@@ -1,0 +1,66 @@
+# Observability
+
+Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus outputs.
+Logging estruturado, níveis consistentes, proteção de dados sensíveis e rastreamento de requisição
+são as quatro alavancas fundamentais — independente de linguagem ou plataforma.
+
+## Logging estruturado
+
+Logs como strings são invisíveis para ferramentas de observabilidade. Logs como objetos com
+campos nomeados permitem busca por campo, correlação e alertas automatizados.
+
+| Anti-pattern | Problema |
+| --- | --- |
+| `"Order 123 created by user 456"` | Não pesquisável por campo |
+| `"Error: " + error.message` | Perde stack trace e contexto |
+| Serializar objeto completo | Vaza dados sensíveis sem controle |
+
+## Níveis de log
+
+Cada nível tem um contrato claro. Usar o nível errado polui o output e esconde sinais reais.
+
+| Nível | Quando usar | Exemplo |
+| --- | --- | --- |
+| **debug** | Diagnóstico local — nunca em produção | Parâmetros de query, valores intermediários |
+| **info** | Evento esperado do fluxo normal | Order created, user authenticated |
+| **warn** | Inesperado, mas o sistema continua | Query lenta, retry, config ausente com fallback |
+| **error** | Falha que requer atenção — com stack trace | Exception, I/O failure, assertion violada |
+
+## O que nunca logar
+
+Logs são persistidos, indexados e acessíveis por múltiplos sistemas. Um dado sensível em log é um
+vazamento permanente — mesmo que o log seja deletado depois.
+
+| Nunca logar | Logar no lugar |
+| --- | --- |
+| Email, CPF, telefone, endereço | ID do usuário |
+| Senha, token, API key, JWT | Nada — nem prefixo |
+| Número de cartão, CVV | Payment ID + last4 |
+| Stack trace com dados de usuário | Stack trace sanitizado |
+
+## Correlation ID
+
+Uma requisição atravessa múltiplos serviços e gera dezenas de log entries. Sem um identificador
+comum, rastrear uma transação de ponta a ponta é inviável.
+
+O correlation ID entra pelo header `X-Correlation-Id` — se ausente, é gerado na borda. Todo log
+entry da requisição carrega esse ID. A resposta retorna o header ao cliente.
+
+```
+Request → [middleware: extrai ou gera correlationId]
+                        ↓
+         [propaga para todos os log entries da request]
+                        ↓
+         [retorna X-Correlation-Id no response]
+```
+
+## Ferramentas
+
+| Ferramenta | Uso primário |
+| --- | --- |
+| Pino / Serilog | Logging estruturado no runtime |
+| Datadog | Logs, métricas, APM distribuído |
+| Grafana + Loki | Dashboards, logs centralizados |
+| CloudWatch | Logs e métricas AWS-native |
+| New Relic | APM, distributed tracing, dashboards |
+| Sentry | Error tracking, performance monitoring |

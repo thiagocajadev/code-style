@@ -1,35 +1,21 @@
-# o arquivo na raiz é a referência única
-# e principal para todo o projeto
 root = true
 
-# Regras gerais para todos os arquivos
 [*]
-# Codificação UTF-8
-charset = utf-8
-# Quebra de linha estilo Unix (LF)
+indent_style = space
+indent_size = 2
 end_of_line = lf
-# Garante nova linha ao final do arquivo
-insert_final_newline = true
-# Usa espaços no lugar de tabulação
-indent_style = space
-# Tamanho da indentação: 2 espaços
-indent_size = 2
-# Remove espaços em branco no fim das linhas
+charset = utf-8
 trim_trailing_whitespace = true
+insert_final_newline = true
 
-[*.cs]
-indent_style = space
-indent_size = 2
-csharp_new_line_before_open_brace = all
-csharp_indent_case_contents = true
-csharp_indent_switch_labels = true
-csharp_indent_labels = one_less_than_current
-csharp_indent_block_contents = true
-csharp_indent_braces = false
-csharp_indent_case_contents_when_block = true
+[*.sql]
+max_line_length = 120
 
-# Regras específicas para arquivos Markdown
+[*.{js,ts,jsx,tsx,cjs,mjs}]
+max_line_length = 80
+
+[*.{cs,csx}]
+max_line_length = 120
+
 [*.md]
-# Mantém espaços ao final
-# (evita quebra em listas e blocos)
 trim_trailing_whitespace = false

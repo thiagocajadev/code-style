@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 275" width="680">
+  <title>Ordem de propriedades CSS — grupos de responsabilidade</title>
+  <desc>Card CSS anotado: posicionamento (roxo), box model (teal), tipografia (âmbar), visual (coral).</desc>
+
+  <style>
+    .card-bg  { fill: #ffffff; }
+    .card-bd  { fill: none; stroke: #e0e0e0; stroke-width: 0.5; }
+    .t-shd    { fill: #000000; fill-opacity: 0.055; }
+    .shd-demo { fill: #000000; fill-opacity: 0.2; }
+    .tx1      { fill: #1a1a1a; }
+    .tx2      { fill: #666666; }
+    .tx3      { fill: #999999; }
+    .g-pos    { color: #534AB7; }
+    .g-box    { color: #0F6E56; }
+    .g-typ    { color: #854F0B; }
+    .g-vis    { color: #993C1D; }
+    .ghost    { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-dasharray: 6 4; opacity: 0.38; }
+    .inset    { fill: none; stroke: currentColor; stroke-width: 1; stroke-dasharray: 4 3; opacity: 0.5; }
+    .hilite   { fill: currentColor; opacity: 0.08; }
+    .bar      { fill: currentColor; opacity: 0.9; }
+    .sans     { font-family: system-ui, -apple-system, sans-serif; }
+    .mono     { font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace; }
+    @media (prefers-color-scheme: dark) {
+      .card-bg  { fill: #1e1e1e; }
+      .card-bd  { stroke: #383838; }
+      .t-shd    { fill-opacity: 0; }
+      .shd-demo { fill-opacity: 0; }
+      .tx1      { fill: #e8e8e8; }
+      .tx2      { fill: #aaaaaa; }
+      .tx3      { fill: #606060; }
+      .g-pos    { color: #AFA9EC; }
+      .g-box    { color: #5DCAA5; }
+      .g-typ    { color: #EF9F27; }
+      .g-vis    { color: #F0997B; }
+    }
+  </style>
+
+  <!-- ghost card (posicionamento) -->
+  <g class="g-pos">
+    <rect class="ghost" x="120" y="48" width="320" height="164" rx="8"/>
+  </g>
+
+  <!-- card -->
+  <rect class="t-shd"    x="134" y="63" width="320" height="164" rx="8"/>
+  <rect class="card-bg"  x="130" y="58" width="320" height="164" rx="8"/>
+  <rect class="card-bd"  x="130" y="58" width="320" height="164" rx="8"/>
+
+  <!-- padding inset (box model) -->
+  <g class="g-box">
+    <rect class="inset" x="154" y="82" width="272" height="116" rx="1"/>
+  </g>
+
+  <!-- área de tipografia -->
+  <g class="g-typ">
+    <rect class="hilite" x="154" y="107" width="272" height="91" rx="1"/>
+  </g>
+
+  <!-- conteúdo do card -->
+  <text class="tx3 mono" x="154" y="94"
+    font-size="10" letter-spacing="0.8" font-weight="500">PREVIEW</text>
+
+  <text class="tx1 sans" x="154" y="118"
+    font-size="15" font-weight="500">Card de referência</text>
+
+  <text class="tx2 sans" x="154" y="143" font-size="13">Conteúdo de exemplo</text>
+  <text class="tx2 sans" x="154" y="163" font-size="13">com tipografia definida</text>
+  <text class="tx2 sans" x="154" y="183" font-size="13">e cor via variável de tema.</text>
+
+  <!-- marcadores de canto (visual) -->
+  <g class="g-vis" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M128,74 L128,56 L148,56"/>
+    <path d="M452,74 L452,56 L432,56"/>
+    <path d="M128,208 L128,226 L148,226"/>
+    <path d="M452,208 L452,226 L432,226"/>
+  </g>
+
+  <!-- rótulo border-radius (visual) -->
+  <g class="g-vis">
+    <text fill="currentColor" class="mono" x="130" y="42" font-size="11">border-radius: 8px</text>
+  </g>
+
+  <!-- badge z-index (posicionamento) -->
+  <g class="g-pos">
+    <rect fill="currentColor" x="408" y="23" width="76" height="21" rx="10.5"/>
+    <text fill="white" class="mono"
+      x="446" y="38" font-size="10.5" text-anchor="middle" font-weight="500">z-index: 1</text>
+  </g>
+
+  <!-- rótulo padding — esquerda (box model) -->
+  <g class="g-box" transform="translate(48, 140) rotate(-90)">
+    <text fill="currentColor" class="mono"
+      x="0" y="0" font-size="11" text-anchor="middle">padding: 24px</text>
+  </g>
+
+  <!-- propriedades direita — box model -->
+  <g class="g-box">
+    <rect class="bar" x="462" y="68" width="2" height="38" rx="1"/>
+    <text fill="currentColor" class="mono" x="470" y="82"  font-size="11">display: flex</text>
+    <text fill="currentColor" class="mono" x="470" y="100" font-size="11">flex-direction: column</text>
+  </g>
+
+  <!-- propriedades direita — tipografia -->
+  <g class="g-typ">
+    <rect class="bar" x="462" y="122" width="2" height="58" rx="1"/>
+    <text fill="currentColor" class="mono" x="470" y="136" font-size="11">font-size: 1rem</text>
+    <text fill="currentColor" class="mono" x="470" y="154" font-size="11">line-height: 1.5</text>
+    <text fill="currentColor" class="mono" x="470" y="172" font-size="11">color: var(--color-text)</text>
+  </g>
+
+  <!-- propriedades direita — visual -->
+  <g class="g-vis">
+    <rect class="bar" x="462" y="192" width="2" height="38" rx="1"/>
+    <text fill="currentColor" class="mono" x="470" y="205" font-size="11">background: var()</text>
+    <text fill="currentColor" class="mono" x="470" y="223" font-size="11">box-shadow</text>
+  </g>
+  <!-- mini demo box-shadow -->
+  <rect class="shd-demo" x="557" y="214" width="30" height="10" rx="2"/>
+  <rect class="card-bg"  x="555" y="212" width="30" height="10" rx="2"/>
+  <rect class="card-bd"  x="555" y="212" width="30" height="10" rx="2"/>
+
+  <!-- seta width — baixo (box model) -->
+  <g class="g-box">
+    <line stroke="currentColor" stroke-width="1" x1="130" y1="240" x2="244" y2="240"/>
+    <line stroke="currentColor" stroke-width="1" x1="336" y1="240" x2="450" y2="240"/>
+    <line stroke="currentColor" stroke-width="1" x1="130" y1="235" x2="130" y2="245"/>
+    <line stroke="currentColor" stroke-width="1" x1="450" y1="235" x2="450" y2="245"/>
+    <text fill="currentColor" class="mono"
+      x="290" y="244" font-size="11" text-anchor="middle">width: 320px</text>
+  </g>
+
+  <!-- legenda -->
+  <g font-size="11" class="sans">
+    <g class="g-pos">
+      <rect fill="currentColor" x="130" y="257" width="8" height="8" rx="1"/>
+      <text fill="currentColor" x="142" y="265">Posicionamento</text>
+    </g>
+    <g class="g-box">
+      <rect fill="currentColor" x="248" y="257" width="8" height="8" rx="1"/>
+      <text fill="currentColor" x="260" y="265">Box model</text>
+    </g>
+    <g class="g-typ">
+      <rect fill="currentColor" x="334" y="257" width="8" height="8" rx="1"/>
+      <text fill="currentColor" x="346" y="265">Tipografia</text>
+    </g>
+    <g class="g-vis">
+      <rect fill="currentColor" x="424" y="257" width="8" height="8" rx="1"/>
+      <text fill="currentColor" x="436" y="265">Visual</text>
+    </g>
+  </g>
+
+</svg>
