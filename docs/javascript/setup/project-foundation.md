@@ -128,6 +128,30 @@ app.post("/api/orders", async (req, res) => {
 <br>
 
 <details>
+<summary>❌ Bad — rotas definidas fora do domínio, em arquivo centralizado</summary>
+<br>
+
+```js
+// routes.js — arquivo monolítico de rotas
+import { listOrders, getOrder, createOrder } from "./features/orders/order.endpoints.js";
+import { listUsers, getUser } from "./features/users/user.endpoints.js";
+
+export function registerRoutes(app, orderService, userService) {
+  app.get("/api/orders", listOrders(orderService));
+  app.get("/api/orders/:id", getOrder(orderService));
+  app.post("/api/orders", createOrder(orderService));
+
+  app.get("/api/users", listUsers(userService));
+  app.get("/api/users/:id", getUser(userService));
+  // domínios diferentes no mesmo arquivo — cresce sem controle
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
 <br>
 
@@ -145,30 +169,6 @@ export function createApp(config) {
   registerOrders(app, config);
 
   return app;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — rotas definidas fora do domínio, em arquivo centralizado</summary>
-<br>
-
-```js
-// routes.js — arquivo monolítico de rotas
-import { listOrders, getOrder, createOrder } from "./features/orders/order.endpoints.js";
-import { listUsers, getUser } from "./features/users/user.endpoints.js";
-
-export function registerRoutes(app, orderService, userService) {
-  app.get("/api/orders", listOrders(orderService));
-  app.get("/api/orders/:id", getOrder(orderService));
-  app.post("/api/orders", createOrder(orderService));
-
-  app.get("/api/users", listUsers(userService));
-  app.get("/api/users/:id", getUser(userService));
-  // domínios diferentes no mesmo arquivo — cresce sem controle
 }
 ```
 

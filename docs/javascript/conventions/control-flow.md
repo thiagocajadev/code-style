@@ -377,22 +377,6 @@ for (const index in prices) {
 <br>
 
 <details>
-<summary>✅ Good — for...of para valores diretos</summary>
-<br>
-
-```js
-const prices = [10, 20, 30];
-
-for (const price of prices) {
-  console.log(price);
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — iteração de objeto com for...of sem Object.entries</summary>
 <br>
 
@@ -401,6 +385,22 @@ const config = { host: "localhost", port: 5432, database: "app" };
 
 for (const key of config) {
   console.log(key); // TypeError: config is not iterable
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — for...of para valores diretos</summary>
+<br>
+
+```js
+const prices = [10, 20, 30];
+
+for (const price of prices) {
+  console.log(price);
 }
 ```
 
@@ -451,24 +451,6 @@ function findFirstExpiredProduct(products) {
 <br>
 
 <details>
-<summary>✅ Good — for...of sai no primeiro match</summary>
-<br>
-
-```js
-function findFirstExpiredProduct(products) {
-  for (const product of products) {
-    if (product.isExpired) return product;
-  }
-
-  return null;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — forEach percorre tudo mesmo quando o método declarativo existe</summary>
 <br>
 
@@ -481,6 +463,24 @@ function hasExpiredProduct(products) {
   });
 
   return found;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — for...of sai no primeiro match</summary>
+<br>
+
+```js
+function findFirstExpiredProduct(products) {
+  for (const product of products) {
+    if (product.isExpired) return product;
+  }
+
+  return null;
 }
 ```
 
@@ -527,6 +527,22 @@ for (let attempt = 0; attempt < maxAttempts; attempt++) {
 <br>
 
 <details>
+<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
+
+```js
+// verifica antes de executar — se a fila já estiver vazia, nunca executa
+while (taskQueue.size > 0) {
+  const task = taskQueue.dequeue();
+  executeTask(task);
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — while para condição de parada por estado</summary>
 <br>
 
@@ -538,22 +554,6 @@ while (attempt < maxAttempts) {
   if (connection.isReady) break;
 
   attempt++;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
-<br>
-
-```js
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
-while (taskQueue.size > 0) {
-  const task = taskQueue.dequeue();
-  executeTask(task);
 }
 ```
 

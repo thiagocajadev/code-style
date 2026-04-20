@@ -63,21 +63,6 @@ var totalRevenue = orders.Aggregate(
 <br>
 
 <details>
-<summary>✅ Good — foreach com variável de acumulação explícita</summary>
-<br>
-
-```csharp
-decimal totalRevenue = 0;
-foreach (var order in orders)
-foreach (var item in order.Items)
-    totalRevenue += item.Price * item.Quantity;
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — foreach manual para construir lista, sem Select</summary>
 <br>
 
@@ -88,6 +73,21 @@ foreach (var order in orders)
     var summary = new OrderSummary(order.Id, order.Total, order.CreatedAt);
     summaries.Add(summary); // acumulação manual para transformação 1-para-1 — Select é mais direto
 }
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — foreach com variável de acumulação explícita</summary>
+<br>
+
+```csharp
+decimal totalRevenue = 0;
+foreach (var order in orders)
+foreach (var item in order.Items)
+    totalRevenue += item.Price * item.Quantity;
 ```
 
 </details>

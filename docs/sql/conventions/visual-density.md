@@ -39,33 +39,6 @@ END;
 <br>
 
 <details>
-<summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
-<br>
-
-```sql
-CREATE OR ALTER PROCEDURE GetFootballTeamById
-(
-  @TeamId INT
-)
-AS
-
-BEGIN
-  SELECT
-    Id,
-    Name,
-    ChampionshipsWon
-  FROM
-    FootballTeams
-  WHERE
-    Id = @TeamId;
-END;
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — PostgreSQL: function sem linhas em branco internas, bloco opaco</summary>
 <br>
 
@@ -92,6 +65,33 @@ BEGIN
     Id = TeamId;
 END;
 $$ LANGUAGE plpgsql;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
+<br>
+
+```sql
+CREATE OR ALTER PROCEDURE GetFootballTeamById
+(
+  @TeamId INT
+)
+AS
+
+BEGIN
+  SELECT
+    Id,
+    Name,
+    ChampionshipsWon
+  FROM
+    FootballTeams
+  WHERE
+    Id = @TeamId;
+END;
 ```
 
 </details>

@@ -11,6 +11,25 @@ A distinção prática: `interface` descreve o shape de um objeto e pode ser est
 ser reaberta.
 
 <details>
+<summary>❌ Bad — type onde interface seria natural, interface onde type seria correto</summary>
+<br>
+
+```ts
+// type para shape de objeto — funciona, mas não é a convenção
+type User = {
+  id: string;
+  name: string;
+};
+
+// interface para union type — não compila
+interface OrderStatus = "pending" | "approved"; // erro de sintaxe
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — interface para objetos e contratos</summary>
 <br>
 
@@ -48,25 +67,6 @@ type Timestamp = number;
 type AdminUser = User & { permissions: string[] };
 
 type ApiResponse<T> = { data: T; meta: ResponseMeta };
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — type onde interface seria natural, interface onde type seria correto</summary>
-<br>
-
-```ts
-// type para shape de objeto — funciona, mas não é a convenção
-type User = {
-  id: string;
-  name: string;
-};
-
-// interface para union type — não compila
-interface OrderStatus = "pending" | "approved"; // erro de sintaxe
 ```
 
 </details>

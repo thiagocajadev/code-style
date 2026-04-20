@@ -188,6 +188,28 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
+<summary>❌ Bad — if/else encadeado para mapear Result em resposta HTTP</summary>
+<br>
+
+```csharp
+public IResult MapResult(Result<Order> result)
+{
+    if (result.IsSuccess)
+        return Results.Ok(result.Value!);
+    else if (result.Error.Code == "NOT_FOUND")
+        return Results.NotFound();
+    else if (result.Error.Code == "UNAUTHORIZED")
+        return Results.Unauthorized();
+    else
+        return Results.Problem();
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — switch expression declarativo e exaustivo</summary>
 <br>
 
@@ -203,28 +225,6 @@ public string GetStatusLabel(string status)
     };
 
     return label;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — if/else encadeado para mapear Result em resposta HTTP</summary>
-<br>
-
-```csharp
-public IResult MapResult(Result<Order> result)
-{
-    if (result.IsSuccess)
-        return Results.Ok(result.Value!);
-    else if (result.Error.Code == "NOT_FOUND")
-        return Results.NotFound();
-    else if (result.Error.Code == "UNAUTHORIZED")
-        return Results.Unauthorized();
-    else
-        return Results.Problem();
 }
 ```
 
@@ -431,26 +431,6 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 <br>
 
 <details>
-<summary>✅ Good — foreach com return antecipado</summary>
-<br>
-
-```csharp
-public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
-{
-    foreach (var order in orders)
-    {
-        if (order.IsExpired) return order;
-    }
-
-    return null;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
 <br>
 
@@ -466,6 +446,26 @@ public bool HasExpiredOrders(IEnumerable<Order> orders)
     }
 
     return hasExpired;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — foreach com return antecipado</summary>
+<br>
+
+```csharp
+public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
+{
+    foreach (var order in orders)
+    {
+        if (order.IsExpired) return order;
+    }
+
+    return null;
 }
 ```
 
@@ -513,26 +513,6 @@ for (int attempt = 0; attempt < maxAttempts; attempt++)
 <br>
 
 <details>
-<summary>✅ Good — while para condição de parada por estado</summary>
-<br>
-
-```csharp
-var attempt = 0;
-
-while (attempt < maxAttempts)
-{
-    var connection = ConnectToDatabase();
-    if (connection.IsReady) break;
-
-    attempt++;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — while com verificação duplicada antes do loop</summary>
 <br>
 
@@ -545,6 +525,26 @@ if (taskQueue.Count > 0)
         var task = taskQueue.Dequeue();
         ExecuteTask(task);
     }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — while para condição de parada por estado</summary>
+<br>
+
+```csharp
+var attempt = 0;
+
+while (attempt < maxAttempts)
+{
+    var connection = ConnectToDatabase();
+    if (connection.IsReady) break;
+
+    attempt++;
 }
 ```
 

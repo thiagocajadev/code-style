@@ -151,6 +151,35 @@ public OrderSummary BuildSummary(Order order) =>
 <br>
 
 <details>
+<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<br>
+
+```csharp
+public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
+    => await _repository.FindByStatusAsync(userId, OrderStatus.Pending, ct);
+
+public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken ct)
+    => await _checkoutService.ProcessAsync(cartId, ct);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<br>
+
+```csharp
+public string BuildShippingLabel(Order order) =>
+    $"{order.Customer.FirstName} {order.Customer.LastName}\n{order.Address.Street}, {order.Address.Number}\n{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}\nOrder #{order.Id}";
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — variável expressiva antes do return</summary>
 <br>
 
@@ -163,22 +192,6 @@ public OrderSummary BuildSummary(Order order)
 
     return summary;
 }
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
-
-```csharp
-public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
-    => await _repository.FindByStatusAsync(userId, OrderStatus.Pending, ct);
-
-public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken ct)
-    => await _checkoutService.ProcessAsync(cartId, ct);
 ```
 
 </details>
@@ -203,19 +216,6 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 
     return invoice;
 }
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
-<br>
-
-```csharp
-public string BuildShippingLabel(Order order) =>
-    $"{order.Customer.FirstName} {order.Customer.LastName}\n{order.Address.Street}, {order.Address.Number}\n{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}\nOrder #{order.Id}";
 ```
 
 </details>

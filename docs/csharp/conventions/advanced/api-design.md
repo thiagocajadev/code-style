@@ -51,6 +51,32 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
 <br>
 
 <details>
+<summary>❌ Bad — handler que busca dependências via service locator</summary>
+<br>
+
+```csharp
+// Features/Orders/CreateOrderHandler.cs
+public class CreateOrderHandler
+{
+    public async Task<IResult> HandleAsync(OrderRequest request, IServiceProvider services, CancellationToken ct)
+    {
+        // dependências resolvidas manualmente dentro do handler
+        var orderService = services.GetRequiredService<OrderService>();
+        var result = await orderService.CreateOrderAsync(request, ct);
+        if (result.IsFailure)
+            return Results.BadRequest(result.Error);
+
+        var createdOrder = result.Value!;
+        return Results.Created($"/api/orders/{createdOrder.Id}", createdOrder);
+    }
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — rotas mapeadas no extension method, handler injetado</summary>
 <br>
 
@@ -83,32 +109,6 @@ public static class OrdersExtensions
             => handler.HandleAsync(request, ct));
 
         return app;
-    }
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — handler que busca dependências via service locator</summary>
-<br>
-
-```csharp
-// Features/Orders/CreateOrderHandler.cs
-public class CreateOrderHandler
-{
-    public async Task<IResult> HandleAsync(OrderRequest request, IServiceProvider services, CancellationToken ct)
-    {
-        // dependências resolvidas manualmente dentro do handler
-        var orderService = services.GetRequiredService<OrderService>();
-        var result = await orderService.CreateOrderAsync(request, ct);
-        if (result.IsFailure)
-            return Results.BadRequest(result.Error);
-
-        var createdOrder = result.Value!;
-        return Results.Created($"/api/orders/{createdOrder.Id}", createdOrder);
     }
 }
 ```

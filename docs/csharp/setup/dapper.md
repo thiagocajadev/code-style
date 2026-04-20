@@ -182,25 +182,6 @@ var sql = $"SELECT Id, Name FROM Customers WHERE Email = '{email}'";
 <br>
 
 <details>
-<summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
-<br>
-
-```csharp
-public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct)
-{
-    const string sql = "SELECT Id, Name FROM Customers WHERE Email = @Email";
-
-    var customer = await _connection.QueryFirstOrDefaultAsync<Customer>(sql, new { email });
-
-    return customer;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
 <br>
 
@@ -214,6 +195,25 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
     var result = customers.ToList();
 
     return result;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
+<br>
+
+```csharp
+public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct)
+{
+    const string sql = "SELECT Id, Name FROM Customers WHERE Email = @Email";
+
+    var customer = await _connection.QueryFirstOrDefaultAsync<Customer>(sql, new { email });
+
+    return customer;
 }
 ```
 

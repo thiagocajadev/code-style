@@ -301,6 +301,38 @@ function getActiveUsers(users) {
 <br>
 
 <details>
+<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<br>
+
+```js
+function findPendingOrders(userId) {
+  return orderRepository.findByStatus(userId, "pending");
+}
+
+async function processCheckout(cartId) {
+  return await checkoutService.process(cartId);
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<br>
+
+```js
+function buildShippingLabel(order) {
+  return `${order.customer.firstName} ${order.customer.lastName}\n${order.address.street}, ${order.address.number}\n${order.address.city} - ${order.address.state}, ${order.address.zipCode}\nOrder #${order.id}`;
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — variável expressiva antes do return</summary>
 <br>
 
@@ -323,24 +355,6 @@ function getActiveUsers(users) {
 <br>
 
 <details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
-
-```js
-function findPendingOrders(userId) {
-  return orderRepository.findByStatus(userId, "pending");
-}
-
-async function processCheckout(cartId) {
-  return await checkoutService.process(cartId);
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>✅ Good — nome simétrico com a função deixa claro o que sai</summary>
 <br>
 
@@ -355,20 +369,6 @@ async function processCheckout(cartId) {
   const invoice = await checkoutService.process(cartId);
 
   return invoice;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
-<br>
-
-```js
-function buildShippingLabel(order) {
-  return `${order.customer.firstName} ${order.customer.lastName}\n${order.address.street}, ${order.address.number}\n${order.address.city} - ${order.address.state}, ${order.address.zipCode}\nOrder #${order.id}`;
 }
 ```
 
