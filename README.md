@@ -32,6 +32,18 @@ Demonstro convenções, padrões e boas práticas que sigo.
 
 Para ilustrar os conceitos, uso a metodologia **learn by example** (aprender pelo exemplo).
 
+## O que eu penso sobre código
+
+Penso como um **Resolvedor de Problemas**. Tenho que aplicar as melhores práticas, igual a um
+**staff engineer** (engenheiro sênior de alto nível), focando mais no **ciclo de vida completo do
+software** do que na implementação imediata.
+
+O **Código serve o time** e a **Governança** cobre todo o ciclo. A **Complexidade tem que ser
+abstraída** pra todos entenderem (do não técnico ao especialista), abrindo espaço para novas ideias
+e melhorias.
+
+Confira os detalhes em [Governança](docs/shared/governance.md).
+
 ## Como eu leio e escrevo código.
 
 Os fundamentos aqui são agnósticos de linguagem. Escolhi usar JavaScript como linguagem para
@@ -109,7 +121,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | --------------------------------------- | ---------------------------------------------------------------- |
 | [HTML](docs/html/README.md)             | Semântica, acessibilidade, performance, SEO, jQuery              |
 | [JavaScript](docs/javascript/README.md) | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async |
-| [TypeScript](docs/typescript/README.md) | Tipos, interfaces, narrowing, generics, null-safety |
+| [TypeScript](docs/typescript/README.md) | Tipos, interfaces, narrowing, generics, null-safety              |
 | [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
 | [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
 | [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ       |
@@ -117,15 +129,23 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 ### Shared
 
-| Tópico                                          | Descrição                                                                   |
-| ----------------------------------------------- | --------------------------------------------------------------------------- |
-| [Principles](docs/shared/principles.md)         | Todos os princípios explicados — Forma, Legibilidade, Controle de Qualidade |
-| [Visual Density](docs/shared/visual-density.md) | Densidade visual agnóstica de linguagem — princípios e regras               |
-| [Git](docs/shared/git.md)                       | Branches, commits, pipeline e estratégia de entrega                         |
-| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
-| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
-| [Null Safety](docs/shared/null-safety.md)       | Segurança com null/undefined — princípios agnósticos de linguagem           |
-| [Security](docs/shared/security.md)             | Segredos, configuração em camadas, autorização e blindagem de cookies       |
+| Tópico                                          | Descrição                                                                  |
+| ----------------------------------------------- | -------------------------------------------------------------------------- |
+| [Governance](docs/shared/governance.md)         | Pensamento de staff engineer, SDLC, onboarding e governança do projeto     |
+| [Principles](docs/shared/principles.md)         | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
+| [Architecture](docs/shared/architecture.md)     | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas              |
+| [Patterns](docs/shared/patterns.md)             | Result, Factory, Repository, Strategy, Observer, Builder, Decorator        |
+| [Performance](docs/shared/performance.md)       | Paginação, cache, filas, lazy loading, índices e connection pool           |
+| [Testing](docs/shared/testing.md)               | AAA, no logic no assert, testes unitários e de integração                  |
+| [Visual Density](docs/shared/visual-density.md) | Densidade visual agnóstica de linguagem: princípios e regras               |
+| [UI/UX](docs/shared/ui-ux.md)                   | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados      |
+| [Security](docs/shared/security.md)             | Segredos, configuração em camadas, autorização e blindagem de cookies      |
+| [Null Safety](docs/shared/null-safety.md)       | Fronteira vs interior, contratos de entrada e schema evolution             |
+| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                           |
+| [CI/CD](docs/shared/ci-cd.md)                   | Pipeline, deploy vs release, feature flags, TBD e fix forward              |
+| [Cloud](docs/shared/cloud.md)                   | Serviços gerenciados, least privilege, containers e ambientes              |
+| [Git](docs/shared/git.md)                       | Branches, commits, pull requests e estratégia de entrega                   |
+| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor compatível com qualquer stack                  |
 
 ### Changelog
 

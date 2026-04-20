@@ -1,6 +1,6 @@
 # Segurança
 
-Segurança não é uma camada adicional: é uma propriedade que atravessa todas as decisões de design, do banco de dados ao frontend. Os princípios abaixo valem para qualquer linguagem ou plataforma.
+Segurança é uma propriedade que atravessa todas as decisões de design, do banco de dados ao frontend. Os princípios abaixo valem para qualquer linguagem ou plataforma.
 
 ## Segredos fora do código
 
@@ -8,7 +8,7 @@ Segredos (connection strings, API keys, JWT secrets, senhas) têm um ciclo de vi
 
 Um secret no repositório é um secret comprometido. Mesmo após a remoção, o histórico do git preserva tudo: qualquer checkout anterior expõe o valor.
 
-A regra é simples: o repositório não é o lugar certo para segredos, nem em branches de desenvolvimento.
+A regra é simples: segredos ficam fora do repositório, inclusive em branches de desenvolvimento.
 
 ## Configuração em camadas
 

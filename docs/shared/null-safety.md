@@ -2,10 +2,10 @@
 
 > "I call it my billion-dollar mistake." Tony Hoare, inventor do null, 2009
 
-Null não é errado: é mal usado. O sintoma mais comum é `?.` espalhado em todo o código como
-defesa preventiva. Isso não é cuidado: é sinal de que os **contratos de entrada não estão fechados**.
+Null tem um espaço definido: as fronteiras do sistema. O sintoma mais comum de uso incorreto é `?.`
+espalhado em todo o código como defesa preventiva. Isso é sinal de que os **contratos de entrada não estão fechados**.
 
-A pergunta certa não é _"devo checar null aqui?"_, mas _"esse null deveria chegar até aqui?"_
+A pergunta certa é _"esse null deveria chegar até aqui?"_
 
 ## A regra: checa na fronteira, confia no interior
 
@@ -26,7 +26,7 @@ O sistema tem dois territórios com regras diferentes:
   [ DOMÍNIO ]  ← opera com valores garantidos, sem ?.
 ```
 
-Null que chega no interior é um **bug de fronteira**, não um caso a tratar com `?.`.
+Null que chega no interior é um **bug de fronteira** que deve ser corrigido na entrada.
 
 ## O que é fronteira
 
@@ -40,10 +40,10 @@ Null que chega no interior é um **bug de fronteira**, não um caso a tratar com
 ## O que não é fronteira
 
 Funções internas, serviços de domínio, cálculos: tudo que recebe dados **que já passaram pela
-fronteira**. Essas funções não checam null: elas confiam que quem chamou já garantiu o contrato.
+fronteira**. Essas funções confiam que quem chamou já garantiu o contrato.
 
 <details>
-<summary>❌ Bad — interior checando null que não deveria existir</summary>
+<summary>❌ Bad: interior checando null que não deveria existir</summary>
 <br>
 
 ```ts
@@ -59,7 +59,7 @@ function calculateTotal(order?: Order | null): number {
 <br>
 
 <details>
-<summary>✅ Good — interior opera com contrato garantido</summary>
+<summary>✅ Good: interior opera com contrato garantido</summary>
 <br>
 
 ```ts
@@ -72,7 +72,7 @@ function calculateTotal(order: Order): number {
 
 </details>
 
-A diferença não é otimismo: é **responsabilidade bem definida**. Quem chama `calculateTotal` é
+A diferença é **responsabilidade bem definida**. Quem chama `calculateTotal` é
 responsável por passar um `Order` válido. Se não passar, é um bug de quem chamou.
 
 ## Como fechar a fronteira
@@ -91,7 +91,7 @@ await createOrder(body); // domínio recebe dados garantidos
 // C# — FluentValidation ou Data Annotations no controller
 public async Task<IResult> CreateOrder([FromBody] CreateOrderRequest request)
 {
-    // request já validado pelo middleware — domínio recebe dados garantidos
+    // request já validado pelo middleware, domínio recebe dados garantidos
     var order = await _service.CreateOrderAsync(request);
     return Results.Created($"/orders/{order.Id}", order);
 }
@@ -104,7 +104,7 @@ public async Task<IResult> CreateOrder([FromBody] CreateOrderRequest request)
 const order = await findOrderById(id);
 if (!order) throw new NotFoundError({ message: `Order ${id} not found.` });
 
-// a partir daqui, order é garantido — sem ?. no restante da função
+// a partir daqui, order é garantido. sem ?. no restante da função
 const total = calculateTotal(order);
 ```
 
@@ -124,7 +124,7 @@ var total = CalculateTotal(order);
 // TypeScript — interface sem null, lista inicializada
 interface Order {
   id: string;
-  items: LineItem[]; // nunca null — [] quando vazio
+  items: LineItem[]; // nunca null, sempre [] quando vazio
 }
 ```
 
@@ -150,16 +150,16 @@ cascata em cada caller, sem benefício nenhum.
 
 ## Onde usar `?.` e `??`
 
-Esses operadores têm lugar: campos **opcionais por design no domínio**, não como defesa contra
-contratos mal fechados.
+Esses operadores têm lugar nos campos **opcionais por design no domínio**, sem servir como defesa
+contra contratos mal fechados.
 
 <details>
-<summary>❌ Bad — ?. como defesa contra contrato que deveria ser fechado</summary>
+<summary>❌ Bad: ?. como defesa contra contrato que deveria ser fechado</summary>
 <br>
 
 ```ts
 const total = order?.items?.reduce((sum, item) => sum + item.price, 0) ?? 0;
-// order.items nunca deveria ser null — isso é contrato fraco, não cuidado
+// order.items nunca deveria ser null: contrato fraco exposto com `?.`
 ```
 
 </details>
@@ -167,7 +167,7 @@ const total = order?.items?.reduce((sum, item) => sum + item.price, 0) ?? 0;
 <br>
 
 <details>
-<summary>✅ Good — ?. e ?? para campos opcionais por design</summary>
+<summary>✅ Good: ?. e ?? para campos opcionais por design</summary>
 <br>
 
 ```ts
@@ -178,7 +178,7 @@ const city = user.address?.city ?? "N/A";       // endereço pode não existir
 </details>
 
 Se você precisa de `?.` para acessar um campo que "sempre deveria existir", o problema está no
-contrato, não na checagem.
+contrato.
 
 ## Schema evolution: campo novo em tabela existente
 
@@ -232,7 +232,7 @@ interface Order {
   priority?: "low" | "normal" | "high"; // ausência = "anterior à feature"
 }
 
-// uma função resolve — não fica espalhando ?. pelo domínio
+// uma função resolve, sem espalhar ?. pelo domínio
 function getEffectivePriority(order: Order): string {
   const priority = order.priority ?? "normal";
   return priority;
