@@ -104,21 +104,21 @@ Organizados como checklist de revisão — do mais impactante ao mais granular:
 
 | Linguagem                               | Descrição                                                        |
 | --------------------------------------- | ---------------------------------------------------------------- |
-| [JavaScript](docs/javascript/README.md) | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async |
-| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
-| [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
-| [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
 | [HTML](docs/html/README.md)             | Semântica, acessibilidade, performance, SEO, jQuery              |
+| [JavaScript](docs/javascript/README.md) | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async |
+| [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
+| [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
+| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
 
 ### Shared
 
 | Tópico                                          | Descrição                                                                   |
 | ----------------------------------------------- | --------------------------------------------------------------------------- |
 | [Principles](docs/shared/principles.md)         | Todos os princípios explicados — Forma, Legibilidade, Controle de Qualidade |
-| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
-| [Git](docs/shared/git.md)                       | Branches, commits, pipeline e estratégia de entrega                         |
-| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
 | [Visual Density](docs/shared/visual-density.md) | Densidade visual agnóstica de linguagem — princípios e regras               |
+| [Git](docs/shared/git.md)                       | Branches, commits, pipeline e estratégia de entrega                         |
+| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
+| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
 
 ### Referências
 
@@ -129,13 +129,26 @@ The Clean Coder — Robert C. Martin _(livro)_
 [The Twelve-Factor App](https://12factor.net/)  
 [Refactoring Guru](https://refactoring.guru/)
 
-**Git**  
-[Conventional Commits](https://www.conventionalcommits.org/)  
-[Trunk-Based Development](https://trunkbaseddevelopment.com/)
+**HTML**  
+[MDN HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)  
+[HTML Living Standard — WHATWG](https://html.spec.whatwg.org/)  
+[WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)  
+[Can I Use](https://caniuse.com/)  
+[jQuery API Docs](https://api.jquery.com/)
 
 **JavaScript**  
 [Airbnb JavaScript Code Style](https://github.com/airbnb/javascript?tab=readme-ov-file)  
 [Mozilla JavaScript Code Style](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Code_style_guide/JavaScript)
+
+**CSS**  
+[MDN CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)  
+[BEM Methodology](https://getbem.com/)  
+[Tailwind CSS Docs](https://tailwindcss.com/docs)  
+[Bootstrap Docs](https://getbootstrap.com/docs/)
+
+**Git**  
+[Conventional Commits](https://www.conventionalcommits.org/)  
+[Trunk-Based Development](https://trunkbaseddevelopment.com/)
 
 **C#**  
 [Google C# Code Style](https://google.github.io/styleguide/csharp-style.html)  
@@ -144,19 +157,6 @@ The Clean Coder — Robert C. Martin _(livro)_
 **SQL**  
 [Guia de estilos SQL](https://www.sqlstyle.guide/)  
 [Guia de referência SQL](https://brainstation.io/learn/sql/reference)
-
-**CSS**  
-[MDN CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)  
-[BEM Methodology](https://getbem.com/)  
-[Tailwind CSS Docs](https://tailwindcss.com/docs)  
-[Bootstrap Docs](https://getbootstrap.com/docs/)
-
-**HTML**  
-[MDN HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)  
-[HTML Living Standard — WHATWG](https://html.spec.whatwg.org/)  
-[WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)  
-[Can I Use](https://caniuse.com/)  
-[jQuery API Docs](https://api.jquery.com/)
 
 **Dates**  
 [Temporal API — TC39](https://tc39.es/proposal-temporal/docs/)  
