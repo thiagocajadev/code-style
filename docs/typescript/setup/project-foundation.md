@@ -26,7 +26,7 @@ npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslin
 em runtime.
 
 <details>
-<summary>❌ Bad — tsconfig sem strict, sem paths, sem checagens essenciais</summary>
+<summary>❌ Bad — tsconfig sem strict, com padrões obsoletos do TS5</summary>
 <br>
 
 ```json
@@ -37,10 +37,17 @@ em runtime.
     "outDir": "./dist",
     "noImplicitAny": false,
     "strictNullChecks": false,
-    "esModuleInterop": true
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
   }
 }
 ```
+
+`target: ES6` e `module: commonjs` são depreciados no TS6. `baseUrl` foi removido — caminhos em
+`paths` já devem ser relativos à raiz do projeto (`"./src/*"`). Flags de strict manual (`noImplicitAny`,
+`strictNullChecks`) são substituídas por `strict: true`.
 
 </details>
 
@@ -53,10 +60,10 @@ em runtime.
 ```json
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2025",
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "lib": ["ES2022"],
+    "lib": ["ES2025"],
 
     "outDir": "./dist",
     "rootDir": "./src",
@@ -69,6 +76,8 @@ em runtime.
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
 
+    "types": ["node"],
+
     "paths": {
       "@/*": ["./src/*"]
     }
@@ -79,6 +88,11 @@ em runtime.
 ```
 
 </details>
+
+> [!NOTE] **TypeScript 6 — novos defaults.** `strict`, `module: esnext` e `target: es2025` passaram
+> a ser padrão. O campo `types` agora é `[]` por padrão — declare explicitamente os pacotes `@types`
+> que o projeto usa (ex.: `["node"]`, `["node", "jest"]`). `baseUrl` foi depreciado: use `paths`
+> com caminhos relativos completos a partir da raiz (`"./src/*"`).
 
 ## Path aliases: importações sem `../../`
 

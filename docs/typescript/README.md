@@ -7,6 +7,8 @@ força.
 Este guia cobre o que é específico do TypeScript: quando anotar tipos, como nomear contratos,
 como modelar variações e como extrair o máximo do sistema de tipos sem adicionar ruído.
 
+> Guia baseado em **TypeScript 6.x**.
+
 ## Setup
 
 Configuração inicial de um projeto TypeScript: compilador, estrutura e ferramentas.

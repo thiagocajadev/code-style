@@ -6,9 +6,10 @@
 
 <div align="center">
 
+[![Version](https://img.shields.io/github/package-json/v/thiagocajadev/code-style?label=version&color=4CAF50)](package.json)
 [![HTML](https://img.shields.io/badge/HTML-Semântico%20%26%20Acessível-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md)
 [![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
 [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
 [![VB.NET](https://img.shields.io/badge/VB.NET-.NET%20Framework%204.8-512BD4?logo=dotnet&logoColor=white)](docs/vbnet/README.md)
