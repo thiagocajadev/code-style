@@ -1,6 +1,6 @@
 # API Design
 
-## Minimal API — preferência
+## Minimal API: preferência
 
 Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice Architecture**: toda a lógica de uma funcionalidade fica co-localizada, não fragmentada em camadas horizontais.
 
@@ -10,7 +10,7 @@ Para endpoints triviais sem dependências, uma lambda direta é suficiente e idi
 app.MapGet("/health", () => Results.Ok());
 ```
 
-Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as dependências via construtor — um handler por operação, sem misturar DI com parâmetros de request:
+Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
 
 ```
 Features/
@@ -92,6 +92,32 @@ public static class OrdersExtensions
 <br>
 
 <details>
+<summary>❌ Bad — handler que busca dependências via service locator</summary>
+<br>
+
+```csharp
+// Features/Orders/CreateOrderHandler.cs
+public class CreateOrderHandler
+{
+    public async Task<IResult> HandleAsync(OrderRequest request, IServiceProvider services, CancellationToken ct)
+    {
+        // dependências resolvidas manualmente dentro do handler
+        var orderService = services.GetRequiredService<OrderService>();
+        var result = await orderService.CreateOrderAsync(request, ct);
+        if (result.IsFailure)
+            return Results.BadRequest(result.Error);
+
+        var createdOrder = result.Value!;
+        return Results.Created($"/api/orders/{createdOrder.Id}", createdOrder);
+    }
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — handler com dependências no construtor, request como parâmetro</summary>
 <br>
 
@@ -113,9 +139,9 @@ public class CreateOrderHandler(OrderService orderService)
 
 </details>
 
-## Controller — MVC e legados
+## Controller: MVC e legados
 
-Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem lógica — apenas orquestra.
+Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem lógica, apenas orquestra.
 
 <details>
 <summary>❌ Bad — controller com lógica de negócio</summary>
@@ -175,7 +201,7 @@ public class OrdersController(OrderService orderService) : ControllerBase
 
 ## Request e Response
 
-DTOs definem o contrato da API. Tipos de domínio não vazam para fora — a API recebe e devolve tipos próprios.
+DTOs definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos próprios.
 
 ### Request
 
@@ -285,7 +311,7 @@ Respostas sem envelope têm shapes inconsistentes: sucesso retorna objeto nu, er
 lista retorna array. Cada shape exige tratamento separado no cliente.
 
 Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carrega apenas o que
-ajuda na observabilidade — sem inflar o payload.
+ajuda na observabilidade, sem inflar o payload.
 
 <details>
 <summary>❌ Bad — shapes inconsistentes: objeto nu no sucesso, string no erro</summary>
@@ -364,8 +390,8 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
 // 404: (sem corpo)
 ```
 
-O `correlationId` em `meta` é o mesmo propagado nos logs da requisição —
-veja [Correlation ID](./observability.md#correlation-id).
+O `correlationId` em `meta` é o mesmo propagado nos logs da requisição.
+Veja [Correlation ID](./observability.md#correlation-id).
 
 </details>
 
@@ -388,13 +414,13 @@ veja [Correlation ID](./observability.md#correlation-id).
 | Status | Quando usar |
 | --- | --- |
 | `200 OK` | Leitura ou operação bem-sucedida com corpo de resposta |
-| `201 Created` | Recurso criado — incluir id ou `Location` no corpo |
+| `201 Created` | Recurso criado; incluir id ou `Location` no corpo |
 | `204 No Content` | Operação bem-sucedida sem corpo (ex: DELETE) |
-| `400 Bad Request` | Input inválido — erro do cliente |
+| `400 Bad Request` | Input inválido (erro do cliente) |
 | `401 Unauthorized` | Não autenticado |
 | `403 Forbidden` | Autenticado mas sem permissão |
 | `404 Not Found` | Recurso não encontrado |
 | `409 Conflict` | Estado incompatível (ex: duplicata) |
 | `422 Unprocessable Entity` | Input válido mas regra de negócio violada |
 | `429 Too Many Requests` | Rate limit atingido |
-| `500 Internal Server Error` | Falha inesperada — nunca expor detalhes ao cliente |
+| `500 Internal Server Error` | Falha inesperada; nunca expor detalhes ao cliente |

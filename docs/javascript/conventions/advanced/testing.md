@@ -1,14 +1,14 @@
 # Testing
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma história — quem chamou, o que recebeu, o que esperava.
+Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)** — uma boa convenção que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
+Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)**, que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
 
-O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas — sem expressões, acessos de propriedade ou literais inline.
+O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas: sem expressões, acessos de propriedade ou literais inline.
 
-As variáveis de assert são sempre nomeadas de forma expressiva — `actualPrice`, `expectedName`, `actualOrder` em vez de genéricos — e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
+As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos), e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 
-Usa [`node:test`](https://nodejs.org/api/test.html) e [`node:assert/strict`](https://nodejs.org/api/assert.html) — built-in desde Node 18, sem dependências externas.
+Usa [`node:test`](https://nodejs.org/api/test.html) e [`node:assert/strict`](https://nodejs.org/api/assert.html): built-in desde Node 18, sem dependências externas.
 
 ```js
 import { test, describe } from 'node:test';
@@ -16,9 +16,9 @@ import assert from 'node:assert/strict';
 ```
 
 > [!NOTE]
-> Em `node:assert`, a convenção é `assert.strictEqual(actual, expected)` — actual primeiro. Em Jest e Vitest, a API fluent deixa a ordem explícita: `expect(actual).toBe(expected)`.
+> Em `node:assert`, a convenção é `assert.strictEqual(actual, expected)`: actual primeiro. Em Jest e Vitest, a API fluent deixa a ordem explícita: `expect(actual).toBe(expected)`.
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto, execução do comportamento e verificação do resultado.
 
@@ -53,7 +53,7 @@ test('applies 10% discount to order price', () => {
 
 </details>
 
-## Assert inline — semantic assert
+## Assert inline: semantic assert
 
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
@@ -104,7 +104,7 @@ test('returns active users only', () => {
 
 ## Nome genérico
 
-O nome do teste descreve o cenário e o resultado esperado, não o nome da função nem uma afirmação vaga. Sem prefixos: `should` não agrega informação, `given/when/then` é mecânico e verboso.
+O nome do teste descreve o cenário e o resultado esperado, não o nome da função nem uma afirmação vaga. Sem prefixos: `should` não agrega informação e `given/when/then` é mecânico e verboso.
 
 <details>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
@@ -191,7 +191,7 @@ test('applies 10% discount to order price', () => {
 
 ## Exceção sem tipo
 
-Testar que um erro foi lançado é diferente de testar *qual* erro foi lançado. `assert.rejects` verifica tipo e mensagem, não apenas presença.
+Testar que um erro foi lançado é diferente de testar qual erro foi lançado. `assert.rejects` verifica tipo e mensagem, não apenas presença.
 
 <details>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>

@@ -1,8 +1,7 @@
 # Naming
 
 Nomes de classe descrevem **propósito** (o que o elemento representa no domínio da UI), não sua
-aparência visual. Uma classe que diz `.button--danger` sobrevive a uma mudança de cor. `.red-button`
-não.
+aparência visual. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
 
 ## Semântico vs presentacional
 
@@ -114,7 +113,7 @@ relacionamento entre partes da UI sem depender de aninhamento no CSS.
 
 ## Especificidade
 
-Especificidade alta torna o CSS frágil — qualquer override exige `!important` ou seletor ainda mais
+Especificidade alta torna o CSS frágil. Qualquer override exige `!important` ou seletor ainda mais
 específico.
 
 <details>

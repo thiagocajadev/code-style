@@ -1,11 +1,11 @@
 # Tailwind
 
-Tailwind é utility-first. A produtividade vem de não sair do HTML, mas isso tem um limite.
+Tailwind é utility-first. A produtividade vem de não sair do HTML, mas há um limite.
 Quando a lista de utilities cresce, o HTML vira ruído e o padrão se repete sem nome.
 
 ## Utility sprawl
 
-Uma lista longa de utilities não é componente — é o estado antes de extrair um.
+Uma lista longa de utilities não é componente: é o estado antes de extrair um.
 
 <details>
 <summary>❌ Bad — lista inlegível, sem nome, não reutilizável</summary>
@@ -49,7 +49,7 @@ Uma lista longa de utilities não é componente — é o estado antes de extrair
 ## Design tokens no config
 
 Valores arbitrários (`text-[14px]`, `bg-[#3b82f6]`) espalham magic numbers pelo HTML. Registrar
-os tokens no config gera classes semânticas e mantém o design system consistente.
+tokens no config gera classes semânticas e mantém o design system consistente.
 
 <details>
 <summary>❌ Bad — valores arbitrários, magic numbers espalhados</summary>

@@ -1,13 +1,13 @@
 # Types
 
 O sistema de tipos do TypeScript tem duas construções principais para descrever formas: `interface`
-e `type`. Cada uma tem um domínio natural. Usá-las nos lugares errados não quebra — mas cria
+e `type`. Cada uma tem um domínio natural. Usá-las nos lugares errados não quebra, mas cria
 inconsistência que escala mal.
 
 ## type vs interface
 
 A distinção prática: `interface` descreve o shape de um objeto e pode ser estendida ou implementada.
-`type` descreve qualquer coisa — union, intersection, mapped type, alias de primitivo — e não pode
+`type` descreve qualquer coisa: union, intersection, mapped type, alias de primitivo. Não pode
 ser reaberta.
 
 <details>
@@ -117,7 +117,7 @@ async function listUsers(): Promise<PaginatedResult<User>> { /* ... */ }
 
 </details>
 
-## Utility types — compor em vez de duplicar
+## Utility types: compor em vez de duplicar
 
 Utility types permitem derivar contratos a partir de tipos existentes. Evitam duplicação e mantêm
 os tipos sincronizados quando o tipo base muda.
@@ -176,7 +176,7 @@ type UpdateUserInput = Partial<Pick<User, "name" | "email" | "password">>;
 ## Discriminated unions
 
 Quando um valor pode ser de formas diferentes dependendo do contexto, uma union de interfaces com
-um campo literal discriminante permite narrowing automático — sem type assertion, sem cast.
+um campo literal discriminante permite narrowing automático, sem type assertion, sem cast.
 
 <details>
 <summary>❌ Bad — campo opcional para cada variant, sem discriminante</summary>
@@ -231,10 +231,42 @@ function handlePayment(result: PaymentResult) {
 
 </details>
 
-## Intersection types — combinar sem herança
+## Intersection types: combinar sem herança
 
 Intersection combina dois tipos em um. Útil para compor shapes ortogonais sem criar hierarquia de
 classes.
+
+<details>
+<summary>❌ Bad — duplicação manual de campos de shapes existentes</summary>
+<br>
+
+```ts
+interface Auditable {
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+}
+
+interface SoftDeletable {
+  deletedAt: string | null;
+}
+
+interface Order {
+  id: string;
+  customerId: string;
+  total: number;
+  // campos de Auditable duplicados manualmente
+  createdAt: string;
+  updatedAt: string;
+  createdBy: string;
+  // campos de SoftDeletable duplicados manualmente
+  deletedAt: string | null;
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — intersection para compor shapes independentes</summary>
@@ -258,7 +290,7 @@ type Order = BaseOrder & Auditable & SoftDeletable;
 
 ## Evitar type assertions
 
-`as Type` diz ao compilador "confie em mim" — e desliga a verificação naquele ponto. Quando o
+`as Type` diz ao compilador "confie em mim" e desliga a verificação naquele ponto. Quando o
 compilador precisa de convencimento, geralmente é o shape que está errado.
 
 <details>

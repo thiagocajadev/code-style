@@ -191,7 +191,7 @@ function getOrderSummary(order) {
 
 ## Direct return
 
-O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo.
+O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
 
 <details>
 <summary>❌ Bad — variável auxiliar desnecessária, else após throw</summary>
@@ -242,7 +242,7 @@ async function findProductById(id) {
 
 ## Ponto de entrada limpo
 
-O caller expressa o quê, não o como. Toda construção de contexto acontece dentro da função.
+O caller expressa o quê, não o como. Toda construção de contexto fica dentro da função.
 
 <details>
 <summary>❌ Bad — caller monta lógica inline antes de chamar</summary>
@@ -441,7 +441,7 @@ async function processOrder(orderId) {
 
 ## Baixa densidade visual — agrupamento
 
-Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam coisas que não se relacionam. A regra: 0 linhas dentro, 1 entre, nunca 2+.
+Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
 <summary>❌ Bad — espaço dentro dos grupos, sem separação entre grupos</summary>

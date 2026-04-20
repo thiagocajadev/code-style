@@ -1,6 +1,6 @@
 # Validation
 
-O pipeline de validação tem três responsabilidades distintas — cada uma no seu lugar:
+O pipeline de validação tem três responsabilidades distintas, cada uma no seu lugar:
 
 ```
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -11,7 +11,7 @@ Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segu
 ## Sanitização de entrada
 
 Antes de validar, limpar: `trim` em strings, `toLowerCase` em emails. Dados sujos entram em
-validação suja — um email com espaço passa no schema mas falha na busca no banco.
+validação suja: um email com espaço passa no schema mas falha na busca no banco.
 
 <details>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
@@ -58,7 +58,7 @@ async function createUserHandler(req, res) {
 
 ## Schema validation com Zod
 
-Zod valida shape, tipos e constraints, não regras de negócio. Centraliza o contrato técnico e
+Zod valida shape, tipos e constraints, nunca regras de negócio. Centraliza o contrato técnico e
 elimina validação manual espalhada pelos handlers.
 
 <details>
@@ -101,8 +101,8 @@ async function createOrder(body) {
 
 ## Regras de negócio
 
-Schema valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio
-— dependem de I/O (banco, serviços externos) e não pertencem ao schema.
+Schema valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio:
+dependem de I/O (banco, serviços externos) e não pertencem ao schema.
 
 <details>
 <summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>
@@ -158,7 +158,7 @@ async function createOrder(body) {
 ## Output filtering
 
 Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`, `internalFlags`.
-Projetar explicitamente o que sai — nunca o objeto do banco.
+Projete explicitamente o que sai, nunca o objeto do banco diretamente.
 
 <details>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>

@@ -28,7 +28,7 @@ Tabelas de consulta rápida para as convenções JavaScript deste guia.
 
 ## Taboos
 
-Nomes que não dizem nada — trocar pelo verbo ou conceito correto.
+Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 
 | Evitar | Usar |
 | --- | --- |
@@ -40,7 +40,7 @@ Nomes que não dizem nada — trocar pelo verbo ou conceito correto.
 
 ## Código narrativo
 
-Entry point de uma linha por responsabilidade. O orquestrador conta a história — os helpers guardam os detalhes.
+Entry point de uma linha por responsabilidade. O orquestrador conta a história; os helpers guardam os detalhes.
 
 ```js
 // ❌ Bad — god function, lógica misturada no entry point

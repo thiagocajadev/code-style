@@ -14,7 +14,7 @@ pip install sqlfluff
 docker run --rm -v $(pwd):/sql sqlfluff/sqlfluff lint /sql
 
 # VS Code
-# Instale a extensão "SQLFluff" na marketplace — zero dependências locais
+# Instale a extensão "SQLFluff" na marketplace (zero dependências locais)
 ```
 
 ## Arquivo pronto para uso
@@ -80,10 +80,10 @@ sqlfluff lint script.sql --dialect tsql
 | `capitalisation.keywords` | Keywords em UPPER (`SELECT`, `FROM`, `WHERE`) |
 | `capitalisation.identifiers` | Identificadores em PascalCase |
 | `capitalisation.functions` | Funções em UPPER (`COUNT`, `GETDATE`) |
-| `aliasing.table` | Sem aliases de letra — nome completo da tabela |
+| `aliasing.table` | Sem aliases de letra: nome completo da tabela |
 | `aliasing.column` | Alias explícito com `AS` |
 | `max_line_length = 120` | Sem linhas longas |
 | `indented_joins = false` | JOIN alinhado com FROM, sem indentação extra |
 
 > [!NOTE]
-> SQLFluff não enforça todas as convenções do guia — formatação vertical, ordem de cláusulas e CTEs precisam de revisão manual ou configuração adicional via rules personalizadas.
+> SQLFluff não enforça todas as convenções do guia. Formatação vertical, ordem de cláusulas e CTEs precisam de revisão manual ou configuração adicional via rules personalizadas.

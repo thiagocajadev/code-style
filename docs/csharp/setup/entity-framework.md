@@ -2,7 +2,7 @@
 
 ## AsNoTracking
 
-Por padrão, o EF rastreia todas as entidades retornadas — qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.
+Por padrão, o EF rastreia todas as entidades retornadas: qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.
 
 <details>
 <summary>❌ Bad — rastreamento habilitado em query somente leitura</summary>
@@ -48,7 +48,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 
 ## Projeção com Select
 
-Nunca exponha entidades EF diretamente — elas carregam estado de rastreamento, navegações não inicializadas e detalhes de persistência. Projete sempre para DTOs via `.Select()` diretamente na query, não após materializar.
+Nunca exponha entidades EF diretamente: elas carregam estado de rastreamento, navegações não inicializadas e detalhes de persistência. Projete sempre para DTOs via `.Select()` diretamente na query, não após materializar.
 
 <details>
 <summary>❌ Bad — entidade exposta, materialização antes da projeção</summary>
@@ -95,7 +95,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 
 ## Include e N+1
 
-Acesso a propriedades de navegação sem `Include` dispara uma query por registro — o problema N+1. Use `Include` para grafos conhecidos; projete com `.Select()` quando precisar de campos específicos de entidades relacionadas.
+Acesso a propriedades de navegação sem `Include` dispara uma query por registro: o problema N+1. Use `Include` para grafos conhecidos; projete com `.Select()` quando precisar de campos específicos de entidades relacionadas.
 
 <details>
 <summary>❌ Bad — N+1: uma query por order para acessar Items</summary>
@@ -168,7 +168,7 @@ public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToke
 
 ## AsSplitQuery
 
-`Include` de múltiplas coleções gera um produto cartesiano — linhas duplicadas na query SQL. `AsSplitQuery()` divide em queries separadas e elimina a explosão de dados.
+`Include` de múltiplas coleções gera um produto cartesiano: linhas duplicadas na query SQL. `AsSplitQuery()` divide em queries separadas e elimina a explosão de dados.
 
 <details>
 <summary>❌ Bad — múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
@@ -211,7 +211,7 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 
 ## OrderBy e ThenBy
 
-Toda query que usa paginação ou que o chamador espera em ordem determinística precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem — o resultado varia entre execuções.
+Toda query que usa paginação ou que o chamador espera em ordem determinística precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem: o resultado varia entre execuções.
 
 <details>
 <summary>❌ Bad — paginação sem ordenação, resultado não determinístico</summary>
@@ -285,7 +285,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 
 ## Paginação
 
-Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os dados — o chamador precisa saber o total de registros para renderizar a navegação.
+Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os dados: o chamador precisa saber o total de registros para renderizar a navegação.
 
 <details>
 <summary>❌ Bad — duas queries independentes, sem compartilhar o filtro base</summary>
@@ -341,7 +341,7 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
 
 ## Left join
 
-EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era necessário combinar `GroupJoin` + `SelectMany` + `DefaultIfEmpty()` — intenção enterrada em ruído. O novo operador declara o que faz.
+EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era necessário combinar `GroupJoin` + `SelectMany` + `DefaultIfEmpty()`: intenção enterrada em ruído. O novo operador declara o que faz.
 
 <details>
 <summary>❌ Bad — intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
@@ -396,7 +396,7 @@ var result = await _context.Orders
 
 ## Migrations
 
-Migrations descrevem intenção — cada uma resolve uma mudança atômica no schema. O nome diz o que muda; o histórico conta a evolução do banco.
+Migrations descrevem intenção: cada uma resolve uma mudança atômica no schema. O nome diz o que muda; o histórico conta a evolução do banco.
 
 ### Nomenclatura
 
@@ -433,7 +433,7 @@ dotnet ef migrations add DropLegacyStatusColumn
 
 ### Forward-only
 
-Migrations são append-only — `Down()` não é implementado. Reverter um schema é uma nova migration, não um rollback. Implementar `Down()` cria uma falsa sensação de segurança: em produção, rollback de schema raramente funciona sem perda de dados.
+Migrations são append-only: `Down()` não é implementado. Reverter um schema é uma nova migration, não um rollback. Implementar `Down()` cria uma falsa sensação de segurança: em produção, rollback de schema raramente funciona sem perda de dados.
 
 <details>
 <summary>❌ Bad — Down() implementado, ilusão de reversibilidade</summary>

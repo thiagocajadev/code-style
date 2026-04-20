@@ -5,7 +5,7 @@ de runtime. Juntos, eles eliminam null inesperado sem obrigar checagem manual em
 
 > Conceito geral: [Null Safety](../../../shared/null-safety.md)
 
-## Configuração — compilador como primeira linha de defesa
+## Configuração: compilador como primeira linha de defesa
 
 `strict: true` já inclui `strictNullChecks`. `noUncheckedIndexedAccess` vai além: acesso por índice
 passa a retornar `T | undefined`, forçando o tratamento de posições que podem não existir.
@@ -67,9 +67,9 @@ TypeScript tem dois valores de ausência. A convenção:
 | Valor | Quando usar |
 | --- | --- |
 | `undefined` | Propriedade opcional, parâmetro não passado, ausência por omissão |
-| `null` | Ausência **intencional e explícita** — campo que foi atribuído como "sem valor" |
+| `null` | Ausência **intencional e explícita**: campo atribuído como "sem valor" |
 
-Prefira `undefined` para opcionais — é o padrão da linguagem. Reserve `null` para quando a
+Prefira `undefined` para opcionais: é o padrão da linguagem. Reserve `null` para quando a
 ausência precisa ser **atribuída** explicitamente (ex: limpar um campo em um update).
 
 <details>
@@ -118,7 +118,7 @@ interface UpdateUserInput {
 ## Coleções nunca são nulas
 
 Função que retorna uma coleção **sempre retorna** `[]` quando não há elementos. Null em lista não
-tem semântica útil — quem chama não deveria precisar checar antes de iterar.
+tem semântica útil. Quem chama não deveria precisar checar antes de iterar.
 
 <details>
 <summary>❌ Bad — null em coleção quebra qualquer iteração</summary>
@@ -160,7 +160,7 @@ orders.forEach(processOrder);
 
 ## Propriedades de coleção em interfaces e classes
 
-Propriedades que representam listas sempre têm tipo `T[]` — nunca `T[] | null`. Inicializadas
+Propriedades que representam listas sempre têm tipo `T[]`, nunca `T[] | null`. Inicializadas
 como `[]` na declaração ou no construtor.
 
 <details>
@@ -210,8 +210,37 @@ class Cart {
 
 ## Normalizar na fronteira
 
-Dados externos — resposta de API, input de formulário, config — chegam sem garantia. Normalize
+Dados externos: resposta de API, input de formulário, config. Chegam sem garantia. Normalize
 com `?? []` no ponto de entrada, antes de propagar para o domínio.
+
+<details>
+<summary>❌ Bad — campos null/undefined da API propagam direto para o domínio</summary>
+<br>
+
+```ts
+interface ApiUserResponse {
+  id: string;
+  orders?: Order[] | null;   // API pode omitir ou retornar null
+  tags?: string[] | null;
+}
+
+async function fetchUserOrders(userId: string): Promise<Order[]> {
+  const response = await externalApi.get<ApiUserResponse>(`/users/${userId}`);
+
+  // propaga null/undefined para quem chamou — domínio precisa se defender
+  return response.orders; // tipo: Order[] | null | undefined — erro de compilação com strict
+}
+
+// caller obrigado a se defender de null em cada uso
+async function buildUserSummary(userId: string) {
+  const orders = await fetchUserOrders(userId);
+  const count = orders?.length ?? 0; // defesa que deveria ter acontecido na fronteira
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — normalização na fronteira, domínio trabalha com tipos limpos</summary>
@@ -230,7 +259,7 @@ async function fetchUserOrders(userId: string): Promise<Order[]> {
 
 ## Optional chaining e nullish coalescing
 
-`?.` e `??` são atalhos para navegação segura e defaults — não substitutos de validação. Use
+`?.` e `??` são atalhos para navegação segura e defaults, não substitutos de validação. Use
 quando a ausência é um caso esperado e tratável inline. Quando a ausência é um erro, use guard
 clause.
 
@@ -271,7 +300,7 @@ function formatUserCity(user?: User): string {
 
 </details>
 
-## Non-null assertion — uso restrito
+## Non-null assertion: uso restrito
 
 O operador `!` diz ao compilador "confie em mim, não é null". Desliga a verificação naquele ponto.
 Aceitável apenas quando você tem garantia externa que o compilador não consegue verificar.

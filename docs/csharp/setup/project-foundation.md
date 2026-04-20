@@ -1,14 +1,14 @@
 # Project Foundation
 
 > [!NOTE]
-> Essa estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais — podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
+> Essa estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
 
 ## Ambiente
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md) — indentação, charset, trailing whitespace
-- `dotnet format` — formatter nativo do .NET, sem instalação adicional
+- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- `dotnet format`: formatter nativo do .NET, sem instalação adicional
 
 ```bash
 dotnet format
@@ -81,7 +81,26 @@ app.Run();
 
 ## Extension methods por domínio
 
-Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios — apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
+Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
+
+<details>
+<summary>❌ Bad — dependências de domínio registradas diretamente no Program.cs</summary>
+<br>
+
+```csharp
+// Program.cs — cresce sem controle conforme o projeto evolui
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
+builder.Services.AddScoped<UserService>();
+// cada novo domínio adiciona mais linhas aqui — sem coesão, sem dono
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
@@ -158,7 +177,7 @@ public static class OrdersExtensions
 
 </details>
 
-## Configuração tipada — Options pattern
+## Configuração tipada: Options pattern
 
 Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension method acessa `builder.Configuration` com strings soltas espalhadas pelo código.
 
@@ -216,7 +235,21 @@ public static class AuthExtensions
 
 ## Banco de dados
 
-Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline — sempre via `IConfiguration`.
+Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline: sempre via `IConfiguration`.
+
+<details>
+<summary>❌ Bad — DbContext configurado inline no Program.cs com string hardcoded</summary>
+<br>
+
+```csharp
+// Program.cs — acoplado ao SQL Server, connection string exposta
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer("Server=prod-db;Database=App;User=sa;Password=Abc123!"));
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — DbContext registrado no módulo de infraestrutura</summary>
@@ -242,7 +275,7 @@ public static class DatabaseExtensions
 
 ## OpenAPI
 
-.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi` — sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como UI.
+.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como UI.
 
 <details>
 <summary>❌ Bad — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
@@ -341,7 +374,29 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 
 ## Rate limiting
 
-Rate limiting é middleware — entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
+Rate limiting é middleware: entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
+
+<details>
+<summary>❌ Bad — rate limiting inline no Program.cs, sem options tipadas</summary>
+<br>
+
+```csharp
+// Program.cs — configuração acoplada, sem separação de responsabilidade
+builder.Services.AddRateLimiter(limiter =>
+{
+    limiter.AddFixedWindowLimiter("default", window =>
+    {
+        window.PermitLimit = 100;    // literal mágico
+        window.Window = TimeSpan.FromSeconds(60); // literal mágico
+        window.QueueLimit = 0;
+    });
+    limiter.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — rate limiting configurado via extension method</summary>
@@ -405,7 +460,7 @@ group.MapPost("/", OrderEndpoints.Create)
 
 ## Ordem do pipeline
 
-A ordem do middleware após `Build()` é determinística e importa. Desviar da ordem padrão causa comportamentos silenciosos — autenticação após roteamento, por exemplo, não protege nada.
+A ordem do middleware após `Build()` é determinística e importa. Desviar da ordem padrão causa comportamentos silenciosos: autenticação após roteamento, por exemplo, não protege nada.
 
 ```
 UseHttpsRedirection   → redireciona antes de qualquer processamento

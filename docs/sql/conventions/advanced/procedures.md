@@ -99,6 +99,43 @@ END;
 ## Procedure com parâmetros e temp tables
 
 <details>
+<summary>❌ Bad — JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
+<br>
+
+```sql
+CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
+(
+  @TeamId UNIQUEIDENTIFIER,
+  @Position NVARCHAR(50)
+)
+AS
+
+BEGIN
+  SELECT
+    FootballTeams.Name AS TeamName,
+    FootballTeams.Stadium AS TeamStadium,
+    Players.Name AS PlayerName,
+    Players.SquadNumber,
+    Players.Nationality,
+    Players.JoinedAt
+  FROM
+    Players
+  JOIN
+    FootballTeams ON Players.TeamId = FootballTeams.Id
+  WHERE
+    Players.TeamId = @TeamId AND
+    Players.Position = @Position AND
+    Players.IsActive = 1
+  ORDER BY
+    Players.SquadNumber;
+END;
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
 <br>
 

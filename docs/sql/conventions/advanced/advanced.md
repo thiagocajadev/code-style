@@ -115,7 +115,7 @@ JOIN
 
 </details>
 
-## Procedure — SQL Server
+## Procedure: SQL Server
 
 <details>
 <summary>❌ Bad — prefixo genérico, nome vago, sem formatação vertical</summary>
@@ -157,7 +157,7 @@ END;
 
 </details>
 
-## Function — PostgreSQL
+## Function: PostgreSQL
 
 <details>
 <summary>❌ Bad — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>

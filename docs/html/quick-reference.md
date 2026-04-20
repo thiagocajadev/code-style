@@ -1,4 +1,4 @@
-# Quick Reference — HTML
+# Quick reference: HTML
 
 ## Elementos semânticos
 

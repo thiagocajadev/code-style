@@ -1,15 +1,15 @@
 # Null Safety
 
-JavaScript não tem compilador que rastreie nullability — a responsabilidade é do código. A regra
+JavaScript não tem compilador que rastreie nullability. A responsabilidade é do código. A regra
 é a mesma: fechar null nas fronteiras, confiar no interior.
 
 > Conceito geral: [Null Safety](../../../../shared/null-safety.md)
 
 ## ?? vs ||
 
-`||` retorna o lado direito para qualquer valor falsy — `0`, `""` e `false` disparam o fallback.
-`??` retorna o lado direito **só para `null` e `undefined`**. Para defaults, `??` quase sempre é
-o correto.
+`||` retorna o lado direito para qualquer valor falsy: `0`, `""` e `false` disparam o fallback.
+`??` retorna o lado direito **só para `null` e `undefined`**. Para defaults, `??` é o correto
+na maioria dos casos.
 
 <details>
 <summary>❌ Bad — || descarta valores falsy válidos</summary>
@@ -40,7 +40,7 @@ const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbac
 ## ??= vs ||=
 
 `??=` atribui só se o valor atual for `null` ou `undefined`. `||=` atribui se for qualquer falsy.
-A mesma distinção de `??` vs `||`, aplicada à atribuição.
+A mesma distinção de `??` vs `||`, aplicada à atribuição lógica.
 
 <details>
 <summary>❌ Bad — ||= sobrescreve zero, que é um valor válido</summary>
@@ -70,12 +70,12 @@ config.port ??= 8080; // não executa — port já é 3000
 
 </details>
 
-## ?. — navegação segura
+## ?. navegação segura
 
 `?.` retorna `undefined` se o receptor for `null` ou `undefined`, sem lançar exceção.
 
 Tem lugar para campos **opcionais por design**. Quando o campo deveria sempre existir, a ausência
-é um bug — use guard clause.
+é um bug: use guard clause.
 
 <details>
 <summary>❌ Bad — ?. esconde contrato fraco</summary>
@@ -120,7 +120,7 @@ function formatUserCity(user) {
 
 ## Coleções nunca são nulas
 
-Funções que retornam listas sempre retornam `[]` — nunca `null`. Na fronteira com dados externos,
+Funções que retornam listas sempre retornam `[]`, nunca `null`. Na fronteira com dados externos,
 normalize com `?? []`.
 
 <details>
@@ -159,10 +159,10 @@ async function fetchUserOrders(userId) {
 
 </details>
 
-## Array.flatMap — filtrar e mapear sem null
+## Array.flatMap: filtrar e mapear sem null
 
 `flatMap` com retorno de `[]` nos casos inválidos é o padrão moderno para remover nulls durante
-uma transformação — mais expressivo que `.filter().map()` por percorrer o array uma única vez.
+uma transformação: mais expressivo que `.filter().map()` por percorrer o array uma única vez.
 
 <details>
 <summary>❌ Bad — filter + map percorre o array duas vezes</summary>
@@ -196,7 +196,7 @@ const parsed = rawItems.flatMap((item) => {
 
 </details>
 
-## Object.hasOwn — checar propriedade com segurança
+## Object.hasOwn: checar propriedade com segurança
 
 `Object.hasOwn(obj, key)` verifica se a propriedade existe no próprio objeto, sem riscos de
 prototype pollution. Substitui o padrão antigo `obj.hasOwnProperty(key)`.
@@ -240,7 +240,7 @@ function mergeConfig(defaults, overrides) {
 
 </details>
 
-## structuredClone — cópia profunda sem perder nulls
+## structuredClone: cópia profunda sem perder nulls
 
 `JSON.parse(JSON.stringify(obj))` descarta campos `undefined` e não preserva `Date`, `Map` e
 `Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.

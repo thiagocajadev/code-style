@@ -34,7 +34,7 @@ WHERE
 
 </details>
 
-## Regra de 3 — exceção inline
+## Regra de 3: exceção inline
 
 Expressão inline é aceita somente quando há ≤3 campos E ≤1 condição. Qualquer coisa além disso vai para o estilo vertical.
 
@@ -179,7 +179,7 @@ WHERE
 
 ## Condições verticais
 
-Uma condição por linha. AND e OR ao final da linha — nunca no início.
+Uma condição por linha. AND e OR ao final da linha, nunca no início.
 
 <details>
 <summary>❌ Bad — AND no início da linha</summary>

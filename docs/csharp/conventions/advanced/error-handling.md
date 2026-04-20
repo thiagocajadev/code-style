@@ -1,8 +1,8 @@
-# Error Handling
+# Error handling
 
 ## Result\<T\>
 
-Exceções são para falhas inesperadas — erros de infraestrutura, bugs, estado impossível. Falhas de negócio são resultados esperados e devem ser representadas como valores. `Result<T>` torna o contrato explícito: o chamador sabe que pode falhar e é obrigado a lidar com isso.
+Exceções são para falhas inesperadas: erros de infraestrutura, bugs, estado impossível. Falhas de negócio são resultados esperados e devem ser representadas como valores. `Result<T>` torna o contrato explícito: o chamador sabe que pode falhar e é obrigado a lidar com isso.
 
 ```csharp
 public sealed record ApiError(string Message, string Code);
@@ -80,7 +80,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 
 ## ApiError
 
-Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE` — mapeável para HTTP status no adapter sem `if-else` espalhados pela aplicação.
+Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para HTTP status no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
 <summary>❌ Bad — strings mágicas sem contrato</summary>
@@ -120,7 +120,7 @@ private static int MapStatusCode(string code) => code switch
 
 ## Falhar rápido
 
-Valide pré-condições no início do método — antes de qualquer I/O ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
+Valide pré-condições no início do método, antes de qualquer I/O ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
 <summary>❌ Bad — validação tardia, trabalho desnecessário antes de falhar</summary>
@@ -171,7 +171,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
 ## Exceção como controle de fluxo
 
-`try/catch` tem custo — é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
+`try/catch` tem custo: é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
 
 <details>
 <summary>❌ Bad — try/catch como desvio de fluxo esperado</summary>
@@ -213,11 +213,11 @@ public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken 
 
 </details>
 
-## Global Exception Handler
+## Global exception handler
 
-Exceções não capturadas borbulham até o topo. Sem um handler global, o runtime devolve stack trace ou detalhes internos ao cliente — vazamento de informação e contrato quebrado.
+Exceções não capturadas borbulham até o topo. Sem um handler global, o runtime devolve stack trace ou detalhes internos ao cliente: vazamento de informação e contrato quebrado.
 
-O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura — nada disso chega ao cliente.
+O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura: nada disso chega ao cliente.
 
 <details>
 <summary>❌ Bad — sem handler global, detalhe interno vaza</summary>

@@ -8,6 +8,7 @@
 
 [![HTML](https://img.shields.io/badge/HTML-Semântico%20%26%20Acessível-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md)
 [![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
 [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
 [![SQL](https://img.shields.io/badge/SQL-Server%20%26%20PostgreSQL-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
@@ -42,7 +43,7 @@ tecnologias).
 
 Cada princípio pode ser aplicado em qualquer linguagem.
 
-Organizados como checklist de revisão — do mais impactante ao mais granular:
+Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 - **Forma** — avalia a estrutura da função de fora para dentro
 - **Legibilidade** — analisa fluxo, espaçamento e nomes linha a linha
@@ -106,6 +107,7 @@ Organizados como checklist de revisão — do mais impactante ao mais granular:
 | --------------------------------------- | ---------------------------------------------------------------- |
 | [HTML](docs/html/README.md)             | Semântica, acessibilidade, performance, SEO, jQuery              |
 | [JavaScript](docs/javascript/README.md) | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async |
+| [TypeScript](docs/typescript/README.md) | Tipos, interfaces, narrowing, generics, null-safety |
 | [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
 | [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
 | [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
@@ -119,19 +121,20 @@ Organizados como checklist de revisão — do mais impactante ao mais granular:
 | [Git](docs/shared/git.md)                       | Branches, commits, pipeline e estratégia de entrega                         |
 | [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
 | [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
+| [Null Safety](docs/shared/null-safety.md)       | Segurança com null/undefined — princípios agnósticos de linguagem           |
 
 ### Referências
 
 **Princípios**  
-Clean Code — Robert C. Martin _(livro)_  
-The Clean Coder — Robert C. Martin _(livro)_  
-[Command Query Separation — Martin Fowler](https://martinfowler.com/bliki/CommandQuerySeparation.html)  
+Clean Code, Robert C. Martin _(livro)_  
+The Clean Coder, Robert C. Martin _(livro)_  
+[Command Query Separation, Martin Fowler](https://martinfowler.com/bliki/CommandQuerySeparation.html)  
 [The Twelve-Factor App](https://12factor.net/)  
 [Refactoring Guru](https://refactoring.guru/)
 
 **HTML**  
 [MDN HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)  
-[HTML Living Standard — WHATWG](https://html.spec.whatwg.org/)  
+[HTML Living Standard, WHATWG](https://html.spec.whatwg.org/)  
 [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)  
 [Can I Use](https://caniuse.com/)  
 [jQuery API Docs](https://api.jquery.com/)
@@ -159,7 +162,7 @@ The Clean Coder — Robert C. Martin _(livro)_
 [Guia de referência SQL](https://brainstation.io/learn/sql/reference)
 
 **Dates**  
-[Temporal API — TC39](https://tc39.es/proposal-temporal/docs/)  
+[Temporal API, TC39](https://tc39.es/proposal-temporal/docs/)  
 [date-fns](https://date-fns.org/)  
 [Luxon](https://moment.github.io/luxon/)
 

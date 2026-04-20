@@ -1,11 +1,11 @@
 # Security
 
 > [!NOTE]
-> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo são referências conceituais — podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio por trás de cada prática.
+> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo são referências conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio por trás de cada prática.
 
 ## Nunca hardcode segredos
 
-Segredos — connection strings, API keys, JWT secrets, senhas — nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
+Segredos (connection strings, API keys, JWT secrets, senhas) nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
 
 <details>
 <summary>❌ Bad — segredo hardcoded no código</summary>
@@ -66,7 +66,7 @@ export const config = {
 
 ## O que vai em .env.example
 
-`.env.example` é commitado — documenta quais variáveis o projeto precisa, sem valores reais. O `.env` com os valores fica fora do repositório.
+`.env.example` é commitado: documenta quais variáveis o projeto precisa, sem valores reais. O `.env` com os valores fica fora do repositório.
 
 | Pode commitar | Nunca commitar |
 | --- | --- |
@@ -93,9 +93,9 @@ RATE_LIMIT_WINDOW_MS=60000
 
 </details>
 
-## dotenv — desenvolvimento
+## dotenv: desenvolvimento
 
-`dotenv` carrega o `.env` local para `process.env` durante o desenvolvimento. É o único ponto onde `.env` é lido — e só em desenvolvimento.
+`dotenv` carrega o `.env` local para `process.env` durante o desenvolvimento. É o único ponto onde `.env` é lido, e só em desenvolvimento.
 
 ```bash
 npm install dotenv
@@ -111,9 +111,9 @@ const app = createApp(config);
 app.listen(config.port);
 ```
 
-`dotenv` nunca entra em produção — em staging e produção, as variáveis são injetadas diretamente pelo host (container, cloud provider, CI/CD).
+`dotenv` nunca entra em produção. Em staging e produção, as variáveis são injetadas diretamente pelo host (container, cloud provider, CI/CD).
 
-## Variáveis de ambiente — produção
+## Variáveis de ambiente: produção
 
 Em produção, `process.env` é populado pelo ambiente de execução. O código não sabe e não precisa saber de onde vêm.
 
@@ -154,7 +154,7 @@ export function registerOrders(app, config) {
 
 ## Cadeia de configuração
 
-O Node.js resolve configuração por precedência — cada camada sobrescreve a anterior.
+O Node.js resolve configuração por precedência: cada camada sobrescreve a anterior.
 
 ```
 .env.example          → contrato público (chaves sem valores, commitado)
@@ -165,7 +165,7 @@ secrets manager       → produção, segredos gerenciados externamente
 
 Nunca inverta essa ordem. Um valor no `.env.example` nunca deve sobrescrever uma variável de ambiente injetada pelo host.
 
-## .gitignore — linha de defesa local
+## .gitignore: linha de defesa local
 
 Mesmo com a cadeia correta, uma linha no `.gitignore` evita acidentes:
 
@@ -181,10 +181,10 @@ secrets.json
 
 O `!.env.example` garante que o arquivo de contrato seja sempre commitado.
 
-## JWT — decode vs verify
+## JWT: decode vs verify
 
-`jwt.decode()` extrai o payload sem verificar a assinatura — qualquer token fabricado ou expirado
-passa. Em produção, sempre `jwt.verify()`: valida assinatura, expiração e audience em uma chamada.
+`jwt.decode()` extrai o payload sem verificar a assinatura. Qualquer token fabricado ou expirado
+passa. Em produção, use `jwt.verify()`: valida assinatura, expiração e audience em uma chamada.
 
 <details>
 <summary>❌ Bad — decode não valida assinatura, token forjado passa</summary>
@@ -238,7 +238,7 @@ export function authenticate(request, response, next) {
 ## Autorização centralizada
 
 Verificar roles inline em cada handler duplica lógica e cria brechas quando um handler esquece a
-checagem. Centralizar em um middleware de autorização garante cobertura uniforme.
+checagem. Um middleware de autorização centralizado garante cobertura uniforme.
 
 <details>
 <summary>❌ Bad — verificação de role duplicada em cada handler</summary>
@@ -286,8 +286,7 @@ app.delete("/orders/:id", authenticate, authorize(["admin", "manager"]), cancelO
 
 ## Session cookie
 
-Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `httpOnly` impede acesso via
-JavaScript, `secure` restringe a HTTPS e `sameSite` bloqueia envio cross-origin.
+Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `httpOnly` impede acesso via JavaScript, `secure` restringe a HTTPS e `sameSite` bloqueia envio cross-origin.
 
 <details>
 <summary>❌ Bad — cookie sem flags de segurança</summary>

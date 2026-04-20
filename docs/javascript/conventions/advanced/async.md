@@ -1,6 +1,6 @@
 # Async
 
-Toda operação que depende de I/O é assíncrona. Bloquear o thread principal trava a aplicação inteira.
+Toda operação que depende de I/O é assíncrona. Bloquear o thread principal trava a aplicação.
 
 ## Callback hell
 
@@ -118,7 +118,7 @@ async function run() {
 
 </details>
 
-## Promise.all — execução paralela
+## Promise.all: execução paralela
 
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
@@ -164,11 +164,11 @@ async function fetchDashboard(userId) {
 </details>
 
 > Use `Promise.all` quando as operações não dependem umas das outras.
-> Se uma falhar, todas falham — use `Promise.allSettled` quando quiser continuar mesmo com erros parciais.
+> Se uma falhar, todas falham. Use `Promise.allSettled` quando quiser continuar mesmo com erros parciais.
 
 ## API client centralizado
 
-Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção — sem `fetch` solto espalhado pelo código.
+Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção: sem `fetch` solto espalhado pelo código.
 
 <details>
 <summary>❌ Bad — fetch direto, configuração duplicada em todo lugar</summary>
@@ -243,6 +243,28 @@ async function fetchOrders(apiClient, userId) {
 </details>
 
 ## Quando criar uma função async
+
+<details>
+<summary>❌ Bad — I/O síncrono bloqueia o event loop</summary>
+<br>
+
+```js
+// banco de dados síncrono — não existe, mas ilustra o padrão errado
+function findUser(id) {
+  const user = database.querySync("SELECT * FROM users WHERE id = $1", [id]);
+  return user;
+}
+
+// leitura de arquivo síncrona trava o processo
+function readConfig() {
+  const config = fs.readFileSync("./config.json", "utf-8");
+  return config;
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — toda operação de I/O é async</summary>

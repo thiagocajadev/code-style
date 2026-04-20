@@ -1,13 +1,13 @@
 # Bootstrap
 
 Bootstrap fornece componentes prontos via classes. Sobrescrever com `!important` ou redefinir
-seletores internos cria CSS que briga com o framework — e perde. Override via custom properties
+seletores internos cria CSS que briga com o framework e perde. Override via custom properties
 é o caminho suportado desde o Bootstrap 5.
 
 ## Override via custom properties
 
 Bootstrap 5 expõe custom properties em todos os componentes. Sobrescrever a variável muda o
-visual sem tocar na especificidade do framework.
+visual sem alterar a especificidade do framework.
 
 <details>
 <summary>❌ Bad — sobrescrita por seletor ou !important</summary>
@@ -46,8 +46,8 @@ visual sem tocar na especificidade do framework.
 
 ## Extensão de componente
 
-Não criar nova classe que duplica o componente Bootstrap — usar classes base do framework e
-adicionar apenas o delta como modificador.
+Use as classes base do framework e adicione apenas o delta como modificador. Criar uma nova classe
+que duplica o componente Bootstrap desacopla do framework.
 
 <details>
 <summary>❌ Bad — duplica o componente base, desacopla do framework</summary>

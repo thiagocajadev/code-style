@@ -1,9 +1,9 @@
 # Dapper
 
 > [!NOTE]
-> Essa estrutura reflete como costumo usar Dapper em projetos C#. Os exemplos são referências conceituais — podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples.
+> Essa estrutura reflete como costumo usar Dapper em projetos C#. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples.
 
-A preferência é usar stored procedures para operações de domínio — a lógica de acesso a dados fica no banco, o C# só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
+A preferência é usar stored procedures para operações de domínio: a lógica de acesso a dados fica no banco, o C# só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
 
 ## Procedure por domínio
 
@@ -114,9 +114,9 @@ public async Task<Guid> CreateAsync(Guid customerId, decimal total, Cancellation
 
 </details>
 
-## Query aberta — casos simples
+## Query aberta: casos simples
 
-Quando a operação é simples demais para justificar uma procedure — lookup por chave, contagem, existência — query aberta é aceitável.
+Quando a operação é simples demais para justificar uma procedure (lookup por chave, contagem, existência), query aberta é aceitável.
 
 <details>
 <summary>✅ Good — lookup simples por chave primária</summary>
@@ -157,7 +157,7 @@ public async Task<bool> ExistsAsync(string email, CancellationToken ct)
 
 ## SQL injection
 
-SQL injection acontece quando um valor externo é interpretado como código SQL em vez de dado. O banco não distingue o que veio do código do que veio do usuário — tudo vira instrução executável.
+SQL injection acontece quando um valor externo é interpretado como código SQL em vez de dado. O banco não distingue o que veio do código do que veio do usuário: tudo vira instrução executável.
 
 Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e o banco trata como dado puro, sem interpretar.
 
@@ -201,6 +201,27 @@ public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct
 <br>
 
 <details>
+<summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
+<br>
+
+```csharp
+public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, CancellationToken ct)
+{
+    var sql = $"SELECT Id, Name FROM Customers WHERE Name LIKE '%{term}%'";
+    // term = "'; DROP TABLE Customers; --" → executa instrução arbitrária
+
+    var customers = await _connection.QueryAsync<Customer>(sql);
+    var result = customers.ToList();
+
+    return result;
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
 <br>
 
@@ -221,7 +242,7 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 
 ## Injeção de conexão
 
-`IDbConnection` é injetado no repositório — nunca instanciado internamente com connection string hardcoded. O ciclo de vida da conexão é responsabilidade do chamador.
+`IDbConnection` é injetado no repositório, nunca instanciado internamente com connection string hardcoded. O ciclo de vida da conexão é responsabilidade do chamador.
 
 <details>
 <summary>❌ Bad — conexão instanciada dentro do repositório</summary>

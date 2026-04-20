@@ -1,16 +1,16 @@
 # Null Safety
 
-C# 8 introduziu nullable reference types — o compilador passou a distinguir `string` (não-nulo
+C# 8 introduziu nullable reference types: o compilador passou a distinguir `string` (não-nulo
 garantido) de `string?` (pode ser null). C# 14 adicionou null-conditional assignment, completando
 o conjunto de operadores null-safe. Ativado globalmente, o compilador bloqueia violações antes do
 runtime.
 
 > Conceito geral: [Null Safety](../../../shared/null-safety.md)
 
-## Configuração — habilitar globalmente
+## Configuração: habilitar globalmente
 
 Ativar no `.csproj` cobre todo o projeto. Por arquivo com `#nullable enable` é para migração
-gradual — o destino é sempre global.
+gradual; o destino é sempre global.
 
 ```xml
 <!-- .csproj -->
@@ -20,10 +20,10 @@ gradual — o destino é sempre global.
 </PropertyGroup>
 ```
 
-Com `TreatWarningsAsErrors`, o compilador bloqueia o build em violações de nullability — não
+Com `TreatWarningsAsErrors`, o compilador bloqueia o build em violações de nullability, não
 apenas avisa.
 
-## required e init — contratos não-nulos em tempo de compilação
+## required e init: contratos não-nulos em tempo de compilação
 
 `required` (C# 11) força o inicializador de objeto a preencher o campo. `init` torna o campo
 imutável após a construção. Juntos, eliminam a necessidade de checar null em propriedades que
@@ -71,8 +71,8 @@ order.Items.ForEach(ProcessItem); // sem checagem — Items é sempre List<LineI
 
 ## Coleções nunca são nulas
 
-Propriedades e retornos de coleção sempre têm valor — `[]` quando vazias, nunca `null`.
-`Array.Empty<T>()` não aloca — preferido para retornos de método.
+Propriedades e retornos de coleção sempre têm valor: `[]` quando vazias, nunca `null`.
+`Array.Empty<T>()` não aloca, sendo preferido para retornos de método.
 
 <details>
 <summary>❌ Bad — null em coleção força defesa em cada caller</summary>
@@ -126,10 +126,10 @@ foreach (var order in orders) ProcessOrder(order);
 
 </details>
 
-## ArgumentNullException.ThrowIfNull — validação nas fronteiras
+## ArgumentNullException.ThrowIfNull: validação nas fronteiras
 
 `ArgumentNullException.ThrowIfNull` (C# 11) substitui o padrão verboso de `if (x is null) throw`.
-Usado nas fronteiras do sistema — construtores, métodos públicos, endpoints.
+Usado nas fronteiras do sistema: construtores, métodos públicos, endpoints.
 
 <details>
 <summary>❌ Bad — verificação manual verbosa ou ausente</summary>
@@ -225,10 +225,10 @@ public string FormatUserCity(User? user)
 
 </details>
 
-## ?.  no lado esquerdo — null-conditional assignment (C# 14)
+## ?. no lado esquerdo: null-conditional assignment (C# 14)
 
 C# 14 permite usar `?.` no lado esquerdo de uma atribuição. A operação só executa se o receptor
-não for null — sem `if` explícito, sem guard clause desnecessário.
+não for null, sem `if` explícito, sem guard clause desnecessário.
 
 <details>
 <summary>❌ Bad — if apenas para proteger a atribuição</summary>
@@ -259,12 +259,37 @@ session?.User?.LastSeenAt = DateTimeOffset.UtcNow;
 </details>
 
 > Use quando a ausência do objeto é um caso **esperado e silencioso**. Quando a ausência é um
-> erro de negócio, guard clause continua sendo a escolha certa — ela nomeia a condição.
+> erro de negócio, guard clause continua sendo a escolha certa: ela nomeia a condição.
 
-## ??= — atribuição condicional
+## ??=: atribuição condicional
 
 `??=` atribui apenas se o valor atual for null. Útil para lazy initialization e merge de defaults
 sem repetir o nome da variável.
+
+<details>
+<summary>❌ Bad — verificação manual de null antes da atribuição</summary>
+<br>
+
+```csharp
+public class ReportConfig
+{
+    public string Title { get; set; } = "Report";
+    public List<string> Columns { get; set; } = [];
+    public TimeSpan? CacheTimeout { get; set; }
+
+    public ReportConfig WithDefaults()
+    {
+        if (CacheTimeout == null)
+            CacheTimeout = TimeSpan.FromMinutes(10); // verboso — repete o nome do campo
+
+        return this;
+    }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — ??= para defaults e lazy init</summary>
@@ -288,7 +313,7 @@ public class ReportConfig
 
 </details>
 
-## Null-forgiving — uso restrito
+## Null-forgiving: uso restrito
 
 O operador `!` suprime o aviso de null do compilador. Aceitável apenas quando você tem garantia
 externa que o compilador não consegue inferir. Documentar o motivo.
@@ -322,8 +347,41 @@ if (!_cache.TryGetValue(userId, out var user))
 ## Atributos de análise estática
 
 Para métodos que já fazem a verificação internamente, atributos do namespace
-`System.Diagnostics.CodeAnalysis` informam o compilador do resultado — sem obrigar o caller a
+`System.Diagnostics.CodeAnalysis` informam o compilador do resultado, sem obrigar o caller a
 repetir a checagem.
+
+<details>
+<summary>❌ Bad — parâmetro nullable sem atributo, compilador não propaga garantia</summary>
+<br>
+
+```csharp
+public static class Guard
+{
+    // sem atributos: o compilador não sabe que value é não-nulo após a chamada
+    public static void NotNull<T>(T? value, string? name = null)
+    {
+        ArgumentNullException.ThrowIfNull(value, name);
+    }
+
+    public static bool IsValid(string? value)
+    {
+        return !string.IsNullOrWhiteSpace(value);
+    }
+}
+
+// uso — compilador ainda emite aviso de possível null
+Guard.NotNull(order);
+ProcessOrder(order); // CS8604: possível argumento null
+
+if (Guard.IsValid(email))
+{
+    SendEmail(email); // CS8604: email ainda considerado nullable dentro do if
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — atributos que propagam a garantia de non-null</summary>

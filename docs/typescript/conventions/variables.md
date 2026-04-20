@@ -68,8 +68,8 @@ const results: Order[] = [];
 
 ## any vs unknown
 
-`any` desliga o sistema de tipos naquela variável — é um buraco no contrato. `unknown` mantém o
-contrato: para usar o valor, é obrigatório fazer narrowing primeiro.
+`any` desliga o sistema de tipos naquela variável: é um buraco no contrato. `unknown` mantém o
+contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
 
 <details>
 <summary>❌ Bad — any apaga todo o benefício do TypeScript</summary>
@@ -108,7 +108,7 @@ const data = raw; // narrowado para ApiResponse — seguro usar
 
 </details>
 
-## as const — tipos literais
+## as const: tipos literais
 
 `as const` converte um objeto ou array em sua forma mais específica: cada valor vira um literal
 type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables e enums sem enum.
@@ -152,7 +152,7 @@ function updateStatus(status: OrderStatus) { /* ... */ } // só aceita os valore
 
 </details>
 
-## satisfies — validar sem alargar o tipo
+## satisfies: validar sem alargar o tipo
 
 `satisfies` valida que um objeto atende a uma interface sem perder o tipo literal inferido.
 Diferente da anotação direta, que alarga o tipo para a interface.

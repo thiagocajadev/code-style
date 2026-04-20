@@ -1,6 +1,6 @@
 # Error Handling
 
-Erros bem estruturados separam o que é **problema de negócio** do que é **falha técnica**. `try/catch` existe para capturar, não para esconder.
+Erros bem estruturados separam o que é **problema de negócio** do que é **falha técnica**. `try/catch` existe para capturar, nunca para esconder.
 
 ## Múltiplos tipos de retorno
 
@@ -83,7 +83,34 @@ async function findUser(id) {
 
 </details>
 
-## BaseError — abstração centralizada
+## BaseError: abstração centralizada
+
+<details>
+<summary>❌ Bad — throw com string solta, sem tipo, sem contrato</summary>
+<br>
+
+```js
+// errors.js — não existe, cada módulo lança o que quiser
+async function findUser(id) {
+  const user = await db.query(id);
+  if (!user) throw "User not found"; // sem tipo, não dá para instanceof
+  return user;
+}
+
+async function processOrder(orderId) {
+  try {
+    const order = await getOrder(orderId);
+    return order;
+  } catch (error) {
+    console.log(error); // engole o erro, não relança
+    return null;
+  }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — contrato único para todos os erros da aplicação</summary>
@@ -245,5 +272,5 @@ function getUser(id) {
 | Use | Não use |
 | --- | --- |
 | I/O externo (DB, rede, arquivo) | Para encadear chamadas que já propagam erros |
-| Fronteira do sistema (controller HTTP) | Para logar e ignorar — mascara problemas |
+| Fronteira do sistema (controller HTTP) | Para logar e ignorar: mascara problemas   |
 | Para mapear erro técnico → erro de negócio | Quando o erro já será tratado em camada superior |

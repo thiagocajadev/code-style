@@ -1,7 +1,7 @@
 # Async
 
-Os padrões assíncronos do JavaScript — async/await, Promise.all, API client centralizado —
-aplicam-se sem mudança. O TypeScript adiciona: `Promise<T>` com tipo explícito no retorno,
+Os padrões assíncronos do JavaScript: async/await, Promise.all, API client centralizado.
+Aplicam-se sem mudança. O TypeScript adiciona: `Promise<T>` com tipo explícito no retorno,
 generics em clientes de I/O e tipagem correta de `Promise.all`.
 
 ## Return type de funções async
@@ -89,13 +89,13 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
 
 </details>
 
-> `Promise.allSettled` retorna `PromiseSettledResult<T>[]` — use quando quiser continuar mesmo com
+> `Promise.allSettled` retorna `PromiseSettledResult<T>[]`. Use quando quiser continuar mesmo com
 > falhas parciais e precisar inspecionar cada resultado.
 
 ## API client tipado
 
 Um cliente genérico com `get<T>` e `post<T>` transfere a responsabilidade de tipagem para o
-caller — que sabe o shape esperado — sem usar `any`.
+caller, que sabe o shape esperado, sem usar `any`.
 
 <details>
 <summary>❌ Bad — fetch direto com any espalhado pelo código</summary>
@@ -180,7 +180,7 @@ async function createOrder(apiClient: ApiClient, input: CreateOrderInput): Promi
 
 ## Callbacks assíncronos em arrays
 
-Métodos de array como `map` e `filter` não são `async-aware` — retornam `Promise[]`, não os valores
+Métodos de array como `map` e `filter` não são `async-aware`: retornam `Promise[]`, não os valores
 resolvidos. Use `Promise.all` para aguardar.
 
 <details>

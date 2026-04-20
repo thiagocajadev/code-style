@@ -1,13 +1,12 @@
 # Dates
 
 Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura local time e
-UTC de forma imprevisível — a regra é simples: armazenar e transmitir sempre em UTC ISO 8601,
+UTC de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC ISO 8601,
 converter para o fuso local só na exibição.
 
 ## UTC vs local time
 
-`new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com timezones
-diferentes, o mesmo código produz resultados diferentes.
+`new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com timezones diferentes, o mesmo código produz resultados diferentes.
 
 <details>
 <summary>❌ Bad — captura hora local, comportamento depende do servidor</summary>
@@ -35,7 +34,7 @@ const createdAt = new Date().toISOString();
 
 ## Parsing inconsistente
 
-O comportamento de `new Date(string)` muda conforme o formato passado — e varia entre engines.
+O comportamento de `new Date(string)` muda conforme o formato passado e varia entre engines.
 
 <details>
 <summary>❌ Bad — formato ambíguo, resultado local-dependente</summary>
@@ -67,7 +66,7 @@ const date = new Date("2026-01-15T00:00:00.000Z");
 
 ## Armazenamento vs exibição
 
-Armazenar ou transmitir com `toLocaleDateString()` embute o fuso no valor — impossível reverter
+Armazenar ou transmitir com `toLocaleDateString()` embute o fuso no valor: impossível reverter
 depois. Separar armazenamento de exibição mantém o dado portável.
 
 <details>
@@ -114,7 +113,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 
 ## Temporal API
 
-`Date` é legado — a [Temporal API](https://tc39.es/proposal-temporal/docs/) (ES2025, Stage 4)
+`Date` é legado. A [Temporal API](https://tc39.es/proposal-temporal/docs/) (ES2025, Stage 4)
 resolve os problemas estruturais com tipos explícitos: `Temporal.Instant` para timestamps UTC,
 `Temporal.PlainDate` para datas sem hora, `Temporal.ZonedDateTime` para datas com timezone.
 
@@ -133,4 +132,4 @@ const appointment = Temporal.ZonedDateTime.from(
 ```
 
 > Enquanto `Temporal` não tem suporte universal, `date-fns` ou `Luxon` são as alternativas
-> recomendadas. Evitar `moment.js` — deprecated desde 2020.
+> recomendadas. Evite `moment.js`: deprecated desde 2020.

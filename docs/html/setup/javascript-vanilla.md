@@ -1,7 +1,7 @@
 # JavaScript Vanilla
 
 Padrões modernos de JavaScript para projetos HTML sem bundler. O objetivo aqui é o contexto de
-integração com o DOM — para convenções da linguagem em si, veja a
+integração com o DOM. Para convenções da linguagem em si, veja a
 [documentação completa de JavaScript](../../javascript/README.md).
 
 ## Script como módulo
@@ -15,7 +15,7 @@ forma padrão de incluir scripts em projetos sem bundler.
 </head>
 ```
 
-Código em um módulo não precisa de wrapper `DOMContentLoaded` — o script só executa após o parse.
+Código em um módulo não precisa de wrapper `DOMContentLoaded`: o script executa após o parse.
 
 ## Seleção e manipulação de DOM
 

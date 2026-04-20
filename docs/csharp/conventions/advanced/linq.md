@@ -1,8 +1,8 @@
 # LINQ
 
-## LINQ puro — sem side effects
+## LINQ puro: sem side effects
 
-LINQ é para transformação de dados — `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e I/O dentro de uma query tornam o comportamento imprevisível e difícil de testar.
+LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e I/O dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
 <summary>❌ Bad — side effect dentro de query LINQ</summary>
@@ -45,7 +45,7 @@ foreach (var order in activeOrders)
 
 ## Select vs foreach
 
-`Select` é para transformação 1-para-1 — cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
+`Select` é para transformação 1-para-1: cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
 
 <details>
 <summary>❌ Bad — Aggregate onde foreach é mais claro</summary>
@@ -78,6 +78,23 @@ foreach (var item in order.Items)
 <br>
 
 <details>
+<summary>❌ Bad — foreach manual para construir lista, sem Select</summary>
+<br>
+
+```csharp
+var summaries = new List<OrderSummary>();
+foreach (var order in orders)
+{
+    var summary = new OrderSummary(order.Id, order.Total, order.CreatedAt);
+    summaries.Add(summary); // acumulação manual para transformação 1-para-1 — Select é mais direto
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — Select para transformação 1-para-1</summary>
 <br>
 
@@ -91,7 +108,7 @@ var summaries = orders
 
 ## Materialização nas fronteiras
 
-`IEnumerable<T>` é lazy — a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
+`IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
 
 <details>
 <summary>❌ Bad — materialização prematura no meio do pipeline</summary>
@@ -140,7 +157,7 @@ public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, Dat
 
 ## Encadeamento excessivo
 
-Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas — cada uma com uma responsabilidade.
+Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas, cada uma com uma responsabilidade.
 
 <details>
 <summary>❌ Bad — chain monolítica, difícil de rastrear</summary>
@@ -201,9 +218,9 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 
 ## Left join (LINQ in-memory)
 
-`GroupJoin` + `SelectMany` com `DefaultIfEmpty()` é o padrão para left join em LINQ in-memory. Todo elemento do lado esquerdo é preservado — o lado direito pode ser `null` quando não há correspondência.
+`GroupJoin` + `SelectMany` com `DefaultIfEmpty()` é o padrão para left join em LINQ in-memory. Todo elemento do lado esquerdo é preservado; o lado direito pode ser `null` quando não há correspondência.
 
-> Para queries EF Core 10+, use o operador `LeftJoin` nativo — veja [Entity Framework](../../setup/entity-framework.md#left-join).
+> Para queries EF Core 10+, use o operador `LeftJoin` nativo. Veja [Entity Framework](../../setup/entity-framework.md#left-join).
 
 <details>
 <summary>❌ Bad — Join exclui registros sem correspondência</summary>

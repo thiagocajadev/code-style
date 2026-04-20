@@ -38,35 +38,35 @@ Tabelas de consulta rápida para as convenções CSS deste guia.
 | Unidade | Nome completo | Quando usar |
 | --- | --- | --- |
 | `px` | pixel | Borders, sombras, valores fixos precisos |
-| `rem` | root em | Tipografia e espaçamento — escala com o `font-size` do `:root` |
+| `rem` | root em | Tipografia e espaçamento; escala com o `font-size` do `:root` |
 | `em` | em | Espaçamento relativo ao `font-size` do elemento pai |
 | `%` | percentual | Layout proporcional ao elemento pai |
 | `vh` / `vw` | viewport height / width | Dimensões relativas à janela do browser |
-| `svh` / `dvh` | small / dynamic viewport height | Viewport mobile — corrige a barra de URL que some ao rolar |
+| `svh` / `dvh` | small / dynamic viewport height | Viewport mobile; corrige a barra de URL que some ao rolar |
 | `fr` | fraction | Distribuição de espaço no CSS Grid (`1fr 2fr` = 1/3 e 2/3) |
-| `ch` | character | Largura baseada no glifo `0` da fonte — útil para colunas de texto |
+| `ch` | character | Largura baseada no glifo `0` da fonte; útil para colunas de texto |
 
-> `rem` é o mais seguro para tipografia e espaçamento — baseia-se no `:root`, não no pai imediato.
+> `rem` é o mais seguro para tipografia e espaçamento: baseia-se no `:root`, não no pai imediato.
 > `em` acumula escala em elementos aninhados, o que pode surpreender.
 
 ## Propriedades que confundem
 
 | Propriedade | O que faz |
 | --- | --- |
-| `z-index` | Profundidade no eixo Z — maior valor fica na frente. Só funciona em elementos com `position` definido |
+| `z-index` | Profundidade no eixo Z. Maior valor fica na frente. Só funciona em elementos com `position` definido |
 | `box-shadow` | Sombra ao redor do box do elemento: `offset-x offset-y blur spread color` |
-| `box-sizing` | `border-box` inclui padding e border no `width` declarado — o padrão sensato |
+| `box-sizing` | `border-box` inclui padding e border no `width` declarado; é o padrão sensato |
 | `overflow` | O que acontece quando o conteúdo ultrapassa o box: `hidden`, `scroll`, `auto` |
 | `display` | Como o elemento participa do layout: `block`, `inline`, `flex`, `grid`, `none` |
-| `opacity` | Transparência do elemento inteiro (0–1) — diferente de `rgba()` que afeta só a cor |
+| `opacity` | Transparência do elemento inteiro (0–1); diferente de `rgba()`, que afeta só a cor |
 | `pointer-events` | `none` remove o elemento da interação do mouse sem escondê-lo visualmente |
-| `will-change` | Avisa o browser para promover o elemento a layer — usar com parcimônia |
+| `will-change` | Avisa o browser para promover o elemento a layer; usar com parcimônia |
 
 ---
 
-## Tailwind — Prefixos de espaçamento
+## Tailwind: prefixos de espaçamento
 
-Padrão: `{propriedade}{lado}-{escala}`. A escala é um número de 0 a 96 — cada unidade equivale a `0.25rem`.
+Padrão: `{propriedade}{lado}-{escala}`. A escala é um número de 0 a 96; cada unidade equivale a `0.25rem`.
 
 | Prefixo | Propriedade CSS | Exemplo |
 | --- | --- | --- |

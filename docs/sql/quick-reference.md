@@ -1,4 +1,4 @@
-# Quick Reference
+# Quick reference
 
 Tabelas de consulta rápida para as convenções SQL deste guia.
 
@@ -47,11 +47,11 @@ Tabelas de consulta rápida para as convenções SQL deste guia.
 | `UQ_` | Unique | `UQ_TABELA_CAMPO` | `UQ_Users_Email` |
 | `CK_` | Check | `CK_TABELA_CAMPO` | `CK_Players_SquadNumber` |
 
-Constraints sempre nomeadas com `CONSTRAINT` — sem inline sem nome. FK sempre acompanhada de índice na coluna referenciadora.
+Constraints sempre nomeadas com `CONSTRAINT`, sem inline sem nome. FK sempre acompanhada de índice na coluna referenciadora.
 
 ## Query estruturada
 
-Ordem canônica das cláusulas — qualificação explícita, condições verticais, AND ao final.
+Ordem canônica das cláusulas: qualificação explícita, condições verticais, AND ao final.
 
 ```sql
 SELECT

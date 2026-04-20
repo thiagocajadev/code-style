@@ -1,7 +1,7 @@
 # Project Foundation
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são referências
-> conceituais — podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
+> conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
 > configuração centralizada, módulos por domínio.
 
@@ -9,8 +9,8 @@
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md) — indentação, charset, trailing whitespace
-- ESLint + Prettier — linting e formatação de código
+- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- ESLint + Prettier: linting e formatação de código
 
 ```bash
 npm init @eslint/config
@@ -18,7 +18,7 @@ npm install --save-dev prettier
 ```
 
 > [!NOTE] [Biome](https://biomejs.dev) é uma alternativa moderna que substitui ESLint + Prettier em
-> um único binário — mais rápido e sem conflito de configuração entre as duas ferramentas.
+> um único binário: mais rápido e sem conflito de configuração entre as duas ferramentas.
 
 ## Entry point enxuto
 
@@ -90,8 +90,8 @@ app.listen(config.port);
 
 ## Módulos por domínio
 
-Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece SQL, JWT ou validação
-— apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que representam.
+Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece SQL, JWT ou validação:
+apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que representam.
 
 <details>
 <summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
@@ -153,6 +153,30 @@ export function createApp(config) {
 <br>
 
 <details>
+<summary>❌ Bad — rotas definidas fora do domínio, em arquivo centralizado</summary>
+<br>
+
+```js
+// routes.js — arquivo monolítico de rotas
+import { listOrders, getOrder, createOrder } from "./features/orders/order.endpoints.js";
+import { listUsers, getUser } from "./features/users/user.endpoints.js";
+
+export function registerRoutes(app, orderService, userService) {
+  app.get("/api/orders", listOrders(orderService));
+  app.get("/api/orders/:id", getOrder(orderService));
+  app.post("/api/orders", createOrder(orderService));
+
+  app.get("/api/users", listUsers(userService));
+  app.get("/api/users/:id", getUser(userService));
+  // domínios diferentes no mesmo arquivo — cresce sem controle
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — domínio de Orders dono das suas rotas</summary>
 <br>
 
@@ -199,7 +223,7 @@ export function create(orderService) {
 ## Configuração centralizada
 
 `config.js` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo acessa `process.env`
-diretamente — apenas importa a seção que precisa.
+diretamente: apenas importa a seção que precisa.
 
 <details>
 <summary>❌ Bad — process.env espalhado em todo lugar</summary>
@@ -254,8 +278,7 @@ export function registerOrders(app, config) {
 
 ## Middleware pipeline
 
-A ordem do middleware é determinística e importa. Registrar autenticação após roteamento não protege
-as rotas.
+A ordem do middleware é determinística e importa. Registrar autenticação após roteamento não protege as rotas.
 
 ```
 express.json()     → parseia o body antes de qualquer handler

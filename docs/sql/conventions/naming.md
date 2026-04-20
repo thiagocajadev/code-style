@@ -4,7 +4,7 @@ Código em inglês. Tabelas no plural, colunas no singular. Nomes descritivos el
 palavras reservadas sem precisar de delimitadores.
 
 > Os exemplos deste guia seguem a convenção do SQL Server. No PostgreSQL, aplique `snake_case` em
-> minúsculas — os princípios de nomenclatura são os mesmos.
+> minúsculas; os princípios de nomenclatura são os mesmos.
 >
 > | Conceito             | SQL Server            | PostgreSQL            |
 > | -------------------- | --------------------- | --------------------- |
@@ -113,7 +113,7 @@ FROM
 
 </details>
 
-## Qualificação explícita — sempre Tabela.Coluna
+## Qualificação explícita: sempre Tabela.Coluna
 
 Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma letra (`u`, `t`, `c`).
 

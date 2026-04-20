@@ -9,7 +9,7 @@ propósito e acessibilidade como padrão, não como adição.
 | --------------------------------------------------------------- | ------------------------------------------------------------ |
 | [Project Foundation](setup/project-foundation.md)               | Template base, ordem do `<head>`, charset, viewport          |
 | [JavaScript Vanilla](setup/javascript-vanilla.md)               | `type="module"`, seleção, delegation, fetch                  |
-| [jQuery](setup/jquery.md)                                       | Legado — 3.7.1 / 4.0.0, seleção, delegation, chaining, AJAX |
+| [jQuery](setup/jquery.md)                                       | Legado: 3.7.1 / 4.0.0, seleção, delegation, chaining, AJAX |
 
 ## Fundamentos
 
@@ -32,7 +32,7 @@ propósito e acessibilidade como padrão, não como adição.
 
 ## Princípios
 
-**Estrutura** — semântica e hierarquia
+**Estrutura:** semântica e hierarquia
 
 | Princípio                                                                    | Descrição                                                           |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- |
@@ -43,7 +43,7 @@ propósito e acessibilidade como padrão, não como adição.
 
 <br>
 
-**Acessibilidade** — legível por todos
+**Acessibilidade:** legível por todos
 
 | Princípio                                                                          | Descrição                                                           |
 | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
@@ -54,7 +54,7 @@ propósito e acessibilidade como padrão, não como adição.
 
 <br>
 
-**Performance e SEO** — produção
+**Performance e SEO:** produção
 
 | Princípio                                                                         | Descrição                                                           |
 | --------------------------------------------------------------------------------- | ------------------------------------------------------------------- |

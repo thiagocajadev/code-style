@@ -1,6 +1,6 @@
 # Validation
 
-O pipeline de validação tem três responsabilidades distintas — cada uma no seu lugar:
+O pipeline de validação tem três responsabilidades distintas, cada uma no seu lugar:
 
 ```
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -11,7 +11,7 @@ Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segu
 ## Sanitização de entrada
 
 Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados sujos entram em
-validação suja — um email com espaço passa no validator mas falha na busca no banco.
+validação suja: um email com espaço passa no validator mas falha na busca no banco.
 
 <details>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
@@ -114,7 +114,7 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 ## Regras de negócio
 
 O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no
-domínio — dependem de I/O (banco, serviços externos) e não pertencem ao validator.
+domínio: dependem de I/O (banco, serviços externos) e não pertencem ao validator.
 
 <details>
 <summary>❌ Bad — I/O dentro do validator mistura camadas</summary>
@@ -183,7 +183,7 @@ public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, Cance
 ## Output filtering
 
 Retornar a entidade direta vaza campos internos: `PasswordHash`, `SecurityStamp`, `IsDeleted`. Usar
-um `record` de resposta como projeção explícita — nunca a entidade do banco.
+um `record` de resposta como projeção explícita, nunca a entidade do banco.
 
 <details>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>

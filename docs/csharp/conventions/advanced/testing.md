@@ -1,29 +1,29 @@
 # Testing
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma história — quem chamou, o
+Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o
 que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)** — uma boa convenção que divide cada
-teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do
-resultado.
+Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)**: uma convenção que divide cada
+teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do
+resultado).
 
-O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas — sem expressões, acessos de propriedade ou literais inline.
+O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
 
-As variáveis de assert são sempre nomeadas de forma expressiva — `actualPrice`, `expectedName`, `actualOrder` em vez de genéricos — e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
+As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 
-Usa [xUnit](https://xunit.net/) como referência — o framework mais adotado no ecossistema .NET, sem boilerplate de `[TestClass]`.
+Usa [xUnit](https://xunit.net/) como referência: o framework mais adotado no ecossistema .NET, sem boilerplate de `[TestClass]`.
 
 ```csharp
 using Xunit;
 ```
 
 > [!NOTE]
-> A ordem do assert varia por framework — cada script de teste indica a convenção no topo.
+> A ordem do assert varia por framework: cada script de teste indica a convenção no topo.
 > - **xUnit**: `Assert.Equal(expected, actual)` — expected primeiro
 > - **MSTest**: `Assert.AreEqual(expected, actual)` — expected primeiro
 > - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))` — actual primeiro
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto,
 execução do comportamento e verificação do resultado.
@@ -63,7 +63,7 @@ public void AppliesTenPercentDiscountToOrderPrice()
 
 </details>
 
-## Assert inline — semantic assert
+## Assert inline: semantic assert
 
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 

@@ -1,7 +1,7 @@
 # Error Handling
 
-Os princípios de tratamento de erros do JavaScript — erros tipados, try/catch nas fronteiras,
-não engolir exceções — aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes
+Os princípios de tratamento de erros do JavaScript: erros tipados, try/catch nas fronteiras,
+não engolir exceções. Aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes
 tipadas com contratos explícitos e `instanceof` como mecanismo de narrowing.
 
 ## Múltiplos tipos de retorno
@@ -43,7 +43,47 @@ function processOrder(order: Order | null): ProcessedOrder {
 
 </details>
 
-## BaseError — hierarquia tipada
+## BaseError: hierarquia tipada
+
+<details>
+<summary>❌ Bad — erros sem hierarquia, sem contrato, sem contexto</summary>
+<br>
+
+```ts
+// erros lançados como string ou Error genérico sem tipo
+async function findOrder(orderId: string): Promise<Order> {
+  const order = await db.orders.findById(orderId);
+  if (!order) throw new Error("not found"); // sem tipo, sem statusCode, sem action
+
+  return order;
+}
+
+// classes de erro sem base comum — catch não consegue distinguir
+class NotFound extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
+class BadInput extends Error {
+  constructor(message: string) {
+    super(message);
+  }
+}
+
+// caller não tem como checar statusCode ou action — acessa name como string
+try {
+  const order = await findOrder(id);
+} catch (error) {
+  if ((error as Error).message === "not found") { // frágil — string hardcoded
+    return Response.json({ error: (error as Error).message }, { status: 404 });
+  }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — contrato único para todos os erros da aplicação</summary>
@@ -150,7 +190,7 @@ export class InternalServerError extends BaseError {
 
 </details>
 
-## try/catch — narrowing do error
+## try/catch: narrowing do error
 
 O `catch` recebe `unknown` em TypeScript estrito. Antes de usar o erro, é preciso fazer narrowing.
 
@@ -207,5 +247,5 @@ async function findProductById(id: string): Promise<Product> {
 | Use                                              | Não use                                                 |
 | ------------------------------------------------ | ------------------------------------------------------- |
 | I/O externo (DB, rede, arquivo)                  | Para encadear chamadas que já propagam erros            |
-| Fronteira do sistema (controller HTTP)           | Para logar e ignorar — mascara problemas                |
+| Fronteira do sistema (controller HTTP)           | Para logar e ignorar: mascara problemas                |
 | Para mapear erro técnico → erro de negócio       | Quando o erro já será tratado em camada superior        |

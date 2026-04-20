@@ -1,6 +1,6 @@
 # Dependency Injection
 
-DI torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente — a única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+DI torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
 
 ## Service locator
 
@@ -92,7 +92,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 | `Transient` | Nova a cada resolução | Objetos leves e sem estado compartilhado |
 | `Singleton` | Uma para toda a aplicação | Configuração, cache, `IHttpClientFactory` |
 
-**Captive dependency**: um `Singleton` que recebe um `Scoped` captura a instância na primeira resolução. O `Scoped` passa a viver para sempre — comportamento incorreto e difícil de rastrear.
+**Captive dependency**: um `Singleton` que recebe um `Scoped` captura a instância na primeira resolução. O `Scoped` passa a viver para sempre: comportamento incorreto e difícil de rastrear.
 
 <details>
 <summary>❌ Bad — singleton captura scoped</summary>
@@ -154,7 +154,7 @@ services.AddScoped<IOrderRepository, FakeOrderRepository>();
 
 ## Registro por assembly
 
-Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. O .NET permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora — sem dependência externa.
+Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. O .NET permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora, sem dependência externa.
 
 <details>
 <summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
@@ -209,7 +209,7 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 </details>
 
 > [!NOTE]
-> [Scrutor](https://github.com/khellang/Scrutor) é uma biblioteca popular que adiciona assembly scanning fluente ao container nativo do .NET — útil quando o registro por convenção é usado em vários domínios e a abordagem manual via reflection se repete.
+> [Scrutor](https://github.com/khellang/Scrutor) é uma biblioteca popular que adiciona assembly scanning fluente ao container nativo do .NET. Útil quando o registro por convenção é usado em vários domínios e a abordagem manual via reflection se repete.
 
 ## Registro
 

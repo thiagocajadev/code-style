@@ -109,7 +109,7 @@ public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, Cancellati
 ## Pattern matching
 
 Guard clauses resolvem pré-condições simples. Quando a condição envolve verificação de tipo, `is`
-extrai e verifica em uma única expressão — sem cast manual, com escopo garantido pelo compilador.
+extrai e verifica em uma única expressão, sem cast manual, com escopo garantido pelo compilador.
 
 <details>
 <summary>❌ Bad — cast manual após verificação de tipo</summary>
@@ -166,7 +166,7 @@ public string SummarizePayment(object payment)
 ## Switch expression
 
 Quando múltiplos `if/else` mapeiam uma entrada para um valor, `switch` expression substitui com
-clareza declarativa. Cada arm retorna um valor e o compilador exige exaustividade — sem `default`
+clareza declarativa. Cada arm retorna um valor e o compilador exige exaustividade: sem `default`
 esquecido, sem caso não tratado.
 
 <details>
@@ -203,6 +203,28 @@ public string GetStatusLabel(string status)
     };
 
     return label;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — if/else encadeado para mapear Result em resposta HTTP</summary>
+<br>
+
+```csharp
+public IResult MapResult(Result<Order> result)
+{
+    if (result.IsSuccess)
+        return Results.Ok(result.Value!);
+    else if (result.Error.Code == "NOT_FOUND")
+        return Results.NotFound();
+    else if (result.Error.Code == "UNAUTHORIZED")
+        return Results.Unauthorized();
+    else
+        return Results.Problem();
 }
 ```
 
@@ -299,7 +321,7 @@ public void ProcessOrderEvent(OrderEvent orderEvent)
 ## Dictionary
 
 Switch expression e switch statement resolvem casos estáticos conhecidos em tempo de compilação.
-Quando os dados são dinâmicos — carregados de config, banco ou fonte externa —
+Quando os dados são dinâmicos (carregados de config, banco ou fonte externa),
 `Dictionary<TKey, TValue>` é a estrutura certa.
 
 <details>
@@ -344,12 +366,11 @@ public string GetCurrencyCode(string region)
 
 ---
 
-_As ferramentas acima resolvem **decisão** — qual caminho seguir. As abaixo resolvem **iteração** —
-quantas vezes percorrer._
+_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem **iteração**: quantas vezes percorrer._
 
 ## foreach
 
-Para iterar sobre uma coleção executando ações por item, `foreach` é direto — sem índice, sem
+Para iterar sobre uma coleção executando ações por item, `foreach` é direto: sem índice, sem
 variável de controle, com suporte nativo a `break` e `continue`.
 
 <details>
@@ -384,7 +405,7 @@ foreach (var order in orders)
 
 Quando o objetivo é encontrar, verificar ou validar elementos de uma coleção, percorrer tudo é
 desperdício. `foreach` com `return` antecipado sai no primeiro match. Para casos declarativos, os
-métodos LINQ fazem circuit break internamente — param no primeiro resultado relevante.
+métodos LINQ fazem circuit break internamente e param no primeiro resultado relevante.
 
 <details>
 <summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
@@ -422,6 +443,29 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
     }
 
     return null;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
+<br>
+
+```csharp
+public bool HasExpiredOrders(IEnumerable<Order> orders)
+{
+    bool hasExpired = false;
+
+    foreach (var order in orders)
+    {
+        if (order.IsExpired)
+            hasExpired = true; // continua iterando mesmo após encontrar
+    }
+
+    return hasExpired;
 }
 ```
 
@@ -481,6 +525,26 @@ while (attempt < maxAttempts)
     if (connection.IsReady) break;
 
     attempt++;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — while com verificação duplicada antes do loop</summary>
+<br>
+
+```csharp
+// verifica a condição antes de entrar, mas a primeira iteração é sempre necessária
+if (taskQueue.Count > 0)
+{
+    while (taskQueue.Count > 0)
+    {
+        var task = taskQueue.Dequeue();
+        ExecuteTask(task);
+    }
 }
 ```
 

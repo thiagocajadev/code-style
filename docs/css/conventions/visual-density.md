@@ -1,10 +1,10 @@
-# Visual Density — CSS
+# Visual density: CSS
 
 Os mesmos princípios de [densidade visual](../../shared/visual-density.md) aplicados a CSS: agrupar o que pertence junto, separar o que é distinto.
 
 ## Entre regras
 
-Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores distintos separa responsabilidades e torna o arquivo escaneável de cima pra baixo.
+Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores distintos separa responsabilidades e torna o arquivo escaneável.
 
 <details>
 <summary>❌ Bad — regras coladas, sem respiro entre blocos</summary>
@@ -54,7 +54,7 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 ## Grupos de propriedades
 
-Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: posicionamento, layout, tipografia, visual. Uma linha em branco separa cada grupo — o bloco torna-se legível de cima pra baixo.
+Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: posicionamento, layout, tipografia, visual. Uma linha em branco separa cada grupo e torna o bloco legível de cima pra baixo.
 
 A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedades).
 
@@ -113,7 +113,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 ## @media blocks
 
-`@media` queries funcionam como fases do mesmo seletor — são separadas do bloco principal e entre si por uma linha em branco.
+`@media` queries funcionam como fases do mesmo seletor. Cada uma é separada do bloco principal e entre si por uma linha em branco.
 
 <details>
 <summary>❌ Bad — @media colados, sem separação visual</summary>
@@ -171,7 +171,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 ## CSS nesting
 
-Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linha em branco antes de cada bloco filho mantém a hierarquia legível.
+Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linha em branco antes de cada bloco filho mantém a hierarquia clara.
 
 <details>
 <summary>❌ Bad — tudo colado, hierarquia difícil de ler</summary>

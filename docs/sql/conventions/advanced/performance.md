@@ -45,7 +45,7 @@ ORDER BY
 
 ## Função aplicada à coluna no WHERE
 
-Aplicar função sobre a coluna filtrada impede o uso do índice — o banco precisa avaliar cada linha.
+Aplicar função sobre a coluna filtrada impede o uso do índice: o banco precisa avaliar cada linha.
 
 <details>
 <summary>❌ Bad — função no WHERE, índice ignorado</summary>
@@ -181,7 +181,7 @@ CREATE INDEX IX_Players_TeamId
 
 </details>
 
-## Índice composto — ordem de seletividade
+## Índice composto: ordem de seletividade
 
 A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
@@ -212,7 +212,7 @@ CREATE INDEX IX_Players_TeamId_IsActive
 
 ## Covering index
 
-Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha — mesmo com índice.
+Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha, mesmo com índice.
 
 <details>
 <summary>❌ Bad — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
@@ -300,11 +300,11 @@ CREATE INDEX IX_Players_TeamId
 > [!NOTE]
 > Alguns sistemas de alta escala — como o GitHub — optam por **não usar FK no banco**, transferindo a responsabilidade de integridade referencial para a aplicação. O trade-off é consciente: FK tem custo em toda operação de escrita (INSERT, UPDATE, DELETE precisa validar a referência), e em volumes muito grandes esse overhead se torna relevante. O ganho é performance de escrita e flexibilidade de deploy; a contrapartida é que o banco não garante a integridade — qualquer falha na camada de aplicação pode gerar dados órfãos. Para a maioria dos sistemas, FK com índice é a escolha certa. A remoção é uma decisão arquitetural, não uma otimização prematura.
 
-## Tipo de ID — BIGINT vs UUID
+## Tipo de ID: BIGINT vs UUID
 
 A escolha do tipo de ID impacta diretamente o tamanho do índice e a frequência de page splits.
-UUID v4 insere em posições aleatórias na B-tree — o banco divide páginas constantemente. Em tabelas
-com alto volume de inserções, a fragmentação degrada progressivamente leituras e escritas.
+UUID v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
+com alto volume de inserções, a fragmentação degrada leituras e escritas.
 
 | Tipo | Tamanho | Unicidade global | Sequencial | Page splits |
 | --- | --- | --- | --- | --- |
@@ -312,7 +312,7 @@ com alto volume de inserções, a fragmentação degrada progressivamente leitur
 | `UUID v4` (`NEWID`) | 16 bytes | ✅ | ❌ | alto |
 | `UUID v7` | 16 bytes | ✅ | ✅ | mínimo |
 
-UUID v7 combina timestamp de alta resolução com aleatoriedade — insere sempre próximo ao fim da
+UUID v7 combina timestamp de alta resolução com aleatoriedade e insere sempre próximo ao fim da
 B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
 
 <details>
@@ -375,9 +375,9 @@ CREATE TABLE Orders
 </details>
 
 `NEWSEQUENTIALID()` (SQL Server) é uma alternativa nativa sequencial, mas só funciona como
-`DEFAULT` — não é portável entre bancos e impede geração de ID antes do INSERT.
+`DEFAULT`: não é portável entre bancos e impede geração de ID antes do INSERT.
 
-## Paginação — OFFSET / FETCH
+## Paginação: OFFSET / FETCH
 
 Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
 

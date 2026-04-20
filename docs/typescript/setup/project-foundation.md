@@ -1,15 +1,15 @@
 # Project Foundation
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos TypeScript. Os exemplos são
-> referências conceituais — o que importa é o princípio: strict mode sempre ativo, path aliases
+> referências conceituais. O que importa é o princípio: strict mode sempre ativo, path aliases
 > para importações limpas, e o compilador como primeira linha de defesa.
 
 ## Ambiente
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md) — indentação, charset, trailing whitespace
-- ESLint + typescript-eslint — linting com regras TypeScript-aware
+- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- ESLint + typescript-eslint: linting com regras TypeScript-aware
 
 ```bash
 npm install --save-dev typescript tsx @types/node
@@ -19,11 +19,32 @@ npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslin
 > [!NOTE] [Biome](https://biomejs.dev) suporta TypeScript nativamente e substitui ESLint + Prettier
 > em um único binário.
 
-## tsconfig — strict mode sempre ativo
+## tsconfig: strict mode sempre ativo
 
 `strict: true` ativa o conjunto de verificações que torna o TypeScript útil: `strictNullChecks`,
 `noImplicitAny`, `strictFunctionTypes` e outros. Sem ele, o compilador aceita código que explode
 em runtime.
+
+<details>
+<summary>❌ Bad — tsconfig sem strict, sem paths, sem checagens essenciais</summary>
+<br>
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "esModuleInterop": true
+  }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — tsconfig base com strict e paths</summary>
@@ -59,9 +80,9 @@ em runtime.
 
 </details>
 
-## Path aliases — importações sem `../../`
+## Path aliases: importações sem `../../`
 
-Path aliases tornam as importações independentes de onde o arquivo está na hierarquia — sem
+Path aliases tornam as importações independentes de onde o arquivo está na hierarquia, sem
 contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no bundler ou loader.
 
 <details>

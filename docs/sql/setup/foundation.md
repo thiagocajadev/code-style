@@ -1,14 +1,14 @@
 # Foundation
 
 > [!NOTE]
-> Essa estrutura reflete como costumo organizar projetos SQL. Os exemplos usam SQL Server como referência — os princípios se aplicam a qualquer banco relacional.
+> Essa estrutura reflete como costumo organizar projetos SQL. Os exemplos usam SQL Server como referência; os princípios se aplicam a qualquer banco relacional.
 
 ## Ambiente
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md) — indentação, charset, trailing whitespace
-- [SQLFluff](./sqlfluff.md) — linting e formatação SQL
+- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- [SQLFluff](./sqlfluff.md): linting e formatação SQL
 
 ## Estrutura de arquivos
 
@@ -24,7 +24,7 @@ sql/
 
 ## Migrations
 
-Cada migration é um arquivo atômico com timestamp no nome — sem editar o que já foi executado.
+Cada migration é um arquivo atômico com timestamp no nome, sem editar o que já foi executado.
 
 ```
 migrations/

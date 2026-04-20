@@ -1,8 +1,7 @@
 # Responsive
 
-Mobile-first significa definir o estilo base para mobile e **expandir** com `min-width`. O
-inverso — começar no desktop e restringir com `max-width` — cria sobreposições e resets
-desnecessários.
+Mobile-first significa definir o estilo base para mobile e **expandir** com `min-width`. Começar
+no desktop e restringir com `max-width` cria sobreposições e resets desnecessários.
 
 ## Mobile-first
 
@@ -52,7 +51,7 @@ desnecessários.
 
 ## Breakpoints nomeados
 
-Valores de breakpoint espalhados em vários arquivos criam inconsistência — mudar `768px` exige
+Valores de breakpoint espalhados em vários arquivos criam inconsistência. Mudar `768px` exige
 grep no projeto inteiro.
 
 <details>
@@ -91,7 +90,7 @@ grep no projeto inteiro.
 @media (min-width: 768px) /* --bp-md */ { }
 ```
 
-> Custom properties não funcionam dentro de `@media` — use o valor diretamente e referencie o
+> Custom properties não funcionam dentro de `@media`. Use o valor diretamente e referencie o
 > token no comentário. A centralização acontece no arquivo de tokens como fonte única de verdade.
 
 </details>

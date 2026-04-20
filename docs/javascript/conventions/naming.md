@@ -254,7 +254,7 @@ function searchProducts(term) {
 
 ## Código como documentação
 
-Comentários que explicam o _quê_ mentem — o código muda, o comentário fica. Um nome expressivo
+Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. Um nome expressivo
 substitui qualquer comentário.
 
 <details>
@@ -291,6 +291,21 @@ attempts++;
 </details>
 
 ## Boolean naming
+
+<details>
+<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
+
+```js
+const loading = true;
+const error = false;
+const active = user.status === "active";
+const valid = email.includes("@");
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>

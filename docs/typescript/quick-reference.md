@@ -10,7 +10,7 @@ Tabelas de consulta rápida para as convenções TypeScript deste guia.
 | Type alias            | PascalCase                         | `OrderStatus`, `UserId`, `ApiResponse<T>`             |
 | Genérico simples      | `T`                                | `function identity<T>(value: T): T`                   |
 | Genérico com contexto | `TItem`, `TKey`, `TValue`          | `function map<TItem, TResult>(...)`                   |
-| Enum (evitar)         | PascalCase + const object          | `ORDER_STATUS.active` — prefer union type             |
+| Enum (evitar)         | PascalCase + const object          | `ORDER_STATUS.active`; prefer union type             |
 
 ## type vs interface
 
@@ -41,17 +41,17 @@ Tabelas de consulta rápida para as convenções TypeScript deste guia.
 
 | Evitar                             | Usar                                                            |
 | ---------------------------------- | --------------------------------------------------------------- |
-| `any`                              | `unknown` — força narrowing antes do uso                        |
+| `any`                              | `unknown`: força narrowing antes do uso                        |
 | Prefixo `I` em interface           | PascalCase direto: `User`, não `IUser`                          |
 | `as Type` para silenciar o erro    | Narrowing real ou refatorar a função                            |
 | Enum nativo                        | Const object + union type                                       |
-| `Object`, `String`, `Number`       | `object`, `string`, `number` — tipos primitivos, não wrappers   |
+| `Object`, `String`, `Number`       | `object`, `string`, `number`: tipos primitivos, não wrappers   |
 | `Function` como tipo               | Assinatura explícita: `(id: string) => Promise<User>`           |
 | `!` (non-null assertion) inline    | Guard clause ou narrowing explícito                             |
 
 ## Código narrativo com tipos
 
-Entry point de uma linha. O orquestrador conta a história — os helpers guardam os detalhes e os tipos.
+Entry point de uma linha. O orquestrador conta a história. Os helpers guardam os detalhes e os tipos.
 
 <details>
 <summary>❌ Bad — tipos inline, lógica misturada no entry point</summary>

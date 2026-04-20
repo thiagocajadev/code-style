@@ -1,8 +1,7 @@
 # CSS
 
-Convenções CSS - Cascading Style Sheets (Folhas de Estilo em Cascata) aplicando os mesmos princípios
-deste guia — nomes semânticos, baixa especificidade, custom properties como tokens e mobile-first
-por padrão.
+Convenções CSS aplicando os mesmos princípios deste guia: nomes semânticos, baixa especificidade,
+custom properties como tokens e mobile-first por padrão.
 
 ## Code Style
 
@@ -24,7 +23,7 @@ por padrão.
 
 ## Princípios
 
-**Nomeação** — semântica, hierarquia e especificidade
+**Nomeação**: semântica, hierarquia e especificidade
 
 | Princípio                                                             | Descrição                                                               |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
@@ -34,7 +33,7 @@ por padrão.
 
 <br>
 
-**Estilo e Layout** — propriedades, tokens e responsividade
+**Estilo e layout**: propriedades, tokens e responsividade
 
 | Princípio                                                             | Descrição                                                               |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |

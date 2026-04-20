@@ -7,7 +7,7 @@ explícita.
 ## defer e async
 
 Scripts sem atributo bloqueiam o parse HTML enquanto baixam e executam. `defer` baixa em paralelo e
-executa após o parse, na ordem do documento — ficam no `<head>`, sem necessidade de mover para o
+executa após o parse, na ordem do documento: ficam no `<head>`, sem necessidade de mover para o
 fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia de ordem.
 
 <details>

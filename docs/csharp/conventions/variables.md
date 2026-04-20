@@ -2,7 +2,7 @@
 
 ## `var` e tipo explícito
 
-`var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente — o leitor não deve precisar inferir.
+`var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente: o leitor não deve precisar inferir.
 
 <details>
 <summary>❌ Bad — tipo obscuro</summary>
@@ -32,7 +32,7 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 
 ## `const` e `readonly`
 
-`const` é resolvido em tempo de compilação — apenas para primitivos e strings. `readonly` é imutável após o construtor — para valores determinados em runtime. Campos mutáveis onde só leitura é necessária são um contrato fraco.
+`const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` é imutável após o construtor, para valores determinados em runtime. Campos mutáveis onde só leitura é necessária são um contrato fraco.
 
 <details>
 <summary>❌ Bad — campo mutável onde deveria ser imutável</summary>
@@ -71,7 +71,7 @@ public class OrderService(IConfiguration config)
 
 ## Records imutáveis
 
-`record` expressa um contrato de dados imutável sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects — a semântica de igualdade por valor vem de graça.
+`record` expressa um contrato de dados imutável sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
 
 <details>
 <summary>❌ Bad — class mutável como contrato de dados</summary>
@@ -101,7 +101,7 @@ public record OrderRequest(string ProductId, int Quantity);
 
 ## Sem valores mágicos
 
-Literais embutidos escondem intenção. `const` nomeado documenta o significado — o nome é a documentação.
+Literais embutidos escondem intenção. `const` nomeado documenta o significado: o nome é a documentação.
 
 <details>
 <summary>❌ Bad — literais sem significado</summary>
@@ -138,7 +138,7 @@ if (discount > MaxDiscountRate)
 
 ## Mutação direta
 
-`record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido — o chamador não deve ter seu estado alterado silenciosamente.
+`record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido: o chamador não deve ter seu estado alterado silenciosamente.
 
 <details>
 <summary>❌ Bad — mutação acoplada e efeito colateral oculto</summary>

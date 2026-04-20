@@ -1,12 +1,27 @@
 # Narrowing
 
 Narrowing é o processo de mover de um tipo amplo para um tipo específico dentro de um bloco. O
-TypeScript rastreia cada verificação e refina o tipo automaticamente — sem cast, sem assertion.
+TypeScript rastreia cada verificação e refina o tipo automaticamente, sem cast, sem assertion.
 
-## typeof — primitivos
+## typeof: primitivos
 
 Para primitivos, `typeof` é a ferramenta correta. TypeScript entende os guards nativos e aplica
 o narrowing.
+
+<details>
+<summary>❌ Bad — type assertion no lugar de narrowing</summary>
+<br>
+
+```ts
+function formatId(id: string | number): string {
+  const formatted = (id as string).padStart(6, "0"); // assume string sem verificar
+  return formatted; // explode em runtime se id for number
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — typeof para primitivos</summary>
@@ -25,9 +40,29 @@ function formatId(id: string | number): string {
 
 </details>
 
-## instanceof — classes
+## instanceof: classes
 
-Para instâncias de classes — incluindo as de erro — `instanceof` é o operador correto.
+Para instâncias de classes, incluindo as de erro, `instanceof` é o operador correto.
+
+<details>
+<summary>❌ Bad — type assertion no lugar de instanceof</summary>
+<br>
+
+```ts
+async function findUser(id: string): Promise<User> {
+  try {
+    const user = await db.users.findById(id);
+    return user;
+  } catch (error) {
+    if ((error as NotFoundError).name === "NotFoundError") throw error; // name pode ser qualquer string
+    throw new InternalServerError({ cause: error });
+  }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — instanceof para classes e erros tipados</summary>
@@ -50,7 +85,7 @@ async function findUser(id: string): Promise<User> {
 ## Custom type guards
 
 Quando a verificação é mais complexa que `typeof` ou `instanceof`, extraia em uma função predicado.
-O nome expressa a intenção de negócio — o compilador entende o `is` como estreitamento de tipo.
+O nome expressa a intenção de negócio. O compilador entende o `is` como estreitamento de tipo.
 
 <details>
 <summary>❌ Bad — verificação inline repetida, sem nome, sem reutilização</summary>
@@ -101,7 +136,27 @@ function processPayment(event: unknown) {
 ## Discriminated unions
 
 Quando um union type tem um campo literal discriminante, o TypeScript aplica narrowing
-automaticamente dentro de cada branch — sem type guard manual.
+automaticamente dentro de cada branch, sem type guard manual.
+
+<details>
+<summary>❌ Bad — acessa campo de variant específica sem narrowing</summary>
+<br>
+
+```ts
+type NotificationEvent =
+  | { type: "email"; recipient: string; subject: string }
+  | { type: "sms"; phone: string; body: string }
+  | { type: "push"; deviceToken: string; title: string; body: string };
+
+function sendNotification(event: NotificationEvent) {
+  // acessa recipient sem verificar se type é "email" — erro de compilação
+  sendEmail(event.recipient, event.subject); // Property 'recipient' does not exist on type 'NotificationEvent'
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — narrowing automático via campo discriminante</summary>
@@ -184,7 +239,7 @@ function getStatusLabel(status: OrderStatus): string {
 
 ## Nullish narrowing
 
-`??` e `?.` não são narrowing — são atalhos para tratar null e undefined. Narrowing real com guard
+`??` e `?.` não são narrowing: são atalhos para tratar null e undefined. Narrowing real com guard
 clause é mais legível quando a ausência do valor é uma condição de negócio que precisa de nome.
 
 <details>

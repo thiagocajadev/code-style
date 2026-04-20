@@ -1,7 +1,7 @@
 # Formatting
 
-A ordem de propriedades não é arbitrária. Agrupar por responsabilidade — posicionamento, box model,
-tipografia, visual — torna um bloco CSS legível de cima pra baixo: de "onde está e qual o tamanho"
+A ordem de propriedades não é arbitrária. Agrupar por responsabilidade (posicionamento, box model,
+tipografia, visual) torna um bloco CSS legível de cima pra baixo: de "onde está e qual o tamanho"
 para "como parece".
 
 ## Ordem de propriedades

@@ -1,4 +1,4 @@
-# Project Foundation — HTML
+# Project Foundation: HTML
 
 Template base para novos projetos HTML. A ordem do `<head>` afeta performance: charset e viewport
 primeiro, recursos críticos antes do CSS, scripts com `defer`.

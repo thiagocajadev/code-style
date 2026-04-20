@@ -4,9 +4,9 @@ Princípios são **critérios de avaliação**, não regras de formatação. Ele
 
 Organizados como checklist de revisão, do mais impactante ao mais granular:
 
-- **Forma** — a estrutura da função avaliada de fora para dentro
-- **Legibilidade** — fluxo, espaçamento e nomes lidos linha a linha
-- **Controle de Qualidade** — as garantias de robustez: estado, erros, I/O (entrada/saída) e testes
+- **Forma:** a estrutura da função avaliada de fora para dentro
+- **Legibilidade:** fluxo, espaçamento e nomes lidos linha a linha
+- **Controle de qualidade:** as garantias de robustez: estado, erros, I/O (entrada/saída) e testes
 
 ---
 
@@ -74,7 +74,7 @@ Números e strings literais espalhados pelo código não dizem nada sobre a inte
 
 ---
 
-## Controle de Qualidade
+## Controle de qualidade
 
 Controle de qualidade é o que você avalia nas **propriedades de robustez** do código: como ele lida com estado, falhas, operações assíncronas e verificação de comportamento.
 
@@ -90,7 +90,7 @@ Computar dados e formatar a saída são **responsabilidades distintas**. Uma fun
 
 Variáveis declaradas como constantes (`const`, `readonly`) comunicam que **o valor não muda**: qualquer alteração posterior é uma exceção explícita, não um efeito colateral silencioso. Imutabilidade por padrão **reduz surpresas** e torna o fluxo de dados rastreável.
 
-### CQS — Command Query Separation (Separação de Comando e Consulta)
+### CQS: Command Query Separation (Separação de Comando e Consulta)
 
 Uma função ou **retorna um valor** (query, consulta) ou **produz um efeito colateral** (command, comando), nunca os dois ao mesmo tempo. Funções que mudam estado _e_ retornam dados acoplam leitura e escrita de forma implícita, dificultando rastreamento e teste.
 
@@ -114,7 +114,7 @@ Toda resposta da função segue **o mesmo formato**, sucesso e erro incluídos. 
 
 Erros são capturados **nas fronteiras do sistema**, nas camadas de entrada da aplicação, não espalhados em cada função de negócio. Centralizar o tratamento evita duplicação, garante **formato consistente** nas respostas e mantém o código de domínio livre de preocupações de infraestrutura.
 
-### I/O assíncrono — Input/Output (Entrada/Saída) assíncrono
+### I/O assíncrono: Input/Output (Entrada/Saída) assíncrono
 
 Operações de I/O (_leitura de banco, chamadas de rede, acesso a disco_) bloqueiam o processamento se feitas de forma síncrona. `async/await` (assíncrono/aguardar) torna essas operações **não-bloqueantes**: a execução continua enquanto aguarda a resposta, sem travar o processo inteiro.
 

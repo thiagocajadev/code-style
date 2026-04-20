@@ -1,4 +1,4 @@
-# Visual Density — HTML
+# Visual density: HTML
 
 Os mesmos princípios de [densidade visual](../../shared/visual-density.md) aplicados a HTML: agrupar
 o que pertence junto, separar o que é distinto.

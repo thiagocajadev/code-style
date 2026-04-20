@@ -1,4 +1,4 @@
-# Visual Density — JavaScript
+# Visual density: JavaScript
 
 Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com exemplos em JavaScript/Node.js.
 
@@ -51,7 +51,7 @@ async function registerUser(input) {
 
 ## `return` sempre separado
 
-O `return` encerra uma função — visualmente, ele pertence a um parágrafo próprio quando há mais de um passo antes dele.
+O `return` encerra uma função. Visualmente, ele pertence a um parágrafo próprio quando há mais de um passo antes dele.
 
 <details>
 <summary>❌ Bad — return colado ao último passo</summary>
@@ -94,7 +94,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 
 </details>
 
-**Exceção:** funções de uma linha ficam compactas — o `return` é o único conteúdo.
+**Exceção:** funções de uma linha ficam compactas. O `return` é o único conteúdo.
 
 ```js
 function findPendingOrders(userId) {
@@ -104,7 +104,7 @@ function findPendingOrders(userId) {
 
 ## Declaração + guarda = 1 grupo
 
-Uma variável seguida do seu `if` de guarda formam um par semântico. A linha em branco vem **depois** do par, não entre eles.
+Uma variável seguida do seu `if` de guarda formam um par semântico. A linha em branco vem **depois** do par, nunca entre eles.
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
@@ -174,6 +174,24 @@ while (attempt < maxAttempts) {
 Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter no máximo 2 linhas antes de um respiro.
 
 <details>
+<summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
+<br>
+
+```js
+async function createUserHandler(req, res) {
+  const sanitized = sanitizeCreateUser(req.body);
+  const input = createUserSchema.parse(sanitized);
+  await createUser(input);
+  const body = { id: input.id };
+  res.status(201).json(body);
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — fases explícitas</summary>
 <br>
 
@@ -191,9 +209,9 @@ async function createUserHandler(req, res) {
 
 </details>
 
-## Testes — expect como fase própria
+## Testes: expect como fase própria
 
-O `expect` é uma fase distinta — a linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
+O `expect` é uma fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
 
 <details>
 <summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
@@ -230,7 +248,7 @@ it('applies percentage discount to order price', () => {
 
 ## Strings longas
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado — o template final fica legível e os pedaços ganham semântica.
+Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado: o template final fica legível e os pedaços ganham semântica.
 
 <details>
 <summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>

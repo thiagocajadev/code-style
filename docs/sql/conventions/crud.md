@@ -1,6 +1,6 @@
 # CRUD
 
-INSERT, SELECT, UPDATE, DELETE — formatação vertical e estratégia de exclusão.
+INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão.
 
 ## INSERT horizontal
 
@@ -113,7 +113,7 @@ WHERE
 
 ## Hard DELETE
 
-Dados deletados são irrecuperáveis. Soft delete — coluna `IsActive = 0` — preserva histórico e permite auditoria.
+Dados deletados são irrecuperáveis. Soft delete com coluna `IsActive = 0` preserva histórico e permite auditoria.
 
 <details>
 <summary>❌ Bad — remoção permanente sem rastro</summary>
@@ -281,7 +281,7 @@ ORDER BY
 
 </details>
 
-## Magic numbers — comentário inline
+## Magic numbers: comentário inline
 
 Literais numéricos fixos perdem o significado fora do contexto. Comentário inline expõe a intenção sem criar abstração desnecessária.
 
@@ -321,7 +321,7 @@ WHERE
 
 </details>
 
-## Parâmetros nomeados — sem valores mágicos
+## Parâmetros nomeados: sem valores mágicos
 
 Literais inline tornam a query frágil e difícil de reusar. Usar parâmetros nomeados.
 

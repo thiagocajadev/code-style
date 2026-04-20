@@ -2,7 +2,7 @@
 
 ## Nomes em português
 
-Todo código é escrito em inglês — variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
+Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
 
 <details>
 <summary>❌ Bad — mistura de idiomas</summary>
@@ -94,7 +94,7 @@ public class OrderService(IOrderRepository repository)
 
 ## Sufixo Async
 
-Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada — sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
+Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada. Sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
 
 <details>
 <summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
@@ -122,9 +122,9 @@ public async Task<bool> ValidatePaymentAsync(PaymentRequest request) { ... }
 
 </details>
 
-## Prefixo I — interfaces
+## Prefixo I: interfaces
 
-Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base` — o nome descreve a implementação pelo domínio ou tecnologia.
+Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base`: o nome descreve a implementação pelo domínio ou tecnologia.
 
 <details>
 <summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
@@ -191,7 +191,7 @@ bool canDelete = user.Role == "ADMIN";
 
 ## Identificadores sem significado
 
-O nome revela intenção pelo domínio. Nomes genéricos — `data`, `info`, `obj`, `item`, `result`, `temp` — são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
+O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`, `item`, `result`, `temp`) são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
 
 <details>
 <summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>

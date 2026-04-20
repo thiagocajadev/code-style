@@ -1,8 +1,8 @@
 # Dates
 
 `DateTime` em C# tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou
-`Unspecified` — e a maioria das construções produz `Unspecified` sem aviso. Preferir
-`DateTimeOffset` elimina a ambiguidade: o offset está embutido no tipo.
+`Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira
+`DateTimeOffset` para eliminar a ambiguidade: o offset está embutido no tipo.
 
 ## DateTime.Now vs DateTimeOffset.UtcNow
 
@@ -37,8 +37,8 @@ var createdAt = DateTimeOffset.UtcNow;
 
 ## DateTime vs DateTimeOffset
 
-`DateTime` perde a informação de timezone. `DateTimeOffset` carrega o offset junto ao valor —
-nenhum contexto externo necessário para interpretar o instante.
+`DateTime` perde a informação de timezone. `DateTimeOffset` carrega o offset junto ao valor,
+sem precisar de contexto externo para interpretar o instante.
 
 <details>
 <summary>❌ Bad — DateTime sem Kind perde contexto de timezone</summary>
@@ -74,8 +74,8 @@ public record OrderResponse
 
 ## DateOnly e TimeOnly
 
-`DateTime` para representar apenas uma data arrasta um componente de hora (`00:00:00`) que não
-tem significado — e pode causar bugs de timezone ao ser serializado. `DateOnly` e `TimeOnly`
+`DateTime` para representar apenas uma data arrasta um componente de hora (`00:00:00`) sem
+significado, que pode causar bugs de timezone ao ser serializado. `DateOnly` e `TimeOnly`
 (.NET 6+) expressam a intenção com precisão.
 
 <details>
@@ -117,10 +117,10 @@ public record ScheduleRequest
 
 </details>
 
-## Entity Framework — armazenar UTC
+## Entity Framework: armazenar UTC
 
 EF Core serializa `DateTime` conforme o `Kind`. Sem configuração explícita, valores `Unspecified`
-são salvos sem conversão — o que for lido do banco volta como `Unspecified` também.
+são salvos sem conversão; o que for lido do banco volta como `Unspecified` também.
 
 <details>
 <summary>❌ Bad — DateTime sem Kind, round-trip ambíguo com o banco</summary>

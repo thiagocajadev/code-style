@@ -1,16 +1,42 @@
-# Visual Density — SQL
+# Visual density: SQL
 
 Os mesmos princípios de [densidade visual](../../shared/visual-density.md) aplicados a SQL.
 
-Em SQL, as cláusulas (`SELECT`, `FROM`, `WHERE`, `JOIN`) já funcionam como separadores visuais — adicionar blank entre elas vai contra as convenções de formatadores como pgFormatter e sqlfmt. A regra não se aplica a cláusulas.
+Em SQL, as cláusulas (`SELECT`, `FROM`, `WHERE`, `JOIN`) já funcionam como separadores visuais: adicionar blank entre elas vai contra as convenções de formatadores como pgFormatter e sqlfmt. A regra não se aplica a cláusulas.
 
-**A exceção é CTE.** Cada `WITH nome AS (...)` é uma etapa nomeada — semanticamente equivalente a uma variável. Cada CTE merece uma linha em branco de separação.
+**A exceção é CTE.** Cada `WITH nome AS (...)` é uma etapa nomeada, semanticamente equivalente a uma variável. Cada CTE merece uma linha em branco de separação.
 
 ## Assinatura e corpo
 
 Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros, tipo de retorno) e corpo (lógica). Uma linha em branco entre eles deixa essa fronteira visível.
 
 Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de abertura e antes do `$$` de fechamento.
+
+<details>
+<summary>❌ Bad — T-SQL: assinatura e corpo colados, sem separação visual</summary>
+<br>
+
+```sql
+CREATE OR ALTER PROCEDURE GetFootballTeamById
+(
+  @TeamId INT
+)
+AS
+BEGIN
+  SELECT
+    Id,
+    Name,
+    ChampionshipsWon
+  FROM
+    FootballTeams
+  WHERE
+    Id = @TeamId;
+END;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
@@ -33,6 +59,39 @@ BEGIN
   WHERE
     Id = @TeamId;
 END;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — PostgreSQL: function sem linhas em branco internas, bloco opaco</summary>
+<br>
+
+```sql
+CREATE OR REPLACE FUNCTION GetFootballTeamById
+(
+  TeamId INT
+)
+RETURNS TABLE
+(
+  Id INT,
+  Name TEXT,
+  ChampionshipsWon INT
+) AS $$
+BEGIN
+  RETURN QUERY
+  SELECT
+    Id,
+    Name,
+    ChampionshipsWon
+  FROM
+    FootballTeams
+  WHERE
+    Id = TeamId;
+END;
+$$ LANGUAGE plpgsql;
 ```
 
 </details>
@@ -144,6 +203,37 @@ JOIN
 ## Etapas em procedures
 
 Procedures com múltiplas etapas (filtrar, enriquecer, agregar, inserir) seguem a mesma lógica: cada bloco lógico separado por uma linha em branco. Queries longas e distintas nunca ficam coladas.
+
+<details>
+<summary>❌ Bad — etapas coladas, sem separação entre blocos distintos</summary>
+<br>
+
+```sql
+INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
+SELECT
+  Orders.Id,
+  Orders.CustomerId,
+  Orders.TotalAmount
+FROM
+  Orders
+WHERE
+  Orders.Status = 'Active'
+  AND Orders.CreatedAt >= @StartDate
+  AND Orders.CreatedAt < @EndDate;
+SELECT
+  ActiveOrders.OrderId,
+  ActiveOrders.TotalAmount,
+  Customers.Name AS CustomerName,
+  Customers.Tier AS CustomerTier
+FROM
+  #ActiveOrders ActiveOrders
+JOIN
+  Customers ON ActiveOrders.CustomerId = Customers.Id;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — etapas separadas, fluxo da procedure legível</summary>

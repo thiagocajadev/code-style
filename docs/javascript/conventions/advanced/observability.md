@@ -1,11 +1,11 @@
 # Observability
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Veja os princípios agnósticos em [shared/observability.md](../../../shared/observability.md).
+Os princípios agnósticos estão em [shared/observability.md](../../../shared/observability.md).
 
 ## Logging estruturado
 
-`console.log` com strings é ilegível para sistemas de observabilidade. Usar Pino (ou Winston) com
+`console.log` com strings é ilegível para sistemas de observabilidade. Use Pino (ou Winston) com
 objetos estruturados: cada campo vira uma propriedade pesquisável.
 
 <details>
@@ -103,7 +103,7 @@ logger.info(authContext, "user authenticated");
 
 ## Correlation ID
 
-Sem um identificador comum, logs de uma mesma requisição são ilhas — impossível rastrear o fluxo.
+Sem um identificador comum, logs de uma mesma requisição são ilhas: impossível rastrear o fluxo.
 `AsyncLocalStorage` propaga o `correlationId` para todos os logs sem passar por parâmetro.
 
 <details>

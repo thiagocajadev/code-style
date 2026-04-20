@@ -1,13 +1,13 @@
 # Naming
 
-As convenções de nomenclatura do JavaScript — camelCase, verbos de intenção, domain-first — se
-aplicam integralmente. O TypeScript adiciona três categorias novas: interfaces, type aliases e
+As convenções de nomenclatura do JavaScript: camelCase, verbos de intenção, domain-first.
+Aplicam-se integralmente. O TypeScript adiciona três categorias novas: interfaces, type aliases e
 parâmetros genéricos.
 
 ## Prefixo I
 
-Herança de Java e C# que não tem lugar em TypeScript. O contexto já diz que é um contrato —
-o prefixo polui o nome sem adicionar informação.
+Herança de Java e C# que não tem lugar em TypeScript. O contexto já diz que é um contrato.
+O prefixo polui o nome sem adicionar informação.
 
 <details>
 <summary>❌ Bad — prefixo I em todas as interfaces</summary>
@@ -41,8 +41,27 @@ function findUser(repo: OrderRepository): User { /* ... */ }
 
 ## Sufixo de papel
 
-Quando o nome precisa expressar o papel estrutural do tipo — não o domínio — use sufixos
+Quando o nome precisa expressar o papel estrutural do tipo, não o domínio, use sufixos
 reconhecíveis: `Service`, `Repository`, `Handler`, `Config`, `Options`.
+
+<details>
+<summary>❌ Bad — nomes vagos, prefixos desnecessários e sufixos sem papel claro</summary>
+<br>
+
+```ts
+interface IUserRepository { /* ... */ }       // prefixo I desnecessário
+interface AbstractBaseHandler { /* ... */ }   // "Abstract" e "Base" não dizem o papel
+interface UserManager { /* ... */ }           // Manager não expressa contrato claro
+interface UserHelper { /* ... */ }            // Helper não diz o que faz
+
+interface IOrderService {
+  handleOrder(data: unknown): Promise<unknown>;
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — sufixo expressa papel, não detalhe técnico</summary>
@@ -68,7 +87,7 @@ interface AuthConfig {
 
 </details>
 
-## Type aliases — nomes de domínio
+## Type aliases: nomes de domínio
 
 Type aliases para primitivos que têm semântica de negócio: o tipo diz _o que é_, não _como é
 armazenado_.
@@ -101,7 +120,7 @@ function createOrder(userId: UserId, productId: ProductId, currency: Currency): 
 
 </details>
 
-## Genéricos — nomes com contexto
+## Genéricos: nomes com contexto
 
 `T` é aceitável para um único parâmetro genérico. Com dois ou mais, nomes curtos perdem o
 significado. Use `TItem`, `TKey`, `TValue`, `TResult` para expressar o papel de cada um.
@@ -132,7 +151,7 @@ function groupBy<TItem, TKey>(items: TItem[], keySelector: (item: TItem) => TKey
 
 </details>
 
-## Enums — evitar o nativo
+## Enums: evitar o nativo
 
 O `enum` nativo do TypeScript gera código JavaScript em runtime, tem comportamento de coerção
 numérica implícito e dificulta tree-shaking. Um const object com union type derivado entrega o

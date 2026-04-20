@@ -2,7 +2,7 @@
 
 ## async/await
 
-Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await` — nunca `.Result` ou `.Wait()`.
+Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
 
 <details>
 <summary>❌ Bad — I/O síncrono bloqueia a thread</summary>
@@ -48,7 +48,7 @@ public async Task SaveOrderAsync(Order order, CancellationToken ct)
 
 ## Task.WhenAll
 
-Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em operações sem dependência entre si desperdiça tempo — o tempo total vira a soma, não o máximo.
+Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em operações sem dependência entre si desperdiça tempo: o tempo total vira a soma, não o máximo.
 
 <details>
 <summary>❌ Bad — await sequencial em chamadas independentes</summary>
@@ -99,7 +99,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 ## CancellationToken
 
-`CancellationToken` é propagado em toda chamada de I/O pública. Ele permite que o chamador cancele a operação — sem ele, requisições HTTP canceladas ou timeouts não interrompem o trabalho em andamento.
+Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições HTTP canceladas ou timeouts não interrompem o trabalho em andamento.
 
 <details>
 <summary>❌ Bad — CancellationToken ignorado ou ausente</summary>
@@ -153,7 +153,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 ## Sem bloqueio síncrono
 
-`.Result`, `.Wait()` e `GetAwaiter().GetResult()` bloqueiam a thread chamante. Em aplicações ASP.NET Core, isso pode causar deadlock quando o `SynchronizationContext` está presente. Não existe caminho seguro — a única solução é async de ponta a ponta.
+`.Result`, `.Wait()` e `GetAwaiter().GetResult()` bloqueiam a thread chamante. Em aplicações ASP.NET Core, isso pode causar deadlock quando o `SynchronizationContext` está presente. Não existe caminho seguro: a única solução é async de ponta a ponta.
 
 <details>
 <summary>❌ Bad — bloqueio síncrono em contexto async</summary>

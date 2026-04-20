@@ -1,12 +1,12 @@
 # Performance
 
-Estas diretrizes se aplicam a hot paths — fluxos executados em volume ou frequência alta. Fora desse
+Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
 contexto, prefira legibilidade. Meça antes de otimizar.
 
 ## Span\<T\>
 
 Operações em strings com `Split`, `Substring` e `IndexOf` alocam novos objetos a cada chamada. Em
-hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem nenhuma alocação —
+hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem nenhuma alocação:
 mesma posição de memória, janela diferente.
 
 <details>
@@ -46,8 +46,7 @@ public string ExtractProductCode(string sku)
 </details>
 <br>
 
-`Span<T>` também funciona sobre arrays. Quando o método recebe `T[]` e itera em alta frequência,
-`ReadOnlySpan<T>` elimina a indireção do enumerador.
+`Span<T>` também funciona sobre arrays. Quando o método recebe `T[]` e itera em alta frequência, `ReadOnlySpan<T>` elimina a indireção do enumerador.
 
 <details>
 <summary>❌ Bad — foreach sobre array em hot path</summary>
@@ -93,7 +92,7 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 
 ## StringBuilder
 
-Concatenação com `+` ou interpolação dentro de um loop aloca uma nova string a cada iteração — cada
+Concatenação com `+` ou interpolação dentro de um loop aloca uma nova string a cada iteração: cada
 string é imutável em .NET. Para construir strings dinamicamente, `StringBuilder` reutiliza um buffer
 interno e aloca uma vez no final.
 
@@ -141,7 +140,7 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 ## ValueTask
 
 `Task<T>` aloca um objeto no heap a cada chamada, mesmo quando o resultado já está disponível
-sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos — resultado em cache, dado
+sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos: resultado em cache, dado
 já computado. Indicado para métodos de alta frequência: repositórios, caches, validators.
 
 <details>
@@ -183,12 +182,11 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 </details>
 <br>
 
-`ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task`
-tem menos overhead de leitura e não oferece risco de double-await.
+`ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task` tem menos overhead de leitura e não oferece risco de double-await.
 
-## ID — Guid v4 vs Guid v7
+## ID: Guid v4 vs Guid v7
 
-`Guid.NewGuid()` gera UUID v4 — aleatório. Inserções aleatórias fragmentam o índice primário
+`Guid.NewGuid()` gera UUID v4: aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sempre próximo ao fim
 da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 

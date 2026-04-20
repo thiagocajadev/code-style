@@ -5,7 +5,7 @@ existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de s
 
 ## If e else
 
-O ponto de partida. Para dois caminhos, `if/else` funciona, mas o `else` após um `return` é ruído:
+O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:
 o fluxo já saiu.
 
 <details>
@@ -89,7 +89,7 @@ function processOrder(order) {
 
 ## Coerção implícita
 
-Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente, tornando a comparação
+Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente e torna a comparação
 imprevisível.
 
 <details>
@@ -282,8 +282,7 @@ function processPaymentEvent(event) {
 
 Lookup table com plain object tem limitações: chaves são sempre coercidas para string e não há
 métodos nativos para tamanho ou verificação segura. `Map` é a estrutura certa quando a chave não é
-string, quando os dados são dinâmicos, ou quando você precisa de `has`, `delete` e `size`
-nativamente.
+string, quando os dados são dinâmicos, ou quando você precisa de `has`, `delete` e `size` nativos.
 
 <details>
 <summary>❌ Bad — plain object perde o tipo da chave</summary>
@@ -319,12 +318,12 @@ userCache.size;
 
 ---
 
-_As ferramentas acima resolvem **decisão** — qual caminho seguir. As abaixo resolvem **iteração** —
+_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem **iteração**:
 quantas vezes percorrer._
 
 ## forEach
 
-Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarativo e suficiente — sem
+Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarativo e suficiente: sem
 índice, sem variável de controle.
 
 <details>
@@ -358,7 +357,7 @@ orders.forEach((order) => {
 
 ## for...of
 
-Quando o laço precisa de saída antecipada ou iteração com valores diretos, `for...of` é a escolha —
+Quando o laço precisa de saída antecipada ou iteração com valores diretos, `for...of` é a escolha:
 sem índice implícito, com suporte a `break` e `continue`, compatível com qualquer iterável.
 
 <details>
@@ -394,6 +393,22 @@ for (const price of prices) {
 <br>
 
 <details>
+<summary>❌ Bad — iteração de objeto com for...of sem Object.entries</summary>
+<br>
+
+```js
+const config = { host: "localhost", port: 5432, database: "app" };
+
+for (const key of config) {
+  console.log(key); // TypeError: config is not iterable
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — Object.entries() para objetos</summary>
 <br>
 
@@ -410,7 +425,7 @@ for (const [key, value] of Object.entries(config)) {
 ## Circuit break
 
 Sair cedo de um laço é uma decisão de fluxo. `for...of` com `break` ou `return` é explícito. Para
-buscas e verificações, os métodos de array fazem circuit break internamente — param no primeiro
+buscas e verificações, os métodos de array fazem circuit break internamente: param no primeiro
 match, sem percorrer o resto.
 
 <details>
@@ -446,6 +461,26 @@ function findFirstExpiredProduct(products) {
   }
 
   return null;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — forEach percorre tudo mesmo quando o método declarativo existe</summary>
+<br>
+
+```js
+function hasExpiredProduct(products) {
+  let found = false;
+
+  products.forEach((product) => {
+    if (product.isExpired) found = true;
+  });
+
+  return found;
 }
 ```
 
@@ -511,11 +546,27 @@ while (attempt < maxAttempts) {
 <br>
 
 <details>
+<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
+
+```js
+// verifica antes de executar — se a fila já estiver vazia, nunca executa
+while (taskQueue.size > 0) {
+  const task = taskQueue.dequeue();
+  executeTask(task);
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — do...while quando a primeira execução é garantida</summary>
 <br>
 
 ```js
-// drena a fila — processa pelo menos um item antes de verificar
+// drena a fila: processa pelo menos um item antes de verificar
 do {
   const task = taskQueue.dequeue();
   executeTask(task);

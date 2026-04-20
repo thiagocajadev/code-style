@@ -1,11 +1,11 @@
 # Security
 
 > [!NOTE]
-> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo são referências conceituais — podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio por trás de cada prática.
+> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio por trás de cada prática.
 
 ## Nunca hardcode segredos
 
-Segredos — connection strings, API keys, JWT secrets, senhas — nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
+Segredos (connection strings, API keys, JWT secrets, senhas) nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
 
 <details>
 <summary>❌ Bad — segredo hardcoded no código</summary>
@@ -70,7 +70,7 @@ public static class DatabaseExtensions
 
 ## O que vai em appsettings.json
 
-`appsettings.json` é commitado no repositório — só recebe configuração não sensível. Segredos entram via variáveis de ambiente ou secrets manager.
+`appsettings.json` é commitado no repositório: só recebe configuração não sensível. Segredos entram via variáveis de ambiente ou secrets manager.
 
 | Pode commitar | Nunca commitar |
 | --- | --- |
@@ -102,7 +102,7 @@ public static class DatabaseExtensions
 
 </details>
 
-## dotnet user-secrets — desenvolvimento
+## dotnet user-secrets: desenvolvimento
 
 `user-secrets` armazena segredos fora do diretório do projeto, sem risco de commit acidental. É o substituto local de variáveis de ambiente para desenvolvimento.
 
@@ -118,11 +118,11 @@ dotnet user-secrets set "Auth:Secret" "dev-only-secret-never-use-in-prod"
 dotnet user-secrets list
 ```
 
-`user-secrets` só funciona quando `ASPNETCORE_ENVIRONMENT=Development`. Em staging e produção, não existe — a configuração vem de variáveis de ambiente ou secrets manager.
+`user-secrets` só funciona quando `ASPNETCORE_ENVIRONMENT=Development`. Em staging e produção não existe: a configuração vem de variáveis de ambiente ou secrets manager.
 
-## Variáveis de ambiente — produção
+## Variáveis de ambiente: produção
 
-Variáveis de ambiente sobrescrevem `appsettings.json`. A convenção do .NET usa `__` (duplo underscore) como separador de seção — equivale ao `:` do JSON.
+Variáveis de ambiente sobrescrevem `appsettings.json`. A convenção do .NET usa `__` (duplo underscore) como separador de seção, equivalente ao `:` do JSON.
 
 ```bash
 # connection string
@@ -132,6 +132,36 @@ ConnectionStrings__Default="Server=prod-db;Database=App;User=sa;Password=..."
 Auth__Secret="prod-signing-secret"
 Auth__Authority="https://login.microsoftonline.com/tenant-id"
 ```
+
+<details>
+<summary>❌ Bad — secret lido diretamente via IConfiguration, sem tipo</summary>
+<br>
+
+```csharp
+// Auth/AuthExtensions.cs — chaves soltas, sem contrato, null não detectado em compile time
+public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
+{
+    var authority = builder.Configuration["Auth:Authority"];
+    var audience  = builder.Configuration["Auth:Audience"];
+    var secret    = builder.Configuration["Auth:Secret"]; // string? — null em produção passa despercebido
+
+    builder.Services
+        .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.Authority = authority;
+            options.Audience  = audience;
+            options.TokenValidationParameters.IssuerSigningKey =
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret!));
+        });
+
+    return builder;
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — Options pattern resolve o secret do ambiente sem expô-lo</summary>
@@ -169,7 +199,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 
 ## Cadeia de configuração
 
-O .NET resolve configuração em camadas — cada camada sobrescreve a anterior. A ordem importa.
+O .NET resolve configuração em camadas: cada camada sobrescreve a anterior. A ordem importa.
 
 ```
 appsettings.json                 → valores base (não sensíveis, commitados)
@@ -179,12 +209,12 @@ variáveis de ambiente            → staging e produção (injetadas pelo host)
 secrets manager (Key Vault etc.) → produção, segredos gerenciados externamente
 ```
 
-Nunca inverta essa ordem. Um valor em `appsettings.json` nunca deve sobrescrever uma variável de ambiente — isso quebraria o modelo de deploy.
+Nunca inverta essa ordem. Um valor em `appsettings.json` nunca deve sobrescrever uma variável de ambiente: isso quebraria o modelo de deploy.
 
-## JWT — leitura manual vs middleware
+## JWT: leitura manual vs middleware
 
-`ReadJwtToken()` lê o token sem validar assinatura nem expiração — qualquer token forjado ou expirado
-passa. O middleware `AddJwtBearer` faz a validação completa automaticamente: não há motivo para
+`ReadJwtToken()` lê o token sem validar assinatura nem expiração: qualquer token forjado ou expirado
+passa. O middleware `AddJwtBearer` faz a validação completa automaticamente; não há motivo para
 leitura manual.
 
 <details>
@@ -232,7 +262,7 @@ app.MapGet("/orders", async (IOrderRepository repo, CancellationToken ct) =>
 ## Autorização centralizada
 
 Checar claims manualmente em cada endpoint duplica lógica e cria brechas quando um handler esquece
-a verificação. Policies centralizam as regras — `RequireAuthorization()` garante cobertura uniforme.
+a verificação. Policies centralizam as regras: `RequireAuthorization()` garante cobertura uniforme.
 
 <details>
 <summary>❌ Bad — verificação de role duplicada inline em cada endpoint</summary>
@@ -320,7 +350,7 @@ builder.Services.AddSession(options =>
 
 </details>
 
-## .gitignore — linha de defesa local
+## .gitignore: linha de defesa local
 
 Mesmo com a cadeia correta, uma linha no `.gitignore` evita acidentes:
 

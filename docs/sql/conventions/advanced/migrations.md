@@ -31,9 +31,9 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 </details>
 
-## Somente para frente — forward only
+## Somente para frente: forward only
 
-Nunca editar uma migration já executada. Se um ajuste for necessário, criar uma nova migration.
+Nunca editar uma migration já executada. Para ajustes, criar uma nova migration.
 
 <details>
 <summary>❌ Bad — editar migration existente para corrigir schema</summary>

@@ -1,4 +1,4 @@
-# Visual Density — C#
+# Visual Density: C#
 
 Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com exemplos em C#/.NET.
 
@@ -54,7 +54,7 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 
 ## `return` sempre separado
 
-O `return` encerra um método — quando há mais de um passo antes dele, ele pertence a um parágrafo próprio.
+O `return` encerra um método. Quando há mais de um passo antes dele, ele pertence a um parágrafo próprio.
 
 <details>
 <summary>❌ Bad — return colado ao último passo</summary>
@@ -128,9 +128,9 @@ var invoice = BuildInvoice(order);
 
 </details>
 
-## Testes — Assert como fase própria
+## Testes: Assert como fase própria
 
-Em métodos de teste, o `Assert` é uma fase distinta — a linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
+Em métodos de teste, o `Assert` é uma fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
 
 <details>
 <summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
@@ -171,7 +171,7 @@ public void AppliesTenPercentDiscountToPrice()
 
 ## Strings longas
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado — o template final fica legível e os pedaços ganham semântica.
+Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado: o template final fica legível e os pedaços ganham semântica.
 
 <details>
 <summary>❌ Bad — interpolação densa inline, sem semântica nas partes</summary>

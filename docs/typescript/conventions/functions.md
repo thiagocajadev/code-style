@@ -1,13 +1,13 @@
 # Functions
 
-Os princípios de funções do JavaScript — responsabilidade única, top-down, sem lógica no retorno —
-se aplicam aqui sem exceção. O TypeScript adiciona: anotar o return type de funções exportadas e
+Os princípios de funções do JavaScript: responsabilidade única, top-down, sem lógica no retorno.
+Aplicam-se aqui sem exceção. O TypeScript adiciona: anotar o return type de funções exportadas e
 tipar parâmetros de forma que o contrato se sustente sem comentários.
 
 ## Return type
 
-Funções exportadas sempre têm return type explícito. O compilador já infere — a anotação é para o
-leitor, e para garantir que a assinatura pública não mude silenciosamente.
+Funções exportadas sempre têm return type explícito. O compilador já infere. A anotação é para o
+leitor e para garantir que a assinatura pública não mude silenciosamente.
 
 <details>
 <summary>❌ Bad — return type implícito em função exportada</summary>
@@ -49,10 +49,10 @@ export function calculateInvoiceTotal(items: LineItem[]): number {
 
 </details>
 
-## Parâmetros tipados — interface para objetos
+## Parâmetros tipados: interface para objetos
 
 Quando a função recebe um objeto de configuração ou dados de domínio, o tipo vai em uma interface
-separada — não inline no parâmetro. Segue a mesma regra do [estilo vertical](../../javascript/conventions/functions.md#estilo-vertical--parâmetros):
+separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](../../javascript/conventions/functions.md#estilo-vertical--parâmetros):
 4+ campos usam objeto; o objeto usa interface.
 
 <details>
@@ -97,6 +97,28 @@ Interfaces de entrada e saída de uma operação usam os sufixos `Input` e `Outp
 Isso os distingue dos tipos de domínio puros como `User` e `Invoice`.
 
 <details>
+<summary>❌ Bad — primitivos soltos sem interface, contrato sem nome</summary>
+<br>
+
+```ts
+async function createUser(
+  name: string,
+  email: string,
+  password: string
+): Promise<{ user: User; token: string }> {
+  const user = await persistUser({ name, email, password });
+  const token = generateToken(user.id);
+  const result = { user, token };
+
+  return result;
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
 <br>
 
@@ -123,7 +145,7 @@ async function createUser(input: CreateUserInput): Promise<CreateUserResult> {
 
 </details>
 
-## Overloads — quando a assinatura varia com o tipo
+## Overloads: quando a assinatura varia com o tipo
 
 Overloads expressam explicitamente que a função retorna tipos diferentes dependendo do parâmetro.
 Use apenas quando a variação é real e precisa ser capturada pelo compilador.
@@ -163,7 +185,7 @@ const asString = parse(42); // string — compilador sabe
 
 </details>
 
-## Genéricos em funções — só quando preserva o tipo do chamador
+## Genéricos em funções: só quando preserva o tipo do chamador
 
 Genérico em função é justificado quando o tipo do retorno depende do tipo do argumento. Sem essa
 relação, é só complexidade.

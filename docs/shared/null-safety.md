@@ -1,11 +1,11 @@
 # Null Safety
 
-> "I call it my billion-dollar mistake." — Tony Hoare, inventor do null, 2009
+> "I call it my billion-dollar mistake." Tony Hoare, inventor do null, 2009
 
-Null não é errado — é mal usado. O sintoma mais comum é `?.` espalhado em todo o código como
+Null não é errado: é mal usado. O sintoma mais comum é `?.` espalhado em todo o código como
 defesa preventiva. Isso não é cuidado: é sinal de que os **contratos de entrada não estão fechados**.
 
-A pergunta certa não é _"devo checar null aqui?"_ — é _"esse null deveria chegar até aqui?"_
+A pergunta certa não é _"devo checar null aqui?"_, mas _"esse null deveria chegar até aqui?"_
 
 ## A regra: checa na fronteira, confia no interior
 
@@ -26,7 +26,7 @@ O sistema tem dois territórios com regras diferentes:
   [ DOMÍNIO ]  ← opera com valores garantidos, sem ?.
 ```
 
-Null que chega no interior é um **bug de fronteira** — não um caso a tratar com `?.`.
+Null que chega no interior é um **bug de fronteira**, não um caso a tratar com `?.`.
 
 ## O que é fronteira
 
@@ -39,7 +39,7 @@ Null que chega no interior é um **bug de fronteira** — não um caso a tratar 
 
 ## O que não é fronteira
 
-Funções internas, serviços de domínio, cálculos — tudo que recebe dados **que já passaram pela
+Funções internas, serviços de domínio, cálculos: tudo que recebe dados **que já passaram pela
 fronteira**. Essas funções não checam null: elas confiam que quem chamou já garantiu o contrato.
 
 <details>
@@ -72,7 +72,7 @@ function calculateTotal(order: Order): number {
 
 </details>
 
-A diferença não é otimismo — é **responsabilidade bem definida**. Quem chama `calculateTotal` é
+A diferença não é otimismo: é **responsabilidade bem definida**. Quem chama `calculateTotal` é
 responsável por passar um `Order` válido. Se não passar, é um bug de quem chamou.
 
 ## Como fechar a fronteira
@@ -140,17 +140,17 @@ public class Order
 ## Coleções: nunca null, sempre vazia
 
 Listas têm um estado neutro natural: `[]`. Retornar null para "sem resultados" força defesa em
-cascata em cada caller — sem benefício nenhum.
+cascata em cada caller, sem benefício nenhum.
 
 | Função | Retorno correto | Por quê |
 | --- | --- | --- |
-| `findOrdersByUser(userId)` | `Order[]` — `[]` se não há pedidos | Ausência e vazio são equivalentes para quem itera |
-| `findUserById(id)` | `User \| null` — `null` se não existe | Ausência de entidade é informação relevante |
+| `findOrdersByUser(userId)` | `Order[]`: `[]` se não há pedidos | Ausência e vazio são equivalentes para quem itera |
+| `findUserById(id)` | `User \| null`: `null` se não existe | Ausência de entidade é informação relevante |
 | Propriedade de lista em classe | inicializada como `[]` | Nunca precisa de `?.` para iterar |
 
 ## Onde usar `?.` e `??`
 
-Esses operadores têm lugar: campos **opcionais por design no domínio** — não como defesa contra
+Esses operadores têm lugar: campos **opcionais por design no domínio**, não como defesa contra
 contratos mal fechados.
 
 <details>
@@ -178,17 +178,17 @@ const city = user.address?.city ?? "N/A";       // endereço pode não existir
 </details>
 
 Se você precisa de `?.` para acessar um campo que "sempre deveria existir", o problema está no
-contrato — não na checagem.
+contrato, não na checagem.
 
-## Schema evolution — campo novo em tabela existente
+## Schema evolution: campo novo em tabela existente
 
 Quando uma regra de negócio muda e um campo novo entra no banco, os registros antigos ficam com
-null por compatibilidade. Esse null não deve vazar para o domínio — o repositório é a fronteira
+null por compatibilidade. Esse null não deve vazar para o domínio: o repositório é a fronteira
 que absorve esse caso.
 
 Três abordagens em ordem de preferência:
 
-**1. Migration com DEFAULT — null nunca existe no banco**
+**1. Migration com DEFAULT: null nunca existe no banco**
 
 A mais limpa. A migration preenche os registros antigos e garante valor para os novos. O domínio
 nunca vê null.
@@ -198,7 +198,7 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 -- registros existentes recebem 'normal' automaticamente
 ```
 
-**2. Normalização no repositório — null morre na fronteira**
+**2. Normalização no repositório: null morre na fronteira**
 
 Quando não é possível alterar o banco (legado, multi-tenant, sem controle da migration).
 
@@ -222,10 +222,10 @@ modelBuilder.Entity<Order>()
     .HasDefaultValue("normal");
 ```
 
-**3. Campo opcional com semântica explícita — quando a ausência tem significado**
+**3. Campo opcional com semântica explícita: quando a ausência tem significado**
 
 Às vezes null *quer dizer algo*: "esse pedido foi criado antes dessa feature existir". Nesse caso,
-o campo é opcional por design — e o domínio tem uma função central que resolve a ausência.
+o campo é opcional por design, e o domínio tem uma função central que resolve a ausência.
 
 ```ts
 interface Order {
@@ -244,9 +244,9 @@ function getEffectivePriority(order: Order): string {
 | Campo sem significado em registros antigos | Migration com `DEFAULT` |
 | Banco legado, sem controle da migration | Normaliza no repositório |
 | Ausência tem significado de negócio | Campo opcional, função de resolução centralizada |
-| `?.` espalhado "porque pode ser null" | Problema de fronteira — fechar em um dos casos acima |
+| `?.` espalhado "porque pode ser null" | Problema de fronteira: fechar em um dos casos acima |
 
 ## Implementação por linguagem
 
-- [TypeScript](../typescript/conventions/advanced/null-safety.md) — `strictNullChecks`, `noUncheckedIndexedAccess`, `??`, `?.`
-- [C#](../csharp/conventions/advanced/null-safety.md) — nullable reference types, `required`, `??=`, `Array.Empty<T>()`
+- [TypeScript](../typescript/conventions/advanced/null-safety.md): `strictNullChecks`, `noUncheckedIndexedAccess`, `??`, `?.`
+- [C#](../csharp/conventions/advanced/null-safety.md): nullable reference types, `required`, `??=`, `Array.Empty<T>()`

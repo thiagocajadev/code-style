@@ -135,7 +135,7 @@ Deploy (implantação) e release (lançamento) são eventos independentes.
 
 - **Deploy**: código vai para produção automaticamente após merge na `main` com pipeline (esteira)
   verde
-- **Release**: funcionalidade fica visível ao usuário — controlada por feature flag (liga/desliga)
+- **Release**: funcionalidade fica visível ao usuário, controlada por feature flag (liga/desliga)
 
 Novas features (funcionalidades) sobem desativadas. Ativação é gradual: por ambiente, percentual ou
 grupo específico.
@@ -144,25 +144,25 @@ grupo específico.
 
 | Situação                  | Ação                                              |
 | ------------------------- | ------------------------------------------------- |
-| Bug em produção           | Abrir PR na `main` com o fix — **fix forward**    |
-| Feature causando problema | Desativar a feature flag — sem rollback de código |
-| Sistema indisponível      | Rollback como exceção crítica — último recurso    |
+| Bug em produção           | Abrir PR na `main` com o fix: **fix forward**    |
+| Feature causando problema | Desativar a feature flag: sem rollback de código |
+| Sistema indisponível      | Rollback como exceção crítica: último recurso    |
 
 A `main` representa sempre o estado mais recente e funcional do sistema. Rollback de código viola
 esse invariante e só é justificável quando o sistema está indisponível e o fix forward é inviável.
 
 ## Pipeline de Desenvolvimento
 
-O mesmo código é promovido de ambiente em ambiente — sem rebuilds, sem branches por ambiente.
+O mesmo código é promovido de ambiente em ambiente, sem rebuilds, sem branches por ambiente.
 
 <img src="../../assets/dev-pipeline-linear-flow.svg" alt="dev-pipeline-linear-flow" width="540" />
 
 | Ambiente  | Responsabilidade                                                        |
 | --------- | ----------------------------------------------------------------------- |
-| `dev`     | Primeira validação após merge — comportamento básico, sem regressão     |
-| `qa`      | Validação funcional completa — cenários reais, integrações e edge cases |
-| `staging` | Ambiente espelho de prod — última barreira antes da entrega real        |
-| `prod`    | Entrega final — observabilidade ativa nos primeiros minutos após deploy |
+| `dev`     | Primeira validação após merge: comportamento básico, sem regressão     |
+| `qa`      | Validação funcional completa: cenários reais, integrações e edge cases |
+| `staging` | Ambiente espelho de prod: última barreira antes da entrega real        |
+| `prod`    | Entrega final: observabilidade ativa nos primeiros minutos após deploy |
 
 ### Pós-deploy
 

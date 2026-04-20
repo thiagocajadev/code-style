@@ -1,7 +1,7 @@
 # jQuery
 
 > **Contexto de uso:** jQuery é uma ferramenta de **manutenção de legado**. Para código novo, prefira
-> JavaScript vanilla — os equivalentes nativos cobrem todos os casos de uso comuns sem dependência
+> JavaScript vanilla: os equivalentes nativos cobrem todos os casos de uso comuns sem dependência
 > adicional. Veja [JavaScript Vanilla](javascript-vanilla.md).
 
 **Versões de referência**
@@ -9,7 +9,7 @@
 | Versão  | Status              | Indicação                                      |
 | ------- | ------------------- | ---------------------------------------------- |
 | 4.0.0   | Mais recente (2026) | Projetos novos que ainda exigem jQuery         |
-| 3.7.1   | LTS de fato         | Projetos legados — versão mais comum em produção |
+| 3.7.1   | LTS de fato         | Projetos legados: versão mais comum em produção |
 
 jQuery 4.x remove suporte a IE, adota ES Modules e tem footprint menor (~19.5KB gzip). Projetos
 legados em 3.x devem permanecer nela; migração para 4.x exige revisão das APIs removidas.

@@ -2,7 +2,7 @@
 
 ## Orquestrador no topo
 
-O método de entrada declara o fluxo de alto nível — o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
+O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
 <summary>❌ Bad — implementação misturada com orquestração</summary>
@@ -65,7 +65,7 @@ private static Invoice BuildInvoice(Order order) { ... }
 
 </details>
 
-## SLA — orquestrador ou implementação
+## SLA: orquestrador ou implementação
 
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
@@ -243,7 +243,7 @@ public string BuildShippingLabel(Order order)
 
 ## Primary constructors
 
-C# 12 introduziu primary constructors. Use para injeção de dependência — elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
+C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
 
 <details>
 <summary>❌ Bad — boilerplate de construtor tradicional</summary>
@@ -296,7 +296,7 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 
 ## Baixa densidade visual
 
-Linhas relacionadas ficam juntas — sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
+Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
 <summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>

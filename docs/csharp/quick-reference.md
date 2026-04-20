@@ -32,10 +32,10 @@
 `Handle` (use `Process`, `Validate`, `Submit`), `Do`, `Run`, `Execute`, `Perform` sem sujeito de domínio, `Get` para cálculos (use `Calculate`, `Compute`).
 
 **Substantivos proibidos:**
-`Data`, `Info`, `Obj`, `Item`, `Thing`, `Result` como nome final — use o nome do domínio.
+`Data`, `Info`, `Obj`, `Item`, `Thing`, `Result` como nome final: use o nome do domínio.
 
 **Abreviações proibidas:**
-`svc`, `mgr`, `ctrl`, `repo` como campo — use o nome completo (`_repository`, `_notifier`). Parâmetros: nunca `req`→`request`, `res`→`response`, `ctx`→`context`.
+`svc`, `mgr`, `ctrl`, `repo` como campo: use o nome completo (`_repository`, `_notifier`). Parâmetros: nunca `req`→`request`, `res`→`response`, `ctx`→`context`.
 
 ## Tipos e contratos
 

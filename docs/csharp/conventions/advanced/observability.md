@@ -5,7 +5,7 @@ Veja os princípios agnósticos em [shared/observability.md](../../../shared/obs
 
 ## Logging estruturado
 
-Interpolação de string em `ILogger` destrói a estrutura — o valor vira texto, não campo. Message
+Interpolação de string em `ILogger` destrói a estrutura: o valor vira texto, não campo. Message
 templates preservam cada argumento como propriedade estruturada no sink (Serilog, Application
 Insights, etc.).
 
@@ -98,7 +98,7 @@ _logger.LogInformation("Token issued for {UserId}", user.Id);
 
 ## Correlation ID
 
-Sem um identificador comum, logs de uma mesma requisição são ilhas — impossível rastrear o fluxo.
+Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear o fluxo se torna inviável.
 Um middleware injeta o `correlationId` no `LogContext` do Serilog, enriquecendo todos os logs da
 requisição automaticamente.
 

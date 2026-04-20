@@ -1,13 +1,13 @@
-# Null Safety
+# Null safety
 
-NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência de valor — e se comporta
-de forma única: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
+NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
+único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
 
 > Conceito geral: [Null Safety](../../../../shared/null-safety.md)
 
-## = NULL nunca funciona
+## `= NULL` nunca funciona
 
-A armadilha mais comum. `= NULL` sempre retorna NULL — a condição nunca é verdadeira. Use
+A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verdadeira. Use
 `IS NULL` e `IS NOT NULL`.
 
 <details>
@@ -50,10 +50,36 @@ WHERE status = 'pending'
 
 </details>
 
-## COALESCE — primeiro valor não-nulo
+## COALESCE: primeiro valor não-nulo
 
 `COALESCE` retorna o primeiro argumento não-nulo. Substitui `CASE WHEN x IS NULL THEN ...`.
 Indispensável para fallbacks e para tornar cálculos seguros.
+
+<details>
+<summary>❌ Bad — CASE WHEN para fallback: verboso e difícil de encadear</summary>
+<br>
+
+```sql
+-- fallback com CASE WHEN: repetitivo para cada nível
+SELECT
+  user_id,
+  CASE
+    WHEN nickname IS NOT NULL THEN nickname
+    WHEN first_name IS NOT NULL THEN first_name
+    ELSE 'Anonymous'
+  END AS display_name
+FROM users;
+
+-- cálculo sem proteção: NULL discount = NULL total
+SELECT
+  order_id,
+  discount + base_amount AS total   -- NULL se discount for NULL
+FROM orders;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — fallback e cálculo null-safe</summary>
@@ -81,10 +107,38 @@ FROM products;
 
 </details>
 
-## NULLIF — converter valor em NULL
+## NULLIF: converter valor em NULL
 
 `NULLIF(a, b)` retorna NULL se `a = b`, senão retorna `a`. Resolve dois casos comuns: divisão
 por zero e tratar string vazia como NULL.
+
+<details>
+<summary>❌ Bad — CASE WHEN para divisão segura e normalização: mais verboso</summary>
+<br>
+
+```sql
+-- divisão por zero com CASE
+SELECT
+  order_id,
+  CASE
+    WHEN quantity = 0 THEN NULL
+    ELSE amount / quantity
+  END AS unit_price
+FROM orders;
+
+-- string vazia tratada manualmente
+SELECT
+  user_id,
+  CASE
+    WHEN TRIM(phone_number) = '' THEN NULL
+    ELSE TRIM(phone_number)
+  END AS phone
+FROM users;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — divisão segura e normalização de string vazia</summary>
@@ -106,10 +160,10 @@ FROM users;
 
 </details>
 
-## NOT NULL + DEFAULT — fechar null no schema
+## NOT NULL + DEFAULT: fechar null no schema
 
 A melhor defesa contra null é não deixá-lo entrar. `NOT NULL` e `DEFAULT` juntos garantem que
-a coluna sempre tem valor — sem precisar de `COALESCE` em cada query.
+a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 
 <details>
 <summary>❌ Bad — coluna nullable sem default obriga COALESCE em todo lugar</summary>
@@ -155,8 +209,32 @@ SELECT order_id, status, priority FROM orders;
 
 ## NULL em agregações
 
-`SUM`, `AVG`, `MIN` e `MAX` ignoram NULL — como se a linha não existisse para o cálculo.
+`SUM`, `AVG`, `MIN` e `MAX` ignoram NULL como se a linha não existisse para o cálculo.
 `COUNT(coluna)` ignora NULL; `COUNT(*)` conta todas as linhas.
+
+<details>
+<summary>❌ Bad — assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
+<br>
+
+```sql
+-- COUNT(*) conta nulos — o resultado pode enganar
+SELECT
+  status,
+  COUNT(*) AS assigned_orders   -- inclui linhas onde assigned_to IS NULL
+FROM orders
+GROUP BY status;
+
+-- SUM pode retornar NULL quando não há linhas no grupo
+SELECT
+  team_id,
+  SUM(salary)  AS total_salary  -- retorna NULL se não houver funcionários
+FROM employees
+GROUP BY team_id;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — comportamento de NULL em agregações</summary>
@@ -193,7 +271,7 @@ GROUP BY team_id;
 
 ## NULL em JOIN
 
-NULL nunca iguala NULL em condições de JOIN. Chaves estrangeiras devem ser `NOT NULL` — evita
+NULL nunca iguala NULL em condições de JOIN. Chaves estrangeiras devem ser `NOT NULL` para evitar
 linhas fantasmas e comportamento inesperado.
 
 <details>
@@ -236,10 +314,10 @@ INNER JOIN customers c ON o.customer_id = c.id;
 
 </details>
 
-## NOT IN com subquery — armadilha de NULL
+## NOT IN com subquery: armadilha de NULL
 
-Se a subquery retornar qualquer NULL, `NOT IN` retorna vazio — comportamento silencioso que não
-gera erro. Sempre filtre NULL da subquery ou use `NOT EXISTS`.
+Se a subquery retornar qualquer NULL, `NOT IN` retorna vazio: comportamento silencioso que não
+gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
 
 <details>
 <summary>❌ Bad — NOT IN retorna vazio se a subquery contiver NULL</summary>
@@ -282,8 +360,27 @@ WHERE NOT EXISTS (
 
 ## NULL em UNIQUE
 
-Múltiplos NULL são permitidos em colunas `UNIQUE` — NULL não é igual a NULL. Use índice filtrado
+Múltiplos NULL são permitidos em colunas `UNIQUE` porque NULL não é igual a NULL. Use índice filtrado
 quando quiser "único entre os preenchidos".
+
+<details>
+<summary>❌ Bad — índice UNIQUE padrão bloqueia múltiplos NULL</summary>
+<br>
+
+```sql
+-- constraint UNIQUE normal: apenas um NULL permitido na coluna
+-- segundo INSERT com phone NULL vai falhar ou ser aceito dependendo do banco
+CREATE TABLE users (
+  user_id INT PRIMARY KEY,
+  email   VARCHAR(255) UNIQUE NOT NULL,
+  phone   VARCHAR(20)  UNIQUE          -- SQL Server: aceita múltiplos NULL; PostgreSQL: aceita múltiplos NULL
+  -- mas a intenção de "único quando preenchido" não está declarada explicitamente
+);
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — índice filtrado para unicidade apenas em valores preenchidos</summary>
@@ -352,7 +449,28 @@ WHERE (new_status != old_status)
 
 ## NULL em ORDER BY
 
-NULL ocupa uma posição diferente dependendo do banco. Controle explícito evita surpresas.
+NULL ocupa uma posição diferente dependendo do banco. Controle explícito da posição evita surpresas.
+
+<details>
+<summary>❌ Bad — ORDER BY sem controle de NULL: posição varia por banco</summary>
+<br>
+
+```sql
+-- PostgreSQL: NULL vai para o fim em ASC (NULLS LAST implícito)
+-- SQL Server: NULL vai para o início em ASC
+-- resultado diferente no mesmo código
+SELECT *
+FROM orders
+ORDER BY due_date ASC;
+
+SELECT *
+FROM orders
+ORDER BY priority DESC;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — controle explícito da posição de NULL na ordenação</summary>
@@ -378,10 +496,24 @@ ORDER BY
 
 </details>
 
-## Schema evolution — adicionar coluna em tabela existente
+## Schema evolution: adicionar coluna em tabela existente
 
 Ver [Null Safety — Schema Evolution](../../../../shared/null-safety.md#schema-evolution--campo-novo-em-tabela-existente)
 para a estratégia completa. O padrão SQL:
+
+<details>
+<summary>❌ Bad — NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>
+<br>
+
+```sql
+-- falha se a tabela já tiver registros: registros existentes não têm valor para a nova coluna
+ALTER TABLE orders
+  ADD COLUMN priority VARCHAR(20) NOT NULL;
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — DEFAULT garante que registros antigos nunca ficam NULL</summary>

@@ -70,7 +70,7 @@ while (attempt < MAX_RETRIES) {
 
 ## Mutação direta de objetos
 
-Objetos são passados por referência. Alterar um parâmetro muda o estado do chamador — um efeito
+Objetos são passados por referência. Alterar um parâmetro muda o estado do chamador: um efeito
 colateral invisível e difícil de rastrear. Prefira retornar um novo objeto com as propriedades
 desejadas.
 
@@ -109,7 +109,7 @@ function applyDiscount(order) {
 
 ## Evitar valores mágicos
 
-Números e strings soltos no código não dizem nada. Constantes nomeadas revelam a intenção.
+Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
 <summary>❌ Bad — o que significa 18? e 86400000?</summary>

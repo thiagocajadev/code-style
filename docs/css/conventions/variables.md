@@ -1,7 +1,7 @@
 # Variables
 
-Custom properties são o mecanismo nativo do CSS para design tokens. Nomes semânticos — que
-descrevem o **papel** do valor, não a aparência — permitem mudar o design sem caçar ocorrências
+Custom properties são o mecanismo nativo do CSS para design tokens. Nomes semânticos que
+descrevem o **papel** do valor, não a aparência, permitem mudar o design sem caçar ocorrências
 espalhadas pelo código.
 
 ## Tokens semânticos
