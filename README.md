@@ -126,6 +126,10 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Null Safety](docs/shared/null-safety.md)       | Segurança com null/undefined — princípios agnósticos de linguagem           |
 | [Security](docs/shared/security.md)             | Segredos, configuração em camadas, autorização e blindagem de cookies       |
 
+### Changelog
+
+Ver [CHANGELOG.md](CHANGELOG.md) para o histórico de versões e releases.
+
 ### Referências
 
 **Princípios**  
