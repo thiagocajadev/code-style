@@ -230,16 +230,15 @@ async function findProductById(id) {
 
 ```js
 async function findProductById(id) {
-  const product = await runQuery(id);
+  const product = await fetchProduct(id);
 
   return product;
 
-  async function runQuery(id) {
-    const results = await db.query(id);
+  async function fetchProduct(id) {
+    const product = await productRepository.findById(id);
 
-    if (results.rowCount === 0) throw new NotFoundError("Product not found.");
+    if (!product) throw new NotFoundError("Product not found.");
 
-    const product = results.rows[0];
     return product;
   }
 }
@@ -309,38 +308,6 @@ function getActiveUsers(users) {
 <br>
 
 <details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
-
-```js
-function findPendingOrders(userId) {
-  return orderRepository.findByStatus(userId, "pending");
-}
-
-async function processCheckout(cartId) {
-  return await checkoutService.process(cartId);
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
-<br>
-
-```js
-function buildShippingLabel(order) {
-  return `${order.customer.firstName} ${order.customer.lastName}\n${order.address.street}, ${order.address.number}\n${order.address.city} - ${order.address.state}, ${order.address.zipCode}\nOrder #${order.id}`;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>✅ Good — variável expressiva antes do return</summary>
 <br>
 
@@ -363,6 +330,24 @@ function getActiveUsers(users) {
 <br>
 
 <details>
+<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<br>
+
+```js
+function findPendingOrders(userId) {
+  return orderRepository.findByStatus(userId, "pending");
+}
+
+async function processCheckout(cartId) {
+  return await checkoutService.process(cartId);
+}
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — nome simétrico com a função deixa claro o que sai</summary>
 <br>
 
@@ -377,6 +362,20 @@ async function processCheckout(cartId) {
   const invoice = await checkoutService.process(cartId);
 
   return invoice;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<br>
+
+```js
+function buildShippingLabel(order) {
+  return `${order.customer.firstName} ${order.customer.lastName}\n${order.address.street}, ${order.address.number}\n${order.address.city} - ${order.address.state}, ${order.address.zipCode}\nOrder #${order.id}`;
 }
 ```
 
@@ -487,11 +486,11 @@ async function registerUser(input) {
 async function registerUser(input) {
   const { name, email } = input;
 
-  const exists = await db.users.findByEmail(email);
+  const exists = await userRepository.findByEmail(email);
   if (exists) throw new ConflictError('Email taken');
 
   const hash = await hashPassword(input.password);
-  const user = await db.users.create({ name, email, hash });
+  const user = await userRepository.create({ name, email, hash });
 
   const token = generateToken(user.id);
   await sendWelcomeEmail(email, token);
@@ -531,7 +530,11 @@ function buildConfirmationEmail(user, order) {
   const fullName = `${user.firstName} ${user.lastName}`;
   const address = `${order.address.street}, ${order.address.city} - ${order.address.state}`;
 
-  const message = `Olá ${fullName}, seu pedido #${order.id} foi confirmado e será entregue em ${address} em até ${order.deliveryDays} dias úteis.`;
+  const greeting = `Olá ${fullName}`;
+  const orderInfo = `seu pedido #${order.id} foi confirmado`;
+  const deliveryInfo = `e será entregue em ${address} em até ${order.deliveryDays} dias úteis`;
+
+  const message = `${greeting}, ${orderInfo} ${deliveryInfo}.`;
 
   return message;
 }
@@ -563,6 +566,7 @@ createInvoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL");
 
 ```js
 function createInvoice(invoiceData) {
+  // why: desestruturar no corpo preserva a assinatura como objeto nomeado na chamada
   const { orderId, customerId, amount, dueDate, currency } = invoiceData;
   /* ... */
 }

@@ -46,14 +46,14 @@ function sanitizeCreateUser(body) {
   return sanitized;
 }
 
-async function createUserHandler(req, res) {
-  const sanitized = sanitizeCreateUser(req.body);
+async function createUserHandler(request, response) {
+  const sanitized = sanitizeCreateUser(request.body);
   const input = createUserSchema.parse(sanitized);
 
   await createUser(input);
 
   const body = { id: input.id };
-  res.status(201).json(body);
+  response.status(201).json(body);
 }
 ```
 
@@ -199,11 +199,11 @@ function toUserResponse(user) {
   return userResponse;
 }
 
-async function findUserByIdHandler(req, res) {
-  const user = await db.users.findById(req.params.id);
+async function findUserByIdHandler(request, response) {
+  const user = await userRepository.findById(request.params.id);
   const userResponse = toUserResponse(user);
 
-  return res.json(userResponse);
+  return response.json(userResponse);
 }
 ```
 

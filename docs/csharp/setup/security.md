@@ -127,10 +127,10 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 <br>
 
 ```csharp
-app.MapGet("/orders", async (IOrderRepository repo, CancellationToken ct) =>
+app.MapGet("/orders", async (IOrderRepository orderRepository, CancellationToken ct) =>
 {
-    var orders = await repo.FindAllAsync(ct);
-    return Results.Ok(orders);
+    var orders = await orderRepository.FindAllAsync(ct);
+    return TypedResults.Ok(orders);
 })
 .RequireAuthorization();
 ```
@@ -152,10 +152,10 @@ builder.Services.AddAuthorization(options =>
 });
 
 // endpoint sem lógica de autorização no corpo
-app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository repo, CancellationToken ct) =>
+app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository orderRepository, CancellationToken ct) =>
 {
-    await repo.DeleteAsync(id, ct);
-    return Results.NoContent();
+    await orderRepository.DeleteAsync(id, ct);
+    return TypedResults.NoContent();
 })
 .RequireAuthorization("OrderManager");
 ```

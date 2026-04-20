@@ -34,11 +34,11 @@ async function registerUser(input) {
 ```js
 async function registerUser(input) {
   const { name, email } = input;
-  const exists = await db.users.findByEmail(email);
+  const exists = await userRepository.findByEmail(email);
   if (exists) throw new ConflictError("Email taken");
 
   const hash = await hashPassword(input.password);
-  const user = await db.users.create({ name, email, hash });
+  const user = await userRepository.create({ name, email, hash });
 
   const token = generateToken(user.id);
   await sendWelcomeEmail(email, token);
@@ -196,14 +196,14 @@ async function createUserHandler(req, res) {
 <br>
 
 ```js
-async function createUserHandler(req, res) {
-  const sanitized = sanitizeCreateUser(req.body);
+async function createUserHandler(request, response) {
+  const sanitized = sanitizeCreateUser(request.body);
   const input = createUserSchema.parse(sanitized);
 
   await createUser(input);
 
   const body = { id: input.id };
-  res.status(201).json(body);
+  response.status(201).json(body);
 }
 ```
 
@@ -273,7 +273,8 @@ function buildDeliveryMessage(user, order) {
   const fullName = `${user.firstName} ${user.lastName}`;
   const address = `${order.address.street}, ${order.address.city} - ${order.address.state}`;
 
-  return `Olá ${fullName}, seu pedido #${order.id} foi confirmado e será entregue em ${address} em até ${order.deliveryDays} dias úteis.`;
+  const deliveryMessage = `Olá ${fullName}, seu pedido #${order.id} foi confirmado e será entregue em ${address} em até ${order.deliveryDays} dias úteis.`;
+  return deliveryMessage;
 }
 ```
 

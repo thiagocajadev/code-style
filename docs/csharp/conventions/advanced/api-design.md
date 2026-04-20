@@ -9,7 +9,7 @@ Minimal API é a abordagem preferida para novos projetos. O design se alinha com
 Para endpoints triviais sem dependências, uma lambda direta é suficiente e idiomática:
 
 ```csharp
-app.MapGet("/health", () => Results.Ok());
+app.MapGet("/health", () => TypedResults.Ok());
 ```
 
 Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
@@ -31,6 +31,8 @@ Features/
 <br>
 
 ```csharp
+// ❌ rota grossa: DbContext injetado direto, regra de negócio inline, sem repository,
+//    sem service, sem TypedResults — tudo junto na lambda
 group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationToken ct) =>
 {
     if (string.IsNullOrWhiteSpace(request.ProductId))
@@ -135,10 +137,11 @@ public class CreateOrderHandler(OrderService orderService)
     {
         var result = await orderService.CreateOrderAsync(request, ct);
         if (result.IsFailure)
-            return Results.BadRequest(result.Error);
+            return TypedResults.BadRequest(result.Error);
 
         var createdOrder = result.Value!;
-        return Results.Created($"/api/orders/{createdOrder.Id}", createdOrder);
+        var orderLocation = $"/api/orders/{createdOrder.Id}";
+        return TypedResults.Created(orderLocation, createdOrder);
     }
 }
 ```
@@ -154,6 +157,8 @@ Controllers fazem sentido em projetos que já os adotam ou que precisam de conve
 <br>
 
 ```csharp
+// ❌ controller gordo: DbContext no construtor, cálculo de preço na lambda,
+//    interpolação no return — mesma regra que Minimal API, diferente só na sintaxe
 [ApiController]
 [Route("api/orders")]
 public class OrdersController(AppDbContext db) : ControllerBase
@@ -199,9 +204,99 @@ public class OrdersController(OrderService orderService) : ControllerBase
             return BadRequest(result.Error);
 
         var createdOrder = result.Value!;
-        return Created($"/api/orders/{createdOrder.Id}", createdOrder);
+        var orderLocation = $"/api/orders/{createdOrder.Id}";
+        return Created(orderLocation, createdOrder);
     }
 }
+```
+
+</details>
+
+## TypedResults vs Results
+
+Minimal API oferece duas famílias de retorno: `Results` (`Microsoft.AspNetCore.Http.Results`) — o idioma histórico — e `TypedResults` — a variante tipada introduzida no .NET 7. Ambas produzem a mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
+
+`Results.Ok(order)` retorna `IResult` — tipo apagado. Quem assina a rota com `Results` perde informação: OpenAPI/Swagger não infere o status nem o payload, testes precisam de cast (`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]` redundantes.
+
+`TypedResults.Ok(order)` retorna `Ok<Order>` — tipo concreto. OpenAPI extrai status (200) e shape (`Order`) automaticamente. Testes leem `result.Value` direto. A assinatura do handler passa a **dizer** exatamente o que retorna.
+
+### Quando usar qual
+
+| Contexto | Preferir |
+|---|---|
+| Minimal API, endpoint novo | `TypedResults.*` |
+| Endpoint com múltiplos status (ex: 200 ou 404) | `Results<Ok<T>, NotFound>` como tipo de retorno |
+| MVC Controller (`ControllerBase`) | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`) — não `Results.*` |
+| Código legado usando `Results.*` | manter até a próxima refatoração natural |
+
+### Assinatura rica para múltiplos status
+
+O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possíveis. OpenAPI gera documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
+
+<details>
+<summary>❌ Bad — Results apaga o tipo de retorno</summary>
+<br>
+
+```csharp
+// ❌ IResult é opaco: Swagger não sabe se é 200 ou 404 sem [ProducesResponseType]
+app.MapGet("/orders/{id}", async (Guid id, OrderService orderService, CancellationToken ct) =>
+{
+    var result = await orderService.FindByIdAsync(id, ct);
+    if (result.IsFailure) return Results.NotFound();
+
+    var response = OrderResponse.From(result.Value!);
+    return Results.Ok(response);
+});
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — TypedResults + union type na assinatura</summary>
+<br>
+
+```csharp
+app.MapGet("/orders/{id}", FindOrder);
+
+static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
+    Guid id, OrderService orderService, CancellationToken ct)
+{
+    var result = await orderService.FindByIdAsync(id, ct);
+    if (result.IsFailure) return TypedResults.NotFound();
+
+    var response = OrderResponse.From(result.Value!);
+    return TypedResults.Ok(response);
+}
+```
+
+</details>
+
+### Location header sem lógica no return
+
+`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a URL em variável nomeada antes do retorno — o `return` nomeia, não computa.
+
+<details>
+<summary>❌ Bad — interpolação no return</summary>
+<br>
+
+```csharp
+// ❌ URL construída na linha do return: lógica inline, difícil inspecionar no debugger
+return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — URL em variável nomeada</summary>
+<br>
+
+```csharp
+var orderLocation = $"/api/orders/{createdOrder.Id}";
+return TypedResults.Created(orderLocation, createdOrder);
 ```
 
 </details>
@@ -294,7 +389,7 @@ public class FindOrderByIdHandler(OrderService orderService)
     {
         var result = await orderService.FindOrderByIdAsync(id, ct);
         if (result.IsFailure)
-            return Results.NotFound(result.Error);
+            return TypedResults.NotFound(result.Error);
 
         var order = result.Value!;
         var orderResponse = new OrderResponse
@@ -306,7 +401,7 @@ public class FindOrderByIdHandler(OrderService orderService)
             CreatedAt = order.CreatedAt
         };
 
-        return Results.Ok(orderResponse);
+        return TypedResults.Ok(orderResponse);
     }
 }
 ```
@@ -369,7 +464,7 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
     {
         var result = await orderService.FindOrderByIdAsync(id, ct);
         if (result.IsFailure)
-            return Results.NotFound();
+            return TypedResults.NotFound();
 
         var order = result.Value!;
         var orderResponse = new OrderResponse
@@ -394,7 +489,7 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
             }
         };
 
-        return Results.Ok(apiResponse);
+        return TypedResults.Ok(apiResponse);
     }
 }
 // 200: { "data": { "id": "01HV...", ... }, "meta": { "correlationId": "abc-123", "requestedAt": "2026-04-19T14:32:00Z" } }

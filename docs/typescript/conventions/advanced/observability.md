@@ -84,11 +84,11 @@ interface RequestContext {
 
 const requestStore = new AsyncLocalStorage<RequestContext>();
 
-export function correlationMiddleware(req: Request, res: Response, next: NextFunction): void {
+export function correlationMiddleware(request: Request, response: Response, next: NextFunction): void {
   const correlationId =
-    (req.headers["x-correlation-id"] as string | undefined) ?? crypto.randomUUID();
+    (request.headers["x-correlation-id"] as string | undefined) ?? crypto.randomUUID();
 
-  res.setHeader("x-correlation-id", correlationId);
+  response.setHeader("x-correlation-id", correlationId);
 
   const store: RequestContext = { correlationId };
   requestStore.run(store, next);

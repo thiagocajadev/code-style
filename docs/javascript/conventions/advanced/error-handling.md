@@ -78,7 +78,7 @@ async function findUser(id) {
 
 ```js
 async function findUser(id) {
-  const user = await db.query(id);
+  const user = await userRepository.findById(id);
 
   if (!user) throw new NotFoundError({ message: `User ${id} not found.` });
 
@@ -219,16 +219,15 @@ async function findProductById(id) {
 ```js
 async function findProductById(id) {
   try {
-    const results = await db.query(id);
+    const product = await productRepository.findById(id);
 
-    if (results.rowCount === 0) {
+    if (!product) {
       throw new NotFoundError({
         message: `Product ${id} not found.`,
         action: "Check if the product ID is correct.",
       });
     }
 
-    const product = results.rows[0];
     return product;
   } catch (error) {
     if (error instanceof NotFoundError) throw error;

@@ -241,9 +241,9 @@ public IResult MapResult(Result<Order> result)
 {
     var response = result switch
     {
-        { IsSuccess: true, Value: var order } => Results.Ok(order),
-        { Error.Code: "NOT_FOUND" } => Results.NotFound(),
-        { Error.Code: "UNAUTHORIZED" } => Results.Unauthorized(),
+        { IsSuccess: true, Value: var order } => TypedResults.Ok(order),
+        { Error.Code: "NOT_FOUND" } => TypedResults.NotFound(),
+        { Error.Code: "UNAUTHORIZED" } => TypedResults.Unauthorized(),
         _ => Results.Problem(),
     };
 

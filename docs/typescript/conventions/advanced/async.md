@@ -31,13 +31,13 @@ export async function findUserById(id: string) {
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
-  const user = await db.users.findById(id);
+  const user = await userRepository.findById(id);
 
   return user;
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<Order> {
-  const order = await db.orders.create(input);
+  const order = await orderRepository.create(input);
 
   return order;
 }

@@ -35,7 +35,7 @@ export function calculateInvoiceTotal(items: LineItem[]) {
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
-  const user = await db.users.findById(id);
+  const user = await userRepository.findById(id);
 
   return user;
 }

@@ -224,16 +224,15 @@ async function findProductById(id: string): Promise<Product> {
 ```ts
 async function findProductById(id: string): Promise<Product> {
   try {
-    const results = await db.query(id);
+    const product = await productRepository.findById(id);
 
-    if (results.rowCount === 0) {
+    if (!product) {
       throw new NotFoundError({
         message: `Product ${id} not found.`,
         action: "Check if the product ID is correct.",
       });
     }
 
-    const product = results.rows[0] as Product;
     return product;
   } catch (error) {
     if (error instanceof NotFoundError) throw error;

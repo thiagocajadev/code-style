@@ -130,12 +130,12 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 
 ```csharp
 // Program.cs — middleware que enriquece o contexto de log
-app.Use(async (ctx, next) =>
+app.Use(async (httpContext, next) =>
 {
-    var correlationId = ctx.Request.Headers["X-Correlation-Id"].FirstOrDefault()
-        ?? ctx.TraceIdentifier;
+    var correlationId = httpContext.Request.Headers["X-Correlation-Id"].FirstOrDefault()
+        ?? httpContext.TraceIdentifier;
 
-    ctx.Response.Headers["X-Correlation-Id"] = correlationId;
+    httpContext.Response.Headers["X-Correlation-Id"] = correlationId;
 
     using (LogContext.PushProperty("CorrelationId", correlationId))
         await next();

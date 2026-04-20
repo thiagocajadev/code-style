@@ -105,7 +105,7 @@ interface User {
 
 // busca de entidade: null quando não encontrada
 function findUser(id: string): User | null {
-  const user = db.users.get(id) ?? null;
+  const user = userRepository.findById(id) ?? null;
   return user;
 }
 
@@ -149,7 +149,7 @@ if (orders) {
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[]> {
-  const orders = await db.orders.findByUser(userId);
+  const orders = await orderRepository.findByUser(userId);
   return orders; // ORM já retorna [] quando não há resultados
 }
 
@@ -287,10 +287,11 @@ async function getOrderTotal(orderId: string): Promise<number> {
 ```ts
 // ausência é erro → guard clause
 async function getOrderTotal(orderId: string): Promise<number> {
-  const order = await db.orders.findById(orderId);
+  const order = await orderRepository.findById(orderId);
   if (!order) throw new NotFoundError({ message: `Order ${orderId} not found.` });
 
-  return order.total;
+  const total = order.total;
+  return total;
 }
 
 // ausência é esperada → ?. e ?? são suficientes

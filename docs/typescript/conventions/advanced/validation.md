@@ -200,11 +200,11 @@ function toUserResponse(user: User): UserResponse {
   return response;
 }
 
-async function findUserHandler(req: Request, res: Response): Promise<void> {
-  const user = await db.users.findById(req.params.id);
+async function findUserHandler(request: Request, response: Response): Promise<void> {
+  const user = await userRepository.findById(request.params.id);
   const userResponse = toUserResponse(user);
 
-  res.json(userResponse);
+  response.json(userResponse);
 }
 ```
 

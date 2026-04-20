@@ -69,8 +69,8 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
     var result = await _service.FindOrderAsync(orderId, ct);
     var response = result switch
     {
-        { IsSuccess: true, Value: var order } => Results.Ok(order),
-        { Error.Code: "NOT_FOUND" } => Results.NotFound(),
+        { IsSuccess: true, Value: var order } => TypedResults.Ok(order),
+        { Error.Code: "NOT_FOUND" } => TypedResults.NotFound(),
         _ => Results.Problem(),
     };
 

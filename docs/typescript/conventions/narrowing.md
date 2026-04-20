@@ -72,7 +72,7 @@ async function findUser(id: string): Promise<User> {
 ```ts
 async function findUser(id: string): Promise<User> {
   try {
-    const user = await db.users.findById(id);
+    const user = await userRepository.findById(id);
     return user;
   } catch (error) {
     if (error instanceof NotFoundError) throw error;    // propaga o erro de negócio
@@ -264,7 +264,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
-  const order = await db.orders.findById(orderId);
+  const order = await orderRepository.findById(orderId);
   if (!order) throw new NotFoundError({ message: `Order ${orderId} not found.` });
 
   const total = order.total;

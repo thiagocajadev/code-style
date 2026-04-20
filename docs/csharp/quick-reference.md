@@ -64,8 +64,8 @@ public class OrderService(IOrderRepository repository, INotifier notifier) { }
 // Switch expression com pattern matching
 var response = result switch
 {
-    { IsSuccess: true, Value: var order } => Results.Ok(order),
-    { Error.Code: "NOT_FOUND" } => Results.NotFound(),
+    { IsSuccess: true, Value: var order } => TypedResults.Ok(order),
+    { Error.Code: "NOT_FOUND" } => TypedResults.NotFound(),
     _ => Results.Problem(),
 };
 ```

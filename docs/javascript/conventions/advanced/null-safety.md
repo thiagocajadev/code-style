@@ -105,7 +105,7 @@ async function getOrderTotal(orderId) {
 ```js
 // ausência é erro → guard clause
 async function getOrderTotal(orderId) {
-  const order = await db.orders.findById(orderId);
+  const order = await orderRepository.findById(orderId);
   if (!order) throw new NotFoundError({ message: `Order ${orderId} not found.` });
 
   const total = order.items.reduce((sum, item) => sum + item.price, 0);
@@ -149,7 +149,7 @@ async function findOrdersByUser(userId) {
 
 ```js
 async function findOrdersByUser(userId) {
-  const orders = await db.orders.findByUser(userId);
+  const orders = await orderRepository.findByUser(userId);
   return orders; // ORM já retorna [] — nunca null
 }
 

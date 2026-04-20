@@ -95,7 +95,8 @@ public async Task<IResult> CreateOrder([FromBody] CreateOrderRequest request)
 {
     // request já validado pelo middleware, domínio recebe dados garantidos
     var order = await _service.CreateOrderAsync(request);
-    return Results.Created($"/orders/{order.Id}", order);
+    var orderLocation = $"/orders/{order.Id}";
+    return TypedResults.Created(orderLocation, order);
 }
 ```
 
@@ -207,13 +208,14 @@ Quando não é possível alterar o banco (legado, multi-tenant, sem controle da 
 ```ts
 // TypeScript — mapeamento no repositório
 async function findOrderById(id: string): Promise<Order | null> {
-  const row = await db.query(id);
+  const row = await database.queryOne("SELECT * FROM orders WHERE id = $1", [id]);
   if (!row) return null;
 
-  return {
+  const order = {
     ...row,
     priority: row.priority ?? "normal", // null histórico vira default aqui
   };
+  return order;
 }
 ```
 

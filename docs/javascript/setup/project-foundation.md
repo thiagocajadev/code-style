@@ -290,7 +290,7 @@ express.json()     → parseia o body antes de qualquer handler
 rateLimit          → rejeita cedo, antes de autenticação e I/O
 cors               → cabeçalhos CORS antes de autenticação
 authenticate       → resolve a identidade
-rotas              → handlers recebem req.user já preenchido
+rotas              → handlers recebem o usuário já autenticado no contexto
 ```
 
 <details>
