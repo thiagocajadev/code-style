@@ -1,0 +1,66 @@
+# TypeScript
+
+TypeScript é o superconjunto tipado de JavaScript. Os princípios de legibilidade deste guia —
+nomes expressivos, guard clauses, funções pequenas, fluxo linear — aplicam-se aqui com a mesma
+força.
+
+Este guia cobre o que é específico do TypeScript: quando anotar tipos, como nomear contratos,
+como modelar variações e como extrair o máximo do sistema de tipos sem adicionar ruído.
+
+## Setup
+
+Configuração inicial de um projeto TypeScript — compilador, estrutura e ferramentas.
+
+| Tópico                                            | Conceitos                                        |
+| ------------------------------------------------- | ------------------------------------------------ |
+| [Project Foundation](setup/project-foundation.md) | tsconfig, strict mode, path aliases, pipeline    |
+
+## Fundamentos
+
+| Tópico                                       | Conceitos                                                          |
+| -------------------------------------------- | ------------------------------------------------------------------ |
+| [Variables](conventions/variables.md)        | Annotations, inferência, `as const`, `unknown` vs `any`            |
+| [Naming](conventions/naming.md)              | Interface, type alias, genérico — convenções de nome               |
+| [Functions](conventions/functions.md)        | Return types, parâmetros tipados, overloads                        |
+| [Types](conventions/types.md)                | `type` vs `interface`, genéricos, utility types                    |
+| [Narrowing](conventions/narrowing.md)        | Type guards, discriminated unions, exhaustiveness                  |
+
+## Avançados
+
+| Tópico                                                    | Conceitos                                          |
+| --------------------------------------------------------- | -------------------------------------------------- |
+| [Error Handling](conventions/advanced/error-handling.md) | Erros tipados, BaseError, try/catch nas fronteiras |
+| [Async](conventions/advanced/async.md)                   | `Promise<T>`, typed async/await, generics em I/O   |
+| [Quick Reference](quick-reference.md)                    | Tipos, utilitários, taboos                         |
+
+## Princípios
+
+**Tipos** — quando anotar, quando inferir
+
+| Princípio                                                                           | Descrição                                                                   |
+| ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| [Inferência por padrão](conventions/variables.md#inferência-por-padrão)             | Deixe o TypeScript derivar o tipo quando óbvio — anotação redundante polui  |
+| [Anotar fronteiras](conventions/functions.md#return-type)                           | Funções exportadas sempre têm return type explícito                         |
+| [Nunca any](conventions/variables.md#any-vs-unknown)                                | `unknown` força narrowing — `any` desativa o compilador                     |
+| [Tipos sem prefixo](conventions/naming.md#prefixo-i)                                | Sem `I` em interfaces — o contexto já diz que é contrato                   |
+
+<br>
+
+**Contratos** — types, interfaces e modelos de domínio
+
+| Princípio                                                                    | Descrição                                                                        |
+| ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| [Interface para objetos](conventions/types.md#type-vs-interface)             | Contratos e shapes usam `interface` — extensíveis por padrão                     |
+| [Type para uniões](conventions/types.md#type-vs-interface)                   | `type` para union types, mapped types e aliases de primitivos                    |
+| [Union types > enums](conventions/types.md#enums)                            | Const object + union type — sem runtime overhead, sem conversão                  |
+| [Genérico com propósito](conventions/types.md#genéricos)                     | Genérico quando a função precisa preservar o tipo do chamador — sem especulação  |
+
+<br>
+
+**Narrowing** — transitar entre tipos com segurança
+
+| Princípio                                                                         | Descrição                                                                  |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Type guards explícitos](conventions/narrowing.md#custom-type-guards)             | Funções predicado nomeadas no lugar de type assertions inline              |
+| [Discriminated unions](conventions/narrowing.md#discriminated-unions)             | Campo literal identifica o variant — narrowing automático no switch        |
+| [Exhaustiveness check](conventions/narrowing.md#exhaustiveness)                   | `never` no default do switch — o compilador avisa se faltar um caso        |
