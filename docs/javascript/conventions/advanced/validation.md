@@ -20,6 +20,7 @@ validação suja: um email com espaço passa no schema mas falha na busca no ban
 ```js
 async function createUserHandler(req, res) {
   const input = createUserSchema.parse(req.body); // " Admin@Email.com " passa no schema
+
   await createUser(input);
   res.status(201).json({ id: input.id });
 }
@@ -69,6 +70,7 @@ elimina validação manual espalhada pelos handlers.
 async function createOrder(body) {
   if (!body.productId) throw new ValidationError("productId required");
   if (typeof body.quantity !== "number") throw new ValidationError("quantity must be number");
+
   if (body.quantity <= 0) throw new ValidationError("quantity must be positive");
   if (!body.customerId) throw new ValidationError("customerId required");
 }
@@ -137,13 +139,16 @@ const createOrderSchema = z.object({
 async function validateOrderRules(input) {
   const product = await findProductById(input.productId);
   if (!product) return Result.fail("Product not found", "NOT_FOUND");
+
   if (!product.isAvailable) return Result.fail("Product unavailable", "UNAVAILABLE");
   if (product.stock < input.quantity) return Result.fail("Insufficient stock", "OUT_OF_STOCK");
+
   return Result.ok(product);
 }
 
 async function createOrder(body) {
   const input = createOrderSchema.parse(body);
+
   const rulesResult = await validateOrderRules(input);
   if (!rulesResult.ok) return rulesResult;
 

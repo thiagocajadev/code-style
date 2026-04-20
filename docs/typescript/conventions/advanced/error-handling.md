@@ -33,6 +33,7 @@ function processOrder(order: Order | null): { success: boolean; order: Order } |
 function processOrder(order: Order | null): ProcessedOrder {
   if (!order) throw new ValidationError({ message: "Order is required." });
   if (order.items.length === 0) throw new ValidationError({ message: "Order has no items." });
+
   if (order.customer.defaulted) throw new BusinessError({ message: "Customer has unpaid debts." });
 
   const processedOrder: ProcessedOrder = { success: true, order };

@@ -219,12 +219,14 @@ export function authenticate(request, response, next) {
   if (!token) {
     const body = { error: "Unauthorized" };
     response.status(401).json(body);
+
     return;
   }
 
   try {
     const claims = jwt.verify(token, config.auth.secret);
     request.user = claims;
+
     next();
   } catch {
     const body = { error: "Invalid token" };
@@ -272,8 +274,10 @@ export function authorize(allowedRoles) {
     if (!isAllowed) {
       const body = { error: "Forbidden" };
       response.status(403).json(body);
+
       return;
     }
+
     next();
   };
 }

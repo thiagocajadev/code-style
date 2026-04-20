@@ -165,8 +165,10 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 {
     builder.Services.AddScoped<FindOrdersHandler>();
     builder.Services.AddScoped<FindOrderByIdHandler>();
+
     builder.Services.AddScoped<CreateOrderHandler>();
     builder.Services.AddScoped<UpdateOrderHandler>();
+
     builder.Services.AddScoped<CancelOrderHandler>();
     // a cada novo handler, uma nova linha aqui
 

@@ -116,6 +116,7 @@ public IReadOnlyList<Order> FindOrdersByStatus(string status)
         return Array.Empty<Order>();
 
     var orders = _repo.FindByStatus(status);
+
     return orders;
 }
 

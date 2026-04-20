@@ -113,6 +113,7 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome da funç
 ```js
 test('test 1', () => { /* ... */ });
 test('should apply discount', () => { /* ... */ });
+
 test('applyDiscount function', () => { /* ... */ });
 ```
 

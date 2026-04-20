@@ -20,6 +20,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
         return Result<Invoice>.Fail("Product not found.", "NOT_FOUND");
 
     var order = new Order(request.ProductId, request.Quantity, product.Price * request.Quantity);
+
     await _orders.SaveAsync(order, ct);
     await _notifications.SendAsync(new OrderCreatedEvent(order.Id), ct);
 
@@ -59,6 +60,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 private static Result ValidateRequest(OrderRequest request) { ... }
 private async Task<Order> SaveOrderAsync(OrderRequest request, Product product, CancellationToken ct) { ... }
+
 private async Task NotifyOrderCreatedAsync(Order order, CancellationToken ct) { ... }
 private static Invoice BuildInvoice(Order order) { ... }
 ```
@@ -80,6 +82,7 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 
     var subtotal = order.Items.Sum(item => item.Price * item.Quantity);
     var tax = subtotal * 0.1m;
+
     var total = subtotal + tax;
 
     var lines = order.Items.Select(item => $"{item.Name} x{item.Quantity}").ToList();
@@ -112,6 +115,7 @@ private static OrderTotals CalculateTotals(Order order)
 {
     var subtotal = order.Items.Sum(item => item.Price * item.Quantity);
     var tax = subtotal * 0.1m;
+
     var total = subtotal + tax;
     var totals = new OrderTotals(subtotal, tax, total);
 
@@ -188,6 +192,7 @@ public OrderSummary BuildSummary(Order order)
 {
     var lines = order.Items.Select(item => $"{item.Name} x{item.Quantity}").ToList();
     var total = order.Items.Sum(item => item.Price * item.Quantity);
+
     var summary = new OrderSummary(order.Id, lines, total);
 
     return summary;
@@ -264,8 +269,10 @@ public class OrderService
     public async Task<Result<Order>> SaveOrderAsync(OrderRequest request, CancellationToken ct)
     {
         var order = Order.From(request);
+
         await _repository.SaveAsync(order, ct);
         await _notifier.SendAsync(order, ct);
+
         return Result<Order>.Success(order);
     }
 }
@@ -285,8 +292,10 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
     public async Task<Result<Order>> SaveOrderAsync(OrderRequest request, CancellationToken ct)
     {
         var order = Order.From(request);
+
         await repository.SaveAsync(order, ct);
         await notifier.SendAsync(order, ct);
+
         return Result<Order>.Success(order);
     }
 }

@@ -197,6 +197,7 @@ public string BuildShippingLabel(Order order)
 {
     var fullName = $"{order.Customer.FirstName} {order.Customer.LastName}";
     var addressLine = $"{order.Address.Street}, {order.Address.Number}";
+
     var cityLine = $"{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}";
 
     var label = $"{fullName}\n{addressLine}\n{cityLine}\nOrder #{order.Id}";

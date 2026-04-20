@@ -105,11 +105,13 @@ import jwt from "jsonwebtoken";
 
 const db = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 const app = express();
+
 app.use(express.json());
 
 app.get("/api/orders", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   const { userId } = jwt.verify(token, process.env.JWT_SECRET);
+
   const { rows } = await db.query("SELECT * FROM orders WHERE user_id = $1", [userId]);
   res.json(rows);
 });
@@ -139,6 +141,7 @@ import { listUsers, getUser } from "./features/users/user.endpoints.js";
 export function registerRoutes(app, orderService, userService) {
   app.get("/api/orders", listOrders(orderService));
   app.get("/api/orders/:id", getOrder(orderService));
+
   app.post("/api/orders", createOrder(orderService));
 
   app.get("/api/users", listUsers(userService));
@@ -165,6 +168,7 @@ import { registerOrders } from "./features/orders/orders.module.js";
 export function createApp(config) {
   const app = express();
   applyMiddleware(app, config);
+
   registerUsers(app, config);
   registerOrders(app, config);
 
@@ -190,6 +194,7 @@ export function registerOrders(app, config) {
 
   app.get("/api/orders", findAll(orderService));
   app.get("/api/orders/:id", findById(orderService));
+
   app.post("/api/orders", create(orderService));
 }
 ```
@@ -320,6 +325,7 @@ import { authenticate } from "./auth/auth.middleware.js";
 export function applyMiddleware(app, config) {
   app.use(express.json());
   app.use(rateLimit(config.rateLimit));
+
   app.use(cors());
   app.use(authenticate(config.auth));
 }

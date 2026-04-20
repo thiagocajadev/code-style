@@ -76,6 +76,7 @@ function processOrder(order) {
 function processOrder(order) {
   if (!order) return;
   if (!order.isActive) return;
+
   if (order.items.length === 0) return;
   if (!order.customer) return;
 
@@ -155,6 +156,7 @@ const label = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score 
 ```js
 const isA = score >= 90;
 const isB = score >= 80;
+
 const isC = score >= 70;
 const isD = score >= 60;
 
@@ -293,6 +295,7 @@ const userCache = {};
 
 userCache[user.id] = user; // id number vira string
 console.log(userCache[123] === userCache["123"]); // true — coerção silenciosa
+
 const count = Object.keys(userCache).length; // verbose
 ```
 
@@ -309,8 +312,10 @@ const userCache = new Map();
 
 userCache.set(user.id, user);
 userCache.has(user.id);
+
 userCache.get(user.id);
 userCache.delete(user.id);
+
 userCache.size;
 ```
 

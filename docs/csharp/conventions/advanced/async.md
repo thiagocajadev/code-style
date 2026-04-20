@@ -59,6 +59,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 {
     var user = await _users.FindByIdAsync(userId, ct);               // espera terminar
     var orders = await _orders.FindRecentAsync(userId, ct);          // só então começa
+
     var notifications = await _notifications.FindAsync(userId, ct);  // só então começa
 
     var dashboard = new Dashboard(user, orders, notifications);

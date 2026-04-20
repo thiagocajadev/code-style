@@ -32,6 +32,7 @@ function fetchUserData(id, callback) {
 async function fetchUserData(id) {
   const user = await getUser(id);
   const orders = await getOrders(user.id);
+
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
@@ -70,6 +71,7 @@ function fetchUserData(id) {
 async function fetchUserData(id) {
   const user = await getUser(id);
   const orders = await getOrders(user.id);
+
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
@@ -130,6 +132,7 @@ Quando as operações são independentes entre si, rodá-las em paralelo reduz o
 async function fetchDashboard(userId) {
   const orders = await fetchOrders(userId);     // espera terminar
   const invoices = await fetchInvoices(userId); // só começa depois
+
   const profile = await fetchProfile(userId);   // só começa depois
 
   const dashboard = { orders, invoices, profile };

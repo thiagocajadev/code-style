@@ -108,6 +108,7 @@ async function createUser(
 ): Promise<{ user: User; token: string }> {
   const user = await persistUser({ name, email, password });
   const token = generateToken(user.id);
+
   const result = { user, token };
 
   return result;
@@ -137,6 +138,7 @@ interface CreateUserResult {
 async function createUser(input: CreateUserInput): Promise<CreateUserResult> {
   const user = await persistUser(input);
   const token = generateToken(user.id);
+
   const result = { user, token };
 
   return result;

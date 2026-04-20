@@ -161,6 +161,7 @@ function buildOrderReport(orders) {
   for (const order of orders) {
     lines.push(`#${order.id}: ${order.customer} — ${order.total}`);
   }
+
   const report = lines.join("\n");
 
   return report;

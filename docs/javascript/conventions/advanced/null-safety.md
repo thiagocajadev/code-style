@@ -18,6 +18,7 @@ na maioria dos casos.
 ```js
 const timeout = config.timeout || 5000; // 0 → 5000 — zero é tempo válido
 const retries = input.retries || 3;     // 0 → 3 — zero retries é intencional
+
 const debug = options.debug || false;   // false → false — ok aqui, mas por acidente
 ```
 
@@ -32,6 +33,7 @@ const debug = options.debug || false;   // false → false — ok aqui, mas por 
 ```js
 const timeout = config.timeout ?? 5000;
 const retries = input.retries ?? 3;
+
 const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbacks
 ```
 
@@ -65,6 +67,7 @@ count ??= 10; // count permanece 0 — zero não é null
 
 const config = {};
 config.port ??= 3000;
+
 config.port ??= 8080; // não executa — port já é 3000
 ```
 

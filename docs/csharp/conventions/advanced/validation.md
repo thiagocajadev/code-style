@@ -53,6 +53,7 @@ private static CreateUserRequest Sanitize(CreateUserRequest request)
 public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
 {
     var sanitized = Sanitize(request);
+
     var validationResult = await _validator.ValidateAsync(sanitized, ct);
     if (!validationResult.IsValid)
         return Result<User>.Fail(validationResult.Errors.First().ErrorMessage, "INVALID_INPUT");
@@ -79,8 +80,10 @@ public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, Cance
 {
     if (string.IsNullOrWhiteSpace(request.ProductId))
         return Result<Invoice>.Fail("ProductId required", "INVALID");
+
     if (request.Quantity <= 0)
         return Result<Invoice>.Fail("Quantity must be positive", "INVALID");
+
     if (string.IsNullOrWhiteSpace(request.CustomerId))
         return Result<Invoice>.Fail("CustomerId required", "INVALID");
 }

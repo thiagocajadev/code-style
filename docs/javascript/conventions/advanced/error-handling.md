@@ -12,6 +12,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 function processOrder(order) {
   if (!order) return null;
   if (order.items.length === 0) return undefined;
+
   if (order.customer.defaulted) return false;
 
   return { success: true, order };
@@ -20,6 +21,7 @@ function processOrder(order) {
 // quem chama não sabe o que esperar
 const result = processOrder(order);
 if (result) { /* ... */ }           // false passa, undefined também
+
 if (result !== null) { /* ... */ }  // e undefined?
 ```
 
@@ -35,6 +37,7 @@ if (result !== null) { /* ... */ }  // e undefined?
 function processOrder(order) {
   if (!order) throw new ValidationError({ message: "Order is required." });
   if (order.items.length === 0) throw new ValidationError({ message: "Order has no items." });
+
   if (order.customer.defaulted) throw new BusinessError({ message: "Customer has unpaid debts." });
 
   const processedOrder = { success: true, order };
@@ -94,6 +97,7 @@ async function findUser(id) {
 async function findUser(id) {
   const user = await db.query(id);
   if (!user) throw "User not found"; // sem tipo, não dá para instanceof
+
   return user;
 }
 
@@ -122,6 +126,7 @@ export class BaseError extends Error {
   constructor({ name, message, action, statusCode, cause }) {
     super(message, { cause });
     this.name = name || "BaseError";
+
     this.action = action || "Contact support.";
     this.statusCode = statusCode || 500;
   }

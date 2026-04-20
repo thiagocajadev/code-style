@@ -39,6 +39,7 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
         return Results.NotFound("Product not found.");
 
     var order = new Order(request.ProductId, request.Quantity, product.Price * request.Quantity);
+
     db.Orders.Add(order);
     await db.SaveChangesAsync(ct);
 
@@ -88,9 +89,11 @@ public static class OrdersExtensions
     {
         // handlers registrados como Scoped — o container os injeta nas rotas automaticamente
         builder.Services.AddScoped<FindOrdersHandler>();
+
         builder.Services.AddScoped<FindOrderByIdHandler>();
 
         builder.Services.AddScoped<CreateOrderHandler>();
+
         builder.Services.AddScoped<OrderService>();
 
         return builder;
@@ -102,6 +105,7 @@ public static class OrdersExtensions
 
         group.MapGet("/", (FindOrdersHandler handler, CancellationToken ct)
             => handler.HandleAsync(ct));
+
         group.MapGet("/{id:guid}", (Guid id, FindOrderByIdHandler handler, CancellationToken ct)
             => handler.HandleAsync(id, ct));
 
@@ -163,6 +167,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
             return NotFound();
 
         var order = new Order(request.ProductId, request.Quantity, product.Price * request.Quantity);
+
         db.Orders.Add(order);
         await db.SaveChangesAsync(ct);
 
@@ -298,6 +303,7 @@ public class FindOrderByIdHandler(OrderService orderService)
             Total = order.Total,
             CreatedAt = order.CreatedAt
         };
+
         return Results.Ok(orderResponse);
     }
 }
@@ -372,8 +378,10 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
             Total = order.Total,
             CreatedAt = order.CreatedAt
         };
+
         var httpContext = httpContextAccessor.HttpContext!;
         var correlationId = httpContext.Request.Headers["X-Correlation-Id"].ToString();
+
         var apiResponse = new ApiResponse<OrderResponse>
         {
             Data = orderResponse,
@@ -383,6 +391,7 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
                 RequestedAt = DateTimeOffset.UtcNow
             }
         };
+
         return Results.Ok(apiResponse);
     }
 }

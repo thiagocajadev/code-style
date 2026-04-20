@@ -27,6 +27,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
@@ -40,8 +41,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 builder.Services.AddScoped<OrderService>();
+
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<UserService>();
+
 builder.Services.AddScoped<INotifier, EmailNotifier>();
 
 var app = builder.Build();
@@ -54,8 +57,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
 app.Run();
 ```
@@ -93,8 +98,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 builder.Services.AddScoped<OrderService>();
+
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<UserService>();
+
 // cada novo domínio adiciona mais linhas aqui — sem coesão, sem dono
 ```
 
@@ -135,6 +142,7 @@ public static class AppPipelineExtensions
 
         app.UseCors();
         app.UseAuthentication();
+
         app.UseAuthorization();
 
         app.MapAppEndpoints();
@@ -161,15 +169,19 @@ public static class OrdersExtensions
     {
         builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
         builder.Services.AddScoped<OrderService>();
+
         return builder;
     }
 
     public static IEndpointRouteBuilder MapOrderEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/orders").WithTags("Orders");
+
         group.MapGet("/", OrderEndpoints.FindAll);
         group.MapGet("/{id:guid}", OrderEndpoints.FindById);
+
         group.MapPost("/", OrderEndpoints.Create);
+
         return app;
     }
 }
@@ -355,18 +367,23 @@ public static class ApiDocsExtensions
 // AppServiceExtensions.cs
 builder.AddDatabase();
 builder.AddAuth();
+
 builder.AddRateLimiting();
 builder.AddApiDocs();
+
 builder.AddOrders();
 builder.AddUsers();
 
 // AppPipelineExtensions.cs
 app.UseHttpsRedirection();
 app.UseRateLimiter();
+
 app.UseCors();
 app.UseAuthentication();
+
 app.UseAuthorization();
 app.MapAppEndpoints();
+
 app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 ```
 
@@ -438,8 +455,10 @@ public record RateLimitingOptions(int PermitLimit, int WindowSeconds)
 // AppServiceExtensions.cs
 builder.AddDatabase();
 builder.AddAuth();
+
 builder.AddRateLimiting();
 builder.AddOrders();
+
 builder.AddUsers();
 ```
 
@@ -478,6 +497,7 @@ MapAppEndpoints       → roteia para os handlers
 ```csharp
 app.UseAuthorization();   // identidade ainda não foi resolvida
 app.UseAuthentication();  // tarde demais
+
 app.MapAppEndpoints();
 ```
 
@@ -492,8 +512,10 @@ app.MapAppEndpoints();
 ```csharp
 app.UseHttpsRedirection();
 app.UseRateLimiter();
+
 app.UseCors();
 app.UseAuthentication();
+
 app.UseAuthorization();
 app.MapAppEndpoints();
 ```

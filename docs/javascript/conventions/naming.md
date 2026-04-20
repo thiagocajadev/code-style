@@ -122,6 +122,7 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 ```js
 getProfileUser(); // "get profile, that's a user"
 updateStatusOrder(); // status pertence ao pedido
+
 calculateTotalInvoice(); // "invoice total" é a expressão natural
 ```
 
@@ -136,6 +137,7 @@ calculateTotalInvoice(); // "invoice total" é a expressão natural
 ```js
 getUserProfile();
 updateOrderStatus();
+
 calculateInvoiceTotal();
 ```
 
@@ -154,6 +156,7 @@ function handle(data) {
 function process(input) {
   /* ... */
 }
+
 function manage(items) {
   /* ... */
 }
@@ -177,6 +180,7 @@ function validatePayment(payment) {
 function calculateOrderTotal(items) {
   /* ... */
 }
+
 function notifyCustomerDefault(order) {
   /* ... */
 }
@@ -213,12 +217,14 @@ function callStripe(amount) {
 function getUserFromDB(id) {
   /* ... */
 }
+
 function postToSlack(message) {
   /* ... */
 }
 function saveToS3(file) {
   /* ... */
 }
+
 function queryElastic(term) {
   /* ... */
 }
@@ -239,12 +245,14 @@ function chargeCustomer(amount) {
 function findUser(id) {
   /* ... */
 }
+
 function notifyTeam(message) {
   /* ... */
 }
 function archiveDocument(file) {
   /* ... */
 }
+
 function searchProducts(term) {
   /* ... */
 }
@@ -299,6 +307,7 @@ attempts++;
 ```js
 const loading = true;
 const error = false;
+
 const active = user.status === "active";
 const valid = email.includes("@");
 ```
@@ -314,6 +323,7 @@ const valid = email.includes("@");
 ```js
 const isActive = user.status === "active";
 const hasPermission = user.roles.includes("admin");
+
 const canDelete = isActive && hasPermission;
 const shouldRetry = attempt < MAX_RETRIES;
 ```

@@ -77,12 +77,14 @@ async function processOrder(orderId) {
   function isInvalid(order) {
     if (!order || order.items.length === 0) return true;
     if (order.customer.defaulted) return notifyDefault(order);
+
     return false;
   }
 
   async function issueInvoice(order) {
     const discountedOrder = applyDiscount(order);
     const invoice = await saveOrder(discountedOrder);
+
     return invoice;
   }
 }
@@ -134,6 +136,7 @@ function buildOrderSummary(order) {
   function buildLineItems(order) {
     const lines = order.items.map((item) => `  - ${item.name}: $${item.price.toFixed(2)}`);
     const lineItems = lines.join("\n");
+
     return lineItems;
   }
 }
@@ -151,6 +154,7 @@ function buildOrderSummary(order) {
 function getOrderSummary(order) {
   const subtotal = order.items.reduce((sum, item) => sum + item.price, 0);
   const tax = subtotal * 0.1;
+
   const total = subtotal + tax;
 
   return `Order #${order.id}: $${subtotal.toFixed(2)} + tax $${tax.toFixed(2)} = $${total.toFixed(2)}`;
@@ -175,13 +179,16 @@ function getOrderSummary(order) {
   function calculateTotals(items) {
     const subtotal = items.reduce((sum, item) => sum + item.price, 0);
     const tax = subtotal * 0.1;
+
     const totals = { subtotal, tax, total: subtotal + tax };
+
     return totals;
   }
 
   function formatSummary(orderId, totals) {
     const { subtotal, tax, total } = totals;
     const summary = `Order #${orderId}: $${subtotal.toFixed(2)} + tax $${tax.toFixed(2)} = $${total.toFixed(2)}`;
+
     return summary;
   }
 }
@@ -270,6 +277,7 @@ await submitOrder(orderId);
 async function submitOrder(orderId) {
   const order = await fetchOrder(orderId);
   const pricedOrder = applyPricing(order);
+
   const invoice = await persistOrder(pricedOrder);
 
   return invoice;
@@ -384,6 +392,7 @@ async function processCheckout(cartId) {
 function buildShippingLabel(order) {
   const fullName = `${order.customer.firstName} ${order.customer.lastName}`;
   const addressLine = `${order.address.street}, ${order.address.number}`;
+
   const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
   const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
 
@@ -455,8 +464,10 @@ async function registerUser(input) {
   const exists = await db.users.findByEmail(email);
 
   if (exists) throw new ConflictError('Email taken');
+
   const hash = await hashPassword(input.password);
   const user = await db.users.create({ name, email, hash });
+
   const token = generateToken(user.id);
   await sendWelcomeEmail(email, token);
 
@@ -519,6 +530,7 @@ function buildConfirmationEmail(user, order) {
 function buildConfirmationEmail(user, order) {
   const fullName = `${user.firstName} ${user.lastName}`;
   const address = `${order.address.street}, ${order.address.city} - ${order.address.state}`;
+
   const message = `Olá ${fullName}, seu pedido #${order.id} foi confirmado e será entregue em ${address} em até ${order.deliveryDays} dias úteis.`;
 
   return message;

@@ -200,6 +200,7 @@ return report;
 static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 {
     decimal total = 0;
+
     foreach (var order in group)
         total += order.Total;
 

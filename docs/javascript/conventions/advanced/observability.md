@@ -44,6 +44,7 @@ logger.error(paymentErrorContext, "payment failed");
 ```js
 console.log("Checkout started");
 console.log(`Database query took ${durationMs}ms`);
+
 console.log(`User ${userId} not found`);
 ```
 
@@ -77,6 +78,7 @@ logger.error(userNotFoundContext, "user not found during checkout");
 ```js
 logger.info({ email: user.email, password: user.password }, "login attempt");
 logger.info({ cardNumber: payment.card, cvv: payment.cvv }, "payment initiated");
+
 logger.info({ token }, "user authenticated");
 ```
 
@@ -113,7 +115,9 @@ Sem um identificador comum, logs de uma mesma requisição são ilhas: impossív
 ```js
 async function processOrder(orderId) {
   logger.info("processing order");
+
   const invoice = await buildInvoice(orderId);
+
   logger.info("order processed");
 
   return invoice;
@@ -137,6 +141,7 @@ export function correlationMiddleware(request, response, next) {
   const correlationId = request.headers["x-correlation-id"] ?? crypto.randomUUID();
 
   response.setHeader("x-correlation-id", correlationId);
+
   const store = { correlationId };
   requestStore.run(store, next);
 }

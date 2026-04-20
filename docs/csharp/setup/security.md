@@ -143,6 +143,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 {
     var authority = builder.Configuration["Auth:Authority"];
     var audience  = builder.Configuration["Auth:Audience"];
+
     var secret    = builder.Configuration["Auth:Secret"]; // string? — null em produção passa despercebido
 
     builder.Services
@@ -228,6 +229,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
     if (string.IsNullOrEmpty(bearerToken)) return Results.Unauthorized();
 
     var tokenHandler = new JwtSecurityTokenHandler();
+
     var jwtToken = tokenHandler.ReadJwtToken(bearerToken); // lê sem validar assinatura
     if (jwtToken.ValidTo < DateTime.UtcNow) return Results.Unauthorized();
 

@@ -212,6 +212,7 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
   const enrichmentTasks = orders.map(async (order) => {
     const customer = await fetchCustomer(order.customerId);
     const enrichedOrder: EnrichedOrder = { ...order, customer };
+
     return enrichedOrder;
   });
 

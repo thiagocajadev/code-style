@@ -40,17 +40,30 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 
 ```sql
 -- FindOrdersByCustomer.sql
-CREATE PROCEDURE FindOrdersByCustomer
-    @CustomerId UNIQUEIDENTIFIER
+CREATE OR ALTER PROCEDURE FindOrdersByCustomer
+(
+  @CustomerId UNIQUEIDENTIFIER
+)
 AS
+
 BEGIN
-    SELECT o.Id, o.Total, o.CreatedAt, s.Name AS Status
-    FROM Orders o
-    INNER JOIN OrderStatuses s ON s.Id = o.StatusId
-    WHERE o.CustomerId = @CustomerId
-      AND o.DeletedAt IS NULL
-    ORDER BY o.CreatedAt DESC;
-END
+  SELECT
+    Orders.Id,
+    Orders.Total,
+    Orders.CreatedAt,
+    OrderStatuses.Name AS Status
+  FROM
+    Orders
+  INNER JOIN
+    OrderStatuses ON Orders.StatusId = OrderStatuses.Id
+  WHERE
+    Orders.CustomerId = @CustomerId AND
+    Orders.DeletedAt IS NULL
+  ORDER BY
+    Orders.CreatedAt DESC;
+END;
+
+-- EXEC FindOrdersByCustomer @CustomerId = '9585E296-1114-4F35-9B34-1130987BA6D0';
 ```
 
 ```csharp
@@ -80,17 +93,25 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 
 ```sql
 -- CreateOrder.sql
-CREATE PROCEDURE CreateOrder
-    @CustomerId UNIQUEIDENTIFIER,
-    @Total      DECIMAL(18, 2),
-    @NewId      UNIQUEIDENTIFIER OUTPUT
+CREATE OR ALTER PROCEDURE CreateOrder
+(
+  @CustomerId UNIQUEIDENTIFIER,
+  @Total DECIMAL(18, 2),
+  @NewId UNIQUEIDENTIFIER OUTPUT
+)
 AS
-BEGIN
-    SET @NewId = NEWID();
 
-    INSERT INTO Orders (Id, CustomerId, Total, CreatedAt)
-    VALUES (@NewId, @CustomerId, @Total, GETUTCDATE());
-END
+BEGIN
+  SET @NewId = NEWID();
+
+  INSERT INTO Orders (Id, CustomerId, Total, CreatedAt)
+  VALUES (@NewId, @CustomerId, @Total, GETUTCDATE());
+END;
+
+-- EXEC CreateOrder
+--   @CustomerId = '9585E296-1114-4F35-9B34-1130987BA6D0',
+--   @Total = 99.90,
+--   @NewId = NULL OUTPUT;
 ```
 
 ```csharp
@@ -99,6 +120,7 @@ public async Task<Guid> CreateAsync(Guid customerId, decimal total, Cancellation
     var parameters = new DynamicParameters();
     parameters.Add("CustomerId", customerId);
     parameters.Add("Total", total);
+
     parameters.Add("NewId", dbType: DbType.Guid, direction: ParameterDirection.Output);
 
     await _connection.ExecuteAsync(
@@ -281,6 +303,7 @@ public class OrderRepository(IDbConnection connection)
             commandType: CommandType.StoredProcedure);
 
         var result = summaries.ToList();
+
         return result;
     }
 }

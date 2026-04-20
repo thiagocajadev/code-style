@@ -103,6 +103,7 @@ return Result<Order>.Fail("unauthorized", "401");
 ```csharp
 return Result<Order>.Fail("Order not found.", "NOT_FOUND");
 return Result<Order>.Fail("Product ID is required.", "INVALID_PRODUCT_ID");
+
 return Result<Order>.Fail("User is not authorized.", "UNAUTHORIZED");
 
 // mapeamento centralizado no adapter
@@ -131,6 +132,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 {
     var order = await _orders.FindByIdAsync(request.OrderId, ct);          // I/O desnecessário
     var customer = await _customers.FindByIdAsync(request.CustomerId, ct); // I/O desnecessário
+
     var items = await _items.FindByOrderAsync(request.OrderId, ct);        // I/O desnecessário
 
     if (string.IsNullOrWhiteSpace(request.Description)) // validação tardia — trabalho já feito
@@ -265,6 +267,7 @@ public static class GlobalExceptionHandlerExtensions
     {
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         builder.Services.AddProblemDetails();
+
         return builder;
     }
 }
@@ -274,6 +277,7 @@ public static class GlobalExceptionHandlerExtensions
 // AppPipelineExtensions.cs — deve ser o primeiro middleware do pipeline
 app.UseExceptionHandler();
 app.UseStatusCodePages(); // padroniza respostas 4xx sem corpo
+
 app.UseHttpsRedirection();
 // ...
 ```

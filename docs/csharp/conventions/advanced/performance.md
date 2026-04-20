@@ -129,6 +129,7 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
     {
         builder.AppendLine($"{item.ProductName}: {item.Quantity}x");
     }
+
     var summary = builder.ToString();
 
     return summary;
