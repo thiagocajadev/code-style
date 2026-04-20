@@ -24,11 +24,20 @@ por padrão.
 
 ## Princípios
 
+**Nomeação** — semântica, hierarquia e especificidade
+
 | Princípio                                                             | Descrição                                                               |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [Nomes semânticos](conventions/naming.md#semântico-vs-presentacional) | Classes descrevem propósito, não aparência                              |
 | [BEM](conventions/naming.md#bem)                                      | Bloco\_\_Elemento--Modificador, hierarquia explícita                    |
-| [Custom properties](conventions/variables.md#tokens-semânticos)       | Valores reutilizáveis com nomes que descrevem papel, não cor            |
-| [Mobile-first](conventions/responsive.md#mobile-first)                | `min-width` como base, expansão progressiva                             |
-| [Ordem lógica](conventions/formatting.md#ordem-de-propriedades)       | Propriedades agrupadas por responsabilidade, legíveis de cima pra baixo |
 | [Baixa especificidade](conventions/naming.md#especificidade)          | Classes simples, sem IDs, sem `!important`                              |
+
+<br>
+
+**Estilo e Layout** — propriedades, tokens e responsividade
+
+| Princípio                                                             | Descrição                                                               |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| [Custom properties](conventions/variables.md#tokens-semânticos)       | Valores reutilizáveis com nomes que descrevem papel, não cor            |
+| [Ordem lógica](conventions/formatting.md#ordem-de-propriedades)       | Propriedades agrupadas por responsabilidade, legíveis de cima pra baixo |
+| [Mobile-first](conventions/responsive.md#mobile-first)                | `min-width` como base, expansão progressiva                             |

@@ -7,11 +7,11 @@ A preferência é usar stored procedures para operações de domínio — a lóg
 
 ## Procedure por domínio
 
-Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia — não constrói SQL.
+Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói SQL.
 
 <details>
-<br>
 <summary>❌ Bad — SQL de domínio inline no repositório</summary>
+<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customerId, CancellationToken ct)
@@ -35,8 +35,8 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 <br>
 
 <details>
-<br>
 <summary>✅ Good — procedure encapsula a lógica, repositório só mapeia</summary>
+<br>
 
 ```sql
 -- FindOrdersByCustomer.sql
@@ -75,8 +75,8 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 <br>
 
 <details>
-<br>
 <summary>✅ Good — procedure de escrita com OUTPUT param</summary>
+<br>
 
 ```sql
 -- CreateOrder.sql
@@ -119,8 +119,8 @@ public async Task<Guid> CreateAsync(Guid customerId, decimal total, Cancellation
 Quando a operação é simples demais para justificar uma procedure — lookup por chave, contagem, existência — query aberta é aceitável.
 
 <details>
-<br>
 <summary>✅ Good — lookup simples por chave primária</summary>
+<br>
 
 ```csharp
 public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
@@ -138,8 +138,8 @@ public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — verificação de existência</summary>
+<br>
 
 ```csharp
 public async Task<bool> ExistsAsync(string email, CancellationToken ct)
@@ -162,8 +162,8 @@ SQL injection acontece quando um valor externo é interpretado como código SQL 
 Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e o banco trata como dado puro, sem interpretar.
 
 <details>
-<br>
 <summary>❌ Bad — concatenação deixa o atacante escrever SQL</summary>
+<br>
 
 ```csharp
 // email recebido: ' OR '1'='1
@@ -182,8 +182,8 @@ var sql = $"SELECT Id, Name FROM Customers WHERE Email = '{email}'";
 <br>
 
 <details>
-<br>
 <summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
+<br>
 
 ```csharp
 public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct)
@@ -201,8 +201,8 @@ public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct
 <br>
 
 <details>
-<br>
 <summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
+<br>
 
 ```csharp
 // tentação comum: $"WHERE Name LIKE '%{term}%'" — SQL injection
@@ -224,8 +224,8 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 `IDbConnection` é injetado no repositório — nunca instanciado internamente com connection string hardcoded. O ciclo de vida da conexão é responsabilidade do chamador.
 
 <details>
-<br>
 <summary>❌ Bad — conexão instanciada dentro do repositório</summary>
+<br>
 
 ```csharp
 public class OrderRepository
@@ -243,8 +243,8 @@ public class OrderRepository
 <br>
 
 <details>
-<br>
 <summary>✅ Good — IDbConnection injetado via construtor</summary>
+<br>
 
 ```csharp
 public class OrderRepository(IDbConnection connection)

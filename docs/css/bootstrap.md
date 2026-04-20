@@ -10,8 +10,8 @@ Bootstrap 5 expõe custom properties em todos os componentes. Sobrescrever a var
 visual sem tocar na especificidade do framework.
 
 <details>
-<br>
 <summary>❌ Bad — sobrescrita por seletor ou !important</summary>
+<br>
 
 ```css
 .btn-primary {
@@ -29,8 +29,8 @@ visual sem tocar na especificidade do framework.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — override via custom properties do Bootstrap</summary>
+<br>
 
 ```css
 :root {
@@ -50,8 +50,8 @@ Não criar nova classe que duplica o componente Bootstrap — usar classes base 
 adicionar apenas o delta como modificador.
 
 <details>
-<br>
 <summary>❌ Bad — duplica o componente base, desacopla do framework</summary>
+<br>
 
 ```html
 <div class="my-card">...</div>
@@ -72,8 +72,8 @@ adicionar apenas o delta como modificador.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — compõe sobre a classe base, adiciona apenas o delta</summary>
+<br>
 
 ```html
 <div class="card card--product">...</div>

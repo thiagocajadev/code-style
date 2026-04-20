@@ -5,8 +5,8 @@ Toda operação que depende de I/O é assíncrona. Bloquear o thread principal t
 ## Callback hell
 
 <details>
-<br>
 <summary>❌ Bad — aninhamento cresce sem controle</summary>
+<br>
 
 ```js
 function fetchUserData(id, callback) {
@@ -25,8 +25,8 @@ function fetchUserData(id, callback) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — async/await, linear e legível</summary>
+<br>
 
 ```js
 async function fetchUserData(id) {
@@ -45,8 +45,8 @@ async function fetchUserData(id) {
 ## .then() encadeado
 
 <details>
-<br>
 <summary>❌ Bad — verboso, difícil de depurar</summary>
+<br>
 
 ```js
 function fetchUserData(id) {
@@ -63,8 +63,8 @@ function fetchUserData(id) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — mesmo resultado, sem o ruído</summary>
+<br>
 
 ```js
 async function fetchUserData(id) {
@@ -83,8 +83,8 @@ async function fetchUserData(id) {
 ## Bloqueio síncrono
 
 <details>
-<br>
 <summary>❌ Bad — loop síncrono trava o thread principal</summary>
+<br>
 
 ```js
 function wait(ms) {
@@ -100,8 +100,8 @@ wait(3000); // aplicação trava por 3 segundos
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Promise libera o thread enquanto aguarda</summary>
+<br>
 
 ```js
 function wait(ms) {
@@ -123,8 +123,8 @@ async function run() {
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
 <details>
-<br>
 <summary>❌ Bad — await sequencial quando não há dependência</summary>
+<br>
 
 ```js
 async function fetchDashboard(userId) {
@@ -143,8 +143,8 @@ async function fetchDashboard(userId) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Promise.all dispara tudo ao mesmo tempo</summary>
+<br>
 
 ```js
 async function fetchDashboard(userId) {
@@ -171,8 +171,8 @@ async function fetchDashboard(userId) {
 Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção — sem `fetch` solto espalhado pelo código.
 
 <details>
-<br>
 <summary>❌ Bad — fetch direto, configuração duplicada em todo lugar</summary>
+<br>
 
 ```js
 // user.service.js
@@ -201,8 +201,8 @@ async function fetchOrders(userId) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — cliente único, injetado onde precisar</summary>
+<br>
 
 ```js
 // api.client.js
@@ -245,8 +245,8 @@ async function fetchOrders(apiClient, userId) {
 ## Quando criar uma função async
 
 <details>
-<br>
 <summary>✅ Good — toda operação de I/O é async</summary>
+<br>
 
 ```js
 // banco de dados

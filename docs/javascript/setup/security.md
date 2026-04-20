@@ -8,8 +8,8 @@
 Segredos — connection strings, API keys, JWT secrets, senhas — nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
 
 <details>
-<br>
 <summary>❌ Bad — segredo hardcoded no código</summary>
+<br>
 
 ```js
 // db.client.js
@@ -26,8 +26,8 @@ const token = jwt.sign(payload, "super-secret-key-123"); // vaza com o código
 <br>
 
 <details>
-<br>
 <summary>❌ Bad — segredo em config.js commitado</summary>
+<br>
 
 ```js
 // config.js
@@ -46,8 +46,8 @@ export const config = {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — segredo resolvido via process.env, injetado pelo ambiente</summary>
+<br>
 
 ```js
 // config.js
@@ -77,8 +77,8 @@ export const config = {
 | Timeouts e limites | Qualquer valor com `PASSWORD`, `SECRET`, `KEY`, `TOKEN` |
 
 <details>
-<br>
 <summary>✅ Good — .env.example como contrato público</summary>
+<br>
 
 ```bash
 # .env.example — commitado, sem valores reais
@@ -127,8 +127,8 @@ JWT_SECRET=prod-signing-secret
 ```
 
 <details>
-<br>
 <summary>✅ Good — config.js lê process.env uma vez, módulos recebem por injeção</summary>
+<br>
 
 ```js
 // config.js — único ponto de leitura
@@ -187,8 +187,8 @@ O `!.env.example` garante que o arquivo de contrato seja sempre commitado.
 passa. Em produção, sempre `jwt.verify()`: valida assinatura, expiração e audience em uma chamada.
 
 <details>
-<br>
 <summary>❌ Bad — decode não valida assinatura, token forjado passa</summary>
+<br>
 
 ```js
 // auth.middleware.js
@@ -209,8 +209,8 @@ export function authenticate(req, res, next) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — verify valida assinatura e expiração</summary>
+<br>
 
 ```js
 // auth.middleware.js
@@ -241,8 +241,8 @@ Verificar roles inline em cada handler duplica lógica e cria brechas quando um 
 checagem. Centralizar em um middleware de autorização garante cobertura uniforme.
 
 <details>
-<br>
 <summary>❌ Bad — verificação de role duplicada em cada handler</summary>
+<br>
 
 ```js
 // orders.handler.js
@@ -261,8 +261,8 @@ export async function cancelOrderHandler(req, res) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — middleware de autorização centralizado e reutilizável</summary>
+<br>
 
 ```js
 // middleware/authorize.js
@@ -290,8 +290,8 @@ Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `httpOn
 JavaScript, `secure` restringe a HTTPS e `sameSite` bloqueia envio cross-origin.
 
 <details>
-<br>
 <summary>❌ Bad — cookie sem flags de segurança</summary>
+<br>
 
 ```js
 // session sem proteção — acessível por JS, enviado em HTTP e em requisições cross-origin
@@ -307,8 +307,8 @@ app.use(session({
 <br>
 
 <details>
-<br>
 <summary>✅ Good — cookie com httpOnly, secure e sameSite</summary>
+<br>
 
 ```js
 const sessionConfig = {

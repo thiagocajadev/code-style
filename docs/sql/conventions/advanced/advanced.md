@@ -5,8 +5,8 @@ Subqueries aninhadas são difíceis de rastrear. CTEs nomeiam os passos e tornam
 ## Subquery aninhada
 
 <details>
-<br>
 <summary>❌ Bad — subquery no WHERE sem nome</summary>
+<br>
 
 ```sql
 SELECT
@@ -30,8 +30,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — CTE nomeada no topo</summary>
+<br>
 
 ```sql
 WITH ActivePlayerTeamsCTE AS
@@ -41,7 +41,7 @@ WITH ActivePlayerTeamsCTE AS
   FROM
     Players
   WHERE
-    IsActive = 1  -- active
+    IsActive = 1 -- active
 )
 
 SELECT
@@ -58,8 +58,8 @@ JOIN
 ## CTEs encadeadas
 
 <details>
-<br>
 <summary>❌ Bad — JOIN de subqueries, difícil de acompanhar</summary>
+<br>
 
 ```sql
 SELECT t.Name, t.ChampionshipsWon, p.PlayerName
@@ -75,8 +75,8 @@ JOIN
 <br>
 
 <details>
-<br>
 <summary>✅ Good — duas CTEs separadas, JOIN no SELECT final</summary>
+<br>
 
 ```sql
 WITH TeamCTE AS
@@ -100,7 +100,7 @@ ActivePlayersCTE AS
   FROM
     Players
   WHERE
-    IsActive = 1  -- active
+    IsActive = 1 -- active
 )
 
 SELECT
@@ -118,8 +118,8 @@ JOIN
 ## Procedure — SQL Server
 
 <details>
-<br>
 <summary>❌ Bad — prefixo genérico, nome vago, sem formatação vertical</summary>
+<br>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -133,8 +133,8 @@ END
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome descritivo, parâmetro tipado, formatação vertical</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -142,6 +142,7 @@ CREATE OR ALTER PROCEDURE GetFootballTeamById
   @TeamId INT
 )
 AS
+
 BEGIN
   SELECT
     Id,
@@ -159,8 +160,8 @@ END;
 ## Function — PostgreSQL
 
 <details>
-<br>
 <summary>❌ Bad — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
+<br>
 
 ```sql
 CREATE FUNCTION get_team(id INT) RETURNS VOID AS $$
@@ -175,8 +176,8 @@ $$ LANGUAGE plpgsql;
 <br>
 
 <details>
-<br>
 <summary>✅ Good — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
+<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById
@@ -189,6 +190,7 @@ RETURNS TABLE
   Name TEXT,
   ChampionshipsWon INT
 ) AS $$
+
 BEGIN
   RETURN QUERY
   SELECT
@@ -200,6 +202,7 @@ BEGIN
   WHERE
     Id = TeamId;
 END;
+
 $$ LANGUAGE plpgsql;
 ```
 

@@ -1,14 +1,14 @@
 # Naming
 
-Nomes de classe descrevem **propósito** — o que o elemento representa no domínio da UI — não sua
+Nomes de classe descrevem **propósito** (o que o elemento representa no domínio da UI), não sua
 aparência visual. Uma classe que diz `.button--danger` sobrevive a uma mudança de cor. `.red-button`
 não.
 
 ## Semântico vs presentacional
 
 <details>
-<br>
 <summary>❌ Bad — nome descreve aparência, quebra ao mudar o design</summary>
+<br>
 
 ```css
 .blue-header {
@@ -32,8 +32,8 @@ não.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome descreve papel, sobrevive a mudanças de design</summary>
+<br>
 
 ```css
 .heading--primary {
@@ -59,8 +59,8 @@ BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explíci
 relacionamento entre partes da UI sem depender de aninhamento no CSS.
 
 <details>
-<br>
 <summary>❌ Bad — hierarquia implícita, acoplada ao HTML</summary>
+<br>
 
 ```html
 <div class="card featured">
@@ -87,8 +87,8 @@ relacionamento entre partes da UI sem depender de aninhamento no CSS.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — BEM: bloco__elemento--modificador</summary>
+<br>
 
 ```html
 <div class="card card--featured">
@@ -118,8 +118,8 @@ Especificidade alta torna o CSS frágil — qualquer override exige `!important`
 específico.
 
 <details>
-<br>
 <summary>❌ Bad — IDs e seletores encadeados inflam a especificidade</summary>
+<br>
 
 ```css
 #app .container .card h2 {
@@ -135,8 +135,8 @@ específico.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — classes simples, especificidade baixa e previsível</summary>
+<br>
 
 ```css
 .card__title {

@@ -42,6 +42,8 @@ Configuração inicial de um projeto C#/.NET — estrutura, infraestrutura e seg
 
 ## Princípios
 
+**Forma** — estrutura e narrativa do método
+
 | Princípio                                                                                      | Descrição                                                           |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | [Escrita em inglês](conventions/naming.md#nomes-em-português)                                  | Código universal, nomes curtos e sem ambiguidade                    |
@@ -49,16 +51,30 @@ Configuração inicial de um projeto C#/.NET — estrutura, infraestrutura e seg
 | [Sufixo Async](conventions/naming.md#sufixo-async)                                             | Todo método assíncrono termina em `Async`                           |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                     | Variáveis e métodos que dispensam explicação                        |
 | [Código como documentação](conventions/naming.md#código-como-documentação)                     | Nomes substituem comentários — comentários mentem                   |
+| [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo)                            | Chamada visível antes dos detalhes — top-down                       |
+| [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
+| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                          | Saída de uma linha — o retorno nomeia o resultado, não o computa    |
+
+<br>
+
+**Legibilidade** — fluxo, densidade visual e nomes
+
+| Princípio                                                                                      | Descrição                                                           |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| [Retorno antecipado](conventions/control-flow.md#if-e-else)                                    | Saída cedo na falha, sem else após return                           |
+| [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                             | Aninhamento em cascata substituído por fluxo plano                  |
+| [Pattern matching](conventions/control-flow.md#pattern-matching)                               | `switch` expressions sobre `if-else` encadeado                      |
 | [Imutabilidade por padrão](conventions/variables.md#records-imutáveis)                         | `readonly`, `const`, `record` — mutação é exceção explícita         |
 | [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos)                            | Constantes nomeadas em vez de literais inline                       |
 | [CQS](conventions/variables.md#mutação-direta)                                                 | Retornar novo estado, sem efeitos colaterais ocultos                |
-| [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo)                            | Chamada visível antes dos detalhes — top-down                       |
-| [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
-| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                          | Variável expressiva antes do `return`, simétrica à entrada          |
+
+<br>
+
+**Controle de Qualidade** — estado, erros, async e testes
+
+| Princípio                                                                                      | Descrição                                                           |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | [Primary constructors](conventions/methods.md#primary-constructors)                            | DI por construtor primário — sem service locator                    |
-| [Guard clauses](conventions/control-flow.md#guard-clauses)                                     | Retorno antecipado, fluxo principal livre                           |
-| [Fluxo linear](conventions/control-flow.md#else-após-return)                                   | Guard clauses sobre condicionais aninhadas                          |
-| [Pattern matching](conventions/control-flow.md#pattern-matching)                               | `switch` expressions sobre `if-else` encadeado                      |
 | [Result\<T\>](conventions/advanced/error-handling.md#resultt)                                  | Exceção para falhas inesperadas — `Result` para fluxo de negócio    |
 | [Falhar rápido](conventions/advanced/error-handling.md#falhar-rápido)                          | Validar cedo, interromper fluxo inválido                            |
 | [Contratos consistentes](conventions/advanced/error-handling.md#apierror)                      | Erros tipados, sempre o mesmo formato                               |

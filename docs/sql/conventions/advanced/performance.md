@@ -7,8 +7,8 @@ Erros comuns que tornam consultas lentas e como corrigi-los.
 Trazer todas as colunas transfere dados desnecessários, impede covering indexes e acopla a query ao schema.
 
 <details>
-<br>
 <summary>❌ Bad — todas as colunas, inclusive as não usadas</summary>
+<br>
 
 ```sql
 SELECT
@@ -24,8 +24,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — somente as colunas necessárias</summary>
+<br>
 
 ```sql
 SELECT
@@ -36,7 +36,7 @@ SELECT
 FROM
   Players
 WHERE
-  Players.IsActive = 1  -- active
+  Players.IsActive = 1 -- active
 ORDER BY
   Players.SquadNumber;
 ```
@@ -48,8 +48,8 @@ ORDER BY
 Aplicar função sobre a coluna filtrada impede o uso do índice — o banco precisa avaliar cada linha.
 
 <details>
-<br>
 <summary>❌ Bad — função no WHERE, índice ignorado</summary>
+<br>
 
 ```sql
 SELECT
@@ -66,8 +66,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — intervalo direto na coluna, índice aproveitado</summary>
+<br>
 
 ```sql
 SELECT
@@ -89,8 +89,8 @@ ORDER BY
 Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
 
 <details>
-<br>
 <summary>❌ Bad — subquery executa N vezes, uma por time</summary>
+<br>
 
 ```sql
 SELECT
@@ -113,8 +113,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — CTE agrega uma vez, JOIN cruza o resultado</summary>
+<br>
 
 ```sql
 WITH ActivePlayerCountCTE AS
@@ -125,7 +125,7 @@ WITH ActivePlayerCountCTE AS
   FROM
     Players
   WHERE
-    Players.IsActive = 1  -- active
+    Players.IsActive = 1 -- active
   GROUP BY
     Players.TeamId
 )
@@ -138,7 +138,7 @@ FROM
 JOIN
   ActivePlayerCountCTE ON FootballTeams.Id = ActivePlayerCountCTE.TeamId
 WHERE
-  FootballTeams.IsActive = 1  -- active
+  FootballTeams.IsActive = 1 -- active
 ORDER BY
   ActivePlayerCountCTE.TotalPlayers DESC;
 ```
@@ -150,8 +150,8 @@ ORDER BY
 Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
 
 <details>
-<br>
 <summary>❌ Bad — full scan em tabela grande sem índice na coluna filtrada</summary>
+<br>
 
 ```sql
 -- sem índice em TeamId: o banco lê todos os registros da tabela
@@ -171,8 +171,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — índice na coluna principal do filtro</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId
@@ -186,8 +186,8 @@ CREATE INDEX IX_Players_TeamId
 A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
 <details>
-<br>
 <summary>❌ Bad — coluna de baixa seletividade isolada</summary>
+<br>
 
 ```sql
 -- IsActive tem apenas dois valores (0 / 1): índice ineficiente sozinho
@@ -200,8 +200,8 @@ CREATE INDEX IX_Players_IsActive
 <br>
 
 <details>
-<br>
 <summary>✅ Good — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -215,8 +215,8 @@ CREATE INDEX IX_Players_TeamId_IsActive
 Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha — mesmo com índice.
 
 <details>
-<br>
 <summary>❌ Bad — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -239,8 +239,8 @@ WHERE
 <br>
 
 <details>
-<br>
 <summary>✅ Good — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive_Cover
@@ -255,8 +255,8 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 Foreign key sem índice na coluna referenciadora força full table scan a cada `DELETE` ou `UPDATE` na tabela pai. O banco precisa verificar se existem filhos antes de executar a operação.
 
 <details>
-<br>
 <summary>❌ Bad — FK declarada, coluna sem índice</summary>
+<br>
 
 ```sql
 CREATE TABLE Players
@@ -277,8 +277,8 @@ CREATE TABLE Players
 <br>
 
 <details>
-<br>
 <summary>✅ Good — índice na coluna FK, lookup eficiente</summary>
+<br>
 
 ```sql
 CREATE TABLE Players
@@ -316,15 +316,15 @@ UUID v7 combina timestamp de alta resolução com aleatoriedade — insere sempr
 B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
 
 <details>
-<br>
 <summary>❌ Bad — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders
 (
-    Id         UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), -- random: page splits constantes
+    Id UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), -- random: page splits constantes
     CustomerId UNIQUEIDENTIFIER NOT NULL,
-    CreatedAt  DATETIME2        NOT NULL DEFAULT GETUTCDATE(),
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
     CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
@@ -335,15 +335,15 @@ CREATE TABLE Orders
 <br>
 
 <details>
-<br>
 <summary>✅ Good — BIGINT quando unicidade global não é requisito</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders
 (
-    Id         BIGINT    NOT NULL IDENTITY(1, 1),
-    CustomerId BIGINT    NOT NULL,
-    CreatedAt  DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    Id BIGINT NOT NULL IDENTITY(1, 1),
+    CustomerId BIGINT NOT NULL,
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
     CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
@@ -354,8 +354,8 @@ CREATE TABLE Orders
 <br>
 
 <details>
-<br>
 <summary>✅ Good — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
+<br>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
@@ -364,9 +364,9 @@ CREATE TABLE Orders
 -- pg_uuidv7 — extensão PostgreSQL
 CREATE TABLE Orders
 (
-    Id         UNIQUEIDENTIFIER NOT NULL, -- sem DEFAULT: valor vem da aplicação
+    Id UNIQUEIDENTIFIER NOT NULL, -- sem DEFAULT: valor vem da aplicação
     CustomerId UNIQUEIDENTIFIER NOT NULL,
-    CreatedAt  DATETIME2        NOT NULL DEFAULT GETUTCDATE(),
+    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
     CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
@@ -382,8 +382,8 @@ CREATE TABLE Orders
 Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
 
 <details>
-<br>
 <summary>❌ Bad — traz tudo e descarta em memória</summary>
+<br>
 
 ```sql
 SELECT
@@ -404,8 +404,8 @@ ORDER BY
 <br>
 
 <details>
-<br>
 <summary>✅ Good — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
+<br>
 
 ```sql
 -- SQL Server

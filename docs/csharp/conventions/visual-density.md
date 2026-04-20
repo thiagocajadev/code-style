@@ -7,8 +7,8 @@ Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com 
 Métodos com múltiplos passos (validar, buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter no máximo 2 linhas antes de um respiro.
 
 <details>
-<br>
 <summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
+<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -29,8 +29,8 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 <br>
 
 <details>
-<br>
 <summary>✅ Good — fases separadas, fluxo legível de cima pra baixo</summary>
+<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -57,8 +57,8 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 O `return` encerra um método — quando há mais de um passo antes dele, ele pertence a um parágrafo próprio.
 
 <details>
-<br>
 <summary>❌ Bad — return colado ao último passo</summary>
+<br>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -74,8 +74,8 @@ public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
 <br>
 
 <details>
-<br>
 <summary>✅ Good — return separado do último passo</summary>
+<br>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -101,8 +101,8 @@ public IEnumerable<Order> GetPendingOrders(Guid userId) =>
 Uma variável seguida do `if` que a valida formam um par semântico. A linha em branco vem **depois** do par, não entre eles.
 
 <details>
-<br>
 <summary>❌ Bad — variável solta do seu guarda</summary>
+<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -116,14 +116,55 @@ var invoice = BuildInvoice(order);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
 if (order is null) return NotFound();
 
 var invoice = BuildInvoice(order);
+```
+
+</details>
+
+## Testes — Assert como fase própria
+
+Em métodos de teste, o `Assert` é uma fase distinta — a linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
+
+<details>
+<summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
+<br>
+
+```csharp
+[Fact]
+public void AppliesTenPercentDiscountToPrice()
+{
+    var price = 100m;
+    var actualPrice = ApplyDiscount(price, 10);
+    var expectedPrice = 90m;
+    Assert.Equal(expectedPrice, actualPrice);
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — Assert separado, assertion como fase própria</summary>
+<br>
+
+```csharp
+[Fact]
+public void AppliesTenPercentDiscountToPrice()
+{
+    var price = 100m;
+    var actualPrice = ApplyDiscount(price, 10);
+    var expectedPrice = 90m;
+
+    Assert.Equal(expectedPrice, actualPrice);
+}
 ```
 
 </details>
@@ -133,8 +174,8 @@ var invoice = BuildInvoice(order);
 Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado — o template final fica legível e os pedaços ganham semântica.
 
 <details>
-<br>
 <summary>❌ Bad — interpolação densa inline, sem semântica nas partes</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -148,8 +189,8 @@ public string BuildShippingLabel(Order order)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)

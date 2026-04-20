@@ -19,8 +19,8 @@ Palavras comuns no português colidem com tipos e funções SQL: `Data` (data ty
 type), `Status` (usado em comandos).
 
 <details>
-<br>
 <summary>❌ Bad — delimitadores para escapar palavras reservadas</summary>
+<br>
 
 ```sql
 SELECT [Data], [Time] FROM [TimesDeFutebol];
@@ -31,8 +31,8 @@ SELECT [Data], [Time] FROM [TimesDeFutebol];
 <br>
 
 <details>
-<br>
 <summary>✅ Good — inglês elimina a ambiguidade</summary>
+<br>
 
 ```sql
 SELECT MatchDate, TeamName FROM FootballTeams;
@@ -43,8 +43,8 @@ SELECT MatchDate, TeamName FROM FootballTeams;
 ## Tabelas no plural, colunas no singular
 
 <details>
-<br>
 <summary>❌ Bad — singular em tabelas, português, sem padrão</summary>
+<br>
 
 ```sql
 CREATE TABLE Time
@@ -60,8 +60,8 @@ CREATE TABLE Time
 <br>
 
 <details>
-<br>
 <summary>✅ Good — plural na tabela, singular nas colunas, inglês</summary>
+<br>
 
 ```sql
 CREATE TABLE FootballTeams
@@ -82,8 +82,8 @@ CREATE TABLE FootballTeams
 ## Prefixo da tabela no nome da coluna
 
 <details>
-<br>
 <summary>❌ Bad — nome da tabela repetido em cada coluna</summary>
+<br>
 
 ```sql
 SELECT
@@ -99,8 +99,8 @@ FROM
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome da tabela qualifica a coluna diretamente</summary>
+<br>
 
 ```sql
 SELECT
@@ -118,8 +118,8 @@ FROM
 Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma letra (`u`, `t`, `c`).
 
 <details>
-<br>
 <summary>❌ Bad — colunas sem qualificação, alias de letra</summary>
+<br>
 
 ```sql
 SELECT
@@ -137,8 +137,8 @@ JOIN
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome completo da tabela em todas as referências</summary>
+<br>
 
 ```sql
 SELECT
@@ -175,8 +175,8 @@ Toda constraint deve ser declarada com `CONSTRAINT` e um nome explícito. Constr
 tornam erros difíceis de identificar e impossibilitam `ALTER TABLE ... DROP CONSTRAINT`.
 
 <details>
-<br>
 <summary>❌ Bad — constraints inline sem nome</summary>
+<br>
 
 ```sql
 CREATE TABLE Players
@@ -192,8 +192,8 @@ CREATE TABLE Players
 <br>
 
 <details>
-<br>
 <summary>✅ Good — constraints nomeadas, removíveis e identificáveis</summary>
+<br>
 
 ```sql
 CREATE TABLE Players

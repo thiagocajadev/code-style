@@ -23,8 +23,8 @@ import assert from 'node:assert/strict';
 Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto, execução do comportamento e verificação do resultado.
 
 <details>
-<br>
 <summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<br>
 
 ```js
 test('applies discount', () => {
@@ -37,8 +37,8 @@ test('applies discount', () => {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — arrange, act e assert separados</summary>
+<br>
 
 ```js
 test('applies 10% discount to order price', () => {
@@ -55,11 +55,11 @@ test('applies 10% discount to order price', () => {
 
 ## Assert inline — semantic assert
 
-`expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase — não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
+`expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
-<br>
 <summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<br>
 
 ```js
 test('formats full name', () => {
@@ -77,8 +77,8 @@ test('returns active users only', () => {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<br>
 
 ```js
 test('formats full name', () => {
@@ -104,11 +104,11 @@ test('returns active users only', () => {
 
 ## Nome genérico
 
-O nome do teste descreve o cenário e o resultado esperado — não o nome da função nem uma afirmação vaga. Sem prefixos: `should` não agrega informação, `given/when/then` é mecânico e verboso.
+O nome do teste descreve o cenário e o resultado esperado, não o nome da função nem uma afirmação vaga. Sem prefixos: `should` não agrega informação, `given/when/then` é mecânico e verboso.
 
 <details>
-<br>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<br>
 
 ```js
 test('test 1', () => { /* ... */ });
@@ -121,8 +121,8 @@ test('applyDiscount function', () => { /* ... */ });
 <br>
 
 <details>
-<br>
 <summary>✅ Good — cenário + resultado esperado, sem prefixo</summary>
+<br>
 
 ```js
 test('applies discount when order total exceeds minimum', () => { /* ... */ });
@@ -138,8 +138,8 @@ test('throws ValidationError when discount percentage is negative', () => { /* .
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<br>
 <summary>❌ Bad — estado mutável compartilhado entre testes</summary>
+<br>
 
 ```js
 let order;
@@ -164,8 +164,8 @@ test('applies discount to order', () => {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<br>
 
 ```js
 test('creates order with generated id', () => {
@@ -191,11 +191,11 @@ test('applies 10% discount to order price', () => {
 
 ## Exceção sem tipo
 
-Testar que um erro foi lançado é diferente de testar *qual* erro foi lançado. `assert.rejects` verifica tipo e mensagem — não apenas presença.
+Testar que um erro foi lançado é diferente de testar *qual* erro foi lançado. `assert.rejects` verifica tipo e mensagem, não apenas presença.
 
 <details>
-<br>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<br>
 
 ```js
 test('throws on missing order', async () => {
@@ -212,8 +212,8 @@ test('throws on missing order', async () => {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — assert.rejects com matcher de tipo</summary>
+<br>
 
 ```js
 test('throws NotFoundError when order does not exist', async () => {

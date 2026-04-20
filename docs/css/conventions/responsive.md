@@ -7,8 +7,8 @@ desnecessários.
 ## Mobile-first
 
 <details>
-<br>
 <summary>❌ Bad — desktop-first: base para tela grande, override para tela pequena</summary>
+<br>
 
 ```css
 .layout {
@@ -30,8 +30,8 @@ desnecessários.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — mobile-first: base simples, expansão progressiva</summary>
+<br>
 
 ```css
 .layout {
@@ -56,8 +56,8 @@ Valores de breakpoint espalhados em vários arquivos criam inconsistência — m
 grep no projeto inteiro.
 
 <details>
-<br>
 <summary>❌ Bad — pixel values mágicos e inconsistentes entre arquivos</summary>
+<br>
 
 ```css
 /* layout.css */
@@ -74,8 +74,8 @@ grep no projeto inteiro.
 <br>
 
 <details>
-<br>
 <summary>✅ Good — breakpoints centralizados como fonte única de verdade</summary>
+<br>
 
 ```css
 /* tokens/breakpoints.css — definição única */

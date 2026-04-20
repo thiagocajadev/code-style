@@ -41,38 +41,59 @@ tecnologias).
 
 Cada princípio pode ser aplicado em qualquer linguagem.
 
+Organizados como checklist de revisão — do mais impactante ao mais granular:
+
+- **Forma** — avalia a estrutura da função de fora para dentro
+- **Legibilidade** — analisa fluxo, espaçamento e nomes linha a linha
+- **Controle de Qualidade** — verifica as garantias de robustez: estado, erros, async e testes
+
 <details>
-<br>
 <summary>Ver todos os princípios</summary>
 
 <br>
 
-| Princípio                                                                                                           | Descrição                                                            |
-| ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](docs/javascript/conventions/naming.md#nomes-em-português)                                       | Código universal, nomes curtos e sem ambiguidade                     |
-| [Código narrativo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades)              | O código conta a história, sem precisar de comentários               |
-| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#ponto-de-entrada-limpo)                           | Caller de uma linha — o quê, não o como                              |
-| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades)          | Chamada visível antes dos detalhes — top-down                        |
-| [Detalhes abaixo](docs/javascript/conventions/functions.md#direct-return)                                           | Helpers ficam abaixo do orquestrador — step-down rule                |
-| [Retorno antecipado](docs/javascript/conventions/control-flow.md#else-após-return)                                  | Guard clauses no topo, fluxo principal livre                         |
-| [Fluxo linear](docs/javascript/conventions/control-flow.md#aninhamento-em-cascata--arrow-antipattern)               | Guard clauses sobre condicionais aninhadas                           |
-| [Baixa densidade visual](docs/javascript/conventions/functions.md#baixa-densidade-visual)                           | Linhas relacionadas juntas, grupos separados por uma linha em branco |
-| [Nomes expressivos](docs/javascript/conventions/naming.md#identificadores-sem-significado)                          | Variáveis e funções que dispensam explicação                         |
-| [Código como documentação](docs/javascript/conventions/naming.md#código-como-documentação)                          | Nomes substituem comentários — comentários mentem                    |
-| [Funções pequenas](docs/javascript/conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)       | Uma responsabilidade, um nível de abstração                          |
-| [Cálculo vs formatação](docs/javascript/conventions/functions.md#separar-cálculo-de-formatação)                     | Computar dados e formatar saída em funções separadas                 |
-| [CQS](docs/javascript/conventions/variables.md#mutação-direta-de-objetos)                                           | Separar comando de consulta, sem efeitos colaterais ocultos          |
-| [Dependências explícitas](docs/javascript/conventions/advanced/async.md#api-client-centralizado)                             | Injetar via parâmetros, evitar estado global                         |
-| [Imutabilidade por padrão](docs/javascript/conventions/variables.md#let-desnecessário)                                       | `const` primeiro, `let` só quando necessário                         |
-| [Sem valores mágicos](docs/javascript/conventions/variables.md#evitar-valores-mágicos)                                       | Constantes nomeadas no lugar de números e strings soltos             |
-| [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                             |
-| [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato                       |
-| [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                               |
-| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras                    |
-| [I/O assíncrono](docs/javascript/conventions/advanced/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                          |
-| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                                      | Variável expressiva antes do `return`, simétrica à entrada           |
-| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical--parâmetros)                                      | Até 3 parâmetros por linha — 4+ usa objeto                           |
-| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas--aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline         |
+**Forma** — estrutura e narrativa da função
+
+| Princípio                                                                                                  | Descrição                                                        |
+| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [Escrita em inglês](docs/javascript/conventions/naming.md#nomes-em-português)                              | Código universal, nomes curtos e sem ambiguidade                 |
+| [Código narrativo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades)     | O código conta a história, sem precisar de comentários           |
+| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#ponto-de-entrada-limpo)                  | Caller de uma linha — o quê, não o como                          |
+| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical--parâmetros)                    | Até 3 parâmetros por linha — 4+ usa objeto                       |
+| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades) | Chamada visível antes dos detalhes — top-down                    |
+| [Detalhes abaixo](docs/javascript/conventions/functions.md#direct-return)                                  | Helpers ficam abaixo do orquestrador — step-down rule            |
+| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                    | Saída de uma linha — o retorno nomeia o resultado, não o computa |
+
+<br>
+
+**Legibilidade** — fluxo, densidade visual e nomes
+
+| Princípio                                                                                  | Descrição                                                            |
+| ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
+| [Retorno antecipado](docs/javascript/conventions/control-flow.md#if-e-else)                | Saída cedo na falha, sem else após return                            |
+| [Fluxo linear](docs/javascript/conventions/control-flow.md#aninhamento-em-cascata)         | Aninhamento em cascata substituído por fluxo plano                   |
+| [Baixa densidade visual](docs/javascript/conventions/functions.md#baixa-densidade-visual)  | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Nomes expressivos](docs/javascript/conventions/naming.md#identificadores-sem-significado) | Variáveis e funções que dispensam explicação                         |
+| [Código como documentação](docs/javascript/conventions/naming.md#código-como-documentação) | Nomes substituem comentários — comentários mentem                    |
+| [Sem valores mágicos](docs/javascript/conventions/variables.md#evitar-valores-mágicos)     | Constantes nomeadas no lugar de números e strings soltos             |
+
+<br>
+
+**Controle de Qualidade** — estado, erros, async e testes
+
+| Princípio                                                                                                                    | Descrição                                                    |
+| ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
+| [Funções pequenas](docs/javascript/conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)                | Uma responsabilidade, um nível de abstração                  |
+| [Cálculo vs formatação](docs/javascript/conventions/functions.md#separar-cálculo-de-formatação)                              | Computar dados e formatar saída em funções separadas         |
+| [Imutabilidade por padrão](docs/javascript/conventions/variables.md#let-desnecessário)                                       | `const` primeiro, `let` só quando necessário                 |
+| [CQS](docs/javascript/conventions/variables.md#mutação-direta-de-objetos)                                                    | Separar comando de consulta, sem efeitos colaterais ocultos  |
+| [Dependências explícitas](docs/javascript/conventions/advanced/async.md#api-client-centralizado)                             | Injetar via parâmetros, evitar estado global                 |
+| [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                     |
+| [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                       |
+| [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato               |
+| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras            |
+| [I/O assíncrono](docs/javascript/conventions/advanced/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                  |
+| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas--aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline |
 
 </details>
 
@@ -89,12 +110,13 @@ Cada princípio pode ser aplicado em qualquer linguagem.
 
 ### Shared
 
-| Tópico                                                  | Descrição                                                    |
-| ------------------------------------------------------- | ------------------------------------------------------------ |
-| [EditorConfig](docs/shared/editorconfig.md)             | Configuração base de editor                                  |
-| [Git](docs/shared/git.md)                               | Branches, commits, pipeline e estratégia de entrega          |
-| [Observability](docs/shared/observability.md)           | Logging estruturado, níveis, PII, correlation ID             |
-| [Visual Density](docs/shared/visual-density.md)         | Densidade visual agnóstica de linguagem — princípios e regras |
+| Tópico                                          | Descrição                                                                   |
+| ----------------------------------------------- | --------------------------------------------------------------------------- |
+| [Principles](docs/shared/principles.md)         | Todos os princípios explicados — Forma, Legibilidade, Controle de Qualidade |
+| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
+| [Git](docs/shared/git.md)                       | Branches, commits, pipeline e estratégia de entrega                         |
+| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
+| [Visual Density](docs/shared/visual-density.md) | Densidade visual agnóstica de linguagem — princípios e regras               |
 
 ### Referências
 

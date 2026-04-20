@@ -14,8 +14,8 @@ Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados
 validação suja — um email com espaço passa no validator mas falha na busca no banco.
 
 <details>
-<br>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<br>
 
 ```csharp
 public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
@@ -35,8 +35,8 @@ public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, Cance
 <br>
 
 <details>
-<br>
 <summary>✅ Good — sanitize antes de validar</summary>
+<br>
 
 ```csharp
 private static CreateUserRequest Sanitize(CreateUserRequest request)
@@ -67,12 +67,12 @@ public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, Cance
 
 ## Schema validation com FluentValidation
 
-`AbstractValidator` valida shape, tipos e constraints — não regras de negócio. Centraliza o contrato
+`AbstractValidator` valida shape, tipos e constraints, não regras de negócio. Centraliza o contrato
 técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
-<br>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, CancellationToken ct)
@@ -91,8 +91,8 @@ public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, Cance
 <br>
 
 <details>
-<br>
 <summary>✅ Good — AbstractValidator centraliza o contrato, handler recebe dado validado</summary>
+<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -117,8 +117,8 @@ O validator valida se o dado tem o formato correto. Regras de negócio validam s
 domínio — dependem de I/O (banco, serviços externos) e não pertencem ao validator.
 
 <details>
-<br>
 <summary>❌ Bad — I/O dentro do validator mistura camadas</summary>
+<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -141,8 +141,8 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 <br>
 
 <details>
-<br>
 <summary>✅ Good — validator valida shape, regras de negócio no handler após</summary>
+<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -186,8 +186,8 @@ Retornar a entidade direta vaza campos internos: `PasswordHash`, `SecurityStamp`
 um `record` de resposta como projeção explícita — nunca a entidade do banco.
 
 <details>
-<br>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
+<br>
 
 ```csharp
 public async Task<User?> FindUserByIdAsync(Guid id, CancellationToken ct)
@@ -203,8 +203,8 @@ public async Task<User?> FindUserByIdAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — response record como projeção explícita do que sai</summary>
+<br>
 
 ```csharp
 public record UserResponse(Guid Id, string Name, string Email, DateTime CreatedAt);

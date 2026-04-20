@@ -7,8 +7,8 @@ Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com 
 **Máximo 2 linhas consecutivas por grupo.** Linhas relacionadas ficam juntas. Passos distintos são separados por exatamente uma linha em branco.
 
 <details>
-<br>
 <summary>❌ Bad — denso demais: todos os passos colados</summary>
+<br>
 
 ```js
 async function registerUser(input) {
@@ -28,8 +28,8 @@ async function registerUser(input) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — passos separados, no máximo 2 linhas por grupo</summary>
+<br>
 
 ```js
 async function registerUser(input) {
@@ -54,8 +54,8 @@ async function registerUser(input) {
 O `return` encerra uma função — visualmente, ele pertence a um parágrafo próprio quando há mais de um passo antes dele.
 
 <details>
-<br>
 <summary>❌ Bad — return colado ao último passo</summary>
+<br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -75,8 +75,8 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — return separado do último passo</summary>
+<br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -107,8 +107,8 @@ function findPendingOrders(userId) {
 Uma variável seguida do seu `if` de guarda formam um par semântico. A linha em branco vem **depois** do par, não entre eles.
 
 <details>
-<br>
 <summary>❌ Bad — variável solta do seu guarda</summary>
+<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -122,8 +122,8 @@ const invoice = buildInvoice(order);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -139,8 +139,8 @@ const invoice = buildInvoice(order);
 Quando um bloco tem 3 ou 4 linhas relacionadas sem nenhuma separação, quebre no meio.
 
 <details>
-<br>
 <summary>❌ Bad — 3 linhas coladas</summary>
+<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -155,8 +155,8 @@ while (attempt < maxAttempts) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — 2+1</summary>
+<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -174,8 +174,8 @@ while (attempt < maxAttempts) {
 Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter no máximo 2 linhas antes de um respiro.
 
 <details>
-<br>
 <summary>✅ Good — fases explícitas</summary>
+<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -191,13 +191,50 @@ async function createUserHandler(req, res) {
 
 </details>
 
+## Testes — expect como fase própria
+
+O `expect` é uma fase distinta — a linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
+
+<details>
+<summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
+<br>
+
+```js
+it('applies percentage discount to order price', () => {
+  const order = { price: 100, discountPct: 10 };
+  const actualOrder = applyDiscount(order);
+  const expectedPrice = 90;
+  expect(actualOrder.price).toBe(expectedPrice);
+});
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — expect separado, assertion como fase própria</summary>
+<br>
+
+```js
+it('applies percentage discount to order price', () => {
+  const order = { price: 100, discountPct: 10 };
+  const actualOrder = applyDiscount(order);
+  const expectedPrice = 90;
+
+  expect(actualOrder.price).toBe(expectedPrice);
+});
+```
+
+</details>
+
 ## Strings longas
 
 Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado — o template final fica legível e os pedaços ganham semântica.
 
 <details>
-<br>
 <summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>
+<br>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -210,8 +247,8 @@ function buildDeliveryMessage(user, order) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<br>
 
 ```js
 function buildDeliveryMessage(user, order) {

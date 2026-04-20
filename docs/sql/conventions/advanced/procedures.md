@@ -6,8 +6,8 @@ resultados intermediários, tornando cada passo testável e legível.
 ## Query monolítica vs etapas com temp tables
 
 <details>
-<br>
 <summary>❌ Bad — query única com subqueries aninhadas, difícil de debugar</summary>
+<br>
 
 ```sql
 SELECT
@@ -20,7 +20,7 @@ FROM
 JOIN (
   SELECT
     Players.TeamId,
-    COUNT(Players.Id)         AS TotalPlayers,
+    COUNT(Players.Id) AS TotalPlayers,
     AVG(Players.SquadNumber) AS AvgSquadNumber
   FROM
     Players
@@ -41,14 +41,15 @@ ORDER BY
 <br>
 
 <details>
-<br>
 <summary>✅ Good — procedure com temp tables, uma etapa por responsabilidade</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
 AS
+
 BEGIN
-  -- Etapa 1: times ativos com títulos
+ -- Etapa 1: times ativos com títulos
   SELECT
     FootballTeams.Id,
     FootballTeams.Name,
@@ -58,10 +59,10 @@ BEGIN
   FROM
     FootballTeams
   WHERE
-    FootballTeams.IsActive = 1 AND         -- active
-    FootballTeams.ChampionshipsWon > 0;    -- at least one title
+    FootballTeams.IsActive = 1 AND -- active
+    FootballTeams.ChampionshipsWon > 0; -- at least one title
 
-  -- Etapa 2: estatísticas de jogadores por time
+ -- Etapa 2: estatísticas de jogadores por time
   SELECT
     Players.TeamId,
     COUNT(Players.Id) AS TotalPlayers,
@@ -71,12 +72,12 @@ BEGIN
   FROM
     Players
   WHERE
-    Players.IsActive = 1 AND  -- active
+    Players.IsActive = 1 AND -- active
     Players.TeamId IN (SELECT #ActiveChampionTeams.Id FROM #ActiveChampionTeams)
   GROUP BY
     Players.TeamId;
 
-  -- Resultado final: combina as etapas
+ -- Resultado final: combina as etapas
   SELECT
     #ActiveChampionTeams.Name,
     #ActiveChampionTeams.ChampionshipsWon,
@@ -98,18 +99,19 @@ END;
 ## Procedure com parâmetros e temp tables
 
 <details>
-<br>
 <summary>✅ Good — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
 (
-  @TeamId   UNIQUEIDENTIFIER,
+  @TeamId UNIQUEIDENTIFIER,
   @Position NVARCHAR(50)
 )
 AS
+
 BEGIN
-  -- Etapa 1: jogadores ativos do time na posição solicitada
+ -- Etapa 1: jogadores ativos do time na posição solicitada
   SELECT
     Players.Id,
     Players.Name,
@@ -123,11 +125,11 @@ BEGIN
   WHERE
     Players.TeamId = @TeamId AND
     Players.Position = @Position AND
-    Players.IsActive = 1;  -- active
+    Players.IsActive = 1; -- active
 
-  -- Etapa 2: contexto do time (sempre 1 linha — CROSS JOIN intencional)
+ -- Etapa 2: contexto do time (sempre 1 linha — CROSS JOIN intencional)
   SELECT
-    FootballTeams.Name    AS TeamName,
+    FootballTeams.Name AS TeamName,
     FootballTeams.Stadium AS TeamStadium
   INTO
     #TeamContext
@@ -136,11 +138,11 @@ BEGIN
   WHERE
     FootballTeams.Id = @TeamId;
 
-  -- Resultado final
+ -- Resultado final
   SELECT
     #TeamContext.TeamName,
     #TeamContext.TeamStadium,
-    #FilteredPlayers.Name         AS PlayerName,
+    #FilteredPlayers.Name AS PlayerName,
     #FilteredPlayers.SquadNumber,
     #FilteredPlayers.Nationality,
     #FilteredPlayers.JoinedAt
@@ -153,8 +155,8 @@ BEGIN
 END;
 
 -- EXEC GetPlayersByTeamAndPosition
---   @TeamId   = '9585E296-1114-4F35-9B34-1130987BA6D0',
---   @Position = 'Forward';
+-- @TeamId = '9585E296-1114-4F35-9B34-1130987BA6D0',
+-- @Position = 'Forward';
 ```
 
 </details>

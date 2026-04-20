@@ -5,12 +5,12 @@ existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de s
 
 ## If e else
 
-O ponto de partida. Para dois caminhos, `if/else` funciona — mas o `else` após um `return` é ruído
+O ponto de partida. Para dois caminhos, `if/else` funciona, mas o `else` após um `return` é ruído
 estrutural: o compilador já descartou o branch anterior.
 
 <details>
-<br>
 <summary>❌ Bad — else desnecessário após return</summary>
+<br>
 
 ```csharp
 public decimal GetDiscount(string customerType)
@@ -29,8 +29,8 @@ public decimal GetDiscount(string customerType)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — early return elimina o else</summary>
+<br>
 
 ```csharp
 public decimal GetDiscount(string customerType)
@@ -46,12 +46,12 @@ public decimal GetDiscount(string customerType)
 
 ## Aninhamento em cascata
 
-Quando as condições crescem e se aninham, o fluxo vira uma pirâmide — o _arrow antipattern_. Guard
+Quando as condições crescem e se aninham, o fluxo vira uma pirâmide: o _arrow antipattern_. Guard
 clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
 
 <details>
-<br>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, CancellationToken ct)
@@ -81,8 +81,8 @@ public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, Cancellati
 <br>
 
 <details>
-<br>
 <summary>✅ Good — guard clauses no topo, fluxo principal livre</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, CancellationToken ct)
@@ -112,8 +112,8 @@ Guard clauses resolvem pré-condições simples. Quando a condição envolve ver
 extrai e verifica em uma única expressão — sem cast manual, com escopo garantido pelo compilador.
 
 <details>
-<br>
 <summary>❌ Bad — cast manual após verificação de tipo</summary>
+<br>
 
 ```csharp
 public string SummarizePayment(object payment)
@@ -139,8 +139,8 @@ public string SummarizePayment(object payment)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — pattern matching extrai e verifica em uma expressão</summary>
+<br>
 
 ```csharp
 public string SummarizePayment(object payment)
@@ -170,8 +170,8 @@ clareza declarativa. Cada arm retorna um valor e o compilador exige exaustividad
 esquecido, sem caso não tratado.
 
 <details>
-<br>
 <summary>❌ Bad — if/else encadeado para mapeamento de valor</summary>
+<br>
 
 ```csharp
 public string GetStatusLabel(string status)
@@ -188,8 +188,8 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — switch expression declarativo e exaustivo</summary>
+<br>
 
 ```csharp
 public string GetStatusLabel(string status)
@@ -211,8 +211,8 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — switch expression com pattern matching em Result</summary>
+<br>
 
 ```csharp
 public IResult MapResult(Result<Order> result)
@@ -233,14 +233,14 @@ public IResult MapResult(Result<Order> result)
 
 ## Switch statement
 
-Switch expression resolve mapeamento de valores. Quando cada caso precisa executar múltiplas ações —
-não retornar um valor, mas fazer algo — `switch` statement torna a intenção mais clara que um
+Switch expression resolve mapeamento de valores. Quando cada caso precisa executar múltiplas ações
+(não retornar um valor, mas fazer algo), `switch` statement torna a intenção mais clara que um
 `if/else` encadeado. Cada `case` termina com `break` explícito: fall-through acidental é bug
 silencioso.
 
 <details>
-<br>
 <summary>❌ Bad — if/else encadeado para despacho de ações</summary>
+<br>
 
 ```csharp
 public void ProcessOrderEvent(OrderEvent orderEvent)
@@ -268,8 +268,8 @@ public void ProcessOrderEvent(OrderEvent orderEvent)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — switch statement para despacho de comportamento</summary>
+<br>
 
 ```csharp
 public void ProcessOrderEvent(OrderEvent orderEvent)
@@ -303,8 +303,8 @@ Quando os dados são dinâmicos — carregados de config, banco ou fonte externa
 `Dictionary<TKey, TValue>` é a estrutura certa.
 
 <details>
-<br>
 <summary>❌ Bad — lógica hardcoded para dados que vêm de fonte externa</summary>
+<br>
 
 ```csharp
 public string GetCurrencyCode(string region)
@@ -321,8 +321,8 @@ public string GetCurrencyCode(string region)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Dictionary para lookup dinâmico</summary>
+<br>
 
 ```csharp
 private readonly Dictionary<string, string> _currencyByRegion = new()
@@ -353,8 +353,8 @@ Para iterar sobre uma coleção executando ações por item, `foreach` é direto
 variável de controle, com suporte nativo a `break` e `continue`.
 
 <details>
-<br>
 <summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
+<br>
 
 ```csharp
 for (int i = 0; i < orders.Count; i++)
@@ -368,8 +368,8 @@ for (int i = 0; i < orders.Count; i++)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — foreach para iteração sobre valores</summary>
+<br>
 
 ```csharp
 foreach (var order in orders)
@@ -387,8 +387,8 @@ desperdício. `foreach` com `return` antecipado sai no primeiro match. Para caso
 métodos LINQ fazem circuit break internamente — param no primeiro resultado relevante.
 
 <details>
-<br>
 <summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
+<br>
 
 ```csharp
 public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
@@ -410,8 +410,8 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — foreach com return antecipado</summary>
+<br>
 
 ```csharp
 public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
@@ -430,8 +430,8 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
+<br>
 
 ```csharp
 // para no primeiro match
@@ -448,13 +448,13 @@ var allOrdersActive = orders.All(order => order.IsActive);
 
 ## while
 
-Quando não há coleção pré-definida e o critério de parada é uma condição — não um índice ou tamanho
-— `while` é a escolha natural. Use `do...while` quando a primeira iteração deve sempre executar,
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice ou tamanho,
+`while` é a escolha natural. Use `do...while` quando a primeira iteração deve sempre executar,
 independente da condição.
 
 <details>
-<br>
 <summary>❌ Bad — for simulando condição de parada por estado</summary>
+<br>
 
 ```csharp
 for (int attempt = 0; attempt < maxAttempts; attempt++)
@@ -469,8 +469,8 @@ for (int attempt = 0; attempt < maxAttempts; attempt++)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — while para condição de parada por estado</summary>
+<br>
 
 ```csharp
 var attempt = 0;
@@ -489,8 +489,8 @@ while (attempt < maxAttempts)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — do...while quando a primeira execução é garantida</summary>
+<br>
 
 ```csharp
 // drena a fila — processa pelo menos um item antes de verificar

@@ -5,8 +5,8 @@
 Todo código é escrito em inglês — variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
 
 <details>
-<br>
 <summary>❌ Bad — mistura de idiomas</summary>
+<br>
 
 ```csharp
 public class PedidoService
@@ -24,8 +24,8 @@ public class PedidoService
 <br>
 
 <details>
-<br>
 <summary>✅ Good — inglês consistente</summary>
+<br>
 
 ```csharp
 public class OrderService
@@ -53,8 +53,8 @@ Membros públicos usam PascalCase. Membros privados usam `_camelCase` com unders
 | Interface | `IPascalCase` | `IOrderRepository` |
 
 <details>
-<br>
 <summary>❌ Bad — convenção inconsistente</summary>
+<br>
 
 ```csharp
 public class orderService
@@ -74,8 +74,8 @@ public class orderService
 <br>
 
 <details>
-<br>
 <summary>✅ Good — escopo declarado pela convenção</summary>
+<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository)
@@ -97,8 +97,8 @@ public class OrderService(IOrderRepository repository)
 Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada — sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
 
 <details>
-<br>
 <summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrder(Guid id, CancellationToken ct) { ... }
@@ -111,8 +111,8 @@ public async Task<bool> ValidatePayment(PaymentRequest request) { ... }
 <br>
 
 <details>
-<br>
 <summary>✅ Good — sufixo declara a natureza assíncrona</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid id, CancellationToken ct) { ... }
@@ -127,8 +127,8 @@ public async Task<bool> ValidatePaymentAsync(PaymentRequest request) { ... }
 Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base` — o nome descreve a implementação pelo domínio ou tecnologia.
 
 <details>
-<br>
 <summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
+<br>
 
 ```csharp
 public class OrderRepository { ... }       // é interface ou classe?
@@ -141,8 +141,8 @@ public class DefaultOrderRepository { ... } // Default não diz onde persiste
 <br>
 
 <details>
-<br>
 <summary>✅ Good — interface clara, implementação pelo domínio</summary>
+<br>
 
 ```csharp
 public interface IOrderRepository { ... }
@@ -154,7 +154,7 @@ public class InMemoryOrderRepository : IOrderRepository { ... }
 
 ## Booleans expressivos
 
-Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`, `valid`) são proibidos — não declaram se representam estado, capacidade ou diretiva.
+Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`, `valid`) são proibidos: não declaram se representam estado, capacidade ou diretiva.
 
 | Prefixo | Significado | Exemplo |
 | --- | --- | --- |
@@ -164,8 +164,8 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 | `should` | Diretiva comportamental | `shouldRetry`, `shouldRedirect` |
 
 <details>
-<br>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
 
 ```csharp
 bool active = user.Status == "ACTIVE";
@@ -178,8 +178,8 @@ bool delete = user.Role == "ADMIN";
 <br>
 
 <details>
-<br>
 <summary>✅ Good — prefixo declara a semântica</summary>
+<br>
 
 ```csharp
 bool isActive = user.Status == "ACTIVE";
@@ -194,8 +194,8 @@ bool canDelete = user.Role == "ADMIN";
 O nome revela intenção pelo domínio. Nomes genéricos — `data`, `info`, `obj`, `item`, `result`, `temp` — são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
 
 <details>
-<br>
 <summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>
+<br>
 
 ```csharp
 public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
@@ -212,8 +212,8 @@ public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nomes expressivos pelo domínio</summary>
+<br>
 
 ```csharp
 public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -229,11 +229,11 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 
 ## Código como documentação
 
-Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura — não uma contribuição de clareza. Use `// why:` apenas para restrições ocultas ou invariantes não óbvios.
+Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura, não uma contribuição de clareza. Use `// why:` apenas para restrições ocultas ou invariantes não óbvios.
 
 <details>
-<br>
 <summary>❌ Bad — comentários repetem o código</summary>
+<br>
 
 ```csharp
 // busca o usuário pelo id
@@ -250,8 +250,8 @@ if (!u.Flag)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — código se explica; comentário só para restrições não óbvias</summary>
+<br>
 
 ```csharp
 var user = await _repo.FindByIdAsync(userId, ct);
@@ -268,8 +268,8 @@ if (!user.IsActive)
 Nomes seguem a ordem de leitura natural: domínio primeiro, ação depois, qualificador por último. O leitor encontra o contexto antes do detalhe.
 
 <details>
-<br>
 <summary>❌ Bad — qualificador antes do domínio</summary>
+<br>
 
 ```csharp
 public async Task<decimal> TotalCalculateOrderAsync(...) { ... }
@@ -282,8 +282,8 @@ public async Task<User> ByIdFindUserAsync(...) { ... }
 <br>
 
 <details>
-<br>
 <summary>✅ Good — domínio primeiro, ação depois</summary>
+<br>
 
 ```csharp
 public async Task<decimal> CalculateOrderTotalAsync(...) { ... }

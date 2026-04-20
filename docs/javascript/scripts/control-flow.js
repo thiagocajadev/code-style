@@ -20,6 +20,7 @@ function processOrder(order) {
 
   const total = order.items.reduce((sum, item) => sum + item.price, 0);
   const processedOrder = { ...order, total, status: "approved" };
+
   return processedOrder;
 }
 

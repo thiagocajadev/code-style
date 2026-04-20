@@ -17,8 +17,8 @@ ORDER BY
 
 -- team with active players (JOIN)
 SELECT
-  FootballTeams.Name  AS TeamName,
-  Players.Name        AS PlayerName,
+  FootballTeams.Name AS TeamName,
+  Players.Name AS PlayerName,
   Players.Position,
   Players.SquadNumber
 FROM

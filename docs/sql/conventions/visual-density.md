@@ -6,11 +6,77 @@ Em SQL, as cláusulas (`SELECT`, `FROM`, `WHERE`, `JOIN`) já funcionam como sep
 
 **A exceção é CTE.** Cada `WITH nome AS (...)` é uma etapa nomeada — semanticamente equivalente a uma variável. Cada CTE merece uma linha em branco de separação.
 
+## Assinatura e corpo
+
+Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros, tipo de retorno) e corpo (lógica). Uma linha em branco entre eles deixa essa fronteira visível.
+
+Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de abertura e antes do `$$` de fechamento.
+
+<details>
+<summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
+<br>
+
+```sql
+CREATE OR ALTER PROCEDURE GetFootballTeamById
+(
+  @TeamId INT
+)
+AS
+
+BEGIN
+  SELECT
+    Id,
+    Name,
+    ChampionshipsWon
+  FROM
+    FootballTeams
+  WHERE
+    Id = @TeamId;
+END;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
+<br>
+
+```sql
+CREATE OR REPLACE FUNCTION GetFootballTeamById
+(
+  TeamId INT
+)
+RETURNS TABLE
+(
+  Id INT,
+  Name TEXT,
+  ChampionshipsWon INT
+) AS $$
+
+BEGIN
+  RETURN QUERY
+  SELECT
+    Id,
+    Name,
+    ChampionshipsWon
+  FROM
+    FootballTeams
+  WHERE
+    Id = TeamId;
+END;
+
+$$ LANGUAGE plpgsql;
+```
+
+</details>
+
 ## CTEs encadeadas
 
 <details>
-<br>
 <summary>❌ Bad — CTEs coladas, sem separação entre as etapas</summary>
+<br>
 
 ```sql
 WITH TeamCTE AS
@@ -36,8 +102,8 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 <br>
 
 <details>
-<br>
 <summary>✅ Good — linha em branco entre CTEs, cada etapa legível</summary>
+<br>
 
 ```sql
 WITH TeamCTE AS
@@ -80,8 +146,8 @@ JOIN
 Procedures com múltiplas etapas (filtrar, enriquecer, agregar, inserir) seguem a mesma lógica: cada bloco lógico separado por uma linha em branco. Queries longas e distintas nunca ficam coladas.
 
 <details>
-<br>
 <summary>✅ Good — etapas separadas, fluxo da procedure legível</summary>
+<br>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)

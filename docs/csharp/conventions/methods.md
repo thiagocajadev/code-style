@@ -5,8 +5,8 @@
 O método de entrada declara o fluxo de alto nível — o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
-<br>
 <summary>❌ Bad — implementação misturada com orquestração</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -34,8 +34,8 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 <br>
 
 <details>
-<br>
 <summary>✅ Good — orquestrador declara o fluxo, helpers implementam cada passo</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -70,8 +70,8 @@ private static Invoice BuildInvoice(Order order) { ... }
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
 <details>
-<br>
 <summary>❌ Bad — orquestração e implementação no mesmo método</summary>
+<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -94,8 +94,8 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 <br>
 
 <details>
-<br>
 <summary>✅ Good — orquestrador chama helpers, cada um com uma responsabilidade</summary>
+<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -131,11 +131,11 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 
 ## Sem lógica no retorno
 
-O `return` declara o que sai — não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
+O `return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
 
 <details>
-<br>
 <summary>❌ Bad — lógica e construção inline no return</summary>
+<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order) =>
@@ -151,8 +151,8 @@ public OrderSummary BuildSummary(Order order) =>
 <br>
 
 <details>
-<br>
 <summary>✅ Good — variável expressiva antes do return</summary>
+<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order)
@@ -170,8 +170,8 @@ public OrderSummary BuildSummary(Order order)
 <br>
 
 <details>
-<br>
 <summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -186,8 +186,8 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome simétrico com o método deixa claro o que sai</summary>
+<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -210,8 +210,8 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 <br>
 
 <details>
-<br>
 <summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order) =>
@@ -223,8 +223,8 @@ public string BuildShippingLabel(Order order) =>
 <br>
 
 <details>
-<br>
 <summary>✅ Good — partes nomeadas antes de montar o resultado</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -246,8 +246,8 @@ public string BuildShippingLabel(Order order)
 C# 12 introduziu primary constructors. Use para injeção de dependência — elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
 
 <details>
-<br>
 <summary>❌ Bad — boilerplate de construtor tradicional</summary>
+<br>
 
 ```csharp
 public class OrderService
@@ -276,8 +276,8 @@ public class OrderService
 <br>
 
 <details>
-<br>
 <summary>✅ Good — primary constructor, DI sem cerimônia</summary>
+<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository, INotifier notifier)
@@ -299,8 +299,8 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 Linhas relacionadas ficam juntas — sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
-<br>
 <summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -326,8 +326,8 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 <br>
 
 <details>
-<br>
 <summary>✅ Good — um grupo por passo, separados por uma linha em branco</summary>
+<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)

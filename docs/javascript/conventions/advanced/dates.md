@@ -10,8 +10,8 @@ converter para o fuso local só na exibição.
 diferentes, o mesmo código produz resultados diferentes.
 
 <details>
-<br>
 <summary>❌ Bad — captura hora local, comportamento depende do servidor</summary>
+<br>
 
 ```js
 const createdAt = new Date().toString();
@@ -23,8 +23,8 @@ const createdAt = new Date().toString();
 <br>
 
 <details>
-<br>
 <summary>✅ Good — UTC explícito, resultado idêntico em qualquer ambiente</summary>
+<br>
 
 ```js
 const createdAt = new Date().toISOString();
@@ -38,8 +38,8 @@ const createdAt = new Date().toISOString();
 O comportamento de `new Date(string)` muda conforme o formato passado — e varia entre engines.
 
 <details>
-<br>
 <summary>❌ Bad — formato ambíguo, resultado local-dependente</summary>
+<br>
 
 ```js
 const date = new Date("01/15/2026");
@@ -55,8 +55,8 @@ const date2 = new Date("2026-01-15");
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ISO 8601 completo, sem ambiguidade</summary>
+<br>
 
 ```js
 const date = new Date("2026-01-15T00:00:00.000Z");
@@ -71,8 +71,8 @@ Armazenar ou transmitir com `toLocaleDateString()` embute o fuso no valor — im
 depois. Separar armazenamento de exibição mantém o dado portável.
 
 <details>
-<br>
 <summary>❌ Bad — exibição misturada com armazenamento</summary>
+<br>
 
 ```js
 const order = {
@@ -87,8 +87,8 @@ const order = {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — armazenar UTC, formatar só na camada de exibição</summary>
+<br>
 
 ```js
 const order = {

@@ -36,7 +36,7 @@ Tabelas de consulta rápida para as convenções SQL deste guia.
 | `ORDER BY` ausente | `ORDER BY` sempre declarado |
 | `UPDATE` / `DELETE` sem `WHERE` | `WHERE` obrigatório |
 | Literais inline (`Status = 2`) | parâmetros nomeados (`@StatusId`) |
-| Número fixo sem contexto (`StatusId = 2`) | comentário inline (`StatusId = 2  -- Approved`) |
+| Número fixo sem contexto (`StatusId = 2`) | comentário inline (`StatusId = 2 -- Approved`) |
 
 ## Constraints
 

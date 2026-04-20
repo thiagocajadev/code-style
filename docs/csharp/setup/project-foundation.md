@@ -16,11 +16,11 @@ dotnet format
 
 ## Program.cs enxuto
 
-`Program.cs` declara intenção — não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
+`Program.cs` declara intenção, não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
-<br>
 <summary>❌ Bad — Program.cs como dumping ground de configuração</summary>
+<br>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -65,8 +65,8 @@ app.Run();
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Program.cs como índice, configuração delegada</summary>
+<br>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -84,8 +84,8 @@ app.Run();
 Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios — apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
 
 <details>
-<br>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
+<br>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -131,8 +131,8 @@ public static class AppPipelineExtensions
 <br>
 
 <details>
-<br>
 <summary>✅ Good — domínio de Orders dono da sua configuração</summary>
+<br>
 
 ```csharp
 // Features/Orders/OrdersExtensions.cs
@@ -163,8 +163,8 @@ public static class OrdersExtensions
 Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension method acessa `builder.Configuration` com strings soltas espalhadas pelo código.
 
 <details>
-<br>
 <summary>❌ Bad — configuração lida com chaves espalhadas</summary>
+<br>
 
 ```csharp
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -180,8 +180,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Options pattern, seção tipada por domínio</summary>
+<br>
 
 ```csharp
 // Auth/AuthOptions.cs
@@ -219,8 +219,8 @@ public static class AuthExtensions
 Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline — sempre via `IConfiguration`.
 
 <details>
-<br>
 <summary>✅ Good — DbContext registrado no módulo de infraestrutura</summary>
+<br>
 
 ```csharp
 // Infrastructure/DatabaseExtensions.cs
@@ -245,8 +245,8 @@ public static class DatabaseExtensions
 .NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi` — sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como UI.
 
 <details>
-<br>
 <summary>❌ Bad — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
+<br>
 
 ```csharp
 builder.Services.AddEndpointsApiExplorer();
@@ -265,8 +265,8 @@ app.UseSwaggerUI();
 <br>
 
 <details>
-<br>
 <summary>✅ Good — OpenAPI nativo, Scalar como UI, apenas em Development</summary>
+<br>
 
 ```csharp
 // Infrastructure/ApiDocsExtensions.cs
@@ -315,8 +315,8 @@ public static class ApiDocsExtensions
 <br>
 
 <details>
-<br>
 <summary>✅ Good — aggregator inclui ApiDocs</summary>
+<br>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -344,8 +344,8 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 Rate limiting é middleware — entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
 
 <details>
-<br>
 <summary>✅ Good — rate limiting configurado via extension method</summary>
+<br>
 
 ```csharp
 // Infrastructure/RateLimitingExtensions.cs
@@ -393,8 +393,8 @@ builder.AddUsers();
 <br>
 
 <details>
-<br>
 <summary>✅ Good — aplicando política por endpoint</summary>
+<br>
 
 ```csharp
 group.MapPost("/", OrderEndpoints.Create)
@@ -417,8 +417,8 @@ MapAppEndpoints       → roteia para os handlers
 ```
 
 <details>
-<br>
 <summary>❌ Bad — UseAuthorization antes de UseAuthentication</summary>
+<br>
 
 ```csharp
 app.UseAuthorization();   // identidade ainda não foi resolvida
@@ -431,8 +431,8 @@ app.MapAppEndpoints();
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ordem correta do pipeline</summary>
+<br>
 
 ```csharp
 app.UseHttpsRedirection();

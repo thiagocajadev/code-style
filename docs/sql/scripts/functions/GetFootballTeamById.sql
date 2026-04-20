@@ -19,6 +19,7 @@ RETURNS TABLE
   SquadNumber INT,
   Nationality TEXT
 ) AS $$
+
 BEGIN
   RETURN QUERY
   SELECT
@@ -46,6 +47,7 @@ BEGIN
   ORDER BY
     Players.SquadNumber;
 END;
+
 $$ LANGUAGE plpgsql;
 
 -- SELECT * FROM GetFootballTeamById('9585E296-1114-4F35-9B34-1130987BA6D0');

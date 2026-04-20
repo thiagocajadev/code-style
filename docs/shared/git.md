@@ -25,8 +25,8 @@ desenvolver melhorias e correções, voltando pra `main` via Pull Request (PR / 
 ```
 
 <details>
-<br>
 <summary>❌ Bad</summary>
+<br>
 
 ```
 feature-nova
@@ -41,8 +41,8 @@ branch-do-joao-refactor-e-tambem-o-bug-do-login
 <br>
 
 <details>
-<br>
 <summary>✅ Good</summary>
+<br>
 
 ```
 feat/user-email-verification
@@ -56,7 +56,7 @@ refactor/payment-service-split
 ## Commits
 
 Sigo o [Conventional Commits](https://www.conventionalcommits.org/). Cada commit descreve **o que**
-mudou e **por que** — não como.
+mudou e **por que**, não como.
 
 ```
 <tipo>[escopo opcional]: <descrição no imperativo, em inglês, sem ponto final>
@@ -78,8 +78,8 @@ mudou e **por que** — não como.
 | `revert`   | Reverte um commit anterior                        |
 
 <details>
-<br>
 <summary>❌ Bad</summary>
+<br>
 
 ```
 fix bug
@@ -95,8 +95,8 @@ feat: adiciona validação no campo de e-mail do usuário no formulário de cada
 <br>
 
 <details>
-<br>
 <summary>✅ Good</summary>
+<br>
 
 ```
 feat(auth): add email verification on signup
@@ -115,7 +115,7 @@ Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de mó
 
 ### Descrição
 
-- Imperativo: `add`, `fix`, `remove`, `update` — não `added`, `fixing`, `removes`
+- Imperativo: `add`, `fix`, `remove`, `update` (não `added`, `fixing`, `removes`)
 - Inglês
 - Sem maiúscula inicial, sem ponto final
 - Até ~72 caracteres

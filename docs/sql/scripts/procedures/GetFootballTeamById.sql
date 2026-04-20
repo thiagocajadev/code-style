@@ -5,6 +5,7 @@ CREATE OR ALTER PROCEDURE GetFootballTeamById
   @TeamId UNIQUEIDENTIFIER
 )
 AS
+
 BEGIN
   SELECT
     FootballTeams.Id,

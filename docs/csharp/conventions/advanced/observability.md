@@ -10,8 +10,8 @@ templates preservam cada argumento como propriedade estruturada no sink (Serilog
 Insights, etc.).
 
 <details>
-<br>
 <summary>❌ Bad — interpolação destrói campos, perde stack trace</summary>
+<br>
 
 ```csharp
 _logger.LogInformation($"Order {order.Id} processed by {user.Id} — total: {order.Total}");
@@ -23,8 +23,8 @@ _logger.LogError($"Payment failed: {ex.Message} for order {order.Id}");
 <br>
 
 <details>
-<br>
 <summary>✅ Good — message templates: cada argumento vira campo estruturado</summary>
+<br>
 
 ```csharp
 _logger.LogInformation(
@@ -39,8 +39,8 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 ## Níveis de log
 
 <details>
-<br>
 <summary>❌ Bad — LogInformation para tudo, sem distinção de severidade</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("Checkout started");
@@ -53,8 +53,8 @@ _logger.LogInformation("User {UserId} not found", userId);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nível correto por situação</summary>
+<br>
 
 ```csharp
 _logger.LogDebug("Checkout handler invoked for {CartId}", cartId);
@@ -69,8 +69,8 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 ## O que nunca logar
 
 <details>
-<br>
 <summary>❌ Bad — PII e credenciais em log</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("Login: {Email} {Password}", user.Email, user.Password);
@@ -83,8 +83,8 @@ _logger.LogInformation("Token issued: {Token}", token);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("User {UserId} authenticated", user.Id);
@@ -103,8 +103,8 @@ Um middleware injeta o `correlationId` no `LogContext` do Serilog, enriquecendo 
 requisição automaticamente.
 
 <details>
-<br>
 <summary>❌ Bad — logs sem contexto de requisição</summary>
+<br>
 
 ```csharp
 public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, CancellationToken ct)
@@ -123,8 +123,8 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 <br>
 
 <details>
-<br>
 <summary>✅ Good — correlationId enriquecido via LogContext para toda a request</summary>
+<br>
 
 ```csharp
 // Program.cs — middleware que enriquece o contexto de log

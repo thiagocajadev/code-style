@@ -10,8 +10,8 @@ hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem
 mesma posição de memória, janela diferente.
 
 <details>
-<br>
 <summary>❌ Bad — Split aloca array e strings intermediárias</summary>
+<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -28,8 +28,8 @@ public string ExtractProductCode(string sku)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Span fatia sem alocar</summary>
+<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -50,8 +50,8 @@ public string ExtractProductCode(string sku)
 `ReadOnlySpan<T>` elimina a indireção do enumerador.
 
 <details>
-<br>
 <summary>❌ Bad — foreach sobre array em hot path</summary>
+<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -71,8 +71,8 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ReadOnlySpan elimina a indireção do enumerador</summary>
+<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -98,8 +98,8 @@ string é imutável em .NET. Para construir strings dinamicamente, `StringBuilde
 interno e aloca uma vez no final.
 
 <details>
-<br>
 <summary>❌ Bad — nova string alocada por iteração</summary>
+<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -119,8 +119,8 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — StringBuilder reutiliza o buffer</summary>
+<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -145,8 +145,8 @@ sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos — 
 já computado. Indicado para métodos de alta frequência: repositórios, caches, validators.
 
 <details>
-<br>
 <summary>❌ Bad — <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
+<br>
 
 ```csharp
 public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -165,8 +165,8 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — <b>ValueTask</b> sem alocação no caminho síncrono</summary>
+<br>
 
 ```csharp
 public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -193,8 +193,8 @@ progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sem
 da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
-<br>
 <summary>❌ Bad — Guid.NewGuid() é v4: random, fragmenta índice</summary>
+<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
@@ -211,8 +211,8 @@ public Order CreateOrder(CreateOrderRequest request)
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
+<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)

@@ -8,6 +8,7 @@ static decimal ApplyDiscount(decimal price, int discountPct)
 {
     if (discountPct <= 0) return price;
     var discountedPrice = price * (1 - discountPct / 100m);
+
     return discountedPrice;
 }
 
@@ -23,10 +24,9 @@ public class ApplyDiscountTests
     public void AppliesTenPercentDiscountToPrice()
     {
         var price = 100m;
-
         var actualPrice = ApplyDiscount(price, 10);
-
         var expectedPrice = 90m;
+
         Assert.Equal(expectedPrice, actualPrice);
     }
 
@@ -34,10 +34,9 @@ public class ApplyDiscountTests
     public void ReturnsOriginalPriceWhenDiscountIsZero()
     {
         var price = 100m;
-
         var actualPrice = ApplyDiscount(price, 0);
-
         var expectedPrice = price;
+
         Assert.Equal(expectedPrice, actualPrice);
     }
 }
@@ -48,8 +47,8 @@ public class FormatNameTests
     public void FormatsFirstAndLastNameIntoFullName()
     {
         var actualName = FormatName("John", "Doe");
-
         var expectedName = "John Doe";
+
         Assert.Equal(expectedName, actualName);
     }
 }

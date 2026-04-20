@@ -14,8 +14,8 @@ Antes de validar, limpar: `trim` em strings, `toLowerCase` em emails. Dados sujo
 validação suja — um email com espaço passa no schema mas falha na busca no banco.
 
 <details>
-<br>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -30,8 +30,8 @@ async function createUserHandler(req, res) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — sanitize antes de validar</summary>
+<br>
 
 ```js
 function sanitizeCreateUser(body) {
@@ -58,12 +58,12 @@ async function createUserHandler(req, res) {
 
 ## Schema validation com Zod
 
-Zod valida shape, tipos e constraints — não regras de negócio. Centraliza o contrato técnico e
+Zod valida shape, tipos e constraints, não regras de negócio. Centraliza o contrato técnico e
 elimina validação manual espalhada pelos handlers.
 
 <details>
-<br>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
+<br>
 
 ```js
 async function createOrder(body) {
@@ -79,8 +79,8 @@ async function createOrder(body) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -105,8 +105,8 @@ Schema valida se o dado tem o formato correto. Regras de negócio validam se faz
 — dependem de I/O (banco, serviços externos) e não pertencem ao schema.
 
 <details>
-<br>
 <summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -125,8 +125,8 @@ const createOrderSchema = z.object({
 <br>
 
 <details>
-<br>
 <summary>✅ Good — schema valida shape, domínio valida regras após</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -161,8 +161,8 @@ Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`, `i
 Projetar explicitamente o que sai — nunca o objeto do banco.
 
 <details>
-<br>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
+<br>
 
 ```js
 async function findUserByIdHandler(req, res) {
@@ -177,8 +177,8 @@ async function findUserByIdHandler(req, res) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — projeção explícita do que sai na resposta</summary>
+<br>
 
 ```js
 function toUserResponse(user) {

@@ -5,8 +5,8 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 ## Múltiplos tipos de retorno
 
 <details>
-<br>
 <summary>❌ Bad — null, undefined, false e objeto na mesma função</summary>
+<br>
 
 ```js
 function processOrder(order) {
@@ -28,8 +28,8 @@ if (result !== null) { /* ... */ }  // e undefined?
 <br>
 
 <details>
-<br>
 <summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
+<br>
 
 ```js
 function processOrder(order) {
@@ -48,8 +48,8 @@ function processOrder(order) {
 ## Erro como string
 
 <details>
-<br>
 <summary>❌ Bad — string solta, impossível tratar com instanceof</summary>
+<br>
 
 ```js
 async function findUser(id) {
@@ -68,8 +68,8 @@ async function findUser(id) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — erros tipados, identificáveis e tratáveis</summary>
+<br>
 
 ```js
 async function findUser(id) {
@@ -86,8 +86,8 @@ async function findUser(id) {
 ## BaseError — abstração centralizada
 
 <details>
-<br>
 <summary>✅ Good — contrato único para todos os erros da aplicação</summary>
+<br>
 
 ```js
 // errors.js
@@ -154,8 +154,8 @@ export class InternalServerError extends BaseError {
 ## try/catch que engole o erro
 
 <details>
-<br>
 <summary>❌ Bad — captura, loga e retorna null</summary>
+<br>
 
 ```js
 async function findProductById(id) {
@@ -179,8 +179,8 @@ async function findProductById(id) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — propaga com contexto, trata na fronteira</summary>
+<br>
 
 ```js
 async function findProductById(id) {
@@ -209,8 +209,8 @@ async function findProductById(id) {
 ## Exceção como controle de fluxo
 
 <details>
-<br>
 <summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
+<br>
 
 ```js
 function getUser(id) {
@@ -227,8 +227,8 @@ function getUser(id) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<br>
 
 ```js
 function getUser(id) {

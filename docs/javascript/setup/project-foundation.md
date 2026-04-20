@@ -22,12 +22,12 @@ npm install --save-dev prettier
 
 ## Entry point enxuto
 
-`server.js` declara intenção — não implementa. Toda configuração é delegada para módulos. O arquivo
+`server.js` declara intenção, não implementa. Toda configuração é delegada para módulos. O arquivo
 serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
-<br>
 <summary>❌ Bad — server.js como dumping ground de configuração</summary>
+<br>
 
 ```js
 import express from "express";
@@ -75,8 +75,8 @@ app.listen(process.env.PORT || 3000);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — server.js como índice, configuração delegada</summary>
+<br>
 
 ```js
 import { config } from "./config.js";
@@ -94,8 +94,8 @@ Cada domínio registra suas próprias rotas e dependências. `app.js` não conhe
 — apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que representam.
 
 <details>
-<br>
 <summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
+<br>
 
 ```js
 // app.js
@@ -128,8 +128,8 @@ app.post("/api/orders", async (req, res) => {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
+<br>
 
 ```js
 // app.js
@@ -153,8 +153,8 @@ export function createApp(config) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — domínio de Orders dono das suas rotas</summary>
+<br>
 
 ```js
 // features/orders/orders.module.js
@@ -202,8 +202,8 @@ export function create(orderService) {
 diretamente — apenas importa a seção que precisa.
 
 <details>
-<br>
 <summary>❌ Bad — process.env espalhado em todo lugar</summary>
+<br>
 
 ```js
 // auth/auth.middleware.js
@@ -221,8 +221,8 @@ const port = process.env.PORT || 3000; // leitura direta
 <br>
 
 <details>
-<br>
 <summary>✅ Good — config.js como único ponto de entrada de env vars</summary>
+<br>
 
 ```js
 // config.js
@@ -266,8 +266,8 @@ rotas              → handlers recebem req.user já preenchido
 ```
 
 <details>
-<br>
 <summary>❌ Bad — authenticate depois das rotas</summary>
+<br>
 
 ```js
 app.use(express.json());
@@ -284,8 +284,8 @@ app.use(authenticate(config.auth)); // tarde demais
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ordem correta do pipeline</summary>
+<br>
 
 ```js
 // middleware.js

@@ -7,8 +7,8 @@ Migrações são incrementais e irreversíveis. Cada arquivo representa uma muda
 Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 <details>
-<br>
 <summary>❌ Bad — numeração sequencial, sem contexto temporal</summary>
+<br>
 
 ```
 01-CreateTables.sql
@@ -20,8 +20,8 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 <br>
 
 <details>
-<br>
 <summary>✅ Good — timestamp + descrição em snake_case</summary>
+<br>
 
 ```
 20260419000000_create_football_teams.sql
@@ -36,8 +36,8 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 Nunca editar uma migration já executada. Se um ajuste for necessário, criar uma nova migration.
 
 <details>
-<br>
 <summary>❌ Bad — editar migration existente para corrigir schema</summary>
+<br>
 
 ```sql
 -- editando 20260419000000_create_football_teams.sql depois de já ter sido rodada
@@ -54,8 +54,8 @@ CREATE TABLE FootballTeams
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nova migration para cada mudança</summary>
+<br>
 
 ```sql
 -- 20260420000000_alter_football_teams_add_is_active.sql
@@ -72,8 +72,8 @@ ADD
 Cada migration faz uma coisa. Não misturar criação de tabelas com inserção de dados ou criação de índices não relacionados.
 
 <details>
-<br>
 <summary>❌ Bad — migration faz tudo de uma vez</summary>
+<br>
 
 ```sql
 -- 20260419000000_setup.sql
@@ -88,8 +88,8 @@ CREATE INDEX IX_Players_TeamId ON Players(TeamId);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — arquivos separados por responsabilidade</summary>
+<br>
 
 ```
 20260419000000_create_football_teams.sql   -- CREATE TABLE

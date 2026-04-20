@@ -10,8 +10,8 @@
 timezones diferentes, o mesmo código produz valores incomparáveis.
 
 <details>
-<br>
 <summary>❌ Bad — hora local do servidor, Kind implícito</summary>
+<br>
 
 ```csharp
 var createdAt = DateTime.Now;
@@ -24,8 +24,8 @@ var createdAt = DateTime.Now;
 <br>
 
 <details>
-<br>
 <summary>✅ Good — UTC explícito, comparável em qualquer ambiente</summary>
+<br>
 
 ```csharp
 var createdAt = DateTimeOffset.UtcNow;
@@ -41,8 +41,8 @@ var createdAt = DateTimeOffset.UtcNow;
 nenhum contexto externo necessário para interpretar o instante.
 
 <details>
-<br>
 <summary>❌ Bad — DateTime sem Kind perde contexto de timezone</summary>
+<br>
 
 ```csharp
 public record OrderResponse
@@ -58,8 +58,8 @@ public record OrderResponse
 <br>
 
 <details>
-<br>
 <summary>✅ Good — DateTimeOffset carrega o offset, sem ambiguidade</summary>
+<br>
 
 ```csharp
 public record OrderResponse
@@ -79,8 +79,8 @@ tem significado — e pode causar bugs de timezone ao ser serializado. `DateOnly
 (.NET 6+) expressam a intenção com precisão.
 
 <details>
-<br>
 <summary>❌ Bad — DateTime para data pura, hora fantasma causa bugs</summary>
+<br>
 
 ```csharp
 public record CustomerRequest
@@ -96,8 +96,8 @@ public record CustomerRequest
 <br>
 
 <details>
-<br>
 <summary>✅ Good — DateOnly para data, TimeOnly para hora — intenção clara</summary>
+<br>
 
 ```csharp
 public record CustomerRequest
@@ -123,8 +123,8 @@ EF Core serializa `DateTime` conforme o `Kind`. Sem configuração explícita, v
 são salvos sem conversão — o que for lido do banco volta como `Unspecified` também.
 
 <details>
-<br>
 <summary>❌ Bad — DateTime sem Kind, round-trip ambíguo com o banco</summary>
+<br>
 
 ```csharp
 public class Order
@@ -139,8 +139,8 @@ public class Order
 <br>
 
 <details>
-<br>
 <summary>✅ Good — DateTimeOffset no modelo, EF preserva offset no banco</summary>
+<br>
 
 ```csharp
 public class Order

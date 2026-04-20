@@ -24,10 +24,10 @@ UPDATE
 SET
   Players.Position = (
     CASE
-      WHEN Players.SquadNumber BETWEEN 1  AND 1  THEN 'Goalkeeper'
-      WHEN Players.SquadNumber BETWEEN 2  AND 5  THEN 'Defender'
-      WHEN Players.SquadNumber BETWEEN 6  AND 8  THEN 'Midfielder'
-      WHEN Players.SquadNumber BETWEEN 9  AND 11 THEN 'Forward'
+      WHEN Players.SquadNumber BETWEEN 1 AND 1 THEN 'Goalkeeper'
+      WHEN Players.SquadNumber BETWEEN 2 AND 5 THEN 'Defender'
+      WHEN Players.SquadNumber BETWEEN 6 AND 8 THEN 'Midfielder'
+      WHEN Players.SquadNumber BETWEEN 9 AND 11 THEN 'Forward'
       ELSE Players.Position
     END
   )

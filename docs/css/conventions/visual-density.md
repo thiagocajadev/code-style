@@ -7,8 +7,8 @@ Os mesmos princípios de [densidade visual](../../shared/visual-density.md) apli
 Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores distintos separa responsabilidades e torna o arquivo escaneável de cima pra baixo.
 
 <details>
-<br>
 <summary>❌ Bad — regras coladas, sem respiro entre blocos</summary>
+<br>
 
 ```css
 .card {
@@ -30,8 +30,8 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 <br>
 
 <details>
-<br>
 <summary>✅ Good — uma linha em branco entre cada regra</summary>
+<br>
 
 ```css
 .card {
@@ -59,8 +59,8 @@ Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: pos
 A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedades).
 
 <details>
-<br>
 <summary>❌ Bad — propriedades longas sem separação entre grupos</summary>
+<br>
 
 ```css
 .modal {
@@ -85,8 +85,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 <br>
 
 <details>
-<br>
 <summary>✅ Good — grupos separados, cada responsabilidade legível</summary>
+<br>
 
 ```css
 .modal {
@@ -116,8 +116,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 `@media` queries funcionam como fases do mesmo seletor — são separadas do bloco principal e entre si por uma linha em branco.
 
 <details>
-<br>
 <summary>❌ Bad — @media colados, sem separação visual</summary>
+<br>
 
 ```css
 .hero {
@@ -143,8 +143,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 <br>
 
 <details>
-<br>
 <summary>✅ Good — uma linha em branco entre cada bloco</summary>
+<br>
 
 ```css
 .hero {
@@ -174,8 +174,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linha em branco antes de cada bloco filho mantém a hierarquia legível.
 
 <details>
-<br>
 <summary>❌ Bad — tudo colado, hierarquia difícil de ler</summary>
+<br>
 
 ```css
 .nav {
@@ -200,8 +200,8 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 <br>
 
 <details>
-<br>
 <summary>✅ Good — cada bloco aninhado separado, hierarquia visível</summary>
+<br>
 
 ```css
 .nav {

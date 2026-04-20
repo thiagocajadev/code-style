@@ -5,8 +5,8 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 ## Identificadores sem significado
 
 <details>
-<br>
 <summary>❌ Bad</summary>
+<br>
 
 ```js
 const r = apply(data, pedido, callback);
@@ -22,8 +22,8 @@ function apply(x, p, c) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good</summary>
+<br>
 
 ```js
 const discountedOrder = applyDiscount(order, calculateDiscount);
@@ -42,8 +42,8 @@ function applyDiscount(order, calculateDiscount) {
 ## Nomes em português
 
 <details>
-<br>
 <summary>❌ Bad — camelCase com português fica desajeitado</summary>
+<br>
 
 ```js
 const nomeDoUsuario = "Alice";
@@ -62,8 +62,8 @@ function buscaEnderecoDoCliente(id) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
+<br>
 
 ```js
 const userName = "Alice";
@@ -82,8 +82,8 @@ function getCustomerAddress(id) {
 ## Mistura de idiomas
 
 <details>
-<br>
 <summary>❌ Bad — português e inglês no mesmo arquivo</summary>
+<br>
 
 ```js
 function notify(pedido) {
@@ -98,8 +98,8 @@ const resultado = processOrder(pedido);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — consistência de idioma</summary>
+<br>
 
 ```js
 function notifyDefault(order) {
@@ -116,8 +116,8 @@ const result = processOrder(order);
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<br>
 <summary>❌ Bad — ordem invertida</summary>
+<br>
 
 ```js
 getProfileUser(); // "get profile, that's a user"
@@ -130,8 +130,8 @@ calculateTotalInvoice(); // "invoice total" é a expressão natural
 <br>
 
 <details>
-<br>
 <summary>✅ Good — ordem natural</summary>
+<br>
 
 ```js
 getUserProfile();
@@ -144,8 +144,8 @@ calculateInvoiceTotal();
 ## Verbos genéricos
 
 <details>
-<br>
 <summary>❌ Bad — handle, process, manage, do não dizem nada</summary>
+<br>
 
 ```js
 function handle(data) {
@@ -167,8 +167,8 @@ function doStuff(x) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — verbo de intenção</summary>
+<br>
 
 ```js
 function validatePayment(payment) {
@@ -203,8 +203,8 @@ function applySeasonalDiscount(order) {
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<br>
 <summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<br>
 
 ```js
 function callStripe(amount) {
@@ -229,8 +229,8 @@ function queryElastic(term) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
+<br>
 
 ```js
 function chargeCustomer(amount) {
@@ -258,8 +258,8 @@ Comentários que explicam o _quê_ mentem — o código muda, o comentário fica
 substitui qualquer comentário.
 
 <details>
-<br>
 <summary>❌ Bad — comentário repete o que o código já diz</summary>
+<br>
 
 ```js
 // verifica se o usuário pode excluir registros
@@ -276,8 +276,8 @@ attempts++;
 <br>
 
 <details>
-<br>
 <summary>✅ Good — nome expressivo torna o comentário desnecessário</summary>
+<br>
 
 ```js
 const canDeleteRecord = user.status === "active" && user.roles.includes("admin");
@@ -293,8 +293,8 @@ attempts++;
 ## Boolean naming
 
 <details>
-<br>
 <summary>✅ Good — prefixos is, has, can, should</summary>
+<br>
 
 ```js
 const isActive = user.status === "active";

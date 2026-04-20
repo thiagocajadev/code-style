@@ -14,10 +14,10 @@ string ProcessOrder(Order? order)
 
     var result = order.Status switch
     {
-        "approved"  => $"Order {order.Id} approved for {order.Total:C}",
-        "pending"   => $"Order {order.Id} is pending review",
+        "approved" => $"Order {order.Id} approved for {order.Total:C}",
+        "pending" => $"Order {order.Id} is pending review",
         "cancelled" => $"Order {order.Id} was cancelled",
-        _           => $"Order {order.Id} has unknown status",
+        _ => $"Order {order.Id} has unknown status",
     };
 
     return result;

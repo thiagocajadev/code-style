@@ -9,8 +9,8 @@ contexto, prefira legibilidade. Meça antes de otimizar.
 execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iterável, sem callback.
 
 <details>
-<br>
 <summary>❌ Bad — callback alocado por iteração</summary>
+<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -28,8 +28,8 @@ function calculateTotalRevenue(orders) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — for...of sem overhead de callback</summary>
+<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -51,8 +51,8 @@ O(1) via hash. Para listas fixas verificadas frequentemente, definir o `Set` uma
 reutilizar.
 
 <details>
-<br>
 <summary>❌ Bad — Array.includes percorre tudo a cada chamada</summary>
+<br>
 
 ```js
 const PREMIUM_CATEGORIES = ["electronics", "jewelry", "watches"];
@@ -71,8 +71,8 @@ function filterPremiumProducts(products) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — Set.has resolve em O(1)</summary>
+<br>
 
 ```js
 const PREMIUM_CATEGORIES = new Set(["electronics", "jewelry", "watches"]);
@@ -95,8 +95,8 @@ progressivamente. UUID v7 é time-ordered: insere sempre próximo ao fim da B-tr
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
-<br>
 <summary>❌ Bad — crypto.randomUUID() é v4: random, fragmenta índice</summary>
+<br>
 
 ```js
 function createOrder(request) {
@@ -111,8 +111,8 @@ function createOrder(request) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — UUID v7: time-ordered, sequencial no índice</summary>
+<br>
 
 ```js
 import { v7 as uuidv7 } from "uuid";
@@ -133,8 +133,8 @@ strings são imutáveis em JavaScript. Para construir strings dinamicamente, acu
 `join()` no final: uma alocação, resultado único.
 
 <details>
-<br>
 <summary>❌ Bad — nova string alocada por iteração</summary>
+<br>
 
 ```js
 function buildOrderReport(orders) {
@@ -152,8 +152,8 @@ function buildOrderReport(orders) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — array + join, uma alocação no final</summary>
+<br>
 
 ```js
 function buildOrderReport(orders) {

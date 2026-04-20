@@ -5,8 +5,8 @@ Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use
 ## var — escopo de função, não de bloco
 
 <details>
-<br>
 <summary>❌ Bad</summary>
+<br>
 
 ```js
 if (true) {
@@ -24,8 +24,8 @@ var count = 20; // redeclaração silenciosa
 <br>
 
 <details>
-<br>
 <summary>✅ Good</summary>
+<br>
 
 ```js
 if (true) {
@@ -40,8 +40,8 @@ console.log(contained); // ReferenceError — escopo correto
 ## let desnecessário
 
 <details>
-<br>
 <summary>❌ Bad — let onde const seria suficiente</summary>
+<br>
 
 ```js
 let MAX_RETRIES = 3; // nunca reatribuído
@@ -53,8 +53,8 @@ let userName = "Alice"; // nunca reatribuído
 <br>
 
 <details>
-<br>
 <summary>✅ Good — const por padrão, let só quando necessário</summary>
+<br>
 
 ```js
 const MAX_RETRIES = 3;
@@ -75,8 +75,8 @@ colateral invisível e difícil de rastrear. Prefira retornar um novo objeto com
 desejadas.
 
 <details>
-<br>
 <summary>❌ Bad — mutação acoplada e difícil de rastrear</summary>
+<br>
 
 ```js
 function applyDiscount(order) {
@@ -90,8 +90,8 @@ function applyDiscount(order) {
 <br>
 
 <details>
-<br>
 <summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<br>
 
 ```js
 function applyDiscount(order) {
@@ -112,8 +112,8 @@ function applyDiscount(order) {
 Números e strings soltos no código não dizem nada. Constantes nomeadas revelam a intenção.
 
 <details>
-<br>
 <summary>❌ Bad — o que significa 18? e 86400000?</summary>
+<br>
 
 ```js
 if (user.age >= 18) {
@@ -130,8 +130,8 @@ setTimeout(syncData, 86400000);
 <br>
 
 <details>
-<br>
 <summary>✅ Good — constantes nomeadas</summary>
+<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
