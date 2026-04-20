@@ -1,5 +1,7 @@
 # Observability
 
+> Escopo: TypeScript. Visão transversal: [shared/observability.md](../../../shared/observability.md).
+
 Os padrões de logging estruturado do JavaScript se aplicam sem mudança. O TypeScript adiciona:
 interface tipada para o logger, contexto de correlação tipado e garantia em compilação de que
 campos obrigatórios não são omitidos.

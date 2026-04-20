@@ -1,5 +1,7 @@
 # Null Safety
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 > "I call it my billion-dollar mistake." Tony Hoare, inventor do null, 2009
 
 Null tem um espaço definido: as fronteiras do sistema. O sintoma mais comum de uso incorreto é `?.`

@@ -1,5 +1,7 @@
 # Performance
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Performance é uma decisão de design. As escolhas de paginação, cache, processamento assíncrono e lazy loading determinam se o sistema escala ou trava sob carga real.
 
 ## Paginação

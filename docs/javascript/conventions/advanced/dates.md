@@ -1,5 +1,7 @@
 # Dates
 
+> Escopo: JavaScript. Idiomas específicos deste ecossistema.
+
 Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura local time e
 UTC de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC ISO 8601,
 converter para o fuso local só na exibição.

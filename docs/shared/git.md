@@ -1,5 +1,7 @@
 # Git
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Convenções de branches, commits e estratégia de entrega.
 
 ## Branches

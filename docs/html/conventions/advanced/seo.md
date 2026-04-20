@@ -1,5 +1,7 @@
 # SEO
 
+> Escopo: HTML. Idiomas específicos deste ecossistema.
+
 SEO técnico em HTML começa no `<head>`. Title, description e canonical são os três mais impactantes.
 Open Graph controla a aparência em redes sociais. JSON-LD comunica estrutura a crawlers.
 

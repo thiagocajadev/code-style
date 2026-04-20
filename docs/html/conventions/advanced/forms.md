@@ -1,5 +1,7 @@
 # Forms
 
+> Escopo: HTML. Idiomas específicos deste ecossistema.
+
 Formulários acessíveis associam labels a inputs, agrupam campos relacionados e usam tipos nativos.
 O browser entrega validação, teclado virtual e autopreenchimento sem JavaScript adicional.
 

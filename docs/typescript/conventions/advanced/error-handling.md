@@ -1,5 +1,7 @@
 # Error Handling
 
+> Escopo: TypeScript. Idiomas específicos deste ecossistema.
+
 Os princípios de tratamento de erros do JavaScript: erros tipados, try/catch nas fronteiras,
 não engolir exceções. Aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes
 tipadas com contratos explícitos e `instanceof` como mecanismo de narrowing.

@@ -1,5 +1,7 @@
 # Governance
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Governance é a decisão de como o projeto é entendido e navegado, além de como é construído. Um projeto bem governado é aquele onde qualquer pessoa, do não técnico ao especialista, consegue navegar, entender e contribuir com contexto.
 
 ## Convicções

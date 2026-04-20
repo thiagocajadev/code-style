@@ -1,5 +1,7 @@
 # Error Handling
 
+> Escopo: VB.NET. Idiomas específicos deste ecossistema.
+
 ## Try/Catch vs On Error GoTo
 
 `On Error GoTo` é o modelo de tratamento de erro do Basic clássico. Em VB.NET, `Try/Catch/Finally` é o padrão da plataforma .NET: tipado, estruturado e compatível com todo o ecossistema. Nunca misture os dois modelos no mesmo método — comportamento indefinido.

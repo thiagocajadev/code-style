@@ -1,5 +1,7 @@
 # Error handling
 
+> Escopo: C#. Idiomas específicos deste ecossistema.
+
 ## Result\<T\>
 
 Exceções são para falhas inesperadas: erros de infraestrutura, bugs, estado impossível. Falhas de negócio são resultados esperados e devem ser representadas como valores. `Result<T>` torna o contrato explícito: o chamador sabe que pode falhar e é obrigado a lidar com isso.

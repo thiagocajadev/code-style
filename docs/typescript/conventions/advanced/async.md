@@ -1,5 +1,7 @@
 # Async
 
+> Escopo: TypeScript. Idiomas específicos deste ecossistema.
+
 Os padrões assíncronos do JavaScript: async/await, Promise.all, API client centralizado.
 Aplicam-se sem mudança. O TypeScript adiciona: `Promise<T>` com tipo explícito no retorno,
 generics em clientes de I/O e tipagem correta de `Promise.all`.

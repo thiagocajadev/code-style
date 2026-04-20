@@ -1,5 +1,7 @@
 # Null Safety
 
+> Escopo: JavaScript. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+
 JavaScript não tem compilador que rastreie nullability. A responsabilidade é do código. A regra
 é a mesma: fechar null nas fronteiras, confiar no interior.
 

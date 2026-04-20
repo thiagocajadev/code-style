@@ -1,5 +1,7 @@
 # Validation
 
+> Escopo: C#. Idiomas específicos deste ecossistema.
+
 O pipeline de validação tem três responsabilidades distintas, cada uma no seu lugar:
 
 ```

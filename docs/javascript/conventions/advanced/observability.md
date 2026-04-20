@@ -1,5 +1,7 @@
 # Observability
 
+> Escopo: JavaScript. Visão transversal: [shared/observability.md](../../../shared/observability.md).
+
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
 Os princípios agnósticos estão em [shared/observability.md](../../../shared/observability.md).
 

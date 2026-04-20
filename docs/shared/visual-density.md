@@ -1,5 +1,7 @@
 # Visual Density
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Código é lido muito mais vezes do que escrito. Densidade visual é sobre agrupar o que pertence junto e separar o que é distinto, sem precisar de comentários para guiar o olho.
 
 ## Referência rápida

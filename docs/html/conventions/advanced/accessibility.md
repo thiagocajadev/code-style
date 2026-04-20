@@ -1,5 +1,7 @@
 # Accessibility
 
+> Escopo: HTML. Idiomas específicos deste ecossistema.
+
 Acessibilidade é estrutura, não camada extra. Elemento semântico correto, texto alternativo e foco
 gerenciável cobrem a maior parte dos casos sem ARIA adicional.
 

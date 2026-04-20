@@ -1,5 +1,7 @@
 # Performance
 
+> Escopo: HTML. Visão transversal: [shared/performance.md](../../../shared/performance.md).
+
 HTML controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão;
 imagens fora da viewport consomem banda desnecessária; recursos críticos chegam tarde sem dica
 explícita.

@@ -1,5 +1,7 @@
 # Princípios
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem a pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
 
 Organizados como checklist de revisão, do mais impactante ao mais granular:

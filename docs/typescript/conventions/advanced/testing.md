@@ -1,5 +1,7 @@
 # Testing
 
+> Escopo: TypeScript. Visão transversal: [shared/testing.md](../../../shared/testing.md).
+
 Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adiciona: fixtures
 tipadas com `satisfies`, mocks com contratos explícitos e verificação de tipos nos testes.
 

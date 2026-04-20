@@ -1,5 +1,7 @@
 # Arquitetura
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Arquitetura é a decisão de como organizar o código para que o sistema possa crescer, ser mantido e ser entendido. A arquitetura certa depende do contexto, do time e do estágio do produto.
 
 | Padrão | Organiza por | Melhor para |

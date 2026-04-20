@@ -1,5 +1,7 @@
 # Patterns
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Patterns de design são soluções consolidadas para problemas recorrentes: vocabulário compartilhado entre engenheiros e heurísticas testadas em produção.
 
 ## Result Pattern

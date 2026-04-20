@@ -1,5 +1,7 @@
 # Segurança
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Segurança é uma propriedade que atravessa todas as decisões de design, do banco de dados ao frontend. Os princípios abaixo valem para qualquer linguagem ou plataforma.
 
 ## Segredos fora do código

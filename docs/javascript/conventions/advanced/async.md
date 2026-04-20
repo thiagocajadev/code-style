@@ -1,5 +1,7 @@
 # Async
 
+> Escopo: JavaScript. Idiomas específicos deste ecossistema.
+
 Toda operação que depende de I/O é assíncrona. Bloquear o thread principal trava a aplicação.
 
 ## Callback hell

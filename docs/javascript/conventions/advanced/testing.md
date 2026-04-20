@@ -1,5 +1,7 @@
 # Testing
 
+> Escopo: JavaScript. Visão transversal: [shared/testing.md](../../../shared/testing.md).
+
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
 Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)**, que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.

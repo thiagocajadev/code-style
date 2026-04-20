@@ -1,111 +1,27 @@
 # Security
 
-> [!NOTE]
-> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo cobrem .NET Framework 4.8 (Web API 2 / ASP.NET MVC 5 / Windows Forms). Conforme as tecnologias evoluem, alguns detalhes podem ficar desatualizados — o que importa é o princípio por trás de cada prática.
+> Escopo: VB.NET (setup). Princípios transversais em [shared/security.md](../../shared/security.md).
 
-## Nunca hardcode segredos
+Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web API 2 / ASP.NET MVC 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/security.md](../../shared/security.md) e não são repetidas aqui.
 
-Segredos (connection strings, API keys, senhas) nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
+---
 
-<details>
-<summary>❌ Bad — segredo hardcoded no código</summary>
-<br>
+## Onde cada coisa vai
 
-```vbnet
-Public Module ConnectionFactory
-    Public Function Create() As SqlConnection
-        ' exposto no repositório
-        Return New SqlConnection("Server=prod-db;Database=App;User=sa;Password=Abc123!")
-    End Function
-End Module
-```
+| Camada | Arquivo / mecanismo | Valor |
+|---|---|---|
+| Config base não sensível (commitado) | `Web.config` | URLs, timeouts, limites, feature flags |
+| Override por ambiente | `Web.Release.config` transform | Tokens substituídos no pipeline de release |
+| Secrets em máquina específica | Seção criptografada via `aspnet_regiis` | Chave DPAPI da máquina ou do farm |
+| Secrets em staging/produção | Variáveis injetadas pelo IIS / pipeline | Connection strings reais |
 
-</details>
+O `Web.config` commitado nunca contém o valor real de um segredo. Ou fica vazio (token substituído no publish) ou fica criptografado (seção resolvida pela chave da máquina).
 
-<br>
+---
 
-<details>
-<summary>❌ Bad — segredo em Web.config commitado</summary>
-<br>
+## Web.config transforms
 
-```xml
-<!-- Web.config — commitado com credenciais reais -->
-<connectionStrings>
-  <add name="DefaultConnection"
-       connectionString="Server=prod-db;Database=App;User=sa;Password=Abc123!"
-       providerName="System.Data.SqlClient" />
-</connectionStrings>
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — segredo lido via ConfigurationManager, valor injetado pelo ambiente</summary>
-<br>
-
-```vbnet
-' Infrastructure/ConnectionFactory.vb
-Public Module ConnectionFactory
-    Public Function Create() As SqlConnection
-        Dim connectionString = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
-        Dim connection = New SqlConnection(connectionString)
-
-        Return connection
-    End Function
-End Module
-```
-
-```xml
-<!-- Web.config — placeholder sem credencial real -->
-<connectionStrings>
-  <add name="DefaultConnection"
-       connectionString=""
-       providerName="System.Data.SqlClient" />
-</connectionStrings>
-```
-
-</details>
-
-## O que vai em Web.config
-
-`Web.config` é commitado no repositório: só recebe configuração não sensível. Segredos entram via Web.config transforms por ambiente ou variáveis de ambiente injetadas pelo IIS.
-
-| Pode commitar | Nunca commitar |
-| --- | --- |
-| URLs de serviços (sem credenciais) | Connection strings com senha |
-| Nomes de seções e chaves | API keys e tokens |
-| Feature flags | Credenciais de terceiros |
-| Timeouts e limites | Qualquer valor com `Password`, `Secret`, `Key`, `Token` |
-
-<details>
-<summary>✅ Good — Web.config com configuração não sensível</summary>
-<br>
-
-```xml
-<!-- Web.config -->
-<appSettings>
-  <add key="Smtp:Host" value="smtp.company.com" />
-  <add key="Smtp:Port" value="587" />
-  <add key="Auth:Authority" value="https://login.microsoftonline.com/tenant-id" />
-  <add key="Queue:MaxRetries" value="3" />
-</appSettings>
-
-<connectionStrings>
-  <add name="DefaultConnection" connectionString="" providerName="System.Data.SqlClient" />
-</connectionStrings>
-```
-
-</details>
-
-## Web.config transforms: segredos por ambiente
-
-`Web.Release.config` sobrescreve valores de `Web.config` durante o publish. Use para injetar connection strings e segredos que variam por ambiente — sem commitar o valor real.
-
-<details>
-<summary>✅ Good — transform injeta a connection string real no publish</summary>
-<br>
+`Web.Release.config` sobrescreve valores durante o publish. O pipeline de CI/CD (Azure DevOps, Octopus) substitui tokens pelas variáveis de release sem commitar o valor real.
 
 ```xml
 <!-- Web.Release.config -->
@@ -120,16 +36,16 @@ End Module
 </configuration>
 ```
 
-O token `#{DefaultConnection}#` é substituído pelo pipeline de CI/CD (Azure DevOps, Octopus, etc.) na variável de release — nunca o valor real no repositório.
+O token `#{DefaultConnection}#` é resolvido no momento do publish pela variável de release correspondente.
 
-</details>
+---
 
-## Criptografia de seção no Web.config
+## Criptografia de seção com aspnet_regiis
 
-Para ambientes onde variáveis de ambiente não são viáveis, `aspnet_regiis` criptografa seções do `Web.config` usando a chave da máquina. O arquivo commitado fica ilegível sem a chave do servidor.
+Para ambientes onde variáveis de ambiente não são viáveis (hosting gerenciado, deploy manual), `aspnet_regiis` criptografa seções do `Web.config` usando a chave da máquina. O arquivo commitado fica ilegível sem a chave do servidor.
 
 ```cmd
-rem criptografar a seção connectionStrings no site físico
+rem criptografar
 aspnet_regiis -pef "connectionStrings" "C:\inetpub\wwwroot\MyApp"
 
 rem descriptografar (para manutenção)
@@ -137,14 +53,34 @@ aspnet_regiis -pdf "connectionStrings" "C:\inetpub\wwwroot\MyApp"
 ```
 
 > [!NOTE]
-> A seção criptografada é específica da máquina/servidor. Use DPAPI (provider `DataProtectionConfigurationProvider`) para portabilidade entre máquinas do mesmo farm.
+> A seção criptografada por DPAPI padrão é específica da máquina. Para portabilidade entre máquinas do mesmo farm, usar o provider `DataProtectionConfigurationProvider` com container compartilhado.
+
+---
+
+## Leitura de configuração
+
+`ConfigurationManager` resolve a configuração consolidada (`Web.config` + transform + seção criptografada decifrada em runtime). O código consome o valor final sem conhecer a origem.
+
+```vbnet
+' Infrastructure/ConnectionFactory.vb
+Public Module ConnectionFactory
+    Public Function Create() As SqlConnection
+        Dim connectionString = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
+        Dim connection = New SqlConnection(connectionString)
+
+        Return connection
+    End Function
+End Module
+```
+
+---
 
 ## Autorização com atributo
 
-Checar permissões manualmente em cada action duplica lógica e cria brechas quando um handler esquece a verificação. `[Authorize]` declarado na controller ou action garante cobertura uniforme antes de qualquer código executar.
+Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na controller ou action garante cobertura uniforme antes de qualquer código executar.
 
 <details>
-<summary>❌ Bad — verificação manual de role dentro da action</summary>
+<summary>❌ Bad — verificação manual de role no corpo</summary>
 <br>
 
 ```vbnet
@@ -167,7 +103,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — [Authorize] declarativo, action sem lógica de autorização</summary>
+<summary>✅ Good — atributo declarativo, action sem lógica de autorização</summary>
 <br>
 
 ```vbnet
@@ -187,28 +123,11 @@ End Class
 
 </details>
 
-## Cookie de sessão
+---
 
-Cookies sem flags de segurança são vetores para XSS e CSRF. Configure `httpOnlyCookies` e `requireSSL` no `Web.config` — valem para toda a aplicação.
+## Cookies de sessão
 
-<details>
-<summary>❌ Bad — cookies sem flags de segurança</summary>
-<br>
-
-```xml
-<!-- Web.config — sem httpOnly nem requireSSL -->
-<system.web>
-  <sessionState timeout="480" />
-</system.web>
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — httpOnly e requireSSL habilitados globalmente</summary>
-<br>
+Flags de segurança de cookie no .NET Framework são configuradas globalmente no `Web.config`, valem para toda a aplicação. Ver [shared/security.md](../../shared/security.md) para o racional de cada flag.
 
 ```xml
 <!-- Web.config -->
@@ -218,14 +137,11 @@ Cookies sem flags de segurança são vetores para XSS e CSRF. Configure `httpOnl
 </system.web>
 ```
 
-</details>
+---
 
-## .gitignore: linha de defesa local
-
-Mesmo com transforms e variáveis de ambiente, uma linha no `.gitignore` evita acidentes:
+## .gitignore
 
 ```gitignore
-# segredos e sobreposições locais
 Web.*.config
 !Web.Debug.config
 !Web.Release.config

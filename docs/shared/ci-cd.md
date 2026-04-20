@@ -1,5 +1,7 @@
 # CI/CD
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 CI/CD (Continuous Integration / Continuous Delivery, Integração Contínua e Entrega Contínua) é o processo que garante que qualquer mudança no código passe por verificação automática antes de chegar ao usuário.
 
 CI e CD são processos distintos com objetivos diferentes:

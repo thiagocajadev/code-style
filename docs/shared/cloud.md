@@ -1,5 +1,7 @@
 # Cloud
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Cloud computing redistribui responsabilidades: o provedor cuida da infraestrutura física, o time cuida da configuração, segurança e arquitetura dos serviços.
 
 ## Serviços Gerenciados

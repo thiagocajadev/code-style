@@ -1,5 +1,7 @@
 # Quick Reference
 
+> Escopo: C#. Cheat-sheet das convenções; detalhes em `conventions/`.
+
 ## Nomenclatura
 
 | Escopo | Convenção | Exemplo |
@@ -28,14 +30,13 @@
 
 ## Taboos
 
-**Verbos proibidos fora de event handlers:**
-`Handle` (use `Process`, `Validate`, `Submit`), `Do`, `Run`, `Execute`, `Perform` sem sujeito de domínio, `Get` para cálculos (use `Calculate`, `Compute`).
-
-**Substantivos proibidos:**
-`Data`, `Info`, `Obj`, `Item`, `Thing`, `Result` como nome final: use o nome do domínio.
-
-**Abreviações proibidas:**
-`svc`, `mgr`, `ctrl`, `repo` como campo: use o nome completo (`_repository`, `_notifier`). Parâmetros: nunca `req`→`request`, `res`→`response`, `ctx`→`context`.
+| Categoria | Evitar | Usar |
+| --- | --- | --- |
+| Verbos vagos | `Handle`, `Do`, `Run`, `Execute`, `Perform` sem sujeito | verbo do domínio: `Process`, `Validate`, `Submit` |
+| `Get` para cálculo | `GetTotal` de cálculo | `Calculate`, `Compute` |
+| Substantivos vazios | `Data`, `Info`, `Obj`, `Item`, `Thing`, `Result` | nome do domínio |
+| Abreviações em campo | `_svc`, `_mgr`, `_ctrl`, `_repo` | `_service`, `_repository` |
+| Abreviações em param | `req`, `res`, `ctx` | `request`, `response`, `context` |
 
 ## Tipos e contratos
 
@@ -51,7 +52,7 @@
 | Assíncrono com dado | `Task<T>` |
 | Assíncrono sem dado | `Task` |
 
-## Convenções rápidas
+## Snippets essenciais
 
 ```csharp
 // Record imutável
@@ -60,10 +61,6 @@ public record OrderRequest(string ProductId, int Quantity);
 // Primary constructor com DI
 public class OrderService(IOrderRepository repository, INotifier notifier) { }
 
-// Result<T>
-public static Result<T> Success(T value) => new(true, false, value, null);
-public static Result<T> Fail(string msg, string code) => new(false, true, default, new ApiError(msg, code));
-
 // Switch expression com pattern matching
 var response = result switch
 {
@@ -71,18 +68,4 @@ var response = result switch
     { Error.Code: "NOT_FOUND" } => Results.NotFound(),
     _ => Results.Problem(),
 };
-
-// Task.WhenAll para chamadas paralelas
-var userTask = _users.FindByIdAsync(userId, ct);
-var ordersTask = _orders.FindRecentAsync(userId, ct);
-await Task.WhenAll(userTask, ordersTask);
-
-// Guard clause
-if (request is null)
-
-    return Result<Order>.Fail("Request is required.", "INVALID_INPUT");
-
-// Explaining return
-var summary = BuildSummary(order, totals);
-return summary;
 ```

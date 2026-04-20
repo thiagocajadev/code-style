@@ -1,6 +1,6 @@
 # Quick reference
 
-Tabelas de consulta rápida para as convenções SQL deste guia.
+> Escopo: SQL. Cheat-sheet das convenções; detalhes em `conventions/`.
 
 ## Nomenclatura
 
@@ -47,70 +47,21 @@ Tabelas de consulta rápida para as convenções SQL deste guia.
 | `UQ_` | Unique | `UQ_TABELA_CAMPO` | `UQ_Users_Email` |
 | `CK_` | Check | `CK_TABELA_CAMPO` | `CK_Players_SquadNumber` |
 
-Constraints sempre nomeadas com `CONSTRAINT`, sem inline sem nome. FK sempre acompanhada de índice na coluna referenciadora.
+Constraints sempre nomeadas com `CONSTRAINT`. FK sempre acompanhada de índice na coluna referenciadora.
 
-## Query estruturada
-
-Ordem canônica das cláusulas: qualificação explícita, condições verticais, AND ao final.
+## Formato canônico de SELECT
 
 ```sql
 SELECT
   FootballTeams.Name,
-  FootballTeams.ChampionshipsWon,
-  Players.Name AS PlayerName,
-  Players.Position
+  Players.Name AS PlayerName
 FROM
   FootballTeams
 JOIN
   Players ON FootballTeams.Id = Players.TeamId
 WHERE
   FootballTeams.IsActive = 1 AND
-  FootballTeams.Country = 'Brazil' AND
-  Players.IsActive = 1
+  FootballTeams.Country = 'Brazil'
 ORDER BY
-  FootballTeams.ChampionshipsWon DESC,
-  Players.SquadNumber;
-```
-
-## CTE vs temp table
-
-```sql
--- CTE: leitura simples, derivação única
-WITH ActivePlayersCTE AS
-(
-  SELECT
-    Players.TeamId,
-    COUNT(Players.Id) AS Total
-  FROM
-    Players
-  WHERE
-    Players.IsActive = 1
-  GROUP BY
-    Players.TeamId
-)
-
-SELECT
-  FootballTeams.Name,
-  ActivePlayersCTE.Total
-FROM
-  FootballTeams
-JOIN
-  ActivePlayersCTE ON FootballTeams.Id = ActivePlayersCTE.TeamId;
-
--- Temp table: resultado reutilizado mais de uma vez, ou com índice próprio
-SELECT
-  Players.TeamId,
-  COUNT(Players.Id) AS Total
-INTO
-  #ActivePlayerCount
-FROM
-  Players
-WHERE
-  Players.IsActive = 1
-GROUP BY
-  Players.TeamId;
-
--- índice vale quando a temp table tem muitas linhas e será reutilizada; criar após todos os INSERTs
-CREATE INDEX IX_ActivePlayerCount_TeamId
-  ON #ActivePlayerCount (TeamId);
+  FootballTeams.ChampionshipsWon DESC;
 ```

@@ -1,5 +1,7 @@
 # LINQ
 
+> Escopo: C#. Idiomas específicos deste ecossistema.
+
 ## LINQ puro: sem side effects
 
 LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e I/O dentro de uma query tornam o comportamento imprevisível e difícil de testar.

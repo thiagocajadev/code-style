@@ -1,5 +1,7 @@
 # UI/UX
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Interface é o contrato entre o sistema e o usuário. Cada decisão de espaçamento, cor, hierarquia e estado comunica algo. Quando essas decisões são inconsistentes, o usuário trabalha mais para entender o que o sistema oferece.
 
 ## Densidade Visual e Respiro

@@ -1,5 +1,7 @@
 # Null safety
 
+> Escopo: SQL. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+
 NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
 único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
 

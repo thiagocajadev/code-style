@@ -1,5 +1,7 @@
 # LINQ
 
+> Escopo: VB.NET. Idiomas específicos deste ecossistema.
+
 LINQ em VB.NET tem duas sintaxes: method syntax (mesma do C#) e query syntax (com palavras-chave `From`, `Where`, `Select`). Prefira method syntax para consistência e capacidade de encadeamento — query syntax é mais verbosa e se fragmenta quando o encadeamento cresce.
 
 ## Method syntax vs query syntax

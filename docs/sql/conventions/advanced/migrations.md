@@ -1,5 +1,7 @@
 # Migrations
 
+> Escopo: SQL. Idiomas específicos deste ecossistema.
+
 Migrações são incrementais e irreversíveis. Cada arquivo representa uma mudança atômica no schema.
 
 ## Convenção de nomenclatura

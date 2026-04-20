@@ -1,5 +1,7 @@
 # Testing
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
 ## AAA (Arrange, Act, Assert)

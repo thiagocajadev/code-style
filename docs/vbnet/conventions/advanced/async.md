@@ -1,5 +1,7 @@
 # Async
 
+> Escopo: VB.NET. Idiomas específicos deste ecossistema.
+
 Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C# — com uma diferença crítica: VB.NET tem `Async Sub`, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos.
 
 ## Async Function vs Async Sub

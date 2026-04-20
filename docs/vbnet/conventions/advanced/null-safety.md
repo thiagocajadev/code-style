@@ -1,5 +1,7 @@
 # Null Safety
 
+> Escopo: VB.NET. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+
 VB.NET representa ausência de valor com `Nothing`. Com `Option Strict On` e `Option Infer On`,
 o compilador bloqueia a maior parte dos acessos a `Nothing` em tempo de compilação — mas não
 todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica sozinho.

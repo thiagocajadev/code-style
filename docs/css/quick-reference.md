@@ -1,6 +1,6 @@
 # Quick Reference
 
-Tabelas de consulta rápida para as convenções CSS deste guia.
+> Escopo: CSS. Cheat-sheet das convenções; detalhes em `conventions/`.
 
 ## Nomenclatura
 
@@ -46,9 +46,6 @@ Tabelas de consulta rápida para as convenções CSS deste guia.
 | `fr` | fraction | Distribuição de espaço no CSS Grid (`1fr 2fr` = 1/3 e 2/3) |
 | `ch` | character | Largura baseada no glifo `0` da fonte; útil para colunas de texto |
 
-> `rem` é o mais seguro para tipografia e espaçamento: baseia-se no `:root`, não no pai imediato.
-> `em` acumula escala em elementos aninhados, o que pode surpreender.
-
 ## Propriedades que confundem
 
 | Propriedade | O que faz |
@@ -62,11 +59,9 @@ Tabelas de consulta rápida para as convenções CSS deste guia.
 | `pointer-events` | `none` remove o elemento da interação do mouse sem escondê-lo visualmente |
 | `will-change` | Avisa o browser para promover o elemento a layer; usar com parcimônia |
 
----
+## Tailwind: prefixos
 
-## Tailwind: prefixos de espaçamento
-
-Padrão: `{propriedade}{lado}-{escala}`. A escala é um número de 0 a 96; cada unidade equivale a `0.25rem`.
+Padrão `{propriedade}{lado}-{escala}`. Escala de 0 a 96; 1 unidade = `0.25rem`.
 
 | Prefixo | Propriedade CSS | Exemplo |
 | --- | --- | --- |

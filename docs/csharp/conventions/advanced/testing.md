@@ -1,5 +1,7 @@
 # Testing
 
+> Escopo: C#. Visão transversal: [shared/testing.md](../../../shared/testing.md).
+
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o
 que recebeu, o que esperava.
 

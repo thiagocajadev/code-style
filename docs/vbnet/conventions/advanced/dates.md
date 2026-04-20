@@ -1,5 +1,7 @@
 # Dates
 
+> Escopo: VB.NET. Idiomas específicos deste ecossistema.
+
 `DateTime` em .NET tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou `Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira `DateTimeOffset` para eliminar a ambiguidade: o offset está embutido no tipo.
 
 ## DateTime.Now vs DateTimeOffset.UtcNow

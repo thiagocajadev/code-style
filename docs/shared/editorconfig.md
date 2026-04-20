@@ -1,5 +1,7 @@
 # EditorConfig
 
+> Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+
 Configuração base compatível com VS Code, JetBrains, Vim e qualquer editor que suporte `.editorconfig`. Copie para a raiz do projeto.
 
 > [!NOTE]

@@ -1,5 +1,7 @@
 # Async
 
+> Escopo: C#. Idiomas específicos deste ecossistema.
+
 ## async/await
 
 Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.

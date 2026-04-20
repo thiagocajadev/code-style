@@ -1,5 +1,7 @@
 # Procedures
 
+> Escopo: SQL. Idiomas específicos deste ecossistema.
+
 Procedures decompõem queries complexas em etapas nomeadas. Tabelas temporárias materializam
 resultados intermediários, tornando cada passo testável e legível.
 

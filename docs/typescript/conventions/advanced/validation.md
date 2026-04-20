@@ -1,5 +1,7 @@
 # Validation
 
+> Escopo: TypeScript. Idiomas específicos deste ecossistema.
+
 Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript adiciona: inferência
 de tipo a partir do schema Zod, tipos derivados em vez de declarados manualmente e garantia de
 que o output do parse corresponde ao tipo esperado.

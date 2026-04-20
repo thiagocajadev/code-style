@@ -1,5 +1,7 @@
 # Performance
 
+> Escopo: SQL. Visão transversal: [shared/performance.md](../../../shared/performance.md).
+
 Erros comuns que tornam consultas lentas e como corrigi-los.
 
 ## SELECT *

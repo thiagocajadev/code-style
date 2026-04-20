@@ -1,5 +1,7 @@
 # Null Safety
 
+> Escopo: C#. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+
 C# 8 introduziu nullable reference types: o compilador passou a distinguir `string` (não-nulo
 garantido) de `string?` (pode ser null). C# 14 adicionou null-conditional assignment, completando
 o conjunto de operadores null-safe. Ativado globalmente, o compilador bloqueia violações antes do

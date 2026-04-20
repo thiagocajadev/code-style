@@ -1,5 +1,7 @@
 # Dates
 
+> Escopo: TypeScript. Idiomas específicos deste ecossistema.
+
 Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona: branded types
 para distinguir timestamps de datas formatadas em nível de tipo, e tipagem das funções utilitárias
 de data.

@@ -1,6 +1,6 @@
 # Quick Reference
 
-Tabelas de consulta rápida para as convenções TypeScript deste guia.
+> Escopo: TypeScript. Cheat-sheet das convenções; detalhes em `conventions/`.
 
 ## Nomenclatura
 
@@ -10,7 +10,7 @@ Tabelas de consulta rápida para as convenções TypeScript deste guia.
 | Type alias            | PascalCase                         | `OrderStatus`, `UserId`, `ApiResponse<T>`             |
 | Genérico simples      | `T`                                | `function identity<T>(value: T): T`                   |
 | Genérico com contexto | `TItem`, `TKey`, `TValue`          | `function map<TItem, TResult>(...)`                   |
-| Enum (evitar)         | PascalCase + const object          | `ORDER_STATUS.active`; prefer union type             |
+| Enum (evitar)         | PascalCase + const object          | `ORDER_STATUS.active`; prefer union type              |
 
 ## type vs interface
 
@@ -41,71 +41,10 @@ Tabelas de consulta rápida para as convenções TypeScript deste guia.
 
 | Evitar                             | Usar                                                            |
 | ---------------------------------- | --------------------------------------------------------------- |
-| `any`                              | `unknown`: força narrowing antes do uso                        |
+| `any`                              | `unknown`: força narrowing antes do uso                         |
 | Prefixo `I` em interface           | PascalCase direto: `User`, não `IUser`                          |
 | `as Type` para silenciar o erro    | Narrowing real ou refatorar a função                            |
 | Enum nativo                        | Const object + union type                                       |
-| `Object`, `String`, `Number`       | `object`, `string`, `number`: tipos primitivos, não wrappers   |
+| `Object`, `String`, `Number`       | `object`, `string`, `number`: tipos primitivos, não wrappers    |
 | `Function` como tipo               | Assinatura explícita: `(id: string) => Promise<User>`           |
 | `!` (non-null assertion) inline    | Guard clause ou narrowing explícito                             |
-
-## Código narrativo com tipos
-
-Entry point de uma linha. O orquestrador conta a história. Os helpers guardam os detalhes e os tipos.
-
-<details>
-<summary>❌ Bad — tipos inline, lógica misturada no entry point</summary>
-<br>
-
-```ts
-async function checkout(cartId: string): Promise<{ id: string; total: number; tax: number }> {
-  const cart = await db.carts.findById(cartId);
-  if (!cart || !cart.items.length) throw new Error('Cart empty');
-  const subtotal = cart.items.reduce((sum: number, item: { price: number; qty: number }) => sum + item.price * item.qty, 0);
-  const tax = subtotal * 0.1;
-  const order = await db.orders.create({ cartId, subtotal, tax, total: subtotal + tax });
-  await emailService.send(cart.userId, order);
-
-  return order;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — entry point limpo, contratos em interfaces separadas</summary>
-<br>
-
-```ts
-async function checkout(cartId: string): Promise<Order> {
-  const cart = await fetchCart(cartId);
-  validateCart(cart);
-
-  const order = await saveOrder(cart);
-  await notifyCustomer(cart.userId, order);
-
-  return order;
-}
-```
-
-</details>
-
-## Retorno simétrico com tipo explícito
-
-O nome da variável de retorno reflete o conceito da função. O return type do topo confirma o contrato.
-
-```ts
-async function findProductById(id: string): Promise<Product> {
-  const product = await db.products.findById(id);
-
-  return product;
-}
-
-function buildInvoice(order: Order): Invoice {
-  const invoice = mapOrderToInvoice(order);
-
-  return invoice;
-}
-```

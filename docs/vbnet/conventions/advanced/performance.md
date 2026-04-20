@@ -1,5 +1,7 @@
 # Performance
 
+> Escopo: VB.NET. Visão transversal: [shared/performance.md](../../../shared/performance.md).
+
 Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
 contexto, prefira legibilidade. Meça antes de otimizar.
 

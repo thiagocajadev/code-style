@@ -1,5 +1,7 @@
 # API Design
 
+> Escopo: C#. Visão transversal: [shared/architecture.md](../../../shared/architecture.md).
+
 ## Minimal API: preferência
 
 Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice Architecture**: toda a lógica de uma funcionalidade fica co-localizada, não fragmentada em camadas horizontais.

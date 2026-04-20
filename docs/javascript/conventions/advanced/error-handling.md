@@ -1,5 +1,7 @@
 # Error Handling
 
+> Escopo: JavaScript. Idiomas específicos deste ecossistema.
+
 Erros bem estruturados separam o que é **problema de negócio** do que é **falha técnica**. `try/catch` existe para capturar, nunca para esconder.
 
 ## Múltiplos tipos de retorno

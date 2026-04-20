@@ -1,87 +1,27 @@
 # Security
 
-> [!NOTE]
-> Segurança é sempre prioridade em qualquer projeto. Os exemplos abaixo são referências conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio por trás de cada prática.
+> Escopo: JavaScript (setup). Princípios transversais em [shared/security.md](../../shared/security.md).
 
-## Nunca hardcode segredos
+Esta página cobre apenas o que é específico do ecossistema Node: onde colocar o quê, quais ferramentas usar, quais patterns idiomáticos. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/security.md](../../shared/security.md) e não são repetidas aqui.
 
-Segredos (connection strings, API keys, JWT secrets, senhas) nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
+---
 
-<details>
-<summary>❌ Bad — segredo hardcoded no código</summary>
-<br>
+## Onde cada coisa vai
 
-```js
-// db.client.js
-const client = new Pool({
-  connectionString: "postgres://user:Abc123!@prod-db/app", // exposto no repositório
-});
+| Camada | Arquivo / mecanismo | Valor |
+|---|---|---|
+| Contrato público (commitado) | `.env.example` | Chaves esperadas, sem valores |
+| Dev local (fora do repositório) | `.env` + `dotenv` | Connection string local, chave de teste |
+| Staging/produção | Variáveis do host (container, PaaS) | Segredos reais, injetados no deploy |
+| Secrets gerenciados | Vault, AWS Secrets Manager, Doppler | Rotação automática, auditoria |
 
-// auth.middleware.js
-const token = jwt.sign(payload, "super-secret-key-123"); // vaza com o código
-```
+`.env.example` documenta a superfície de configuração do projeto. Clonar o repo e rodar `cp .env.example .env` dá ao dev a lista do que precisa preencher.
 
-</details>
+---
 
-<br>
-
-<details>
-<summary>❌ Bad — segredo em config.js commitado</summary>
-<br>
-
-```js
-// config.js
-export const config = {
-  db: {
-    url: "postgres://user:Abc123!@prod-db/app", // hardcoded
-  },
-  auth: {
-    secret: "super-secret-key-123", // hardcoded
-  },
-};
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — segredo resolvido via process.env, injetado pelo ambiente</summary>
-<br>
-
-```js
-// config.js
-export const config = {
-  database: {
-    url: process.env.DATABASE_URL,
-  },
-  auth: {
-    secret: process.env.JWT_SECRET,
-    audience: process.env.JWT_AUDIENCE,
-  },
-};
-```
-
-</details>
-
-## O que vai em .env.example
-
-`.env.example` é commitado: documenta quais variáveis o projeto precisa, sem valores reais. O `.env` com os valores fica fora do repositório.
-
-| Pode commitar | Nunca commitar |
-| --- | --- |
-| `.env.example` (chaves sem valores) | `.env` (chaves com valores reais) |
-| URLs sem credenciais | Connection strings com senha |
-| Nomes de filas, tópicos, buckets | API keys e tokens |
-| Feature flags | JWT signing secrets |
-| Timeouts e limites | Qualquer valor com `PASSWORD`, `SECRET`, `KEY`, `TOKEN` |
-
-<details>
-<summary>✅ Good — .env.example como contrato público</summary>
-<br>
+## .env.example
 
 ```bash
-# .env.example — commitado, sem valores reais
 DATABASE_URL=
 JWT_SECRET=
 JWT_AUDIENCE=
@@ -91,18 +31,20 @@ RATE_LIMIT_MAX=100
 RATE_LIMIT_WINDOW_MS=60000
 ```
 
-</details>
+Chaves com valor zero indicam segredos (devem vir do ambiente). Chaves com valor default indicam config não sensível.
 
-## dotenv: desenvolvimento
+---
 
-`dotenv` carrega o `.env` local para `process.env` durante o desenvolvimento. É o único ponto onde `.env` é lido, e só em desenvolvimento.
+## dotenv: apenas em desenvolvimento
+
+`dotenv` carrega `.env` para `process.env`. Importar uma vez no bootstrap, antes de qualquer módulo que leia `process.env`.
 
 ```bash
 npm install dotenv
 ```
 
 ```js
-// server.js — carregado antes de qualquer import que use process.env
+// server.js
 import "dotenv/config";
 import { config } from "./config.js";
 import { createApp } from "./app.js";
@@ -111,27 +53,37 @@ const app = createApp(config);
 app.listen(config.port);
 ```
 
-`dotenv` nunca entra em produção. Em staging e produção, as variáveis são injetadas diretamente pelo host (container, cloud provider, CI/CD).
+Em staging e produção, `dotenv` não entra no bundle. As variáveis são injetadas pelo container ou PaaS diretamente.
 
-## Variáveis de ambiente: produção
+---
 
-Em produção, `process.env` é populado pelo ambiente de execução. O código não sabe e não precisa saber de onde vêm.
+## config.js: único ponto de leitura
 
-```bash
-# Docker / docker-compose
-DATABASE_URL=postgres://user:secret@prod-db/app
-JWT_SECRET=prod-signing-secret
-
-# ou via arquivo no deploy
---env-file .env.production
-```
+`process.env` é fronteira. Ler diretamente no meio da lógica espalha dependência global e dificulta teste. O padrão é um `config.js` que lê uma vez, valida e exporta um objeto consumido por injeção.
 
 <details>
-<summary>✅ Good — config.js lê process.env uma vez, módulos recebem por injeção</summary>
+<summary>❌ Bad — process.env espalhado pela aplicação</summary>
 <br>
 
 ```js
-// config.js — único ponto de leitura
+// orders.service.js
+export function createOrderService() {
+  const db = new Pool({ connectionString: process.env.DATABASE_URL });
+  const rate = parseInt(process.env.RATE_LIMIT_MAX, 10);
+  // ...
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — leitura em um lugar, módulos recebem por parâmetro</summary>
+<br>
+
+```js
+// config.js
 export const config = {
   port: parseInt(process.env.PORT, 10) || 3000,
   database: {
@@ -143,7 +95,7 @@ export const config = {
   },
 };
 
-// features/orders/orders.module.js — recebe config.database, nunca process.env
+// features/orders/orders.module.js
 export function registerOrders(app, config) {
   const orderService = createOrderService(config.database);
   // ...
@@ -152,54 +104,23 @@ export function registerOrders(app, config) {
 
 </details>
 
-## Cadeia de configuração
+---
 
-O Node.js resolve configuração por precedência: cada camada sobrescreve a anterior.
+## JWT: verify, nunca decode
 
-```
-.env.example          → contrato público (chaves sem valores, commitado)
-.env                  → desenvolvimento local (fora do repositório, via dotenv)
-variáveis de ambiente → staging e produção (injetadas pelo host)
-secrets manager       → produção, segredos gerenciados externamente
-```
-
-Nunca inverta essa ordem. Um valor no `.env.example` nunca deve sobrescrever uma variável de ambiente injetada pelo host.
-
-## .gitignore: linha de defesa local
-
-Mesmo com a cadeia correta, uma linha no `.gitignore` evita acidentes:
-
-```gitignore
-# secrets locais
-.env
-.env.*
-!.env.example
-*.key
-*.pem
-secrets.json
-```
-
-O `!.env.example` garante que o arquivo de contrato seja sempre commitado.
-
-## JWT: decode vs verify
-
-`jwt.decode()` extrai o payload sem verificar a assinatura. Qualquer token fabricado ou expirado
-passa. Em produção, use `jwt.verify()`: valida assinatura, expiração e audience em uma chamada.
+`jwt.decode()` extrai o payload sem verificar assinatura. Qualquer token fabricado ou vencido passa. Em produção, use sempre `jwt.verify()`.
 
 <details>
-<summary>❌ Bad — decode não valida assinatura, token forjado passa</summary>
+<summary>❌ Bad — decode aceita token forjado</summary>
 <br>
 
 ```js
-// auth.middleware.js
-export function authenticate(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
+export function authenticate(request, response, next) {
+  const token = request.headers.authorization?.split(" ")[1];
+  if (!token) return response.status(401).json({ error: "Unauthorized" });
 
-  const claims = jwt.decode(token); // extrai payload sem verificar assinatura
-  if (!claims) return res.status(401).json({ error: "Invalid token" });
-
-  req.user = claims;
+  const claims = jwt.decode(token); // não verifica assinatura
+  request.user = claims;
   next();
 }
 ```
@@ -213,20 +134,17 @@ export function authenticate(req, res, next) {
 <br>
 
 ```js
-// auth.middleware.js
 export function authenticate(request, response, next) {
   const token = request.headers.authorization?.split(" ")[1];
   if (!token) {
     const body = { error: "Unauthorized" };
     response.status(401).json(body);
-
     return;
   }
 
   try {
     const claims = jwt.verify(token, config.auth.secret);
     request.user = claims;
-
     next();
   } catch {
     const body = { error: "Invalid token" };
@@ -237,34 +155,11 @@ export function authenticate(request, response, next) {
 
 </details>
 
-## Autorização centralizada
+---
 
-Verificar roles inline em cada handler duplica lógica e cria brechas quando um handler esquece a
-checagem. Um middleware de autorização centralizado garante cobertura uniforme.
+## Autorização: middleware reutilizável
 
-<details>
-<summary>❌ Bad — verificação de role duplicada em cada handler</summary>
-<br>
-
-```js
-// orders.handler.js
-export async function cancelOrderHandler(req, res) {
-  if (req.user.role !== "admin" && req.user.role !== "manager") {
-    return res.status(403).json({ error: "Forbidden" });
-  }
-
-  await cancelOrder(req.params.id);
-  res.json({ message: "Order cancelled" });
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — middleware de autorização centralizado e reutilizável</summary>
-<br>
+Checar role dentro de cada handler duplica lógica. Um middleware `authorize(roles)` aplica a regra uma vez na definição da rota.
 
 ```js
 // middleware/authorize.js
@@ -274,44 +169,21 @@ export function authorize(allowedRoles) {
     if (!isAllowed) {
       const body = { error: "Forbidden" };
       response.status(403).json(body);
-
       return;
     }
-
     next();
   };
 }
 
-// routes/orders.routes.js — regras visíveis na definição da rota
+// routes/orders.routes.js
 app.delete("/orders/:id", authenticate, authorize(["admin", "manager"]), cancelOrderHandler);
 ```
 
-</details>
+---
 
-## Session cookie
+## Session cookie com flags
 
-Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `httpOnly` impede acesso via JavaScript, `secure` restringe a HTTPS e `sameSite` bloqueia envio cross-origin.
-
-<details>
-<summary>❌ Bad — cookie sem flags de segurança</summary>
-<br>
-
-```js
-// session sem proteção — acessível por JS, enviado em HTTP e em requisições cross-origin
-app.use(session({
-  secret: config.auth.secret,
-  resave: false,
-  saveUninitialized: false,
-}));
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — cookie com httpOnly, secure e sameSite</summary>
-<br>
+`express-session` aceita as três flags obrigatórias diretamente no binding. Ver [shared/security.md](../../shared/security.md) para o racional de cada uma.
 
 ```js
 const sessionConfig = {
@@ -319,13 +191,26 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: false,
   cookie: {
-    httpOnly: true,               // inacessível via document.cookie
-    secure: true,                 // HTTPS only
-    sameSite: "strict",           // bloqueia envio cross-origin (CSRF)
-    maxAge: 1000 * 60 * 60 * 8,  // 8 horas
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    maxAge: 1000 * 60 * 60 * 8,
   },
 };
 app.use(session(sessionConfig));
 ```
 
-</details>
+---
+
+## .gitignore
+
+```gitignore
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+```
+
+O `!.env.example` garante que o contrato público seja sempre commitado.

@@ -1,5 +1,7 @@
 # Quick reference: HTML
 
+> Escopo: HTML. Cheat-sheet das convenções; detalhes em `conventions/`.
+
 ## Elementos semânticos
 
 | Elemento      | Uso                                                      |

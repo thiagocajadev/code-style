@@ -129,23 +129,26 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 ### Shared
 
-| Tópico                                          | Descrição                                                                  |
-| ----------------------------------------------- | -------------------------------------------------------------------------- |
-| [Governance](docs/shared/governance.md)         | Pensamento de staff engineer, SDLC, onboarding e governança do projeto     |
-| [Principles](docs/shared/principles.md)         | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
-| [Architecture](docs/shared/architecture.md)     | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas              |
-| [Patterns](docs/shared/patterns.md)             | Result, Factory, Repository, Strategy, Observer, Builder, Decorator        |
-| [Performance](docs/shared/performance.md)       | Paginação, cache, filas, lazy loading, índices e connection pool           |
-| [Testing](docs/shared/testing.md)               | AAA, no logic no assert, testes unitários e de integração                  |
-| [Visual Density](docs/shared/visual-density.md) | Densidade visual agnóstica de linguagem: princípios e regras               |
-| [UI/UX](docs/shared/ui-ux.md)                   | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados      |
-| [Security](docs/shared/security.md)             | Segredos, configuração em camadas, autorização e blindagem de cookies      |
-| [Null Safety](docs/shared/null-safety.md)       | Fronteira vs interior, contratos de entrada e schema evolution             |
-| [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                           |
-| [CI/CD](docs/shared/ci-cd.md)                   | Pipeline, deploy vs release, feature flags, TBD e fix forward              |
-| [Cloud](docs/shared/cloud.md)                   | Serviços gerenciados, least privilege, containers e ambientes              |
-| [Git](docs/shared/git.md)                       | Branches, commits, pull requests e estratégia de entrega                   |
-| [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor compatível com qualquer stack                  |
+| Tópico                                                          | Descrição                                                                  |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| [Governance](docs/shared/governance.md)                         | Pensamento de staff engineer, SDLC, onboarding e governança do projeto     |
+| [Principles](docs/shared/principles.md)                         | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
+| [Architecture](docs/shared/architecture.md)                     | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas              |
+| [Component Architecture](docs/shared/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras     |
+| [Patterns](docs/shared/patterns.md)                             | Result, Factory, Repository, Strategy, Observer, Builder, Decorator        |
+| [Performance](docs/shared/performance.md)                       | Paginação, cache, filas, lazy loading, índices e connection pool           |
+| [Testing](docs/shared/testing.md)                               | AAA, no logic no assert, testes unitários e de integração                  |
+| [Visual Density](docs/shared/visual-density.md)                 | Densidade visual agnóstica de linguagem: princípios e regras               |
+| [UI/UX](docs/shared/ui-ux.md)                                   | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados      |
+| [Security](docs/shared/security.md)                             | Segredos, configuração em camadas, autorização e blindagem de cookies      |
+| [Configuration](docs/shared/configuration.md)                   | Config vs secret, precedência, layering, tipagem e fail-fast               |
+| [Null Safety](docs/shared/null-safety.md)                       | Fronteira vs interior, contratos de entrada e schema evolution             |
+| [Observability](docs/shared/observability.md)                   | Logging estruturado, níveis, PII, correlation ID                           |
+| [CI/CD](docs/shared/ci-cd.md)                                   | Pipeline, deploy vs release, feature flags, TBD e fix forward              |
+| [Feature Flags](docs/shared/feature-flags.md)                   | Toggle por propósito, rollout, dark launch, kill switch e dívida           |
+| [Cloud](docs/shared/cloud.md)                                   | Serviços gerenciados, least privilege, containers e ambientes              |
+| [Git](docs/shared/git.md)                                       | Branches, commits, pull requests e estratégia de entrega                   |
+| [EditorConfig](docs/shared/editorconfig.md)                     | Configuração base de editor compatível com qualquer stack                  |
 
 ### Changelog
 

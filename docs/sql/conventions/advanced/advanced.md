@@ -1,5 +1,7 @@
 # Advanced
 
+> Escopo: SQL. Idiomas específicos deste ecossistema.
+
 Subqueries aninhadas são difíceis de rastrear. CTEs nomeiam os passos e tornam a intenção legível.
 
 ## Subquery aninhada
