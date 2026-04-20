@@ -5,6 +5,7 @@
 `var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente — o leitor não deve precisar inferir.
 
 <details>
+<br>
 <summary>❌ Bad — tipo obscuro</summary>
 
 ```csharp
@@ -14,7 +15,10 @@ var discount = Calculate(order);    // decimal? int? percentual ou valor absolut
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — tipo legível; `var` apenas onde óbvio</summary>
 
 ```csharp
@@ -31,6 +35,7 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 `const` é resolvido em tempo de compilação — apenas para primitivos e strings. `readonly` é imutável após o construtor — para valores determinados em runtime. Campos mutáveis onde só leitura é necessária são um contrato fraco.
 
 <details>
+<br>
 <summary>❌ Bad — campo mutável onde deveria ser imutável</summary>
 
 ```csharp
@@ -48,7 +53,10 @@ public class OrderService
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — imutabilidade declarada explicitamente</summary>
 
 ```csharp
@@ -66,6 +74,7 @@ public class OrderService(IConfiguration config)
 `record` expressa um contrato de dados imutável sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects — a semântica de igualdade por valor vem de graça.
 
 <details>
+<br>
 <summary>❌ Bad — class mutável como contrato de dados</summary>
 
 ```csharp
@@ -78,7 +87,10 @@ public class OrderRequest
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — record imutável, contrato explícito</summary>
 
 ```csharp
@@ -92,6 +104,7 @@ public record OrderRequest(string ProductId, int Quantity);
 Literais embutidos escondem intenção. `const` nomeado documenta o significado — o nome é a documentação.
 
 <details>
+<br>
 <summary>❌ Bad — literais sem significado</summary>
 
 ```csharp
@@ -104,7 +117,10 @@ if (discount > 0.15m)    // limite de desconto? taxa? de onde vem esse número?
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — constantes nomeadas</summary>
 
 ```csharp
@@ -125,6 +141,7 @@ if (discount > MaxDiscountRate)
 `record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido — o chamador não deve ter seu estado alterado silenciosamente.
 
 <details>
+<br>
 <summary>❌ Bad — mutação acoplada e efeito colateral oculto</summary>
 
 ```csharp
@@ -137,13 +154,17 @@ public void ApplyDiscount(Order order)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
 
 ```csharp
 public Order ApplyDiscount(Order order)
 {
     var discountedOrder = order with { Discount = 10, Total = order.Total - 10 };
+
     return discountedOrder;
 }
 ```

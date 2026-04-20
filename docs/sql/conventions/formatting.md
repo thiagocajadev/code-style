@@ -5,6 +5,7 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. SQL legível de cima
 ## Consulta em linha única
 
 <details>
+<br>
 <summary>❌ Bad</summary>
 
 ```sql
@@ -13,7 +14,10 @@ SELECT Id, Name, Email FROM Users WHERE Id = 1 AND IsActive = 1
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good</summary>
 
 ```sql
@@ -35,6 +39,7 @@ WHERE
 Expressão inline é aceita somente quando há ≤3 campos E ≤1 condição. Qualquer coisa além disso vai para o estilo vertical.
 
 <details>
+<br>
 <summary>❌ Bad — inline com 4+ campos ou 2+ condições</summary>
 
 ```sql
@@ -43,7 +48,10 @@ SELECT Users.Id, Users.Name, Users.Email, Users.Phone FROM Users WHERE Users.IsA
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — inline só para operações triviais (≤3 campos, ≤1 condição)</summary>
 
 ```sql
@@ -57,6 +65,7 @@ DELETE FROM Logs WHERE Logs.Id = 123;
 ## Colunas sem recuo
 
 <details>
+<br>
 <summary>❌ Bad — alinhadas com SELECT, sem indentação</summary>
 
 ```sql
@@ -71,7 +80,10 @@ AND IsActive = 1
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — 2 espaços sob cada cláusula</summary>
 
 ```sql
@@ -91,6 +103,7 @@ WHERE
 ## JOIN com ON simples
 
 <details>
+<br>
 <summary>❌ Bad — linha longa misturando JOIN e ON</summary>
 
 ```sql
@@ -101,7 +114,10 @@ WHERE Users.Id = 1;
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ON na mesma linha do JOIN quando há uma única condição</summary>
 
 ```sql
@@ -121,6 +137,7 @@ WHERE
 ## JOIN com ON complexo
 
 <details>
+<br>
 <summary>❌ Bad — múltiplas condições em linha única</summary>
 
 ```sql
@@ -137,7 +154,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — uma condição por linha, alinhadas após ON</summary>
 
 ```sql
@@ -162,6 +182,7 @@ WHERE
 Uma condição por linha. AND e OR ao final da linha — nunca no início.
 
 <details>
+<br>
 <summary>❌ Bad — AND no início da linha</summary>
 
 ```sql
@@ -180,7 +201,10 @@ ORDER BY
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — AND ao final da linha, fluxo de cima pra baixo</summary>
 
 ```sql

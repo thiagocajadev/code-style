@@ -5,6 +5,7 @@
 LINQ é para transformação de dados — `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e I/O dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
+<br>
 <summary>❌ Bad — side effect dentro de query LINQ</summary>
 
 ```csharp
@@ -21,7 +22,10 @@ var summaries = orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — LINQ transforma, foreach executa side effects</summary>
 
 ```csharp
@@ -44,6 +48,7 @@ foreach (var order in activeOrders)
 `Select` é para transformação 1-para-1 — cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
 
 <details>
+<br>
 <summary>❌ Bad — Aggregate onde foreach é mais claro</summary>
 
 ```csharp
@@ -55,7 +60,10 @@ var totalRevenue = orders.Aggregate(
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — foreach com variável de acumulação explícita</summary>
 
 ```csharp
@@ -67,7 +75,10 @@ foreach (var item in order.Items)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Select para transformação 1-para-1</summary>
 
 ```csharp
@@ -83,6 +94,7 @@ var summaries = orders
 `IEnumerable<T>` é lazy — a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
 
 <details>
+<br>
 <summary>❌ Bad — materialização prematura no meio do pipeline</summary>
 
 ```csharp
@@ -105,7 +117,10 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — pipeline lazy, materialização única na fronteira</summary>
 
 ```csharp
@@ -128,6 +143,7 @@ public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, Dat
 Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas — cada uma com uma responsabilidade.
 
 <details>
+<br>
 <summary>❌ Bad — chain monolítica, difícil de rastrear</summary>
 
 ```csharp
@@ -142,7 +158,10 @@ var report = orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — etapas nomeadas, cada uma com responsabilidade clara</summary>
 
 ```csharp
@@ -173,6 +192,7 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
         group.Count(),
         group.Max(order => order.CreatedAt)
     );
+
     return customerReport;
 }
 ```
@@ -183,9 +203,10 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 
 `GroupJoin` + `SelectMany` com `DefaultIfEmpty()` é o padrão para left join em LINQ in-memory. Todo elemento do lado esquerdo é preservado — o lado direito pode ser `null` quando não há correspondência.
 
-> Para queries EF Core 10+, use o operador `LeftJoin` nativo — veja [Entity Framework](../setup/entity-framework.md#left-join).
+> Para queries EF Core 10+, use o operador `LeftJoin` nativo — veja [Entity Framework](../../setup/entity-framework.md#left-join).
 
 <details>
+<br>
 <summary>❌ Bad — Join exclui registros sem correspondência</summary>
 
 ```csharp
@@ -201,7 +222,10 @@ var result = orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
 
 ```csharp

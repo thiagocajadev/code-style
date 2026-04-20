@@ -7,6 +7,7 @@ Erros comuns que tornam consultas lentas e como corrigi-los.
 Trazer todas as colunas transfere dados desnecessários, impede covering indexes e acopla a query ao schema.
 
 <details>
+<br>
 <summary>❌ Bad — todas as colunas, inclusive as não usadas</summary>
 
 ```sql
@@ -20,7 +21,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — somente as colunas necessárias</summary>
 
 ```sql
@@ -44,6 +48,7 @@ ORDER BY
 Aplicar função sobre a coluna filtrada impede o uso do índice — o banco precisa avaliar cada linha.
 
 <details>
+<br>
 <summary>❌ Bad — função no WHERE, índice ignorado</summary>
 
 ```sql
@@ -58,7 +63,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — intervalo direto na coluna, índice aproveitado</summary>
 
 ```sql
@@ -81,6 +89,7 @@ ORDER BY
 Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
 
 <details>
+<br>
 <summary>❌ Bad — subquery executa N vezes, uma por time</summary>
 
 ```sql
@@ -101,7 +110,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — CTE agrega uma vez, JOIN cruza o resultado</summary>
 
 ```sql
@@ -138,6 +150,7 @@ ORDER BY
 Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
 
 <details>
+<br>
 <summary>❌ Bad — full scan em tabela grande sem índice na coluna filtrada</summary>
 
 ```sql
@@ -155,7 +168,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — índice na coluna principal do filtro</summary>
 
 ```sql
@@ -170,6 +186,7 @@ CREATE INDEX IX_Players_TeamId
 A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
 <details>
+<br>
 <summary>❌ Bad — coluna de baixa seletividade isolada</summary>
 
 ```sql
@@ -180,7 +197,10 @@ CREATE INDEX IX_Players_IsActive
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
 
 ```sql
@@ -195,6 +215,7 @@ CREATE INDEX IX_Players_TeamId_IsActive
 Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha — mesmo com índice.
 
 <details>
+<br>
 <summary>❌ Bad — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
 
 ```sql
@@ -215,7 +236,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
 
 ```sql
@@ -231,6 +255,7 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 Foreign key sem índice na coluna referenciadora força full table scan a cada `DELETE` ou `UPDATE` na tabela pai. O banco precisa verificar se existem filhos antes de executar a operação.
 
 <details>
+<br>
 <summary>❌ Bad — FK declarada, coluna sem índice</summary>
 
 ```sql
@@ -249,7 +274,10 @@ CREATE TABLE Players
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — índice na coluna FK, lookup eficiente</summary>
 
 ```sql
@@ -288,6 +316,7 @@ UUID v7 combina timestamp de alta resolução com aleatoriedade — insere sempr
 B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
 
 <details>
+<br>
 <summary>❌ Bad — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
 
 ```sql
@@ -303,7 +332,10 @@ CREATE TABLE Orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — BIGINT quando unicidade global não é requisito</summary>
 
 ```sql
@@ -319,7 +351,10 @@ CREATE TABLE Orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
 
 ```sql
@@ -347,6 +382,7 @@ CREATE TABLE Orders
 Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
 
 <details>
+<br>
 <summary>❌ Bad — traz tudo e descarta em memória</summary>
 
 ```sql
@@ -365,7 +401,10 @@ ORDER BY
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
 
 ```sql

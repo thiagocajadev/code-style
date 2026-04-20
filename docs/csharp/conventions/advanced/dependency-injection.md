@@ -7,6 +7,7 @@ DI torna dependências explícitas, testáveis e substituíveis. O container do 
 Service locator é o antipadrão clássico de DI: buscar dependências diretamente do container dentro da classe. Torna dependências implícitas, dificulta testes e cria acoplamento ao container.
 
 <details>
+<br>
 <summary>❌ Bad — dependência implícita, acoplado ao container</summary>
 
 ```csharp
@@ -23,7 +24,10 @@ public class OrderService(IServiceProvider services)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — dependências explícitas no contrato</summary>
 
 ```csharp
@@ -43,6 +47,7 @@ public class OrderService(IOrderRepository orderRepository, INotifier notifier)
 C# 12 introduziu primary constructors para classes. Substitui o padrão verboso de campo + construtor explícito. Parâmetros são promovidos a campos `readonly` com `_camelCase`.
 
 <details>
+<br>
 <summary>❌ Bad — construtor explícito verboso</summary>
 
 ```csharp
@@ -61,7 +66,10 @@ public class OrderService
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — primary constructor, DI direta e concisa</summary>
 
 ```csharp
@@ -87,6 +95,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 **Captive dependency**: um `Singleton` que recebe um `Scoped` captura a instância na primeira resolução. O `Scoped` passa a viver para sempre — comportamento incorreto e difícil de rastrear.
 
 <details>
+<br>
 <summary>❌ Bad — singleton captura scoped</summary>
 
 ```csharp
@@ -98,7 +107,10 @@ public class ReportService(IOrderRepository orderRepository) { } // capturado na
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — lifetimes compatíveis</summary>
 
 ```csharp
@@ -113,6 +125,7 @@ builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 Depender de interfaces, não de implementações concretas. Permite substituição em testes sem alterar o código de produção.
 
 <details>
+<br>
 <summary>❌ Bad — dependência concreta, impossível substituir em testes</summary>
 
 ```csharp
@@ -121,7 +134,10 @@ public class OrderService(SqlOrderRepository orderRepository) { }
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — dependência por interface, substituível</summary>
 
 ```csharp
@@ -141,6 +157,7 @@ services.AddScoped<IOrderRepository, FakeOrderRepository>();
 Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. O .NET permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora — sem dependência externa.
 
 <details>
+<br>
 <summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
 
 ```csharp
@@ -152,13 +169,17 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
     builder.Services.AddScoped<UpdateOrderHandler>();
     builder.Services.AddScoped<CancelOrderHandler>();
     // a cada novo handler, uma nova linha aqui
+
     return builder;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — registro por convenção via reflection</summary>
 
 ```csharp
@@ -180,6 +201,7 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
         builder.Services.AddScoped(handlerType);
 
     builder.Services.AddScoped<OrderService>();
+
     return builder;
 }
 ```
@@ -191,4 +213,4 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 
 ## Registro
 
-O registro das dependências pertence ao extension method do domínio — não ao `Program.cs`. Veja [Project Foundation](../setup/project-foundation.md#extension-methods-por-domínio).
+O registro das dependências pertence ao extension method do domínio — não ao `Program.cs`. Veja [Project Foundation](../../setup/project-foundation.md#extension-methods-por-domínio).

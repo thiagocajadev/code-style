@@ -8,6 +8,7 @@
 Segredos — connection strings, API keys, JWT secrets, senhas — nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
 
 <details>
+<br>
 <summary>❌ Bad — segredo hardcoded no código</summary>
 
 ```js
@@ -22,7 +23,10 @@ const token = jwt.sign(payload, "super-secret-key-123"); // vaza com o código
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>❌ Bad — segredo em config.js commitado</summary>
 
 ```js
@@ -39,13 +43,16 @@ export const config = {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — segredo resolvido via process.env, injetado pelo ambiente</summary>
 
 ```js
 // config.js
 export const config = {
-  db: {
+  database: {
     url: process.env.DATABASE_URL,
   },
   auth: {
@@ -70,6 +77,7 @@ export const config = {
 | Timeouts e limites | Qualquer valor com `PASSWORD`, `SECRET`, `KEY`, `TOKEN` |
 
 <details>
+<br>
 <summary>✅ Good — .env.example como contrato público</summary>
 
 ```bash
@@ -119,13 +127,14 @@ JWT_SECRET=prod-signing-secret
 ```
 
 <details>
+<br>
 <summary>✅ Good — config.js lê process.env uma vez, módulos recebem por injeção</summary>
 
 ```js
 // config.js — único ponto de leitura
 export const config = {
   port: parseInt(process.env.PORT, 10) || 3000,
-  db: {
+  database: {
     url: process.env.DATABASE_URL,
   },
   auth: {
@@ -134,9 +143,9 @@ export const config = {
   },
 };
 
-// features/orders/orders.module.js — recebe config.db, nunca process.env
+// features/orders/orders.module.js — recebe config.database, nunca process.env
 export function registerOrders(app, config) {
-  const orderService = createOrderService(config.db);
+  const orderService = createOrderService(config.database);
   // ...
 }
 ```
@@ -178,6 +187,7 @@ O `!.env.example` garante que o arquivo de contrato seja sempre commitado.
 passa. Em produção, sempre `jwt.verify()`: valida assinatura, expiração e audience em uma chamada.
 
 <details>
+<br>
 <summary>❌ Bad — decode não valida assinatura, token forjado passa</summary>
 
 ```js
@@ -196,21 +206,29 @@ export function authenticate(req, res, next) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — verify valida assinatura e expiração</summary>
 
 ```js
 // auth.middleware.js
-export function authenticate(req, res, next) {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ error: "Unauthorized" });
+export function authenticate(request, response, next) {
+  const token = request.headers.authorization?.split(" ")[1];
+  if (!token) {
+    const body = { error: "Unauthorized" };
+    response.status(401).json(body);
+    return;
+  }
 
   try {
     const claims = jwt.verify(token, config.auth.secret);
-    req.user = claims;
+    request.user = claims;
     next();
   } catch {
-    res.status(401).json({ error: "Invalid token" });
+    const body = { error: "Invalid token" };
+    response.status(401).json(body);
   }
 }
 ```
@@ -223,6 +241,7 @@ Verificar roles inline em cada handler duplica lógica e cria brechas quando um 
 checagem. Centralizar em um middleware de autorização garante cobertura uniforme.
 
 <details>
+<br>
 <summary>❌ Bad — verificação de role duplicada em cada handler</summary>
 
 ```js
@@ -239,15 +258,22 @@ export async function cancelOrderHandler(req, res) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — middleware de autorização centralizado e reutilizável</summary>
 
 ```js
 // middleware/authorize.js
 export function authorize(allowedRoles) {
-  return function checkRole(req, res, next) {
-    const isAllowed = allowedRoles.includes(req.user.role);
-    if (!isAllowed) return res.status(403).json({ error: "Forbidden" });
+  return function checkRole(request, response, next) {
+    const isAllowed = allowedRoles.includes(request.user.role);
+    if (!isAllowed) {
+      const body = { error: "Forbidden" };
+      response.status(403).json(body);
+      return;
+    }
     next();
   };
 }
@@ -264,6 +290,7 @@ Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `httpOn
 JavaScript, `secure` restringe a HTTPS e `sameSite` bloqueia envio cross-origin.
 
 <details>
+<br>
 <summary>❌ Bad — cookie sem flags de segurança</summary>
 
 ```js
@@ -277,11 +304,14 @@ app.use(session({
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cookie com httpOnly, secure e sameSite</summary>
 
 ```js
-app.use(session({
+const sessionConfig = {
   secret: config.auth.secret,
   resave: false,
   saveUninitialized: false,
@@ -291,7 +321,8 @@ app.use(session({
     sameSite: "strict",           // bloqueia envio cross-origin (CSRF)
     maxAge: 1000 * 60 * 60 * 8,  // 8 horas
   },
-}));
+};
+app.use(session(sessionConfig));
 ```
 
 </details>

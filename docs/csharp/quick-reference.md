@@ -79,6 +79,7 @@ await Task.WhenAll(userTask, ordersTask);
 
 // Guard clause
 if (request is null)
+
     return Result<Order>.Fail("Request is required.", "INVALID_INPUT");
 
 // Explaining return

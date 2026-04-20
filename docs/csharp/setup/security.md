@@ -8,6 +8,7 @@
 Segredos — connection strings, API keys, JWT secrets, senhas — nunca ficam no código-fonte. Um secret no repositório é um secret comprometido, mesmo que removido depois: o histórico do git preserva tudo.
 
 <details>
+<br>
 <summary>❌ Bad — segredo hardcoded no código</summary>
 
 ```csharp
@@ -24,7 +25,10 @@ builder.Services.AddAuthentication()
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>❌ Bad — segredo em appsettings.json commitado</summary>
 
 ```json
@@ -40,7 +44,10 @@ builder.Services.AddAuthentication()
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — segredo resolvido via IConfiguration, injetado pelo ambiente</summary>
 
 ```csharp
@@ -74,6 +81,7 @@ public static class DatabaseExtensions
 | Nomes de seções e chaves | Qualquer valor com `Password`, `Secret`, `Key`, `Token` |
 
 <details>
+<br>
 <summary>✅ Good — appsettings.json com configuração não sensível</summary>
 
 ```json
@@ -126,6 +134,7 @@ Auth__Authority="https://login.microsoftonline.com/tenant-id"
 ```
 
 <details>
+<br>
 <summary>✅ Good — Options pattern resolve o secret do ambiente sem expô-lo</summary>
 
 ```csharp
@@ -179,6 +188,7 @@ passa. O middleware `AddJwtBearer` faz a validação completa automaticamente: n
 leitura manual.
 
 <details>
+<br>
 <summary>❌ Bad — ReadJwtToken lê sem validar assinatura ou expiração</summary>
 
 ```csharp
@@ -192,13 +202,17 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
     if (jwtToken.ValidTo < DateTime.UtcNow) return Results.Unauthorized();
 
     var orders = await repo.FindAllAsync(ct);
+
     return Results.Ok(orders);
 });
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — middleware valida token antes do endpoint ser chamado</summary>
 
 ```csharp
@@ -207,6 +221,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 app.MapGet("/orders", async (IOrderRepository repo, CancellationToken ct) =>
 {
     var orders = await repo.FindAllAsync(ct);
+
     return Results.Ok(orders);
 })
 .RequireAuthorization();
@@ -220,6 +235,7 @@ Checar claims manualmente em cada endpoint duplica lógica e cria brechas quando
 a verificação. Policies centralizam as regras — `RequireAuthorization()` garante cobertura uniforme.
 
 <details>
+<br>
 <summary>❌ Bad — verificação de role duplicada inline em cada endpoint</summary>
 
 ```csharp
@@ -233,13 +249,17 @@ app.MapDelete("/orders/{id}", async (
     if (role != "admin" && role != "manager") return Results.Forbid();
 
     await repo.DeleteAsync(id, ct);
+
     return Results.NoContent();
 });
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — policy centralizada, regra legível na definição da rota</summary>
 
 ```csharp
@@ -254,6 +274,7 @@ builder.Services.AddAuthorization(options =>
 app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository repo, CancellationToken ct) =>
 {
     await repo.DeleteAsync(id, ct);
+
     return Results.NoContent();
 })
 .RequireAuthorization("OrderManager");
@@ -267,6 +288,7 @@ Cookies de sessão sem flags de segurança são vetores para XSS e CSRF. `HttpOn
 JavaScript, `Secure` restringe a HTTPS e `SameSite` bloqueia envio cross-origin.
 
 <details>
+<br>
 <summary>❌ Bad — cookie sem flags de segurança</summary>
 
 ```csharp
@@ -279,7 +301,10 @@ builder.Services.AddSession(options =>
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cookie com HttpOnly, Secure e SameSite</summary>
 
 ```csharp

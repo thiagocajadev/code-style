@@ -1,7 +1,7 @@
 # Observability
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Veja os princípios agnósticos em [shared/observability.md](../../shared/observability.md).
+Veja os princípios agnósticos em [shared/observability.md](../../../shared/observability.md).
 
 ## Logging estruturado
 
@@ -10,6 +10,7 @@ templates preservam cada argumento como propriedade estruturada no sink (Serilog
 Insights, etc.).
 
 <details>
+<br>
 <summary>❌ Bad — interpolação destrói campos, perde stack trace</summary>
 
 ```csharp
@@ -19,7 +20,10 @@ _logger.LogError($"Payment failed: {ex.Message} for order {order.Id}");
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — message templates: cada argumento vira campo estruturado</summary>
 
 ```csharp
@@ -35,6 +39,7 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 ## Níveis de log
 
 <details>
+<br>
 <summary>❌ Bad — LogInformation para tudo, sem distinção de severidade</summary>
 
 ```csharp
@@ -45,12 +50,17 @@ _logger.LogInformation("User {UserId} not found", userId);
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nível correto por situação</summary>
 
 ```csharp
 _logger.LogDebug("Checkout handler invoked for {CartId}", cartId);
+
 _logger.LogWarning("Slow query: {Duration}ms on {Query}", durationMs, queryName);
+
 _logger.LogError("User {UserId} not found during checkout", userId);
 ```
 
@@ -59,6 +69,7 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 ## O que nunca logar
 
 <details>
+<br>
 <summary>❌ Bad — PII e credenciais em log</summary>
 
 ```csharp
@@ -69,12 +80,17 @@ _logger.LogInformation("Token issued: {Token}", token);
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
 
 ```csharp
 _logger.LogInformation("User {UserId} authenticated", user.Id);
+
 _logger.LogInformation("Payment {PaymentId} initiated, last4 {Last4}", payment.Id, payment.LastFour);
+
 _logger.LogInformation("Token issued for {UserId}", user.Id);
 ```
 
@@ -87,6 +103,7 @@ Um middleware injeta o `correlationId` no `LogContext` do Serilog, enriquecendo 
 requisição automaticamente.
 
 <details>
+<br>
 <summary>❌ Bad — logs sem contexto de requisição</summary>
 
 ```csharp
@@ -95,6 +112,7 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
     _logger.LogInformation("Processing checkout");
     var invoice = await BuildInvoiceAsync(request, ct);
     _logger.LogInformation("Checkout complete");
+
     return invoice;
 }
 // {"msg":"Processing checkout"} — impossível saber qual request originou
@@ -102,7 +120,10 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — correlationId enriquecido via LogContext para toda a request</summary>
 
 ```csharp
@@ -122,8 +143,11 @@ app.Use(async (ctx, next) =>
 public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, CancellationToken ct)
 {
     _logger.LogInformation("Checkout started for {CartId}", request.CartId);
+
     var invoice = await BuildInvoiceAsync(request, ct);
+
     _logger.LogInformation("Checkout complete, invoice {InvoiceId}", invoice.Id);
+
     return invoice;
 }
 // {"CorrelationId":"abc-123","CartId":"...","msg":"Checkout started for ..."}

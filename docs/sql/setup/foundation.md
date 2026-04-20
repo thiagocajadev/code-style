@@ -33,4 +33,4 @@ migrations/
   20260419120000_alter_football_teams_add_ticket_price.sql
 ```
 
-Veja [Migrations](../conventions/migrations.md) para as convenções completas.
+Veja [Migrations](../conventions/advanced/migrations.md) para as convenções completas.

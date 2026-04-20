@@ -7,7 +7,7 @@ Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)** — uma boa conven
 teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do
 resultado.
 
-O [code style](variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas — sem expressões, acessos de propriedade ou literais inline.
+O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas — sem expressões, acessos de propriedade ou literais inline.
 
 As variáveis de assert são sempre nomeadas de forma expressiva — `actualPrice`, `expectedName`, `actualOrder` em vez de genéricos — e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 
@@ -29,6 +29,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 execução do comportamento e verificação do resultado.
 
 <details>
+<br>
 <summary>❌ Bad — tudo inline, fases invisíveis</summary>
 
 ```csharp
@@ -41,7 +42,10 @@ public void AppliesDiscount()
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — arrange, act e assert separados</summary>
 
 ```csharp
@@ -64,6 +68,7 @@ public void AppliesTenPercentDiscountToOrderPrice()
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase — não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
+<br>
 <summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
 
 ```csharp
@@ -83,7 +88,10 @@ public void ReturnsActiveUsersOnly()
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — expected e actual declarados, assert semântico</summary>
 
 ```csharp
@@ -116,6 +124,7 @@ O nome do teste descreve o cenário e o resultado esperado — não o nome do m�
 vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
 
 <details>
+<br>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
 
 ```csharp
@@ -131,7 +140,10 @@ public void ApplyDiscount() { /* ... */ }
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cenário + resultado esperado no título</summary>
 
 ```csharp
@@ -152,6 +164,7 @@ public void ThrowsValidationExceptionWhenDiscountIsNegative() { /* ... */ }
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
+<br>
 <summary>❌ Bad — campo estático mutável compartilhado entre testes</summary>
 
 ```csharp
@@ -181,7 +194,10 @@ public class OrderTests
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
 
 ```csharp
@@ -219,6 +235,7 @@ Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado.
 verifica o tipo — não apenas a presença.
 
 <details>
+<br>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>
 
 ```csharp
@@ -238,7 +255,10 @@ public async Task ThrowsOnMissingOrder()
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Assert.ThrowsAsync com tipo explícito</summary>
 
 ```csharp
@@ -247,9 +267,9 @@ public async Task ThrowsNotFoundExceptionWhenOrderDoesNotExist()
 {
     var invalidId = "nonexistent-id";
 
-    var actual = async () => await FindOrderAsync(invalidId);
+    var act = () => FindOrderAsync(invalidId);
 
-    await Assert.ThrowsAsync<NotFoundException>(actual);
+    await Assert.ThrowsAsync<NotFoundException>(act);
 }
 ```
 

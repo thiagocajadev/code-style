@@ -42,7 +42,10 @@ tecnologias).
 Cada princípio pode ser aplicado em qualquer linguagem.
 
 <details>
+<br>
 <summary>Ver todos os princípios</summary>
+
+<br>
 
 | Princípio                                                                                                           | Descrição                                                            |
 | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
@@ -59,17 +62,17 @@ Cada princípio pode ser aplicado em qualquer linguagem.
 | [Funções pequenas](docs/javascript/conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)       | Uma responsabilidade, um nível de abstração                          |
 | [Cálculo vs formatação](docs/javascript/conventions/functions.md#separar-cálculo-de-formatação)                     | Computar dados e formatar saída em funções separadas                 |
 | [CQS](docs/javascript/conventions/variables.md#mutação-direta-de-objetos)                                           | Separar comando de consulta, sem efeitos colaterais ocultos          |
-| [Dependências explícitas](docs/javascript/conventions/async.md#api-client-centralizado)                             | Injetar via parâmetros, evitar estado global                         |
-| [Imutabilidade por padrão](docs/javascript/conventions/variables.md#let-desnecessário)                              | `const` primeiro, `let` só quando necessário                         |
-| [Sem valores mágicos](docs/javascript/conventions/variables.md#evitar-valores-mágicos)                              | Constantes nomeadas no lugar de números e strings soltos             |
-| [Falhar rápido](docs/javascript/conventions/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                             |
-| [Contratos consistentes](docs/javascript/conventions/error-handling.md#baseerror--abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato                       |
-| [Retorno explícito](docs/javascript/conventions/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                               |
-| [Tratamento centralizado de erros](docs/javascript/conventions/error-handling.md#baseerror--abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras                    |
-| [I/O assíncrono](docs/javascript/conventions/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                          |
-| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                             | Variável expressiva antes do `return`, simétrica à entrada           |
-| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical--parâmetros)                             | Até 3 parâmetros por linha — 4+ usa objeto                           |
-| [Testes estruturados](docs/javascript/conventions/testing.md#fases-misturadas--aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline         |
+| [Dependências explícitas](docs/javascript/conventions/advanced/async.md#api-client-centralizado)                             | Injetar via parâmetros, evitar estado global                         |
+| [Imutabilidade por padrão](docs/javascript/conventions/variables.md#let-desnecessário)                                       | `const` primeiro, `let` só quando necessário                         |
+| [Sem valores mágicos](docs/javascript/conventions/variables.md#evitar-valores-mágicos)                                       | Constantes nomeadas no lugar de números e strings soltos             |
+| [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                             |
+| [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato                       |
+| [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                               |
+| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras                    |
+| [I/O assíncrono](docs/javascript/conventions/advanced/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                          |
+| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                                      | Variável expressiva antes do `return`, simétrica à entrada           |
+| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical--parâmetros)                                      | Até 3 parâmetros por linha — 4+ usa objeto                           |
+| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas--aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline         |
 
 </details>
 
@@ -86,11 +89,12 @@ Cada princípio pode ser aplicado em qualquer linguagem.
 
 ### Shared
 
-| Tópico                                      | Descrição                                           |
-| ------------------------------------------- | --------------------------------------------------- |
-| [EditorConfig](docs/shared/editorconfig.md)       | Configuração base de editor                         |
-| [Git](docs/shared/git.md)                         | Branches, commits, pipeline e estratégia de entrega |
-| [Observability](docs/shared/observability.md)     | Logging estruturado, níveis, PII, correlation ID    |
+| Tópico                                                  | Descrição                                                    |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| [EditorConfig](docs/shared/editorconfig.md)             | Configuração base de editor                                  |
+| [Git](docs/shared/git.md)                               | Branches, commits, pipeline e estratégia de entrega          |
+| [Observability](docs/shared/observability.md)           | Logging estruturado, níveis, PII, correlation ID             |
+| [Visual Density](docs/shared/visual-density.md)         | Densidade visual agnóstica de linguagem — princípios e regras |
 
 ### Referências
 

@@ -7,6 +7,7 @@ para "como parece".
 ## Ordem de propriedades
 
 <details>
+<br>
 <summary>❌ Bad — ordem aleatória, difícil de escanear</summary>
 
 ```css
@@ -28,7 +29,10 @@ para "como parece".
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — agrupado por responsabilidade, legível de cima pra baixo</summary>
 
 ```css
@@ -60,6 +64,7 @@ para "como parece".
 ## Uma propriedade por linha
 
 <details>
+<br>
 <summary>❌ Bad — múltiplas propriedades em uma linha, diff ilegível</summary>
 
 <!-- prettier-ignore -->
@@ -69,7 +74,10 @@ para "como parece".
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — uma propriedade por linha, diff limpo</summary>
 
 ```css

@@ -5,6 +5,7 @@ Subqueries aninhadas são difíceis de rastrear. CTEs nomeiam os passos e tornam
 ## Subquery aninhada
 
 <details>
+<br>
 <summary>❌ Bad — subquery no WHERE sem nome</summary>
 
 ```sql
@@ -26,7 +27,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — CTE nomeada no topo</summary>
 
 ```sql
@@ -54,6 +58,7 @@ JOIN
 ## CTEs encadeadas
 
 <details>
+<br>
 <summary>❌ Bad — JOIN de subqueries, difícil de acompanhar</summary>
 
 ```sql
@@ -67,7 +72,10 @@ JOIN
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — duas CTEs separadas, JOIN no SELECT final</summary>
 
 ```sql
@@ -82,6 +90,7 @@ WITH TeamCTE AS
   WHERE
     Id = 1
 ),
+
 ActivePlayersCTE AS
 (
   SELECT
@@ -109,6 +118,7 @@ JOIN
 ## Procedure — SQL Server
 
 <details>
+<br>
 <summary>❌ Bad — prefixo genérico, nome vago, sem formatação vertical</summary>
 
 ```sql
@@ -120,7 +130,10 @@ END
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nome descritivo, parâmetro tipado, formatação vertical</summary>
 
 ```sql
@@ -146,6 +159,7 @@ END;
 ## Function — PostgreSQL
 
 <details>
+<br>
 <summary>❌ Bad — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
 
 ```sql
@@ -158,7 +172,10 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
 
 ```sql

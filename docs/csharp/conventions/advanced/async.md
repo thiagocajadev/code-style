@@ -5,12 +5,14 @@
 Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await` — nunca `.Result` ou `.Wait()`.
 
 <details>
+<br>
 <summary>❌ Bad — I/O síncrono bloqueia a thread</summary>
 
 ```csharp
 public Order FindOrder(Guid orderId)
 {
     var order = _repo.FindByIdAsync(orderId).Result; // bloqueia thread
+
     return order;
 }
 
@@ -22,13 +24,17 @@ public void SaveOrder(Order order)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — async/await do início ao fim</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
+
     return order;
 }
 
@@ -45,6 +51,7 @@ public async Task SaveOrderAsync(Order order, CancellationToken ct)
 Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em operações sem dependência entre si desperdiça tempo — o tempo total vira a soma, não o máximo.
 
 <details>
+<br>
 <summary>❌ Bad — await sequencial em chamadas independentes</summary>
 
 ```csharp
@@ -55,13 +62,17 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
     var notifications = await _notifications.FindAsync(userId, ct);  // só então começa
 
     var dashboard = new Dashboard(user, orders, notifications);
+
     return dashboard;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Task.WhenAll para chamadas independentes em paralelo</summary>
 
 ```csharp
@@ -69,6 +80,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 {
     var userTask = _users.FindByIdAsync(userId, ct);
     var ordersTask = _orders.FindRecentAsync(userId, ct);
+
     var notificationsTask = _notifications.FindAsync(userId, ct);
 
     await Task.WhenAll(userTask, ordersTask, notificationsTask);
@@ -78,6 +90,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
         await ordersTask,
         await notificationsTask
     );
+
     return dashboard;
 }
 ```
@@ -89,12 +102,14 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 `CancellationToken` é propagado em toda chamada de I/O pública. Ele permite que o chamador cancele a operação — sem ele, requisições HTTP canceladas ou timeouts não interrompem o trabalho em andamento.
 
 <details>
+<br>
 <summary>❌ Bad — CancellationToken ignorado ou ausente</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId)
 {
     var order = await _repo.FindByIdAsync(orderId); // sem ct
+
     return order;
 }
 
@@ -102,19 +117,24 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 {
     var order = await _repo.FindByIdAsync(request.OrderId); // ct disponível mas não propagado
     await _notifications.SendAsync(order);
+
     return Result<Invoice>.Success(BuildInvoice(order));
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — CancellationToken propagado em toda a cadeia</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
+
     return order;
 }
 
@@ -122,7 +142,9 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 {
     var order = await _repo.FindByIdAsync(request.OrderId, ct);
     await _notifications.SendAsync(order, ct);
+
     var invoice = BuildInvoice(order);
+
     return Result<Invoice>.Success(invoice);
 }
 ```
@@ -134,6 +156,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 `.Result`, `.Wait()` e `GetAwaiter().GetResult()` bloqueiam a thread chamante. Em aplicações ASP.NET Core, isso pode causar deadlock quando o `SynchronizationContext` está presente. Não existe caminho seguro — a única solução é async de ponta a ponta.
 
 <details>
+<br>
 <summary>❌ Bad — bloqueio síncrono em contexto async</summary>
 
 ```csharp
@@ -150,7 +173,10 @@ public class OrderController(OrderService service) : ControllerBase
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — endpoint async de ponta a ponta</summary>
 
 ```csharp

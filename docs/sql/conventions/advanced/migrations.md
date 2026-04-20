@@ -7,6 +7,7 @@ Migrações são incrementais e irreversíveis. Cada arquivo representa uma muda
 Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 <details>
+<br>
 <summary>❌ Bad — numeração sequencial, sem contexto temporal</summary>
 
 ```
@@ -16,7 +17,10 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — timestamp + descrição em snake_case</summary>
 
 ```
@@ -32,6 +36,7 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 Nunca editar uma migration já executada. Se um ajuste for necessário, criar uma nova migration.
 
 <details>
+<br>
 <summary>❌ Bad — editar migration existente para corrigir schema</summary>
 
 ```sql
@@ -46,7 +51,10 @@ CREATE TABLE FootballTeams
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nova migration para cada mudança</summary>
 
 ```sql
@@ -64,6 +72,7 @@ ADD
 Cada migration faz uma coisa. Não misturar criação de tabelas com inserção de dados ou criação de índices não relacionados.
 
 <details>
+<br>
 <summary>❌ Bad — migration faz tudo de uma vez</summary>
 
 ```sql
@@ -76,7 +85,10 @@ CREATE INDEX IX_Players_TeamId ON Players(TeamId);
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — arquivos separados por responsabilidade</summary>
 
 ```

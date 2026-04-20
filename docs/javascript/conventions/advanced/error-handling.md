@@ -5,6 +5,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 ## Múltiplos tipos de retorno
 
 <details>
+<br>
 <summary>❌ Bad — null, undefined, false e objeto na mesma função</summary>
 
 ```js
@@ -24,7 +25,10 @@ if (result !== null) { /* ... */ }  // e undefined?
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
 
 ```js
@@ -34,6 +38,7 @@ function processOrder(order) {
   if (order.customer.defaulted) throw new BusinessError({ message: "Customer has unpaid debts." });
 
   const processedOrder = { success: true, order };
+
   return processedOrder;
 }
 ```
@@ -43,6 +48,7 @@ function processOrder(order) {
 ## Erro como string
 
 <details>
+<br>
 <summary>❌ Bad — string solta, impossível tratar com instanceof</summary>
 
 ```js
@@ -59,7 +65,10 @@ async function findUser(id) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — erros tipados, identificáveis e tratáveis</summary>
 
 ```js
@@ -77,6 +86,7 @@ async function findUser(id) {
 ## BaseError — abstração centralizada
 
 <details>
+<br>
 <summary>✅ Good — contrato único para todos os erros da aplicação</summary>
 
 ```js
@@ -144,6 +154,7 @@ export class InternalServerError extends BaseError {
 ## try/catch que engole o erro
 
 <details>
+<br>
 <summary>❌ Bad — captura, loga e retorna null</summary>
 
 ```js
@@ -165,7 +176,10 @@ async function findProductById(id) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — propaga com contexto, trata na fronteira</summary>
 
 ```js
@@ -195,6 +209,7 @@ async function findProductById(id) {
 ## Exceção como controle de fluxo
 
 <details>
+<br>
 <summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
 
 ```js
@@ -209,12 +224,16 @@ function getUser(id) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
 
 ```js
 function getUser(id) {
   const user = userMap[id] ?? null;
+
   return user;
 }
 ```

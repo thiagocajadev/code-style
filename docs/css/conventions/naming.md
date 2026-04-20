@@ -7,6 +7,7 @@ não.
 ## Semântico vs presentacional
 
 <details>
+<br>
 <summary>❌ Bad — nome descreve aparência, quebra ao mudar o design</summary>
 
 ```css
@@ -28,7 +29,10 @@ não.
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nome descreve papel, sobrevive a mudanças de design</summary>
 
 ```css
@@ -55,6 +59,7 @@ BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explíci
 relacionamento entre partes da UI sem depender de aninhamento no CSS.
 
 <details>
+<br>
 <summary>❌ Bad — hierarquia implícita, acoplada ao HTML</summary>
 
 ```html
@@ -79,7 +84,10 @@ relacionamento entre partes da UI sem depender de aninhamento no CSS.
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — BEM: bloco__elemento--modificador</summary>
 
 ```html
@@ -110,6 +118,7 @@ Especificidade alta torna o CSS frágil — qualquer override exige `!important`
 específico.
 
 <details>
+<br>
 <summary>❌ Bad — IDs e seletores encadeados inflam a especificidade</summary>
 
 ```css
@@ -123,7 +132,10 @@ específico.
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — classes simples, especificidade baixa e previsível</summary>
 
 ```css

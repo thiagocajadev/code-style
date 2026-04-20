@@ -9,11 +9,11 @@ são as quatro alavancas fundamentais — independente de linguagem ou plataform
 Logs como strings são invisíveis para ferramentas de observabilidade. Logs como objetos com
 campos nomeados permitem busca por campo, correlação e alertas automatizados.
 
-| Anti-pattern | Problema |
-| --- | --- |
-| `"Order 123 created by user 456"` | Não pesquisável por campo |
-| `"Error: " + error.message` | Perde stack trace e contexto |
-| Serializar objeto completo | Vaza dados sensíveis sem controle |
+| Anti-pattern | Problema | Ação |
+| --- | --- | --- |
+| `"Order 123 created by user 456"` | Não pesquisável por campo | Logar objeto com campos `orderId` e `userId` separados |
+| `"Error: " + error.message` | Perde stack trace e contexto | Passar o objeto de erro diretamente ao logger |
+| Serializar objeto completo | Vaza dados sensíveis sem controle | Projetar explicitamente os campos permitidos |
 
 ## Níveis de log
 

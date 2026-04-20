@@ -25,6 +25,7 @@ desenvolver melhorias e correções, voltando pra `main` via Pull Request (PR / 
 ```
 
 <details>
+<br>
 <summary>❌ Bad</summary>
 
 ```
@@ -37,7 +38,10 @@ branch-do-joao-refactor-e-tambem-o-bug-do-login
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good</summary>
 
 ```
@@ -74,6 +78,7 @@ mudou e **por que** — não como.
 | `revert`   | Reverte um commit anterior                        |
 
 <details>
+<br>
 <summary>❌ Bad</summary>
 
 ```
@@ -87,7 +92,10 @@ feat: adiciona validação no campo de e-mail do usuário no formulário de cada
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good</summary>
 
 ```

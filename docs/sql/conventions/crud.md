@@ -5,6 +5,7 @@ INSERT, SELECT, UPDATE, DELETE — formatação vertical e estratégia de exclus
 ## INSERT horizontal
 
 <details>
+<br>
 <summary>❌ Bad — colunas e valores em linha única</summary>
 
 ```sql
@@ -13,7 +14,10 @@ INSERT INTO Users(Id, Name, Email) VALUES(1, 'Alice', 'alice@email.com');
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — colunas e valores em blocos verticais separados</summary>
 
 ```sql
@@ -36,6 +40,7 @@ VALUES
 ## INSERT ... SELECT
 
 <details>
+<br>
 <summary>❌ Bad — SELECT inline, sem correspondência visual entre colunas</summary>
 
 ```sql
@@ -44,7 +49,10 @@ INSERT INTO Users(Id, Name, Email) SELECT ExternalId, FullName, ContactEmail FRO
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — colunas do INSERT alinhadas com colunas do SELECT</summary>
 
 ```sql
@@ -69,6 +77,7 @@ WHERE
 ## UPDATE usando outra tabela
 
 <details>
+<br>
 <summary>❌ Bad — subquery correlacionada no SET</summary>
 
 ```sql
@@ -83,7 +92,10 @@ WHERE Id IN (SELECT UserId FROM EmailUpdates);
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — UPDATE ... FROM ... WHERE</summary>
 
 ```sql
@@ -104,6 +116,7 @@ WHERE
 Dados deletados são irrecuperáveis. Soft delete — coluna `IsActive = 0` — preserva histórico e permite auditoria.
 
 <details>
+<br>
 <summary>❌ Bad — remoção permanente sem rastro</summary>
 
 ```sql
@@ -115,7 +128,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — soft delete com timestamp de inativação</summary>
 
 ```sql
@@ -133,6 +149,7 @@ WHERE
 ## UPDATE condicional em massa
 
 <details>
+<br>
 <summary>❌ Bad — um UPDATE por condição, duas passagens na tabela</summary>
 
 ```sql
@@ -142,7 +159,10 @@ UPDATE Orders SET StatusId = 3 WHERE IsActive = 1 AND CustomerId NOT IN (SELECT 
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — CASE numa única passagem</summary>
 
 ```sql
@@ -170,6 +190,7 @@ WHERE
 Filtrar na tabela principal antes dos JOINs reduz o volume processado. WHERE na tabela driving, não após o JOIN.
 
 <details>
+<br>
 <summary>❌ Bad — filtro aplicado depois do JOIN em tabela grande</summary>
 
 ```sql
@@ -188,7 +209,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — CTE filtra a tabela principal antes do JOIN</summary>
 
 ```sql
@@ -222,6 +246,7 @@ JOIN
 Nunca assumir ordem natural. Declarar ORDER BY em todo SELECT que retorna lista.
 
 <details>
+<br>
 <summary>❌ Bad — sem ORDER BY, ordem indefinida</summary>
 
 ```sql
@@ -236,7 +261,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ORDER BY explícito</summary>
 
 ```sql
@@ -258,6 +286,7 @@ ORDER BY
 Literais numéricos fixos perdem o significado fora do contexto. Comentário inline expõe a intenção sem criar abstração desnecessária.
 
 <details>
+<br>
 <summary>❌ Bad — números sem contexto</summary>
 
 ```sql
@@ -273,7 +302,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — comentário inline expõe a intenção</summary>
 
 ```sql
@@ -294,6 +326,7 @@ WHERE
 Literais inline tornam a query frágil e difícil de reusar. Usar parâmetros nomeados.
 
 <details>
+<br>
 <summary>❌ Bad — literais inline, sem contexto</summary>
 
 ```sql
@@ -309,7 +342,10 @@ WHERE
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — parâmetros nomeados (SQL Server / PostgreSQL)</summary>
 
 ```sql

@@ -9,6 +9,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona — mas o `else` apó
 o fluxo já saiu.
 
 <details>
+<br>
 <summary>❌ Bad — else desnecessário após return</summary>
 
 ```js
@@ -23,7 +24,10 @@ function getDiscount(user) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — early return elimina o else</summary>
 
 ```js
@@ -43,6 +47,7 @@ vira uma pirâmide — o _arrow antipattern_.
 Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
 
 <details>
+<br>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
 
 ```js
@@ -61,7 +66,10 @@ function processOrder(order) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — guard clauses, fluxo principal ao fundo</summary>
 
 ```js
@@ -72,6 +80,7 @@ function processOrder(order) {
   if (!order.customer) return;
 
   const invoice = process(order);
+
   return invoice;
 }
 ```
@@ -84,6 +93,7 @@ Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente, tornan
 imprevisível.
 
 <details>
+<br>
 <summary>❌ Bad — coerção silenciosa</summary>
 
 ```js
@@ -100,16 +110,21 @@ if (count == "3") {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — comparação explícita</summary>
 
 ```js
 if (value !== null && value !== undefined) {
   /* ... */
 }
+
 if (!value) {
   /* ... */
 }
+
 if (count === 3) {
   /* ... */
 }
@@ -122,6 +137,7 @@ if (count === 3) {
 Para atribuição de dois valores possíveis — não para lógica de fluxo. Encadeado, vira puzzle.
 
 <details>
+<br>
 <summary>❌ Bad — lógica inline ilegível</summary>
 
 ```js
@@ -130,7 +146,10 @@ const label = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score 
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — variáveis nomeadas extraem a intenção</summary>
 
 ```js
@@ -155,6 +174,7 @@ Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista
 catálogo. Substitua por um objeto: a chave é a condição, o valor é o resultado.
 
 <details>
+<br>
 <summary>❌ Bad — switch repetitivo mapeando chave → valor</summary>
 
 ```js
@@ -176,7 +196,10 @@ function getStatusLabel(status) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — lookup table: legível e extensível</summary>
 
 ```js
@@ -189,6 +212,7 @@ const STATUS_LABELS = {
 
 function getStatusLabel(status) {
   const label = STATUS_LABELS[status] ?? "Unknown";
+
   return label;
 }
 ```
@@ -202,6 +226,7 @@ retornar um valor, mas fazer algo — `switch` torna a intenção mais clara que
 Cada `case` termina com `break` ou `return` explícito: fall-through acidental é bug silencioso.
 
 <details>
+<br>
 <summary>❌ Bad — if/else encadeado para despacho de ações</summary>
 
 ```js
@@ -224,7 +249,10 @@ function processPaymentEvent(event) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — switch para despacho de comportamento</summary>
 
 ```js
@@ -258,6 +286,7 @@ string, quando os dados são dinâmicos, ou quando você precisa de `has`, `dele
 nativamente.
 
 <details>
+<br>
 <summary>❌ Bad — plain object perde o tipo da chave</summary>
 
 ```js
@@ -270,7 +299,10 @@ const count = Object.keys(userCache).length; // verbose
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Map preserva tipo e tem API nativa</summary>
 
 ```js
@@ -287,7 +319,8 @@ userCache.size;
 
 ---
 
-_As ferramentas acima resolvem **decisão** — qual caminho seguir. As abaixo resolvem **iteração** — quantas vezes percorrer._
+_As ferramentas acima resolvem **decisão** — qual caminho seguir. As abaixo resolvem **iteração** —
+quantas vezes percorrer._
 
 ## forEach
 
@@ -295,6 +328,7 @@ Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarati
 índice, sem variável de controle.
 
 <details>
+<br>
 <summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
 
 ```js
@@ -305,7 +339,10 @@ for (let i = 0; i < orders.length; i++) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — forEach para efeitos colaterais por item</summary>
 
 ```js
@@ -316,7 +353,8 @@ orders.forEach((order) => {
 
 </details>
 
-`forEach` não suporta `break` nem `continue` — quando precisar de saída antecipada, use `for...of`.
+> `forEach` não suporta `break` nem `continue` — quando precisar de saída antecipada, use
+> `for...of`.
 
 ## for...of
 
@@ -324,6 +362,7 @@ Quando o laço precisa de saída antecipada ou iteração com valores diretos, `
 sem índice implícito, com suporte a `break` e `continue`, compatível com qualquer iterável.
 
 <details>
+<br>
 <summary>❌ Bad — for...in em array percorre o protótipo</summary>
 
 ```js
@@ -336,7 +375,10 @@ for (const index in prices) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — for...of para valores diretos</summary>
 
 ```js
@@ -349,11 +391,14 @@ for (const price of prices) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Object.entries() para objetos</summary>
 
 ```js
-const config = { host: "localhost", port: 5432, db: "app" };
+const config = { host: "localhost", port: 5432, database: "app" };
 
 for (const [key, value] of Object.entries(config)) {
   console.log(`${key}: ${value}`);
@@ -369,6 +414,7 @@ buscas e verificações, os métodos de array fazem circuit break internamente �
 match, sem percorrer o resto.
 
 <details>
+<br>
 <summary>❌ Bad — forEach com flag força percorrer tudo</summary>
 
 ```js
@@ -387,7 +433,10 @@ function findFirstExpiredProduct(products) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — for...of sai no primeiro match</summary>
 
 ```js
@@ -402,7 +451,10 @@ function findFirstExpiredProduct(products) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — métodos declarativos com circuit break nativo</summary>
 
 ```js
@@ -425,6 +477,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 independente da condição.
 
 <details>
+<br>
 <summary>❌ Bad — for simulando condição de parada por estado</summary>
 
 ```js
@@ -436,7 +489,10 @@ for (let attempt = 0; attempt < maxAttempts; attempt++) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — while para condição de parada por estado</summary>
 
 ```js
@@ -445,13 +501,17 @@ let attempt = 0;
 while (attempt < maxAttempts) {
   const connection = connectToDatabase();
   if (connection.isReady) break;
+
   attempt++;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — do...while quando a primeira execução é garantida</summary>
 
 ```js

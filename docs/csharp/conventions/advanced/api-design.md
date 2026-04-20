@@ -25,6 +25,7 @@ Features/
 ```
 
 <details>
+<br>
 <summary>❌ Bad — lógica de negócio inline na rota</summary>
 
 ```csharp
@@ -47,7 +48,10 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — rotas mapeadas no extension method, handler injetado</summary>
 
 ```csharp
@@ -59,20 +63,25 @@ public static class OrdersExtensions
         // handlers registrados como Scoped — o container os injeta nas rotas automaticamente
         builder.Services.AddScoped<FindOrdersHandler>();
         builder.Services.AddScoped<FindOrderByIdHandler>();
+
         builder.Services.AddScoped<CreateOrderHandler>();
         builder.Services.AddScoped<OrderService>();
+
         return builder;
     }
 
     public static IEndpointRouteBuilder MapOrderEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app.MapGroup("/api/orders").WithTags("Orders");
+
         group.MapGet("/", (FindOrdersHandler handler, CancellationToken ct)
             => handler.HandleAsync(ct));
         group.MapGet("/{id:guid}", (Guid id, FindOrderByIdHandler handler, CancellationToken ct)
             => handler.HandleAsync(id, ct));
+
         group.MapPost("/", (OrderRequest request, CreateOrderHandler handler, CancellationToken ct)
             => handler.HandleAsync(request, ct));
+
         return app;
     }
 }
@@ -80,7 +89,10 @@ public static class OrdersExtensions
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — handler com dependências no construtor, request como parâmetro</summary>
 
 ```csharp
@@ -106,6 +118,7 @@ public class CreateOrderHandler(OrderService orderService)
 Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem lógica — apenas orquestra.
 
 <details>
+<br>
 <summary>❌ Bad — controller com lógica de negócio</summary>
 
 ```csharp
@@ -134,7 +147,10 @@ public class OrdersController(AppDbContext db) : ControllerBase
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — controller thin, delega para o service</summary>
 
 ```csharp
@@ -164,6 +180,7 @@ DTOs definem o contrato da API. Tipos de domínio não vazam para fora — a API
 ### Request
 
 <details>
+<br>
 <summary>❌ Bad — classe mutável, contrato implícito</summary>
 
 ```csharp
@@ -176,7 +193,10 @@ public class OrderRequest
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — record imutável, contrato explícito</summary>
 
 ```csharp
@@ -188,6 +208,7 @@ public record OrderRequest(string ProductId, int Quantity);
 ### Response
 
 <details>
+<br>
 <summary>❌ Bad — entidade de domínio exposta diretamente</summary>
 
 ```csharp
@@ -203,7 +224,10 @@ public class FindOrderByIdHandler(OrderService orderService)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>❌ Bad — record posicional com muitos parâmetros, ordem implícita</summary>
 
 ```csharp
@@ -215,7 +239,10 @@ var orderResponse = new OrderResponse(order.Id, order.ProductId, order.Quantity,
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — DTO com required init, nomeado e imutável</summary>
 
 ```csharp
@@ -261,6 +288,7 @@ Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carreg
 ajuda na observabilidade — sem inflar o payload.
 
 <details>
+<br>
 <summary>❌ Bad — shapes inconsistentes: objeto nu no sucesso, string no erro</summary>
 
 ```csharp
@@ -278,7 +306,10 @@ public async Task<IResult> HandleAsync(Guid id, CancellationToken ct)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — envelope com meta enxuto para rastreamento</summary>
 
 ```csharp

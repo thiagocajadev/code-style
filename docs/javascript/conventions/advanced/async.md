@@ -5,6 +5,7 @@ Toda operação que depende de I/O é assíncrona. Bloquear o thread principal t
 ## Callback hell
 
 <details>
+<br>
 <summary>❌ Bad — aninhamento cresce sem controle</summary>
 
 ```js
@@ -21,7 +22,10 @@ function fetchUserData(id, callback) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — async/await, linear e legível</summary>
 
 ```js
@@ -31,6 +35,7 @@ async function fetchUserData(id) {
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
+
   return userData;
 }
 ```
@@ -40,6 +45,7 @@ async function fetchUserData(id) {
 ## .then() encadeado
 
 <details>
+<br>
 <summary>❌ Bad — verboso, difícil de depurar</summary>
 
 ```js
@@ -54,7 +60,10 @@ function fetchUserData(id) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — mesmo resultado, sem o ruído</summary>
 
 ```js
@@ -64,6 +73,7 @@ async function fetchUserData(id) {
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
+
   return userData;
 }
 ```
@@ -73,6 +83,7 @@ async function fetchUserData(id) {
 ## Bloqueio síncrono
 
 <details>
+<br>
 <summary>❌ Bad — loop síncrono trava o thread principal</summary>
 
 ```js
@@ -86,12 +97,17 @@ wait(3000); // aplicação trava por 3 segundos
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Promise libera o thread enquanto aguarda</summary>
 
 ```js
 function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  const timer = new Promise((resolve) => setTimeout(resolve, ms));
+
+  return timer;
 }
 
 async function run() {
@@ -107,6 +123,7 @@ async function run() {
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
 <details>
+<br>
 <summary>❌ Bad — await sequencial quando não há dependência</summary>
 
 ```js
@@ -116,24 +133,30 @@ async function fetchDashboard(userId) {
   const profile = await fetchProfile(userId);   // só começa depois
 
   const dashboard = { orders, invoices, profile };
+
   return dashboard;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Promise.all dispara tudo ao mesmo tempo</summary>
 
 ```js
 async function fetchDashboard(userId) {
-  const [orders, invoices, profile] = await Promise.all([
+  const requests = [
     fetchOrders(userId),
     fetchInvoices(userId),
     fetchProfile(userId),
-  ]);
+  ];
+  const [orders, invoices, profile] = await Promise.all(requests);
 
   const dashboard = { orders, invoices, profile };
+
   return dashboard;
 }
 ```
@@ -148,6 +171,7 @@ async function fetchDashboard(userId) {
 Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção — sem `fetch` solto espalhado pelo código.
 
 <details>
+<br>
 <summary>❌ Bad — fetch direto, configuração duplicada em todo lugar</summary>
 
 ```js
@@ -157,6 +181,7 @@ async function fetchUser(id) {
     headers: { Authorization: `Bearer ${token}` },
   });
   const user = await response.json();
+
   return user;
 }
 
@@ -166,27 +191,34 @@ async function fetchOrders(userId) {
     headers: { Authorization: `Bearer ${token}` },
   });
   const orders = await response.json();
+
   return orders;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cliente único, injetado onde precisar</summary>
 
 ```js
 // api.client.js
 function createApiClient(baseUrl, token) {
   async function get(path) {
-    const response = await fetch(`${baseUrl}${path}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const fetchConfig = { headers: { Authorization: `Bearer ${token}` } };
+    const response = await fetch(`${baseUrl}${path}`, fetchConfig);
+
     const body = await response.json();
+
     return body;
   }
 
-  return { get };
+  const client = { get };
+
+  return client;
 }
 
 export const apiClient = createApiClient("https://api.example.com", token);
@@ -196,12 +228,14 @@ export const apiClient = createApiClient("https://api.example.com", token);
 // user.service.js
 async function fetchUser(apiClient, id) {
   const user = await apiClient.get(`/users/${id}`);
+
   return user;
 }
 
 // order.service.js
 async function fetchOrders(apiClient, userId) {
   const orders = await apiClient.get(`/orders?userId=${userId}`);
+
   return orders;
 }
 ```
@@ -211,12 +245,14 @@ async function fetchOrders(apiClient, userId) {
 ## Quando criar uma função async
 
 <details>
+<br>
 <summary>✅ Good — toda operação de I/O é async</summary>
 
 ```js
 // banco de dados
 async function findUser(id) {
-  const user = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+  const user = await database.query("SELECT * FROM users WHERE id = $1", [id]);
+
   return user;
 }
 
@@ -224,12 +260,14 @@ async function findUser(id) {
 async function fetchRates() {
   const response = await fetch("https://api.example.com/rates");
   const rates = await response.json();
+
   return rates;
 }
 
 // leitura de arquivo
 async function readConfig() {
   const config = await fs.promises.readFile("./config.json", "utf-8");
+
   return config;
 }
 ```

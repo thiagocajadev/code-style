@@ -5,6 +5,7 @@
 Por padrão, o EF rastreia todas as entidades retornadas — qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.
 
 <details>
+<br>
 <summary>❌ Bad — rastreamento habilitado em query somente leitura</summary>
 
 ```csharp
@@ -24,7 +25,10 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — AsNoTracking para leitura sem rastreamento</summary>
 
 ```csharp
@@ -47,6 +51,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 Nunca exponha entidades EF diretamente — elas carregam estado de rastreamento, navegações não inicializadas e detalhes de persistência. Projete sempre para DTOs via `.Select()` diretamente na query, não após materializar.
 
 <details>
+<br>
 <summary>❌ Bad — entidade exposta, materialização antes da projeção</summary>
 
 ```csharp
@@ -62,7 +67,10 @@ public async Task<List<Order>> FindOrdersAsync(Guid customerId, CancellationToke
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — projeção para DTO dentro da query, sem materializar entidade</summary>
 
 ```csharp
@@ -90,6 +98,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 Acesso a propriedades de navegação sem `Include` dispara uma query por registro — o problema N+1. Use `Include` para grafos conhecidos; projete com `.Select()` quando precisar de campos específicos de entidades relacionadas.
 
 <details>
+<br>
 <summary>❌ Bad — N+1: uma query por order para acessar Items</summary>
 
 ```csharp
@@ -113,7 +122,10 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — projeção com Select, EF resolve o JOIN em uma query</summary>
 
 ```csharp
@@ -134,7 +146,10 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Include para grafo completo necessário</summary>
 
 ```csharp
@@ -156,6 +171,7 @@ public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToke
 `Include` de múltiplas coleções gera um produto cartesiano — linhas duplicadas na query SQL. `AsSplitQuery()` divide em queries separadas e elimina a explosão de dados.
 
 <details>
+<br>
 <summary>❌ Bad — múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
 
 ```csharp
@@ -172,7 +188,10 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — AsSplitQuery divide em queries separadas</summary>
 
 ```csharp
@@ -195,6 +214,7 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 Toda query que usa paginação ou que o chamador espera em ordem determinística precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem — o resultado varia entre execuções.
 
 <details>
+<br>
 <summary>❌ Bad — paginação sem ordenação, resultado não determinístico</summary>
 
 ```csharp
@@ -215,7 +235,10 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — OrderBy antes de Skip/Take, ordem estável e determinística</summary>
 
 ```csharp
@@ -237,7 +260,10 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ThenBy para desempate estável</summary>
 
 ```csharp
@@ -262,6 +288,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os dados — o chamador precisa saber o total de registros para renderizar a navegação.
 
 <details>
+<br>
 <summary>❌ Bad — duas queries independentes, sem compartilhar o filtro base</summary>
 
 ```csharp
@@ -280,7 +307,10 @@ public async Task<List<OrderSummary>> FindOrdersAsync(Guid customerId, int page,
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — query base compartilhada, metadados e dados na mesma chamada</summary>
 
 ```csharp
@@ -302,6 +332,7 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
         .ToListAsync(ct);
 
     var result = new PagedResult<OrderSummary>(items, total, page, pageSize);
+
     return result;
 }
 ```
@@ -313,6 +344,7 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
 EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era necessário combinar `GroupJoin` + `SelectMany` + `DefaultIfEmpty()` — intenção enterrada em ruído. O novo operador declara o que faz.
 
 <details>
+<br>
 <summary>❌ Bad — intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
 
 ```csharp
@@ -337,7 +369,10 @@ var result = await _context.Orders
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — LeftJoin (EF Core 10), intenção clara</summary>
 
 ```csharp
@@ -368,6 +403,7 @@ Migrations descrevem intenção — cada uma resolve uma mudança atômica no sc
 O nome segue a convenção Rails: verbo + substantivo, descrevendo a mudança concreta. Nomes genéricos como `Update`, `Fix` ou `Initial` não comunicam nada.
 
 <details>
+<br>
 <summary>❌ Bad — nomes vagos que não descrevem a mudança</summary>
 
 ```bash
@@ -379,7 +415,10 @@ dotnet ef migrations add SchemaChanges
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — verbo + substantivo, mudança óbvia pelo nome</summary>
 
 ```bash
@@ -397,6 +436,7 @@ dotnet ef migrations add DropLegacyStatusColumn
 Migrations são append-only — `Down()` não é implementado. Reverter um schema é uma nova migration, não um rollback. Implementar `Down()` cria uma falsa sensação de segurança: em produção, rollback de schema raramente funciona sem perda de dados.
 
 <details>
+<br>
 <summary>❌ Bad — Down() implementado, ilusão de reversibilidade</summary>
 
 ```csharp
@@ -423,7 +463,10 @@ public partial class CreateOrdersTable : Migration
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Down() sinaliza explicitamente que não é suportado</summary>
 
 ```csharp
@@ -453,6 +496,7 @@ public partial class CreateOrdersTable : Migration
 Cada migration resolve uma coisa. Agrupar mudanças não relacionadas dificulta o rastreamento, mistura contextos no histórico e impede rollback cirúrgico via nova migration.
 
 <details>
+<br>
 <summary>❌ Bad — múltiplas mudanças sem relação na mesma migration</summary>
 
 ```csharp
@@ -478,7 +522,10 @@ public partial class UpdateSchema : Migration // nome vago, mudanças misturadas
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — uma migration por mudança, histórico legível</summary>
 
 ```bash
@@ -512,6 +559,7 @@ public partial class AddEmailToCustomers : Migration
 `RightJoin` preserva todos os registros do lado direito, mesmo sem correspondência no esquerdo. Use quando a tabela da direita é a fonte principal e a esquerda é opcional.
 
 <details>
+<br>
 <summary>✅ Good — RightJoin (EF Core 10), products sem reviews incluídos</summary>
 
 ```csharp

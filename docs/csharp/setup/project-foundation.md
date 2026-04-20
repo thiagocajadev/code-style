@@ -19,6 +19,7 @@ dotnet format
 `Program.cs` declara intenção — não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
+<br>
 <summary>❌ Bad — Program.cs como dumping ground de configuração</summary>
 
 ```csharp
@@ -61,7 +62,10 @@ app.Run();
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Program.cs como índice, configuração delegada</summary>
 
 ```csharp
@@ -80,6 +84,7 @@ app.Run();
 Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios — apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
 
 <details>
+<br>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
 
 ```csharp
@@ -90,10 +95,13 @@ public static class AppServiceExtensions
     {
         builder.AddDatabase();
         builder.AddAuth();
+
         builder.AddRateLimiting();
         builder.AddApiDocs();
+
         builder.AddOrders();
         builder.AddUsers();
+
         return builder;
     }
 }
@@ -105,11 +113,14 @@ public static class AppPipelineExtensions
     {
         app.UseHttpsRedirection();
         app.UseRateLimiter();
+
         app.UseCors();
         app.UseAuthentication();
         app.UseAuthorization();
+
         app.MapAppEndpoints();
         app.MapApiDocs();
+
         return app;
     }
 }
@@ -117,7 +128,10 @@ public static class AppPipelineExtensions
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — domínio de Orders dono da sua configuração</summary>
 
 ```csharp
@@ -149,6 +163,7 @@ public static class OrdersExtensions
 Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension method acessa `builder.Configuration` com strings soltas espalhadas pelo código.
 
 <details>
+<br>
 <summary>❌ Bad — configuração lida com chaves espalhadas</summary>
 
 ```csharp
@@ -162,7 +177,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Options pattern, seção tipada por domínio</summary>
 
 ```csharp
@@ -201,6 +219,7 @@ public static class AuthExtensions
 Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline — sempre via `IConfiguration`.
 
 <details>
+<br>
 <summary>✅ Good — DbContext registrado no módulo de infraestrutura</summary>
 
 ```csharp
@@ -226,6 +245,7 @@ public static class DatabaseExtensions
 .NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi` — sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como UI.
 
 <details>
+<br>
 <summary>❌ Bad — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
 
 ```csharp
@@ -242,7 +262,10 @@ app.UseSwaggerUI();
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — OpenAPI nativo, Scalar como UI, apenas em Development</summary>
 
 ```csharp
@@ -289,7 +312,10 @@ public static class ApiDocsExtensions
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — aggregator inclui ApiDocs</summary>
 
 ```csharp
@@ -318,6 +344,7 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 Rate limiting é middleware — entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
 
 <details>
+<br>
 <summary>✅ Good — rate limiting configurado via extension method</summary>
 
 ```csharp
@@ -363,7 +390,10 @@ builder.AddUsers();
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — aplicando política por endpoint</summary>
 
 ```csharp
@@ -387,6 +417,7 @@ MapAppEndpoints       → roteia para os handlers
 ```
 
 <details>
+<br>
 <summary>❌ Bad — UseAuthorization antes de UseAuthentication</summary>
 
 ```csharp
@@ -397,7 +428,10 @@ app.MapAppEndpoints();
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ordem correta do pipeline</summary>
 
 ```csharp

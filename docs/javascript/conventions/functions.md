@@ -5,6 +5,7 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 ## God function — múltiplas responsabilidades
 
 <details>
+<br>
 <summary>❌ Bad — busca, valida, calcula, persiste e loga na mesma função</summary>
 
 ```js
@@ -56,7 +57,10 @@ function realizaVenda(x) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — orquestrador no topo, responsabilidades separadas</summary>
 
 ```js
@@ -67,6 +71,7 @@ async function processOrder(orderId) {
   if (isInvalid(order)) return;
 
   const invoice = await issueInvoice(order);
+
   return invoice;
 
   function isInvalid(order) {
@@ -88,6 +93,7 @@ async function processOrder(orderId) {
 ## SLA — orquestrador ou implementação, nunca os dois
 
 <details>
+<br>
 <summary>❌ Bad — mesma função orquestra e implementa</summary>
 
 ```js
@@ -105,7 +111,10 @@ function buildOrderSummary(order) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — orquestrador chama helpers, cada um faz uma coisa</summary>
 
 ```js
@@ -114,6 +123,7 @@ function buildOrderSummary(order) {
   const lineItems = buildLineItems(order);
 
   const summary = [header, lineItems].join("\n");
+
   return summary;
 
   function buildHeader(order) {
@@ -134,6 +144,7 @@ function buildOrderSummary(order) {
 ## Separar cálculo de formatação
 
 <details>
+<br>
 <summary>❌ Bad — cálculo e formatação misturados</summary>
 
 ```js
@@ -148,13 +159,17 @@ function getOrderSummary(order) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — cálculo separado da formatação</summary>
 
 ```js
 function getOrderSummary(order) {
   const totals = calculateTotals(order.items);
   const summary = formatSummary(order.id, totals);
+
   return summary;
 
   function calculateTotals(items) {
@@ -179,6 +194,7 @@ function getOrderSummary(order) {
 O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo.
 
 <details>
+<br>
 <summary>❌ Bad — variável auxiliar desnecessária, else após throw</summary>
 
 ```js
@@ -199,12 +215,16 @@ async function findProductById(id) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — intenção clara no topo, detalhe abaixo</summary>
 
 ```js
 async function findProductById(id) {
   const product = await runQuery(id);
+
   return product;
 
   async function runQuery(id) {
@@ -225,6 +245,7 @@ async function findProductById(id) {
 O caller expressa o quê, não o como. Toda construção de contexto acontece dentro da função.
 
 <details>
+<br>
 <summary>❌ Bad — caller monta lógica inline antes de chamar</summary>
 
 ```js
@@ -237,7 +258,10 @@ await submitOrder({
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — entrada de uma linha, detalhes dentro</summary>
 
 ```js
@@ -247,6 +271,7 @@ async function submitOrder(orderId) {
   const order = await fetchOrder(orderId);
   const pricedOrder = applyPricing(order);
   const invoice = await persistOrder(pricedOrder);
+
   return invoice;
 }
 ```
@@ -258,6 +283,7 @@ async function submitOrder(orderId) {
 O retorno nomeia o resultado — não o computa. A variável é expressiva e simétrica com a intenção da função.
 
 <details>
+<br>
 <summary>❌ Bad — lógica ou objeto anônimo direto no return</summary>
 
 ```js
@@ -272,24 +298,32 @@ function getActiveUsers(users) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — variável expressiva antes do return</summary>
 
 ```js
 function buildGreeting(user) {
   const greeting = `Hello, ${user.name}! You have ${user.notifications.length} notifications.`;
+
   return greeting;
 }
 
 function getActiveUsers(users) {
   const activeUsers = users.filter((user) => user.isActive && !user.isBanned);
+
   return activeUsers;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
 
 ```js
@@ -304,24 +338,32 @@ async function processCheckout(cartId) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nome simétrico com a função deixa claro o que sai</summary>
 
 ```js
 function findPendingOrders(userId) {
   const pendingOrders = orderRepository.findByStatus(userId, "pending");
+
   return pendingOrders;
 }
 
 async function processCheckout(cartId) {
   const invoice = await checkoutService.process(cartId);
+
   return invoice;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
 
 ```js
@@ -332,7 +374,10 @@ function buildShippingLabel(order) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — partes nomeadas antes de montar o resultado</summary>
 
 ```js
@@ -341,6 +386,7 @@ function buildShippingLabel(order) {
   const addressLine = `${order.address.street}, ${order.address.number}`;
   const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
   const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
+
   return label;
 }
 ```
@@ -352,6 +398,7 @@ function buildShippingLabel(order) {
 Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco. Nunca duas.
 
 <details>
+<br>
 <summary>❌ Bad — parede de código sem respiro entre grupos</summary>
 
 ```js
@@ -362,13 +409,17 @@ async function processOrder(orderId) {
   const invoice = buildInvoice(discountedOrder);
   await saveInvoice(invoice);
   await notifyCustomer(invoice);
+
   return invoice;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — parágrafos de intenção</summary>
 
 ```js
@@ -393,6 +444,7 @@ async function processOrder(orderId) {
 Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam coisas que não se relacionam. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
+<br>
 <summary>❌ Bad — espaço dentro dos grupos, sem separação entre grupos</summary>
 
 ```js
@@ -407,18 +459,23 @@ async function registerUser(input) {
   const user = await db.users.create({ name, email, hash });
   const token = generateToken(user.id);
   await sendWelcomeEmail(email, token);
+
   return user;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — 0 linhas dentro do grupo, 1 entre grupos</summary>
 
 ```js
 async function registerUser(input) {
   const { name, email } = input;
+
   const exists = await db.users.findByEmail(email);
   if (exists) throw new ConflictError('Email taken');
 
@@ -439,18 +496,23 @@ async function registerUser(input) {
 Template literal gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
+<br>
 <summary>❌ Bad — todos os detalhes interpolados inline</summary>
 
 ```js
 function buildConfirmationEmail(user, order) {
   const message = `Olá ${user.firstName} ${user.lastName}, seu pedido #${order.id} foi confirmado e será entregue no endereço ${order.address.street}, ${order.address.city} - ${order.address.state} em até ${order.deliveryDays} dias úteis.`;
+
   return message;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — compostos extraídos, string final legível</summary>
 
 ```js
@@ -458,6 +520,7 @@ function buildConfirmationEmail(user, order) {
   const fullName = `${user.firstName} ${user.lastName}`;
   const address = `${order.address.street}, ${order.address.city} - ${order.address.state}`;
   const message = `Olá ${fullName}, seu pedido #${order.id} foi confirmado e será entregue em ${address} em até ${order.deliveryDays} dias úteis.`;
+
   return message;
 }
 ```
@@ -469,6 +532,7 @@ function buildConfirmationEmail(user, order) {
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto.
 
 <details>
+<br>
 <summary>❌ Bad — 4+ parâmetros inline, intenção obscura na chamada</summary>
 
 ```js
@@ -479,7 +543,10 @@ createInvoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL");
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — objeto quando 4+ parâmetros</summary>
 
 ```js
@@ -502,6 +569,7 @@ createInvoice({
 ## Código morto
 
 <details>
+<br>
 <summary>❌ Bad — condição impossível, função nunca chamada</summary>
 
 ```js
@@ -521,12 +589,16 @@ function legacyTransform(items) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — remove o que não é usado</summary>
 
 ```js
 function getStatus(value) {
   const status = value > 0 ? "active" : "inactive";
+
   return status;
 }
 ```

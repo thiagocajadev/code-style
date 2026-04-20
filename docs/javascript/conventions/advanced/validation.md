@@ -14,6 +14,7 @@ Antes de validar, limpar: `trim` em strings, `toLowerCase` em emails. Dados sujo
 validação suja — um email com espaço passa no schema mas falha na busca no banco.
 
 <details>
+<br>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
 
 ```js
@@ -26,7 +27,10 @@ async function createUserHandler(req, res) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — sanitize antes de validar</summary>
 
 ```js
@@ -35,14 +39,18 @@ function sanitizeCreateUser(body) {
     name: body.name?.trim(),
     email: body.email?.trim().toLowerCase(),
   };
+
   return sanitized;
 }
 
 async function createUserHandler(req, res) {
   const sanitized = sanitizeCreateUser(req.body);
   const input = createUserSchema.parse(sanitized);
+
   await createUser(input);
-  res.status(201).json({ id: input.id });
+
+  const body = { id: input.id };
+  res.status(201).json(body);
 }
 ```
 
@@ -54,6 +62,7 @@ Zod valida shape, tipos e constraints — não regras de negócio. Centraliza o 
 elimina validação manual espalhada pelos handlers.
 
 <details>
+<br>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
 
 ```js
@@ -67,7 +76,10 @@ async function createOrder(body) {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
 
 ```js
@@ -80,6 +92,7 @@ const createOrderSchema = z.object({
 async function createOrder(body) {
   const input = createOrderSchema.parse(body);
   const invoice = await buildInvoice(input);
+
   return invoice;
 }
 ```
@@ -92,6 +105,7 @@ Schema valida se o dado tem o formato correto. Regras de negócio validam se faz
 — dependem de I/O (banco, serviços externos) e não pertencem ao schema.
 
 <details>
+<br>
 <summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>
 
 ```js
@@ -108,7 +122,10 @@ const createOrderSchema = z.object({
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — schema valida shape, domínio valida regras após</summary>
 
 ```js
@@ -131,6 +148,7 @@ async function createOrder(body) {
   if (!rulesResult.ok) return rulesResult;
 
   const invoice = await buildInvoice(input, rulesResult.value);
+
   return Result.ok(invoice);
 }
 ```
@@ -143,18 +161,23 @@ Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`, `i
 Projetar explicitamente o que sai — nunca o objeto do banco.
 
 <details>
+<br>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
 
 ```js
 async function findUserByIdHandler(req, res) {
   const user = await db.users.findById(req.params.id);
+
   return res.json(user); // passwordHash, internalFlags, deletedAt...
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — projeção explícita do que sai na resposta</summary>
 
 ```js
@@ -165,12 +188,14 @@ function toUserResponse(user) {
     email: user.email,
     createdAt: user.createdAt,
   };
+
   return userResponse;
 }
 
 async function findUserByIdHandler(req, res) {
   const user = await db.users.findById(req.params.id);
   const userResponse = toUserResponse(user);
+
   return res.json(userResponse);
 }
 ```

@@ -10,6 +10,7 @@ hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem
 mesma posição de memória, janela diferente.
 
 <details>
+<br>
 <summary>❌ Bad — Split aloca array e strings intermediárias</summary>
 
 ```csharp
@@ -17,13 +18,17 @@ public string ExtractProductCode(string sku)
 {
     var parts = sku.Split('-');
     var code = parts[0];
+
     return code;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Span fatia sem alocar</summary>
 
 ```csharp
@@ -31,7 +36,9 @@ public string ExtractProductCode(string sku)
 {
     var span = sku.AsSpan();
     var separatorIndex = span.IndexOf('-');
+
     var code = span[..separatorIndex].ToString();
+
     return code;
 }
 ```
@@ -43,6 +50,7 @@ public string ExtractProductCode(string sku)
 `ReadOnlySpan<T>` elimina a indireção do enumerador.
 
 <details>
+<br>
 <summary>❌ Bad — foreach sobre array em hot path</summary>
 
 ```csharp
@@ -53,13 +61,17 @@ public decimal SumLineItemAmounts(OrderItem[] items)
     {
         total += item.Amount;
     }
+
     return total;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ReadOnlySpan elimina a indireção do enumerador</summary>
 
 ```csharp
@@ -67,10 +79,12 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 {
     ReadOnlySpan<OrderItem> span = items;
     var total = 0m;
+
     for (var i = 0; i < span.Length; i++)
     {
         total += span[i].Amount;
     }
+
     return total;
 }
 ```
@@ -84,6 +98,7 @@ string é imutável em .NET. Para construir strings dinamicamente, `StringBuilde
 interno e aloca uma vez no final.
 
 <details>
+<br>
 <summary>❌ Bad — nova string alocada por iteração</summary>
 
 ```csharp
@@ -94,13 +109,17 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
     {
         summary += $"{item.ProductName}: {item.Quantity}x\n";
     }
+
     return summary;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — StringBuilder reutiliza o buffer</summary>
 
 ```csharp
@@ -112,6 +131,7 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
         builder.AppendLine($"{item.ProductName}: {item.Quantity}x");
     }
     var summary = builder.ToString();
+
     return summary;
 }
 ```
@@ -125,6 +145,7 @@ sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos — 
 já computado. Indicado para métodos de alta frequência: repositórios, caches, validators.
 
 <details>
+<br>
 <summary>❌ Bad — <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
 
 ```csharp
@@ -134,13 +155,17 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
         return cached;
 
     var product = await _repo.FindByIdAsync(id, ct);
+
     return product;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — <b>ValueTask</b> sem alocação no caminho síncrono</summary>
 
 ```csharp
@@ -150,6 +175,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
         return cached;
 
     var product = await _repo.FindByIdAsync(id, ct);
+
     return product;
 }
 ```
@@ -164,9 +190,10 @@ tem menos overhead de leitura e não oferece risco de double-await.
 
 `Guid.NewGuid()` gera UUID v4 — aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sempre próximo ao fim
-da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/performance.md](../../sql/conventions/performance.md#tipo-de-id--bigint-vs-uuid).
+da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
+<br>
 <summary>❌ Bad — Guid.NewGuid() é v4: random, fragmenta índice</summary>
 
 ```csharp
@@ -174,13 +201,17 @@ public Order CreateOrder(CreateOrderRequest request)
 {
     var orderId = Guid.NewGuid(); // v4 — random, page splits no banco
     var order = new Order(orderId, request.CustomerId, request.Total);
+
     return order;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
 
 ```csharp
@@ -188,6 +219,7 @@ public Order CreateOrder(CreateOrderRequest request)
 {
     var orderId = Guid.CreateVersion7(); // .NET 9+ — time-ordered, sequencial no índice
     var order = new Order(orderId, request.CustomerId, request.Total);
+
     return order;
 }
 ```

@@ -15,6 +15,7 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 ```
 
 <details>
+<br>
 <summary>❌ Bad — exceção como controle de fluxo de negócio</summary>
 
 ```csharp
@@ -44,7 +45,10 @@ public async Task<IResult> GetOrder(Guid orderId)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — falha de negócio como valor, contrato explícito</summary>
 
 ```csharp
@@ -67,6 +71,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
         { Error.Code: "NOT_FOUND" } => Results.NotFound(),
         _ => Results.Problem(),
     };
+
     return response;
 }
 ```
@@ -78,6 +83,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE` — mapeável para HTTP status no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
+<br>
 <summary>❌ Bad — strings mágicas sem contrato</summary>
 
 ```csharp
@@ -88,7 +94,10 @@ return Result<Order>.Fail("unauthorized", "401");
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — códigos semânticos, mapeamento centralizado</summary>
 
 ```csharp
@@ -114,6 +123,7 @@ private static int MapStatusCode(string code) => code switch
 Valide pré-condições no início do método — antes de qualquer I/O ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
+<br>
 <summary>❌ Bad — validação tardia, trabalho desnecessário antes de falhar</summary>
 
 ```csharp
@@ -127,13 +137,17 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
         return Result<Invoice>.Fail("Description is required.", "INVALID_INPUT");
 
     var invoice = BuildInvoice(order, customer, items, request.Description);
+
     return Result<Invoice>.Success(invoice);
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — validação antes do I/O, falha rápida</summary>
 
 ```csharp
@@ -144,9 +158,11 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
     var order = await _orders.FindByIdAsync(request.OrderId, ct);
     var customer = await _customers.FindByIdAsync(request.CustomerId, ct);
+
     var items = await _items.FindByOrderAsync(request.OrderId, ct);
 
     var invoice = BuildInvoice(order, customer, items, request.Description);
+
     return Result<Invoice>.Success(invoice);
 }
 ```
@@ -158,6 +174,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 `try/catch` tem custo — é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
 
 <details>
+<br>
 <summary>❌ Bad — try/catch como desvio de fluxo esperado</summary>
 
 ```csharp
@@ -177,7 +194,10 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — retorno explícito para ausência, try/catch apenas na fronteira</summary>
 
 ```csharp
@@ -200,6 +220,7 @@ Exceções não capturadas borbulham até o topo. Sem um handler global, o runti
 O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura — nada disso chega ao cliente.
 
 <details>
+<br>
 <summary>❌ Bad — sem handler global, detalhe interno vaza</summary>
 
 ```csharp
@@ -209,7 +230,10 @@ O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: inte
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — IExceptionHandler como barreira final</summary>
 
 ```csharp

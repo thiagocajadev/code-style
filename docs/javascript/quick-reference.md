@@ -51,6 +51,7 @@ async function checkout(cartId) {
   const tax = subtotal * 0.1;
   const order = await db.orders.create({ cartId, subtotal, tax, total: subtotal + tax });
   await emailService.send(cart.userId, order);
+
   return order;
 }
 
@@ -78,11 +79,13 @@ O nome da variável de retorno reflete o conceito da função.
 ```js
 function processOrder(order) {
   const invoice = buildInvoice(order);
+
   return invoice;
 }
 
 function findProductById(productId) {
   const product = db.products.find(productId);
+
   return product;
 }
 ```

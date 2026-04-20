@@ -6,6 +6,7 @@ resultados intermediários, tornando cada passo testável e legível.
 ## Query monolítica vs etapas com temp tables
 
 <details>
+<br>
 <summary>❌ Bad — query única com subqueries aninhadas, difícil de debugar</summary>
 
 ```sql
@@ -37,7 +38,10 @@ ORDER BY
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — procedure com temp tables, uma etapa por responsabilidade</summary>
 
 ```sql
@@ -94,6 +98,7 @@ END;
 ## Procedure com parâmetros e temp tables
 
 <details>
+<br>
 <summary>✅ Good — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
 
 ```sql

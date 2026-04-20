@@ -26,6 +26,7 @@ npm install --save-dev prettier
 serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
+<br>
 <summary>❌ Bad — server.js como dumping ground de configuração</summary>
 
 ```js
@@ -71,7 +72,10 @@ app.listen(process.env.PORT || 3000);
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — server.js como índice, configuração delegada</summary>
 
 ```js
@@ -90,6 +94,7 @@ Cada domínio registra suas próprias rotas e dependências. `app.js` não conhe
 — apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que representam.
 
 <details>
+<br>
 <summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
 
 ```js
@@ -120,7 +125,10 @@ app.post("/api/orders", async (req, res) => {
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
 
 ```js
@@ -135,13 +143,17 @@ export function createApp(config) {
   applyMiddleware(app, config);
   registerUsers(app, config);
   registerOrders(app, config);
+
   return app;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — domínio de Orders dono das suas rotas</summary>
 
 ```js
@@ -150,7 +162,7 @@ import { createOrderService } from "./order.service.js";
 import { findAll, findById, create } from "./order.endpoints.js";
 
 export function registerOrders(app, config) {
-  const orderService = createOrderService(config.db);
+  const orderService = createOrderService(config.database);
 
   app.get("/api/orders", findAll(orderService));
   app.get("/api/orders/:id", findById(orderService));
@@ -161,23 +173,23 @@ export function registerOrders(app, config) {
 ```js
 // features/orders/order.endpoints.js
 export function findAll(orderService) {
-  return async (req, res) => {
+  return async (request, response) => {
     const orders = await orderService.findAll();
-    res.json(orders);
+    response.json(orders);
   };
 }
 
 export function findById(orderService) {
-  return async (req, res) => {
-    const order = await orderService.findById(req.params.id);
-    res.json(order);
+  return async (request, response) => {
+    const order = await orderService.findById(request.params.id);
+    response.json(order);
   };
 }
 
 export function create(orderService) {
-  return async (req, res) => {
-    const order = await orderService.create(req.body);
-    res.status(201).json(order);
+  return async (request, response) => {
+    const order = await orderService.create(request.body);
+    response.status(201).json(order);
   };
 }
 ```
@@ -190,6 +202,7 @@ export function create(orderService) {
 diretamente — apenas importa a seção que precisa.
 
 <details>
+<br>
 <summary>❌ Bad — process.env espalhado em todo lugar</summary>
 
 ```js
@@ -205,14 +218,17 @@ const port = process.env.PORT || 3000; // leitura direta
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — config.js como único ponto de entrada de env vars</summary>
 
 ```js
 // config.js
 export const config = {
   port: parseInt(process.env.PORT, 10) || 3000,
-  db: {
+  database: {
     url: process.env.DATABASE_URL,
   },
   auth: {
@@ -229,7 +245,7 @@ export const config = {
 ```js
 // features/orders/orders.module.js
 export function registerOrders(app, config) {
-  const orderService = createOrderService(config.db); // recebe a seção
+  const orderService = createOrderService(config.database); // recebe a seção
   // ...
 }
 ```
@@ -250,6 +266,7 @@ rotas              → handlers recebem req.user já preenchido
 ```
 
 <details>
+<br>
 <summary>❌ Bad — authenticate depois das rotas</summary>
 
 ```js
@@ -264,7 +281,10 @@ app.use(authenticate(config.auth)); // tarde demais
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — ordem correta do pipeline</summary>
 
 ```js
@@ -302,6 +322,6 @@ src/
 │       ├── user.endpoints.js
 │       └── user.service.js
 └── infra/
-    ├── db.client.js             ← createDbClient(config.db)
+    ├── database.client.js       ← createDatabaseClient(config.database)
     └── auth.middleware.js       ← authenticate(config.auth)
 ```

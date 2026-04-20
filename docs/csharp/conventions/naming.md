@@ -5,6 +5,7 @@
 Todo código é escrito em inglês — variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
 
 <details>
+<br>
 <summary>❌ Bad — mistura de idiomas</summary>
 
 ```csharp
@@ -20,7 +21,10 @@ public class PedidoService
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — inglês consistente</summary>
 
 ```csharp
@@ -49,6 +53,7 @@ Membros públicos usam PascalCase. Membros privados usam `_camelCase` com unders
 | Interface | `IPascalCase` | `IOrderRepository` |
 
 <details>
+<br>
 <summary>❌ Bad — convenção inconsistente</summary>
 
 ```csharp
@@ -66,7 +71,10 @@ public class orderService
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — escopo declarado pela convenção</summary>
 
 ```csharp
@@ -89,6 +97,7 @@ public class OrderService(IOrderRepository repository)
 Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada — sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
 
 <details>
+<br>
 <summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
 
 ```csharp
@@ -99,7 +108,10 @@ public async Task<bool> ValidatePayment(PaymentRequest request) { ... }
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — sufixo declara a natureza assíncrona</summary>
 
 ```csharp
@@ -115,6 +127,7 @@ public async Task<bool> ValidatePaymentAsync(PaymentRequest request) { ... }
 Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base` — o nome descreve a implementação pelo domínio ou tecnologia.
 
 <details>
+<br>
 <summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
 
 ```csharp
@@ -125,7 +138,10 @@ public class DefaultOrderRepository { ... } // Default não diz onde persiste
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — interface clara, implementação pelo domínio</summary>
 
 ```csharp
@@ -148,6 +164,7 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 | `should` | Diretiva comportamental | `shouldRetry`, `shouldRedirect` |
 
 <details>
+<br>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
 
 ```csharp
@@ -158,7 +175,10 @@ bool delete = user.Role == "ADMIN";
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — prefixo declara a semântica</summary>
 
 ```csharp
@@ -174,6 +194,7 @@ bool canDelete = user.Role == "ADMIN";
 O nome revela intenção pelo domínio. Nomes genéricos — `data`, `info`, `obj`, `item`, `result`, `temp` — são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
 
 <details>
+<br>
 <summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>
 
 ```csharp
@@ -181,13 +202,17 @@ public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 {
     var result = await _repo.FindAsync(id, ct);
     var data = MapToDto(result);
+
     return data;
 }
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — nomes expressivos pelo domínio</summary>
 
 ```csharp
@@ -195,6 +220,7 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
     var summary = MapToSummary(order);
+
     return summary;
 }
 ```
@@ -206,6 +232,7 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura — não uma contribuição de clareza. Use `// why:` apenas para restrições ocultas ou invariantes não óbvios.
 
 <details>
+<br>
 <summary>❌ Bad — comentários repetem o código</summary>
 
 ```csharp
@@ -214,18 +241,23 @@ var u = await _repo.FindAsync(id, ct);
 
 // verifica se o usuário está ativo
 if (!u.Flag)
+
     return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
 ```
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — código se explica; comentário só para restrições não óbvias</summary>
 
 ```csharp
 var user = await _repo.FindByIdAsync(userId, ct);
 
 if (!user.IsActive)
+
     return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
 ```
 
@@ -236,6 +268,7 @@ if (!user.IsActive)
 Nomes seguem a ordem de leitura natural: domínio primeiro, ação depois, qualificador por último. O leitor encontra o contexto antes do detalhe.
 
 <details>
+<br>
 <summary>❌ Bad — qualificador antes do domínio</summary>
 
 ```csharp
@@ -246,7 +279,10 @@ public async Task<User> ByIdFindUserAsync(...) { ... }
 
 </details>
 
+<br>
+
 <details>
+<br>
 <summary>✅ Good — domínio primeiro, ação depois</summary>
 
 ```csharp
