@@ -6,10 +6,11 @@
 
 <div align="center">
 
+[![HTML](https://img.shields.io/badge/HTML-Semântico%20%26%20Acessível-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md)
+[![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
 [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
 [![SQL](https://img.shields.io/badge/SQL-Server%20%26%20PostgreSQL-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
-[![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/editorconfig.md)
 
@@ -107,6 +108,7 @@ Organizados como checklist de revisão — do mais impactante ao mais granular:
 | [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
 | [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
 | [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
+| [HTML](docs/html/README.md)             | Semântica, acessibilidade, performance, SEO, jQuery              |
 
 ### Shared
 
@@ -148,6 +150,13 @@ The Clean Coder — Robert C. Martin _(livro)_
 [BEM Methodology](https://getbem.com/)  
 [Tailwind CSS Docs](https://tailwindcss.com/docs)  
 [Bootstrap Docs](https://getbootstrap.com/docs/)
+
+**HTML**  
+[MDN HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)  
+[HTML Living Standard — WHATWG](https://html.spec.whatwg.org/)  
+[WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)  
+[Can I Use](https://caniuse.com/)  
+[jQuery API Docs](https://api.jquery.com/)
 
 **Dates**  
 [Temporal API — TC39](https://tc39.es/proposal-temporal/docs/)  

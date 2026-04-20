@@ -152,25 +152,25 @@ Procedures com múltiplas etapas (filtrar, enriquecer, agregar, inserir) seguem 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
 SELECT
-  o.Id,
-  o.CustomerId,
-  o.TotalAmount
+  Orders.Id,
+  Orders.CustomerId,
+  Orders.TotalAmount
 FROM
-  Orders o
+  Orders
 WHERE
-  o.Status = 'Active'
-  AND o.CreatedAt >= @StartDate
-  AND o.CreatedAt < @EndDate;
+  Orders.Status = 'Active'
+  AND Orders.CreatedAt >= @StartDate
+  AND Orders.CreatedAt < @EndDate;
 
 SELECT
-  ao.OrderId,
-  ao.TotalAmount,
-  c.Name AS CustomerName,
-  c.Tier AS CustomerTier
+  ActiveOrders.OrderId,
+  ActiveOrders.TotalAmount,
+  Customers.Name AS CustomerName,
+  Customers.Tier AS CustomerTier
 FROM
-  #ActiveOrders ao
+  #ActiveOrders ActiveOrders
 JOIN
-  Customers c ON ao.CustomerId = c.Id;
+  Customers ON ActiveOrders.CustomerId = Customers.Id;
 ```
 
 </details>

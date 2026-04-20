@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout — Acme Store</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/checkout.js" defer></script>
+  </head>
+
+  <body>
+    <main id="main-content">
+      <h1>Checkout</h1>
+
+      <form action="/orders" method="post" novalidate>
+        <!-- Personal info -->
+        <fieldset>
+          <legend>Personal information</legend>
+
+          <label for="first-name">First name</label>
+          <input
+            id="first-name"
+            type="text"
+            name="first_name"
+            autocomplete="given-name"
+            aria-describedby="first-name-error"
+            required
+          />
+          <p id="first-name-error" class="field-error" aria-live="polite"></p>
+
+          <label for="last-name">Last name</label>
+          <input
+            id="last-name"
+            type="text"
+            name="last_name"
+            autocomplete="family-name"
+            aria-describedby="last-name-error"
+            required
+          />
+          <p id="last-name-error" class="field-error" aria-live="polite"></p>
+
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="name@example.com"
+            autocomplete="email"
+            aria-describedby="email-hint email-error"
+            required
+          />
+          <p id="email-hint" class="field-hint">We'll send your receipt here.</p>
+          <p id="email-error" class="field-error" aria-live="polite"></p>
+
+          <label for="phone">Phone number</label>
+          <input
+            id="phone"
+            type="tel"
+            name="phone"
+            autocomplete="tel"
+            aria-describedby="phone-hint"
+          />
+          <p id="phone-hint" class="field-hint">Optional. Used only for delivery updates.</p>
+        </fieldset>
+
+        <!-- Shipping address -->
+        <fieldset>
+          <legend>Shipping address</legend>
+
+          <label for="address-line1">Address</label>
+          <input
+            id="address-line1"
+            type="text"
+            name="address_line1"
+            autocomplete="address-line1"
+            required
+          />
+
+          <label for="address-line2">Apartment, suite, etc.</label>
+          <input
+            id="address-line2"
+            type="text"
+            name="address_line2"
+            autocomplete="address-line2"
+          />
+
+          <label for="city">City</label>
+          <input
+            id="city"
+            type="text"
+            name="city"
+            autocomplete="address-level2"
+            required
+          />
+
+          <label for="postal-code">Postal code</label>
+          <input
+            id="postal-code"
+            type="text"
+            name="postal_code"
+            autocomplete="postal-code"
+            pattern="[0-9]{5}(-[0-9]{4})?"
+            aria-describedby="postal-code-error"
+            required
+          />
+          <p id="postal-code-error" class="field-error" aria-live="polite"></p>
+        </fieldset>
+
+        <!-- Shipping method -->
+        <fieldset>
+          <legend>Shipping method</legend>
+
+          <label class="radio-option">
+            <input type="radio" name="shipping" value="standard" required />
+            Standard shipping — Free (5–7 business days)
+          </label>
+
+          <label class="radio-option">
+            <input type="radio" name="shipping" value="express" />
+            Express shipping — $9.99 (1–2 business days)
+          </label>
+        </fieldset>
+
+        <!-- Consent -->
+        <label class="checkbox-option">
+          <input type="checkbox" name="marketing_consent" value="yes" />
+          Send me updates about new products and promotions
+        </label>
+
+        <button type="submit" class="button button--primary">Place order</button>
+      </form>
+    </main>
+  </body>
+</html>

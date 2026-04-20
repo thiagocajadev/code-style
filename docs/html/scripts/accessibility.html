@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Products — Acme Store</title>
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/app.js" defer></script>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+      <a href="/" class="brand">
+        <img src="/img/logo.svg" alt="Acme Store" width="120" height="32" />
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/products" aria-current="page">Products</a>
+        <a href="/cart" aria-label="Shopping cart, 3 items">
+          <svg aria-hidden="true" focusable="false">...</svg>
+        </a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <h1>Products</h1>
+
+      <p id="results-count" aria-live="polite" aria-atomic="true">
+        Showing 12 of 48 products
+      </p>
+
+      <div class="filters" role="group" aria-labelledby="filter-heading">
+        <h2 id="filter-heading" class="visually-hidden">Filter products</h2>
+
+        <button
+          type="button"
+          class="filter-chip"
+          aria-pressed="false"
+          data-filter="running"
+        >Running</button>
+
+        <button
+          type="button"
+          class="filter-chip filter-chip--active"
+          aria-pressed="true"
+          data-filter="trail"
+        >Trail</button>
+      </div>
+
+      <ul class="product-grid" role="list">
+        <li class="product-card">
+          <a href="/products/trail-runner-x" class="product-card__link">
+            <img
+              src="/img/trail-runner-x.jpg"
+              alt="Trail Runner X, black with orange accents"
+              width="400"
+              height="400"
+              loading="lazy"
+            />
+            <h2 class="product-card__name">Trail Runner X</h2>
+          </a>
+
+          <p class="product-card__price" aria-label="Price: $129.99">$129.99</p>
+
+          <div class="product-card__rating" aria-label="Rating: 4.5 out of 5">
+            <span aria-hidden="true">★★★★½</span>
+            <span class="visually-hidden">(142 reviews)</span>
+          </div>
+
+          <button
+            type="button"
+            class="button button--primary"
+            aria-label="Add Trail Runner X to cart"
+          >Add to cart</button>
+        </li>
+      </ul>
+
+      <!-- focus trap managed in JS -->
+      <div
+        id="quick-view-dialog"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="quick-view-title"
+        hidden
+      >
+        <div class="modal__content">
+          <h2 id="quick-view-title">Trail Runner X</h2>
+
+          <button
+            type="button"
+            class="modal__close"
+            aria-label="Close quick view"
+          >
+            <svg aria-hidden="true" focusable="false">...</svg>
+          </button>
+        </div>
+      </div>
+
+      <section aria-labelledby="details-heading">
+        <h2 id="details-heading">Product details</h2>
+
+        <div role="tablist" aria-label="Product information">
+          <button
+            id="tab-description"
+            role="tab"
+            aria-selected="true"
+            aria-controls="panel-description"
+          >Description</button>
+
+          <button
+            id="tab-reviews"
+            role="tab"
+            aria-selected="false"
+            aria-controls="panel-reviews"
+            tabindex="-1"
+          >Reviews</button>
+        </div>
+
+        <div
+          id="panel-description"
+          role="tabpanel"
+          aria-labelledby="tab-description"
+        >
+          <p>Lightweight trail shoe built for technical terrain.</p>
+        </div>
+
+        <div
+          id="panel-reviews"
+          role="tabpanel"
+          aria-labelledby="tab-reviews"
+          hidden
+        >
+          <p>142 customer reviews...</p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

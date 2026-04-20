@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Article — Tech Blog</title>
+    <meta
+      name="description"
+      content="A practical example of semantic HTML structure using landmark elements and a proper heading hierarchy."
+    />
+    <link rel="canonical" href="https://example.com/blog/semantic-html" />
+    <link rel="stylesheet" href="/css/app.css" />
+    <script src="/js/app.js" defer></script>
+  </head>
+
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header>
+      <a href="/" class="brand">Tech Blog</a>
+
+      <nav aria-label="Main navigation">
+        <a href="/">Home</a>
+        <a href="/articles">Articles</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <article>
+        <header>
+          <h1>Semantic HTML in Practice</h1>
+
+          <p class="article-meta">
+            Published <time datetime="2026-04-20">April 20, 2026</time>
+            by <address><a href="/authors/ana">Ana Souza</a></address>
+          </p>
+        </header>
+
+        <section aria-labelledby="intro-heading">
+          <h2 id="intro-heading">Introduction</h2>
+          <p>
+            Semantic HTML uses the right element for the right purpose. The element itself
+            carries meaning — no extra classes needed.
+          </p>
+        </section>
+
+        <section aria-labelledby="landmarks-heading">
+          <h2 id="landmarks-heading">Landmark Elements</h2>
+          <p>Landmark elements define the structure of the page for assistive technologies.</p>
+
+          <section aria-labelledby="nav-heading">
+            <h3 id="nav-heading">Navigation</h3>
+            <p>Use <code>&lt;nav&gt;</code> for groups of navigation links.</p>
+          </section>
+
+          <section aria-labelledby="main-heading">
+            <h3 id="main-heading">Main Content</h3>
+            <p>Use <code>&lt;main&gt;</code> for the primary content — one per page.</p>
+          </section>
+        </section>
+
+        <section aria-labelledby="figures-heading">
+          <h2 id="figures-heading">Figures and Media</h2>
+
+          <figure>
+            <img
+              src="/img/landmark-diagram.png"
+              alt="Diagram showing header, nav, main, aside, and footer landmark regions on a page"
+              width="800"
+              height="450"
+              loading="lazy"
+            />
+            <figcaption>Landmark regions map the page structure for screen readers.</figcaption>
+          </figure>
+        </section>
+
+        <footer>
+          <p>
+            Filed under <a href="/tags/html">HTML</a>, <a href="/tags/accessibility">Accessibility</a>
+          </p>
+        </footer>
+      </article>
+
+      <aside aria-labelledby="related-heading">
+        <h2 id="related-heading">Related Articles</h2>
+        <ul>
+          <li><a href="/blog/css-naming">CSS Naming Conventions</a></li>
+          <li><a href="/blog/forms-a11y">Accessible Forms</a></li>
+        </ul>
+      </aside>
+    </main>
+
+    <footer>
+      <nav aria-label="Footer navigation">
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+      <p>© 2026 Tech Blog</p>
+    </footer>
+  </body>
+</html>
