@@ -124,6 +124,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [EditorConfig](docs/shared/editorconfig.md)     | Configuração base de editor                                                 |
 | [Observability](docs/shared/observability.md)   | Logging estruturado, níveis, PII, correlation ID                            |
 | [Null Safety](docs/shared/null-safety.md)       | Segurança com null/undefined — princípios agnósticos de linguagem           |
+| [Security](docs/shared/security.md)             | Segredos, configuração em camadas, autorização e blindagem de cookies       |
 
 ### Referências
 
