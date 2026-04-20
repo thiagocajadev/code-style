@@ -7,12 +7,13 @@ custom properties como tokens e mobile-first por padrão.
 
 | Tópico                                  | Conceitos                                                    |
 | --------------------------------------- | ------------------------------------------------------------ |
-| [Naming](conventions/naming.md)         | BEM, kebab-case, semântico vs presentacional, especificidade |
-| [Variables](conventions/variables.md)   | Custom properties, tokens semânticos, escopo de variável     |
-| [Formatting](conventions/formatting.md) | Ordem de propriedades, agrupamento por responsabilidade      |
-| [Responsive](conventions/responsive.md)         | Mobile-first, min-width, breakpoints nomeados                |
-| [Visual Density](conventions/visual-density.md) | Entre regras, grupos de propriedades, @media, nesting        |
-| [Quick Reference](quick-reference.md)           | Nomenclatura, ordem de propriedades, tokens                  |
+| [Naming](conventions/naming.md)             | BEM, kebab-case, semântico vs presentacional, especificidade  |
+| [Variables](conventions/variables.md)       | Custom properties, tokens semânticos, escopo de variável      |
+| [Formatting](conventions/formatting.md)     | Ordem de propriedades, agrupamento por responsabilidade       |
+| [Responsive](conventions/responsive.md)     | Mobile-first, min-width, breakpoints nomeados                 |
+| [Visual Density](conventions/visual-density.md) | Entre regras, grupos de propriedades, @media, nesting     |
+| [Performance](conventions/performance.md)   | Reflow, `transform`, `will-change`, `contain`, especificidade |
+| [Quick Reference](quick-reference.md)       | Nomenclatura, ordem de propriedades, tokens                   |
 
 ## Frameworks
 

@@ -1,6 +1,6 @@
 # VB.NET
 
-Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 14 e .NET Framework 4.8 — a última versão major do .NET Framework — como referência para trabalho com bases de código legadas.
+Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 16 e .NET Framework 4.8 — a última versão major do .NET Framework — como referência para trabalho com bases de código legadas.
 
 > [!IMPORTANT]
 > Antes de qualquer convenção, três switches de compilador precisam estar ativos em todo projeto:
@@ -45,6 +45,8 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | [Observability](conventions/advanced/observability.md) | NLog, message templates, níveis, PII, Correlation ID |
 | [Testing](conventions/advanced/testing.md) | AAA, assert semântico, nomes expressivos, isolamento, `Assert.Throws(Of T)` |
 | [Visual Density](conventions/visual-density.md) | Fases de método, `Return` separado, declaração + guarda, strings longas |
+| [Performance](conventions/advanced/performance.md) | `StringBuilder`, boxing, `HashSet`, `For` vs `For Each` em hot paths |
+| [Null Safety](conventions/advanced/null-safety.md) | `Is Nothing`, `Nullable(Of T)`, `If()` null-coalescing, guard em construtor |
 
 ## Princípios
 

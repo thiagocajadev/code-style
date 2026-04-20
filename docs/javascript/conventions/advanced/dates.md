@@ -113,7 +113,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 
 ## Temporal API
 
-`Date` é legado. A [Temporal API](https://tc39.es/proposal-temporal/docs/) (ES2025, Stage 4)
+`Date` é legado. A [Temporal API](https://tc39.es/proposal-temporal/docs/) (ES2026)
 resolve os problemas estruturais com tipos explícitos: `Temporal.Instant` para timestamps UTC,
 `Temporal.PlainDate` para datas sem hora, `Temporal.ZonedDateTime` para datas com timezone.
 
@@ -131,5 +131,6 @@ const appointment = Temporal.ZonedDateTime.from(
 );
 ```
 
-> Enquanto `Temporal` não tem suporte universal, `date-fns` ou `Luxon` são as alternativas
-> recomendadas. Evite `moment.js`: deprecated desde 2020.
+> `Temporal` tem suporte nativo no Chrome 144+ e Firefox 139+; Safari ainda em progresso.
+> Enquanto não há suporte universal, `date-fns` ou `Luxon` são as alternativas recomendadas.
+> Evite `moment.js`: deprecated desde 2020.

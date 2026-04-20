@@ -19,21 +19,28 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 
 ## Fundamentos
 
-| Tópico                                       | Conceitos                                                          |
-| -------------------------------------------- | ------------------------------------------------------------------ |
-| [Variables](conventions/variables.md)        | Annotations, inferência, `as const`, `unknown` vs `any`            |
-| [Naming](conventions/naming.md)              | Interface, type alias, genérico: convenções de nome               |
-| [Functions](conventions/functions.md)        | Return types, parâmetros tipados, overloads                        |
-| [Types](conventions/types.md)                | `type` vs `interface`, genéricos, utility types                    |
-| [Narrowing](conventions/narrowing.md)        | Type guards, discriminated unions, exhaustiveness                  |
+| Tópico                                          | Conceitos                                                          |
+| ----------------------------------------------- | ------------------------------------------------------------------ |
+| [Variables](conventions/variables.md)           | Annotations, inferência, `as const`, `unknown` vs `any`            |
+| [Naming](conventions/naming.md)                 | Interface, type alias, genérico: convenções de nome               |
+| [Functions](conventions/functions.md)           | Return types, parâmetros tipados, overloads                        |
+| [Types](conventions/types.md)                   | `type` vs `interface`, genéricos, utility types                    |
+| [Narrowing](conventions/narrowing.md)           | Type guards, discriminated unions, exhaustiveness                  |
+| [Control Flow](conventions/control-flow.md)     | Narrowing como guard, discriminated unions, exhaustiveness check   |
+| [Visual Density](conventions/visual-density.md) | Passos separados, `return` separado, anotações na mesma linha      |
 
 ## Avançados
 
-| Tópico                                                    | Conceitos                                          |
-| --------------------------------------------------------- | -------------------------------------------------- |
-| [Error Handling](conventions/advanced/error-handling.md) | Erros tipados, BaseError, try/catch nas fronteiras |
-| [Async](conventions/advanced/async.md)                   | `Promise<T>`, typed async/await, generics em I/O   |
-| [Quick Reference](quick-reference.md)                    | Tipos, utilitários, taboos                         |
+| Tópico                                                        | Conceitos                                                     |
+| ------------------------------------------------------------- | ------------------------------------------------------------- |
+| [Error Handling](conventions/advanced/error-handling.md)     | Erros tipados, BaseError, try/catch nas fronteiras            |
+| [Async](conventions/advanced/async.md)                       | `Promise<T>`, typed async/await, generics em I/O             |
+| [Performance](conventions/advanced/performance.md)           | `as const`, enums vs const objects, satisfies, tipos recursivos |
+| [Observability](conventions/advanced/observability.md)       | Logger tipado, contexto de correlação tipado, níveis          |
+| [Testing](conventions/advanced/testing.md)                   | Fixtures com `satisfies`, mocks tipados, `expectTypeOf`       |
+| [Validation](conventions/advanced/validation.md)             | `z.infer`, `safeParse`, discriminated unions, output DTO      |
+| [Dates](conventions/advanced/dates.md)                       | Branded types para timestamps, Temporal API tipada            |
+| [Quick Reference](quick-reference.md)                        | Tipos, utilitários, taboos                                    |
 
 ## Princípios
 
