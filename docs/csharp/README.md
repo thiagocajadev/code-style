@@ -11,6 +11,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | ------------------------------------------------- | -------------------------------------------------------------- |
 | [Security](setup/security.md)                     | Secrets, env vars, user-secrets, cadeia de configuração        |
 | [Project Foundation](setup/project-foundation.md) | Program.cs enxuto, extension methods, rate limiting, pipeline  |
+| [Vertical Slice](setup/vertical-slice.md)         | IModule, auto-discovery, AddDefaults/UseDefaults, pipeline 6 steps, CQS |
 | [Entity Framework](setup/entity-framework.md)     | `AsNoTracking`, projeção, N+1, paginação, `OrderBy`, left join |
 | [Dapper](setup/dapper.md)                         | Procedures por domínio, queries simples, injeção de conexão    |
 

@@ -13,6 +13,8 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 {
     public static Result<T> Success(T value) => new(true, false, value, null);
     public static Result<T> Fail(string message, string code) => new(false, true, default, new ApiError(message, code));
+
+    public static implicit operator Result<T>(T value) => Success(value);
 }
 ```
 
@@ -117,6 +119,50 @@ private static int MapStatusCode(string code) => code switch
     "CONFLICT" => 409,
     _ => 422,
 };
+```
+
+</details>
+
+## Implicit operator — happy path sem cerimônia
+
+O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automaticamente. O caminho feliz retorna o valor diretamente — sem `Success(...)` explícito em cada ponto de retorno.
+
+<details>
+<summary>❌ Bad — Success() explícito repetido em cada retorno bem-sucedido</summary>
+<br>
+
+```csharp
+public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
+{
+    if (request.CustomerId == Guid.Empty)
+        return Result<OrderCreateRequest>.Fail("Customer id is required.", "INVALID_CUSTOMER_ID");
+
+    if (!request.Items.Any())
+        return Result<OrderCreateRequest>.Fail("Order must have at least one item.", "INVALID_ITEMS");
+
+    return Result<OrderCreateRequest>.Success(request); // cerimônia desnecessária
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — implicit operator, happy path retorna o valor diretamente</summary>
+<br>
+
+```csharp
+public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
+{
+    if (request.CustomerId == Guid.Empty)
+        return Result<OrderCreateRequest>.Fail("Customer id is required.", "INVALID_CUSTOMER_ID");
+
+    if (!request.Items.Any())
+        return Result<OrderCreateRequest>.Fail("Order must have at least one item.", "INVALID_ITEMS");
+
+    return request; // implicit operator: converte para Result<T>.Success(request)
+}
 ```
 
 </details>

@@ -4,7 +4,9 @@
 
 ## Minimal API: preferência
 
-Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice Architecture**: toda a lógica de uma funcionalidade fica co-localizada, não fragmentada em camadas horizontais.
+Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice
+Architecture**: toda a lógica de uma funcionalidade fica co-localizada, não fragmentada em camadas
+horizontais.
 
 Para endpoints triviais sem dependências, uma lambda direta é suficiente e idiomática:
 
@@ -12,7 +14,8 @@ Para endpoints triviais sem dependências, uma lambda direta é suficiente e idi
 app.MapGet("/health", () => TypedResults.Ok());
 ```
 
-Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
+Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as
+dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
 
 ```
 Features/
@@ -148,9 +151,65 @@ public class CreateOrderHandler(OrderService orderService)
 
 </details>
 
+## [AsParameters] — context records
+
+Em Minimal API, handlers com muitas dependências produzem assinaturas longas. `[AsParameters]`
+permite agrupar todos os parâmetros em um context record — o framework resolve cada propriedade
+individualmente via DI, como se fossem parâmetros avulsos.
+
+<details>
+<summary>❌ Bad — assinatura longa, dependências espalhadas no handler</summary>
+<br>
+
+```csharp
+// ❌ cada dependência é um parâmetro avulso — cresce a cada nova injeção
+app.MapPost("/orders", async (
+    OrderCreateRequest request,
+    IOrderRepository repository,
+    IOrderBusinessRules businessRules,
+    IOrderReader reader,
+    CancellationToken cancellationToken) =>
+{
+    // ...
+});
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — context record agrupa dependências, handler recebe um parâmetro</summary>
+<br>
+
+```csharp
+// Features/Orders/OrderContexts.cs
+public sealed record OrderCreateContext(
+    OrderCreateRequest Request,
+    IOrderRepository Repository,
+    IOrderBusinessRules BusinessRules,
+    IOrderReader Reader,
+    CancellationToken CancellationToken);
+```
+
+```csharp
+// Features/Orders/Create.cs — handler recebe um parâmetro; DI resolve cada propriedade
+public static async Task<OrderCreateResult> Handle(
+    [AsParameters] OrderCreateContext context)
+{
+    var (request, repository, businessRules, reader, cancellationToken) = context;
+
+    // ...
+}
+```
+
+</details>
+
 ## Controller: MVC e legados
 
-Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem lógica, apenas orquestra.
+Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros
+globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem
+lógica, apenas orquestra.
 
 <details>
 <summary>❌ Bad — controller com lógica de negócio</summary>
@@ -205,7 +264,8 @@ public class OrdersController(OrderService orderService) : ControllerBase
 
         var createdOrder = result.Value!;
         var orderLocation = $"/api/orders/{createdOrder.Id}";
-        return Created(orderLocation, createdOrder);
+        var response = Created(orderLocation, createdOrder);
+        return response;
     }
 }
 ```
@@ -214,24 +274,32 @@ public class OrdersController(OrderService orderService) : ControllerBase
 
 ## TypedResults vs Results
 
-Minimal API oferece duas famílias de retorno: `Results` (`Microsoft.AspNetCore.Http.Results`) — o idioma histórico — e `TypedResults` — a variante tipada introduzida no .NET 7. Ambas produzem a mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
+Minimal API oferece duas famílias de retorno: `Results` (`Microsoft.AspNetCore.Http.Results`) — o
+idioma histórico — e `TypedResults` — a variante tipada introduzida no .NET 7. Ambas produzem a
+mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
 
-`Results.Ok(order)` retorna `IResult` — tipo apagado. Quem assina a rota com `Results` perde informação: OpenAPI/Swagger não infere o status nem o payload, testes precisam de cast (`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]` redundantes.
+`Results.Ok(order)` retorna `IResult` — tipo apagado. Quem assina a rota com `Results` perde
+informação: OpenAPI/Swagger não infere o status nem o payload, testes precisam de cast
+(`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]`
+redundantes.
 
-`TypedResults.Ok(order)` retorna `Ok<Order>` — tipo concreto. OpenAPI extrai status (200) e shape (`Order`) automaticamente. Testes leem `result.Value` direto. A assinatura do handler passa a **dizer** exatamente o que retorna.
+`TypedResults.Ok(order)` retorna `Ok<Order>` — tipo concreto. OpenAPI extrai status (200) e shape
+(`Order`) automaticamente. Testes leem `result.Value` direto. A assinatura do handler passa a
+**dizer** exatamente o que retorna.
 
 ### Quando usar qual
 
-| Contexto | Preferir |
-|---|---|
-| Minimal API, endpoint novo | `TypedResults.*` |
-| Endpoint com múltiplos status (ex: 200 ou 404) | `Results<Ok<T>, NotFound>` como tipo de retorno |
-| MVC Controller (`ControllerBase`) | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`) — não `Results.*` |
-| Código legado usando `Results.*` | manter até a próxima refatoração natural |
+| Contexto                                       | Preferir                                                                       |
+| ---------------------------------------------- | ------------------------------------------------------------------------------ |
+| Minimal API, endpoint novo                     | `TypedResults.*`                                                               |
+| Endpoint com múltiplos status (ex: 200 ou 404) | `Results<Ok<T>, NotFound>` como tipo de retorno                                |
+| MVC Controller (`ControllerBase`)              | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`) — não `Results.*` |
+| Código legado usando `Results.*`               | manter até a próxima refatoração natural                                       |
 
 ### Assinatura rica para múltiplos status
 
-O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possíveis. OpenAPI gera documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
+O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possíveis. OpenAPI gera
+documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
 
 <details>
 <summary>❌ Bad — Results apaga o tipo de retorno</summary>
@@ -275,7 +343,8 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 
 ### Location header sem lógica no return
 
-`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a URL em variável nomeada antes do retorno — o `return` nomeia, não computa.
+`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a URL em variável
+nomeada antes do retorno — o `return` nomeia, não computa.
 
 <details>
 <summary>❌ Bad — interpolação no return</summary>
@@ -296,14 +365,127 @@ return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
 
 ```csharp
 var orderLocation = $"/api/orders/{createdOrder.Id}";
-return TypedResults.Created(orderLocation, createdOrder);
+var response = TypedResults.Created(orderLocation, createdOrder);
+
+return response;
+```
+
+</details>
+
+## TypedResults aliases
+
+A assinatura `Results<T1, T2, T3>` enumera todos os retornos possíveis, mas repetir namespaces
+completos em cada handler polui o código. `global using` aliasa o tipo uma vez para todo o assembly
+— os handlers ficam limpos, o contrato permanece explícito e o OpenAPI continua enumerando cada
+status.
+
+<details>
+<summary>❌ Bad — tipo union verboso repetido em cada handler</summary>
+<br>
+
+```csharp
+// ❌ namespaces completos repetidos a cada handler que retorna esse tipo
+public static async Task<Results<
+    Created<OrderResponse>,
+    BadRequest<string>,
+    ProblemHttpResult>> Handle([AsParameters] OrderCreateContext context)
+{
+    // ...
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — alias declarado uma vez, handler usa nome semântico</summary>
+<br>
+
+```csharp
+// Features/Orders/OrderAliases.cs — um arquivo por feature, uma linha por status possível
+global using OrderCreateResult = Microsoft.AspNetCore.Http.HttpResults.Results<
+    Microsoft.AspNetCore.Http.HttpResults.Created<Features.Orders.OrderResponse>,
+    Microsoft.AspNetCore.Http.HttpResults.BadRequest<string>,
+    Microsoft.AspNetCore.Http.HttpResults.ProblemHttpResult>;
+
+global using OrderGetResult = Microsoft.AspNetCore.Http.HttpResults.Results<
+    Microsoft.AspNetCore.Http.HttpResults.Ok<Features.Orders.OrderResponse>,
+    Microsoft.AspNetCore.Http.HttpResults.NotFound>;
+```
+
+```csharp
+// handler — tipo de retorno expressivo, sem repetição de namespace
+public static async Task<OrderCreateResult> Handle(
+    [AsParameters] OrderCreateContext context)
+{
+    // ...
+}
+```
+
+</details>
+
+## CQS — Save sem retorno
+
+`SaveAsync` é um comando: persiste e retorna `void`. Retornar a entidade salva mistura command e
+query no mesmo método — viola CQS e acopla a leitura à escrita. Um `IOrderReader` separado lê após o
+save.
+
+<details>
+<summary>❌ Bad — SaveAsync retorna entidade (CQS violado)</summary>
+<br>
+
+```csharp
+// ❌ salva e retorna — command e query no mesmo método
+var saved = await repository.SaveAsync(order, cancellationToken);
+
+return TypedResults.Created($"/orders/{saved.Id}", saved);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — SaveAsync void, IOrderReader separado para leitura</summary>
+<br>
+
+```csharp
+// IOrderRepository — contrato de persistência (command)
+public interface IOrderRepository
+{
+    Task SaveAsync(Order order, CancellationToken cancellationToken);
+}
+
+// IOrderReader — contrato de leitura (query)
+public interface IOrderReader
+{
+    Task<Result<Order>> FindByIdAsync(Guid id, CancellationToken cancellationToken);
+}
+```
+
+```csharp
+// no handler: save void, read com interface separada
+await repository.SaveAsync(order, cancellationToken);
+
+var saved = await reader.FindByIdAsync(order.Id, cancellationToken);
+
+if (!saved.IsSuccess)
+    return TypedResults.Problem(saved.Error!.Message);
+
+var orderLocation = $"/orders/{order.Id}";
+var orderResponse = OrderResponseFilterOutput.Apply(saved.Value!);
+var response = TypedResults.Created(orderLocation, orderResponse);
+
+return response;
 ```
 
 </details>
 
 ## Request e Response
 
-DTOs definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos próprios.
+DTOs definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos
+próprios.
 
 ### Request
 
@@ -401,7 +583,8 @@ public class FindOrderByIdHandler(OrderService orderService)
             CreatedAt = order.CreatedAt
         };
 
-        return TypedResults.Ok(orderResponse);
+        var response = TypedResults.Ok(orderResponse);
+        return response;
     }
 }
 ```
@@ -413,8 +596,8 @@ public class FindOrderByIdHandler(OrderService orderService)
 Respostas sem envelope têm shapes inconsistentes: sucesso retorna objeto nu, erro retorna string,
 lista retorna array. Cada shape exige tratamento separado no cliente.
 
-Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carrega apenas o que
-ajuda na observabilidade, sem inflar o payload.
+Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carrega apenas o que ajuda
+na observabilidade, sem inflar o payload.
 
 <details>
 <summary>❌ Bad — shapes inconsistentes: objeto nu no sucesso, string no erro</summary>
@@ -489,27 +672,28 @@ public class FindOrderByIdHandler(OrderService orderService, IHttpContextAccesso
             }
         };
 
-        return TypedResults.Ok(apiResponse);
+        var response = TypedResults.Ok(apiResponse);
+        return response;
     }
 }
 // 200: { "data": { "id": "01HV...", ... }, "meta": { "correlationId": "abc-123", "requestedAt": "2026-04-19T14:32:00Z" } }
 // 404: (sem corpo)
 ```
 
-O `correlationId` em `meta` é o mesmo propagado nos logs da requisição.
-Veja [Correlation ID](./observability.md#correlation-id).
+O `correlationId` em `meta` é o mesmo propagado nos logs da requisição. Veja
+[Correlation ID](./observability.md#correlation-id).
 
 </details>
 
 ## Verbos e rotas
 
-| Verbo | Semântica | Exemplo |
-| --- | --- | --- |
-| `GET` | Leitura sem efeito colateral | `GET /api/orders`, `GET /api/orders/{id}` |
-| `POST` | Criação de recurso | `POST /api/orders` |
-| `PUT` | Substituição completa | `PUT /api/orders/{id}` |
-| `PATCH` | Atualização parcial | `PATCH /api/orders/{id}` |
-| `DELETE` | Remoção | `DELETE /api/orders/{id}` |
+| Verbo    | Semântica                    | Exemplo                                   |
+| -------- | ---------------------------- | ----------------------------------------- |
+| `GET`    | Leitura sem efeito colateral | `GET /api/orders`, `GET /api/orders/{id}` |
+| `POST`   | Criação de recurso           | `POST /api/orders`                        |
+| `PUT`    | Substituição completa        | `PUT /api/orders/{id}`                    |
+| `PATCH`  | Atualização parcial          | `PATCH /api/orders/{id}`                  |
+| `DELETE` | Remoção                      | `DELETE /api/orders/{id}`                 |
 
 - Rotas em kebab-case: `/api/order-items`, não `/api/orderItems`
 - Plural para coleções: `/api/orders`, não `/api/order`
@@ -517,16 +701,16 @@ Veja [Correlation ID](./observability.md#correlation-id).
 
 ## Status codes
 
-| Status | Quando usar |
-| --- | --- |
-| `200 OK` | Leitura ou operação bem-sucedida com corpo de resposta |
-| `201 Created` | Recurso criado; incluir id ou `Location` no corpo |
-| `204 No Content` | Operação bem-sucedida sem corpo (ex: DELETE) |
-| `400 Bad Request` | Input inválido (erro do cliente) |
-| `401 Unauthorized` | Não autenticado |
-| `403 Forbidden` | Autenticado mas sem permissão |
-| `404 Not Found` | Recurso não encontrado |
-| `409 Conflict` | Estado incompatível (ex: duplicata) |
-| `422 Unprocessable Entity` | Input válido mas regra de negócio violada |
-| `429 Too Many Requests` | Rate limit atingido |
-| `500 Internal Server Error` | Falha inesperada; nunca expor detalhes ao cliente |
+| Status                      | Quando usar                                            |
+| --------------------------- | ------------------------------------------------------ |
+| `200 OK`                    | Leitura ou operação bem-sucedida com corpo de resposta |
+| `201 Created`               | Recurso criado; incluir id ou `Location` no corpo      |
+| `204 No Content`            | Operação bem-sucedida sem corpo (ex: DELETE)           |
+| `400 Bad Request`           | Input inválido (erro do cliente)                       |
+| `401 Unauthorized`          | Não autenticado                                        |
+| `403 Forbidden`             | Autenticado mas sem permissão                          |
+| `404 Not Found`             | Recurso não encontrado                                 |
+| `409 Conflict`              | Estado incompatível (ex: duplicata)                    |
+| `422 Unprocessable Entity`  | Input válido mas regra de negócio violada              |
+| `429 Too Many Requests`     | Rate limit atingido                                    |
+| `500 Internal Server Error` | Falha inesperada; nunca expor detalhes ao cliente      |
