@@ -5,6 +5,16 @@
 Convenções de branches (cópias da versão principal), commits (registro das alterações) e estratégia
 de entrega.
 
+## Conceitos fundamentais
+
+| Conceito                                                             | O que é                                                                          |
+| -------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **TBD** (Trunk-Based Development, Desenvolvimento baseado no tronco) | Estratégia onde a main é a única fonte da verdade; branches são curtas e focadas |
+| **Branch** (cópia)                                                   | Cópia isolada do código para desenvolver uma mudança sem afetar a main           |
+| **Commit** (registro de alteração)                                   | Snapshot do código em um momento, com descrição do que mudou e por quê           |
+| **PR** (Pull Request, Pedido de Integração)                          | Solicitação de mesclagem de uma branch para a main, com revisão obrigatória      |
+| **Merge** (mesclagem)                                                | Integração das alterações de uma branch de volta à main                          |
+
 ## Branches
 
 **Trunk-based development** (TBD / Desenvolvimento baseado no tronco / fluxo principal): é uma
@@ -12,7 +22,7 @@ estratégia de desenvolvimento de software onde a `main` (fluxo principal) é a 
 verdade**.
 
 As Branches (cópias) derivam da `main`. Essas cópias devem existir por poucos dias, servindo pra
-desenvolver melhorias e correções, voltando pra `main` via Pull Request (PR / Empurrãozinho).
+desenvolver melhorias e correções, voltando pra `main` via Pull Request (PR / Pedido de Integração).
 
 ```
 main → branch → commits → PR → review → merge → main
@@ -72,18 +82,18 @@ Uma ótima estratégia para nomear commits (registro das alterações) é o
 
 ### Tipos
 
-| Tipo       | Quando usar                                       |
-| ---------- | ------------------------------------------------- |
-| `feat`     | Nova funcionalidade visível ao usuário ou sistema |
-| `fix`      | Correção de bug                                   |
-| `docs`     | Apenas documentação                               |
-| `refactor` | Mudança interna sem alterar comportamento         |
-| `test`     | Adição ou correção de testes                      |
-| `perf`     | Melhoria de performance                           |
-| `style`    | Formatação, whitespace (espaço em branco), sem mudança de lógica     |
-| `chore`    | Tarefas de manutenção (build, deps, config)       |
-| `ci`       | Mudanças em pipelines de CI/CD                    |
-| `revert`   | Reverte um commit anterior                        |
+| Tipo       | Quando usar                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `feat`     | Nova funcionalidade visível ao usuário ou sistema                |
+| `fix`      | Correção de bug                                                  |
+| `docs`     | Apenas documentação                                              |
+| `refactor` | Mudança interna sem alterar comportamento                        |
+| `test`     | Adição ou correção de testes                                     |
+| `perf`     | Melhoria de performance                                          |
+| `style`    | Formatação, whitespace (espaço em branco), sem mudança de lógica |
+| `chore`    | Tarefas de manutenção (build, deps, config)                      |
+| `ci`       | Mudanças em pipelines de CI/CD                                   |
+| `revert`   | Reverte um commit anterior                                       |
 
 <details>
 <summary>❌ Bad</summary>
@@ -130,11 +140,11 @@ Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de mó
 
 ## Pull Requests
 
-| Prática                      | Motivo                                                           |
-| ---------------------------- | ---------------------------------------------------------------- |
-| PR pequeno e focado          | Review (revisão) mais rápido, menor superfície de bug, rollout (implantação gradual) mais seguro |
-| Review obrigatório           | Ninguém faz `merge` do próprio PR sem aprovação                  |
-| Checks (verificações automatizadas) verdes antes do merge | CI/CD valida antes de tocar a `main`                             |
-| Merge na `main` diretamente  | Sem branches de longa vida (develop, staging, release)           |
+| Prática                                                   | Motivo                                                                                           |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| PR pequeno e focado                                       | Review (revisão) mais rápido, menor superfície de bug, rollout (implantação gradual) mais seguro |
+| Review obrigatório                                        | Ninguém faz `merge` do próprio PR sem aprovação                                                  |
+| Checks (verificações automatizadas) verdes antes do merge | CI/CD valida antes de tocar a `main`                                                             |
+| Merge na `main` diretamente                               | Sem branches de longa vida (develop, staging, release)                                           |
 
 Deploy, release, ambientes e fix forward: [ci-cd.md](ci-cd.md).

@@ -6,6 +6,18 @@ Uma operação — criar um recurso, processar um formulário, buscar dados — 
 
 O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e I/O (entrada/saída) é visível na estrutura.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Input** (entrada) | Dados recebidos por uma operação |
+| **Output** (saída) | Dados produzidos por uma operação |
+| `Result<T>` | Tipo que representa explicitamente sucesso ou falha de uma operação, tornando os dois caminhos visíveis na assinatura |
+| **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Escrita retorna void; leitura retorna dado. A mesma operação não faz os dois |
+| **Pipeline** (sequência de processamento) | Conjunto de etapas ordenadas de transformação de dados, cada uma com entrada e saída definidas |
+| **Caller** (quem invoca a operação) | Código que chama uma função ou serviço e é responsável por tratar os dois caminhos do resultado |
+| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+
 ## Backend
 
 ```

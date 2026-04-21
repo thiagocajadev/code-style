@@ -12,6 +12,17 @@ Arquitetura é a decisão de como organizar o código para que o sistema possa c
 | [XP](#xp-extreme-programming) | Qualidade e iteração | Times pequenos com cultura técnica forte |
 | [XGH](#xgh-extreme-go-horse) | Velocidade acima de tudo | Scripts descartáveis, protótipos de vida curta |
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Vertical Slice** | Arquitetura que organiza o código por feature, agrupando tudo que pertence a uma funcionalidade na mesma pasta |
+| **MVC** (Model-View-Controller) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
+| **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
+| **TDD** (Test-Driven Development, Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
+| **Blast radius** (raio de impacto) | Extensão do sistema afetada por uma alteração ou falha |
+| **MVP** (Minimum Viable Product, Produto Mínimo Viável) | Versão mais simples de um produto que valida uma hipótese de negócio |
+
 ## Como escolher
 
 As perguntas úteis:

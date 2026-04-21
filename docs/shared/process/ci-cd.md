@@ -9,10 +9,22 @@ ao usuário.
 CI e CD são processos distintos com objetivos diferentes. A estratégia de branches que viabiliza
 esse fluxo está em [git.md](git.md).
 
-| Processo                     | O que faz                                         | Resultado           |
-| ---------------------------- | ------------------------------------------------- | ------------------- |
-| **CI** (Integração Contínua) | Valida qualidade a cada push (envio de código): lint, testes, build | Artefato verificado |
-| **CD** (Entrega Contínua)    | Promove o artefato pelos ambientes até produção   | Código em produção  |
+| Processo                          | O que faz                                                           | Resultado           |
+| --------------------------------- | ------------------------------------------------------------------- | ------------------- |
+| **CI** (Integração Contínua)      | Valida qualidade a cada push (envio de código): lint, testes, build | Artefato verificado |
+| **CD** (Entrega Contínua)         | Promove o artefato pelos ambientes até produção com aprovação manual no último estágio | Artefato pronto para produção |
+| **CD** (Deploy Contínuo)          | Promove o artefato até produção automaticamente, sem aprovação manual | Código em produção  |
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Pipeline** (sequência de etapas de verificação) | Conjunto ordenado de estágios que todo código deve passar; cada estágio é um portão |
+| **Lint** | Verificação estática de estilo e formatação do código |
+| **Smoke test** (teste de fumaça) | Teste rápido do fluxo crítico após deploy para confirmar que o sistema responde |
+| **Fix forward** (corrigir para frente) | Estratégia de corrigir bugs com um novo commit e deploy, sem reverter o histórico |
+| **Rollback** (reversão) | Retorno do artefato em produção à versão anterior; reservado para emergências |
+| **Pre-commit hook** (gancho de pré-commit) | Automação executada localmente antes de cada commit, com custo máximo de 5 segundos |
 
 ## Pipeline
 

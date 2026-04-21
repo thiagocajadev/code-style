@@ -4,6 +4,16 @@
 
 Segurança é uma propriedade que atravessa todas as decisões de design, do banco de dados ao frontend. Os princípios abaixo valem para qualquer linguagem ou plataforma.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **XSS** (Cross-Site Scripting, injeção de script) | Ataque que injeta scripts maliciosos na página para roubar dados ou sequestrar sessões |
+| **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites) | Ataque que força o navegador do usuário autenticado a fazer requisições não autorizadas |
+| **JWT** (JSON Web Token) | Token assinado que transmite identidade e claims entre cliente e servidor |
+| **Autenticação** (authentication) | Verificação de identidade: quem é você? |
+| **Autorização** (authorization) | Verificação de permissão: o que você pode fazer? |
+
 ## Segredos fora do código
 
 Segredos (connection strings, API keys, JWT secrets, senhas) têm um ciclo de vida diferente do código. Código é versionado, compartilhado e eventualmente público. Segredos são rotativos, privados e específicos por ambiente.

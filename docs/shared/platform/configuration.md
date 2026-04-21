@@ -6,6 +6,16 @@ Configuração é **tudo que varia entre ambientes sem mudar o comportamento do 
 
 Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armazenamento, escopo) são tratados em [security.md](security.md). Feature flags, como mecanismo de release gradual, em [ci-cd.md](ci-cd.md).
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Config** (configuração) | Valor que varia entre ambientes sem mudar o comportamento do código |
+| **Secret** (segredo) | Valor sensível que expõe credencial ou acesso privilegiado; nunca vai para o repositório |
+| **Layering** (camadas de configuração) | Estratégia de resolver configuração por níveis de especificidade, onde cada camada sobrescreve a anterior |
+| **Fail-fast** (falhar rápido) | Validar toda a configuração no startup e encerrar imediatamente se algo estiver ausente ou inválido |
+| **Runtime** (tempo de execução) | Período em que o processo está rodando, após o startup; configurações dinâmicas são avaliadas aqui |
+
 ---
 
 ## Config vs Secret

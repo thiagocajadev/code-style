@@ -16,6 +16,19 @@ Os princípios desta página são **agnósticos de framework**. Aplicam-se a Rea
 Razor, Vue ou qualquer organização modular de backend. Frameworks específicos ancoram o vocabulário
 depois, na documentação da linguagem.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Container** (componente inteligente) | Componente que busca dados, coordena estado e aplica regras de aplicação |
+| **Presentational** (componente de apresentação) | Componente que recebe props, renderiza e emite eventos, sem lógica de dados |
+| **Props** (propriedades) | Dados passados de um componente pai para filho |
+| **Lifting state** (elevar estado) | Mover estado para o ancestral comum mais próximo quando dois componentes irmãos precisam do mesmo dado |
+| **Prop drilling** (cascata de props) | Passar props por camadas intermediárias que não as utilizam |
+| **Memoization** (memorização de resultados) | Cache do resultado de uma computação cara para evitar reprocessamento com os mesmos argumentos |
+| **Cache** (armazenamento temporário) | Resultado armazenado de uma computação ou busca para evitar recalcular com os mesmos argumentos |
+| **Barrel file** (arquivo índice) | Arquivo que exporta a API pública de um módulo, escondendo os arquivos internos |
+
 ---
 
 ## Composição sobre herança

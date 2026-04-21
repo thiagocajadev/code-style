@@ -4,6 +4,18 @@
 
 Interface é o contrato entre o sistema e o usuário. Cada decisão de espaçamento, cor, hierarquia e estado comunica algo. Quando essas decisões são inconsistentes, o usuário trabalha mais para entender o que o sistema oferece.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Padding** (preenchimento interno) | Espaço entre o conteúdo e a borda de um container |
+| **Token** (valor nomeado do sistema de design) | Variável semântica que representa um valor de design (cor, espaçamento, tipografia) |
+| **Viewport** (área visível da tela) | Porção da tela disponível para renderização no momento |
+| **WCAG** (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web) | Padrão internacional de acessibilidade para conteúdo web, com níveis A, AA e AAA |
+| **ARIA** (Accessible Rich Internet Applications, Aplicações de Internet Ricas Acessíveis) | Atributos HTML que complementam a semântica nativa para padrões complexos de UI |
+| **Skeleton** (esqueleto de carregamento) | Placeholder visual que representa o formato do conteúdo enquanto os dados carregam |
+| **Toast** (notificação temporária) | Mensagem de feedback exibida brevemente na interface, sem interromper o fluxo do usuário |
+
 ## Densidade Visual e Respiro
 
 Interfaces com excesso de elementos competindo por atenção cansam o olho e aumentam o tempo de decisão. Respiro (o espaço entre elementos) é a estrutura que guia a leitura.

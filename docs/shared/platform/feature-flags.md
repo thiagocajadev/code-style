@@ -6,9 +6,22 @@ Feature flags (interruptores de funcionalidade) separam o ciclo de vida do **có
 vida da **feature**. Código pode estar em produção desativado. Feature pode ser ativada para 1% dos
 usuários antes de 100%. Uma feature problemática pode ser desligada sem rollback de deploy.
 
-Esta página aprofunda o vocabulário que [ci-cd.md](../process/ci-cd.md) esboça na seção de deploy vs release.
-Flags como caso particular de configuração dinâmica aparecem também em
+Esta página aprofunda o vocabulário que [ci-cd.md](../process/ci-cd.md) esboça na seção de deploy vs
+release. Flags como caso particular de configuração dinâmica aparecem também em
 [configuration.md](configuration.md).
+
+## Conceitos fundamentais
+
+| Conceito                                  | O que é                                                                                          |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| **Feature** (funcionalidade)              | Comportamento visível ao usuário, cujo ciclo de vida é independente do ciclo de deploy do código |
+| **Deploy** (implantação)                  | Ato técnico de colocar o código em produção; não implica que a feature esteja visível ao usuário |
+| **Toggle** (interruptor)                  | Mecanismo que habilita ou desabilita uma feature sem deploy                                      |
+| **Rollout** (ativação gradual)            | Estratégia de ativar uma feature progressivamente para subconjuntos de usuários                  |
+| **Dark launch** (ativação invisível)      | Executar o novo código em produção sem expor o resultado ao usuário                              |
+| **Kill switch** (chave de emergência)     | Flag que desativa uma feature problemática imediatamente, sem deploy ou rollback                 |
+| **Runtime** (tempo de execução)           | Ponto de avaliação da flag a cada requisição, permitindo mudança sem restart                     |
+| **TTL** (Time To Live, tempo de validade) | Tempo durante o qual o valor de uma flag em cache local é considerado válido                     |
 
 ---
 
@@ -107,8 +120,8 @@ A maioria das flags úteis é runtime: o valor muda sem restart (reinicializaç�
 ajustável, o kill switch responde ao incidente imediatamente.
 
 O custo por avaliação importa. Consultar um serviço externo a cada chamada de função é
-insustentável. O padrão é **cache local com TTL (Time To Live, tempo de validade) curto**: o cliente da flag
-sincroniza com o backend a cada poucos segundos e responde localmente ao código. Ver
+insustentável. O padrão é **cache local com TTL (Time To Live, tempo de validade) curto**: o cliente
+da flag sincroniza com o backend a cada poucos segundos e responde localmente ao código. Ver
 [performance.md](performance.md) seção Cache.
 
 ---
@@ -203,5 +216,5 @@ externa e vira frágil.
 | Estrutura no código                           | Flag escolhe implementação, implementação não sabe                   |
 | Flag ligada em 100% há tempo                  | Agendar remoção, manter inventário auditável                         |
 | Como testar                                   | Fixture com valores fixos; nunca ler flag service em teste           |
-| Deploy vs release, visão geral                | Ver [ci-cd.md](../process/ci-cd.md)                                             |
+| Deploy vs release, visão geral                | Ver [ci-cd.md](../process/ci-cd.md)                                  |
 | Flag como config dinâmica                     | Ver [configuration.md](configuration.md) seção "Mudanças em runtime" |

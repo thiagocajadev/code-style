@@ -4,6 +4,16 @@
 
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) | Estrutura de três fases para cada teste: montagem do contexto, execução e verificação do resultado |
+| **Unit test** (teste unitário) | Teste de uma função em isolamento, sem I/O real; dependências externas são substituídas por doubles |
+| **Integration test** (teste de integração) | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos |
+| **Doubles** (substitutos de teste) | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
+| **Fixture** (dado de teste pré-definido) | Contexto ou dado passado para configurar o estado do teste |
+
 ## AAA (Arrange, Act, Assert)
 
 O padrão **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) divide cada teste em três fases explícitas, separadas por uma linha em branco.

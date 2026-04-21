@@ -12,6 +12,18 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 - **Legibilidade:** fluxo, espaçamento e nomes lidos linha a linha
 - **Controle de qualidade:** as garantias de robustez: estado, erros, I/O (entrada/saída) e testes
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **SSOT** (Single Source of Truth, fonte centralizada da verdade) | Uma única fonte autoritativa de informação; documentações por linguagem aplicam, não redefinem |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em apenas um nível de detalhe: ou coordena ou implementa |
+| **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Funções que retornam valor não produzem efeitos colaterais; as que produzem efeitos retornam void |
+| **Caller** (quem chama a função) | Código que invoca uma função e é responsável por garantir o contrato de entrada |
+| **Guard clause** (cláusula de guarda) | Verificação antecipada no topo da função que elimina casos inválidos antes da lógica principal |
+| **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) | Estrutura de três fases para testes: contexto, execução e verificação |
+| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+
 ---
 
 ## Forma

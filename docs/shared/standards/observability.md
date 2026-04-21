@@ -6,6 +6,16 @@ Observabilidade é a capacidade de entender o estado interno do sistema a partir
 Logging estruturado, níveis consistentes, proteção de dados sensíveis e rastreamento de requisição
 são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Logging** (registro estruturado) | Emissão de eventos do sistema como objetos com campos nomeados, pesquisáveis por ferramentas de observabilidade |
+| **APM** (Application Performance Monitoring, monitoramento de performance de aplicações) | Rastreamento distribuído de requisições, latência e erros em toda a stack |
+| **Correlation ID** (identificador de correlação) | Identificador único gerado na borda e propagado por todos os logs de uma requisição para rastreamento ponta a ponta |
+| **Stack trace** (rastreamento de pilha) | Sequência de chamadas de função que levou a um erro |
+| **Runtime** (tempo de execução) | Período em que o processo está rodando; logs de nível `debug` são suprimidos em produção |
+
 ## Logging estruturado
 
 Logs como strings são invisíveis para ferramentas de observabilidade. Logs como objetos com

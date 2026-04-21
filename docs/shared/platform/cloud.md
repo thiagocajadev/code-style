@@ -4,6 +4,17 @@
 
 Cloud computing redistribui responsabilidades: o provedor cuida da infraestrutura física, o time cuida da configuração, segurança e arquitetura dos serviços.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **PaaS/SaaS** (Platform/Software as a Service, Plataforma/Software como Serviço) | Modelos de serviço onde o provedor gerencia a infraestrutura; o time gerencia apenas a aplicação |
+| **IAM** (Identity and Access Management, Gerenciamento de Identidade e Acesso) | Sistema de controle de permissões em cloud: define quem pode fazer o quê em quais recursos |
+| **Container** | Unidade de empacotamento que garante paridade entre ambientes: o que roda em dev é o que vai para prod |
+| **Multi-stage build** (build em múltiplos estágios) | Estratégia de build que separa a etapa de compilação da imagem final, reduzindo o tamanho e a superfície de ataque |
+| **Health check** (verificação de saúde) | Declaração de como o orquestrador verifica se o container está saudável para receber tráfego |
+| **OOMKilled** (Out Of Memory Killed, Processo encerrado por falta de memória) | Sinal do orquestrador indicando que o container esgotou a memória disponível |
+
 ## Serviços Gerenciados
 
 A escolha entre gerenciado (PaaS/SaaS, Platform/Software as a Service, Plataforma/Software como Serviço) e self-hosted afeta diretamente o custo operacional e a complexidade do time.

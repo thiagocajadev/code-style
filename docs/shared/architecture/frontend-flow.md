@@ -4,6 +4,18 @@
 
 Dois fluxos estruturam a maior parte da lógica de interação em aplicações de frontend: **routing** (roteamento), que determina como o usuário navega entre telas, e **forms** (formulários), que governa como alterações são capturadas, validadas e enviadas ao servidor. Os princípios desta página são agnósticos de framework. A implementação varia por stack, mas o contrato de cada fluxo é o mesmo.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Routing** (roteamento) | Contrato entre URL e componente renderizado: uma URL sempre resolve para a mesma tela |
+| **Guard** (proteção de rota) | Verificação de autorização executada durante a resolução da rota, antes de qualquer componente montar |
+| **Loader** (carregador de dados) | Busca os dados da rota durante a resolução, antes do componente montar |
+| **Schema** (esquema de validação) | Fonte da verdade para formato e regras de campos de um formulário, usada no cliente e no servidor |
+| **UX** (User Experience, experiência do usuário) | Qualidade da interação do usuário com a interface |
+| **Optimistic update** (atualização otimista) | Alterar o estado local imediatamente, antes da confirmação do servidor, e reverter em caso de erro |
+| **Waterfall** (cascata de requisições) | Anti-padrão onde requisições são feitas em série, cada uma aguardando a anterior |
+
 ---
 
 ## Routing (Roteamento)
@@ -196,9 +208,9 @@ Erros por formulário ficam no escopo do `<form>`, adjacentes ao botão de submi
 
 O formulário fica desabilitado durante a requisição. Não apenas o botão de submit: todos os campos. Previne double-submit (envio duplicado) e comunica estado ao usuário. `<fieldset disabled>` é a forma mais acessível: o atributo se propaga para todos os inputs filhos sem precisar desabilitar cada um individualmente.
 
-### Optimistic updates (atualizações otimistas)
+### Optimistic updates
 
-Optimistic update (atualização otimista) altera o estado local imediatamente, antes da confirmação do servidor, e reverte em caso de erro.
+Optimistic update altera o estado local imediatamente, antes da confirmação do servidor, e reverte em caso de erro.
 
 Usar quando: a alteração é de baixo risco, reversível, e o servidor raramente rejeita. Exemplos: favoritar, reordenar, marcar como lido.
 

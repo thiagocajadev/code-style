@@ -6,6 +6,15 @@ Governança é a decisão de como o projeto é entendido e navegado, além de co
 projeto bem governado é aquele onde qualquer pessoa, do não técnico ao especialista, consegue
 navegar, entender e contribuir com contexto.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **SDLC** (Software Development Life Cycle, Ciclo de Vida de Desenvolvimento de Software) | Conjunto de fases do desenvolvimento: design, implementação, testes, entrega, operação e manutenção |
+| **ADR** (Architecture Decision Record, Registro de Decisão de Arquitetura) | Documento que registra o porquê de uma decisão técnica, as alternativas consideradas e as consequências |
+| **Onboarding** (integração) | Processo de integração de um novo membro ao projeto, transferindo conhecimento estrutural |
+| **Landing** (primeiro contato) | Ponto de entrada do projeto; o que um dev vê primeiro ao abrir o repositório |
+
 ## Convicções
 
 **Código serve o time.** A melhor solução é aquela que o próximo dev consegue ler, manter e evoluir

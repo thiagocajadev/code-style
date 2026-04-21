@@ -8,6 +8,21 @@ segundo plano), **webhook** (notificação HTTP acionada por evento externo) e *
 ciclo de request/response. Esta página complementa [operation-flow.md](operation-flow.md), que cobre
 o ciclo síncrono.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Background job** (tarefa em segundo plano) | Trabalho desacoplado do ciclo de request/response, executado de forma assíncrona |
+| **Worker** (processo trabalhador) | Processo que consome e executa jobs de forma independente |
+| **Outbox pattern** (padrão de caixa de saída) | Garantia de atomicidade entre persistência no banco e publicação no broker, usando a mesma transação |
+| **Relay** (processo de retransmissão) | Processo que lê registros pendentes do outbox e publica no broker com retry |
+| **Broker** (intermediário de mensagens) | Serviço que recebe, armazena e distribui mensagens entre producers e consumers |
+| **DLQ** (Dead-letter queue, fila de mensagens com falha persistente) | Fila de isolamento para mensagens que falharam repetidamente |
+| **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor) | Entrega unidirecional de eventos do servidor ao browser sobre HTTP |
+| **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash) | Mecanismo que valida a origem e integridade de um webhook |
+| **Publisher** (publicador) | Quem emite um evento de domínio para o broker |
+| **Subscriber** (assinante) | Quem consome e processa eventos do broker de forma independente |
+
 ---
 
 ## Background Job

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.2] - 2026-04-21
+
+### Fixed
+
+- `docs/shared/`: seção `## Conceitos fundamentais` adicionada em 18 arquivos (architecture×7, platform×5, standards×3, process×3); tabela `| Conceito | O que é |` logo após a introdução, com bold nos termos e tradução PT entre parênteses; `PR (Pull Request)` traduzido como "Pedido de Integração" em git.md; `CI/CD` expandido para 3 entradas distintas (CI, Entrega Contínua, Deploy Contínuo) na tabela de processos
+
 ## [1.6.1] - 2026-04-21
 
 ### Fixed

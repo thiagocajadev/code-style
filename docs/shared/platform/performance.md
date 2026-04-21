@@ -4,6 +4,19 @@
 
 Performance é uma decisão de design. As escolhas de paginação, cache (armazenamento temporário de respostas), processamento assíncrono e lazy loading determinam se o sistema escala ou trava sob carga real.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Cache** (armazenamento temporário) | Resposta armazenada para evitar recomputação ou nova consulta ao banco |
+| **TTL** (Time To Live, tempo de vida) | Tempo durante o qual uma entrada em cache é considerada válida |
+| **Offset/limit** (paginação por deslocamento e quantidade) | Modelo de paginação que pula N registros e retorna os próximos M |
+| **Cursor** | Referência ao último item retornado, usada para paginação estável em dados que mudam |
+| **Lazy loading** (carregamento sob demanda) | Carregar dados ou código apenas no momento em que são necessários |
+| **N+1** | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
+| **Connection pooling** (agrupamento de conexões) | Reutilização de conexões abertas com o banco para reduzir o custo de handshake por requisição |
+| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+
 ## Paginação
 
 Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da API) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.

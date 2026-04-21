@@ -4,6 +4,15 @@
 
 Patterns de design são soluções consolidadas para problemas recorrentes: vocabulário compartilhado entre engenheiros e heurísticas testadas em produção.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Caller** (quem invoca a função) | Código que chama uma função ou serviço e trata o resultado |
+| **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Biblioteca que mapeia objetos do código para tabelas do banco de dados |
+| **OCP** (Open/Closed Principle, Princípio Aberto/Fechado) | Design aberto para extensão por novas implementações, fechado para modificação do código existente |
+| **CRUD** (Create, Read, Update, Delete — Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
+
 ## Result Pattern
 
 Operações que podem falhar têm dois caminhos: sucesso e falha. A forma mais comum de tratar isso é lançar exceções, mas exceções são invisíveis na assinatura da função. Quem chama não sabe, sem ler a implementação, que a função pode falhar e em quais condições.
