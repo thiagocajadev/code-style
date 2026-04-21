@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-04-21
+
+### Added
+
+- `docs/typescript/frameworks/react-nextjs.md`: guia React 19.2 + Next.js 16 — RSC vs RCC, Props tipadas, hooks com pipeline Component→Service→apiClient, proxy.ts guards, formulários Zod+Server Action+useActionState, API Routes (GET/POST), Caching (`use cache`, `cacheLife`, `updateTag`); exemplos dogfoodam code style completo
+- `docs/typescript/frameworks/angular.md`: guia Angular 21 Standalone — Signals, Smart/Dumb Components, Services com `inject()`, `CanActivateFn` guards, `ResolveFn` loaders, formulários reativos tipados com `FormBuilder`, HTTP Interceptors (auth + error handling); exemplos dogfoodam code style completo
+- `docs/typescript/README.md`: seção `## Frameworks` com links para react-nextjs.md e angular.md
+
 ## [1.7.1] - 2026-04-21
 
 ### Fixed
