@@ -13,6 +13,7 @@ Testes documentam o comportamento esperado. Um teste que falha conta uma histór
 | **Integration test** (teste de integração) | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos |
 | **Doubles** (substitutos de teste) | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
 | **Fixture** (dado de teste pré-definido) | Contexto ou dado passado para configurar o estado do teste |
+| **Complexidade ciclomática** (cyclomatic complexity) | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações |
 
 ## AAA (Arrange, Act, Assert)
 
@@ -99,6 +100,25 @@ fronteira com I/O real (banco, rede, fila)     → integração
 | Endpoint cria pedido e persiste no banco | Integração |
 | Cálculo de frete por CEP e peso | Unitário |
 | Worker de fila processa mensagem completa | Integração |
+
+## Complexidade ciclomática
+
+**Complexidade ciclomática** (cyclomatic complexity) mede o número de caminhos independentes em uma função. A complexidade mínima é 1 (linha reta); cada `if`, `else if`, `case`, loop, `&&`, `||` e `catch` soma +1.
+
+| Faixa | Avaliação |
+|---|---|
+| 1–10 | Simples — fácil de testar e manter |
+| 11–20 | Moderada — requer atenção |
+| 21–50 | Alta — difícil de testar; candidato a refatoração |
+| > 50 | Intratável — cobertura completa é inviável na prática |
+
+A métrica tem uma consequência direta nos testes: uma função com complexidade N exige pelo menos N casos de teste para cobertura de branch (cobertura de ramificações). Funções com complexidade alta concentram risco — uma mudança pequena pode quebrar múltiplos caminhos.
+
+Quando a complexidade supera 10, as ações são as mesmas que para funções longas:
+
+- extrair lógica condicional em funções menores com responsabilidade única
+- substituir `switch` extenso por tabela de despacho (dispatch table) ou padrão **Strategy**
+- usar guard clauses para eliminar aninhamento
 
 ## Por linguagem
 

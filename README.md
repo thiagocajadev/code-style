@@ -7,7 +7,7 @@
 <div align="center">
 
 [![Version](https://img.shields.io/github/package-json/v/thiagocajadev/code-style?label=version&color=4CAF50)](package.json)
-[![HTML](https://img.shields.io/badge/HTML-Semântico%20%26%20Acessível-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
+[![HTML](https://img.shields.io/badge/HTML-Semantic%20%26%20Accessible-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md)
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](docs/typescript/frameworks/react-nextjs.md)

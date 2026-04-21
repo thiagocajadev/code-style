@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.3] - 2026-04-21
+
+### Fixed
+
+- `docs/shared/architecture/patterns.md`: 8 padrões GoF adicionados com seção completa (Singleton, Adapter, Facade, Proxy, Chain of Responsibility, Command, State, Template Method); 9 padrões especializados em tabela compacta (Abstract Factory, Prototype, Bridge, Composite, Flyweight, Iterator, Mediator, Memento, Visitor); Referência rápida movida para o topo (após Conceitos fundamentais), dividida em duas tabelas com anchors; Conceitos fundamentais expandido (Handler, Middleware); writing-soul aplicado (em dash, voz passiva, tradução write side)
+
+## [1.8.2] - 2026-04-21
+
+### Fixed
+
+- `README.md`: badge HTML corrigido para inglês ("Semantic & Accessible")
+- `docs/shared/standards/testing.md`: seção `## Complexidade ciclomática` adicionada — faixas 1–10/11–20/21–50/>50, relação com número mínimo de casos de teste, e ações de refatoração; entrada adicionada em `## Conceitos fundamentais`
+
 ## [1.8.1] - 2026-04-21
 
 ### Fixed

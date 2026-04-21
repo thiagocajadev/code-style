@@ -19,6 +19,45 @@ Patterns de design são soluções consolidadas para problemas recorrentes: voca
 | **Projection** (Projeção) | Modelo de leitura desnormalizado, otimizado para consulta |
 | **SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações) | Spec define contrato de entradas, saídas e comportamentos antes de qualquer implementação |
 | **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) | Modelo de IA treinado em texto que gera código, explica conceitos e auxilia no desenvolvimento |
+| **Handler** (processador de evento ou requisição) | Função ou objeto que recebe um evento ou requisição e decide como processar |
+| **Middleware** (intermediário de requisição) | Componente em um pipeline que intercepta a requisição, processa e repassa para o próximo elo |
+
+## Referência rápida
+
+| Pattern | Problema que resolve | Sinal de uso |
+|---|---|---|
+| [**Result**](#result-pattern) | Falhas invisíveis na assinatura | Operação de domínio que pode falhar |
+| [**Repository**](#repository) | Acoplamento entre domínio e storage | `SELECT` no meio do código de negócio |
+| [**Factory**](#factory) | Criação complexa espalhada nos callers | Construtor com lógica condicional |
+| [**Builder**](#builder) | Construtor com muitos parâmetros opcionais | `new Obj(null, null, true, false, ...)` |
+| [**Singleton**](#singleton) | Instância duplicada para estado global | Pool de conexões, config, logger |
+| [**Strategy**](#strategy) | `if/switch` crescendo por tipo | Comportamento que varia por contexto |
+| [**Observer**](#observer) | Produtor acoplado a consumidores | Reações a eventos em cascata |
+| [**Decorator**](#decorator) | Comportamento transversal sem modificar base | Logging, cache, retry composáveis |
+| [**Adapter**](#adapter) | Interfaces incompatíveis entre domínio e externo | Integração com API ou lib de terceiro |
+| [**Facade**](#facade) | Subsistema com muitos pontos de entrada | Orquestração de múltiplos serviços |
+| [**Proxy**](#proxy) | Acesso ao objeto precisa de interceptação | Cache, controle de acesso, lazy init |
+| [**Chain of Responsibility**](#chain-of-responsibility) | Múltiplos handlers em sequência | Pipeline de middleware, validação em etapas |
+| [**Command**](#command) | Operação precisa ser enfileirada ou auditada | Fila de tarefas, undo/redo |
+| [**State**](#state) | Comportamento muda por estado interno | Entidades com ciclo de vida (pedidos, contratos) |
+| [**Template Method**](#template-method) | Algoritmo fixo com etapas variáveis por tipo | Relatórios, importações com formatos diferentes |
+| [**CQRS**](#cqrs-command-query-responsibility-segregation) | Write model e read model divergem | Relatórios complexos, alto volume de leitura |
+| [**AI-Driven**](#ai-driven-development-desenvolvimento-assistido-por-ia) | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
+| [**SDD**](#sdd-spec-driven-development-desenvolvimento-orientado-a-especificações) | Spec antes de código | Decisões de design sem custo de implementação |
+
+_Especializados — aplicabilidade mais restrita, sem seção dedicada:_
+
+| Pattern | Problema que resolve | Sinal de uso |
+|---|---|---|
+| **Abstract Factory** | Criação acoplada a uma família de objetos concretos | Sistemas com múltiplos temas, providers ou conjuntos intercambiáveis |
+| **Prototype** | Criar objeto do zero é caro | Clone com ajustes é mais eficiente que instanciar |
+| **Composite** | Objetos individuais e composições tratados de forma diferente | Estruturas em árvore: menus, categorias, UI aninhada |
+| **Mediator** | Objetos se referenciam diretamente criando acoplamento cruzado | Event bus, formulários com dependências entre campos |
+| **Memento** | Precisa restaurar estado anterior sem violar encapsulamento | Undo/redo, snapshots de sessão |
+| **Bridge** | Abstração e implementação crescem juntas em subclasses | Ambas precisam variar de forma independente |
+| **Visitor** | Novas operações em estruturas heterogêneas exigem modificar classes | AST, exportadores multi-formato |
+| **Flyweight** | Muitas instâncias com estado repetido consomem memória | Volumes altos de objetos similares: partículas, caracteres em editores |
+| **Iterator** | Acesso interno à coleção exposto ao caller | Embutido via `for...of` e generators; raramente implementado diretamente |
 
 ## Result Pattern
 
@@ -131,6 +170,130 @@ Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova t
 
 **Quando usar**: comportamento transversal (logging, cache, autenticação) que precisa ser aplicado de forma composável, sem modificar a implementação base.
 
+## Singleton
+
+Uma única instância de uma classe durante todo o ciclo de vida da aplicação. Qualquer parte do código que solicita a dependência recebe a mesma instância.
+
+```
+Config (instância única)
+  → carregada uma vez no startup
+  → compartilhada por todos os módulos
+  → nunca reinstanciada
+```
+
+**Quando usar**: estado genuinamente global e sem variação por contexto: pool de conexões, configuração da aplicação, logger compartilhado. Evitar em lógica de domínio: oculta dependências e dificulta testes.
+
+## Adapter
+
+Dois componentes com interfaces incompatíveis precisam colaborar. O Adapter envolve um dos dois e traduz a interface para o formato que o outro espera, sem modificar nenhum dos dois.
+
+```
+EmailService (interno)
+  → adapter
+    → SendGridClient (externo)
+```
+
+O código de domínio chama `EmailService.send()`. O adapter traduz para a API do SendGrid. Trocar o provedor é trocar o adapter, sem tocar o domínio.
+
+**Quando usar**: integrar bibliotecas externas, APIs de terceiros ou código legado com interface diferente da esperada pelo domínio.
+
+## Facade
+
+Um subsistema com muitos componentes expõe complexidade desnecessária para quem só precisa de uma operação de alto nível. Facade cria uma interface simplificada que coordena o subsistema internamente.
+
+```
+OrderFacade.place(cart)
+  → PaymentService.charge()
+  → InventoryService.reserve()
+  → EmailService.confirmOrder()
+  → retorna OrderConfirmation
+```
+
+O caller usa uma única entrada. O subsistema pode crescer internamente sem que a interface pública mude.
+
+**Quando usar**: orquestrar múltiplos serviços em uma operação de negócio, ou simplificar acesso a uma biblioteca com muitos pontos de entrada.
+
+## Proxy
+
+Um substituto que intercepta o acesso a outro objeto. O Proxy implementa a mesma interface que o objeto real e decide o que acontece antes, depois ou no lugar da chamada.
+
+```
+UserRepositoryProxy (cache)
+  → verifica cache local
+    → HIT: retorna sem acessar o banco
+    → MISS: delega para SqlUserRepository → armazena no cache
+```
+
+O caller não sabe que está falando com um proxy. A lógica de cache, controle de acesso ou logging fica isolada do objeto real.
+
+**Quando usar**: cache transparente, controle de acesso por permissão, logging de chamadas sem modificar o objeto real, ou lazy initialization (inicialização tardia) de recursos pesados.
+
+## Chain of Responsibility
+
+Uma requisição passa por uma cadeia de handlers (processadores). Cada handler decide se processa a requisição ou a passa para o próximo. O caller não sabe qual handler vai processar.
+
+```
+Request
+  → AuthHandler (valida token)
+  → RateLimitHandler (verifica limite de taxa)
+  → ValidationHandler (valida payload)
+  → BusinessHandler (executa lógica)
+```
+
+Adicionar um novo passo é adicionar um novo handler e inseri-lo na cadeia. A ordem é explícita na configuração.
+
+**Quando usar**: pipelines de middleware (intermediário de requisição), validação em múltiplas etapas, processamento de eventos onde os passos precisam ser montados de forma composável.
+
+## Command
+
+Encapsula uma operação como um objeto. O Command carrega os parâmetros, o executor e o contexto necessário para executar a operação em qualquer momento.
+
+```
+PlaceOrderCommand { orderId, userId, items }
+  → armazenado na fila
+  → executado pelo Worker
+  → resultado auditado
+```
+
+Separar a criação do comando da sua execução permite filas de operações, retry (nova tentativa), undo/redo e auditoria de ações.
+
+**Quando usar**: operações que precisam ser enfileiradas, agendadas, revertidas ou auditadas. Complementa CQRS: os Commands do write side (lado de escrita) são objetos que encapsulam a intenção de mudança de estado.
+
+## State
+
+O comportamento de um objeto muda conforme seu estado interno. Sem o padrão, cada método acumula um `if/switch` verificando o estado atual, com lógica crescendo sem controle.
+
+State extrai cada estado em sua própria implementação:
+
+```
+Order
+  ├── PendingState   → permite: pay(), cancel()
+  ├── PaidState      → permite: ship(), refund()
+  └── ShippedState   → permite: deliver(), return()
+```
+
+O objeto delega para o estado atual. Adicionar um novo estado é adicionar uma nova implementação, sem tocar os estados existentes.
+
+**Quando usar**: entidades com ciclo de vida explícito (pedidos, contratos, workflows) onde cada estado permite ações distintas.
+
+## Template Method
+
+Um algoritmo tem etapas fixas e etapas que variam por implementação. Template Method define o esqueleto na classe base e deixa cada subclasse preencher as etapas variáveis.
+
+```
+ReportGenerator (base)
+  → fetchData()       ← implementado por cada subclasse
+  → format(data)      ← implementado por cada subclasse
+  → export(result)    ← fixo na base
+
+PdfReportGenerator  → fetchData() + format() específicos para PDF
+CsvReportGenerator  → fetchData() + format() específicos para CSV
+```
+
+A sequência é controlada pela base. As variações ficam nas subclasses sem duplicar a estrutura do algoritmo.
+
+**Quando usar**: algoritmos com estrutura fixa e etapas variáveis por tipo: geração de relatórios, processamento de arquivos, pipelines de importação com formatos diferentes.
+
 ## CQRS: Command Query Responsibility Segregation
 
 > Não confundir com **CQS** (Command-Query Separation), que é um princípio de _função_: a função retorna valor ou produz efeito, nunca os dois. CQRS é um padrão _arquitetural_ que separa modelos inteiros de escrita e leitura.
@@ -193,19 +356,3 @@ O benefício central é custo de decisão: rever uma spec é grátis; rever cód
 
 > Este guia segue SDD. O ciclo de governança em `.ai/` é uma implementação direta desse padrão.
 
----
-
-## Referência rápida
-
-| Pattern | Problema que resolve | Sinal de uso |
-|---|---|---|
-| **Result** | Falhas invisíveis na assinatura | Operação de domínio que pode falhar |
-| **Factory** | Criação complexa espalhada nos callers | Construtor com lógica condicional |
-| **Repository** | Acoplamento entre domínio e storage | `SELECT` no meio do código de negócio |
-| **Strategy** | `if/switch` crescendo por tipo | Comportamento que varia por contexto |
-| **Observer** | Produtor acoplado a consumidores | Reações a eventos em cascata |
-| **Builder** | Construtor com muitos parâmetros opcionais | `new Obj(null, null, true, false, ...)` |
-| **Decorator** | Comportamento transversal sem modificar base | Logging, cache, retry composáveis |
-| **CQRS** | Write model e read model divergem | Relatórios complexos, alto volume de leitura |
-| **AI-Driven** | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
-| **SDD** | Spec antes de código | Decisões de design sem custo de implementação |
