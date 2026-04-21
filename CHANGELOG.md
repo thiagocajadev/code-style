@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-04-21
+
+### Fixed
+
+- `docs/shared/platform/database.md`: exemplos NoSQL adicionados (Consultas NoSQL — projeção, filtro, N+1/$lookup com JS code style); exemplos SQL corrigidos para o formato vertical do guia (SELECT/FROM/WHERE/JOIN com recuo, AND ao final da linha, nomes de tabela qualificados); queries de diagnóstico (slow query, connection pool, locks) no mesmo padrão; `db.` → `database.`; `qs`/`qt` → `queryStats`/`queryText`; SUBSTRING verboso simplificado para `queryText.text`
+- `docs/shared/platform/integrations.md`: novo arquivo — GraphQL, TOML, YAML (modernos) + XML/SOAP, SPED, CNAB, ZPL, RS-232 (legado); exemplos em JavaScript com code style completo; nomes internacionalizados (`companyRegistrationNumber`, `periodStart`, `taxId` → `companyRegistrationNumber`); RTS/CTS expandidos e traduzidos
+
 ## [1.7.0] - 2026-04-21
 
 ### Added

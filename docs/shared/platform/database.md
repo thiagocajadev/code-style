@@ -22,6 +22,8 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 | **Lock** (bloqueio) | Mecanismo que impede acesso simultâneo conflitante a um recurso; pode causar espera ou deadlock |
 | **Deadlock** (bloqueio morto) | Situação onde duas transações esperam uma pela outra indefinidamente |
 | **Connection pool exhaustion** (esgotamento do pool de conexões) | Todas as conexões do pool estão em uso; novas requisições ficam em fila ou falham |
+| **Projection** (projeção) | Define quais campos retornar em uma consulta NoSQL; evita trafegar o documento inteiro |
+| **Aggregation pipeline** (pipeline de agregação) | Sequência de estágios para processar documentos em lote no MongoDB; substitui JOINs e GROUP BY do SQL |
 
 ---
 
@@ -110,9 +112,14 @@ SELECT * FROM orders WHERE status = 'pending';
 <br>
 
 ```sql
-SELECT id, customer_id, total
-FROM orders
-WHERE status = 'pending';
+SELECT
+  id,
+  customer_id,
+  total
+FROM
+  orders
+WHERE
+  status = 'pending';
 ```
 
 </details>
@@ -136,10 +143,14 @@ SELECT * FROM users WHERE YEAR(created_at) = 2024;
 <br>
 
 ```sql
-SELECT id, name
-FROM users
-WHERE created_at >= '2024-01-01'
-  AND created_at < '2025-01-01';
+SELECT
+  id,
+  name
+FROM
+  users
+WHERE
+  created_at >= '2024-01-01' AND
+  created_at < '2025-01-01';
 ```
 
 </details>
@@ -165,9 +176,132 @@ FROM orders o;
 <br>
 
 ```sql
-SELECT o.id, c.name AS customer_name
-FROM orders o
-JOIN customers c ON c.id = o.customer_id;
+SELECT
+  orders.id,
+  customers.name AS customer_name
+FROM
+  orders
+JOIN
+  customers ON customers.id = orders.customer_id;
+```
+
+</details>
+
+### Consultas NoSQL
+
+Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho desnecessário no servidor é mais barato que trabalho no cliente.
+
+<details>
+<summary>❌ Bad: sem projeção — trafega o documento inteiro para usar um campo</summary>
+<br>
+
+```js
+const user = await database.collection('users').findOne({ email });
+const userName = user.name;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: projeção limita os campos retornados</summary>
+<br>
+
+```js
+class UserRepository {
+  async findByEmail(email) {
+    const user = await this.collection.findOne(
+      { email },
+      { projection: { name: 1, _id: 0 } }
+    );
+
+    return user;
+  }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad: filtro em memória — carrega a coleção inteira para filtrar no cliente</summary>
+<br>
+
+```js
+const allOrders = await database.collection('orders').find({}).toArray();
+const pendingOrders = allOrders.filter(order => order.status === 'pending');
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: filtro na query — banco usa índice em status</summary>
+<br>
+
+```js
+class OrderRepository {
+  async findPending() {
+    const pendingOrders = await this.collection
+      .find({ status: 'pending' })
+      .project({ id: 1, customerId: 1, total: 1 })
+      .toArray();
+
+    return pendingOrders;
+  }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad: N+1 em document store — uma query por item para buscar documento relacionado</summary>
+<br>
+
+```js
+const orders = await database.collection('orders').find({ userId }).toArray();
+
+const enrichedOrders = await Promise.all(
+  orders.map(async order => {
+    const product = await database.collection('products').findOne({ _id: order.productId });
+
+    return { ...order, product };
+  })
+);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: $lookup resolve em uma única passagem no banco</summary>
+<br>
+
+```js
+class OrderRepository {
+  async findByUserWithProduct(userId) {
+    const enrichedOrders = await this.collection.aggregate([
+      { $match: { userId } },
+      {
+        $lookup: {
+          from: 'products',
+          localField: 'productId',
+          foreignField: '_id',
+          as: 'product',
+        },
+      },
+      { $unwind: '$product' }, // drops orders with no matching product — use preserveNullAndEmptyArrays: true if product can be missing
+    ]).toArray();
+
+    return enrichedOrders;
+  }
+}
 ```
 
 </details>
@@ -240,13 +374,15 @@ log_statement = 'none'
 -- Extended Events ou Query Store para capturar queries lentas
 -- Query Store habilitado por padrão no SQL Server 2016+
 SELECT TOP 20
-  qs.total_elapsed_time / qs.execution_count AS avg_elapsed_time,
-  qs.execution_count,
-  SUBSTRING(qt.text, (qs.statement_start_offset / 2) + 1,
-    ((qs.statement_end_offset - qs.statement_start_offset) / 2) + 1) AS query_text
-FROM sys.dm_exec_query_stats qs
-CROSS APPLY sys.dm_exec_sql_text(qs.sql_handle) qt
-ORDER BY avg_elapsed_time DESC;
+  queryStats.total_elapsed_time / queryStats.execution_count AS avg_elapsed_time,
+  queryStats.execution_count,
+  queryText.text AS query_text
+FROM
+  sys.dm_exec_query_stats queryStats
+CROSS APPLY
+  sys.dm_exec_sql_text(queryStats.sql_handle) queryText
+ORDER BY
+  avg_elapsed_time DESC;
 ```
 
 ### N+1 em runtime
@@ -271,15 +407,24 @@ Diagnóstico:
 
 ```sql
 -- PostgreSQL: conexões ativas por estado
-SELECT state, count(*)
-FROM pg_stat_activity
-GROUP BY state;
+SELECT
+  state,
+  count(*)
+FROM
+  pg_stat_activity
+GROUP BY
+  state;
 
 -- SQL Server: conexões ativas
-SELECT DB_NAME(dbid) AS database_name, COUNT(*) AS connections
-FROM sys.sysprocesses
-WHERE dbid > 0
-GROUP BY dbid;
+SELECT
+  DB_NAME(dbid) AS database_name,
+  COUNT(*) AS connections
+FROM
+  sys.sysprocesses
+WHERE
+  dbid > 0
+GROUP BY
+  dbid;
 ```
 
 Causas comuns: queries longas segurando conexão, transaction não fechada, pool subdimensionado, pico de tráfego inesperado.
@@ -296,9 +441,11 @@ SELECT
   now() - pg_stat_activity.query_start AS duration,
   query,
   state
-FROM pg_stat_activity
-WHERE state != 'idle'
-  AND now() - pg_stat_activity.query_start > interval '5 seconds';
+FROM
+  pg_stat_activity
+WHERE
+  state != 'idle' AND
+  now() - pg_stat_activity.query_start > interval '5 seconds';
 ```
 
 **Deadlock** aparece no log com mensagem explícita. A causa mais comum é duas transações acessando as mesmas linhas em ordem inversa. A solução é padronizar a ordem de acesso.
