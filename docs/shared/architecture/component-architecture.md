@@ -264,3 +264,6 @@ sprints.
 | Direção de dependência           | `application → domain ← infrastructure`                                 |
 | Import entre features            | Proibir; compartilhar via `shared/` ou eventos                          |
 | Public API do módulo             | Exportar via barrel; esconder internals (implementação interna)         |
+
+**Veja também**
+- [frontend-flow.md](frontend-flow.md) — routing e forms: rotas impõem a separação container/presentacional naturalmente

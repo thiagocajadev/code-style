@@ -160,6 +160,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Component Architecture](docs/shared/architecture/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras |
 | [Patterns](docs/shared/architecture/patterns.md) | Result, Factory, Repository, Strategy, Observer, Builder, Decorator |
 | [Operation Flow](docs/shared/architecture/operation-flow.md) | Fluxo de operação backend e frontend: puro nas bordas, I/O no meio, CQS |
+| [Frontend Flow](docs/shared/architecture/frontend-flow.md) | Routing, guards, loaders, layouts aninhados, forms e updates otimistas |
+| [Backend Flow](docs/shared/architecture/backend-flow.md) | Background jobs, webhooks e event-driven: outbox, idempotência, DLQ e envelope |
 
 <br>
 

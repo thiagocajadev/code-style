@@ -58,3 +58,7 @@ O `apiClient` é o único ponto de I/O — tudo acima dele é puro. O `Service` 
 
 **Implementações por stack**
 - C#: [csharp/setup/vertical-slice.md](../csharp/setup/vertical-slice.md)
+
+**Veja também**
+- [frontend-flow.md](frontend-flow.md) — routing, guards, loaders e forms
+- [backend-flow.md](backend-flow.md) — background jobs, webhooks e event-driven
