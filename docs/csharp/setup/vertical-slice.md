@@ -1,6 +1,6 @@
 # Vertical Slice Architecture
 
-> Escopo: C#. Visão transversal: [shared/architecture.md](../../shared/architecture.md).
+> Escopo: C#. Visão transversal: [shared/architecture/architecture.md](../../shared/architecture/architecture.md) · [shared/architecture/operation-flow.md](../../shared/architecture/operation-flow.md).
 
 Cada feature é uma fatia vertical autossuficiente — sem camadas horizontais cruzando o sistema. A fatia de pedidos tem suas rotas, contratos, regras de negócio e acesso a dados. Nenhuma dependência cruza para outra fatia.
 

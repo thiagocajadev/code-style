@@ -7,7 +7,7 @@
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
 - `dotnet format`: formatter nativo do .NET, sem instalação adicional
 
 ```bash

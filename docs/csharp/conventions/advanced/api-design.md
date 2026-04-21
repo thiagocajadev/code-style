@@ -1,6 +1,6 @@
 # API Design
 
-> Escopo: C#. Visão transversal: [shared/architecture.md](../../../shared/architecture.md).
+> Escopo: C#. Visão transversal: [shared/architecture/architecture.md](../../../shared/architecture/architecture.md).
 
 ## Minimal API: preferência
 

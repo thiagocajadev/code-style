@@ -1,9 +1,9 @@
 # Observability
 
-> Escopo: C#. Visão transversal: [shared/observability.md](../../../shared/observability.md).
+> Escopo: C#. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Veja os princípios agnósticos em [shared/observability.md](../../../shared/observability.md).
+Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 ## Logging estruturado
 

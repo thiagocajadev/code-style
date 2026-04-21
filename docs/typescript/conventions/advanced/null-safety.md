@@ -1,11 +1,11 @@
 # Null Safety
 
-> Escopo: TypeScript. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+> Escopo: TypeScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
 TypeScript tem dois mecanismos complementares: o sistema de tipos em compile time e os operadores
 de runtime. Juntos, eles eliminam null inesperado sem obrigar checagem manual em cada ponto de uso.
 
-> Conceito geral: [Null Safety](../../../shared/null-safety.md)
+> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
 ## Configuração: compilador como primeira linha de defesa
 

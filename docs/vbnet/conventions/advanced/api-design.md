@@ -1,6 +1,6 @@
 # API Design
 
-> Escopo: VB.NET. Visão transversal: [shared/architecture.md](../../../shared/architecture.md).
+> Escopo: VB.NET. Visão transversal: [shared/architecture/architecture.md](../../../shared/architecture/architecture.md).
 
 VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para APIs HTTP. Não há Minimal API (exige .NET 6+) nem primary constructors (exige C# 12). O design continua valendo: controller fino, handler por operação, DTOs imutáveis, envelope consistente.
 

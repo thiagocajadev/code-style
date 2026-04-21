@@ -9,7 +9,7 @@
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
 - ESLint + Prettier: linting e formatação de código
 
 ```bash

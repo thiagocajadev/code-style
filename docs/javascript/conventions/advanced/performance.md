@@ -1,6 +1,6 @@
 # Performance
 
-> Escopo: JavaScript. Visão transversal: [shared/performance.md](../../../shared/performance.md).
+> Escopo: JavaScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
 Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
 contexto, prefira legibilidade. Meça antes de otimizar.

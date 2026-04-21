@@ -1,6 +1,6 @@
 # Types
 
-> Escopo: **idioma C# / .NET moderno**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture.md` e `shared/patterns.md`; este documento cobre as ferramentas do idioma.
+> Escopo: **idioma C# / .NET moderno**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
 O sistema de tipos do C# oferece várias formas de descrever contratos: `interface`, `abstract class`, `class`, `record`, `struct`. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
 

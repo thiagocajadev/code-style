@@ -1,8 +1,8 @@
 # Security
 
-> Escopo: JavaScript (setup). Princípios transversais em [shared/security.md](../../shared/security.md).
+> Escopo: JavaScript (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
-Esta página cobre apenas o que é específico do ecossistema Node: onde colocar o quê, quais ferramentas usar, quais patterns idiomáticos. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/security.md](../../shared/security.md) e não são repetidas aqui.
+Esta página cobre apenas o que é específico do ecossistema Node: onde colocar o quê, quais ferramentas usar, quais patterns idiomáticos. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
 
 ---
 
@@ -183,7 +183,7 @@ app.delete("/orders/:id", authenticate, authorize(["admin", "manager"]), cancelO
 
 ## Session cookie com flags
 
-`express-session` aceita as três flags obrigatórias diretamente no binding. Ver [shared/security.md](../../shared/security.md) para o racional de cada uma.
+`express-session` aceita as três flags obrigatórias diretamente no binding. Ver [shared/platform/security.md](../../shared/platform/security.md) para o racional de cada uma.
 
 ```js
 const sessionConfig = {

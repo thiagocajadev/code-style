@@ -1,6 +1,6 @@
 # Visual Density: VB.NET
 
-Os mesmos princípios de [densidade visual](../../../shared/visual-density.md) com exemplos em VB.NET/.NET Framework 4.8.
+Os mesmos princípios de [densidade visual](../../../shared/standards/visual-density.md) com exemplos em VB.NET/.NET Framework 4.8.
 
 ## Fases de um método
 

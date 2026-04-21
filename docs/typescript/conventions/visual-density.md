@@ -1,6 +1,6 @@
 # Visual density: TypeScript
 
-Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com exemplos em TypeScript.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript.
 Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração.
 
 > Base JavaScript: [javascript/conventions/visual-density.md](../../javascript/conventions/visual-density.md)

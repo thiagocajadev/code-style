@@ -4,7 +4,7 @@ CSS não tem `null` como tipo, mas tem o equivalente: uma custom property refere
 ser definida produz um valor inválido que o browser descarta sem aviso. O mecanismo de defesa é
 o **fallback** em `var()` e o `@property` com `initial-value`.
 
-> Conceito geral: [Null Safety](../../../shared/null-safety.md)
+> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
 ## var() com fallback: o operador ?? do CSS
 

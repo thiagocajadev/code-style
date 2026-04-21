@@ -1,6 +1,6 @@
 # Performance
 
-> Escopo: TypeScript. Visão transversal: [shared/performance.md](../../../shared/performance.md).
+> Escopo: TypeScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
 As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript adiciona:
 evitar padrões que forçam trabalho desnecessário no compilador e no runtime.

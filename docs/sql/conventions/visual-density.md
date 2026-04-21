@@ -1,6 +1,6 @@
 # Visual density: SQL
 
-Os mesmos princípios de [densidade visual](../../shared/visual-density.md) aplicados a SQL.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a SQL.
 
 Em SQL, as cláusulas (`SELECT`, `FROM`, `WHERE`, `JOIN`) já funcionam como separadores visuais: adicionar blank entre elas vai contra as convenções de formatadores como pgFormatter e sqlfmt. A regra não se aplica a cláusulas.
 

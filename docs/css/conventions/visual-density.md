@@ -1,6 +1,6 @@
 # Visual density: CSS
 
-Os mesmos princípios de [densidade visual](../../shared/visual-density.md) aplicados a CSS: agrupar o que pertence junto, separar o que é distinto.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar o que pertence junto, separar o que é distinto.
 
 ## Entre regras
 

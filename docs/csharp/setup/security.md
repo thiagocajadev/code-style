@@ -1,8 +1,8 @@
 # Security
 
-> Escopo: C# (setup). Princípios transversais em [shared/security.md](../../shared/security.md).
+> Escopo: C# (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
-Esta página cobre apenas o que é específico do .NET: onde colocar o quê, quais ferramentas usar, quais patterns do ecossistema. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/security.md](../../shared/security.md) e não são repetidas aqui.
+Esta página cobre apenas o que é específico do .NET: onde colocar o quê, quais ferramentas usar, quais patterns do ecossistema. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
 
 ---
 
@@ -164,7 +164,7 @@ app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository orderRepository, 
 
 ## Session cookie com flags
 
-`AddSession` aceita as três flags obrigatórias diretamente no binding. Ver [shared/security.md](../../shared/security.md) para o racional de cada uma.
+`AddSession` aceita as três flags obrigatórias diretamente no binding. Ver [shared/platform/security.md](../../shared/platform/security.md) para o racional de cada uma.
 
 ```csharp
 builder.Services.AddSession(options =>

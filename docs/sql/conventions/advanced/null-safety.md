@@ -1,11 +1,11 @@
 # Null safety
 
-> Escopo: SQL. Visão transversal: [shared/null-safety.md](../../../shared/null-safety.md).
+> Escopo: SQL. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
 NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
 único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
 
-> Conceito geral: [Null Safety](../../../../shared/null-safety.md)
+> Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
 
 ## `= NULL` nunca funciona
 
@@ -500,7 +500,7 @@ ORDER BY
 
 ## Schema evolution: adicionar coluna em tabela existente
 
-Ver [Null Safety — Schema Evolution](../../../../shared/null-safety.md#schema-evolution--campo-novo-em-tabela-existente)
+Ver [Null Safety — Schema Evolution](../../../../shared/standards/null-safety.md#schema-evolution--campo-novo-em-tabela-existente)
 para a estratégia completa. O padrão SQL:
 
 <details>

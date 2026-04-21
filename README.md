@@ -14,8 +14,8 @@
 [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
 [![VB.NET](https://img.shields.io/badge/VB.NET-.NET%20Framework%204.8-512BD4?logo=dotnet&logoColor=white)](docs/vbnet/README.md)
 [![SQL](https://img.shields.io/badge/SQL-Server%20%26%20PostgreSQL-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/git.md)
-[![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/editorconfig.md)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
+[![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
 
 </div>
 
@@ -42,7 +42,7 @@ O **Código serve o time** e a **Governança** cobre todo o ciclo. A **Complexid
 abstraída** pra todos entenderem (do não técnico ao especialista), abrindo espaço para novas ideias
 e melhorias.
 
-Confira os detalhes em [Governança](docs/shared/governance.md).
+Confira os detalhes em [Governança](docs/shared/process/governance.md).
 
 ## Como eu leio e escrevo código.
 
@@ -117,6 +117,11 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 ### Linguagens
 
+<details>
+<summary>Ver todas as linguagens</summary>
+
+<br>
+
 | Linguagem                               | Descrição                                                        |
 | --------------------------------------- | ---------------------------------------------------------------- |
 | [HTML](docs/html/README.md)             | Semântica, acessibilidade, performance, SEO, jQuery              |
@@ -127,28 +132,61 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ       |
 | [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
 
-### Shared
+</details>
 
-| Tópico                                                          | Descrição                                                                  |
-| --------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [Governance](docs/shared/governance.md)                         | Pensamento de staff engineer, SDLC, onboarding e governança do projeto     |
-| [Principles](docs/shared/principles.md)                         | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
-| [Architecture](docs/shared/architecture.md)                     | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas              |
-| [Component Architecture](docs/shared/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras     |
-| [Patterns](docs/shared/patterns.md)                             | Result, Factory, Repository, Strategy, Observer, Builder, Decorator        |
-| [Performance](docs/shared/performance.md)                       | Paginação, cache, filas, lazy loading, índices e connection pool           |
-| [Testing](docs/shared/testing.md)                               | AAA, no logic no assert, testes unitários e de integração                  |
-| [Visual Density](docs/shared/visual-density.md)                 | Densidade visual agnóstica de linguagem: princípios e regras               |
-| [UI/UX](docs/shared/ui-ux.md)                                   | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados      |
-| [Security](docs/shared/security.md)                             | Segredos, configuração em camadas, autorização e blindagem de cookies      |
-| [Configuration](docs/shared/configuration.md)                   | Config vs secret, precedência, layering, tipagem e fail-fast               |
-| [Null Safety](docs/shared/null-safety.md)                       | Fronteira vs interior, contratos de entrada e schema evolution             |
-| [Observability](docs/shared/observability.md)                   | Logging estruturado, níveis, PII, correlation ID                           |
-| [CI/CD](docs/shared/ci-cd.md)                                   | Pipeline, deploy vs release, feature flags, TBD e fix forward              |
-| [Feature Flags](docs/shared/feature-flags.md)                   | Toggle por propósito, rollout, dark launch, kill switch e dívida           |
-| [Cloud](docs/shared/cloud.md)                                   | Serviços gerenciados, least privilege, containers e ambientes              |
-| [Git](docs/shared/git.md)                                       | Branches, commits, pull requests e estratégia de entrega                   |
-| [EditorConfig](docs/shared/editorconfig.md)                     | Configuração base de editor compatível com qualquer stack                  |
+### Conceitos Compartilhados
+
+<details>
+<summary>Ver todos os conceitos</summary>
+
+<br>
+
+**Processo** — como o time trabalha e entrega
+
+| Tópico | Descrição |
+| --- | --- |
+| [Governance](docs/shared/process/governance.md) | Pensamento de staff engineer, SDLC, onboarding e governança do projeto |
+| [Git](docs/shared/process/git.md) | Branches, commits, pull requests e estratégia de entrega |
+| [CI/CD](docs/shared/process/ci-cd.md) | Pipeline, deploy vs release, feature flags, TBD e fix forward |
+
+<br>
+
+**Arquitetura** — como o código é estruturado
+
+| Tópico | Descrição |
+| --- | --- |
+| [Principles](docs/shared/architecture/principles.md) | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
+| [Architecture](docs/shared/architecture/architecture.md) | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas |
+| [Component Architecture](docs/shared/architecture/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras |
+| [Patterns](docs/shared/architecture/patterns.md) | Result, Factory, Repository, Strategy, Observer, Builder, Decorator |
+| [Operation Flow](docs/shared/architecture/operation-flow.md) | Fluxo de operação backend e frontend: puro nas bordas, I/O no meio, CQS |
+
+<br>
+
+**Qualidade** — como o código é escrito
+
+| Tópico | Descrição |
+| --- | --- |
+| [Visual Density](docs/shared/standards/visual-density.md) | Densidade visual agnóstica de linguagem: princípios e regras |
+| [Null Safety](docs/shared/standards/null-safety.md) | Fronteira vs interior, contratos de entrada e schema evolution |
+| [Testing](docs/shared/standards/testing.md) | AAA, no logic no assert, testes unitários e de integração |
+| [Observability](docs/shared/standards/observability.md) | Logging estruturado, níveis, PII, correlation ID |
+| [UI/UX](docs/shared/standards/ui-ux.md) | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados |
+| [EditorConfig](docs/shared/standards/editorconfig.md) | Configuração base de editor compatível com qualquer stack |
+
+<br>
+
+**Plataforma** — infraestrutura e configuração
+
+| Tópico | Descrição |
+| --- | --- |
+| [Security](docs/shared/platform/security.md) | Segredos, configuração em camadas, autorização e blindagem de cookies |
+| [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast |
+| [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |
+| [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas, lazy loading, índices e connection pool |
+| [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |
+
+</details>
 
 ### Changelog
 

@@ -1,6 +1,6 @@
 # Visual density: JavaScript
 
-Os mesmos princípios de [densidade visual](../../shared/visual-density.md) com exemplos em JavaScript/Node.js.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em JavaScript/Node.js.
 
 ## A regra central
 

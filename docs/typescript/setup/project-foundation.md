@@ -8,7 +8,7 @@
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/editorconfig.md): indentação, charset, trailing whitespace
+- [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
 - ESLint + typescript-eslint: linting com regras TypeScript-aware
 
 ```bash

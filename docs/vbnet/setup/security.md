@@ -1,8 +1,8 @@
 # Security
 
-> Escopo: VB.NET (setup). Princípios transversais em [shared/security.md](../../shared/security.md).
+> Escopo: VB.NET (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
-Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web API 2 / ASP.NET MVC 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/security.md](../../shared/security.md) e não são repetidas aqui.
+Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web API 2 / ASP.NET MVC 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
 
 ---
 
@@ -127,7 +127,7 @@ End Class
 
 ## Cookies de sessão
 
-Flags de segurança de cookie no .NET Framework são configuradas globalmente no `Web.config`, valem para toda a aplicação. Ver [shared/security.md](../../shared/security.md) para o racional de cada flag.
+Flags de segurança de cookie no .NET Framework são configuradas globalmente no `Web.config`, valem para toda a aplicação. Ver [shared/platform/security.md](../../shared/platform/security.md) para o racional de cada flag.
 
 ```xml
 <!-- Web.config -->

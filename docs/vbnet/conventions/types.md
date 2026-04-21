@@ -1,6 +1,6 @@
 # Types
 
-> Escopo: **idioma VB.NET sobre .NET Framework 4.8**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture.md` e `shared/patterns.md`; este documento cobre as ferramentas do idioma.
+> Escopo: **idioma VB.NET sobre .NET Framework 4.8**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
 VB.NET oferece `Interface`, `MustInherit Class` (abstract), `Class`, `Structure`, `Enum`. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
 
