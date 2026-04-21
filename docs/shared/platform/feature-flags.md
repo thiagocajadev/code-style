@@ -107,7 +107,7 @@ A maioria das flags úteis é runtime: o valor muda sem restart (reinicializaç�
 ajustável, o kill switch responde ao incidente imediatamente.
 
 O custo por avaliação importa. Consultar um serviço externo a cada chamada de função é
-insustentável. O padrão é **cache local com TTL (tempo de validade) curto**: o cliente da flag
+insustentável. O padrão é **cache local com TTL (Time To Live, tempo de validade) curto**: o cliente da flag
 sincroniza com o backend a cada poucos segundos e responde localmente ao código. Ver
 [performance.md](performance.md) seção Cache.
 

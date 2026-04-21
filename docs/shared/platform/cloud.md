@@ -21,7 +21,7 @@ Usar gerenciado como padrão. Self-hosted quando há restrição de custo ou req
 
 ## Least Privilege (Menor Privilégio)
 
-Cada serviço opera com exatamente as permissões que precisa. IAM (Identity and Access Management, Gerenciamento de Identidade e Acesso) mal configurado é uma das maiores superfícies de ataque em cloud.
+Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity and Access Management, Gerenciamento de Identidade e Acesso) mal configurado é uma das maiores superfícies de ataque em cloud.
 
 | Prática | Por quê |
 |---|---|
@@ -54,7 +54,7 @@ Todo container em produção declara limites de CPU e memória. Sem limites, um 
 | Limite conservador com monitoramento | OOMKilled sinaliza o problema real |
 | CPU sem limite | Starvation de outros serviços no mesmo host |
 
-OOMKilled (Out Of Memory Killed, Processo encerrado por falta de memória) é um sinal a investigar. Restart automático silencioso mascara o problema e adia o diagnóstico.
+**OOMKilled** (Out Of Memory Killed, Processo encerrado por falta de memória) é um sinal a investigar. Restart automático silencioso mascara o problema e adia o diagnóstico.
 
 ## Observabilidade
 

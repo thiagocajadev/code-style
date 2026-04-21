@@ -2,7 +2,7 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-DI (Dependency Injection — injeção de dependência) torna dependências explícitas, testáveis e substituíveis. O container resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+**DI** (Dependency Injection, injeção de dependência) torna dependências explícitas, testáveis e substituíveis. O container resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
 
 VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (Microsoft, padrão em projetos legados) ou **Autofac** (ecossistema mais rico). Os exemplos abaixo usam Unity por ser o mais comum em bases VB.NET; o idioma é equivalente em Autofac.
 

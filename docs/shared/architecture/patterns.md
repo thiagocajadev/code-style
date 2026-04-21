@@ -37,7 +37,7 @@ UserFactory.create({ name, email, role })
 
 ## Repository
 
-O código de negócio não deveria conhecer SQL, ORM (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
+O código de negócio não deveria conhecer SQL, **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
 
 ```
 UserRepository

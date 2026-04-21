@@ -84,7 +84,7 @@ O benefício central é a separação entre lógica de negócio e lógica de apr
 
 O risco clássico é o **Fat Controller**: quando o controller acumula lógica que deveria estar no Model. Controllers devem ser finos: o papel deles é coordenar o fluxo, não implementar lógica.
 
-**Melhor para**: aplicações web tradicionais com renderização server-side, APIs REST (Representational State Transfer, Transferência de Estado Representacional) com múltiplas entidades.
+**Melhor para**: aplicações web tradicionais com renderização server-side, APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) com múltiplas entidades.
 
 ---
 

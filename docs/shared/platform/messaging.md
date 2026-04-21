@@ -52,7 +52,7 @@ Estratégias:
 Consumer falha N vezes → mensagem vai para DLQ → análise ou reprocessamento manual
 ```
 
-Dead-letter queue (DLQ) (fila de mensagens com falha persistente) isola mensagens que falharam repetidamente. Sem DLQ, uma mensagem problemática bloqueia a fila ou é descartada sem registro.
+A **DLQ** (Dead-letter queue, fila de mensagens com falha persistente) isola mensagens que falharam repetidamente. Sem DLQ, uma mensagem problemática bloqueia a fila ou é descartada sem registro.
 
 | Configuração | Recomendação |
 |---|---|
@@ -74,7 +74,7 @@ Estratégias:
 
 | Ferramenta | Modelo | Melhor para |
 |---|---|---|
-| **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, RPC (chamada de procedimento remoto) |
+| **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, **RPC** (Remote Procedure Call, chamada de procedimento remoto) |
 | **Kafka** | Log distribuído, pub/sub | Alto volume, replay de eventos, event sourcing (eventos como fonte da verdade) |
 | **SQS** (Amazon Simple Queue Service) | Queue gerenciada | Integração AWS, baixo overhead operacional |
 | **Redis Streams** | Log leve | Mensageria simples em stacks que já usam Redis |

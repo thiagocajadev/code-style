@@ -61,7 +61,7 @@ Request → [middleware: extrai ou gera correlationId]
 | Ferramenta | Uso primário |
 | --- | --- |
 | Pino / Serilog | Logging estruturado no runtime (tempo de execução) |
-| Datadog | Logs, métricas, APM (monitoramento de performance de aplicações) distribuído |
+| Datadog | Logs, métricas, **APM** (Application Performance Monitoring, monitoramento de performance de aplicações) distribuído |
 | Grafana + Loki | Dashboards (painéis), logs centralizados |
 | CloudWatch | Logs e métricas AWS-native |
 | New Relic | APM, distributed tracing (rastreamento distribuído), dashboards |

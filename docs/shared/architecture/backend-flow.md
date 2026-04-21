@@ -108,7 +108,7 @@ Duas regras sem exceção:
 
 ### Validação HMAC
 
-O HMAC (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash)
+O **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash)
 é o mecanismo que confirma a origem de um webhook. O provedor assina o payload com um segredo
 compartilhado. O receptor recalcula a assinatura com o mesmo segredo e compara. Se bater, a mensagem
 veio de quem diz ser e não foi alterada no caminho.
@@ -231,9 +231,9 @@ Publisher emite evento → Broker (tópico/fila) → Subscriber consome → proc
                                                                  DLQ → alerta → revisão manual
 ```
 
-### Dead Letter Queue
+### Dead-letter queue
 
-A DLQ (Dead Letter Queue, Fila de Mensagens Mortas) é obrigatória. Sem ela, uma mensagem que falha
+A **DLQ** (Dead-letter queue, fila de mensagens com falha persistente) é obrigatória. Sem ela, uma mensagem que falha
 repetidamente bloqueia o consumer group (grupo de consumidores) inteiro.
 
 O fluxo padrão:

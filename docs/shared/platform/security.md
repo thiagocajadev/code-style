@@ -74,7 +74,7 @@ Autorização centralizada move a regra para uma camada única: middleware, poli
 
 ## Blindagem de cookies
 
-Cookies de sessão sem flags de segurança são vetores para dois ataques clássicos: XSS (Cross-Site Scripting, injeção de script) e CSRF (Cross-Site Request Forgery, falsificação de requisição entre sites). Três flags fecham essas brechas:
+Cookies de sessão sem flags de segurança são vetores para dois ataques clássicos: **XSS** (Cross-Site Scripting, injeção de script) e **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites). Três flags fecham essas brechas:
 
 | Flag | O que protege | Como |
 | --- | --- | --- |

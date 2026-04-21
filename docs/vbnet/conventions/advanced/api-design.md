@@ -195,7 +195,7 @@ End Class
 
 ## Request e Response
 
-DTOs (Data Transfer Objects — objetos de transferência de dados) definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos próprios. Em VB.NET sobre .NET Framework 4.8 não há `record`; o equivalente idiomático é a **classe imutável** com propriedades `ReadOnly` inicializadas no construtor.
+**DTOs** (Data Transfer Objects, objetos de transferência de dados) definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos próprios. Em VB.NET sobre .NET Framework 4.8 não há `record`; o equivalente idiomático é a **classe imutável** com propriedades `ReadOnly` inicializadas no construtor.
 
 ### Request
 

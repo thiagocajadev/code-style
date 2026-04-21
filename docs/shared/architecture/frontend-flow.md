@@ -153,7 +153,7 @@ const orderSchema = z.object({
 
 </details>
 
-Validação no cliente é UX (experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (fronteira) de segurança. Nunca confia no que veio do cliente. As duas sempre executam.
+Validação no cliente é **UX** (User Experience, experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (fronteira) de segurança. Nunca confia no que veio do cliente. As duas sempre executam.
 
 O servidor retorna erros estruturados por campo, não status HTTP isolado:
 

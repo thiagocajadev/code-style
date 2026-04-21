@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 >
-> SSOT (Single Source of Truth, fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
+> **SSOT** (Single Source of Truth, fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
 
 Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem a pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
 

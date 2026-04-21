@@ -6,7 +6,7 @@ Testes documentam o comportamento esperado. Um teste que falha conta uma histór
 
 ## AAA (Arrange, Act, Assert)
 
-O padrão AAA (Arrange, Act, Assert — Preparar, Executar, Verificar) divide cada teste em três fases explícitas, separadas por uma linha em branco.
+O padrão **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) divide cada teste em três fases explícitas, separadas por uma linha em branco.
 
 ```
 [Arrange]  montar o contexto: entidades, inputs, dependências

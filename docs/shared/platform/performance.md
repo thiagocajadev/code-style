@@ -21,9 +21,9 @@ A resposta de uma lista paginada inclui os dados e metadados de navegação: tot
 
 ## Cache
 
-Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos CPU (unidade de processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
+Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit, unidade de processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
 
-A decisão central é o **TTL** (Time To Live, Tempo de Vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto = cache quente mas dado fresco. TTL longo = menos pressão no banco, dado potencialmente obsoleto.
+A decisão central é o **TTL** (Time To Live, tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto = cache quente mas dado fresco. TTL longo = menos pressão no banco, dado potencialmente obsoleto.
 
 | Estratégia | Quando usar |
 |---|---|
@@ -62,7 +62,7 @@ Worker conclui job → POST <endpoint-do-cliente> → Cliente responde 200 OK
 | Prática | Motivo |
 |---|---|
 | ID do job no payload | Idempotência: reentregas não duplicam efeito |
-| Assinar com HMAC (código de autenticação por hash) | Valida que a chamada veio do servidor esperado |
+| Assinar com **HMAC** (Hash-based Message Authentication Code, código de autenticação de mensagem por hash) | Valida que a chamada veio do servidor esperado |
 | Retry com backoff (espera crescente entre tentativas) exponencial | Absorve falhas transitórias sem sobrecarregar o cliente |
 | Registrar todas as tentativas | Auditoria e diagnóstico de entrega |
 
@@ -120,7 +120,7 @@ O banco de dados é o gargalo mais comum em sistemas que não foram desenhados c
 | Prática | Impacto |
 |---|---|
 | Indexar colunas de filtro e join (junção de tabelas) | Query usa índice em vez de varrer a tabela inteira |
-| Selecionar apenas as colunas necessárias | Reduz I/O (Entrada/Saída) e transferência de dados |
+| Selecionar apenas as colunas necessárias | Reduz **I/O** (Input/Output, Entrada/Saída) e transferência de dados |
 | Evitar funções em colunas indexadas no WHERE | Função desabilita o uso do índice |
 | Analisar plano de execução | Identifica full scans (varredura completa da tabela) e joins caros antes de ir a produção |
 

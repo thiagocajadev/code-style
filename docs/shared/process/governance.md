@@ -28,7 +28,7 @@ corrigir, é o que impede a falha de se repetir.
 
 ## O Pensamento de Staff Engineer (Engenheiro de Alto Nível)
 
-O SDLC (Software Development Life Cycle, Ciclo de Vida de Desenvolvimento de Software) começa antes
+O **SDLC** (Software Development Life Cycle, Ciclo de Vida de Desenvolvimento de Software) começa antes
 do primeiro commit e termina depois do último deploy. Design, implementação, testes, entrega,
 operação e manutenção: cada fase tem peso nas decisões que o engenheiro toma hoje.
 
@@ -110,7 +110,7 @@ transferência de conhecimento não funciona, porque cada parte do sistema "tem 
 
 ## Decision Records
 
-ADRs (Architecture Decision Records, Registros de Decisão de Arquitetura) documentam o porquê das
+**ADRs** (Architecture Decision Records, Registros de Decisão de Arquitetura) documentam o porquê das
 decisões, não apenas o quê. Código mostra o que foi feito. O ADR mostra por que foi feito assim e
 quais alternativas foram consideradas.
 
