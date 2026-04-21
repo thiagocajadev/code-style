@@ -47,6 +47,10 @@ Qualquer requisição pode ser construída fora do navegador, sem passar pela UI
 
 O servidor valida todas as entradas como se o frontend não existisse. As duas validações coexistem com responsabilidades distintas: frontend valida por UX, servidor valida por segurança.
 
+```
+Request → frontend (UX: feedback imediato) → servidor (segurança: autoridade) → handler
+```
+
 ## Autenticação vs autorização
 
 São dois controles distintos com implementações distintas.
@@ -55,6 +59,10 @@ São dois controles distintos com implementações distintas.
 | --- | --- | --- |
 | **Autenticação** (authentication) | Quem é você? | Identidade: sessão válida, token assinado |
 | **Autorização** (authorization) | O que você pode fazer? | Permissão: roles, policies, escopos |
+
+```
+Request → autenticação (quem é você?) → autorização (o que pode fazer?) → handler
+```
 
 Um usuário pode ser autenticado (sessão válida) mas não autorizado (sem permissão para o recurso). Misturar os dois controles cria pontos cegos: uma rota protegida apenas por autenticação aceita qualquer usuário autenticado, independente do role.
 

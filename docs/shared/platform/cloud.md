@@ -68,6 +68,10 @@ Ver [Observabilidade](./observability.md) para estrutura de logs, níveis e corr
 
 O mesmo artefato é promovido de ambiente em ambiente, sem rebuild. Cada ambiente serve um propósito:
 
+```
+artefato → dev → qa → staging → prod
+```
+
 | Ambiente | Responsabilidade |
 |---|---|
 | **Dev** | Primeira validação após merge: comportamento básico, sem regressão |

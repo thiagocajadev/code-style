@@ -150,7 +150,9 @@ Cada etapa tem entrada, saída e um critério verificável. Quando isso está em
 (dev, tech lead, pessoas de negocio) consegue inspecionar um ponto ou o ciclo inteiro e aferir o
 estado real do projeto.
 
-**Spec → Implementação → Review → CI → Deploy → Observação**
+```
+Spec → Implementação → Review → CI → Deploy → Observação
+```
 
 | Etapa         | Saída                                     | O que é auditável                  |
 | ------------- | ----------------------------------------- | ---------------------------------- |

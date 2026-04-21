@@ -152,6 +152,10 @@ Quando uma regra de negócio muda e um campo novo entra no banco, os registros a
 por compatibilidade. Esse null não deve vazar para o domínio: o repositório é a fronteira que
 absorve esse caso.
 
+```
+campo novo → registros antigos nulos → fronteira absorve → domínio nunca vê null
+```
+
 Três abordagens em ordem de preferência:
 
 **1. Migration com DEFAULT: null nunca existe no banco**

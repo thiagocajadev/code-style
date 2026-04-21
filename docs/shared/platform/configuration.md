@@ -93,6 +93,11 @@ Um serviço que sobe com `DATABASE_URL` ausente e só descobre no primeiro reque
 A regra é: **validar tudo no startup, antes de aceitar tráfego**. O binding do `AppConfig` roda cedo e falha alto:
 
 ```
+startup → loadConfig() → validar → [válido] server.start() → aceita tráfego
+                                 → [inválido] log fatal + exit non-zero
+```
+
+```
 on startup:
   config = loadConfig()
   if not isValid(config):

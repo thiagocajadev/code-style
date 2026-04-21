@@ -76,6 +76,11 @@ Um erro frequente é usar mocks extensivos para simular o banco em testes "unit�
 
 A distinção é o que cada tipo verifica. Testes unitários verificam se a lógica está correta. Testes de integração verificam se os componentes funcionam juntos com infraestrutura real. Os dois são necessários e se complementam.
 
+```
+lógica isolada (funções, cálculos, validações) → unitário
+fronteira com I/O real (banco, rede, fila)     → integração
+```
+
 | Cenário | Tipo certo |
 |---|---|
 | Regra de desconto com múltiplos casos de borda | Unitário |
