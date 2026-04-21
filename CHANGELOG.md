@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-04-21
+
+### Added
+
+- `docs/shared/process/methodologies.md`: DDD, BDD, TDD, XGH, XP, desenvolvimento intuitivo e orgânico; estilos arquiteturais Monolito, Microsserviços e Monolito Modular com posição opinionada sobre o padrão recomendado em 2026
+- `docs/shared/architecture/patterns.md`: CQRS (separado explicitamente de CQS), AI-Driven Development e SDD (Spec-Driven Development) com tabela de referência rápida atualizada
+- `docs/shared/platform/performance.md`: seção Big O com tabela de notações e 4 armadilhas comuns (loop aninhado, N+1, filter+map, sort) em `<details>` com exemplos no code style do projeto
+- `docs/shared/architecture/scaling.md`: escala vertical e horizontal, Load Balancing (algoritmos, health checks, SSL termination), API Gateway, estratégias de cache/CDN/read replicas e seção anti-overengineering com sequência de escala recomendada
+- `docs/shared/platform/database.md`: SQL vs NoSQL (4 modelos), tuning de queries (índices, boas práticas em `<details>`), plano de execução (`EXPLAIN` PostgreSQL e SQL Server), troubleshooting de gargalos (slow query log, N+1, pool exhaustion, locks/deadlocks)
+- `REFERENCES.md`: links centralizados na raiz, organizados em 10 grupos semânticos; `README.md` aponta em uma linha para o arquivo
+
 ## [1.6.2] - 2026-04-21
 
 ### Fixed

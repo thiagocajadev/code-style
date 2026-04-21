@@ -16,6 +16,9 @@ Performance é uma decisão de design. As escolhas de paginação, cache (armaze
 | **N+1** | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Connection pooling** (agrupamento de conexões) | Reutilização de conexões abertas com o banco para reduzir o custo de handshake por requisição |
 | **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+| **Big O** | Notação que descreve como o tempo ou espaço de um algoritmo cresce em função do tamanho da entrada |
+| **Time complexity** (complexidade de tempo) | Quantas operações o algoritmo executa em relação ao tamanho da entrada |
+| **Space complexity** (complexidade de espaço) | Quanta memória o algoritmo usa em relação ao tamanho da entrada |
 
 ## Paginação
 
@@ -126,21 +129,179 @@ Carregar dados antes de precisar deles desperdiça recursos e aumenta o tempo de
 
 O risco clássico é o **N+1**: carregar uma lista de 100 itens e fazer uma query (consulta ao banco) para cada item ao acessar um relacionamento. O resultado são 101 queries em vez de 2. A solução é carregar relacionamentos em lote quando o acesso é previsível.
 
-## Índices e Queries
+## Banco de Dados
 
-O banco de dados é o gargalo mais comum em sistemas que não foram desenhados com leitura em mente. Índices corretos mudam queries de segundos para milissegundos.
+Índices, tuning de queries, plano de execução e troubleshooting de gargalos estão em [database.md](database.md).
 
-| Prática | Impacto |
-|---|---|
-| Indexar colunas de filtro e join (junção de tabelas) | Query usa índice em vez de varrer a tabela inteira |
-| Selecionar apenas as colunas necessárias | Reduz **I/O** (Input/Output, Entrada/Saída) e transferência de dados |
-| Evitar funções em colunas indexadas no WHERE | Função desabilita o uso do índice |
-| Analisar plano de execução | Identifica full scans (varredura completa da tabela) e joins caros antes de ir a produção |
+## Complexidade Algorítmica (Big O)
 
-## Conexões e Pool
+**Big O** descreve como o tempo de execução ou o uso de memória de um algoritmo cresce à medida que a entrada cresce. É a ferramenta para avaliar se uma solução escala antes de medir em produção.
 
-Abrir uma conexão com o banco tem custo fixo: handshake (negociação de protocolo), autenticação, alocação de recursos. Abrir uma conexão por requisição é insustentável sob carga.
+| Notação | Comportamento | Exemplo prático |
+|---|---|---|
+| **O(1)** | Constante, não cresce com a entrada | Acesso a elemento de array por índice, lookup em hash map |
+| **O(log n)** | Logarítmica, cresce devagar | Busca binária em array ordenado |
+| **O(n)** | Linear, cresce com a entrada | Iterar uma lista uma vez |
+| **O(n log n)** | Linearítmica | Ordenação eficiente (mergesort, quicksort no caso médio) |
+| **O(n²)** | Quadrática, cresce muito rápido | Loop aninhado sobre a mesma coleção |
+| **O(2ⁿ)** | Exponencial, inviável para n grande | Subconjuntos recursivos sem memoization (armazenamento de resultados intermediários) |
 
-**Connection pooling** (agrupamento de conexões reutilizáveis) mantém um conjunto de conexões abertas e reutilizáveis. A requisição pega uma conexão do pool, usa e devolve. O banco vê um número controlado de conexões, não um pico proporcional ao tráfego.
+A regra prática: **O(n²) é o limite onde a maioria dos problemas de escala começa**. Qualquer loop aninhado sobre a mesma coleção é um candidato a revisão.
 
-Tamanho do pool: nem pequeno (requisições esperam) nem grande (banco satura). O número ideal depende do número de workers (processos que atendem requisições) e do tempo médio de uso de cada conexão.
+### Armadilhas comuns
+
+**Loop aninhado sobre a mesma coleção**
+
+O caso mais frequente de O(n²) oculto. Para cada item externo, itera todos os itens internos.
+
+<details>
+<summary>❌ Bad: O(n²) com loop aninhado sobre a mesma coleção</summary>
+<br>
+
+```javascript
+for (const order of orders) {
+  for (const item of orders) {
+    if (order.id === item.relatedId) { ... }
+  }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: indexar em O(n), acessar em O(1)</summary>
+<br>
+
+```javascript
+function findRelatedOrders(orders) {
+  const orderIndex = new Map(orders.map(order => [order.id, order]));
+
+  const ordersWithRelated = orders.map(order => ({
+    ...order,
+    related: orderIndex.get(order.relatedId),
+  }));
+
+  return ordersWithRelated;
+}
+```
+
+</details>
+
+**N+1 queries no banco de dados**
+
+Carregar uma lista e fazer uma query para cada item. O(n) queries em vez de O(1).
+
+<details>
+<summary>❌ Bad: N+1, uma query por item da lista</summary>
+<br>
+
+```javascript
+const orders = await orderRepository.findAll();
+
+for (const order of orders) {
+  order.customer = await customerRepository.findById(order.customerId);
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: duas queries no total com busca em lote</summary>
+<br>
+
+```javascript
+async function loadOrdersWithCustomers() {
+  const orders = await orderRepository.findAll();
+  const customerIds = orders.map(order => order.customerId);
+  const customers = await customerRepository.findByIds(customerIds);
+  const customerIndex = new Map(customers.map(customer => [customer.id, customer]));
+
+  const ordersWithCustomers = orders.map(order => ({
+    ...order,
+    customer: customerIndex.get(order.customerId),
+  }));
+
+  return ordersWithCustomers;
+}
+```
+
+</details>
+
+**Múltiplas iterações desnecessárias**
+
+Encadeamento de `.filter().map()` quando uma única passagem resolve.
+
+<details>
+<summary>❌ Bad: dois passes sobre a mesma lista</summary>
+<br>
+
+```javascript
+const activeUserNames = users
+  .filter(user => user.isActive)
+  .map(user => user.name);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: um passe com reduce quando o volume importa</summary>
+<br>
+
+```javascript
+function extractActiveUserNames(users) {
+  const activeUserNames = users.reduce((names, user) => {
+    if (user.isActive) names.push(user.name);
+    return names;
+  }, []);
+
+  return activeUserNames;
+}
+```
+
+</details>
+
+> Para listas pequenas (< alguns milhares de itens), `.filter().map()` é legível e aceitável. O impacto de dois passes só é relevante em volumes grandes ou loops internos de hot paths (caminhos de código executados com altíssima frequência).
+
+**Ordenação desnecessária**
+
+`Array.sort()` é O(n log n). Se o objetivo é encontrar o máximo ou mínimo, uma iteração linear O(n) resolve.
+
+<details>
+<summary>❌ Bad: sort() para obter o maior valor (O(n log n))</summary>
+<br>
+
+```javascript
+const highestScore = scores.sort((a, b) => b - a)[0];
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good: Math.max() em O(n)</summary>
+<br>
+
+```javascript
+function findHighestScore(scores) {
+  const highestScore = Math.max(...scores);
+
+  return highestScore;
+}
+```
+
+</details>
+
+### Como identificar
+
+- **Code review**: qualquer loop dentro de outro loop sobre a mesma coleção é suspeito
+- **Query count logging**: logar o número de queries por request revela N+1 rapidamente
+- **Profiler**: medir tempo real antes de otimizar; otimização sem medição é especulação
+- **Critério de aceitação**: para operações em lote ou relatórios, definir na spec o volume esperado e o tempo máximo aceitável
+

@@ -11,7 +11,14 @@ Patterns de design são soluções consolidadas para problemas recorrentes: voca
 | **Caller** (quem invoca a função) | Código que chama uma função ou serviço e trata o resultado |
 | **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Biblioteca que mapeia objetos do código para tabelas do banco de dados |
 | **OCP** (Open/Closed Principle, Princípio Aberto/Fechado) | Design aberto para extensão por novas implementações, fechado para modificação do código existente |
-| **CRUD** (Create, Read, Update, Delete — Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
+| **CRUD** (Create, Read, Update, Delete, Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
+| **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Princípio de função: retorna valor OU produz efeito colateral, nunca os dois; ver `principles.md` |
+| **CQRS** (Command Query Responsibility Segregation, Segregação de Responsabilidade de Comando e Consulta) | Padrão arquitetural: modelos de escrita e leitura completamente separados |
+| **Command** (Comando) | Operação que altera estado; não retorna dado de negócio |
+| **Query** (Consulta) | Operação que lê e retorna dado; não altera estado |
+| **Projection** (Projeção) | Modelo de leitura desnormalizado, otimizado para consulta |
+| **SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações) | Spec define contrato de entradas, saídas e comportamentos antes de qualquer implementação |
+| **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) | Modelo de IA treinado em texto que gera código, explica conceitos e auxilia no desenvolvimento |
 
 ## Result Pattern
 
@@ -57,7 +64,7 @@ UserRepository
 
 O código de domínio fala em `findByEmail`, não em `SELECT * FROM users WHERE email = ?`. A camada de dados pode mudar (PostgreSQL → MongoDB, Dapper → EF) sem tocar o domínio.
 
-**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete — Criar, Ler, Atualizar, Deletar) simples sem lógica, pode ser overhead (custo extra de implementação).
+**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete, Criar, Ler, Atualizar, Deletar) simples sem lógica, pode ser overhead (custo extra de implementação).
 
 ## Strategy
 
@@ -124,6 +131,70 @@ Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova t
 
 **Quando usar**: comportamento transversal (logging, cache, autenticação) que precisa ser aplicado de forma composável, sem modificar a implementação base.
 
+## CQRS: Command Query Responsibility Segregation
+
+> Não confundir com **CQS** (Command-Query Separation), que é um princípio de _função_: a função retorna valor ou produz efeito, nunca os dois. CQRS é um padrão _arquitetural_ que separa modelos inteiros de escrita e leitura.
+
+Em sistemas com lógica de negócio complexa, o modelo de escrita (validações, invariantes, regras de domínio) e o modelo de leitura (relatórios, dashboards, listas paginadas) divergem: o que faz sentido para persistir não é o que faz sentido para exibir.
+
+CQRS separa os dois em modelos distintos:
+
+```
+Command (escrita)              Query (leitura)
+─────────────────              ───────────────
+CreateOrder                    GetOrderSummary
+  → valida domínio               → lê projeção desnormalizada
+  → persiste no write model      → retorna DTO otimizado para a UI
+  → emite evento
+```
+
+O **write model** (modelo de escrita) aplica as regras de domínio e persiste o estado. O **read model** (modelo de leitura), chamado de **Projection** (Projeção), é uma visão desnormalizada e otimizada para consulta. Pode ser uma tabela separada, uma view materializada ou um índice de busca.
+
+| Responsabilidade | Modelo | Objetivo |
+|---|---|---|
+| **Command** | Write model | Validar e persistir mudança de estado |
+| **Query** | Read model (Projection) | Servir dados otimizados para leitura |
+
+**Quando usar**: sistemas onde o modelo de leitura e o de escrita divergem de forma significativa: relatórios complexos, dashboards de alto volume, auditoria, histórico de eventos. Em CRUDs simples, CQRS é overhead sem benefício.
+
+## AI-Driven Development (Desenvolvimento Assistido por IA)
+
+Desenvolvimento assistido por **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) integrado ao ciclo de engenharia: geração de código, revisão, sugestão de refactoring e navegação em bases de código grandes.
+
+O risco central não é a IA: é a ausência de revisão crítica. Código gerado sem avaliação contra a spec e os padrões do projeto cria dívida técnica opaca: funciona, mas não se encaixa no modelo de domínio, ignora convenções ou duplica lógica existente.
+
+A prática correta:
+
+```
+Spec define o contrato → IA gera o candidato → Engenheiro revisa contra spec e padrões → Merge
+```
+
+Nesse modelo, a IA acelera a geração; o engenheiro mantém a responsabilidade pelo design e pela qualidade. A spec é o critério de avaliação, não o feeling de "parece certo".
+
+**Quando usar**: qualquer tarefa onde o contrato já está definido. A IA produz melhor quando sabe o que deve entregar; tarefas sem spec clara geram código sem critério de aceitação.
+
+## SDD: Spec-Driven Development (Desenvolvimento Orientado a Especificações)
+
+A spec (especificação) define entradas, saídas e comportamentos esperados antes de qualquer linha de implementação. O código serve a spec, não o contrário.
+
+Ciclo:
+
+```
+SPEC → PLAN → CODE → TEST → END
+```
+
+- **SPEC**: define o contrato: o quê e por quê, não o como
+- **PLAN**: decompõe em tarefas ordenadas com esforço estimado
+- **CODE**: implementa o plano, nada além
+- **TEST**: verifica que a implementação satisfaz a spec
+- **END**: fecha o ciclo com changelog, backlog sync e commit
+
+O benefício central é custo de decisão: rever uma spec é grátis; rever código já implementado tem custo de entendimento, reescrita e reteste. Decisões de design tomadas na spec chegam ao código com clareza de intenção.
+
+> Este guia segue SDD. O ciclo de governança em `.ai/` é uma implementação direta desse padrão.
+
+---
+
 ## Referência rápida
 
 | Pattern | Problema que resolve | Sinal de uso |
@@ -135,3 +206,6 @@ Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova t
 | **Observer** | Produtor acoplado a consumidores | Reações a eventos em cascata |
 | **Builder** | Construtor com muitos parâmetros opcionais | `new Obj(null, null, true, false, ...)` |
 | **Decorator** | Comportamento transversal sem modificar base | Logging, cache, retry composáveis |
+| **CQRS** | Write model e read model divergem | Relatórios complexos, alto volume de leitura |
+| **AI-Driven** | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
+| **SDD** | Spec antes de código | Decisões de design sem custo de implementação |

@@ -146,6 +146,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | Tópico | Descrição |
 | --- | --- |
 | [Governance](docs/shared/process/governance.md) | Pensamento de staff engineer, SDLC, onboarding e governança do projeto |
+| [Methodologies](docs/shared/process/methodologies.md) | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
 | [Git](docs/shared/process/git.md) | Branches, commits, pull requests e estratégia de entrega |
 | [CI/CD](docs/shared/process/ci-cd.md) | Pipeline, deploy vs release, feature flags, TBD e fix forward |
 
@@ -158,7 +159,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Principles](docs/shared/architecture/principles.md) | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
 | [Architecture](docs/shared/architecture/architecture.md) | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas |
 | [Component Architecture](docs/shared/architecture/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras |
-| [Patterns](docs/shared/architecture/patterns.md) | Result, Factory, Repository, Strategy, Observer, Builder, Decorator |
+| [Patterns](docs/shared/architecture/patterns.md) | Result, Factory, Repository, Strategy, Observer, Builder, Decorator, CQRS, AI-Driven, SDD |
+| [Scaling](docs/shared/architecture/scaling.md) | Load Balancing, API Gateway, escala vertical e horizontal, estratégias e anti-overengineering |
 | [Operation Flow](docs/shared/architecture/operation-flow.md) | Fluxo de operação backend e frontend: puro nas bordas, I/O no meio, CQS |
 | [Frontend Flow](docs/shared/architecture/frontend-flow.md) | Routing, guards, loaders, layouts aninhados, forms e updates otimistas |
 | [Backend Flow](docs/shared/architecture/backend-flow.md) | Background jobs, webhooks e event-driven: outbox, idempotência, DLQ e envelope |
@@ -185,7 +187,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Security](docs/shared/platform/security.md) | Segredos, configuração em camadas, autorização e blindagem de cookies |
 | [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast |
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |
-| [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e connection pool |
+| [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O |
+| [Database](docs/shared/platform/database.md) | SQL vs NoSQL, tuning de queries, plano de execução e troubleshooting de gargalos |
 | [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
 | [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |
 
@@ -197,53 +200,4 @@ Ver [CHANGELOG.md](CHANGELOG.md) para o histórico de versões e releases.
 
 ### Referências
 
-**Princípios**  
-Clean Code, Robert C. Martin _(livro)_  
-The Clean Coder, Robert C. Martin _(livro)_  
-[Command Query Separation, Martin Fowler](https://martinfowler.com/bliki/CommandQuerySeparation.html)  
-[The Twelve-Factor App](https://12factor.net/)  
-[Refactoring Guru](https://refactoring.guru/)
-
-**HTML**  
-[MDN HTML Reference](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)  
-[HTML Living Standard, WHATWG](https://html.spec.whatwg.org/)  
-[WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/)  
-[Can I Use](https://caniuse.com/)  
-[jQuery API Docs](https://api.jquery.com/)
-
-**JavaScript**  
-[Airbnb JavaScript Code Style](https://github.com/airbnb/javascript?tab=readme-ov-file)  
-[Mozilla JavaScript Code Style](https://developer.mozilla.org/en-US/docs/MDN/Writing_guidelines/Code_style_guide/JavaScript)
-
-**CSS**  
-[MDN CSS Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)  
-[BEM Methodology](https://getbem.com/)  
-[Tailwind CSS Docs](https://tailwindcss.com/docs)  
-[Bootstrap Docs](https://getbootstrap.com/docs/)
-
-**Git**  
-[Conventional Commits](https://www.conventionalcommits.org/)  
-[Trunk-Based Development](https://trunkbaseddevelopment.com/)
-
-**C#**  
-[Google C# Code Style](https://google.github.io/styleguide/csharp-style.html)  
-[Microsoft C# Code Style](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions)
-
-**VB.NET**  
-[Microsoft VB.NET Code Style](https://learn.microsoft.com/en-us/dotnet/visual-basic/programming-guide/program-structure/coding-conventions)  
-[.NET Framework 4.8 API Reference](https://learn.microsoft.com/en-us/dotnet/api/?view=netframework-4.8)
-
-**SQL**  
-[Guia de estilos SQL](https://www.sqlstyle.guide/)  
-[Guia de referência SQL](https://brainstation.io/learn/sql/reference)
-
-**Dates**  
-[Temporal API, TC39](https://tc39.es/proposal-temporal/docs/)  
-[date-fns](https://date-fns.org/)  
-[Luxon](https://moment.github.io/luxon/)
-
-**Observability**  
-[Pino](https://getpino.io/)  
-[Serilog](https://serilog.net/)  
-[Sentry](https://docs.sentry.io/)  
-[New Relic](https://docs.newrelic.com/)
+Ver [REFERENCES.md](REFERENCES.md) para todos os links organizados por tema.
