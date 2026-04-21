@@ -2,24 +2,118 @@
 
 > Escopo: TypeScript. Guia baseado em **React 19.2** com **Next.js 16** (App Router).
 
-React é uma biblioteca de UI. Next.js é o framework: roteamento por arquivo, Server Components, Server Actions e otimizações de build integradas. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com React e Next.js.
+React é uma biblioteca de UI. Next.js é o framework: roteamento por arquivo, Server Components,
+Server Actions e otimizações de build integradas. Este guia mostra como implementar os contratos de
+[operation-flow.md](../../shared/architecture/operation-flow.md) e
+[frontend-flow.md](../../shared/architecture/frontend-flow.md) com React e Next.js.
 
 ## Conceitos fundamentais
 
-| Conceito | O que é |
-|---|---|
-| **RSC** (React Server Component, Componente de Servidor) | Componente renderizado no servidor: acessa banco e APIs diretamente, sem enviar código ao cliente |
-| **RCC** (React Client Component, Componente de Cliente) | Componente com `"use client"`: acessa estado, eventos e APIs do navegador |
-| **Server Action** (Ação de Servidor) | Função assíncrona com `"use server"`: executa no servidor, invocável em formulários e event handlers |
-| **App Router** (Roteador de Aplicação) | Sistema de roteamento do Next.js baseado em hierarquia de pastas em `app/` |
-| **Proxy** (proxy de rede) | Arquivo `proxy.ts` executado antes do handler da rota: guards de autenticação, redirecionamentos |
-| **Hydration** (hidratação) | Processo de sincronizar o HTML renderizado no servidor com o estado do cliente |
+| Conceito                                                                                              | O que é                                                                                                    |
+| ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **RSC** (React Server Component, Componente de Servidor)                                              | Componente renderizado no servidor: acessa banco e APIs diretamente, sem enviar código ao cliente          |
+| **RCC** (React Client Component, Componente de Cliente)                                               | Componente com `"use client"`: acessa estado, eventos e APIs do navegador                                  |
+| **Server Action** (Ação de Servidor)                                                                  | Função assíncrona com `"use server"`: executa no servidor, invocável em formulários e event handlers       |
+| **App Router** (Roteador de Aplicação)                                                                | Sistema de roteamento do Next.js baseado em hierarquia de pastas em `app/`                                 |
+| **Proxy** (proxy de rede)                                                                             | Arquivo `proxy.ts` executado antes do handler da rota: guards de autenticação, redirecionamentos           |
+| **Hydration** (hidratação)                                                                            | Processo de sincronizar o HTML renderizado no servidor com o estado do cliente                             |
+| **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash) | Mecanismo que valida a origem e integridade de um webhook comparando assinaturas com segredo compartilhado |
+
+## Fluxo de Operação
+
+Next.js funciona como frontend puro (chamando qualquer backend) ou como fullstack (executando backend no mesmo projeto). O slice `features/` é o mesmo nos dois cenários; o que muda é o que cada artefato faz dentro dele.
+
+### Next.js como frontend
+
+Next.js cuida de UI e roteamento. Todo acesso a dados passa pelo `apiClient`, que aponta para qualquer backend (C#, Java, Node, etc.).
+
+**Render:** `URL → proxy.ts → page.tsx → Service → apiClient → API`
+
+**Interação:** `User Action → RCC → Hook → Service → apiClient → API`
+
+| Passo | O que faz | Domínio |
+|---|---|---|
+| **URL** | Navegação inicia a resolução da rota no App Router | navegador |
+| **proxy.ts** | Guard de autenticação executado antes de qualquer render | `app/` |
+| **page.tsx** | Orquestrador RSC: chama Service, monta componentes com dados | `app/` |
+| **RCC** | Componente com `"use client"`: captura estado e eventos do browser | `features/` |
+| **Hook** | Gerencia estado de UI (`data`, `error`, `isLoading`) | `features/` |
+| **Service** | Chama apiClient e transforma para view type | `features/` |
+| **apiClient** | Único caller de rede: retorna `Result<T>` | `lib/` |
+| **Zod** | Valida dados na fronteira da API | `features/` |
+| **API** | Backend externo (C#, Java, Node, etc.) | backend |
+
+```
+app/
+└── orders/[id]/page.tsx     → RSC: chama Service, monta componentes
+features/orders/
+├── components/
+│   ├── OrderDetail.tsx       → RSC: renderiza dados
+│   └── CreateOrderForm.tsx   → RCC "use client": captura estado e eventos
+├── hooks/use-orders.ts       → estado de UI: data, error, isLoading
+├── services/order.ts         → chama apiClient, transforma para view type
+└── schemas/order.ts          → Zod: valida na fronteira da API
+lib/
+└── api-client.ts             → único caller de rede: retorna Result<T>
+proxy.ts                      → guard: executa antes de qualquer render
+```
+
+### Next.js fullstack
+
+Next.js é frontend e backend. `page.tsx` acessa o banco diretamente via Repository, sem passar pela própria API Route. API Routes existem para clientes externos (mobile, integrações B2B). RCC e hooks funcionam igual ao cenário anterior para interações client-side.
+
+**Leitura:** `URL → proxy.ts → page.tsx → Repository → render`
+
+**Escrita:** `Submit → Server Action → Zod → Repository → updateTag → result`
+
+**Webhook:** `POST → route.ts → HMAC → idempotência → 200 OK → enqueue → Worker`
+
+| Passo | O que faz | Domínio |
+|---|---|---|
+| **URL** | Navegação inicia a resolução da rota no App Router | navegador |
+| **proxy.ts** | Guard de autenticação executado antes de qualquer render | `app/` |
+| **page.tsx** | Orquestrador RSC: acessa Repository diretamente, monta componentes | `app/` |
+| **Server Action** | Executa no servidor: valida, persiste e invalida cache | `features/` |
+| **route.ts** | Named export por método HTTP: entry point para clientes externos | `app/api/` |
+| **Zod** | Schema compartilhado: valida input no cliente e no servidor | `features/` |
+| **Service** | Regras de negócio; transforma dados para persistência ou resposta | `features/` |
+| **Repository** | Acesso direto ao banco: queries e mutações | `features/` |
+| **updateTag** | Invalida o cache após escrita: garante read-your-writes | `features/` |
+| **HMAC** | Valida a assinatura do webhook sobre o raw body | `app/api/` |
+| **enqueue** | Adiciona job à fila para processamento assíncrono | `lib/` |
+| **Worker** | Consome e executa o job de forma independente | externo |
+| **Response** | `NextResponse.json()` tipado com status explícito | `app/api/` |
+
+```
+app/
+├── orders/[id]/page.tsx              → RSC: acessa Repository diretamente
+└── api/
+    ├── orders/route.ts               → API Route: para clientes externos
+    └── webhooks/[provider]/route.ts  → Webhook Handler: HMAC, idempotência, enqueue
+features/orders/
+├── components/
+│   ├── OrderDetail.tsx               → RSC: renderiza dados
+│   └── CreateOrderForm.tsx           → RCC "use client": captura estado e eventos
+├── hooks/use-orders.ts               → estado de UI: data, error, isLoading
+├── actions/order.ts                  → Server Action: valida, persiste, invalida cache
+├── services/order.ts                 → regras de negócio, transforma para view type
+├── repositories/order.ts             → acesso direto ao banco
+├── queries/orders.ts                 → "use cache": leitura cacheada com tag
+└── schemas/order.ts                  → Zod: contrato cliente/servidor
+lib/
+├── api-client.ts                     → chama APIs externas (quando necessário)
+└── queue.ts                          → enfileira jobs para processamento assíncrono
+proxy.ts                              → guard: executa antes de qualquer render
+```
 
 ## Componentes: Server vs Client
 
-Todo componente começa como **RSC**. Recebe `"use client"` apenas quando precisa de interatividade — estado, efeitos ou eventos de browser.
+Todo componente começa como **RSC**. Recebe `"use client"` apenas quando precisa de interatividade:
+estado, efeitos ou eventos de browser.
 
-**RSC** cobre o papel do **Loader** definido em [frontend-flow.md](../../shared/architecture/frontend-flow.md): acessa dados antes do render, sem estado de loading, sem waterfall.
+**RSC** cobre o papel do **Loader** definido em
+[frontend-flow.md](../../shared/architecture/frontend-flow.md): acessa dados antes do render, sem
+estado de loading, sem waterfall.
 
 <details>
 <summary>❌ Bad — RCC desnecessário para conteúdo sem interatividade</summary>
@@ -35,7 +129,7 @@ export function ProductDetail({ id }: { id: string }) {
 
   useEffect(() => {
     fetch(`/api/products/${id}`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setProduct);
   }, [id]);
 
@@ -71,7 +165,8 @@ export async function ProductDetail({ id }: ProductDetailProps) {
 
 </details>
 
-O `page.tsx` é o orquestrador da rota — delega renderização a componentes e dados a repositórios. Sem lógica de negócio inline.
+O `page.tsx` é o orquestrador da rota: delega renderização a componentes e dados a repositórios.
+Sem lógica de negócio inline.
 
 <details>
 <summary>❌ Bad — lógica de dados e negócio misturada no page.tsx</summary>
@@ -88,7 +183,11 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 
   const total = order.items.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-  return <div>{order.customer.name} — R$ {total}</div>;
+  return (
+    <div>
+      {order.customer.name} — R$ {total}
+    </div>
+  );
 }
 ```
 
@@ -123,20 +222,30 @@ export default async function OrderPage({ params }: OrderPageProps) {
 
 ## Props: interface com sufixo Props
 
-Props de componentes seguem a mesma regra das funções TypeScript: objetos com três ou mais campos usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
+Props de componentes seguem a mesma regra das funções TypeScript: objetos com três ou mais campos
+usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
 
 <details>
 <summary>❌ Bad — tipo inline na assinatura do componente</summary>
 <br>
 
 ```tsx
-export function OrderCard({ id, status, total, customerName }: {
+export function OrderCard({
+  id,
+  status,
+  total,
+  customerName,
+}: {
   id: string;
   status: OrderStatus;
   total: number;
   customerName: string;
 }) {
-  return <div>{customerName} — {total}</div>;
+  return (
+    <div>
+      {customerName} — {total}
+    </div>
+  );
 }
 ```
 
@@ -157,7 +266,11 @@ interface OrderCardProps {
 }
 
 export function OrderCard({ id, status, total, customerName }: OrderCardProps) {
-  return <div>{customerName} — {total}</div>;
+  return (
+    <div>
+      {customerName} — {total}
+    </div>
+  );
 }
 ```
 
@@ -165,7 +278,9 @@ export function OrderCard({ id, status, total, customerName }: OrderCardProps) {
 
 ## Hooks: pipeline Component → Service → apiClient
 
-Em **RCCs**, o pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) se aplica diretamente: o hook encapsula estado de UI (`data`, `error`, `isLoading`) e delega ao **Service**. O **Service** chama o `apiClient` — único ponto de rede — e entrega um tipo de view ao hook.
+Em **RCCs**, o pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) se
+aplica diretamente: o hook encapsula estado de UI (`data`, `error`, `isLoading`) e delega ao
+**Service**. O **Service** chama o `apiClient` (único ponto de rede) e entrega um tipo de view ao hook.
 
 O retorno do hook é tipado com interface quando tem três ou mais valores.
 
@@ -181,11 +296,17 @@ export function OrderList() {
 
   useEffect(() => {
     fetch("/api/orders")
-      .then(res => res.json())
+      .then((res) => res.json())
       .then(setOrders);
   }, []);
 
-  return <ul>{orders.map(o => <li key={o.id}>{o.id}</li>)}</ul>;
+  return (
+    <ul>
+      {orders.map((o) => (
+        <li key={o.id}>{o.id}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -248,7 +369,13 @@ export function OrderList() {
   if (isLoading) return <Skeleton />;
   if (error) return <ErrorMessage message={error} />;
 
-  return <ul>{orders.map(order => <li key={order.id}>{order.customerName}</li>)}</ul>;
+  return (
+    <ul>
+      {orders.map((order) => (
+        <li key={order.id}>{order.customerName}</li>
+      ))}
+    </ul>
+  );
 }
 ```
 
@@ -256,7 +383,9 @@ export function OrderList() {
 
 ## Guards: Proxy
 
-Guards de autenticação e autorização ficam no `proxy.ts` — executam antes de qualquer render, conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro de componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
+Guards de autenticação e autorização ficam no `proxy.ts`: executam antes de qualquer render,
+conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro de
+componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
 
 <details>
 <summary>❌ Bad — guard no componente, expõe conteúdo por um frame</summary>
@@ -313,9 +442,11 @@ export const config = {
 
 ## Formulários: schema → Server Action
 
-O fluxo de formulários de [frontend-flow.md](../../shared/architecture/frontend-flow.md) se aplica diretamente. O schema Zod é a fonte da verdade para cliente e servidor. A **Server Action** implementa o pipeline de escrita: valida → regras de negócio → persiste → retorna `Result`.
+O fluxo de formulários de [frontend-flow.md](../../shared/architecture/frontend-flow.md) se aplica
+diretamente. O schema Zod é a fonte da verdade para cliente e servidor. A **Server Action**
+implementa o pipeline de escrita: valida → regras de negócio → persiste → retorna `Result`.
 
-O servidor retorna erros estruturados por campo e por formulário — nunca apenas `ok: false`.
+O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
 
 <details>
 <summary>❌ Bad — validação manual sem schema, erros sem estrutura</summary>
@@ -373,7 +504,7 @@ interface CreateOrderResult {
 
 export async function createOrder(
   _prev: CreateOrderResult | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateOrderResult> {
   const parsed = createOrderSchema.safeParse({
     productId: formData.get("productId"),
@@ -428,11 +559,14 @@ export function CreateOrderForm() {
 
 </details>
 
-`<fieldset disabled>` cobre todos os campos durante a requisição — previne double-submit (envio duplicado) sem desabilitar cada input individualmente.
+`<fieldset disabled>` cobre todos os campos durante a requisição: previne double-submit (envio
+duplicado) sem desabilitar cada input individualmente.
 
 ## API Routes
 
-API Routes ficam em `app/api/[recurso]/route.ts`. Cada método HTTP é um named export. O pipeline segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operation-flow.md): valida → regras de negócio → persiste → retorna Response.
+API Routes ficam em `app/api/[recurso]/route.ts`. Cada método HTTP é um named export. O pipeline
+segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operation-flow.md): valida →
+regras de negócio → persiste → retorna Response.
 
 <details>
 <summary>❌ Bad — lógica de negócio inline, sem schema, status code hardcoded</summary>
@@ -494,11 +628,109 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 </details>
 
+## Webhook Handler
+
+O webhook handler implementa o fluxo de
+[backend-flow.md](../../shared/architecture/backend-flow.md): captura o raw body antes de qualquer
+parse, valida o **HMAC**, checa idempotência e responde 200 antes de processar.
+
+Duas regras sem exceção: responder 200 antes de processar (provedores como Stripe e GitHub fazem
+retry se não receberem resposta em até 30 segundos) e validar o **HMAC** sobre o raw body (parsear
+o JSON antes invalida o cálculo da assinatura).
+
+```
+POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa idempotência → 200 OK → enfileira → processa
+```
+
+<details>
+<summary>❌ Bad — valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<br>
+
+```ts
+// app/api/webhooks/[provider]/route.ts
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  const signature = request.headers.get("x-signature");
+
+  const expected = createHmac("sha256", process.env.WEBHOOK_SECRET!)
+    .update(JSON.stringify(body))
+    .digest("hex");
+
+  if (expected !== signature) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  await processWebhookPayload(body);
+
+  return NextResponse.json({ ok: true });
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
+<br>
+
+```ts
+// app/api/webhooks/[provider]/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { createHmac, timingSafeEqual } from "crypto";
+import { webhookRepository } from "@/lib/repositories/webhook";
+import { jobQueue } from "@/lib/queue";
+
+export async function POST(request: NextRequest): Promise<NextResponse> {
+  const rawBody = await request.text();
+  const receivedSignature = request.headers.get("x-signature") ?? "";
+  const eventId = request.headers.get("x-event-id") ?? "";
+
+  const expectedSignature = createHmac("sha256", process.env.WEBHOOK_SECRET!)
+    .update(rawBody)
+    .digest("hex");
+
+  const signaturesMatch =
+    expectedSignature.length === receivedSignature.length &&
+    timingSafeEqual(Buffer.from(expectedSignature), Buffer.from(receivedSignature));
+
+  if (!signaturesMatch) {
+    const unauthorizedResponse = NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    return unauthorizedResponse;
+  }
+
+  const alreadyReceived = await webhookRepository.findByEventId(eventId);
+
+  if (alreadyReceived) {
+    const duplicateResponse = NextResponse.json({ ok: true });
+
+    return duplicateResponse;
+  }
+
+  await webhookRepository.save({ eventId, rawBody });
+  await jobQueue.enqueue("webhook.process", { eventId });
+
+  const acceptedResponse = NextResponse.json({ ok: true });
+
+  return acceptedResponse;
+}
+```
+
+</details>
+
+A checagem de comprimento antes do `timingSafeEqual` é necessária: buffers de tamanhos diferentes
+lançam exceção em runtime. Retornar 200 silenciosamente para eventos duplicados é o contrato correto:
+o provedor não precisa saber que o evento já foi recebido.
+
 ## Caching: `use cache`
 
-Next.js 16 introduz o `"use cache"` como diretiva opt-in. Todo código dinâmico executa em tempo de requisição por padrão — cache é declarado explicitamente por função ou componente.
+Next.js 16 introduz o `"use cache"` como diretiva opt-in. Todo código dinâmico executa em tempo de
+requisição por padrão; cache é declarado explicitamente por função ou componente.
 
-`cacheLife()` define o perfil de expiração. `cacheTag()` marca os dados para invalidação seletiva. `updateTag()` em Server Actions garante **read-your-writes** (leitura imediata após escrita): o usuário vê as próprias mudanças na hora.
+`cacheLife()` define o perfil de expiração. `cacheTag()` marca os dados para invalidação seletiva.
+`updateTag()` em Server Actions garante **read-your-writes** (leitura imediata após escrita): o
+usuário vê as próprias mudanças na hora.
 
 <details>
 <summary>✅ Good — função cacheada com perfil e tag</summary>
@@ -539,7 +771,7 @@ import { orderRepository } from "@/lib/repositories/order";
 
 export async function createOrder(
   _prev: CreateOrderResult | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<CreateOrderResult> {
   const parsed = createOrderSchema.safeParse({
     productId: formData.get("productId"),
@@ -565,4 +797,5 @@ export async function createOrder(
 
 </details>
 
-`updateTag()` só está disponível em Server Actions. Para invalidação externa (webhook, cron), use `revalidateTag(tag, "max")` com perfil `cacheLife`.
+`updateTag()` só está disponível em Server Actions. Para invalidação externa (webhook, cron), use
+`revalidateTag(tag, "max")` com perfil `cacheLife`.

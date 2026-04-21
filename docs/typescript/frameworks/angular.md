@@ -18,6 +18,45 @@ Angular é um framework completo: roteamento, injeção de dependência, formul�
 | **Guard** (proteção de rota) | Verificação de autorização executada durante a resolução da rota, antes de qualquer componente montar |
 | **Resolver** (carregador de dados) | Busca os dados da rota durante a resolução, antes do componente montar |
 
+## Fluxo de Operação
+
+`URL → app.routes.ts → Guard → Resolver → Smart Component → Service → Interceptor → HttpClient → API`
+
+| Passo | O que faz | Domínio |
+|---|---|---|
+| **URL** | Navegação do usuário inicia a resolução da rota | navegador |
+| **app.routes.ts** | Mapeia a URL para guard, resolver e componente destino | `core/` |
+| **Guard** | Verifica autenticação ou papel; redireciona se não autorizado, antes de qualquer componente montar | `core/` |
+| **Resolver** | Busca os dados da rota; o componente recebe dados prontos, sem estado de loading interno | `features/` |
+| **Smart Component** | Orquestra estado com signals; delega renderização a **Dumb Components** via `@Input()` | `features/` |
+| **Service** | Encapsula a lógica de acesso HTTP e retorna `Observable<T>` | `features/` |
+| **Interceptor** | Processa todas as requisições (injeta token) e respostas (trata 401, 500) de forma centralizada | `core/` |
+| **HttpClient** | Injectable do framework: configurado em `app.config.ts`, injetado nos Services via `inject(HttpClient)` | `core/` · `features/` |
+| **API** | Fronteira do frontend com o backend | backend |
+
+## Estrutura de pastas
+
+Angular não impõe estrutura de pastas. O roteamento é configurado em código, não por arquivo. Isso permite organização por slice vertical: cada feature reúne pages, components, services e resolvers. Guards e interceptors ficam em `core/` por serem infraestrutura compartilhada por todos os slices.
+
+```
+src/app/
+├── features/
+│   └── orders/                              ← slice: tudo relativo a orders
+│       ├── pages/order-detail.page.ts       → Smart Component: orquestra dados e estado
+│       ├── components/order-list.component.ts → Dumb Component: @Input(), @Output(), sem lógica
+│       ├── services/order.service.ts         → Injectable: HttpClient, retorna Observable<T>
+│       └── resolvers/order-detail.resolver.ts → ResolveFn: busca dados antes do componente montar
+├── core/
+│   ├── guards/
+│   │   ├── auth.guard.ts                    → CanActivateFn: verifica autenticação
+│   │   └── role.guard.ts                    → CanActivateFn: verifica papel do usuário
+│   ├── interceptors/
+│   │   ├── auth.interceptor.ts              → HttpInterceptorFn: injeta token nas requisições
+│   │   └── error.interceptor.ts             → HttpInterceptorFn: trata 401 e 500 globalmente
+│   ├── app.routes.ts                        → rotas: guards, resolvers, lazy load
+│   └── app.config.ts                        → providers: HttpClient, interceptors
+```
+
 ## Componentes standalone
 
 Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada componente declara as dependências que usa diretamente em `imports`.
@@ -78,7 +117,7 @@ export class UserCardComponent {
 
 Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A API é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
 
-Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos — DOM direto, localStorage, analytics. Nunca para sincronizar signals entre si.
+Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
 
 <details>
 <summary>❌ Bad — BehaviorSubject para estado local simples</summary>
@@ -306,9 +345,9 @@ export class OrderService {
 
 ## Guards: CanActivateFn
 
-Guards de autorização ficam na definição da rota — executam antes de qualquer componente montar, conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro do componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito.
+Guards de autorização ficam na definição da rota: executam antes de qualquer componente montar, conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro do componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito.
 
-Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado — roda uma vez para o grupo, não individualmente em cada rota filha.
+Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado; roda uma vez para o grupo, não individualmente em cada rota filha.
 
 <details>
 <summary>❌ Bad — guard no ngOnInit do componente</summary>
@@ -483,9 +522,9 @@ export class OrderDetailPageComponent {
 
 ## Formulários reativos tipados
 
-Angular tem `FormGroup` e `FormControl` com tipagem genérica. Use `FormBuilder` — acesso direto aos controls, sem `form.get("campo")?.value` não-tipado.
+Angular tem `FormGroup` e `FormControl` com tipagem genérica. Use `FormBuilder`: acesso direto aos controls, sem `form.get("campo")?.value` não-tipado.
 
-O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Angular valida a experiência do usuário no formulário — os dois executam sempre, conforme o padrão de [frontend-flow.md](../../shared/architecture/frontend-flow.md).
+O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Angular valida a experiência do usuário no formulário; os dois executam sempre, conforme o padrão de [frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
 <details>
 <summary>❌ Bad — FormGroup não-tipado, acesso por string</summary>
@@ -580,7 +619,7 @@ export class LoginFormComponent {
 
 ## Interceptors: HTTP global
 
-**Interceptors** (`HttpInterceptorFn`) processam todas as requisições HTTP antes de chegarem ao serviço e todas as respostas antes de chegarem ao componente. Centralizam autenticação, error handling e retry — sem repetir lógica em cada **Service**.
+**Interceptors** (`HttpInterceptorFn`) processam todas as requisições HTTP antes de chegarem ao serviço e todas as respostas antes de chegarem ao componente. Centralizam autenticação, error handling e retry, sem repetir lógica em cada **Service**.
 
 Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient → API`
 

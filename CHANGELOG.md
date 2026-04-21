@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.1] - 2026-04-21
+
+### Fixed
+
+- `docs/typescript/frameworks/react-nextjs.md`: Fluxo de Operação reestruturado por cenário de uso (Next.js como frontend vs fullstack); webhook handler adicionado (HMAC, idempotência, enqueue); estrutura de pastas com slice vertical (`features/`); coluna Domínio nas tabelas; writing soul (em dashes removidos)
+- `docs/typescript/frameworks/angular.md`: Fluxo de Operação com fluxo linear, tabela passo a passo e coluna Domínio (features/ vs core/); estrutura de pastas com slice vertical; writing soul (em dashes removidos)
+
 ## [1.8.0] - 2026-04-21
 
 ### Added
