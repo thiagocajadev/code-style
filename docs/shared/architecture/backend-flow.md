@@ -13,7 +13,7 @@ o ciclo síncrono.
 ## Background Job
 
 Um job (tarefa assíncrona) desacopla o aceite de trabalho da sua execução. A API aceita a
-requisição, persiste o job, responde 202, e o worker (processo trabalhador) executa de forma
+requisição, persiste o job, responde 202, e o **worker** (processo trabalhador) executa de forma
 independente.
 
 ```
@@ -42,8 +42,8 @@ BEGIN;
 COMMIT;
 ```
 
-Um relay (processo de retransmissão) separado lê os registros não publicados do outbox, publica no
-broker (intermediário de mensagens) e marca como enviado. O commit no banco e a intenção de publicar
+Um **relay** (processo de retransmissão) separado lê os registros não publicados do outbox, publica no
+**broker** (intermediário de mensagens) e marca como enviado. O commit no banco e a intenção de publicar
 são atômicos; o relay entrega com retry (retentatva).
 
 Quando a fila de jobs **é** o banco principal (PostgreSQL com `pgboss`, por exemplo), o outbox está
@@ -221,9 +221,9 @@ sistema ignora o que não conhece sem errar.
 
 ## Event-Driven
 
-No modelo event-driven (orientado a eventos), o publisher (publicador) emite um evento de domínio
-para um broker. Subscribers (assinantes) independentes consomem e processam sem conhecer o
-publisher.
+No modelo event-driven (orientado a eventos), o **publisher** (publicador) emite um evento de domínio
+para um **broker**. **Subscribers** (assinantes) independentes consomem e processam sem conhecer o
+**publisher**.
 
 ```
 Publisher emite evento → Broker (tópico/fila) → Subscriber consome → processa → ack → broker remove

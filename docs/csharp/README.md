@@ -19,7 +19,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 
 | Tópico                                            | Conceitos                                             |
 | ------------------------------------------------- | ----------------------------------------------------- |
-| [Variables](conventions/variables.md)             | `var`, `const`, `readonly`, records imutáveis         |
+| [Variables](conventions/variables.md)             | `var`, `const`, `readonly`, records immutable         |
 | [Naming](conventions/naming.md)                   | PascalCase, `_camelCase`, prefixo `I`, sufixo `Async` |
 | [Methods](conventions/methods.md)                 | SLA, orquestrador, guard clauses, primary constructors |
 | [Control Flow](conventions/control-flow.md)       | Guard clauses, pattern matching, switch expressions   |
@@ -65,7 +65,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                    | Saída cedo na falha, sem else após return                           |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                             | Aninhamento em cascata substituído por fluxo plano                  |
 | [Pattern matching](conventions/control-flow.md#pattern-matching)                               | `switch` expressions sobre `if-else` encadeado                      |
-| [Imutabilidade por padrão](conventions/variables.md#records-imutáveis)                         | `readonly`, `const`, `record`: mutação é exceção explícita          |
+| [Valor fixo por padrão](conventions/variables.md#records-immutable)                            | `readonly`, `const`, `record`: alteração é exceção explícita        |
 | [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos)                            | Constantes nomeadas em vez de literais inline                       |
 | [CQS](conventions/variables.md#mutação-direta)                                                 | Retornar novo estado, sem efeitos colaterais ocultos                |
 

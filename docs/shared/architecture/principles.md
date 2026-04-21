@@ -1,6 +1,8 @@
 # Princípios
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
+>
+> SSOT (Single Source of Truth, fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
 
 Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem a pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
 
@@ -88,9 +90,9 @@ Uma função **faz uma coisa**. Esse é o **SLA** (Single Level of Abstraction, 
 
 Computar dados e formatar a saída são **responsabilidades distintas**. Uma função que calcula totais não deveria também montar a string de exibição. Separar as duas torna cada parte **testável de forma independente** e reutilizável em contextos diferentes.
 
-### Imutabilidade por padrão
+### Valor fixo por padrão
 
-Variáveis declaradas como constantes (`const`, `readonly`) comunicam que **o valor não muda**: qualquer alteração posterior é uma exceção explícita, não um efeito colateral silencioso. Imutabilidade por padrão **reduz surpresas** e torna o fluxo de dados rastreável.
+Variáveis declaradas como constantes (`const`, `readonly`) comunicam que **o valor não muda**: qualquer alteração posterior é uma exceção explícita, não um efeito colateral silencioso. Immutable (valor fixo) por padrão **reduz surpresas** e torna o fluxo de dados rastreável.
 
 ### CQS: Command Query Separation (Separação de Comando e Consulta)
 

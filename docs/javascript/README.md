@@ -17,7 +17,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 
 | Tópico                                          | Conceitos                                                       |
 | ----------------------------------------------- | --------------------------------------------------------------- |
-| [Variables](conventions/variables.md)           | `const`, `let`, imutabilidade por padrão                        |
+| [Variables](conventions/variables.md)           | `const`, `let`, valor fixo por padrão                           |
 | [Naming](conventions/naming.md)                 | camelCase, UPPER_CASE, ordem semântica, inglês                  |
 | [Functions](conventions/functions.md)           | Tamanho, top-down, direct return                                |
 | [Control Flow](conventions/control-flow.md)     | Guard clauses, early return, iterações                          |
@@ -71,7 +71,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | [Funções pequenas](conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)                    | Uma responsabilidade, um nível de abstração                  |
 | [Cálculo vs formatação](conventions/functions.md#separar-cálculo-de-formatação)                                  | Computar dados e formatar saída em funções separadas         |
-| [Imutabilidade por padrão](conventions/variables.md#let-desnecessário)                                           | `const` primeiro, `let` só quando necessário                 |
+| [Valor fixo por padrão](conventions/variables.md#let-desnecessário)                                              | `const` primeiro, `let` só quando necessário                 |
 | [CQS](conventions/variables.md#mutação-direta-de-objetos)                                                        | Separar comando de consulta, sem efeitos colaterais ocultos  |
 | [Dependências explícitas](conventions/advanced/async.md#api-client-centralizado)                                 | Injetar via parâmetros, evitar estado global                 |
 | [Falhar rápido](conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                               | Validar cedo, interromper fluxo inválido                     |

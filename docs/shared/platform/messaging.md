@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Mensageria é a comunicação assíncrona entre partes do sistema por meio de mensagens. O producer (produtor) envia uma mensagem para um broker (serviço intermediário que armazena e entrega mensagens) e segue em frente. O consumer (consumidor) processa quando disponível.
+Mensageria é a comunicação assíncrona entre partes do sistema por meio de mensagens. O **producer** (produtor) envia uma mensagem para um **broker** (serviço intermediário que armazena e entrega mensagens) e segue em frente. O **consumer** (consumidor) processa quando disponível.
 
 O resultado é desacoplamento temporal: producer e consumer não precisam estar disponíveis ao mesmo tempo.
 

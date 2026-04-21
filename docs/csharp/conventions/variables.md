@@ -32,10 +32,10 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 
 ## `const` e `readonly`
 
-`const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` é imutável após o construtor, para valores determinados em runtime. Campos mutáveis onde só leitura é necessária são um contrato fraco.
+`const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` não pode ser alterado após o construtor, para valores determinados em runtime. Campos que mudam onde só leitura é necessária são um contrato fraco.
 
 <details>
-<summary>❌ Bad — campo mutável onde deveria ser imutável</summary>
+<summary>❌ Bad — campo mutable onde deveria ser immutable</summary>
 <br>
 
 ```csharp
@@ -56,7 +56,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — imutabilidade declarada explicitamente</summary>
+<summary>✅ Good — valor fixo declarado explicitamente</summary>
 <br>
 
 ```csharp
@@ -69,9 +69,9 @@ public class OrderService(IConfiguration config)
 
 </details>
 
-## Records imutáveis
+## Records immutable
 
-`record` expressa um contrato de dados imutável sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
+`record` expressa um contrato de dados immutable (que não muda) sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
 
 <details>
 <summary>❌ Bad — class mutável como contrato de dados</summary>
@@ -90,7 +90,7 @@ public class OrderRequest
 <br>
 
 <details>
-<summary>✅ Good — record imutável, contrato explícito</summary>
+<summary>✅ Good — record immutable, contrato explícito</summary>
 <br>
 
 ```csharp

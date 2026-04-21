@@ -1,6 +1,6 @@
 # Variables
 
-As regras de `const`, `let` e imutabilidade do JavaScript se aplicam aqui. O que TypeScript
+As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que TypeScript
 adiciona é o sistema de tipos: quando anotar, quando deixar a inferência trabalhar, e como evitar
 buracos no contrato.
 
