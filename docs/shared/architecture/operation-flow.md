@@ -2,9 +2,9 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Uma operação — criar um recurso, processar um formulário, buscar dados — segue sempre o mesmo ciclo: recebe input, transforma, executa, retorna output. Operation flow é a estrutura que torna esse ciclo explícito: cada passo tem uma responsabilidade, um tipo de entrada e um tipo de saída.
+Uma operação — criar um recurso, processar um formulário, buscar dados — segue sempre o mesmo ciclo: recebe input (entrada), transforma, executa, retorna output (saída). Operation flow é a estrutura que torna esse ciclo explícito: cada passo tem uma responsabilidade, um tipo de entrada e um tipo de saída.
 
-O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e I/O é visível na estrutura.
+O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e I/O (entrada/saída) é visível na estrutura.
 
 ## Backend
 
@@ -26,7 +26,7 @@ Request
 Response
 ```
 
-Os passos puros (1, 2, 6) ficam nas bordas — sem dependências externas, testáveis em isolamento. Os passos com I/O (3, 4, 5) ficam no meio. Save e Read são separados: **CQS** (Command-Query Separation) — escrita não retorna dado; leitura não persiste.
+Os passos puros (1, 2, 6) ficam nas bordas — sem dependências externas, testáveis em isolamento. Os passos com I/O (3, 4, 5) ficam no meio. Save e Read são separados: **CQS** (Command-Query Separation, Separação de Comando e Consulta) — escrita não retorna dado; leitura não persiste.
 
 ## Frontend
 
@@ -48,9 +48,9 @@ O `apiClient` é o único ponto de I/O — tudo acima dele é puro. O `Service` 
 
 ## Princípios compartilhados
 
-**Puro nas bordas, I/O no meio.** Passos sem efeitos colaterais ficam nas extremidades do pipeline. São os mais fáceis de testar e de raciocinar. Passos com I/O ficam agrupados no centro.
+**Puro nas bordas, I/O no meio.** Passos sem efeitos colaterais ficam nas extremidades do pipeline (sequência de processamento). São os mais fáceis de testar e de raciocinar. Passos com I/O ficam agrupados no centro.
 
-**Result<T> como contrato.** Operações que podem falhar por regra de negócio retornam `Result<T>` — sucesso e falha são valores explícitos na assinatura. O caller trata os dois caminhos. Exceções de infraestrutura (timeout, falha de rede) seguem o caminho normal de exceções.
+**Result<T> como contrato.** Operações que podem falhar por regra de negócio retornam `Result<T>` — sucesso e falha são valores explícitos na assinatura. O caller (quem invoca a operação) trata os dois caminhos. Exceções de infraestrutura, como timeout (tempo limite) e falha de rede, seguem o caminho normal de exceções.
 
 **CQS.** Escrita (`Save`) retorna `void`. Leitura (`Read`) retorna dado. A mesma operação não faz os dois.
 

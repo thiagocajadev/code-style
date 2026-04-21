@@ -98,7 +98,7 @@ Uma função ou **retorna um valor** (query, consulta) ou **produz um efeito col
 
 ### Dependências explícitas
 
-Dependências **recebidas como parâmetros** são visíveis, substituíveis e testáveis. Dependências buscadas dentro da função via estado global, singleton ou service locator são ocultas e acopladas. **Injetar via parâmetros** é a forma mais simples de tornar o comportamento previsível.
+Dependências **recebidas como parâmetros** são visíveis, substituíveis e testáveis. Dependências buscadas dentro da função via estado global, singleton (instância única global) ou service locator (localizador de serviços) são ocultas e acopladas. **Injetar via parâmetros** é a forma mais simples de tornar o comportamento previsível.
 
 ### Falhar rápido
 

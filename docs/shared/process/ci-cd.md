@@ -11,12 +11,12 @@ esse fluxo está em [git.md](git.md).
 
 | Processo                     | O que faz                                         | Resultado           |
 | ---------------------------- | ------------------------------------------------- | ------------------- |
-| **CI** (Integração Contínua) | Valida qualidade a cada push: lint, testes, build | Artefato verificado |
+| **CI** (Integração Contínua) | Valida qualidade a cada push (envio de código): lint, testes, build | Artefato verificado |
 | **CD** (Entrega Contínua)    | Promove o artefato pelos ambientes até produção   | Código em produção  |
 
 ## Pipeline
 
-O pipeline é a sequência de verificações que todo código precisa passar. Cada estágio é um portão:
+O pipeline (sequência de etapas de verificação) é a sequência de verificações que todo código precisa passar. Cada estágio é um portão:
 falhou, parou.
 
 ```
@@ -97,7 +97,7 @@ permanentes que crescem com o código.
 
 ## Pre-commit
 
-CI detecta problemas tarde: após o push, na esteira. Pre-commit hooks detectam imediatamente, antes
+CI detecta problemas tarde: após o push, na esteira. Pre-commit hooks (ganchos de automação) detectam imediatamente, antes
 do commit.
 
 ```
@@ -131,6 +131,6 @@ necessário. Reverte o estado da `main` e cria inconsistência com o histórico.
 | ---------- | ------------------------------------------------------------ |
 | Avaliar    | Sistema indisponível e correção inviável no tempo necessário |
 | Reverter   | Rollback do artefato no ambiente de prod                     |
-| Comunicar  | Notificar stakeholders sobre o incidente e a reversão        |
+| Comunicar  | Notificar stakeholders (partes interessadas) sobre o incidente e a reversão        |
 | Investigar | Identificar a causa raiz sem pressão de produção             |
 | Corrigir   | Retomar pelo fluxo de fix forward após estabilização         |

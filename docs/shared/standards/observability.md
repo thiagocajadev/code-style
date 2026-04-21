@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus outputs.
+Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus outputs (saídas).
 Logging estruturado, níveis consistentes, proteção de dados sensíveis e rastreamento de requisição
 são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
 
@@ -25,8 +25,8 @@ Cada nível tem um contrato claro. Usar o nível errado polui o output e esconde
 | --- | --- | --- |
 | **debug** | Diagnóstico local, nunca em produção | Parâmetros de query, valores intermediários |
 | **info** | Evento esperado do fluxo normal | Order created, user authenticated |
-| **warn** | Inesperado, mas o sistema continua | Query lenta, retry, config ausente com fallback |
-| **error** | Falha que requer atenção, com stack trace | Exception, I/O failure, assertion violada |
+| **warn** | Inesperado, mas o sistema continua | Query lenta, retry (nova tentativa), config ausente com fallback (solução alternativa) |
+| **error** | Falha que requer atenção, com stack trace (rastreamento de pilha) | Exception, I/O failure, assertion violada |
 
 ## O que nunca logar
 
@@ -45,7 +45,7 @@ vazamento permanente, mesmo que o log seja deletado depois.
 Uma requisição atravessa múltiplos serviços e gera dezenas de log entries. Sem um identificador
 comum, rastrear uma transação de ponta a ponta é inviável.
 
-O correlation ID entra pelo header `X-Correlation-Id`; se ausente, é gerado na borda. Todo log
+O correlation ID entra pelo header (cabeçalho) `X-Correlation-Id`; se ausente, é gerado na borda. Todo log
 entry da requisição carrega esse ID. A resposta retorna o header ao cliente.
 
 ```
@@ -60,9 +60,9 @@ Request → [middleware: extrai ou gera correlationId]
 
 | Ferramenta | Uso primário |
 | --- | --- |
-| Pino / Serilog | Logging estruturado no runtime |
-| Datadog | Logs, métricas, APM distribuído |
-| Grafana + Loki | Dashboards, logs centralizados |
+| Pino / Serilog | Logging estruturado no runtime (tempo de execução) |
+| Datadog | Logs, métricas, APM (monitoramento de performance de aplicações) distribuído |
+| Grafana + Loki | Dashboards (painéis), logs centralizados |
 | CloudWatch | Logs e métricas AWS-native |
-| New Relic | APM, distributed tracing, dashboards |
-| Sentry | Error tracking, performance monitoring |
+| New Relic | APM, distributed tracing (rastreamento distribuído), dashboards |
+| Sentry | Error tracking (rastreamento de erros), performance monitoring (monitoramento de performance) |

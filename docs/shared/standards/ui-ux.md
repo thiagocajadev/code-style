@@ -12,7 +12,7 @@ A regra central é agrupamento semântico: elementos relacionados ficam próximo
 
 | Anti-pattern | Efeito | Solução |
 |---|---|---|
-| Texto colado na borda do container | Sensação de sufocamento | Padding interno consistente |
+| Texto colado na borda do container | Sensação de sufocamento | Padding (preenchimento interno) consistente |
 | Todos os elementos com o mesmo peso visual | Nenhuma hierarquia clara | Tamanho, cor e espaçamento para criar níveis |
 | Espaçamento inconsistente entre seções | Interface parece montada por partes | Sistema de espaçamento em escala fixo |
 | Informação densa sem quebra visual | Cansativo de ler | Grupos de no máximo 2-3 linhas com respiro entre eles |
@@ -33,7 +33,7 @@ Escala típica baseada em múltiplos de 4:
 | `space-8` | 32px | Separação entre seções maiores |
 | `space-12` | 48px | Separação entre blocos de página |
 
-Usar tokens em vez de valores livres garante que qualquer ajuste de escala se propague de forma consistente. A interface respira no mesmo ritmo em qualquer viewport.
+Usar tokens (valores nomeados do sistema de design) em vez de valores livres garante que qualquer ajuste de escala se propague de forma consistente. A interface respira no mesmo ritmo em qualquer viewport (área visível da tela).
 
 ## Hierarquia Tipográfica
 
@@ -45,7 +45,7 @@ Três níveis são suficientes para a maioria dos contextos:
 |---|---|---|
 | **Primário** | Título da seção ou ação principal | Tamanho maior, peso alto, cor de maior contraste |
 | **Secundário** | Subtítulo, rótulo de campo, nome de item | Tamanho médio, peso regular |
-| **Terciário** | Metadado, data, hint, legenda | Tamanho menor, cor mais suave |
+| **Terciário** | Metadado, data, hint (dica), legenda | Tamanho menor, cor mais suave |
 
 Evitar mais de três níveis tipográficos na mesma tela: a hierarquia colapsa, tudo parece especial, nada parece importante.
 
@@ -80,13 +80,13 @@ Acessibilidade garante que a interface funciona para todos os usuários, incluin
 
 ### Contraste
 
-Texto e elementos interativos precisam de contraste suficiente contra o fundo. A regra prática: se precisar apertar os olhos para ler no mockup, vai falhar em produção.
+Texto e elementos interativos precisam de contraste suficiente contra o fundo. A regra prática: se precisar apertar os olhos para ler no mockup (protótipo visual), vai falhar em produção.
 
 ### Navegação por teclado
 
 Todo elemento interativo (botão, link, campo, modal) deve ser acessível via `Tab` e ativável via `Enter` ou `Space`. A ordem de foco deve seguir a ordem visual da página.
 
-Foco visível é obrigatório. Nunca remover o outline de foco sem substituí-lo por algo equivalente ou melhor.
+Foco visível é obrigatório. Nunca remover o outline (contorno) de foco sem substituí-lo por algo equivalente ou melhor.
 
 ### Semântica HTML
 
@@ -103,7 +103,7 @@ Leitor de tela lê o que o HTML diz, não o que a tela mostra. Um `<div>` com vi
 
 ### ARIA
 
-ARIA (Accessible Rich Internet Applications, Aplicações de Internet Ricas Acessíveis) complementa a semântica nativa para padrões complexos: menus, tooltips, modais, comboboxes.
+ARIA (Accessible Rich Internet Applications, Aplicações de Internet Ricas Acessíveis) complementa a semântica nativa para padrões complexos: menus, tooltips (dicas flutuantes), modais, comboboxes (campos de seleção combinados).
 
 A regra de uso é simples: ARIA é o último recurso. Preferir elemento HTML semântico nativo antes de qualquer atributo ARIA. ARIA mal usado é pior que nenhum ARIA.
 
@@ -113,9 +113,9 @@ Cada ação do usuário precisa de resposta visível:
 
 | Estado | Como comunicar |
 |---|---|
-| Loading | Spinner ou skeleton com `aria-busy` |
-| Erro de formulário | Mensagem inline associada ao campo via `aria-describedby` |
-| Sucesso | Toast ou inline com contraste e ícone |
+| Loading | Spinner (ícone giratório de carregamento) ou skeleton (esqueleto de carregamento) com `aria-busy` |
+| Erro de formulário | Mensagem inline (integrada ao elemento) associada ao campo via `aria-describedby` |
+| Sucesso | Toast (notificação temporária) ou inline com contraste e ícone |
 | Campo desabilitado | Combinar visual de desabilitado com atributo `disabled` |
 
 ## Estados de Interface

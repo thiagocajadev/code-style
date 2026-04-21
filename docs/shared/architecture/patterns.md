@@ -16,13 +16,13 @@ Result<Order>
   .Failure("SKU not found")
 ```
 
-O caller é obrigado a tratar os dois casos. Sucesso e falha são valores: ambos aparecem na assinatura e exigem tratamento explícito. Isso elimina try/catch espalhados pelo código de negócio e centraliza o tratamento de erro onde faz sentido.
+O caller (quem invoca a função) é obrigado a tratar os dois casos. Sucesso e falha são valores: ambos aparecem na assinatura e exigem tratamento explícito. Isso elimina try/catch espalhados pelo código de negócio e centraliza o tratamento de erro onde faz sentido.
 
 **Quando usar**: operações de domínio que podem falhar por regra de negócio (validação, não encontrado, estado inválido). Exceções de infraestrutura (falha de banco, timeout de rede) seguem o caminho normal de exceções.
 
 ## Factory
 
-Criação de objetos complexos tem lógica: validar parâmetros, aplicar defaults, montar dependências. Colocar essa lógica no construtor mistura responsabilidades. Espalhá-la nos callers cria duplicação.
+Criação de objetos complexos tem lógica: validar parâmetros, aplicar defaults (valores padrão), montar dependências. Colocar essa lógica no construtor mistura responsabilidades. Espalhá-la nos callers cria duplicação.
 
 Factory centraliza a lógica de criação em um único lugar. O caller pede um objeto sem saber como ele é montado.
 
@@ -48,7 +48,7 @@ UserRepository
 
 O código de domínio fala em `findByEmail`, não em `SELECT * FROM users WHERE email = ?`. A camada de dados pode mudar (PostgreSQL → MongoDB, Dapper → EF) sem tocar o domínio.
 
-**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete — Criar, Ler, Atualizar, Deletar) simples sem lógica, pode ser overhead.
+**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete — Criar, Ler, Atualizar, Deletar) simples sem lógica, pode ser overhead (custo extra de implementação).
 
 ## Strategy
 
@@ -80,7 +80,7 @@ OrderPlaced (evento)
 
 Adicionar um novo consumidor não toca o produtor. Remover um consumidor também não. O produtor e os consumidores evoluem de forma independente.
 
-**Quando usar**: reações a eventos onde o produtor e os consumidores precisam evoluir de forma independente. Evitar quando a ordem de execução dos handlers importa, pois Observer não garante ordem.
+**Quando usar**: reações a eventos onde o produtor e os consumidores precisam evoluir de forma independente. Evitar quando a ordem de execução dos handlers (funções que respondem ao evento) importa, pois Observer não garante ordem.
 
 ## Builder
 
@@ -111,7 +111,7 @@ LoggingRepository(
 )
 ```
 
-Cada camada adiciona uma responsabilidade isolada: logging, cache, retry, rate limiting. A composição é feita na configuração, não espalhada pelo código. A implementação original não sabe que está sendo decorada.
+Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova tentativa), rate limiting (limitação de taxa de requisições). A composição é feita na configuração, não espalhada pelo código. A implementação original não sabe que está sendo decorada.
 
 **Quando usar**: comportamento transversal (logging, cache, autenticação) que precisa ser aplicado de forma composável, sem modificar a implementação base.
 

@@ -183,7 +183,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Security](docs/shared/platform/security.md) | Segredos, configuração em camadas, autorização e blindagem de cookies |
 | [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast |
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |
-| [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas, lazy loading, índices e connection pool |
+| [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e connection pool |
+| [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
 | [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |
 
 </details>

@@ -80,7 +80,7 @@ Uma ótima estratégia para nomear commits (registro das alterações) é o
 | `refactor` | Mudança interna sem alterar comportamento         |
 | `test`     | Adição ou correção de testes                      |
 | `perf`     | Melhoria de performance                           |
-| `style`    | Formatação, whitespace, sem mudança de lógica     |
+| `style`    | Formatação, whitespace (espaço em branco), sem mudança de lógica     |
 | `chore`    | Tarefas de manutenção (build, deps, config)       |
 | `ci`       | Mudanças em pipelines de CI/CD                    |
 | `revert`   | Reverte um commit anterior                        |
@@ -132,9 +132,9 @@ Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de mó
 
 | Prática                      | Motivo                                                           |
 | ---------------------------- | ---------------------------------------------------------------- |
-| PR pequeno e focado          | Review mais rápido, menor superfície de bug, rollout mais seguro |
+| PR pequeno e focado          | Review (revisão) mais rápido, menor superfície de bug, rollout (implantação gradual) mais seguro |
 | Review obrigatório           | Ninguém faz `merge` do próprio PR sem aprovação                  |
-| Checks verdes antes do merge | CI/CD valida antes de tocar a `main`                             |
+| Checks (verificações automatizadas) verdes antes do merge | CI/CD valida antes de tocar a `main`                             |
 | Merge na `main` diretamente  | Sem branches de longa vida (develop, staging, release)           |
 
 Deploy, release, ambientes e fix forward: [ci-cd.md](ci-cd.md).

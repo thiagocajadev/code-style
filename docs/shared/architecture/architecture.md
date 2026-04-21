@@ -119,7 +119,7 @@ Trabalhar em código legado tem regras diferentes:
 
 ## XP (Extreme Programming)
 
-XP é uma metodologia de desenvolvimento que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real (pair programming). Se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development, Desenvolvimento Guiado por Testes).
+XP é uma metodologia de desenvolvimento que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real com pair programming (programação em par). Se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development, Desenvolvimento Guiado por Testes).
 
 ```
 src/
@@ -144,7 +144,7 @@ Práticas centrais:
 | **TDD** | Teste antes do código. Red → Green → Refactor. |
 | **Pair programming** | Dois desenvolvedores, uma máquina. Um escreve, o outro revisa em tempo real. |
 | **Integração contínua** | Código integrado e testado várias vezes ao dia. |
-| **Refactoring contínuo** | Design melhorado de forma incremental, sem big bang. |
+| **Refactoring (refatoração) contínuo** | Design melhorado de forma incremental, sem big bang. |
 | **Simplicidade** | A solução mais simples que funciona. Sem antecipar requisitos futuros. |
 
 XP funciona melhor em times pequenos com alta comunicação, requisitos que mudam frequentemente e cultura que valoriza qualidade técnica. O custo é disciplina: as práticas exigem compromisso sustentado.
