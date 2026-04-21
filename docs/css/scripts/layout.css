@@ -1,0 +1,96 @@
+/* Princípios: Flexbox e Grid para layout, sem floats, sem posicionamento absoluto desnecessário */
+
+/* --- Page layout: sidebar + main --- */
+
+.app-layout {
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar header"
+    "sidebar main";
+  min-height: 100vh;
+}
+
+.app-layout__sidebar {
+  grid-area: sidebar;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-4);
+}
+
+.app-layout__header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.app-layout__main {
+  grid-area: main;
+  padding: var(--space-6);
+  background-color: var(--color-background);
+  overflow-y: auto;
+}
+
+/* --- Responsive: sidebar vira gaveta em telas pequenas --- */
+
+@media (max-width: 768px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "main";
+  }
+
+  .app-layout__sidebar {
+    display: none;
+  }
+}
+
+/* --- Card grid: ajusta colunas automaticamente por conteúdo --- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+/* --- Stack: coluna vertical com espaçamento uniforme --- */
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stack--sm { gap: var(--space-2); }
+.stack--lg { gap: var(--space-8); }
+
+/* --- Inline cluster: itens em linha que quebram naturalmente --- */
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* --- Center: centraliza conteúdo horizontal e verticalmente --- */
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* --- Split: dois grupos opostos na mesma linha --- */
+
+.split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}

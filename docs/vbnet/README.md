@@ -20,6 +20,7 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | Tópico | Conceitos |
 | --- | --- |
 | [Project Foundation](setup/project-foundation.md) | `Web.config`, `Global.asax.vb`, constructor injection, Unity IoC, WinForms legacy |
+| [Legacy Desktop](setup/legacy-desktop.md) | Setup enxuto: `App.config`, módulo de acesso thin, formulário → banco → resultado |
 | [Security](setup/security.md) | Segredos, Web.config transforms, criptografia de seção, `[Authorize]`, cookies |
 | [Dapper](setup/dapper.md) | Procedures por domínio, queries simples, `DynamicParameters`, SQL injection |
 | [ADO.NET](setup/ado-net.md) | `SqlCommand`, `SqlDataReader`, `DataTable`, transações, OUTPUT params |
