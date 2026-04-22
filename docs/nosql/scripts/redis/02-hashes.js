@@ -39,19 +39,19 @@ async function fetchTeamPoints(teamId, season) {
 async function fetchTeamStats(teamId, season) {
   const hashKey = `team:stats:${teamId}:${season}`;
 
-  const raw = await client.hGetAll(hashKey);
+  const hashFields = await client.hGetAll(hashKey);
 
-  if (Object.keys(raw).length === 0) {
+  if (Object.keys(hashFields).length === 0) {
     return null;
   }
 
   const stats = {
-    wins: Number(raw.wins),
-    draws: Number(raw.draws),
-    losses: Number(raw.losses),
-    goalsFor: Number(raw.goalsFor),
-    goalsAgainst: Number(raw.goalsAgainst),
-    points: Number(raw.points),
+    wins: Number(hashFields.wins),
+    draws: Number(hashFields.draws),
+    losses: Number(hashFields.losses),
+    goalsFor: Number(hashFields.goalsFor),
+    goalsAgainst: Number(hashFields.goalsAgainst),
+    points: Number(hashFields.points),
   };
 
   return stats;

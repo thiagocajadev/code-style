@@ -22,14 +22,14 @@ SELECT Id, Name, Email FROM Users WHERE Id = 1 AND IsActive = 1
 
 ```sql
 SELECT
-  Id,
-  Name,
-  Email
+  Users.Id,
+  Users.Name,
+  Users.Email
 FROM
   Users
 WHERE
-  Id = 1 AND
-  IsActive = 1;
+  Users.Id = 1 AND
+  Users.IsActive = 1;
 ```
 
 </details>
@@ -88,14 +88,14 @@ AND IsActive = 1
 
 ```sql
 SELECT
-  Id,
-  Name,
-  Email
+  Users.Id,
+  Users.Name,
+  Users.Email
 FROM
   Users
 WHERE
-  Id = 1 AND
-  IsActive = 1;
+  Users.Id = 1 AND
+  Users.IsActive = 1;
 ```
 
 </details>

@@ -102,7 +102,7 @@ WHERE Id IN (SELECT UserId FROM EmailUpdates);
 UPDATE
   Users
 SET
-  Email = EmailUpdates.NewEmail
+  Users.Email = EmailUpdates.NewEmail
 FROM
   EmailUpdates
 WHERE
@@ -138,10 +138,10 @@ WHERE
 UPDATE
   Users
 SET
-  IsActive = 0, -- inactive
-  InactivatedAt = GETDATE()
+  Users.IsActive = 0, -- inactive
+  Users.InactivatedAt = GETDATE()
 WHERE
-  Id = 1;
+  Users.Id = 1;
 ```
 
 </details>
@@ -169,7 +169,7 @@ UPDATE Orders SET StatusId = 3 WHERE IsActive = 1 AND CustomerId NOT IN (SELECT 
 UPDATE
   Orders
 SET
-  StatusId = (
+  Orders.StatusId = (
     CASE
       WHEN PremiumCustomers.Id IS NOT NULL THEN 2 -- Priority
       ELSE 3 -- Standard

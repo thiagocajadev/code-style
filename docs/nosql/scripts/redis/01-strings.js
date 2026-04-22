@@ -66,7 +66,6 @@ async function findMultipleTeams(teamIds) {
 // ── exemplo de uso ────────────────────────────────────────────────────────────
 
 const team = await findTeamCached('42', async (id) => {
-  // simulação de busca no banco primário
   return { id, name: 'São Paulo FC', city: 'São Paulo' };
 });
 

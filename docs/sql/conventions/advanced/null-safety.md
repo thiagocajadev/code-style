@@ -618,7 +618,7 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 ALTER TABLE Orders ADD Priority NVARCHAR(20) NULL;
 
 -- passo 2: preenche os registros existentes em lote
-UPDATE Orders SET Priority = 'Normal' WHERE Priority IS NULL;
+UPDATE Orders SET Orders.Priority = 'Normal' WHERE Orders.Priority IS NULL;
 
 -- passo 3: aplica o constraint depois que todos os registros têm valor
 ALTER TABLE Orders ALTER COLUMN Priority NVARCHAR(20) NOT NULL;

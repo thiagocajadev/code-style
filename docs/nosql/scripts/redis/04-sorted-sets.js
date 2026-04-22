@@ -22,11 +22,10 @@ async function fetchTopScorers(count = 10) {
     LEADERBOARD_KEY,
     0,
     count - 1,
-    { REV: true }, // maior score primeiro
+    { REV: true },
   );
 
   return topScorers;
-  // retorna: [{ value: 'player:7', score: 15 }, ...]
 }
 
 // ── posição de um jogador no ranking ─────────────────────────────────────────

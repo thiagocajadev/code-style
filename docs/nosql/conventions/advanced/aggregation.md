@@ -68,7 +68,7 @@ const pipeline = [
 ```js
 async function fetchActiveTeamsWithPlayers() {
   const pipeline = [
-    { $match: { isActive: true } }, // filtra antes do join
+    { $match: { isActive: true } },
 
     {
       $lookup: {
@@ -281,9 +281,9 @@ async function fetchTeamsWithOptionalPlayers() {
     },
   ];
 
-  const rows = await teamsCollection.aggregate(pipeline).toArray();
+  const teamsWithPlayers = await teamsCollection.aggregate(pipeline).toArray();
 
-  return rows;
+  return teamsWithPlayers;
 }
 ```
 

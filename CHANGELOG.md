@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.1] - 2026-04-22
+
+### Fixed
+
+- `docs/nosql/conventions/crud.md`: Explaining Returns — extraída `const modifiedCount`/`deletedCount` antes do `return` em 4 métodos GOOD (updateManager, deactivate, softDelete, purgeExpired); upsert `save` passa a retornar `{ wasInserted, modifiedCount }` em vez do resultado bruto do driver
+- `docs/nosql/conventions/advanced/aggregation.md`: `$unwind` GOOD — `const rows` renomeado para `const teamsWithPlayers`; `$match` GOOD — removido comentário "what" `// filtra antes do join`
+- `docs/nosql/conventions/naming.md`: `managerId: 'player:7'` corrigido para ObjectId hex realista
+- `docs/nosql/scripts/mongodb/01-insert.js`: campo `managerId: null` removido do exemplo de uso (campo opcional não deve ser explicitado como null)
+- `docs/nosql/scripts/redis/02-hashes.js`: `const raw` renomeado para `const hashFields`
+- `docs/nosql/scripts/redis/04-sorted-sets.js`: removidos comentários "what" (`// maior score primeiro`, `// retorna: [...]`)
+- `docs/nosql/scripts/redis/01-strings.js`: removido comentário "what" `// simulação de busca no banco primário`
+- `docs/sql/conventions/formatting.md`: 2 GOOD examples — colunas `Id, Name, Email` qualificadas como `Users.Id, Users.Name, Users.Email`
+- `docs/sql/conventions/crud.md`: UPDATE FROM GOOD — `Email` → `Users.Email`; UPDATE CASE GOOD — `StatusId` → `Orders.StatusId`; soft delete GOOD — `IsActive, InactivatedAt, Id` qualificados com `Users.`
+- `docs/sql/conventions/advanced/advanced.md`: CTE GOOD — `TeamId, IsActive` qualificados como `Players.TeamId, Players.IsActive`
+- `docs/sql/conventions/advanced/null-safety.md`: migration batch GOOD — `Priority` qualificado como `Orders.Priority`
+- `docs/sql/conventions/advanced/procedures.md`: indentação dos comentários `-- Etapa X:` corrigida de 1 espaço para 2 espaços dentro do `BEGIN`
+- `docs/sql/sgbd/postgres.md`: RETURNING UPDATE GOOD — `status` qualificado como `orders.status`
+
 ## [1.13.0] - 2026-04-22
 
 ### Added

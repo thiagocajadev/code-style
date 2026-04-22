@@ -167,8 +167,9 @@ class TeamRepository {
     };
 
     const result = await this.collection.updateOne(filter, patch);
+    const modifiedCount = result.modifiedCount;
 
-    return result.modifiedCount;
+    return modifiedCount;
   }
 
   async deactivate(teamId) {
@@ -181,8 +182,9 @@ class TeamRepository {
     };
 
     const result = await this.collection.updateOne(filter, patch);
+    const modifiedCount = result.modifiedCount;
 
-    return result.modifiedCount;
+    return modifiedCount;
   }
 }
 ```
@@ -229,8 +231,9 @@ class TeamRepository {
     };
 
     const result = await this.collection.updateOne(filter, patch);
+    const modifiedCount = result.modifiedCount;
 
-    return result.modifiedCount;
+    return modifiedCount;
   }
 
   async purgeExpired(cutoffDate) {
@@ -240,8 +243,9 @@ class TeamRepository {
     };
 
     const result = await this.collection.deleteMany(filter);
+    const deletedCount = result.deletedCount;
 
-    return result.deletedCount;
+    return deletedCount;
   }
 }
 ```
@@ -288,8 +292,9 @@ class StandingsRepository {
     const options = { upsert: true };
 
     const result = await this.collection.updateOne(filter, update, options);
+    const wasInserted = result.upsertedCount > 0;
 
-    return result;
+    return { wasInserted, modifiedCount: result.modifiedCount };
   }
 }
 ```

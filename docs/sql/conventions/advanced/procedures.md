@@ -51,7 +51,7 @@ CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
 AS
 
 BEGIN
- -- Etapa 1: times ativos com títulos
+  -- Etapa 1: times ativos com títulos
   SELECT
     FootballTeams.Id,
     FootballTeams.Name,
@@ -64,7 +64,7 @@ BEGIN
     FootballTeams.IsActive = 1 AND -- active
     FootballTeams.ChampionshipsWon > 0; -- at least one title
 
- -- Etapa 2: estatísticas de jogadores por time
+  -- Etapa 2: estatísticas de jogadores por time
   SELECT
     Players.TeamId,
     COUNT(Players.Id) AS TotalPlayers,
@@ -79,7 +79,7 @@ BEGIN
   GROUP BY
     Players.TeamId;
 
- -- Resultado final: combina as etapas
+   -- Resultado final: combina as etapas
   SELECT
     #ActiveChampionTeams.Name,
     #ActiveChampionTeams.ChampionshipsWon,
@@ -150,7 +150,7 @@ CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
 AS
 
 BEGIN
- -- Etapa 1: jogadores ativos do time na posição solicitada
+  -- Etapa 1: jogadores ativos do time na posição solicitada
   SELECT
     Players.Id,
     Players.Name,
@@ -166,7 +166,7 @@ BEGIN
     Players.Position = @Position AND
     Players.IsActive = 1; -- active
 
- -- Etapa 2: contexto do time (sempre 1 linha — CROSS JOIN intencional)
+  -- Etapa 2: contexto do time (sempre 1 linha — CROSS JOIN intencional)
   SELECT
     FootballTeams.Name AS TeamName,
     FootballTeams.Stadium AS TeamStadium
@@ -177,7 +177,7 @@ BEGIN
   WHERE
     FootballTeams.Id = @TeamId;
 
- -- Resultado final
+  -- Resultado final
   SELECT
     #TeamContext.TeamName,
     #TeamContext.TeamStadium,

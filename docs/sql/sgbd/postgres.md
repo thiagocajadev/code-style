@@ -171,7 +171,7 @@ RETURNING
 -- UPDATE com NEW e OLD (PostgreSQL 18)
 UPDATE orders
 SET
-  status = 'shipped'
+  orders.status = 'shipped'
 WHERE
   orders.id = $1
 RETURNING

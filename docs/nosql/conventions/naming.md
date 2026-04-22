@@ -117,7 +117,7 @@ await teamsCollection.insertOne({
   name: 'São Paulo FC',
   foundedYear: 1930,
   isActive: true,
-  managerId: 'player:7',
+  managerId: '66f1a2b3c4d5e6f7a8b9c0d1',
   homeStadium: 'Morumbi',
   createdAt: new Date(),
 });

@@ -39,11 +39,11 @@ WHERE
 WITH ActivePlayerTeamsCTE AS
 (
   SELECT
-    TeamId
+    Players.TeamId
   FROM
     Players
   WHERE
-    IsActive = 1 -- active
+    Players.IsActive = 1 -- active
 )
 
 SELECT
