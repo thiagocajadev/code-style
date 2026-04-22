@@ -24,6 +24,9 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 | **Connection pool exhaustion** (esgotamento do pool de conexões) | Todas as conexões do pool estão em uso; novas requisições ficam em fila ou falham |
 | **Projection** (projeção) | Define quais campos retornar em uma consulta NoSQL; evita trafegar o documento inteiro |
 | **Aggregation pipeline** (pipeline de agregação) | Sequência de estágios para processar documentos em lote no MongoDB; substitui JOINs e GROUP BY do SQL |
+| **ETL** (Extract, Transform, Load, Extração, Transformação e Carga) | Processo de mover dados de fontes externas para o banco: extrair da origem, transformar e carregar no destino. Ver [etl-bi.md](./etl-bi.md) |
+| **Staging table** (tabela de preparação) | Tabela intermediária que recebe dados brutos antes de validar e inserir na tabela de produção |
+| **Chunk** (fatia, lote) | Subconjunto fixo de linhas processado por vez em operações de alto volume; mantém locks de curta duração |
 
 ---
 
@@ -91,101 +94,11 @@ CREATE INDEX idx_orders_status_created ON orders(status, created_at);
 - Indexar colunas usadas em WHERE, JOIN e ORDER BY com alta seletividade
 - Não indexar colunas com poucos valores distintos (`boolean`, `gender`); o banco prefere full scan
 - Índices têm custo de escrita: cada INSERT/UPDATE/DELETE atualiza todos os índices da tabela
-- Colunas com função no WHERE desativam o índice: `WHERE LOWER(email) = ?` não usa índice em `email`; criar índice funcional ou normalizar no insert
+- Colunas com função no WHERE desativam o índice: `WHERE LOWER(email) = ?` não usa índice em `email`; criar índice funcional ou normalizar no insert. O mesmo vale para `CAST`/`CONVERT` na coluna: converter o parâmetro, nunca a coluna. Ver [sql/performance.md](../../../sql/conventions/advanced/performance.md#cast-e-conversão-de-tipo-em-colunas)
 
 ### Boas práticas de query
 
-<details>
-<summary>❌ Bad: SELECT * traz colunas desnecessárias e impede index covering</summary>
-<br>
-
-```sql
-SELECT * FROM orders WHERE status = 'pending';
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good: selecionar apenas as colunas necessárias</summary>
-<br>
-
-```sql
-SELECT
-  id,
-  customer_id,
-  total
-FROM
-  orders
-WHERE
-  status = 'pending';
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad: função em coluna indexada desabilita o índice</summary>
-<br>
-
-```sql
-SELECT * FROM users WHERE YEAR(created_at) = 2024;
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good: range explícito usa o índice</summary>
-<br>
-
-```sql
-SELECT
-  id,
-  name
-FROM
-  users
-WHERE
-  created_at >= '2024-01-01' AND
-  created_at < '2025-01-01';
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad: subquery correlacionada executa uma vez por linha (N+1 em SQL)</summary>
-<br>
-
-```sql
-SELECT o.id,
-  (SELECT name FROM customers WHERE id = o.customer_id) AS customer_name
-FROM orders o;
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good: JOIN resolve em uma única passagem</summary>
-<br>
-
-```sql
-SELECT
-  orders.id,
-  customers.name AS customer_name
-FROM
-  orders
-JOIN
-  customers ON customers.id = orders.customer_id;
-```
-
-</details>
+Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md).
 
 ### Consultas NoSQL
 
@@ -308,31 +221,46 @@ class OrderRepository {
 
 ---
 
+## Operações em Lote
+
+Operações em lote agrupam múltiplas linhas em uma única instrução ou dividem uma operação grande
+em ciclos menores. Dois objetivos distintos: aumentar throughput em carga inicial e evitar locks
+de longa duração em operações de manutenção.
+
+| Padrão | Quando usar |
+|---|---|
+| **Batch INSERT** | Inserir muitos registros de uma vez: importação, ETL, seed de dados |
+| **Chunked UPDATE/DELETE** | Atualizar ou remover grandes volumes sem bloquear a tabela por minutos |
+| **BULK INSERT / COPY** | Importar arquivos CSV ou binários diretamente no banco, sem round trips pela aplicação |
+| **Staging table** | Validar dados externos antes de inserir na tabela de produção |
+| **Scheduled job** | Executar operações periódicas — limpeza, agregação, archive — sem intervenção manual |
+
+### Chunk size
+
+Não existe valor universal. O critério é o tempo de lock aceitável para o sistema.
+
+- Lotes entre 1.000 e 5.000 linhas são um ponto de partida seguro para a maioria dos casos
+- Lotes muito pequenos aumentam o número de round trips e o overhead de transação
+- Lotes muito grandes seguram o lock por mais tempo e aumentam o risco de rollback custoso
+
+Operações em lote que rodam em produção precisam de idempotência: se o job for interrompido, a
+próxima execução deve continuar de onde parou sem duplicar ou corromper dados. O padrão é usar a
+condição de filtro do próprio UPDATE/DELETE como cursor natural — o WHERE já exclui as linhas
+já processadas nas iterações anteriores.
+
+Padrões de query: [sql/conventions/advanced/batch.md](../../../sql/conventions/advanced/batch.md).
+
+Recursos específicos por banco: [SQL Server](../../../sql/sgbd/sql-server.md#operações-em-lote) | [PostgreSQL](../../../sql/sgbd/postgres.md#operações-em-lote).
+
+---
+
 ## Plano de Execução
 
 O plano de execução mostra _como_ o banco vai executar a query: quais índices vai usar, como vai fazer joins, qual o custo estimado de cada operação.
 
 **Antes de deployar qualquer query em uma tabela grande, analisar o plano.**
 
-### PostgreSQL
-
-```sql
--- EXPLAIN: mostra o plano sem executar
-EXPLAIN SELECT id, total FROM orders WHERE status = 'pending';
-
--- EXPLAIN ANALYZE: executa e mostra tempo real
-EXPLAIN ANALYZE SELECT id, total FROM orders WHERE status = 'pending';
-```
-
-### SQL Server
-
-```sql
--- equivalente ao EXPLAIN ANALYZE
-SET STATISTICS IO ON;
-SET STATISTICS TIME ON;
-
-SELECT id, total FROM orders WHERE status = 'pending';
-```
+Sintaxe por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
 
 ### O que procurar no plano
 
@@ -361,29 +289,7 @@ Seq Scan on orders  (cost=0.00..4521.00 rows=150000 width=16)
 
 O primeiro passo para identificar problemas em produção é habilitar o log de queries lentas.
 
-**PostgreSQL** (`postgresql.conf`):
-
-```
-log_min_duration_statement = 500   # loga queries acima de 500ms
-log_statement = 'none'
-```
-
-**SQL Server**:
-
-```sql
--- Extended Events ou Query Store para capturar queries lentas
--- Query Store habilitado por padrão no SQL Server 2016+
-SELECT TOP 20
-  queryStats.total_elapsed_time / queryStats.execution_count AS avg_elapsed_time,
-  queryStats.execution_count,
-  queryText.text AS query_text
-FROM
-  sys.dm_exec_query_stats queryStats
-CROSS APPLY
-  sys.dm_exec_sql_text(queryStats.sql_handle) queryText
-ORDER BY
-  avg_elapsed_time DESC;
-```
+Configuração por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
 
 ### N+1 em runtime
 
@@ -403,29 +309,7 @@ Ferramentas que expõem N+1 automaticamente: **Bullet** (Rails), **Hibernate Sta
 
 Quando todas as conexões do pool estão em uso, novas requisições ficam em fila. Sintoma: timeouts em requisições simples que normalmente são rápidas, sem aumento de CPU ou lentidão de queries.
 
-Diagnóstico:
-
-```sql
--- PostgreSQL: conexões ativas por estado
-SELECT
-  state,
-  count(*)
-FROM
-  pg_stat_activity
-GROUP BY
-  state;
-
--- SQL Server: conexões ativas
-SELECT
-  DB_NAME(dbid) AS database_name,
-  COUNT(*) AS connections
-FROM
-  sys.sysprocesses
-WHERE
-  dbid > 0
-GROUP BY
-  dbid;
-```
+Diagnóstico por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
 
 Causas comuns: queries longas segurando conexão, transaction não fechada, pool subdimensionado, pico de tráfego inesperado.
 
@@ -433,20 +317,7 @@ Causas comuns: queries longas segurando conexão, transaction não fechada, pool
 
 Lock é esperado: é o mecanismo de consistência. O problema é lock de longa duração ou deadlock.
 
-**Identificar locks ativos** (PostgreSQL):
-
-```sql
-SELECT
-  pid,
-  now() - pg_stat_activity.query_start AS duration,
-  query,
-  state
-FROM
-  pg_stat_activity
-WHERE
-  state != 'idle' AND
-  now() - pg_stat_activity.query_start > interval '5 seconds';
-```
+**Identificar locks ativos**: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
 
 **Deadlock** aparece no log com mensagem explícita. A causa mais comum é duas transações acessando as mesmas linhas em ordem inversa. A solução é padronizar a ordem de acesso.
 

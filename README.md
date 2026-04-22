@@ -197,7 +197,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast |
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |
 | [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O |
-| [Database](docs/shared/platform/database.md) | SQL vs NoSQL, tuning de queries, plano de execução e troubleshooting de gargalos |
+| [Database](docs/shared/platform/database.md) | SQL vs NoSQL, tuning de queries, operações em lote, plano de execução e troubleshooting |
+| [ETL e BI](docs/shared/platform/etl-bi.md) | OLTP vs OLAP, pipeline de dados, extração incremental, ELT, modelagem dimensional, SCD e BI |
 | [Integrations](docs/shared/platform/integrations.md) | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial |
 | [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
 | [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |

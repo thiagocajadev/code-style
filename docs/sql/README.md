@@ -22,6 +22,7 @@ O banco de dados é um **store**: armazena e devolve dados. Regras de negócio, 
 | [Performance](conventions/advanced/performance.md)            | SELECT *, índices, subquery correlacionada, FK sem índice, paginação |
 | [Null Safety](conventions/advanced/null-safety.md)            | IS NULL, COALESCE, NULLIF, NOT NULL + DEFAULT, NULL em JOIN          |
 | [Migrations](conventions/advanced/migrations.md)              | Naming YYYYMMDDHHMMSS, forward only, uma responsabilidade           |
+| [Batch](conventions/advanced/batch.md)                        | Batch INSERT, DELETE/UPDATE em lotes com TOP + WHILE, staging table |
 | [Quick Reference](quick-reference.md)                         | Nomenclatura, verbos, taboos, query estruturada                     |
 
 ## SGBD

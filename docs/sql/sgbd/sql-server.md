@@ -450,6 +450,143 @@ END;
 
 </details>
 
+## Operações em Lote
+
+### BULK INSERT
+
+`BULK INSERT` importa um arquivo de texto diretamente para uma tabela. Mais eficiente que INSERT
+linha a linha para volumes acima de milhares de registros.
+
+<details>
+<summary>✅ Good — importar CSV com BULK INSERT</summary>
+<br>
+
+```sql
+BULK INSERT Players
+FROM 'C:\imports\players.csv'
+WITH
+(
+  FIELDTERMINATOR = ',',
+  ROWTERMINATOR   = '\n',
+  FIRSTROW        = 2,     -- ignorar cabeçalho
+  BATCHSIZE       = 1000,  -- commit a cada 1000 linhas
+  TABLOCK          -- lock de tabela: mais rápido, bloqueia leituras simultâneas
+);
+```
+
+</details>
+
+### SQL Server Agent
+
+**SQL Server Agent** executa jobs agendados em T-SQL, SSIS ou PowerShell. Cada job tem uma ou
+mais etapas e um ou mais schedules.
+
+<details>
+<summary>✅ Good — criar job com etapa T-SQL e agendamento diário</summary>
+<br>
+
+```sql
+-- criar o job
+EXEC sp_add_job
+  @job_name = N'CleanInactivePlayers';
+
+-- adicionar etapa T-SQL
+EXEC sp_add_jobstep
+  @job_name      = N'CleanInactivePlayers',
+  @step_name     = N'DeleteInBatches',
+  @subsystem     = N'TSQL',
+  @database_name = N'SportsDB',
+  @command       = N'
+    DECLARE @ChunkSize  INT = 1000;
+    DECLARE @RowsDeleted INT = 1;
+
+    WHILE @RowsDeleted > 0
+    BEGIN
+      DELETE TOP (@ChunkSize) FROM Players
+      WHERE
+        Players.IsActive      = 0 AND
+        Players.InactivatedAt < DATEADD(year, -1, GETUTCDATE());
+
+      SET @RowsDeleted = @@ROWCOUNT;
+    END;
+  ';
+
+-- agendamento: todo dia às 02:00
+EXEC sp_add_schedule
+  @schedule_name     = N'DailyAt2AM',
+  @freq_type         = 4,      -- diário
+  @freq_interval     = 1,
+  @active_start_time = 20000;  -- 02:00:00
+
+-- vincular agendamento ao job
+EXEC sp_attach_schedule
+  @job_name      = N'CleanInactivePlayers',
+  @schedule_name = N'DailyAt2AM';
+
+-- habilitar no servidor local
+EXEC sp_add_jobserver
+  @job_name = N'CleanInactivePlayers';
+```
+
+</details>
+
+---
+
+## Diagnóstico
+
+### Plano de execução
+
+```sql
+-- ativar antes da query para ver I/O e tempo
+SET STATISTICS IO ON;
+SET STATISTICS TIME ON;
+
+SELECT
+  orders.id,
+  orders.total
+FROM
+  Orders
+WHERE
+  Orders.Status = 'pending';
+```
+
+`Logical reads` alto com `Scan count` 1 em tabela grande indica índice ausente.
+
+### Queries lentas (Query Store)
+
+**Query Store** está ativo por padrão no SQL Server 2016+.
+
+```sql
+-- top 20 queries por tempo médio de execução
+SELECT TOP 20
+  queryStats.total_elapsed_time / queryStats.execution_count AS avg_elapsed_time,
+  queryStats.execution_count,
+  queryText.text AS query_text
+FROM
+  sys.dm_exec_query_stats queryStats
+CROSS APPLY
+  sys.dm_exec_sql_text(queryStats.sql_handle) queryText
+ORDER BY
+  avg_elapsed_time DESC;
+```
+
+### Conexões ativas
+
+```sql
+-- conexões por banco (diagnóstico de pool exhaustion)
+SELECT
+  DB_NAME(sysprocesses.dbid) AS database_name,
+  COUNT(*) AS connections
+FROM
+  sys.sysprocesses
+WHERE
+  sysprocesses.dbid > 0
+GROUP BY
+  sysprocesses.dbid;
+```
+
+---
+
 ## Funções do sistema
 
 | Função | Retorna | Uso |

@@ -476,6 +476,154 @@ CREATE TABLE employee_roles (
 );
 ```
 
+## Operações em Lote
+
+### COPY
+
+`COPY` importa ou exporta dados entre arquivo e tabela com performance muito superior ao INSERT
+linha a linha: sem overhead de parse por linha, sem round trips pela aplicação.
+
+<details>
+<summary>✅ Good — importar CSV com COPY (arquivo no servidor)</summary>
+<br>
+
+```sql
+COPY players
+(
+  name,
+  position,
+  team_id
+)
+FROM '/imports/players.csv'
+WITH
+(
+  FORMAT    csv,
+  HEADER    true,
+  DELIMITER ','
+);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — \copy (arquivo local via cliente psql)</summary>
+<br>
+
+```sql
+-- \copy lê o arquivo na máquina do cliente, não no servidor
+\copy players (name, position, team_id)
+FROM 'players.csv'
+WITH (FORMAT csv, HEADER true, DELIMITER ',')
+```
+
+</details>
+
+### pg_cron
+
+`pg_cron` é uma extensão para jobs agendados diretamente no PostgreSQL, usando sintaxe cron.
+Requer `shared_preload_libraries = 'pg_cron'` no `postgresql.conf`.
+
+<details>
+<summary>✅ Good — agendar limpeza diária com pg_cron</summary>
+<br>
+
+```sql
+-- habilitar extensão
+CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+-- agendar job: todo dia às 02:00
+SELECT cron.schedule(
+  'clean-inactive-players',
+  '0 2 * * *',
+  $$
+    DELETE FROM players
+    WHERE
+      players.is_active      = FALSE AND
+      players.inactivated_at < NOW() - INTERVAL '1 year';
+  $$
+);
+
+-- listar jobs ativos
+SELECT * FROM cron.job;
+
+-- remover job
+SELECT cron.unschedule('clean-inactive-players');
+```
+
+</details>
+
+---
+
+## Diagnóstico
+
+### Slow query log
+
+`postgresql.conf`:
+
+```
+log_min_duration_statement = 500   # loga queries acima de 500ms
+log_statement = 'none'
+```
+
+### Plano de execução
+
+```sql
+-- EXPLAIN: mostra o plano sem executar
+EXPLAIN
+SELECT
+  orders.id,
+  orders.total
+FROM
+  orders
+WHERE
+  orders.status = 'pending';
+
+-- EXPLAIN ANALYZE: executa e mostra tempo real
+EXPLAIN ANALYZE
+SELECT
+  orders.id,
+  orders.total
+FROM
+  orders
+WHERE
+  orders.status = 'pending';
+```
+
+`Seq Scan` em tabela grande com `Filter` é o sinal mais claro de índice ausente.
+
+### Conexões ativas
+
+```sql
+-- conexões por estado (diagnóstico de pool exhaustion)
+SELECT
+  state,
+  COUNT(*) AS total
+FROM
+  pg_stat_activity
+GROUP BY
+  state;
+```
+
+### Queries lentas e locks
+
+```sql
+-- queries em execução há mais de 5 segundos
+SELECT
+  pg_stat_activity.pid,
+  now() - pg_stat_activity.query_start AS duration,
+  pg_stat_activity.query,
+  pg_stat_activity.state
+FROM
+  pg_stat_activity
+WHERE
+  pg_stat_activity.state != 'idle' AND
+  now() - pg_stat_activity.query_start > interval '5 seconds';
+```
+
+---
+
 ## Recursos relacionados
 
 - [Formatting](../conventions/formatting.md) — estilo vertical, JOIN, condições

@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-04-23
+
+### Added
+
+- `docs/sql/conventions/advanced/batch.md`: operações em lote — Batch INSERT multi-row, DELETE/UPDATE em lotes com TOP + WHILE + `@@ROWCOUNT`, staging table (load bruto → validar em etapas → inserir apenas válidos)
+- `docs/sql/sgbd/sql-server.md`: seção `## Operações em Lote` — `BULK INSERT` com BATCHSIZE e TABLOCK; SQL Server Agent com `sp_add_job`, `sp_add_jobstep`, `sp_add_schedule`, `sp_add_jobserver`
+- `docs/sql/sgbd/postgres.md`: seção `## Operações em Lote` — `COPY` (servidor) e `\copy` (cliente psql); `pg_cron` com `cron.schedule`, `cron.job`, `cron.unschedule`
+- `docs/sql/sgbd/sql-server.md`: seção `## Diagnóstico` — SET STATISTICS IO/TIME, Query Store (`sys.dm_exec_query_stats` + `sys.dm_exec_sql_text`), conexões ativas (`sys.sysprocesses`)
+- `docs/sql/sgbd/postgres.md`: seção `## Diagnóstico` — slow query log (`postgresql.conf`), EXPLAIN / EXPLAIN ANALYZE, `pg_stat_activity` (conexões e queries lentas/locks)
+- `docs/shared/platform/etl-bi.md`: guia ETL e BI — OLTP vs OLAP, pipeline de dados em camadas, extração (full load / incremental / CDC), ETL vs ELT, modelagem dimensional (star/snowflake schema, fact/dimension tables, grain), SCD Tipo 1/2/3, BI e relatórios, pre-agregação, referência rápida
+
+### Fixed
+
+- `docs/shared/platform/database.md`: engine-specific removido (EXPLAIN syntax, SET STATISTICS, `pg_stat_activity`, `sys.dm_exec_query_stats`, `sys.sysprocesses`, `postgresql.conf`) — substituídos por cross-links para `sgbd/`; BAD/GOOD SQL em "Boas práticas de query" convertidos em cross-link para `sql/performance.md`; seção `## Operações em Lote` conceitual adicionada (chunk size, idempotência, padrões) com 3 conceitos novos (ETL, staging table, chunk)
+- `docs/sql/conventions/advanced/performance.md`: seção `## CAST e conversão de tipo em colunas` adicionada — 4 BAD/GOOD: CAST explícito na coluna, conversão implícita por tipo incompatível (VARCHAR/NVARCHAR), CAST em condição de JOIN, data armazenada como VARCHAR
+- `docs/sql/README.md`: link para `batch.md` adicionado na tabela Avançados
+- `README.md`: `ETL e BI` adicionado na tabela Plataforma; descrição de `Database` atualizada com operações em lote
+
 ## [1.11.0] - 2026-04-22
 
 ### Added

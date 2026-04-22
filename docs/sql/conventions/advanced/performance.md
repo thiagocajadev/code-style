@@ -86,6 +86,192 @@ ORDER BY
 
 </details>
 
+## CAST e conversão de tipo em colunas
+
+Aplicar `CAST` ou `CONVERT` sobre uma coluna indexada tem o mesmo efeito de qualquer função no
+`WHERE`: o banco avalia cada linha individualmente e descarta o índice. O caso mais insidioso é a
+conversão implícita: quando o tipo do parâmetro não corresponde ao tipo da coluna, o banco converte
+em silêncio, sem aviso, sem erro, com full scan.
+
+### CAST explícito na coluna de filtro
+
+<details>
+<summary>❌ Bad — CAST na coluna: índice em SquadNumber ignorado</summary>
+<br>
+
+```sql
+-- SquadNumber é INT; comparação como texto força conversão de cada linha
+SELECT
+  Players.Name,
+  Players.SquadNumber,
+  Players.Position
+FROM
+  Players
+WHERE
+  CAST(Players.SquadNumber AS NVARCHAR) = @SquadParam AND
+  Players.IsActive = 1;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — parâmetro com o tipo correto, coluna intocada</summary>
+<br>
+
+```sql
+-- @SquadNumber declarado como INT na aplicação; zero conversão no banco
+SELECT
+  Players.Name,
+  Players.SquadNumber,
+  Players.Position
+FROM
+  Players
+WHERE
+  Players.SquadNumber = @SquadNumber AND
+  Players.IsActive = 1 -- active
+ORDER BY
+  Players.SquadNumber;
+```
+
+</details>
+
+### Conversão implícita por tipo incompatível
+
+SQL Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
+nenhum erro aparece, e o índice é ignorado em silêncio.
+
+<details>
+<summary>❌ Bad — literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
+<br>
+
+```sql
+-- Players.Name é NVARCHAR; literal sem prefixo N é VARCHAR
+-- SQL Server converte cada Name para VARCHAR antes de comparar
+SELECT
+  Players.Id,
+  Players.Name,
+  Players.Position
+FROM
+  Players
+WHERE
+  Players.Name = 'Alice Smith'; -- VARCHAR literal, índice ignorado
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
+<br>
+
+```sql
+SELECT
+  Players.Id,
+  Players.Name,
+  Players.Position
+FROM
+  Players
+WHERE
+  Players.Name = N'Alice Smith'; -- NVARCHAR literal, índice aproveitado
+```
+
+</details>
+
+### CAST em condição de JOIN
+
+Type mismatch entre colunas de JOIN força conversão em cada linha de uma das tabelas. Converter
+a coluna não indexada preserva o índice da principal.
+
+<details>
+<summary>❌ Bad — CAST na coluna indexada da tabela principal</summary>
+<br>
+
+```sql
+-- FootballTeams.Id é INT; ExternalTeams.TeamReference é NVARCHAR
+-- CAST em FootballTeams.Id descarta o índice em Id
+SELECT
+  FootballTeams.Name,
+  ExternalTeams.LeagueName
+FROM
+  FootballTeams
+JOIN
+  ExternalTeams ON CAST(FootballTeams.Id AS NVARCHAR) = ExternalTeams.TeamReference;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — CAST na coluna não indexada; preferível: corrigir o schema</summary>
+<br>
+
+```sql
+-- opção 1: converter o lado não indexado — índice em FootballTeams.Id preservado
+SELECT
+  FootballTeams.Name,
+  ExternalTeams.LeagueName
+FROM
+  FootballTeams
+JOIN
+  ExternalTeams ON FootballTeams.Id = CAST(ExternalTeams.TeamReference AS INT);
+
+-- opção 2 (ideal): alinhar os tipos no schema e eliminar a conversão
+-- ALTER TABLE ExternalTeams ALTER COLUMN TeamReference INT NOT NULL;
+```
+
+</details>
+
+### Data armazenada como texto
+
+Coluna de data armazenada como `VARCHAR` obriga `CONVERT` em toda query de filtro por período.
+A correção é normalizar o tipo no schema: `DATE` ou `DATETIME2` na definição da coluna e
+converter na aplicação antes do `INSERT`.
+
+<details>
+<summary>❌ Bad — data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
+<br>
+
+```sql
+-- JoinedAt definido como VARCHAR(10): '2024-01-15', '15/01/2024', '2024/01/15'
+SELECT
+  Players.Name,
+  Players.JoinedAt
+FROM
+  Players
+WHERE
+  CONVERT(DATE, Players.JoinedAt) >= '2024-01-01' AND
+  CONVERT(DATE, Players.JoinedAt) <  '2025-01-01';
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — JoinedAt como DATE: filtro direto, índice aproveitado</summary>
+<br>
+
+```sql
+-- schema correto: JoinedAt DATE NOT NULL
+-- aplicação envia Date, não string; zero conversão no banco
+SELECT
+  Players.Name,
+  Players.JoinedAt
+FROM
+  Players
+WHERE
+  Players.JoinedAt >= '2024-01-01' AND
+  Players.JoinedAt <  '2025-01-01'
+ORDER BY
+  Players.JoinedAt;
+```
+
+</details>
+
 ## Subquery correlacionada no SELECT
 
 Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
