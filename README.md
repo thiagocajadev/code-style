@@ -15,6 +15,7 @@
 [![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
 [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
 [![VB.NET](https://img.shields.io/badge/VB.NET-.NET%20Framework%204.8-512BD4?logo=dotnet&logoColor=white)](docs/vbnet/README.md)
+[![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](docs/python/README.md)
 [![SQL](https://img.shields.io/badge/SQL-Server%20%26%20PostgreSQL-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
 [![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-47A248?logo=mongodb&logoColor=white)](docs/shared/platform/database.md)
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
@@ -132,9 +133,10 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [JavaScript](docs/javascript/README.md) | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async |
 | [TypeScript](docs/typescript/README.md) | Tipos, interfaces, narrowing, generics, null-safety              |
 | [CSS](docs/css/README.md)               | BEM, custom properties, mobile-first, Tailwind, Bootstrap        |
-| [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ           |
-| [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ       |
-| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL           |
+| [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ              |
+| [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ          |
+| [Python](docs/python/README.md)         | Convenções Python 3.14 — dataclasses, async, Pydantic, match/case   |
+| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL              |
 
 </details>
 

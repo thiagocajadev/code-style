@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.8.4] - 2026-04-22
+
+### Fixed
+
+- `docs/python/conventions/variables.md`: t-string SQL vertical sem `SELECT *`; seção `pathlib` migrada de setup — stdlib, não configuração de projeto
+- `docs/python/conventions/visual-density.md`: exemplo declaração+guarda expandido com múltiplos pares para contraste legível entre Bad e Good
+- `docs/python/conventions/control-flow.md`: match/case estrutural com domínio de negócio (`order_placed`, `payment_received`) — sem variáveis genéricas `x`/`y`
+- `docs/python/setup/project-foundation.md`: ruff select comentado com nomes dos rule sets; `app.py` removido (apenas `main.py`); Configuração centralizada movida antes de Entry point; Bad example em Módulos por domínio; estrutura de arquivos com `pyproject.toml`, `.editorconfig`, `.env.example`, `scripts/`; pathlib removido
+- `docs/python/quick-reference.md`: Bad/Good com `<details>` em type hints, strings e destructuring; bare return no Good de destructuring
+
 ## [1.8.3] - 2026-04-21
 
 ### Fixed
