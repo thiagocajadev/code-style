@@ -41,6 +41,13 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Dates](conventions/advanced/dates.md)                             | `DateTimeOffset`, `DateOnly`, UTC, EF Core round-trip        |
 | [Quick Reference](quick-reference.md)                              | Nomenclatura, verbos, taboos, convenções rápidas             |
 
+## Frameworks
+
+| Tópico                                         | Conceitos                                                                              |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------- |
+| [Blazor](frameworks/blazor.md)                 | Render modes, componentes, estado, formulários, roteamento, JS Interop                 |
+| [Razor Pages e MVC](frameworks/razor-mvc.md)   | PageModel, Tag Helpers, controller thin, ViewModel, layouts, partial views             |
+
 ## Princípios
 
 **Forma**: estrutura e narrativa do método

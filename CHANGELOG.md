@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-04-22
+
+### Added
+
+- `docs/csharp/frameworks/blazor.md`: guia Blazor .NET 10 — render modes (Static SSR, Interactive Server, WebAssembly, Auto), componentes com computed properties, EventCallback filho→pai, `[PersistentState]` sem chamada duplicada, EditForm com DataAnnotationsValidator, roteamento tipado com `@page`, JS Interop em `OnAfterRenderAsync`
+- `docs/csharp/frameworks/razor-mvc.md`: guia ASP.NET Core MVC e Razor Pages .NET 10 — PageModel com `OnGet`/`OnPost`, `[BindProperty]`, Tag Helpers (`asp-for`, `asp-validation-for`), controller thin com boundary `Result<T>` → `IActionResult`, ViewModel sem exposição de entidade, layouts e partial views
+- `docs/csharp/README.md`: seção `## Frameworks` com tabela linkando Blazor e Razor Pages/MVC
+
 ## [1.9.0] - 2026-04-22
 
 ### Added
