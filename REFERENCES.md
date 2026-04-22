@@ -28,14 +28,25 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Event-Driven Architecture, Martin Fowler](https://martinfowler.com/articles/201701-event-driven.html)  
 [CloudEvents Spec](https://cloudevents.io/)
 
-## Banco de Dados
+## Banco de Dados — SQL
 
 [PostgreSQL Documentation](https://www.postgresql.org/docs/)  
 [SQL Server Documentation, Microsoft](https://learn.microsoft.com/en-us/sql/sql-server/)  
 [Use the Index, Luke — SQL Performance Explained](https://use-the-index-luke.com/)  
-[PostgreSQL EXPLAIN Visualizer (PEV2)](https://explain.depesz.com/)  
-[MongoDB Documentation](https://www.mongodb.com/docs/)  
-[Redis Documentation](https://redis.io/docs/)
+[PostgreSQL EXPLAIN Visualizer (PEV2)](https://explain.depesz.com/)
+
+## Banco de Dados — NoSQL
+
+[MongoDB Manual 8.x](https://www.mongodb.com/docs/manual/)  
+[MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/)  
+[Redis Documentation](https://redis.io/docs/latest/)  
+[node-redis — Official Node.js Client](https://redis.io/docs/latest/develop/clients/nodejs/)  
+[AWS DynamoDB Developer Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/)  
+[AWS SDK v3 — DynamoDB Examples](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_dynamodb_code_examples.html)  
+[Apache Cassandra Documentation](https://cassandra.apache.org/doc/latest/)  
+[DataStax Node.js Driver for Cassandra](https://docs.datastax.com/en/developer/nodejs-driver/4.3/)  
+[Elasticsearch Reference 8.x](https://www.elastic.co/guide/en/elasticsearch/reference/current/)  
+[@elastic/elasticsearch Node.js Client](https://www.elastic.co/guide/en/elasticsearch/client/javascript-api/current/)
 
 ## Escala e Infraestrutura
 

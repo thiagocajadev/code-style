@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-04-22
+
+### Added
+
+- `docs/nosql/README.md`: índice da seção NoSQL — mapa de convenções, tabela de SGBD por caso de uso (80% → MongoDB + Redis; AWS → DynamoDB; escala → Cassandra; busca → Elasticsearch), conceitos fundamentais, cross-link para scripts
+- `docs/nosql/quick-reference.md`: cheat-sheet tabular de dos/don'ts por SGBD (MongoDB, Redis, DynamoDB, Cassandra, Elasticsearch) + tabela de naming por contexto
+- `docs/nosql/conventions/naming.md`: convenções de nomenclatura — collection/table (plural, snake_case/PascalCase por SGBD), fields (camelCase MongoDB, snake_case Cassandra/ES, PascalCase DynamoDB), Redis key namespace (`namespace:entity:id`), DynamoDB single-table design (`ENTITY#id`), index naming (`idx_`, `unq_`)
+- `docs/nosql/conventions/crud.md`: padrões CRUD com BAD/GOOD — insertOne/insertMany, findOne/find com projeção, updateOne com `$set`, upsert com `$setOnInsert`, soft delete, purge; todos via repository pattern
+- `docs/nosql/conventions/visual-density.md`: densidade visual para drivers JS — grupos semânticos, pipeline legível, estágios por propósito
+- `docs/nosql/conventions/advanced/performance.md`: índices (quando criar/não criar), projeção obrigatória, N+1 com `$lookup`, TTL index + `expiresAt` no insert, checklist de investigação
+- `docs/nosql/conventions/advanced/aggregation.md`: pipeline de agregação — ordem dos estágios, `$match` primeiro, `$group` com nomes de domínio, `$lookup` com pipeline interno, `$unwind` com `preserveNullAndEmptyArrays`
+- `docs/nosql/sgbd/mongodb.md`: MongoDB 8.2 — conexão com pool singleton, insertOne/insertMany/bulkWrite, findOne/find/paginação, operadores de update, aggregation completo, createIndex (simples/composto/único/texto/TTL), diagnóstico com `explain()`
+- `docs/nosql/sgbd/redis.md`: Redis 8.x — node-redis, Strings (SET/GET/INCR/MGET), cache-aside, Hashes (HSET/HGET/HGETALL/HMGET), Sorted Sets (ZADD/ZRANGE/ZREVRANK), Sets (SADD/SMEMBERS/SINTER/SDIFF), Lists, pub/sub com clientes separados, TTL, diagnóstico com redis-cli
+- `docs/nosql/sgbd/dynamodb.md`: DynamoDB SDK v3 — `DynamoDBDocumentClient`, partition key design, single-table design (`ENTITY#id`), PutCommand/GetCommand/UpdateCommand/DeleteCommand/QueryCommand, GSI para access patterns, tabela de anti-padrões (Scan, hot spot, FilterExpression sem GSI)
+- `docs/nosql/sgbd/cassandra.md`: Cassandra 5.x — keyspace, schema CQL com partition+clustering key, `prepare: true` obrigatório, consistency levels (LOCAL_QUORUM padrão), SELECT com LIMIT, UPDATE com IF EXISTS, TTL na inserção, batch para consistência entre tabelas, tabela de anti-padrões
+- `docs/nosql/sgbd/elasticsearch.md`: Elasticsearch 8.x — mapping (text vs keyword), index/bulk, search (match/term/bool/range), aggregations com `size: 0`, update/deleteByQuery, tabela de anti-padrões (match em keyword, wildcard leading, aggregation em text)
+- `docs/nosql/scripts/mongodb/` — 5 scripts JS: 01-insert (insertOne/insertMany/bulkWrite), 02-find (findOne/find/paginação/text search), 03-update ($set/$inc/upsert/updateMany), 04-delete (soft delete/purge), 05-aggregation (top scorers/$lookup/$group)
+- `docs/nosql/scripts/redis/` — 4 scripts JS: 01-strings (cache-aside/invalidação/INCR/MGET), 02-hashes (HSET/HGET/HGETALL/HMGET/HINCRBY), 03-sets (SADD/SINTER/SDIFF/SCARD), 04-sorted-sets (leaderboard/standings/ZRANGE/ZRANK)
+
+### Fixed
+
+- `docs/shared/platform/database.md`: cross-link para `docs/nosql/` na seção "Consultas NoSQL"
+- `README.md`: badge MongoDB atualizado (8.2 → `docs/nosql/`); badge Redis adicionado (8.x); NoSQL adicionado na tabela de Linguagens
+
 ## [1.12.0] - 2026-04-23
 
 ### Added

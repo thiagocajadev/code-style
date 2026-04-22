@@ -104,6 +104,8 @@ Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../..
 
 Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho desnecessário no servidor é mais barato que trabalho no cliente.
 
+Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de CRUD, naming e performance: [nosql/conventions/](../../../nosql/conventions/).
+
 <details>
 <summary>❌ Bad: sem projeção — trafega o documento inteiro para usar um campo</summary>
 <br>

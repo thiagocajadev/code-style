@@ -20,7 +20,11 @@
 [![HTMX](https://img.shields.io/badge/HTMX-2.0.10-3D72D7?logoColor=white)](docs/python/frameworks/htmx.md)
 [![Reflex](https://img.shields.io/badge/Reflex-0.8.28-6E56CF?logoColor=white)](docs/python/frameworks/reflex.md)
 [![SQL](https://img.shields.io/badge/SQL-Server%20%7C%20PostgreSQL%20%7C%20SQLite-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
-[![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-47A248?logo=mongodb&logoColor=white)](docs/shared/platform/database.md)
+[![MongoDB](https://img.shields.io/badge/MongoDB-8.2-47A248?logo=mongodb&logoColor=white)](docs/nosql/README.md)
+[![Redis](https://img.shields.io/badge/Redis-8.x-FF4438?logo=redis&logoColor=white)](docs/nosql/sgbd/redis.md)
+[![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-FF9900?logo=amazondynamodb&logoColor=white)](docs/nosql/sgbd/dynamodb.md)
+[![Cassandra](https://img.shields.io/badge/Cassandra-5.x-1287B1?logo=apachecassandra&logoColor=white)](docs/nosql/sgbd/cassandra.md)
+[![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch&logoColor=white)](docs/nosql/sgbd/elasticsearch.md)
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
@@ -140,6 +144,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ          |
 | [Python](docs/python/README.md)         | Convenções Python 3.14 — dataclasses, async, Pydantic, match/case   |
 | [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server, PostgreSQL e SQLite      |
+| [NoSQL](docs/nosql/README.md)           | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch                 |
 
 </details>
 
@@ -198,6 +203,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |
 | [Performance](docs/shared/platform/performance.md) | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O |
 | [Database](docs/shared/platform/database.md) | SQL vs NoSQL, tuning de queries, operações em lote, plano de execução e troubleshooting |
+| [NoSQL](docs/nosql/README.md) | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch — convenções, SGBD e scripts |
 | [ETL e BI](docs/shared/platform/etl-bi.md) | OLTP vs OLAP, pipeline de dados, extração incremental, ELT, modelagem dimensional, SCD e BI |
 | [Integrations](docs/shared/platform/integrations.md) | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial |
 | [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
