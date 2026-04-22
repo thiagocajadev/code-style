@@ -7,6 +7,9 @@ NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência d
 
 > Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
 
+> Os exemplos seguem a convenção SQL Server (PascalCase). Exemplos específicos de PostgreSQL são
+> marcados com `-- PostgreSQL`.
+
 ## `= NULL` nunca funciona
 
 A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verdadeira. Use
@@ -35,19 +38,34 @@ WHERE assigned_to != NULL;    -- retorna 0 linhas sempre
 <br>
 
 ```sql
-SELECT *
-FROM orders
-WHERE assigned_to IS NULL;
+SELECT
+  Orders.Id,
+  Orders.Status,
+  Orders.AssignedTo
+FROM
+  Orders
+WHERE
+  Orders.AssignedTo IS NULL;
 
-SELECT *
-FROM orders
-WHERE assigned_to IS NOT NULL;
+SELECT
+  Orders.Id,
+  Orders.Status,
+  Orders.AssignedTo
+FROM
+  Orders
+WHERE
+  Orders.AssignedTo IS NOT NULL;
 
 -- combinando com outras condições
-SELECT *
-FROM orders
-WHERE status = 'pending'
-  AND assigned_to IS NULL;
+SELECT
+  Orders.Id,
+  Orders.Status,
+  Orders.AssignedTo
+FROM
+  Orders
+WHERE
+  Orders.Status = 'Pending' AND
+  Orders.AssignedTo IS NULL;
 ```
 
 </details>
@@ -64,19 +82,19 @@ Indispensável para fallbacks e para tornar cálculos seguros.
 ```sql
 -- fallback com CASE WHEN: repetitivo para cada nível
 SELECT
-  user_id,
+  UserId,
   CASE
-    WHEN nickname IS NOT NULL THEN nickname
-    WHEN first_name IS NOT NULL THEN first_name
+    WHEN Nickname IS NOT NULL THEN Nickname
+    WHEN FirstName IS NOT NULL THEN FirstName
     ELSE 'Anonymous'
-  END AS display_name
-FROM users;
+  END AS DisplayName
+FROM Users;
 
--- cálculo sem proteção: NULL discount = NULL total
+-- cálculo sem proteção: NULL Discount = NULL Total
 SELECT
-  order_id,
-  discount + base_amount AS total   -- NULL se discount for NULL
-FROM orders;
+  OrderId,
+  Discount + BaseAmount AS Total -- NULL se Discount for NULL
+FROM Orders;
 ```
 
 </details>
@@ -90,21 +108,24 @@ FROM orders;
 ```sql
 -- fallback em cascata
 SELECT
-  user_id,
-  COALESCE(nickname, first_name, 'Anonymous') AS display_name
-FROM users;
+  Users.Id,
+  COALESCE(Users.Nickname, Users.FirstName, 'Anonymous') AS DisplayName
+FROM
+  Users;
 
--- cálculo null-safe: NULL + qualquer valor = NULL
+-- cálculo null-safe
 SELECT
-  order_id,
-  COALESCE(discount, 0) + base_amount AS total   -- sem COALESCE, NULL desconto = NULL total
-FROM orders;
+  Orders.Id,
+  COALESCE(Orders.Discount, 0) + Orders.BaseAmount AS Total -- NULL Discount = NULL Total sem COALESCE
+FROM
+  Orders;
 
 -- normalizar dados legados
 SELECT
-  product_id,
-  COALESCE(new_price, legacy_price, 0.00) AS price
-FROM products;
+  Products.Id,
+  COALESCE(Products.NewPrice, Products.LegacyPrice, 0.00) AS Price
+FROM
+  Products;
 ```
 
 </details>
@@ -121,21 +142,21 @@ por zero e tratar string vazia como NULL.
 ```sql
 -- divisão por zero com CASE
 SELECT
-  order_id,
+  OrderId,
   CASE
-    WHEN quantity = 0 THEN NULL
-    ELSE amount / quantity
-  END AS unit_price
-FROM orders;
+    WHEN Quantity = 0 THEN NULL
+    ELSE Amount / Quantity
+  END AS UnitPrice
+FROM Orders;
 
 -- string vazia tratada manualmente
 SELECT
-  user_id,
+  UserId,
   CASE
-    WHEN TRIM(phone_number) = '' THEN NULL
-    ELSE TRIM(phone_number)
-  END AS phone
-FROM users;
+    WHEN TRIM(PhoneNumber) = '' THEN NULL
+    ELSE TRIM(PhoneNumber)
+  END AS PhoneNumber
+FROM Users;
 ```
 
 </details>
@@ -149,15 +170,17 @@ FROM users;
 ```sql
 -- divisão por zero sem CASE
 SELECT
-  order_id,
-  amount / NULLIF(quantity, 0) AS unit_price   -- NULL se quantity for 0
-FROM orders;
+  Orders.Id,
+  Orders.Amount / NULLIF(Orders.Quantity, 0) AS UnitPrice -- NULL se Quantity for 0
+FROM
+  Orders;
 
 -- tratar string vazia como NULL
 SELECT
-  user_id,
-  NULLIF(TRIM(phone_number), '') AS phone      -- '' vira NULL
-FROM users;
+  Users.Id,
+  NULLIF(TRIM(Users.PhoneNumber), '') AS PhoneNumber -- '' vira NULL
+FROM
+  Users;
 ```
 
 </details>
@@ -172,19 +195,21 @@ a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 <br>
 
 ```sql
-CREATE TABLE orders (
-  order_id   INT           PRIMARY KEY,
-  status     VARCHAR(20),              -- nullable, sem default
-  priority   VARCHAR(20),              -- nullable, sem default
-  created_at TIMESTAMP                 -- nullable, sem default
+CREATE TABLE Orders
+(
+  Id        INT,
+  Status    VARCHAR(20),   -- nullable, sem default
+  Priority  VARCHAR(20),   -- nullable, sem default
+  CreatedAt DATETIME2      -- nullable, sem default
 );
 
 -- toda query precisa se defender
 SELECT
-  order_id,
-  COALESCE(status, 'unknown')   AS status,
-  COALESCE(priority, 'normal')  AS priority
-FROM orders;
+  Orders.Id,
+  COALESCE(Orders.Status, 'unknown')  AS Status,
+  COALESCE(Orders.Priority, 'normal') AS Priority
+FROM
+  Orders;
 ```
 
 </details>
@@ -196,15 +221,23 @@ FROM orders;
 <br>
 
 ```sql
-CREATE TABLE orders (
-  order_id   INT           PRIMARY KEY,
-  status     VARCHAR(20)   NOT NULL DEFAULT 'pending',
-  priority   VARCHAR(20)   NOT NULL DEFAULT 'normal',
-  created_at TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE Orders
+(
+  Id        INT          NOT NULL IDENTITY(1, 1),
+  Status    NVARCHAR(20) NOT NULL DEFAULT 'Pending',
+  Priority  NVARCHAR(20) NOT NULL DEFAULT 'Normal',
+  CreatedAt DATETIME2    NOT NULL DEFAULT GETUTCDATE(),
+
+  CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
 
 -- queries simples, sem defesa
-SELECT order_id, status, priority FROM orders;
+SELECT
+  Orders.Id,
+  Orders.Status,
+  Orders.Priority
+FROM
+  Orders;
 ```
 
 </details>
@@ -221,17 +254,17 @@ SELECT order_id, status, priority FROM orders;
 ```sql
 -- COUNT(*) conta nulos — o resultado pode enganar
 SELECT
-  status,
-  COUNT(*) AS assigned_orders   -- inclui linhas onde assigned_to IS NULL
-FROM orders
-GROUP BY status;
+  Status,
+  COUNT(*) AS AssignedOrders -- inclui linhas onde AssignedTo IS NULL
+FROM Orders
+GROUP BY Status;
 
 -- SUM pode retornar NULL quando não há linhas no grupo
 SELECT
-  team_id,
-  SUM(salary)  AS total_salary  -- retorna NULL se não houver funcionários
-FROM employees
-GROUP BY team_id;
+  TeamId,
+  SUM(Salary) AS TotalSalary -- retorna NULL se não houver funcionários
+FROM Employees
+GROUP BY TeamId;
 ```
 
 </details>
@@ -245,28 +278,34 @@ GROUP BY team_id;
 ```sql
 -- COUNT(*) vs COUNT(coluna)
 SELECT
-  status,
-  COUNT(*)             AS total_orders,       -- conta todas as linhas
-  COUNT(assigned_to)   AS assigned_orders,    -- ignora NULL
-  COUNT(DISTINCT customer_id) AS customers
-FROM orders
-GROUP BY status;
+  Orders.Status,
+  COUNT(*)                          AS TotalOrders,    -- conta todas as linhas
+  COUNT(Orders.AssignedTo)          AS AssignedOrders, -- ignora NULL
+  COUNT(DISTINCT Orders.CustomerId) AS Customers
+FROM
+  Orders
+GROUP BY
+  Orders.Status;
 
 -- AVG ignora NULL — divisor é count de não-nulos
 SELECT
-  product_id,
-  AVG(rating) AS avg_rating,           -- apenas ratings preenchidos
-  COUNT(rating) AS rating_count        -- quantos avaliaram
-FROM reviews
-GROUP BY product_id;
+  Reviews.ProductId,
+  AVG(Reviews.Rating)   AS AvgRating,  -- apenas ratings preenchidos
+  COUNT(Reviews.Rating) AS RatingCount -- quantos avaliaram
+FROM
+  Reviews
+GROUP BY
+  Reviews.ProductId;
 
 -- garantir resultado 0 em vez de NULL quando não há linhas
 SELECT
-  team_id,
-  COALESCE(SUM(salary), 0)  AS total_salary,
-  COALESCE(COUNT(*), 0)     AS headcount
-FROM employees
-GROUP BY team_id;
+  Employees.TeamId,
+  COALESCE(SUM(Employees.Salary), 0) AS TotalSalary,
+  COUNT(*)                           AS Headcount
+FROM
+  Employees
+GROUP BY
+  Employees.TeamId;
 ```
 
 </details>
@@ -281,14 +320,14 @@ linhas fantasmas e comportamento inesperado.
 <br>
 
 ```sql
--- se customer_id for NULL em alguma ordem, a linha some no INNER JOIN
+-- se CustomerId for NULL em algum pedido, a linha some no INNER JOIN
 SELECT
-  o.order_id,
-  c.name AS customer_name
-FROM orders o
-INNER JOIN customers c ON o.customer_id = c.id;
+  o.Id,
+  c.Name AS CustomerName
+FROM Orders o
+INNER JOIN Customers c ON o.CustomerId = c.Id;
 
--- LEFT JOIN traz a linha, mas customer_name será NULL — difícil de depurar
+-- LEFT JOIN traz a linha, mas CustomerName será NULL — difícil de depurar
 ```
 
 </details>
@@ -300,18 +339,25 @@ INNER JOIN customers c ON o.customer_id = c.id;
 <br>
 
 ```sql
-CREATE TABLE orders (
-  order_id    INT     PRIMARY KEY,
-  customer_id INT     NOT NULL REFERENCES customers(id),
-  status      VARCHAR(20) NOT NULL DEFAULT 'pending'
+CREATE TABLE Orders
+(
+  Id         INT NOT NULL IDENTITY(1, 1),
+  CustomerId INT NOT NULL,
+  Status     NVARCHAR(20) NOT NULL DEFAULT 'Pending',
+
+  CONSTRAINT PK_Orders PRIMARY KEY (Id),
+  CONSTRAINT FK_Orders_Customers FOREIGN KEY (CustomerId)
+    REFERENCES Customers (Id)
 );
 
--- JOIN previsível — customer_id sempre existe
+-- JOIN previsível — CustomerId sempre existe
 SELECT
-  o.order_id,
-  c.name AS customer_name
-FROM orders o
-INNER JOIN customers c ON o.customer_id = c.id;
+  Orders.Id,
+  Customers.Name AS CustomerName
+FROM
+  Orders
+JOIN
+  Customers ON Orders.CustomerId = Customers.Id;
 ```
 
 </details>
@@ -326,12 +372,14 @@ gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
 <br>
 
 ```sql
--- se users tiver algum user_id NULL, essa query retorna 0 linhas
-SELECT *
-FROM orders
-WHERE customer_id NOT IN (
-  SELECT user_id FROM users
-);
+-- se Users tiver algum Id NULL, essa query retorna 0 linhas
+SELECT
+  Orders.Id,
+  Orders.Status
+FROM
+  Orders
+WHERE
+  Orders.CustomerId NOT IN (SELECT Users.Id FROM Users);
 ```
 
 </details>
@@ -344,18 +392,26 @@ WHERE customer_id NOT IN (
 
 ```sql
 -- opção 1: filtrar NULL explicitamente
-SELECT *
-FROM orders
-WHERE customer_id NOT IN (
-  SELECT user_id FROM users WHERE user_id IS NOT NULL
-);
+SELECT
+  Orders.Id,
+  Orders.Status
+FROM
+  Orders
+WHERE
+  Orders.CustomerId NOT IN (
+    SELECT Users.Id FROM Users WHERE Users.Id IS NOT NULL
+  );
 
 -- opção 2: NOT EXISTS — null-safe por design
-SELECT *
-FROM orders o
-WHERE NOT EXISTS (
-  SELECT 1 FROM users u WHERE u.user_id = o.customer_id
-);
+SELECT
+  Orders.Id,
+  Orders.Status
+FROM
+  Orders
+WHERE
+  NOT EXISTS (
+    SELECT 1 FROM Users WHERE Users.Id = Orders.CustomerId
+  );
 ```
 
 </details>
@@ -366,17 +422,17 @@ Múltiplos NULL são permitidos em colunas `UNIQUE` porque NULL não é igual a 
 quando quiser "único entre os preenchidos".
 
 <details>
-<summary>❌ Bad — índice UNIQUE padrão bloqueia múltiplos NULL</summary>
+<summary>❌ Bad — intenção de "único quando preenchido" não está declarada explicitamente</summary>
 <br>
 
 ```sql
--- constraint UNIQUE normal: apenas um NULL permitido na coluna
--- segundo INSERT com phone NULL vai falhar ou ser aceito dependendo do banco
-CREATE TABLE users (
-  user_id INT PRIMARY KEY,
-  email   VARCHAR(255) UNIQUE NOT NULL,
-  phone   VARCHAR(20)  UNIQUE          -- SQL Server: aceita múltiplos NULL; PostgreSQL: aceita múltiplos NULL
-  -- mas a intenção de "único quando preenchido" não está declarada explicitamente
+CREATE TABLE Users
+(
+  Id    INT          NOT NULL IDENTITY(1, 1),
+  Email VARCHAR(255) NOT NULL,
+  Phone VARCHAR(20)  UNIQUE NULL -- intenção ambígua
+
+  CONSTRAINT PK_Users PRIMARY KEY (Id)
 );
 ```
 
@@ -385,24 +441,27 @@ CREATE TABLE users (
 <br>
 
 <details>
-<summary>✅ Good — índice filtrado para unicidade apenas em valores preenchidos</summary>
+<summary>✅ Good — índice filtrado declara explicitamente a intenção</summary>
 <br>
 
 ```sql
--- múltiplos NULLs são aceitos em UNIQUE (comportamento padrão)
-CREATE TABLE users (
-  user_id INT PRIMARY KEY,
-  email   VARCHAR(255) UNIQUE NOT NULL,
-  phone   VARCHAR(20)  UNIQUE NULL      -- vários NULLs permitidos
+CREATE TABLE Users
+(
+  Id    INT          NOT NULL IDENTITY(1, 1),
+  Email VARCHAR(255) NOT NULL,
+  Phone VARCHAR(20)  NULL,
+
+  CONSTRAINT PK_Users   PRIMARY KEY (Id),
+  CONSTRAINT UQ_Users_Email UNIQUE (Email)
 );
 
--- PostgreSQL: índice parcial para unicidade apenas quando preenchido
-CREATE UNIQUE INDEX uix_users_phone_notnull
-  ON users (phone)
-  WHERE phone IS NOT NULL;
+-- SQL Server: índice filtrado para unicidade apenas em valores preenchidos
+CREATE UNIQUE NONCLUSTERED INDEX UQ_Users_Phone_NotNull
+  ON Users (Phone)
+  WHERE Phone IS NOT NULL;
 
--- SQL Server: índice filtrado equivalente
-CREATE UNIQUE NONCLUSTERED INDEX uix_users_phone_notnull
+-- PostgreSQL: índice parcial equivalente
+CREATE UNIQUE INDEX uq_users_phone_not_null
   ON users (phone)
   WHERE phone IS NOT NULL;
 ```
@@ -420,9 +479,12 @@ CREATE UNIQUE NONCLUSTERED INDEX uix_users_phone_notnull
 
 ```sql
 -- NULL != 'shipped' → NULL — linha ignorada no WHERE, mudança some silenciosamente
-SELECT order_id
-FROM order_history
-WHERE new_status != old_status;
+SELECT
+  OrderId
+FROM
+  OrderHistory
+WHERE
+  NewStatus != OldStatus;
 ```
 
 </details>
@@ -435,16 +497,22 @@ WHERE new_status != old_status;
 
 ```sql
 -- PostgreSQL
-SELECT order_id
-FROM order_history
-WHERE new_status IS DISTINCT FROM old_status;
+SELECT
+  order_history.order_id
+FROM
+  order_history
+WHERE
+  order_history.new_status IS DISTINCT FROM order_history.old_status;
 
 -- SQL Server: equivalente sem IS DISTINCT FROM
-SELECT order_id
-FROM order_history
-WHERE (new_status != old_status)
-   OR (new_status IS NULL AND old_status IS NOT NULL)
-   OR (new_status IS NOT NULL AND old_status IS NULL);
+SELECT
+  OrderHistory.Id
+FROM
+  OrderHistory
+WHERE
+  OrderHistory.NewStatus != OrderHistory.OldStatus OR
+  (OrderHistory.NewStatus IS NULL AND OrderHistory.OldStatus IS NOT NULL) OR
+  (OrderHistory.NewStatus IS NOT NULL AND OrderHistory.OldStatus IS NULL);
 ```
 
 </details>
@@ -461,13 +529,13 @@ NULL ocupa uma posição diferente dependendo do banco. Controle explícito da p
 -- PostgreSQL: NULL vai para o fim em ASC (NULLS LAST implícito)
 -- SQL Server: NULL vai para o início em ASC
 -- resultado diferente no mesmo código
-SELECT *
-FROM orders
-ORDER BY due_date ASC;
-
-SELECT *
-FROM orders
-ORDER BY priority DESC;
+SELECT
+  Orders.Id,
+  Orders.DueDate
+FROM
+  Orders
+ORDER BY
+  Orders.DueDate ASC;
 ```
 
 </details>
@@ -480,20 +548,23 @@ ORDER BY priority DESC;
 
 ```sql
 -- PostgreSQL: NULLS FIRST / NULLS LAST
-SELECT *
-FROM orders
-ORDER BY due_date ASC NULLS LAST;    -- sem data ficam no fim
-
-SELECT *
-FROM orders
-ORDER BY priority DESC NULLS FIRST;  -- sem prioridade ficam no início
+SELECT
+  orders.id,
+  orders.due_date
+FROM
+  orders
+ORDER BY
+  orders.due_date ASC NULLS LAST; -- sem data ficam no fim
 
 -- SQL Server: CASE para simular NULLS LAST
-SELECT *
-FROM orders
+SELECT
+  Orders.Id,
+  Orders.DueDate
+FROM
+  Orders
 ORDER BY
-  CASE WHEN due_date IS NULL THEN 1 ELSE 0 END,
-  due_date ASC;
+  CASE WHEN Orders.DueDate IS NULL THEN 1 ELSE 0 END,
+  Orders.DueDate ASC;
 ```
 
 </details>
@@ -509,8 +580,11 @@ para a estratégia completa. O padrão SQL:
 
 ```sql
 -- falha se a tabela já tiver registros: registros existentes não têm valor para a nova coluna
-ALTER TABLE orders
-  ADD COLUMN priority VARCHAR(20) NOT NULL;
+-- SQL Server
+ALTER TABLE Orders ADD Priority NVARCHAR(20) NOT NULL;
+
+-- PostgreSQL
+ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL;
 ```
 
 </details>
@@ -522,9 +596,11 @@ ALTER TABLE orders
 <br>
 
 ```sql
--- opção preferida: uma única instrução, registros antigos recebem 'normal'
-ALTER TABLE orders
-  ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
+-- SQL Server: uma instrução, registros antigos recebem 'Normal'
+ALTER TABLE Orders ADD Priority NVARCHAR(20) NOT NULL DEFAULT 'Normal';
+
+-- PostgreSQL: equivalente
+ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 ```
 
 </details>
@@ -536,14 +612,17 @@ ALTER TABLE orders
 <br>
 
 ```sql
+-- SQL Server
+
 -- passo 1: adiciona nullable para não bloquear a tabela
-ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NULL;
+ALTER TABLE Orders ADD Priority NVARCHAR(20) NULL;
 
 -- passo 2: preenche os registros existentes em lote
-UPDATE orders SET priority = 'normal' WHERE priority IS NULL;
+UPDATE Orders SET Priority = 'Normal' WHERE Priority IS NULL;
 
 -- passo 3: aplica o constraint depois que todos os registros têm valor
-ALTER TABLE orders ALTER COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
+ALTER TABLE Orders ALTER COLUMN Priority NVARCHAR(20) NOT NULL;
+ALTER TABLE Orders ADD DEFAULT 'Normal' FOR Priority;
 ```
 
 </details>

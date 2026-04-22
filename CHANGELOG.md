@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-04-22
+
+### Added
+
+- `docs/sql/sgbd/sql-server.md`: guia SQL Server 2025 — tipos de dados, UUID v7, stored procedures com TRY/CATCH, transações, OPPO (Optional Parameter Plan Optimization), RegEx nativo, JSON nativo, vector search (DiskANN)
+- `docs/sql/sgbd/postgres.md`: guia PostgreSQL 18 — tipos, UUID v7 nativo (`uuidv7()`), `GENERATED ALWAYS AS IDENTITY`, `RETURNING` com `OLD/NEW`, CTEs em DML, JSONB + índice GIN, índice parcial, window functions, `LISTEN/NOTIFY`, AIO, virtual generated columns, temporal constraints
+- `docs/sql/sgbd/sqlite.md`: guia SQLite 3.53 — type affinity, WAL mode, rowid, FTS5, JSON nativo (`json_array_insert`), `ALTER TABLE ADD/DROP CONSTRAINT` (3.53+), transações `IMMEDIATE`, PRAGMAs recomendados
+- `docs/sql/README.md`: seção `## SGBD` com tabela linkando SQL Server, PostgreSQL e SQLite
+
+### Fixed
+
+- `docs/sql/conventions/visual-density.md`: Good examples de procedure T-SQL e PostgreSQL com colunas qualificadas (`FootballTeams.`); CTE Good com aliases explícitos (`Players.Id AS PlayerId`); AND ao final da linha em "Etapas em procedures" (Bad e Good)
+- `docs/sql/conventions/advanced/advanced.md`: Good examples de procedure SQL Server e function PostgreSQL com colunas qualificadas; CTE "duas CTEs" com aliases explícitos
+- `docs/sql/conventions/advanced/null-safety.md`: reescrito — PascalCase SQL Server como primary; `SELECT *` removido de todos os Good; aliases de letra (`o`, `c`, `u`) eliminados; `OR`/`AND` ao final da linha; exemplos PostgreSQL marcados explicitamente
+
 ## [1.10.0] - 2026-04-22
 
 ### Added

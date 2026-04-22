@@ -20,8 +20,19 @@ O banco de dados é um **store**: armazena e devolve dados. Regras de negócio, 
 | [Advanced](conventions/advanced/advanced.md)                  | CTEs, subqueries, functions                                         |
 | [Procedures](conventions/advanced/procedures.md)              | Temp tables, etapas nomeadas, queries complexas                     |
 | [Performance](conventions/advanced/performance.md)            | SELECT *, índices, subquery correlacionada, FK sem índice, paginação |
+| [Null Safety](conventions/advanced/null-safety.md)            | IS NULL, COALESCE, NULLIF, NOT NULL + DEFAULT, NULL em JOIN          |
 | [Migrations](conventions/advanced/migrations.md)              | Naming YYYYMMDDHHMMSS, forward only, uma responsabilidade           |
 | [Quick Reference](quick-reference.md)                         | Nomenclatura, verbos, taboos, query estruturada                     |
+
+## SGBD
+
+Idiomas e recursos específicos de cada banco de dados.
+
+| SGBD | Versão | Conceitos |
+| --- | --- | --- |
+| [SQL Server](sgbd/sql-server.md) | 2025 | T-SQL, tipos, procedures, TRY/CATCH, OPPO, RegEx, JSON nativo, vector search |
+| [PostgreSQL](sgbd/postgres.md) | 18 | PL/pgSQL, RETURNING, JSONB, UUID v7, CTEs em DML, window functions, LISTEN/NOTIFY |
+| [SQLite](sgbd/sqlite.md) | 3.53 | Type affinity, WAL, rowid, FTS5, JSON, ALTER TABLE, PRAGMAs |
 
 ## Princípios
 

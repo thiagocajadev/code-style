@@ -19,7 +19,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136.0-009688?logo=fastapi&logoColor=white)](docs/python/frameworks/fastapi.md)
 [![HTMX](https://img.shields.io/badge/HTMX-2.0.10-3D72D7?logoColor=white)](docs/python/frameworks/htmx.md)
 [![Reflex](https://img.shields.io/badge/Reflex-0.8.28-6E56CF?logoColor=white)](docs/python/frameworks/reflex.md)
-[![SQL](https://img.shields.io/badge/SQL-Server%20%26%20PostgreSQL-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
+[![SQL](https://img.shields.io/badge/SQL-Server%20%7C%20PostgreSQL%20%7C%20SQLite-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
 [![MongoDB](https://img.shields.io/badge/MongoDB-NoSQL-47A248?logo=mongodb&logoColor=white)](docs/shared/platform/database.md)
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
@@ -139,7 +139,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [C#](docs/csharp/README.md)             | Convenções C#/.NET — records, Result\<T\>, async, LINQ              |
 | [VB.NET](docs/vbnet/README.md)          | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ          |
 | [Python](docs/python/README.md)         | Convenções Python 3.14 — dataclasses, async, Pydantic, match/case   |
-| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server e PostgreSQL              |
+| [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server, PostgreSQL e SQLite      |
 
 </details>
 

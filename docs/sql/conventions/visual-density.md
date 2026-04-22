@@ -84,13 +84,13 @@ AS
 
 BEGIN
   SELECT
-    Id,
-    Name,
-    ChampionshipsWon
+    FootballTeams.Id,
+    FootballTeams.Name,
+    FootballTeams.ChampionshipsWon
   FROM
     FootballTeams
   WHERE
-    Id = @TeamId;
+    FootballTeams.Id = @TeamId;
 END;
 ```
 
@@ -117,13 +117,13 @@ RETURNS TABLE
 BEGIN
   RETURN QUERY
   SELECT
-    Id,
-    Name,
-    ChampionshipsWon
+    FootballTeams.Id,
+    FootballTeams.Name,
+    FootballTeams.ChampionshipsWon
   FROM
     FootballTeams
   WHERE
-    Id = TeamId;
+    FootballTeams.Id = TeamId;
 END;
 
 $$ LANGUAGE plpgsql;
@@ -168,25 +168,25 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 WITH TeamCTE AS
 (
   SELECT
-    Id,
-    Name,
-    ChampionshipsWon
+    FootballTeams.Id,
+    FootballTeams.Name,
+    FootballTeams.ChampionshipsWon
   FROM
     FootballTeams
   WHERE
-    Id = 1
+    FootballTeams.Id = 1
 ),
 
 ActivePlayersCTE AS
 (
   SELECT
-    PlayerId,
-    PlayerName,
-    TeamId
+    Players.Id AS PlayerId,
+    Players.Name AS PlayerName,
+    Players.TeamId
   FROM
     Players
   WHERE
-    IsActive = 1
+    Players.IsActive = 1
 )
 
 SELECT
@@ -217,9 +217,9 @@ SELECT
 FROM
   Orders
 WHERE
-  Orders.Status = 'Active'
-  AND Orders.CreatedAt >= @StartDate
-  AND Orders.CreatedAt < @EndDate;
+  Orders.Status = 'Active' AND
+  Orders.CreatedAt >= @StartDate AND
+  Orders.CreatedAt < @EndDate;
 SELECT
   ActiveOrders.OrderId,
   ActiveOrders.TotalAmount,
@@ -248,9 +248,9 @@ SELECT
 FROM
   Orders
 WHERE
-  Orders.Status = 'Active'
-  AND Orders.CreatedAt >= @StartDate
-  AND Orders.CreatedAt < @EndDate;
+  Orders.Status = 'Active' AND
+  Orders.CreatedAt >= @StartDate AND
+  Orders.CreatedAt < @EndDate;
 
 SELECT
   ActiveOrders.OrderId,
