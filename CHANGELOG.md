@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-04-22
+
+### Added
+
+- `docs/python/frameworks/reflex.md`: guia Reflex 0.8.28 — State, Vars tipadas, Event Handlers (público vs `_` privado), Computed Vars com `@rx.var`, Components sem I/O inline; nota de compatibilidade Python 3.14 (Pydantic v1 + operador `~`); estrutura de projeto
+- `docs/python/frameworks/fastapi.md`: guia FastAPI 0.136.0 — schemas separados (Input/Response), Path Operations finas, Dependency Injection via `Depends()`, async sem bloqueio do event loop com httpx
+- `docs/python/frameworks/htmx.md`: guia HTMX 2.0.10 integrado com FastAPI e Jinja2 — respostas parciais (fragmentos vs página completa), hx-target e hx-swap intencionais, out-of-band swaps, estados de loading com hx-indicator
+- `docs/python/README.md`: seção `## Frameworks` com tabela linkando FastAPI, HTMX e Reflex
+
 ## [1.8.4] - 2026-04-22
 
 ### Fixed

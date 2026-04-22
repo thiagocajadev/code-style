@@ -38,6 +38,14 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [Validation](conventions/advanced/validation.md)              | Pydantic, validação na fronteira, output filter      |
 | [Dates](conventions/advanced/dates.md)                        | datetime aware, zoneinfo, ISO 8601, strptime         |
 
+## Frameworks
+
+| Tópico                             | Conceitos                                                      |
+| ---------------------------------- | -------------------------------------------------------------- |
+| [FastAPI](frameworks/fastapi.md)   | Router, Schema, Path Operation, Dependency Injection, Async   |
+| [HTMX](frameworks/htmx.md)         | Fragmentos, hx-target, hx-swap, Out-of-band, Loading          |
+| [Reflex](frameworks/reflex.md)     | State, Computed Var, Event Handlers, Components, Python 3.14  |
+
 ## Princípios
 
 **Forma**: estrutura e narrativa da função

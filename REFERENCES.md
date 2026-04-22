@@ -80,6 +80,17 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Microsoft VB.NET Coding Conventions](https://learn.microsoft.com/en-us/dotnet/visual-basic/programming-guide/program-structure/coding-conventions)  
 [.NET Framework 4.8 API Reference](https://learn.microsoft.com/en-us/dotnet/api/?view=netframework-4.8)
 
+## Python
+
+[Python 3.14 Documentation](https://docs.python.org/3.14/)  
+[asyncio — Python Docs](https://docs.python.org/3/library/asyncio.html)  
+[Pydantic Documentation](https://docs.pydantic.dev/latest/)  
+[Jinja2 Documentation](https://jinja.palletsprojects.com/)  
+[FastAPI Documentation](https://fastapi.tiangolo.com)  
+[httpx — Async HTTP Client](https://www.python-httpx.org/)  
+[HTMX Documentation](https://htmx.org/docs/)  
+[Reflex Documentation](https://reflex.dev/docs/getting-started/introduction/)
+
 ## SQL
 
 [SQL Style Guide, Simon Holywell](https://www.sqlstyle.guide/)  
