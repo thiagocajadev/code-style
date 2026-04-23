@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.2] - 2026-04-23
+
+### Fixed
+
+- `docs/shared/process/governance.md` — nova seção `## Normas de referência` entre Decision Records e Code Review: tabelas agrupadas por domínio (Linguagem normativa e datas: RFC 2119, ISO 8601; Protocolos HTTP e autenticação: RFC 7231/9110/6749/7519; Qualidade e segurança: ISO/IEC 25010/27001/27035, OWASP ASVS, OWASP Top 10; Versionamento e entrega: SemVer 2.0.0, Conventional Commits, Keep a Changelog) + parágrafo de fechamento articulando que desvio registrado em ADR tem valor equivalente à conformidade
+
 ## [1.14.1] - 2026-04-22
 
 ### Added

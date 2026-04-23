@@ -135,6 +135,52 @@ Três elementos tornam um ADR útil:
 | **Decisão**       | O que foi escolhido e por quê                                |
 | **Consequências** | O que fica melhor, o que fica pior, o que precisa de atenção |
 
+## Normas de referência
+
+Governança não se inventa do zero. Existe um repertório público de normas que já resolveu problemas
+comuns de vocabulário, segurança, versionamento e interoperabilidade. Referenciar esse repertório
+reduz debate de bike shed e dá terreno comum para auditoria externa.
+
+O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
+
+**Linguagem normativa e datas**
+
+| Norma | O que padroniza |
+|---|---|
+| **RFC 2119** (Request for Comments, Pedido de Comentários) | Vocabulário de obrigatoriedade: MUST, SHOULD, MAY. Usado em specs e ADRs para deixar o grau de exigência explícito |
+| **ISO 8601** (International Organization for Standardization, Organização Internacional de Normalização) | Representação de datas e horários: `2026-04-23T14:30:00Z`. Resolve ambiguidade entre formatos regionais |
+
+**Protocolos HTTP e autenticação**
+
+| Norma | O que padroniza |
+|---|---|
+| RFC 7231 e RFC 9110 | Semântica do HTTP (Hypertext Transfer Protocol, Protocolo de Transferência de Hipertexto): métodos, status codes, cabeçalhos |
+| RFC 6749 | OAuth 2.0 (Open Authorization, Autorização Aberta): fluxo de autorização delegada |
+| RFC 7519 | JWT (JSON Web Token, Token Web JSON): formato de token de claims assinado |
+
+**Qualidade e segurança**
+
+| Norma | O que padroniza |
+|---|---|
+| ISO/IEC 25010 | Atributos de qualidade de software: manutenibilidade, confiabilidade, performance, segurança, usabilidade |
+| ISO/IEC 27001 | Controles de segurança da informação no nível de organização |
+| ISO/IEC 27035 | Resposta a incidentes: detecção, contenção, erradicação, pós-mortem |
+| **OWASP ASVS** (Open Worldwide Application Security Project, Projeto Aberto Mundial de Segurança de Aplicações, Application Security Verification Standard, Padrão de Verificação de Segurança de Aplicação) | Checklist de requisitos de segurança de aplicação com níveis de maturidade |
+| OWASP Top 10 | Lista das dez classes de vulnerabilidade mais comuns em aplicações web |
+
+**Versionamento e entrega**
+
+| Norma | O que padroniza |
+|---|---|
+| **SemVer 2.0.0** (Semantic Versioning, Versionamento Semântico) | Formato `MAJOR.MINOR.PATCH` com regras de incremento conforme o tipo de mudança |
+| **Conventional Commits** (Commits Convencionais) | Prefixos padronizados em mensagens de commit: `feat:`, `fix:`, `docs:`, `chore:` |
+| Keep a Changelog | Estrutura do `CHANGELOG.md`: `Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`, `Security` |
+
+Norma é ponto de referência, não dogma. Um projeto pode divergir quando existe motivo concreto, e
+o desvio tem o mesmo valor da conformidade desde que registrado em um **ADR**. O que não é aceitável
+é divergir por inércia, sem decisão documentada. Nesse ponto, quem chega depois não consegue
+distinguir escolha deliberada de acidente histórico, e o custo cai sobre o time inteiro.
+
 ## Code Review como Governança
 
 Code review é o ponto onde governança se encontra com execução. Uma revisão que verifica apenas bugs
