@@ -28,6 +28,7 @@
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
+[![IA](https://img.shields.io/badge/IA-LLM%20%7C%20RAG%20%7C%20MCP%20%7C%20Agents-FF6B2B)](docs/shared/ai/README.md)
 
 </div>
 
@@ -208,6 +209,21 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Integrations](docs/shared/platform/integrations.md) | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial |
 | [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
 | [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |
+
+<br>
+
+**IA (Inteligência Artificial)** — modelos, agentes e integração com LLMs
+
+| Tópico | Descrição |
+| --- | --- |
+| [Modelos](docs/shared/ai/models.md) | Modelos cloud (Claude, GPT, Gemini, Llama, Mistral), modelos locais (Ollama, LM Studio) e quantização |
+| [Agentes](docs/shared/ai/agents.md) | Agent, Harness, Orchestration, Multi-agent e Memory |
+| [RAG](docs/shared/ai/rag.md) | Retrieval-Augmented Generation, Embeddings, Vector store e Chunking |
+| [Tool Use e MCP](docs/shared/ai/tools-mcp.md) | Tool Use, Function Calling e MCP Protocol |
+| [Tokens](docs/shared/ai/tokens.md) | Token, Context window, Custo e Prompt Caching |
+| [Engenharia de Prompts](docs/shared/ai/prompts.md) | Estrutura de prompt e exemplos BAD/GOOD para eficiência |
+| [Skills](docs/shared/ai/skills.md) | Skills como capacidades de agentes: routing, loading, composição e boas práticas |
+| [Conceitos Avançados](docs/shared/ai/advanced.md) | Fine-tuning, Hallucination, Structured outputs, Extended thinking, Inference engines e AI Gateway |
 
 </details>
 

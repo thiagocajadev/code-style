@@ -354,5 +354,5 @@ SPEC → PLAN → CODE → TEST → END
 
 O benefício central é custo de decisão: rever uma spec é grátis; rever código já implementado tem custo de entendimento, reescrita e reteste. Decisões de design tomadas na spec chegam ao código com clareza de intenção.
 
-> Este guia segue SDD. O ciclo de governança em `.ai/` é uma implementação direta desse padrão.
+> Este guia segue SDD. Referência completa do padrão: [specdrivenguide.org](https://specdrivenguide.org/).
 

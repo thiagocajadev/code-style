@@ -23,6 +23,8 @@ Sistemas reais raramente consomem apenas JSON sobre HTTP. Configuração de ferr
 | **CT-e** (Conhecimento de Transporte eletrônico) | Documento fiscal para transporte de cargas; mesmo modelo XML/SEFAZ da NF-e |
 | **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra) | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios |
 | **RS-232** (Recommended Standard 232) | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
+| **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor) | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM |
+| **LLM API** | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto |
 
 ---
 
@@ -421,6 +423,90 @@ function readWeight(path = 'COM3') {
 
 ---
 
+## APIs de Modelos de IA (LLM APIs)
+
+APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias: cobrança por token, respostas incrementais via streaming e rate limits por minuto. Ignorar essas três dimensões gera custo desnecessário, UX ruim e falhas em produção.
+
+### Autenticação
+
+A API key nunca entra no código. Ela é resolvida via variável de ambiente na inicialização da aplicação.
+
+```bad
+const client = new Anthropic({ apiKey: "sk-ant-..." });
+```
+
+```good
+const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+```
+
+Ver [security.md](security.md) para gestão de segredos.
+
+### Streaming
+
+LLMs geram tokens incrementalmente. Sem streaming, o cliente espera o response completo antes de renderizar — latência percebida alta para respostas longas. Com streaming, o primeiro token chega em milissegundos.
+
+```bad
+const message = await client.messages.create({
+  model: "claude-sonnet-4-6",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: prompt }],
+});
+
+console.log(message.content[0].text);
+```
+
+```good
+const stream = client.messages.stream({
+  model: "claude-sonnet-4-6",
+  max_tokens: 1024,
+  messages: [{ role: "user", content: prompt }],
+});
+
+for await (const chunk of stream) {
+  if (chunk.type === "content_block_delta") {
+    process.stdout.write(chunk.delta.text);
+  }
+}
+```
+
+### Rate limits e retries
+
+APIs de LLM impõem rate limits por minuto (RPM) e por token (TPM). Erros `429 Too Many Requests` são esperados em produção e devem ser tratados com **exponential backoff** (recuo exponencial).
+
+```bad
+const response = await fetch(apiUrl, options);
+
+if (!response.ok) {
+  throw new Error("API error");
+}
+```
+
+```good
+async function callWithRetry(requestFn, maxAttempts = 3) {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await requestFn();
+
+    if (response.status !== 429) {
+      return response;
+    }
+
+    const delayMs = Math.pow(2, attempt) * 1000;
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+
+  throw new Error("Rate limit exceeded after retries");
+}
+```
+
+### Boas práticas
+
+- **Abstrair o provider**: encapsular a chamada atrás de uma função de domínio. Trocar de provedor não deve tocar em lógica de negócio.
+- **Estimar tokens antes de enviar**: prompts muito grandes retornam erro `400`. Truncar contexto ou usar chunking antes da chamada.
+- **Logar input/output tokens**: custo é proporcional ao volume de tokens. Sem log, não há visibilidade de gasto por feature ou por usuário.
+- **Timeout explícito**: respostas de LLM podem demorar dezenas de segundos. Definir timeout protege contra hanging requests.
+
+---
+
 ## Referência rápida
 
 | Formato / Protocolo | Contexto comum | Cuidado principal |
@@ -433,3 +519,4 @@ function readWeight(path = 'COM3') {
 | **Fixed-width** | CNAB 240/400, SINTEGRA | Layout como objeto com `pos` e `len`; nunca `slice` com números soltos |
 | **ZPL** | Impressoras Zebra (etiquetas, romaneios) | Template isolado; enviar via TCP porta 9100 ou porta serial |
 | **RS-232** | Balanças, leitores, equipamentos industriais | Timeout obrigatório; fechar porta em todos os caminhos |
+| **LLM API** | Geração de texto, código e decisões com modelos de IA | API key via env var; streaming para UX; retry com backoff em 429 |

@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-04-22
+
+### Added
+
+- `docs/shared/ai/` — nova seção transversal de IA com 9 arquivos: README (índice + nota sobre o que IA realmente é), models.md (Claude/GPT/Gemini/Llama/Mistral + Ollama + quantização GGUF), agents.md (Agent, Harness, Orchestration, Multi-agent, Memory), rag.md (RAG, Embeddings, Vector store, Chunking, variações), tools-mcp.md (Tool Use, Function Calling, MCP Protocol spec 2025-11-25), tokens.md (token, context window, custo por token com preços verificados, Prompt Caching), prompts.md (engenharia de prompts com 6 pares BAD/GOOD em details/summary), skills.md (Skills/Habilidades de agentes: routing, loading, composição), advanced.md (Fine-tuning, Hallucination com BAD/GOOD, Structured outputs, Extended thinking, Inference engines, AI Gateway com ferramentas atualizadas para 2026)
+- `docs/shared/platform/integrations.md` — seção `## APIs de Modelos de IA` com BAD/GOOD para autenticação, streaming e retry com exponential backoff
+- `README.md` — badge IA + seção `**IA (Inteligência Artificial)**` na tabela de Conceitos Compartilhados
+- `docs/shared/architecture/patterns.md` — link para specdrivenguide.org substituindo referência ao `.ai/`
+
 ## [1.13.1] - 2026-04-22
 
 ### Fixed
