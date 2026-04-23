@@ -1,6 +1,7 @@
 # API Design
 
-> Escopo: VB.NET. Visão transversal: [shared/architecture/architecture.md](../../../shared/architecture/architecture.md).
+> Escopo: VB.NET. Idiomas Web API 2 deste arquivo.
+> SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
 VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para APIs HTTP. Não há Minimal API (exige .NET 6+) nem primary constructors (exige C# 12). O design continua valendo: controller fino, handler por operação, DTOs imutáveis, envelope consistente.
 
@@ -193,30 +194,14 @@ End Class
 
 </details>
 
-## Request e Response
+## Contrato, envelope, verbos e status codes
 
-**DTOs** (Data Transfer Objects, objetos de transferência de dados) definem o contrato da API. Tipos de domínio não vazam para fora: a API recebe e devolve tipos próprios. Em VB.NET sobre .NET Framework 4.8 não há `record`; o equivalente idiomático é a **classe imutável** com propriedades `ReadOnly` inicializadas no construtor.
+Pipeline de API, DTOs de Request/Response, envelope `ApiResponse(Of T)` com `{ Data, Meta }`,
+verbos REST, status codes e mapeamento de `Result(Of T)` para HTTP são agnósticos. A SSOT fica em
+[shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-### Request
-
-<details>
-<summary>❌ Bad — classe mutável, contrato implícito</summary>
-<br>
-
-```vbnet
-Public Class OrderRequest
-    Public Property ProductId As String
-    Public Property Quantity As Integer
-End Class
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — classe imutável, contrato explícito</summary>
-<br>
+Em VB.NET sobre .NET Framework 4.8 não há `record`; o equivalente idiomático é a **classe imutável**
+com propriedades `ReadOnly` inicializadas no construtor, e o envelope é montado no controller:
 
 ```vbnet
 Public NotInheritable Class OrderRequest
@@ -229,123 +214,7 @@ Public NotInheritable Class OrderRequest
         Me.Quantity = quantity
     End Sub
 End Class
-```
 
-</details>
-
-### Response
-
-<details>
-<summary>❌ Bad — entidade de domínio exposta diretamente</summary>
-<br>
-
-```vbnet
-Public Async Function HandleAsync(id As Guid) As Task(Of Result(Of Order))
-    Dim order = Await _orderService.FindOrderByIdAsync(id)
-    Dim success = Result(Of Order).Success(order) ' ❌ expõe Order (entidade de domínio)
-
-    Return success
-End Function
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — DTO imutável dedicado ao contrato externo</summary>
-<br>
-
-```vbnet
-Public NotInheritable Class OrderResponse
-
-    Public ReadOnly Property Id As Guid
-    Public ReadOnly Property ProductId As String
-    Public ReadOnly Property Quantity As Integer
-    Public ReadOnly Property Total As Decimal
-    Public ReadOnly Property CreatedAt As DateTime
-
-    Public Sub New(id As Guid,
-                   productId As String,
-                   quantity As Integer,
-                   total As Decimal,
-                   createdAt As DateTime)
-        Me.Id = id
-        Me.ProductId = productId
-        Me.Quantity = quantity
-        Me.Total = total
-        Me.CreatedAt = createdAt
-    End Sub
-End Class
-
-Public Class FindOrderByIdHandler
-
-    Private ReadOnly _orderService As OrderService
-
-    Public Sub New(orderService As OrderService)
-        _orderService = orderService
-    End Sub
-
-    Public Async Function HandleAsync(id As Guid) As Task(Of Result(Of OrderResponse))
-        Dim serviceResult = Await _orderService.FindOrderByIdAsync(id)
-        If Not serviceResult.IsSuccess Then
-            Dim failure = Result(Of OrderResponse).Fail(serviceResult.ErrorMessage)
-            Return failure
-        End If
-
-        Dim order = serviceResult.Value
-        Dim orderResponse = New OrderResponse(
-            order.Id,
-            order.ProductId,
-            order.Quantity,
-            order.Total,
-            order.CreatedAt)
-
-        Dim success = Result(Of OrderResponse).Success(orderResponse)
-
-        Return success
-    End Function
-End Class
-```
-
-</details>
-
-## Response Envelope
-
-Respostas sem envelope têm shapes inconsistentes: sucesso retorna objeto nu, erro retorna string, lista retorna array. Cada shape exige tratamento separado no cliente.
-
-Um envelope `{ Data, Meta }` garante contrato previsível. O campo `Meta` carrega apenas o que ajuda na observabilidade, sem inflar o payload. A montagem do envelope pertence ao controller (boundary HTTP) — o handler continua devolvendo domínio puro.
-
-<details>
-<summary>❌ Bad — shapes inconsistentes entre sucesso e erro</summary>
-<br>
-
-```vbnet
-Public Async Function FindById(id As Guid) As Task(Of IHttpActionResult)
-    Dim result = Await _findOrderById.HandleAsync(id)
-    If Not result.IsSuccess Then
-        Dim notFound = Content(HttpStatusCode.NotFound, "Order not found.") ' ❌ string solta
-        Return notFound
-    End If
-
-    Dim response = Ok(result.Value) ' ❌ objeto nu, sem envelope
-
-    Return response
-End Function
-' 200: { "id": "01HV...", "productId": "...", "quantity": 3 }
-' 404: "Order not found."
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — envelope construído no controller, handler permanece puro</summary>
-<br>
-
-```vbnet
-' Shared/ApiResponse.vb
 Public NotInheritable Class ApiMeta
 
     Public ReadOnly Property CorrelationId As String
@@ -368,66 +237,6 @@ Public NotInheritable Class ApiResponse(Of T)
     End Sub
 End Class
 ```
-
-```vbnet
-' Features/Orders/OrdersController.vb
-<HttpGet>
-<Route("{id:guid}")>
-Public Async Function FindById(id As Guid) As Task(Of IHttpActionResult)
-    Dim result = Await _findOrderById.HandleAsync(id)
-    If Not result.IsSuccess Then
-        Dim notFound = NotFound()
-        Return notFound
-    End If
-
-    Dim correlationHeader = Request.Headers.GetValues("X-Correlation-Id").FirstOrDefault()
-    Dim correlationId = If(correlationHeader, String.Empty)
-
-    Dim meta = New ApiMeta(correlationId, DateTimeOffset.UtcNow)
-    Dim apiResponse = New ApiResponse(Of OrderResponse)(result.Value, meta)
-
-    Dim response = Ok(apiResponse)
-
-    Return response
-End Function
-' 200: { "data": { "id": "01HV...", ... }, "meta": { "correlationId": "abc-123", "requestedAt": "2026-04-19T14:32:00Z" } }
-' 404: (sem corpo)
-```
-
-O `CorrelationId` em `Meta` é o mesmo propagado nos logs da requisição.
-Veja [Correlation ID](./observability.md#correlation-id).
-
-</details>
-
-## Verbos e rotas
-
-| Verbo | Semântica | Exemplo |
-| --- | --- | --- |
-| `GET` | Leitura sem efeito colateral | `GET /api/orders`, `GET /api/orders/{id}` |
-| `POST` | Criação de recurso | `POST /api/orders` |
-| `PUT` | Substituição completa | `PUT /api/orders/{id}` |
-| `PATCH` | Atualização parcial | `PATCH /api/orders/{id}` |
-| `DELETE` | Remoção | `DELETE /api/orders/{id}` |
-
-- Rotas em kebab-case: `/api/order-items`, não `/api/orderItems`
-- Plural para coleções: `/api/orders`, não `/api/order`
-- Sem verbo na rota: `POST /api/orders`, não `POST /api/create-order`
-
-## Status codes
-
-| Status | Quando usar |
-| --- | --- |
-| `200 OK` | Leitura ou operação bem-sucedida com corpo de resposta |
-| `201 Created` | Recurso criado; incluir id ou `Location` no corpo |
-| `204 No Content` | Operação bem-sucedida sem corpo (ex: DELETE) |
-| `400 Bad Request` | Input inválido (erro do cliente) |
-| `401 Unauthorized` | Não autenticado |
-| `403 Forbidden` | Autenticado mas sem permissão |
-| `404 Not Found` | Recurso não encontrado |
-| `409 Conflict` | Estado incompatível (ex: duplicata) |
-| `422 Unprocessable Entity` | Input válido mas regra de negócio violada |
-| `429 Too Many Requests` | Rate limit atingido |
-| `500 Internal Server Error` | Falha inesperada; nunca expor detalhes ao cliente |
 
 ## Roteamento por atributo
 

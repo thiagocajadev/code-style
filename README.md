@@ -200,6 +200,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 | Tópico | Descrição |
 | --- | --- |
+| [API Design](docs/shared/platform/api-design.md) | Pipeline BFF, contratos Request/Response, envelope padrão, verbos REST, status codes e Result → HTTP |
 | [Security](docs/shared/platform/security.md) | Segredos, configuração em camadas, autorização e blindagem de cookies |
 | [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast |
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida |

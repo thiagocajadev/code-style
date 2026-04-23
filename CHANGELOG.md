@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-04-23
+
+### Added
+
+- `docs/shared/platform/api-design.md` — novo SSOT do pipeline de API: BFF como boundary, pipeline linear (Controller thin → Handler → Service → Repository → Storage), Conceitos fundamentais (BFF, DTO, Envelope, Correlation ID, Result, Idempotência), contratos Request/Response com DTO e validação de schema, envelope `{ data, meta }` com shape padrão e tabela de campos, verbos REST e convenções de rota (kebab-case, plural, sem verbo na URL), status codes com distinção 400 vs 422, mapeamento Result → HTTP no boundary com tabela de códigos. Exemplos BAD/GOOD em JS
+
+### Changed
+
+- `docs/csharp/conventions/advanced/api-design.md` — seções `## Request e Response`, `## Response Envelope`, `## Verbos e rotas` e `## Status codes` removidas (agora SSOT em shared/platform/api-design.md); adicionada seção `## Contrato, envelope, verbos e status codes` com idioma C# (`record` com `required init`) e cross-link. Blockquote de escopo atualizado
+- `docs/vbnet/conventions/advanced/api-design.md` — mesmas seções agnósticas removidas; adicionada seção com idioma VB.NET (`NotInheritable Class` com `ReadOnly` e construtor) e cross-link. Blockquote de escopo atualizado
+- `README.md` — linha `API Design` adicionada na tabela Platform, entre o índice de Plataforma
+
 ## [1.14.2] - 2026-04-23
 
 ### Fixed
