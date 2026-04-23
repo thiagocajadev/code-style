@@ -1,12 +1,13 @@
 {
   "name": "code-style",
-  "version": "1.17.0",
+  "version": "1.17.1",
   "private": true,
   "type": "module",
   "scripts": {
     "bump": "bumpp --no-commit --no-tag --no-push",
     "prune": "node .ai/tooling/scripts/prune-backlog.mjs --keep 3",
     "audit:docs": "node .ai/tooling/scripts/audit-docs.mjs",
+    "audit:pedagogy": "node .ai/tooling/scripts/audit-pedagogy.mjs",
     "test:docs": "node --test .ai/tooling/scripts/audit-docs.test.mjs"
   },
   "devDependencies": {

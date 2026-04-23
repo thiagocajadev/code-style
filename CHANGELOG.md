@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.1] - 2026-04-23
+
+### Added
+
+- `.ai/tooling/scripts/audit-pedagogy.mjs` — auditor reusável de estrutura pedagógica em `docs/` (5 regras: R1 intro paragraph após H1, R2 `## Conceitos fundamentais` + tabela `\| Conceito \| O que é \|` quando há 3+ termos em inglês, R3 sigla na 1ª ocorrência `**SIGLA** (English, PT)`, R3b não-sigla `**termo** (tradução)`, R4 títulos com expansão completa). Catálogo embutido de ~100 siglas + ~50 termos. Filtros de ruído: code fences, tabelas (exceto intro válida), headings, blockquotes, cross-link items, backticks inline e expansões de outras siglas
+- `.ai/backlog/audit-pedagogical-structure.md` — relatório de gaps por pasta: 330 gaps em 136 arquivos (de 182 auditáveis). Distribuição: R1×25, R2×18, R3×248, R3b×38, R4×1. Top 10 arquivos por densidade. Serve como input para ciclos `docs:` de correção
+- `package.json` — script `audit:pedagogy`
+
 ## [1.17.0] - 2026-04-23
 
 ### Added
