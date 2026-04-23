@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.1] - 2026-04-22
+
+### Added
+
+- `docs/shared/process/git-advanced.md` — novo arquivo transversal: rotina convencional com tabela de passos (pull → branch → commits → fetch/merge → PR → squash → deletar), squash no PR (GitHub Squash and merge + BAD/GOOD), DX no PR (tabela reviewer), troubleshooting semântico (O que não fazer, Inspecionando, Stash, Conflitos com a main, Recuperando commits via Reflog, Rebase como recuperação, Conflitos graves com fix branch, Corrigindo em produção, Revertendo deploy com git revert + tabela explicativa)
+- `docs/shared/process/git.md` — linha squash na tabela de PRs + cross-link para git-advanced.md
+
 ## [1.14.0] - 2026-04-22
 
 ### Added

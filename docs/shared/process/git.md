@@ -146,5 +146,6 @@ Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de mó
 | Review obrigatório                                        | Ninguém faz `merge` do próprio PR sem aprovação                                                  |
 | Checks (verificações automatizadas) verdes antes do merge | CI/CD valida antes de tocar a `main`                                                             |
 | Merge na `main` diretamente                               | Sem branches de longa vida (develop, staging, release)                                           |
+| Squash antes do merge                                     | Um commit por PR mantém o histórico legível e viabiliza debug com `git bisect` (busca binária de regressão) |
 
-Deploy, release, ambientes e fix forward: [ci-cd.md](ci-cd.md).
+Rotina diária, rebase, squash e troubleshooting: [git-advanced.md](git-advanced.md). Deploy, release, ambientes e fix forward: [ci-cd.md](ci-cd.md).

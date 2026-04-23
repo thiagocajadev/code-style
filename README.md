@@ -163,6 +163,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Governance](docs/shared/process/governance.md) | Pensamento de staff engineer, SDLC, onboarding e governança do projeto |
 | [Methodologies](docs/shared/process/methodologies.md) | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
 | [Git](docs/shared/process/git.md) | Branches, commits, pull requests e estratégia de entrega |
+| [Git (avançado)](docs/shared/process/git-advanced.md) | Rotina convencional, squash, DX no PR e troubleshooting |
 | [CI/CD](docs/shared/process/ci-cd.md) | Pipeline, deploy vs release, feature flags, TBD e fix forward |
 
 <br>
