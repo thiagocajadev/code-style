@@ -62,7 +62,6 @@ const ORDER_LABELS: Record<OrderStatus, string> = {
 
 function getLabel(status: OrderStatus): string {
   const label = ORDER_LABELS[status];
-
   return label;
 }
 ```

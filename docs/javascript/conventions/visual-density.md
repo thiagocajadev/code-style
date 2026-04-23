@@ -4,7 +4,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 ## A regra central
 
-**Máximo 2 linhas consecutivas por grupo.** Linhas relacionadas ficam juntas. Passos distintos são separados por exatamente uma linha em branco.
+**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Bad — denso demais: todos os passos colados</summary>
@@ -28,7 +28,7 @@ async function registerUser(input) {
 <br>
 
 <details>
-<summary>✅ Good — passos separados, no máximo 2 linhas por grupo</summary>
+<summary>✅ Good — fases visíveis, no máximo 2 linhas por grupo</summary>
 <br>
 
 ```js
@@ -49,24 +49,19 @@ async function registerUser(input) {
 
 </details>
 
-## `return` sempre separado
+## Explaining Return: par tight
 
-O `return` encerra uma função. Visualmente, ele pertence a um parágrafo próprio quando há mais de um passo antes dele.
+Uma `const` nomeada acima do `return` explica o valor retornado. Quando há **apenas esse passo** antes do `return`, os dois formam par de 2 linhas sem blank. A linha em branco separa o par do que vem antes, não fragmenta o par.
 
 <details>
-<summary>❌ Bad — return colado ao último passo</summary>
+<summary>❌ Bad — blank fragmenta o par</summary>
 <br>
 
 ```js
-function formatOrderDate(isoString, locale = "pt-BR") {
-  const date = new Date(isoString);
-  const formattedDate = new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    timeZone: "America/Sao_Paulo",
-  }).format(date);
-  return formattedDate;
+function mapErrorToStatus(error) {
+  const status = errorStatusByCode[error.code] ?? 500;
+
+  return status;
 }
 ```
 
@@ -75,18 +70,36 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 <br>
 
 <details>
-<summary>✅ Good — return separado do último passo</summary>
+<summary>✅ Good — par tight</summary>
+<br>
+
+```js
+function mapErrorToStatus(error) {
+  const status = errorStatusByCode[error.code] ?? 500;
+  return status;
+}
+```
+
+</details>
+
+## Return separado: quando há 2+ passos antes
+
+Quando há dois ou mais passos distintos antes do `return`, o blank line marca a transição do "preparar" para o "entregar".
+
+<details>
+<summary>✅ Good — 3 passos antes do return</summary>
 <br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
-  const date = new Date(isoString);
-  const formattedDate = new Intl.DateTimeFormat(locale, {
+  const parsedDate = new Date(isoString);
+  const formatter = new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     timeZone: "America/Sao_Paulo",
-  }).format(date);
+  });
+  const formattedDate = formatter.format(parsedDate);
 
   return formattedDate;
 }
@@ -104,7 +117,7 @@ function findPendingOrders(userId) {
 
 ## Declaração + guarda = 1 grupo
 
-Uma variável seguida do seu `if` de guarda formam um par semântico. A linha em branco vem **depois** do par, nunca entre eles.
+Uma variável seguida do seu `if` de guarda formam par semântico. A linha em branco vem **depois** do par, nunca entre eles.
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
@@ -134,12 +147,101 @@ const invoice = buildInvoice(order);
 
 </details>
 
-## 3 linhas viram 2+1, 4 linhas viram 2+2
+## Órfão de 1 linha: pior que trio atômico
 
-Quando um bloco tem 3 ou 4 linhas relacionadas sem nenhuma separação, quebre no meio.
+Três declarações simples consecutivas (const, let, var) formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Bad — 3 linhas coladas</summary>
+<summary>❌ Bad — órfão entre blanks</summary>
+<br>
+
+```js
+const MINIMUM_DRIVING_AGE = 18;
+const ORDER_STATUS_APPROVED = 2;
+
+const ONE_DAY_MS = 86_400_000;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — trio tight</summary>
+<br>
+
+```js
+const MINIMUM_DRIVING_AGE = 18;
+const ORDER_STATUS_APPROVED = 2;
+const ONE_DAY_MS = 86_400_000;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — 4 atomics viram 2+2</summary>
+<br>
+
+```js
+const MINIMUM_DRIVING_AGE = 18;
+const ORDER_STATUS_APPROVED = 2;
+
+const ONE_DAY_MS = 86_400_000;
+const MAX_RETRY_ATTEMPTS = 3;
+```
+
+</details>
+
+## Par semântico encadeado
+
+Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam par. A quebra natural fica antes do par, não entre ele e sua dependência direta.
+
+<details>
+<summary>❌ Bad — dependência direta partida</summary>
+<br>
+
+```js
+function buildShippingLabel(order) {
+  const fullName = `${order.customer.firstName} ${order.customer.lastName}`;
+  const addressLine = `${order.address.street}, ${order.address.number}`;
+
+  const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
+
+  const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
+  return label;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — par semântico tight</summary>
+<br>
+
+```js
+function buildShippingLabel(order) {
+  const fullName = `${order.customer.firstName} ${order.customer.lastName}`;
+  const addressLine = `${order.address.street}, ${order.address.number}`;
+
+  const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
+  const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
+
+  return label;
+}
+```
+
+</details>
+
+## 2+1 dentro de blocos curtos
+
+Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não são todas atômicas homogêneas.
+
+<details>
+<summary>❌ Bad — 3 linhas heterogêneas coladas</summary>
 <br>
 
 ```js
@@ -155,7 +257,7 @@ while (attempt < maxAttempts) {
 <br>
 
 <details>
-<summary>✅ Good — 2+1</summary>
+<summary>✅ Good — declaração + guarda em par, incremento separado</summary>
 <br>
 
 ```js
@@ -171,7 +273,7 @@ while (attempt < maxAttempts) {
 
 ## Fases de um método
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter no máximo 2 linhas antes de um respiro.
+Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível.
 
 <details>
 <summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
@@ -211,7 +313,7 @@ async function createUserHandler(request, response) {
 
 ## Testes: expect como fase própria
 
-O `expect` é uma fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado. Setup (arrange + act + expected) fica compacto em um grupo; assertion fica no próprio parágrafo.
+O `expect` é fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
@@ -248,7 +350,7 @@ it('applies percentage discount to order price', () => {
 
 ## Strings longas
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado: o template final fica legível e os pedaços ganham semântica.
+Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>

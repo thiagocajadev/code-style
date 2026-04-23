@@ -203,7 +203,6 @@ async function fetchTeamsWithPlayers(teamIds) {
   ];
 
   const teamsWithPlayers = await teamsCollection.aggregate(pipeline).toArray();
-
   return teamsWithPlayers;
 }
 ```

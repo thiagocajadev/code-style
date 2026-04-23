@@ -81,7 +81,6 @@ function processOrder(order) {
   if (!order.customer) return;
 
   const invoice = process(order);
-
   return invoice;
 }
 ```
@@ -214,7 +213,6 @@ const STATUS_LABELS = {
 
 function getStatusLabel(status) {
   const label = STATUS_LABELS[status] ?? "Unknown";
-
   return label;
 }
 ```

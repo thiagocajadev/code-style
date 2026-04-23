@@ -32,7 +32,6 @@ function applyDiscount(order, calculateDiscount) {
   if (order.customer.defaulted) return null;
 
   const discountedOrder = calculateDiscount(order);
-
   return discountedOrder;
 }
 ```

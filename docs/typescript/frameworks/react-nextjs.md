@@ -328,7 +328,6 @@ export async function listOrders(): Promise<OrderView[]> {
   if (!result.success) return [];
 
   const orderViews = result.data.map(toOrderView);
-
   return orderViews;
 }
 ```
@@ -429,7 +428,6 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   }
 
   const nextResponse = NextResponse.next();
-
   return nextResponse;
 }
 
@@ -748,7 +746,6 @@ export async function getCachedOrders(): Promise<Order[]> {
   cacheTag("orders");
 
   const orders = await orderRepository.listAll();
-
   return orders;
 }
 ```

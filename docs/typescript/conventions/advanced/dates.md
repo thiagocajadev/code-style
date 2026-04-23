@@ -142,7 +142,6 @@ function parseOrderDate(raw: unknown) {
 ```ts
 function parseIsoDate(isoString: IsoTimestamp): Date {
   const date = new Date(isoString);
-
   return date;
 }
 

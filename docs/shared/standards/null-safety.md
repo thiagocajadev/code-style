@@ -61,7 +61,6 @@ function calculateDiscount(order) {
 ```js
 function calculateDiscount(order) {
   const discount = order.total * order.discountRate;
-
   return discount;
 }
 ```

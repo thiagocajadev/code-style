@@ -32,13 +32,11 @@ export async function findUserById(id: string) {
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
   const user = await userRepository.findById(id);
-
   return user;
 }
 
 export async function createOrder(input: CreateOrderInput): Promise<Order> {
   const order = await orderRepository.create(input);
-
   return order;
 }
 ```
@@ -137,7 +135,6 @@ function createApiClient(baseUrl: string, token: string): ApiClient {
     });
 
     const body = await response.json() as TResponse;
-
     return body;
   }
 
@@ -152,12 +149,10 @@ function createApiClient(baseUrl: string, token: string): ApiClient {
     });
 
     const result = await response.json() as TResponse;
-
     return result;
   }
 
   const client: ApiClient = { get, post };
-
   return client;
 }
 ```
@@ -166,14 +161,12 @@ function createApiClient(baseUrl: string, token: string): ApiClient {
 // user.service.ts
 async function fetchUser(apiClient: ApiClient, id: string): Promise<User> {
   const user = await apiClient.get<User>(`/users/${id}`);
-
   return user;
 }
 
 // order.service.ts
 async function createOrder(apiClient: ApiClient, input: CreateOrderInput): Promise<Order> {
   const order = await apiClient.post<CreateOrderInput, Order>("/orders", input);
-
   return order;
 }
 ```
@@ -219,7 +212,6 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
   });
 
   const enrichedOrders = await Promise.all(enrichmentTasks);
-
   return enrichedOrders;
 }
 ```

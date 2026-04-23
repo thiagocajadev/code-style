@@ -40,7 +40,6 @@ public string ExtractProductCode(string sku)
     var separatorIndex = span.IndexOf('-');
 
     var code = span[..separatorIndex].ToString();
-
     return code;
 }
 ```
@@ -133,7 +132,6 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
     }
 
     var summary = builder.ToString();
-
     return summary;
 }
 ```
@@ -157,7 +155,6 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
         return cached;
 
     var product = await _repo.FindByIdAsync(id, ct);
-
     return product;
 }
 ```
@@ -177,7 +174,6 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
         return cached;
 
     var product = await _repo.FindByIdAsync(id, ct);
-
     return product;
 }
 ```

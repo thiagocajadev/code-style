@@ -1,14 +1,12 @@
 # Visual density: TypeScript
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript.
-Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript. Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração.
 
 > Base JavaScript: [javascript/conventions/visual-density.md](../../javascript/conventions/visual-density.md)
 
 ## A regra central
 
-**Máximo 2 linhas consecutivas por grupo.** Passos distintos são separados por exatamente uma
-linha em branco. Anotações de tipo não contam como passo separado.
+**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2. Anotações de tipo não contam como passo separado.
 
 <details>
 <summary>❌ Bad — todos os passos colados</summary>
@@ -53,18 +51,19 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 
 </details>
 
-## return sempre separado
+## Explaining Return: par tight
+
+Quando há **apenas um passo** antes do `return`, os dois formam par de 2 linhas sem blank.
 
 <details>
-<summary>❌ Bad — return colado ao último passo</summary>
+<summary>❌ Bad — blank fragmenta o par</summary>
 <br>
 
 ```ts
-function buildOrderSummary(order: Order): OrderSummary {
-  const itemCount = order.items.length;
-  const totalFormatted = formatCurrency(order.total);
-  const summary: OrderSummary = { itemCount, totalFormatted, orderId: order.id };
-  return summary;
+function mapErrorToStatus(error: DomainError): number {
+  const status: number = errorStatusByCode[error.code] ?? 500;
+
+  return status;
 }
 ```
 
@@ -73,14 +72,28 @@ function buildOrderSummary(order: Order): OrderSummary {
 <br>
 
 <details>
-<summary>✅ Good — return separado do último passo</summary>
+<summary>✅ Good — par tight</summary>
+<br>
+
+```ts
+function mapErrorToStatus(error: DomainError): number {
+  const status: number = errorStatusByCode[error.code] ?? 500;
+  return status;
+}
+```
+
+</details>
+
+## Return separado: quando há 2+ passos antes
+
+<details>
+<summary>✅ Good — 3 passos antes do return</summary>
 <br>
 
 ```ts
 function buildOrderSummary(order: Order): OrderSummary {
   const itemCount = order.items.length;
   const totalFormatted = formatCurrency(order.total);
-
   const summary: OrderSummary = { itemCount, totalFormatted, orderId: order.id };
 
   return summary;
@@ -123,6 +136,55 @@ const order = await fetchOrder(orderId);
 if (!order) return;
 
 const invoice = buildInvoice(order);
+```
+
+</details>
+
+## Órfão de 1 linha: pior que trio atômico
+
+<details>
+<summary>❌ Bad — órfão entre blanks</summary>
+<br>
+
+```ts
+const MINIMUM_DRIVING_AGE: number = 18;
+const ORDER_STATUS_APPROVED: number = 2;
+
+const ONE_DAY_MS: number = 86_400_000;
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — trio tight</summary>
+<br>
+
+```ts
+const MINIMUM_DRIVING_AGE: number = 18;
+const ORDER_STATUS_APPROVED: number = 2;
+const ONE_DAY_MS: number = 86_400_000;
+```
+
+</details>
+
+## Par semântico encadeado
+
+<details>
+<summary>✅ Good — penúltima consumida pela última, par tight</summary>
+<br>
+
+```ts
+function buildShippingLabel(order: Order): string {
+  const fullName = `${order.customer.firstName} ${order.customer.lastName}`;
+  const addressLine = `${order.address.street}, ${order.address.number}`;
+
+  const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
+  const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
+
+  return label;
+}
 ```
 
 </details>

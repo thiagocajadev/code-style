@@ -36,7 +36,6 @@ public void SaveOrder(Order order)
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
-
     return order;
 }
 
@@ -137,7 +136,6 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
-
     return order;
 }
 

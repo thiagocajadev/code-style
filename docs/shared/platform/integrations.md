@@ -244,7 +244,6 @@ const CNAB240_HEADER = {
 
 function extractField(line, { pos, len }) {
   const field = line.slice(pos, pos + len);
-
   return field;
 }
 ```

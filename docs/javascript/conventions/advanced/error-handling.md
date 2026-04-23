@@ -266,7 +266,6 @@ function getUser(id) {
 ```js
 function getUser(id) {
   const user = userMap[id] ?? null;
-
   return user;
 }
 ```

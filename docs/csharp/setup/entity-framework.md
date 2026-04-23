@@ -332,7 +332,6 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
         .ToListAsync(ct);
 
     var result = new PagedResult<OrderSummary>(items, total, page, pageSize);
-
     return result;
 }
 ```

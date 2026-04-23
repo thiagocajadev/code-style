@@ -36,13 +36,11 @@ export function calculateInvoiceTotal(items: LineItem[]) {
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
   const user = await userRepository.findById(id);
-
   return user;
 }
 
 export function calculateInvoiceTotal(items: LineItem[]): number {
   const total = items.reduce((sum, item) => sum + item.price * item.qty, 0);
-
   return total;
 }
 ```

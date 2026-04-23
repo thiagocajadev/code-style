@@ -117,7 +117,6 @@ export function createOrderHandler({ orderService }) {
     const serviceResult = await orderService.createOrder(request);
     if (serviceResult.isFailure) {
       const failure = Result.fail(serviceResult.error);
-
       return failure;
     }
 
@@ -131,7 +130,6 @@ export function createOrderHandler({ orderService }) {
     };
 
     const success = Result.ok(orderResponse);
-
     return success;
   }
 
@@ -192,12 +190,10 @@ export function parseOrderRequest(body) {
   const parsed = orderRequestSchema.safeParse(body);
   if (!parsed.success) {
     const validation = Result.fail(parsed.error.issues);
-
     return validation;
   }
 
   const request = Result.ok(parsed.data);
-
   return request;
 }
 ```
@@ -256,7 +252,6 @@ async function handle(id) {
   const serviceResult = await orderService.findById(id);
   if (serviceResult.isFailure) {
     const failure = Result.fail(serviceResult.error);
-
     return failure;
   }
 
@@ -270,7 +265,6 @@ async function handle(id) {
   };
 
   const success = Result.ok(orderResponse);
-
   return success;
 }
 ```
@@ -445,7 +439,6 @@ export function findOrderByIdHandler({ orderService }) {
     const serviceResult = await orderService.findById(id);
     if (serviceResult.isFailure) {
       const failure = Result.fail(serviceResult.error);
-
       return failure;
     }
 
@@ -459,7 +452,6 @@ export function findOrderByIdHandler({ orderService }) {
     };
 
     const success = Result.ok(orderResponse);
-
     return success;
   }
 
@@ -497,7 +489,6 @@ const errorStatusByCode = {
 
 export function mapErrorToStatus(error) {
   const status = errorStatusByCode[error.code] ?? 500;
-
   return status;
 }
 ```

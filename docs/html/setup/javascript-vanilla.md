@@ -117,7 +117,6 @@ async function createOrder(orderData) {
   }
 
   const createdOrder = await orderResponse.json();
-
   return createdOrder;
 }
 ```

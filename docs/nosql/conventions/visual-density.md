@@ -44,7 +44,6 @@ async function findTeamById(teamId) {
   const projection = { name: 1, city: 1, foundedYear: 1, _id: 0 };
 
   const team = await teamsCollection.findOne(filter, { projection });
-
   return team;
 }
 
@@ -62,7 +61,6 @@ async function fetchTopScorers(season) {
   ];
 
   const topScorers = await matchesCollection.aggregate(pipeline).toArray();
-
   return topScorers;
 }
 ```
@@ -127,7 +125,6 @@ async function fetchActiveTeamsWithPlayerCount() {
   ];
 
   const teamsWithCount = await teamsCollection.aggregate(pipeline).toArray();
-
   return teamsWithCount;
 }
 ```

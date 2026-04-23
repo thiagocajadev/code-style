@@ -110,7 +110,6 @@ wait(3000); // aplicação trava por 3 segundos
 ```js
 function wait(ms) {
   const timer = new Promise((resolve) => setTimeout(resolve, ms));
-
   return timer;
 }
 
@@ -217,12 +216,10 @@ function createApiClient(baseUrl, token) {
     const response = await fetch(`${baseUrl}${path}`, fetchConfig);
 
     const body = await response.json();
-
     return body;
   }
 
   const client = { get };
-
   return client;
 }
 
@@ -279,7 +276,6 @@ function readConfig() {
 // banco de dados
 async function findUser(id) {
   const user = await database.query("SELECT * FROM users WHERE id = $1", [id]);
-
   return user;
 }
 
@@ -294,7 +290,6 @@ async function fetchRates() {
 // leitura de arquivo
 async function readConfig() {
   const config = await fs.promises.readFile("./config.json", "utf-8");
-
   return config;
 }
 ```

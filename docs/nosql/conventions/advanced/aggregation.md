@@ -89,7 +89,6 @@ async function fetchActiveTeamsWithPlayers() {
   ];
 
   const activeTeams = await teamsCollection.aggregate(pipeline).toArray();
-
   return activeTeams;
 }
 ```
@@ -144,7 +143,6 @@ async function computeTopScorersBySeason(season) {
   ];
 
   const topScorers = await matchEventsCollection.aggregate(pipeline).toArray();
-
   return topScorers;
 }
 ```
@@ -282,7 +280,6 @@ async function fetchTeamsWithOptionalPlayers() {
   ];
 
   const teamsWithPlayers = await teamsCollection.aggregate(pipeline).toArray();
-
   return teamsWithPlayers;
 }
 ```

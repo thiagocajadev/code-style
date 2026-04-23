@@ -357,7 +357,6 @@ private readonly Dictionary<string, string> _currencyByRegion = new()
 public string GetCurrencyCode(string region)
 {
     var currencyCode = _currencyByRegion.GetValueOrDefault(region, "USD");
-
     return currencyCode;
 }
 ```

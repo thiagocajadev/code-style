@@ -136,7 +136,6 @@ setTimeout(syncData, 86400000);
 ```js
 const MINIMUM_DRIVING_AGE = 18;
 const ORDER_STATUS_APPROVED = 2;
-
 const ONE_DAY_MS = 86_400_000;
 
 if (user.age >= MINIMUM_DRIVING_AGE) {

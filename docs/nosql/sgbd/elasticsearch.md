@@ -136,7 +136,6 @@ async function searchTeams(query) {
   });
 
   const teams = response.hits.hits.map((hit) => hit._source);
-
   return teams;
 }
 ```
@@ -154,7 +153,6 @@ async function findTeamsByCity(city) {
   });
 
   const teams = response.hits.hits.map((hit) => hit._source);
-
   return teams;
 }
 ```
@@ -209,7 +207,6 @@ async function searchActiveTeamsByCity(city, nameQuery) {
   });
 
   const teams = response.hits.hits.map((hit) => hit._source);
-
   return teams;
 }
 ```
@@ -232,7 +229,6 @@ async function findTeamsByFoundedPeriod(fromYear, toYear) {
   });
 
   const teams = response.hits.hits.map((hit) => hit._source);
-
   return teams;
 }
 ```
@@ -267,7 +263,6 @@ async function computeTeamStatsByCity() {
   });
 
   const cityBuckets = response.aggregations.by_city.buckets;
-
   return cityBuckets;
 }
 ```

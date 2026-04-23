@@ -194,7 +194,6 @@ public OrderSummary BuildSummary(Order order)
     var total = order.Items.Sum(item => item.Price * item.Quantity);
 
     var summary = new OrderSummary(order.Id, lines, total);
-
     return summary;
 }
 ```
@@ -211,14 +210,12 @@ public OrderSummary BuildSummary(Order order)
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
 {
     var pendingOrders = await _repository.FindByStatusAsync(userId, OrderStatus.Pending, ct);
-
     return pendingOrders;
 }
 
 public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken ct)
 {
     var invoice = await _checkoutService.ProcessAsync(cartId, ct);
-
     return invoice;
 }
 ```

@@ -31,7 +31,6 @@ function formatId(id: string | number): string {
 function formatId(id: string | number): string {
   if (typeof id === "number") {
     const formatted = id.toString().padStart(6, "0");
-
     return formatted;
   }
 

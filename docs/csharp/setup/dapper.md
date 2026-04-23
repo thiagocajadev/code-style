@@ -78,7 +78,6 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
         commandType: CommandType.StoredProcedure);
 
     var result = summaries.ToList();
-
     return result;
 }
 ```
@@ -129,7 +128,6 @@ public async Task<Guid> CreateAsync(Guid customerId, decimal total, Cancellation
         commandType: CommandType.StoredProcedure);
 
     var newId = parameters.Get<Guid>("NewId");
-
     return newId;
 }
 ```
@@ -303,7 +301,6 @@ public class OrderRepository(IDbConnection connection)
             commandType: CommandType.StoredProcedure);
 
         var result = summaries.ToList();
-
         return result;
     }
 }

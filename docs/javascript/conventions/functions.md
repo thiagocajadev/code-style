@@ -71,7 +71,6 @@ async function processOrder(orderId) {
   if (isInvalid(order)) return;
 
   const invoice = await issueInvoice(order);
-
   return invoice;
 
   function isInvalid(order) {
@@ -125,7 +124,6 @@ function buildOrderSummary(order) {
   const lineItems = buildLineItems(order);
 
   const summary = [header, lineItems].join("\n");
-
   return summary;
 
   function buildHeader(order) {
@@ -231,7 +229,6 @@ async function findProductById(id) {
 ```js
 async function findProductById(id) {
   const product = await fetchProduct(id);
-
   return product;
 
   async function fetchProduct(id) {
@@ -278,7 +275,6 @@ async function submitOrder(orderId) {
   const pricedOrder = applyPricing(order);
 
   const invoice = await persistOrder(pricedOrder);
-
   return invoice;
 }
 ```
@@ -320,7 +316,6 @@ function buildGreeting(user) {
 
 function getActiveUsers(users) {
   const activeUsers = users.filter((user) => user.isActive && !user.isBanned);
-
   return activeUsers;
 }
 ```
@@ -354,13 +349,11 @@ async function processCheckout(cartId) {
 ```js
 function findPendingOrders(userId) {
   const pendingOrders = orderRepository.findByStatus(userId, "pending");
-
   return pendingOrders;
 }
 
 async function processCheckout(cartId) {
   const invoice = await checkoutService.process(cartId);
-
   return invoice;
 }
 ```
@@ -614,7 +607,6 @@ function legacyTransform(items) {
 ```js
 function getStatus(value) {
   const status = value > 0 ? "active" : "inactive";
-
   return status;
 }
 ```

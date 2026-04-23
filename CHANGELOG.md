@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.16.0] - 2026-04-23
+
+### Fixed
+
+- `docs/shared/standards/visual-density.md` — SSOT refinado: nova regra "Explaining Return: par tight" (`const X = …; return X;` é par de 2 linhas sem blank entre declaração e return, blank antes do return só quando há 2+ passos antes); nova regra "Órfão de 1 linha: pior que trio atômico" (3 declarações atômicas consecutivas ficam juntas, 4+ viram 2+2); nova regra "Par semântico encadeado" (quando linha final depende da penúltima, ficam tight). Tabela de referência rápida reorganizada com 9 regras; BAD/GOOD em details/summary para cada refinamento
+- `docs/shared/platform/api-design.md` — 9 blocos Good ajustados: pares `Result.fail + return failure` e `Result.ok + return success` agora tight; `mapErrorToStatus` (`const status = … ?? 500; return status;`) tight. Multi-step (`buildErrorEnvelope` + 2 linhas) mantém blank antes do return
+- `docs/shared/platform/integrations.md` — `extractField` (CNAB240 fixed-width): par `const field = line.slice(...); return field;` tight
+- `docs/shared/platform/performance.md` — `findHighestScore` (Math.max O(n)): par tight
+- `docs/shared/standards/null-safety.md` — `calculateDiscount` com contrato garantido: par tight
+- `docs/javascript/conventions/visual-density.md` — reestruturado para refletir SSOT refinado: subseções "Explaining Return: par tight", "Return separado: quando há 2+ passos antes", "Órfão de 1 linha: pior que trio atômico", "Par semântico encadeado"; 6 novos BAD/GOOD pairs em details/summary
+- `docs/typescript/conventions/visual-density.md` — mesma estrutura refinada com exemplos TypeScript; anotações de tipo na mesma linha que a declaração
+- `docs/csharp/conventions/visual-density.md` — estrutura refinada com exemplos em C# 13/.NET 10; exemplo de `DomainLimits` com `public const` para trio atômico
+- `docs/vbnet/conventions/visual-density.md` — estrutura refinada com exemplos em VB.NET/.NET Framework 4.8; `Public Const` para trio atômico e `$"..."` strings de interpolação
+- `docs/javascript/conventions/` — 20 blocos Good ajustados em functions.md, advanced/async.md, advanced/null-safety.md, advanced/error-handling.md, advanced/performance.md, control-flow.md, naming.md, variables.md
+- `docs/typescript/conventions/` — 15 blocos Good ajustados em advanced/async.md, advanced/dates.md, advanced/performance.md, functions.md, narrowing.md; `docs/typescript/frameworks/` angular.md e react-nextjs.md também alinhados
+- `docs/csharp/conventions/` — 20 blocos Good ajustados em advanced/{async,null-safety,performance,validation}.md, control-flow.md, methods.md, types.md; `docs/csharp/setup/` dapper.md e entity-framework.md também alinhados
+- `docs/html/setup/javascript-vanilla.md` — 1 bloco ajustado (`createdOrder` tight)
+- `docs/nosql/conventions/` e `docs/nosql/sgbd/` — 16 blocos ajustados em aggregation.md, performance.md, visual-density.md, cassandra.md, elasticsearch.md, mongodb.md, redis.md
+
+### Added
+
+- `.ai/tooling/scripts/audit-docs.mjs` — 2 regras novas: `density-explaining-return-blank` (flagra blank entre declaração única e return, ignora multi-step) e `density-orphan-single-line` (flagra declaração atômica isolada após par de atomics; ignora quando seguida de guard clause ou código não atômico; requer todos os 3 atomics serem literais simples sem `await` ou function call, evitando falsos positivos em fases de execução). Helpers `isAtomicDeclaration`, `isDeclarationBoundary`, `isSimpleLiteralAtomic`. Suporta `const`, `let`, `var`, `Dim`, `final`, `readonly`
+- `.ai/tooling/scripts/audit-docs.test.mjs` — 6 testes novos cobrindo par tight aceito, blank em 1-prep flagrado, multi-step aceito, órfão atomic flagrado, split 2+2 aceito, fases com await aceitas. Total 23 testes passando
+- Audit `docs/` 100% limpo: 0 violações em 1220 blocos Good, 197 arquivos
+
 ## [1.15.0] - 2026-04-23
 
 ### Added

@@ -165,7 +165,6 @@ function buildOrderReport(orders) {
   }
 
   const report = lines.join("\n");
-
   return report;
 }
 ```

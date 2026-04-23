@@ -53,7 +53,6 @@ public abstract class OrderProcessor(ILogger logger)
         }
 
         var execution = await ExecuteAsync(order);
-
         return execution;
     }
 
@@ -205,7 +204,6 @@ public sealed class OrderService(IOrderRepository orderRepository)
     public Order? FindById(Guid id)
     {
         var order = orderRepository.FindById(id);
-
         return order;
     }
 }
@@ -273,7 +271,6 @@ public string DescribePayment(IPayment payment)
     }
 
     var fallback = "Unknown payment";
-
     return fallback;
 }
 ```
@@ -312,7 +309,6 @@ public IActionResult HandlePayment(PaymentResult result)
     }
 
     var serverError = StatusCode(500);
-
     return serverError;
 }
 ```
@@ -357,7 +353,6 @@ public interface IEntity
 public T? Find<T>(Guid id) where T : class, IEntity
 {
     var entity = _context.Set<T>().FirstOrDefault(e => e.Id == id);
-
     return entity;
 }
 ```

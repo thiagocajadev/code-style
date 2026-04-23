@@ -109,14 +109,12 @@ async function getOrderTotal(orderId) {
   if (!order) throw new NotFoundError({ message: `Order ${orderId} not found.` });
 
   const total = order.items.reduce((sum, item) => sum + item.price, 0);
-
   return total;
 }
 
 // ausência é esperada → ?. é suficiente
 function formatUserCity(user) {
   const city = user?.address?.city ?? "N/A";
-
   return city;
 }
 ```

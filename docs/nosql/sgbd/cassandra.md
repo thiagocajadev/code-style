@@ -177,7 +177,6 @@ class MatchEventRepository {
     });
 
     const events = result.rows;
-
     return events;
   }
 }
@@ -209,7 +208,6 @@ class MatchEventRepository {
     });
 
     const wasApplied = result.rows[0]['[applied]'];
-
     return wasApplied;
   }
 }

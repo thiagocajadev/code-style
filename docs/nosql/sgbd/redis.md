@@ -131,7 +131,6 @@ class TeamCache {
     }
 
     const team = JSON.parse(cached);
-
     return team;
   }
 }
@@ -162,7 +161,6 @@ class TeamRepository {
 
     if (cached) {
       const team = JSON.parse(cached);
-
       return team;
     }
 

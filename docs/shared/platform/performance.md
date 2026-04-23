@@ -291,7 +291,6 @@ const highestScore = scores.sort((a, b) => b - a)[0];
 ```javascript
 function findHighestScore(scores) {
   const highestScore = Math.max(...scores);
-
   return highestScore;
 }
 ```

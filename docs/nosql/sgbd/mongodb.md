@@ -272,7 +272,6 @@ async function fetchSeasonReport(season) {
   ];
 
   const report = await matchEventsCollection.aggregate(pipeline).toArray();
-
   return report;
 }
 ```

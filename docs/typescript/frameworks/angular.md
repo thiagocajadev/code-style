@@ -323,13 +323,11 @@ export class OrderService {
 
   listOrders(): Observable<Order[]> {
     const orders = this.http.get<Order[]>("/api/orders");
-
     return orders;
   }
 
   findById(id: string): Observable<Order> {
     const order = this.http.get<Order>(`/api/orders/${id}`);
-
     return order;
   }
 
@@ -390,7 +388,6 @@ export const authGuard: CanActivateFn = () => {
   }
 
   const accessGranted = true;
-
   return accessGranted;
 };
 
@@ -406,7 +403,6 @@ export function roleGuard(role: UserRole): CanActivateFn {
     }
 
     const accessGranted = true;
-
     return accessGranted;
   };
 }

@@ -4,7 +4,7 @@ Os mesmos princípios de [densidade visual](../../../shared/standards/visual-den
 
 ## Fases de um método
 
-Métodos com múltiplos passos (validar, buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter no máximo 2 linhas antes de um respiro.
+Métodos com múltiplos passos (validar, buscar, transformar, persistir, responder) devem deixar cada fase visível.
 
 <details>
 <summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
@@ -45,26 +45,25 @@ Public Async Function RegisterUserAsync(request As RegisterUserRequest) As Task(
     Await _emailService.SendWelcomeAsync(user.Email, token)
 
     Dim userDto = UserDto.From(user)
-
     Return userDto
 End Function
 ```
 
 </details>
 
-## `Return` sempre separado
+## Explaining Return: par tight
 
-O `Return` encerra um método. Quando há mais de um passo antes dele, ele pertence a um parágrafo próprio.
+Quando há **apenas um passo** antes do `Return`, os dois formam par de 2 linhas sem blank.
 
 <details>
-<summary>❌ Bad — Return colado ao último passo</summary>
+<summary>❌ Bad — blank fragmenta o par</summary>
 <br>
 
 ```vbnet
-Public Function FormatOrderDate(date As DateTimeOffset, Optional locale As String = "pt-BR") As String
-    Dim culture = New CultureInfo(locale)
-    Dim formatted = date.ToString("dd/MM/yyyy", culture)
-    Return formatted
+Public Function MapErrorToStatus(error As DomainError) As Integer
+    Dim status = If(ErrorStatusByCode.ContainsKey(error.Code), ErrorStatusByCode(error.Code), 500)
+
+    Return status
 End Function
 ```
 
@@ -73,15 +72,30 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Return separado do último passo</summary>
+<summary>✅ Good — par tight</summary>
+<br>
+
+```vbnet
+Public Function MapErrorToStatus(error As DomainError) As Integer
+    Dim status = If(ErrorStatusByCode.ContainsKey(error.Code), ErrorStatusByCode(error.Code), 500)
+    Return status
+End Function
+```
+
+</details>
+
+## Return separado: quando há 2+ passos antes
+
+<details>
+<summary>✅ Good — 2 preps + Return separado</summary>
 <br>
 
 ```vbnet
 Public Function FormatOrderDate(date As DateTimeOffset, Optional locale As String = "pt-BR") As String
     Dim culture = New CultureInfo(locale)
-    Dim formatted = date.ToString("dd/MM/yyyy", culture)
+    Dim formattedDate = date.ToString("dd/MM/yyyy", culture)
 
-    Return formatted
+    Return formattedDate
 End Function
 ```
 
@@ -97,7 +111,7 @@ End Function
 
 ## Declaração + guarda = 1 grupo
 
-Uma variável seguida do `If` que a valida formam um par semântico. A linha em branco vem **depois** do par, não entre eles.
+Uma variável seguida do `If` que a valida formam par semântico. A linha em branco vem **depois** do par.
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
@@ -127,9 +141,62 @@ Dim invoice = BuildInvoice(order)
 
 </details>
 
-## Testes: Assert como fase própria
+## Órfão de 1 linha: pior que trio atômico
 
-Em métodos de teste, o `Assert` é uma fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
+Três declarações simples consecutivas (Const, ReadOnly, Dim com literal) formam grupo coeso.
+
+<details>
+<summary>❌ Bad — órfão entre blanks</summary>
+<br>
+
+```vbnet
+Public Class DomainLimits
+    Public Const MinimumDrivingAge As Integer = 18
+    Public Const OrderStatusApproved As Integer = 2
+
+    Public Const OneDayMs As Long = 86_400_000
+End Class
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — trio tight</summary>
+<br>
+
+```vbnet
+Public Class DomainLimits
+    Public Const MinimumDrivingAge As Integer = 18
+    Public Const OrderStatusApproved As Integer = 2
+    Public Const OneDayMs As Long = 86_400_000
+End Class
+```
+
+</details>
+
+## Par semântico encadeado
+
+<details>
+<summary>✅ Good — penúltima consumida pela última, par tight</summary>
+<br>
+
+```vbnet
+Public Function BuildShippingLabel(order As Order) As String
+    Dim fullName = $"{order.Customer.FirstName} {order.Customer.LastName}"
+    Dim addressLine = $"{order.Address.Street}, {order.Address.Number}"
+
+    Dim cityLine = $"{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}"
+    Dim label = $"{fullName}{vbCrLf}{addressLine}{vbCrLf}{cityLine}{vbCrLf}Order #{order.Id}"
+
+    Return label
+End Function
+```
+
+</details>
+
+## Testes: Assert como fase própria
 
 <details>
 <summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
@@ -168,14 +235,12 @@ End Sub
 
 ## Strings longas
 
-Uma string longa colada em um `Return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado: o template final fica legível e os pedaços ganham semântica.
-
 <details>
 <summary>❌ Bad — concatenação densa inline, sem semântica nas partes</summary>
 <br>
 
 ```vbnet
-Public Function BuildShippingLabel(order As Order) As String
+Public Function BuildShippingMessage(order As Order) As String
     Return order.Customer.FirstName & " " & order.Customer.LastName & vbCrLf & order.Address.Street & ", " & order.Address.Number & vbCrLf & order.Address.City & " - " & order.Address.State & ", " & order.Address.ZipCode & vbCrLf & "Order #" & order.Id.ToString()
 End Function
 ```
@@ -189,15 +254,14 @@ End Function
 <br>
 
 ```vbnet
-Public Function BuildShippingLabel(order As Order) As String
+Public Function BuildShippingMessage(order As Order) As String
     Dim fullName = $"{order.Customer.FirstName} {order.Customer.LastName}"
     Dim addressLine = $"{order.Address.Street}, {order.Address.Number}"
 
     Dim cityLine = $"{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}"
+    Dim message = $"{fullName}{vbCrLf}{addressLine}{vbCrLf}{cityLine}{vbCrLf}Order #{order.Id}"
 
-    Dim label = $"{fullName}{vbCrLf}{addressLine}{vbCrLf}{cityLine}{vbCrLf}Order #{order.Id}"
-
-    Return label
+    Return message
 End Function
 ```
 

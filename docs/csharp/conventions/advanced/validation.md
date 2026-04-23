@@ -220,7 +220,6 @@ public async Task<UserResponse?> FindUserByIdAsync(Guid id, CancellationToken ct
     if (user is null) return null;
 
     var userResponse = new UserResponse(user.Id, user.Name, user.Email, user.CreatedAt);
-
     return userResponse;
 }
 ```
