@@ -164,6 +164,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Methodologies](docs/shared/process/methodologies.md) | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
 | [Git](docs/shared/process/git.md) | Branches, commits, pull requests e estratégia de entrega |
 | [Git (avançado)](docs/shared/process/git-advanced.md) | Rotina convencional, squash, DX no PR e troubleshooting |
+| [Design Thinking](docs/shared/process/design-thinking.md) | Empatia, definição de problema, ideação, protótipo e teste centrado no usuário |
+| [Design Thinking (avançado)](docs/shared/process/design-thinking-advanced.md) | Double Diamond, Service Blueprint, Crazy 8s, SCAMPER, MVP vs MLP e usability testing |
 | [CI/CD](docs/shared/process/ci-cd.md) | Pipeline, deploy vs release, feature flags, TBD e fix forward |
 
 <br>
@@ -173,6 +175,8 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | Tópico | Descrição |
 | --- | --- |
 | [Principles](docs/shared/architecture/principles.md) | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade |
+| [System Design](docs/shared/architecture/system-design.md) | Requisitos funcionais e não-funcionais, decomposição, trade-offs essenciais |
+| [System Design (avançado)](docs/shared/architecture/system-design-advanced.md) | SLA/SLO/SLI, CAP, PACELC, modelos de consistência, sharding, replicação e capacity planning |
 | [Architecture](docs/shared/architecture/architecture.md) | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas |
 | [Component Architecture](docs/shared/architecture/component-architecture.md) | Composição, container/presentational, estado, memoization, fronteiras |
 | [Patterns](docs/shared/architecture/patterns.md) | Result, Factory, Repository, Strategy, Observer, Builder, Decorator, CQRS, AI-Driven, SDD |

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.0] - 2026-04-23
+
+### Added
+
+- `docs/shared/architecture/system-design.md` — guia conceitual leve: papel do System Design (raciocínio antes do código), requisitos funcionais vs não-funcionais, processo de decomposição (Entidades → Fluxos → Fronteiras → Contratos → Componentes), trade-offs essenciais em tabela (Consistência vs Disponibilidade, Latência vs Throughput, Simplicidade vs Escala, Custo vs Performance), quando começa e quando termina. Cross-links para scaling, patterns, methodologies, messaging, database, security
+- `docs/shared/architecture/system-design-advanced.md` — instrumentos quantitativos: SLA/SLO/SLI e error budget, CAP (CP vs AP), PACELC (PA/EL, PC/EC, PC/EL, PA/EC), modelos de consistência (strong, sequential, causal, read-your-writes, eventual), back-of-the-envelope (cálculo QPS com referências de ordem de grandeza), sharding (range-based, hash-based, consistent hashing, directory-based), replicação (single-leader, multi-leader, leaderless com quórum `W + R > N`), particionamento vs replicação, checklist de System Design
+- `docs/shared/process/design-thinking.md` — guia conceitual leve: papel do Design Thinking (raciocínio antes de decidir o que construir), 5 fases em tabela (Empathize → Define → Ideate → Prototype → Test) com técnicas para cada uma, HMW questions, fidelidade de protótipo (papel → wireframe → mockup), Design Thinking vs UI/UX (upstream vs downstream). Cross-links para ui-ux, methodologies, system-design
+- `docs/shared/process/design-thinking-advanced.md` — técnicas estruturadas: Double Diamond (Discover → Define → Develop → Deliver), Service Blueprint em 4 camadas (customer actions, frontstage, backstage, support processes), Journey Map com dimensões (ação, objetivo, emoção, ponto de contato, fricção, oportunidade), técnicas de ideação (Crazy 8s, SCAMPER, Lotus Blossom, analogia forçada), estratégia de protótipo em 5 estágios, MVP vs MLP, Usability Testing (modalidades, think-aloud, métricas SUS/NPS/task success rate), checklist
+- `README.md` — tabela Processo ganhou `Design Thinking` e `Design Thinking (avançado)`; tabela Arquitetura ganhou `System Design` e `System Design (avançado)`
+
 ## [1.16.0] - 2026-04-23
 
 ### Fixed
