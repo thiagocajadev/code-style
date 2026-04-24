@@ -1,5 +1,7 @@
 # Variables
 
+Variáveis em VB.NET começam antes da primeira linha de código: `Option Strict On` e `Option Explicit On` precisam estar ativos em todo arquivo. Sem isso, o compilador aceita conversões implícitas perigosas e variáveis não declaradas. A partir daí, `Dim` tipado, uso consciente de `ByVal`/`ByRef` e nomes por propósito do domínio.
+
 ## Option Strict e Option Explicit
 
 Dois switches de compilador precisam estar ativos em todo arquivo VB.NET. São desativados por padrão — ativar é o primeiro gesto de qualidade em qualquer projeto.

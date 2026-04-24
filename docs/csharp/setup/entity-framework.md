@@ -1,5 +1,17 @@
 # Entity Framework Core
 
+Entity Framework Core é o **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) padrão da plataforma .NET. Sua força está no rastreamento automático de entidades para `SaveChanges`; sua armadilha é exatamente a mesma quando o código apenas lê. Três decisões cobrem a maior parte dos casos: quando desligar o rastreamento, como escrever queries que traduzem bem, e como evitar N+1.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Camada que traduz objetos do domínio para tabelas relacionais e vice-versa |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de leitura; projeção `Select` materializa o DTO sem carregar a entidade inteira |
+| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem gerada pelo provider; `EXPLAIN` ou logs do EF mostram o SQL produzido |
+| **Change Tracker** (rastreador de alterações) | Componente do `DbContext` que detecta mudanças entre `Load` e `SaveChanges` |
+| **N+1** (consulta repetida por item) | Anti-padrão: 1 query para a lista + N queries para cada item; resolve com `Include` ou projeção |
+
 ## AsNoTracking
 
 Por padrão, o EF rastreia todas as entidades retornadas: qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.

@@ -115,8 +115,8 @@ public class OrderInput
 
 ## Tag Helpers
 
-Tag Helpers geram os atributos HTML a partir do model. `asp-for` vincula um input à propriedade
-do `PageModel`; `asp-validation-for` exibe erros por campo; `asp-page` gera a URL do formulário
+Tag Helpers geram os atributos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) a partir do model. `asp-for` vincula um input à propriedade
+do `PageModel`; `asp-validation-for` exibe erros por campo; `asp-page` gera a **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) do formulário
 e injeta o token anti-falsificação automaticamente.
 
 <details>
@@ -166,8 +166,8 @@ e injeta o token anti-falsificação automaticamente.
 
 ## MVC — Controller thin
 
-Controllers MVC são adaptadores: recebem a requisição HTTP, delegam para um **Service** ou
-**Handler**, e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
+Controllers MVC são adaptadores: recebem a requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto), delegam para um **Service** ou
+**Handler** (manipulador), e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
 controller. O acesso ao banco passa pelo **Repository**; o controller nunca injeta `DbContext`.
 
 **Fluxo:** `HTTP Request → Controller → Service → Result<T> → IActionResult → HTTP Response`

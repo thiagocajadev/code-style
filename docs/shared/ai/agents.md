@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um agente de IA é um sistema que usa um LLM para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
+Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo de Linguagem Grande) para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
 
 ## Conceitos fundamentais
 
@@ -46,7 +46,7 @@ O **Harness** é o código de infraestrutura que faz o agente funcionar. Ele nã
 - Interrupções, timeouts e limites de iteração
 - Checkpoints para retomada após falha
 
-Exemplos de harnesses: **Claude Code** (Anthropic), **LangGraph**, **CrewAI**, **AutoGen/AG2** (Microsoft), **OpenAI Agents SDK**, **Google ADK**.
+Exemplos de harnesses: **Claude Code** (Anthropic), **LangGraph**, **CrewAI**, **AutoGen/AG2** (Microsoft), **OpenAI Agents SDK** (Software Development Kit, Kit de Desenvolvimento de Software), **Google ADK**.
 
 Um harness bem construído é independente do domínio: a lógica de negócio fica nas ferramentas, não no loop de execução.
 
@@ -89,4 +89,4 @@ Modelos de linguagem são stateless por natureza: cada chamada começa do zero. 
 | **External long-term** | Embeddings em vector store; recuperados via RAG | Conhecimento acumulado entre sessões |
 | **Episodic** (episódica) | Registro de interações passadas com o usuário | Personalização e continuidade |
 
-A memória in-context é a mais simples, mas cresce com o número de iterações e pode esgotar a janela de contexto. Para agentes de longa duração, combine checkpoint (estado estruturado) com RAG (recuperação semântica).
+A memória in-context é a mais simples, mas cresce com o número de iterações e pode esgotar a janela de contexto. Para agentes de longa duração, combine checkpoint (estado estruturado) com **RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) (recuperação semântica).

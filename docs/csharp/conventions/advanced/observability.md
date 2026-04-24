@@ -101,7 +101,7 @@ _logger.LogInformation("Token issued for {UserId}", user.Id);
 ## Correlation ID
 
 Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear o fluxo se torna inviável.
-Um middleware injeta o `correlationId` no `LogContext` do Serilog, enriquecendo todos os logs da
+Um **middleware** (componente de pipeline) injeta o `correlationId` no `LogContext` do Serilog, enriquecendo todos os logs da
 requisição automaticamente.
 
 <details>

@@ -4,7 +4,7 @@
 
 O gargalo mais comum não é o banco: é query sem índice, documento inteiro trafegado quando só dois campos são necessários, ou N queries onde uma bastaria.
 
-Padrões de performance SQL: [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md).
+Padrões de performance **SQL** (Structured Query Language, Linguagem de Consulta Estruturada): [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md).
 
 ## Conceitos fundamentais
 
@@ -67,7 +67,7 @@ async function fetchTeamSummary(teamId) {
 - Campos usados em `filter` / `$match` com alta seletividade
 - Campos usados em `sort` frequente
 - Campos de lookup em `$lookup` (foreign field)
-- Campos de expiração com TTL
+- Campos de expiração com **TTL** (Time To Live, Tempo de Vida)
 
 ### Quando não indexar
 
@@ -274,7 +274,7 @@ class SessionRepository {
 
 ## Checklist de Investigação
 
-Ao receber relatório de "banco NoSQL lento":
+Ao receber relatório de "banco **NoSQL** (Not Only SQL, Não Apenas SQL) lento":
 
 1. Verificar se o campo filtrado tem índice (`explain()` no MongoDB)
 2. Verificar projeção — o documento inteiro está sendo trafegado?

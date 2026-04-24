@@ -163,7 +163,7 @@ function processPayment(payment: Payment): void {
 
 ## Output filtering tipado
 
-O tipo de retorno do handler deve ser o DTO de resposta, não a entidade. `Pick` ou um tipo
+O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object, Objeto de Transferência de Dados) de resposta, não a entidade. `Pick` ou um tipo
 explícito documentam o contrato publicamente e impedem o vazamento acidental de campos.
 
 <details>

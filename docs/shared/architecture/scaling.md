@@ -24,7 +24,7 @@ Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais da
 
 ## Escala Vertical
 
-Aumentar a capacidade da máquina: mais CPU, mais RAM, disco mais rápido.
+Aumentar a capacidade da máquina: mais **CPU** (Central Processing Unit, Unidade Central de Processamento), mais **RAM** (Random Access Memory, Memória de Acesso Aleatório), disco mais rápido.
 
 **Vantagens**: zero mudança de código, zero complexidade de infraestrutura. Resolve a maioria dos gargalos de um sistema em crescimento.
 
@@ -73,7 +73,7 @@ Load Balancer → GET /health → timeout → instância removida da rotação
 
 ### SSL termination
 
-O balanceador recebe o tráfego HTTPS, descriptografa e repassa HTTP simples para as instâncias internas. As instâncias não precisam gerenciar certificados; o balanceador centraliza isso.
+O balanceador recebe o tráfego **HTTPS** (HyperText Transfer Protocol Secure, Protocolo Seguro de Transferência de Hipertexto), descriptografa e repassa **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) simples para as instâncias internas. As instâncias não precisam gerenciar certificados; o balanceador centraliza isso.
 
 ```
 Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
@@ -81,7 +81,7 @@ Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
 
 ## API Gateway
 
-O **API Gateway** é o ponto de entrada único para todos os serviços de uma API. Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
+O **API** (Application Programming Interface, Interface de Programação de Aplicações) **Gateway** é o ponto de entrada único para todos os serviços de uma API. Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
 
 Responsabilidades centrais:
 
@@ -122,7 +122,7 @@ Escrita → banco primário
 Leitura → read replica 1 | read replica 2 | read replica N
 ```
 
-**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileirar e processar em background. O servidor de aplicação responde rápido; o worker absorve o pico no seu próprio ritmo.
+**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileirar e processar em background. O servidor de aplicação responde rápido; o **worker** (trabalhador) absorve o pico no seu próprio ritmo.
 
 ## Anti-Overengineering
 
@@ -154,7 +154,7 @@ Cada etapa só faz sentido depois que a anterior foi esgotada. Pular etapas aume
 - Configurar load balancer antes de ter tráfego que justifique
 - Separar em microsserviços porque "vai crescer"
 - Montar Kubernetes para uma aplicação com 10 usuários simultâneos
-- Implementar CQRS e event sourcing sem complexidade de leitura/escrita que justifique
+- Implementar **CQRS** (Command Query Responsibility Segregation, Separação de Responsabilidade entre Comando e Consulta) e event sourcing sem complexidade de leitura/escrita que justifique
 
 ---
 

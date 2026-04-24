@@ -1,7 +1,20 @@
 # API Design
 
 > Escopo: C#. Idiomas .NET deste arquivo.
-> SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
+> **SSOT** (Single Source of Truth, Fonte Única da Verdade) do pipeline, envelope, verbos, status codes e Result → **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto): [shared/platform/api-design.md](../../../shared/platform/api-design.md).
+
+**API** (Application Programming Interface, Interface de Programação de Aplicações) em C# tem dois caminhos idiomáticos: **Minimal API** (ASP.NET Core 6+) e Controllers (herança de **MVC** (Model-View-Controller, Modelo-Visão-Controle)). O padrão deste guia é Minimal API com Result → HTTP tipado, alinhado ao pipeline agnóstico definido no SSOT transversal.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
+| **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural que usa verbos HTTP sobre recursos identificados por URL |
+| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Padrão que separa dados, apresentação e controle; em ASP.NET, o pipeline de Controllers |
+| **CQS** (Command-Query Separation, Separação Comando-Consulta) | Princípio: um método ou altera estado (command) ou retorna dado (query), nunca os dois |
+| **SSOT** (Single Source of Truth, Fonte Única da Verdade) | Um único lugar canônico para cada regra ou contrato; cross-links apontam para ele |
 
 ## Minimal API: preferência
 
@@ -280,7 +293,7 @@ idioma histórico — e `TypedResults` — a variante tipada introduzida no .NET
 mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
 
 `Results.Ok(order)` retorna `IResult` — tipo apagado. Quem assina a rota com `Results` perde
-informação: OpenAPI/Swagger não infere o status nem o payload, testes precisam de cast
+informação: OpenAPI/Swagger não infere o status nem o **payload** (corpo da mensagem), testes precisam de cast
 (`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]`
 redundantes.
 
@@ -344,7 +357,7 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 
 ### Location header sem lógica no return
 
-`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a URL em variável
+`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) em variável
 nomeada antes do retorno — o `return` nomeia, não computa.
 
 <details>

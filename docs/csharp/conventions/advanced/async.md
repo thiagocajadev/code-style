@@ -2,9 +2,11 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
+Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação que atravessa fronteira do processo (banco, rede, arquivo) retorna `Task`. O chamador aguarda com `await`; bloquear (`Result`, `Wait()`) trava threads do pool e leva a deadlock.
+
 ## async/await
 
-Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
+Todo **I/O** (Input/Output, Entrada/Saída) é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
 
 <details>
 <summary>❌ Bad — I/O síncrono bloqueia a thread</summary>
@@ -101,7 +103,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 ## CancellationToken
 
-Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições HTTP canceladas ou timeouts não interrompem o trabalho em andamento.
+Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) canceladas ou timeouts não interrompem o trabalho em andamento.
 
 <details>
 <summary>❌ Bad — CancellationToken ignorado ou ausente</summary>

@@ -92,7 +92,7 @@ UserFactory.create({ name, email, role })
 
 ## Repository
 
-O código de negócio não deveria conhecer SQL, **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
+O código de negócio não deveria conhecer **SQL** (Structured Query Language, Linguagem de Consulta Estruturada), **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
 
 ```
 UserRepository
@@ -193,7 +193,7 @@ EmailService (interno)
     → SendGridClient (externo)
 ```
 
-O código de domínio chama `EmailService.send()`. O adapter traduz para a API do SendGrid. Trocar o provedor é trocar o adapter, sem tocar o domínio.
+O código de domínio chama `EmailService.send()`. O adapter traduz para a **API** (Application Programming Interface, Interface de Programação de Aplicações) do SendGrid. Trocar o provedor é trocar o adapter, sem tocar o domínio.
 
 **Quando usar**: integrar bibliotecas externas, APIs de terceiros ou código legado com interface diferente da esperada pelo domínio.
 
@@ -242,7 +242,7 @@ Request
 
 Adicionar um novo passo é adicionar um novo handler e inseri-lo na cadeia. A ordem é explícita na configuração.
 
-**Quando usar**: pipelines de middleware (intermediário de requisição), validação em múltiplas etapas, processamento de eventos onde os passos precisam ser montados de forma composável.
+**Quando usar**: pipelines de **middleware** (componente de pipeline), validação em múltiplas etapas, processamento de eventos onde os passos precisam ser montados de forma composável.
 
 ## Command
 

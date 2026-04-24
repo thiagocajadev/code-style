@@ -15,9 +15,9 @@ Testes documentam o comportamento esperado. Um teste que falha conta uma histór
 | **Fixture** (dado de teste pré-definido) | Contexto ou dado passado para configurar o estado do teste |
 | **Complexidade ciclomática** (cyclomatic complexity) | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações |
 
-## AAA (Arrange, Act, Assert)
+## AAA
 
-O padrão **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) divide cada teste em três fases explícitas, separadas por uma linha em branco.
+O padrão **AAA** (Arrange, Act, Assert, Preparar, Executar, Verificar) divide cada teste em três fases explícitas, separadas por uma linha em branco.
 
 ```
 [Arrange]  montar o contexto: entidades, inputs, dependências
@@ -72,7 +72,7 @@ Velocidade é a característica central: rodam em milissegundos, sem setup de in
 
 Verificam como múltiplos componentes funcionam juntos, com infraestrutura real: banco de dados, APIs externas, filas, sistema de arquivos.
 
-O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a query SQL está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
+O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a query **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
 
 | Característica | Detalhe |
 |---|---|

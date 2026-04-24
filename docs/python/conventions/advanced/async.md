@@ -2,7 +2,7 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de I/O é assíncrona. Bloquear o event loop congela a aplicação inteira.
+Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o event loop congela a aplicação inteira.
 
 ## Bloqueio síncrono
 
@@ -169,7 +169,7 @@ async def read_config() -> dict:
 
 ## Context managers assíncronos
 
-Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões HTTP) usam
+Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)) usam
 `async with`. O protocolo `__aenter__`/`__aexit__` garante que o recurso seja liberado mesmo em
 caso de exceção.
 

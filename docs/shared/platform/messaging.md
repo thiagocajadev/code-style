@@ -43,7 +43,7 @@ Uma operação é idempotente quando executá-la múltiplas vezes produz o mesmo
 Estratégias:
 
 - Verificar se o ID da mensagem já foi processado antes de agir
-- Usar upsert (inserir ou atualizar) em vez de insert puro
+- Usar **upsert** (inserir ou atualizar) em vez de insert puro
 - Operações de set em vez de increment para valores acumulados
 
 ## Dead-letter Queue
@@ -76,5 +76,5 @@ Estratégias:
 |---|---|---|
 | **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, **RPC** (Remote Procedure Call, chamada de procedimento remoto) |
 | **Kafka** | Log distribuído, pub/sub | Alto volume, replay de eventos, event sourcing (eventos como fonte da verdade) |
-| **SQS** (Amazon Simple Queue Service) | Queue gerenciada | Integração AWS, baixo overhead operacional |
+| **SQS** (Amazon Simple Queue Service, Fila Simples Amazon) | Queue gerenciada | Integração AWS, baixo overhead operacional |
 | **Redis Streams** | Log leve | Mensageria simples em stacks que já usam Redis |

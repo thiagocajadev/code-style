@@ -2,9 +2,9 @@
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os padrões assíncronos do JavaScript: async/await, Promise.all, API client centralizado.
+Os padrões assíncronos do JavaScript: async/await, Promise.all, **API** (Application Programming Interface, Interface de Programação de Aplicações) client centralizado.
 Aplicam-se sem mudança. O TypeScript adiciona: `Promise<T>` com tipo explícito no retorno,
-generics em clientes de I/O e tipagem correta de `Promise.all`.
+generics em clientes de **I/O** (Input/Output, Entrada/Saída) e tipagem correta de `Promise.all`.
 
 ## Return type de funções async
 

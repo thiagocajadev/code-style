@@ -225,7 +225,7 @@ End Class
 
 VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (feature do C# 8+ em .NET Core 3+ / .NET 5+). Qualquer reference type pode ser `Nothing`. O tratamento de ausência é convenção:
 
-- Retornos que podem não encontrar valor devolvem `Nothing` e o tipo documenta isso na assinatura via comentário XML ou nomeação explícita (`FindById` vs `GetById`).
+- Retornos que podem não encontrar valor devolvem `Nothing` e o tipo documenta isso na assinatura via comentário **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) ou nomeação explícita (`FindById` vs `GetById`).
 - `Nullable(Of T)` (`T?` em C#) aplica-se apenas a value types (`Integer?`, `DateTime?`, `Guid?`).
 
 <details>

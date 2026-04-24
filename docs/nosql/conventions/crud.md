@@ -2,7 +2,7 @@
 
 > Escopo: NoSQL. Padrões de operações de leitura e escrita para bancos não-relacionais.
 
-As convenções abaixo usam MongoDB como referência primária. Princípios de projeção, filtro e repository pattern aplicam-se a qualquer SGBD NoSQL.
+As convenções abaixo usam MongoDB como referência primária. Princípios de projeção, filtro e repository pattern aplicam-se a qualquer SGBD **NoSQL** (Not Only SQL, Não Apenas SQL).
 
 ## Conceitos fundamentais
 
@@ -278,7 +278,7 @@ async function saveStandings(teamId, points) {
 <br>
 
 <details>
-<summary>✅ Good — upsert atômico com $setOnInsert para campos de criação</summary>
+<summary>✅ Good — **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
 <br>
 
 ```js

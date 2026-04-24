@@ -24,7 +24,7 @@ def test_apply_discount():
 <br>
 
 <details>
-<summary>✅ Good — AAA: fases explícitas</summary>
+<summary>✅ Good — **AAA** (Arrange, Act, Assert — Preparar, Agir, Verificar): fases explícitas</summary>
 <br>
 
 ```python

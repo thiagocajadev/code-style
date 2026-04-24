@@ -10,6 +10,16 @@ O pipeline de validação tem três responsabilidades distintas, cada uma no seu
 
 Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Ponto de entrada onde a validação começa; controller recebe o input bruto |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de entrada validado pelo schema; imutável, com tipos idiomáticos |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET onde Data Annotations executam schema validation automática |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa fronteira; regras de negócio que dependem de I/O não cabem no validator |
+| **Sanitize** (higienização) | Limpa input (trim, lowercase) antes de validar; evita falsos positivos |
+
 ## Sanitização de entrada
 
 Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados sujos entram em validação suja: um email com espaço passa no validator mas falha na busca no banco.

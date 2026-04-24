@@ -40,7 +40,7 @@ Cada camada tem uma responsabilidade única:
 | **Service** | Regra de negócio, invariantes, coordenação entre repositórios | Validar input de transporte, falar HTTP |
 | **Repository** | Ler e escrever no storage, devolver entidade ou primitivo | Regra de negócio, tradução para contrato externo |
 
-A separação protege o domínio: o handler pode ser testado sem montar uma requisição HTTP, o service
+A separação protege o domínio: o handler pode ser testado sem montar uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto), o service
 pode ser reaproveitado por um job em background e o repository pode trocar de storage sem mexer no
 resto.
 
@@ -280,7 +280,7 @@ Respostas sem envelope têm shapes inconsistentes: sucesso retorna objeto nu, er
 coleção retorna array. Cada shape exige tratamento separado no cliente.
 
 Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carrega apenas o que ajuda
-na observabilidade e paginação, sem inflar o payload. A montagem do envelope pertence ao
+na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). A montagem do envelope pertence ao
 **Controller** (boundary HTTP). O handler continua devolvendo `Result` com DTO de domínio.
 
 | Campo | Conteúdo | Quando |
@@ -368,7 +368,7 @@ com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer
 
 Convenções de rota:
 
-- Kebab-case na URL: `/api/order-items`, não `/api/orderItems`
+- Kebab-case na **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso): `/api/order-items`, não `/api/orderItems`
 - Plural para coleções: `/api/orders`, não `/api/order`
 - Sem verbo na URL: `POST /api/orders`, não `POST /api/create-order`
 - Recurso aninhado quando há relação clara: `/api/orders/{id}/items`
@@ -422,7 +422,7 @@ async function handle(id, res) {
 }
 ```
 
-Handler acoplado a `res`. Não dá para reaproveitar em um worker que lê da fila e não tem `res`.
+**Handler** (manipulador) acoplado a `res`. Não dá para reaproveitar em um **worker** (trabalhador) que lê da fila e não tem `res`.
 
 </details>
 

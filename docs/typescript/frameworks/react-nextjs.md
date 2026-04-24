@@ -2,7 +2,7 @@
 
 > Escopo: TypeScript. Guia baseado em **React 19.2** com **Next.js 16** (App Router).
 
-React é uma biblioteca de UI. Next.js é o framework: roteamento por arquivo, Server Components,
+React é uma biblioteca de **UI** (User Interface, Interface do Usuário). Next.js é o framework: roteamento por arquivo, Server Components,
 Server Actions e otimizações de build integradas. Este guia mostra como implementar os contratos de
 [operation-flow.md](../../shared/architecture/operation-flow.md) e
 [frontend-flow.md](../../shared/architecture/frontend-flow.md) com React e Next.js.
@@ -60,7 +60,7 @@ proxy.ts                      → guard: executa antes de qualquer render
 
 ### Next.js fullstack
 
-Next.js é frontend e backend. `page.tsx` acessa o banco diretamente via Repository, sem passar pela própria API Route. API Routes existem para clientes externos (mobile, integrações B2B). RCC e hooks funcionam igual ao cenário anterior para interações client-side.
+Next.js é frontend e backend. `page.tsx` acessa o banco diretamente via Repository, sem passar pela própria **API** (Application Programming Interface, Interface de Programação de Aplicações) Route. API Routes existem para clientes externos (mobile, integrações B2B). RCC e hooks funcionam igual ao cenário anterior para interações client-side.
 
 **Leitura:** `URL → proxy.ts → page.tsx → Repository → render`
 
@@ -562,7 +562,7 @@ duplicado) sem desabilitar cada input individualmente.
 
 ## API Routes
 
-API Routes ficam em `app/api/[recurso]/route.ts`. Cada método HTTP é um named export. O pipeline
+API Routes ficam em `app/api/[recurso]/route.ts`. Cada método **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) é um named export. O pipeline
 segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operation-flow.md): valida →
 regras de negócio → persiste → retorna Response.
 
@@ -634,7 +634,7 @@ parse, valida o **HMAC**, checa idempotência e responde 200 antes de processar.
 
 Duas regras sem exceção: responder 200 antes de processar (provedores como Stripe e GitHub fazem
 retry se não receberem resposta em até 30 segundos) e validar o **HMAC** sobre o raw body (parsear
-o JSON antes invalida o cálculo da assinatura).
+o **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) antes invalida o cálculo da assinatura).
 
 ```
 POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa idempotência → 200 OK → enfileira → processa

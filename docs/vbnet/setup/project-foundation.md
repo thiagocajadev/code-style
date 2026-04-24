@@ -3,6 +3,18 @@
 > [!NOTE]
 > Essa estrutura reflete como organizar projetos VB.NET/.NET Framework 4.8. A seção Legacy Desktop cobre Windows Forms; a seção Web cobre ASP.NET MVC 5 / Web API 2. Os padrões de configuração e injeção de dependência se aplicam a ambos os contextos.
 
+Projetos VB.NET em .NET Framework 4.8 dividem-se em duas famílias: desktop (Windows Forms) e web (ASP.NET **MVC** (Model-View-Controller, Modelo-Visão-Controle) 5 / Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2). Cada família tem seu entry point e seu modelo de ciclo de vida, mas compartilham as decisões sobre configuração, injeção de dependência e organização por domínio.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Superfície HTTP do projeto web, servida por Web API 2 |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET MVC 5 para renderização de Views e processamento de formulários |
+| **UI** (User Interface, Interface do Usuário) | Superfície visual do cliente; Windows Forms no desktop ou Razor no web |
+| **Entry point** (ponto de entrada) | `Sub Main` no desktop, `Global.asax` no web; inicializa serviços antes da primeira interação |
+| **DI** (Dependency Injection, Injeção de Dependência) | Container (Unity) provê implementações via constructor injection |
+
 ---
 
 ## Legacy Desktop (Windows Forms)

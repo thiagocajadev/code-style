@@ -2,7 +2,7 @@
 
 > Escopo: Python · HTML. Guia baseado em **HTMX 2.0.10** integrado com **FastAPI** e **Jinja2**.
 
-HTMX é uma biblioteca JavaScript que adiciona comportamento hypermedia (hipermídia) ao HTML
+HTMX é uma biblioteca JavaScript que adiciona comportamento hypermedia (hipermídia) ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)
 padrão. Em vez de uma **SPA** (Single Page Application, Aplicação de Página Única), o browser
 troca fragmentos de HTML retornados pelo servidor. Toda a lógica de renderização permanece no
 backend Python.
@@ -26,8 +26,7 @@ com HTMX, seguindo os princípios de [functions.md](../conventions/functions.md)
 
 HTMX intercepta eventos no browser e substitui a navegação padrão por requisições
 **AJAX** (Asynchronous JavaScript and XML, JavaScript e XML Assíncronos). O servidor responde
-com HTML puro; o HTMX insere o fragmento no **DOM** (Document Object Model, Modelo de Objeto do
-Documento) sem recarregar a página.
+com HTML puro; o HTMX insere o fragmento no **Document** (documento) **Model** (modelo) — o **DOM** (Document Object Model, Modelo de Objeto do Documento) — sem recarregar a página.
 
 **Fluxo:** `User Action → hx-* → HTTP Request → Python Handler → HTML Fragment → DOM Swap`
 

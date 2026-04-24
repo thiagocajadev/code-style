@@ -9,7 +9,7 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 | Conceito | O que é |
 |---|---|
 | **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem padrão para bancos relacionais; define, consulta e manipula dados em tabelas |
-| **NoSQL** (Not Only SQL) | Família de bancos não-relacionais: document, key-value, column-family e graph |
+| **NoSQL** (Not Only SQL, Não Apenas SQL) | Família de bancos não-relacionais: document, key-value, column-family e graph |
 | **ACID** (Atomicity, Consistency, Isolation, Durability, Atomicidade, Consistência, Isolamento, Durabilidade) | Garantias de transação que asseguram integridade dos dados em bancos relacionais |
 | **Index** (Índice) | Estrutura auxiliar que acelera buscas em uma coluna sem varrer a tabela inteira |
 | **Full scan** (varredura completa) | Leitura de todas as linhas da tabela para encontrar os registros; evitar em tabelas grandes |
@@ -104,7 +104,7 @@ Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../..
 
 Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho desnecessário no servidor é mais barato que trabalho no cliente.
 
-Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de CRUD, naming e performance: [nosql/conventions/](../../../nosql/conventions/).
+Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../../nosql/conventions/).
 
 <details>
 <summary>❌ Bad: sem projeção — trafega o documento inteiro para usar um campo</summary>
@@ -309,7 +309,7 @@ Ferramentas que expõem N+1 automaticamente: **Bullet** (Rails), **Hibernate Sta
 
 ### Connection pool exhaustion
 
-Quando todas as conexões do pool estão em uso, novas requisições ficam em fila. Sintoma: timeouts em requisições simples que normalmente são rápidas, sem aumento de CPU ou lentidão de queries.
+Quando todas as conexões do pool estão em uso, novas requisições ficam em fila. Sintoma: timeouts em requisições simples que normalmente são rápidas, sem aumento de **CPU** (Central Processing Unit, Unidade Central de Processamento) ou lentidão de queries.
 
 Diagnóstico por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
 

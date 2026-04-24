@@ -1,5 +1,7 @@
 # Variables
 
+Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A decisão não é estilística: quando o tipo está óbvio no lado direito, `var` reduz ruído; quando o leitor precisa rastrear, o tipo explícito é obrigação.
+
 ## `var` e tipo explícito
 
 `var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente: o leitor não deve precisar inferir.

@@ -10,7 +10,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 - **Forma:** a estrutura da função avaliada de fora para dentro
 - **Legibilidade:** fluxo, espaçamento e nomes lidos linha a linha
-- **Controle de qualidade:** as garantias de robustez: estado, erros, I/O (entrada/saída) e testes
+- **Controle de qualidade:** as garantias de robustez: estado, erros, **I/O** (Input/Output, Entrada/Saída) e testes
 
 ## Conceitos fundamentais
 

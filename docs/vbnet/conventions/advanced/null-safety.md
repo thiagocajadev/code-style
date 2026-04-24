@@ -187,7 +187,7 @@ Next
 ## Guard clause em construtores
 
 Verificar argumentos de construtor garante que o objeto nunca é criado em estado inválido.
-Fail-fast: melhor do que descobrir o `Nothing` mais tarde na cadeia.
+**Fail-fast** (falhar cedo): melhor do que descobrir o `Nothing` mais tarde na cadeia.
 
 <details>
 <summary>❌ Bad — construtor aceita Nothing silenciosamente</summary>

@@ -1,5 +1,7 @@
 # Naming
 
+Nomes em VB.NET seguem as convenções da plataforma .NET: `PascalCase` para tipos, métodos, propriedades e parâmetros públicos; `camelCase` para locais privadas. A regra sobre propósito do domínio vem antes da convenção visual: o identificador nomeia o papel, não o tipo técnico.
+
 ## Nomes em português
 
 Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `' why:`.

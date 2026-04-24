@@ -1,5 +1,7 @@
 # Naming
 
+Nomes em C# seguem convenções da plataforma .NET: `PascalCase` para tipos, métodos e propriedades; `camelCase` para parâmetros e variáveis locais. A regra mais forte vem antes da convenção visual: o identificador expressa propósito do domínio, não tipo técnico.
+
 ## Nomes em português
 
 Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.

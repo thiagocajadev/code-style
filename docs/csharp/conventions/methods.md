@@ -1,5 +1,7 @@
 # Methods
 
+Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de abstração único. O orquestrador lê como sumário da operação; helpers privados implementam os passos logo abaixo, na ordem em que o leitor os encontra.
+
 ## Orquestrador no topo
 
 O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.

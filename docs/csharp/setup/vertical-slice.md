@@ -2,9 +2,19 @@
 
 > Escopo: C#. Visão transversal: [shared/architecture/architecture.md](../../shared/architecture/architecture.md) · [shared/architecture/operation-flow.md](../../shared/architecture/operation-flow.md).
 
-Cada feature é uma fatia vertical autossuficiente — sem camadas horizontais cruzando o sistema. A fatia de pedidos tem suas rotas, contratos, regras de negócio e acesso a dados. Nenhuma dependência cruza para outra fatia.
+Cada feature é uma fatia vertical autossuficiente, sem camadas horizontais cruzando o sistema. A fatia de pedidos tem suas rotas, contratos, regras de negócio e acesso a dados. Nenhuma dependência cruza para outra fatia.
 
 Este documento segue o ciclo de vida de uma requisição: de `Program.cs` até o response final.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Vertical Slice** (fatia vertical) | Organização por feature onde rota, contrato, regra e acesso a dados ficam colocalizados |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de entrada ou saída da feature, imutável |
+| **CQS** (Command-Query Separation, Separação Comando-Consulta) | Handler altera estado OU retorna dado, nunca os dois |
+| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da fatia: verbo, status, envelope no boundary |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa fronteira do processo: banco, rede, arquivo; sempre assíncrona |
 
 ## Estrutura de arquivos
 

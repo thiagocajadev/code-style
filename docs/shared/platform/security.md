@@ -10,13 +10,13 @@ Segurança é uma propriedade que atravessa todas as decisões de design, do ban
 |---|---|
 | **XSS** (Cross-Site Scripting, injeção de script) | Ataque que injeta scripts maliciosos na página para roubar dados ou sequestrar sessões |
 | **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites) | Ataque que força o navegador do usuário autenticado a fazer requisições não autorizadas |
-| **JWT** (JSON Web Token) | Token assinado que transmite identidade e claims entre cliente e servidor |
+| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado que transmite identidade e claims entre cliente e servidor |
 | **Autenticação** (authentication) | Verificação de identidade: quem é você? |
 | **Autorização** (authorization) | Verificação de permissão: o que você pode fazer? |
 
 ## Segredos fora do código
 
-Segredos (connection strings, API keys, JWT secrets, senhas) têm um ciclo de vida diferente do código. Código é versionado, compartilhado e eventualmente público. Segredos são rotativos, privados e específicos por ambiente.
+Segredos (connection strings, **API** (Application Programming Interface, Interface de Programação de Aplicações) keys, JWT secrets, senhas) têm um ciclo de vida diferente do código. Código é versionado, compartilhado e eventualmente público. Segredos são rotativos, privados e específicos por ambiente.
 
 Um secret no repositório é um secret comprometido. Mesmo após a remoção, o histórico do git preserva tudo: qualquer checkout anterior expõe o valor.
 
@@ -53,9 +53,9 @@ O frontend acessa dados por meio de chamadas ao backend autenticado. O backend v
 
 Validação no frontend melhora a experiência: feedback imediato sem roundtrip de rede. Mas validação no frontend não tem valor de segurança.
 
-Qualquer requisição pode ser construída fora do navegador, sem passar pela UI. Ferramentas como `curl`, Postman ou qualquer script HTTP ignoram as regras de validação do frontend.
+Qualquer requisição pode ser construída fora do navegador, sem passar pela **UI** (User Interface, Interface do Usuário). Ferramentas como `curl`, Postman ou qualquer script **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) ignoram as regras de validação do frontend.
 
-O servidor valida todas as entradas como se o frontend não existisse. As duas validações coexistem com responsabilidades distintas: frontend valida por UX, servidor valida por segurança.
+O servidor valida todas as entradas como se o frontend não existisse. As duas validações coexistem com responsabilidades distintas: frontend valida por **UX** (User Experience, Experiência do Usuário), servidor valida por segurança.
 
 ```
 Request → frontend (UX: feedback imediato) → servidor (segurança: autoridade) → handler
@@ -80,7 +80,7 @@ Um usuário pode ser autenticado (sessão válida) mas não autorizado (sem perm
 
 Verificar permissões dentro de cada handler distribui a regra por todo o código. Quando um novo endpoint é adicionado, a verificação pode ser esquecida. Quando a regra muda, precisa ser atualizada em vários lugares.
 
-Autorização centralizada move a regra para uma camada única: middleware, policy ou atributo. O handler não conhece a regra de acesso, só executa. A cobertura é garantida estruturalmente, não por disciplina individual.
+Autorização centralizada move a regra para uma camada única: **middleware** (componente de pipeline), policy ou atributo. O handler não conhece a regra de acesso, só executa. A cobertura é garantida estruturalmente, não por disciplina individual.
 
 ## Blindagem de cookies
 

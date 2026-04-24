@@ -2,6 +2,8 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
+Tratamento de erros em C# separa dois mundos: falhas inesperadas (exceções) e falhas esperadas de negócio (`Result<T>`). A distinção é semântica: exceção é evento excepcional, resultado é parte do contrato. Confundir os dois produz código defensivo em excesso ou silêncio perigoso.
+
 ## Result\<T\>
 
 Exceções são para falhas inesperadas: erros de infraestrutura, bugs, estado impossível. Falhas de negócio são resultados esperados e devem ser representadas como valores. `Result<T>` torna o contrato explícito: o chamador sabe que pode falhar e é obrigado a lidar com isso.
@@ -84,7 +86,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 
 ## ApiError
 
-Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para HTTP status no adapter sem `if-else` espalhados pela aplicação.
+Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) status no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
 <summary>❌ Bad — strings mágicas sem contrato</summary>
@@ -169,7 +171,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 
 ## Falhar rápido
 
-Valide pré-condições no início do método, antes de qualquer I/O ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
+Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output, Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
 <summary>❌ Bad — validação tardia, trabalho desnecessário antes de falhar</summary>

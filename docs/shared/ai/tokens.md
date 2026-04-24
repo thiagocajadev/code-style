@@ -95,9 +95,9 @@ Chamadas seguintes: apenas os tokens novos (ex: mensagem do usuário) são proce
 }
 ```
 
-**OpenAI**: cache automático, sem marcação explícita no payload.
+**OpenAI**: cache automático, sem marcação explícita no **payload** (corpo da mensagem).
 
-O cache tem TTL (time to live, tempo de vida) de aproximadamente 5 minutos para prompts com variação frequente.
+O cache tem **TTL** (Time To Live, tempo de vida) de aproximadamente 5 minutos para prompts com variação frequente.
 
 ## Boas práticas de custo
 
@@ -105,7 +105,7 @@ O cache tem TTL (time to live, tempo de vida) de aproximadamente 5 minutos para 
 
 **Usar o modelo certo para cada tarefa.** Haiku 4.5 custa 5x menos que Sonnet 4.6 por token de saída. Tarefas simples (classificação, extração, resumo curto) não precisam do modelo mais capaz.
 
-**Combinar Prompt Caching com Batch API.** O desconto do cache (90%) e o desconto do Batch API (50%) se acumulam. Para processamento de documentos em volume, a redução de custo pode chegar a 95%.
+**Combinar Prompt Caching com Batch API.** A Batch **API** (Application Programming Interface, Interface de Programação de Aplicações) acumula o desconto do cache (90%) com o desconto do Batch (50%). Para processamento de documentos em volume, a redução de custo pode chegar a 95%.
 
 **Evitar output tokens desnecessários.** Instruir o modelo a responder de forma concisa quando a tarefa permite. Output tokens são os mais caros.
 

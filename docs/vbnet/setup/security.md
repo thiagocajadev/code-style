@@ -2,7 +2,17 @@
 
 > Escopo: VB.NET (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
-Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web API 2 / ASP.NET MVC 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
+Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2 / ASP.NET **MVC** (Model-View-Controller, Modelo-Visão-Controle) 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Config** (configuração) | Valor não sensível que muda entre ambientes, em `Web.config` ou `App.config` |
+| **Secret** (segredo) | Credencial ou chave; fica em seção criptografada via `aspnet_regiis`, nunca commitada |
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Superfície HTTP (Web API 2) sujeita a autenticação e CORS |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET MVC 5 com filtros de autorização e antiforgery tokens |
+| **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas) | Pipeline que aplica transforms de `Web.Release.config` e injeta secrets no deploy |
 
 ---
 
@@ -21,7 +31,7 @@ O `Web.config` commitado nunca contém o valor real de um segredo. Ou fica vazio
 
 ## Web.config transforms
 
-`Web.Release.config` sobrescreve valores durante o publish. O pipeline de CI/CD (Azure DevOps, Octopus) substitui tokens pelas variáveis de release sem commitar o valor real.
+`Web.Release.config` sobrescreve valores durante o publish. O pipeline de **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas) (Azure DevOps, Octopus) substitui tokens pelas variáveis de release sem commitar o valor real.
 
 ```xml
 <!-- Web.Release.config -->

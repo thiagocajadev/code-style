@@ -1,6 +1,6 @@
 # Project Foundation: HTML
 
-Template base para novos projetos HTML. A ordem do `<head>` afeta performance: charset e viewport
+Template base para novos projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: charset e viewport
 primeiro, recursos críticos antes do CSS, scripts com `defer`.
 
 ## Template base

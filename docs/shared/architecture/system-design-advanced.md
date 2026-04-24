@@ -14,7 +14,7 @@ Projetar sistemas em escala exige vocabulário preciso: acordos de nível de ser
 | **SLO** (Service Level Objective, Objetivo de Nível de Serviço) | Meta interna mensurável, geralmente mais estrita que o SLA |
 | **SLI** (Service Level Indicator, Indicador de Nível de Serviço) | Métrica concreta que mede o SLO em produção |
 | **CAP** (Consistency, Availability, Partition tolerance) | Teorema que afirma que um sistema distribuído escolhe entre Consistência e Disponibilidade sob partição de rede |
-| **PACELC** (Partition-Availability-Consistency Else Latency-Consistency) | Extensão do CAP: fora de partição, o trade-off é Latência vs Consistência |
+| **PACELC** (Partition-Availability-Consistency Else Latency-Consistency, Partição-Disponibilidade-Consistência Senão Latência-Consistência) | Extensão do CAP: fora de partição, o trade-off é Latência vs Consistência |
 | **Sharding** (particionamento horizontal) | Distribuir dados entre múltiplos nós por chave de partição |
 | **Replication** (replicação) | Manter cópias dos mesmos dados em nós diferentes para leitura e disponibilidade |
 | **Quorum** (quórum) | Número mínimo de nós que precisam concordar para uma operação ser aceita |
@@ -57,8 +57,8 @@ Em sistemas distribuídos, partições de rede são inevitáveis. O teorema CAP 
 
 | Escolha | Comportamento | Exemplos |
 |---|---|---|
-| **CP** (Consistency + Partition tolerance) | Sob partição, rejeita escrita para manter consistência | Banco relacional em modo síncrono, Zookeeper |
-| **AP** (Availability + Partition tolerance) | Sob partição, aceita escrita e reconcilia depois | DynamoDB, Cassandra, CouchDB |
+| **CP** (Consistency + Partition tolerance, Consistência + Tolerância a Partição) | Sob partição, rejeita escrita para manter consistência | Banco relacional em modo síncrono, Zookeeper |
+| **AP** (Availability + Partition tolerance, Disponibilidade + Tolerância a Partição) | Sob partição, aceita escrita e reconcilia depois | DynamoDB, Cassandra, CouchDB |
 
 Não existe sistema CA em produção real: partição não é opcional, é uma propriedade da rede.
 

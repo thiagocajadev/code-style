@@ -5,6 +5,8 @@
 > Este documento cobre idiomas e recursos específicos do SQL Server. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 
+**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (Agente) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -83,7 +85,7 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 | `NEWSEQUENTIALID()` | UUID sequencial gerado pelo banco; só como `DEFAULT`, não portável |
 
 <details>
-<summary>✅ Good — UUID v7 gerado na aplicação (.NET 9+)</summary>
+<summary>✅ Good — **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
 <br>
 
 ```sql
@@ -458,7 +460,7 @@ END;
 linha a linha para volumes acima de milhares de registros.
 
 <details>
-<summary>✅ Good — importar CSV com BULK INSERT</summary>
+<summary>✅ Good — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
 <br>
 
 ```sql

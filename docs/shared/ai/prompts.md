@@ -38,7 +38,7 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 
 **Especifique o formato de saída.** Sem instrução de formato, o modelo escolhe. Com instrução, o output é previsível e parseável.
 
-**Use few-shot examples para tarefas de formatação.** Para saídas com padrão específico (JSON, tabela, convenção de nomes), um exemplo vale mais que dez frases descritivas.
+**Use few-shot examples para tarefas de formatação.** Para saídas com padrão específico (**JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), tabela, convenção de nomes), um exemplo vale mais que dez frases descritivas.
 
 **Instrua raciocínio passo a passo em tarefas complexas.** "Pense passo a passo" ou "raciocine antes de responder" aumenta a precisão em problemas lógicos, matemáticos e de código.
 

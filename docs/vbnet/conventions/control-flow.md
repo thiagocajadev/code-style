@@ -1,5 +1,7 @@
 # Control Flow
 
+Controle de fluxo em VB.NET prioriza retorno antecipado e guard clauses sobre aninhamento. Cada `If` que não guarda cedo acumula profundidade; cada `Else` após `Return` é ruído que o leitor precisa descartar. O objetivo é que o olho percorra o método em linha reta.
+
 ## If e ElseIf
 
 O ponto de partida. Para dois caminhos, `If/Else` funciona, mas `Else` após um `Return` é ruído estrutural: o compilador já descartou o branch anterior.

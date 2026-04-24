@@ -2,9 +2,16 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura local time e
-UTC de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC ISO 8601,
-converter para o fuso local só na exibição.
+Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura local time e **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas), converter para o fuso local só na exibição.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
+| **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ss.sssZ` para datas em texto |
+| **Temporal** (proposta de API moderna) | API que substitui `Date` no ECMAScript, separa tipos por intenção (instant, zoned, plain) |
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato público; `Date` e `Intl.DateTimeFormat` são APIs nativas |
 
 ## UTC vs local time
 
@@ -56,7 +63,7 @@ const date2 = new Date("2026-01-15");
 <br>
 
 <details>
-<summary>✅ Good — ISO 8601 completo, sem ambiguidade</summary>
+<summary>✅ Good — **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
 <br>
 
 ```js

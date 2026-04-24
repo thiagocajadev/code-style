@@ -15,7 +15,7 @@ palavras reservadas sem precisar de delimitadores.
 
 ## Nomes em português
 
-Palavras comuns no português colidem com tipos e funções SQL: `Data` (data type), `Time` (time
+Palavras comuns no português colidem com tipos e funções **SQL** (Structured Query Language, Linguagem de Consulta Estruturada): `Data` (data type), `Time` (time
 type), `Status` (usado em comandos).
 
 <details>

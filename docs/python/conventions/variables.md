@@ -3,6 +3,16 @@
 Python não tem `const` nativo. Use `Final` para sinalizar que uma variável não deve ser reatribuída.
 Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo de execução.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Final** (valor fixo) | Anotação do `typing` que sinaliza variável não reatribuível; verificada por type checker |
+| **Frozen dataclass** (classe de dados congelada) | `@dataclass(frozen=True)` torna instâncias imutáveis em tempo de execução |
+| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem de consulta relacional; strings constantes nomeadas por propósito |
+| **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) | Marcação da web; valores fixos típicos incluem nomes de classes e IDs |
+| **UI** (User Interface, Interface do Usuário) | Superfície visual; constantes de UI separam dados de apresentação |
+
 ## Final — valor fixo por padrão
 
 <details>

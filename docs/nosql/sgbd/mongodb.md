@@ -5,6 +5,8 @@
 > Este documento cobre idiomas e recursos específicos do MongoDB. Convenções gerais de CRUD,
 > aggregation e naming estão em [conventions/](../conventions/).
 
+MongoDB é um banco de documentos baseado em BSON, com sharding nativo, pipeline de agregação expressivo e índices especializados (compostos, geoespaciais, texto). As seções abaixo cobrem o que é idiomático do MongoDB 8.2: operadores de agregação, transações multi-documento, Change Streams e padrões de modelagem que aproveitam embedding versus referenciamento.
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |

@@ -4,7 +4,7 @@
 >
 > Driver: `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` (SDK v3).
 
-DynamoDB é o banco NoSQL gerenciado da AWS. Escala automaticamente e elimina operações de cluster. Exige design cuidadoso de access patterns antes de criar a tabela.
+DynamoDB é o banco **NoSQL** (Not Only SQL, Não Apenas SQL) gerenciado da AWS. Escala automaticamente e elimina operações de cluster. Exige design cuidadoso de access patterns antes de criar a tabela.
 
 ## Conceitos fundamentais
 

@@ -5,6 +5,8 @@
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
 > configuração centralizada, módulos por domínio.
 
+Um projeto Python bem fundado começa com `pyproject.toml` concentrando deps, linter (ruff), type checker (mypy) e runner de testes (pytest). O entry point carrega configuração, registra dependências e sobe a aplicação; módulos ficam organizados por domínio, não por camada técnica.
+
 ## Estrutura de arquivos
 
 ```
@@ -72,7 +74,7 @@ mypy.ini
 <br>
 
 <details>
-<summary>✅ Good — pyproject.toml como SSOT (Single Source of Truth, fonte única de verdade)</summary>
+<summary>✅ Good — pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
 <br>
 
 ```toml

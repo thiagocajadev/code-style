@@ -53,7 +53,7 @@ class User {
 }
 ```
 
-A mesma lógica vale para componentes de UI (User Interface, Interface do Usuário). Um `Card` que
+A mesma lógica vale para componentes de **UI** (User Interface, Interface do Usuário). Um `Card` que
 aceita `children` compõe. Um `ProductCard extends Card` herda. O primeiro é reutilizável por design;
 o segundo precisa de uma subclasse nova para cada variação.
 
@@ -88,7 +88,7 @@ OrderDetailsView (pure)
   └── emite eventos ao clicar
 ```
 
-O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte (API
+O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte (**API** (Application Programming Interface, Interface de Programação de Aplicações)
 real, mock em Storybook, fixture de teste pré-definido) sem tocar na UI. O container não sabe **como** a tela é
 desenhada. Designers trocam o layout sem medo de quebrar a lógica.
 
@@ -115,7 +115,7 @@ estado local → lifting (ancestral comum) → context (transversal: tema, user)
 
 Quando dois componentes irmãos precisam do mesmo dado, o estado sobe para o **ancestral comum mais
 próximo** que consegue coordenar os dois. O pai detém a fonte da verdade; os filhos recebem o valor
-e um callback (função de retorno) para mudá-lo.
+e um **callback** (função de retorno) para mudá-lo.
 
 ```
         <Checkout>                    <- detém shippingAddress
@@ -247,8 +247,8 @@ Três regras mantêm o grafo saudável entre features:
 - **Public API explícita.** Cada módulo tem um `index` ou barrel file (arquivo índice) como único ponto de exportação. Consumidores importam desse contrato, não de arquivos internos. Mudanças internas ficam contidas.
 
 Quando a ferramenta suporta, as regras viram **configuração verificável** (ESLint boundaries, Nx
-tags, analyzers .NET, dependency-cruiser). Regras checadas pelo CI (pipeline que automatiza lint,
-testes e build a cada commit) não degradam; as confiadas na disciplina humana erodem em dois
+tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration, Integração Contínua) — pipeline que automatiza lint,
+testes e build a cada commit — não degradam; as confiadas na disciplina humana erodem em dois
 sprints.
 
 ### Sinais de fronteira errada

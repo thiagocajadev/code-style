@@ -1,6 +1,6 @@
 # JavaScript Vanilla
 
-Padrões modernos de JavaScript para projetos HTML sem bundler. O objetivo aqui é o contexto de
+Padrões modernos de JavaScript para projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) sem bundler. O objetivo aqui é o contexto de
 integração com o DOM. Para convenções da linguagem em si, veja a
 [documentação completa de JavaScript](../../javascript/README.md).
 

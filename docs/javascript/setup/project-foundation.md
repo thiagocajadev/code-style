@@ -5,6 +5,17 @@
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
 > configuração centralizada, módulos por domínio.
 
+A fundação de um projeto Node.js define três decisões estruturantes: onde fica a configuração, como módulos se organizam por domínio, e como o entry point orquestra o boot da aplicação. Editor, linter e gerenciador de pacotes ficam alinhados antes da primeira linha de domínio.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Entry point** (ponto de entrada) | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor |
+| **Middleware** (componente de pipeline) | Função que intercepta a requisição antes ou depois do handler |
+| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado usado para autenticação stateless |
+| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM |
+
 ## Ambiente
 
 Antes de iniciar, configure o editor:
@@ -283,7 +294,7 @@ export function registerOrders(app, config) {
 
 ## Middleware pipeline
 
-A ordem do middleware é determinística e importa. Registrar autenticação após roteamento não protege as rotas.
+A ordem do **middleware** (componente de pipeline) é determinística e importa. Registrar autenticação após roteamento não protege as rotas.
 
 ```
 express.json()     → parseia o body antes de qualquer handler

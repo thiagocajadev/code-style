@@ -73,7 +73,7 @@ End Module
 Um módulo por domínio. Cada função executa uma query e retorna o resultado — sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
 
 <details>
-<summary>❌ Bad — acesso a dados misturado com lógica de UI no Form</summary>
+<summary>❌ Bad — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
 <br>
 
 ```vbnet

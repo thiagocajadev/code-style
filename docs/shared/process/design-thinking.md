@@ -125,7 +125,7 @@ Design Thinking responde **o que construir**. A execução visual e de interaç�
 | Sistema de design, tipografia, acessibilidade, estados | [`../standards/ui-ux.md`](../standards/ui-ux.md) |
 | Metodologia de implementação (DDD, BDD, TDD) | [`methodologies.md`](./methodologies.md) |
 
-Confundir Design Thinking com UI/UX é comum. UI/UX é a execução visual do que Design Thinking decidiu construir.
+Confundir Design Thinking com **UI** (User Interface, Interface do Usuário)/**UX** (User Experience, Experiência do Usuário) é comum. UI/UX é a execução visual do que Design Thinking decidiu construir.
 
 ## Quando Design Thinking começa e termina
 

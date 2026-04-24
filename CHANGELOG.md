@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.17.2] - 2026-04-23
+
+### Fixed
+
+- Estrutura pedagógica em 136 arquivos de `docs/`: 330 gaps zerados em ciclo único (ciclos A+B+C+D fundidos do relatório `audit-pedagogical-structure.md`). R1×25 (parágrafos de intro após H1), R2×18 (seções `## Conceitos fundamentais` + tabela), R3×248 (siglas `**SIGLA** (English, PT)` na 1ª ocorrência), R3b×38 (não-siglas `**termo** (tradução)`), R4×1 (título com expansão completa → tradução curta). Zero toque em código, exemplos Good/Bad ou estrutura de arquivos. Audit final: 0 gaps em 182 arquivos; `audit:docs` mantém 0 violações em 1230 blocos Good / 201 arquivos
+
 ## [1.17.1] - 2026-04-23
 
 ### Added

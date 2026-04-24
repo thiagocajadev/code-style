@@ -4,6 +4,8 @@
 > referências conceituais. O que importa é o princípio: strict mode sempre ativo, path aliases
 > para importações limpas, e o compilador como primeira linha de defesa.
 
+A fundação de um projeto TypeScript define três decisões-chave: `tsconfig.json` com `strict: true` ativado (nada de `any` implícito), path aliases configurados em `compilerOptions.paths` para evitar `../../../`, e o compilador integrado ao pipeline (pre-commit, **CI** (Continuous Integration, Integração Contínua)) como primeira linha de defesa contra regressões de tipo.
+
 ## Ambiente
 
 Antes de iniciar, configure o editor:

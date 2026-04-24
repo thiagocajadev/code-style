@@ -2,6 +2,8 @@
 
 > Escopo: Python. Especificidades do ecossistema; princípios em [shared/platform/security.md](../../shared/platform/security.md).
 
+Segurança em Python concentra-se em três frentes: gerenciamento de segredos (variáveis de ambiente, nunca commits), validação de entrada (pydantic no boundary) e dependências (pinning + auditoria). Os princípios conceituais vivem no guia transversal; aqui ficam apenas as escolhas idiomáticas do ecossistema.
+
 ## Secrets em variáveis de ambiente
 
 Nunca hardcode credenciais. Use `.env` para desenvolvimento local e variáveis de ambiente reais

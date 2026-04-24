@@ -3,6 +3,8 @@
 > [!NOTE]
 > Essa estrutura reflete como costumo organizar projetos SQL. Os exemplos usam SQL Server como referência; os princípios se aplicam a qualquer banco relacional.
 
+A fundação de um projeto **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) define três coisas: onde vivem migrations versionadas, como scripts são organizados por domínio (não por tipo de objeto) e quais convenções de naming se aplicam. Editor e formatter ficam alinhados antes da primeira migration entrar no repositório.
+
 ## Ambiente
 
 Antes de iniciar, configure o editor:
@@ -12,7 +14,7 @@ Antes de iniciar, configure o editor:
 
 ## Estrutura de arquivos
 
-Separar scripts por responsabilidade facilita revisão, rollback e automação de CI.
+Separar scripts por responsabilidade facilita revisão, rollback e automação de **CI** (Continuous Integration, Integração Contínua).
 
 ```
 sql/

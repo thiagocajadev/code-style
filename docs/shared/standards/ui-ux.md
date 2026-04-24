@@ -102,7 +102,7 @@ Foco visível é obrigatório. Nunca remover o outline (contorno) de foco sem su
 
 ### Semântica HTML
 
-Elementos HTML semânticos comunicam estrutura para leitores de tela:
+Elementos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) semânticos comunicam estrutura para leitores de tela:
 
 | Evitar | Usar |
 |---|---|

@@ -139,7 +139,7 @@ ORDER BY
 
 ### Conversão implícita por tipo incompatível
 
-SQL Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
+**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
 nenhum erro aparece, e o índice é ignorado em silêncio.
 
 <details>
@@ -491,7 +491,7 @@ CREATE INDEX IX_Players_TeamId
 ## Tipo de ID: BIGINT vs UUID
 
 A escolha do tipo de ID impacta diretamente o tamanho do índice e a frequência de page splits.
-UUID v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
+**UUID** (Universally Unique Identifier, Identificador Universalmente Único) v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
 com alto volume de inserções, a fragmentação degrada leituras e escritas.
 
 | Tipo | Tamanho | Unicidade global | Sequencial | Page splits |

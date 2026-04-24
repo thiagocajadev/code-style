@@ -185,7 +185,7 @@ End Function
 ## Configuração do NLog
 
 <details>
-<summary>✅ Good — NLog.config mínimo para Web API 2</summary>
+<summary>✅ Good — NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
 <br>
 
 ```xml

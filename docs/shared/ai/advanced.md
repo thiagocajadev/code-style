@@ -3,7 +3,7 @@
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
 Este guia cobre conceitos que aparecem em sistemas de IA em produção: ajuste fino de modelos,
-alucinações, saídas estruturadas, raciocínio estendido, engines de inferência e AI Gateway. Cada
+alucinações, saídas estruturadas, raciocínio estendido, engines de inferência e **AI** (Artificial Intelligence, Inteligência Artificial) Gateway. Cada
 conceito impacta diretamente decisões de arquitetura e custo.
 
 ## Conceitos fundamentais
@@ -40,7 +40,7 @@ Modelo base (treinado em internet) → Fine-tuning com dados do domínio → Mod
 | Comportamento novo sem dados suficientes            | Prompt engineering primeiro    |
 | Conhecimento factual atualizado                     | RAG (mais simples e auditável) |
 
-Fine-tuning não é a primeira escolha. Prompt engineering e RAG resolvem a maioria dos casos com
+Fine-tuning não é a primeira escolha. Prompt engineering e **RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) resolvem a maioria dos casos com
 menos custo e sem a complexidade de um pipeline de treinamento.
 
 **Variantes:**
@@ -48,9 +48,9 @@ menos custo e sem a complexidade de um pipeline de treinamento.
 | Variante                                   | O que é                                                                     | Indicação                                      |
 | ------------------------------------------ | --------------------------------------------------------------------------- | ---------------------------------------------- |
 | **Full fine-tuning**                       | Atualiza todos os pesos do modelo                                           | Máxima especialização; exige GPU               |
-| **LoRA** (Low-Rank Adaptation)             | Atualiza apenas matrizes de baixo rank (classicação); pesos base congelados | Eficiente em memória; mais comum               |
+| **LoRA** (Low-Rank Adaptation, Adaptação de Baixo Rank) | Atualiza apenas matrizes de baixo rank (classicação); pesos base congelados | Eficiente em memória; mais comum               |
 | **QLoRA**                                  | LoRA sobre modelo quantizado                                                | Fine-tuning em hardware consumer (GPU de 24GB) |
-| **PEFT** (Parameter-Efficient Fine-Tuning) | Família de técnicas que incluem LoRA, prefix tuning e adapters              | Termo genérico para ajuste fino eficiente      |
+| **PEFT** (Parameter-Efficient Fine-Tuning, Ajuste Fino com Eficiência de Parâmetros) | Família de técnicas que incluem LoRA, prefix tuning e adapters              | Termo genérico para ajuste fino eficiente      |
 
 ## Hallucination (Alucinação)
 
@@ -158,7 +158,7 @@ Se não tiver certeza, diga que não sabe e recomende verificar a documentação
 
 ## Structured outputs (Saídas estruturadas)
 
-Structured outputs forçam o modelo a gerar um JSON que segue um schema definido. O output é
+Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) que segue um schema definido. O output é
 parseável sem regex, sem pós-processamento frágil.
 
 <details>
@@ -248,7 +248,7 @@ engine impacta velocidade, compatibilidade e recursos suportados.
 | **Ollama**                          | Wrapper de llama.cpp com API REST e CLI simples               | Desenvolvimento local; prototipagem                      |
 | **vLLM**                            | Alto throughput em GPU; PagedAttention; batching contínuo     | Produção em servidor GPU; múltiplos usuários simultâneos |
 | **LM Studio**                       | Interface gráfica sobre llama.cpp; servidor OpenAI-compatible | Exploração local com UI; sem linha de comando            |
-| **TGI** (Text Generation Inference) | Servidor Hugging Face; quantização, streaming, batching       | Modelos Hugging Face em produção                         |
+| **TGI** (Text Generation Inference, Inferência para Geração de Texto) | Servidor Hugging Face; quantização, streaming, batching       | Modelos Hugging Face em produção                         |
 
 Para uso em produção com múltiplos usuários, **vLLM** é a escolha padrão: batching contínuo maximiza
 throughput (vazão) e PagedAttention (atenção paginada) gerencia a KV cache (armazenamento rápido e
@@ -256,7 +256,7 @@ temporário das matrizes de atenção chave-valor de tokens já processados) de 
 
 ## AI Gateway
 
-Um AI Gateway (portão de IA) é uma camada intermediária entre a aplicação e as APIs de LLM.
+Um AI Gateway (portão de IA) é uma camada intermediária entre a aplicação e as APIs de **LLM** (Large Language Model, Modelo de Linguagem Grande).
 Centraliza responsabilidades que não devem viver na lógica de negócio.
 
 ```

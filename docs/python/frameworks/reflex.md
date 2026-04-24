@@ -3,8 +3,8 @@
 > Escopo: Python. Guia baseado em **Reflex 0.8.28** com **Python 3.10+** (Python 3.14: ver nota de compatibilidade).
 
 Reflex é um framework Python fullstack (completo): o código Python compila para um frontend em **React**
-(biblioteca de UI) e um backend em **FastAPI** (framework web assíncrono). Toda a lógica de negócio
-permanece no servidor. O browser recebe apenas o HTML e o JavaScript gerados a partir dos componentes
+(biblioteca de **UI** (User Interface, Interface do Usuário)) e um backend em **FastAPI** (framework web assíncrono). Toda a lógica de negócio
+permanece no servidor. O browser recebe apenas o **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) e o JavaScript gerados a partir dos componentes
 declarados em Python.
 
 Este guia mostra como estruturar State, event handlers, computed vars e componentes seguindo os
@@ -204,7 +204,7 @@ class CartState(rx.State):
 ## Componentes
 
 Componentes são funções Python que retornam elementos `rx.*`. Recebem props como parâmetros e
-referenciam Vars do State. Sem I/O nem lógica de negócio inline.
+referenciam Vars do State. Sem **I/O** (Input/Output, Entrada/Saída) nem lógica de negócio inline.
 
 <details>
 <summary>❌ Bad — I/O direto no componente, lógica de negócio misturada com apresentação</summary>

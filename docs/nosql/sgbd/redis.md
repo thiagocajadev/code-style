@@ -40,7 +40,7 @@ await client.connect();
 ```
 
 <details>
-<summary>❌ Bad — sem tratamento de erro de conexão; URL hardcoded</summary>
+<summary>❌ Bad — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
 <br>
 
 ```js
@@ -78,7 +78,7 @@ export { client };
 
 ## Strings
 
-O tipo mais simples. Usar para valores atômicos, contadores e JSON serializado.
+O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) serializado.
 
 | Comando | Uso |
 | --- | --- |

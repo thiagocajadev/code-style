@@ -137,7 +137,7 @@ Ambos são versões reduzidas do produto, mas com objetivos distintos:
 | **MVP** | Validação da hipótese de valor com o mínimo viável | Problema ainda não é claro; quer testar se vale a pena construir |
 | **MLP** | Experiência suficientemente boa para gerar adesão emocional | Problema é claro; quer testar se a solução será adotada |
 
-MVP pode ter UX desagradável desde que valide a hipótese. MLP precisa de qualidade de experiência para gerar retorno real do usuário.
+MVP pode ter **UX** (User Experience, Experiência do Usuário) desagradável desde que valide a hipótese. MLP precisa de qualidade de experiência para gerar retorno real do usuário.
 
 A escolha depende da fase: descoberta de problema usa MVP, validação de adoção usa MLP.
 

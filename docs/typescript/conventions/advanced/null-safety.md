@@ -212,7 +212,7 @@ class Cart {
 
 ## Normalizar na fronteira
 
-Dados externos: resposta de API, input de formulário, config. Chegam sem garantia. Normalize
+Dados externos: resposta de **API** (Application Programming Interface, Interface de Programação de Aplicações), input de formulário, config. Chegam sem garantia. Normalize
 com `?? []` no ponto de entrada, antes de propagar para o domínio.
 
 <details>

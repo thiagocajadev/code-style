@@ -9,6 +9,8 @@
 > Indicado para apps mobile, desktop, CLI, testes e edge computing. Não substitui PostgreSQL ou
 > SQL Server em workloads de alta concorrência com múltiplas escritas.
 
+SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) com idiomas próprios: tipos dinâmicos (type affinity), pragmas de configuração por conexão, Write-Ahead Logging para concorrência de leitura, `UPSERT` com `ON CONFLICT` e full-text search via `FTS5`. As seções abaixo cobrem o que distingue o SQLite de bancos servidor-cliente.
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -111,7 +113,7 @@ VALUES
 ## IDs no SQLite
 
 `INTEGER PRIMARY KEY` é um alias direto para o `rowid` interno. A sequência é automática e
-eficiente. Para unicidade global, armazene UUID como `TEXT`.
+eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifier, Identificador Universalmente Único) como `TEXT`.
 
 <details>
 <summary>✅ Good — BIGINT sequencial via rowid alias</summary>
@@ -221,7 +223,7 @@ COMMIT;
 
 ## JSON: funções nativas
 
-SQLite suporta funções JSON sem extensão desde a versão 3.38. Armazene JSON como `TEXT` e acesse
+SQLite suporta funções **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sem extensão desde a versão 3.38. Armazene JSON como `TEXT` e acesse
 via `json_extract`, `json_object`, `json_array` e demais funções.
 
 SQLite 3.53 adicionou `json_array_insert()` para inserir elemento em posição específica de um

@@ -4,7 +4,7 @@
 
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)**, que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
+Os exemplos seguem a abordagem **AAA** (Arrange, Act, Assert — Preparar, Agir, Verificar), que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
 
 O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas: sem expressões, acessos de propriedade ou literais inline.
 

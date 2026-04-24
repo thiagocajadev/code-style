@@ -4,6 +4,16 @@
 
 `DateTime` em .NET tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou `Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira `DateTimeOffset` para eliminar a ambiguidade: o offset está embutido no tipo.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
+| **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ssZ` para datas em texto |
+| **DateTimeOffset** (data com fuso) | Tipo .NET que carrega o offset embutido; elimina ambiguidade do `Kind` |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato que transporta datas entre camadas; sempre em UTC ISO 8601 |
+| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Banco relacional; colunas `datetime2` + UTC é o padrão seguro |
+
 ## DateTime.Now vs DateTimeOffset.UtcNow
 
 `DateTime.Now` captura a hora local do servidor. Em deploys com servidores em timezones diferentes, o mesmo código produz valores incomparáveis.
@@ -122,7 +132,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — string ISO no DTO, parse explícito no domínio</summary>
+<summary>✅ Good — string **ISO** (International Organization for Standardization, Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
 <br>
 
 ```vbnet

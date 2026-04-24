@@ -130,7 +130,7 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 
 ## Record vs class
 
-`record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de API, resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem boilerplate. `class` fica para tipos com identidade, estado mutável ou comportamento rico.
+`record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de **API** (Application Programming Interface, Interface de Programação de Aplicações), resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem boilerplate. `class` fica para tipos com identidade, estado mutável ou comportamento rico.
 
 <details>
 <summary>❌ Bad — class mutable para dados immutable</summary>

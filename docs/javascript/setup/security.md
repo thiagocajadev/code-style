@@ -4,6 +4,16 @@
 
 Esta página cobre apenas o que é específico do ecossistema Node: onde colocar o quê, quais ferramentas usar, quais patterns idiomáticos. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Secret** (segredo) | Credencial, chave ou token; nunca vai para o repositório |
+| **PaaS** (Platform as a Service, Plataforma como Serviço) | Ambiente gerenciado (Heroku, Railway, Fly) que injeta variáveis no deploy |
+| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado usado para autenticação stateless |
+| **Middleware** (componente de pipeline) | Função que intercepta a requisição antes ou depois do handler |
+| **Payload** (corpo da mensagem) | Dados que acompanham a requisição ou o token |
+
 ---
 
 ## Onde cada coisa vai
@@ -108,7 +118,7 @@ export function registerOrders(app, config) {
 
 ## JWT: verify, nunca decode
 
-`jwt.decode()` extrai o payload sem verificar assinatura. Qualquer token fabricado ou vencido passa. Em produção, use sempre `jwt.verify()`.
+`jwt.decode()` extrai o **payload** (corpo da mensagem) sem verificar assinatura. Qualquer token fabricado ou vencido passa. Em produção, use sempre `jwt.verify()`.
 
 <details>
 <summary>❌ Bad — decode aceita token forjado</summary>
@@ -159,7 +169,7 @@ export function authenticate(request, response, next) {
 
 ## Autorização: middleware reutilizável
 
-Checar role dentro de cada handler duplica lógica. Um middleware `authorize(roles)` aplica a regra uma vez na definição da rota.
+Checar role dentro de cada handler duplica lógica. Um **middleware** (componente de pipeline) `authorize(roles)` aplica a regra uma vez na definição da rota.
 
 ```js
 // middleware/authorize.js

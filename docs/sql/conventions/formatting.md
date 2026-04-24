@@ -1,6 +1,6 @@
 # Formatting
 
-Uma cláusula por linha, colunas indentadas com 2 espaços. SQL legível de cima pra baixo, sem scroll horizontal.
+Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) legível de cima pra baixo, sem scroll horizontal.
 
 ## Consulta em linha única
 

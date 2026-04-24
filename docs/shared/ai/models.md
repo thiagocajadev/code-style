@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um modelo de IA é um conjunto de pesos e parâmetros resultado de treinamento em grandes volumes de dados. Para uso em produção, os modelos se dividem em duas categorias: **cloud** (nuvem), acessados via API mediante pagamento por token, e **local**, executados diretamente na máquina do desenvolvedor.
+Um modelo de IA é um conjunto de pesos e parâmetros resultado de treinamento em grandes volumes de dados. Para uso em produção, os modelos se dividem em duas categorias: **cloud** (nuvem), acessados via **API** (Application Programming Interface, Interface de Programação de Aplicações) mediante pagamento por token, e **local**, executados diretamente na máquina do desenvolvedor.
 
 ## Conceitos fundamentais
 
@@ -19,7 +19,7 @@ Um modelo de IA é um conjunto de pesos e parâmetros resultado de treinamento e
 
 ## Modelos em nuvem (Cloud Models)
 
-Modelos em nuvem são acessados via API REST. O desenvolvedor envia tokens e paga por volume de entrada e saída. Nenhum hardware especializado é necessário no lado do cliente.
+Modelos em nuvem são acessados via API **REST** (Representational State Transfer, Transferência de Estado Representacional). O desenvolvedor envia tokens e paga por volume de entrada e saída. Nenhum hardware especializado é necessário no lado do cliente.
 
 ### Claude (Anthropic)
 
@@ -66,7 +66,7 @@ Por serem open weights, modelos Llama podem ser rodados localmente via Ollama.
 
 ### Mistral
 
-Família de modelos da Mistral AI, com foco em código e eficiência. Distribuídos sob Apache 2.0.
+Família de modelos da Mistral **AI** (Artificial Intelligence, Inteligência Artificial), com foco em código e eficiência. Distribuídos sob Apache 2.0.
 
 | Modelo | Perfil de uso |
 |---|---|
@@ -95,7 +95,7 @@ Modelos populares disponíveis no Ollama: `llama4`, `qwen2.5`, `mistral`, `gemma
 
 ### LM Studio
 
-LM Studio é uma interface gráfica para rodar modelos GGUF localmente. Inclui um servidor compatível com a API da OpenAI, permitindo integração direta com ferramentas existentes sem alterar código.
+LM Studio é uma interface gráfica para rodar modelos **GGUF** (GPT-Generated Unified Format, Formato Unificado Gerado por GPT) localmente. Inclui um servidor compatível com a API da OpenAI, permitindo integração direta com ferramentas existentes sem alterar código.
 
 ## Quantização (Quantization)
 

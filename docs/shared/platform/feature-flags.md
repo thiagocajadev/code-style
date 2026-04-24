@@ -88,7 +88,7 @@ cálculo, troca de provedor). Mais caro de implementar, mais barato que um incid
 
 ## Kill switch (matar feature)
 
-Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir PR, sem rebuild
+Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir **PR** (Pull Request, Pedido de Integração), sem rebuild
 (recompilação), sem deploy. É a rede de segurança quando algo descompensa: picos de erro, latência
 fora do limite, regressão detectada em métrica.
 

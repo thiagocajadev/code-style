@@ -1,6 +1,6 @@
 # Visual density: HTML
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a HTML: agrupar
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar
 o que pertence junto, separar o que é distinto.
 
 ## Entre blocos irmãos

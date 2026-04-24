@@ -2,7 +2,7 @@
 
 > Escopo: NoSQL. Aplica as regras de densidade visual ao código de drivers JS (MongoDB, Redis, DynamoDB).
 
-As regras gerais de densidade visual estão em [shared/standards/visual-density.md](../../../shared/standards/visual-density.md). Esta seção aplica essas regras ao contexto específico de drivers NoSQL em JavaScript.
+As regras gerais de densidade visual estão em [shared/standards/visual-density.md](../../../shared/standards/visual-density.md). Esta seção aplica essas regras ao contexto específico de drivers **NoSQL** (Not Only SQL, Não Apenas SQL) em JavaScript.
 
 ## Regras
 

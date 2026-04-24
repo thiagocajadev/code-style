@@ -1,5 +1,7 @@
 # Methods
 
+Métodos em VB.NET distinguem `Sub` (sem retorno) e `Function` (com retorno). A escolha é semântica, não estética: comunica a intenção da operação antes mesmo do nome. Orquestrador fica no topo; helpers `Private` descem em ordem de leitura.
+
 ## Sub vs Function
 
 `Sub` não retorna valor — equivalente a `void`. `Function` retorna. A escolha é semântica: se a operação produz um resultado, use `Function`. `Sub` com parâmetro `ByRef` para comunicar resultado é um cheiro de design — na dúvida, prefira `Function`.

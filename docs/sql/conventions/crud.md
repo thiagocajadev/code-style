@@ -345,7 +345,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — parâmetros nomeados (SQL Server / PostgreSQL)</summary>
+<summary>✅ Good — parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
 <br>
 
 ```sql

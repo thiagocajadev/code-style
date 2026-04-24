@@ -27,7 +27,7 @@ o ciclo síncrono.
 
 ## Background Job
 
-Um job (tarefa assíncrona) desacopla o aceite de trabalho da sua execução. A API aceita a
+Um job (tarefa assíncrona) desacopla o aceite de trabalho da sua execução. A **API** (Application Programming Interface, Interface de Programação de Aplicações) aceita a
 requisição, persiste o job, responde 202, e o **worker** (processo trabalhador) executa de forma
 independente.
 
@@ -43,7 +43,7 @@ conclusão do job.
 O job precisa ser persistido **antes** do 202 ser retornado. Se a aplicação reiniciar após responder
 mas antes de enfileirar o job, o trabalho é perdido silenciosamente.
 
-Quando a fila é externa ao banco principal (Kafka, SQS, RabbitMQ), o problema se aprofunda. Commit
+Quando a fila é externa ao banco principal (Kafka, **SQS** (Simple Queue Service, Serviço Simples de Filas), RabbitMQ), o problema se aprofunda. Commit
 no banco e publicação na fila são dois sistemas distintos, sem garantia de atomicidade (atomicity,
 execução como unidade indivisível).
 
@@ -100,7 +100,7 @@ cache sem reprocessar. A constraint (restrição) `UNIQUE` é a proteção contr
 | **WebSocket**                                                | Comunicação bidirecional em tempo real, custo e complexidade mais altos  |
 
 SSE substituiu WebSocket na maioria dos casos de entrega de status unidirecional: funciona sobre
-HTTP/2 padrão, sem infraestrutura adicional para balanceamento de carga.
+**HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)/2 padrão, sem infraestrutura adicional para balanceamento de carga.
 
 ---
 
@@ -124,12 +124,12 @@ Duas regras sem exceção:
 ### Validação HMAC
 
 O **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash)
-é o mecanismo que confirma a origem de um webhook. O provedor assina o payload com um segredo
+é o mecanismo que confirma a origem de um webhook. O provedor assina o **payload** (corpo da mensagem) com um segredo
 compartilhado. O receptor recalcula a assinatura com o mesmo segredo e compara. Se bater, a mensagem
 veio de quem diz ser e não foi alterada no caminho.
 
 O cálculo é feito sobre o **raw body** (corpo bruto da requisição), antes do parse (interpretação)
-do JSON. Frameworks que fazem parse automático do body antes do middleware executar invalidam o
+do **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript). Frameworks que fazem parse automático do body antes do **middleware** (componente de pipeline) executar invalidam o
 cálculo. O webhook handler precisa receber o stream bruto diretamente.
 
 A comparação usa `timingSafeEqual` para evitar timing attack (ataque de temporização):

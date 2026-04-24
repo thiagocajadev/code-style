@@ -1,6 +1,6 @@
 # Formatting
 
-Formatação consistente torna o HTML escaneável: indentação revela hierarquia, ordem de atributos
+Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) escaneável: indentação revela hierarquia, ordem de atributos
 cria previsibilidade e aspas duplas eliminam ambiguidade.
 
 ## Indentação

@@ -55,10 +55,10 @@ aparência visual. Uma classe `.button--danger` sobrevive a uma mudança de cor.
 ## BEM
 
 BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explícita a hierarquia e o
-relacionamento entre partes da UI sem depender de aninhamento no CSS.
+relacionamento entre partes da **UI** (User Interface, Interface do Usuário) sem depender de aninhamento no CSS.
 
 <details>
-<summary>❌ Bad — hierarquia implícita, acoplada ao HTML</summary>
+<summary>❌ Bad — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
 <br>
 
 ```html

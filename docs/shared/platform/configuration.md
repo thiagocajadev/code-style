@@ -92,7 +92,7 @@ AppConfig {
 
 O resto do código recebe `AppConfig` como dependência, não lê variáveis de ambiente diretamente. Mudanças de nome de chave viram erro de compilação, não surpresa em runtime. Testar um cenário com config específica é construir um `AppConfig` de teste, sem monkey-patching em `process.env`.
 
-Em linguagens com forte tipagem (TypeScript, C#, VB.NET), o objeto de config é uma classe ou record com propriedades não-nulas. Em linguagens dinâmicas, validar a forma na carga (schema de JSON, dataclass com validação) cobre o mesmo papel.
+Em linguagens com forte tipagem (TypeScript, C#, VB.NET), o objeto de config é uma classe ou record com propriedades não-nulas. Em linguagens dinâmicas, validar a forma na carga (schema de **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), dataclass com validação) cobre o mesmo papel.
 
 ---
 

@@ -2,7 +2,7 @@
 
 > Escopo: SQL. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-NULL em SQL não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
+NULL em **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
 único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
 
 > Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)

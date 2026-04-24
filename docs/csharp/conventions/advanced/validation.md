@@ -119,7 +119,7 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 ## Regras de negócio
 
 O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no
-domínio: dependem de I/O (banco, serviços externos) e não pertencem ao validator.
+domínio: dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviços externos) e não pertencem ao validator.
 
 <details>
 <summary>❌ Bad — I/O dentro do validator mistura camadas</summary>

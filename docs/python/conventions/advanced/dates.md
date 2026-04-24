@@ -86,7 +86,7 @@ local_time = datetime.now(tz=ZoneInfo("America/Sao_Paulo"))
 
 ## Serialização e parsing — ISO 8601
 
-Armazene e transmita datas como strings ISO 8601. Use `isoformat()` para serializar e
+Armazene e transmita datas como strings **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601. Use `isoformat()` para serializar e
 `datetime.fromisoformat()` para desserializar.
 
 <details>

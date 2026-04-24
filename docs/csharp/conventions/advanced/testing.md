@@ -5,7 +5,7 @@
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o
 que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA (Arrange, Act, Assert)**: uma convenção que divide cada
+Os exemplos seguem a abordagem **AAA** (Arrange Act Assert, Preparar Executar Verificar): uma convenção que divide cada
 teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do
 resultado).
 

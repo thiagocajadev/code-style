@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**ETL** (Extract, Transform, Load, Extração, Transformação e Carga) e **BI** (Business Intelligence, Inteligência de Negócios) formam a camada analítica de um sistema: movem dados operacionais para um ambiente otimizado para leitura e análise. O banco transacional (**OLTP**) é projetado para escrita rápida e consistência. O banco analítico (**OLAP**) é projetado para queries agregadas em grandes volumes históricos. Rodar análises pesadas diretamente no OLTP compromete a latência do sistema operacional.
+**ETL** (Extract, Transform, Load, Extração, Transformação e Carga) e **BI** (Business Intelligence, Inteligência de Negócios) formam a camada analítica de um sistema: movem dados operacionais para um ambiente otimizado para leitura e análise. O banco transacional **OLTP** (Online Transaction Processing, Processamento de Transações Online) é projetado para escrita rápida e consistência. O banco analítico **OLAP** (Online Analytical Processing, Processamento Analítico Online) é projetado para queries agregadas em grandes volumes históricos. Rodar análises pesadas diretamente no OLTP compromete a latência do sistema operacional.
 
 ## Conceitos fundamentais
 
@@ -106,7 +106,7 @@ A diferença está em onde a transformação acontece.
 | Quando usar | Dados sensíveis que não podem entrar brutos no DW; transformações que SQL não expressa bem | Warehouse com poder computacional suficiente; equipe com SQL forte |
 | Ferramentas comuns | Apache Spark, SSIS, Talend, Airflow com Python | dbt, Dataform, SQL nativo do warehouse |
 
-**ELT é o padrão moderno** para warehouses como BigQuery, Snowflake e Redshift: armazenamento barato, SQL nativo poderoso e transformações versionáveis com dbt. ETL continua a escolha certa quando os dados brutos não podem sair da rede interna ou quando a transformação exige lógica que SQL não expressa.
+**ELT é o padrão moderno** para warehouses como BigQuery, Snowflake e Redshift: armazenamento barato, **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) nativo poderoso e transformações versionáveis com dbt. ETL continua a escolha certa quando os dados brutos não podem sair da rede interna ou quando a transformação exige lógica que SQL não expressa.
 
 ---
 

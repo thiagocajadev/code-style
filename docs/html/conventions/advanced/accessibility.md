@@ -3,7 +3,16 @@
 > Escopo: HTML. Idiomas específicos deste ecossistema.
 
 Acessibilidade é estrutura, não camada extra. Elemento semântico correto, texto alternativo e foco
-gerenciável cobrem a maior parte dos casos sem ARIA adicional.
+gerenciável cobrem a maior parte dos casos sem **ARIA** (Accessible Rich Internet Applications, Aplicações Ricas e Acessíveis para Internet) adicional.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) | Estrutura semântica da página; elementos corretos já carregam acessibilidade nativa |
+| **ARIA** (Accessible Rich Internet Applications, Aplicações Ricas e Acessíveis para Internet) | Atributos que complementam semântica quando HTML nativo não cobre o caso |
+| **UI** (User Interface, Interface do Usuário) | Superfície visual e interativa com que o usuário interage |
+| **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) | Endereço do recurso; âncoras e links dependem dela para navegação acessível |
 
 ## Imagens
 

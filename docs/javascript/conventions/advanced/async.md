@@ -2,7 +2,16 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de I/O é assíncrona. Bloquear o thread principal trava a aplicação.
+Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o thread principal trava a aplicação.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa fronteira do processo: rede, disco, banco |
+| **callback** (função de retorno) | Função passada como argumento para executar quando a operação termina |
+| **Promise** (promessa de valor) | Objeto que representa o resultado futuro de uma operação assíncrona |
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato público de uma biblioteca ou serviço externo |
 
 ## Callback hell
 

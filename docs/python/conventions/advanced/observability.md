@@ -116,7 +116,7 @@ logger.info(
 ## Logging estruturado com correlation_id
 
 Em sistemas distribuídos, rastrear uma requisição entre serviços exige um identificador comum.
-Propague o `correlation_id` por todas as chamadas de I/O.
+Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output, Entrada/Saída).
 
 <details>
 <summary>❌ Bad — logs sem contexto de rastreamento</summary>

@@ -2,8 +2,17 @@
 
 > Escopo: HTML. Idiomas específicos deste ecossistema.
 
-SEO técnico em HTML começa no `<head>`. Title, description e canonical são os três mais impactantes.
-Open Graph controla a aparência em redes sociais. JSON-LD comunica estrutura a crawlers.
+**SEO** (Search Engine Optimization, Otimização para Mecanismos de Busca) técnico em **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) começa no `<head>`. Title, description e canonical são os três mais impactantes. **Open Graph** (protocolo de metadados sociais) controla a aparência em redes sociais. **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript)-LD comunica estrutura a crawlers.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **SEO** (Search Engine Optimization, Otimização para Mecanismos de Busca) | Conjunto de práticas para melhorar visibilidade em buscadores |
+| **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) | Marcação estrutural interpretada por crawlers e navegadores |
+| **Open Graph** (protocolo de metadados sociais) | Padrão do Facebook para controlar como a página aparece em redes sociais |
+| **JSON-LD** (JavaScript Object Notation for Linked Data, Notação de Objetos JavaScript para Dados Ligados) | Formato de dados estruturados embutido em `<script>` para crawlers |
+| **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) | Endereço canônico da página; `rel="canonical"` evita conteúdo duplicado |
 
 ## title e description
 
@@ -50,11 +59,11 @@ Open Graph controla a aparência em redes sociais. JSON-LD comunica estrutura a 
 
 ## Open Graph
 
-Tags Open Graph controlam título, descrição e imagem ao compartilhar em redes sociais. Sem elas,
+Tags **Open Graph** (protocolo de metadados sociais) controlam título, descrição e imagem ao compartilhar em redes sociais. Sem elas,
 a plataforma escolhe, geralmente mal.
 
 <details>
-<summary>❌ Bad — sem Open Graph, aparência ao compartilhar indefinida</summary>
+<summary>❌ Bad — sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
 <br>
 
 ```html
@@ -68,7 +77,7 @@ a plataforma escolhe, geralmente mal.
 <br>
 
 <details>
-<summary>✅ Good — Open Graph completo com imagem 1200×630</summary>
+<summary>✅ Good — **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
 <br>
 
 ```html

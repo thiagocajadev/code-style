@@ -1,6 +1,6 @@
 # Tailwind
 
-Tailwind é utility-first. A produtividade vem de não sair do HTML, mas há um limite.
+Tailwind é utility-first. A produtividade vem de não sair do **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto), mas há um limite.
 Quando a lista de utilities cresce, o HTML vira ruído e o padrão se repete sem nome.
 
 ## Utility sprawl

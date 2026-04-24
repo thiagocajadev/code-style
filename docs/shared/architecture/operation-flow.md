@@ -4,7 +4,7 @@
 
 Uma operação — criar um recurso, processar um formulário, buscar dados — segue sempre o mesmo ciclo: recebe input (entrada), transforma, executa, retorna output (saída). Operation flow é a estrutura que torna esse ciclo explícito: cada passo tem uma responsabilidade, um tipo de entrada e um tipo de saída.
 
-O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e I/O (entrada/saída) é visível na estrutura.
+O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e **I/O** (Input/Output, Entrada/Saída) é visível na estrutura.
 
 ## Conceitos fundamentais
 

@@ -22,7 +22,7 @@ Performance é uma decisão de design. As escolhas de paginação, cache (armaze
 
 ## Paginação
 
-Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da API) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.
+Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da **API** (Application Programming Interface, Interface de Programação de Aplicações)) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.
 
 Dois modelos cobrem a maioria dos casos:
 
@@ -51,7 +51,7 @@ Dados que mudam frequentemente com custo de desatualização alto (saldo, estoqu
 
 ## Fila e Processamento Assíncrono
 
-Operações lentas dentro de uma requisição HTTP aumentam a latência percebida pelo usuário e travam o worker enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
+Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (trabalhador) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
 
 O padrão é: aceitar o trabalho, responder imediatamente, processar em background.
 
@@ -63,7 +63,7 @@ Benefícios diretos: tempo de resposta previsível, isolamento de falhas (job fa
 
 **Quando usar fila:**
 - Operação leva mais de ~500ms
-- Depende de serviço externo com SLA variável
+- Depende de serviço externo com **SLA** (Service Level Agreement, Acordo de Nível de Serviço) variável
 - Pode falhar e precisa de retry
 - Volume pode criar picos que o banco não absorve em tempo real
 
@@ -115,7 +115,7 @@ Menor latência entre as três opções: o resultado chega assim que disponível
 
 O custo é operacional: cada cliente conectado mantém uma conexão aberta no servidor. Gateway, load balancer (balanceador de carga) e infra precisam suportar conexões persistentes, o que afeta o escalonamento horizontal.
 
-**Quando usar**: UI em tempo real, dashboards (painéis ao vivo) e feeds ao vivo, onde a latência mínima justifica a complexidade operacional.
+**Quando usar**: **UI** (User Interface, Interface do Usuário) em tempo real, dashboards (painéis ao vivo) e feeds ao vivo, onde a latência mínima justifica a complexidade operacional.
 
 ## Lazy Loading
 

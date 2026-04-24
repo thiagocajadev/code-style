@@ -3,7 +3,7 @@
 > Escopo: C#/.NET. Guia baseado em **Blazor .NET 10** com **C# 14**.
 
 Blazor é o framework de interface de usuário da Microsoft para .NET. Um componente Blazor combina
-marcação HTML com código C# em um único arquivo `.razor`. A mesma base de código roda no servidor
+marcação **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) com código C# em um único arquivo `.razor`. A mesma base de código roda no servidor
 via **SignalR** (protocolo de comunicação bidirecional em tempo real) ou no browser via
 **WebAssembly** (formato binário executado diretamente no browser), sem JavaScript obrigatório.
 

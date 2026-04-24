@@ -7,7 +7,7 @@ contexto, prefira legibilidade. Meça antes de otimizar.
 
 ## for...of vs forEach
 
-`forEach` executa um callback por iteração: há custo de chamada de função e criação de contexto de
+`forEach` executa um **callback** (função de retorno) por iteração: há custo de chamada de função e criação de contexto de
 execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iterável, sem callback.
 
 <details>
@@ -92,7 +92,7 @@ function filterPremiumProducts(products) {
 
 ## ID: UUID v4 vs UUID v7
 
-`crypto.randomUUID()` gera UUID v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
+`crypto.randomUUID()` gera **UUID** (Universally Unique Identifier, Identificador Único Universal) v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. UUID v7 é time-ordered: insere sempre próximo ao fim da B-tree, sem fragmentação.
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 

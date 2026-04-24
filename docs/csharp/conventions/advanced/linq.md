@@ -2,9 +2,11 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
+LINQ é a linguagem de transformação de coleções em C#: declarativa, composável e lazy. Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
+
 ## LINQ puro: sem side effects
 
-LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e I/O dentro de uma query tornam o comportamento imprevisível e difícil de testar.
+LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
 <summary>❌ Bad — side effect dentro de query LINQ</summary>

@@ -1,6 +1,6 @@
 # Structure
 
-HTML semântico usa o elemento correto para cada propósito. O elemento carrega significado, dispensa
+**HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) semântico usa o elemento correto para cada propósito. O elemento carrega significado, dispensa
 classes explicativas e melhora acessibilidade sem custo extra.
 
 ## Elementos semânticos

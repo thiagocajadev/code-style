@@ -18,7 +18,7 @@ Rotina prática, limpeza de histórico e recuperação de erros comuns.
 
 ## Rotina convencional
 
-O ciclo correto parte da `main` atualizada, usa uma branch com um único propósito e termina com o PR
+O ciclo correto parte da `main` atualizada, usa uma branch com um único propósito e termina com o **PR** (Pull Request, Pedido de Integração)
 mergeado e a branch removida.
 
 ```

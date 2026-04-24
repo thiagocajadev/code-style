@@ -17,7 +17,7 @@ Arquitetura é a decisão de como organizar o código para que o sistema possa c
 | Conceito | O que é |
 |---|---|
 | **Vertical Slice** | Arquitetura que organiza o código por feature, agrupando tudo que pertence a uma funcionalidade na mesma pasta |
-| **MVC** (Model-View-Controller) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
 | **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
 | **TDD** (Test-Driven Development, Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
 | **Blast radius** (raio de impacto) | Extensão do sistema afetada por uma alteração ou falha |
@@ -91,9 +91,9 @@ views/
     index
 ```
 
-O benefício central é a separação entre lógica de negócio e lógica de apresentação. Um Model pode ser testado sem renderizar nada. Uma View pode ser trocada sem tocar nas regras de negócio.
+O benefício central é a separação entre lógica de negócio e lógica de apresentação. Um **Model** (modelo) pode ser testado sem renderizar nada. Uma View pode ser trocada sem tocar nas regras de negócio.
 
-O risco clássico é o **Fat Controller**: quando o controller acumula lógica que deveria estar no Model. Controllers devem ser finos: o papel deles é coordenar o fluxo, não implementar lógica.
+O risco clássico é o **Fat Controller**: quando o **Controller** (controlador) acumula lógica que deveria estar no Model. Controllers devem ser finos: o papel deles é coordenar o fluxo, não implementar lógica.
 
 **Melhor para**: aplicações web tradicionais com renderização server-side, APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) com múltiplas entidades.
 
@@ -130,7 +130,7 @@ Trabalhar em código legado tem regras diferentes:
 
 ## XP (Extreme Programming)
 
-XP é uma metodologia de desenvolvimento que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real com pair programming (programação em par). Se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development, Desenvolvimento Guiado por Testes).
+**XP** (eXtreme Programming, Programação eXtrema) é uma metodologia de desenvolvimento que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real com pair programming (programação em par). Se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development, Desenvolvimento Guiado por Testes).
 
 ```
 src/
@@ -168,7 +168,7 @@ XP funciona melhor em times pequenos com alta comunicação, requisitos que muda
 
 > ⚠️ Esta seção documenta um padrão real com consciência dos riscos.
 
-XGH é a arquitetura que emerge de projetos onde a velocidade supera qualquer outra consideração. Surgiu espontaneamente, sem planejamento. O processo é simples: tem um problema, resolve agora, sem questionar como.
+**XGH** (eXtreme Go Horse, Vai Cavalo eXtremo) é a arquitetura que emerge de projetos onde a velocidade supera qualquer outra consideração. Surgiu espontaneamente, sem planejamento. O processo é simples: tem um problema, resolve agora, sem questionar como.
 
 ```
 src/

@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-RAG é a técnica de enriquecer o prompt de um modelo com conteúdo recuperado de uma base de conhecimento externa antes da geração. O modelo não precisa ter memorizado a informação no treinamento: ela chega via contexto, no momento da chamada. O resultado é respostas mais precisas, com base em dados atualizados e auditáveis.
+**RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) é a técnica de enriquecer o prompt de um modelo com conteúdo recuperado de uma base de conhecimento externa antes da geração. O modelo não precisa ter memorizado a informação no treinamento: ela chega via contexto, no momento da chamada. O resultado é respostas mais precisas, com base em dados atualizados e auditáveis.
 
 ## Conceitos fundamentais
 
@@ -45,7 +45,7 @@ Um embedding transforma texto em um vetor de números (ex: 1536 dimensões para 
 "refrigerador" → [-0.54, 0.23, -0.71, ...] ← distantes
 ```
 
-Modelos de embedding populares: `text-embedding-3-small` e `text-embedding-3-large` (OpenAI), `voyage-3` (Voyage AI, recomendado pela Anthropic para uso com Claude).
+Modelos de embedding populares: `text-embedding-3-small` e `text-embedding-3-large` (OpenAI), `voyage-3` (Voyage **AI** (Artificial Intelligence, Inteligência Artificial), recomendado pela Anthropic para uso com Claude).
 
 ## Vector store (Banco vetorial)
 

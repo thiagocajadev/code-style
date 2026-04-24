@@ -249,7 +249,7 @@ function mergeConfig(defaults, overrides) {
 `Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.
 
 <details>
-<summary>❌ Bad — JSON round-trip perde undefined, Date e Map</summary>
+<summary>❌ Bad — **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
 <br>
 
 ```js

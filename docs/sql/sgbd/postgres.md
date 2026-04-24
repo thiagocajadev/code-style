@@ -5,8 +5,10 @@
 > Este documento cobre idiomas e recursos específicos do PostgreSQL. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 >
-> **Naming no PostgreSQL**: `snake_case` para tabelas, colunas e funções — conforme a convenção da
+> **Naming no PostgreSQL**: `snake_case` para tabelas, colunas e funções, conforme a convenção da
 > comunidade. Princípios de nomenclatura são os mesmos do guia principal.
+
+PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window functions completas, índices especializados (GIN, BRIN, partial) e extensões como `pg_trgm` e `postgis`. As seções abaixo cobrem o que é idiomático do Postgres: `PL/pgSQL` para procedures, `EXPLAIN ANALYZE` para diagnóstico, `COPY` para carga em massa e `pg_cron` para agendamento dentro do próprio banco.
 
 ## Conceitos fundamentais
 
@@ -52,7 +54,7 @@ CREATE TABLE orders (
 <br>
 
 <details>
-<summary>✅ Good — tipos explícitos, UUID v7, TIMESTAMPTZ</summary>
+<summary>✅ Good — tipos explícitos, **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7, TIMESTAMPTZ</summary>
 <br>
 
 ```sql
@@ -95,7 +97,7 @@ CREATE TABLE events (
 
 ## GENERATED ALWAYS AS IDENTITY
 
-Substitui `SERIAL`. Padrão SQL, compatível com `INSERT ... RETURNING`, sem a sequência implícita
+Substitui `SERIAL`. Padrão **SQL** (Structured Query Language, Linguagem de Consulta Estruturada), compatível com `INSERT ... RETURNING`, sem a sequência implícita
 criada pelo `SERIAL`.
 
 <details>
@@ -277,7 +279,7 @@ RETURNING
 
 ## JSONB: índice GIN
 
-`JSONB` suporta índice GIN para busca eficiente em documentos JSON, sem precisar conhecer a
+`JSONB` suporta índice GIN para busca eficiente em documentos **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), sem precisar conhecer a
 estrutura completa em tempo de definição do schema.
 
 <details>
@@ -430,7 +432,7 @@ CREATE TRIGGER trg_orders_on_insert
 
 ### AIO — Asynchronous I/O
 
-PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de I/O em paralelo,
+PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de **I/O** (Input/Output, Entrada/Saída) em paralelo,
 em vez de aguardar cada leitura em sequência. Benchmarks mostram ganhos de até 3x em sequential
 scans e vacuum em cargas de trabalho I/O-bound. Não requer configuração: ativo por padrão.
 
@@ -484,7 +486,7 @@ CREATE TABLE employee_roles (
 linha a linha: sem overhead de parse por linha, sem round trips pela aplicação.
 
 <details>
-<summary>✅ Good — importar CSV com COPY (arquivo no servidor)</summary>
+<summary>✅ Good — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com COPY (arquivo no servidor)</summary>
 <br>
 
 ```sql

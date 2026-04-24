@@ -188,7 +188,7 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<summary>❌ Bad — if/else encadeado para mapear Result em resposta HTTP</summary>
+<summary>❌ Bad — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
 <br>
 
 ```csharp

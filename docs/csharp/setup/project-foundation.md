@@ -3,6 +3,8 @@
 > [!NOTE]
 > Essa estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
 
+Um projeto .NET bem fundado define três coisas antes da primeira linha de domínio: editor e linter alinhados, `Program.cs` como índice legível da aplicação, e configuração delegada a `appsettings` com secrets fora do repositório. O resto cresce a partir daí.
+
 ## Ambiente
 
 Antes de iniciar, configure o editor:
@@ -287,7 +289,7 @@ public static class DatabaseExtensions
 
 ## OpenAPI
 
-.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como UI.
+.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como **UI** (User Interface, Interface do Usuário).
 
 <details>
 <summary>❌ Bad — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
@@ -391,7 +393,7 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 
 ## Rate limiting
 
-Rate limiting é middleware: entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
+Rate limiting é **middleware** (componente de pipeline): entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
 
 <details>
 <summary>❌ Bad — rate limiting inline no Program.cs, sem options tipadas</summary>

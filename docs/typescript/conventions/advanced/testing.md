@@ -7,7 +7,7 @@ tipadas com `satisfies`, mocks com contratos explícitos e verificação de tipo
 
 > Base JavaScript: [javascript/conventions/advanced/testing.md](../../../../javascript/conventions/advanced/testing.md)
 
-Usa [Vitest](https://vitest.dev/) nos exemplos — mesma API do Jest, integração nativa com TypeScript.
+Usa [Vitest](https://vitest.dev/) nos exemplos — mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
 
 ## Fixtures tipadas com satisfies
 

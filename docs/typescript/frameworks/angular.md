@@ -2,7 +2,7 @@
 
 > Escopo: TypeScript. Guia baseado em **Angular 21** com **Standalone API** e **Signals**.
 
-Angular é um framework completo: roteamento, injeção de dependência, formulários reativos e comunicação HTTP fazem parte do core. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Angular moderno.
+Angular é um framework completo: roteamento, injeção de dependência, formulários reativos e comunicação **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) fazem parte do core. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Angular moderno.
 
 ## Conceitos fundamentais
 
@@ -115,7 +115,7 @@ export class UserCardComponent {
 
 ## Signals: estado local reativo
 
-Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A API é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
+Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A **API** (Application Programming Interface, Interface de Programação de Aplicações) é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
 
 Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
 

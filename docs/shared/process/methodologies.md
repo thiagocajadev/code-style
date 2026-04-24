@@ -12,7 +12,7 @@ Metodologias definem _como_ um time organiza o trabalho. Estilos arquiteturais d
 | **BDD** (Behavior-Driven Development, Desenvolvimento Orientado ao Comportamento) | Descrever o comportamento esperado em linguagem de negócio antes de implementar |
 | **TDD** (Test-Driven Development, Desenvolvimento Orientado a Testes) | Escrever o teste antes do código; o teste guia o design |
 | **XP** (eXtreme Programming, Programação Extrema) | Conjunto de práticas ágeis: integração contínua, feedback curto, refactoring constante |
-| **XGH** (eXtreme Go Horse) | Anti-metodologia satírica; útil para nomear o que _não_ fazer |
+| **XGH** (eXtreme Go Horse, Vai Cavalo Extremo) | Anti-metodologia satírica; útil para nomear o que _não_ fazer |
 | **Monolith** (Monolito) | Aplicação inteira em um único processo e deployável |
 | **Microservices** (Microsserviços) | Serviços independentes com deploy e escala separados |
 | **Modular Monolith** (Monolito Modular) | Módulos com fronteiras de domínio dentro de um único processo |
@@ -79,7 +79,7 @@ Conjunto de práticas de engenharia voltadas a feedback rápido e qualidade cont
 | **Releases pequenos** | Entregar incrementos pequenos e frequentes em vez de grandes lotes |
 | **Posse coletiva do código** | Qualquer engenheiro pode melhorar qualquer parte do sistema |
 
-XP é a base conceitual de práticas que hoje chamamos de DevOps e CI/CD.
+XP é a base conceitual de práticas que hoje chamamos de DevOps e **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas — **CI**, Integração Contínua; **CD**, Entrega Contínua).
 
 **Quando usar**: times pequenos com entregas frequentes e domínio em evolução.
 
@@ -127,7 +127,7 @@ Toda a aplicação em um único processo e deployável. O banco de dados, o serv
 
 ### Microsserviços (Microservices)
 
-Serviços independentes, cada um com sua própria base de código, banco de dados e ciclo de deploy. Comunicam-se via API ou mensageria.
+Serviços independentes, cada um com sua própria base de código, banco de dados e ciclo de deploy. Comunicam-se via **API** (Application Programming Interface, Interface de Programação de Aplicações) ou mensageria.
 
 **Vantagens**: escala e evolui cada serviço de forma independente. Times diferentes ownam (são responsáveis por) serviços diferentes sem coordenação constante.
 
@@ -163,7 +163,7 @@ Monolito Modular
 - Deploy simples de monolito, sem overhead operacional de microsserviços
 - Fronteiras de domínio claras desde o início, sem acoplamento invisível
 - Refactoring para microsserviços se torna cirúrgico quando necessário: o módulo já tem fronteira definida
-- Escala vertical (mais CPU/RAM) resolve a maioria dos casos antes de precisar distribuir
+- Escala vertical (mais **CPU** (Central Processing Unit, Unidade Central de Processamento)/**RAM** (Random Access Memory, Memória de Acesso Aleatório)) resolve a maioria dos casos antes de precisar distribuir
 
 **Quando extrair um microsserviço**: quando um módulo tem requisito de escala, ciclo de deploy ou equipe radicalmente diferentes dos demais. Não antes.
 

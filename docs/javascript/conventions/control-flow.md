@@ -302,7 +302,7 @@ const count = Object.keys(userCache).length; // verbose
 <br>
 
 <details>
-<summary>✅ Good — Map preserva tipo e tem API nativa</summary>
+<summary>✅ Good — Map preserva tipo e tem **API** (Application Programming Interface, Interface de Programação de Aplicações) nativa</summary>
 <br>
 
 ```js

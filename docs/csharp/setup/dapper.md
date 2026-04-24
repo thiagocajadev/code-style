@@ -7,7 +7,7 @@ A preferência é usar stored procedures para operações de domínio: a lógica
 
 ## Procedure por domínio
 
-Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói SQL.
+Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
 
 <details>
 <summary>❌ Bad — SQL de domínio inline no repositório</summary>

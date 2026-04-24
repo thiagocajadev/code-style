@@ -3,7 +3,18 @@
 > Escopo: VB.NET. Idiomas Web API 2 deste arquivo.
 > SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para APIs HTTP. Não há Minimal API (exige .NET 6+) nem primary constructors (exige C# 12). O design continua valendo: controller fino, handler por operação, DTOs imutáveis, envelope consistente.
+VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para **API** (Application Programming Interface, Interface de Programação de Aplicações) **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Não há Minimal API (exige .NET 6+) nem primary constructors (exige C# 12). O design continua valendo: controller fino, handler por operação, DTOs imutáveis, envelope consistente.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
+| **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural com verbos HTTP sobre recursos identificados por URL |
+| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
+| **Controller** (controlador) | Boundary entre HTTP e domínio; recebe input, chama handler, traduz resultado |
+| **Handler** (manipulador) | Executa a regra da operação; retorna `Result(Of T)` sem conhecer HTTP |
+| **SSOT** (Single Source of Truth, Fonte Única da Verdade) | Pipeline, envelope e mapeamento Result → HTTP ficam em shared/platform/api-design.md |
 
 ## Controller thin: delegar para handler
 

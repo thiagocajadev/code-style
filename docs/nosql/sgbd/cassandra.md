@@ -220,7 +220,7 @@ class MatchEventRepository {
 Delete em Cassandra gera tombstones. Tombstones se acumulam até o GC grace period. Em alto volume de deleção, o custo de leitura aumenta.
 
 **Alternativas ao hard delete**:
-- TTL na inserção — Cassandra remove automaticamente após o intervalo
+- **TTL** (Time To Live, Tempo de Vida) na inserção — Cassandra remove automaticamente após o intervalo
 - Soft delete com campo `is_deleted` — query exclui o registro por filtro
 
 ```js
@@ -244,7 +244,7 @@ class SessionRepository {
 
 ## Batch
 
-Batch em Cassandra garante atomicidade lógica, não atômica como em SQL. Usar apenas para atualizar múltiplas tabelas que devem ser consistentes entre si.
+Batch em Cassandra garante atomicidade lógica, não atômica como em **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Usar apenas para atualizar múltiplas tabelas que devem ser consistentes entre si.
 
 ```js
 const batch = [

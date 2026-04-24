@@ -4,7 +4,18 @@
 > JavaScript vanilla: os equivalentes nativos cobrem todos os casos de uso comuns sem dependência
 > adicional. Veja [JavaScript Vanilla](javascript-vanilla.md).
 
-**Versões de referência**
+jQuery simplifica manipulação de **DOM** (Document Object Model, Modelo de Objetos do Documento), eventos e requisições assíncronas. Seu valor hoje está em bases de código que já o adotam; para projetos novos, as APIs nativas do navegador cobrem o mesmo terreno sem dependência.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **DOM** (Document Object Model, Modelo de Objetos do Documento) | Árvore de nós do navegador; jQuery abstrai seleção e manipulação |
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato público de uma biblioteca; jQuery tem a sua própria (`$`, `.on`, `.ajax`) |
+| **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) | Formato de resposta mais comum em chamadas assíncronas |
+| **callback** (função de retorno) | Função passada como argumento para executar quando a operação termina |
+
+## Versões de referência
 
 | Versão  | Status              | Indicação                                      |
 | ------- | ------------------- | ---------------------------------------------- |

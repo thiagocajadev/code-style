@@ -2,7 +2,7 @@
 
 > Escopo: NoSQL. Padrões de pipeline de agregação para MongoDB. Princípios aplicam-se a Elasticsearch aggregations e DynamoDB expressions.
 
-**Aggregation pipeline** (pipeline de agregação) é a alternativa NoSQL a `JOIN + GROUP BY` do SQL. Cada estágio transforma o conjunto de documentos e passa o resultado para o próximo.
+**Aggregation pipeline** (pipeline de agregação) é a alternativa **NoSQL** (Not Only SQL, Não Apenas SQL) a `JOIN + GROUP BY` do **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Cada estágio transforma o conjunto de documentos e passa o resultado para o próximo.
 
 ## Conceitos fundamentais
 

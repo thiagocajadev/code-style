@@ -17,7 +17,7 @@ Cloud computing redistribui responsabilidades: o provedor cuida da infraestrutur
 
 ## Serviços Gerenciados
 
-A escolha entre gerenciado (PaaS/SaaS, Platform/Software as a Service, Plataforma/Software como Serviço) e self-hosted afeta diretamente o custo operacional e a complexidade do time.
+A escolha entre gerenciado (**PaaS** (Platform as a Service, Plataforma como Serviço) / **SaaS** (Software as a Service, Software como Serviço)) e self-hosted afeta diretamente o custo operacional e a complexidade do time.
 
 | Categoria | Gerenciado | Self-hosted |
 |---|---|---|
@@ -41,7 +41,7 @@ Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity
 | Permissão de leitura onde só se lê | Write não utilizado é write disponível para exploração |
 | Revisão periódica de permissões | Permissões crescem com o tempo, raramente diminuem sozinhas |
 
-Secrets ficam em serviços gerenciados (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e são injetados em runtime. Variáveis de ambiente plaintext, código commitado e `.env` no repositório são vetores de vazamento. Ver [Segurança](./security.md) para detalhes.
+Um **Secret** (segredo) fica em serviços gerenciados (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e é injetado em runtime. Variáveis de ambiente plaintext, código commitado e `.env` no repositório são vetores de vazamento. Ver [Segurança](./security.md) para detalhes.
 
 ## Containers
 
@@ -57,7 +57,7 @@ Containers garantem paridade entre ambientes: o que roda em dev é o que vai par
 
 ## Limites de Recursos
 
-Todo container em produção declara limites de CPU e memória. Sem limites, um serviço com leak de memória consome os recursos do host inteiro.
+Todo container em produção declara limites de **CPU** (Central Processing Unit, Unidade Central de Processamento) e memória. Sem limites, um serviço com leak de memória consome os recursos do host inteiro.
 
 | Configuração | Efeito |
 |---|---|

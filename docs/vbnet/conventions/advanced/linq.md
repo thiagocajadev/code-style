@@ -79,7 +79,7 @@ Dim dtos = purchases.Select(Function(purchase) MapToDto(purchase)).ToList()
 
 ## Materialização explícita
 
-Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()` ou `ToArray()` no momento certo evita múltiplas execuções da query, garante snapshot dos dados e deixa explícito onde o I/O acontece.
+Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()` ou `ToArray()` no momento certo evita múltiplas execuções da query, garante snapshot dos dados e deixa explícito onde o **I/O** (Input/Output, Entrada/Saída) acontece.
 
 <details>
 <summary>❌ Bad — IEnumerable lazy enumerado múltiplas vezes</summary>

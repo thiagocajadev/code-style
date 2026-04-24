@@ -227,7 +227,7 @@ async def list_orders(
 
 ## Async
 
-Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de I/O (ORM síncrono,
+Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O** (Input/Output, Entrada/Saída) (**ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) síncrono,
 `time.sleep`, biblioteca `requests`) congestionam todas as requisições em andamento.
 
 <details>

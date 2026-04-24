@@ -1,6 +1,6 @@
 # Naming
 
-IDs e classes descrevem **propósito**: o papel do elemento no domínio da UI, não sua aparência nem
+IDs e classes descrevem **propósito**: o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência nem
 sua posição no layout. `data-*` é para JavaScript; classes são para CSS. As duas responsabilidades
 não se misturam.
 

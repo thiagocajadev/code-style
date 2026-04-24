@@ -106,7 +106,7 @@ async function createOrder(body) {
 ## Regras de negócio
 
 Schema valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio:
-dependem de I/O (banco, serviços externos) e não pertencem ao schema.
+dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviços externos) e não pertencem ao schema.
 
 <details>
 <summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>

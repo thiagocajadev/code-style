@@ -81,7 +81,7 @@ const order: Order = {
 
 ## Temporal API tipada (ES2026)
 
-A [Temporal API](https://tc39.es/proposal-temporal/docs/) é nativa do ES2026. Os tipos estão
+A [**Temporal** (padrão moderno de datas) **API** (Application Programming Interface, Interface de Programação de Aplicações)](https://tc39.es/proposal-temporal/docs/) é nativa do ES2026. Os tipos estão
 disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambientes ES2026.
 
 <details>

@@ -93,7 +93,7 @@ End Function
 
 ## Task.WhenAll para chamadas independentes
 
-Chamadas de I/O sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
+Chamadas de **I/O** (Input/Output, Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
 
 <details>
 <summary>❌ Bad — chamadas independentes em sequência</summary>
@@ -136,7 +136,7 @@ End Function
 
 ## ConfigureAwait
 
-Em bibliotecas reutilizáveis (não UI, não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita — o contexto é necessário para atualizar UI ou HttpContext.
+Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita — o contexto é necessário para atualizar UI ou HttpContext.
 
 <details>
 <summary>✅ Good — ConfigureAwait(False) em código de biblioteca</summary>

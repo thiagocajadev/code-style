@@ -150,7 +150,7 @@ O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
 | **RFC 2119** (Request for Comments, Pedido de Comentários) | Vocabulário de obrigatoriedade: MUST, SHOULD, MAY. Usado em specs e ADRs para deixar o grau de exigência explícito |
 | **ISO 8601** (International Organization for Standardization, Organização Internacional de Normalização) | Representação de datas e horários: `2026-04-23T14:30:00Z`. Resolve ambiguidade entre formatos regionais |
 
-**Protocolos HTTP e autenticação**
+**Protocolos HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) **e autenticação**
 
 | Norma | O que padroniza |
 |---|---|

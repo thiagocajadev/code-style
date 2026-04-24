@@ -4,6 +4,17 @@
 
 Esta página cobre apenas o que é específico do .NET: onde colocar o quê, quais ferramentas usar, quais patterns do ecossistema. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **Config** (configuração) | Valor não sensível que muda entre ambientes, commitado no repositório |
+| **Secret** (segredo) | Credencial, chave ou token; nunca vai para o repositório |
+| **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) | Formato de serialização de dados usado em `appsettings` |
+| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado usado para autenticação stateless |
+| **Middleware** (componente de pipeline) | Componente que intercepta a requisição antes ou depois de chegar ao handler |
+| **Payload** (corpo da mensagem) | Dados que acompanham a requisição ou o token |
+
 ---
 
 ## Onde cada coisa vai
@@ -100,7 +111,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 
 ## JWT: middleware valida, não `ReadJwtToken`
 
-`ReadJwtToken()` lê o payload sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
+`ReadJwtToken()` lê o **payload** (corpo da mensagem) sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
 
 <details>
 <summary>❌ Bad — ReadJwtToken dentro do handler</summary>
@@ -123,7 +134,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 <br>
 
 <details>
-<summary>✅ Good — middleware valida antes do handler rodar</summary>
+<summary>✅ Good — **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
 <br>
 
 ```csharp
