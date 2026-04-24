@@ -25,6 +25,9 @@
 [![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-FF9900?logo=amazondynamodb&logoColor=white)](docs/nosql/sgbd/dynamodb.md)
 [![Cassandra](https://img.shields.io/badge/Cassandra-5.x-1287B1?logo=apachecassandra&logoColor=white)](docs/nosql/sgbd/cassandra.md)
 [![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch&logoColor=white)](docs/nosql/sgbd/elasticsearch.md)
+[![Discord](https://img.shields.io/badge/Discord-Bot%20discord.js-5865F2?logo=discord&logoColor=white)](docs/javascript/frameworks/bot/discord.md)
+[![Telegram](https://img.shields.io/badge/Telegram-Bot%20Telegraf-26A5E4?logo=telegram&logoColor=white)](docs/javascript/frameworks/bot/telegram.md)
+[![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot%20Baileys%20%7C%20Meta%20API-25D366?logo=whatsapp&logoColor=white)](docs/javascript/frameworks/bot/whatsapp.md)
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
@@ -214,6 +217,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [ETL e BI](docs/shared/platform/etl-bi.md) | OLTP vs OLAP, pipeline de dados, extração incremental, ELT, modelagem dimensional, SCD e BI |
 | [Integrations](docs/shared/platform/integrations.md) | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial |
 | [Messaging](docs/shared/platform/messaging.md) | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure |
+| [Bots](docs/shared/platform/bots.md) | Webhook vs polling, command routing, session state, rate limit e lifecycle |
 | [Cloud](docs/shared/platform/cloud.md) | Serviços gerenciados, least privilege, containers e ambientes |
 
 <br>

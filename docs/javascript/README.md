@@ -36,6 +36,14 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Dates](conventions/advanced/dates.md)                     | UTC, ISO 8601, parsing, Temporal API            |
 | [Quick Reference](quick-reference.md)                      | Nomenclatura, verbos, taboos                    |
 
+## Frameworks
+
+| Tópico                                                  | Conceitos                                                          |
+| ------------------------------------------------------- | ------------------------------------------------------------------ |
+| [Bot — Discord](frameworks/bot/discord.md)              | discord.js: Client, Gateway Intents, Slash Commands, Embeds        |
+| [Bot — Telegram](frameworks/bot/telegram.md)            | Telegraf: commands, Inline Keyboard, middleware, webhook           |
+| [Bot — WhatsApp](frameworks/bot/whatsapp.md)            | Baileys e Meta Cloud API: webhook, Template Messages, command router |
+
 ## Princípios
 
 **Forma**: estrutura e narrativa da função

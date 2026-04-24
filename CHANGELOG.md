@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-04-24
+
+### Added
+
+- `docs/shared/platform/bots.md` — guia conceitual agnóstico de linguagem: webhook vs polling, command routing com Strategy Map, session state (opções em tabela: in-memory/Redis/DB), rate limits (global vs per-user, janela deslizante), lifecycle de shutdown limpo. `## Conceitos fundamentais` com 11 termos (Bot, Gateway, Event, Command, Handler, Webhook, Polling, Rate limit, Session, Intent, Callback). Cross-links para `bots-advanced.md`, `messaging.md`, `api-design.md`
+- `docs/shared/platform/bots-advanced.md` — primitivas específicas por plataforma: Discord (tabela Gateway Intents, fluxo de registro de Slash Commands, limites de Embed), Telegram (setup BotFather, polling vs webhook, tipos de Inline Keyboard, tabela de tipos de chat), WhatsApp (tabela oficial vs não-oficial, janela de 24h da Business API, verificação de webhook). `## Conceitos fundamentais` com 9 termos (Gateway Intent, Slash Command, Embed, Inline Keyboard, BotFather, Bot Token, Business API, Unofficial Client, Template Message). Cross-links para `bots.md`
+- `docs/javascript/frameworks/bot/discord.md` — discord.js v14.19 com Node.js 22: import via `Events`/`GatewayIntentBits` enum (sem strings literais), `REST({ version: '10' })` + `SlashCommandBuilder`, `isChatInputCommand()` type guard, `deferReply`/`editReply` para operações assíncronas, `EmbedBuilder` + `{ embeds: [embed] }` array syntax, eventos `GuildMemberAdd`/`MessageReactionAdd` com guards de null e bot
+- `docs/javascript/frameworks/bot/telegram.md` — Telegraf v4.16 com Node.js 22: `context` (sem abreviação `ctx`), `message` filter de `telegraf/filters`, separação compute/format/action, `answerCbQuery` obrigatório após callback, `bot.createWebhook()` com `secretToken` e shutdown limpo
+- `docs/javascript/frameworks/bot/whatsapp.md` — Baileys v7 (ESM-only, `makeWASocket` como default export, reconnect automático, guard `fromMe`, Strategy Map) + Meta Cloud API v21.0 (fetch nativo Node.js 22, verificação `hub.mode`+`hub.verify_token`, 200 imediato antes de processar, Template Messages)
+- `docs/javascript/README.md` — seção `## Frameworks` com tabela cobrindo discord.js, Telegraf e Baileys/Meta Cloud API
+- `README.md` — badge Discord (discord.js), Telegram (Telegraf), WhatsApp (Baileys | Meta API); linha `Bots` na tabela Plataforma
+
 ## [1.17.2] - 2026-04-23
 
 ### Fixed
