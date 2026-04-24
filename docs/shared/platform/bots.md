@@ -106,6 +106,6 @@ Shutdown abrupto pode deixar eventos sem resposta e usuários em estados de sess
 
 ## Veja também
 
-- [bots-advanced.md](bots-advanced.md) — plataformas: Discord, Telegram, WhatsApp
+- [bots-advanced.md](bots-advanced.md) — plataformas: Discord, Telegram, WhatsApp, Slack
 - [messaging.md](messaging.md) — mensageria assíncrona interna: broker, queue, pub/sub
 - [api-design.md](api-design.md) — design de endpoints para webhook receivers

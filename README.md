@@ -28,6 +28,7 @@
 [![Discord](https://img.shields.io/badge/Discord-Bot%20discord.js-5865F2?logo=discord&logoColor=white)](docs/javascript/frameworks/bot/discord.md)
 [![Telegram](https://img.shields.io/badge/Telegram-Bot%20Telegraf-26A5E4?logo=telegram&logoColor=white)](docs/javascript/frameworks/bot/telegram.md)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot%20Baileys%20%7C%20Meta%20API-25D366?logo=whatsapp&logoColor=white)](docs/javascript/frameworks/bot/whatsapp.md)
+[![Slack](https://img.shields.io/badge/Slack-Bot%20Bolt%20for%20JS-4A154B?logo=slack&logoColor=white)](docs/javascript/frameworks/bot/slack.md)
 [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)

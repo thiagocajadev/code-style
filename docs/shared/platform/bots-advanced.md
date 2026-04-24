@@ -163,9 +163,63 @@ GET /webhook?hub.mode=subscribe&hub.verify_token=<token>&hub.challenge=<nonce>
 Bot responde: 200 OK com body = hub.challenge
 ```
 
+## Slack
+
+### Autenticação e setup
+
+O app autentica via **Bot Token** (`xoxb-...`) emitido na seção OAuth & Permissions do painel da Slack. O **Signing Secret** valida que as requisições HTTP recebidas vêm da Slack. Para Socket Mode, um **App-Level Token** (`xapp-...`) com scope `connections:write` substitui a necessidade de URL pública.
+
+```
+Criar app em api.slack.com → Basic Information → Signing Secret
+                           → OAuth & Permissions → Add scopes → Install app → Bot Token
+                           → App-Level Tokens (para Socket Mode) → Generate → connections:write
+```
+
+Nunca expor Bot Token, Signing Secret ou App-Level Token em código. Armazenar em variáveis de ambiente.
+
+### Socket Mode vs HTTP Mode
+
+| | Socket Mode | HTTP Mode |
+|---|---|---|
+| **Conexão** | WebSocket via App-Level Token | HTTP POST com verificação de Signing Secret |
+| **URL pública** | Não necessário | Obrigatório |
+| **Token adicional** | `SLACK_APP_TOKEN` (`xapp-...`) | Não necessário |
+| **Uso recomendado** | Desenvolvimento e bots internos | Produção e apps distribuídos |
+
+### Block Kit
+
+**Block Kit** é o sistema de UI interativa do Slack. Mensagens são compostas por blocos tipados; cada bloco aceita elementos interativos com um `action_id` único que identifica o evento de ação.
+
+| Tipo de bloco | Para que serve |
+|---|---|
+| `section` | Texto com Markdown (`mrkdwn`) e elemento acessório opcional |
+| `actions` | Linha de botões, selects ou date pickers |
+| `image` | Imagem com título e texto alternativo |
+| `divider` | Separador visual entre blocos |
+| `header` | Título em plain text em fonte maior |
+| `input` | Campo de entrada para modais e Home Tab |
+
+O bot recebe o evento de ação via `app.action(action_id, handler)`. O **ack()** (reconhecimento) é obrigatório dentro de 3 segundos; sem ele, a Slack exibe um spinner indefinido no botão.
+
+### Scopes
+
+Declare apenas os scopes necessários em OAuth & Permissions. Scopes desnecessários ampliam a superfície de ataque e podem bloquear a aprovação em app directories.
+
+| Scope | Para que serve |
+|---|---|
+| `chat:write` | Enviar mensagens como o bot |
+| `commands` | Receber slash commands |
+| `app_mentions:read` | Receber eventos de menção (`app_mention`) |
+| `channels:history` | Ler mensagens de canais públicos |
+| `im:history` | Ler mensagens diretas com o bot |
+| `reactions:write` | Adicionar reações a mensagens |
+
+---
+
 ## Veja também
 
 - [bots.md](bots.md) — conceitos fundamentais: webhook, polling, command routing, rate limit, lifecycle
 - [javascript/frameworks/bot/discord.md](../../javascript/frameworks/bot/discord.md) — implementação discord.js
 - [javascript/frameworks/bot/telegram.md](../../javascript/frameworks/bot/telegram.md) — implementação Telegraf
 - [javascript/frameworks/bot/whatsapp.md](../../javascript/frameworks/bot/whatsapp.md) — implementação Baileys e Meta Cloud API
+- [javascript/frameworks/bot/slack.md](../../javascript/frameworks/bot/slack.md) — implementação Bolt for JavaScript

@@ -71,6 +71,17 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Bootstrap Docs](https://getbootstrap.com/docs/)  
 [Can I Use](https://caniuse.com/)
 
+## Bots e Mensageria
+
+[discord.js Documentation](https://discord.js.org/docs/packages/discord.js/main)
+[Discord Developer Portal](https://discord.com/developers/docs)
+[Telegraf Documentation](https://telegraf.js.org/)
+[Telegram Bot API Reference](https://core.telegram.org/bots/api)
+[Baileys — WhatsApp Web API](https://github.com/WhiskeySockets/Baileys)
+[WhatsApp Cloud API, Meta Developers](https://developers.facebook.com/docs/whatsapp/cloud-api)
+[Bolt for JavaScript Documentation](https://docs.slack.dev/tools/bolt-js/)
+[Slack API Reference](https://api.slack.com/methods)
+
 ## JavaScript e TypeScript
 
 [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)  

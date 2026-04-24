@@ -43,6 +43,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Bot — Discord](frameworks/bot/discord.md)              | discord.js: Client, Gateway Intents, Slash Commands, Embeds        |
 | [Bot — Telegram](frameworks/bot/telegram.md)            | Telegraf: commands, Inline Keyboard, middleware, webhook           |
 | [Bot — WhatsApp](frameworks/bot/whatsapp.md)            | Baileys e Meta Cloud API: webhook, Template Messages, command router |
+| [Bot — Slack](frameworks/bot/slack.md)                  | Bolt for JS: slash commands, Events API, Block Kit, Socket Mode      |
 
 ## Princípios
 
