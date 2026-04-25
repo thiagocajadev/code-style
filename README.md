@@ -33,6 +33,7 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
 [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
 [![IA](https://img.shields.io/badge/IA-LLM%20%7C%20RAG%20%7C%20MCP%20%7C%20Agents-FF6B2B)](docs/shared/ai/README.md)
+[![Mobile](https://img.shields.io/badge/Mobile-Android%20%7C%20iOS%20%7C%20Flutter-3DDC84)](docs/shared/mobile/README.md)
 
 </div>
 
@@ -235,6 +236,18 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Engenharia de Prompts](docs/shared/ai/prompts.md) | Estrutura de prompt e exemplos BAD/GOOD para eficiência |
 | [Skills](docs/shared/ai/skills.md) | Skills como capacidades de agentes: routing, loading, composição e boas práticas |
 | [Conceitos Avançados](docs/shared/ai/advanced.md) | Fine-tuning, Hallucination, Structured outputs, Extended thinking, Inference engines e AI Gateway |
+
+<br>
+
+**Mobile** — fundamentos cross-platform para Android, iOS e Flutter
+
+| Tópico | Descrição |
+| --- | --- |
+| [App Lifecycle](docs/shared/mobile/app-lifecycle.md) | Estados do app, ciclo de vida, cold/warm start e impacto em UX |
+| [Navigation](docs/shared/mobile/navigation.md) | Stack, tab bar, modal, deep link e back stack |
+| [State Management](docs/shared/mobile/state-management.md) | UI state vs domain state, unidirectional data flow e reatividade |
+| [Offline-first](docs/shared/mobile/offline-first.md) | Cache strategy, sync, conflict resolution e network-aware UX |
+| [Permissions](docs/shared/mobile/permissions.md) | Runtime permissions, graceful degradation e fluxo de solicitação |
 
 </details>
 

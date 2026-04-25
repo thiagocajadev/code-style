@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.21.0] - 2026-04-25
+
+### Added
+
+- `docs/shared/mobile/` — subdomínio de fundamentos cross-platform: `README.md` (nativo vs cross-platform, mapa de tópicos), `app-lifecycle.md` (estados, cold/warm start, process death), `navigation.md` (stack, tab bar, modal, deep link, back stack), `state-management.md` (UI state vs domain state, unidirectional data flow, reatividade), `offline-first.md` (cache strategy, sincronia, conflict resolution, optimistic update, network-aware UX), `permissions.md` (runtime permissions, graceful degradation, permanently denied). Badge Mobile + tabela em `README.md`
+
+## [1.20.1] - 2026-04-24
+
 ### Added
 
 - `docs/shared/ai/security.md` — boas práticas contra prompt injection: tipos de ataque (direct injection, indirect injection, jailbreak, prompt leaking), 5 mitigações com exemplos BAD/GOOD em `<details><summary>`, tabela de erros comuns. Cross-links em `README.md` e `prompts.md`
