@@ -1,7 +1,7 @@
-import { database } from './db.js';
+import { database } from "./db.js";
 
-const teamsCollection = database.collection('teams');
-const playersCollection = database.collection('players');
+const teamsCollection = database.collection("teams");
+const playersCollection = database.collection("players");
 
 // ── soft delete — remoção lógica ─────────────────────────────────────────────
 
@@ -16,7 +16,6 @@ async function softDeleteTeam(teamId) {
 
   const result = await teamsCollection.updateOne(filter, patch);
   const modifiedCount = result.modifiedCount;
-
   return modifiedCount;
 }
 
@@ -33,7 +32,6 @@ async function softDeletePlayersByTeam(teamId) {
 
   const result = await playersCollection.updateMany(filter, patch);
   const modifiedCount = result.modifiedCount;
-
   return modifiedCount;
 }
 
@@ -47,25 +45,24 @@ async function purgeDeletedTeams(cutoffDate) {
 
   const result = await teamsCollection.deleteMany(filter);
   const deletedCount = result.deletedCount;
-
   return deletedCount;
 }
 
 // ── deleteOne — remoção física por ID ─────────────────────────────────────────
 
-async function removePlayer(playerId) {
+export async function removePlayer(playerId) {
   const filter = { _id: playerId };
 
   const result = await playersCollection.deleteOne(filter);
-  const wasDeleted = result.deletedCount === 1;
 
+  const wasDeleted = result.deletedCount === 1;
   return wasDeleted;
 }
 
 // ── exemplo de uso ────────────────────────────────────────────────────────────
 
-await softDeleteTeam('66f1a2b3c4d5e6f7a8b9c0d1');
-await softDeletePlayersByTeam('66f1a2b3c4d5e6f7a8b9c0d1');
+await softDeleteTeam("66f1a2b3c4d5e6f7a8b9c0d1");
+await softDeletePlayersByTeam("66f1a2b3c4d5e6f7a8b9c0d1");
 
 const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 const deletedCount = await purgeDeletedTeams(thirtyDaysAgo);

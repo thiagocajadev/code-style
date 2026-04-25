@@ -33,7 +33,9 @@ try {
 }
 
 function getUser(id) {
-  if (!id) throw new ValidationError("id is required");
+  if (!id) {
+    throw new ValidationError("id is required");
+  }
 
   const user = findUser(id);
   return user;
@@ -43,7 +45,9 @@ function findUser(id) {
   const users = [{ id: 1, name: "Alice" }];
   const user = users.find((u) => u.id === id);
 
-  if (!user) throw new NotFoundError(`User ${id} not found`);
+  if (!user) {
+    throw new NotFoundError(`User ${id} not found`);
+  }
 
   return user;
 }

@@ -12,3 +12,8 @@ CLAUDE.md
 .ai/
 tmp/
 temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp

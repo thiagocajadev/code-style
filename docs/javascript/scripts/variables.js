@@ -18,5 +18,6 @@ function applyDiscount(order) {
     discount: 10,
     total: order.total - 10,
   };
+
   return discountedOrder;
 }

@@ -1,7 +1,7 @@
-import { database } from './db.js';
+import { database } from "./db.js";
 
-const teamsCollection = database.collection('teams');
-const matchEventsCollection = database.collection('match_events');
+const teamsCollection = database.collection("teams");
+const matchEventsCollection = database.collection("match_events");
 
 // ── top scorers por temporada ─────────────────────────────────────────────────
 
@@ -11,8 +11,8 @@ async function fetchTopScorersBySeason(season, limit = 10) {
 
     {
       $group: {
-        _id: '$playerId',
-        totalGoals: { $sum: '$goals' },
+        _id: "$playerId",
+        totalGoals: { $sum: "$goals" },
         matchesPlayed: { $sum: 1 },
       },
     },
@@ -22,19 +22,19 @@ async function fetchTopScorersBySeason(season, limit = 10) {
 
     {
       $lookup: {
-        from: 'players',
-        localField: '_id',
-        foreignField: '_id',
-        as: 'player',
+        from: "players",
+        localField: "_id",
+        foreignField: "_id",
+        as: "player",
       },
     },
 
-    { $unwind: '$player' },
+    { $unwind: "$player" },
 
     {
       $project: {
-        playerName: '$player.name',
-        position: '$player.position',
+        playerName: "$player.name",
+        position: "$player.position",
         totalGoals: 1,
         matchesPlayed: 1,
         _id: 0,
@@ -43,7 +43,6 @@ async function fetchTopScorersBySeason(season, limit = 10) {
   ];
 
   const topScorers = await matchEventsCollection.aggregate(pipeline).toArray();
-
   return topScorers;
 }
 
@@ -55,12 +54,12 @@ async function fetchTeamRosters() {
 
     {
       $lookup: {
-        from: 'players',
-        let: { teamRef: '$_id' },
+        from: "players",
+        let: { teamRef: "$_id" },
         pipeline: [
           {
             $match: {
-              $expr: { $eq: ['$teamId', '$$teamRef'] },
+              $expr: { $eq: ["$teamId", "$$teamRef"] },
               isActive: true,
             },
           },
@@ -74,7 +73,7 @@ async function fetchTeamRosters() {
           },
           { $sort: { squadNumber: 1 } },
         ],
-        as: 'players',
+        as: "players",
       },
     },
 
@@ -82,7 +81,7 @@ async function fetchTeamRosters() {
       $project: {
         name: 1,
         city: 1,
-        playerCount: { $size: '$players' },
+        playerCount: { $size: "$players" },
         players: 1,
         _id: 0,
       },
@@ -92,7 +91,6 @@ async function fetchTeamRosters() {
   ];
 
   const rosters = await teamsCollection.aggregate(pipeline).toArray();
-
   return rosters;
 }
 
@@ -104,28 +102,28 @@ async function computeGoalsByCity(season) {
 
     {
       $lookup: {
-        from: 'teams',
-        localField: 'teamId',
-        foreignField: '_id',
-        as: 'team',
+        from: "teams",
+        localField: "teamId",
+        foreignField: "_id",
+        as: "team",
       },
     },
 
-    { $unwind: '$team' },
+    { $unwind: "$team" },
 
     {
       $group: {
-        _id: '$team.city',
-        totalGoals: { $sum: '$goals' },
-        teamCount: { $addToSet: '$teamId' },
+        _id: "$team.city",
+        totalGoals: { $sum: "$goals" },
+        teamCount: { $addToSet: "$teamId" },
       },
     },
 
     {
       $project: {
-        city: '$_id',
+        city: "$_id",
         totalGoals: 1,
-        teamCount: { $size: '$teamCount' },
+        teamCount: { $size: "$teamCount" },
         _id: 0,
       },
     },
@@ -134,14 +132,13 @@ async function computeGoalsByCity(season) {
   ];
 
   const goalsByCity = await matchEventsCollection.aggregate(pipeline).toArray();
-
   return goalsByCity;
 }
 
 // ── exemplo de uso ────────────────────────────────────────────────────────────
 
-const topScorers = await fetchTopScorersBySeason('2026', 5);
+const topScorers = await fetchTopScorersBySeason("2026", 5);
 const rosters = await fetchTeamRosters();
-const goalsByCity = await computeGoalsByCity('2026');
+const goalsByCity = await computeGoalsByCity("2026");
 
 console.log({ topScorers, rosters, goalsByCity });

@@ -1,16 +1,21 @@
-import { database } from './db.js';
+import { database } from "./db.js";
 
-const teamsCollection = database.collection('teams');
-const playersCollection = database.collection('players');
+const teamsCollection = database.collection("teams");
+const playersCollection = database.collection("players");
 
 // ── findOne ───────────────────────────────────────────────────────────────────
 
 async function findTeamById(teamId) {
   const filter = { _id: teamId };
-  const projection = { name: 1, city: 1, foundedYear: 1, homeStadium: 1, _id: 0 };
+  const projection = {
+    name: 1,
+    city: 1,
+    foundedYear: 1,
+    homeStadium: 1,
+    _id: 0,
+  };
 
   const team = await teamsCollection.findOne(filter, { projection });
-
   return team;
 }
 
@@ -18,7 +23,13 @@ async function findTeamById(teamId) {
 
 async function findPlayersByTeam(teamId) {
   const filter = { teamId, isActive: true };
-  const projection = { name: 1, position: 1, squadNumber: 1, nationality: 1, _id: 1 };
+  const projection = {
+    name: 1,
+    position: 1,
+    squadNumber: 1,
+    nationality: 1,
+    _id: 1,
+  };
 
   const players = await playersCollection
     .find(filter, { projection })
@@ -32,8 +43,14 @@ async function findPlayersByTeam(teamId) {
 
 async function searchTeamsByName(searchTerm) {
   const filter = { $text: { $search: searchTerm } };
-  const projection = { name: 1, city: 1, _id: 1, score: { $meta: 'textScore' } };
-  const sort = { score: { $meta: 'textScore' } };
+  const projection = {
+    name: 1,
+    city: 1,
+    _id: 1,
+    score: { $meta: "textScore" },
+  };
+
+  const sort = { score: { $meta: "textScore" } };
 
   const teams = await teamsCollection
     .find(filter, { projection })
@@ -62,15 +79,14 @@ async function fetchTeamsPaged(page, pageSize) {
   ]);
 
   const hasNextPage = skip + teams.length < total;
-
   return { teams, total, hasNextPage };
 }
 
 // ── exemplo de uso ────────────────────────────────────────────────────────────
 
-const team = await findTeamById('66f1a2b3c4d5e6f7a8b9c0d1');
-const players = await findPlayersByTeam('66f1a2b3c4d5e6f7a8b9c0d1');
-const searchResults = await searchTeamsByName('São Paulo');
+const team = await findTeamById("66f1a2b3c4d5e6f7a8b9c0d1");
+const players = await findPlayersByTeam("66f1a2b3c4d5e6f7a8b9c0d1");
+const searchResults = await searchTeamsByName("São Paulo");
 const page = await fetchTeamsPaged(1, 20);
 
 console.log({ team, playerCount: players.length, searchResults, page });

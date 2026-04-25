@@ -14,15 +14,15 @@ async function fetchDashboard(userId) {
 
 async function fetchUser(id) {
   await wait(100);
-  const user = { id, name: "Alice" };
 
+  const user = { id, name: "Alice" };
   return user;
 }
 
 async function fetchOrders(userId) {
   await wait(80);
-  const orders = [{ id: 10, userId, total: 150 }];
 
+  const orders = [{ id: 10, userId, total: 150 }];
   return orders;
 }
 

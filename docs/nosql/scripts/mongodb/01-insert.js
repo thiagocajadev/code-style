@@ -14,7 +14,6 @@ async function createTeam(team) {
 
   const result = await teamsCollection.insertOne(document);
   const insertedId = result.insertedId;
-
   return insertedId;
 }
 
@@ -27,15 +26,17 @@ async function createPlayers(players) {
     createdAt: new Date(),
   }));
 
-  const result = await playersCollection.insertMany(documents, { ordered: false });
-  const insertedCount = result.insertedCount;
+  const result = await playersCollection.insertMany(documents, {
+    ordered: false,
+  });
 
+  const insertedCount = result.insertedCount;
   return insertedCount;
 }
 
 // ── bulkWrite ─────────────────────────────────────────────────────────────────
 
-async function applyTransferWindow(transfers) {
+export async function applyTransferWindow(transfers) {
   const operations = transfers.map((transfer) => ({
     updateOne: {
       filter: { _id: transfer.playerId },
@@ -48,9 +49,11 @@ async function applyTransferWindow(transfers) {
     },
   }));
 
-  const result = await playersCollection.bulkWrite(operations, { ordered: false });
-  const modifiedCount = result.modifiedCount;
+  const result = await playersCollection.bulkWrite(operations, {
+    ordered: false,
+  });
 
+  const modifiedCount = result.modifiedCount;
   return modifiedCount;
 }
 
@@ -71,7 +74,13 @@ const insertedCount = await createPlayers([
     squadNumber: 9,
     nationality: "Argentine",
   },
-  { teamId, name: "Cicinho", position: "Right Back", squadNumber: 2, nationality: "Brazilian" },
+  {
+    teamId,
+    name: "Cicinho",
+    position: "Right Back",
+    squadNumber: 2,
+    nationality: "Brazilian",
+  },
   {
     teamId,
     name: "Diego Lugano",

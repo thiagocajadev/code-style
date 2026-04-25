@@ -1,8 +1,8 @@
-import { createClient } from 'redis';
+import { createClient } from "redis";
 
 const client = createClient({ url: process.env.REDIS_URL });
 
-client.on('error', (error) => console.error('Redis error:', error));
+client.on("error", (error) => console.error("Redis error:", error));
 await client.connect();
 
 const CACHE_TTL_SECONDS = 300;
@@ -15,7 +15,6 @@ async function findTeamCached(teamId, fetchFromDatabase) {
 
   if (cached) {
     const team = JSON.parse(cached);
-
     return team;
   }
 
@@ -30,7 +29,7 @@ async function findTeamCached(teamId, fetchFromDatabase) {
 
 // ── invalidação de cache ──────────────────────────────────────────────────────
 
-async function invalidateTeamCache(teamId) {
+export async function invalidateTeamCache(teamId) {
   const cacheKey = `team:profile:${teamId}`;
 
   await client.del(cacheKey);
@@ -65,12 +64,12 @@ async function findMultipleTeams(teamIds) {
 
 // ── exemplo de uso ────────────────────────────────────────────────────────────
 
-const team = await findTeamCached('42', async (id) => {
-  return { id, name: 'São Paulo FC', city: 'São Paulo' };
+const team = await findTeamCached("42", async (id) => {
+  return { id, name: "São Paulo FC", city: "São Paulo" };
 });
 
-const views = await incrementMatchViews('1099');
-const teams = await findMultipleTeams(['42', '43', '44']);
+const views = await incrementMatchViews("1099");
+const teams = await findMultipleTeams(["42", "43", "44"]);
 
 console.log({ team, views, teams });
 

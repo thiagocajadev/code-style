@@ -12,7 +12,6 @@ console.log(messages);
 function buildWelcomeMessages(users) {
   const activeUsers = getActiveUsers(users);
   const messages = activeUsers.map(buildGreeting);
-
   return messages;
 }
 
@@ -24,6 +23,5 @@ function getActiveUsers(users) {
 function buildGreeting(user) {
   const name = user.name.trim();
   const greeting = `Olá, ${name}!`;
-
   return greeting;
 }

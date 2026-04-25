@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.20.0] - 2026-04-24
+
+### Added
+
+- ESLint v9 flat config (`eslint.config.mjs`) com SDG custom rules: `local/semantic-spacing`, `local/no-boolean-comparison`, `local/no-inline-assert`, `local/blank-before-assertion` (test files); `curly: all`, `no-nested-ternary`, `multiline-ternary`, `operator-linebreak`, `padding-line-between-statements`. `sdgTestConfig` wired para `**/*.test.*` e `**/*.spec.*`. Node.js globals + Jest globals para arquivos de teste. `docs/` incluída no lint (sem ignore). `printWidth: 80` enforça quebra de chains longas via Prettier. Script `npm run lint`. `.vscode/settings.json` com `formatOnSave` + `source.fixAll.eslint`
+
 ## [1.18.0] - 2026-04-24
 
 ### Added
