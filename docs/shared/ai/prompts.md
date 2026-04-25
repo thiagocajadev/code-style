@@ -215,3 +215,5 @@ Para dados que mudam (preços, limites, versões), sempre inclua a fonte no prom
 | Prompt ambíguo com múltiplas interpretações | Resposta para a interpretação errada | Adicionar contexto ou exemplos |
 | System prompt muito longo com regras conflitantes | Comportamento inconsistente | Manter system prompt coeso e conciso |
 | Esperar que o modelo memorize entre sessões | Perda de contexto | Reiterar o contexto necessário em cada sessão |
+
+> Para ataques que exploram a estrutura do prompt (injection, jailbreak, prompt leaking), veja [security.md](security.md).

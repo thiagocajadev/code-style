@@ -53,6 +53,7 @@ dados, não no modelo.
 | [prompts.md](prompts.md)     | Engenharia de prompts com exemplos BAD/GOOD para eficiência                                              |
 | [skills.md](skills.md)       | Skills como capacidades de agentes: routing, loading, composição e boas práticas                         |
 | [advanced.md](advanced.md)   | Fine-tuning, Hallucination, Structured outputs, Extended thinking, Inference engines e AI Gateway        |
+| [security.md](security.md)   | Prompt injection, jailbreak, indirect injection e mitigações com exemplos BAD/GOOD                      |
 
 ## Veja também
 

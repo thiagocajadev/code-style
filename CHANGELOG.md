@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `docs/shared/ai/security.md` — boas práticas contra prompt injection: tipos de ataque (direct injection, indirect injection, jailbreak, prompt leaking), 5 mitigações com exemplos BAD/GOOD em `<details><summary>`, tabela de erros comuns. Cross-links em `README.md` e `prompts.md`
+
 ## [1.20.0] - 2026-04-24
 
 ### Added
