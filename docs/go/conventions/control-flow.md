@@ -161,6 +161,73 @@ default:
 
 </details>
 
+## Circuit break
+
+Antes de escrever um loop, verifique se `slices.ContainsFunc` ou `slices.IndexFunc` (Go 1.21+) já
+resolve. Para busca com lógica customizada, `range` com retorno antecipado é direto.
+
+<details>
+<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<br>
+
+```go
+func findFirstExpiredItem(items []Item) *Item {
+    var found *Item
+
+    for i := range items {
+        if found == nil && items[i].IsExpired() {
+            found = &items[i] // continua iterando mesmo após encontrar
+        }
+    }
+
+    return found
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — range com retorno antecipado sai no primeiro match</summary>
+<br>
+
+```go
+func findFirstExpiredItem(items []Item) *Item {
+    for i := range items {
+        if items[i].IsExpired() {
+            return &items[i]
+        }
+    }
+
+    return nil
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — slices declarativo com circuit break nativo (Go 1.21+)</summary>
+<br>
+
+```go
+import "slices"
+
+// para no primeiro match — verifica existência
+hasExpired := slices.ContainsFunc(items, func(item Item) bool {
+    return item.IsExpired()
+})
+
+// retorna o índice do primeiro match — -1 se não encontrado
+index := slices.IndexFunc(items, func(item Item) bool {
+    return item.IsExpired()
+})
+```
+
+</details>
+
 ## for — único loop de Go
 
 Go tem apenas `for`. Use-o para while, loop infinito e iteração com range.

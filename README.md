@@ -7,41 +7,19 @@
 <div align="center">
 
 [![Version](https://img.shields.io/github/package-json/v/thiagocajadev/code-style?label=version&color=4CAF50)](package.json)
-[![HTML](https://img.shields.io/badge/HTML-Semantic%20%26%20Accessible-E34F26?logo=html5&logoColor=white)](docs/html/README.md)
-[![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md)
-[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md)
-[![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](docs/typescript/frameworks/react-nextjs.md)
-[![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)](docs/typescript/frameworks/angular.md)
-[![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md)
-[![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md)
-[![VB.NET](https://img.shields.io/badge/VB.NET-.NET%20Framework%204.8-512BD4?logo=dotnet&logoColor=white)](docs/vbnet/README.md)
-[![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](docs/python/README.md)
-[![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](docs/go/README.md)
-[![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](docs/php/README.md)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](docs/kotlin/README.md)
-[![Swift](https://img.shields.io/badge/Swift-6.1-F05138?logo=swift&logoColor=white)](docs/swift/README.md)
-[![Dart](https://img.shields.io/badge/Dart-3.7-0175C2?logo=dart&logoColor=white)](docs/dart/README.md)
-[![Flutter](https://img.shields.io/badge/Flutter-3.29-02569B?logo=flutter&logoColor=white)](docs/dart/frameworks/flutter/README.md)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.136.0-009688?logo=fastapi&logoColor=white)](docs/python/frameworks/fastapi.md)
-[![HTMX](https://img.shields.io/badge/HTMX-2.0.10-3D72D7?logoColor=white)](docs/python/frameworks/htmx.md)
-[![Reflex](https://img.shields.io/badge/Reflex-0.8.28-6E56CF?logoColor=white)](docs/python/frameworks/reflex.md)
-[![SQL](https://img.shields.io/badge/SQL-Server%20%7C%20PostgreSQL%20%7C%20SQLite-336791?logo=postgresql&logoColor=white)](docs/sql/README.md)
-[![MongoDB](https://img.shields.io/badge/MongoDB-8.2-47A248?logo=mongodb&logoColor=white)](docs/nosql/README.md)
-[![Redis](https://img.shields.io/badge/Redis-8.x-FF4438?logo=redis&logoColor=white)](docs/nosql/sgbd/redis.md)
-[![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-FF9900?logo=amazondynamodb&logoColor=white)](docs/nosql/sgbd/dynamodb.md)
-[![Cassandra](https://img.shields.io/badge/Cassandra-5.x-1287B1?logo=apachecassandra&logoColor=white)](docs/nosql/sgbd/cassandra.md)
-[![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch&logoColor=white)](docs/nosql/sgbd/elasticsearch.md)
-[![Discord](https://img.shields.io/badge/Discord-Bot%20discord.js-5865F2?logo=discord&logoColor=white)](docs/javascript/frameworks/bot/discord.md)
-[![Telegram](https://img.shields.io/badge/Telegram-Bot%20Telegraf-26A5E4?logo=telegram&logoColor=white)](docs/javascript/frameworks/bot/telegram.md)
-[![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot%20Baileys%20%7C%20Meta%20API-25D366?logo=whatsapp&logoColor=white)](docs/javascript/frameworks/bot/whatsapp.md)
-[![Slack](https://img.shields.io/badge/Slack-Bot%20Bolt%20for%20JS-4A154B?logo=slack&logoColor=white)](docs/javascript/frameworks/bot/slack.md)
-[![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md)
-[![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md)
-[![IA](https://img.shields.io/badge/IA-LLM%20%7C%20RAG%20%7C%20MCP%20%7C%20Agents-FF6B2B)](docs/shared/ai/README.md)
-[![Mobile](https://img.shields.io/badge/Mobile-Android%20%7C%20iOS%20%7C%20Flutter-3DDC84)](docs/shared/mobile/README.md)
 
 </div>
+
+<br>
+
+| Área | Stack |
+|:--|:--|
+| **Frontend** | [![HTML](https://img.shields.io/badge/HTML-Semantic%20%26%20Accessible-E34F26?logo=html5&logoColor=white)](docs/html/README.md) [![CSS](https://img.shields.io/badge/CSS-BEM%20%26%20Custom%20Properties-1572B6?logo=css3&logoColor=white)](docs/css/README.md) [![JavaScript](https://img.shields.io/badge/JavaScript-ES2024-F7DF1E?logo=javascript&logoColor=black)](docs/javascript/README.md) [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](docs/typescript/README.md) [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](docs/typescript/frameworks/react-nextjs.md) [![Angular](https://img.shields.io/badge/Angular-21-DD0031?logo=angular&logoColor=white)](docs/typescript/frameworks/angular.md) |
+| **Backend** | [![C#](https://img.shields.io/badge/C%23-.NET-512BD4?logo=dotnet&logoColor=white)](docs/csharp/README.md) [![VB.NET](https://img.shields.io/badge/VB.NET-.NET%20Framework%204.8-512BD4?logo=dotnet&logoColor=white)](docs/vbnet/README.md) [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](docs/python/README.md) [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](docs/go/README.md) [![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](docs/php/README.md) [![FastAPI](https://img.shields.io/badge/FastAPI-0.136.0-009688?logo=fastapi&logoColor=white)](docs/python/frameworks/fastapi.md) [![HTMX](https://img.shields.io/badge/HTMX-2.0.10-3D72D7?logoColor=white)](docs/python/frameworks/htmx.md) [![Reflex](https://img.shields.io/badge/Reflex-0.8.28-6E56CF?logoColor=white)](docs/python/frameworks/reflex.md) |
+| **Mobile** | [![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](docs/kotlin/README.md) [![Swift](https://img.shields.io/badge/Swift-6.1-F05138?logo=swift&logoColor=white)](docs/swift/README.md) [![Dart](https://img.shields.io/badge/Dart-3.7-0175C2?logo=dart&logoColor=white)](docs/dart/README.md) [![Flutter](https://img.shields.io/badge/Flutter-3.29-02569B?logo=flutter&logoColor=white)](docs/dart/frameworks/flutter/README.md) |
+| **Banco de dados** | [![SQL Server](https://img.shields.io/badge/SQL%20Server-2025-CC2927?logo=microsoftsqlserver&logoColor=white)](docs/sql/sgbd/sql-server.md) [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-336791?logo=postgresql&logoColor=white)](docs/sql/sgbd/postgres.md) [![SQLite](https://img.shields.io/badge/SQLite-3.53-003B57?logo=sqlite&logoColor=white)](docs/sql/sgbd/sqlite.md) [![MongoDB](https://img.shields.io/badge/MongoDB-8.2-47A248?logo=mongodb&logoColor=white)](docs/nosql/README.md) [![Redis](https://img.shields.io/badge/Redis-8.x-FF4438?logo=redis&logoColor=white)](docs/nosql/sgbd/redis.md) [![DynamoDB](https://img.shields.io/badge/DynamoDB-AWS-FF9900?logo=amazondynamodb&logoColor=white)](docs/nosql/sgbd/dynamodb.md) [![Cassandra](https://img.shields.io/badge/Cassandra-5.x-1287B1?logo=apachecassandra&logoColor=white)](docs/nosql/sgbd/cassandra.md) [![Elasticsearch](https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch&logoColor=white)](docs/nosql/sgbd/elasticsearch.md) |
+| **Bots & Integrações** | [![Discord](https://img.shields.io/badge/Discord-Bot%20discord.js-5865F2?logo=discord&logoColor=white)](docs/javascript/frameworks/bot/discord.md) [![Telegram](https://img.shields.io/badge/Telegram-Bot%20Telegraf-26A5E4?logo=telegram&logoColor=white)](docs/javascript/frameworks/bot/telegram.md) [![WhatsApp](https://img.shields.io/badge/WhatsApp-Bot%20Baileys%20%7C%20Meta%20API-25D366?logo=whatsapp&logoColor=white)](docs/javascript/frameworks/bot/whatsapp.md) [![Slack](https://img.shields.io/badge/Slack-Bot%20Bolt%20for%20JS-4A154B?logo=slack&logoColor=white)](docs/javascript/frameworks/bot/slack.md) [![GraphQL](https://img.shields.io/badge/GraphQL-API%20Query-E10098?logo=graphql&logoColor=white)](docs/shared/platform/integrations.md) |
+| **Padrões** | [![IA](https://img.shields.io/badge/IA-LLM%20%7C%20RAG%20%7C%20MCP%20%7C%20Agents-FF6B2B)](docs/shared/ai/README.md) [![Mobile](https://img.shields.io/badge/Mobile-Android%20%7C%20iOS%20%7C%20Flutter-3DDC84)](docs/shared/mobile/README.md) [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-FE5196?logo=conventionalcommits&logoColor=white)](docs/shared/process/git.md) [![EditorConfig](https://img.shields.io/badge/EditorConfig-enabled-E0EFEF?logo=editorconfig&logoColor=black)](docs/shared/standards/editorconfig.md) |
 
 # Code Style
 
@@ -208,6 +186,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 | Tópico | Descrição |
 | --- | --- |
+| [Control Flow](docs/shared/standards/control-flow.md) | Quando usar cada ferramenta de fluxo: tabela semântica simples → complexo |
 | [Visual Density](docs/shared/standards/visual-density.md) | Densidade visual agnóstica de linguagem: princípios e regras |
 | [Null Safety](docs/shared/standards/null-safety.md) | Fronteira vs interior, contratos de entrada e schema evolution |
 | [Testing](docs/shared/standards/testing.md) | AAA, no logic no assert, testes unitários e de integração |

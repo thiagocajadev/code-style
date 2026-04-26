@@ -1,12 +1,13 @@
 # Control Flow
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
-existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
+Controle de fluxo evolui com a complexidade. A ferramenta certa depende de
+quantas condições existem, se mapeiam valores ou executam ações, e se o fluxo
+pode precisar de saída antecipada.
 
 ## If e else
 
-O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:
-o fluxo já saiu.
+O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um
+`return` é ruído: o fluxo já saiu.
 
 <details>
 <summary>❌ Bad — else desnecessário após return</summary>
@@ -41,10 +42,11 @@ function getDiscount(user) {
 
 ## Aninhamento em cascata
 
-Quando as condições crescem e se aninham, cada nível enterra a lógica um nível mais fundo. O fluxo
-vira uma pirâmide: o _arrow antipattern_.
+Quando as condições crescem e se aninham, cada nível enterra a lógica um nível
+mais fundo. O fluxo vira uma pirâmide: o _arrow antipattern_.
 
-Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
+Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal
+limpo.
 
 <details>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
@@ -89,8 +91,8 @@ function processOrder(order) {
 
 ## Coerção implícita
 
-Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente e torna a comparação
-imprevisível.
+Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente e torna
+a comparação imprevisível.
 
 <details>
 <summary>❌ Bad — coerção silenciosa</summary>
@@ -134,14 +136,24 @@ if (count === 3) {
 
 ## Ternário
 
-Para atribuição de dois valores possíveis, não para lógica de fluxo. Encadeado, vira puzzle.
+Para atribuição de dois valores possíveis, não para lógica de fluxo. Encadeado,
+vira puzzle (quebra cabeça).
 
 <details>
 <summary>❌ Bad — lógica inline ilegível</summary>
 <br>
 
 ```js
-const label = score >= 90 ? "A" : score >= 80 ? "B" : score >= 70 ? "C" : score >= 60 ? "D" : "F";
+const label =
+  score >= 90
+    ? "A"
+    : score >= 80
+      ? "B"
+      : score >= 70
+        ? "C"
+        : score >= 60
+          ? "D"
+          : "F";
 ```
 
 </details>
@@ -171,8 +183,9 @@ const grade = isA ? "A"
 
 ## Lookup table
 
-Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista de condições vira um
-catálogo. Substitua por um objeto: a chave é a condição, o valor é o resultado.
+Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista
+de condições vira um catálogo. Substitua por um objeto: a chave é a condição, o
+valor é o resultado.
 
 <details>
 <summary>❌ Bad — switch repetitivo mapeando chave → valor</summary>
@@ -221,9 +234,10 @@ function getStatusLabel(status) {
 
 ## Switch
 
-Lookup table resolve mapeamento de valores. Quando cada caso precisa executar múltiplas ações (não
-retornar um valor, mas fazer algo), `switch` torna a intenção mais clara que um `if/else` encadeado.
-Cada `case` termina com `break` ou `return` explícito: fall-through acidental é bug silencioso.
+Lookup table resolve mapeamento de valores. Quando cada caso precisa executar
+múltiplas ações (não retornar um valor, mas fazer algo), `switch` torna a
+intenção mais clara que um `if/else` encadeado. Cada `case` termina com `break`
+ou `return` explícito: fall-through acidental é bug silencioso.
 
 <details>
 <summary>❌ Bad — if/else encadeado para despacho de ações</summary>
@@ -280,9 +294,10 @@ function processPaymentEvent(event) {
 
 ## Map
 
-Lookup table com plain object tem limitações: chaves são sempre coercidas para string e não há
-métodos nativos para tamanho ou verificação segura. `Map` é a estrutura certa quando a chave não é
-string, quando os dados são dinâmicos, ou quando você precisa de `has`, `delete` e `size` nativos.
+Lookup table com plain object tem limitações: chaves são sempre coercidas para
+string e não há métodos nativos para tamanho ou verificação segura. `Map` é a
+estrutura certa quando a chave não é string, quando os dados são dinâmicos, ou
+quando você precisa de `has`, `delete` e `size` nativos.
 
 <details>
 <summary>❌ Bad — plain object perde o tipo da chave</summary>
@@ -321,115 +336,14 @@ userCache.size;
 
 ---
 
-_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem **iteração**:
-quantas vezes percorrer._
-
-## forEach
-
-Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarativo e suficiente: sem
-índice, sem variável de controle.
-
-<details>
-<summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
-<br>
-
-```js
-for (let i = 0; i < orders.length; i++) {
-  notifyCustomer(orders[i]);
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — forEach para efeitos colaterais por item</summary>
-<br>
-
-```js
-orders.forEach((order) => {
-  notifyCustomer(order);
-});
-```
-
-</details>
-
-> `forEach` não suporta `break` nem `continue` — quando precisar de saída antecipada, use
-> `for...of`.
-
-## for...of
-
-Quando o laço precisa de saída antecipada ou iteração com valores diretos, `for...of` é a escolha:
-sem índice implícito, com suporte a `break` e `continue`, compatível com qualquer iterável.
-
-<details>
-<summary>❌ Bad — for...in em array percorre o protótipo</summary>
-<br>
-
-```js
-const prices = [10, 20, 30];
-
-for (const index in prices) {
-  console.log(prices[index]); // índices como strings, inclui herança do protótipo
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — iteração de objeto com for...of sem Object.entries</summary>
-<br>
-
-```js
-const config = { host: "localhost", port: 5432, database: "app" };
-
-for (const key of config) {
-  console.log(key); // TypeError: config is not iterable
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — for...of para valores diretos</summary>
-<br>
-
-```js
-const prices = [10, 20, 30];
-
-for (const price of prices) {
-  console.log(price);
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — Object.entries() para objetos</summary>
-<br>
-
-```js
-const config = { host: "localhost", port: 5432, database: "app" };
-
-for (const [key, value] of Object.entries(config)) {
-  console.log(`${key}: ${value}`);
-}
-```
-
-</details>
+_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo
+resolvem **iteração**: quantas vezes percorrer._
 
 ## Circuit break
 
-Sair cedo de um laço é uma decisão de fluxo. `for...of` com `break` ou `return` é explícito. Para
-buscas e verificações, os métodos de array fazem circuit break internamente: param no primeiro
-match, sem percorrer o resto.
+Antes de escrever um loop, verifique se `find`, `some` ou `every` já resolve.
+Esses métodos param no primeiro match — sem percorrer o resto. Para busca com
+lógica de saída explícita, `for...of` com `return` é direto.
 
 <details>
 <summary>❌ Bad — forEach com flag força percorrer tudo</summary>
@@ -446,6 +360,24 @@ function findFirstExpiredProduct(products) {
   });
 
   return expiredProduct;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — for...of sai no primeiro match</summary>
+<br>
+
+```js
+function findFirstExpiredProduct(products) {
+  for (const product of products) {
+    if (product.isExpired) return product;
+  }
+
+  return null;
 }
 ```
 
@@ -474,24 +406,6 @@ function hasExpiredProduct(products) {
 <br>
 
 <details>
-<summary>✅ Good — for...of sai no primeiro match</summary>
-<br>
-
-```js
-function findFirstExpiredProduct(products) {
-  for (const product of products) {
-    if (product.isExpired) return product;
-  }
-
-  return null;
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>✅ Good — métodos declarativos com circuit break nativo</summary>
 <br>
 
@@ -508,11 +422,113 @@ const allProductsActive = products.every((product) => product.isActive);
 
 </details>
 
+## forEach
+
+Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarativo
+e suficiente: sem índice, sem variável de controle.
+
+<details>
+<summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
+<br>
+
+```js
+for (let i = 0; i < orders.length; i++) {
+  notifyCustomer(orders[i]);
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — forEach para efeitos colaterais por item</summary>
+<br>
+
+```js
+orders.forEach((order) => {
+  notifyCustomer(order);
+});
+```
+
+</details>
+
+> `forEach` não suporta `break` nem `continue` — quando precisar de saída
+> antecipada, use `for...of`.
+
+## for...of
+
+Quando o laço precisa de saída antecipada ou iteração com valores diretos,
+`for...of` é a escolha: sem índice implícito, com suporte a `break` e
+`continue`, compatível com qualquer iterável.
+
+<details>
+<summary>❌ Bad — for...in em array percorre o protótipo</summary>
+<br>
+
+```js
+const prices = [10, 20, 30];
+
+for (const index in prices) {
+  console.log(prices[index]); // índices como strings, inclui herança do protótipo
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — for...of para valores diretos</summary>
+<br>
+
+```js
+const prices = [10, 20, 30];
+
+for (const price of prices) {
+  console.log(price);
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — iteração de objeto com for...of sem Object.entries</summary>
+<br>
+
+```js
+const config = { host: "localhost", port: 5432, database: "app" };
+
+for (const key of config) {
+  console.log(key); // TypeError: config is not iterable
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — Object.entries() para objetos</summary>
+<br>
+
+```js
+const config = { host: "localhost", port: 5432, database: "app" };
+
+for (const [key, value] of Object.entries(config)) {
+  console.log(`${key}: ${value}`);
+}
+```
+
+</details>
+
 ## while
 
-Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice ou tamanho,
-`while` é a escolha natural. Use `do...while` quando a primeira iteração deve sempre executar,
-independente da condição.
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um
+índice ou tamanho, `while` é a escolha natural. Use `do...while` quando a
+primeira iteração deve sempre executar, independente da condição.
 
 <details>
 <summary>❌ Bad — for simulando condição de parada por estado</summary>
@@ -522,22 +538,6 @@ independente da condição.
 for (let attempt = 0; attempt < maxAttempts; attempt++) {
   const connection = connectToDatabase();
   if (connection.isReady) break; // o índice não tem significado aqui
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
-<br>
-
-```js
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
-while (taskQueue.size > 0) {
-  const task = taskQueue.dequeue();
-  executeTask(task);
 }
 ```
 
@@ -557,6 +557,22 @@ while (attempt < maxAttempts) {
   if (connection.isReady) break;
 
   attempt++;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
+
+```js
+// verifica antes de executar — se a fila já estiver vazia, nunca executa
+while (taskQueue.size > 0) {
+  const task = taskQueue.dequeue();
+  executeTask(task);
 }
 ```
 

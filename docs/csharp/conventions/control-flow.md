@@ -44,6 +44,64 @@ public decimal GetDiscount(string customerType)
 
 </details>
 
+## Ternário
+
+Para atribuição de dois valores possíveis em uma linha. Três ou mais alternativas → `switch`
+expression. Nunca aninhar ternários.
+
+<details>
+<summary>❌ Bad — if/else imperativo para atribuição simples</summary>
+<br>
+
+```csharp
+string label;
+if (order.IsPaid)
+    label = "Paid";
+else
+    label = "Pending";
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — ternário na atribuição</summary>
+<br>
+
+```csharp
+var label = order.IsPaid ? "Paid" : "Pending";
+```
+
+</details>
+
+<details>
+<summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
+<br>
+
+```csharp
+var priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal";
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — switch expression para 3+ alternativas</summary>
+<br>
+
+```csharp
+var priority = (isUrgent, isCritical) switch
+{
+    (true, true)  => "Critical",
+    (true, false) => "High",
+    _             => "Normal",
+};
+```
+
+</details>
+
 ## Aninhamento em cascata
 
 Quando as condições crescem e se aninham, o fluxo vira uma pirâmide: o _arrow antipattern_. Guard
@@ -188,28 +246,6 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<summary>❌ Bad — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
-<br>
-
-```csharp
-public IResult MapResult(Result<Order> result)
-{
-    if (result.IsSuccess)
-        return Results.Ok(result.Value!);
-    else if (result.Error.Code == "NOT_FOUND")
-        return Results.NotFound();
-    else if (result.Error.Code == "UNAUTHORIZED")
-        return Results.Unauthorized();
-    else
-        return Results.Problem();
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>✅ Good — switch expression declarativo e exaustivo</summary>
 <br>
 
@@ -225,6 +261,28 @@ public string GetStatusLabel(string status)
     };
 
     return label;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
+<br>
+
+```csharp
+public IResult MapResult(Result<Order> result)
+{
+    if (result.IsSuccess)
+        return Results.Ok(result.Value!);
+    else if (result.Error.Code == "NOT_FOUND")
+        return Results.NotFound();
+    else if (result.Error.Code == "UNAUTHORIZED")
+        return Results.Unauthorized();
+    else
+        return Results.Problem();
 }
 ```
 
@@ -367,6 +425,95 @@ public string GetCurrencyCode(string region)
 
 _As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem **iteração**: quantas vezes percorrer._
 
+## Circuit break
+
+Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` já resolve. Esses métodos
+LINQ param no primeiro match — sem percorrer o resto. Para busca com lógica de saída explícita,
+`foreach` com `return` antecipado é direto.
+
+<details>
+<summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
+<br>
+
+```csharp
+public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
+{
+    Order? expiredOrder = null;
+
+    foreach (var order in orders)
+    {
+        if (expiredOrder is null && order.IsExpired)
+            expiredOrder = order; // continua iterando mesmo após encontrar
+    }
+
+    return expiredOrder;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — foreach com return antecipado</summary>
+<br>
+
+```csharp
+public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
+{
+    foreach (var order in orders)
+    {
+        if (order.IsExpired) return order;
+    }
+
+    return null;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
+<br>
+
+```csharp
+public bool HasExpiredOrders(IEnumerable<Order> orders)
+{
+    bool hasExpired = false;
+
+    foreach (var order in orders)
+    {
+        if (order.IsExpired)
+            hasExpired = true; // continua iterando mesmo após encontrar
+    }
+
+    return hasExpired;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
+<br>
+
+```csharp
+// para no primeiro match
+var expiredOrder = orders.FirstOrDefault(order => order.IsExpired);
+
+// para no primeiro true
+var hasExpiredOrders = orders.Any(order => order.IsExpired);
+
+// para no primeiro false
+var allOrdersActive = orders.All(order => order.IsActive);
+```
+
+</details>
+
 ## foreach
 
 Para iterar sobre uma coleção executando ações por item, `foreach` é direto: sem índice, sem
@@ -400,95 +547,6 @@ foreach (var order in orders)
 
 </details>
 
-## Circuit break
-
-Quando o objetivo é encontrar, verificar ou validar elementos de uma coleção, percorrer tudo é
-desperdício. `foreach` com `return` antecipado sai no primeiro match. Para casos declarativos, os
-métodos LINQ fazem circuit break internamente e param no primeiro resultado relevante.
-
-<details>
-<summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
-<br>
-
-```csharp
-public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
-{
-    Order? expiredOrder = null;
-
-    foreach (var order in orders)
-    {
-        if (expiredOrder is null && order.IsExpired)
-            expiredOrder = order; // continua iterando mesmo após encontrar
-    }
-
-    return expiredOrder;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
-<br>
-
-```csharp
-public bool HasExpiredOrders(IEnumerable<Order> orders)
-{
-    bool hasExpired = false;
-
-    foreach (var order in orders)
-    {
-        if (order.IsExpired)
-            hasExpired = true; // continua iterando mesmo após encontrar
-    }
-
-    return hasExpired;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — foreach com return antecipado</summary>
-<br>
-
-```csharp
-public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
-{
-    foreach (var order in orders)
-    {
-        if (order.IsExpired) return order;
-    }
-
-    return null;
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
-<br>
-
-```csharp
-// para no primeiro match
-var expiredOrder = orders.FirstOrDefault(order => order.IsExpired);
-
-// para no primeiro true
-var hasExpiredOrders = orders.Any(order => order.IsExpired);
-
-// para no primeiro false
-var allOrdersActive = orders.All(order => order.IsActive);
-```
-
-</details>
-
 ## while
 
 Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice ou tamanho,
@@ -512,26 +570,6 @@ for (int attempt = 0; attempt < maxAttempts; attempt++)
 <br>
 
 <details>
-<summary>❌ Bad — while com verificação duplicada antes do loop</summary>
-<br>
-
-```csharp
-// verifica a condição antes de entrar, mas a primeira iteração é sempre necessária
-if (taskQueue.Count > 0)
-{
-    while (taskQueue.Count > 0)
-    {
-        var task = taskQueue.Dequeue();
-        ExecuteTask(task);
-    }
-}
-```
-
-</details>
-
-<br>
-
-<details>
 <summary>✅ Good — while para condição de parada por estado</summary>
 <br>
 
@@ -544,6 +582,26 @@ while (attempt < maxAttempts)
     if (connection.IsReady) break;
 
     attempt++;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Bad — while com verificação duplicada antes do loop</summary>
+<br>
+
+```csharp
+// verifica a condição antes de entrar, mas a primeira iteração é sempre necessária
+if (taskQueue.Count > 0)
+{
+    while (taskQueue.Count > 0)
+    {
+        var task = taskQueue.Dequeue();
+        ExecuteTask(task);
+    }
 }
 ```
 

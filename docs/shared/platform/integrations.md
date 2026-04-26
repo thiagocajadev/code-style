@@ -2,35 +2,59 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Configuração de ferramentas, APIs de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns — dos modernos aos legados.
+Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation,
+Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol,
+Protocolo de Transferência de Hipertexto). Configuração de ferramentas, APIs de
+parceiros, integração fiscal e hardware periférico exigem conhecer outros
+formatos e protocolos. Este guia cobre os padrões mais comuns — dos modernos aos
+legados.
 
 ## Conceitos fundamentais
 
-| Conceito | O que é |
-|---|---|
-| **GraphQL** | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer — não é banco de dados |
-| **TOML** (Tom's Obvious, Minimal Language) | Formato de configuração legível com semântica clara e tipos nativos; comum em Rust, Python e Go |
-| **YAML** (YAML Ain't Markup Language, YAML Não é uma Linguagem de Marcação) | Formato hierárquico baseado em indentação; dominante em CI/CD, Kubernetes e automação |
-| **SOAP** (Simple Object Access Protocol, Protocolo Simples de Acesso a Objetos) | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros |
-| **WSDL** (Web Services Description Language, Linguagem de Descrição de WebServices) | Documento XML que descreve métodos, tipos e endereços de um WebService SOAP |
-| **XSD** (XML Schema Definition, Definição de Esquema XML) | Define a estrutura válida de um documento XML; usado para validar NF-e, CT-e e outros documentos fiscais |
-| **Namespace XML** | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML |
-| **CSV** (Comma-Separated Values, valores separados por vírgula) | Formato tabular em texto plano; separador pode ser vírgula, ponto-e-vírgula ou pipe |
-| **Fixed-width** (largura fixa) | Formato de arquivo texto onde cada campo ocupa posições fixas na linha; comum em CNAB e SINTEGRA |
-| **CNAB** (Centro Nacional de Automação Bancária, Centro Nacional de Automação Bancária) | Padrão de arquivo texto para remessa e retorno bancário (cobranças, pagamentos); linhas de 240 ou 400 caracteres |
-| **SPED** (Sistema Público de Escrituração Digital, Sistema Público de Escrituração Digital) | Obrigação fiscal digital brasileira; arquivos pipe-delimited com registros tipados (SPED Fiscal, SPED Contábil) |
-| **NF-e** (Nota Fiscal eletrônica) | Documento fiscal digital brasileiro emitido como XML assinado e transmitido à SEFAZ |
-| **CT-e** (Conhecimento de Transporte eletrônico) | Documento fiscal para transporte de cargas; mesmo modelo XML/SEFAZ da NF-e |
-| **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra) | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios |
-| **RS-232** (Recommended Standard 232) | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
-| **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor) | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM |
-| **LLM API** | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto |
+| Conceito                                                                                    | O que é                                                                                                                 |
+| ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **GraphQL**                                                                                 | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer — não é banco de dados                   |
+| **TOML** (Tom's Obvious, Minimal Language)                                                  | Formato de configuração legível com semântica clara e tipos nativos; comum em Rust, Python e Go                         |
+| **YAML** (YAML Ain't Markup Language, YAML Não é uma Linguagem de Marcação)                 | Formato hierárquico baseado em indentação; dominante em CI/CD, Kubernetes e automação                                   |
+| **SOAP** (Simple Object Access Protocol, Protocolo Simples de Acesso a Objetos)             | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros                   |
+| **WSDL** (Web Services Description Language, Linguagem de Descrição de WebServices)         | Documento XML que descreve métodos, tipos e endereços de um WebService SOAP                                             |
+| **XSD** (XML Schema Definition, Definição de Esquema XML)                                   | Define a estrutura válida de um documento XML; usado para validar NF-e, CT-e e outros documentos fiscais                |
+| **Namespace XML**                                                                           | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML                                        |
+| **CSV** (Comma-Separated Values, valores separados por vírgula)                             | Formato tabular em texto plano; separador pode ser vírgula, ponto-e-vírgula ou pipe                                     |
+| **Fixed-width** (largura fixa)                                                              | Formato de arquivo texto onde cada campo ocupa posições fixas na linha; comum em CNAB e SINTEGRA                        |
+| **CNAB** (Centro Nacional de Automação Bancária, Centro Nacional de Automação Bancária)     | Padrão de arquivo texto para remessa e retorno bancário (cobranças, pagamentos); linhas de 240 ou 400 caracteres        |
+| **SPED** (Sistema Público de Escrituração Digital, Sistema Público de Escrituração Digital) | Obrigação fiscal digital brasileira; arquivos pipe-delimited com registros tipados (SPED Fiscal, SPED Contábil)         |
+| **NF-e** (Nota Fiscal eletrônica)                                                           | Documento fiscal digital brasileiro emitido como XML assinado e transmitido à SEFAZ                                     |
+| **CT-e** (Conhecimento de Transporte eletrônico)                                            | Documento fiscal para transporte de cargas; mesmo modelo XML/SEFAZ da NF-e                                              |
+| **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra)                        | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios              |
+| **RS-232** (Recommended Standard 232)                                                       | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
+| **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor)                                | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM                    |
+| **LLM API**                                                                                 | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
 
 ---
 
 ## GraphQL
 
-**GraphQL** é uma linguagem de consulta para APIs — não um banco de dados. O cliente define exatamente quais campos quer; o servidor responde apenas com esses campos, eliminando **over-fetching** (busca excessiva) e **under-fetching** (busca insuficiente).
+Um **grafo** (graph) é uma estrutura de dados formada por entidades chamadas
+**nós** (nodes) e pelas conexões entre elas, chamadas **arestas** (edges). Dados
+reais raramente são listas planas: um pedido pertence a um cliente, que tem
+endereços, que têm cidades, que têm países. Essa rede de relações forma
+naturalmente um grafo.
+
+```
+Pedido
+  ├─→ Cliente  → Endereço → Cidade → País
+  └─→ Itens    → Produto  → Categoria
+```
+
+**GraphQL** tira o nome daí. Em vez de expor recursos isolados como `/orders` e
+`/customers`, expõe o grafo inteiro — e o cliente define o caminho que quer
+percorrer em uma única consulta.
+
+**GraphQL** é uma linguagem de consulta para APIs — não um banco de dados. O
+cliente define exatamente quais campos quer; o servidor responde apenas com
+esses campos, eliminando **over-fetching** (busca excessiva) e
+**under-fetching** (busca insuficiente).
 
 ```graphql
 query {
@@ -47,20 +71,108 @@ query {
 
 **Quando considerar GraphQL:**
 
-- Múltiplos clientes (mobile, web, parceiros) com necessidades de dados muito diferentes
-- Over-fetching recorrente em APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) existentes que não podem ser quebradas
+- Múltiplos clientes (mobile, web, parceiros) com necessidades de dados muito
+  diferentes
+- Over-fetching recorrente em APIs **REST** (Representational State Transfer,
+  Transferência de Estado Representacional) existentes que não podem ser
+  quebradas
 - Produto com queries de alto dinamismo que mudam com frequência
 
 **Quando não usar:**
 
-- APIs internas simples com poucos consumidores; REST é mais simples de cachear e monitorar
-- Quando o time não tem familiaridade; a curva de aprendizado de schema, resolvers e N+1 interno é real
+- APIs internas simples com poucos consumidores; REST é mais simples de cachear
+  e monitorar
+- Quando o time não tem familiaridade; a curva de aprendizado de schema,
+  resolvers e N+1 interno é real
+
+### Consulta com variável
+
+O risco mais comum em queries maiores é o over-fetching combinado com filtragem
+no cliente — buscar tudo e encontrar um. Variáveis no servidor resolvem os dois
+problemas ao mesmo tempo.
+
+Os exemplos abaixo usam a [Countries API](https://countries.trevorblades.com/),
+uma API GraphQL pública.
+
+<img src="../../../assets/graphql_countries_schema.svg" width="560" alt="Countries API Schema" />
+
+<sub>Exemplo de grafo: cada nó representa um tipo de dado, cada aresta
+representa uma relação entre eles.</sub>
+
+<details>
+<summary>❌ Bad — busca todos os países, filtra no cliente, query inline</summary>
+<br>
+
+```js
+const response = await fetch("https://countries.trevorblades.com/", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `{ countries { code name capital currency languages { code name native } continent { code name } states { code name } } }`,
+  }),
+});
+
+const json = await response.json();
+const country = json.data.countries.find((c) => c.code === "BR");
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
+<br>
+
+```js
+const GET_COUNTRY = `
+  query GetCountry($code: ID!) {
+    country(code: $code) {
+      name
+      capital
+      currency
+
+      languages {
+        name
+      }
+
+      continent {
+        name
+      }
+    }
+  }
+`;
+
+async function fetchCountry(code) {
+  const response = await fetch("https://countries.trevorblades.com/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: GET_COUNTRY,
+      variables: { code },
+    }),
+  });
+
+  const { data, errors } = await response.json();
+  const [firstError] = errors ?? [];
+  if (firstError) throw new Error(firstError.message);
+
+  const country = data.country;
+  return country;
+}
+```
+
+</details>
+
+<br>
 
 ---
 
 ## TOML
 
-**TOML** é preferível a **YAML** quando a configuração tem tipagem explícita ou estruturas planas. Erros de indentação não quebram o arquivo — a sintaxe usa `=` e `[seção]`, não espaços como delimitadores.
+**TOML** é preferível a **YAML** quando a configuração tem tipagem explícita ou
+estruturas planas. Erros de indentação não quebram o arquivo — a sintaxe usa `=`
+e `[seção]`, não espaços como delimitadores.
 
 ```toml
 # config.toml
@@ -77,13 +189,18 @@ timeout = 30
 maintenance_mode = false
 ```
 
-Comum em: `Cargo.toml` (Rust), `pyproject.toml` (Python), configurações de ferramentas CLI.
+Comum em: `Cargo.toml` (Rust), `pyproject.toml` (Python), configurações de
+ferramentas CLI.
 
 ---
 
 ## YAML
 
-**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas — **CI**, Integração Contínua; **CD**, Entrega Contínua), Kubernetes, Docker Compose e ferramentas de automação. A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
+**YAML** domina configuração de infraestrutura: pipelines de **CI/CD**
+(Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas
+— **CI**, Integração Contínua; **CD**, Entrega Contínua), Kubernetes, Docker
+Compose e ferramentas de automação. A hierarquia via indentação é expressiva,
+mas um tab no lugar de espaço quebra silenciosamente o parse.
 
 ```yaml
 # docker-compose.yml
@@ -98,33 +215,43 @@ services:
 
 **Armadilhas comuns:**
 
-- Valores `yes`, `no`, `on`, `off`, `true`, `false` são interpretados como boolean sem aspas — usar aspas se o valor for string
-- Chaves duplicadas no mesmo nível são aceitas pelo parser; a última sobrescreve sem erro
+- Valores `yes`, `no`, `on`, `off`, `true`, `false` são interpretados como
+  boolean sem aspas — usar aspas se o valor for string
+- Chaves duplicadas no mesmo nível são aceitas pelo parser; a última sobrescreve
+  sem erro
 - Tabs não são aceitos como indentação; usar sempre espaços
 
 ---
 
 ## Legado
 
-Protocolos e formatos de sistemas anteriores ao JSON/REST. Presentes em integração fiscal, bancária, industrial e de hardware periférico.
+Protocolos e formatos de sistemas anteriores ao JSON/REST. Presentes em
+integração fiscal, bancária, industrial e de hardware periférico.
 
 ### XML e WebServices SOAP
 
-WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros (**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A comunicação ocorre via **SOAP Envelope** (envelope SOAP) — um **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura fixa — e o contrato do serviço é descrito em um arquivo **WSDL**.
+WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros
+(**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A
+comunicação ocorre via **SOAP Envelope** (envelope SOAP) — um **XML**
+(eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura
+fixa — e o contrato do serviço é descrito em um arquivo **WSDL**.
 
-O erro mais comum é navegar o XML sem levar em conta os namespaces. Um documento NF-e tem namespace `http://www.portalfiscal.inf.br/nfe`; ignorá-lo faz toda navegação retornar nulo silenciosamente. Em Node.js, a biblioteca `@xmldom/xmldom` fornece `DOMParser` com suporte a namespaces.
+O erro mais comum é navegar o XML sem levar em conta os namespaces. Um documento
+NF-e tem namespace `http://www.portalfiscal.inf.br/nfe`; ignorá-lo faz toda
+navegação retornar nulo silenciosamente. Em Node.js, a biblioteca
+`@xmldom/xmldom` fornece `DOMParser` com suporte a namespaces.
 
 <details>
 <summary>❌ Bad: getElementsByTagName ignora namespace — retorna null sem erro</summary>
 <br>
 
 ```js
-import { DOMParser } from '@xmldom/xmldom';
+import { DOMParser } from "@xmldom/xmldom";
 
-const doc = new DOMParser().parseFromString(xml, 'text/xml');
+const doc = new DOMParser().parseFromString(xml, "text/xml");
 
 // sem namespace: não encontra o nó em documento fiscal com prefixo nfe:
-const invoiceNumber = doc.getElementsByTagName('nNF')[0].textContent;
+const invoiceNumber = doc.getElementsByTagName("nNF")[0].textContent;
 ```
 
 </details>
@@ -136,18 +263,20 @@ const invoiceNumber = doc.getElementsByTagName('nNF')[0].textContent;
 <br>
 
 ```js
-import { DOMParser } from '@xmldom/xmldom';
+import { DOMParser } from "@xmldom/xmldom";
 
-const NS = 'http://www.portalfiscal.inf.br/nfe';
+const NS = "http://www.portalfiscal.inf.br/nfe";
 
 function extractInvoiceNumber(xml) {
-  const doc = new DOMParser().parseFromString(xml, 'text/xml');
+  const doc = new DOMParser().parseFromString(xml, "text/xml");
 
-  const ide = doc.getElementsByTagNameNS(NS, 'ide')[0];
-  const invoiceNumber = ide?.getElementsByTagNameNS(NS, 'nNF')[0]?.textContent ?? null;
+  const ide = doc.getElementsByTagNameNS(NS, "ide")[0];
+  const invoiceNumber =
+    ide?.getElementsByTagNameNS(NS, "nNF")[0]?.textContent ?? null;
 
   const hasInvoiceNumber = invoiceNumber !== null;
-  if (!hasInvoiceNumber) throw new ValidationError({ message: 'Invoice number not found in XML.' });
+  if (!hasInvoiceNumber)
+    throw new ValidationError({ message: "Invoice number not found in XML." });
 
   return invoiceNumber;
 }
@@ -159,27 +288,36 @@ function extractInvoiceNumber(xml) {
 
 **Boas práticas ao consumir WebServices SOAP:**
 
-- Validar o XML recebido contra o **XSD** antes de processar; sistemas fiscais têm schemas públicos disponibilizados pela SEFAZ
-- Nunca concatenar strings para montar o envelope SOAP; usar cliente gerado a partir do **WSDL** ou biblioteca dedicada
-- Guardar o XML bruto recebido para auditoria antes de fazer parse; documentos fiscais têm valor legal
-- O retorno da SEFAZ inclui código de status no campo `cStat`; tratar os códigos conhecidos (100 = autorizado, 204 = sem registros) antes de lançar erro genérico
+- Validar o XML recebido contra o **XSD** antes de processar; sistemas fiscais
+  têm schemas públicos disponibilizados pela SEFAZ
+- Nunca concatenar strings para montar o envelope SOAP; usar cliente gerado a
+  partir do **WSDL** ou biblioteca dedicada
+- Guardar o XML bruto recebido para auditoria antes de fazer parse; documentos
+  fiscais têm valor legal
+- O retorno da SEFAZ inclui código de status no campo `cStat`; tratar os códigos
+  conhecidos (100 = autorizado, 204 = sem registros) antes de lançar erro
+  genérico
 
 ---
 
 ### Arquivos de Texto — TXT, CSV, Fixed-width
 
-Integrações bancárias (**CNAB**), obrigações fiscais (**SPED**), exportações de ERP e transferências entre sistemas legados frequentemente usam arquivos texto com layout fixo ou delimitado. O maior risco é espalhar posições e índices mágicos pelo código — quando o layout muda, a quebra é silenciosa.
+Integrações bancárias (**CNAB**), obrigações fiscais (**SPED**), exportações de
+ERP e transferências entre sistemas legados frequentemente usam arquivos texto
+com layout fixo ou delimitado. O maior risco é espalhar posições e índices
+mágicos pelo código — quando o layout muda, a quebra é silenciosa.
 
 #### CSV e pipe-delimited
 
-Arquivos **SPED** usam pipe como separador. Cada linha começa com o tipo de registro (`|0000|`, `|C100|`).
+Arquivos **SPED** usam pipe como separador. Cada linha começa com o tipo de
+registro (`|0000|`, `|C100|`).
 
 <details>
 <summary>❌ Bad: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
 <br>
 
 ```js
-const fields = line.replace(/^\||\|$/g, '').split('|');
+const fields = line.replace(/^\||\|$/g, "").split("|");
 
 const companyRegistrationNumber = fields[6]; // CNPJ
 const companyName = fields[5];
@@ -196,7 +334,7 @@ const periodStart = fields[3];
 
 ```js
 function parseRecord0000(line) {
-  const fields = line.replace(/^\||\|$/g, '').split('|');
+  const fields = line.replace(/^\||\|$/g, "").split("|");
 
   const record = {
     periodStart: fields[3],
@@ -213,7 +351,9 @@ function parseRecord0000(line) {
 
 #### Fixed-width — CNAB
 
-Arquivos **CNAB** (240 ou 400 caracteres por linha) definem cada campo por posição e comprimento. Números sem nome espalhados pelo código tornam qualquer manutenção de layout um risco.
+Arquivos **CNAB** (240 ou 400 caracteres por linha) definem cada campo por
+posição e comprimento. Números sem nome espalhados pelo código tornam qualquer
+manutenção de layout um risco.
 
 <details>
 <summary>❌ Bad: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
@@ -236,9 +376,9 @@ const companyRegistrationNumber = line.slice(18, 32); // CNPJ
 
 ```js
 const CNAB240_HEADER = {
-  bankCode:     { pos: 0,  len: 3  },
-  serviceBatch: { pos: 3,  len: 4  },
-  recordType:   { pos: 7,  len: 1  },
+  bankCode: { pos: 0, len: 3 },
+  serviceBatch: { pos: 3, len: 4 },
+  recordType: { pos: 7, len: 1 },
   companyRegistrationNumber: { pos: 18, len: 14 }, // CNPJ
 };
 
@@ -250,7 +390,10 @@ function extractField(line, { pos, len }) {
 
 ```js
 const bankCode = extractField(line, CNAB240_HEADER.bankCode);
-const companyRegistrationNumber = extractField(line, CNAB240_HEADER.companyRegistrationNumber); // CNPJ
+const companyRegistrationNumber = extractField(
+  line,
+  CNAB240_HEADER.companyRegistrationNumber,
+); // CNPJ
 ```
 
 </details>
@@ -259,16 +402,25 @@ const companyRegistrationNumber = extractField(line, CNAB240_HEADER.companyRegis
 
 **Boas práticas para arquivos texto:**
 
-- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO** (International Organization for Standardization, Organização Internacional de Normalização)-8859-1 (Latin-1) — em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
-- Verificar total de linhas e somatório de valores contra os registros de trailer antes de importar
-- Nunca processar arquivo parcialmente — ler tudo, validar estrutura, só então persistir
-- Guardar o arquivo original para reprocessamento; falhas de layout são comuns em integrações bancárias e fiscais
+- Validar encoding antes de processar; arquivos legados brasileiros
+  frequentemente usam **ISO** (International Organization for Standardization,
+  Organização Internacional de Normalização)-8859-1 (Latin-1) — em Node.js, usar
+  `{ encoding: 'latin1' }` no `fs.readFile`
+- Verificar total de linhas e somatório de valores contra os registros de
+  trailer antes de importar
+- Nunca processar arquivo parcialmente — ler tudo, validar estrutura, só então
+  persistir
+- Guardar o arquivo original para reprocessamento; falhas de layout são comuns
+  em integrações bancárias e fiscais
 
 ---
 
 ### Impressoras Térmicas — ZPL
 
-Impressoras Zebra usam **ZPL** como protocolo nativo. Cada etiqueta é um programa ZPL enviado como texto puro via porta serial, TCP/IP (porta 9100) ou USB. Para envio TCP, basta abrir um socket para `ip:9100` e escrever a string — nenhum driver especial necessário.
+Impressoras Zebra usam **ZPL** como protocolo nativo. Cada etiqueta é um
+programa ZPL enviado como texto puro via porta serial, TCP/IP (porta 9100) ou
+USB. Para envio TCP, basta abrir um socket para `ip:9100` e escrever a string —
+nenhum driver especial necessário.
 
 Estrutura mínima de uma etiqueta ZPL:
 
@@ -285,9 +437,16 @@ Estrutura mínima de uma etiqueta ZPL:
 <br>
 
 ```js
-const zpl = '^XA^FO50,50^A0N,30,30^FD' + product.name + '^FS'
-          + '^FO50,100^BCN,80,Y,N,N^FD' + product.barcode + '^FS'
-          + '^FO50,200^A0N,20,20^FDLote: ' + product.lot + '^FS^XZ';
+const zpl =
+  "^XA^FO50,50^A0N,30,30^FD" +
+  product.name +
+  "^FS" +
+  "^FO50,100^BCN,80,Y,N,N^FD" +
+  product.barcode +
+  "^FS" +
+  "^FO50,200^A0N,20,20^FDLote: " +
+  product.lot +
+  "^FS^XZ";
 
 port.write(zpl);
 ```
@@ -303,12 +462,12 @@ port.write(zpl);
 ```js
 function buildProductLabel({ name: productName, barcode, lot: lotNumber }) {
   const label = [
-    '^XA',
+    "^XA",
     `^FO50,50^A0N,30,30^FD${productName}^FS`,
     `^FO50,100^BCN,80,Y,N,N^FD${barcode}^FS`,
     `^FO50,200^A0N,20,20^FDLote: ${lotNumber}^FS`,
-    '^XZ',
-  ].join('\n');
+    "^XZ",
+  ].join("\n");
 
   return label;
 }
@@ -325,34 +484,37 @@ port.write(label);
 
 **Principais comandos ZPL:**
 
-| Comando | Função |
-|---|---|
-| `^XA` / `^XZ` | Início e fim do label |
-| `^FO x,y` | Posição de origem do próximo campo |
-| `^A0N,h,w` | Fonte escalável — altura e largura em pontos |
-| `^FD…^FS` | Conteúdo do campo (Field Data / Field Separator) |
-| `^BCN,h,Y,N,N` | Código de barras Code 128 |
-| `^BQN,2,10` | QR Code |
-| `^PQ n` | Quantidade de cópias |
+| Comando        | Função                                           |
+| -------------- | ------------------------------------------------ |
+| `^XA` / `^XZ`  | Início e fim do label                            |
+| `^FO x,y`      | Posição de origem do próximo campo               |
+| `^A0N,h,w`     | Fonte escalável — altura e largura em pontos     |
+| `^FD…^FS`      | Conteúdo do campo (Field Data / Field Separator) |
+| `^BCN,h,Y,N,N` | Código de barras Code 128                        |
+| `^BQN,2,10`    | QR Code                                          |
+| `^PQ n`        | Quantidade de cópias                             |
 
 ---
 
 ### Porta Serial — RS-232
 
-Balanças, catracas, leitores de código de barras antigos e equipamentos industriais frequentemente se comunicam via porta serial **RS-232**. Em Node.js, o pacote `serialport` expõe a leitura via stream de eventos — sem timeout configurado, o processo aguarda indefinidamente se o equipamento não responder.
+Balanças, catracas, leitores de código de barras antigos e equipamentos
+industriais frequentemente se comunicam via porta serial **RS-232**. Em Node.js,
+o pacote `serialport` expõe a leitura via stream de eventos — sem timeout
+configurado, o processo aguarda indefinidamente se o equipamento não responder.
 
 <details>
 <summary>❌ Bad: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
 <br>
 
 ```js
-import { SerialPort } from 'serialport';
-import { ReadlineParser } from '@serialport/parser-readline';
+import { SerialPort } from "serialport";
+import { ReadlineParser } from "@serialport/parser-readline";
 
-const port = new SerialPort({ path: 'COM3', baudRate: 9600 });
-const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+const port = new SerialPort({ path: "COM3", baudRate: 9600 });
+const parser = port.pipe(new ReadlineParser({ delimiter: "\r\n" }));
 
-parser.on('data', (rawLine) => {
+parser.on("data", (rawLine) => {
   const weight = parseWeight(rawLine);
 });
 ```
@@ -366,20 +528,20 @@ parser.on('data', (rawLine) => {
 <br>
 
 ```js
-import { SerialPort } from 'serialport';
-import { ReadlineParser } from '@serialport/parser-readline';
+import { SerialPort } from "serialport";
+import { ReadlineParser } from "@serialport/parser-readline";
 
-function readWeight(path = 'COM3') {
+function readWeight(path = "COM3") {
   const weightReading = new Promise((resolve, reject) => {
     const port = new SerialPort({ path, baudRate: 9600 });
-    const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
+    const parser = port.pipe(new ReadlineParser({ delimiter: "\r\n" }));
 
     const responseTimeout = setTimeout(() => {
       port.close();
-      reject(new Error('Balança não respondeu no tempo esperado.'));
+      reject(new Error("Balança não respondeu no tempo esperado."));
     }, 2000);
 
-    parser.once('data', (rawLine) => {
+    parser.once("data", (rawLine) => {
       clearTimeout(responseTimeout);
       port.close();
 
@@ -387,7 +549,7 @@ function readWeight(path = 'COM3') {
       resolve(weight);
     });
 
-    port.on('error', (serialError) => {
+    port.on("error", (serialError) => {
       clearTimeout(responseTimeout);
       reject(serialError);
     });
@@ -403,32 +565,46 @@ function readWeight(path = 'COM3') {
 
 **Parâmetros comuns de configuração serial:**
 
-| Parâmetro | Valor mais comum | Detalhe |
-|---|---|---|
-| Baud rate (taxa de transmissão) | 9600 | Verificar manual do equipamento; balanças Toledo usam 9600 |
-| Data bits | 8 | Número de bits por caractere no frame serial; 7 era comum em sistemas ASCII antigos |
-| Stop bits | 1 | Marca o fim do frame; 2 stop bits eram usados em equipamentos lentos que precisavam de mais tempo para processar |
-| Parity (paridade) | None | Bit de detecção de erro por frame; `Even` (par) / `Odd` (ímpar) somam os bits para checar integridade, mas a maioria dos equipamentos modernos usa `None` e delega a verificação ao protocolo |
-| Handshake | None ou RTS/CTS | Impressoras antigas frequentemente requerem RTS/CTS |
+| Parâmetro                       | Valor mais comum | Detalhe                                                                                                                                                                                       |
+| ------------------------------- | ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baud rate (taxa de transmissão) | 9600             | Verificar manual do equipamento; balanças Toledo usam 9600                                                                                                                                    |
+| Data bits                       | 8                | Número de bits por caractere no frame serial; 7 era comum em sistemas ASCII antigos                                                                                                           |
+| Stop bits                       | 1                | Marca o fim do frame; 2 stop bits eram usados em equipamentos lentos que precisavam de mais tempo para processar                                                                              |
+| Parity (paridade)               | None             | Bit de detecção de erro por frame; `Even` (par) / `Odd` (ímpar) somam os bits para checar integridade, mas a maioria dos equipamentos modernos usa `None` e delega a verificação ao protocolo |
+| Handshake                       | None ou RTS/CTS  | Impressoras antigas frequentemente requerem RTS/CTS                                                                                                                                           |
 
-**RTS** (Ready to Send, Pronto para Enviar) e **CTS** (Clear to Send, Livre para Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a linha RTS para indicar que quer transmitir; o receptor responde com CTS para indicar que está pronto para receber. Sem esse handshake, equipamentos lentos podem perder bytes durante a transmissão.
+**RTS** (Ready to Send, Pronto para Enviar) e **CTS** (Clear to Send, Livre para
+Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a
+linha RTS para indicar que quer transmitir; o receptor responde com CTS para
+indicar que está pronto para receber. Sem esse handshake, equipamentos lentos
+podem perder bytes durante a transmissão.
 
 **Boas práticas:**
 
-- Fechar a porta (`port.close()`) em todos os caminhos de saída — resolve, reject e erro; porta não fechada bloqueia reconexão
-- Tratar leitura parcial: alguns equipamentos enviam a leitura em múltiplos pacotes; acumular em buffer até encontrar o delimitador esperado (normalmente `\r\n`)
-- Nunca abrir a mesma porta em duas instâncias ao mesmo tempo; resulta em erro `Access denied` ou `Port is already open`
-- Registrar cleanup no encerramento do processo: `process.on('exit', () => port.close())`
+- Fechar a porta (`port.close()`) em todos os caminhos de saída — resolve,
+  reject e erro; porta não fechada bloqueia reconexão
+- Tratar leitura parcial: alguns equipamentos enviam a leitura em múltiplos
+  pacotes; acumular em buffer até encontrar o delimitador esperado (normalmente
+  `\r\n`)
+- Nunca abrir a mesma porta em duas instâncias ao mesmo tempo; resulta em erro
+  `Access denied` ou `Port is already open`
+- Registrar cleanup no encerramento do processo:
+  `process.on('exit', () => port.close())`
 
 ---
 
 ## APIs de Modelos de IA (LLM APIs)
 
-APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias: cobrança por token, respostas incrementais via streaming e rate limits por minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User Experience, Experiência do Usuário) ruim e falhas em produção.
+APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias:
+cobrança por token, respostas incrementais via streaming e rate limits por
+minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User
+Experience, Experiência do Usuário) ruim e falhas em produção.
 
 ### Autenticação
 
-A **API** (Application Programming Interface, Interface de Programação de Aplicações) key nunca entra no código. Ela é resolvida via variável de ambiente na inicialização da aplicação.
+A **API** (Application Programming Interface, Interface de Programação de
+Aplicações) key nunca entra no código. Ela é resolvida via variável de ambiente
+na inicialização da aplicação.
 
 ```bad
 const client = new Anthropic({ apiKey: "sk-ant-..." });
@@ -442,7 +618,9 @@ Ver [security.md](security.md) para gestão de segredos.
 
 ### Streaming
 
-LLMs geram tokens incrementalmente. Sem streaming, o cliente espera o response completo antes de renderizar — latência percebida alta para respostas longas. Com streaming, o primeiro token chega em milissegundos.
+LLMs geram tokens incrementalmente. Sem streaming, o cliente espera o response
+completo antes de renderizar — latência percebida alta para respostas longas.
+Com streaming, o primeiro token chega em milissegundos.
 
 ```bad
 const message = await client.messages.create({
@@ -470,7 +648,10 @@ for await (const chunk of stream) {
 
 ### Rate limits e retries
 
-APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) impõem rate limits por minuto (RPM) e por token (TPM). Erros `429 Too Many Requests` são esperados em produção e devem ser tratados com **exponential backoff** (recuo exponencial).
+APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala)
+impõem rate limits por minuto (RPM) e por token (TPM). Erros
+`429 Too Many Requests` são esperados em produção e devem ser tratados com
+**exponential backoff** (recuo exponencial).
 
 ```bad
 const response = await fetch(apiUrl, options);
@@ -499,23 +680,27 @@ async function callWithRetry(requestFn, maxAttempts = 3) {
 
 ### Boas práticas
 
-- **Abstrair o provider**: encapsular a chamada atrás de uma função de domínio. Trocar de provedor não deve tocar em lógica de negócio.
-- **Estimar tokens antes de enviar**: prompts muito grandes retornam erro `400`. Truncar contexto ou usar chunking antes da chamada.
-- **Logar input/output tokens**: custo é proporcional ao volume de tokens. Sem log, não há visibilidade de gasto por feature ou por usuário.
-- **Timeout explícito**: respostas de LLM podem demorar dezenas de segundos. Definir timeout protege contra hanging requests.
+- **Abstrair o provider**: encapsular a chamada atrás de uma função de domínio.
+  Trocar de provedor não deve tocar em lógica de negócio.
+- **Estimar tokens antes de enviar**: prompts muito grandes retornam erro `400`.
+  Truncar contexto ou usar chunking antes da chamada.
+- **Logar input/output tokens**: custo é proporcional ao volume de tokens. Sem
+  log, não há visibilidade de gasto por feature ou por usuário.
+- **Timeout explícito**: respostas de LLM podem demorar dezenas de segundos.
+  Definir timeout protege contra hanging requests.
 
 ---
 
 ## Referência rápida
 
-| Formato / Protocolo | Contexto comum | Cuidado principal |
-|---|---|---|
-| **GraphQL** | APIs com múltiplos clientes heterogêneos | N+1 interno real; REST mais simples para APIs privadas |
-| **TOML** | Config de ferramentas, `Cargo.toml`, `pyproject.toml` | Mais seguro que YAML para config tipada; sem armadilha de indentação |
-| **YAML** | CI/CD, Kubernetes, Docker Compose | Tab vs espaço; `yes`/`no` viram boolean sem aspas |
-| **SOAP / XML** | NF-e, CT-e, NFS-e, sistemas legados | `getElementsByTagNameNS` obrigatório; guardar XML bruto para auditoria |
-| **CSV / pipe-delimited** | SPED fiscal e contábil, exportações de ERP | Parser dedicado com campos nomeados; validar encoding (`latin1` vs UTF-8) |
-| **Fixed-width** | CNAB 240/400, SINTEGRA | Layout como objeto com `pos` e `len`; nunca `slice` com números soltos |
-| **ZPL** | Impressoras Zebra (etiquetas, romaneios) | Template isolado; enviar via TCP porta 9100 ou porta serial |
-| **RS-232** | Balanças, leitores, equipamentos industriais | Timeout obrigatório; fechar porta em todos os caminhos |
-| **LLM API** | Geração de texto, código e decisões com modelos de IA | API key via env var; streaming para UX; retry com backoff em 429 |
+| Formato / Protocolo      | Contexto comum                                        | Cuidado principal                                                         |
+| ------------------------ | ----------------------------------------------------- | ------------------------------------------------------------------------- |
+| **GraphQL**              | APIs com múltiplos clientes heterogêneos              | N+1 interno real; REST mais simples para APIs privadas                    |
+| **TOML**                 | Config de ferramentas, `Cargo.toml`, `pyproject.toml` | Mais seguro que YAML para config tipada; sem armadilha de indentação      |
+| **YAML**                 | CI/CD, Kubernetes, Docker Compose                     | Tab vs espaço; `yes`/`no` viram boolean sem aspas                         |
+| **SOAP / XML**           | NF-e, CT-e, NFS-e, sistemas legados                   | `getElementsByTagNameNS` obrigatório; guardar XML bruto para auditoria    |
+| **CSV / pipe-delimited** | SPED fiscal e contábil, exportações de ERP            | Parser dedicado com campos nomeados; validar encoding (`latin1` vs UTF-8) |
+| **Fixed-width**          | CNAB 240/400, SINTEGRA                                | Layout como objeto com `pos` e `len`; nunca `slice` com números soltos    |
+| **ZPL**                  | Impressoras Zebra (etiquetas, romaneios)              | Template isolado; enviar via TCP porta 9100 ou porta serial               |
+| **RS-232**               | Balanças, leitores, equipamentos industriais          | Timeout obrigatório; fechar porta em todos os caminhos                    |
+| **LLM API**              | Geração de texto, código e decisões com modelos de IA | API key via env var; streaming para UX; retry com backoff em 429          |

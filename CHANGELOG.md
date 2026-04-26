@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `docs/shared/platform/integrations.md` — GraphQL: intro conceitual sobre grafos (nós, arestas), mini-grafo ASCII (Pedido → Cliente/Itens), schema Countries API como imagem, BAD/GOOD com query nomeada e variável de servidor
+
+### Fixed
+
+- `docs/javascript/conventions/control-flow.md` — 3 seções reordenadas de BAD BAD GOOD GOOD para BAD GOOD BAD GOOD: circuit break, for...of, while
+- `docs/csharp/conventions/control-flow.md` — 3 seções reordenadas de BAD BAD GOOD GOOD para BAD GOOD BAD GOOD: switch expression, circuit break, while
+- `docs/go/conventions/control-flow.md` — `idx` renomeado para `index` em exemplo Good (banned abbreviation)
+- `README.md` — badges reorganizados em tabela semântica (Área | Stack): Frontend, Backend, Mobile, Banco de dados, Bots & Integrações, Padrões; SQL separado em SQL Server 2025, PostgreSQL 18 e SQLite 3.53 com logos individuais
+
 ## [1.23.0] - 2026-04-26
 
 ### Added
