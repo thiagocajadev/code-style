@@ -87,28 +87,21 @@ if ($result === false) {}
 
 </details>
 
-## match — mapeamento de valores
+## Ternário
 
-`match` usa comparação estrita, não faz fallthrough automático e lança `UnhandledMatchError`
-para valores não cobertos. Substitui `switch` para mapeamento de valores.
+Para atribuição de dois valores possíveis. Três ou mais alternativas → `match`. Nunca aninhar
+ternários.
 
 <details>
-<summary>❌ Bad — switch para mapeamento de valores</summary>
+<summary>❌ Bad — if/else imperativo para atribuição simples</summary>
 <br>
 
 ```php
-switch ($status) {
-    case 'pending':
-        $label = 'Pendente';
-        break;
-    case 'processing':
-        $label = 'Processando';
-        break;
-    case 'shipped':
-        $label = 'Enviado';
-        break;
-    default:
-        $label = 'Desconhecido';
+$label = '';
+if ($order->isPaid) {
+    $label = 'Paid';
+} else {
+    $label = 'Pending';
 }
 ```
 
@@ -117,16 +110,36 @@ switch ($status) {
 <br>
 
 <details>
-<summary>✅ Good — match: conciso, estrito, sem fallthrough</summary>
+<summary>✅ Good — ternário na atribuição</summary>
 <br>
 
 ```php
-$label = match($order->status) {
-    OrderStatus::Pending    => 'Pendente',
-    OrderStatus::Processing => 'Processando',
-    OrderStatus::Shipped    => 'Enviado',
-    OrderStatus::Delivered  => 'Entregue',
-    OrderStatus::Canceled   => 'Cancelado',
+$label = $order->isPaid ? 'Paid' : 'Pending';
+```
+
+</details>
+
+<details>
+<summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
+<br>
+
+```php
+$priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — match para 3+ alternativas</summary>
+<br>
+
+```php
+$priority = match (true) {
+    $isUrgent && $isCritical => 'Critical',
+    $isUrgent                => 'High',
+    default                  => 'Normal',
 };
 ```
 
@@ -193,6 +206,51 @@ function processPayment(Order $order): void
 
 </details>
 
+## match — mapeamento de valores
+
+`match` usa comparação estrita, não faz fallthrough automático e lança `UnhandledMatchError`
+para valores não cobertos. Substitui `switch` para mapeamento de valores.
+
+<details>
+<summary>❌ Bad — switch para mapeamento de valores</summary>
+<br>
+
+```php
+switch ($status) {
+    case 'pending':
+        $label = 'Pendente';
+        break;
+    case 'processing':
+        $label = 'Processando';
+        break;
+    case 'shipped':
+        $label = 'Enviado';
+        break;
+    default:
+        $label = 'Desconhecido';
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — match: conciso, estrito, sem fallthrough</summary>
+<br>
+
+```php
+$label = match($order->status) {
+    OrderStatus::Pending    => 'Pendente',
+    OrderStatus::Processing => 'Processando',
+    OrderStatus::Shipped    => 'Enviado',
+    OrderStatus::Delivered  => 'Entregue',
+    OrderStatus::Canceled   => 'Cancelado',
+};
+```
+
+</details>
+
 ## Operador nullsafe (?->)
 
 Use `?->` para encadear acessos opcionais sem verificações de null intermediárias.
@@ -240,6 +298,71 @@ $page = (int) ($_GET['page'] ?? 1);
 $limit = (int) ($_GET['limit'] ?? 20);
 
 $customerName = $order->customer?->name ?? 'Guest';
+```
+
+</details>
+
+## Circuit break
+
+Antes de escrever um loop, verifique se `array_find` ou `array_any` (PHP 8.4) já resolve. Essas
+funções param no primeiro match — sem percorrer o resto. Para lógica de saída explícita, `foreach`
+com `return` antecipado é direto.
+
+<details>
+<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<br>
+
+```php
+function findFirstExpiredProduct(array $products): ?Product
+{
+    $expired = null;
+
+    foreach ($products as $product) {
+        if ($expired === null && $product->isExpired()) {
+            $expired = $product; // continua iterando mesmo após encontrar
+        }
+    }
+
+    return $expired;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — foreach com return antecipado sai no primeiro match</summary>
+<br>
+
+```php
+function findFirstExpiredProduct(array $products): ?Product
+{
+    foreach ($products as $product) {
+        if ($product->isExpired()) return $product;
+    }
+
+    return null;
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — array_find / array_any com circuit break nativo (PHP 8.4)</summary>
+<br>
+
+```php
+// para no primeiro match — retorna o elemento ou null
+$expiredProduct = array_find($products, fn(Product $p) => $p->isExpired());
+
+// para no primeiro true
+$hasExpired = array_any($products, fn(Product $p) => $p->isExpired());
+
+// para no primeiro false
+$allActive = array_all($products, fn(Product $p) => $p->isActive());
 ```
 
 </details>

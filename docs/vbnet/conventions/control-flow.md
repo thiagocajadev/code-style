@@ -41,6 +41,63 @@ End Function
 
 </details>
 
+## If ternário
+
+Para atribuição de dois valores possíveis em uma linha. Três ou mais alternativas → `Select Case`.
+`IIf` é uma função _legacy_ que avalia **ambos** os argumentos sempre — incluindo expressões que
+lançam exceções. O operador `If(condition, truePart, falsePart)` usa curto-circuito.
+
+<details>
+<summary>❌ Bad — IIf avalia os dois lados sempre</summary>
+<br>
+
+```vbnet
+Dim label = IIf(isActive, "Active", "Inactive")
+Dim count = IIf(items IsNot Nothing, items.Count, 0)  ' items.Count avaliado mesmo se Nothing
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — If ternário com curto-circuito</summary>
+<br>
+
+```vbnet
+Dim label = If(isActive, "Active", "Inactive")
+Dim count = If(items IsNot Nothing, items.Count, 0)
+```
+
+</details>
+
+<details>
+<summary>❌ Bad — If ternário aninhado para 3+ alternativas</summary>
+<br>
+
+```vbnet
+Dim priority = If(isUrgent, If(isCritical, "Critical", "High"), "Normal")
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — Select Case para 3+ alternativas</summary>
+<br>
+
+```vbnet
+Dim priority As String
+Select Case True
+    Case isUrgent AndAlso isCritical : priority = "Critical"
+    Case isUrgent                    : priority = "High"
+    Case Else                        : priority = "Normal"
+End Select
+```
+
+</details>
+
 ## Aninhamento em cascata
 
 Quando as condições crescem e se aninham, o fluxo vira uma pirâmide — o _arrow antipattern_. Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
@@ -86,6 +143,50 @@ Public Async Function CheckoutAsync(request As CartRequest) As Task(Of Invoice)
 
     Dim invoice = Await BuildInvoiceAsync(request, user)
     Return invoice
+End Function
+```
+
+</details>
+
+## Dictionary
+
+`Dictionary(Of TKey, TValue)` substitui chains de `If/ElseIf` para mapeamento de chave → valor
+quando os dados são dinâmicos ou o conjunto é extensível sem recompilar.
+
+<details>
+<summary>❌ Bad — If/ElseIf para mapeamento estático de chave → valor</summary>
+<br>
+
+```vbnet
+Public Function GetCurrencyCode(region As String) As String
+    If region = "BR" Then Return "BRL"
+    If region = "US" Then Return "USD"
+    If region = "EU" Then Return "EUR"
+
+    Return "USD"
+End Function
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — Dictionary para lookup dinâmico</summary>
+<br>
+
+```vbnet
+Private ReadOnly _currencyByRegion As New Dictionary(Of String, String) From {
+    {"BR", "BRL"},
+    {"US", "USD"},
+    {"EU", "EUR"}
+}
+
+Public Function GetCurrencyCode(region As String) As String
+    Dim code As String = Nothing
+    Dim found = _currencyByRegion.TryGetValue(region, code)
+
+    Return If(found, code, "USD")
 End Function
 ```
 
@@ -166,6 +267,64 @@ End Function
 
 </details>
 
+## Circuit break
+
+Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` (LINQ) já resolve. Esses
+métodos param no primeiro match — sem percorrer o resto.
+
+<details>
+<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<br>
+
+```vbnet
+Dim expiredOrder As Order = Nothing
+
+For Each order In orders
+    If expiredOrder Is Nothing AndAlso order.IsExpired Then
+        expiredOrder = order  ' continua iterando mesmo após encontrar
+    End If
+Next
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — For Each com Return antecipado sai no primeiro match</summary>
+<br>
+
+```vbnet
+Function FindFirstExpiredOrder(orders As IEnumerable(Of Order)) As Order
+    For Each order In orders
+        If order.IsExpired Then Return order
+    Next
+
+    Return Nothing
+End Function
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
+<br>
+
+```vbnet
+' para no primeiro match
+Dim expiredOrder = orders.FirstOrDefault(Function(o) o.IsExpired)
+
+' para no primeiro True
+Dim hasExpired = orders.Any(Function(o) o.IsExpired)
+
+' para no primeiro False
+Dim allActive = orders.All(Function(o) o.IsActive)
+```
+
+</details>
+
 ## For Each e For
 
 Use `For Each` quando não precisa do índice — comunica iteração pura sem ruído de contador. Reserve `For...Next` para quando o índice é parte da lógica.
@@ -220,6 +379,60 @@ Next
 For i = 0 To items.Count - 2 Step 2
     SwapItems(items, i, i + 1)
 Next
+```
+
+</details>
+
+## While
+
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `While`
+é a escolha natural. Use `Do...Loop Until` quando a primeira iteração deve sempre executar,
+independente da condição.
+
+<details>
+<summary>❌ Bad — For simulando condição de parada por estado</summary>
+<br>
+
+```vbnet
+For attempt = 0 To maxAttempts - 1
+    Dim conn = ConnectToDatabase()
+    If conn.IsReady Then Exit For  ' o índice não representa nada aqui
+Next
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — While para condição de parada por estado</summary>
+<br>
+
+```vbnet
+Dim attempt = 0
+
+While attempt < maxAttempts
+    Dim conn = ConnectToDatabase()
+    If conn.IsReady Then Exit While
+
+    attempt += 1
+End While
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — Do...Loop Until quando a primeira execução é garantida</summary>
+<br>
+
+```vbnet
+' drena a fila — processa pelo menos um item antes de verificar
+Do
+    Dim task = taskQueue.Dequeue()
+    ExecuteTask(task)
+Loop Until taskQueue.Count = 0
 ```
 
 </details>
@@ -311,30 +524,3 @@ End Sub
 
 </details>
 
-## IIf vs If ternário
-
-`IIf` é uma função legacy que avalia **ambos** os argumentos independente da condição — incluindo expressões com efeitos colaterais ou que lançam exceções. O operador ternário `If(condition, truePart, falsePart)` usa curto-circuito.
-
-<details>
-<summary>❌ Bad — IIf avalia os dois lados sempre</summary>
-<br>
-
-```vbnet
-Dim label = IIf(isActive, "Active", "Inactive")
-Dim value = IIf(items IsNot Nothing, items.Count, 0)  ' items.Count avaliado mesmo se Nothing
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — If ternário com curto-circuito</summary>
-<br>
-
-```vbnet
-Dim label = If(isActive, "Active", "Inactive")
-Dim count = If(items IsNot Nothing, items.Count, 0)  ' items.Count só se items IsNot Nothing
-```
-
-</details>

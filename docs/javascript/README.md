@@ -1,8 +1,12 @@
 # JavaScript
 
+[![JavaScript](https://img.shields.io/badge/JavaScript-ES2025-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
 JavaScript é a linguagem usada para ilustrar os fundamentos deste guia. A maioria dos princípios
 aqui (nomes expressivos, guard clauses, funções pequenas, fluxo linear) são transportáveis para
 qualquer linguagem.
+
+→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

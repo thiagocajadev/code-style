@@ -1,7 +1,11 @@
 # C#
 
+[![C#](https://img.shields.io/badge/C%23-14-512BD4?logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
+
 Convenções C#/.NET aplicando os mesmos princípios do guia. Os exemplos usam C# 14 e .NET 10 como
 referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
+
+→ [Quick Reference](quick-reference.md) — nomenclatura, modificadores, tipos, LINQ, controle de fluxo
 
 ## Setup
 

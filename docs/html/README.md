@@ -1,7 +1,11 @@
 # HTML
 
+[![HTML](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)
+
 Convenções HTML aplicando os mesmos princípios do guia: estrutura semântica, nomes que descrevem
 propósito e acessibilidade como padrão, não como adição.
+
+→ [Quick Reference](quick-reference.md) — elementos semânticos, atributos, checklist
 
 ## Setup
 

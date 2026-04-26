@@ -113,6 +113,25 @@ The Clean Coder, Robert C. Martin _(livro)_
 [HTMX Documentation](https://htmx.org/docs/)  
 [Reflex Documentation](https://reflex.dev/docs/getting-started/introduction/)
 
+## Go
+
+[Go Documentation](https://go.dev/doc/)
+[Effective Go](https://go.dev/doc/effective_go)
+[Go Code Review Comments](https://go.dev/wiki/CodeReviewComments)
+[Go Specification](https://go.dev/ref/spec)
+[golangci-lint](https://golangci-lint.run/)
+[staticcheck](https://staticcheck.dev/)
+[testify](https://github.com/stretchr/testify)
+
+## PHP
+
+[PHP Documentation](https://www.php.net/docs.php)
+[PHP-FIG — PSR Standards](https://www.php-fig.org/psr/)
+[PHP: The Right Way](https://phptherightway.com/)
+[PHP CS Fixer](https://cs.symfony.com/)
+[PHPStan](https://phpstan.org/)
+[PHPUnit Documentation](https://docs.phpunit.de/)
+
 ## SQL
 
 [SQL Style Guide, Simon Holywell](https://www.sqlstyle.guide/)  

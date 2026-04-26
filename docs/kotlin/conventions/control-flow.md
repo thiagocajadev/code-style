@@ -305,6 +305,46 @@ fun describeShape(shape: Shape): String {
 
 </details>
 
+## Circuit break
+
+Antes de escrever um loop, verifique se `firstOrNull`, `any` ou `all` já resolve. Essas funções
+param no primeiro match — sem percorrer o resto.
+
+<details>
+<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<br>
+
+```kotlin
+var expiredProduct: Product? = null
+
+for (product in products) {
+    if (expiredProduct == null && product.isExpired) {
+        expiredProduct = product // continua iterando mesmo após encontrar
+    }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — firstOrNull sai no primeiro match</summary>
+<br>
+
+```kotlin
+// para no primeiro match
+val expiredProduct = products.firstOrNull { it.isExpired }
+
+// para no primeiro true
+val hasExpired = products.any { it.isExpired }
+
+// para no primeiro false
+val allActive = products.all { it.isActive }
+```
+
+</details>
+
 ## Iteração
 
 <details>
@@ -337,6 +377,77 @@ for ((index, item) in items.withIndex()) {
 
 // transformação: preferir funções de coleção
 val names = items.map { it.name }
+```
+
+</details>
+
+## while
+
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `while`
+é a escolha natural.
+
+<details>
+<summary>❌ Bad — for com índice quando o critério é condição de estado</summary>
+<br>
+
+```kotlin
+for (attempt in 0 until maxAttempts) {
+    val connection = connectToDatabase()
+    if (connection.isReady) break  // o índice não representa nada aqui
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — while para condição de parada por estado</summary>
+<br>
+
+```kotlin
+var attempt = 0
+
+while (attempt < maxAttempts) {
+    val connection = connectToDatabase()
+    if (connection.isReady) break
+
+    attempt++
+}
+```
+
+</details>
+
+## do-while
+
+Use `do-while` quando a primeira iteração deve sempre executar, independente da condição.
+
+<details>
+<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
+
+```kotlin
+// verifica antes de executar — se a fila já estiver vazia, nunca executa
+while (taskQueue.isNotEmpty()) {
+    val task = taskQueue.dequeue()
+    executeTask(task)
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — do-while quando a primeira execução é garantida</summary>
+<br>
+
+```kotlin
+// drena a fila — processa pelo menos um item antes de verificar
+do {
+    val task = taskQueue.dequeue()
+    executeTask(task)
+} while (taskQueue.isNotEmpty())
 ```
 
 </details>

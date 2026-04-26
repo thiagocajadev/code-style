@@ -1,7 +1,11 @@
 # CSS
 
+[![CSS](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
+
 Convenções CSS aplicando os mesmos princípios deste guia: nomes semânticos, baixa especificidade,
 custom properties como tokens e mobile-first por padrão.
+
+→ [Quick Reference](quick-reference.md) — nomenclatura, ordem de propriedades, tokens
 
 ## Code Style
 

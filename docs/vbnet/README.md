@@ -1,6 +1,10 @@
 # VB.NET
 
+[![VB.NET](https://img.shields.io/badge/VB.NET-16-512BD4?logo=dotnet&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/visual-basic/)
+
 Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 16 e .NET Framework 4.8 — a última versão major do .NET Framework — como referência para trabalho com bases de código legadas.
+
+→ [Quick Reference](quick-reference.md) — nomenclatura, modificadores, tipos, controle de fluxo
 
 > [!IMPORTANT]
 > Antes de qualquer convenção, três switches de compilador precisam estar ativos em todo projeto:

@@ -6,6 +6,46 @@
 suporta pattern matching avançado. `if let` e `guard let` fazem unwrap de optionals sem `!`.
 Máximo dois níveis de indentação.
 
+## if e else
+
+O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:
+o compilador já descartou o branch anterior.
+
+<details>
+<summary>❌ Bad — else desnecessário após return</summary>
+<br>
+
+```swift
+func getDiscount(for customerType: CustomerType) -> Double {
+    if customerType == .vip {
+        return 0.20
+    } else if customerType == .premium {
+        return 0.10
+    } else {
+        return 0.0
+    }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — early return elimina o else</summary>
+<br>
+
+```swift
+func getDiscount(for customerType: CustomerType) -> Double {
+    if customerType == .vip { return 0.20 }
+    if customerType == .premium { return 0.10 }
+
+    return 0.0
+}
+```
+
+</details>
+
 ## Ternário — atribuição de 2 valores
 
 Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou mais alternativas
@@ -141,45 +181,6 @@ guard let name = user.name,
 
 </details>
 
-## `switch` exaustivo com enums
-
-<details>
-<summary>❌ Bad — if/else chain sem exaustividade</summary>
-<br>
-
-```swift
-func describeStatus(_ status: OrderStatus) -> String {
-    if status == .pending {
-        return "Waiting for payment"
-    } else if status == .processing {
-        return "Being prepared"
-    } else {
-        return "Unknown"   // novo case adicionado passa despercebido
-    }
-}
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — switch garante exaustividade em tempo de compilação</summary>
-<br>
-
-```swift
-func describeStatus(_ status: OrderStatus) -> String {
-    switch status {
-    case .pending: "Waiting for payment"
-    case .processing: "Being prepared"
-    case .shipped: "On the way"
-    case .delivered: "Delivered"
-    }
-}
-```
-
-</details>
-
 ## Dictionary como lookup
 
 `Dictionary` mapeia chave → valor sem if/else chain. Usar quando o mapeamento não é um enum
@@ -223,6 +224,45 @@ func httpMessage(for code: Int) -> String {
 
 </details>
 
+## `switch` exaustivo com enums
+
+<details>
+<summary>❌ Bad — if/else chain sem exaustividade</summary>
+<br>
+
+```swift
+func describeStatus(_ status: OrderStatus) -> String {
+    if status == .pending {
+        return "Waiting for payment"
+    } else if status == .processing {
+        return "Being prepared"
+    } else {
+        return "Unknown"   // novo case adicionado passa despercebido
+    }
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — switch garante exaustividade em tempo de compilação</summary>
+<br>
+
+```swift
+func describeStatus(_ status: OrderStatus) -> String {
+    switch status {
+    case .pending: "Waiting for payment"
+    case .processing: "Being prepared"
+    case .shipped: "On the way"
+    case .delivered: "Delivered"
+    }
+}
+```
+
+</details>
+
 ## Pattern matching com associated values
 
 <details>
@@ -259,6 +299,50 @@ func handleResult(_ result: OrderResult) -> String {
 
 </details>
 
+## Circuit break
+
+Antes de escrever um loop, verifique se `first(where:)`, `contains(where:)` ou `allSatisfy` já
+resolve. Essas funções param no primeiro match — sem percorrer o resto.
+
+<details>
+<summary>❌ Bad — iteração manual com flag percorre tudo mesmo após encontrar</summary>
+<br>
+
+```swift
+func findFirstExpiredProduct(_ products: [Product]) -> Product? {
+    var expired: Product?
+
+    products.forEach { product in
+        if expired == nil && product.isExpired {
+            expired = product // continua iterando mesmo após encontrar
+        }
+    }
+
+    return expired
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — first(where:) sai no primeiro match</summary>
+<br>
+
+```swift
+// para no primeiro match
+let expiredProduct = products.first(where: \.isExpired)
+
+// para no primeiro true
+let hasExpired = products.contains(where: \.isExpired)
+
+// para no primeiro false
+let allActive = products.allSatisfy(\.isActive)
+```
+
+</details>
+
 ## `for...where` como filtro inline
 
 <details>
@@ -284,6 +368,77 @@ for order in orders {
 for order in orders where order.status == .paid {
     processInvoice(for: order)
 }
+```
+
+</details>
+
+## while
+
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `while`
+é a escolha natural.
+
+<details>
+<summary>❌ Bad — for com índice quando o critério é condição de estado</summary>
+<br>
+
+```swift
+for attempt in 0..<maxAttempts {
+    let connection = connectToDatabase()
+    if connection.isReady { break }  // o índice não representa nada aqui
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — while para condição de parada por estado</summary>
+<br>
+
+```swift
+var attempt = 0
+
+while attempt < maxAttempts {
+    let connection = connectToDatabase()
+    if connection.isReady { break }
+
+    attempt += 1
+}
+```
+
+</details>
+
+## repeat-while
+
+Use `repeat-while` quando a primeira iteração deve sempre executar, independente da condição.
+
+<details>
+<summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
+
+```swift
+// verifica antes de executar — se a fila já estiver vazia, nunca executa
+while !taskQueue.isEmpty {
+    let task = taskQueue.dequeue()
+    executeTask(task)
+}
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — repeat-while quando a primeira execução é garantida</summary>
+<br>
+
+```swift
+// drena a fila — processa pelo menos um item antes de verificar
+repeat {
+    let task = taskQueue.dequeue()
+    executeTask(task)
+} while !taskQueue.isEmpty
 ```
 
 </details>

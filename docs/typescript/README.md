@@ -1,5 +1,7 @@
 # TypeScript
 
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/docs/)
+
 TypeScript é o superconjunto tipado de JavaScript. Os princípios de legibilidade deste guia:
 nomes expressivos, guard clauses, funções pequenas, fluxo linear. Aplicam-se aqui com a mesma
 força.
@@ -7,7 +9,7 @@ força.
 Este guia cobre o que é específico do TypeScript: quando anotar tipos, como nomear contratos,
 como modelar variações e como extrair o máximo do sistema de tipos sem adicionar ruído.
 
-> Guia baseado em **TypeScript 6.x**.
+→ [Quick Reference](quick-reference.md) — nomenclatura, type vs interface, utility types, narrowing
 
 ## Setup
 

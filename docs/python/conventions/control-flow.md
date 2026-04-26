@@ -38,6 +38,63 @@ def get_discount(user) -> float:
 
 </details>
 
+## Expressão condicional
+
+Para atribuição de dois valores possíveis em uma linha. Três ou mais alternativas → dicionário de
+lookup ou `match/case`. Nunca aninhar expressões condicionais.
+
+<details>
+<summary>❌ Bad — if/else imperativo para atribuição simples</summary>
+<br>
+
+```python
+if order.is_paid:
+    label = "Paid"
+else:
+    label = "Pending"
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — expressão condicional na atribuição</summary>
+<br>
+
+```python
+label = "Paid" if order.is_paid else "Pending"
+```
+
+</details>
+
+<details>
+<summary>❌ Bad — expressão condicional aninhada para 3+ alternativas</summary>
+<br>
+
+```python
+priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else "Normal"
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — dicionário de lookup para 3+ alternativas</summary>
+<br>
+
+```python
+PRIORITY_MAP = {
+    (True, True):  "Critical",
+    (True, False): "High",
+}
+
+priority = PRIORITY_MAP.get((is_urgent, is_critical), "Normal")
+```
+
+</details>
+
 ## Aninhamento em cascata
 
 Quando as condições crescem e se aninham, cada nível enterra a lógica um nível mais fundo. O fluxo
@@ -80,6 +137,53 @@ def process_order(order):
     invoice = process(order)
 
     return invoice
+```
+
+</details>
+
+## match/case — mapeamento de valor
+
+Quando múltiplos `if/elif` retornam um valor para cada chave, substitua por um dicionário de
+lookup ou um `match` com guard:
+
+<details>
+<summary>❌ Bad — if/elif repetitivo mapeando chave → valor</summary>
+<br>
+
+```python
+def get_status_label(status: str) -> str:
+    if status == "pending":
+        return "Pending review"
+    elif status == "approved":
+        return "Approved"
+    elif status == "rejected":
+        return "Rejected"
+    elif status == "cancelled":
+        return "Cancelled"
+    else:
+        return "Unknown"
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — lookup dict: legível e extensível</summary>
+<br>
+
+```python
+STATUS_LABELS: dict[str, str] = {
+    "pending": "Pending review",
+    "approved": "Approved",
+    "rejected": "Rejected",
+    "cancelled": "Cancelled",
+}
+
+def get_status_label(status: str) -> str:
+    label = STATUS_LABELS.get(status, "Unknown")
+
+    return label
 ```
 
 </details>
@@ -132,53 +236,6 @@ def process_payment_event(event):
 
 </details>
 
-## match/case — mapeamento de valor
-
-Quando múltiplos `if/elif` retornam um valor para cada chave, substitua por um dicionário de
-lookup ou um `match` com guard:
-
-<details>
-<summary>❌ Bad — if/elif repetitivo mapeando chave → valor</summary>
-<br>
-
-```python
-def get_status_label(status: str) -> str:
-    if status == "pending":
-        return "Pending review"
-    elif status == "approved":
-        return "Approved"
-    elif status == "rejected":
-        return "Rejected"
-    elif status == "cancelled":
-        return "Cancelled"
-    else:
-        return "Unknown"
-```
-
-</details>
-
-<br>
-
-<details>
-<summary>✅ Good — lookup dict: legível e extensível</summary>
-<br>
-
-```python
-STATUS_LABELS: dict[str, str] = {
-    "pending": "Pending review",
-    "approved": "Approved",
-    "rejected": "Rejected",
-    "cancelled": "Cancelled",
-}
-
-def get_status_label(status: str) -> str:
-    label = STATUS_LABELS.get(status, "Unknown")
-
-    return label
-```
-
-</details>
-
 ## match/case — pattern matching estrutural
 
 `match/case` vai além de valores literais: desestrutura objetos, sequências e dataclasses, reduzindo
@@ -214,11 +271,65 @@ def build_notification_message(event: dict) -> str:
 
         case {"type": "payment_received", "amount": amount, "currency": currency}:
             message = f"Payment received: {amount} {currency}"
-            
+
         case _:
             message = "Unknown event"
 
     return message
+```
+
+</details>
+
+## Saída antecipada em laços
+
+Antes de escrever um loop, verifique se `next()`, `any()` ou `all()` já resolve. Essas funções
+param no primeiro match — sem percorrer o resto.
+
+<details>
+<summary>❌ Bad — loop com flag força percorrer tudo</summary>
+<br>
+
+```python
+def find_first_expired_product(products: list):
+    expired_product = None
+
+    for product in products:
+        if not expired_product and product.is_expired:
+            expired_product = product
+
+    return expired_product
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — next() sai no primeiro match</summary>
+<br>
+
+```python
+def find_first_expired_product(products: list):
+    expired_product = next(
+        (product for product in products if product.is_expired),
+        None,
+    )
+
+    return expired_product
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — any() e all() com circuit break nativo</summary>
+<br>
+
+```python
+has_expired_product = any(product.is_expired for product in products)
+
+all_products_active = all(product.is_active for product in products)
 ```
 
 </details>
@@ -284,24 +395,21 @@ for order in pending_orders:
 
 </details>
 
-## Saída antecipada em laços
+## while
 
-Para buscas, use `next()` com default. Para verificações, use `any()` e `all()` — param no primeiro
-match, sem percorrer o resto.
+Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `while`
+é a escolha natural. Python não tem `do-while` — use `while True` com `break` quando a primeira
+execução é garantida.
 
 <details>
-<summary>❌ Bad — loop com flag força percorrer tudo</summary>
+<summary>❌ Bad — for simulando condição de parada por estado</summary>
 <br>
 
 ```python
-def find_first_expired_product(products: list):
-    expired_product = None
-
-    for product in products:
-        if not expired_product and product.is_expired:
-            expired_product = product
-
-    return expired_product
+for attempt in range(max_attempts):
+    connection = connect_to_database()
+    if connection.is_ready:
+        break  # o índice não representa nada aqui
 ```
 
 </details>
@@ -309,17 +417,18 @@ def find_first_expired_product(products: list):
 <br>
 
 <details>
-<summary>✅ Good — next() sai no primeiro match</summary>
+<summary>✅ Good — while para condição de parada por estado</summary>
 <br>
 
 ```python
-def find_first_expired_product(products: list):
-    expired_product = next(
-        (product for product in products if product.is_expired),
-        None,
-    )
+attempt = 0
 
-    return expired_product
+while attempt < max_attempts:
+    connection = connect_to_database()
+    if connection.is_ready:
+        break
+
+    attempt += 1
 ```
 
 </details>
@@ -327,13 +436,17 @@ def find_first_expired_product(products: list):
 <br>
 
 <details>
-<summary>✅ Good — any() e all() com circuit break nativo</summary>
+<summary>✅ Good — while True com break quando a primeira execução é garantida</summary>
 <br>
 
 ```python
-has_expired_product = any(product.is_expired for product in products)
+# drena a fila: processa pelo menos um item antes de verificar
+while True:
+    task = task_queue.dequeue()
+    process_task(task)
 
-all_products_active = all(product.is_active for product in products)
+    if task_queue.is_empty():
+        break
 ```
 
 </details>
