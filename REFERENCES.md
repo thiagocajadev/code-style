@@ -118,6 +118,39 @@ The Clean Coder, Robert C. Martin _(livro)_
 [SQL Style Guide, Simon Holywell](https://www.sqlstyle.guide/)  
 [SQL Quick Reference, BrainStation](https://brainstation.io/learn/sql/reference)
 
+## Kotlin
+
+[Kotlin Documentation](https://kotlinlang.org/docs/home.html)
+[Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
+[Kotlin Coroutines Guide](https://kotlinlang.org/docs/coroutines-guide.html)
+[Kotlin — java.time no Android/JVM](https://kotlinlang.org/docs/datetime.html)
+[ktlint](https://pinterest.github.io/ktlint/)
+[detekt](https://detekt.dev/)
+[Kotest Framework](https://kotest.io/docs/framework/framework.html)
+[MockK](https://mockk.io/)
+[Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html)
+
+## Swift
+
+[Swift Documentation](https://www.swift.org/documentation/)
+[Swift API Design Guidelines](https://www.swift.org/documentation/api-design-guidelines/)
+[The Swift Programming Language](https://docs.swift.org/swift-book/)
+[Swift Package Manager](https://www.swift.org/documentation/package-manager/)
+[SwiftLint](https://github.com/realm/SwiftLint)
+[XCTest — Apple Developer](https://developer.apple.com/documentation/xctest)
+[Swift Testing — Apple Developer](https://developer.apple.com/documentation/testing)
+
+## Dart e Flutter
+
+[Dart Documentation](https://dart.dev/guides)
+[Effective Dart — Style](https://dart.dev/effective-dart/style)
+[Dart — pub.dev](https://pub.dev/)
+[Flutter Documentation](https://docs.flutter.dev/)
+[Flutter Widget Catalog](https://docs.flutter.dev/ui/widgets)
+[Riverpod](https://riverpod.dev/docs/introduction/why_riverpod)
+[package:test](https://pub.dev/packages/test)
+[mocktail](https://pub.dev/packages/mocktail)
+
 ## Observabilidade
 
 [Pino — Fast Node.js Logger](https://getpino.io/)  

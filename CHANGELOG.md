@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-04-26
+
+### Added
+
+- `docs/kotlin/` skeleton completo — Kotlin 2.2 (K2 compiler): README, quick-reference, setup/tooling, conventions/{naming,variables,control-flow,methods,visual-density,types}, advanced/{async,coroutines,error-handling,null-safety,performance,testing,validation,dates,observability}
+- `docs/swift/` skeleton completo — Swift 6.1 (strict concurrency, actors, Sendable): README, quick-reference, setup/tooling, conventions/{naming,variables,control-flow,functions,visual-density,types}, advanced/{concurrency,error-handling,null-safety,performance,testing,validation,dates,observability}
+- `docs/dart/` skeleton completo — Dart 3.7 (null safety, records, patterns, streams): README, quick-reference, setup/tooling, conventions/{naming,variables,control-flow,functions,visual-density,types}, advanced/{async,streams,error-handling,null-safety,performance,testing,validation,dates,observability}
+- `docs/dart/frameworks/flutter/` — Flutter 3.29 (framework dentro de Dart): README, quick-reference, conventions/widgets, advanced/{state-management,navigation,platform-channels,testing}; cross-links `shared/mobile/`
+- `README.md` — badges Kotlin 2.2, Swift 6.1, Dart 3.7, Flutter 3.29; tabela de linguagens atualizada
+- `REFERENCES.md` — seções Kotlin, Swift, Dart e Flutter (28 links: docs oficiais, coding conventions, linters, frameworks de teste, pub.dev)
+- `docs/kotlin/conventions/control-flow.md` — `## if-expression` (ternário Kotlin via if/else expressão, limite 2 alternativas, escalada para `when`)
+- `docs/swift/conventions/control-flow.md` — `## Ternário` (? : para 2 valores, ternário aninhado → switch) e `## Dictionary como lookup` (chaves dinâmicas + ?? fallback)
+- `docs/dart/conventions/control-flow.md` — `## Ternário` (? : para 2 valores, aninhado → switch expression) e `## Map como lookup` (const Map + ?? fallback)
+
+### Fixed
+
+- `docs/kotlin/conventions/methods.md` — helpers SLA com lógica no `return` convertidos para single-expression syntax (`=`) — dogfood explaining return
+- `docs/swift/conventions/functions.md` — `generateReport` GOOD: construtor `Report(...)` extraído para `let report` antes do return
+- `docs/swift/conventions/advanced/performance.md` — `findTopSpenders` GOOD: conversão `Array(topSpenderNames)` extraída para `let topSpenders` antes do return
+- `docs/swift/conventions/visual-density.md` — chains GOOD: `Array(recentPaidSummaries)` extraído para `let recentPaid` antes do return
+- `docs/dart/conventions/visual-density.md` — chains GOOD: `.take(5).toList()` extraído para `final recentPaid` antes do return
+- `docs/dart/conventions/advanced/validation.md` — `validateProfile` GOOD: list comprehension `[if (...) ...]` extraída para `final profileErrors` antes do return
+- `docs/dart/frameworks/flutter/README.md` — 5 links `../../../../shared/mobile/` corrigidos para `../../../shared/mobile/`
+- `docs/kotlin/conventions/control-flow.md`, `docs/swift/conventions/control-flow.md`, `docs/dart/conventions/control-flow.md` — seções reordenadas de simples para complexo (ternário/guards → switch/lookup → pattern matching → loops)
+- `.ai/tooling/scripts/audit-docs.mjs` — lint auto-fix (trailing comma + semantic-spacing)
+
 ## [1.22.1] - 2026-04-25
 
 ### Fixed

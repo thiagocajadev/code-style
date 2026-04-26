@@ -18,6 +18,10 @@
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](docs/python/README.md)
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](docs/go/README.md)
 [![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](docs/php/README.md)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](docs/kotlin/README.md)
+[![Swift](https://img.shields.io/badge/Swift-6.1-F05138?logo=swift&logoColor=white)](docs/swift/README.md)
+[![Dart](https://img.shields.io/badge/Dart-3.7-0175C2?logo=dart&logoColor=white)](docs/dart/README.md)
+[![Flutter](https://img.shields.io/badge/Flutter-3.29-02569B?logo=flutter&logoColor=white)](docs/dart/frameworks/flutter/README.md)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136.0-009688?logo=fastapi&logoColor=white)](docs/python/frameworks/fastapi.md)
 [![HTMX](https://img.shields.io/badge/HTMX-2.0.10-3D72D7?logoColor=white)](docs/python/frameworks/htmx.md)
 [![Reflex](https://img.shields.io/badge/Reflex-0.8.28-6E56CF?logoColor=white)](docs/python/frameworks/reflex.md)
@@ -153,6 +157,10 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Python](docs/python/README.md)         | Convenções Python 3.14 — dataclasses, async, Pydantic, match/case   |
 | [Go](docs/go/README.md)                 | Convenções Go 1.26 — structs, interfaces, goroutines, error values   |
 | [PHP](docs/php/README.md)               | Convenções PHP 8.4 — readonly, enums, traits, Fibers, PSR-12        |
+| [Kotlin](docs/kotlin/README.md)         | Convenções Kotlin 2.2 — coroutines, sealed classes, K2 compiler     |
+| [Swift](docs/swift/README.md)           | Convenções Swift 6.1 — actors, async/await, Sendable, strict concurrency |
+| [Dart](docs/dart/README.md)             | Convenções Dart 3.7 — null safety, records, streams, sealed classes |
+| [Flutter](docs/dart/frameworks/flutter/README.md) | Framework Flutter 3.29 — widgets, GoRouter, Riverpod, platform channels |
 | [SQL](docs/sql/README.md)               | Formatação e nomenclatura para SQL Server, PostgreSQL e SQLite      |
 | [NoSQL](docs/nosql/README.md)           | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch                 |
 
