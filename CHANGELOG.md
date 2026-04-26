@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.24.0] - 2026-04-26
+
+### Added
+
+- `docs/rust/` — skeleton completo: README, quick-reference, setup×2, conventions×6 (naming, variables, control-flow, functions, visual-density, types), advanced×8 (error-handling, async, null-safety, testing, performance, observability, validation, dates)
+- `docs/rust/frameworks/blockchain.md` — Solana/Anchor 1.0: modelo de programa, accounts, instrução BAD/GOOD em Rust
+- `docs/shared/platform/iot.md` — padrões de domínio IoT com MicroPython 1.28: naming de sensores, debounce, FSM, alertas idempotentes, watchdog, polling vs IRQ
+- `docs/python/conventions/advanced/micropython.md` — diff da stdlib CPython, restrições de hardware, asyncio, boas práticas
+- `REFERENCES.md` — seções Rust 1.95, Blockchain/Solana, IoT/MicroPython (26 links, versões abril 2026)
+
+### Fixed
+
+- `docs/rust/conventions/control-flow.md` — reescrito na ordem canônica simples→complexo (if/else · if expressão · ? · if let/let-else · lookup · match · circuit break · for · while · loop)
+- `docs/rust/conventions/advanced/testing.md` — seção `assert` com `PartialEq + Debug`; AAA documentado
+- `docs/shared/platform/iot.md` — debounce: `antirrepique` → `filtragem de ruído`
+- `docs/shared/standards/control-flow.md` — Rust adicionado em Veja também
+- AAA — `Arrumar, Agir, Atestar` padronizado em 11 arquivos (anteriormente: Preparar/Executar/Verificar, Preparar/Agir/Verificar, sem tradução)
+
 ## [Unreleased]
 
 ### Added

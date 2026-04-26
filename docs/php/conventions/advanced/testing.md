@@ -4,7 +4,7 @@
 
 PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 **data providers** (provedores de dados) para múltiplos casos e **AAA**
-(Arrange, Act, Assert) com fases visualmente separadas. Mocks de interfaces via
+(Arrange, Act, Assert, Arrumar, Agir, Atestar) com fases visualmente separadas. Mocks de interfaces via
 `createMock()` isolam dependências externas.
 
 ## Conceitos fundamentais
@@ -12,7 +12,7 @@ PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 | Conceito | O que é |
 | -------- | ------- |
 | **data provider** (provedor de dados) | Método que retorna múltiplos conjuntos de argumentos para um teste; reduz duplicação |
-| **AAA** (Arrange, Act, Assert) | Padrão de estruturação de testes: preparar, executar, verificar — fases visualmente separadas |
+| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | Padrão de estruturação de testes: preparar, executar, verificar — fases visualmente separadas |
 | `createMock` | PHPUnit gera um mock (objeto simulado) de uma interface sem implementação real |
 | `createStub` | PHPUnit gera um stub (esboço) sem verificações de chamada |
 | `#[DataProvider]` | Atributo PHP 8.x que liga um método de teste ao seu data provider |

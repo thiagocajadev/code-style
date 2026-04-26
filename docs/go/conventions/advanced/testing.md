@@ -12,7 +12,7 @@ Go tem um framework de testes na stdlib. O padrão idiomático é **table-driven
 | -------- | ------- |
 | **table-driven test** (teste por tabela) | Slice de structs onde cada elemento é um caso de teste; reduz duplicação e facilita adição de cenários |
 | **subtest** (subteste) | `t.Run("nome", func(t *testing.T){})` — cria testes nomeados dentro de um teste |
-| **AAA** (Arrange, Act, Assert) | Padrão de estruturação: preparar, executar, verificar — fases visualmente separadas |
+| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | Padrão de estruturação: preparar, executar, verificar — fases visualmente separadas |
 | `testify` | Biblioteca `github.com/stretchr/testify` com `assert` e `require` para mensagens de erro claras |
 | `t.Helper()` | Marca a função auxiliar como helper; erros aparecem na linha do chamador, não na helper |
 

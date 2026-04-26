@@ -21,7 +21,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Funções que retornam valor não produzem efeitos colaterais; as que produzem efeitos retornam void |
 | **Caller** (quem chama a função) | Código que invoca uma função e é responsável por garantir o contrato de entrada |
 | **Guard clause** (cláusula de guarda) | Verificação antecipada no topo da função que elimina casos inválidos antes da lógica principal |
-| **AAA** (Arrange, Act, Assert — Preparar, Executar, Verificar) | Estrutura de três fases para testes: contexto, execução e verificação |
+| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | Estrutura de três fases para testes: contexto, execução e verificação |
 | **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
 
 ---
@@ -136,4 +136,4 @@ Operações de I/O (_leitura de banco, chamadas de rede, acesso a disco_) bloque
 
 ### Testes estruturados
 
-O padrão **AAA** (Arrange, Act, Assert: Preparar, Executar, Verificar) divide cada teste em **três fases explícitas**. A fase de preparação monta o contexto. A execução chama o comportamento. A verificação confirma o resultado com **variáveis nomeadas**, sem expressões inline no assert. Testes estruturados são legíveis como especificações do comportamento esperado.
+O padrão **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) divide cada teste em **três fases explícitas**. A fase de preparação monta o contexto. A execução chama o comportamento. A verificação confirma o resultado com **variáveis nomeadas**, sem expressões inline no assert. Testes estruturados são legíveis como especificações do comportamento esperado.

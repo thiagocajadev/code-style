@@ -48,4 +48,5 @@ Cada linguagem tem o guia específico com os construtores nativos e exemplos BAD
 [PHP](../../php/conventions/control-flow.md) ·
 [Kotlin](../../kotlin/conventions/control-flow.md) ·
 [Swift](../../swift/conventions/control-flow.md) ·
-[Dart](../../dart/conventions/control-flow.md)
+[Dart](../../dart/conventions/control-flow.md) ·
+[Rust](../../rust/conventions/control-flow.md)

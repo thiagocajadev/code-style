@@ -46,6 +46,14 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [HTMX](frameworks/htmx.md)         | Fragmentos, hx-target, hx-swap, Out-of-band, Loading          |
 | [Reflex](frameworks/reflex.md)     | State, Computed Var, Event Handlers, Components, Python 3.14  |
 
+## MicroPython / IoT
+
+| Tópico                                                       | Conceitos                                                              |
+| ------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| [MicroPython](conventions/advanced/micropython.md)           | Diferenças da stdlib, restrições de hardware, asyncio, watchdog        |
+
+→ Padrões de domínio IoT (debounce, FSM, alertas): [shared/platform/iot.md](../../shared/platform/iot.md)
+
 ## Princípios
 
 **Forma**: estrutura e narrativa da função

@@ -176,3 +176,38 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Serilog](https://serilog.net/)  
 [Sentry](https://docs.sentry.io/)  
 [New Relic](https://docs.newrelic.com/)
+
+## Rust
+
+[The Rust Programming Language (The Book)](https://doc.rust-lang.org/book/)  
+[The Rust Reference](https://doc.rust-lang.org/reference/)  
+[Standard Library Documentation](https://doc.rust-lang.org/std/)  
+[The Cargo Book](https://doc.rust-lang.org/cargo/)  
+[Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)  
+[Clippy Lints Reference](https://rust-lang.github.io/rust-clippy/master/)  
+[Tokio — Async Runtime](https://tokio.rs/)  
+[Axum — Web Framework](https://github.com/tokio-rs/axum)  
+[Actix-web](https://actix.rs/)  
+[Serde](https://serde.rs/)  
+[thiserror](https://docs.rs/thiserror)  
+[anyhow](https://docs.rs/anyhow)
+
+## Blockchain / Smart Contracts
+
+[Solana Documentation](https://solana.com/docs)  
+[Solana — Accounts](https://solana.com/docs/core/accounts)  
+[Solana — Instructions](https://solana.com/docs/core/instructions)  
+[Solana — Programs](https://solana.com/docs/core/programs)  
+[Anchor Framework Documentation](https://www.anchor-lang.com/docs)  
+[anchor-lang — docs.rs](https://docs.rs/anchor-lang/latest/anchor_lang/)  
+[Solana Playground (Beta)](https://beta.solpg.io/)
+
+## IoT / MicroPython
+
+[MicroPython Documentation](https://docs.micropython.org/)  
+[MicroPython Standard Library Reference](https://docs.micropython.org/en/latest/library/index.html)  
+[MicroPython Differences from CPython](https://docs.micropython.org/en/latest/genrst/index.html)  
+[machine — MicroPython](https://docs.micropython.org/en/latest/library/machine.html)  
+[machine.WDT — Watchdog Timer](https://docs.micropython.org/en/latest/library/machine.WDT.html)  
+[RP2 Quick Reference — Raspberry Pi Pico](https://docs.micropython.org/en/latest/rp2/quickref.html)  
+[ESP32 Quick Reference — MicroPython](https://docs.micropython.org/en/latest/esp32/quickref.html)
