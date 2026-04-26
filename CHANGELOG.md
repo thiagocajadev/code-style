@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.25.0] - 2026-04-26
+
+### Added
+
+- `docs/ruby/` — skeleton completo: README, quick-reference, setup×2, conventions×6 (naming, variables, control-flow, methods, visual-density, types), advanced×7 (error-handling, async, testing, performance, observability, validation, dates)
+- `docs/ruby/frameworks/rails.md` — Rails 8.0: MVC, controller thin, ActiveRecord, Strong Parameters, migrations, rotas RESTful, Solid Queue, auth generator, Concerns
+- `REFERENCES.md` — seção Ruby e Rails (17 links, versões abril 2026)
+- README raiz — badges Ruby 4.0 e Rails 8.0; Backend reordenado: linguagem colada ao(s) framework(s)
+
 ## [1.24.0] - 2026-04-26
 
 ### Added

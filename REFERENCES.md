@@ -202,6 +202,26 @@ The Clean Coder, Robert C. Martin _(livro)_
 [anchor-lang — docs.rs](https://docs.rs/anchor-lang/latest/anchor_lang/)  
 [Solana Playground (Beta)](https://beta.solpg.io/)
 
+## Ruby e Rails
+
+[Ruby Documentation](https://www.ruby-lang.org/en/documentation/)
+[Ruby 4.0 Release Notes](https://www.ruby-lang.org/en/news/2025/12/25/ruby-4-0-0-released/)
+[Ruby Style Guide, community](https://rubystyle.guide/)
+[RuboCop Documentation](https://docs.rubocop.org/)
+[Bundler Documentation](https://bundler.io/docs.html)
+[Rails Guides](https://guides.rubyonrails.org/)
+[Rails API Documentation](https://api.rubyonrails.org/)
+[Rails 8.0 Release Notes](https://guides.rubyonrails.org/8_0_release_notes.html)
+[ActiveRecord Associations](https://guides.rubyonrails.org/association_basics.html)
+[ActiveRecord Validations](https://guides.rubyonrails.org/active_record_validations.html)
+[Active Job Basics](https://guides.rubyonrails.org/active_job_basics.html)
+[Solid Queue — GitHub](https://github.com/rails/solid_queue)
+[RSpec Documentation](https://rspec.info/documentation/)
+[FactoryBot — GitHub](https://github.com/thoughtbot/factory_bot)
+[dry-validation](https://dry-rb.org/gems/dry-validation/)
+[semantic_logger — GitHub](https://github.com/reidmorrison/semantic_logger)
+[Kamal Deploy Documentation](https://kamal-deploy.org/)
+
 ## IoT / MicroPython
 
 [MicroPython Documentation](https://docs.micropython.org/)  
