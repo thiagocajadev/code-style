@@ -90,7 +90,9 @@ func parseScheduledAt(raw string) (time.Time, error) {
         return time.Time{}, fmt.Errorf("scheduled_at must be RFC 3339, got %q: %w", raw, err)
     }
 
-    return scheduledAt.UTC(), nil
+    utcTime := scheduledAt.UTC()
+
+    return utcTime, nil
 }
 ```
 

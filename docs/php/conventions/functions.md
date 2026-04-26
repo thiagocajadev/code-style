@@ -130,7 +130,6 @@ public function buildSummary(array $orders): array
     $ids   = array_column($orders, 'id');
 
     $summary = ['count' => $count, 'total' => $total, 'ids' => $ids];
-
     return $summary;
 }
 ```
@@ -222,6 +221,36 @@ function createOrder(CreateOrderInput $input): Order {}
 Use arrow functions para transformações curtas em `array_map`, `array_filter`, `usort`.
 
 <details>
+<summary>❌ Bad — closures tradicionais: verbosas e exigem `use` explícito</summary>
+<br>
+
+```php
+$multiplier = 1.1;
+
+$adjustedAmounts = array_map(
+    function (Order $order) use ($multiplier) {
+        return $order->amount * $multiplier;
+    },
+    $orders
+);
+
+$activeOrders = array_filter(
+    $orders,
+    function (Order $order) {
+        return $order->isActive();
+    }
+);
+
+usort($orders, function (Order $a, Order $b) {
+    return $a->createdAt <=> $b->createdAt;
+});
+```
+
+</details>
+
+<br>
+
+<details>
 <summary>✅ Good — arrow functions para pipelines de transformação</summary>
 <br>
 
@@ -234,7 +263,10 @@ $activeOrderIDs = array_map(
     )
 );
 
-usort($orders, fn(Order $a, Order $b): int => $a->createdAt <=> $b->createdAt);
+usort(
+    $orders,
+    fn(Order $a, Order $b): int => $a->createdAt <=> $b->createdAt
+);
 ```
 
 </details>
@@ -243,6 +275,42 @@ usort($orders, fn(Order $a, Order $b): int => $a->createdAt <=> $b->createdAt);
 
 O método público orquestrador aparece primeiro. Os métodos privados de suporte ficam
 abaixo, na ordem em que são chamados.
+
+<details>
+<summary>❌ Bad — helpers antes do orquestrador: leitura de baixo para cima</summary>
+<br>
+
+```php
+final class InvoiceService
+{
+    private function formatReport(Summary $summary, \DateTimeImmutable $month): Report
+    {
+        $report = new Report(month: $month->format('Y-m'), summary: $summary);
+        return $report;
+    }
+
+    private function buildSummary(array $invoices): Summary
+    {
+        $count = count($invoices);
+        $total = array_sum(array_column($invoices, 'amount'));
+        $summary = new Summary(count: $count, total: $total);
+        return $summary;
+    }
+
+    // orquestrador está no final — leitor vê detalhes antes da intenção
+    public function generateMonthlyReport(\DateTimeImmutable $month): Report
+    {
+        $invoices = $this->repository->findByMonth($month);
+        $summary  = $this->buildSummary($invoices);
+        $report   = $this->formatReport($summary, $month);
+        return $report;
+    }
+}
+```
+
+</details>
+
+<br>
 
 <details>
 <summary>✅ Good — leitura top-down natural</summary>

@@ -253,7 +253,9 @@ func processEvent(event interface{}) error {
         return fmt.Errorf("unexpected event type: %T", event)
     }
 
-    return processOrder(orderEvent)
+    err := processOrder(orderEvent)
+
+    return err
 }
 ```
 

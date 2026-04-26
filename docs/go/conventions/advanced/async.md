@@ -198,28 +198,34 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
         var err error
 
         order, err = orderRepo.FindByID(groupCtx, orderID)
+        if err != nil {
+            return fmt.Errorf("find order: %w", err)
+        }
 
-        return fmt.Errorf("find order: %w", err)
+        return nil
     })
 
     g.Go(func() error {
         var err error
 
         shipping, err = shippingRepo.FindByOrderID(groupCtx, orderID)
+        if err != nil {
+            return fmt.Errorf("find shipping: %w", err)
+        }
 
-        return fmt.Errorf("find shipping: %w", err)
+        return nil
     })
 
     if err := g.Wait(); err != nil {
         return nil, err
     }
 
-    customerResult, err := customerRepo.FindByID(ctx, order.CustomerID)
+    var err error
+
+    customer, err = customerRepo.FindByID(ctx, order.CustomerID)
     if err != nil {
         return nil, fmt.Errorf("find customer: %w", err)
     }
-
-    customer = customerResult
 
     details := &OrderDetails{Order: order, Customer: customer, Shipping: shipping}
 

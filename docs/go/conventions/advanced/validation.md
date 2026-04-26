@@ -95,7 +95,8 @@ func buildValidationResponse(err error) ValidationResponse {
     var validErrs validator.ValidationErrors
 
     if !errors.As(err, &validErrs) {
-        return ValidationResponse{Errors: []FieldError{{Field: "body", Message: err.Error()}}}
+        response := ValidationResponse{Errors: []FieldError{{Field: "body", Message: err.Error()}}}
+        return response
     }
 
     fieldErrors := make([]FieldError, 0, len(validErrs))

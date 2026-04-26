@@ -149,9 +149,11 @@ type OrderIndex struct {
 }
 
 func NewOrderIndex() *OrderIndex {
-    return &OrderIndex{
+    index := &OrderIndex{
         byCustomer: make(map[int64][]Order),
     }
+
+    return index
 }
 
 func (oi *OrderIndex) Add(order Order) {

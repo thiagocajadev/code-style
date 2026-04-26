@@ -136,7 +136,9 @@ type contextKey string
 const correlationIDKey contextKey = "correlation_id"
 
 func withCorrelationID(ctx context.Context, id string) context.Context {
-    return context.WithValue(ctx, correlationIDKey, id)
+    newCtx := context.WithValue(ctx, correlationIDKey, id)
+
+    return newCtx
 }
 
 func correlationIDFrom(ctx context.Context) string {
@@ -147,7 +149,7 @@ func correlationIDFrom(ctx context.Context) string {
 
 // middleware HTTP
 func correlationMiddleware(next http.Handler) http.Handler {
-    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+    handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         id := r.Header.Get("X-Correlation-ID")
         if id == "" {
             id = uuid.New().String()
@@ -158,6 +160,8 @@ func correlationMiddleware(next http.Handler) http.Handler {
 
         next.ServeHTTP(w, r.WithContext(ctx))
     })
+
+    return handler
 }
 
 // uso no service

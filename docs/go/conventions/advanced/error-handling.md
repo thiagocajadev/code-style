@@ -242,7 +242,9 @@ func NewOrderService(repo OrderRepository) *OrderService {
         panic("OrderService: repository must not be nil")  // invariante: dependência obrigatória
     }
 
-    return &OrderService{repository: repo}
+    service := &OrderService{repository: repo}
+
+    return service
 }
 
 func (s *OrderService) FindOrder(ctx context.Context, orderID int64) (*Order, error) {

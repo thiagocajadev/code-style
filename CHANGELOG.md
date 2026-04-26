@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.22.1] - 2026-04-25
+
+### Fixed
+
+- `docs/go/` — dogfood strict nos Good examples: construtores inline extraídos para variável nomeada (`NewOrderService`, `NewOrderIndex`, `newFakeOrderRepository`, `NewRepository`); chamadas de função no return extraídas (`processOrder`, `g.Wait`, `http.ListenAndServe`, `context.WithValue`, `http.HandlerFunc`, `scheduledAt.UTC`); bug real em goroutines errgroup corrigido (`fmt.Errorf("...: %w", nil)` sempre produzia erro não-nil); variável intermediária `customerResult` removida
+- `docs/php/conventions/functions.md` — BAD example para arrow functions (closures com `use` explícito vs `fn() =>`); BAD example para stepdown rule (helpers antes do orquestrador); VD tight em explaining return (`$summary` + `return` sem blank); quebra de linha em `usort` (> 80 chars)
+
 ## [1.22.0] - 2026-04-25
 
 ### Added

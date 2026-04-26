@@ -279,7 +279,9 @@ func processOrderQueue(ctx context.Context, orders <-chan Order) error {
         })
     }
 
-    return g.Wait()
+    err := g.Wait()
+
+    return err
 }
 ```
 

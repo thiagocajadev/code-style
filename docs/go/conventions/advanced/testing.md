@@ -146,7 +146,9 @@ type fakeOrderRepository struct {
 }
 
 func newFakeOrderRepository() *fakeOrderRepository {
-    return &fakeOrderRepository{orders: make(map[int64]*Order)}
+    repo := &fakeOrderRepository{orders: make(map[int64]*Order)}
+
+    return repo
 }
 
 func (r *fakeOrderRepository) FindByID(_ context.Context, id int64) (*Order, error) {
@@ -159,9 +161,11 @@ func (r *fakeOrderRepository) FindByID(_ context.Context, id int64) (*Order, err
 }
 
 func (r *fakeOrderRepository) Save(_ context.Context, order Order) (*Order, error) {
-    r.orders[order.ID] = &order
+    saved := &order
 
-    return &order, nil
+    r.orders[saved.ID] = saved
+
+    return saved, nil
 }
 
 // teste
