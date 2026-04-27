@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.26.0] - 2026-04-27
+
+### Added
+
+- `docs/java/` — skeleton completo: README, quick-reference, setup×2, conventions×6 (naming, variables, control-flow, methods, visual-density, types), advanced×8 (error-handling, async, null-safety, testing, performance, observability, validation, dates)
+- `docs/java/frameworks/spring.md` — Spring Boot 4.0: @RestController, DI, Spring Data JPA, @ControllerAdvice, paginação, Actuator
+- `docs/java/setup/security.md` — Spring Security 7: BCrypt, JWT, @PreAuthorize, CORS explícito
+- `REFERENCES.md` — seção Java e Spring (20 links, versões abril 2026)
+- README raiz — badges Java 25 LTS e Spring Boot 4.0; tabela Linguagens com Java
+
+### Fixed
+
+- `docs/java/conventions/control-flow.md` — early return guard clause dogfood (variável nomeada antes do return)
+- `docs/java/frameworks/spring.md` — `OrderResponse.from()` dogfood (resultado nomeado antes do return)
+- `docs/java/setup/security.md` — `passwordEncoder()` dogfood (variável nomeada antes do return)
+
 ## [1.25.0] - 2026-04-26
 
 ### Added

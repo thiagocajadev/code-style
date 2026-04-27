@@ -222,6 +222,29 @@ The Clean Coder, Robert C. Martin _(livro)_
 [semantic_logger — GitHub](https://github.com/reidmorrison/semantic_logger)
 [Kamal Deploy Documentation](https://kamal-deploy.org/)
 
+## Java e Spring
+
+[OpenJDK Documentation](https://openjdk.org/)  
+[Java 25 Release Notes](https://openjdk.org/projects/jdk/25/)  
+[Java SE 25 API Specification](https://docs.oracle.com/en/java/javase/25/docs/api/)  
+[The Java Tutorials — java.time](https://docs.oracle.com/javase/tutorial/datetime/)  
+[JEP Index — Project Loom (Virtual Threads)](https://openjdk.org/projects/loom/)  
+[JEP 425 — Virtual Threads](https://openjdk.org/jeps/425/)  
+[JEP 441 — Pattern Matching for switch](https://openjdk.org/jeps/441/)  
+[JEP 395 — Records](https://openjdk.org/jeps/395/)  
+[JEP 409 — Sealed Classes](https://openjdk.org/jeps/409/)  
+[Spring Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/)  
+[Spring Framework Documentation](https://docs.spring.io/spring-framework/reference/)  
+[Spring Security Reference](https://docs.spring.io/spring-security/reference/)  
+[Spring Data JPA Reference](https://docs.spring.io/spring-data/jpa/reference/)  
+[JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)  
+[AssertJ Documentation](https://assertj.github.io/doc/)  
+[Mockito Documentation](https://javadoc.io/doc/org.mockito/mockito-core/latest/)  
+[Gradle User Manual](https://docs.gradle.org/current/userguide/userguide.html)  
+[Jakarta Bean Validation 3.1](https://jakarta.ee/specifications/bean-validation/3.1/)  
+[Micrometer Documentation](https://micrometer.io/docs)  
+[Logback Documentation](https://logback.qos.ch/documentation.html)  
+
 ## IoT / MicroPython
 
 [MicroPython Documentation](https://docs.micropython.org/)  
