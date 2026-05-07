@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.0] - 2026-05-07
+
+### Added
+
+- `docs/shared/standards/color-theory.md` — guia conceitual transversal de teoria das cores (8 seções): Conceitos fundamentais (OKLCH, matiz, croma, luminosidade, gamut, APCA), Círculo cromático e OKLCH (perceptualmente uniforme; quentes/frias/temperatura), Harmonias (complementar, análoga, triádica, split-complementar, tetrádica, quadrada, neutros), Composição (60-30-10, hierarquia por contraste, contraste de luminosidade vs. temperatura, espaço em branco como cor), WCAG (1.4.3, AA/AAA, proporção de contraste, OKLCH ↔ WCAG, APCA, 1.4.6, 1.4.11), Hierarquia de superfícies (background/surface/card/popover/foreground, ΔL mínimo 0.05-0.08, sombras tonalizadas), Light/Dark themes (fundos não-pretos, off-white em dark, saturar destaques no escuro, bordas sutis), Escala tonal 50-950 (combos testados, regra de 4 paradas, parada 500, cuidados com amarelos/cianos)
+- `README.md` raiz — entrada "Color Theory" na tabela Standards
+- `REFERENCES.md` — nova seção "Cor e Acessibilidade Visual" (13 links: oklch.com, Evil Martians, MDN oklch, WCAG 1.4.3, WCAG 1.4.11, WebAIM Contrast Checker, APCA Calculator, Adobe Color, Smashing Magazine, Material Design 3, Refactoring UI, Tailwind v4 Colors, shadcn/ui Themes)
+
+### Changed
+
+- `docs/shared/standards/ui-ux.md` — seção "Temas Claro e Escuro" enxugada (24 → 17 linhas) com cross-link para `color-theory.md` como SSOT de OKLCH, harmonias, escala tonal e estratégias light/dark
+
 ## [1.27.0] - 2026-05-07
 
 ### Added

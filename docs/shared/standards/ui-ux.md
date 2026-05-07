@@ -63,14 +63,14 @@ Evitar mais de três níveis tipográficos na mesma tela: a hierarquia colapsa, 
 
 ## Temas Claro e Escuro
 
-Temas claro e escuro requerem paletas re-otimizadas para cada contexto. Superfícies, sombras, opacidade e contraste se comportam de forma diferente em cada fundo. Um sistema de cores que funciona bem nos dois temas usa variáveis semânticas em vez de valores fixos.
+Temas requerem paletas re-otimizadas para cada contexto, não apenas inversão de cores. Superfícies, sombras, opacidade e contraste se comportam de forma diferente em cada fundo.
+
+A regra prática é usar variáveis semânticas em vez de valores fixos:
 
 | Abordagem | Problema |
 |---|---|
 | `color: #1a1a1a` direto no componente | Não muda com o tema |
 | `color: var(--text-primary)` com valores por tema | Funciona nos dois modos |
-
-Variáveis semânticas descrevem o papel, não o valor:
 
 ```
 --text-primary        → texto de maior hierarquia
@@ -79,12 +79,9 @@ Variáveis semânticas descrevem o papel, não o valor:
 --surface-elevated    → fundo de cards e modais
 --border-subtle       → bordas de separação
 --interactive-default → cor de botões e links
---interactive-hover   → estado hover
 ```
 
-No tema claro, `--surface-base` é branco. No escuro, é um cinza muito escuro (preto puro cria contraste excessivo e cansa a leitura prolongada).
-
-**Contraste mínimo**: WCAG 2.1 AA (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web) exige razão de contraste de 4.5:1 para texto normal e 3:1 para texto grande. Verificar os dois temas separadamente, pois um componente acessível no claro pode falhar no escuro.
+Para o detalhamento de **OKLCH**, harmonias, escala tonal de 11 paradas, hierarquia de superfícies, **WCAG** 1.4.3 e estratégias específicas de light/dark, consulte [color-theory.md](color-theory.md).
 
 ## Acessibilidade
 

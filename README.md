@@ -193,6 +193,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Testing](docs/shared/standards/testing.md) | AAA, no logic no assert, testes unitários e de integração |
 | [Observability](docs/shared/standards/observability.md) | Logging estruturado, níveis, PII, correlation ID |
 | [UI/UX](docs/shared/standards/ui-ux.md) | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados |
+| [Color Theory](docs/shared/standards/color-theory.md) | OKLCH, círculo cromático, harmonias, composição 60-30-10, WCAG, hierarquia de superfícies, escala tonal 50-950 |
 | [EditorConfig](docs/shared/standards/editorconfig.md) | Configuração base de editor compatível com qualquer stack |
 
 <br>

@@ -71,6 +71,22 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Bootstrap Docs](https://getbootstrap.com/docs/)  
 [Can I Use](https://caniuse.com/)
 
+## Cor e Acessibilidade Visual
+
+[oklch.com — Picker Interativo](https://oklch.com)  
+[Evil Martians — OKLCH in CSS: why quit RGB & HSL](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl)  
+[MDN — CSS oklch()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch)  
+[WCAG 2.2 — Criterion 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)  
+[WCAG 2.2 — Criterion 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)  
+[WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)  
+[APCA Contrast Calculator](https://www.myndex.com/APCA/)  
+[Adobe Color — Roda de Cores](https://color.adobe.com/pt/create/color-wheel)  
+[Smashing Magazine — Color Theory for Designers](https://www.smashingmagazine.com/2010/01/color-theory-for-designers-part-1-the-meaning-of-color/)  
+[Material Design 3 — Color System](https://m3.material.io/styles/color/system/overview)  
+[Refactoring UI](https://www.refactoringui.com)  
+[Tailwind CSS v4 — Colors](https://tailwindcss.com/docs/colors)  
+[shadcn/ui — Themes](https://ui.shadcn.com/themes)
+
 ## Bots e Mensageria
 
 [discord.js Documentation](https://discord.js.org/docs/packages/discord.js/main)
