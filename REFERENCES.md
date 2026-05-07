@@ -92,6 +92,21 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Luxon](https://moment.github.io/luxon/)  
 [jQuery API Docs](https://api.jquery.com/)
 
+## Vue e Nuxt
+
+[Vue.js Documentation](https://vuejs.org/guide/introduction.html)  
+[Vue.js API Reference](https://vuejs.org/api/)  
+[Vue.js Releases](https://vuejs.org/about/releases)  
+[`<script setup>` Reference](https://vuejs.org/api/sfc-script-setup)  
+[Vue Composition API](https://vuejs.org/guide/typescript/composition-api)  
+[Pinia Documentation](https://pinia.vuejs.org/)  
+[Nuxt 4 Documentation](https://nuxt.com/docs/4.x/getting-started/introduction)  
+[Nuxt Server Directory](https://nuxt.com/docs/4.x/directory-structure/server)  
+[Nuxt useFetch Composable](https://nuxt.com/docs/api/composables/use-fetch)  
+[Nitro Caching Layer](https://nitro.build/guide/cache)  
+[Vite Documentation](https://vite.dev/guide/)  
+[VueUse — Collection of Composables](https://vueuse.org/)
+
 ## C# e .NET
 
 [Google C# Style Guide](https://google.github.io/styleguide/csharp-style.html)  

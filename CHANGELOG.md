@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.27.0] - 2026-05-07
+
+### Added
+
+- `docs/typescript/frameworks/vue.md` — guia Vue 3.5 LTS + Nuxt 4.4 + Pinia 3 (1071 linhas, 13 seções): Conceitos fundamentais, Fluxo de Operação (Vue puro SPA + Nuxt fullstack), Estrutura de pastas, SFC com `<script setup>`, Composition API + reactive props destructuring (Vue 3.5), Smart/Dumb Components + `defineModel`, Composables, Pinia 3 setup syntax, Route Middleware do Nuxt, Formulários com Zod + Server Route, Server Routes (`defineEventHandler`, `readValidatedBody`), Webhook Handler (HMAC, `timingSafeEqual`, idempotência), Caching (`defineCachedEventHandler`, `useFetch`)
+- `docs/typescript/README.md` — linha "Vue + Nuxt" na tabela `## Frameworks`
+- `README.md` raiz — badges Vue 3.5 LTS e Nuxt 4.4 na linha Frontend
+- `REFERENCES.md` — seção "Vue e Nuxt" (12 links: Vue.js docs, API, Releases, `<script setup>`, Composition API, Pinia, Nuxt 4, server directory, useFetch, Nitro caching, Vite, VueUse)
+
 ## [1.26.0] - 2026-04-27
 
 ### Added
