@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 Nomes em VB.NET seguem as convenções da plataforma .NET: `PascalCase` para tipos, métodos, propriedades e parâmetros públicos; `camelCase` para locais privadas. A regra sobre propósito do domínio vem antes da convenção visual: o identificador nomeia o papel, não o tipo técnico.
@@ -12,6 +8,7 @@ Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, p
 
 <details>
 <summary>❌ Bad — mistura de idiomas</summary>
+<br>
 
 ```vbnet
 Public Class ServicoDeClientes
@@ -24,10 +21,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inglês consistente</summary>
+<br>
 
 ```vbnet
 Public Class CustomerService
@@ -57,6 +55,7 @@ A linguagem não diferencia `purchase` de `Purchase` — a convenção é o úni
 
 <details>
 <summary>❌ Bad — convenção inconsistente</summary>
+<br>
 
 ```vbnet
 Public Class purchaseService
@@ -71,10 +70,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — escopo declarado pela convenção</summary>
+<br>
 
 ```vbnet
 Public Class PurchaseService
@@ -99,6 +99,7 @@ Todo método que retorna `Task` ou `Task(Of T)` termina em `Async`. O sufixo sin
 
 <details>
 <summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
+<br>
 
 ```vbnet
 Public Async Function FindPurchase(id As Guid) As Task(Of Purchase)
@@ -108,10 +109,11 @@ Public Async Function ValidatePayment(request As PaymentRequest) As Task(Of Bool
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sufixo declara a natureza assíncrona</summary>
+<br>
 
 ```vbnet
 Public Async Function FindPurchaseAsync(id As Guid) As Task(Of Purchase)
@@ -127,6 +129,7 @@ Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`
 
 <details>
 <summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
+<br>
 
 ```vbnet
 Public Class PurchaseRepository         ' é interface ou classe?
@@ -141,10 +144,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — interface clara, implementação pelo domínio</summary>
+<br>
 
 ```vbnet
 Public Interface IPurchaseRepository
@@ -174,6 +178,7 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
 
 ```vbnet
 Dim active = user.Status = "ACTIVE"
@@ -183,10 +188,11 @@ Dim delete = user.Role = "ADMIN"
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prefixo declara a semântica</summary>
+<br>
 
 ```vbnet
 Dim isActive = user.Status = "ACTIVE"
@@ -202,6 +208,7 @@ O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`,
 
 <details>
 <summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>
+<br>
 
 ```vbnet
 Public Async Function GetDataAsync(id As Guid) As Task(Of Object)
@@ -213,10 +220,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nomes expressivos pelo domínio</summary>
+<br>
 
 ```vbnet
 Public Async Function FindPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
@@ -234,6 +242,7 @@ Prefixos de tipo (`str`, `int`, `obj`, `tbl`, `btn`) eram comuns em VB clássico
 
 <details>
 <summary>❌ Bad — prefixo de tipo no nome</summary>
+<br>
 
 ```vbnet
 Dim strName As String = customer.Name
@@ -244,10 +253,11 @@ Dim btnSubmit As Button = FindControl("btnSubmit")
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nome pelo domínio, tipo pelo compilador</summary>
+<br>
 
 ```vbnet
 Dim name As String = customer.Name
@@ -264,6 +274,7 @@ Nomes expressivos eliminam a necessidade de comentários. Um comentário que ree
 
 <details>
 <summary>❌ Bad — comentários repetem o código</summary>
+<br>
 
 ```vbnet
 ' busca o usuário pelo id
@@ -277,10 +288,11 @@ End If
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — código se explica; comentário só para restrições não óbvias</summary>
+<br>
 
 ```vbnet
 Dim user = Await _repo.FindByIdAsync(userId)

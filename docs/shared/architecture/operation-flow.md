@@ -1,7 +1,3 @@
----
-title: "Operation Flow"
----
-
 # Operation Flow
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -66,7 +62,7 @@ O `apiClient` é o único ponto de I/O — tudo acima dele é puro. O `Service` 
 
 **Puro nas bordas, I/O no meio.** Passos sem efeitos colaterais ficam nas extremidades do pipeline (sequência de processamento). São os mais fáceis de testar e de raciocinar. Passos com I/O ficam agrupados no centro.
 
-**Result&lt;T&gt; como contrato.** Operações que podem falhar por regra de negócio retornam `Result<T>` — sucesso e falha são valores explícitos na assinatura. O caller (quem invoca a operação) trata os dois caminhos. Exceções de infraestrutura, como timeout (tempo limite) e falha de rede, seguem o caminho normal de exceções.
+**Result<T> como contrato.** Operações que podem falhar por regra de negócio retornam `Result<T>` — sucesso e falha são valores explícitos na assinatura. O caller (quem invoca a operação) trata os dois caminhos. Exceções de infraestrutura, como timeout (tempo limite) e falha de rede, seguem o caminho normal de exceções.
 
 **CQS.** Escrita (`Save`) retorna `void`. Leitura (`Read`) retorna dado. A mesma operação não faz os dois.
 

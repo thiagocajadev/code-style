@@ -1,7 +1,3 @@
----
-title: "Java"
----
-
 # Java
 
 [![Java](https://img.shields.io/badge/Java-25_LTS-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
@@ -67,7 +63,7 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 | [Orquestrador no topo](conventions/methods.md#god-method--múltiplas-responsabilidades)                  | Chamada visível antes dos detalhes (top-down)                        |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                                   | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -80,7 +76,7 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 | [Código como documentação](conventions/naming.md#código-como-documentação)                   | Nomes substituem comentários; comentários mentem                     |
 | [Sem valores mágicos](conventions/variables.md#evitar-valores-mágicos)                       | Constantes nomeadas no lugar de números e strings soltos             |
 
-<br />
+<br>
 
 **Controle de qualidade**: estado, erros, async e testes
 

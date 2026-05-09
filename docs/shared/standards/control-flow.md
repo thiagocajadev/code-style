@@ -1,7 +1,3 @@
----
-title: "Control Flow"
----
-
 # Control Flow
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

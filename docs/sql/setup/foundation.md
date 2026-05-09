@@ -1,7 +1,3 @@
----
-title: "Foundation"
----
-
 # Foundation
 
 > [!NOTE]

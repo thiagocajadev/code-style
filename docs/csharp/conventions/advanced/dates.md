@@ -1,7 +1,3 @@
----
-title: "Dates"
----
-
 # Dates
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
@@ -17,6 +13,7 @@ timezones diferentes, o mesmo código produz valores incomparáveis.
 
 <details>
 <summary>❌ Bad — hora local do servidor, Kind implícito</summary>
+<br>
 
 ```csharp
 var createdAt = DateTime.Now;
@@ -26,10 +23,11 @@ var createdAt = DateTime.Now;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — UTC explícito, comparável em qualquer ambiente</summary>
+<br>
 
 ```csharp
 var createdAt = DateTimeOffset.UtcNow;
@@ -46,6 +44,7 @@ sem precisar de contexto externo para interpretar o instante.
 
 <details>
 <summary>❌ Bad — DateTime sem Kind perde contexto de timezone</summary>
+<br>
 
 ```csharp
 public record OrderResponse
@@ -58,10 +57,11 @@ public record OrderResponse
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateTimeOffset carrega o offset, sem ambiguidade</summary>
+<br>
 
 ```csharp
 public record OrderResponse
@@ -82,6 +82,7 @@ significado, que pode causar bugs de timezone ao ser serializado. `DateOnly` e `
 
 <details>
 <summary>❌ Bad — DateTime para data pura, hora fantasma causa bugs</summary>
+<br>
 
 ```csharp
 public record CustomerRequest
@@ -94,10 +95,11 @@ public record CustomerRequest
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateOnly para data, TimeOnly para hora — intenção clara</summary>
+<br>
 
 ```csharp
 public record CustomerRequest
@@ -124,6 +126,7 @@ são salvos sem conversão; o que for lido do banco volta como `Unspecified` tam
 
 <details>
 <summary>❌ Bad — DateTime sem Kind, round-trip ambíguo com o banco</summary>
+<br>
 
 ```csharp
 public class Order
@@ -135,10 +138,11 @@ public class Order
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateTimeOffset no modelo, EF preserva offset no banco</summary>
+<br>
 
 ```csharp
 public class Order

@@ -1,7 +1,3 @@
----
-title: "Visual Density"
----
-
 # Visual Density
 
 > Escopo: Kotlin 2.2.
@@ -14,6 +10,7 @@ como parágrafos — cada parágrafo é uma fase da função.
 
 <details>
 <summary>❌ Bad — sem separação entre fases</summary>
+<br>
 
 ```kotlin
 fun processPayment(request: PaymentRequest): Result<Receipt> {
@@ -33,10 +30,11 @@ fun processPayment(request: PaymentRequest): Result<Receipt> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases separadas por linha em branco</summary>
+<br>
 
 ```kotlin
 fun processPayment(request: PaymentRequest): Result<Receipt> {
@@ -68,6 +66,7 @@ na linha seguinte, sem linha em branco entre eles.
 
 <details>
 <summary>❌ Bad — blank entre val e return (explaining return com espaço)</summary>
+<br>
 
 ```kotlin
 fun buildWelcomeMessage(user: User): String {
@@ -79,10 +78,11 @@ fun buildWelcomeMessage(user: User): String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — val + return sem blank (explaining return tight)</summary>
+<br>
 
 ```kotlin
 fun buildWelcomeMessage(user: User): String {
@@ -100,6 +100,7 @@ viram dois grupos de dois.
 
 <details>
 <summary>❌ Bad — statement isolado no topo</summary>
+<br>
 
 ```kotlin
 fun activateAccount(userId: Long) {
@@ -114,10 +115,11 @@ fun activateAccount(userId: Long) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard + grupo de ação bem dividido</summary>
+<br>
 
 ```kotlin
 fun activateAccount(userId: Long) {
@@ -139,6 +141,7 @@ Chains longas quebram por linha, uma operação por linha.
 
 <details>
 <summary>❌ Bad — chain em uma linha só</summary>
+<br>
 
 ```kotlin
 val result = orders.filter { it.isPaid }.sortedByDescending { it.createdAt }.take(5).map { it.toSummary() }
@@ -146,10 +149,11 @@ val result = orders.filter { it.isPaid }.sortedByDescending { it.createdAt }.tak
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma operação por linha</summary>
+<br>
 
 ```kotlin
 val recentPaidSummaries = orders
@@ -167,6 +171,7 @@ return recentPaidSummaries
 
 <details>
 <summary>❌ Bad — construção de objeto inline com lógica</summary>
+<br>
 
 ```kotlin
 return Order(
@@ -179,10 +184,11 @@ return Order(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lógica extraída antes da construção</summary>
+<br>
 
 ```kotlin
 val availableItems = items.filter { it.stock > 0 }

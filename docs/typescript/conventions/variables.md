@@ -1,7 +1,3 @@
----
-title: "Variables"
----
-
 # Variables
 
 As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que TypeScript
@@ -15,6 +11,7 @@ que polui sem agregar.
 
 <details>
 <summary>❌ Bad — anotação repete o que a atribuição já diz</summary>
+<br>
 
 ```ts
 const userName: string = "Alice";
@@ -25,10 +22,11 @@ const orders: Order[] = [];
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inferência quando o tipo é óbvio</summary>
+<br>
 
 ```ts
 const userName = "Alice";
@@ -46,6 +44,7 @@ arrays vazios, objetos parcialmente construídos.
 
 <details>
 <summary>❌ Bad — tipo implícito `any` sem aviso visual</summary>
+<br>
 
 ```ts
 let currentUser; // any — sem tipo, sem proteção
@@ -54,10 +53,11 @@ const results = []; // never[] — TypeScript não sabe o tipo dos elementos
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — anotação explícita onde a inferência não alcança</summary>
+<br>
 
 ```ts
 let currentUser: User | null = null;
@@ -73,6 +73,7 @@ contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
 
 <details>
 <summary>❌ Bad — any apaga todo o benefício do TypeScript</summary>
+<br>
 
 ```ts
 async function fetchExternalData(): Promise<any> {
@@ -86,10 +87,11 @@ data.user.name; // TypeScript aceita, mas pode explodir em runtime
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — unknown força narrowing antes do uso</summary>
+<br>
 
 ```ts
 async function fetchExternalData(): Promise<unknown> {
@@ -113,6 +115,7 @@ type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables 
 
 <details>
 <summary>❌ Bad — tipo inferido como string, perde a especificidade</summary>
+<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -128,10 +131,11 @@ function updateStatus(status: string) { /* ... */ } // sem restrição real
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — as const preserva os literais</summary>
+<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -155,6 +159,7 @@ Diferente da anotação direta, que alarga o tipo para a interface.
 
 <details>
 <summary>❌ Bad — anotação direta alarga para o tipo base</summary>
+<br>
 
 ```ts
 interface RouteConfig {
@@ -172,10 +177,11 @@ createOrder.method; // tipo: "GET" | "POST" | "PUT" | "DELETE" — perde a espec
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — satisfies valida e preserva o tipo literal</summary>
+<br>
 
 ```ts
 const createOrder = {

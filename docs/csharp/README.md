@@ -1,7 +1,3 @@
----
-title: "C#"
----
-
 # C#
 
 [![C#](https://img.shields.io/badge/C%23-14-512BD4?logo=csharp&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/csharp/)
@@ -71,7 +67,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                          | Saída de uma linha: o retorno nomeia o resultado, não o computa     |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -84,7 +80,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos)                            | Constantes nomeadas em vez de literais inline                       |
 | [CQS](conventions/variables.md#mutação-direta)                                                 | Retornar novo estado, sem efeitos colaterais ocultos                |
 
-<br />
+<br>
 
 **Controle de qualidade**: estado, erros, async e testes
 

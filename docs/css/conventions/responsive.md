@@ -1,7 +1,3 @@
----
-title: "Responsive"
----
-
 # Responsive
 
 Mobile-first significa definir o estilo base para mobile e **expandir** com `min-width`. Começar
@@ -11,6 +7,7 @@ no desktop e restringir com `max-width` cria sobreposições e resets desnecess�
 
 <details>
 <summary>❌ Bad — desktop-first: base para tela grande, override para tela pequena</summary>
+<br>
 
 ```css
 .layout {
@@ -29,10 +26,11 @@ no desktop e restringir com `max-width` cria sobreposições e resets desnecess�
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — mobile-first: base simples, expansão progressiva</summary>
+<br>
 
 ```css
 .layout {
@@ -58,6 +56,7 @@ grep no projeto inteiro.
 
 <details>
 <summary>❌ Bad — pixel values mágicos e inconsistentes entre arquivos</summary>
+<br>
 
 ```css
 /* layout.css */
@@ -71,10 +70,11 @@ grep no projeto inteiro.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — breakpoints centralizados como fonte única de verdade</summary>
+<br>
 
 ```css
 /* tokens/breakpoints.css — definição única */

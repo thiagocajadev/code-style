@@ -1,7 +1,3 @@
----
-title: "Quick Reference"
----
-
 # Quick Reference
 
 > Escopo: JavaScript. Cheat-sheet das convenções; detalhes em `conventions/`.

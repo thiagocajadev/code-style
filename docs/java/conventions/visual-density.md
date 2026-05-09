@@ -1,7 +1,3 @@
----
-title: "Visual density: Java"
----
-
 # Visual density: Java
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em Java.
@@ -13,6 +9,7 @@ quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Bad — denso demais: todos os passos colados</summary>
+<br>
 
 ```java
 public User registerUser(UserInput input) {
@@ -30,10 +27,11 @@ public User registerUser(UserInput input) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases visíveis, no máximo 2 linhas por grupo</summary>
+<br>
 
 ```java
 public User registerUser(UserInput input) {
@@ -62,6 +60,7 @@ o par do que vem antes, não fragmenta o par.
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
+<br>
 
 ```java
 private String mapErrorToStatus(AppException error) {
@@ -73,10 +72,11 @@ private String mapErrorToStatus(AppException error) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — par tight</summary>
+<br>
 
 ```java
 private String mapErrorToStatus(AppException error) {
@@ -94,6 +94,7 @@ Quando há dois ou mais passos distintos antes do `return`, o blank line marca a
 
 <details>
 <summary>✅ Good — 3 passos antes do return</summary>
+<br>
 
 ```java
 public String formatOrderDate(String isoString) {
@@ -114,6 +115,7 @@ Uma variável seguida do seu `if` de guarda formam par semântico. A linha em br
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
+<br>
 
 ```java
 final var order = orderRepository.findById(orderId).orElse(null);
@@ -124,10 +126,11 @@ final var invoice = buildInvoice(order);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<br>
 
 ```java
 final var order = orderRepository.findById(orderId).orElse(null);
@@ -145,6 +148,7 @@ solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
+<br>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -155,10 +159,11 @@ private static final long ONE_DAY_MS = 86_400_000L;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — trio tight</summary>
+<br>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -168,10 +173,11 @@ private static final long ONE_DAY_MS = 86_400_000L;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — 4 atomics viram 2+2</summary>
+<br>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -190,6 +196,7 @@ A quebra natural fica antes do par, não entre ele e sua dependência direta.
 
 <details>
 <summary>❌ Bad — dependência direta partida</summary>
+<br>
 
 ```java
 public String buildShippingLabel(Order order) {
@@ -205,10 +212,11 @@ public String buildShippingLabel(Order order) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — par semântico tight</summary>
+<br>
 
 ```java
 public String buildShippingLabel(Order order) {
@@ -231,6 +239,7 @@ visível.
 
 <details>
 <summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
+<br>
 
 ```java
 public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
@@ -244,10 +253,11 @@ public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases explícitas</summary>
+<br>
 
 ```java
 public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
@@ -270,6 +280,7 @@ como está sendo verificado.
 
 <details>
 <summary>❌ Bad — assertion colado ao setup, fases invisíveis</summary>
+<br>
 
 ```java
 @Test
@@ -283,10 +294,11 @@ void appliesPercentageDiscountToOrderPrice() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — assertion separado, como fase própria</summary>
+<br>
 
 ```java
 @Test

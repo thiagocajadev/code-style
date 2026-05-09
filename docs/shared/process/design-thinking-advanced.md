@@ -1,7 +1,3 @@
----
-title: "Design Thinking (avançado)"
----
-
 # Design Thinking (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

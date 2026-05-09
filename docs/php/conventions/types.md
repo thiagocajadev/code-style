@@ -1,7 +1,3 @@
----
-title: "Types"
----
-
 # Types
 
 > Escopo: PHP 8.4.
@@ -28,6 +24,7 @@ Não use como escape para falta de tipagem.
 
 <details>
 <summary>❌ Bad — mixed onde union type seria preciso</summary>
+<br>
 
 ```php
 function findByIdentifier(mixed $identifier): mixed
@@ -38,10 +35,11 @@ function findByIdentifier(mixed $identifier): mixed
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — union type expressa os tipos aceitos</summary>
+<br>
 
 ```php
 function findByIdentifier(int|string $identifier): ?User
@@ -65,6 +63,7 @@ serializáveis; enums puros são para modelagem sem serialização.
 
 <details>
 <summary>❌ Bad — strings mágicas para status</summary>
+<br>
 
 ```php
 class Order
@@ -80,10 +79,11 @@ class Order
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — enum backed para status com serialização</summary>
+<br>
 
 ```php
 enum OrderStatus: string
@@ -127,6 +127,7 @@ Toda propriedade de uma readonly class é implicitamente `readonly`.
 
 <details>
 <summary>✅ Good — readonly class para value object imutável</summary>
+<br>
 
 ```php
 readonly class Money
@@ -174,6 +175,7 @@ Use `never` como tipo de retorno para funções que sempre lançam exceção ou 
 
 <details>
 <summary>✅ Good — never para helper de falha e redirect</summary>
+<br>
 
 ```php
 function abort(int $statusCode, string $message): never
@@ -198,6 +200,7 @@ Prefira interfaces pequenas e específicas.
 
 <details>
 <summary>✅ Good — interface mínima por consumidor</summary>
+<br>
 
 ```php
 // Interface no namespace do consumidor

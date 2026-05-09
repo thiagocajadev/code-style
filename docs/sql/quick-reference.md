@@ -1,7 +1,3 @@
----
-title: "Quick reference"
----
-
 # Quick reference
 
 > Escopo: SQL. Cheat-sheet das convenções; detalhes em `conventions/`.

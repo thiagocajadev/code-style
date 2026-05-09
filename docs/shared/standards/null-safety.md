@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -54,6 +50,7 @@ fronteira**. Essas funções confiam que quem chamou já garantiu o contrato.
 
 <details>
 <summary>❌ Bad: interior checando null que não deveria existir</summary>
+<br>
 
 ```js
 function calculateDiscount(order) {
@@ -66,10 +63,11 @@ function calculateDiscount(order) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: interior opera com contrato garantido</summary>
+<br>
 
 ```js
 function calculateDiscount(order) {
@@ -133,6 +131,7 @@ contra contratos mal fechados.
 
 <details>
 <summary>❌ Bad: ?. como defesa contra contrato que deveria ser fechado</summary>
+<br>
 
 ```js
 const discount = order?.discountRate ? order.total * order.discountRate : 0;
@@ -141,10 +140,11 @@ const discount = order?.discountRate ? order.total * order.discountRate : 0;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: ?. e ?? para campos opcionais por design</summary>
+<br>
 
 ```js
 const display = user.nickname ?? user.name; // nickname é opcional no modelo

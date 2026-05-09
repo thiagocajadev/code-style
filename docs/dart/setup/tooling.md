@@ -1,7 +1,3 @@
----
-title: "Tooling"
----
-
 # Tooling
 
 > Escopo: Dart 3.7, Dart SDK.
@@ -76,6 +72,7 @@ linter:
 
 <details>
 <summary>❌ Bad — análise estática ignorada</summary>
+<br>
 
 ```dart
 dynamic processData(data) {   // sem tipo de retorno, parâmetro dynamic
@@ -85,10 +82,11 @@ dynamic processData(data) {   // sem tipo de retorno, parâmetro dynamic
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipos explícitos, sem print</summary>
+<br>
 
 ```dart
 void processOrder(Order order) {

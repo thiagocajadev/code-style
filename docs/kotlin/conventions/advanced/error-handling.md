@@ -1,7 +1,3 @@
----
-title: "Error Handling"
----
-
 # Error Handling
 
 > Escopo: Kotlin 2.2.
@@ -25,6 +21,7 @@ irrecuperáveis de infraestrutura.
 
 <details>
 <summary>❌ Bad — exceção para erro esperado de negócio</summary>
+<br>
 
 ```kotlin
 fun findOrder(id: Long): Order {
@@ -45,10 +42,11 @@ fun processRequest(orderId: Long): Response {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Result comunica explicitamente a ausência</summary>
+<br>
 
 ```kotlin
 fun findOrder(id: Long): Result<Order> {
@@ -74,6 +72,7 @@ fun processRequest(orderId: Long): Response {
 
 <details>
 <summary>❌ Bad — exceção engolida sem rastro</summary>
+<br>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -87,10 +86,11 @@ fun sendNotification(userId: Long) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — log estruturado + decisão explícita de continuar</summary>
+<br>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -107,6 +107,7 @@ fun sendNotification(userId: Long) {
 
 <details>
 <summary>❌ Bad — string como discriminante de erro</summary>
+<br>
 
 ```kotlin
 data class ServiceError(val code: String, val message: String)
@@ -120,10 +121,11 @@ fun validateOrder(order: Order): ServiceError? {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sealed class com when exaustivo</summary>
+<br>
 
 ```kotlin
 sealed class OrderValidationError {
@@ -160,6 +162,7 @@ fun handleValidationError(error: OrderValidationError): String {
 
 <details>
 <summary>❌ Bad — if manual com mensagem genérica</summary>
+<br>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -172,10 +175,11 @@ fun applyDiscount(price: Double, rate: Double): Double {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — require com mensagem expressiva</summary>
+<br>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -194,6 +198,7 @@ fun applyDiscount(price: Double, rate: Double): Double {
 
 <details>
 <summary>❌ Bad — sealed class de domínio exposta diretamente na resposta HTTP</summary>
+<br>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
@@ -208,10 +213,11 @@ fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tradução explícita do erro de domínio para HTTP</summary>
+<br>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {

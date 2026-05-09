@@ -1,7 +1,3 @@
----
-title: "Async"
----
-
 # Async
 
 > Escopo: Dart 3.7.
@@ -27,6 +23,7 @@ operações. `unawaited` marca fire-and-forget intencional.
 
 <details>
 <summary>❌ Bad — awaits em série sem necessidade de ordem</summary>
+<br>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -39,10 +36,11 @@ Future<Dashboard> loadDashboard(int userId) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Future.wait executa em paralelo</summary>
+<br>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -66,6 +64,7 @@ Future<Dashboard> loadDashboard(int userId) async {
 
 <details>
 <summary>❌ Bad — await esquecido ou Future ignorado sem intenção clara</summary>
+<br>
 
 ```dart
 void confirmOrder(Order order) async {
@@ -76,10 +75,11 @@ void confirmOrder(Order order) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — unawaited declara a intenção de não esperar</summary>
+<br>
 
 ```dart
 import 'dart:async' show unawaited;
@@ -96,6 +96,7 @@ void confirmOrder(Order order) async {
 
 <details>
 <summary>❌ Bad — callback exposto ao chamador sem Future</summary>
+<br>
 
 ```dart
 void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onError) {
@@ -105,10 +106,11 @@ void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onEr
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Completer wraps callback em Future</summary>
+<br>
 
 ```dart
 Future<User> fetchUser(int id) {
@@ -130,6 +132,7 @@ Future<User> fetchUser(int id) {
 
 <details>
 <summary>❌ Bad — sem limite de tempo em chamada externa</summary>
+<br>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -140,10 +143,11 @@ Future<double> fetchExchangeRate(String currency) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — timeout cancela se exceder o prazo</summary>
+<br>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -161,6 +165,7 @@ Future<double> fetchExchangeRate(String currency) async {
 
 <details>
 <summary>❌ Bad — catchError com tipo Any</summary>
+<br>
 
 ```dart
 Future<Order> findOrder(int id) {
@@ -172,10 +177,11 @@ Future<Order> findOrder(int id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — try/catch com tipo explícito</summary>
+<br>
 
 ```dart
 Future<Order?> findOrder(int id) async {

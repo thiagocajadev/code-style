@@ -1,7 +1,3 @@
----
-title: "Validation"
----
-
 # Validation
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
@@ -21,6 +17,7 @@ validação suja: um email com espaço passa no schema mas falha na busca no ban
 
 <details>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -33,10 +30,11 @@ async function createUserHandler(req, res) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sanitize antes de validar</summary>
+<br>
 
 ```js
 function sanitizeCreateUser(body) {
@@ -68,6 +66,7 @@ elimina validação manual espalhada pelos handlers.
 
 <details>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
+<br>
 
 ```js
 async function createOrder(body) {
@@ -81,10 +80,11 @@ async function createOrder(body) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -110,6 +110,7 @@ dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviços externos) e
 
 <details>
 <summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -125,10 +126,11 @@ const createOrderSchema = z.object({
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — schema valida shape, domínio valida regras após</summary>
+<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -167,6 +169,7 @@ Projete explicitamente o que sai, nunca o objeto do banco diretamente.
 
 <details>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
+<br>
 
 ```js
 async function findUserByIdHandler(req, res) {
@@ -178,10 +181,11 @@ async function findUserByIdHandler(req, res) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — projeção explícita do que sai na resposta</summary>
+<br>
 
 ```js
 function toUserResponse(user) {

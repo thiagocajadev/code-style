@@ -1,7 +1,3 @@
----
-title: "Quick Reference"
----
-
 # Quick Reference
 
 > Escopo: Python. Cheat-sheet das convenções; detalhes em `conventions/`.
@@ -46,6 +42,7 @@ Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 
 <details>
 <summary>❌ Bad — sintaxe legada</summary>
+<br>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -57,10 +54,11 @@ def load_config() -> Dict[str, str]: ...
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sintaxe moderna, sem imports extras</summary>
+<br>
 
 ```python
 def find_user(user_id: int) -> User | None: ...
@@ -74,6 +72,7 @@ def load_config() -> dict[str, str]: ...
 
 <details>
 <summary>❌ Bad — f-string em contexto sensível a injeção</summary>
+<br>
 
 ```python
 query = f"SELECT * FROM users WHERE name = '{user_input}'"
@@ -81,10 +80,11 @@ query = f"SELECT * FROM users WHERE name = '{user_input}'"
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — f-string para interpolação segura; t-string para sanitização (Python 3.14+)</summary>
+<br>
 
 ```python
 # interpolação segura: UI, logs, mensagens
@@ -102,6 +102,7 @@ Sempre no corpo da função, nunca inline no return.
 
 <details>
 <summary>❌ Bad — acesso encadeado inline</summary>
+<br>
 
 ```python
 def format_address(user):
@@ -110,10 +111,11 @@ def format_address(user):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — extrai antes de usar</summary>
+<br>
 
 ```python
 def format_address(user):

@@ -1,7 +1,3 @@
----
-title: "Kotlin — Quick Reference"
----
-
 # Kotlin — Quick Reference
 
 > Escopo: Kotlin 2.2. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.

@@ -1,7 +1,3 @@
----
-title: "MicroPython / IoT"
----
-
 # MicroPython / IoT
 
 > Escopo: MicroPython 1.28 — RP2040 (Raspberry Pi Pico) e ESP32.
@@ -44,6 +40,7 @@ Chame `gc.collect()` periodicamente em loops que alocam muito.
 
 <details>
 <summary>❌ Bad — lista crescente em memória limitada</summary>
+<br>
 
 ```python
 import machine
@@ -66,10 +63,11 @@ while True:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — acumulador com tamanho fixo, sem lista</summary>
+<br>
 
 ```python
 import machine
@@ -104,6 +102,7 @@ MicroPython não tem `datetime`. Use `utime.localtime()` para decompor timestamp
 
 <details>
 <summary>❌ Bad — import que falha em MicroPython</summary>
+<br>
 
 ```python
 from datetime import datetime, timedelta
@@ -114,10 +113,11 @@ expiry = now + timedelta(hours=1)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — utime como substituto</summary>
+<br>
 
 ```python
 import utime
@@ -140,6 +140,7 @@ sem threads — essencial para ler sensores e manter rede ao mesmo tempo.
 
 <details>
 <summary>✅ Good — leitura de sensor + keep-alive de rede com asyncio</summary>
+<br>
 
 ```python
 import asyncio

@@ -1,7 +1,3 @@
----
-title: "Mensageria"
----
-
 # Mensageria
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

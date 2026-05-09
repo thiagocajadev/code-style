@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: Flutter 3.29, package:flutter_test.
@@ -25,6 +21,7 @@ widget são o ponto de equilíbrio entre velocidade e cobertura.
 
 <details>
 <summary>❌ Bad — sem pump o widget não é construído</summary>
+<br>
 
 ```dart
 testWidgets('shows order list', (tester) async {
@@ -36,10 +33,11 @@ testWidgets('shows order list', (tester) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pumpAndSettle aguarda renders e animações</summary>
+<br>
 
 ```dart
 testWidgets('shows order list when orders are loaded', (tester) async {
@@ -66,6 +64,7 @@ testWidgets('shows order list when orders are loaded', (tester) async {
 
 <details>
 <summary>✅ Good — tap, type e verificação de estado</summary>
+<br>
 
 ```dart
 testWidgets('submits form and shows confirmation', (tester) async {
@@ -93,6 +92,7 @@ testWidgets('submits form and shows confirmation', (tester) async {
 
 <details>
 <summary>✅ Good — golden registra e verifica aparência visual</summary>
+<br>
 
 ```dart
 testWidgets('OrderListItem matches golden', (tester) async {

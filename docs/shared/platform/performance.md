@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -160,6 +156,7 @@ O caso mais frequente de O(n²) oculto. Para cada item externo, itera todos os i
 
 <details>
 <summary>❌ Bad: O(n²) com loop aninhado sobre a mesma coleção</summary>
+<br>
 
 ```javascript
 for (const order of orders) {
@@ -171,10 +168,11 @@ for (const order of orders) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: indexar em O(n), acessar em O(1)</summary>
+<br>
 
 ```javascript
 function findRelatedOrders(orders) {
@@ -197,6 +195,7 @@ Carregar uma lista e fazer uma query para cada item. O(n) queries em vez de O(1)
 
 <details>
 <summary>❌ Bad: N+1, uma query por item da lista</summary>
+<br>
 
 ```javascript
 const orders = await orderRepository.findAll();
@@ -208,10 +207,11 @@ for (const order of orders) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: duas queries no total com busca em lote</summary>
+<br>
 
 ```javascript
 async function loadOrdersWithCustomers() {
@@ -237,6 +237,7 @@ Encadeamento de `.filter().map()` quando uma única passagem resolve.
 
 <details>
 <summary>❌ Bad: dois passes sobre a mesma lista</summary>
+<br>
 
 ```javascript
 const activeUserNames = users
@@ -246,10 +247,11 @@ const activeUserNames = users
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: um passe com reduce quando o volume importa</summary>
+<br>
 
 ```javascript
 function extractActiveUserNames(users) {
@@ -272,6 +274,7 @@ function extractActiveUserNames(users) {
 
 <details>
 <summary>❌ Bad: sort() para obter o maior valor (O(n log n))</summary>
+<br>
 
 ```javascript
 const highestScore = scores.sort((a, b) => b - a)[0];
@@ -279,10 +282,11 @@ const highestScore = scores.sort((a, b) => b - a)[0];
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: Math.max() em O(n)</summary>
+<br>
 
 ```javascript
 function findHighestScore(scores) {

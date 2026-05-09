@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
@@ -19,6 +15,7 @@ na maioria dos casos.
 
 <details>
 <summary>❌ Bad — || descarta valores falsy válidos</summary>
+<br>
 
 ```js
 const timeout = config.timeout || 5000; // 0 → 5000 — zero é tempo válido
@@ -29,10 +26,11 @@ const debug = options.debug || false;   // false → false — ok aqui, mas por 
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ?? respeita 0, "" e false</summary>
+<br>
 
 ```js
 const timeout = config.timeout ?? 5000;
@@ -50,6 +48,7 @@ A mesma distinção de `??` vs `||`, aplicada à atribuição lógica.
 
 <details>
 <summary>❌ Bad — ||= sobrescreve zero, que é um valor válido</summary>
+<br>
 
 ```js
 let count = 0;
@@ -58,10 +57,11 @@ count ||= 10; // count vira 10 — zero é falsy, então ||= dispara
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ??= respeita zero e false</summary>
+<br>
 
 ```js
 let count = 0;
@@ -84,6 +84,7 @@ Tem lugar para campos **opcionais por design**. Quando o campo deveria sempre ex
 
 <details>
 <summary>❌ Bad — ?. esconde contrato fraco</summary>
+<br>
 
 ```js
 async function getOrderTotal(orderId) {
@@ -95,10 +96,11 @@ async function getOrderTotal(orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard clause quando ausência é erro; ?. quando é esperada</summary>
+<br>
 
 ```js
 // ausência é erro → guard clause
@@ -126,6 +128,7 @@ normalize com `?? []`.
 
 <details>
 <summary>❌ Bad — null em lista força defesa no caller</summary>
+<br>
 
 ```js
 async function findOrdersByUser(userId) {
@@ -136,10 +139,11 @@ async function findOrdersByUser(userId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lista vazia como estado neutro</summary>
+<br>
 
 ```js
 async function findOrdersByUser(userId) {
@@ -165,6 +169,7 @@ uma transformação: mais expressivo que `.filter().map()` por percorrer o array
 
 <details>
 <summary>❌ Bad — filter + map percorre o array duas vezes</summary>
+<br>
 
 ```js
 const rawItems = ["1", null, "3", undefined, "5"];
@@ -176,10 +181,11 @@ const parsed = rawItems
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — flatMap filtra e transforma em uma passagem</summary>
+<br>
 
 ```js
 const rawItems = ["1", null, "3", undefined, "5"];
@@ -200,6 +206,7 @@ prototype pollution. Substitui o padrão antigo `obj.hasOwnProperty(key)`.
 
 <details>
 <summary>❌ Bad — hasOwnProperty vulnerável a prototype pollution</summary>
+<br>
 
 ```js
 const config = { timeout: 0 };
@@ -209,10 +216,11 @@ config.hasOwnProperty("timeout"); // funciona, mas pode ser sobrescrito via prot
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Object.hasOwn seguro e direto</summary>
+<br>
 
 ```js
 const config = { timeout: 0, debug: false };
@@ -242,6 +250,7 @@ function mergeConfig(defaults, overrides) {
 
 <details>
 <summary>❌ Bad — **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
+<br>
 
 ```js
 const order = {
@@ -260,10 +269,11 @@ const clone = JSON.parse(JSON.stringify(order));
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — structuredClone preserva todos os tipos</summary>
+<br>
 
 ```js
 const order = {

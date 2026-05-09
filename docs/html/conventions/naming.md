@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 IDs e classes descrevem **propósito**: o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência nem
@@ -15,6 +11,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 
 <details>
 <summary>❌ Bad — ID duplicável, classe descreve aparência</summary>
+<br>
 
 ```html
 <div id="box" class="blue-card big-text">
@@ -27,10 +24,11 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ID único e semântico, classe descreve papel</summary>
+<br>
 
 ```html
 <div id="checkout-summary" class="order-summary">
@@ -50,6 +48,7 @@ reutilize classes CSS como gatilhos de comportamento: isso acopla estilo e lógi
 
 <details>
 <summary>❌ Bad — classe CSS usada como gatilho JS, sem data-*</summary>
+<br>
 
 ```html
 <button class="btn btn-primary open-modal">Open</button>
@@ -63,10 +62,11 @@ document.querySelectorAll('.open-modal').forEach((btn) => { ... });
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — data-* para comportamento, classe só para estilo</summary>
+<br>
 
 ```html
 <button class="button button--primary" data-modal-target="product-details">Open</button>
@@ -87,6 +87,7 @@ repetir o elemento pai).
 
 <details>
 <summary>❌ Bad — prefixo redundante, nome opaco</summary>
+<br>
 
 ```html
 <tr data-row-data-id="42" data-row-data-status="active" data-x="1">
@@ -94,10 +95,11 @@ repetir o elemento pai).
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nome direto, kebab-case, sem redundância</summary>
+<br>
 
 ```html
 <tr data-user-id="42" data-status="active" data-page="1">

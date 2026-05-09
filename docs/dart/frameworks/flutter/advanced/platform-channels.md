@@ -1,7 +1,3 @@
----
-title: "Platform Channels"
----
-
 # Platform Channels
 
 > Escopo: Flutter 3.29.
@@ -96,6 +92,7 @@ override func application(_ application: UIApplication,
 
 <details>
 <summary>❌ Bad — polling via MethodChannel para dados contínuos</summary>
+<br>
 
 ```dart
 // polling: ineficiente e com latência
@@ -110,10 +107,11 @@ Future<void> trackLocation() async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — EventChannel entrega eventos quando disponíveis</summary>
+<br>
 
 ```dart
 const _locationChannel = EventChannel('com.acme.app/location');
@@ -135,6 +133,7 @@ Stream<Coordinate> get locationStream {
 
 <details>
 <summary>❌ Bad — PlatformException não tratada — crash</summary>
+<br>
 
 ```dart
 Future<String> readNfcTag() async {
@@ -144,10 +143,11 @@ Future<String> readNfcTag() async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — PlatformException mapeada para erro de domínio</summary>
+<br>
 
 ```dart
 Future<String> readNfcTag() async {

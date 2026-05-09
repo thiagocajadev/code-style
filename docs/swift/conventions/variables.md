@@ -1,7 +1,3 @@
----
-title: "Variables"
----
-
 # Variables
 
 > Escopo: Swift 6.1.
@@ -14,6 +10,7 @@ Propriedades computadas transformam dados sem armazenar estado extra. Prefira `l
 
 <details>
 <summary>❌ Bad — var desnecessário</summary>
+<br>
 
 ```swift
 var total = 0.0
@@ -25,10 +22,11 @@ isActive = user.status == .active
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — let com inicialização direta</summary>
+<br>
 
 ```swift
 let total = items.reduce(0) { $0 + $1.price }
@@ -42,6 +40,7 @@ let isActive = user.status == .active
 
 <details>
 <summary>❌ Bad — literais inline sem contexto</summary>
+<br>
 
 ```swift
 if user.role == "admin" { ... }
@@ -53,10 +52,11 @@ let discount = price * 0.15
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — constantes nomeadas com intenção</summary>
+<br>
 
 ```swift
 private let adminRole = "admin"
@@ -79,6 +79,7 @@ Propriedades computadas modelam atributos derivados (sem parâmetros). Funções
 
 <details>
 <summary>❌ Bad — função para atributo derivado simples</summary>
+<br>
 
 ```swift
 struct Order {
@@ -92,10 +93,11 @@ struct Order {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — propriedade computada para valor derivado</summary>
+<br>
 
 ```swift
 struct Order {
@@ -113,6 +115,7 @@ struct Order {
 
 <details>
 <summary>❌ Bad — objeto pesado criado mesmo quando não usado</summary>
+<br>
 
 ```swift
 class ReportService {
@@ -122,10 +125,11 @@ class ReportService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lazy adia até o primeiro acesso</summary>
+<br>
 
 ```swift
 class ReportService {
@@ -141,6 +145,7 @@ Declare no escopo mais restrito possível.
 
 <details>
 <summary>❌ Bad — var declarado antes do escopo real</summary>
+<br>
 
 ```swift
 var message: String
@@ -156,10 +161,11 @@ sendNotification(message)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — let com expressão condicional</summary>
+<br>
 
 ```swift
 let message = order.isPaid ? "Payment confirmed" : "Payment pending"
@@ -173,6 +179,7 @@ sendNotification(message)
 
 <details>
 <summary>❌ Bad — observação de estado via polling</summary>
+<br>
 
 ```swift
 var score = 0
@@ -185,10 +192,11 @@ func updateUI() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — didSet reage à mudança de estado</summary>
+<br>
 
 ```swift
 var score = 0 {

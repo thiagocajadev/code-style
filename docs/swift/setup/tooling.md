@@ -1,7 +1,3 @@
----
-title: "Tooling"
----
-
 # Tooling
 
 > Escopo: Swift 6.1, Xcode 16 / Swift Package Manager.
@@ -96,6 +92,7 @@ Executar: `swiftlint --strict` em CI.
 
 <details>
 <summary>❌ Bad — force unwrap detectado pelo SwiftLint</summary>
+<br>
 
 ```swift
 let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
@@ -103,10 +100,11 @@ let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard let com saída antecipada expressiva</summary>
+<br>
 
 ```swift
 guard let user = userRepository.find(id: userId) else {

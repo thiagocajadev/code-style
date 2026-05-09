@@ -1,7 +1,3 @@
----
-title: "Engenharia de Prompts (Prompt Engineering)"
----
-
 # Engenharia de Prompts (Prompt Engineering)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -54,6 +50,7 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 
 <details>
 <summary>❌ Bad: instrução vaga — modelo escolhe escopo, formato e tamanho</summary>
+<br>
 
 ```
 Faça um resumo.
@@ -61,10 +58,11 @@ Faça um resumo.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: instrução específica — cada restrição elimina uma classe de resposta errada</summary>
+<br>
 
 ```
 Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicações para engenheiros de software. Não inclua introdução ou conclusão.
@@ -78,6 +76,7 @@ Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicaçõ
 
 <details>
 <summary>❌ Bad: sem contexto — modelo só pode especular</summary>
+<br>
 
 ```
 Por que meu código não funciona?
@@ -85,10 +84,11 @@ Por que meu código não funciona?
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: com contexto — resposta direta e aplicável</summary>
+<br>
 
 ```
 Este código TypeScript lança `TypeError: Cannot read properties of undefined` na linha 12 ao chamar `user.profile.name`. A função `loadUser` recebe `user` de uma API que pode retornar `null`. Como corrigir com null-safe access mantendo o tipo inferido?
@@ -102,6 +102,7 @@ Este código TypeScript lança `TypeError: Cannot read properties of undefined` 
 
 <details>
 <summary>❌ Bad: sem formato — modelo decide estrutura e escopo</summary>
+<br>
 
 ```
 Liste boas práticas de API REST.
@@ -109,10 +110,11 @@ Liste boas práticas de API REST.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: formato definido — output previsível e parseável</summary>
+<br>
 
 ```
 Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). Formato: tabela Markdown com colunas "Prática" e "Por quê". Máximo 1 frase por célula. Não inclua boas práticas de leitura.
@@ -126,6 +128,7 @@ Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). F
 
 <details>
 <summary>❌ Bad: sem papel — revisão genérica e subjetiva</summary>
+<br>
 
 ```
 Revise esse texto.
@@ -133,10 +136,11 @@ Revise esse texto.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: papel definido — instruções operacionais e acionáveis</summary>
+<br>
 
 ```
 Você é um tech writer sênior com foco em documentação de APIs. Revise o texto abaixo para o guia público de referência: elimine adjetivos desnecessários, use voz ativa, mantenha termos técnicos em inglês, substitua jargão interno por linguagem acessível a desenvolvedores externos.
@@ -150,6 +154,7 @@ Você é um tech writer sênior com foco em documentação de APIs. Revise o tex
 
 <details>
 <summary>❌ Bad: sem instrução de raciocínio — modelo pode errar em cálculos diretos</summary>
+<br>
 
 ```
 Qual o resultado de 17 × 24 + 89 ÷ 7?
@@ -157,10 +162,11 @@ Qual o resultado de 17 × 24 + 89 ÷ 7?
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: chain-of-thought explícito — modelo externaliza raciocínio antes de concluir</summary>
+<br>
 
 ```
 Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo antes de dar o resultado final.
@@ -174,6 +180,7 @@ Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo an
 
 <details>
 <summary>❌ Bad: sem grounding — modelo pode alucinar valores desatualizados</summary>
+<br>
 
 ```
 Quais são os limites de rate limiting da API do GitHub?
@@ -181,10 +188,11 @@ Quais são os limites de rate limiting da API do GitHub?
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: com grounding — resposta ancorada em fatos fornecidos</summary>
+<br>
 
 ```
 Com base na documentação abaixo, quais são os limites de rate limiting da API REST do GitHub para requisições autenticadas?

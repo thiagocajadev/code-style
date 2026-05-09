@@ -1,7 +1,3 @@
----
-title: "Streams"
----
-
 # Streams
 
 > Escopo: Dart 3.7.
@@ -26,6 +22,7 @@ de UI em Flutter e de I/O em Dart puro.
 
 <details>
 <summary>❌ Bad — múltiplos listeners em single-subscription stream</summary>
+<br>
 
 ```dart
 final stream = File('data.json').openRead();
@@ -36,10 +33,11 @@ stream.listen((chunk) => logChunk(chunk));   // StateError: Stream has already b
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — broadcast para múltiplos listeners</summary>
+<br>
 
 ```dart
 final controller = StreamController<List<int>>.broadcast();
@@ -57,6 +55,7 @@ controller.add(data);
 
 <details>
 <summary>❌ Bad — StreamController manual para sequência simples</summary>
+<br>
 
 ```dart
 Stream<int> countDown(int from) {
@@ -75,10 +74,11 @@ Stream<int> countDown(int from) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — async* é mais legível e gerencia ciclo de vida automaticamente</summary>
+<br>
 
 ```dart
 Stream<int> countDown(int from) async* {
@@ -95,6 +95,7 @@ Stream<int> countDown(int from) async* {
 
 <details>
 <summary>❌ Bad — subscription sem cancelamento — memory leak</summary>
+<br>
 
 ```dart
 class OrderWidget extends StatefulWidget { ... }
@@ -111,10 +112,11 @@ class _OrderWidgetState extends State<OrderWidget> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — subscription cancelada no dispose</summary>
+<br>
 
 ```dart
 class _OrderWidgetState extends State<OrderWidget> {
@@ -165,6 +167,7 @@ final debouncedStream = searchStream.debounceTime(
 
 <details>
 <summary>❌ Bad — controller nunca fechado</summary>
+<br>
 
 ```dart
 class EventBus {
@@ -178,10 +181,11 @@ class EventBus {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — dispose fecha o controller</summary>
+<br>
 
 ```dart
 class EventBus {

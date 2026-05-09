@@ -1,7 +1,3 @@
----
-title: "Validation"
----
-
 # Validation
 
 > Escopo: Dart 3.7.
@@ -24,6 +20,7 @@ e verificações explícitas com `throw` atuam em produção.
 
 <details>
 <summary>❌ Bad — guards espalhados ao longo da função de negócio</summary>
+<br>
 
 ```dart
 Future<Order> processOrder({
@@ -47,10 +44,11 @@ Future<Order> processOrder({
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — validação em init, lógica limpa na função</summary>
+<br>
 
 ```dart
 class ProcessOrderRequest {
@@ -85,6 +83,7 @@ Future<Order> processOrder(ProcessOrderRequest request) async {
 
 <details>
 <summary>❌ Bad — para no primeiro erro (usuário corrige um por vez)</summary>
+<br>
 
 ```dart
 String? validateProfile(UserProfile profile) {
@@ -97,10 +96,11 @@ String? validateProfile(UserProfile profile) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — acumula todos os erros</summary>
+<br>
 
 ```dart
 sealed class ProfileError {}
@@ -131,6 +131,7 @@ if (errors.isNotEmpty) {
 
 <details>
 <summary>❌ Bad — throw em código que nunca chegará em produção</summary>
+<br>
 
 ```dart
 double applyDiscount(double price, double rate) {
@@ -141,10 +142,11 @@ double applyDiscount(double price, double rate) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — assert em invariantes; validação real no construtor da request</summary>
+<br>
 
 ```dart
 double applyDiscount(double price, double rate) {

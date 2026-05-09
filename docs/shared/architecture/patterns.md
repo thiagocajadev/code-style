@@ -1,7 +1,3 @@
----
-title: "Patterns"
----
-
 # Patterns
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

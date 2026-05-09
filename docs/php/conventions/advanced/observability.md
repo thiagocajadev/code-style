@@ -1,7 +1,3 @@
----
-title: "Observability"
----
-
 # Observability
 
 > Escopo: PHP 8.4 + Monolog 3.
@@ -30,6 +26,7 @@ nunca use o logger global ou Facade.
 
 <details>
 <summary>✅ Good — Monolog com JsonFormatter para produção</summary>
+<br>
 
 ```php
 use Monolog\Logger;
@@ -69,6 +66,7 @@ Passe contexto como array de pares chave-valor. Nunca interpole variáveis na me
 
 <details>
 <summary>❌ Bad — interpolação na mensagem, sem estrutura</summary>
+<br>
 
 ```php
 $this->logger->info("Processing order {$order->id} for customer {$order->customerID} with amount {$order->amount}");
@@ -77,10 +75,11 @@ $this->logger->error("Error saving order {$order->id}: {$e->getMessage()}");
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contexto como array, mensagem fixa</summary>
+<br>
 
 ```php
 $this->logger->info('Processing order', [
@@ -109,6 +108,7 @@ $this->logger->error('Save order failed', [
 
 <details>
 <summary>❌ Bad — error para evento esperado</summary>
+<br>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -120,10 +120,11 @@ if ($order === null) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — info para evento esperado; error para falha real</summary>
+<br>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -154,6 +155,7 @@ requisição. Use um middleware HTTP para gerar ou extrair o ID do header.
 
 <details>
 <summary>✅ Good — correlation ID via processor do Monolog</summary>
+<br>
 
 ```php
 use Monolog\Processor\ProcessorInterface;
@@ -200,6 +202,7 @@ Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
 <summary>❌ Bad — PII nos logs</summary>
+<br>
 
 ```php
 $this->logger->info('User logged in', [
@@ -211,10 +214,11 @@ $this->logger->info('User logged in', [
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — apenas ID e evento, sem PII</summary>
+<br>
 
 ```php
 $this->logger->info('User logged in', [

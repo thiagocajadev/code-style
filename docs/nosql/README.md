@@ -1,7 +1,3 @@
----
-title: "NoSQL"
----
-
 # NoSQL
 
 > Escopo: transversal. Aplica-se a qualquer stack que use bancos não-relacionais.

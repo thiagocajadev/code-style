@@ -1,7 +1,3 @@
----
-title: "Observability"
----
-
 # Observability
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

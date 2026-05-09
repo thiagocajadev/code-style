@@ -1,7 +1,3 @@
----
-title: "Control Flow"
----
-
 # Control Flow
 
 > Escopo: Rust 1.95.
@@ -17,6 +13,7 @@ indentação desnecessária e esconde o caminho feliz.
 
 <details>
 <summary>❌ Bad — else após return</summary>
+<br>
 
 ```rust
 fn get_discount(order: &Order) -> f64 {
@@ -30,10 +27,11 @@ fn get_discount(order: &Order) -> f64 {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — retorno antecipado, sem else</summary>
+<br>
 
 ```rust
 fn get_discount(order: &Order) -> f64 {
@@ -54,6 +52,7 @@ possíveis em uma linha. Nunca aninhe `if` expressões.
 
 <details>
 <summary>❌ Bad — variável mutável para simular ternário</summary>
+<br>
 
 ```rust
 let label;
@@ -66,10 +65,11 @@ if order.is_paid {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — if como expressão</summary>
+<br>
 
 ```rust
 let label = if order.is_paid { "pago" } else { "pendente" };
@@ -84,6 +84,7 @@ guard clause em funções que retornam `Result` ou `Option`.
 
 <details>
 <summary>❌ Bad — match aninhado para propagação de erro</summary>
+<br>
 
 ```rust
 fn load_order(order_id: u64) -> Result<Order, AppError> {
@@ -106,10 +107,11 @@ fn load_order(order_id: u64) -> Result<Order, AppError> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ? em cadeia linear</summary>
+<br>
 
 ```rust
 fn load_order(order_id: u64) -> anyhow::Result<Order> {
@@ -132,6 +134,7 @@ desestruturação de `Option` ou `Result` — saída antecipada se o valor não 
 
 <details>
 <summary>❌ Bad — unwrap que pânica em None</summary>
+<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon: Option<String>) {
@@ -142,10 +145,11 @@ fn apply_coupon(order: &mut Order, coupon: Option<String>) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — let-else como guard clause</summary>
+<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon: Option<String>) {
@@ -166,6 +170,7 @@ Com 3 ou mais entradas, o mapa é mais legível e extensível.
 
 <details>
 <summary>❌ Bad — if/else chain para mapear chave em valor</summary>
+<br>
 
 ```rust
 fn get_status_label(status: &str) -> &str {
@@ -185,10 +190,11 @@ fn get_status_label(status: &str) -> &str {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — HashMap como tabela de mapeamento</summary>
+<br>
 
 ```rust
 use std::collections::HashMap;
@@ -214,6 +220,7 @@ todos os casos precisam ser cobertos. Evite `_ => {}` silencioso que esconde var
 
 <details>
 <summary>❌ Bad — catch-all que esconde variantes não tratadas</summary>
+<br>
 
 ```rust
 fn handle_status(status: OrderStatus) {
@@ -226,10 +233,11 @@ fn handle_status(status: OrderStatus) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — match exaustivo, cada variante com ação explícita</summary>
+<br>
 
 ```rust
 fn handle_status(status: OrderStatus) {
@@ -246,6 +254,7 @@ fn handle_status(status: OrderStatus) {
 
 <details>
 <summary>✅ Good — match para 3+ variantes com valor (substitui ternário aninhado)</summary>
+<br>
 
 ```rust
 let label = match order.status {
@@ -265,6 +274,7 @@ Evite `for` com `break` manual.
 
 <details>
 <summary>❌ Bad — for com flag e break manual</summary>
+<br>
 
 ```rust
 let mut has_overdue = false;
@@ -279,10 +289,11 @@ for order in &orders {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — .any() para verificação que para no primeiro true</summary>
+<br>
 
 ```rust
 let has_overdue = orders.iter().any(|order| order.is_overdue);
@@ -292,6 +303,7 @@ let has_overdue = orders.iter().any(|order| order.is_overdue);
 
 <details>
 <summary>✅ Good — .find() para busca do primeiro elemento que satisfaz condição</summary>
+<br>
 
 ```rust
 let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
@@ -301,6 +313,7 @@ let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
 
 <details>
 <summary>✅ Good — .all() para verificar se todos satisfazem condição</summary>
+<br>
 
 ```rust
 let all_delivered = orders.iter().all(|order| order.is_delivered);
@@ -315,6 +328,7 @@ o objetivo é transformar ou filtrar — reserve `for` para efeitos como enviar,
 
 <details>
 <summary>❌ Bad — for com índice quando o índice não é usado</summary>
+<br>
 
 ```rust
 for i in 0..orders.len() {
@@ -324,10 +338,11 @@ for i in 0..orders.len() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — for sobre referência direta</summary>
+<br>
 
 ```rust
 for order in &orders {
@@ -339,6 +354,7 @@ for order in &orders {
 
 <details>
 <summary>✅ Good — iterador funcional quando o resultado importa</summary>
+<br>
 
 ```rust
 let paid_totals: Vec<f64> = orders
@@ -357,6 +373,7 @@ let paid_totals: Vec<f64> = orders
 
 <details>
 <summary>❌ Bad — while com flag booleano desnecessário</summary>
+<br>
 
 ```rust
 let mut done = false;
@@ -376,10 +393,11 @@ while !done {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — while let idiomático</summary>
+<br>
 
 ```rust
 let mut result = None;
@@ -401,6 +419,7 @@ while let Some(item) = queue.pop() {
 
 <details>
 <summary>❌ Bad — while com inicialização fora do loop</summary>
+<br>
 
 ```rust
 let mut attempt = 0;
@@ -417,10 +436,11 @@ while attempt < MAX_RETRIES {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — loop com break value</summary>
+<br>
 
 ```rust
 let connection = loop {

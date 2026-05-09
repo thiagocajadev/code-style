@@ -1,7 +1,3 @@
----
-title: "Visual Density"
----
-
 # Visual Density
 
 > Escopo: Go 1.26.
@@ -14,6 +10,7 @@ uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
 <summary>❌ Bad — bloco sem separação entre grupos lógicos</summary>
+<br>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -36,10 +33,11 @@ func processOrder(ctx context.Context, orderID int64) (*Order, error) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — grupos separados por linha em branco; return separado do último grupo</summary>
+<br>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -73,6 +71,7 @@ A linha de `return` nomeia o resultado. Um blank antes do return separa a saída
 
 <details>
 <summary>❌ Bad — return com lógica inline, sem separação</summary>
+<br>
 
 ```go
 func buildOrderSummary(orders []Order) OrderSummary {
@@ -86,10 +85,11 @@ func buildOrderSummary(orders []Order) OrderSummary {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — resultado calculado antes, return limpo</summary>
+<br>
 
 ```go
 func buildOrderSummary(orders []Order) OrderSummary {
@@ -112,6 +112,7 @@ entre grupos lógicos (identificação, configuração, dependências).
 
 <details>
 <summary>❌ Bad — campos sem separação lógica</summary>
+<br>
 
 ```go
 type OrderService struct {
@@ -127,10 +128,11 @@ type OrderService struct {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — campos agrupados por responsabilidade</summary>
+<br>
 
 ```go
 type OrderService struct {
@@ -155,6 +157,7 @@ separada por uma linha em branco.
 
 <details>
 <summary>❌ Bad — fases misturadas, sem separação</summary>
+<br>
 
 ```go
 func generateInvoice(ctx context.Context, orderID int64) (*Invoice, error) {
@@ -179,10 +182,11 @@ func generateInvoice(ctx context.Context, orderID int64) (*Invoice, error) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases distintas separadas por linha em branco</summary>
+<br>
 
 ```go
 func generateInvoice(ctx context.Context, orderID int64) (*Invoice, error) {
@@ -223,6 +227,7 @@ Agrupe importações em blocos: stdlib, externos, internos. `goimports` faz isso
 
 <details>
 <summary>✅ Good — importações em 3 grupos separados por linha em branco</summary>
+<br>
 
 ```go
 import (
@@ -247,6 +252,7 @@ Literals de um único campo podem ficar em uma linha.
 
 <details>
 <summary>❌ Bad — literal multi-campo inline</summary>
+<br>
 
 ```go
 user := User{ID: 42, Name: "Alice", Email: "alice@example.com", Role: "admin", Active: true}
@@ -254,10 +260,11 @@ user := User{ID: 42, Name: "Alice", Email: "alice@example.com", Role: "admin", A
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada campo em sua própria linha</summary>
+<br>
 
 ```go
 user := User{

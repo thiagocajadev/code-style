@@ -1,7 +1,3 @@
----
-title: "Formatting"
----
-
 # Formatting
 
 Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) legível de cima pra baixo, sem scroll horizontal.
@@ -10,6 +6,7 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured 
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```sql
 SELECT Id, Name, Email FROM Users WHERE Id = 1 AND IsActive = 1
@@ -17,10 +14,11 @@ SELECT Id, Name, Email FROM Users WHERE Id = 1 AND IsActive = 1
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```sql
 SELECT
@@ -42,6 +40,7 @@ Expressão inline é aceita somente quando há ≤3 campos E ≤1 condição. Qu
 
 <details>
 <summary>❌ Bad — inline com 4+ campos ou 2+ condições</summary>
+<br>
 
 ```sql
 SELECT Users.Id, Users.Name, Users.Email, Users.Phone FROM Users WHERE Users.IsActive = 1 AND Users.CreatedAt > '2024-01-01';
@@ -49,10 +48,11 @@ SELECT Users.Id, Users.Name, Users.Email, Users.Phone FROM Users WHERE Users.IsA
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inline só para operações triviais (≤3 campos, ≤1 condição)</summary>
+<br>
 
 ```sql
 SELECT Users.Id, Users.Name FROM Users WHERE Users.IsActive = 1;
@@ -66,6 +66,7 @@ DELETE FROM Logs WHERE Logs.Id = 123;
 
 <details>
 <summary>❌ Bad — alinhadas com SELECT, sem indentação</summary>
+<br>
 
 ```sql
 SELECT 
@@ -79,10 +80,11 @@ AND IsActive = 1
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — 2 espaços sob cada cláusula</summary>
+<br>
 
 ```sql
 SELECT
@@ -102,6 +104,7 @@ WHERE
 
 <details>
 <summary>❌ Bad — linha longa misturando JOIN e ON</summary>
+<br>
 
 ```sql
 SELECT Users.Name, Statuses.Description
@@ -111,10 +114,11 @@ WHERE Users.Id = 1;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ON na mesma linha do JOIN quando há uma única condição</summary>
+<br>
 
 ```sql
 SELECT
@@ -134,6 +138,7 @@ WHERE
 
 <details>
 <summary>❌ Bad — múltiplas condições em linha única</summary>
+<br>
 
 ```sql
 SELECT
@@ -149,10 +154,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma condição por linha, alinhadas após ON</summary>
+<br>
 
 ```sql
 SELECT
@@ -177,6 +183,7 @@ Uma condição por linha. AND e OR ao final da linha, nunca no início.
 
 <details>
 <summary>❌ Bad — AND no início da linha</summary>
+<br>
 
 ```sql
 SELECT
@@ -194,10 +201,11 @@ ORDER BY
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — AND ao final da linha, fluxo de cima pra baixo</summary>
+<br>
 
 ```sql
 SELECT

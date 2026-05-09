@@ -1,7 +1,3 @@
----
-title: "Swift"
----
-
 # Swift
 
 [![Swift](https://img.shields.io/badge/Swift-6.1-F05138?logo=swift&logoColor=white)](https://www.swift.org/documentation/)
@@ -69,7 +65,7 @@ vivem em [shared/mobile/](../shared/mobile/README.md):
 | [SLA](conventions/functions.md#sla--orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -81,7 +77,7 @@ vivem em [shared/mobile/](../shared/mobile/README.md):
 | [`let` por padrão](conventions/variables.md#var-onde-let-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
 
-<br />
+<br>
 
 **Controle de qualidade**: erros, concorrência e testes
 

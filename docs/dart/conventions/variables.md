@@ -1,7 +1,3 @@
----
-title: "Variables"
----
-
 # Variables
 
 > Escopo: Dart 3.7.
@@ -14,6 +10,7 @@ reatribuição.
 
 <details>
 <summary>❌ Bad — var desnecessário</summary>
+<br>
 
 ```dart
 var total = 0.0;
@@ -25,10 +22,11 @@ isActive = user.status == 'active';
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — final com inicialização direta</summary>
+<br>
 
 ```dart
 final total = items.fold(0.0, (sum, item) => sum + item.price);
@@ -42,6 +40,7 @@ final isActive = user.status == 'active';
 
 <details>
 <summary>❌ Bad — número mágico inline</summary>
+<br>
 
 ```dart
 bool shouldRetry(int attempt) {
@@ -51,10 +50,11 @@ bool shouldRetry(int attempt) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — constante nomeada com intenção</summary>
+<br>
 
 ```dart
 const maxRetries = 3;
@@ -70,6 +70,7 @@ bool shouldRetry(int attempt) {
 
 <details>
 <summary>❌ Bad — nullable onde o valor sempre existirá</summary>
+<br>
 
 ```dart
 class OrderService {
@@ -83,10 +84,11 @@ class OrderService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — late final declara intenção sem nullable</summary>
+<br>
 
 ```dart
 class OrderService {
@@ -104,6 +106,7 @@ class OrderService {
 
 <details>
 <summary>❌ Bad — literais inline sem contexto</summary>
+<br>
 
 ```dart
 if (user.role == 'admin') { ... }
@@ -115,10 +118,11 @@ final discount = price * 0.15;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — constantes nomeadas com intenção</summary>
+<br>
 
 ```dart
 const adminRole = 'admin';
@@ -141,6 +145,7 @@ função e em declarações públicas de API.
 
 <details>
 <summary>❌ Bad — anotação redundante em variável local</summary>
+<br>
 
 ```dart
 final List<String> names = ['Alice', 'Bob'];
@@ -150,10 +155,11 @@ final int count = items.length;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inferência onde é óbvio; anotação em APIs</summary>
+<br>
 
 ```dart
 final names = ['Alice', 'Bob'];       // List<String> inferido

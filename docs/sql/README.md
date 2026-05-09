@@ -1,7 +1,3 @@
----
-title: "SQL"
----
-
 # SQL
 
 Convenções SQL focadas em legibilidade e manutenção. Os exemplos usam SQL Server como referência; diferenças com PostgreSQL são destacadas onde relevantes.
@@ -58,7 +54,7 @@ Idiomas e recursos específicos de cada banco de dados.
 | [Objetos nomeados](conventions/naming.md#prefixos-de-objetos)                                                | `SP_`, `FN_`, `IX_`, `VW_`: prefixo declara a intenção                     |
 | [Constraints nomeadas](conventions/naming.md#constraints-nomeadas)                                           | `PK_`, `FK_`, `UQ_`, `CK_`: toda constraint tem nome explícito             |
 
-<br />
+<br>
 
 **Estrutura**: organização de queries complexas
 
@@ -70,7 +66,7 @@ Idiomas e recursos específicos de cada banco de dados.
 | [CTE vs temp table](conventions/advanced/advanced.md#ctes-encadeadas)                                        | CTE para leitura simples; temp table (`#`) para reuso e performance         |
 | [Filtros antecipados](conventions/crud.md#filtros-antecipados)                                               | WHERE na tabela principal antes dos JOINs                                   |
 
-<br />
+<br>
 
 **Performance e integridade**: otimizações e restrições
 

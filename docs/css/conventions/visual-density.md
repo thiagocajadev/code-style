@@ -1,7 +1,3 @@
----
-title: "Visual density: CSS"
----
-
 # Visual density: CSS
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar o que pertence junto, separar o que é distinto.
@@ -12,6 +8,7 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 <details>
 <summary>❌ Bad — regras coladas, sem respiro entre blocos</summary>
+<br>
 
 ```css
 .card {
@@ -30,10 +27,11 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma linha em branco entre cada regra</summary>
+<br>
 
 ```css
 .card {
@@ -62,6 +60,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 <details>
 <summary>❌ Bad — propriedades longas sem separação entre grupos</summary>
+<br>
 
 ```css
 .modal {
@@ -83,10 +82,11 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — grupos separados, cada responsabilidade legível</summary>
+<br>
 
 ```css
 .modal {
@@ -117,6 +117,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 <details>
 <summary>❌ Bad — @media colados, sem separação visual</summary>
+<br>
 
 ```css
 .hero {
@@ -139,10 +140,11 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma linha em branco entre cada bloco</summary>
+<br>
 
 ```css
 .hero {
@@ -173,6 +175,7 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 
 <details>
 <summary>❌ Bad — tudo colado, hierarquia difícil de ler</summary>
+<br>
 
 ```css
 .nav {
@@ -194,10 +197,11 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada bloco aninhado separado, hierarquia visível</summary>
+<br>
 
 ```css
 .nav {

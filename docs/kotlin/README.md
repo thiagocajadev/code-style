@@ -1,7 +1,3 @@
----
-title: "Kotlin"
----
-
 # Kotlin
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.2-7F52FF?logo=kotlin&logoColor=white)](https://kotlinlang.org/docs/home.html)
@@ -71,7 +67,7 @@ Kotlin é a linguagem principal para **Android** nativo. Os fundamentos cross-pl
 | [SLA](conventions/methods.md#sla--orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -83,7 +79,7 @@ Kotlin é a linguagem principal para **Android** nativo. Os fundamentos cross-pl
 | [`val` por padrão](conventions/variables.md#var-onde-val-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
 
-<br />
+<br>
 
 **Controle de qualidade**: erros, coroutines e testes
 

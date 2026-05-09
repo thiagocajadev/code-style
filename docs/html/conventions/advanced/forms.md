@@ -1,7 +1,3 @@
----
-title: "Forms"
----
-
 # Forms
 
 > Escopo: HTML. Idiomas específicos deste ecossistema.
@@ -16,6 +12,7 @@ desaparece ao digitar e tem contraste insuficiente.
 
 <details>
 <summary>❌ Bad — sem label, placeholder como único texto</summary>
+<br>
 
 ```html
 <input type="text" placeholder="First name" />
@@ -25,10 +22,11 @@ desaparece ao digitar e tem contraste insuficiente.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — label explícita com for/id; placeholder complementa</summary>
+<br>
 
 ```html
 <label for="first-name">First name</label>
@@ -50,6 +48,7 @@ recomendado para seções de formulário com múltiplos campos.
 
 <details>
 <summary>❌ Bad — grupo de radio sem fieldset, sem contexto semântico</summary>
+<br>
 
 ```html
 <p>Shipping method</p>
@@ -61,10 +60,11 @@ recomendado para seções de formulário com múltiplos campos.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fieldset + legend contextualiza o grupo</summary>
+<br>
 
 ```html
 <fieldset>
@@ -91,6 +91,7 @@ contextual, sem JavaScript adicional.
 
 <details>
 <summary>❌ Bad — type="text" para tudo</summary>
+<br>
 
 ```html
 <input type="text" name="email" />
@@ -102,10 +103,11 @@ contextual, sem JavaScript adicional.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo correto para cada dado</summary>
+<br>
 
 ```html
 <input type="email" name="email" autocomplete="email" />
@@ -125,6 +127,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 
 <details>
 <summary>❌ Bad — validação só em JS, sem atributos nativos</summary>
+<br>
 
 ```html
 <input type="text" id="username" name="username" />
@@ -133,10 +136,11 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — atributos nativos + mensagem de erro acessível</summary>
+<br>
 
 ```html
 <label for="username">Username</label>

@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
@@ -30,6 +26,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 
 <details>
 <summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<br>
 
 ```js
 test('applies discount', () => {
@@ -39,10 +36,11 @@ test('applies discount', () => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — arrange, act e assert separados</summary>
+<br>
 
 ```js
 test('applies 10% discount to order price', () => {
@@ -63,6 +61,7 @@ test('applies 10% discount to order price', () => {
 
 <details>
 <summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<br>
 
 ```js
 test('formats full name', () => {
@@ -77,10 +76,11 @@ test('returns active users only', () => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<br>
 
 ```js
 test('formats full name', () => {
@@ -110,6 +110,7 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome da funç
 
 <details>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<br>
 
 ```js
 test('test 1', () => { /* ... */ });
@@ -120,10 +121,11 @@ test('applyDiscount function', () => { /* ... */ });
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cenário + resultado esperado, sem prefixo</summary>
+<br>
 
 ```js
 test('applies discount when order total exceeds minimum', () => { /* ... */ });
@@ -140,6 +142,7 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funci
 
 <details>
 <summary>❌ Bad — estado mutável compartilhado entre testes</summary>
+<br>
 
 ```js
 let order;
@@ -161,10 +164,11 @@ test('applies discount to order', () => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<br>
 
 ```js
 test('creates order with generated id', () => {
@@ -194,6 +198,7 @@ Testar que um erro foi lançado é diferente de testar qual erro foi lançado. `
 
 <details>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<br>
 
 ```js
 test('throws on missing order', async () => {
@@ -207,10 +212,11 @@ test('throws on missing order', async () => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — assert.rejects com matcher de tipo</summary>
+<br>
 
 ```js
 test('throws NotFoundError when order does not exist', async () => {

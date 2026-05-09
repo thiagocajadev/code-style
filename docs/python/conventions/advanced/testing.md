@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
@@ -16,6 +12,7 @@ está sendo testado.
 
 <details>
 <summary>❌ Bad — fases misturadas, intenção obscura</summary>
+<br>
 
 ```python
 def test_apply_discount():
@@ -24,10 +21,11 @@ def test_apply_discount():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar): fases explícitas</summary>
+<br>
 
 ```python
 def test_apply_discount_reduces_total():
@@ -47,6 +45,7 @@ O nome do teste e o assert precisam dizer o que falhou — sem precisar inspecio
 
 <details>
 <summary>❌ Bad — assert genérico, mensagem de falha inútil</summary>
+<br>
 
 ```python
 def test_user():
@@ -57,10 +56,11 @@ def test_user():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — assert expressivo com campo específico</summary>
+<br>
 
 ```python
 def test_create_user_sets_email():
@@ -78,6 +78,7 @@ os testes recebem por injeção de parâmetro.
 
 <details>
 <summary>❌ Bad — setup duplicado em cada teste</summary>
+<br>
 
 ```python
 def test_order_total():
@@ -99,10 +100,11 @@ def test_order_with_discount():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fixture compartilhada, sem duplicação</summary>
+<br>
 
 ```python
 import pytest
@@ -134,6 +136,7 @@ Verificar o tipo não basta — valide a mensagem quando ela carrega a intençã
 
 <details>
 <summary>❌ Bad — captura genérica sem verificação da causa</summary>
+<br>
 
 ```python
 def test_invalid_order():
@@ -145,10 +148,11 @@ def test_invalid_order():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pytest.raises com tipo e mensagem verificados</summary>
+<br>
 
 ```python
 import pytest
@@ -167,6 +171,7 @@ configure `asyncio_mode = "auto"` no `pyproject.toml`.
 
 <details>
 <summary>❌ Bad — coroutine não aguardada, teste passa sem executar</summary>
+<br>
 
 ```python
 def test_fetch_user():
@@ -177,10 +182,11 @@ def test_fetch_user():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pytest.mark.asyncio aguarda a coroutine</summary>
+<br>
 
 ```python
 import pytest

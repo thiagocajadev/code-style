@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: Go 1.26.
@@ -26,6 +22,7 @@ Cada teste deve ter fases explícitas: Arrange (preparar), Act (executar), Asser
 
 <details>
 <summary>❌ Bad — fases misturadas, sem separação visual</summary>
+<br>
 
 ```go
 func TestApplyDiscount(t *testing.T) {
@@ -44,10 +41,11 @@ func TestApplyDiscount(t *testing.T) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — table-driven + AAA + testify</summary>
+<br>
 
 ```go
 func TestApplyDiscount(t *testing.T) {
@@ -86,6 +84,7 @@ Use `assert` para verificações adicionais onde a execução pode continuar.
 
 <details>
 <summary>✅ Good — require para precondição, assert para verificações</summary>
+<br>
 
 ```go
 func TestCreateOrder(t *testing.T) {
@@ -115,6 +114,7 @@ na suite de testes. Prefira fakes a mocks gerados automaticamente para lógica s
 
 <details>
 <summary>❌ Bad — dependência concreta no teste, impossível isolar</summary>
+<br>
 
 ```go
 func TestOrderService(t *testing.T) {
@@ -127,10 +127,11 @@ func TestOrderService(t *testing.T) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — interface + fake em memória para testes unitários</summary>
+<br>
 
 ```go
 // em order/service.go — interface mínima
@@ -190,6 +191,7 @@ sentinel errors e `assert.ErrorAs` para tipos customizados.
 
 <details>
 <summary>✅ Good — happy path + error path + edge case</summary>
+<br>
 
 ```go
 func TestValidateOrder(t *testing.T) {
@@ -241,6 +243,7 @@ apareçam na linha do teste, não no helper.
 
 <details>
 <summary>✅ Good — helper com t.Helper()</summary>
+<br>
 
 ```go
 func buildTestOrder(t *testing.T, overrides ...func(*Order)) Order {

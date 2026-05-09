@@ -1,7 +1,3 @@
----
-title: "Async"
----
-
 # Async
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
@@ -16,6 +12,7 @@ Toda função `async` retorna uma `Promise`. O tipo do retorno deve declarar o q
 
 <details>
 <summary>❌ Bad — return type implícito em função async exportada</summary>
+<br>
 
 ```ts
 export async function findUserById(id: string) {
@@ -26,10 +23,11 @@ export async function findUserById(id: string) {
 
 </details>
 
-<br />
+<br>
 
 <details>
-<summary>✅ Good — Promise&lt;T&gt; explícito</summary>
+<summary>✅ Good — Promise<T> explícito</summary>
+<br>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -52,6 +50,7 @@ infere cada posição corretamente.
 
 <details>
 <summary>❌ Bad — await sequencial quando não há dependência</summary>
+<br>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -67,10 +66,11 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Promise.all com tipos preservados</summary>
+<br>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -99,6 +99,7 @@ caller, que sabe o shape esperado, sem usar `any`.
 
 <details>
 <summary>❌ Bad — fetch direto com any espalhado pelo código</summary>
+<br>
 
 ```ts
 // user.service.ts
@@ -114,10 +115,11 @@ async function fetchUser(id: string) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cliente genérico, caller declara o tipo esperado</summary>
+<br>
 
 ```ts
 // api.client.ts
@@ -178,6 +180,7 @@ resolvidos. Use `Promise.all` para aguardar.
 
 <details>
 <summary>❌ Bad — map com async retorna Promise[], não os valores</summary>
+<br>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
@@ -193,10 +196,11 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Promise.all resolve o array de promises</summary>
+<br>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {

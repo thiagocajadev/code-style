@@ -1,7 +1,3 @@
----
-title: "Async"
----
-
 # Async
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
@@ -14,6 +10,7 @@ Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmo
 
 <details>
 <summary>❌ Bad — Async Sub fora de event handler</summary>
+<br>
 
 ```vbnet
 ' caller não pode aguardar, exceções são indetectáveis
@@ -28,10 +25,11 @@ SavePurchaseAsync(purchase)  ' não há como saber se concluiu ou falhou
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Async Function: aguardável, exceções propagam corretamente</summary>
+<br>
 
 ```vbnet
 Public Async Function SavePurchaseAsync(purchase As Purchase) As Task
@@ -58,6 +56,7 @@ End Sub
 
 <details>
 <summary>❌ Bad — .Result e .Wait() bloqueiam e causam deadlock</summary>
+<br>
 
 ```vbnet
 Public Function GetPurchase(id As Guid) As Purchase
@@ -73,10 +72,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Await propaga o contexto corretamente</summary>
+<br>
 
 ```vbnet
 Public Async Function GetPurchaseAsync(id As Guid) As Task(Of Purchase)
@@ -97,6 +97,7 @@ Chamadas de **I/O** (Input/Output, Entrada/Saída) sem dependência entre si dev
 
 <details>
 <summary>❌ Bad — chamadas independentes em sequência</summary>
+<br>
 
 ```vbnet
 Public Async Function GetDashboardAsync(userId As Guid) As Task(Of Dashboard)
@@ -112,10 +113,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Task.WhenAll dispara em paralelo</summary>
+<br>
 
 ```vbnet
 Public Async Function GetDashboardAsync(userId As Guid) As Task(Of Dashboard)
@@ -138,6 +140,7 @@ Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuári
 
 <details>
 <summary>✅ Good — ConfigureAwait(False) em código de biblioteca</summary>
+<br>
 
 ```vbnet
 ' em uma biblioteca de acesso a dados
@@ -153,10 +156,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sem ConfigureAwait em code-behind (contexto necessário)</summary>
+<br>
 
 ```vbnet
 ' em Windows Forms ou WebForms: contexto necessário para atualizar controles
@@ -177,6 +181,7 @@ Async é contagioso. Quando um método torna-se `Async`, seus callers devem torn
 
 <details>
 <summary>❌ Bad — mistura síncrono/assíncrono na cadeia</summary>
+<br>
 
 ```vbnet
 Public Function GetSummary(purchaseId As Guid) As PurchaseSummary
@@ -189,10 +194,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cadeia async até o ponto de entrada</summary>
+<br>
 
 ```vbnet
 Public Async Function GetSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)

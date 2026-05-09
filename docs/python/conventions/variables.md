@@ -1,7 +1,3 @@
----
-title: "Variables"
----
-
 # Variables
 
 Python não tem `const` nativo. Use `Final` para sinalizar que uma variável não deve ser reatribuída.
@@ -21,6 +17,7 @@ Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo
 
 <details>
 <summary>❌ Bad — constante sem tipo, reatribuível sem aviso</summary>
+<br>
 
 ```python
 MAX_RETRIES = 3
@@ -31,10 +28,11 @@ MAX_RETRIES = 5  # reatribuição silenciosa
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Final sinaliza intenção ao type checker</summary>
+<br>
 
 ```python
 from typing import Final
@@ -49,6 +47,7 @@ API_URL: Final = "https://api.example.com"
 
 <details>
 <summary>❌ Bad — objeto de valor mutável por padrão</summary>
+<br>
 
 ```python
 class Money:
@@ -62,10 +61,11 @@ price.amount = 0  # alteração acidental sem aviso
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — frozen=True garante imutabilidade</summary>
+<br>
 
 ```python
 from dataclasses import dataclass
@@ -88,6 +88,7 @@ um efeito colateral invisível e difícil de rastrear. Prefira retornar um novo 
 
 <details>
 <summary>❌ Bad — mutação acoplada e difícil de rastrear</summary>
+<br>
 
 ```python
 def apply_discount(order):
@@ -97,10 +98,11 @@ def apply_discount(order):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<br>
 
 ```python
 def apply_discount(order):
@@ -121,6 +123,7 @@ Números e strings soltos no código não dizem nada. Constantes nomeadas tornam
 
 <details>
 <summary>❌ Bad — o que significa 18? e 86400?</summary>
+<br>
 
 ```python
 if user.age >= 18:
@@ -134,10 +137,11 @@ time.sleep(86400)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — constantes nomeadas</summary>
+<br>
 
 ```python
 from typing import Final
@@ -164,6 +168,7 @@ Python 3.14 (PEP 649), forward references não precisam mais de aspas.
 
 <details>
 <summary>❌ Bad — sintaxe legada, verbose</summary>
+<br>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -180,10 +185,11 @@ def load_config() -> Dict[str, str]:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sintaxe moderna, sem imports extras</summary>
+<br>
 
 ```python
 def find_user(user_id: int) -> User | None:
@@ -206,6 +212,7 @@ objeto `Template` que pode ser sanitizado antes de produzir a string final.
 
 <details>
 <summary>❌ Bad — f-string em contexto sensível a injeção</summary>
+<br>
 
 ```python
 def build_query(user_input: str) -> str:
@@ -216,10 +223,11 @@ def build_query(user_input: str) -> str:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — t-string para contextos que exigem sanitização</summary>
+<br>
 
 ```python
 from string.templatelib import Template
@@ -250,6 +258,7 @@ def build_safe_query(user_input: str) -> Template:
 
 <details>
 <summary>❌ Bad — os.path e shutil fragmentados</summary>
+<br>
 
 ```python
 import os
@@ -262,10 +271,11 @@ if os.path.exists(config_path):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pathlib.Path fluente e legível</summary>
+<br>
 
 ```python
 from pathlib import Path

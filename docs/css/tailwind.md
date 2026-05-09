@@ -1,7 +1,3 @@
----
-title: "Tailwind"
----
-
 # Tailwind
 
 Tailwind é utility-first. A produtividade vem de não sair do **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto), mas há um limite.
@@ -13,6 +9,7 @@ Uma lista longa de utilities não é componente: é o estado antes de extrair um
 
 <details>
 <summary>❌ Bad — lista inlegível, sem nome, não reutilizável</summary>
+<br>
 
 ```html
 <button class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
@@ -22,10 +19,11 @@ Uma lista longa de utilities não é componente: é o estado antes de extrair um
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — utilities extraídas para componente com @layer</summary>
+<br>
 
 ```css
 /* components/button.css */
@@ -55,6 +53,7 @@ tokens no config gera classes semânticas e mantém o design system consistente.
 
 <details>
 <summary>❌ Bad — valores arbitrários, magic numbers espalhados</summary>
+<br>
 
 ```html
 <div class="text-[13px] bg-[#1e293b] rounded-[6px] p-[18px]">...</div>
@@ -62,10 +61,11 @@ tokens no config gera classes semânticas e mantém o design system consistente.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tokens no tailwind.config, classes semânticas no HTML</summary>
+<br>
 
 ```js
 // tailwind.config.js

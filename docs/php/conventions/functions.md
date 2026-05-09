@@ -1,7 +1,3 @@
----
-title: "Functions"
----
-
 # Functions
 
 > Escopo: PHP 8.4.
@@ -24,6 +20,7 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 
 <details>
 <summary>❌ Bad — god function: orquestra e implementa ao mesmo tempo</summary>
+<br>
 
 ```php
 public function processOrder(array $data): void
@@ -52,10 +49,11 @@ public function processOrder(array $data): void
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — orquestrador delega para funções de um nível abaixo</summary>
+<br>
 
 ```php
 public function processOrder(CreateOrderInput $input): Order
@@ -103,6 +101,7 @@ Atribua a uma variável nomeada antes de retornar.
 
 <details>
 <summary>❌ Bad — lógica inline no return</summary>
+<br>
 
 ```php
 public function buildSummary(array $orders): array
@@ -117,10 +116,11 @@ public function buildSummary(array $orders): array
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — explaining return: resultado nomeado antes do return</summary>
+<br>
 
 ```php
 public function buildSummary(array $orders): array
@@ -143,6 +143,7 @@ parâmetros opcionais.
 
 <details>
 <summary>❌ Bad — chamada com múltiplos literais sem contexto</summary>
+<br>
 
 ```php
 $order = createOrder(42, 150.0, 'BRL', true, false, null);
@@ -151,10 +152,11 @@ $order = createOrder(42, 150.0, 'BRL', true, false, null);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — named arguments tornam a chamada autodocumentada</summary>
+<br>
 
 ```php
 $order = createOrder(
@@ -175,6 +177,7 @@ Com 4 ou mais parâmetros, agrupe em um objeto de entrada.
 
 <details>
 <summary>❌ Bad — muitos parâmetros na assinatura</summary>
+<br>
 
 ```php
 function createOrder(
@@ -189,10 +192,11 @@ function createOrder(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — objeto de entrada agrupa parâmetros relacionados</summary>
+<br>
 
 ```php
 final readonly class CreateOrderInput
@@ -218,6 +222,7 @@ Use arrow functions para transformações curtas em `array_map`, `array_filter`,
 
 <details>
 <summary>❌ Bad — closures tradicionais: verbosas e exigem `use` explícito</summary>
+<br>
 
 ```php
 $multiplier = 1.1;
@@ -243,10 +248,11 @@ usort($orders, function (Order $a, Order $b) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — arrow functions para pipelines de transformação</summary>
+<br>
 
 ```php
 $activeOrderIDs = array_map(
@@ -272,6 +278,7 @@ abaixo, na ordem em que são chamados.
 
 <details>
 <summary>❌ Bad — helpers antes do orquestrador: leitura de baixo para cima</summary>
+<br>
 
 ```php
 final class InvoiceService
@@ -303,10 +310,11 @@ final class InvoiceService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — leitura top-down natural</summary>
+<br>
 
 ```php
 final class InvoiceService

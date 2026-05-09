@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: HTML. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
@@ -18,6 +14,7 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 
 <details>
 <summary>❌ Bad — script no head sem defer, bloqueia o parse</summary>
+<br>
 
 ```html
 <head>
@@ -28,10 +25,11 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — defer para scripts dependentes de DOM; async para scripts independentes</summary>
+<br>
 
 ```html
 <head>
@@ -59,6 +57,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 <details>
 <summary>❌ Bad — todas as imagens carregam imediatamente</summary>
+<br>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" />
@@ -69,10 +68,11 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — hero sem lazy (above the fold), demais com lazy</summary>
+<br>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" fetchpriority="high" />
@@ -90,6 +90,7 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 
 <details>
 <summary>❌ Bad — fonte crítica descoberta tarde, origem externa sem preconnect</summary>
+<br>
 
 ```html
 <head>
@@ -100,10 +101,11 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — preconnect abre conexão, preload antecipa recursos críticos</summary>
+<br>
 
 ```html
 <head>
@@ -131,6 +133,7 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 <details>
 <summary>❌ Bad — sem dimensões, layout shift ao carregar</summary>
+<br>
 
 ```html
 <img src="/img/product.jpg" alt="Product photo" loading="lazy" />
@@ -138,10 +141,11 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — dimensões declaradas, CSS mantém proporção</summary>
+<br>
 
 ```html
 <img

@@ -1,7 +1,3 @@
----
-title: "Visual Density: C#"
----
-
 # Visual Density: C#
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em C#/.NET.
@@ -12,6 +8,7 @@ Métodos com múltiplos passos (validar, buscar, transformar, persistir, respond
 
 <details>
 <summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
+<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -29,10 +26,11 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases separadas, fluxo legível de cima pra baixo</summary>
+<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -61,6 +59,7 @@ Uma `var` nomeada acima do `return` explica o valor retornado. Quando há **apen
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
+<br>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -73,10 +72,11 @@ public int MapErrorToStatus(DomainError error)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — par tight</summary>
+<br>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -94,6 +94,7 @@ Quando o `return` é precedido por dois ou mais passos distintos, a linha em bra
 
 <details>
 <summary>✅ Good — 2 preps + return separado</summary>
+<br>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -120,6 +121,7 @@ Uma variável seguida do `if` que a valida formam par semântico. A linha em bra
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
+<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -130,10 +132,11 @@ var invoice = BuildInvoice(order);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -150,6 +153,7 @@ Três declarações simples consecutivas (const, readonly, var com literal) form
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
+<br>
 
 ```csharp
 public static class DomainLimits
@@ -163,10 +167,11 @@ public static class DomainLimits
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — trio tight</summary>
+<br>
 
 ```csharp
 public static class DomainLimits
@@ -185,6 +190,7 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 
 <details>
 <summary>❌ Bad — dependência direta partida</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -202,10 +208,11 @@ public string BuildShippingLabel(Order order)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — par semântico tight</summary>
+<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -228,6 +235,7 @@ Em métodos de teste, o `Assert` é fase distinta. A linha em branco antes dele 
 
 <details>
 <summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -242,10 +250,11 @@ public void AppliesTenPercentDiscountToPrice()
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Assert separado, assertion como fase própria</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -267,6 +276,7 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 
 <details>
 <summary>❌ Bad — interpolação densa inline, sem semântica nas partes</summary>
+<br>
 
 ```csharp
 public string BuildShippingMessage(Order order)
@@ -277,10 +287,11 @@ public string BuildShippingMessage(Order order)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<br>
 
 ```csharp
 public string BuildShippingMessage(Order order)

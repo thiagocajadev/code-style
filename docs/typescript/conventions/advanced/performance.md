@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: TypeScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
@@ -19,6 +15,7 @@ valores que são apenas constantes de domínio, `as const` não gera nada em run
 
 <details>
 <summary>❌ Bad — enum gera objeto runtime desnecessário</summary>
+<br>
 
 ```ts
 enum OrderStatus {
@@ -42,10 +39,11 @@ function getLabel(status: OrderStatus): string {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — const object + union type: sem overhead runtime</summary>
+<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -77,6 +75,7 @@ type guard valida o valor explicitamente: custo mínimo, contrato real.
 
 <details>
 <summary>❌ Bad — as T aceita sem verificar</summary>
+<br>
 
 ```ts
 async function fetchOrder(id: string): Promise<Order> {
@@ -89,10 +88,11 @@ async function fetchOrder(id: string): Promise<Order> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — type guard valida o contrato na fronteira</summary>
+<br>
 
 ```ts
 function isOrder(value: unknown): value is Order {
@@ -123,6 +123,7 @@ Defina a profundidade máxima explicitamente.
 
 <details>
 <summary>❌ Bad — recursão ilimitada, compilador infere profundidade arbitrária</summary>
+<br>
 
 ```ts
 type DeepPartial<T> = {
@@ -134,10 +135,11 @@ type Config = DeepPartial<ApplicationConfig>; // pode atingir dezenas de níveis
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — profundidade máxima explícita</summary>
+<br>
 
 ```ts
 type DeepPartial<T, Depth extends number = 3> = Depth extends 0
@@ -157,7 +159,8 @@ type DeepPartial<T, Depth extends number = 3> = Depth extends 0
 literais para uso em narrowing, enquanto garante que todas as chaves estão presentes.
 
 <details>
-<summary>❌ Bad — Record&lt;&gt; alarga os tipos, perde literais</summary>
+<summary>❌ Bad — Record<> alarga os tipos, perde literais</summary>
+<br>
 
 ```ts
 const DISCOUNT_RATES: Record<string, number> = {
@@ -172,10 +175,11 @@ const DISCOUNT_RATES: Record<string, number> = {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — satisfies valida sem alargar</summary>
+<br>
 
 ```ts
 type CustomerTier = "premium" | "standard" | "trial";

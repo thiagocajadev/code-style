@@ -1,7 +1,3 @@
----
-title: "Structure"
----
-
 # Structure
 
 **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) semântico usa o elemento correto para cada propósito. O elemento carrega significado, dispensa
@@ -14,6 +10,7 @@ uso, ele substitui o genérico.
 
 <details>
 <summary>❌ Bad — div soup, estrutura sem significado</summary>
+<br>
 
 ```html
 <div class="header">
@@ -35,10 +32,11 @@ uso, ele substitui o genérico.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — elementos semânticos, estrutura legível</summary>
+<br>
 
 ```html
 <header>
@@ -68,6 +66,7 @@ tamanho padrão.
 
 <details>
 <summary>❌ Bad — nível pulado, h3 sem h2 pai</summary>
+<br>
 
 ```html
 <h1>Blog</h1>
@@ -77,10 +76,11 @@ tamanho padrão.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — hierarquia contínua, sem saltos</summary>
+<br>
 
 ```html
 <h1>Blog</h1>
@@ -101,6 +101,7 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 
 <details>
 <summary>❌ Bad — sem lang, charset fora de posição</summary>
+<br>
 
 ```html
 <!DOCTYPE html>
@@ -114,10 +115,11 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lang e charset corretos, na ordem certa</summary>
+<br>
 
 ```html
 <!DOCTYPE html>
@@ -140,6 +142,7 @@ para parecer mais semântico.
 
 <details>
 <summary>❌ Bad — section sem heading, usado como div</summary>
+<br>
 
 ```html
 <section class="wrapper">
@@ -152,10 +155,11 @@ para parecer mais semântico.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — section com heading, div para layout</summary>
+<br>
 
 ```html
 <section aria-labelledby="featured-heading">

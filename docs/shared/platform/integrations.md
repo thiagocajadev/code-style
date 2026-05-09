@@ -1,7 +1,3 @@
----
-title: "Formatos e Integrações"
----
-
 # Formatos e Integrações
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -105,6 +101,7 @@ representa uma relação entre eles.</sub>
 
 <details>
 <summary>❌ Bad — busca todos os países, filtra no cliente, query inline</summary>
+<br>
 
 ```js
 const response = await fetch("https://countries.trevorblades.com/", {
@@ -121,10 +118,11 @@ const country = json.data.countries.find((c) => c.code === "BR");
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
+<br>
 
 ```js
 const GET_COUNTRY = `
@@ -166,7 +164,7 @@ async function fetchCountry(code) {
 
 </details>
 
-<br />
+<br>
 
 ---
 
@@ -245,6 +243,7 @@ navegação retornar nulo silenciosamente. Em Node.js, a biblioteca
 
 <details>
 <summary>❌ Bad: getElementsByTagName ignora namespace — retorna null sem erro</summary>
+<br>
 
 ```js
 import { DOMParser } from "@xmldom/xmldom";
@@ -257,10 +256,11 @@ const invoiceNumber = doc.getElementsByTagName("nNF")[0].textContent;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: getElementsByTagNameNS com namespace explícito e navegação segura</summary>
+<br>
 
 ```js
 import { DOMParser } from "@xmldom/xmldom";
@@ -284,7 +284,7 @@ function extractInvoiceNumber(xml) {
 
 </details>
 
-<br />
+<br>
 
 **Boas práticas ao consumir WebServices SOAP:**
 
@@ -314,6 +314,7 @@ registro (`|0000|`, `|C100|`).
 
 <details>
 <summary>❌ Bad: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
+<br>
 
 ```js
 const fields = line.replace(/^\||\|$/g, "").split("|");
@@ -325,10 +326,11 @@ const periodStart = fields[3];
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: parser dedicado com campos nomeados</summary>
+<br>
 
 ```js
 function parseRecord0000(line) {
@@ -355,6 +357,7 @@ manutenção de layout um risco.
 
 <details>
 <summary>❌ Bad: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
+<br>
 
 ```js
 const bankCode = line.slice(0, 3);
@@ -365,10 +368,11 @@ const companyRegistrationNumber = line.slice(18, 32); // CNPJ
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: layout como objeto, helper nomeado — posição e comprimento declarados juntos</summary>
+<br>
 
 ```js
 const CNAB240_HEADER = {
@@ -394,7 +398,7 @@ const companyRegistrationNumber = extractField(
 
 </details>
 
-<br />
+<br>
 
 **Boas práticas para arquivos texto:**
 
@@ -430,6 +434,7 @@ Estrutura mínima de uma etiqueta ZPL:
 
 <details>
 <summary>❌ Bad: ZPL montado por concatenação — posições e campos difíceis de manter</summary>
+<br>
 
 ```js
 const zpl =
@@ -448,10 +453,11 @@ port.write(zpl);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: template dedicado, campos via destructuring</summary>
+<br>
 
 ```js
 function buildProductLabel({ name: productName, barcode, lot: lotNumber }) {
@@ -474,7 +480,7 @@ port.write(label);
 
 </details>
 
-<br />
+<br>
 
 **Principais comandos ZPL:**
 
@@ -499,6 +505,7 @@ configurado, o processo aguarda indefinidamente se o equipamento não responder.
 
 <details>
 <summary>❌ Bad: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
+<br>
 
 ```js
 import { SerialPort } from "serialport";
@@ -514,10 +521,11 @@ parser.on("data", (rawLine) => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good: timeout explícito, porta fechada em todos os caminhos</summary>
+<br>
 
 ```js
 import { SerialPort } from "serialport";
@@ -553,7 +561,7 @@ function readWeight(path = "COM3") {
 
 </details>
 
-<br />
+<br>
 
 **Parâmetros comuns de configuração serial:**
 

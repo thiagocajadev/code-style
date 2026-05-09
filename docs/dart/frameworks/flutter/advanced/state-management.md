@@ -1,7 +1,3 @@
----
-title: "State Management"
----
-
 # State Management
 
 > Escopo: Flutter 3.29, Riverpod 2.x / Bloc 8.x.
@@ -27,6 +23,7 @@ dado) é modelado com sealed classes ou `AsyncValue`.
 
 <details>
 <summary>❌ Bad — I/O e lógica de negócio direto no build</summary>
+<br>
 
 ```dart
 class OrderListScreen extends StatefulWidget { ... }
@@ -58,10 +55,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — AsyncNotifier (Riverpod) separa lógica da UI</summary>
+<br>
 
 ```dart
 // notifier.dart
@@ -101,6 +99,7 @@ class OrderListScreen extends ConsumerWidget {
 
 <details>
 <summary>❌ Bad — múltiplos booleanos para estado</summary>
+<br>
 
 ```dart
 class OrdersState {
@@ -115,10 +114,11 @@ class OrdersState {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sealed class com exatamente 3 estados válidos</summary>
+<br>
 
 ```dart
 sealed class OrdersState {}

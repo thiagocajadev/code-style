@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: C#. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
@@ -36,6 +32,7 @@ execução do comportamento e verificação do resultado.
 
 <details>
 <summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -47,10 +44,11 @@ public void AppliesDiscount()
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — arrange, act e assert separados</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -73,6 +71,7 @@ public void AppliesTenPercentDiscountToOrderPrice()
 
 <details>
 <summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -91,10 +90,11 @@ public void ReturnsActiveUsersOnly()
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -127,6 +127,7 @@ vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecân
 
 <details>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -141,10 +142,11 @@ public void ApplyDiscount() { /* ... */ }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cenário + resultado esperado no título</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -165,6 +167,7 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funci
 
 <details>
 <summary>❌ Bad — campo estático mutável compartilhado entre testes</summary>
+<br>
 
 ```csharp
 public class OrderTests
@@ -193,10 +196,11 @@ public class OrderTests
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<br>
 
 ```csharp
 public class OrderTests
@@ -234,6 +238,7 @@ verifica o tipo, não apenas a presença.
 
 <details>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<br>
 
 ```csharp
 [Fact]
@@ -252,10 +257,11 @@ public async Task ThrowsOnMissingOrder()
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Assert.ThrowsAsync com tipo explícito</summary>
+<br>
 
 ```csharp
 [Fact]

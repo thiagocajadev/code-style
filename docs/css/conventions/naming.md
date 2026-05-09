@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 Nomes de classe descrevem **propósito** (o que o elemento representa no domínio da UI), não sua
@@ -11,6 +7,7 @@ aparência visual. Uma classe `.button--danger` sobrevive a uma mudança de cor.
 
 <details>
 <summary>❌ Bad — nome descreve aparência, quebra ao mudar o design</summary>
+<br>
 
 ```css
 .blue-header {
@@ -31,10 +28,11 @@ aparência visual. Uma classe `.button--danger` sobrevive a uma mudança de cor.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nome descreve papel, sobrevive a mudanças de design</summary>
+<br>
 
 ```css
 .heading--primary {
@@ -61,6 +59,7 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 
 <details>
 <summary>❌ Bad — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
+<br>
 
 ```html
 <div class="card featured">
@@ -84,10 +83,11 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — BEM: bloco__elemento--modificador</summary>
+<br>
 
 ```html
 <div class="card card--featured">
@@ -118,6 +118,7 @@ específico.
 
 <details>
 <summary>❌ Bad — IDs e seletores encadeados inflam a especificidade</summary>
+<br>
 
 ```css
 #app .container .card h2 {
@@ -130,10 +131,11 @@ específico.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — classes simples, especificidade baixa e previsível</summary>
+<br>
 
 ```css
 .card__title {

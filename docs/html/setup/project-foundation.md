@@ -1,7 +1,3 @@
----
-title: "Project Foundation: HTML"
----
-
 # Project Foundation: HTML
 
 Template base para novos projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: charset e viewport

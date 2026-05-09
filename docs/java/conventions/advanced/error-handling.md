@@ -1,7 +1,3 @@
----
-title: "Error Handling"
----
-
 # Error Handling
 
 > Escopo: Java 25 LTS. Idiomas específicos deste ecossistema.
@@ -23,6 +19,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 
 <details>
 <summary>❌ Bad — null, Optional vazio e objeto na mesma função com contrato inconsistente</summary>
+<br>
 
 ```java
 public Order processOrder(String orderId) {
@@ -39,10 +36,11 @@ public Order processOrder(String orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contrato consistente: lança exceção tipada em caso de falha</summary>
+<br>
 
 ```java
 public Order processOrder(String orderId) {
@@ -64,6 +62,7 @@ public Order processOrder(String orderId) {
 
 <details>
 <summary>❌ Bad — RuntimeException genérica, sem tipo, sem contrato</summary>
+<br>
 
 ```java
 public User findUser(String id) {
@@ -85,10 +84,11 @@ public Order processOrder(String orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — hierarquia de exceções tipada, contrato único</summary>
+<br>
 
 ```java
 // exceptions/AppException.java
@@ -140,6 +140,7 @@ public class InternalException extends AppException {
 
 <details>
 <summary>❌ Bad — captura, loga e retorna null</summary>
+<br>
 
 ```java
 public Product findProductById(String id) {
@@ -155,10 +156,11 @@ public Product findProductById(String id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — propaga com contexto, trata na fronteira</summary>
+<br>
 
 ```java
 public Product findProductById(String id) {
@@ -183,6 +185,7 @@ devem ser abertos em `try-with-resources`. Garante fechamento mesmo em caso de e
 
 <details>
 <summary>❌ Bad — fechamento manual em finally, propenso a erro</summary>
+<br>
 
 ```java
 public String readFile(Path path) throws IOException {
@@ -198,10 +201,11 @@ public String readFile(Path path) throws IOException {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — try-with-resources garante fechamento automático</summary>
+<br>
 
 ```java
 public String readFile(Path path) throws IOException {
@@ -218,6 +222,7 @@ public String readFile(Path path) throws IOException {
 
 <details>
 <summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
+<br>
 
 ```java
 public User getUser(String id) {
@@ -231,10 +236,11 @@ public User getUser(String id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<br>
 
 ```java
 public Optional<User> getUser(String id) {

@@ -1,7 +1,3 @@
----
-title: "System Design (avançado)"
----
-
 # System Design (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,7 +1,3 @@
----
-title: "Error Handling"
----
-
 # Error Handling
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
@@ -12,6 +8,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 
 <details>
 <summary>❌ Bad — null, undefined, false e objeto na mesma função</summary>
+<br>
 
 ```js
 function processOrder(order) {
@@ -32,10 +29,11 @@ if (result !== null) { /* ... */ }  // e undefined?
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
+<br>
 
 ```js
 function processOrder(order) {
@@ -56,6 +54,7 @@ function processOrder(order) {
 
 <details>
 <summary>❌ Bad — string solta, impossível tratar com instanceof</summary>
+<br>
 
 ```js
 async function findUser(id) {
@@ -71,10 +70,11 @@ async function findUser(id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — erros tipados, identificáveis e tratáveis</summary>
+<br>
 
 ```js
 async function findUser(id) {
@@ -92,6 +92,7 @@ async function findUser(id) {
 
 <details>
 <summary>❌ Bad — throw com string solta, sem tipo, sem contrato</summary>
+<br>
 
 ```js
 // errors.js — não existe, cada módulo lança o que quiser
@@ -115,10 +116,11 @@ async function processOrder(orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contrato único para todos os erros da aplicação</summary>
+<br>
 
 ```js
 // errors.js
@@ -187,6 +189,7 @@ export class InternalServerError extends BaseError {
 
 <details>
 <summary>❌ Bad — captura, loga e retorna null</summary>
+<br>
 
 ```js
 async function findProductById(id) {
@@ -207,10 +210,11 @@ async function findProductById(id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — propaga com contexto, trata na fronteira</summary>
+<br>
 
 ```js
 async function findProductById(id) {
@@ -239,6 +243,7 @@ async function findProductById(id) {
 
 <details>
 <summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
+<br>
 
 ```js
 function getUser(id) {
@@ -252,10 +257,11 @@ function getUser(id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<br>
 
 ```js
 function getUser(id) {

@@ -1,7 +1,3 @@
----
-title: "Observability"
----
-
 # Observability
 
 > Escopo: C#. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
@@ -17,6 +13,7 @@ Insights, etc.).
 
 <details>
 <summary>❌ Bad — interpolação destrói campos, perde stack trace</summary>
+<br>
 
 ```csharp
 _logger.LogInformation($"Order {order.Id} processed by {user.Id} — total: {order.Total}");
@@ -25,10 +22,11 @@ _logger.LogError($"Payment failed: {ex.Message} for order {order.Id}");
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — message templates: cada argumento vira campo estruturado</summary>
+<br>
 
 ```csharp
 _logger.LogInformation(
@@ -44,6 +42,7 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 
 <details>
 <summary>❌ Bad — LogInformation para tudo, sem distinção de severidade</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("Checkout started");
@@ -53,10 +52,11 @@ _logger.LogInformation("User {UserId} not found", userId);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nível correto por situação</summary>
+<br>
 
 ```csharp
 _logger.LogDebug("Checkout handler invoked for {CartId}", cartId);
@@ -72,6 +72,7 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 
 <details>
 <summary>❌ Bad — PII e credenciais em log</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("Login: {Email} {Password}", user.Email, user.Password);
@@ -81,10 +82,11 @@ _logger.LogInformation("Token issued: {Token}", token);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<br>
 
 ```csharp
 _logger.LogInformation("User {UserId} authenticated", user.Id);
@@ -104,6 +106,7 @@ requisição automaticamente.
 
 <details>
 <summary>❌ Bad — logs sem contexto de requisição</summary>
+<br>
 
 ```csharp
 public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, CancellationToken ct)
@@ -119,10 +122,11 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — correlationId enriquecido via LogContext para toda a request</summary>
+<br>
 
 ```csharp
 // Program.cs — middleware que enriquece o contexto de log

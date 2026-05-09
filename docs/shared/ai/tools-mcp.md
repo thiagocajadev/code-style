@@ -1,7 +1,3 @@
----
-title: "Tool Use e MCP (Uso de Ferramentas e Protocolo de Contexto de Modelo)"
----
-
 # Tool Use e MCP (Uso de Ferramentas e Protocolo de Contexto de Modelo)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,7 +1,3 @@
----
-title: "Quick Reference"
----
-
 # Quick Reference
 
 > Escopo: C#. Cheat-sheet das convenções; detalhes em `conventions/`.

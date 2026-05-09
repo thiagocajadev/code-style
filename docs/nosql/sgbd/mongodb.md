@@ -1,7 +1,3 @@
----
-title: "MongoDB"
----
-
 # MongoDB
 
 > Escopo: MongoDB 8.2. Referência: [mongodb.com/docs](https://www.mongodb.com/docs/manual/).
@@ -53,6 +49,7 @@ const playersCollection = database.collection('players');
 
 <details>
 <summary>❌ Bad — novo cliente por requisição: pool destruído e recriado a cada chamada</summary>
+<br>
 
 ```js
 // cria conexão, usa e fecha — sem reuso de pool
@@ -70,10 +67,11 @@ async function findTeam(teamId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cliente singleton; pool reutilizado em toda a aplicação</summary>
+<br>
 
 ```js
 // db.js — singleton exportado

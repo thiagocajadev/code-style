@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: Swift 6.1, Apple platforms.
@@ -24,6 +20,7 @@ alocações intermediárias. Instruments (Xcode) é a ferramenta de diagnóstico
 
 <details>
 <summary>❌ Bad — classe com ARC overhead desnecessário</summary>
+<br>
 
 ```swift
 class Coordinate {
@@ -40,10 +37,11 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de referê
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — struct: sem ARC, cópia eficiente</summary>
+<br>
 
 ```swift
 struct Coordinate {
@@ -60,6 +58,7 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de values,
 
 <details>
 <summary>❌ Bad — cada operação aloca array intermediário</summary>
+<br>
 
 ```swift
 func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
@@ -73,10 +72,11 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lazy adia operações sem alocação intermediária</summary>
+<br>
 
 ```swift
 func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
@@ -97,6 +97,7 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 
 <details>
 <summary>❌ Bad — closure captura self fortemente — memory leak</summary>
+<br>
 
 ```swift
 class OrderViewModel {
@@ -113,10 +114,11 @@ class OrderViewModel {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — [weak self] quebra o retain cycle</summary>
+<br>
 
 ```swift
 class OrderViewModel {

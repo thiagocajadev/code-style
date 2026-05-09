@@ -1,7 +1,3 @@
----
-title: "Security"
----
-
 # Security
 
 > Escopo: VB.NET (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
@@ -95,6 +91,7 @@ Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na 
 
 <details>
 <summary>❌ Bad — verificação manual de role no corpo</summary>
+<br>
 
 ```vbnet
 Public Class OrdersController
@@ -113,10 +110,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — atributo declarativo, action sem lógica de autorização</summary>
+<br>
 
 ```vbnet
 Public Class OrdersController

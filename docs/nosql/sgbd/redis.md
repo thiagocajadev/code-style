@@ -1,7 +1,3 @@
----
-title: "Redis"
----
-
 # Redis
 
 > Escopo: Redis 8.x. Referência: [redis.io/docs](https://redis.io/docs/latest/).
@@ -45,6 +41,7 @@ await client.connect();
 
 <details>
 <summary>❌ Bad — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
+<br>
 
 ```js
 const client = createClient({ url: 'redis://localhost:6379' });
@@ -54,10 +51,11 @@ await client.connect();
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — URL por variável de ambiente; handler de erro; connect aguardado</summary>
+<br>
 
 ```js
 import { createClient } from 'redis';
@@ -92,6 +90,7 @@ O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScr
 
 <details>
 <summary>❌ Bad — SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
+<br>
 
 ```js
 // cache sem TTL — acumula indefinidamente
@@ -106,10 +105,11 @@ const cached = JSON.parse(await client.get('team:profile:42'));
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
+<br>
 
 ```js
 const CACHE_TTL_SECONDS = 300; // 5 minutos
@@ -151,6 +151,7 @@ cache miss → busca no banco → salva no cache → retorna valor
 
 <details>
 <summary>✅ Good — cache-aside com TTL; sem duplicação de lógica de busca</summary>
+<br>
 
 ```js
 class TeamRepository {
@@ -226,6 +227,7 @@ Ideal para rankings, leaderboards e filas com prioridade.
 
 <details>
 <summary>✅ Good — leaderboard de gols com Sorted Set</summary>
+<br>
 
 ```js
 const LEADERBOARD_KEY = 'season:2026:top-scorers';

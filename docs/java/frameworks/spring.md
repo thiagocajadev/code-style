@@ -1,7 +1,3 @@
----
-title: "Spring Boot 4"
----
-
 # Spring Boot 4
 
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
@@ -16,6 +12,7 @@ negócio fica aqui.
 
 <details>
 <summary>❌ Bad — controller com lógica de negócio e acesso direto ao banco</summary>
+<br>
 
 ```java
 @RestController
@@ -41,10 +38,11 @@ public class OrderController {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — controller delega ao service; request e response são records tipados</summary>
+<br>
 
 ```java
 @Slf4j
@@ -84,6 +82,7 @@ Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos D
 
 <details>
 <summary>✅ Good — records como contrato de API</summary>
+<br>
 
 ```java
 // request
@@ -129,6 +128,7 @@ O service orquestra as regras de negócio. Não conhece HTTP nem detalhes de ban
 
 <details>
 <summary>✅ Good — service orquestra, não implementa detalhes de infra</summary>
+<br>
 
 ```java
 @Slf4j
@@ -187,6 +187,7 @@ pelo nome da classe — ou SQL nativo com `nativeQuery = true` — referencia a 
 
 <details>
 <summary>✅ Good — JPQL: referencia a entidade Java, alias expressivo</summary>
+<br>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -220,10 +221,11 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — SQL nativo: tabela real, padrão Tabela.coluna</summary>
+<br>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -262,6 +264,7 @@ de escrita.
 
 <details>
 <summary>❌ Bad — @Transactional no controller ou sem readOnly</summary>
+<br>
 
 ```java
 @Transactional // no controller — camada errada
@@ -275,10 +278,11 @@ public class OrderService { /* ... */ }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
+<br>
 
 ```java
 @Service
@@ -300,6 +304,7 @@ Centralize o mapeamento de exceções para respostas HTTP em um `@RestController
 
 <details>
 <summary>✅ Good — tratamento centralizado por tipo de exceção</summary>
+<br>
 
 ```java
 @Slf4j
@@ -338,6 +343,7 @@ Use `Pageable` e `Page<T>` para endpoints que retornam listas potencialmente gra
 
 <details>
 <summary>✅ Good — paginação via Pageable</summary>
+<br>
 
 ```java
 // controller

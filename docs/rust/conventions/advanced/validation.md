@@ -1,7 +1,3 @@
----
-title: "Validation"
----
-
 # Validation
 
 > Escopo: Rust 1.95.
@@ -26,6 +22,7 @@ apenas o tipo validado.
 
 <details>
 <summary>❌ Bad — String bruta repassada para o domínio</summary>
+<br>
 
 ```rust
 async fn create_order(email: String, amount: f64) -> anyhow::Result<Order> {
@@ -37,10 +34,11 @@ async fn create_order(email: String, amount: f64) -> anyhow::Result<Order> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo validado como contrato</summary>
+<br>
 
 ```rust
 pub struct ValidatedEmail(String);
@@ -84,6 +82,7 @@ Use `#[derive(Validate)]` para validação declarativa de requests de entrada.
 
 <details>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
+<br>
 
 ```rust
 async fn create_order_handler(
@@ -106,10 +105,11 @@ async fn create_order_handler(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — validator derive + validação centralizada</summary>
+<br>
 
 ```rust
 use serde::Deserialize;
@@ -146,6 +146,7 @@ Mensagens de erro de validação devem ser legíveis e identificar o campo probl
 
 <details>
 <summary>❌ Bad — erro genérico sem campo</summary>
+<br>
 
 ```rust
 fn validate_payment(payment: &Payment) -> anyhow::Result<()> {
@@ -157,10 +158,11 @@ fn validate_payment(payment: &Payment) -> anyhow::Result<()> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — erro com campo e valor</summary>
+<br>
 
 ```rust
 fn validate_payment(payment: &Payment) -> anyhow::Result<()> {

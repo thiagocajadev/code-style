@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 > Escopo: Dart 3.7.
@@ -14,6 +10,7 @@ Nomes bons tornam comentários desnecessários. Dart usa `camelCase` para identi
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```dart
 dynamic apply(dynamic x, Map<String, dynamic> p, Function c) {
@@ -24,10 +21,11 @@ dynamic apply(dynamic x, Map<String, dynamic> p, Function c) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```dart
 Order? applyDiscount(Order order, Order Function(Order) calculate) {
@@ -44,6 +42,7 @@ Order? applyDiscount(Order order, Order Function(Order) calculate) {
 
 <details>
 <summary>❌ Bad — identificadores em português ficam desajeitados no idioma Dart</summary>
+<br>
 
 ```dart
 final nomeDoUsuario = 'Alice';
@@ -55,10 +54,11 @@ Address? buscaEnderecoDoCliente(int id) { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
+<br>
 
 ```dart
 final userName = 'Alice';
@@ -82,6 +82,7 @@ Address? findCustomerAddress(int customerId) { ... }
 
 <details>
 <summary>❌ Bad — case errado</summary>
+<br>
 
 ```dart
 const MAX_RETRIES = 3;          // SCREAMING_SNAKE não é idiomático em Dart
@@ -91,10 +92,11 @@ void Calculate_Total() {}       // função com underscore
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — convenções Dart respeitadas</summary>
+<br>
 
 ```dart
 const maxRetries = 3;
@@ -110,6 +112,7 @@ double calculateTotal(List<Item> items) { ... }
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
 
 ```dart
 final loading = true;
@@ -119,10 +122,11 @@ final valid = email.contains('@');
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
+<br>
 
 ```dart
 final isActive = user.status == 'active';
@@ -138,6 +142,7 @@ final shouldRetry = attempt < maxRetries;
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura</summary>
+<br>
 
 ```dart
 Future<void> callStripe(double amount) async { ... }
@@ -146,10 +151,11 @@ Future<User?> getUserFromDB(int userId) async { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
+<br>
 
 ```dart
 Future<void> chargeCustomer(double amount) async { ... }
@@ -162,6 +168,7 @@ Future<User?> findUser(int userId) async { ... }
 
 <details>
 <summary>❌ Bad — membro público que não faz parte da API</summary>
+<br>
 
 ```dart
 class OrderService {
@@ -172,10 +179,11 @@ class OrderService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — `_` sinaliza que é detalhe de implementação</summary>
+<br>
 
 ```dart
 class OrderService {

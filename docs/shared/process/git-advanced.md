@@ -1,7 +1,3 @@
----
-title: "Git (avançado)"
----
-
 # Git (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto. Pré-requisito:
@@ -42,6 +38,7 @@ pull main → nova branch → commits atômicos → fetch origin/main → merge 
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```bash
 # trabalhar direto na main
@@ -52,10 +49,11 @@ git push origin main
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # 1. atualizar main antes de começar
@@ -102,6 +100,7 @@ stash → trocar de branch → trabalhar → voltar → stash pop → continuar
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```bash
 # commit de WIP polui o histórico e precisa ser limpo antes do PR
@@ -112,10 +111,11 @@ git checkout feat/other-priority-task
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # guardar o estado atual sem commitar
@@ -144,6 +144,7 @@ WIP → fix typo → esqueci de salvar → arrumei → squash → feat(auth): ad
 
 <details>
 <summary>❌ Bad — histórico fragmentado no merge</summary>
+<br>
 
 ```
 WIP
@@ -157,10 +158,11 @@ feat: email
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — GitHub (padrão)</summary>
+<br>
 
 No PR aberto, clique no dropdown ao lado de "Merge pull request" e selecione **Squash and merge**. O
 GitHub abre um editor para ajustar a mensagem antes de confirmar — edite antes de clicar em "Confirm
@@ -188,6 +190,7 @@ rápida.
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```
 título: update
@@ -199,10 +202,11 @@ linhas alteradas: 1.200
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```
 título: feat(auth): add email verification on signup
@@ -233,6 +237,7 @@ linhas alteradas: 180
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # ver o que mudou nos últimos 3 commits antes de resetar
@@ -254,6 +259,7 @@ git clean -n -fd
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # salvar alterações locais antes de trocar de contexto
@@ -280,6 +286,7 @@ squash no merge do PR limpa tudo depois.
 
 <details>
 <summary>❌ Bad — rebase de rotina</summary>
+<br>
 
 ```bash
 # rebase força --force-push depois e reescreve histórico já publicado
@@ -289,10 +296,11 @@ git push --force origin feat/user-email-verification
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — forward-only</summary>
+<br>
 
 ```bash
 # incorporar main na branch com um merge commit
@@ -316,6 +324,7 @@ local, independente de push.
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # listar todas as posições recentes do HEAD
@@ -342,6 +351,7 @@ Nunca em branches compartilhadas.
 
 <details>
 <summary>✅ Good — limpar commits antes do primeiro push</summary>
+<br>
 
 ```bash
 # compactar os 4 últimos commits locais em um antes de publicar
@@ -356,10 +366,11 @@ git rebase -i HEAD~4
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — remover commit com dado sensível (branch local)</summary>
+<br>
 
 ```bash
 # remover um commit específico do histórico antes de publicar
@@ -382,6 +393,7 @@ desfaz mudanças de outros devs que chegaram junto.
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # 1. partir da main atualizada
@@ -427,6 +439,7 @@ Com a `main` revertida, o caminho para entregar o fix é:
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```bash
 # 1. reverter o commit problemático na main

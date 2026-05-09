@@ -1,7 +1,3 @@
----
-title: "Procedures"
----
-
 # Procedures
 
 > Escopo: SQL. Idiomas específicos deste ecossistema.
@@ -13,6 +9,7 @@ resultados intermediários, tornando cada passo testável e legível.
 
 <details>
 <summary>❌ Bad — query única com subqueries aninhadas, difícil de debugar</summary>
+<br>
 
 ```sql
 SELECT
@@ -43,10 +40,11 @@ ORDER BY
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — procedure com temp tables, uma etapa por responsabilidade</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
@@ -104,6 +102,7 @@ END;
 
 <details>
 <summary>❌ Bad — JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
@@ -136,10 +135,11 @@ END;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition

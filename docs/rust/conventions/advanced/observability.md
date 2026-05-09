@@ -1,7 +1,3 @@
----
-title: "Observability"
----
-
 # Observability
 
 > Escopo: Rust 1.95.
@@ -27,6 +23,7 @@ Configure `tracing_subscriber` no entry point. Use `env-filter` para controle po
 
 <details>
 <summary>❌ Bad — println! como logging</summary>
+<br>
 
 ```rust
 fn main() {
@@ -37,10 +34,11 @@ fn main() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tracing_subscriber inicializado no entry point</summary>
+<br>
 
 ```rust
 fn main() -> anyhow::Result<()> {
@@ -66,6 +64,7 @@ Use `skip` para omitir campos sensíveis ou grandes.
 
 <details>
 <summary>❌ Bad — sem span, sem contexto de rastreamento</summary>
+<br>
 
 ```rust
 async fn find_order(pool: &sqlx::PgPool, order_id: u64) -> anyhow::Result<Option<Order>> {
@@ -79,10 +78,11 @@ async fn find_order(pool: &sqlx::PgPool, order_id: u64) -> anyhow::Result<Option
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — #[instrument] com campos estruturados</summary>
+<br>
 
 ```rust
 #[tracing::instrument(skip(pool), fields(order_id))]
@@ -112,6 +112,7 @@ Use o nível adequado para cada tipo de informação.
 
 <details>
 <summary>❌ Bad — tudo em info, campos como strings</summary>
+<br>
 
 ```rust
 tracing::info!("error processing order: {}", error);
@@ -121,10 +122,11 @@ tracing::info!("db query: SELECT * FROM orders WHERE id = {}", order_id);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nível adequado + campos estruturados</summary>
+<br>
 
 ```rust
 tracing::error!(%error, order_id, "failed to process order");
@@ -141,6 +143,7 @@ Use `%value` para Display, `?value` para Debug, `field = value` para valores pr�
 
 <details>
 <summary>❌ Bad — contexto embutido na string</summary>
+<br>
 
 ```rust
 tracing::error!("failed to charge customer {} for order {} with amount {:.2}", customer_id, order_id, amount);
@@ -148,10 +151,11 @@ tracing::error!("failed to charge customer {} for order {} with amount {:.2}", c
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — campos estruturados separados da mensagem</summary>
+<br>
 
 ```rust
 tracing::error!(

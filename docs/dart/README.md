@@ -1,7 +1,3 @@
----
-title: "Dart"
----
-
 # Dart
 
 [![Dart](https://img.shields.io/badge/Dart-3.7-0175C2?logo=dart&logoColor=white)](https://dart.dev/guides)
@@ -76,7 +72,7 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 | [SLA](conventions/functions.md#sla--orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -88,7 +84,7 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 | [`final` por padrão](conventions/variables.md#var-onde-final-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
 
-<br />
+<br>
 
 **Controle de qualidade**: erros, async e testes
 

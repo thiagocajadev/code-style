@@ -1,7 +1,3 @@
----
-title: "Variables"
----
-
 # Variables
 
 Custom properties são o mecanismo nativo do CSS para design tokens. Nomes semânticos que
@@ -12,6 +8,7 @@ espalhadas pelo código.
 
 <details>
 <summary>❌ Bad — valores mágicos espalhados e nomes não-semânticos</summary>
+<br>
 
 ```css
 .button { background: #3b82f6; }
@@ -26,10 +23,11 @@ espalhadas pelo código.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — token semântico definido uma vez, referenciado em todo lugar</summary>
+<br>
 
 ```css
 :root {
@@ -62,6 +60,7 @@ componente, defini-lo no `:root` polui o namespace global.
 
 <details>
 <summary>❌ Bad — variáveis de componente expostas globalmente</summary>
+<br>
 
 ```css
 :root {
@@ -79,10 +78,11 @@ componente, defini-lo no `:root` polui o namespace global.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variáveis de componente escopadas ao bloco</summary>
+<br>
 
 ```css
 .card {

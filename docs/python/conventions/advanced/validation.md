@@ -1,7 +1,3 @@
----
-title: "Validation"
----
-
 # Validation
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
@@ -11,6 +7,7 @@ circula com tipos garantidos. Revalidar dados internos é sinal de desconfiança
 
 <details>
 <summary>❌ Bad — verificações manuais duplicadas, sem contrato</summary>
+<br>
 
 ```python
 def create_order(data: dict):
@@ -28,10 +25,11 @@ def create_order(data: dict):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Pydantic valida na fronteira, tipo garantido no domínio</summary>
+<br>
 
 ```python
 from pydantic import BaseModel
@@ -60,6 +58,7 @@ Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segu
 
 <details>
 <summary>❌ Bad — sanitize, schema, regras de negócio e output misturados na mesma função</summary>
+<br>
 
 ```python
 async def create_order(body: dict):
@@ -81,10 +80,11 @@ async def create_order(body: dict):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada camada no seu lugar</summary>
+<br>
 
 ```python
 async def create_order(body: dict):
@@ -107,6 +107,7 @@ validação suja: um email com espaço passa no schema mas falha na busca no ban
 
 <details>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<br>
 
 ```python
 async def create_user(body: dict):
@@ -117,10 +118,11 @@ async def create_user(body: dict):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sanitize antes de validar</summary>
+<br>
 
 ```python
 from pydantic import BaseModel, field_validator
@@ -158,6 +160,7 @@ técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
 <summary>❌ Bad — verificações manuais duplicadas, sem contrato</summary>
+<br>
 
 ```python
 def create_order(data: dict):
@@ -175,10 +178,11 @@ def create_order(data: dict):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
+<br>
 
 ```python
 from pydantic import BaseModel, field_validator
@@ -210,6 +214,7 @@ domínio — dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviço
 
 <details>
 <summary>❌ Bad — I/O dentro do validador mistura camadas</summary>
+<br>
 
 ```python
 class OrderInput(BaseModel):
@@ -228,10 +233,11 @@ class OrderInput(BaseModel):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — schema valida shape; domínio valida regras após</summary>
+<br>
 
 ```python
 from pydantic import BaseModel
@@ -256,6 +262,7 @@ Regras de negócio falham rápido: valide na entrada da função, não após per
 
 <details>
 <summary>❌ Bad — dado inválido percorre o fluxo antes de falhar</summary>
+<br>
 
 ```python
 async def issue_invoice(order_id: int, discount: float):
@@ -270,10 +277,11 @@ async def issue_invoice(order_id: int, discount: float):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard clause valida na entrada, falha imediata</summary>
+<br>
 
 ```python
 async def issue_invoice(order_id: int, discount: float):
@@ -298,6 +306,7 @@ evita vazamento acidental de dados.
 
 <details>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
+<br>
 
 ```python
 async def get_user_profile(user_id: int):
@@ -308,10 +317,11 @@ async def get_user_profile(user_id: int):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — modelo de resposta declara os campos permitidos</summary>
+<br>
 
 ```python
 from pydantic import BaseModel

@@ -1,7 +1,3 @@
----
-title: "Visual Density: VB.NET"
----
-
 # Visual Density: VB.NET
 
 Os mesmos princípios de [densidade visual](../../../shared/standards/visual-density.md) com exemplos em VB.NET/.NET Framework 4.8.
@@ -12,6 +8,7 @@ Métodos com múltiplos passos (validar, buscar, transformar, persistir, respond
 
 <details>
 <summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
+<br>
 
 ```vbnet
 Public Async Function RegisterUserAsync(request As RegisterUserRequest) As Task(Of UserDto)
@@ -28,10 +25,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases separadas, fluxo legível de cima pra baixo</summary>
+<br>
 
 ```vbnet
 Public Async Function RegisterUserAsync(request As RegisterUserRequest) As Task(Of UserDto)
@@ -59,6 +57,7 @@ Quando há **apenas um passo** antes do `Return`, os dois formam par de 2 linhas
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
+<br>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -70,10 +69,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — par tight</summary>
+<br>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -88,6 +88,7 @@ End Function
 
 <details>
 <summary>✅ Good — 2 preps + Return separado</summary>
+<br>
 
 ```vbnet
 Public Function FormatOrderDate(date As DateTimeOffset, Optional locale As String = "pt-BR") As String
@@ -114,6 +115,7 @@ Uma variável seguida do `If` que a valida formam par semântico. A linha em bra
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
+<br>
 
 ```vbnet
 Dim order = Await _orderRepository.FindByIdAsync(orderId)
@@ -124,10 +126,11 @@ Dim invoice = BuildInvoice(order)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<br>
 
 ```vbnet
 Dim order = Await _orderRepository.FindByIdAsync(orderId)
@@ -144,6 +147,7 @@ Três declarações simples consecutivas (Const, ReadOnly, Dim com literal) form
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
+<br>
 
 ```vbnet
 Public Class DomainLimits
@@ -156,10 +160,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — trio tight</summary>
+<br>
 
 ```vbnet
 Public Class DomainLimits
@@ -175,6 +180,7 @@ End Class
 
 <details>
 <summary>✅ Good — penúltima consumida pela última, par tight</summary>
+<br>
 
 ```vbnet
 Public Function BuildShippingLabel(order As Order) As String
@@ -194,6 +200,7 @@ End Function
 
 <details>
 <summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -207,10 +214,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Assert separado, assertion como fase própria</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -229,6 +237,7 @@ End Sub
 
 <details>
 <summary>❌ Bad — concatenação densa inline, sem semântica nas partes</summary>
+<br>
 
 ```vbnet
 Public Function BuildShippingMessage(order As Order) As String
@@ -238,10 +247,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<br>
 
 ```vbnet
 Public Function BuildShippingMessage(order As Order) As String

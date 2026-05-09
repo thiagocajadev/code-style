@@ -1,7 +1,3 @@
----
-title: "Operações em Lote"
----
-
 # Operações em Lote
 
 > Escopo: SQL. Visão transversal: [shared/platform/database.md](../../../../shared/platform/database.md#operações-em-lote).
@@ -15,6 +11,7 @@ operações. Lotes menores liberam o lock entre cada commit.
 
 <details>
 <summary>❌ Bad — um INSERT por linha, um round trip por registro</summary>
+<br>
 
 ```sql
 INSERT INTO Players (Id, Name, Position, TeamId) VALUES (1, 'Alice', 'GK', @TeamId);
@@ -24,10 +21,11 @@ INSERT INTO Players (Id, Name, Position, TeamId) VALUES (3, 'Carol', 'ST', @Team
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — um INSERT com múltiplos VALUES</summary>
+<br>
 
 ```sql
 INSERT INTO Players
@@ -45,13 +43,14 @@ VALUES
 
 </details>
 
-<br />
+<br>
 
 Quando os dados vêm de outra tabela, `INSERT ... SELECT` é preferível: uma operação, sem
 construção de lista de VALUES no código.
 
 <details>
 <summary>✅ Good — INSERT ... SELECT de tabela de origem</summary>
+<br>
 
 ```sql
 INSERT INTO Players
@@ -80,6 +79,7 @@ WHERE
 
 <details>
 <summary>❌ Bad — DELETE único em tabela grande: lock de longa duração</summary>
+<br>
 
 ```sql
 -- bloqueia Players pela duração inteira da operação
@@ -92,10 +92,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
+<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -119,6 +120,7 @@ END;
 
 <details>
 <summary>❌ Bad — UPDATE único em tabela grande</summary>
+<br>
 
 ```sql
 -- deactivate players from dissolved teams: pode modificar milhões de linhas
@@ -138,10 +140,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
+<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -172,6 +175,7 @@ END;
 
 <details>
 <summary>❌ Bad — inserir dados externos diretamente na tabela de produção sem validação</summary>
+<br>
 
 ```sql
 -- dados brutos do parceiro entram direto: posições inválidas ou times inexistentes quebram no FK
@@ -193,10 +197,11 @@ FROM
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — staging → validar → inserir apenas registros válidos</summary>
+<br>
 
 ```sql
 -- Etapa 1: receber dados brutos na staging

@@ -1,7 +1,3 @@
----
-title: "CSS"
----
-
 # CSS
 
 [![CSS](https://img.shields.io/badge/CSS-3-1572B6?logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference)
@@ -40,7 +36,7 @@ custom properties como tokens e mobile-first por padrão.
 | [BEM](conventions/naming.md#bem)                                      | Bloco\_\_Elemento--Modificador, hierarquia explícita                    |
 | [Baixa especificidade](conventions/naming.md#especificidade)          | Classes simples, sem IDs, sem `!important`                              |
 
-<br />
+<br>
 
 **Estilo e layout**: propriedades, tokens e responsividade
 

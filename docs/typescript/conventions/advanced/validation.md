@@ -1,7 +1,3 @@
----
-title: "Validation"
----
-
 # Validation
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
@@ -20,6 +16,7 @@ divergência.
 
 <details>
 <summary>❌ Bad — tipo declarado manualmente, pode divergir do schema</summary>
+<br>
 
 ```ts
 type CreateOrderInput = {
@@ -39,10 +36,11 @@ const createOrderSchema = z.object({
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo inferido do schema, fonte única</summary>
+<br>
 
 ```ts
 const createOrderSchema = z.object({
@@ -67,6 +65,7 @@ no fluxo de negócio.
 
 <details>
 <summary>❌ Bad — parse lança exceção tratada com try/catch para fluxo de negócio</summary>
+<br>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -87,10 +86,11 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — safeParse retorna Result, sem try/catch para validação</summary>
+<br>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -112,6 +112,7 @@ narrowing automático no switch sem type assertions.
 
 <details>
 <summary>❌ Bad — z.union sem discriminante, narrowing manual com as</summary>
+<br>
 
 ```ts
 const paymentSchema = z.union([
@@ -131,10 +132,11 @@ function processPayment(payment: Payment): void {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — discriminatedUnion com narrowing automático</summary>
+<br>
 
 ```ts
 const paymentSchema = z.discriminatedUnion("method", [
@@ -166,6 +168,7 @@ explícito documentam o contrato publicamente e impedem o vazamento acidental de
 
 <details>
 <summary>❌ Bad — retorna a entidade completa, sem contrato explícito</summary>
+<br>
 
 ```ts
 async function findUserHandler(req: Request, res: Response): Promise<void> {
@@ -177,10 +180,11 @@ async function findUserHandler(req: Request, res: Response): Promise<void> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DTO tipado define o contrato da resposta</summary>
+<br>
 
 ```ts
 type UserResponse = Pick<User, "id" | "name" | "email" | "createdAt">;

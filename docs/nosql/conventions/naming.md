@@ -1,7 +1,3 @@
----
-title: "Naming — NoSQL"
----
-
 # Naming — NoSQL
 
 > Escopo: NoSQL. Convenções de nomenclatura para coleções, campos, chaves e índices.
@@ -89,6 +85,7 @@ Regras:
 
 <details>
 <summary>❌ Bad — nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
+<br>
 
 ```js
 // MongoDB: coleção no singular, campos abreviados, boolean sem prefixo, nome técnico em vez de domínio
@@ -108,10 +105,11 @@ await redis.set('s42', JSON.stringify(stats));  // opaco
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
+<br>
 
 ```js
 // MongoDB: plural, camelCase, boolean com prefixo, nome de domínio

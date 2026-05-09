@@ -1,7 +1,3 @@
----
-title: "Error Handling"
----
-
 # Error Handling
 
 > Escopo: Ruby 4.0.
@@ -27,6 +23,7 @@ genérico não engula erros do sistema (como `SignalException`).
 
 <details>
 <summary>❌ Bad — strings ou RuntimeError sem tipo</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -39,10 +36,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — exceções tipadas e hierarquia de domínio</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -80,6 +78,7 @@ deixe propagar — não engula erros silenciosamente.
 
 <details>
 <summary>❌ Bad — rescue silencioso dentro do domínio</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -95,10 +94,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — rescue específico na fronteira com log e re-raise</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -122,6 +122,7 @@ lock). No corpo de um método, omita `begin` — o método inteiro funciona como
 
 <details>
 <summary>❌ Bad — begin desnecessário no corpo do método</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -140,10 +141,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — rescue direto no método, ensure para cleanup</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -168,6 +170,7 @@ tentativas para evitar loop infinito.
 
 <details>
 <summary>❌ Bad — retry sem limite</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -182,10 +185,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — retry limitado com backoff</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true

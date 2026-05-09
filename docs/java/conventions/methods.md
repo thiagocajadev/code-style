@@ -1,7 +1,3 @@
----
-title: "Methods"
----
-
 # Methods
 
 Um método faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
@@ -10,6 +6,7 @@ Um método faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 
 <details>
 <summary>❌ Bad — busca, valida, calcula, persiste e loga na mesma função</summary>
+<br>
 
 ```java
 public Order realizaVenda(String id) {
@@ -40,10 +37,11 @@ public Order realizaVenda(String id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — orquestrador no topo, responsabilidades separadas</summary>
+<br>
 
 ```java
 public Order processOrder(String orderId) {
@@ -81,6 +79,7 @@ private Order issueInvoice(Order order) {
 
 <details>
 <summary>❌ Bad — mesmo método orquestra e implementa</summary>
+<br>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -97,10 +96,11 @@ public String buildOrderSummary(Order order) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — orquestrador chama helpers, cada um faz uma coisa</summary>
+<br>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -130,6 +130,7 @@ private String buildLineItems(Order order) {
 
 <details>
 <summary>❌ Bad — cálculo e formatação misturados</summary>
+<br>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -145,10 +146,11 @@ public String getOrderSummary(Order order) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cálculo separado da formatação</summary>
+<br>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -182,6 +184,7 @@ O retorno fica no topo do método, com os detalhes encapsulados em auxiliares ab
 
 <details>
 <summary>❌ Bad — variável auxiliar desnecessária, else após throw</summary>
+<br>
 
 ```java
 public Product findProductById(String id) {
@@ -201,10 +204,11 @@ public Product findProductById(String id) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — intenção clara no topo, detalhe abaixo</summary>
+<br>
 
 ```java
 public Product findProductById(String id) {
@@ -227,6 +231,7 @@ O caller expressa o quê, não o como. Toda construção de contexto fica dentro
 
 <details>
 <summary>❌ Bad — caller monta lógica inline antes de chamar</summary>
+<br>
 
 ```java
 submitOrder(
@@ -240,10 +245,11 @@ submitOrder(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — entrada de uma linha, detalhes dentro</summary>
+<br>
 
 ```java
 submitOrder(orderId);
@@ -266,6 +272,7 @@ do método.
 
 <details>
 <summary>❌ Bad — lógica inline no return</summary>
+<br>
 
 ```java
 public String buildGreeting(User user) {
@@ -281,10 +288,11 @@ public List<User> getActiveUsers(List<User> users) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — variável expressiva antes do return</summary>
+<br>
 
 ```java
 public String buildGreeting(User user) {
@@ -310,6 +318,7 @@ Nunca duas.
 
 <details>
 <summary>❌ Bad — parede de código sem respiro entre grupos</summary>
+<br>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -325,10 +334,11 @@ public Invoice processOrder(String orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — parágrafos de intenção</summary>
+<br>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -353,6 +363,7 @@ Até 3 parâmetros na mesma linha. Com 4 ou mais, use um record.
 
 <details>
 <summary>❌ Bad — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<br>
 
 ```java
 private Invoice createInvoice(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) { /* ... */ }
@@ -362,10 +373,11 @@ createInvoice("ord-1", "cust-99", new BigDecimal("149.90"), LocalDate.of(2026, 5
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — record quando 4+ parâmetros</summary>
+<br>
 
 ```java
 record InvoiceRequest(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) {}

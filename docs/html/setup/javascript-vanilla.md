@@ -1,7 +1,3 @@
----
-title: "JavaScript Vanilla"
----
-
 # JavaScript Vanilla
 
 Padrões modernos de JavaScript para projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) sem bundler. O objetivo aqui é o contexto de
@@ -28,6 +24,7 @@ Cache a seleção quando reutilizar o elemento.
 
 <details>
 <summary>❌ Bad — seleção repetida, sem cache</summary>
+<br>
 
 ```js
 document.querySelector(".card__title").classList.add("active");
@@ -36,10 +33,11 @@ document.querySelector(".card__title").textContent = "Updated";
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cache da seleção, operações encadeadas no mesmo elemento</summary>
+<br>
 
 ```js
 const title = document.querySelector(".card__title");
@@ -57,6 +55,7 @@ filtra o target pelo seletor.
 
 <details>
 <summary>❌ Bad — listener em cada item, não cobre elementos dinâmicos</summary>
+<br>
 
 ```js
 document.querySelectorAll(".product-card").forEach((card) => {
@@ -66,10 +65,11 @@ document.querySelectorAll(".product-card").forEach((card) => {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — delegation no container, matches como filtro</summary>
+<br>
 
 ```js
 document.getElementById("product-list").addEventListener("click", (event) => {
@@ -87,6 +87,7 @@ document.getElementById("product-list").addEventListener("click", (event) => {
 
 <details>
 <summary>❌ Bad — sem verificação de status, sem tratamento de erro</summary>
+<br>
 
 ```js
 fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
@@ -96,10 +97,11 @@ fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — status verificado, erro tratado, Content-Type explícito</summary>
+<br>
 
 ```js
 async function createOrder(orderData) {

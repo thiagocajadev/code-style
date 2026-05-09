@@ -1,7 +1,3 @@
----
-title: "Dapper"
----
-
 # Dapper
 
 > [!NOTE]
@@ -15,6 +11,7 @@ Cada operação de domínio tem sua própria procedure. O repositório chama e m
 
 <details>
 <summary>❌ Bad — SQL de domínio inline no repositório</summary>
+<br>
 
 ```vbnet
 Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOnlyList(Of PurchaseSummary))
@@ -34,10 +31,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — procedure encapsula a lógica, repositório só mapeia</summary>
+<br>
 
 ```sql
 -- FindPurchasesByCustomer.sql
@@ -84,10 +82,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — procedure de escrita com OUTPUT param</summary>
+<br>
 
 ```sql
 -- CreatePurchase.sql
@@ -137,6 +136,7 @@ Quando a operação é simples demais para justificar uma procedure (lookup por 
 
 <details>
 <summary>✅ Good — lookup simples por chave primária</summary>
+<br>
 
 ```vbnet
 Public Async Function FindByIdAsync(id As Guid) As Task(Of Customer)
@@ -150,10 +150,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verificação de existência</summary>
+<br>
 
 ```vbnet
 Public Async Function ExistsAsync(email As String) As Task(Of Boolean)
@@ -174,6 +175,7 @@ SQL injection acontece quando um valor externo é interpretado como código SQL 
 
 <details>
 <summary>❌ Bad — concatenação deixa o atacante escrever SQL</summary>
+<br>
 
 ```vbnet
 ' email recebido: ' OR '1'='1
@@ -189,10 +191,11 @@ Dim sql = "SELECT Id, Name FROM Customers WHERE Email = '" & email & "'"
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
+<br>
 
 ```vbnet
 Public Async Function SearchByNameAsync(term As String) As Task(Of IReadOnlyList(Of Customer))
@@ -208,10 +211,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
+<br>
 
 ```vbnet
 Public Async Function FindByEmailAsync(email As String) As Task(Of Customer)
@@ -225,10 +229,11 @@ End Function
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
+<br>
 
 ```vbnet
 Public Async Function SearchByNameAsync(term As String) As Task(Of IReadOnlyList(Of Customer))
@@ -249,6 +254,7 @@ End Function
 
 <details>
 <summary>❌ Bad — conexão instanciada dentro do repositório</summary>
+<br>
 
 ```vbnet
 Public Class PurchaseRepository
@@ -262,10 +268,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — IDbConnection injetado via construtor</summary>
+<br>
 
 ```vbnet
 Public Class PurchaseRepository
@@ -313,6 +320,7 @@ Quando uma procedure retorna múltiplos result sets, `QueryMultiple` lê cada um
 
 <details>
 <summary>✅ Good — procedure com múltiplos SELECTs, uma única chamada</summary>
+<br>
 
 ```sql
 -- GetPurchaseDashboard.sql

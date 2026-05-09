@@ -1,7 +1,3 @@
----
-title: "UI/UX"
----
-
 # UI/UX
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,7 +1,3 @@
----
-title: "Migrations"
----
-
 # Migrations
 
 > Escopo: SQL. Idiomas específicos deste ecossistema.
@@ -14,6 +10,7 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 <details>
 <summary>❌ Bad — numeração sequencial, sem contexto temporal</summary>
+<br>
 
 ```
 01-CreateTables.sql
@@ -22,10 +19,11 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — timestamp + descrição em snake_case</summary>
+<br>
 
 ```
 20260419000000_create_football_teams.sql
@@ -41,6 +39,7 @@ Nunca editar uma migration já executada. Para ajustes, criar uma nova migration
 
 <details>
 <summary>❌ Bad — editar migration existente para corrigir schema</summary>
+<br>
 
 ```sql
 -- editando 20260419000000_create_football_teams.sql depois de já ter sido rodada
@@ -54,10 +53,11 @@ CREATE TABLE FootballTeams
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nova migration para cada mudança</summary>
+<br>
 
 ```sql
 -- 20260420000000_alter_football_teams_add_is_active.sql
@@ -75,6 +75,7 @@ Cada migration faz uma coisa. Não misturar criação de tabelas com inserção 
 
 <details>
 <summary>❌ Bad — migration faz tudo de uma vez</summary>
+<br>
 
 ```sql
 -- 20260419000000_setup.sql
@@ -86,10 +87,11 @@ CREATE INDEX IX_Players_TeamId ON Players(TeamId);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — arquivos separados por responsabilidade</summary>
+<br>
 
 ```
 20260419000000_create_football_teams.sql   -- CREATE TABLE

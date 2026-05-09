@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: Dart 3.7.
@@ -24,6 +20,7 @@ e Futures têm custo de microtask — lazy evaluation adia trabalho desnecessár
 
 <details>
 <summary>❌ Bad — dynamic desabilita verificação de tipo</summary>
+<br>
 
 ```dart
 List<dynamic> processItems(List<dynamic> items) {
@@ -33,10 +30,11 @@ List<dynamic> processItems(List<dynamic> items) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — genérico tipado; erros em compile-time</summary>
+<br>
 
 ```dart
 List<String> extractNames(List<Map<String, dynamic>> items) {
@@ -50,6 +48,7 @@ List<String> extractNames(List<Map<String, dynamic>> items) {
 
 <details>
 <summary>❌ Bad — objeto novo criado a cada chamada</summary>
+<br>
 
 ```dart
 final padding = EdgeInsets.all(16);     // nova instância sempre
@@ -58,10 +57,11 @@ final color = Colors.blue;             // nova instância sempre
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — const canonicaliza e reusa a mesma instância</summary>
+<br>
 
 ```dart
 const padding = EdgeInsets.all(16);
@@ -74,6 +74,7 @@ const color = Colors.blue;
 
 <details>
 <summary>❌ Bad — cada operação cria lista intermediária</summary>
+<br>
 
 ```dart
 List<String> findTopSpenders(List<Customer> customers, int limit) {
@@ -87,10 +88,11 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lazy até o toList() final</summary>
+<br>
 
 ```dart
 List<String> findTopSpenders(List<Customer> customers, int limit) {
@@ -109,7 +111,8 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 ## `Uint8List` para I/O de bytes
 
 <details>
-<summary>❌ Bad — List&lt;int&gt; com boxing para cada byte</summary>
+<summary>❌ Bad — List<int> com boxing para cada byte</summary>
+<br>
 
 ```dart
 Future<List<int>> readFile(String path) async {
@@ -119,10 +122,11 @@ Future<List<int>> readFile(String path) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Uint8List é buffer nativo sem boxing</summary>
+<br>
 
 ```dart
 Future<Uint8List> readFile(String path) async {

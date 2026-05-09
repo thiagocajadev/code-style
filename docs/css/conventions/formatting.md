@@ -1,7 +1,3 @@
----
-title: "Formatting"
----
-
 # Formatting
 
 A ordem de propriedades não é arbitrária. Agrupar por responsabilidade (posicionamento, box model,
@@ -12,6 +8,7 @@ para "como parece".
 
 <details>
 <summary>❌ Bad — ordem aleatória, difícil de escanear</summary>
+<br>
 
 ```css
 .card {
@@ -32,10 +29,11 @@ para "como parece".
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — agrupado por responsabilidade, legível de cima pra baixo</summary>
+<br>
 
 ```css
 .card {
@@ -67,6 +65,7 @@ para "como parece".
 
 <details>
 <summary>❌ Bad — múltiplas propriedades em uma linha, diff ilegível</summary>
+<br>
 
 <!-- prettier-ignore -->
 ```css
@@ -75,10 +74,11 @@ para "como parece".
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma propriedade por linha, diff limpo</summary>
+<br>
 
 ```css
 .button {

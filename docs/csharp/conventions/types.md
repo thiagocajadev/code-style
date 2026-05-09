@@ -1,7 +1,3 @@
----
-title: "Types"
----
-
 # Types
 
 > Escopo: **idioma C# / .NET moderno**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
@@ -16,6 +12,7 @@ A regra prática: se duas implementações vão compartilhar código, `abstract 
 
 <details>
 <summary>❌ Bad — interface usada para compartilhar código entre implementações</summary>
+<br>
 
 ```csharp
 public interface OrderProcessor
@@ -35,10 +32,11 @@ public interface OrderProcessor
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — abstract class quando há estado ou template method</summary>
+<br>
 
 ```csharp
 public abstract class OrderProcessor(ILogger logger)
@@ -71,10 +69,11 @@ public sealed class StandardOrderProcessor(ILogger logger) : OrderProcessor(logg
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — interface quando só o contrato importa</summary>
+<br>
 
 ```csharp
 public interface IOrderRepository
@@ -95,6 +94,7 @@ public sealed class InMemoryOrderRepository : IOrderRepository { /* testes */ }
 
 <details>
 <summary>❌ Bad — classe concreta sem sealed, extensibilidade acidental</summary>
+<br>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository)
@@ -111,10 +111,11 @@ public class CustomOrderService : OrderService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sealed por padrão, extensibilidade exige decisão</summary>
+<br>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -133,6 +134,7 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 
 <details>
 <summary>❌ Bad — class mutable para dados immutable</summary>
+<br>
 
 ```csharp
 public class OrderResponse
@@ -147,10 +149,11 @@ public class OrderResponse
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — record para dados, igualdade estrutural sem boilerplate</summary>
+<br>
 
 ```csharp
 public record OrderResponse
@@ -173,6 +176,7 @@ Habilitar `<Nullable>enable</Nullable>` no `.csproj` torna a ausência de valor 
 
 <details>
 <summary>❌ Bad — nullable desligado, null silencioso no contrato</summary>
+<br>
 
 ```csharp
 public class OrderService
@@ -188,10 +192,11 @@ public class OrderService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nullable habilitado, contrato explícito</summary>
+<br>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -221,6 +226,7 @@ Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e
 
 <details>
 <summary>❌ Bad — cadeia de if com cast explícito</summary>
+<br>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -243,10 +249,11 @@ public string DescribePayment(IPayment payment)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — is-expression com narrowing e descrição nomeada por variante</summary>
+<br>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -274,6 +281,7 @@ Quando o domínio tem variantes fechadas, o pattern matching troca o discriminad
 
 <details>
 <summary>✅ Good — discriminated result via pattern matching</summary>
+<br>
 
 ```csharp
 public abstract record PaymentResult
@@ -313,6 +321,7 @@ Generic sem constraint descreve qualquer tipo — é abstração sem propósito.
 
 <details>
 <summary>❌ Bad — genérico sem constraint, reflection para descobrir capability</summary>
+<br>
 
 ```csharp
 public T? Find<T>(Guid id) where T : class
@@ -329,10 +338,11 @@ public T? Find<T>(Guid id) where T : class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — constraint declara capability, compilador valida</summary>
+<br>
 
 ```csharp
 public interface IEntity
@@ -357,6 +367,7 @@ Existem dois casos legítimos: interop com COM/Office e desserialização de sha
 
 <details>
 <summary>❌ Bad — dynamic para conveniência</summary>
+<br>
 
 ```csharp
 public void ProcessConfig(dynamic config)
@@ -368,10 +379,11 @@ public void ProcessConfig(dynamic config)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo concreto ou JsonElement</summary>
+<br>
 
 ```csharp
 public sealed record ApiConfig

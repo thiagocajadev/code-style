@@ -1,7 +1,3 @@
----
-title: "Arquitetura"
----
-
 # Arquitetura
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

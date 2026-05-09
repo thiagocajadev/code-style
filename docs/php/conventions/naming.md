@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 > Escopo: PHP 8.4.
@@ -13,6 +9,7 @@ de nomenclatura. Dentro dessas convenções, o mesmo princípio vale: o código 
 
 <details>
 <summary>❌ Bad</summary>
+<br>
 
 ```php
 declare(strict_types=1);
@@ -28,10 +25,11 @@ function apply($x, array $p, callable $c)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good</summary>
+<br>
 
 ```php
 declare(strict_types=1);
@@ -54,6 +52,7 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
 
 <details>
 <summary>❌ Bad — nomes em português no código</summary>
+<br>
 
 ```php
 $nomeDoUsuario = 'Alice';
@@ -65,10 +64,11 @@ function buscaEnderecoDoCliente(int $id): Address { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
+<br>
 
 ```php
 $userName = 'Alice';
@@ -93,6 +93,7 @@ function findCustomerAddress(int $customerID): Address { ... }
 
 <details>
 <summary>❌ Bad — case errado para o contexto</summary>
+<br>
 
 ```php
 class order_service {}          // classe com underscore
@@ -105,10 +106,11 @@ $order_id = 42;                 // variável com underscore
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — convenções PSR respeitadas</summary>
+<br>
 
 ```php
 class OrderService {}
@@ -131,6 +133,7 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Bad — ordem invertida</summary>
+<br>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -142,10 +145,11 @@ function statusUpdateOrder(int $orderID): void {}
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ordem natural</summary>
+<br>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -159,6 +163,7 @@ function calculateInvoiceTotal(Invoice $invoice): float {}
 
 <details>
 <summary>❌ Bad — handle, process, manage não dizem nada</summary>
+<br>
 
 ```php
 function handle($data): mixed {}
@@ -169,10 +174,11 @@ function doStuff($x): mixed {}
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verbo de intenção</summary>
+<br>
 
 ```php
 function validatePayment(Payment $payment): void {}
@@ -187,6 +193,7 @@ function applySeasonalDiscount(Order $order): Order {}
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<br>
 
 ```php
 function callStripe(float $amount): ChargeResult {}
@@ -196,10 +203,11 @@ function postToSlack(string $message): void {}
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
+<br>
 
 ```php
 function chargeCustomer(float $amount): ChargeResult {}
@@ -213,6 +221,7 @@ function notifyTeam(string $message): void {}
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
 
 ```php
 $loading = true;
@@ -222,10 +231,11 @@ $valid = str_contains($email, '@');
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
+<br>
 
 ```php
 $isActive = $user->status === 'active';

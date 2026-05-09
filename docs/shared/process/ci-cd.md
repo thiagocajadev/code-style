@@ -1,7 +1,3 @@
----
-title: "CI/CD"
----
-
 # CI/CD
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

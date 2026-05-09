@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
@@ -16,6 +12,7 @@ uma lista intermediária em memória.
 
 <details>
 <summary>❌ Bad — lista completa criada antes de consumir</summary>
+<br>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -27,10 +24,11 @@ def sum_active_prices(products: list) -> float:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — generator expression, sem lista intermediária</summary>
+<br>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -48,6 +46,7 @@ Busca em `list` é O(n). Busca em `set` é O(1). Quando a ordem não importa e a
 
 <details>
 <summary>❌ Bad — in list: percorre tudo a cada verificação</summary>
+<br>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -58,10 +57,11 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — in set: O(1) por verificação</summary>
+<br>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -80,6 +80,7 @@ use `"".join()`.
 
 <details>
 <summary>❌ Bad — concatenação O(n²) em loop</summary>
+<br>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -92,10 +93,11 @@ def build_csv_row(fields: list[str]) -> str:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — join: uma única alocação</summary>
+<br>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -113,6 +115,7 @@ mantém o uso de memória constante.
 
 <details>
 <summary>❌ Bad — arquivo inteiro em memória</summary>
+<br>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -126,10 +129,11 @@ def count_error_lines(log_path: str) -> int:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — iteração linha a linha, memória constante</summary>
+<br>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -147,6 +151,7 @@ default sem exceção — sem try/except desnecessário.
 
 <details>
 <summary>❌ Bad — try/except para controle de fluxo normal</summary>
+<br>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -160,10 +165,11 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — dict.get com default declarativo</summary>
+<br>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -181,6 +187,7 @@ milhares de objetos, `__slots__` reduz o uso de memória consideravelmente.
 
 <details>
 <summary>❌ Bad — __dict__ implícito em classe de dado intensivo</summary>
+<br>
 
 ```python
 class OrderItem:
@@ -192,10 +199,11 @@ class OrderItem:
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — dataclass com slots=True</summary>
+<br>
 
 ```python
 from dataclasses import dataclass

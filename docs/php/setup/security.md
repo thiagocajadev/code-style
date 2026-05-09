@@ -1,7 +1,3 @@
----
-title: "Security"
----
-
 # Security
 
 > Escopo: PHP 8.4. Especificidades do ecossistema PHP para secrets, validação e proteção HTTP.
@@ -15,6 +11,7 @@ na fronteira antes de chegar ao domínio.
 
 <details>
 <summary>❌ Bad — secret no código-fonte</summary>
+<br>
 
 ```php
 class AuthService
@@ -30,10 +27,11 @@ class AuthService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<br>
 
 ```php
 // src/Config.php
@@ -64,6 +62,7 @@ Nunca concatene input do usuário em queries. Use sempre PDO com `prepare()` e `
 
 <details>
 <summary>❌ Bad — concatenação em query SQL</summary>
+<br>
 
 ```php
 $query = "SELECT * FROM users WHERE email = '" . $email . "'";
@@ -72,10 +71,11 @@ $result = $pdo->query($query); // SQL injection
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prepared statement com bind</summary>
+<br>
 
 ```php
 final class UserRepository
@@ -108,6 +108,7 @@ Sempre escape output em templates HTML. Nunca exiba input do usuário sem tratar
 
 <details>
 <summary>❌ Bad — output sem escaping</summary>
+<br>
 
 ```php
 echo "<h1>Olá, " . $_GET['name'] . "</h1>"; // XSS
@@ -115,10 +116,11 @@ echo "<h1>Olá, " . $_GET['name'] . "</h1>"; // XSS
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — htmlspecialchars para output HTML</summary>
+<br>
 
 ```php
 $name = htmlspecialchars($_GET['name'] ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -134,6 +136,7 @@ para senhas.
 
 <details>
 <summary>❌ Bad — hash fraco para senha</summary>
+<br>
 
 ```php
 $passwordHash = md5($password); // quebrável por rainbow table
@@ -142,10 +145,11 @@ $passwordHash = sha256($password); // sem salt, vulnerável
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — password_hash + password_verify</summary>
+<br>
 
 ```php
 final class PasswordHasher
@@ -174,6 +178,7 @@ Proteja formulários com token CSRF gerado por sessão.
 
 <details>
 <summary>✅ Good — geração e verificação de token CSRF</summary>
+<br>
 
 ```php
 final class CsrfProtection

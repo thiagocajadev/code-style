@@ -1,7 +1,3 @@
----
-title: "Control Flow"
----
-
 # Control Flow
 
 > Escopo: Swift 6.1.
@@ -17,6 +13,7 @@ o compilador já descartou o branch anterior.
 
 <details>
 <summary>❌ Bad — else desnecessário após return</summary>
+<br>
 
 ```swift
 func getDiscount(for customerType: CustomerType) -> Double {
@@ -32,10 +29,11 @@ func getDiscount(for customerType: CustomerType) -> Double {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — early return elimina o else</summary>
+<br>
 
 ```swift
 func getDiscount(for customerType: CustomerType) -> Double {
@@ -55,6 +53,7 @@ Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou ma
 
 <details>
 <summary>❌ Bad — if/else imperativo para atribuição simples</summary>
+<br>
 
 ```swift
 var label: String
@@ -67,10 +66,11 @@ if order.isPaid {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ternário na atribuição</summary>
+<br>
 
 ```swift
 let label = order.isPaid ? "Paid" : "Pending"
@@ -80,6 +80,7 @@ let label = order.isPaid ? "Paid" : "Pending"
 
 <details>
 <summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
+<br>
 
 ```swift
 let priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal"
@@ -87,10 +88,11 @@ let priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal"
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — switch expression para 3+ alternativas</summary>
+<br>
 
 ```swift
 let priority = switch (isUrgent, isCritical) {
@@ -106,6 +108,7 @@ default: "Normal"
 
 <details>
 <summary>❌ Bad — if let aninhado aumenta indentação</summary>
+<br>
 
 ```swift
 func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
@@ -128,10 +131,11 @@ func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard flatten o fluxo feliz</summary>
+<br>
 
 ```swift
 func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
@@ -151,6 +155,7 @@ func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
 
 <details>
 <summary>❌ Bad — guard aninhado para múltiplos optionals</summary>
+<br>
 
 ```swift
 guard let name = user.name else { return }
@@ -160,10 +165,11 @@ guard let phone = user.phone else { return }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard com vírgula une condições no mesmo bloco</summary>
+<br>
 
 ```swift
 guard let name = user.name,
@@ -183,6 +189,7 @@ em tempo de compilação.
 
 <details>
 <summary>❌ Bad — if chain para mapeamento de chave string</summary>
+<br>
 
 ```swift
 func httpMessage(for code: Int) -> String {
@@ -196,10 +203,11 @@ func httpMessage(for code: Int) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Dictionary + ?? para o fallback</summary>
+<br>
 
 ```swift
 func httpMessage(for code: Int) -> String {
@@ -220,6 +228,7 @@ func httpMessage(for code: Int) -> String {
 
 <details>
 <summary>❌ Bad — if/else chain sem exaustividade</summary>
+<br>
 
 ```swift
 func describeStatus(_ status: OrderStatus) -> String {
@@ -235,10 +244,11 @@ func describeStatus(_ status: OrderStatus) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — switch garante exaustividade em tempo de compilação</summary>
+<br>
 
 ```swift
 func describeStatus(_ status: OrderStatus) -> String {
@@ -257,6 +267,7 @@ func describeStatus(_ status: OrderStatus) -> String {
 
 <details>
 <summary>❌ Bad — extração manual via propriedade</summary>
+<br>
 
 ```swift
 func handleResult(_ result: OrderResult) -> String {
@@ -270,10 +281,11 @@ func handleResult(_ result: OrderResult) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — switch com pattern binding nos associated values</summary>
+<br>
 
 ```swift
 func handleResult(_ result: OrderResult) -> String {
@@ -294,6 +306,7 @@ resolve. Essas funções param no primeiro match — sem percorrer o resto.
 
 <details>
 <summary>❌ Bad — iteração manual com flag percorre tudo mesmo após encontrar</summary>
+<br>
 
 ```swift
 func findFirstExpiredProduct(_ products: [Product]) -> Product? {
@@ -311,10 +324,11 @@ func findFirstExpiredProduct(_ products: [Product]) -> Product? {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — first(where:) sai no primeiro match</summary>
+<br>
 
 ```swift
 // para no primeiro match
@@ -333,6 +347,7 @@ let allActive = products.allSatisfy(\.isActive)
 
 <details>
 <summary>❌ Bad — guard/continue dentro do loop</summary>
+<br>
 
 ```swift
 for order in orders {
@@ -343,10 +358,11 @@ for order in orders {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — where filtra sem corpo extra</summary>
+<br>
 
 ```swift
 for order in orders where order.status == .paid {
@@ -363,6 +379,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 
 <details>
 <summary>❌ Bad — for com índice quando o critério é condição de estado</summary>
+<br>
 
 ```swift
 for attempt in 0..<maxAttempts {
@@ -373,10 +390,11 @@ for attempt in 0..<maxAttempts {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — while para condição de parada por estado</summary>
+<br>
 
 ```swift
 var attempt = 0
@@ -397,6 +415,7 @@ Use `repeat-while` quando a primeira iteração deve sempre executar, independen
 
 <details>
 <summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
+<br>
 
 ```swift
 // verifica antes de executar — se a fila já estiver vazia, nunca executa
@@ -408,10 +427,11 @@ while !taskQueue.isEmpty {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — repeat-while quando a primeira execução é garantida</summary>
+<br>
 
 ```swift
 // drena a fila — processa pelo menos um item antes de verificar
@@ -427,6 +447,7 @@ repeat {
 
 <details>
 <summary>❌ Bad — cleanup duplicado em cada caminho de saída</summary>
+<br>
 
 ```swift
 func processFile(at url: URL) throws {
@@ -444,10 +465,11 @@ func processFile(at url: URL) throws {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — defer garante cleanup em qualquer caminho</summary>
+<br>
 
 ```swift
 func processFile(at url: URL) throws {

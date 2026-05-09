@@ -1,7 +1,3 @@
----
-title: "Methods"
----
-
 # Methods
 
 > Escopo: Kotlin 2.2.
@@ -23,6 +19,7 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 
 <details>
 <summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
+<br>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -55,10 +52,11 @@ fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
+<br>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -89,6 +87,7 @@ private fun notifyConfirmation(email: String) { ... }
 
 <details>
 <summary>❌ Bad — função mistura nível de abstração</summary>
+<br>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -105,10 +104,11 @@ fun generateReport(orders: List<Order>): Report {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada função em um único nível</summary>
+<br>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -131,6 +131,7 @@ private fun calculateRevenue(orders: List<Order>): Double =
 
 <details>
 <summary>❌ Bad — lógica inline no return</summary>
+<br>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -142,10 +143,11 @@ fun findActiveCustomers(customers: List<Customer>): List<Customer> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — explaining return com val nomeada</summary>
+<br>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -167,6 +169,7 @@ domínio que as usa, não em um arquivo de utilitários genérico.
 
 <details>
 <summary>❌ Bad — utilitário genérico sem contexto</summary>
+<br>
 
 ```kotlin
 // StringUtils.kt
@@ -180,10 +183,11 @@ val label = formatCurrency(order.total)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — extension function no tipo correto</summary>
+<br>
 
 ```kotlin
 // Order.kt
@@ -201,6 +205,7 @@ val label = order.total.toCurrencyLabel()
 
 <details>
 <summary>❌ Bad — assinatura com muitos parâmetros posicionais</summary>
+<br>
 
 ```kotlin
 fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, notes: String): Order { ... }
@@ -208,10 +213,11 @@ fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, 
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — data class agrupa parâmetros com semântica</summary>
+<br>
 
 ```kotlin
 data class CreateOrderRequest(

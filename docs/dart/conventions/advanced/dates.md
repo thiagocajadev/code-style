@@ -1,7 +1,3 @@
----
-title: "Dates"
----
-
 # Dates
 
 > Escopo: Dart 3.7.
@@ -25,6 +21,7 @@ a formatação para o usuário usa `intl`.
 
 <details>
 <summary>❌ Bad — DateTime.now() em UTC sem conversão</summary>
+<br>
 
 ```dart
 final order = Order(
@@ -37,10 +34,11 @@ final json = {'id': 1, 'createdAt': order.createdAt.toString()};   // formato n�
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateTime.now().toUtc() + toIso8601String()</summary>
+<br>
 
 ```dart
 final order = Order(
@@ -58,6 +56,7 @@ final json = {'id': 1, 'createdAt': order.createdAt.toIso8601String()};
 
 <details>
 <summary>❌ Bad — string comparada como texto</summary>
+<br>
 
 ```dart
 final dueDate = '2026-04-30';
@@ -66,10 +65,11 @@ final isOverdue = dueDate.compareTo(DateTime.now().toString()) < 0;   // compara
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateTime.parse com comparação tipada</summary>
+<br>
 
 ```dart
 final dueDate = DateTime.parse('2026-04-30T00:00:00Z');
@@ -82,6 +82,7 @@ final isOverdue = dueDate.isBefore(DateTime.now().toUtc());
 
 <details>
 <summary>❌ Bad — toString() com formato indefinido</summary>
+<br>
 
 ```dart
 Text(order.createdAt.toString())   // "2026-04-26 14:30:00.000Z" — não é label para usuário
@@ -89,10 +90,11 @@ Text(order.createdAt.toString())   // "2026-04-26 14:30:00.000Z" — não é lab
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — DateFormat com locale e fuso do usuário</summary>
+<br>
 
 ```dart
 import 'package:intl/intl.dart';

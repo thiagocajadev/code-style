@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: Rust 1.95.
@@ -28,6 +24,7 @@ tratado antes de usar o valor interno.
 
 <details>
 <summary>❌ Bad — unwrap pânica em None</summary>
+<br>
 
 ```rust
 fn get_shipping_address(order: &Order) -> String {
@@ -37,10 +34,11 @@ fn get_shipping_address(order: &Order) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Option propagada ou tratada explicitamente</summary>
+<br>
 
 ```rust
 fn get_shipping_address(order: &Order) -> Option<&str> {
@@ -61,6 +59,7 @@ fn get_shipping_address_or_default(order: &Order) -> &str {
 
 <details>
 <summary>❌ Bad — if/else aninhado para Option</summary>
+<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
@@ -75,10 +74,11 @@ fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — let-else para guard, if para validação</summary>
+<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
@@ -102,6 +102,7 @@ Transforme e encadeie `Option` sem sair da cadeia funcional.
 
 <details>
 <summary>❌ Bad — checagem manual com if let em cada passo</summary>
+<br>
 
 ```rust
 fn get_customer_city(order: &Order) -> Option<String> {
@@ -118,10 +119,11 @@ fn get_customer_city(order: &Order) -> Option<String> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cadeia map/and_then</summary>
+<br>
 
 ```rust
 fn get_customer_city(order: &Order) -> Option<String> {
@@ -143,6 +145,7 @@ Converta `Option` em `Result` quando precisar de `?` para propagação de erro.
 
 <details>
 <summary>❌ Bad — match manual para converter Option em Result</summary>
+<br>
 
 ```rust
 async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
@@ -157,10 +160,11 @@ async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ok_or_else converte Option em Result idiomaticamente</summary>
+<br>
 
 ```rust
 async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
@@ -181,6 +185,7 @@ referências thread-safe. `Mutex` ou `RwLock` para mutabilidade compartilhada.
 
 <details>
 <summary>❌ Bad — clone excessivo de dados grandes</summary>
+<br>
 
 ```rust
 async fn process_batch(orders: Vec<Order>) {
@@ -194,10 +199,11 @@ async fn process_batch(orders: Vec<Order>) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Arc para ownership compartilhado sem clone</summary>
+<br>
 
 ```rust
 use std::sync::Arc;

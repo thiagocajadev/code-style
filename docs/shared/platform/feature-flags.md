@@ -1,7 +1,3 @@
----
-title: "Feature Flags"
----
-
 # Feature Flags
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

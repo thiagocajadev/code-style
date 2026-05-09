@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: PHP 8.4 + PHPUnit 11.
@@ -25,6 +21,7 @@ PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 
 <details>
 <summary>❌ Bad — fases misturadas, sem separação visual</summary>
+<br>
 
 ```php
 public function testApplyDiscount(): void
@@ -40,10 +37,11 @@ public function testApplyDiscount(): void
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — data provider + AAA com fases separadas</summary>
+<br>
 
 ```php
 #[DataProvider('discountCases')]
@@ -78,6 +76,7 @@ em testes unitários.
 
 <details>
 <summary>✅ Good — mock de repositório + service isolado</summary>
+<br>
 
 ```php
 final class OrderServiceTest extends TestCase
@@ -132,6 +131,7 @@ Use `expectException` antes da ação para verificar que a exceção certa é la
 
 <details>
 <summary>✅ Good — teste de exceção com tipo e mensagem</summary>
+<br>
 
 ```php
 public function testCreateOrderThrowsOnMissingCustomer(): void
@@ -157,6 +157,7 @@ Nomeie os métodos com `test` + comportamento esperado + contexto.
 
 <details>
 <summary>✅ Good — nomenclatura e estrutura</summary>
+<br>
 
 ```php
 final class OrderServiceTest extends TestCase
@@ -183,6 +184,7 @@ para liberar recursos externos (arquivos, conexões de teste).
 
 <details>
 <summary>✅ Good — setUp cria um estado limpo por teste</summary>
+<br>
 
 ```php
 final class UserRepositoryTest extends TestCase

@@ -1,7 +1,3 @@
----
-title: "Observability"
----
-
 # Observability
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
@@ -16,6 +12,7 @@ objetos estruturados: cada campo vira uma propriedade pesquisável.
 
 <details>
 <summary>❌ Bad — string concatenada, ilegível para ferramentas</summary>
+<br>
 
 ```js
 logger.info(`Order ${order.id} processed by user ${user.id} — total: $${order.total}`);
@@ -24,10 +21,11 @@ logger.error(`Payment failed: ${error.message} for order ${order.id}`);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — objeto estruturado com campos semânticos</summary>
+<br>
 
 ```js
 const orderContext = { orderId: order.id, userId: user.id, total: order.total };
@@ -43,6 +41,7 @@ logger.error(paymentErrorContext, "payment failed");
 
 <details>
 <summary>❌ Bad — console.log para tudo, sem distinção de severidade</summary>
+<br>
 
 ```js
 console.log("Checkout started");
@@ -53,10 +52,11 @@ console.log(`User ${userId} not found`);
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nível correto por situação</summary>
+<br>
 
 ```js
 const checkoutContext = { cartId };
@@ -75,6 +75,7 @@ logger.error(userNotFoundContext, "user not found during checkout");
 
 <details>
 <summary>❌ Bad — PII e credenciais em log</summary>
+<br>
 
 ```js
 logger.info({ email: user.email, password: user.password }, "login attempt");
@@ -85,10 +86,11 @@ logger.info({ token }, "user authenticated");
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<br>
 
 ```js
 const loginContext = { userId: user.id };
@@ -110,6 +112,7 @@ Sem um identificador comum, logs de uma mesma requisição são ilhas: impossív
 
 <details>
 <summary>❌ Bad — logs sem contexto de requisição</summary>
+<br>
 
 ```js
 async function processOrder(orderId) {
@@ -126,10 +129,11 @@ async function processOrder(orderId) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — correlationId propagado via AsyncLocalStorage</summary>
+<br>
 
 ```js
 // middleware/correlation.js

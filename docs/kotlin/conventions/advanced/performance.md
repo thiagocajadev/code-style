@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: Kotlin 2.2, JVM.
@@ -24,6 +20,7 @@ evitam cópias intermediárias.
 
 <details>
 <summary>❌ Bad — cada operação cria uma lista intermediária</summary>
+<br>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -37,10 +34,11 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Sequence processa elemento a elemento sem cópias intermediárias</summary>
+<br>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -61,6 +59,7 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 
 <details>
 <summary>❌ Bad — lambda captura contexto, aloca objeto a cada chamada</summary>
+<br>
 
 ```kotlin
 fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -73,10 +72,11 @@ fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inline elimina alocação do lambda</summary>
+<br>
 
 ```kotlin
 inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -93,6 +93,7 @@ inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 
 <details>
 <summary>❌ Bad — mutableListOf + toList gera cópia extra</summary>
+<br>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -108,10 +109,11 @@ fun buildMenuItems(user: User): List<MenuItem> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — buildList sem cópia final</summary>
+<br>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -131,6 +133,7 @@ fun buildMenuItems(user: User): List<MenuItem> {
 
 <details>
 <summary>❌ Bad — objeto pesado inicializado mesmo quando não usado</summary>
+<br>
 
 ```kotlin
 class ReportService {
@@ -140,10 +143,11 @@ class ReportService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lazy adia até o primeiro acesso</summary>
+<br>
 
 ```kotlin
 class ReportService {

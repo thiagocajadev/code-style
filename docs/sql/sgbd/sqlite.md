@@ -1,7 +1,3 @@
----
-title: "SQLite"
----
-
 # SQLite
 
 > Escopo: SQLite 3.53. Referência: [sqlite.org/docs.html](https://sqlite.org/docs.html).
@@ -40,6 +36,7 @@ número. O tipo declarado define a **afinidade** usada para conversões implíci
 
 <details>
 <summary>❌ Bad — tipo não declarado, comportamento imprevisível</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders (
@@ -50,10 +47,11 @@ CREATE TABLE Orders (
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo declarado com afinidade explícita</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders
@@ -78,6 +76,7 @@ Foreign keys estão **desativadas por padrão** no SQLite. Precisam ser ativadas
 
 <details>
 <summary>❌ Bad — FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
+<br>
 
 ```sql
 -- sem PRAGMA foreign_keys = ON, esta inserção passa silenciosamente
@@ -86,10 +85,11 @@ INSERT INTO Orders (Id, CustomerId) VALUES (1, 999); -- CustomerId 999 não exis
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ativar FK no início de cada conexão</summary>
+<br>
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -117,6 +117,7 @@ eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifi
 
 <details>
 <summary>✅ Good — BIGINT sequencial via rowid alias</summary>
+<br>
 
 ```sql
 CREATE TABLE Customers
@@ -132,10 +133,11 @@ CREATE TABLE Customers
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — UUID como TEXT quando unicidade global é requisito</summary>
+<br>
 
 ```sql
 CREATE TABLE Events
@@ -183,6 +185,7 @@ primeiro acesso). Para operações de escrita, use `IMMEDIATE` para adquirir o l
 
 <details>
 <summary>✅ Good — transação IMMEDIATE para operação de escrita</summary>
+<br>
 
 ```sql
 BEGIN IMMEDIATE;
@@ -228,6 +231,7 @@ array JSON.
 
 <details>
 <summary>✅ Good — armazenar e consultar JSON em coluna TEXT</summary>
+<br>
 
 ```sql
 -- armazenar
@@ -264,6 +268,7 @@ Crie uma tabela virtual com `USING fts5`.
 
 <details>
 <summary>✅ Good — tabela FTS5 para busca textual em produtos</summary>
+<br>
 
 ```sql
 -- tabela virtual FTS5
@@ -307,6 +312,7 @@ SQLite tem suporte limitado a `ALTER TABLE`. Operações não suportadas exigem 
 
 <details>
 <summary>✅ Good — adicionar constraint NOT NULL (SQLite 3.53+)</summary>
+<br>
 
 ```sql
 -- antes do SQLite 3.53: era necessário recriar a tabela
@@ -317,10 +323,11 @@ ALTER TABLE Orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — recriar tabela para alterar tipo de coluna</summary>
+<br>
 
 ```sql
 -- passo 1: criar nova tabela com o schema correto

@@ -1,7 +1,3 @@
----
-title: "App Lifecycle (Ciclo de Vida do Aplicativo)"
----
-
 # App Lifecycle (Ciclo de Vida do Aplicativo)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

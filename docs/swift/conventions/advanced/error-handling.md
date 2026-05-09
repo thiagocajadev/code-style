@@ -1,7 +1,3 @@
----
-title: "Error Handling"
----
-
 # Error Handling
 
 > Escopo: Swift 6.1.
@@ -25,6 +21,7 @@ Exceções irrecuperáveis usam `preconditionFailure` ou `fatalError`.
 
 <details>
 <summary>❌ Bad — String como erro (sem exaustividade)</summary>
+<br>
 
 ```swift
 func findOrder(id: UUID) throws -> Order {
@@ -37,10 +34,11 @@ func findOrder(id: UUID) throws -> Order {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — enum tipado com LocalizedError</summary>
+<br>
 
 ```swift
 enum OrderError: LocalizedError {
@@ -72,6 +70,7 @@ func findOrder(id: UUID) throws -> Order {
 
 <details>
 <summary>❌ Bad — do-catch para silenciar erro sem contexto</summary>
+<br>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -85,10 +84,11 @@ func loadCachedUser(id: UUID) -> User? {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — try? quando nil é a semântica correta</summary>
+<br>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -103,6 +103,7 @@ func loadCachedUser(id: UUID) -> User? {
 
 <details>
 <summary>❌ Bad — catch no lugar errado, propagação perdida</summary>
+<br>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -119,10 +120,11 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tratar somente o que pode tratar; propagar o resto</summary>
+<br>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -153,6 +155,7 @@ func handleSubmit() async {
 
 <details>
 <summary>❌ Bad — closure com dois parâmetros opcionais ambíguos</summary>
+<br>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
@@ -162,10 +165,11 @@ func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Result torna os estados explícitos</summary>
+<br>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
@@ -183,6 +187,7 @@ func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
 
 <details>
 <summary>❌ Bad — fatalError com mensagem genérica</summary>
+<br>
 
 ```swift
 guard let config = Configuration.shared else {
@@ -192,10 +197,11 @@ guard let config = Configuration.shared else {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — preconditionFailure com contexto do invariante</summary>
+<br>
 
 ```swift
 guard let config = Configuration.shared else {

@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: SQL. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
@@ -14,6 +10,7 @@ Trazer todas as colunas transfere dados desnecessários, impede covering indexes
 
 <details>
 <summary>❌ Bad — todas as colunas, inclusive as não usadas</summary>
+<br>
 
 ```sql
 SELECT
@@ -26,10 +23,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — somente as colunas necessárias</summary>
+<br>
 
 ```sql
 SELECT
@@ -53,6 +51,7 @@ Aplicar função sobre a coluna filtrada impede o uso do índice: o banco precis
 
 <details>
 <summary>❌ Bad — função no WHERE, índice ignorado</summary>
+<br>
 
 ```sql
 SELECT
@@ -66,10 +65,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — intervalo direto na coluna, índice aproveitado</summary>
+<br>
 
 ```sql
 SELECT
@@ -97,6 +97,7 @@ em silêncio, sem aviso, sem erro, com full scan.
 
 <details>
 <summary>❌ Bad — CAST na coluna: índice em SquadNumber ignorado</summary>
+<br>
 
 ```sql
 -- SquadNumber é INT; comparação como texto força conversão de cada linha
@@ -113,10 +114,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — parâmetro com o tipo correto, coluna intocada</summary>
+<br>
 
 ```sql
 -- @SquadNumber declarado como INT na aplicação; zero conversão no banco
@@ -142,6 +144,7 @@ nenhum erro aparece, e o índice é ignorado em silêncio.
 
 <details>
 <summary>❌ Bad — literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
+<br>
 
 ```sql
 -- Players.Name é NVARCHAR; literal sem prefixo N é VARCHAR
@@ -158,10 +161,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
+<br>
 
 ```sql
 SELECT
@@ -183,6 +187,7 @@ a coluna não indexada preserva o índice da principal.
 
 <details>
 <summary>❌ Bad — CAST na coluna indexada da tabela principal</summary>
+<br>
 
 ```sql
 -- FootballTeams.Id é INT; ExternalTeams.TeamReference é NVARCHAR
@@ -198,10 +203,11 @@ JOIN
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — CAST na coluna não indexada; preferível: corrigir o schema</summary>
+<br>
 
 ```sql
 -- opção 1: converter o lado não indexado — índice em FootballTeams.Id preservado
@@ -227,6 +233,7 @@ converter na aplicação antes do `INSERT`.
 
 <details>
 <summary>❌ Bad — data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
+<br>
 
 ```sql
 -- JoinedAt definido como VARCHAR(10): '2024-01-15', '15/01/2024', '2024/01/15'
@@ -242,10 +249,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — JoinedAt como DATE: filtro direto, índice aproveitado</summary>
+<br>
 
 ```sql
 -- schema correto: JoinedAt DATE NOT NULL
@@ -270,6 +278,7 @@ Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil
 
 <details>
 <summary>❌ Bad — subquery executa N vezes, uma por time</summary>
+<br>
 
 ```sql
 SELECT
@@ -289,10 +298,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — CTE agrega uma vez, JOIN cruza o resultado</summary>
+<br>
 
 ```sql
 WITH ActivePlayerCountCTE AS
@@ -329,6 +339,7 @@ Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
 
 <details>
 <summary>❌ Bad — full scan em tabela grande sem índice na coluna filtrada</summary>
+<br>
 
 ```sql
 -- sem índice em TeamId: o banco lê todos os registros da tabela
@@ -345,10 +356,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — índice na coluna principal do filtro</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId
@@ -363,6 +375,7 @@ A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
 <details>
 <summary>❌ Bad — coluna de baixa seletividade isolada</summary>
+<br>
 
 ```sql
 -- IsActive tem apenas dois valores (0 / 1): índice ineficiente sozinho
@@ -372,10 +385,11 @@ CREATE INDEX IX_Players_IsActive
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -390,6 +404,7 @@ Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha, mesmo c
 
 <details>
 <summary>❌ Bad — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -409,10 +424,11 @@ WHERE
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
+<br>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive_Cover
@@ -428,6 +444,7 @@ Foreign key sem índice na coluna referenciadora força full table scan a cada `
 
 <details>
 <summary>❌ Bad — FK declarada, coluna sem índice</summary>
+<br>
 
 ```sql
 CREATE TABLE Players
@@ -445,10 +462,11 @@ CREATE TABLE Players
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — índice na coluna FK, lookup eficiente</summary>
+<br>
 
 ```sql
 CREATE TABLE Players
@@ -487,6 +505,7 @@ B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, n�
 
 <details>
 <summary>❌ Bad — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders
@@ -501,10 +520,11 @@ CREATE TABLE Orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — BIGINT quando unicidade global não é requisito</summary>
+<br>
 
 ```sql
 CREATE TABLE Orders
@@ -519,10 +539,11 @@ CREATE TABLE Orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
+<br>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
@@ -550,6 +571,7 @@ Nunca trazer todos os registros para paginar em memória. Delegar a paginação 
 
 <details>
 <summary>❌ Bad — traz tudo e descarta em memória</summary>
+<br>
 
 ```sql
 SELECT
@@ -567,10 +589,11 @@ ORDER BY
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
+<br>
 
 ```sql
 -- SQL Server

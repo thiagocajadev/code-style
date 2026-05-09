@@ -1,7 +1,3 @@
----
-title: "State Management (Gerenciamento de Estado)"
----
-
 # State Management (Gerenciamento de Estado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

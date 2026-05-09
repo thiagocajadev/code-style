@@ -1,7 +1,3 @@
----
-title: "Naming"
----
-
 # Naming
 
 Nomes em C# seguem convenções da plataforma .NET: `PascalCase` para tipos, métodos e propriedades; `camelCase` para parâmetros e variáveis locais. A regra mais forte vem antes da convenção visual: o identificador expressa propósito do domínio, não tipo técnico.
@@ -12,6 +8,7 @@ Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, p
 
 <details>
 <summary>❌ Bad — mistura de idiomas</summary>
+<br>
 
 ```csharp
 public class PedidoService
@@ -26,10 +23,11 @@ public class PedidoService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inglês consistente</summary>
+<br>
 
 ```csharp
 public class OrderService
@@ -58,6 +56,7 @@ Membros públicos usam PascalCase. Membros privados usam `_camelCase` com unders
 
 <details>
 <summary>❌ Bad — convenção inconsistente</summary>
+<br>
 
 ```csharp
 public class orderService
@@ -74,10 +73,11 @@ public class orderService
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — escopo declarado pela convenção</summary>
+<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository)
@@ -100,6 +100,7 @@ Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sina
 
 <details>
 <summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrder(Guid id, CancellationToken ct) { ... }
@@ -109,10 +110,11 @@ public async Task<bool> ValidatePayment(PaymentRequest request) { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sufixo declara a natureza assíncrona</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid id, CancellationToken ct) { ... }
@@ -128,6 +130,7 @@ Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`
 
 <details>
 <summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
+<br>
 
 ```csharp
 public class OrderRepository { ... }       // é interface ou classe?
@@ -137,10 +140,11 @@ public class DefaultOrderRepository { ... } // Default não diz onde persiste
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — interface clara, implementação pelo domínio</summary>
+<br>
 
 ```csharp
 public interface IOrderRepository { ... }
@@ -163,6 +167,7 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<br>
 
 ```csharp
 bool active = user.Status == "ACTIVE";
@@ -172,10 +177,11 @@ bool delete = user.Role == "ADMIN";
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — prefixo declara a semântica</summary>
+<br>
 
 ```csharp
 bool isActive = user.Status == "ACTIVE";
@@ -191,6 +197,7 @@ O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`,
 
 <details>
 <summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>
+<br>
 
 ```csharp
 public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
@@ -204,10 +211,11 @@ public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nomes expressivos pelo domínio</summary>
+<br>
 
 ```csharp
 public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -227,6 +235,7 @@ Nomes expressivos eliminam a necessidade de comentários. Um comentário que ree
 
 <details>
 <summary>❌ Bad — comentários repetem o código</summary>
+<br>
 
 ```csharp
 // busca o usuário pelo id
@@ -240,10 +249,11 @@ if (!u.Flag)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — código se explica; comentário só para restrições não óbvias</summary>
+<br>
 
 ```csharp
 var user = await _repo.FindByIdAsync(userId, ct);
@@ -261,6 +271,7 @@ Nomes seguem a ordem de leitura natural: domínio primeiro, ação depois, quali
 
 <details>
 <summary>❌ Bad — qualificador antes do domínio</summary>
+<br>
 
 ```csharp
 public async Task<decimal> TotalCalculateOrderAsync(...) { ... }
@@ -270,10 +281,11 @@ public async Task<User> ByIdFindUserAsync(...) { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — domínio primeiro, ação depois</summary>
+<br>
 
 ```csharp
 public async Task<decimal> CalculateOrderTotalAsync(...) { ... }

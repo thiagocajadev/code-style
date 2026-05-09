@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: Kotlin 2.2, JUnit 5, Kotest 5.9, MockK 1.13.
@@ -24,6 +20,7 @@ via `runTest`.
 
 <details>
 <summary>❌ Bad — setup, ação e assert misturados</summary>
+<br>
 
 ```kotlin
 @Test
@@ -37,10 +34,11 @@ fun testOrder() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — AAA explícito com nomes expressivos</summary>
+<br>
 
 ```kotlin
 @Test
@@ -68,6 +66,7 @@ fun `findOrder returns paid order when found`() {
 
 <details>
 <summary>❌ Bad — nomes genéricos sem contexto</summary>
+<br>
 
 ```kotlin
 @Test
@@ -82,10 +81,11 @@ fun orderTest() { ... }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — backtick notation descreve comportamento</summary>
+<br>
 
 ```kotlin
 @Test
@@ -104,6 +104,7 @@ fun `applyDiscount throws when rate is outside 0-1 range`() { ... }
 
 <details>
 <summary>❌ Bad — runBlocking não controla tempo virtual</summary>
+<br>
 
 ```kotlin
 @Test
@@ -115,10 +116,11 @@ fun testRetryWithDelay() = runBlocking {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — runTest com advanceTimeBy</summary>
+<br>
 
 ```kotlin
 @Test
@@ -140,6 +142,7 @@ fun `retryWithDelay retries after 1 second`() = runTest {
 
 <details>
 <summary>❌ Bad — stub genérico sem verificação de comportamento</summary>
+<br>
 
 ```kotlin
 @Test
@@ -155,10 +158,11 @@ fun testSendNotification() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verify com exatamente o que deve ser chamado</summary>
+<br>
 
 ```kotlin
 @Test
@@ -186,6 +190,7 @@ fun `confirmOrder sends confirmation email to customer`() {
 
 <details>
 <summary>❌ Bad — testes duplicados com dados diferentes</summary>
+<br>
 
 ```kotlin
 @Test
@@ -209,10 +214,11 @@ fun `rate -0_1 is invalid`() {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tabela de dados cobre todos os cenários</summary>
+<br>
 
 ```kotlin
 @ParameterizedTest

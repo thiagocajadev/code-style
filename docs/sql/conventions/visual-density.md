@@ -1,7 +1,3 @@
----
-title: "Visual density: SQL"
----
-
 # Visual density: SQL
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
@@ -18,6 +14,7 @@ Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de a
 
 <details>
 <summary>❌ Bad — T-SQL: assinatura e corpo colados, sem separação visual</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -39,10 +36,11 @@ END;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>❌ Bad — PostgreSQL: function sem linhas em branco internas, bloco opaco</summary>
+<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById
@@ -71,10 +69,11 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
+<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -97,10 +96,11 @@ END;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
+<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById
@@ -135,6 +135,7 @@ $$ LANGUAGE plpgsql;
 
 <details>
 <summary>❌ Bad — CTEs coladas, sem separação entre as etapas</summary>
+<br>
 
 ```sql
 WITH TeamCTE AS
@@ -157,10 +158,11 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — linha em branco entre CTEs, cada etapa legível</summary>
+<br>
 
 ```sql
 WITH TeamCTE AS
@@ -204,6 +206,7 @@ Procedures com múltiplas etapas (filtrar, enriquecer, agregar, inserir) seguem 
 
 <details>
 <summary>❌ Bad — etapas coladas, sem separação entre blocos distintos</summary>
+<br>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -230,10 +233,11 @@ JOIN
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — etapas separadas, fluxo da procedure legível</summary>
+<br>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)

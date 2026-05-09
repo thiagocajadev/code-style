@@ -1,7 +1,3 @@
----
-title: "PHP"
----
-
 # PHP
 
 [![PHP](https://img.shields.io/badge/PHP-8.4-777BB4?logo=php&logoColor=white)](https://www.php.net/releases/8.4/)
@@ -59,7 +55,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [SLA](conventions/functions.md#sla--orquestrador-ou-implementação)                            | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -71,7 +67,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [Readonly por padrão](conventions/variables.md#mutação-direta)                                | `readonly` em propriedades e parâmetros; mutação é exceção           |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
 
-<br />
+<br>
 
 **Controle de qualidade**: estado, erros e testes
 

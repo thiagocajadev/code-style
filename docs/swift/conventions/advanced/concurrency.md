@@ -1,7 +1,3 @@
----
-title: "Concurrency"
----
-
 # Concurrency
 
 > Escopo: Swift 6.1, Swift concurrency model.
@@ -26,6 +22,7 @@ que tipos são seguros para transferência entre tasks.
 
 <details>
 <summary>❌ Bad — Task não estruturado vaza ciclo de vida</summary>
+<br>
 
 ```swift
 func loadUser(userId: UUID) {
@@ -39,10 +36,11 @@ func loadUser(userId: UUID) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Task vinculado ao ciclo de vida via async context</summary>
+<br>
 
 ```swift
 @MainActor
@@ -63,6 +61,7 @@ class UserViewModel: ObservableObject {
 
 <details>
 <summary>❌ Bad — await sequencial sem paralelismo</summary>
+<br>
 
 ```swift
 func loadDashboard(userId: UUID) async throws -> Dashboard {
@@ -75,10 +74,11 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — async let executa em paralelo</summary>
+<br>
 
 ```swift
 func loadDashboard(userId: UUID) async throws -> Dashboard {
@@ -100,6 +100,7 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 
 <details>
 <summary>❌ Bad — classe mutável acessada de múltiplas tasks (erro no Swift 6)</summary>
+<br>
 
 ```swift
 class RequestCounter {
@@ -111,10 +112,11 @@ class RequestCounter {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — actor serializa acesso ao estado</summary>
+<br>
 
 ```swift
 actor RequestCounter {
@@ -137,6 +139,7 @@ let total = await counter.currentCount()
 
 <details>
 <summary>❌ Bad — atualização de UI em background thread</summary>
+<br>
 
 ```swift
 func loadOrders() async {
@@ -148,10 +151,11 @@ func loadOrders() async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — @MainActor garante execução na main thread</summary>
+<br>
 
 ```swift
 @MainActor
@@ -168,6 +172,7 @@ func loadOrders() async {
 
 <details>
 <summary>❌ Bad — loop de tasks sem controle de falhas</summary>
+<br>
 
 ```swift
 func sendNotifications(to users: [User]) async {
@@ -179,10 +184,11 @@ func sendNotifications(to users: [User]) async {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — withTaskGroup com tratamento de falhas por filho</summary>
+<br>
 
 ```swift
 func sendNotifications(to users: [User]) async {
@@ -206,6 +212,7 @@ func sendNotifications(to users: [User]) async {
 
 <details>
 <summary>❌ Bad — loop longo ignora cancelamento</summary>
+<br>
 
 ```swift
 func processItems(_ items: [Item]) async throws {
@@ -217,10 +224,11 @@ func processItems(_ items: [Item]) async throws {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verificação explícita de cancelamento</summary>
+<br>
 
 ```swift
 func processItems(_ items: [Item]) async throws {

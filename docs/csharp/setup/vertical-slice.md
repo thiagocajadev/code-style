@@ -1,7 +1,3 @@
----
-title: "Vertical Slice Architecture"
----
-
 # Vertical Slice Architecture
 
 > Escopo: C#. Visão transversal: [shared/architecture/architecture.md](../../shared/architecture/architecture.md) · [shared/architecture/operation-flow.md](../../shared/architecture/operation-flow.md).
@@ -454,6 +450,7 @@ O handler orquestra os 6 steps em sequência. Retorna cedo na falha, nunca imple
 
 <details>
 <summary>❌ Bad — lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
+<br>
 
 ```csharp
 // ❌ valida inline, CQS violado (SaveAsync retorna entidade), lógica no return
@@ -473,10 +470,11 @@ public static async Task<IResult> Handle(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — orquestrador slim, 6 steps explícitos</summary>
+<br>
 
 ```csharp
 // Features/Orders/Create.cs
@@ -612,6 +610,7 @@ Para convenções de teste completas, ver [testing.md](../advanced/testing.md).
 
 <details>
 <summary>❌ Bad — violações frequentes no padrão vertical slice</summary>
+<br>
 
 ```csharp
 // ❌ SaveAsync retornando entidade — CQS violado

@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
@@ -28,6 +24,7 @@ passa a retornar `T | undefined`, forçando o tratamento de posições que podem
 
 <details>
 <summary>❌ Bad — sem strictNullChecks, null passa silenciosamente</summary>
+<br>
 
 ```ts
 // sem strict: true — TypeScript aceita tudo isso sem reclamar
@@ -41,10 +38,11 @@ console.log(user.name); // ReferenceError em runtime
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — compilador aponta os problemas antes do runtime</summary>
+<br>
 
 ```ts
 // com strict + noUncheckedIndexedAccess
@@ -78,6 +76,7 @@ ausência precisa ser **atribuída** explicitamente (ex: limpar um campo em um u
 
 <details>
 <summary>❌ Bad — null e undefined misturados sem intenção</summary>
+<br>
 
 ```ts
 interface User {
@@ -92,10 +91,11 @@ function findUser(id: string): User | null | undefined {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — um tipo de ausência por contexto</summary>
+<br>
 
 ```ts
 interface User {
@@ -124,6 +124,7 @@ tem semântica útil. Quem chama não deveria precisar checar antes de iterar.
 
 <details>
 <summary>❌ Bad — null em coleção quebra qualquer iteração</summary>
+<br>
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[] | null> {
@@ -140,10 +141,11 @@ if (orders) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lista vazia como estado neutro</summary>
+<br>
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[]> {
@@ -165,6 +167,7 @@ como `[]` na declaração ou no construtor.
 
 <details>
 <summary>❌ Bad — null como estado inicial de lista</summary>
+<br>
 
 ```ts
 interface Order {
@@ -183,10 +186,11 @@ class Cart {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lista vazia como default, sem null</summary>
+<br>
 
 ```ts
 interface Order {
@@ -213,6 +217,7 @@ com `?? []` no ponto de entrada, antes de propagar para o domínio.
 
 <details>
 <summary>❌ Bad — campos null/undefined da API propagam direto para o domínio</summary>
+<br>
 
 ```ts
 interface ApiUserResponse {
@@ -237,10 +242,11 @@ async function buildUserSummary(userId: string) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — normalização na fronteira, domínio trabalha com tipos limpos</summary>
+<br>
 
 ```ts
 async function fetchUserOrders(userId: string): Promise<Order[]> {
@@ -261,6 +267,7 @@ clause.
 
 <details>
 <summary>❌ Bad — encadeamento que esconde condição de negócio</summary>
+<br>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
@@ -271,10 +278,11 @@ async function getOrderTotal(orderId: string): Promise<number> {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<br>
 
 ```ts
 // ausência é erro → guard clause
@@ -302,6 +310,7 @@ Aceitável apenas quando você tem garantia externa que o compilador não conseg
 
 <details>
 <summary>❌ Bad — ! para silenciar o compilador sem garantia real</summary>
+<br>
 
 ```ts
 const user = findUser(id)!; // e se retornar null?
@@ -310,10 +319,11 @@ const email = form.fields.get("email")!.value; // e se a chave não existir?
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard clause no lugar de !</summary>
+<br>
 
 ```ts
 const user = await findUser(id);
@@ -327,10 +337,11 @@ const email = emailField.value;
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ! aceitável com garantia documentada</summary>
+<br>
 
 ```ts
 // após um type guard já verificado no bloco acima, ! é defensável

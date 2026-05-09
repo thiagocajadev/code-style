@@ -1,7 +1,3 @@
----
-title: "Async"
----
-
 # Async
 
 > Escopo: Go 1.26.
@@ -29,6 +25,7 @@ Nunca use `context.Background()` dentro de handlers — propague o contexto da r
 
 <details>
 <summary>❌ Bad — contexto não propagado</summary>
+<br>
 
 ```go
 func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
@@ -47,10 +44,11 @@ func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contexto da requisição propagado em toda a cadeia</summary>
+<br>
 
 ```go
 func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
@@ -90,6 +88,7 @@ criar um sub-contexto com deadline.
 
 <details>
 <summary>❌ Bad — chamada HTTP sem timeout</summary>
+<br>
 
 ```go
 func (c *PaymentClient) Charge(amount float64) (*ChargeResult, error) {
@@ -105,10 +104,11 @@ func (c *PaymentClient) Charge(amount float64) (*ChargeResult, error) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sub-contexto com timeout por chamada</summary>
+<br>
 
 ```go
 const paymentTimeout = 5 * time.Second
@@ -153,6 +153,7 @@ coletar o primeiro erro. O contexto do grupo é cancelado automaticamente no pri
 
 <details>
 <summary>❌ Bad — chamadas sequenciais que poderiam ser paralelas</summary>
+<br>
 
 ```go
 func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error) {
@@ -179,10 +180,11 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — errgroup para chamadas independentes em paralelo</summary>
+<br>
 
 ```go
 func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error) {
@@ -239,6 +241,7 @@ Em loops longos ou processamento em lote, verifique `ctx.Done()` periodicamente.
 
 <details>
 <summary>✅ Good — verificação de cancelamento em loop de processamento</summary>
+<br>
 
 ```go
 func processOrders(ctx context.Context, orders []Order) error {

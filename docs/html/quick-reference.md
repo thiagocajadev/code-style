@@ -1,7 +1,3 @@
----
-title: "Quick reference: HTML"
----
-
 # Quick reference: HTML
 
 > Escopo: HTML. Cheat-sheet das convenções; detalhes em `conventions/`.

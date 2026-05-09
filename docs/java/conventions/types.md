@@ -1,7 +1,3 @@
----
-title: "Types"
----
-
 # Types
 
 Java moderno (25 LTS) oferece ferramentas para modelar domínio com precisão:
@@ -15,6 +11,7 @@ getter/setter manual.
 
 <details>
 <summary>❌ Bad — classe de dados verbosa</summary>
+<br>
 
 ```java
 public class UserProfile {
@@ -38,10 +35,11 @@ public class UserProfile {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — record elimina o boilerplate</summary>
+<br>
 
 ```java
 public record UserProfile(String id, String name, String email) {}
@@ -57,6 +55,7 @@ profile.name(); // getter gerado
 
 <details>
 <summary>✅ Good — construtor compacto valida invariantes</summary>
+<br>
 
 ```java
 public record Money(BigDecimal amount, String currency) {
@@ -81,6 +80,7 @@ classe. O compilador garante que todos os casos são cobertos no switch.
 
 <details>
 <summary>❌ Bad — hierarquia aberta, switch incompleto passa em silêncio</summary>
+<br>
 
 ```java
 public abstract class PaymentResult {}
@@ -97,10 +97,11 @@ String message = switch (result) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — sealed garante cobertura total em tempo de compilação</summary>
+<br>
 
 ```java
 public sealed interface PaymentResult
@@ -126,6 +127,7 @@ Enums não são só constantes. Podem carregar dados e implementar métodos.
 
 <details>
 <summary>❌ Bad — lógica espalhada fora do enum</summary>
+<br>
 
 ```java
 public enum OrderStatus { PENDING, APPROVED, REJECTED, CANCELLED }
@@ -138,10 +140,11 @@ else if (status == OrderStatus.APPROVED) label = "Approved";
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — enum centraliza os dados e o comportamento</summary>
+<br>
 
 ```java
 public enum OrderStatus {
@@ -169,6 +172,7 @@ Generics eliminam casts e tornam os contratos explícitos.
 
 <details>
 <summary>❌ Bad — raw type (tipo sem parâmetro genérico) perde a segurança do compilador</summary>
+<br>
 
 ```java
 public List fetchAll() { // raw type
@@ -181,10 +185,11 @@ Order order = (Order) orders.get(0); // cast manual
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — tipo parametrizado torna o contrato explícito</summary>
+<br>
 
 ```java
 public List<Order> fetchAll() {
@@ -205,6 +210,7 @@ legibilidade do contrato.
 
 <details>
 <summary>✅ Good — covariance (covariância: aceitar tipos mais específicos) com `? extends`</summary>
+<br>
 
 ```java
 // aceita List<Order>, List<PriorityOrder>, List<SampleOrder>

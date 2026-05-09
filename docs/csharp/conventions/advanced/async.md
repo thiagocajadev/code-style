@@ -1,7 +1,3 @@
----
-title: "Async"
----
-
 # Async
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
@@ -14,6 +10,7 @@ Todo **I/O** (Input/Output, Entrada/Saída) é assíncrono. Métodos que realiza
 
 <details>
 <summary>❌ Bad — I/O síncrono bloqueia a thread</summary>
+<br>
 
 ```csharp
 public Order FindOrder(Guid orderId)
@@ -31,10 +28,11 @@ public void SaveOrder(Order order)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — async/await do início ao fim</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -57,6 +55,7 @@ Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em ope
 
 <details>
 <summary>❌ Bad — await sequencial em chamadas independentes</summary>
+<br>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -74,10 +73,11 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Task.WhenAll para chamadas independentes em paralelo</summary>
+<br>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -107,6 +107,7 @@ Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o 
 
 <details>
 <summary>❌ Bad — CancellationToken ignorado ou ausente</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId)
@@ -127,10 +128,11 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — CancellationToken propagado em toda a cadeia</summary>
+<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -158,6 +160,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 <details>
 <summary>❌ Bad — bloqueio síncrono em contexto async</summary>
+<br>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase
@@ -173,10 +176,11 @@ public class OrderController(OrderService service) : ControllerBase
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — endpoint async de ponta a ponta</summary>
+<br>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase

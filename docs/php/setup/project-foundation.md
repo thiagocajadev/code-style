@@ -1,7 +1,3 @@
----
-title: "Project Foundation"
----
-
 # Project Foundation
 
 > Escopo: PHP 8.4.
@@ -63,6 +59,7 @@ instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
 <summary>✅ Good — composer.json com PSR-4, PHPStan e scripts</summary>
+<br>
 
 ```json
 {
@@ -106,6 +103,7 @@ instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
 <summary>❌ Bad — getenv() espalhado em todo lugar</summary>
+<br>
 
 ```php
 // src/Domain/Order/OrderRepository.php
@@ -123,10 +121,11 @@ $jwtSecret = $_ENV['JWT_SECRET']; // leitura direta
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Config como único ponto de entrada de env vars</summary>
+<br>
 
 ```php
 // src/Config.php
@@ -177,6 +176,7 @@ registra rotas; handlers ficam no domínio.
 
 <details>
 <summary>✅ Good — index.php como índice, lógica delegada</summary>
+<br>
 
 ```php
 <?php
@@ -227,6 +227,7 @@ estrita de tipos em chamadas de função e previne coerções silenciosas.
 
 <details>
 <summary>❌ Bad — sem strict_types, coerção silenciosa</summary>
+<br>
 
 ```php
 <?php
@@ -241,10 +242,11 @@ calculateTotal("5", "3"); // "5" é convertido para 5 silenciosamente
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — strict_types em todos os arquivos</summary>
+<br>
 
 ```php
 <?php

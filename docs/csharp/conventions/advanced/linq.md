@@ -1,7 +1,3 @@
----
-title: "LINQ"
----
-
 # LINQ
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
@@ -14,6 +10,7 @@ LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. 
 
 <details>
 <summary>❌ Bad — side effect dentro de query LINQ</summary>
+<br>
 
 ```csharp
 var summaries = orders
@@ -29,10 +26,11 @@ var summaries = orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — LINQ transforma, foreach executa side effects</summary>
+<br>
 
 ```csharp
 var activeOrders = orders
@@ -55,6 +53,7 @@ foreach (var order in activeOrders)
 
 <details>
 <summary>❌ Bad — Aggregate onde foreach é mais claro</summary>
+<br>
 
 ```csharp
 var totalRevenue = orders.Aggregate(
@@ -65,10 +64,11 @@ var totalRevenue = orders.Aggregate(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>❌ Bad — foreach manual para construir lista, sem Select</summary>
+<br>
 
 ```csharp
 var summaries = new List<OrderSummary>();
@@ -81,10 +81,11 @@ foreach (var order in orders)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — foreach com variável de acumulação explícita</summary>
+<br>
 
 ```csharp
 decimal totalRevenue = 0;
@@ -95,10 +96,11 @@ foreach (var item in order.Items)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Select para transformação 1-para-1</summary>
+<br>
 
 ```csharp
 var summaries = orders
@@ -114,6 +116,7 @@ var summaries = orders
 
 <details>
 <summary>❌ Bad — materialização prematura no meio do pipeline</summary>
+<br>
 
 ```csharp
 public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -135,10 +138,11 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pipeline lazy, materialização única na fronteira</summary>
+<br>
 
 ```csharp
 public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -161,6 +165,7 @@ Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupa
 
 <details>
 <summary>❌ Bad — chain monolítica, difícil de rastrear</summary>
+<br>
 
 ```csharp
 var report = orders
@@ -174,10 +179,11 @@ var report = orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — etapas nomeadas, cada uma com responsabilidade clara</summary>
+<br>
 
 ```csharp
 var recentConfirmedOrders = orders
@@ -223,6 +229,7 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 
 <details>
 <summary>❌ Bad — Join exclui registros sem correspondência</summary>
+<br>
 
 ```csharp
 var result = orders
@@ -237,10 +244,11 @@ var result = orders
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
+<br>
 
 ```csharp
 var result = orders

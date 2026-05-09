@@ -1,7 +1,3 @@
----
-title: "Visual Density"
----
-
 # Visual Density
 
 > Escopo: Swift 6.1.
@@ -13,6 +9,7 @@ Zero linhas dentro de um grupo. Nunca duas linhas em branco consecutivas.
 
 <details>
 <summary>❌ Bad — sem separação entre fases</summary>
+<br>
 
 ```swift
 func processPayment(request: PaymentRequest) async throws -> Receipt {
@@ -32,10 +29,11 @@ func processPayment(request: PaymentRequest) async throws -> Receipt {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — fases separadas por linha em branco</summary>
+<br>
 
 ```swift
 func processPayment(request: PaymentRequest) async throws -> Receipt {
@@ -64,6 +62,7 @@ func processPayment(request: PaymentRequest) async throws -> Receipt {
 
 <details>
 <summary>❌ Bad — blank entre let e return</summary>
+<br>
 
 ```swift
 func buildWelcomeMessage(for user: User) -> String {
@@ -75,10 +74,11 @@ func buildWelcomeMessage(for user: User) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — let + return sem blank (explaining return tight)</summary>
+<br>
 
 ```swift
 func buildWelcomeMessage(for user: User) -> String {
@@ -93,6 +93,7 @@ func buildWelcomeMessage(for user: User) -> String {
 
 <details>
 <summary>❌ Bad — chain em uma linha só</summary>
+<br>
 
 ```swift
 let result = orders.filter { $0.isPaid }.sorted { $0.createdAt > $1.createdAt }.prefix(5).map { $0.toSummary() }
@@ -100,10 +101,11 @@ let result = orders.filter { $0.isPaid }.sorted { $0.createdAt > $1.createdAt }.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma operação por linha</summary>
+<br>
 
 ```swift
 let recentPaidSummaries = orders
@@ -122,6 +124,7 @@ return recentPaid
 
 <details>
 <summary>❌ Bad — lógica embutida na inicialização</summary>
+<br>
 
 ```swift
 return Order(
@@ -134,10 +137,11 @@ return Order(
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lógica extraída antes da construção</summary>
+<br>
 
 ```swift
 let availableItems = items.filter { $0.stock > 0 }
@@ -161,6 +165,7 @@ Extensions organizam conformances sem aumentar a densidade do tipo principal.
 
 <details>
 <summary>❌ Bad — tudo no corpo da struct</summary>
+<br>
 
 ```swift
 struct Order: Codable, Equatable, CustomStringConvertible {
@@ -178,10 +183,11 @@ struct Order: Codable, Equatable, CustomStringConvertible {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma extension por conformance</summary>
+<br>
 
 ```swift
 struct Order {

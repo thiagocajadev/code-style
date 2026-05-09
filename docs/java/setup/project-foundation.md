@@ -1,7 +1,3 @@
----
-title: "Project Foundation"
----
-
 # Project Foundation
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos Java com Spring Boot 4. Os exemplos
@@ -47,6 +43,7 @@ testável sem o container Spring.
 
 <details>
 <summary>❌ Bad — @Autowired em campo: dependências ocultas, dificulta teste</summary>
+<br>
 
 ```java
 @Service
@@ -62,10 +59,11 @@ public class OrderService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — injeção via construtor: dependências explícitas</summary>
+<br>
 
 ```java
 @Service
@@ -102,6 +100,7 @@ diretamente. Use `@ConfigurationProperties` para agrupar propriedades por domín
 
 <details>
 <summary>❌ Bad — System.getenv() espalhado em todo lugar</summary>
+<br>
 
 ```java
 @Service
@@ -116,10 +115,11 @@ public class PaymentService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — @ConfigurationProperties agrupa e valida a configuração</summary>
+<br>
 
 ```java
 // config/PaymentProperties.java
@@ -153,6 +153,7 @@ Organize por domínio (feature), não por camada técnica. O código de um domí
 
 <details>
 <summary>❌ Bad — pacotes por camada técnica: acopla tudo</summary>
+<br>
 
 ```
 src/main/java/com/example/
@@ -169,10 +170,11 @@ src/main/java/com/example/
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — pacotes por domínio: cada domínio é dono do seu código</summary>
+<br>
 
 ```
 src/main/java/com/example/

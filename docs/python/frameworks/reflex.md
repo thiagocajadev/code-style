@@ -1,7 +1,3 @@
----
-title: "Reflex"
----
-
 # Reflex
 
 > Escopo: Python. Guia baseado em **Reflex 0.8.28** com **Python 3.10+** (Python 3.14: ver nota de compatibilidade).
@@ -78,6 +74,7 @@ ao browser.
 
 <details>
 <summary>❌ Bad — Var sem tipo, boolean sem prefixo semântico, intenção de backend var sem prefixo</summary>
+<br>
 
 ```python
 class AppState(rx.State):
@@ -88,10 +85,11 @@ class AppState(rx.State):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Vars tipadas, boolean com is_, backend var com prefixo _</summary>
+<br>
 
 ```python
 class OrderState(rx.State):
@@ -109,6 +107,7 @@ torna o método privado (somente uso interno, não exposto ao browser).
 
 <details>
 <summary>❌ Bad — verbo handle, validação misturada com persistência, helper sem prefixo</summary>
+<br>
 
 ```python
 class OrderState(rx.State):
@@ -124,10 +123,11 @@ class OrderState(rx.State):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — verbo expressivo, validação em helper privado, persistência delegada ao serviço</summary>
+<br>
 
 ```python
 class OrderState(rx.State):
@@ -159,6 +159,7 @@ Anotação de tipo obrigatória.
 
 <details>
 <summary>❌ Bad — Var atualizada manualmente a cada escrita, sem tipo, sem decorator</summary>
+<br>
 
 ```python
 class CartState(rx.State):
@@ -172,10 +173,11 @@ class CartState(rx.State):
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — computed var derivada automaticamente, sem sincronização manual</summary>
+<br>
 
 ```python
 class CartState(rx.State):
@@ -206,6 +208,7 @@ referenciam Vars do State. Sem **I/O** (Input/Output, Entrada/Saída) nem lógic
 
 <details>
 <summary>❌ Bad — I/O direto no componente, lógica de negócio misturada com apresentação</summary>
+<br>
 
 ```python
 def order_list():
@@ -217,10 +220,11 @@ def order_list():
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — componente referencia State, sem I/O, sem lógica de negócio</summary>
+<br>
 
 ```python
 def order_card(order: Order) -> rx.Component:

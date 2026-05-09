@@ -1,7 +1,3 @@
----
-title: "Angular"
----
-
 # Angular
 
 > Escopo: TypeScript. Guia baseado em **Angular 21** com **Standalone API** e **Signals**.
@@ -67,6 +63,7 @@ Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada compo
 
 <details>
 <summary>❌ Bad — componente declarado em NgModule</summary>
+<br>
 
 ```ts
 @NgModule({
@@ -87,10 +84,11 @@ export class UserCardComponent {
 
 </details>
 
-<br />
+<br>
 
 <details>
-<summary>✅ Good — standalone com imports e @Input(&#123; required: true &#125;)</summary>
+<summary>✅ Good — standalone com imports e @Input({ required: true })</summary>
+<br>
 
 ```ts
 import { Component, input } from "@angular/core";
@@ -123,6 +121,7 @@ Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` 
 
 <details>
 <summary>❌ Bad — BehaviorSubject para estado local simples</summary>
+<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -144,10 +143,11 @@ export class CartComponent implements OnInit, OnDestroy {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — signal e computed para estado local</summary>
+<br>
 
 ```ts
 import { Component, signal, computed } from "@angular/core";
@@ -189,6 +189,7 @@ Fluxo: `Smart → @Input() → Dumb → @Output() → Smart`
 
 <details>
 <summary>❌ Bad — componente de lista com lógica de negócio misturada</summary>
+<br>
 
 ```ts
 @Component({
@@ -217,10 +218,11 @@ export class OrderListComponent implements OnInit {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Smart orquestra com signals; Dumb apresenta</summary>
+<br>
 
 ```ts
 // Smart Component
@@ -289,6 +291,7 @@ Services encapsulam lógica de negócio e acesso a dados. Usam `inject()` em vez
 
 <details>
 <summary>❌ Bad — injeção via construtor, return type implícito</summary>
+<br>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -303,10 +306,11 @@ export class OrderService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — inject(), return type explícito, tipos genéricos no HttpClient</summary>
+<br>
 
 ```ts
 import { Injectable, inject } from "@angular/core";
@@ -345,6 +349,7 @@ Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado
 
 <details>
 <summary>❌ Bad — guard no ngOnInit do componente</summary>
+<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -362,10 +367,11 @@ export class DashboardComponent implements OnInit {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — CanActivateFn na definição da rota</summary>
+<br>
 
 ```ts
 // guards/auth.guard.ts
@@ -430,6 +436,7 @@ O **Resolver** cobre o papel do **Loader** definido em [frontend-flow.md](../../
 
 <details>
 <summary>❌ Bad — busca no ngOnInit, componente monta sem dados</summary>
+<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -450,10 +457,11 @@ export class OrderDetailComponent implements OnInit {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ResolveFn na rota, componente recebe dados prontos via signal</summary>
+<br>
 
 ```ts
 // resolvers/order-detail.resolver.ts
@@ -516,6 +524,7 @@ O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Ang
 
 <details>
 <summary>❌ Bad — FormGroup não-tipado, acesso por string</summary>
+<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -534,10 +543,11 @@ export class LoginFormComponent {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
+<br>
 
 ```ts
 import { Component, inject, signal } from "@angular/core";
@@ -611,6 +621,7 @@ Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient �
 
 <details>
 <summary>❌ Bad — token injetado manualmente em cada service</summary>
+<br>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -630,10 +641,11 @@ export class OrderService {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — auth interceptor centraliza o token em todas as requisições</summary>
+<br>
 
 ```ts
 // interceptors/auth.interceptor.ts
@@ -674,10 +686,11 @@ export const appConfig: ApplicationConfig = {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — error interceptor trata 401 e 500 globalmente</summary>
+<br>
 
 ```ts
 // interceptors/error.interceptor.ts

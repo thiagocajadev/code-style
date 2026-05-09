@@ -1,7 +1,3 @@
----
-title: "Visual density: HTML"
----
-
 # Visual density: HTML
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar
@@ -14,6 +10,7 @@ arquivo escaneável e revela a estrutura de cima pra baixo sem precisar ler o co
 
 <details>
 <summary>❌ Bad — blocos colados, sem respiro entre seções</summary>
+<br>
 
 ```html
 <header>
@@ -37,10 +34,11 @@ arquivo escaneável e revela a estrutura de cima pra baixo sem precisar ler o co
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — uma linha em branco entre blocos distintos</summary>
+<br>
 
 ```html
 <header>
@@ -75,6 +73,7 @@ separa campos distintos. O formulário torna-se legível de cima pra baixo.
 
 <details>
 <summary>❌ Bad — campos colados, unidades indistintas</summary>
+<br>
 
 ```html
 <form>
@@ -90,10 +89,11 @@ separa campos distintos. O formulário torna-se legível de cima pra baixo.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — campos separados, unidades visíveis</summary>
+<br>
 
 ```html
 <form>
@@ -119,6 +119,7 @@ fechamento identifica o bloco, não o elemento.
 
 <details>
 <summary>❌ Bad — comentário sobre o que o código faz, não onde termina</summary>
+<br>
 
 ```html
 <!-- This is the navigation menu with links -->
@@ -128,10 +129,11 @@ fechamento identifica o bloco, não o elemento.
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — comentário de fechamento identifica a seção</summary>
+<br>
 
 ```html
 <!-- Navigation -->

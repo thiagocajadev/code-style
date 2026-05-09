@@ -1,7 +1,3 @@
----
-title: "Performance"
----
-
 # Performance
 
 > Escopo: Ruby 4.0. Padrões transversais de performance em [shared/architecture/performance.md](../../../../shared/architecture/performance.md).
@@ -17,6 +13,7 @@ Cada literal de string sem `frozen_string_literal: true` cria um novo objeto na 
 
 <details>
 <summary>❌ Bad — string alocada a cada iteração</summary>
+<br>
 
 ```ruby
 def build_greetings(users)
@@ -26,10 +23,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — frozen_string_literal + interpolação</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -48,6 +46,7 @@ Evita processar o array inteiro.
 
 <details>
 <summary>❌ Bad — processa toda a coleção mesmo precisando de poucos</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -62,10 +61,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lazy avalia só até encontrar 10 elementos</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -90,6 +90,7 @@ quando constrói um novo valor (soma, produto, string concatenada).
 
 <details>
 <summary>❌ Bad — inject com mutação do acumulador</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -105,10 +106,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — each_with_object para acumulador mutável</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -130,6 +132,7 @@ end
 
 <details>
 <summary>❌ Bad — dois passes na coleção</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -143,10 +146,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — filter_map em uma passagem</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -167,6 +171,7 @@ evitar N+1 queries (N+1 consultas ao banco).
 
 <details>
 <summary>❌ Bad — N+1: 1 query por ordem para buscar o usuário</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -178,10 +183,11 @@ end
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — includes pré-carrega em 2 queries</summary>
+<br>
 
 ```ruby
 # frozen_string_literal: true

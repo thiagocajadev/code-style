@@ -1,7 +1,3 @@
----
-title: "Testing"
----
-
 # Testing
 
 > Escopo: VB.NET. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
@@ -31,6 +27,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 
 <details>
 <summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -41,10 +38,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — arrange, act e assert separados</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -66,6 +64,7 @@ End Sub
 
 <details>
 <summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -82,10 +81,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -115,6 +115,7 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome do méto
 
 <details>
 <summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -129,10 +130,11 @@ Public Sub ApplyDiscount() : End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cenário + resultado esperado no título</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -153,6 +155,7 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funci
 
 <details>
 <summary>❌ Bad — campo compartilhado entre testes, ordem importa</summary>
+<br>
 
 ```vbnet
 <TestFixture>
@@ -178,10 +181,11 @@ End Class
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<br>
 
 ```vbnet
 <TestFixture>
@@ -216,6 +220,7 @@ Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado.
 
 <details>
 <summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -230,10 +235,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Assert.Throws(Of T) com tipo explícito</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -252,6 +258,7 @@ NUnit 3 suporta testes assíncronos com `Async Function` retornando `Task`.
 
 <details>
 <summary>❌ Bad — .Result bloqueia thread e esconde falhas async</summary>
+<br>
 
 ```vbnet
 <Test>
@@ -263,10 +270,11 @@ End Sub
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — Async Function com Await, NUnit aguarda corretamente</summary>
+<br>
 
 ```vbnet
 <Test>

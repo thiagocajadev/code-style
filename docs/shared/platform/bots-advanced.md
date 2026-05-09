@@ -1,7 +1,3 @@
----
-title: "Bots de Mensageria (avançado)"
----
-
 # Bots de Mensageria (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

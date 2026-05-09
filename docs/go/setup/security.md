@@ -1,7 +1,3 @@
----
-title: "Security"
----
-
 # Security
 
 > Escopo: Go 1.26. Especificidades do ecossistema Go para secrets, validação e autenticação.
@@ -14,6 +10,7 @@ Secrets em Go ficam em variáveis de ambiente, nunca em arquivos versionados. O 
 
 <details>
 <summary>❌ Bad — secret no código-fonte</summary>
+<br>
 
 ```go
 const jwtSecret = "supersecret123"
@@ -26,10 +23,11 @@ func validateToken(token string) bool {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<br>
 
 ```go
 // internal/config/config.go
@@ -48,6 +46,7 @@ Use o pacote `github.com/go-playground/validator/v10` para struct tags.
 
 <details>
 <summary>❌ Bad — validação ausente na fronteira</summary>
+<br>
 
 ```go
 func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
@@ -67,10 +66,11 @@ func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — validação explícita antes de delegar ao service</summary>
+<br>
 
 ```go
 type CreateOrderRequest struct {
@@ -111,6 +111,7 @@ Nunca concatene input do usuário em queries. Use sempre placeholders parametriz
 
 <details>
 <summary>❌ Bad — concatenação de string em query SQL</summary>
+<br>
 
 ```go
 query := "SELECT * FROM users WHERE email = '" + email + "'"
@@ -119,10 +120,11 @@ rows, err := db.Query(query)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — placeholder parametrizado</summary>
+<br>
 
 ```go
 const queryFindUserByEmail = `
@@ -152,6 +154,7 @@ Toda chamada externa (banco, HTTP, fila) deve respeitar um `context.Context` com
 
 <details>
 <summary>❌ Bad — chamada sem timeout</summary>
+<br>
 
 ```go
 func fetchPrice(productID int64) (*Price, error) {
@@ -167,10 +170,11 @@ func fetchPrice(productID int64) (*Price, error) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — contexto com timeout propagado</summary>
+<br>
 
 ```go
 func (c *PricingClient) FetchPrice(ctx context.Context, productID int64) (*Price, error) {

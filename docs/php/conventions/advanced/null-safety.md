@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: PHP 8.4.
@@ -18,6 +14,7 @@ Declare `?Type` quando null é um retorno válido com semântica específica ("n
 
 <details>
 <summary>❌ Bad — null implícito sem tipo declarado</summary>
+<br>
 
 ```php
 class UserRepository
@@ -35,10 +32,11 @@ class UserRepository
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nullable type explicita ausência</summary>
+<br>
 
 ```php
 final class UserRepository
@@ -73,6 +71,7 @@ Encadeie acessos opcionais com `?->` para evitar verificações de null intermed
 
 <details>
 <summary>❌ Bad — verificações manuais encadeadas</summary>
+<br>
 
 ```php
 $city = null;
@@ -90,10 +89,11 @@ if ($order !== null) {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — nullsafe operator</summary>
+<br>
 
 ```php
 $city = $order?->customer?->address?->city;
@@ -108,6 +108,7 @@ variável não definida).
 
 <details>
 <summary>✅ Good — ?? para valores com default</summary>
+<br>
 
 ```php
 $page    = (int) ($_GET['page'] ?? 1);
@@ -126,6 +127,7 @@ e null apenas para "ausência esperada de um valor".
 
 <details>
 <summary>❌ Bad — null para indicar falha sem contexto</summary>
+<br>
 
 ```php
 public function processOrder(int $orderID): ?Order
@@ -145,10 +147,11 @@ public function processOrder(int $orderID): ?Order
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — exceções para falhas; null apenas para ausência legítima</summary>
+<br>
 
 ```php
 public function processOrder(int $orderID): Order
@@ -192,6 +195,7 @@ PHP lança `Error` se você tentar ler uma propriedade não inicializada.
 
 <details>
 <summary>✅ Good — propriedades inicializadas no construtor</summary>
+<br>
 
 ```php
 final class Order

@@ -1,7 +1,3 @@
----
-title: "LINQ"
----
-
 # LINQ
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
@@ -12,6 +8,7 @@ LINQ em VB.NET tem duas sintaxes: method syntax (mesma do C#) e query syntax (co
 
 <details>
 <summary>❌ Bad — query syntax verbosa, difícil de encadear</summary>
+<br>
 
 ```vbnet
 ' simples, mas não escala bem com múltiplas operações
@@ -26,10 +23,11 @@ Dim totals = From purchase In purchases
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — method syntax, encadeável e consistente</summary>
+<br>
 
 ```vbnet
 Dim expiredPurchases = purchases _
@@ -50,6 +48,7 @@ Dim totals = purchases _
 
 <details>
 <summary>❌ Bad — side effect dentro de Select</summary>
+<br>
 
 ```vbnet
 Dim processed = purchases.Select(Function(purchase)
@@ -61,10 +60,11 @@ End Function).ToList()
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — LINQ para transformação, loop explícito para side effects</summary>
+<br>
 
 ```vbnet
 For Each purchase In purchases
@@ -83,6 +83,7 @@ Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()
 
 <details>
 <summary>❌ Bad — IEnumerable lazy enumerado múltiplas vezes</summary>
+<br>
 
 ```vbnet
 Dim activePurchases = purchases.Where(Function(purchase) purchase.IsActive)  ' não materializado
@@ -94,10 +95,11 @@ Dim first = activePurchases.FirstOrDefault() ' 3ª execução
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — materializado uma vez, operações sobre List(Of T)</summary>
+<br>
 
 ```vbnet
 Dim activePurchases = purchases.Where(Function(purchase) purchase.IsActive).ToList()
@@ -115,6 +117,7 @@ Dim first = activePurchases.FirstOrDefault()
 
 <details>
 <summary>❌ Bad — First lança exceção em fluxo normal</summary>
+<br>
 
 ```vbnet
 Dim found = purchases.First(Function(purchase) purchase.Id = purchaseId)  ' InvalidOperationException se não encontrar
@@ -123,10 +126,11 @@ ProcessPurchase(found)
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — FirstOrDefault com guard clause explícita</summary>
+<br>
 
 ```vbnet
 Dim found = purchases.FirstOrDefault(Function(purchase) purchase.Id = purchaseId)
@@ -146,6 +150,7 @@ ProcessPurchase(found)
 
 <details>
 <summary>✅ Good — Select para projeção simples, SelectMany para achatar</summary>
+<br>
 
 ```vbnet
 ' Select: Purchase -> PurchaseDto
@@ -171,6 +176,7 @@ Dim itemsWithPurchase = purchases _
 
 <details>
 <summary>❌ Bad — Max/Min em coleção possivelmente vazia</summary>
+<br>
 
 ```vbnet
 Dim highestTotal = purchases.Max(Function(purchase) purchase.Total)  ' InvalidOperationException se vazia
@@ -179,10 +185,11 @@ Dim oldestDate = purchases.Min(Function(purchase) purchase.CreatedAt) ' idem
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard ou DefaultIfEmpty antes de Max/Min</summary>
+<br>
 
 ```vbnet
 If Not purchases.Any() Then Return Decimal.Zero
@@ -203,6 +210,7 @@ Encadeie `OrderBy` com `ThenBy` para ordenação composta. Usar `OrderBy` duas v
 
 <details>
 <summary>❌ Bad — OrderBy duplo descarta a primeira ordenação</summary>
+<br>
 
 ```vbnet
 Dim sorted = purchases _
@@ -212,10 +220,11 @@ Dim sorted = purchases _
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ThenBy para ordenação secundária</summary>
+<br>
 
 ```vbnet
 Dim sorted = purchases _

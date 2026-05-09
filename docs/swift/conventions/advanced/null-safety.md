@@ -1,7 +1,3 @@
----
-title: "Null Safety"
----
-
 # Null Safety
 
 > Escopo: Swift 6.1.
@@ -25,6 +21,7 @@ unwrap) é o único ponto de falha explícita e deve ser evitado em produção.
 
 <details>
 <summary>❌ Bad — ! como atalho perigoso</summary>
+<br>
 
 ```swift
 func getCustomerEmail(userId: UUID) -> String {
@@ -35,10 +32,11 @@ func getCustomerEmail(userId: UUID) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard com saída antecipada e erro expressivo</summary>
+<br>
 
 ```swift
 func getCustomerEmail(userId: UUID) throws -> String {
@@ -56,6 +54,7 @@ func getCustomerEmail(userId: UUID) throws -> String {
 
 <details>
 <summary>❌ Bad — verificações manuais aninhadas</summary>
+<br>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -72,10 +71,11 @@ func getCity(order: Order?) -> String {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — optional chaining com nil-coalescing no final</summary>
+<br>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -89,6 +89,7 @@ func getCity(order: Order?) -> String {
 
 <details>
 <summary>❌ Bad — guard separado para cada optional</summary>
+<br>
 
 ```swift
 guard let name = user.name else { return }
@@ -98,10 +99,11 @@ guard let phone = user.phone else { return }
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — guard com vírgula une condições</summary>
+<br>
 
 ```swift
 guard let name = user.name,
@@ -117,6 +119,7 @@ guard let name = user.name,
 
 <details>
 <summary>❌ Bad — if com nil-check explícito</summary>
+<br>
 
 ```swift
 if order.promotion != nil {
@@ -127,10 +130,11 @@ if order.promotion != nil {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — if let faz unwrap e bind em um passo</summary>
+<br>
 
 ```swift
 if let promo = order.promotion {
@@ -144,6 +148,7 @@ if let promo = order.promotion {
 
 <details>
 <summary>❌ Bad — if/else para optional com default</summary>
+<br>
 
 ```swift
 let displayName: String
@@ -156,10 +161,11 @@ if let name = user.name {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — ?? em uma linha</summary>
+<br>
 
 ```swift
 let displayName = user.name ?? "Anonymous"
@@ -171,6 +177,7 @@ let displayName = user.name ?? "Anonymous"
 
 <details>
 <summary>❌ Bad — nil para representar lista vazia</summary>
+<br>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order]? {
@@ -181,10 +188,11 @@ func findOrdersByUser(userId: UUID) -> [Order]? {
 
 </details>
 
-<br />
+<br>
 
 <details>
 <summary>✅ Good — lista vazia; nil nunca representa ausência de itens</summary>
+<br>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order] {

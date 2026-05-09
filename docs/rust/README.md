@@ -1,7 +1,3 @@
----
-title: "Rust"
----
-
 # Rust
 
 [![Rust](https://img.shields.io/badge/Rust-1.95-000000?logo=rust&logoColor=white)](https://doc.rust-lang.org/book/)
@@ -62,7 +58,7 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | [SLA](conventions/functions.md#sla--uma-responsabilidade-um-nível)                                 | Uma responsabilidade, um nível de abstração                              |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                            | Extraia o resultado antes de retornar                                    |
 
-<br />
+<br>
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -74,7 +70,7 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | [Imutável por padrão](conventions/variables.md#let-vs-let-mut)                                     | `let` é o padrão; `let mut` só quando necessário                         |
 | [Sem valores mágicos](conventions/variables.md#constantes-nomeadas)                                | `const` no lugar de literais inline                                      |
 
-<br />
+<br>
 
 **Controle de qualidade**: erros, concorrência e testes
 

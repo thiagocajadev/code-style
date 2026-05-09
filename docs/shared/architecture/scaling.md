@@ -1,7 +1,3 @@
----
-title: "Escala e Infraestrutura"
----
-
 # Escala e Infraestrutura
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
