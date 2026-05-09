@@ -1,0 +1,31 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    uses: pmndrs/docs/.github/workflows/build.yml@v2
+    with:
+      mdx: "docs"
+      libname: "Code Style"
+      libname_short: "code-style"
+      libname_dotsuffix_label: "docs"
+      home_redirect: "/javascript/README"
+      github: "https://github.com/thiagocajadev/code-style"
+      theme_primary: "#4CAF50"
+      theme_scheme: "tonalSpot"
+      theme_contrast: "0"
+      theme_note: "#1f6feb"
+      theme_tip: "#238636"
+      theme_important: "#8957e5"
+      theme_warning: "#d29922"
+      theme_caution: "#da3633"
