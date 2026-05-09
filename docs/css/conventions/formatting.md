@@ -68,7 +68,7 @@ para "como parece".
 <details>
 <summary>❌ Bad — múltiplas propriedades em uma linha, diff ilegível</summary>
 
-{/* prettier-ignore */}
+<!-- prettier-ignore -->
 ```css
 .button { display: inline-flex; align-items: center; padding: 8px 16px; font-weight: 600; }
 ```
