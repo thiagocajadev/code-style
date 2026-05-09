@@ -606,13 +606,27 @@ A **API** (Application Programming Interface, Interface de Programação de
 Aplicações) key nunca entra no código. Ela é resolvida via variável de ambiente
 na inicialização da aplicação.
 
-```bad
+<details>
+<summary>❌ Bad — API key hardcoded no código</summary>
+<br>
+
+```js
 const client = new Anthropic({ apiKey: "sk-ant-..." });
 ```
 
-```good
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — API key resolvida via variável de ambiente</summary>
+<br>
+
+```js
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 ```
+
+</details>
 
 Ver [security.md](security.md) para gestão de segredos.
 
@@ -622,7 +636,11 @@ LLMs geram tokens incrementalmente. Sem streaming, o cliente espera o response
 completo antes de renderizar — latência percebida alta para respostas longas.
 Com streaming, o primeiro token chega em milissegundos.
 
-```bad
+<details>
+<summary>❌ Bad — aguarda resposta completa antes de renderizar</summary>
+<br>
+
+```js
 const message = await client.messages.create({
   model: "claude-sonnet-4-6",
   max_tokens: 1024,
@@ -632,7 +650,15 @@ const message = await client.messages.create({
 console.log(message.content[0].text);
 ```
 
-```good
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — streaming token-a-token via chunks</summary>
+<br>
+
+```js
 const stream = client.messages.stream({
   model: "claude-sonnet-4-6",
   max_tokens: 1024,
@@ -646,6 +672,8 @@ for await (const chunk of stream) {
 }
 ```
 
+</details>
+
 ### Rate limits e retries
 
 APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala)
@@ -653,7 +681,11 @@ impõem rate limits por minuto (RPM) e por token (TPM). Erros
 `429 Too Many Requests` são esperados em produção e devem ser tratados com
 **exponential backoff** (recuo exponencial).
 
-```bad
+<details>
+<summary>❌ Bad — sem retry, qualquer 429 vira erro irrecuperável</summary>
+<br>
+
+```js
 const response = await fetch(apiUrl, options);
 
 if (!response.ok) {
@@ -661,7 +693,15 @@ if (!response.ok) {
 }
 ```
 
-```good
+</details>
+
+<br>
+
+<details>
+<summary>✅ Good — exponential backoff em 429 Too Many Requests</summary>
+<br>
+
+```js
 async function callWithRetry(requestFn, maxAttempts = 3) {
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     const response = await requestFn();
@@ -677,6 +717,8 @@ async function callWithRetry(requestFn, maxAttempts = 3) {
   throw new Error("Rate limit exceeded after retries");
 }
 ```
+
+</details>
 
 ### Boas práticas
 
