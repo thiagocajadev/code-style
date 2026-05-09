@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 > Escopo: Kotlin 2.2.
@@ -12,7 +16,6 @@ linguagens. Limite: 2 alternativas. Três ou mais → `when`.
 
 <details>
 <summary>❌ Bad — if/else imperativo para atribuição simples</summary>
-<br>
 
 ```kotlin
 var label: String
@@ -25,11 +28,10 @@ if (order.isPaid) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — if-expression na atribuição</summary>
-<br>
 
 ```kotlin
 val label = if (order.isPaid) "Paid" else "Pending"
@@ -39,7 +41,6 @@ val label = if (order.isPaid) "Paid" else "Pending"
 
 <details>
 <summary>❌ Bad — if-expression aninhada para 3+ alternativas</summary>
-<br>
 
 ```kotlin
 val label = if (score >= 90) "A" else if (score >= 80) "B" else if (score >= 70) "C" else "F"
@@ -47,11 +48,10 @@ val label = if (score >= 90) "A" else if (score >= 80) "B" else if (score >= 70)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — when para 3+ alternativas</summary>
-<br>
 
 ```kotlin
 val label = when {
@@ -68,7 +68,6 @@ val label = when {
 
 <details>
 <summary>❌ Bad — lógica principal aninhada</summary>
-<br>
 
 ```kotlin
 fun processOrder(order: Order?): Result<Invoice> {
@@ -91,11 +90,10 @@ fun processOrder(order: Order?): Result<Invoice> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guards eliminam aninhamento</summary>
-<br>
 
 ```kotlin
 fun processOrder(order: Order?): Result<Invoice> {
@@ -123,7 +121,6 @@ fun processOrder(order: Order?): Result<Invoice> {
 
 <details>
 <summary>❌ Bad — else após return</summary>
-<br>
 
 ```kotlin
 fun classify(score: Int): String {
@@ -141,11 +138,10 @@ fun classify(score: Int): String {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — when como expressão</summary>
-<br>
 
 ```kotlin
 fun classify(score: Int): String {
@@ -164,7 +160,6 @@ fun classify(score: Int): String {
 
 <details>
 <summary>❌ Bad — chain de if/else para mapeamento de valor</summary>
-<br>
 
 ```kotlin
 fun describeStatus(status: OrderStatus): String {
@@ -182,11 +177,10 @@ fun describeStatus(status: OrderStatus): String {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — when exaustivo com sealed class</summary>
-<br>
 
 ```kotlin
 fun describeStatus(status: OrderStatus): String {
@@ -205,7 +199,6 @@ fun describeStatus(status: OrderStatus): String {
 
 <details>
 <summary>❌ Bad — null-check verboso com if</summary>
-<br>
 
 ```kotlin
 fun findCustomerEmail(customerId: Long): String {
@@ -219,11 +212,10 @@ fun findCustomerEmail(customerId: Long): String {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — elvis direto</summary>
-<br>
 
 ```kotlin
 fun findCustomerEmail(customerId: Long): String {
@@ -240,7 +232,6 @@ fun findCustomerEmail(customerId: Long): String {
 
 <details>
 <summary>❌ Bad — null-check explícito antes de bloco</summary>
-<br>
 
 ```kotlin
 val discount = order.promotion
@@ -252,11 +243,10 @@ if (discount != null) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — let executa somente quando não-null</summary>
-<br>
 
 ```kotlin
 order.promotion?.let { discount ->
@@ -273,7 +263,6 @@ Após verificação de tipo, o compilador converte automaticamente — sem cast 
 
 <details>
 <summary>❌ Bad — cast manual desnecessário</summary>
-<br>
 
 ```kotlin
 fun describeShape(shape: Shape): String {
@@ -287,11 +276,10 @@ fun describeShape(shape: Shape): String {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — smart cast automático</summary>
-<br>
 
 ```kotlin
 fun describeShape(shape: Shape): String {
@@ -312,7 +300,6 @@ param no primeiro match — sem percorrer o resto.
 
 <details>
 <summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
-<br>
 
 ```kotlin
 var expiredProduct: Product? = null
@@ -326,11 +313,10 @@ for (product in products) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — firstOrNull sai no primeiro match</summary>
-<br>
 
 ```kotlin
 // para no primeiro match
@@ -349,7 +335,6 @@ val allActive = products.all { it.isActive }
 
 <details>
 <summary>❌ Bad — índice manual quando não necessário</summary>
-<br>
 
 ```kotlin
 for (i in 0 until items.size) {
@@ -359,11 +344,10 @@ for (i in 0 until items.size) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — for idiomático ou operações de coleção</summary>
-<br>
 
 ```kotlin
 for (item in items) {
@@ -388,7 +372,6 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 
 <details>
 <summary>❌ Bad — for com índice quando o critério é condição de estado</summary>
-<br>
 
 ```kotlin
 for (attempt in 0 until maxAttempts) {
@@ -399,11 +382,10 @@ for (attempt in 0 until maxAttempts) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — while para condição de parada por estado</summary>
-<br>
 
 ```kotlin
 var attempt = 0
@@ -424,7 +406,6 @@ Use `do-while` quando a primeira iteração deve sempre executar, independente d
 
 <details>
 <summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
-<br>
 
 ```kotlin
 // verifica antes de executar — se a fila já estiver vazia, nunca executa
@@ -436,11 +417,10 @@ while (taskQueue.isNotEmpty()) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — do-while quando a primeira execução é garantida</summary>
-<br>
 
 ```kotlin
 // drena a fila — processa pelo menos um item antes de verificar

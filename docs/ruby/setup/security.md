@@ -1,3 +1,7 @@
+---
+title: "Security"
+---
+
 # Security
 
 > Escopo: Ruby 4.0. Princípios de segurança transversais em [shared/platform/security.md](../../../shared/platform/security.md).
@@ -9,7 +13,6 @@ para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via 
 
 <details>
 <summary>❌ Bad — secret hardcoded no código</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -26,11 +29,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lido do ambiente na inicialização</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -114,7 +116,6 @@ end
 
 <details>
 <summary>❌ Bad — parâmetro de usuário usado diretamente</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -126,11 +127,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipagem e sanitização antes de usar</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

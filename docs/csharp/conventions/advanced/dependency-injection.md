@@ -1,3 +1,7 @@
+---
+title: "Dependency Injection"
+---
+
 # Dependency Injection
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
@@ -10,7 +14,6 @@ Service locator é o antipadrão clássico de DI: buscar dependências diretamen
 
 <details>
 <summary>❌ Bad — dependência implícita, acoplado ao container</summary>
-<br>
 
 ```csharp
 public class OrderService(IServiceProvider services)
@@ -26,11 +29,10 @@ public class OrderService(IServiceProvider services)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependências explícitas no contrato</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository, INotifier notifier)
@@ -50,7 +52,6 @@ C# 12 introduziu primary constructors para classes. Substitui o padrão verboso 
 
 <details>
 <summary>❌ Bad — construtor explícito verboso</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -68,11 +69,10 @@ public class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — primary constructor, DI direta e concisa</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository, INotifier notifier)
@@ -98,7 +98,6 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 
 <details>
 <summary>❌ Bad — singleton captura scoped</summary>
-<br>
 
 ```csharp
 builder.Services.AddSingleton<ReportService>();
@@ -109,11 +108,10 @@ public class ReportService(IOrderRepository orderRepository) { } // capturado na
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lifetimes compatíveis</summary>
-<br>
 
 ```csharp
 builder.Services.AddScoped<ReportService>();
@@ -128,7 +126,6 @@ Depender de interfaces, não de implementações concretas. Permite substituiç�
 
 <details>
 <summary>❌ Bad — dependência concreta, impossível substituir em testes</summary>
-<br>
 
 ```csharp
 public class OrderService(SqlOrderRepository orderRepository) { }
@@ -136,11 +133,10 @@ public class OrderService(SqlOrderRepository orderRepository) { }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependência por interface, substituível</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository) { }
@@ -160,7 +156,6 @@ Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e 
 
 <details>
 <summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
-<br>
 
 ```csharp
 public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder)
@@ -180,11 +175,10 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — registro por convenção via reflection</summary>
-<br>
 
 ```csharp
 // interface marcadora — sem métodos, só para identificar handlers no assembly

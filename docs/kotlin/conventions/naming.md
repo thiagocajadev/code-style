@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 > Escopo: Kotlin 2.2.
@@ -8,7 +12,6 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```kotlin
 fun apply(x: Any, p: Map<String, Any>, c: (Any) -> Any): Any {
@@ -21,11 +24,10 @@ fun apply(x: Any, p: Map<String, Any>, c: (Any) -> Any): Any {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```kotlin
 fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
@@ -45,7 +47,6 @@ fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
 
 <details>
 <summary>❌ Bad — identificadores em português ficam desajeitados no idioma Kotlin</summary>
-<br>
 
 ```kotlin
 val nomeDoUsuario = "Alice"
@@ -57,11 +58,10 @@ fun buscaEnderecoDoCliente(id: Long): Address? { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
-<br>
 
 ```kotlin
 val userName = "Alice"
@@ -85,7 +85,6 @@ fun findCustomerAddress(customerId: Long): Address? { ... }
 
 <details>
 <summary>❌ Bad — case errado para o contexto</summary>
-<br>
 
 ```kotlin
 val MAX_retries = 3              // mistura de case
@@ -97,11 +96,10 @@ val UserName = "Alice"           // var com PascalCase
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — convenções Kotlin respeitadas</summary>
-<br>
 
 ```kotlin
 const val MAX_RETRIES = 3
@@ -121,7 +119,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Bad — ordem invertida</summary>
-<br>
 
 ```kotlin
 fun getUserProfile(userId: Long): UserProfile { ... }   // correto, mas mostrando o anti-padrão abaixo:
@@ -133,11 +130,10 @@ fun totalCalculateInvoice(invoiceId: Long): Double { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ordem natural</summary>
-<br>
 
 ```kotlin
 fun getUserProfile(userId: Long): UserProfile { ... }
@@ -151,7 +147,6 @@ fun calculateInvoiceTotal(invoiceId: Long): Double { ... }
 
 <details>
 <summary>❌ Bad — handle, process, manage não dizem nada</summary>
-<br>
 
 ```kotlin
 fun handle(data: Any) { }
@@ -162,11 +157,10 @@ fun doStuff(x: Any) { }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verbo de intenção</summary>
-<br>
 
 ```kotlin
 fun validatePayment(payment: Payment): Result<Unit> { ... }
@@ -181,7 +175,6 @@ fun applySeasonalDiscount(order: Order): Order { ... }
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
-<br>
 
 ```kotlin
 val loading = true
@@ -191,11 +184,10 @@ val valid = email.contains("@")
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
-<br>
 
 ```kotlin
 val isActive = user.status == "active"
@@ -213,7 +205,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de onde a opera
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```kotlin
 fun callStripe(amount: Double): Result<Unit> { ... }
@@ -224,11 +215,10 @@ fun saveToS3(file: ByteArray) { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
-<br>
 
 ```kotlin
 fun chargeCustomer(amount: Double): Result<Unit> { ... }

@@ -1,3 +1,7 @@
+---
+title: "Functions"
+---
+
 # Functions
 
 > Escopo: Dart 3.7.
@@ -20,7 +24,6 @@ para corpo de uma única expressão.
 
 <details>
 <summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
-<br>
 
 ```dart
 Future<Order> submitOrder(int userId, List<Item> items) async {
@@ -47,11 +50,10 @@ Future<Order> submitOrder(int userId, List<Item> items) async {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
-<br>
 
 ```dart
 Future<Order> submitOrder(int userId, List<Item> items) async {
@@ -84,7 +86,6 @@ Future<void> _notifyConfirmation(String email) async { ... }
 
 <details>
 <summary>❌ Bad — lógica inline no return</summary>
-<br>
 
 ```dart
 List<Customer> findActiveCustomers(List<Customer> customers) {
@@ -97,11 +98,10 @@ List<Customer> findActiveCustomers(List<Customer> customers) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — explaining return com final nomeada</summary>
-<br>
 
 ```dart
 List<Customer> findActiveCustomers(List<Customer> customers) {
@@ -123,7 +123,6 @@ a erros de posição.
 
 <details>
 <summary>❌ Bad — parâmetros posicionais ambíguos</summary>
-<br>
 
 ```dart
 Order createOrder(int userId, int productId, int quantity, double discount) { ... }
@@ -133,11 +132,10 @@ createOrder(42, 100, 3, 0.15);   // qual é qual?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — named parameters com required</summary>
-<br>
 
 ```dart
 Order createOrder({
@@ -156,7 +154,6 @@ createOrder(userId: 42, productId: 100, quantity: 3, discount: 0.15);
 
 <details>
 <summary>❌ Bad — bloco com return para corpo trivial</summary>
-<br>
 
 ```dart
 bool isPaidOrder(Order order) {
@@ -172,11 +169,10 @@ List<String> getOrderIds(List<Order> orders) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — arrow para corpo de uma expressão</summary>
-<br>
 
 ```dart
 bool isPaidOrder(Order order) => order.status == OrderStatus.paid;
@@ -191,7 +187,6 @@ List<String> getOrderIds(List<Order> orders) =>
 
 <details>
 <summary>❌ Bad — função de utilitário sem contexto</summary>
-<br>
 
 ```dart
 // string_utils.dart
@@ -203,11 +198,10 @@ final label = formatCurrency(order.total);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — extension method no tipo correto</summary>
-<br>
 
 ```dart
 extension DoubleFormatting on double {

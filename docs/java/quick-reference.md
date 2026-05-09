@@ -1,3 +1,7 @@
+---
+title: "Quick Reference"
+---
+
 # Quick Reference
 
 > Escopo: Java 25 LTS. Cheat-sheet das convenções; detalhes em `conventions/`.

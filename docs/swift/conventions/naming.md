@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 > Escopo: Swift 6.1.
@@ -9,7 +13,6 @@ ponto de uso deve ler como prosa: `users.remove(at: index)` é mais claro que `u
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```swift
 func apply(_ x: Any, _ p: [String: Any], _ c: (Any) -> Any) -> Any {
@@ -20,11 +23,10 @@ func apply(_ x: Any, _ p: [String: Any], _ c: (Any) -> Any) -> Any {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```swift
 func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
@@ -41,7 +43,6 @@ func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
 
 <details>
 <summary>❌ Bad — identificadores em português ficam desajeitados no idioma Swift</summary>
-<br>
 
 ```swift
 let nomeDoUsuario = "Alice"
@@ -53,11 +54,10 @@ func buscaEnderecoDoCliente(id: Int64) -> Address? { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
-<br>
 
 ```swift
 let userName = "Alice"
@@ -80,7 +80,6 @@ func findCustomerAddress(customerId: Int64) -> Address? { ... }
 
 <details>
 <summary>❌ Bad — case errado</summary>
-<br>
 
 ```swift
 struct order_service { }         // struct com snake_case
@@ -90,11 +89,10 @@ let MaxRetries = 3               // constante com UpperCamelCase
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — convenções Swift respeitadas</summary>
-<br>
 
 ```swift
 struct OrderService { }
@@ -113,7 +111,6 @@ nome da função já o implica.
 
 <details>
 <summary>❌ Bad — labels que repetem o tipo ou são desnecessários</summary>
-<br>
 
 ```swift
 func send(message message: String, toUser user: User) { }
@@ -122,11 +119,10 @@ func send(message message: String, toUser user: User) { }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — chamada lê como prosa</summary>
-<br>
 
 ```swift
 func send(_ message: String, to user: User) { }
@@ -142,7 +138,6 @@ func move(from source: Index, to destination: Index) { }
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
-<br>
 
 ```swift
 let loading = true
@@ -152,11 +147,10 @@ let valid = email.contains("@")
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
-<br>
 
 ```swift
 let isActive = user.status == .active
@@ -178,7 +172,6 @@ let shouldRetry = attempt < maxRetries
 
 <details>
 <summary>❌ Bad — sufixo genérico ou ambíguo</summary>
-<br>
 
 ```swift
 protocol UserProtocol { }
@@ -187,11 +180,10 @@ protocol IRepository { }     // prefixo I ao estilo C#, não idiomático em Swif
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome que descreve o papel</summary>
-<br>
 
 ```swift
 protocol UserRepository { }
@@ -205,7 +197,6 @@ protocol Cacheable { }
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura</summary>
-<br>
 
 ```swift
 func callStripe(amount: Decimal) async throws { }
@@ -214,11 +205,10 @@ func getUserFromCoreData(id: UUID) -> User? { }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
-<br>
 
 ```swift
 func chargeCustomer(amount: Decimal) async throws { }

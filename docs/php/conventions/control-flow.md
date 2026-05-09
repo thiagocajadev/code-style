@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 > Escopo: PHP 8.4.
@@ -12,7 +16,6 @@ Após um `return` ou `throw`, o `else` é desnecessário e cria aninhamento sem 
 
 <details>
 <summary>❌ Bad — else após return</summary>
-<br>
 
 ```php
 function findActiveOrder(int $orderID): ?Order
@@ -32,11 +35,10 @@ function findActiveOrder(int $orderID): ?Order
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clauses, sem else após return</summary>
-<br>
 
 ```php
 function findActiveOrder(int $orderID): Order
@@ -63,7 +65,6 @@ Use `===` e `!==` sempre. PHP tem coerção de tipo agressiva com `==` que leva 
 
 <details>
 <summary>❌ Bad — comparação fraca com ==</summary>
-<br>
 
 ```php
 if ($userID == "0") {}    // true se $userID for 0 ou false ou ""
@@ -73,11 +74,10 @@ if ($result == false) {}  // true para 0, "", "0", null, []
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — comparação estrita com ===</summary>
-<br>
 
 ```php
 if ($userID === 0) {}
@@ -94,7 +94,6 @@ ternários.
 
 <details>
 <summary>❌ Bad — if/else imperativo para atribuição simples</summary>
-<br>
 
 ```php
 $label = '';
@@ -107,11 +106,10 @@ if ($order->isPaid) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ternário na atribuição</summary>
-<br>
 
 ```php
 $label = $order->isPaid ? 'Paid' : 'Pending';
@@ -121,7 +119,6 @@ $label = $order->isPaid ? 'Paid' : 'Pending';
 
 <details>
 <summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
-<br>
 
 ```php
 $priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
@@ -129,11 +126,10 @@ $priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — match para 3+ alternativas</summary>
-<br>
 
 ```php
 $priority = match (true) {
@@ -151,7 +147,6 @@ Máximo 2 níveis de indentação. Guard clauses substituem a pirâmide de condi
 
 <details>
 <summary>❌ Bad — pyramid of doom</summary>
-<br>
 
 ```php
 function processPayment(Order $order): void
@@ -178,11 +173,10 @@ function processPayment(Order $order): void
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clauses, fluxo linear</summary>
-<br>
 
 ```php
 function processPayment(Order $order): void
@@ -213,7 +207,6 @@ para valores não cobertos. Substitui `switch` para mapeamento de valores.
 
 <details>
 <summary>❌ Bad — switch para mapeamento de valores</summary>
-<br>
 
 ```php
 switch ($status) {
@@ -233,11 +226,10 @@ switch ($status) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — match: conciso, estrito, sem fallthrough</summary>
-<br>
 
 ```php
 $label = match($order->status) {
@@ -257,7 +249,6 @@ Use `?->` para encadear acessos opcionais sem verificações de null intermediá
 
 <details>
 <summary>❌ Bad — verificações de null encadeadas</summary>
-<br>
 
 ```php
 $city = null;
@@ -273,11 +264,10 @@ if ($user !== null) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nullsafe operator elimina o aninhamento</summary>
-<br>
 
 ```php
 $city = $user?->address?->city;
@@ -291,7 +281,6 @@ Use `??` para fornecer um valor padrão quando a expressão da esquerda é null.
 
 <details>
 <summary>✅ Good — ?? para valores opcionais com default</summary>
-<br>
 
 ```php
 $page = (int) ($_GET['page'] ?? 1);
@@ -310,7 +299,6 @@ com `return` antecipado é direto.
 
 <details>
 <summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
-<br>
 
 ```php
 function findFirstExpiredProduct(array $products): ?Product
@@ -329,11 +317,10 @@ function findFirstExpiredProduct(array $products): ?Product
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — foreach com return antecipado sai no primeiro match</summary>
-<br>
 
 ```php
 function findFirstExpiredProduct(array $products): ?Product
@@ -348,11 +335,10 @@ function findFirstExpiredProduct(array $products): ?Product
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — array_find / array_any com circuit break nativo (PHP 8.4)</summary>
-<br>
 
 ```php
 // para no primeiro match — retorna o elemento ou null
@@ -374,7 +360,6 @@ Use `foreach` para iterar sobre arrays e coleções. Prefira funções de array 
 
 <details>
 <summary>✅ Good — foreach para iteração; array_map para transformação</summary>
-<br>
 
 ```php
 // Iteração com efeito colateral: foreach

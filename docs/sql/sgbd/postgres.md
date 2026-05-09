@@ -1,3 +1,7 @@
+---
+title: "PostgreSQL"
+---
+
 # PostgreSQL
 
 > Escopo: PostgreSQL 18. Referência: [postgresql.org/docs/18](https://www.postgresql.org/docs/18/).
@@ -39,7 +43,6 @@ PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window f
 
 <details>
 <summary>❌ Bad — tipos imprecisos e sem timezone</summary>
-<br>
 
 ```sql
 CREATE TABLE orders (
@@ -51,11 +54,10 @@ CREATE TABLE orders (
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipos explícitos, **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7, TIMESTAMPTZ</summary>
-<br>
 
 ```sql
 CREATE TABLE orders (
@@ -80,7 +82,6 @@ Sequencial, sem fragmentação de índice, com unicidade global.
 
 <details>
 <summary>✅ Good — UUID v7 como DEFAULT, sem geração na aplicação</summary>
-<br>
 
 ```sql
 CREATE TABLE events (
@@ -102,7 +103,6 @@ criada pelo `SERIAL`.
 
 <details>
 <summary>❌ Bad — SERIAL cria uma sequência implícita difícil de inspecionar</summary>
-<br>
 
 ```sql
 CREATE TABLE customers (
@@ -113,11 +113,10 @@ CREATE TABLE customers (
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — GENERATED ALWAYS AS IDENTITY</summary>
-<br>
 
 ```sql
 CREATE TABLE customers (
@@ -139,7 +138,6 @@ antes e depois da operação.
 
 <details>
 <summary>❌ Bad — query adicional para recuperar o ID após INSERT</summary>
-<br>
 
 ```sql
 INSERT INTO orders (customer_id, total) VALUES (@customer_id, @total);
@@ -148,11 +146,10 @@ SELECT LASTVAL(); -- necessário para recuperar o ID
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — RETURNING retorna o ID na mesma operação</summary>
-<br>
 
 ```sql
 -- INSERT com RETURNING
@@ -191,7 +188,6 @@ Prefira `RETURNS TABLE` a `RETURNS SETOF` para funções que retornam linhas com
 
 <details>
 <summary>❌ Bad — RETURNS VOID, SELECT * dentro de function</summary>
-<br>
 
 ```sql
 CREATE FUNCTION get_team(team_id INT) RETURNS VOID AS $$
@@ -203,11 +199,10 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
-<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION fn_get_football_team_by_id
@@ -245,7 +240,6 @@ Permite encadear operações em uma única instrução.
 
 <details>
 <summary>✅ Good — mover registro de tabela de origem para destino em uma instrução</summary>
-<br>
 
 ```sql
 WITH deleted_order AS
@@ -284,7 +278,6 @@ estrutura completa em tempo de definição do schema.
 
 <details>
 <summary>❌ Bad — coluna JSON sem índice: full table scan em todo acesso</summary>
-<br>
 
 ```sql
 CREATE TABLE events (
@@ -300,11 +293,10 @@ WHERE events.payload->>'type' = 'order.created';
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — JSONB com índice GIN e operador @></summary>
-<br>
 
 ```sql
 CREATE TABLE events (
@@ -335,7 +327,6 @@ mais eficiente para queries que sempre filtram pelo mesmo critério.
 
 <details>
 <summary>✅ Good — índice apenas em pedidos pendentes</summary>
-<br>
 
 ```sql
 -- sem índice parcial: índice cobre todos os status, incluindo os finalizados
@@ -353,7 +344,6 @@ CREATE INDEX ix_orders_pending
 
 <details>
 <summary>✅ Good — LIMIT / OFFSET</summary>
-<br>
 
 ```sql
 SELECT
@@ -378,7 +368,6 @@ comparações com linhas adjacentes.
 
 <details>
 <summary>✅ Good — ranking de jogadores por número de camisa por time</summary>
-<br>
 
 ```sql
 SELECT
@@ -404,7 +393,6 @@ Mecanismo de pub/sub nativo do PostgreSQL para notificações assíncronas entre
 
 <details>
 <summary>✅ Good — notificar canal quando pedido é criado</summary>
-<br>
 
 ```sql
 -- função que notifica o canal 'orders' após INSERT
@@ -487,7 +475,6 @@ linha a linha: sem overhead de parse por linha, sem round trips pela aplicação
 
 <details>
 <summary>✅ Good — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com COPY (arquivo no servidor)</summary>
-<br>
 
 ```sql
 COPY players
@@ -507,11 +494,10 @@ WITH
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — \copy (arquivo local via cliente psql)</summary>
-<br>
 
 ```sql
 -- \copy lê o arquivo na máquina do cliente, não no servidor
@@ -529,7 +515,6 @@ Requer `shared_preload_libraries = 'pg_cron'` no `postgresql.conf`.
 
 <details>
 <summary>✅ Good — agendar limpeza diária com pg_cron</summary>
-<br>
 
 ```sql
 -- habilitar extensão

@@ -1,3 +1,7 @@
+---
+title: "DynamoDB"
+---
+
 # DynamoDB
 
 > Escopo: AWS DynamoDB. Referência: [docs.aws.amazon.com/dynamodb](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/).
@@ -58,7 +62,6 @@ PK: MATCH#1099       SK: EVENT#002
 
 <details>
 <summary>❌ Bad — partition key de baixa cardinalidade; hot spot; Scan em produção</summary>
-<br>
 
 ```js
 import { ScanCommand } from '@aws-sdk/lib-dynamodb';
@@ -86,11 +89,10 @@ const item = {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Query por partition key; GSI para access patterns alternativos</summary>
-<br>
 
 ```js
 import { QueryCommand, PutCommand } from '@aws-sdk/lib-dynamodb';

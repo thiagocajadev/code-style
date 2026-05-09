@@ -1,3 +1,7 @@
+---
+title: "Cassandra"
+---
+
 # Cassandra
 
 > Escopo: Apache Cassandra 5.x. Referência: [cassandra.apache.org/doc](https://cassandra.apache.org/doc/latest/).
@@ -85,7 +89,6 @@ CREATE TABLE football.match_events (
 
 <details>
 <summary>❌ Bad — query sem prepare; string interpolada; sem consistency level</summary>
-<br>
 
 ```js
 // query reconstruída e re-parseada em cada chamada
@@ -101,11 +104,10 @@ async function insertMatchEvent(event) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prepared statement; parâmetros posicionais; consistency level explícito</summary>
-<br>
 
 ```js
 const INSERT_MATCH_EVENT = `
@@ -140,7 +142,6 @@ class MatchEventRepository {
 
 <details>
 <summary>❌ Bad — query sem partition key: full cluster scan</summary>
-<br>
 
 ```js
 // sem WHERE na partition key — varre todos os nós do cluster
@@ -150,11 +151,10 @@ await client.execute(query, ['goal'], { prepare: true });
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — query com partition key; LIMIT obrigatório; projeção de campos</summary>
-<br>
 
 ```js
 const FETCH_TEAM_EVENTS = `

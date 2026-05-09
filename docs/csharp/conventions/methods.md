@@ -1,3 +1,7 @@
+---
+title: "Methods"
+---
+
 # Methods
 
 Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de abstração único. O orquestrador lê como sumário da operação; helpers privados implementam os passos logo abaixo, na ordem em que o leitor os encontra.
@@ -8,7 +12,6 @@ O método de entrada declara o fluxo de alto nível: o quê, não o como. Helper
 
 <details>
 <summary>❌ Bad — implementação misturada com orquestração</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -34,11 +37,10 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador declara o fluxo, helpers implementam cada passo</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -75,7 +77,6 @@ Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um pas
 
 <details>
 <summary>❌ Bad — orquestração e implementação no mesmo método</summary>
-<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -96,11 +97,10 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador chama helpers, cada um com uma responsabilidade</summary>
-<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -141,7 +141,6 @@ O `return` declara o que sai, não calcula. Uma variável nomeada antes do retor
 
 <details>
 <summary>❌ Bad — lógica e construção inline no return</summary>
-<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order) =>
@@ -154,11 +153,10 @@ public OrderSummary BuildSummary(Order order) =>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -170,11 +168,10 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order) =>
@@ -183,11 +180,10 @@ public string BuildShippingLabel(Order order) =>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — variável expressiva antes do return</summary>
-<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order)
@@ -202,11 +198,10 @@ public OrderSummary BuildSummary(Order order)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome simétrico com o método deixa claro o que sai</summary>
-<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -224,11 +219,10 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — partes nomeadas antes de montar o resultado</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -251,7 +245,6 @@ C# 12 introduziu primary constructors. Use para injeção de dependência: elimi
 
 <details>
 <summary>❌ Bad — boilerplate de construtor tradicional</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -279,11 +272,10 @@ public class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — primary constructor, DI sem cerimônia</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository, INotifier notifier)
@@ -308,7 +300,6 @@ Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Pas
 
 <details>
 <summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -331,11 +322,10 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — um grupo por passo, separados por uma linha em branco</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)

@@ -1,3 +1,7 @@
+---
+title: "Error Handling"
+---
+
 # Error Handling
 
 > Escopo: Go 1.26.
@@ -22,7 +26,6 @@ Nunca ignore um erro com `_`. Todo erro deve ser verificado ou explicitamente pr
 
 <details>
 <summary>❌ Bad — erro ignorado</summary>
-<br>
 
 ```go
 file, _ := os.Open("config.json")  // falha silenciosa
@@ -32,11 +35,10 @@ config, _ := parseConfig(data)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — todo erro verificado</summary>
-<br>
 
 ```go
 file, err := os.Open("config.json")
@@ -65,7 +67,6 @@ Adicione contexto ao propagar um erro. Use `%w` para preservar a cadeia e permit
 
 <details>
 <summary>❌ Bad — erro propagado sem contexto</summary>
-<br>
 
 ```go
 func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -80,11 +81,10 @@ func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — erro empacotado com contexto da operação</summary>
-<br>
 
 ```go
 func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -109,7 +109,6 @@ Use sentinel errors para condições que o chamador precisa tratar de forma espe
 
 <details>
 <summary>❌ Bad — erro como string, difícil de comparar</summary>
-<br>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -127,11 +126,10 @@ if err.Error() == "user not found" {  // frágil
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sentinel error exportado, verificado com errors.Is</summary>
-<br>
 
 ```go
 var ErrNotFound = errors.New("not found")
@@ -170,7 +168,6 @@ da mensagem de texto.
 
 <details>
 <summary>✅ Good — tipo de erro com campos estruturados</summary>
-<br>
 
 ```go
 type ValidationError struct {
@@ -216,7 +213,6 @@ Nunca use para erros esperados como "não encontrado" ou "input inválido".
 
 <details>
 <summary>❌ Bad — panic para erro esperado</summary>
-<br>
 
 ```go
 func findUser(userID int64) *User {
@@ -230,11 +226,10 @@ func findUser(userID int64) *User {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — panic apenas para invariantes; erros esperados retornados</summary>
-<br>
 
 ```go
 func NewOrderService(repo OrderRepository) *OrderService {
@@ -266,7 +261,6 @@ erros tipados; o handler decide o status code.
 
 <details>
 <summary>✅ Good — fronteira error → HTTP no handler</summary>
-<br>
 
 ```go
 func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {

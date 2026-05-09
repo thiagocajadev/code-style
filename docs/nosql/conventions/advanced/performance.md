@@ -1,3 +1,7 @@
+---
+title: "Performance — NoSQL"
+---
+
 # Performance — NoSQL
 
 > Escopo: NoSQL. Padrões de performance para bancos não-relacionais: índices, projeção, N+1 e TTL.
@@ -24,7 +28,6 @@ Sempre limitar os campos retornados ao mínimo necessário para a operação.
 
 <details>
 <summary>❌ Bad — documento inteiro trafegado para usar dois campos</summary>
-<br>
 
 ```js
 // carrega todos os campos do documento
@@ -39,11 +42,10 @@ async function fetchTeamSummary(teamId) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — projeção limita o tráfego ao mínimo</summary>
-<br>
 
 ```js
 async function fetchTeamSummary(teamId) {
@@ -96,7 +98,6 @@ await sessionsCollection.createIndex(
 
 <details>
 <summary>❌ Bad — campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
-<br>
 
 ```js
 // LOWER() equivalente em JS — índice em name não é usado
@@ -110,11 +111,10 @@ await teamsCollection.createIndex({ isActive: 1 });
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
-<br>
 
 ```js
 // índice de texto serve $text queries com seletividade alta
@@ -151,7 +151,6 @@ N+1 não aparece no código; aparece no log. O sinal é um padrão de queries id
 
 <details>
 <summary>❌ Bad — uma query por item para buscar documento relacionado</summary>
-<br>
 
 ```js
 // N queries para N times — cada iteração dispara uma roundtrip ao banco
@@ -174,11 +173,10 @@ async function fetchTeamsWithPlayers(teamIds) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — $lookup resolve em uma única passagem no banco</summary>
-<br>
 
 ```js
 async function fetchTeamsWithPlayers(teamIds) {
@@ -217,7 +215,6 @@ TTL é responsabilidade do código na inserção, não de um job de limpeza exte
 
 <details>
 <summary>❌ Bad — sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
-<br>
 
 ```js
 // session sem expiração — acumula indefinidamente
@@ -233,11 +230,10 @@ async function createSession(userId, token) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — TTL index + expiresAt definido no insert</summary>
-<br>
 
 ```js
 // na inicialização: TTL index aponta para expiresAt

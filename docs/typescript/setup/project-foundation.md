@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos TypeScript. Os exemplos são
@@ -29,7 +33,6 @@ em runtime.
 
 <details>
 <summary>❌ Bad — tsconfig sem strict, com padrões obsoletos do TS5</summary>
-<br>
 
 ```json
 {
@@ -53,11 +56,10 @@ em runtime.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tsconfig base com strict e paths</summary>
-<br>
 
 ```json
 {
@@ -103,7 +105,6 @@ contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no 
 
 <details>
 <summary>❌ Bad — importações relativas profundas</summary>
-<br>
 
 ```ts
 import { UserRepository } from "../../../infra/database/user.repository";
@@ -113,11 +114,10 @@ import { config } from "../../../config";
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — alias limpo e independente de profundidade</summary>
-<br>
 
 ```ts
 import { UserRepository } from "@/infra/database/user.repository";
@@ -154,7 +154,6 @@ O arquivo serve como índice do projeto.
 
 <details>
 <summary>✅ Good — server.ts como índice, configuração delegada</summary>
-<br>
 
 ```ts
 // server.ts
@@ -174,7 +173,6 @@ acessa `process.env` diretamente e que os campos obrigatórios são verificados 
 
 <details>
 <summary>❌ Bad — process.env espalhado e sem validação</summary>
-<br>
 
 ```ts
 // auth.middleware.ts
@@ -186,11 +184,10 @@ const url = process.env.DATABASE_URL!; // non-null assertion sem garantia
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — config.ts como único ponto, com validação na inicialização</summary>
-<br>
 
 ```ts
 // config.ts

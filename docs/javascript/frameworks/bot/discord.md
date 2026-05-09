@@ -1,3 +1,7 @@
+---
+title: "Discord — discord.js"
+---
+
 # Discord — discord.js
 
 > Escopo: JavaScript/Node.js. Guia baseado em **discord.js v14.19** com **Node.js 22**.
@@ -31,7 +35,6 @@ Use o enum `Events` em todos os listeners. Strings literais como `'ready'` ou `'
 
 <details>
 <summary>❌ Bad — strings literais removidas no v14; sem type safety</summary>
-<br>
 
 ```js
 client.on('ready', () => {
@@ -47,11 +50,10 @@ client.on('interactionCreate', async (interaction) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Events enum; Client com intents declaradas; login no final</summary>
-<br>
 
 ```js
 import { Client, Events, GatewayIntentBits } from 'discord.js';
@@ -81,7 +83,6 @@ O registro por servidor (`applicationGuildCommands`) é instantâneo — ideal p
 
 <details>
 <summary>❌ Bad — REST sem version; schema como objeto literal sem validação</summary>
-<br>
 
 ```js
 import { REST, Routes } from 'discord.js';
@@ -95,11 +96,10 @@ await rest.put(Routes.applicationGuildCommands(appId, guildId), {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — REST com version: '10'; schema validado via SlashCommandBuilder</summary>
-<br>
 
 ```js
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
@@ -139,7 +139,6 @@ Use `Events.InteractionCreate` e o type guard `isChatInputCommand()`. Centralize
 
 <details>
 <summary>❌ Bad — string literal no evento; sem type guard; lógica de negócio no router; sem deferReply</summary>
-<br>
 
 ```js
 client.on('interactionCreate', async (interaction) => {
@@ -153,11 +152,10 @@ client.on('interactionCreate', async (interaction) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Events enum; isChatInputCommand() guard; Strategy Map; router só delega</summary>
-<br>
 
 ```js
 import { Events } from 'discord.js';
@@ -192,7 +190,6 @@ A resposta a uma Interaction deve ocorrer em até 3 segundos. Para operações a
 
 <details>
 <summary>❌ Bad — reply direto em operação assíncrona; embed como objeto solto (sintaxe v13 removida)</summary>
-<br>
 
 ```js
 export async function orderCommand(interaction) {
@@ -204,11 +201,10 @@ export async function orderCommand(interaction) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — deferReply antes do await; embeds como array; orquestrador + helpers abaixo</summary>
-<br>
 
 ```js
 import { EmbedBuilder } from 'discord.js';
@@ -247,7 +243,6 @@ function buildOrderEmbed(order) {
 
 <details>
 <summary>❌ Bad — string literal no evento; acesso a canal nulo sem guard; sem guard para bot</summary>
-<br>
 
 ```js
 client.on('guildMemberAdd', async (member) => {
@@ -261,11 +256,10 @@ client.on('messageReactionAdd', async (reaction, user) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Events enum; guard para canal nulo; guard para bot</summary>
-<br>
 
 ```js
 client.on(Events.GuildMemberAdd, async (member) => {

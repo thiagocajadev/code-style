@@ -1,3 +1,7 @@
+---
+title: "Async"
+---
+
 # Async
 
 > Escopo: Rust 1.95.
@@ -26,7 +30,6 @@ Use `#[tokio::test]` nos testes assíncronos.
 
 <details>
 <summary>❌ Bad — runtime bloqueante misturado com async</summary>
-<br>
 
 ```rust
 fn main() {
@@ -39,11 +42,10 @@ fn main() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — #[tokio::main] no entry point</summary>
-<br>
 
 ```rust
 #[tokio::main]
@@ -67,7 +69,6 @@ Para operações independentes, execute em paralelo com `tokio::join!` em vez de
 
 <details>
 <summary>❌ Bad — .await sequencial quando as operações são independentes</summary>
-<br>
 
 ```rust
 async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
@@ -81,11 +82,10 @@ async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tokio::join! executa em paralelo</summary>
-<br>
 
 ```rust
 async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
@@ -111,7 +111,6 @@ Sempre faça `await` no `JoinHandle` ou capture erros.
 
 <details>
 <summary>❌ Bad — spawn sem controle de ciclo de vida</summary>
-<br>
 
 ```rust
 async fn process_order(order: Order) {
@@ -124,11 +123,10 @@ async fn process_order(order: Order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — JoinHandle capturado e erro registrado</summary>
-<br>
 
 ```rust
 async fn process_order(order: Order) -> anyhow::Result<()> {
@@ -155,7 +153,6 @@ requisições em andamento.
 
 <details>
 <summary>❌ Bad — processo encerrado abruptamente</summary>
-<br>
 
 ```rust
 #[tokio::main]
@@ -167,11 +164,10 @@ async fn main() -> anyhow::Result<()> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — shutdown signal aguardado antes de encerrar</summary>
-<br>
 
 ```rust
 #[tokio::main]
@@ -215,7 +211,6 @@ código CPU-intensivo ou I/O síncrono.
 
 <details>
 <summary>❌ Bad — bloqueio na thread do runtime</summary>
-<br>
 
 ```rust
 async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {
@@ -226,11 +221,10 @@ async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — CPU-bound em thread dedicada via spawn_blocking</summary>
-<br>
 
 ```rust
 async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {

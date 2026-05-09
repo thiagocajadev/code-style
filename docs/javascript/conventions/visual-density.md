@@ -1,3 +1,7 @@
+---
+title: "Visual density: JavaScript"
+---
+
 # Visual density: JavaScript
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em JavaScript/Node.js.
@@ -8,7 +12,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Bad — denso demais: todos os passos colados</summary>
-<br>
 
 ```js
 async function registerUser(input) {
@@ -25,11 +28,10 @@ async function registerUser(input) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```js
 async function registerUser(input) {
@@ -55,7 +57,6 @@ Uma `const` nomeada acima do `return` explica o valor retornado. Quando há **ap
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
-<br>
 
 ```js
 function mapErrorToStatus(error) {
@@ -67,11 +68,10 @@ function mapErrorToStatus(error) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — par tight</summary>
-<br>
 
 ```js
 function mapErrorToStatus(error) {
@@ -88,7 +88,6 @@ Quando há dois ou mais passos distintos antes do `return`, o blank line marca a
 
 <details>
 <summary>✅ Good — 3 passos antes do return</summary>
-<br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -121,7 +120,6 @@ Uma variável seguida do seu `if` de guarda formam par semântico. A linha em br
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
-<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -132,11 +130,10 @@ const invoice = buildInvoice(order);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
-<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -153,7 +150,6 @@ Três declarações simples consecutivas (const, let, var) formam grupo coeso. P
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -164,11 +160,10 @@ const ONE_DAY_MS = 86_400_000;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — trio tight</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -178,11 +173,10 @@ const ONE_DAY_MS = 86_400_000;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — 4 atomics viram 2+2</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -200,7 +194,6 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 
 <details>
 <summary>❌ Bad — dependência direta partida</summary>
-<br>
 
 ```js
 function buildShippingLabel(order) {
@@ -216,11 +209,10 @@ function buildShippingLabel(order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — par semântico tight</summary>
-<br>
 
 ```js
 function buildShippingLabel(order) {
@@ -242,7 +234,6 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não 
 
 <details>
 <summary>❌ Bad — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -254,11 +245,10 @@ while (attempt < maxAttempts) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -277,7 +267,6 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 
 <details>
 <summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -291,11 +280,10 @@ async function createUserHandler(req, res) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases explícitas</summary>
-<br>
 
 ```js
 async function createUserHandler(request, response) {
@@ -317,7 +305,6 @@ O `expect` é fase distinta. A linha em branco antes dele separa o que está sen
 
 <details>
 <summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```js
 it('applies percentage discount to order price', () => {
@@ -330,11 +317,10 @@ it('applies percentage discount to order price', () => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — expect separado, assertion como fase própria</summary>
-<br>
 
 ```js
 it('applies percentage discount to order price', () => {
@@ -354,7 +340,6 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 
 <details>
 <summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -364,11 +349,10 @@ function buildDeliveryMessage(user, order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {

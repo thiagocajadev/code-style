@@ -1,3 +1,7 @@
+---
+title: "IoT / MicroPython"
+---
+
 # IoT / MicroPython
 
 > Escopo: transversal — padrões de domínio IoT com exemplos em MicroPython 1.28.
@@ -24,7 +28,6 @@ Nomes refletem o papel do sensor no domínio, não o tipo de hardware.
 
 <details>
 <summary>❌ Bad — nome técnico sem contexto de domínio</summary>
-<br>
 
 ```python
 pin0 = machine.Pin(0, machine.Pin.IN)
@@ -34,11 +37,10 @@ pwm_out = machine.PWM(machine.Pin(2))
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome de domínio revela intenção</summary>
-<br>
 
 ```python
 door_sensor = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
@@ -55,7 +57,6 @@ de tempo após a primeira detecção.
 
 <details>
 <summary>❌ Bad — sem debounce, evento disparado múltiplas vezes</summary>
-<br>
 
 ```python
 import machine
@@ -70,11 +71,10 @@ button.irq(trigger=machine.Pin.IRQ_FALLING, handler=on_press)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — debounce por timestamp</summary>
-<br>
 
 ```python
 import machine
@@ -111,7 +111,6 @@ Modele o comportamento do dispositivo como estados explícitos. Evite flags bool
 
 <details>
 <summary>❌ Bad — flags soltos sem estado explícito</summary>
-<br>
 
 ```python
 is_door_open = False
@@ -126,11 +125,10 @@ if is_door_open and not is_alarm_active:
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — FSM com estados nomeados e transições explícitas</summary>
-<br>
 
 ```python
 import utime
@@ -181,7 +179,6 @@ o mesmo alerta enquanto a condição não mudar.
 
 <details>
 <summary>❌ Bad — alerta reenviado a cada tick enquanto condição persiste</summary>
-<br>
 
 ```python
 import urequests
@@ -194,11 +191,10 @@ def check_temperature(temp_celsius):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — alerta enviado uma vez por evento, com ID único</summary>
-<br>
 
 ```python
 import urequests
@@ -238,7 +234,6 @@ O **Watchdog** reinicia o dispositivo se o loop principal parar de alimentá-lo.
 
 <details>
 <summary>❌ Bad — watchdog nunca alimentado, ou ausente</summary>
-<br>
 
 ```python
 import machine
@@ -253,11 +248,10 @@ def main_loop():
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — watchdog alimentado a cada iteração do loop</summary>
-<br>
 
 ```python
 import machine
@@ -290,7 +284,6 @@ de sensores analógicos ou quando o hardware não suporta interrupção.
 
 <details>
 <summary>✅ Good — polling periódico com sleep para sensores analógicos</summary>
-<br>
 
 ```python
 import machine

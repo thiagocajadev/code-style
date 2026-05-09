@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: Java 25 LTS. Otimize onde há evidência de problema; código legível sempre.
@@ -21,7 +25,6 @@ sobre coleções pequenas, a diferença de performance é irrelevante. Para hot 
 
 <details>
 <summary>✅ Good — stream para transformação declarativa</summary>
-<br>
 
 ```java
 final var activeUserIds = users.stream()
@@ -32,11 +35,10 @@ final var activeUserIds = users.stream()
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — for-each em hot path: sem overhead de stream</summary>
-<br>
 
 ```java
 // chamado milhões de vezes por segundo
@@ -54,7 +56,6 @@ para evitar realocações.
 
 <details>
 <summary>❌ Bad — ArrayList cresce dinamicamente com realocação</summary>
-<br>
 
 ```java
 final var results = new ArrayList<String>();
@@ -66,11 +67,10 @@ for (final var item : items) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tamanho inicial conhecido</summary>
-<br>
 
 ```java
 final var results = new ArrayList<String>(items.size());
@@ -88,7 +88,6 @@ O operador `+` em loop cria um objeto `String` por iteração. `StringBuilder` r
 
 <details>
 <summary>❌ Bad — concatenação cria N objetos</summary>
-<br>
 
 ```java
 String result = "";
@@ -99,11 +98,10 @@ for (final var item : items) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — StringBuilder ou String.join()</summary>
-<br>
 
 ```java
 // para listas, String.join() é mais expressivo
@@ -127,7 +125,6 @@ de tamanho conhecido, calcule a capacidade inicial: `tamanho / 0.75 + 1`.
 
 <details>
 <summary>❌ Bad — HashMap com capacidade padrão (16), realoca se >12 entradas</summary>
-<br>
 
 ```java
 final var cache = new HashMap<String, User>(); // padrão: 16
@@ -136,11 +133,10 @@ final var cache = new HashMap<String, User>(); // padrão: 16
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — capacidade calculada</summary>
-<br>
 
 ```java
 final int expectedSize = 100;
@@ -157,7 +153,6 @@ use virtual threads.
 
 <details>
 <summary>❌ Bad — parallel para operação I/O-bound (piora o throughput)</summary>
-<br>
 
 ```java
 final var results = orders.parallelStream()
@@ -167,11 +162,10 @@ final var results = orders.parallelStream()
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — parallel apenas para CPU-bound com dados grandes</summary>
-<br>
 
 ```java
 // CPU-bound: cálculo pesado sobre lista grande (>10k elementos)
@@ -189,7 +183,6 @@ Para coleções que não devem ser modificadas após criação, prefira `List.of
 
 <details>
 <summary>❌ Bad — wrapper ainda permite mutação se a referência original vazar</summary>
-<br>
 
 ```java
 final var mutableList = new ArrayList<>(items);
@@ -200,11 +193,10 @@ mutableList.add(newItem); // readOnly reflete a mudança!
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — List.of() é imutável por construção</summary>
-<br>
 
 ```java
 final var immutableItems = List.of("a", "b", "c"); // lança UnsupportedOperationException em add/remove

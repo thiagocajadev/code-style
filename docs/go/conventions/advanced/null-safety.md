@@ -1,3 +1,7 @@
+---
+title: "Null Safety"
+---
+
 # Null Safety
 
 > Escopo: Go 1.26.
@@ -21,7 +25,6 @@ Verifique ponteiros antes de acessar campos ou métodos.
 
 <details>
 <summary>❌ Bad — acesso sem verificação de nil</summary>
-<br>
 
 ```go
 func describeOrder(order *Order) string {
@@ -32,11 +35,10 @@ func describeOrder(order *Order) string {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verificação explícita antes do acesso</summary>
-<br>
 
 ```go
 func describeOrder(order *Order) string {
@@ -59,7 +61,6 @@ pelo zero value. Ponteiro só quando nil tem semântica de "ausente".
 
 <details>
 <summary>❌ Bad — ponteiro para representar "vazio" onde zero value bastaria</summary>
-<br>
 
 ```go
 type Address struct {
@@ -83,11 +84,10 @@ func printAddress(user User) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — zero value é estado vazio válido; ponteiro apenas com semântica clara</summary>
-<br>
 
 ```go
 type Address struct {
@@ -122,7 +122,6 @@ mas comunique a ausência explicitamente.
 
 <details>
 <summary>❌ Bad — escrita em map nil</summary>
-<br>
 
 ```go
 type OrderIndex struct {
@@ -137,11 +136,10 @@ func (oi *OrderIndex) Add(order Order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — map inicializado no construtor</summary>
-<br>
 
 ```go
 type OrderIndex struct {
@@ -170,7 +168,6 @@ se ambos forem nil. Um ponteiro nil atribuído a uma interface não é nil.
 
 <details>
 <summary>❌ Bad — comparação incorreta de interface com nil</summary>
-<br>
 
 ```go
 type Logger interface {
@@ -193,11 +190,10 @@ if logger == nil {  // FALSO: interface tem tipo, não é nil
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — retornar nil de interface diretamente</summary>
-<br>
 
 ```go
 func newLogger(debug bool) Logger {
@@ -223,7 +219,6 @@ de zero value.
 
 <details>
 <summary>✅ Good — ok idiom para map lookup e type assertion</summary>
-<br>
 
 ```go
 // map: distingue "chave ausente" de "valor é zero"

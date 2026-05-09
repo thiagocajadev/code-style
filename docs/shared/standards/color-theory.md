@@ -1,3 +1,7 @@
+---
+title: "Teoria das Cores"
+---
+
 # Teoria das Cores
 
 > Escopo: transversal. Aplica-se a qualquer interface, em qualquer linguagem ou stack do projeto.

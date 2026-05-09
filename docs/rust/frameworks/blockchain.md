@@ -1,3 +1,7 @@
+---
+title: "Blockchain / Smart Contracts"
+---
+
 # Blockchain / Smart Contracts
 
 > Escopo: Solana (solana-program 4.0, Agave 2.1) + Anchor 1.0.
@@ -39,7 +43,6 @@ my-program/
 
 <details>
 <summary>❌ Bad — sem validação de accounts, lógica na instrução</summary>
-<br>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -81,11 +84,10 @@ pub struct Product {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constraint de autorização + validação de entrada</summary>
-<br>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -182,7 +184,6 @@ mutabilidade e assinatura antes de executar o programa.
 
 <details>
 <summary>❌ Bad — account sem constraint, mutabilidade excessiva</summary>
-<br>
 
 ```rust
 #[derive(Accounts)]
@@ -199,11 +200,10 @@ pub struct WithdrawFunds<'info> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — account tipado, constraint de ownership, PDA verificado</summary>
-<br>
 
 ```rust
 #[derive(Accounts)]

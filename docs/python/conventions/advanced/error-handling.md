@@ -1,3 +1,7 @@
+---
+title: "Error Handling"
+---
+
 # Error Handling
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
@@ -9,7 +13,6 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 
 <details>
 <summary>❌ Bad — None, False e objeto na mesma função</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -30,11 +33,10 @@ if result:  # False passa, None também
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -57,7 +59,6 @@ def process_order(order):
 
 <details>
 <summary>❌ Bad — string solta, impossível tratar com isinstance</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -71,11 +72,10 @@ async def find_user(user_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — exceções tipadas, identificáveis e tratáveis</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -93,7 +93,6 @@ async def find_user(user_id: int):
 
 <details>
 <summary>❌ Bad — raise com string solta, sem tipo, sem contrato</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -114,11 +113,10 @@ async def process_order(order_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — hierarquia centralizada para todos os erros da aplicação</summary>
-<br>
 
 ```python
 # errors.py
@@ -169,7 +167,6 @@ class InternalServerError(AppError):
 
 <details>
 <summary>❌ Bad — captura, loga e retorna None</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -187,11 +184,10 @@ async def find_product_by_id(product_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — propaga com contexto, trata na fronteira</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -220,7 +216,6 @@ Use parênteses quando precisar de `as` ou quando o grupo tiver mais de dois tip
 
 <details>
 <summary>❌ Bad — except separado para tipos que recebem o mesmo tratamento</summary>
-<br>
 
 ```python
 try:
@@ -233,11 +228,10 @@ except ConnectionRefusedError:
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — excpet agrupado sem parênteses (Python 3.14+)</summary>
-<br>
 
 ```python
 try:
@@ -248,11 +242,10 @@ except TimeoutError, ConnectionRefusedError:
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — parênteses quando há cláusula as ou 3+ tipos</summary>
-<br>
 
 ```python
 try:
@@ -268,7 +261,6 @@ except (TimeoutError, ConnectionRefusedError) as error:
 
 <details>
 <summary>❌ Bad — try/except controlando lógica de negócio normal</summary>
-<br>
 
 ```python
 def get_user(user_id: int):
@@ -280,11 +272,10 @@ def get_user(user_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
-<br>
 
 ```python
 def get_user(user_id: int):

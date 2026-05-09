@@ -1,3 +1,7 @@
+---
+title: "Types"
+---
+
 # Types
 
 > Escopo: Rust 1.95.
@@ -24,7 +28,6 @@ Derive traits comuns com `#[derive]`. Não derive o que não vai usar.
 
 <details>
 <summary>❌ Bad — struct anêmica sem semântica</summary>
-<br>
 
 ```rust
 struct Data {
@@ -36,11 +39,10 @@ struct Data {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — campos nomeados por domínio + derives úteis</summary>
-<br>
 
 ```rust
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -62,7 +64,6 @@ dados diferentes. Use para modelar estados e resultados distintos.
 
 <details>
 <summary>❌ Bad — status como string magic</summary>
-<br>
 
 ```rust
 struct Order {
@@ -76,11 +77,10 @@ fn is_paid(order: &Order) -> bool {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — enum exaustivo com dados por variante</summary>
-<br>
 
 ```rust
 #[derive(Debug, Clone, PartialEq)]
@@ -105,7 +105,6 @@ Prefira `impl Trait` em parâmetros para funções simples; `Box<dyn Trait>` par
 
 <details>
 <summary>❌ Bad — lógica acoplada a um tipo concreto</summary>
-<br>
 
 ```rust
 struct EmailNotifier;
@@ -117,11 +116,10 @@ fn notify_order_paid_sms(notifier: &SmsNotifier, order: &Order) {}
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — trait como contrato, impl por tipo</summary>
-<br>
 
 ```rust
 pub trait Notifier {
@@ -158,7 +156,6 @@ async fn notify_order_paid(notifier: &impl Notifier, order: &Order) -> anyhow::R
 
 <details>
 <summary>❌ Bad — unwrap que pânica em Option None</summary>
-<br>
 
 ```rust
 fn get_discount_label(order: &Order) -> String {
@@ -169,11 +166,10 @@ fn get_discount_label(order: &Order) -> String {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Option tratado com map ou let-else</summary>
-<br>
 
 ```rust
 fn get_discount_label(order: &Order) -> Option<String> {
@@ -192,7 +188,6 @@ O compilador rejeita trocas acidentais.
 
 <details>
 <summary>❌ Bad — IDs intercambiáveis pelo compilador</summary>
-<br>
 
 ```rust
 fn transfer(from_account: u64, to_account: u64, amount: f64) {}
@@ -203,11 +198,10 @@ transfer(to_id, from_id, 100.0);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — newtype impede inversão silenciosa</summary>
-<br>
 
 ```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -229,7 +223,6 @@ Generics evitam duplicação sem perder informação de tipo.
 
 <details>
 <summary>❌ Bad — lógica duplicada por tipo</summary>
-<br>
 
 ```rust
 fn find_first_active_order(orders: &[Order]) -> Option<&Order> {
@@ -243,11 +236,10 @@ fn find_first_active_product(products: &[Product]) -> Option<&Product> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — trait bound genérico</summary>
-<br>
 
 ```rust
 pub trait HasActiveStatus {

@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
@@ -16,7 +20,6 @@ protegido.
 
 <details>
 <summary>❌ Bad — string genérica aceita qualquer valor em qualquer posição</summary>
-<br>
 
 ```ts
 interface Order {
@@ -38,11 +41,10 @@ const order: Order = {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — branded type distingue timestamp de string genérica</summary>
-<br>
 
 ```ts
 type IsoTimestamp = string & { readonly __brand: "IsoTimestamp" };
@@ -86,7 +88,6 @@ disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambie
 
 <details>
 <summary>✅ Good — Temporal com tipos explícitos</summary>
-<br>
 
 ```ts
 function createScheduledEvent(
@@ -122,7 +123,6 @@ sem inspecionar a implementação.
 
 <details>
 <summary>❌ Bad — retorno inferido, contrato invisível</summary>
-<br>
 
 ```ts
 function parseOrderDate(raw: unknown) {
@@ -133,11 +133,10 @@ function parseOrderDate(raw: unknown) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — input validado, retorno explícito</summary>
-<br>
 
 ```ts
 function parseIsoDate(isoString: IsoTimestamp): Date {

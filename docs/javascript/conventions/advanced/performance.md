@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: JavaScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
@@ -12,7 +16,6 @@ execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iter�
 
 <details>
 <summary>❌ Bad — callback alocado por iteração</summary>
-<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -27,11 +30,10 @@ function calculateTotalRevenue(orders) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — for...of sem overhead de callback</summary>
-<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -54,7 +56,6 @@ reutilize.
 
 <details>
 <summary>❌ Bad — Array.includes percorre tudo a cada chamada</summary>
-<br>
 
 ```js
 const PREMIUM_CATEGORIES = ["electronics", "jewelry", "watches"];
@@ -70,11 +71,10 @@ function filterPremiumProducts(products) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Set.has resolve em O(1)</summary>
-<br>
 
 ```js
 const PREMIUM_CATEGORIES = new Set(["electronics", "jewelry", "watches"]);
@@ -98,7 +98,6 @@ Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sq
 
 <details>
 <summary>❌ Bad — crypto.randomUUID() é v4: random, fragmenta índice</summary>
-<br>
 
 ```js
 function createOrder(request) {
@@ -110,11 +109,10 @@ function createOrder(request) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — UUID v7: time-ordered, sequencial no índice</summary>
-<br>
 
 ```js
 import { v7 as uuidv7 } from "uuid";
@@ -136,7 +134,6 @@ strings são imutáveis em JavaScript. Para construir strings dinamicamente, acu
 
 <details>
 <summary>❌ Bad — nova string alocada por iteração</summary>
-<br>
 
 ```js
 function buildOrderReport(orders) {
@@ -151,11 +148,10 @@ function buildOrderReport(orders) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — array + join, uma alocação no final</summary>
-<br>
 
 ```js
 function buildOrderReport(orders) {

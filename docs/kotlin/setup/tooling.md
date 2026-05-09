@@ -1,3 +1,7 @@
+---
+title: "Tooling"
+---
+
 # Tooling
 
 > Escopo: Kotlin 2.2, Android ou JVM/KMP.
@@ -56,7 +60,6 @@ dependencies {
 
 <details>
 <summary>❌ Bad — sem formatação padronizada</summary>
-<br>
 
 ```kotlin
 fun calculateTotal(items:List<Item>,discount:Double):Double{
@@ -66,11 +69,10 @@ return items.sumOf{it.price}*(1-discount)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ktlint aplicado</summary>
-<br>
 
 ```kotlin
 fun calculateTotal(

@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: Kotlin 2.2, java.time (JSR-310).
@@ -21,7 +25,6 @@ transferência usa ISO 8601; a formatação para o usuário aplica o fuso e o lo
 
 <details>
 <summary>❌ Bad — java.util.Date e Calendar têm comportamento imprevisível</summary>
-<br>
 
 ```kotlin
 val now = Date()
@@ -33,11 +36,10 @@ val nextWeek = cal.time
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — java.time é imutável e explícito</summary>
-<br>
 
 ```kotlin
 val now = Instant.now()
@@ -50,7 +52,6 @@ val nextWeek = now.plus(7, ChronoUnit.DAYS)
 
 <details>
 <summary>❌ Bad — offset fixo quebra no horário de verão</summary>
-<br>
 
 ```kotlin
 val saoPaulo = ZoneId.of("GMT-3")   // errado: ignora horário de verão
@@ -60,11 +61,10 @@ val now = ZonedDateTime.now(saoPaulo)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome IANA do fuso inclui regras de horário de verão</summary>
-<br>
 
 ```kotlin
 val saoPaulo = ZoneId.of("America/Sao_Paulo")
@@ -78,7 +78,6 @@ val now = ZonedDateTime.now(saoPaulo)
 
 <details>
 <summary>❌ Bad — string interpretada como data sem parse explícito</summary>
-<br>
 
 ```kotlin
 val dueDate = "2026-04-30"   // String, não LocalDate
@@ -87,11 +86,10 @@ val isOverdue = dueDate < today.toString()   // comparação lexicográfica, nã
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — LocalDate com comparação tipada</summary>
-<br>
 
 ```kotlin
 val dueDate = LocalDate.parse("2026-04-30")
@@ -104,7 +102,6 @@ val isOverdue = dueDate.isBefore(LocalDate.now())
 
 <details>
 <summary>❌ Bad — formato de data local varia por máquina</summary>
-<br>
 
 ```kotlin
 data class OrderResponse(
@@ -115,11 +112,10 @@ data class OrderResponse(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ISO 8601 é portável e indexável</summary>
-<br>
 
 ```kotlin
 data class OrderResponse(

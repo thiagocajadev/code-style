@@ -1,3 +1,7 @@
+---
+title: "Blazor"
+---
+
 # Blazor
 
 > Escopo: C#/.NET. Guia baseado em **Blazor .NET 10** com **C# 14**.
@@ -44,7 +48,6 @@ ou impede recursos interativos.
 
 <details>
 <summary>❌ Bad — rendermode global no App.razor força SignalR em páginas estáticas</summary>
-<br>
 
 ```razor
 @* App.razor — força Interactive Server em TUDO, incluindo páginas sem interatividade *@
@@ -53,11 +56,10 @@ ou impede recursos interativos.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Static SSR como padrão; rendermode declarado por componente</summary>
-<br>
 
 ```razor
 @* App.razor — sem rendermode global; cada página declara o próprio *@
@@ -92,7 +94,6 @@ properties no `@code` mantêm o template legível.
 
 <details>
 <summary>❌ Bad — cálculo e ternário inline na marcação</summary>
-<br>
 
 ```razor
 @* ProductCard.razor *@
@@ -109,11 +110,10 @@ properties no `@code` mantêm o template legível.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — computed properties no @code, marcação sem lógica</summary>
-<br>
 
 ```razor
 @* ProductCard.razor *@
@@ -143,7 +143,6 @@ notifique o pai sobre eventos sem acoplar os dois componentes.
 
 <details>
 <summary>❌ Bad — filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
-<br>
 
 ```razor
 @* QuantitySelector.razor *@
@@ -161,11 +160,10 @@ notifique o pai sobre eventos sem acoplar os dois componentes.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — EventCallback notifica o pai; filho permanece sem efeitos colaterais</summary>
-<br>
 
 ```razor
 @* QuantitySelector.razor *@
@@ -204,7 +202,6 @@ o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 
 <details>
 <summary>❌ Bad — chamada duplicada ao repositório: prerenderização e hidratação</summary>
-<br>
 
 ```razor
 @* OrderList.razor *@
@@ -222,11 +219,10 @@ o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — [PersistentState] serializa o estado e evita chamada duplicada</summary>
-<br>
 
 ```razor
 @* OrderList.razor *@
@@ -256,7 +252,6 @@ por campo; `ValidationSummary` exibe todos os erros consolidados.
 
 <details>
 <summary>❌ Bad — formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
-<br>
 
 ```razor
 <form @onsubmit="SubmitAsync">
@@ -280,11 +275,10 @@ por campo; `ValidationSummary` exibe todos os erros consolidados.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — EditForm com DataAnnotationsValidator; submissão bloqueada enquanto inválida</summary>
-<br>
 
 ```razor
 <EditForm Model="orderInput" OnValidSubmit="SubmitAsync">
@@ -343,7 +337,6 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 <details>
 <summary>❌ Bad — NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
-<br>
 
 ```razor
 @page "/orders/{id}"
@@ -358,11 +351,10 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — rota tipada, navegação em método separado</summary>
-<br>
 
 ```razor
 @page "/orders/{orderId:guid}"
@@ -393,7 +385,6 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 <details>
 <summary>❌ Bad — interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>
-<br>
 
 ```razor
 @inject IJSRuntime jsRuntime
@@ -408,11 +399,10 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interop em OnAfterRenderAsync com guard firstRender</summary>
-<br>
 
 ```razor
 @inject IJSRuntime jsRuntime

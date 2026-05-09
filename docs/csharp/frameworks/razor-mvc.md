@@ -1,3 +1,7 @@
+---
+title: "Razor Pages e MVC"
+---
+
 # Razor Pages e MVC
 
 > Escopo: C#/.NET. Guia baseado em **ASP.NET Core .NET 10** com **C# 14**.
@@ -35,7 +39,6 @@ os dados da view e o `OnPost` para processar o formulário.
 
 <details>
 <summary>❌ Bad — lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
-<br>
 
 ```csharp
 // Pages/Orders/Create.cshtml.cs
@@ -66,11 +69,10 @@ public class CreateModel(AppDbContext db) : PageModel
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — PageModel delega para Service; validação via DataAnnotations</summary>
-<br>
 
 ```csharp
 // Pages/Orders/Create.cshtml.cs
@@ -121,7 +123,6 @@ e injeta o token anti-falsificação automaticamente.
 
 <details>
 <summary>❌ Bad — HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
-<br>
 
 ```html
 <form method="post" action="/orders/create">
@@ -136,11 +137,10 @@ e injeta o token anti-falsificação automaticamente.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Tag Helpers vinculam ao model; anti-forgery e erros automáticos</summary>
-<br>
 
 ```html
 <form asp-page="./Create" method="post">
@@ -174,7 +174,6 @@ controller. O acesso ao banco passa pelo **Repository**; o controller nunca inje
 
 <details>
 <summary>❌ Bad — lógica de negócio no controller; DbContext injetado diretamente</summary>
-<br>
 
 ```csharp
 [ApiController]
@@ -198,11 +197,10 @@ public class OrdersController(AppDbContext db) : ControllerBase
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — controller delega para Service; traduz Result em HTTP no boundary</summary>
-<br>
 
 ```csharp
 [ApiController]
@@ -244,7 +242,6 @@ diretamente na view e impede que campos sensíveis vazem para o HTML.
 
 <details>
 <summary>❌ Bad — entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
-<br>
 
 ```csharp
 // Controllers/OrdersController.cs
@@ -260,11 +257,10 @@ public async Task<IActionResult> DetailAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ViewModel tipado projetado para a view</summary>
-<br>
 
 ```csharp
 // Controllers/OrdersController.cs
@@ -302,7 +298,6 @@ cada view focada em seu próprio conteúdo.
 
 <details>
 <summary>❌ Bad — HTML estrutural duplicado em cada página</summary>
-<br>
 
 ```html
 @* Pages/Orders/Index.cshtml — sem layout *@
@@ -321,11 +316,10 @@ cada view focada em seu próprio conteúdo.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — _Layout.cshtml compartilhado; partial view para fragmentos</summary>
-<br>
 
 ```html
 @* Shared/_Layout.cshtml *@

@@ -1,3 +1,7 @@
+---
+title: "Flutter"
+---
+
 # Flutter
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.29-02569B?logo=flutter&logoColor=white)](https://docs.flutter.dev/)

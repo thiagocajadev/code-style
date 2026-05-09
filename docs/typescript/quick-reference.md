@@ -1,3 +1,7 @@
+---
+title: "Quick Reference"
+---
+
 # Quick Reference
 
 > Escopo: TypeScript. Cheat-sheet das convenções; detalhes em `conventions/`.

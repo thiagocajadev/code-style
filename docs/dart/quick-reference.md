@@ -1,3 +1,7 @@
+---
+title: "Dart — Quick Reference"
+---
+
 # Dart — Quick Reference
 
 > Escopo: Dart 3.7. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.

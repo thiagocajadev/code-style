@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: PHP 8.4.
@@ -13,7 +17,6 @@ requisição. Certifique-se que está habilitado em produção.
 
 <details>
 <summary>✅ Good — configuração mínima do OPcache em php.ini</summary>
-<br>
 
 ```ini
 ; php.ini
@@ -34,7 +37,6 @@ Carregue dados em lote com uma única query, nunca uma query por item em loop.
 
 <details>
 <summary>❌ Bad — N+1: uma query por ordem</summary>
-<br>
 
 ```php
 $orders = $this->orderRepository->findAll();
@@ -48,11 +50,10 @@ foreach ($orders as $order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — carregamento em lote com uma query</summary>
-<br>
 
 ```php
 $orders = $this->orderRepository->findAll();
@@ -76,7 +77,6 @@ Use `yield` para processar grandes volumes de dados sem carregar tudo na memóri
 
 <details>
 <summary>❌ Bad — carrega todos os registros em memória</summary>
-<br>
 
 ```php
 public function findAllOrders(): array
@@ -92,11 +92,10 @@ foreach ($this->repository->findAllOrders() as $order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — generator: processa um registro por vez</summary>
-<br>
 
 ```php
 public function streamAllOrders(): \Generator
@@ -122,7 +121,6 @@ realmente necessários.
 
 <details>
 <summary>✅ Good — lazy initializer com Reflection (PHP 8.4)</summary>
-<br>
 
 ```php
 use ReflectionClass;
@@ -161,7 +159,6 @@ para strings complexas.
 
 <details>
 <summary>❌ Bad — concatenação em loop, O(n²)</summary>
-<br>
 
 ```php
 $csv = '';
@@ -172,11 +169,10 @@ foreach ($orders as $order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — array + implode: uma única alocação de string</summary>
-<br>
 
 ```php
 $lines = array_map(
@@ -196,7 +192,6 @@ Use `array_map` para transformações puras. Use `foreach` para efeitos colatera
 
 <details>
 <summary>✅ Good — separação de transformação e efeito colateral</summary>
-<br>
 
 ```php
 // Transformação pura: array_map

@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

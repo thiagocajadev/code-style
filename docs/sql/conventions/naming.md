@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 Código em inglês. Tabelas no plural, colunas no singular. Nomes descritivos eliminam conflito com
@@ -20,7 +24,6 @@ type), `Status` (usado em comandos).
 
 <details>
 <summary>❌ Bad — delimitadores para escapar palavras reservadas</summary>
-<br>
 
 ```sql
 SELECT [Data], [Time] FROM [TimesDeFutebol];
@@ -28,11 +31,10 @@ SELECT [Data], [Time] FROM [TimesDeFutebol];
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — inglês elimina a ambiguidade</summary>
-<br>
 
 ```sql
 SELECT MatchDate, TeamName FROM FootballTeams;
@@ -44,7 +46,6 @@ SELECT MatchDate, TeamName FROM FootballTeams;
 
 <details>
 <summary>❌ Bad — singular em tabelas, português, sem padrão</summary>
-<br>
 
 ```sql
 CREATE TABLE Time
@@ -57,11 +58,10 @@ CREATE TABLE Time
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — plural na tabela, singular nas colunas, inglês</summary>
-<br>
 
 ```sql
 CREATE TABLE FootballTeams
@@ -83,7 +83,6 @@ CREATE TABLE FootballTeams
 
 <details>
 <summary>❌ Bad — nome da tabela repetido em cada coluna</summary>
-<br>
 
 ```sql
 SELECT
@@ -96,11 +95,10 @@ FROM
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome da tabela qualifica a coluna diretamente</summary>
-<br>
 
 ```sql
 SELECT
@@ -119,7 +117,6 @@ Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma le
 
 <details>
 <summary>❌ Bad — colunas sem qualificação, alias de letra</summary>
-<br>
 
 ```sql
 SELECT
@@ -134,11 +131,10 @@ JOIN
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome completo da tabela em todas as referências</summary>
-<br>
 
 ```sql
 SELECT
@@ -176,7 +172,6 @@ tornam erros difíceis de identificar e impossibilitam `ALTER TABLE ... DROP CON
 
 <details>
 <summary>❌ Bad — constraints inline sem nome</summary>
-<br>
 
 ```sql
 CREATE TABLE Players
@@ -189,11 +184,10 @@ CREATE TABLE Players
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constraints nomeadas, removíveis e identificáveis</summary>
-<br>
 
 ```sql
 CREATE TABLE Players

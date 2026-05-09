@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
@@ -19,7 +23,6 @@ Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mist
 
 <details>
 <summary>❌ Bad — captura hora local, comportamento depende do servidor</summary>
-<br>
 
 ```js
 const createdAt = new Date().toString();
@@ -28,11 +31,10 @@ const createdAt = new Date().toString();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — UTC explícito, resultado idêntico em qualquer ambiente</summary>
-<br>
 
 ```js
 const createdAt = new Date().toISOString();
@@ -47,7 +49,6 @@ O comportamento de `new Date(string)` muda conforme o formato passado e varia en
 
 <details>
 <summary>❌ Bad — formato ambíguo, resultado local-dependente</summary>
-<br>
 
 ```js
 const date = new Date("01/15/2026");
@@ -60,11 +61,10 @@ const date2 = new Date("2026-01-15");
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
-<br>
 
 ```js
 const date = new Date("2026-01-15T00:00:00.000Z");
@@ -80,7 +80,6 @@ depois. Separar armazenamento de exibição mantém o dado portável.
 
 <details>
 <summary>❌ Bad — exibição misturada com armazenamento</summary>
-<br>
 
 ```js
 const order = {
@@ -92,11 +91,10 @@ const order = {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — armazenar UTC, formatar só na camada de exibição</summary>
-<br>
 
 ```js
 const order = {

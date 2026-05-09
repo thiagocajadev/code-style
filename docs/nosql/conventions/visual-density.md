@@ -1,3 +1,7 @@
+---
+title: "Visual Density — NoSQL"
+---
+
 # Visual Density — NoSQL
 
 > Escopo: NoSQL. Aplica as regras de densidade visual ao código de drivers JS (MongoDB, Redis, DynamoDB).
@@ -16,7 +20,6 @@ As regras gerais de densidade visual estão em [shared/standards/visual-density.
 
 <details>
 <summary>❌ Bad — blocos compactados sem separação, pipeline inline, nomes genéricos</summary>
-<br>
 
 ```js
 // query, options e processamento misturados sem separação
@@ -32,11 +35,10 @@ const data = await db.collection('matches').aggregate([{$match:{season:'2026'}},
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — grupos semânticos separados, pipeline legível, nomes de domínio</summary>
-<br>
 
 ```js
 async function findTeamById(teamId) {
@@ -83,7 +85,6 @@ Cada estágio é um objeto literal separado no array. Nunca inline todos em uma 
 
 <details>
 <summary>❌ Bad — pipeline colapsado em uma linha, sem separação por propósito</summary>
-<br>
 
 ```js
 const results = await col.aggregate([{$match:{status:'active'}},{$lookup:{from:'players',localField:'_id',foreignField:'teamId',as:'players'}},{$unwind:'$players'},{$group:{_id:'$_id',playerCount:{$sum:1}}},{$sort:{playerCount:-1}}]).toArray();
@@ -91,11 +92,10 @@ const results = await col.aggregate([{$match:{status:'active'}},{$lookup:{from:'
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pipeline com estágios separados e comentários de propósito</summary>
-<br>
 
 ```js
 async function fetchActiveTeamsWithPlayerCount() {

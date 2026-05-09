@@ -1,3 +1,7 @@
+---
+title: "Testing"
+---
+
 # Testing
 
 > Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../../shared/standards/testing.md).
@@ -24,7 +28,6 @@ Fases explícitas em cada `it`. Um `expect` por exemplo; sem lógica inline no a
 
 <details>
 <summary>❌ Bad — fases misturadas, assert com lógica inline</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -39,11 +42,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — AAA explícito, resultado nomeado</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -67,7 +69,6 @@ declara a expectativa em linguagem de negócio.
 
 <details>
 <summary>❌ Bad — nomes sem contexto, fases coladas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -86,11 +87,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — hierarquia semântica, 1 expectativa por exemplo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -125,7 +125,6 @@ válido na factory base; use `trait` para variações.
 
 <details>
 <summary>❌ Bad — criação manual sem contexto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -135,11 +134,10 @@ let(:order) { Order.new(id: 1, user_id: 5, total: 200, status: "active", created
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — factory com estado mínimo e traits semânticos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -171,7 +169,6 @@ prefira objetos reais ou fakes nomeados — não inline stubs.
 
 <details>
 <summary>❌ Bad — stub inline sem nome</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -187,11 +184,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — double nomeado, interface explícita</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

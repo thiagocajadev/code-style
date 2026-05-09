@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > [!NOTE]
@@ -22,7 +26,6 @@ dotnet format
 
 <details>
 <summary>❌ Bad — Program.cs como dumping ground de configuração</summary>
-<br>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -69,11 +72,10 @@ app.Run();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Program.cs como índice, configuração delegada</summary>
-<br>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -92,7 +94,6 @@ Cada domínio registra suas próprias dependências. `Program.cs` não conhece `
 
 <details>
 <summary>❌ Bad — dependências de domínio registradas diretamente no Program.cs</summary>
-<br>
 
 ```csharp
 // Program.cs — cresce sem controle conforme o projeto evolui
@@ -109,11 +110,10 @@ builder.Services.AddScoped<UserService>();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
-<br>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -157,11 +157,10 @@ public static class AppPipelineExtensions
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — domínio de Orders dono da sua configuração</summary>
-<br>
 
 ```csharp
 // Features/Orders/OrdersExtensions.cs
@@ -197,7 +196,6 @@ Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension m
 
 <details>
 <summary>❌ Bad — configuração lida com chaves espalhadas</summary>
-<br>
 
 ```csharp
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -210,11 +208,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Options pattern, seção tipada por domínio</summary>
-<br>
 
 ```csharp
 // Auth/AuthOptions.cs
@@ -253,7 +250,6 @@ Configuração do `DbContext` pertence ao extension method de infraestrutura. Co
 
 <details>
 <summary>❌ Bad — DbContext configurado inline no Program.cs com string hardcoded</summary>
-<br>
 
 ```csharp
 // Program.cs — acoplado ao SQL Server, connection string exposta
@@ -263,11 +259,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — DbContext registrado no módulo de infraestrutura</summary>
-<br>
 
 ```csharp
 // Infrastructure/DatabaseExtensions.cs
@@ -293,7 +288,6 @@ public static class DatabaseExtensions
 
 <details>
 <summary>❌ Bad — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
-<br>
 
 ```csharp
 builder.Services.AddEndpointsApiExplorer();
@@ -309,11 +303,10 @@ app.UseSwaggerUI();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — OpenAPI nativo, Scalar como UI, apenas em Development</summary>
-<br>
 
 ```csharp
 // Infrastructure/ApiDocsExtensions.cs
@@ -359,11 +352,10 @@ public static class ApiDocsExtensions
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — aggregator inclui ApiDocs</summary>
-<br>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -397,7 +389,6 @@ Rate limiting é **middleware** (componente de pipeline): entra no `AddAppServic
 
 <details>
 <summary>❌ Bad — rate limiting inline no Program.cs, sem options tipadas</summary>
-<br>
 
 ```csharp
 // Program.cs — configuração acoplada, sem separação de responsabilidade
@@ -415,11 +406,10 @@ builder.Services.AddRateLimiter(limiter =>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — rate limiting configurado via extension method</summary>
-<br>
 
 ```csharp
 // Infrastructure/RateLimitingExtensions.cs
@@ -466,11 +456,10 @@ builder.AddUsers();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — aplicando política por endpoint</summary>
-<br>
 
 ```csharp
 group.MapPost("/", OrderEndpoints.Create)
@@ -494,7 +483,6 @@ MapAppEndpoints       → roteia para os handlers
 
 <details>
 <summary>❌ Bad — UseAuthorization antes de UseAuthentication</summary>
-<br>
 
 ```csharp
 app.UseAuthorization();   // identidade ainda não foi resolvida
@@ -505,11 +493,10 @@ app.MapAppEndpoints();
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ordem correta do pipeline</summary>
-<br>
 
 ```csharp
 app.UseHttpsRedirection();

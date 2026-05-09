@@ -1,3 +1,7 @@
+---
+title: "Observability"
+---
+
 # Observability
 
 > Escopo: Go 1.26.
@@ -25,7 +29,6 @@ ou como dependência explícita.
 
 <details>
 <summary>✅ Good — slog com JSON handler para produção</summary>
-<br>
 
 ```go
 // cmd/api/main.go
@@ -48,7 +51,6 @@ Sempre use pares chave-valor nos logs. Evite interpolação de string — dificu
 
 <details>
 <summary>❌ Bad — string interpolada, sem estrutura</summary>
-<br>
 
 ```go
 log.Printf("processing order %d for customer %d with amount %.2f", order.ID, order.CustomerID, order.Amount)
@@ -57,11 +59,10 @@ log.Printf("error saving order: %v", err)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — slog com chave-valor</summary>
-<br>
 
 ```go
 slog.Info("processing order",
@@ -89,7 +90,6 @@ slog.Error("save order failed",
 
 <details>
 <summary>❌ Bad — Error para log de fluxo normal</summary>
-<br>
 
 ```go
 order, err := findOrder(ctx, orderID)
@@ -101,11 +101,10 @@ if errors.Is(err, ErrNotFound) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Info/Warn para fluxo esperado; Error para falha real</summary>
-<br>
 
 ```go
 order, err := findOrder(ctx, orderID)
@@ -128,7 +127,6 @@ Propague o correlation ID em todos os logs de uma requisição usando o context.
 
 <details>
 <summary>✅ Good — correlation ID extraído do context e adicionado ao log</summary>
-<br>
 
 ```go
 type contextKey string
@@ -185,7 +183,6 @@ Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
 <summary>❌ Bad — PII nos logs</summary>
-<br>
 
 ```go
 slog.Info("user logged in",
@@ -197,11 +194,10 @@ slog.Info("user logged in",
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — apenas ID e evento, sem PII</summary>
-<br>
 
 ```go
 slog.Info("user logged in",

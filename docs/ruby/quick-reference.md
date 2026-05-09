@@ -1,3 +1,7 @@
+---
+title: "Quick Reference — Ruby"
+---
+
 # Quick Reference — Ruby
 
 > Escopo: Ruby 4.0. Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.

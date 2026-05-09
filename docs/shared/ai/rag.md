@@ -1,3 +1,7 @@
+---
+title: "RAG (Retrieval-Augmented Generation, Geração com Recuperação Aumentada)"
+---
+
 # RAG (Retrieval-Augmented Generation, Geração com Recuperação Aumentada)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

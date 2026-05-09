@@ -1,3 +1,7 @@
+---
+title: "Variables"
+---
+
 # Variables
 
 Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A decisão não é estilística: quando o tipo está óbvio no lado direito, `var` reduz ruído; quando o leitor precisa rastrear, o tipo explícito é obrigação.
@@ -8,7 +12,6 @@ Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A dec
 
 <details>
 <summary>❌ Bad — tipo obscuro</summary>
-<br>
 
 ```csharp
 var result = ProcessOrder(request); // Order? InvoiceResult? ViewModel? impossível saber
@@ -17,11 +20,10 @@ var discount = Calculate(order);    // decimal? int? percentual ou valor absolut
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipo legível; `var` apenas onde óbvio</summary>
-<br>
 
 ```csharp
 Order order = ProcessOrder(request);
@@ -38,7 +40,6 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 
 <details>
 <summary>❌ Bad — campo mutable onde deveria ser immutable</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -55,11 +56,10 @@ public class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — valor fixo declarado explicitamente</summary>
-<br>
 
 ```csharp
 public class OrderService(IConfiguration config)
@@ -77,7 +77,6 @@ public class OrderService(IConfiguration config)
 
 <details>
 <summary>❌ Bad — class mutável como contrato de dados</summary>
-<br>
 
 ```csharp
 public class OrderRequest
@@ -89,11 +88,10 @@ public class OrderRequest
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — record immutable, contrato explícito</summary>
-<br>
 
 ```csharp
 public record OrderRequest(string ProductId, int Quantity);
@@ -107,7 +105,6 @@ Literais embutidos escondem intenção. `const` nomeado documenta o significado:
 
 <details>
 <summary>❌ Bad — literais sem significado</summary>
-<br>
 
 ```csharp
 if (order.Status == 2)    // o que é 2?
@@ -119,11 +116,10 @@ if (discount > 0.15m)    // limite de desconto? taxa? de onde vem esse número?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constantes nomeadas</summary>
-<br>
 
 ```csharp
 private const int OrderStatusApproved = 2;
@@ -144,7 +140,6 @@ if (discount > MaxDiscountRate)
 
 <details>
 <summary>❌ Bad — mutação acoplada e efeito colateral oculto</summary>
-<br>
 
 ```csharp
 public void ApplyDiscount(Order order)
@@ -156,11 +151,10 @@ public void ApplyDiscount(Order order)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
-<br>
 
 ```csharp
 public Order ApplyDiscount(Order order)

@@ -1,3 +1,7 @@
+---
+title: "Quick Reference — PHP"
+---
+
 # Quick Reference — PHP
 
 > Escopo: PHP 8.4. Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.

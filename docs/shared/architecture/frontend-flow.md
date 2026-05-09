@@ -1,3 +1,7 @@
+---
+title: "Fluxos de Frontend"
+---
+
 # Fluxos de Frontend
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -32,7 +36,6 @@ O guard (proteção de rota) verifica autorização durante a resolução da rot
 
 <details>
 <summary>❌ Bad — guard no componente renderiza antes de redirecionar</summary>
-<br>
 
 ```js
 function OrdersPage() {
@@ -46,11 +49,10 @@ function OrdersPage() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard na resolução da rota, antes de qualquer componente montar</summary>
-<br>
 
 ```js
 {
@@ -80,7 +82,6 @@ O loader (carregador de dados) busca os dados da rota durante a resolução, ant
 
 <details>
 <summary>❌ Bad — busca dentro do componente, após montar</summary>
-<br>
 
 ```js
 function OrderDetailPage({ orderId }) {
@@ -96,11 +97,10 @@ function OrderDetailPage({ orderId }) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — loader na rota, componente recebe dados prontos</summary>
-<br>
 
 ```js
 async function loadOrderDetail(loaderArgs) {
@@ -151,7 +151,6 @@ O schema (esquema de validação) é a fonte da verdade para formato e regras de
 
 <details>
 <summary>✅ Good — schema único como contrato entre cliente e servidor</summary>
-<br>
 
 ```js
 import { z } from 'zod';
@@ -171,7 +170,6 @@ O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText
 
 <details>
 <summary>✅ Good — retorno estruturado de erros do servidor</summary>
-<br>
 
 ```js
 async function submitOrder(orderInput) {

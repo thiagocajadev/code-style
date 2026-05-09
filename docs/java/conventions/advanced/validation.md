@@ -1,3 +1,7 @@
+---
+title: "Validation"
+---
+
 # Validation
 
 > Escopo: Java 25 LTS — Jakarta Bean Validation 3.1 + Hibernate Validator 9.
@@ -20,7 +24,6 @@ confie nos contratos já validados.
 
 <details>
 <summary>❌ Bad — validação espalhada em múltiplos serviços</summary>
-<br>
 
 ```java
 public User createUser(String name, String email) {
@@ -34,11 +37,10 @@ public User createUser(String name, String email) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — anotações de Bean Validation no record de input</summary>
-<br>
 
 ```java
 public record UserInput(
@@ -82,7 +84,6 @@ Quando precisar validar fora de um controller Spring, injete o `Validator` progr
 
 <details>
 <summary>✅ Good — validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
-<br>
 
 ```java
 @Component
@@ -118,7 +119,6 @@ Quando as anotações padrão não cobrem uma regra de negócio, crie um validat
 
 <details>
 <summary>✅ Good — validator customizado para CPF</summary>
-<br>
 
 ```java
 // annotation
@@ -154,7 +154,6 @@ public record CustomerInput(
 
 <details>
 <summary>✅ Good — mapeia MethodArgumentNotValidException para resposta padronizada</summary>
-<br>
 
 ```java
 @RestControllerAdvice

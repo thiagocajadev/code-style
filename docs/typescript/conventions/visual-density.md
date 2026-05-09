@@ -1,3 +1,7 @@
+---
+title: "Visual density: TypeScript"
+---
+
 # Visual density: TypeScript
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript. Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração.
@@ -10,7 +14,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Bad — todos os passos colados</summary>
-<br>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -27,11 +30,10 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — passos separados, anotações de tipo na mesma linha</summary>
-<br>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -57,7 +59,6 @@ Quando há **apenas um passo** antes do `return`, os dois formam par de 2 linhas
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
-<br>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -69,11 +70,10 @@ function mapErrorToStatus(error: DomainError): number {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — par tight</summary>
-<br>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -88,7 +88,6 @@ function mapErrorToStatus(error: DomainError): number {
 
 <details>
 <summary>✅ Good — 3 passos antes do return</summary>
-<br>
 
 ```ts
 function buildOrderSummary(order: Order): OrderSummary {
@@ -114,7 +113,6 @@ function findPendingOrders(userId: string): Promise<Order[]> {
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
-<br>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -125,11 +123,10 @@ const invoice = buildInvoice(order);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
-<br>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -144,7 +141,6 @@ const invoice = buildInvoice(order);
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
-<br>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -155,11 +151,10 @@ const ONE_DAY_MS: number = 86_400_000;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — trio tight</summary>
-<br>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -173,7 +168,6 @@ const ONE_DAY_MS: number = 86_400_000;
 
 <details>
 <summary>✅ Good — penúltima consumida pela última, par tight</summary>
-<br>
 
 ```ts
 function buildShippingLabel(order: Order): string {
@@ -193,7 +187,6 @@ function buildShippingLabel(order: Order): string {
 
 <details>
 <summary>❌ Bad — todas as fases coladas</summary>
-<br>
 
 ```ts
 async function createUserHandler(req: Request, res: Response): Promise<void> {
@@ -207,11 +200,10 @@ async function createUserHandler(req: Request, res: Response): Promise<void> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases explícitas</summary>
-<br>
 
 ```ts
 async function createUserHandler(request: Request, response: Response): Promise<void> {
@@ -231,7 +223,6 @@ async function createUserHandler(request: Request, response: Response): Promise<
 
 <details>
 <summary>❌ Bad — string imensa inline</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -241,11 +232,10 @@ function buildDeliveryMessage(user: User, order: Order): string {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {

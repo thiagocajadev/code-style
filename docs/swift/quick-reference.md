@@ -1,3 +1,7 @@
+---
+title: "Swift — Quick Reference"
+---
+
 # Swift — Quick Reference
 
 > Escopo: Swift 6.1, Swift 6 language mode. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.

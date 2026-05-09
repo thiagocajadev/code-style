@@ -1,3 +1,7 @@
+---
+title: "Security"
+---
+
 # Security
 
 > Escopo: JavaScript (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
@@ -73,7 +77,6 @@ Em staging e produção, `dotenv` não entra no bundle. As variáveis são injet
 
 <details>
 <summary>❌ Bad — process.env espalhado pela aplicação</summary>
-<br>
 
 ```js
 // orders.service.js
@@ -86,11 +89,10 @@ export function createOrderService() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — leitura em um lugar, módulos recebem por parâmetro</summary>
-<br>
 
 ```js
 // config.js
@@ -122,7 +124,6 @@ export function registerOrders(app, config) {
 
 <details>
 <summary>❌ Bad — decode aceita token forjado</summary>
-<br>
 
 ```js
 export function authenticate(request, response, next) {
@@ -137,11 +138,10 @@ export function authenticate(request, response, next) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verify valida assinatura e expiração</summary>
-<br>
 
 ```js
 export function authenticate(request, response, next) {

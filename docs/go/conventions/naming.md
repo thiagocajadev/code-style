@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 > Escopo: Go 1.26.
@@ -8,7 +12,6 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```go
 func apply(x interface{}, p map[string]interface{}, c func(interface{}) interface{}) interface{} {
@@ -21,11 +24,10 @@ func apply(x interface{}, p map[string]interface{}, c func(interface{}) interfac
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```go
 func applyDiscount(order Order, calculate func(Order) Order) *Order {
@@ -45,7 +47,6 @@ func applyDiscount(order Order, calculate func(Order) Order) *Order {
 
 <details>
 <summary>❌ Bad — identificadores em português ficam desajeitados no idioma Go</summary>
-<br>
 
 ```go
 nomeDoUsuario := "Alice"
@@ -57,11 +58,10 @@ func buscaEnderecoDoCliente(id int) *Endereco { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
-<br>
 
 ```go
 userName := "Alice"
@@ -89,7 +89,6 @@ Essa não é uma convenção opcional — é parte da semântica da linguagem.
 
 <details>
 <summary>❌ Bad — case errado para o contexto</summary>
-<br>
 
 ```go
 const max_retries = 3           // underscore em Go não é idiomático
@@ -102,11 +101,10 @@ func (service *OrderService) FindByID(id int64) { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — convenções Go respeitadas</summary>
-<br>
 
 ```go
 const MaxRetries = 3
@@ -127,7 +125,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Bad — ordem invertida</summary>
-<br>
 
 ```go
 func GetProfileUser(userID int64) {}
@@ -137,11 +134,10 @@ func CalculateTotalInvoice(invoiceID int64) {}
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ordem natural</summary>
-<br>
 
 ```go
 func GetUserProfile(userID int64) {}
@@ -155,7 +151,6 @@ func CalculateInvoiceTotal(invoiceID int64) {}
 
 <details>
 <summary>❌ Bad — Handle, Process, Manage não dizem nada</summary>
-<br>
 
 ```go
 func Handle(data interface{}) {}
@@ -166,11 +161,10 @@ func DoStuff(x interface{}) {}
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verbo de intenção</summary>
-<br>
 
 ```go
 func ValidatePayment(payment Payment) error { ... }
@@ -187,7 +181,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de onde a opera
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```go
 func CallStripe(amount float64) error { ... }
@@ -198,11 +191,10 @@ func SaveToS3(file []byte) error { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
-<br>
 
 ```go
 func ChargeCustomer(amount float64) error { ... }
@@ -217,7 +209,6 @@ func ArchiveDocument(file []byte) error { ... }
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
-<br>
 
 ```go
 loading := true
@@ -227,11 +218,10 @@ valid := strings.Contains(email, "@")
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
-<br>
 
 ```go
 isActive := user.Status == "active"
@@ -249,7 +239,6 @@ Variáveis de erro exportadas recebem o prefixo `Err`; tipos de erro recebem o s
 
 <details>
 <summary>❌ Bad — nome de erro sem convenção</summary>
-<br>
 
 ```go
 var NotFound = errors.New("not found")
@@ -260,11 +249,10 @@ type ValidationProblem struct { Field string }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prefixo Err + sufixo Error</summary>
-<br>
 
 ```go
 var ErrNotFound = errors.New("not found")

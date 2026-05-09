@@ -1,3 +1,7 @@
+---
+title: "Navigation (Navegação)"
+---
+
 # Navigation (Navegação)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
@@ -6,7 +10,6 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```java
 final var r = apply(data, pedido, cb);
@@ -19,11 +22,10 @@ private Order apply(Object x, Order p, Function<Order, Order> c) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```java
 final var discountedOrder = applyDiscount(order, this::calculateDiscount);
@@ -42,7 +44,6 @@ private Order applyDiscount(Order order, UnaryOperator<Order> calculateDiscount)
 
 <details>
 <summary>❌ Bad — camelCase com português fica desajeitado</summary>
-<br>
 
 ```java
 final var nomeDoUsuario = "Alice";
@@ -54,11 +55,10 @@ private Address buscaEnderecoDoCliente(String id) { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — inglês: curto, direto, universal</summary>
-<br>
 
 ```java
 final var userName = "Alice";
@@ -74,7 +74,6 @@ private Address getCustomerAddress(String id) { /* ... */ }
 
 <details>
 <summary>❌ Bad — português e inglês no mesmo arquivo</summary>
-<br>
 
 ```java
 private void notify(Order pedido) {
@@ -86,11 +85,10 @@ final var resultado = processOrder(pedido);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — consistência de idioma</summary>
-<br>
 
 ```java
 private void notifyDefault(Order order) {
@@ -108,7 +106,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Bad — ordem invertida</summary>
-<br>
 
 ```java
 getProfileUser();       // "get profile, that's a user"
@@ -118,11 +115,10 @@ calculateTotalInvoice();// "invoice total" é a expressão natural
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ordem natural</summary>
-<br>
 
 ```java
 getUserProfile();
@@ -136,7 +132,6 @@ calculateInvoiceTotal();
 
 <details>
 <summary>❌ Bad — handle, process, manage, do não dizem nada</summary>
-<br>
 
 ```java
 private void handle(Object data) { /* ... */ }
@@ -148,11 +143,10 @@ private void doStuff(Object x) { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verbo de intenção</summary>
-<br>
 
 ```java
 private void validatePayment(Payment payment) { /* ... */ }
@@ -181,7 +175,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde
 
 <details>
 <summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```java
 private void callStripe(BigDecimal amount) { /* ... */ }
@@ -193,11 +186,10 @@ private void saveToS3(byte[] file) { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome fala a linguagem do negócio</summary>
-<br>
 
 ```java
 private void chargeCustomer(BigDecimal amount) { /* ... */ }
@@ -216,7 +208,6 @@ substitui qualquer comentário.
 
 <details>
 <summary>❌ Bad — comentário repete o que o código já diz</summary>
-<br>
 
 ```java
 // verifica se o usuário pode excluir registros
@@ -230,11 +221,10 @@ attempts++;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome expressivo torna o comentário desnecessário</summary>
-<br>
 
 ```java
 final var canDeleteRecord = "active".equals(user.getStatus())
@@ -253,7 +243,6 @@ attempts++;
 
 <details>
 <summary>❌ Bad — booleanos sem prefixo semântico</summary>
-<br>
 
 ```java
 final var loading = true;
@@ -265,11 +254,10 @@ final var valid = email.contains("@");
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — prefixos is, has, can, should</summary>
-<br>
 
 ```java
 final var isActive = "active".equals(user.getStatus());
@@ -288,7 +276,6 @@ não o artefato.
 
 <details>
 <summary>❌ Bad — prefixo I revela o artefato, não o papel</summary>
-<br>
 
 ```java
 public interface IUserRepository { /* ... */ }
@@ -298,11 +285,10 @@ public class UserRepositoryImpl implements IUserRepository { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome expressa o papel; implementação detalha a tecnologia</summary>
-<br>
 
 ```java
 public interface UserRepository { /* ... */ }

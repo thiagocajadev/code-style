@@ -1,3 +1,7 @@
+---
+title: "Rails 8"
+---
+
 # Rails 8
 
 > Escopo: Ruby on Rails 8.0 + Ruby 4.0.
@@ -28,7 +32,6 @@ HTTP. Nenhuma lógica de negócio dentro do controller.
 
 <details>
 <summary>❌ Bad — lógica de negócio no controller</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -52,11 +55,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — controller delega para serviço, traduz resultado para HTTP</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -90,7 +92,6 @@ service objects (objetos de serviço), não no model.
 
 <details>
 <summary>❌ Bad — model com lógica de negócio e callbacks ocultos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -117,11 +118,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — model declara dados e validações; lógica fica no serviço</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -151,7 +151,6 @@ Migrations são versionadas e irreversíveis em produção. Sempre implemente
 
 <details>
 <summary>❌ Bad — migration sem índice em foreign key</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -170,11 +169,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — references com índice, tipos explícitos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -202,7 +200,6 @@ customizadas são exceção — declare `only:` para limitar os verbos gerados.
 
 <details>
 <summary>❌ Bad — rotas manuais onde resources resolveria</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -219,11 +216,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — resources + member action semântica</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

@@ -1,3 +1,7 @@
+---
+title: "Advanced"
+---
+
 # Advanced
 
 > Escopo: SQL. Idiomas específicos deste ecossistema.
@@ -8,7 +12,6 @@ Subqueries aninhadas são difíceis de rastrear. CTEs nomeiam os passos e tornam
 
 <details>
 <summary>❌ Bad — subquery no WHERE sem nome</summary>
-<br>
 
 ```sql
 SELECT
@@ -29,11 +32,10 @@ WHERE
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — CTE nomeada no topo</summary>
-<br>
 
 ```sql
 WITH ActivePlayerTeamsCTE AS
@@ -61,7 +63,6 @@ JOIN
 
 <details>
 <summary>❌ Bad — JOIN de subqueries, difícil de acompanhar</summary>
-<br>
 
 ```sql
 SELECT t.Name, t.ChampionshipsWon, p.PlayerName
@@ -74,11 +75,10 @@ JOIN
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — duas CTEs separadas, JOIN no SELECT final</summary>
-<br>
 
 ```sql
 WITH TeamCTE AS
@@ -121,7 +121,6 @@ JOIN
 
 <details>
 <summary>❌ Bad — prefixo genérico, nome vago, sem formatação vertical</summary>
-<br>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -132,11 +131,10 @@ END
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome descritivo, parâmetro tipado, formatação vertical</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -163,7 +161,6 @@ END;
 
 <details>
 <summary>❌ Bad — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
-<br>
 
 ```sql
 CREATE FUNCTION get_team(id INT) RETURNS VOID AS $$
@@ -175,11 +172,10 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
-<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById

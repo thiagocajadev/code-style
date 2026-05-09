@@ -1,3 +1,7 @@
+---
+title: "IA (Inteligência Artificial)"
+---
+
 # IA (Inteligência Artificial)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

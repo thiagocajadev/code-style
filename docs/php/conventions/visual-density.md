@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: PHP 8.4.
@@ -11,7 +15,6 @@ a densidade visual é a camada do desenvolvedor por cima.
 
 <details>
 <summary>❌ Bad — bloco sem separação entre grupos lógicos</summary>
-<br>
 
 ```php
 public function processOrder(int $orderID): Order
@@ -33,11 +36,10 @@ public function processOrder(int $orderID): Order
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — grupos separados por linha em branco; return separado do último grupo</summary>
-<br>
 
 ```php
 public function processOrder(int $orderID): Order
@@ -71,7 +73,6 @@ do último grupo de processamento.
 
 <details>
 <summary>❌ Bad — return com lógica inline, sem separação</summary>
-<br>
 
 ```php
 public function buildOrderSummary(array $orders): array
@@ -86,11 +87,10 @@ public function buildOrderSummary(array $orders): array
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — resultado calculado antes, return limpo</summary>
-<br>
 
 ```php
 public function buildOrderSummary(array $orders): array
@@ -113,7 +113,6 @@ Agrupe propriedades por responsabilidade com linha em branco entre grupos.
 
 <details>
 <summary>❌ Bad — propriedades sem separação lógica</summary>
-<br>
 
 ```php
 class OrderService
@@ -130,11 +129,10 @@ class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — propriedades agrupadas por responsabilidade</summary>
-<br>
 
 ```php
 class OrderService
@@ -160,7 +158,6 @@ separada por linha em branco.
 
 <details>
 <summary>❌ Bad — fases misturadas, sem separação</summary>
-<br>
 
 ```php
 public function generateInvoice(int $orderID): Invoice
@@ -178,11 +175,10 @@ public function generateInvoice(int $orderID): Invoice
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases distintas separadas por linha em branco</summary>
-<br>
 
 ```php
 public function generateInvoice(int $orderID): Invoice
@@ -215,7 +211,6 @@ Com PHP 8.0+ promoted properties, use uma declaração por linha para manter leg
 
 <details>
 <summary>✅ Good — promoted properties em múltiplas linhas</summary>
-<br>
 
 ```php
 final class OrderService

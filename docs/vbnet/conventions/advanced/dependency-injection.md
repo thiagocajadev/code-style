@@ -1,3 +1,7 @@
+---
+title: "Dependency Injection"
+---
+
 # Dependency Injection
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
@@ -12,7 +16,6 @@ Service locator é o antipadrão clássico de DI: buscar dependências diretamen
 
 <details>
 <summary>❌ Bad — dependência implícita, acoplado ao container</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -33,11 +36,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependências explícitas no construtor</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -64,7 +66,6 @@ Property injection (setter injection) cria objetos em estado inválido: a depend
 
 <details>
 <summary>❌ Bad — property injection, dependência opcional implícita</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -82,11 +83,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constructor injection, objeto nasce válido</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -120,7 +120,6 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 
 <details>
 <summary>❌ Bad — singleton captura scoped</summary>
-<br>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New ContainerControlledLifetimeManager())
@@ -138,11 +137,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lifetimes compatíveis</summary>
-<br>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New HierarchicalLifetimeManager())
@@ -157,7 +155,6 @@ Depender de interfaces, não de implementações concretas. Permite substituiç�
 
 <details>
 <summary>❌ Bad — dependência concreta, impossível substituir em testes</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -172,11 +169,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependência por interface, substituível</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -203,7 +199,6 @@ Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e 
 
 <details>
 <summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
-<br>
 
 ```vbnet
 Public Module OrdersRegistration
@@ -223,11 +218,10 @@ End Module
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — registro por convenção via reflection</summary>
-<br>
 
 ```vbnet
 ' interface marcadora — sem métodos, só para identificar handlers no assembly

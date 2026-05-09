@@ -1,3 +1,7 @@
+---
+title: "Observability"
+---
+
 # Observability
 
 > Escopo: Swift 6.1, os.Logger (unified logging system).
@@ -23,7 +27,6 @@ marcar regiões de código para profiling no Instruments.
 
 <details>
 <summary>❌ Bad — print() não tem nível, subsystem nem controle de privacidade</summary>
-<br>
 
 ```swift
 func processPayment(userId: UUID, amount: Double) {
@@ -35,11 +38,10 @@ func processPayment(userId: UUID, amount: Double) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — os.Logger com categoria e nível correto</summary>
-<br>
 
 ```swift
 import OSLog
@@ -62,7 +64,6 @@ do usuário. Marque explicitamente o que pode ser público.
 
 <details>
 <summary>❌ Bad — dados sensíveis em log público</summary>
-<br>
 
 ```swift
 logger.debug("Charging card \(cardNumber)")   // número de cartão em plain text no log
@@ -70,11 +71,10 @@ logger.debug("Charging card \(cardNumber)")   // número de cartão em plain tex
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — privacidade explícita por campo</summary>
-<br>
 
 ```swift
 logger.info("Charging card ending in \(cardLast4, privacy: .public) for \(amount, privacy: .public)")
@@ -99,7 +99,6 @@ logger.debug("Full card id: \(cardId, privacy: .private)")   // redacted em rele
 
 <details>
 <summary>✅ Good — signpost marca início e fim de operação crítica</summary>
-<br>
 
 ```swift
 import OSLog

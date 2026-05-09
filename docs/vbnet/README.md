@@ -1,3 +1,7 @@
+---
+title: "VB.NET"
+---
+
 # VB.NET
 
 [![VB.NET](https://img.shields.io/badge/VB.NET-16-512BD4?logo=dotnet&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/visual-basic/)

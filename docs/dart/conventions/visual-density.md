@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: Dart 3.7.
@@ -10,7 +14,6 @@ consecutivas.
 
 <details>
 <summary>❌ Bad — sem separação entre fases</summary>
-<br>
 
 ```dart
 Future<Receipt> processPayment(PaymentRequest request) async {
@@ -28,11 +31,10 @@ Future<Receipt> processPayment(PaymentRequest request) async {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases separadas por linha em branco</summary>
-<br>
 
 ```dart
 Future<Receipt> processPayment(PaymentRequest request) async {
@@ -63,7 +65,6 @@ Future<Receipt> processPayment(PaymentRequest request) async {
 
 <details>
 <summary>❌ Bad — blank entre final e return</summary>
-<br>
 
 ```dart
 String buildWelcomeMessage(User user) {
@@ -75,11 +76,10 @@ String buildWelcomeMessage(User user) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — final + return sem blank (explaining return tight)</summary>
-<br>
 
 ```dart
 String buildWelcomeMessage(User user) {
@@ -94,7 +94,6 @@ String buildWelcomeMessage(User user) {
 
 <details>
 <summary>❌ Bad — chain em uma linha só</summary>
-<br>
 
 ```dart
 final result = orders.where((o) => o.isPaid).toList()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
@@ -102,11 +101,10 @@ final result = orders.where((o) => o.isPaid).toList()..sort((a, b) => b.createdA
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — uma operação por linha</summary>
-<br>
 
 ```dart
 final recentPaidOrders = orders
@@ -124,7 +122,6 @@ return recentPaid;
 
 <details>
 <summary>❌ Bad — lógica embutida no construtor</summary>
-<br>
 
 ```dart
 return Order(
@@ -137,11 +134,10 @@ return Order(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lógica extraída antes da construção</summary>
-<br>
 
 ```dart
 final availableItems = items.where((i) => i.stock > 0).toList();
@@ -166,7 +162,6 @@ têm efeitos colaterais não óbvios.
 
 <details>
 <summary>❌ Bad — cascade misturado com lógica</summary>
-<br>
 
 ```dart
 final buffer = StringBuffer()
@@ -178,11 +173,10 @@ final buffer = StringBuffer()
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lógica extraída; cascade apenas para operações de configuração</summary>
-<br>
 
 ```dart
 final itemsLine = items.isEmpty ? 'No items' : items.map((i) => i.name).join(', ');

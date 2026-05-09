@@ -1,3 +1,7 @@
+---
+title: "Quick Reference — Go"
+---
+
 # Quick Reference — Go
 
 > Escopo: Go 1.26. Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.

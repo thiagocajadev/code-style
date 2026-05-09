@@ -1,3 +1,7 @@
+---
+title: "Null safety"
+---
+
 # Null safety
 
 > Escopo: SQL. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
@@ -17,7 +21,6 @@ A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verd
 
 <details>
 <summary>❌ Bad — = NULL não retorna nenhuma linha</summary>
-<br>
 
 ```sql
 SELECT *
@@ -31,11 +34,10 @@ WHERE assigned_to != NULL;    -- retorna 0 linhas sempre
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — IS NULL / IS NOT NULL</summary>
-<br>
 
 ```sql
 SELECT
@@ -77,7 +79,6 @@ Indispensável para fallbacks e para tornar cálculos seguros.
 
 <details>
 <summary>❌ Bad — CASE WHEN para fallback: verboso e difícil de encadear</summary>
-<br>
 
 ```sql
 -- fallback com CASE WHEN: repetitivo para cada nível
@@ -99,11 +100,10 @@ FROM Orders;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fallback e cálculo null-safe</summary>
-<br>
 
 ```sql
 -- fallback em cascata
@@ -137,7 +137,6 @@ por zero e tratar string vazia como NULL.
 
 <details>
 <summary>❌ Bad — CASE WHEN para divisão segura e normalização: mais verboso</summary>
-<br>
 
 ```sql
 -- divisão por zero com CASE
@@ -161,11 +160,10 @@ FROM Users;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — divisão segura e normalização de string vazia</summary>
-<br>
 
 ```sql
 -- divisão por zero sem CASE
@@ -192,7 +190,6 @@ a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 
 <details>
 <summary>❌ Bad — coluna nullable sem default obriga COALESCE em todo lugar</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -214,11 +211,10 @@ FROM
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — NOT NULL + DEFAULT fecha o problema na origem</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -249,7 +245,6 @@ FROM
 
 <details>
 <summary>❌ Bad — assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
-<br>
 
 ```sql
 -- COUNT(*) conta nulos — o resultado pode enganar
@@ -269,11 +264,10 @@ GROUP BY TeamId;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — comportamento de NULL em agregações</summary>
-<br>
 
 ```sql
 -- COUNT(*) vs COUNT(coluna)
@@ -317,7 +311,6 @@ linhas fantasmas e comportamento inesperado.
 
 <details>
 <summary>❌ Bad — JOIN com chave nullable perde linhas silenciosamente</summary>
-<br>
 
 ```sql
 -- se CustomerId for NULL em algum pedido, a linha some no INNER JOIN
@@ -332,11 +325,10 @@ INNER JOIN Customers c ON o.CustomerId = c.Id;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — chave estrangeira NOT NULL, comportamento previsível</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -369,7 +361,6 @@ gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
 
 <details>
 <summary>❌ Bad — NOT IN retorna vazio se a subquery contiver NULL</summary>
-<br>
 
 ```sql
 -- se Users tiver algum Id NULL, essa query retorna 0 linhas
@@ -384,11 +375,10 @@ WHERE
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — filtrar NULL da subquery ou usar NOT EXISTS</summary>
-<br>
 
 ```sql
 -- opção 1: filtrar NULL explicitamente
@@ -423,7 +413,6 @@ quando quiser "único entre os preenchidos".
 
 <details>
 <summary>❌ Bad — intenção de "único quando preenchido" não está declarada explicitamente</summary>
-<br>
 
 ```sql
 CREATE TABLE Users
@@ -438,11 +427,10 @@ CREATE TABLE Users
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — índice filtrado declara explicitamente a intenção</summary>
-<br>
 
 ```sql
 CREATE TABLE Users
@@ -475,7 +463,6 @@ CREATE UNIQUE INDEX uq_users_phone_not_null
 
 <details>
 <summary>❌ Bad — comparação sem IS DISTINCT FROM perde mudanças envolvendo NULL</summary>
-<br>
 
 ```sql
 -- NULL != 'shipped' → NULL — linha ignorada no WHERE, mudança some silenciosamente
@@ -489,11 +476,10 @@ WHERE
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — IS DISTINCT FROM detecta qualquer mudança, incluindo de/para NULL</summary>
-<br>
 
 ```sql
 -- PostgreSQL
@@ -523,7 +509,6 @@ NULL ocupa uma posição diferente dependendo do banco. Controle explícito da p
 
 <details>
 <summary>❌ Bad — ORDER BY sem controle de NULL: posição varia por banco</summary>
-<br>
 
 ```sql
 -- PostgreSQL: NULL vai para o fim em ASC (NULLS LAST implícito)
@@ -540,11 +525,10 @@ ORDER BY
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — controle explícito da posição de NULL na ordenação</summary>
-<br>
 
 ```sql
 -- PostgreSQL: NULLS FIRST / NULLS LAST
@@ -576,7 +560,6 @@ para a estratégia completa. O padrão SQL:
 
 <details>
 <summary>❌ Bad — NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>
-<br>
 
 ```sql
 -- falha se a tabela já tiver registros: registros existentes não têm valor para a nova coluna
@@ -589,11 +572,10 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — DEFAULT garante que registros antigos nunca ficam NULL</summary>
-<br>
 
 ```sql
 -- SQL Server: uma instrução, registros antigos recebem 'Normal'
@@ -605,11 +587,10 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — migration em lotes para tabelas grandes em produção</summary>
-<br>
 
 ```sql
 -- SQL Server

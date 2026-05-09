@@ -1,3 +1,7 @@
+---
+title: "Git"
+---
+
 # Git
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -43,7 +47,6 @@ main → branch → commits → PR → review → merge → main
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```
 feature-nova
@@ -55,11 +58,10 @@ branch-do-joao-refactor-e-tambem-o-bug-do-login
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```
 feat/user-email-verification
@@ -97,7 +99,6 @@ Uma ótima estratégia para nomear commits (registro das alterações) é o
 
 <details>
 <summary>❌ Bad</summary>
-<br>
 
 ```
 fix bug
@@ -110,11 +111,10 @@ feat: adiciona validação no campo de e-mail do usuário no formulário de cada
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good</summary>
-<br>
 
 ```
 feat(auth): add email verification on signup

@@ -1,3 +1,7 @@
+---
+title: "Security"
+---
+
 # Security
 
 > Escopo: C# (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
@@ -64,7 +68,6 @@ Ler `builder.Configuration["Auth:Secret"]` espalha strings mágicas e não detec
 
 <details>
 <summary>❌ Bad — chaves soltas no código</summary>
-<br>
 
 ```csharp
 var authority = builder.Configuration["Auth:Authority"];
@@ -73,11 +76,10 @@ var secret    = builder.Configuration["Auth:Secret"]; // string? — null passa 
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — record tipado resolvido uma vez no startup</summary>
-<br>
 
 ```csharp
 public record AuthOptions(string Authority, string Audience, string Secret)
@@ -115,7 +117,6 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 
 <details>
 <summary>❌ Bad — ReadJwtToken dentro do handler</summary>
-<br>
 
 ```csharp
 app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, CancellationToken ct) =>
@@ -131,11 +132,10 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
-<br>
 
 ```csharp
 app.MapGet("/orders", async (IOrderRepository orderRepository, CancellationToken ct) =>

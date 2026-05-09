@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > Escopo: Go 1.26.
@@ -54,7 +58,6 @@ my-app/
 
 <details>
 <summary>❌ Bad — sem versão de toolchain, dependências soltas</summary>
-<br>
 
 ```go
 module my-app
@@ -68,11 +71,10 @@ require (
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — módulo com toolchain fixo e dependências versionadas</summary>
-<br>
 
 ```go
 module github.com/company/my-app
@@ -102,7 +104,6 @@ ausência de valor vazio.
 
 <details>
 <summary>❌ Bad — os.Getenv espalhado em todo lugar</summary>
-<br>
 
 ```go
 // internal/order/repository.go
@@ -121,11 +122,10 @@ secret := os.Getenv("JWT_SECRET") // leitura direta
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Config como único ponto de entrada de env vars</summary>
-<br>
 
 ```go
 // internal/config/config.go
@@ -191,7 +191,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 
 <details>
 <summary>❌ Bad — main.go como dumping ground</summary>
-<br>
 
 ```go
 package main
@@ -217,11 +216,10 @@ func main() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — main.go como índice, lógica delegada</summary>
-<br>
 
 ```go
 // cmd/api/main.go
@@ -292,7 +290,6 @@ Cada domínio encapsula handler, service e repository. O server não conhece os 
 
 <details>
 <summary>❌ Bad — estrutura por camada técnica</summary>
-<br>
 
 ```
 internal/
@@ -309,11 +306,10 @@ internal/
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — estrutura por domínio (feature-based)</summary>
-<br>
 
 ```
 internal/

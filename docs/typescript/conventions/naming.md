@@ -1,3 +1,7 @@
+---
+title: "Naming"
+---
+
 # Naming
 
 As convenções de nomenclatura do JavaScript: camelCase, verbos de intenção, domain-first.
@@ -11,7 +15,6 @@ O prefixo polui o nome sem adicionar informação.
 
 <details>
 <summary>❌ Bad — prefixo I em todas as interfaces</summary>
-<br>
 
 ```ts
 interface IUser { /* ... */ }
@@ -23,11 +26,10 @@ function findUser(repo: IOrderRepository): IUser { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — PascalCase direto, sem prefixo</summary>
-<br>
 
 ```ts
 interface User { /* ... */ }
@@ -46,7 +48,6 @@ reconhecíveis: `Service`, `Repository`, `Handler`, `Config`, `Options`.
 
 <details>
 <summary>❌ Bad — nomes vagos, prefixos desnecessários e sufixos sem papel claro</summary>
-<br>
 
 ```ts
 interface IUserRepository { /* ... */ }       // prefixo I desnecessário
@@ -61,11 +62,10 @@ interface IOrderService {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sufixo expressa papel, não detalhe técnico</summary>
-<br>
 
 ```ts
 interface UserService {
@@ -94,7 +94,6 @@ armazenado_.
 
 <details>
 <summary>❌ Bad — string puro sem semântica</summary>
-<br>
 
 ```ts
 function createOrder(userId: string, productId: string, currency: string): Promise<string> { /* ... */ }
@@ -103,11 +102,10 @@ function createOrder(userId: string, productId: string, currency: string): Promi
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — aliases expressam o domínio</summary>
-<br>
 
 ```ts
 type UserId = string;
@@ -127,7 +125,6 @@ significado. Use `TItem`, `TKey`, `TValue`, `TResult` para expressar o papel de 
 
 <details>
 <summary>❌ Bad — T, U, V sem significado quando existem múltiplos</summary>
-<br>
 
 ```ts
 function mapCollection<T, U>(items: T[], transform: (item: T) => U): U[] { /* ... */ }
@@ -137,11 +134,10 @@ function groupBy<T, U>(items: T[], keySelector: (item: T) => U): Map<U, T[]> { /
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nomes que expressam o papel do parâmetro</summary>
-<br>
 
 ```ts
 function mapCollection<TItem, TResult>(items: TItem[], transform: (item: TItem) => TResult): TResult[] { /* ... */ }
@@ -159,7 +155,6 @@ mesmo benefício sem overhead.
 
 <details>
 <summary>❌ Bad — enum nativo com overhead de runtime</summary>
-<br>
 
 ```ts
 enum OrderStatus {
@@ -175,11 +170,10 @@ updateStatus(OrderStatus.Approved); // obrigado a usar o enum — não aceita a 
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — const object + union type derivado</summary>
-<br>
 
 ```ts
 const ORDER_STATUS = {

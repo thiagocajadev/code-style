@@ -1,3 +1,7 @@
+---
+title: "Validation"
+---
+
 # Validation
 
 > Escopo: Kotlin 2.2, Jakarta Validation 3.x / Spring Boot 3.x.
@@ -20,7 +24,6 @@ negócio: dados chegam válidos ou o fluxo para antes de começar.
 
 <details>
 <summary>❌ Bad — validação espalhada pela função</summary>
-<br>
 
 ```kotlin
 fun processOrder(userId: Long, items: List<Item>, discount: Double): Order {
@@ -44,11 +47,10 @@ fun processOrder(userId: Long, items: List<Item>, discount: Double): Order {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — validação na entrada, lógica limpa depois</summary>
-<br>
 
 ```kotlin
 data class ProcessOrderRequest(
@@ -78,7 +80,6 @@ fun processOrder(request: ProcessOrderRequest): Order {
 
 <details>
 <summary>❌ Bad — validação manual no controller</summary>
-<br>
 
 ```kotlin
 @PostMapping("/orders")
@@ -95,11 +96,10 @@ fun createOrder(@RequestBody request: CreateOrderRequest): ResponseEntity<Order>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — @Valid delega ao Bean Validation; controller fica limpo</summary>
-<br>
 
 ```kotlin
 data class CreateOrderRequest(
@@ -121,7 +121,6 @@ fun createOrder(@Valid @RequestBody request: CreateOrderRequest): ResponseEntity
 
 <details>
 <summary>❌ Bad — para no primeiro erro (usuário precisa corrigir um campo por vez)</summary>
-<br>
 
 ```kotlin
 fun validateProfile(profile: UserProfile): Result<Unit> {
@@ -134,11 +133,10 @@ fun validateProfile(profile: UserProfile): Result<Unit> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — acumula todos os erros e retorna de uma vez</summary>
-<br>
 
 ```kotlin
 sealed class ProfileValidationError {

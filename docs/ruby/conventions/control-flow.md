@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 > Escopo: Ruby 4.0.
@@ -11,7 +15,6 @@ Saia cedo na falha. Sem `else` após `return`.
 
 <details>
 <summary>❌ Bad — aninhamento em cascata</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -29,11 +32,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clauses, fluxo plano</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -56,7 +58,6 @@ lógica com `if`.
 
 <details>
 <summary>❌ Bad — unless com else (confuso) / unless com condição composta</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -70,11 +71,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — unless para 1 condição simples; if para o resto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -96,7 +96,6 @@ Use ternário apenas para atribuição de 2 valores. Nunca encadeie ternários.
 
 <details>
 <summary>❌ Bad — ternário aninhado</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -106,11 +105,10 @@ label = admin? ? "Admin" : verified? ? "Verified" : "Guest"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ternário simples ou case/when para 3+</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +131,6 @@ Use para 3 ou mais ramos sobre um mesmo valor. Mais limpo que `if/elsif` em casc
 
 <details>
 <summary>❌ Bad — if/elsif em cascata</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -153,11 +150,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — case/when declarativo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -183,7 +179,6 @@ objetos com deconstruct.
 
 <details>
 <summary>❌ Bad — acesso manual a campos sem garantia de forma</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -198,11 +193,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pattern matching desestrutura e garante forma</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -227,7 +221,6 @@ Prefira `map`, `filter`/`select`, `reject`, `reduce`/`sum` no lugar de loops imp
 
 <details>
 <summary>❌ Bad — loop imperativo com mutação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -245,11 +238,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pipeline funcional sem mutação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

@@ -1,3 +1,7 @@
+---
+title: "Banco de Dados"
+---
+
 # Banco de Dados
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -108,7 +112,6 @@ Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de **CRUD**
 
 <details>
 <summary>❌ Bad: sem projeção — trafega o documento inteiro para usar um campo</summary>
-<br>
 
 ```js
 const user = await database.collection('users').findOne({ email });
@@ -117,11 +120,10 @@ const userName = user.name;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: projeção limita os campos retornados</summary>
-<br>
 
 ```js
 class UserRepository {
@@ -138,11 +140,10 @@ class UserRepository {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad: filtro em memória — carrega a coleção inteira para filtrar no cliente</summary>
-<br>
 
 ```js
 const allOrders = await database.collection('orders').find({}).toArray();
@@ -151,11 +152,10 @@ const pendingOrders = allOrders.filter(order => order.status === 'pending');
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: filtro na query — banco usa índice em status</summary>
-<br>
 
 ```js
 class OrderRepository {
@@ -172,11 +172,10 @@ class OrderRepository {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad: N+1 em document store — uma query por item para buscar documento relacionado</summary>
-<br>
 
 ```js
 const orders = await database.collection('orders').find({ userId }).toArray();
@@ -192,11 +191,10 @@ const enrichedOrders = await Promise.all(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: $lookup resolve em uma única passagem no banco</summary>
-<br>
 
 ```js
 class OrderRepository {

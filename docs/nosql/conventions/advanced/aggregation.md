@@ -1,3 +1,7 @@
+---
+title: "Aggregation — NoSQL"
+---
+
 # Aggregation — NoSQL
 
 > Escopo: NoSQL. Padrões de pipeline de agregação para MongoDB. Princípios aplicam-se a Elasticsearch aggregations e DynamoDB expressions.
@@ -41,7 +45,6 @@ Regras:
 
 <details>
 <summary>❌ Bad — $match após $lookup: join sobre toda a coleção antes de filtrar</summary>
-<br>
 
 ```js
 const pipeline = [
@@ -59,11 +62,10 @@ const pipeline = [
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — $match primeiro; lookup apenas sobre o subconjunto filtrado</summary>
-<br>
 
 ```js
 async function fetchActiveTeamsWithPlayers() {
@@ -101,7 +103,6 @@ async function fetchActiveTeamsWithPlayers() {
 
 <details>
 <summary>❌ Bad — agrupamento sem $match primeiro; acumulador sem nome de domínio</summary>
-<br>
 
 ```js
 // agrupa toda a coleção sem filtro prévio
@@ -118,11 +119,10 @@ const pipeline = [
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — $match antes do $group; nomes de domínio nos acumuladores</summary>
-<br>
 
 ```js
 async function computeTopScorersBySeason(season) {
@@ -155,7 +155,6 @@ async function computeTopScorersBySeason(season) {
 
 <details>
 <summary>❌ Bad — $lookup sem projeção final; trafega todos os campos dos documentos joined</summary>
-<br>
 
 ```js
 // retorna o documento inteiro de cada player junto ao team
@@ -174,11 +173,10 @@ const pipeline = [
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — $lookup com pipeline interno para projetar apenas os campos necessários</summary>
-<br>
 
 ```js
 async function fetchTeamRoster(teamId) {
@@ -224,7 +222,6 @@ async function fetchTeamRoster(teamId) {
 
 <details>
 <summary>❌ Bad — $unwind sem preserveNullAndEmptyArrays; times sem jogadores são excluídos silenciosamente</summary>
-<br>
 
 ```js
 const pipeline = [
@@ -242,11 +239,10 @@ const pipeline = [
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — preserveNullAndEmptyArrays mantém times sem jogadores no resultado</summary>
-<br>
 
 ```js
 async function fetchTeamsWithOptionalPlayers() {

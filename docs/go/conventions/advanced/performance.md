@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: Go 1.26.
@@ -12,7 +16,6 @@ Escreva benchmarks antes de otimizar. `go test -bench=.` mede throughput e aloca
 
 <details>
 <summary>✅ Good — benchmark com -benchmem para medir alocações</summary>
-<br>
 
 ```go
 func BenchmarkBuildReport(b *testing.B) {
@@ -41,7 +44,6 @@ o que o compilador move para o heap (escape).
 
 <details>
 <summary>❌ Bad — retornar ponteiro força escape para heap</summary>
-<br>
 
 ```go
 func buildSummary(orders []Order) *Summary {
@@ -55,11 +57,10 @@ func buildSummary(orders []Order) *Summary {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — retornar valor quando o caller não precisa do ponteiro</summary>
-<br>
 
 ```go
 func buildSummary(orders []Order) Summary {
@@ -81,7 +82,6 @@ realocações durante `append`.
 
 <details>
 <summary>❌ Bad — slice cresce com realocações</summary>
-<br>
 
 ```go
 func extractIDs(orders []Order) []int64 {
@@ -95,11 +95,10 @@ func extractIDs(orders []Order) []int64 {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pre-alocação com capacidade exata</summary>
-<br>
 
 ```go
 func extractIDs(orders []Order) []int64 {
@@ -121,7 +120,6 @@ Use `sync.Pool` para reutilizar objetos caros de alocar (buffers, encoders, deco
 
 <details>
 <summary>✅ Good — pool de buffers para operações de I/O frequentes</summary>
-<br>
 
 ```go
 var bufferPool = sync.Pool{
@@ -156,7 +154,6 @@ Concatenação com `+` em loop cria uma nova string a cada iteração. Use `stri
 
 <details>
 <summary>❌ Bad — concatenação em loop, O(n²) em memória</summary>
-<br>
 
 ```go
 func buildCSV(orders []Order) string {
@@ -170,11 +167,10 @@ func buildCSV(orders []Order) string {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — strings.Builder: uma única alocação</summary>
-<br>
 
 ```go
 func buildCSV(orders []Order) string {
@@ -200,7 +196,6 @@ Carregue dados em lote, não um a um dentro de um loop.
 
 <details>
 <summary>❌ Bad — N+1: uma query por item</summary>
-<br>
 
 ```go
 func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithCustomer, error) {
@@ -222,11 +217,10 @@ func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithC
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — carga em lote com uma query</summary>
-<br>
 
 ```go
 func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithCustomer, error) {

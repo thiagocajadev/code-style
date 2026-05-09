@@ -1,3 +1,7 @@
+---
+title: "Testing"
+---
+
 # Testing
 
 > Escopo: Rust 1.95.
@@ -23,7 +27,6 @@ do código que testam, em um módulo `#[cfg(test)]`. Testes de integração fica
 
 <details>
 <summary>❌ Bad — teste misturado com código de produção, sem módulo</summary>
-<br>
 
 ```rust
 pub fn calculate_discount(total: f64) -> f64 {
@@ -38,11 +41,10 @@ fn test_discount() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — testes isolados em #[cfg(test)]</summary>
-<br>
 
 ```rust
 pub fn calculate_discount(total: f64) -> f64 {
@@ -78,7 +80,6 @@ teste com valores diferentes.
 
 <details>
 <summary>❌ Bad — um test por variação</summary>
-<br>
 
 ```rust
 #[test]
@@ -96,11 +97,10 @@ fn no_discount_99() { assert_eq!(calculate_discount(99.0), 0.0); }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — table-driven com casos nomeados</summary>
-<br>
 
 ```rust
 #[cfg(test)]
@@ -130,7 +130,6 @@ mod tests {
 
 <details>
 <summary>❌ Bad — block_on manual em teste async</summary>
-<br>
 
 ```rust
 #[test]
@@ -144,11 +143,10 @@ fn find_order_returns_none_when_missing() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — #[tokio::test] como runtime do teste</summary>
-<br>
 
 ```rust
 #[cfg(test)]
@@ -175,7 +173,6 @@ Formato: `<contexto>_<ação>_<resultado esperado>` ou `<comportamento em prosa>
 
 <details>
 <summary>❌ Bad — nome que repete o método</summary>
-<br>
 
 ```rust
 #[test] fn test_calculate_discount() {}
@@ -185,11 +182,10 @@ Formato: `<contexto>_<ação>_<resultado esperado>` ou `<comportamento em prosa>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome que descreve o comportamento</summary>
-<br>
 
 ```rust
 #[test] fn applies_10_percent_discount_when_total_at_threshold() {}
@@ -206,7 +202,6 @@ Sem essas derives, o compilador rejeita o assert. Adicione-as em todos os tipos 
 
 <details>
 <summary>❌ Bad — tipo sem PartialEq e Debug</summary>
-<br>
 
 ```rust
 pub struct Order {
@@ -230,11 +225,10 @@ mod tests {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — derives que habilitam assert_eq! e mensagem de falha legível</summary>
-<br>
 
 ```rust
 #[derive(Debug, PartialEq)]
@@ -266,7 +260,6 @@ Testes Rust são funções comuns: AAA aplica sem adaptação. Separe as fases p
 
 <details>
 <summary>❌ Bad — fases misturadas, dois comportamentos no mesmo teste</summary>
-<br>
 
 ```rust
 #[test]
@@ -280,11 +273,10 @@ fn applies_vip_discount() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — um comportamento por teste, fases explícitas</summary>
-<br>
 
 ```rust
 #[test]

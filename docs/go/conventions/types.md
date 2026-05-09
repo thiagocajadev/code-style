@@ -1,3 +1,7 @@
+---
+title: "Types"
+---
+
 # Types
 
 > Escopo: Go 1.26.
@@ -23,7 +27,6 @@ pacote que implementa. Isso inverte a dependência e facilita testes.
 
 <details>
 <summary>❌ Bad — interface grande definida no pacote de implementação</summary>
-<br>
 
 ```go
 // package order
@@ -39,11 +42,10 @@ type OrderRepository interface {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface mínima no pacote consumidor</summary>
-<br>
 
 ```go
 // package order (service.go) — define apenas o que usa
@@ -66,7 +68,6 @@ de transferência de dados; campos unexported para structs com invariantes a pro
 
 <details>
 <summary>✅ Good — struct com construtor que valida invariantes</summary>
-<br>
 
 ```go
 type Money struct {
@@ -101,7 +102,6 @@ confusão entre tipos com a mesma representação subjacente.
 
 <details>
 <summary>❌ Bad — ID como int64 genérico, fácil de confundir</summary>
-<br>
 
 ```go
 func transferFunds(fromAccount int64, toAccount int64, amount float64) error {
@@ -111,11 +111,10 @@ func transferFunds(fromAccount int64, toAccount int64, amount float64) error {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipos nomeados: o compilador impede troca acidental</summary>
-<br>
 
 ```go
 type AccountID int64
@@ -135,7 +134,6 @@ seus métodos diretamente no tipo externo.
 
 <details>
 <summary>❌ Bad — delegação manual método a método</summary>
-<br>
 
 ```go
 type AuditableOrder struct {
@@ -153,11 +151,10 @@ func (a *AuditableOrder) IsCancelable() bool {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — embedding promove métodos automaticamente</summary>
-<br>
 
 ```go
 type AuditableOrder struct {
@@ -178,7 +175,6 @@ quando uma interface resolve o problema com mais clareza.
 
 <details>
 <summary>❌ Bad — duplicação de lógica para diferentes tipos</summary>
-<br>
 
 ```go
 func containsInt(slice []int, value int) bool {
@@ -202,11 +198,10 @@ func containsString(slice []string, value string) bool {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — função genérica com type constraint</summary>
-<br>
 
 ```go
 func Contains[T comparable](slice []T, value T) bool {
@@ -229,7 +224,6 @@ Prefira type switch quando há múltiplos tipos possíveis. Use a forma de dois 
 
 <details>
 <summary>❌ Bad — type assertion sem verificação, pode causar panic</summary>
-<br>
 
 ```go
 func processEvent(event interface{}) {
@@ -240,11 +234,10 @@ func processEvent(event interface{}) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — type assertion com verificação de ok</summary>
-<br>
 
 ```go
 func processEvent(event interface{}) error {
@@ -268,7 +261,6 @@ implementa uma interface sem instanciar.
 
 <details>
 <summary>✅ Good — verificação de implementação em tempo de compilação</summary>
-<br>
 
 ```go
 // compilará com erro se postgresOrderRepo não implementar OrderRepository

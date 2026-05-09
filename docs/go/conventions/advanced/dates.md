@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: Go 1.26.
@@ -24,7 +28,6 @@ timestamps do sistema e `time.ParseInLocation` para input do usuário com timezo
 
 <details>
 <summary>❌ Bad — time sem fuso horário definido</summary>
-<br>
 
 ```go
 scheduledAt, _ := time.Parse("2006-01-02", "2026-01-15")
@@ -34,11 +37,10 @@ scheduledAt, _ := time.Parse("2006-01-02", "2026-01-15")
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fuso horário explícito em toda criação de time</summary>
-<br>
 
 ```go
 // timestamp do sistema: sempre UTC
@@ -60,7 +62,6 @@ e desserializar datas em APIs e bancos de dados.
 
 <details>
 <summary>❌ Bad — formato de data não padronizado</summary>
-<br>
 
 ```go
 type OrderRequest struct {
@@ -72,11 +73,10 @@ scheduledAt, _ := time.Parse("02/01/2006", req.ScheduledAt)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — RFC 3339 com parsing explícito</summary>
-<br>
 
 ```go
 type OrderRequest struct {
@@ -105,7 +105,6 @@ o campo é opcionalmente nulo (diferente de zero time).
 
 <details>
 <summary>✅ Good — time.Time direto para campos obrigatórios</summary>
-<br>
 
 ```go
 type Order struct {
@@ -132,7 +131,6 @@ Para durations, componha usando as constantes de `time`: `time.Second`, `time.Mi
 
 <details>
 <summary>❌ Bad — número mágico de nanosegundos</summary>
-<br>
 
 ```go
 time.Sleep(5000000000)         // 5 segundos? 5ms? impossível ler
@@ -141,11 +139,10 @@ timeout := 300000000000        // 5 minutos em nanosegundos
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constantes compostas e nomeadas</summary>
-<br>
 
 ```go
 const (
@@ -168,7 +165,6 @@ Nunca compare strings de datas.
 
 <details>
 <summary>❌ Bad — comparação via string</summary>
-<br>
 
 ```go
 if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) {
@@ -178,11 +174,10 @@ if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) 
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — comparação via métodos de time.Time</summary>
-<br>
 
 ```go
 func (o Order) IsExpired() bool {
@@ -201,7 +196,6 @@ antes de salvar evita divergência entre o que foi salvo e o que foi retornado.
 
 <details>
 <summary>✅ Good — truncar para microsegundos antes de persistir</summary>
-<br>
 
 ```go
 func (r *orderRepository) Save(ctx context.Context, order Order) (*Order, error) {

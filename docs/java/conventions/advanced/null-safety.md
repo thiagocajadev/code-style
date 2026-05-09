@@ -1,3 +1,7 @@
+---
+title: "Null Safety"
+---
+
 # Null Safety
 
 > Escopo: Java 25 LTS.
@@ -9,7 +13,6 @@ torna a ausência explícita no contrato do método e força o chamador a lidar 
 
 <details>
 <summary>❌ Bad — null silencioso: o chamador pode esquecer de verificar</summary>
-<br>
 
 ```java
 public User findUser(String id) {
@@ -23,11 +26,10 @@ final var email = user.getEmail(); // NullPointerException em runtime
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Optional torna a ausência explícita no contrato</summary>
-<br>
 
 ```java
 public Optional<User> findUser(String id) {
@@ -50,7 +52,6 @@ em vez de verificar o `Optional` manualmente.
 
 <details>
 <summary>❌ Bad — verificação manual verbosa</summary>
-<br>
 
 ```java
 public User getUser(String id) {
@@ -64,11 +65,10 @@ public User getUser(String id) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orElseThrow expressa a intenção diretamente</summary>
-<br>
 
 ```java
 public User getUser(String id) {
@@ -87,7 +87,6 @@ Para parâmetros que podem ser null mas têm um padrão razoável, `Objects.requ
 
 <details>
 <summary>❌ Bad — ternário com verificação de null</summary>
-<br>
 
 ```java
 public String getDisplayName(String name) {
@@ -97,11 +96,10 @@ public String getDisplayName(String name) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — semântica declarativa</summary>
-<br>
 
 ```java
 public String getDisplayName(String name) {
@@ -119,7 +117,6 @@ topo — não deixe o null propagar.
 
 <details>
 <summary>❌ Bad — null propaga para NullPointerException interno</summary>
-<br>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -130,11 +127,10 @@ public Invoice processOrder(Order order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clause no topo, falha rápida e mensagem clara</summary>
-<br>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -155,7 +151,6 @@ em coleções.
 
 <details>
 <summary>❌ Bad — Optional em lugares errados</summary>
-<br>
 
 ```java
 public void notify(Optional<User> user) { /* ... */ } // parâmetro
@@ -169,11 +164,10 @@ final var users = List.of(Optional.of(user1), Optional.empty()); // em coleção
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Optional apenas no retorno de método</summary>
-<br>
 
 ```java
 public Optional<User> findUser(String id) { /* ... */ }

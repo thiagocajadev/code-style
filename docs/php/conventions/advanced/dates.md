@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: PHP 8.4.
@@ -24,7 +28,6 @@ e readonly classes.
 
 <details>
 <summary>❌ Bad — DateTime mutável causa bugs sutis</summary>
-<br>
 
 ```php
 function addWorkdays(\DateTime $date, int $days): \DateTime
@@ -42,11 +45,10 @@ echo $orderDate->format('Y-m-d'); // "2026-01-22" em vez de "2026-01-15"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — DateTimeImmutable: operações retornam nova instância</summary>
-<br>
 
 ```php
 function addWorkdays(\DateTimeImmutable $date, int $days): \DateTimeImmutable
@@ -73,7 +75,6 @@ o timezone padrão do servidor — não determinístico em produção.
 
 <details>
 <summary>❌ Bad — timezone implícito do servidor</summary>
-<br>
 
 ```php
 $now = new \DateTimeImmutable(); // depende do php.ini date.timezone
@@ -82,11 +83,10 @@ $scheduledAt = new \DateTime('2026-01-15 10:00:00'); // sem timezone
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — timezone explícito sempre</summary>
-<br>
 
 ```php
 $utc = new \DateTimeZone('UTC');
@@ -109,7 +109,6 @@ Use `DateTimeImmutable::createFromFormat` para formatos conhecidos. Use
 
 <details>
 <summary>❌ Bad — parse sem verificação de erro</summary>
-<br>
 
 ```php
 $date = \DateTime::createFromFormat('d/m/Y', $input); // retorna false em erro
@@ -118,11 +117,10 @@ $date->format('Y-m-d'); // Fatal Error se false
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — parse com verificação explícita de erro</summary>
-<br>
 
 ```php
 function parseBrazilianDate(string $input): \DateTimeImmutable
@@ -163,7 +161,6 @@ compare strings de datas.
 
 <details>
 <summary>✅ Good — comparação com operadores nativos</summary>
-<br>
 
 ```php
 $now     = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
@@ -182,7 +179,6 @@ Serialize como ISO 8601 com timezone. Ao ler do banco, reconstituir com `DateTim
 
 <details>
 <summary>✅ Good — ISO 8601 para API; DateTimeImmutable ao reconstruir</summary>
-<br>
 
 ```php
 final class Order implements \JsonSerializable

@@ -1,3 +1,7 @@
+---
+title: "Null Safety"
+---
+
 # Null Safety
 
 > Escopo: C#. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
@@ -33,7 +37,6 @@ sempre devem ter valor.
 
 <details>
 <summary>❌ Bad — propriedades com setter público sem garantia de valor</summary>
-<br>
 
 ```csharp
 public class Order
@@ -49,11 +52,10 @@ order.Items?.ForEach(ProcessItem); // defesa em cascata
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — required + init + coleção inicializada</summary>
-<br>
 
 ```csharp
 public class Order
@@ -78,7 +80,6 @@ Propriedades e retornos de coleção sempre têm valor: `[]` quando vazias, nunc
 
 <details>
 <summary>❌ Bad — null em coleção força defesa em cada caller</summary>
-<br>
 
 ```csharp
 public async Task<IEnumerable<Order>?> FindOrdersByUserAsync(string userId)
@@ -97,11 +98,10 @@ if (orders is not null)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lista vazia como estado neutro, sem null</summary>
-<br>
 
 ```csharp
 // quando o repositório já retorna [] — EF e Dapper nunca retornam null
@@ -135,7 +135,6 @@ Usado nas fronteiras do sistema: construtores, métodos públicos, endpoints.
 
 <details>
 <summary>❌ Bad — verificação manual verbosa ou ausente</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -158,11 +157,10 @@ public class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ThrowIfNull no construtor e nas fronteiras públicas</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository repo)
@@ -188,7 +186,6 @@ Quando a ausência é um erro de negócio, guard clause é mais expressivo.
 
 <details>
 <summary>❌ Bad — encadeamento que esconde condição de negócio</summary>
-<br>
 
 ```csharp
 public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken ct)
@@ -200,11 +197,10 @@ public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken 
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
-<br>
 
 ```csharp
 // ausência é erro → guard clause
@@ -234,7 +230,6 @@ não for null, sem `if` explícito, sem guard clause desnecessário.
 
 <details>
 <summary>❌ Bad — if apenas para proteger a atribuição</summary>
-<br>
 
 ```csharp
 if (order is not null)
@@ -246,11 +241,10 @@ if (session?.User is not null)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — null-conditional assignment elimina o if</summary>
-<br>
 
 ```csharp
 order?.Status = OrderStatus.Shipped;
@@ -270,7 +264,6 @@ sem repetir o nome da variável.
 
 <details>
 <summary>❌ Bad — verificação manual de null antes da atribuição</summary>
-<br>
 
 ```csharp
 public class ReportConfig
@@ -291,11 +284,10 @@ public class ReportConfig
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ??= para defaults e lazy init</summary>
-<br>
 
 ```csharp
 public class ReportConfig
@@ -322,7 +314,6 @@ externa que o compilador não consegue inferir. Documentar o motivo.
 
 <details>
 <summary>❌ Bad — ! para silenciar o compilador sem garantia</summary>
-<br>
 
 ```csharp
 var user = _cache.Get(userId)!; // e se não estiver no cache?
@@ -331,11 +322,10 @@ var config = _options.Value!;   // e se Value for null?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clause no lugar de !</summary>
-<br>
 
 ```csharp
 if (!_cache.TryGetValue(userId, out var user))
@@ -354,7 +344,6 @@ repetir a checagem.
 
 <details>
 <summary>❌ Bad — parâmetro nullable sem atributo, compilador não propaga garantia</summary>
-<br>
 
 ```csharp
 public static class Guard
@@ -383,11 +372,10 @@ if (Guard.IsValid(email))
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — atributos que propagam a garantia de non-null</summary>
-<br>
 
 ```csharp
 using System.Diagnostics.CodeAnalysis;

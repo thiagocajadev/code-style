@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > Escopo: Rust 1.95 (2024 Edition).
@@ -55,7 +59,6 @@ my-app/
 
 <details>
 <summary>❌ Bad — versões sem pin, sem toolchain</summary>
-<br>
 
 ```toml
 [package]
@@ -69,11 +72,10 @@ serde = "*"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependências versionadas e features explícitas</summary>
-<br>
 
 ```toml
 [package]
@@ -110,7 +112,6 @@ channel = "stable"
 
 <details>
 <summary>❌ Bad — main.rs como dumping ground</summary>
-<br>
 
 ```rust
 #[tokio::main]
@@ -132,11 +133,10 @@ async fn main() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — main.rs como índice, lógica delegada</summary>
-<br>
 
 ```rust
 mod config;
@@ -171,7 +171,6 @@ Nenhum módulo acessa `std::env::var` diretamente.
 
 <details>
 <summary>❌ Bad — env var lida em qualquer lugar</summary>
-<br>
 
 ```rust
 // src/order/repository.rs
@@ -186,11 +185,10 @@ let secret = std::env::var("JWT_SECRET").unwrap(); // espalhado
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Config como único ponto de entrada de env vars</summary>
-<br>
 
 ```rust
 // src/config.rs
@@ -241,7 +239,6 @@ Cada domínio agrupa handler, service e repository. Evite estrutura por camada t
 
 <details>
 <summary>❌ Bad — estrutura por camada</summary>
-<br>
 
 ```
 src/
@@ -258,11 +255,10 @@ src/
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — estrutura por domínio</summary>
-<br>
 
 ```
 src/

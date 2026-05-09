@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: Rust 1.95.
@@ -24,7 +28,6 @@ Clone só quando o valor precisa viver mais que a referência ou quando não é 
 
 <details>
 <summary>❌ Bad — clone onde &str seria suficiente</summary>
-<br>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -39,11 +42,10 @@ fn find_by_name(orders: &[Order], name: String) -> Option<&Order> { // String qu
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — referências onde o valor não precisa ser owned</summary>
-<br>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -64,7 +66,6 @@ com tanto `String` quanto `&str` sem alocação.
 
 <details>
 <summary>❌ Bad — String em parâmetro que só lê</summary>
-<br>
 
 ```rust
 fn validate_email(email: String) -> bool {
@@ -77,11 +78,10 @@ validate_email(user.email.clone());
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — &str aceita String e &str sem alocação</summary>
-<br>
 
 ```rust
 fn validate_email(email: &str) -> bool {
@@ -101,7 +101,6 @@ Não colete em `Vec` antes de precisar do resultado final. Encadeie iteradores l
 
 <details>
 <summary>❌ Bad — coleta intermediária desnecessária</summary>
-<br>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -113,11 +112,10 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pipeline lazy sem alocação intermediária</summary>
-<br>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -137,7 +135,6 @@ Quando o tamanho do `HashMap` é conhecido de antemão, pré-aloque para evitar 
 
 <details>
 <summary>❌ Bad — HashMap sem capacidade inicial</summary>
-<br>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -153,11 +150,10 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — with_capacity evita rehashing</summary>
-<br>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -179,7 +175,6 @@ Use `criterion` para benchmarks reproduzíveis. Não confie em timing manual.
 
 <details>
 <summary>✅ Good — benchmark com criterion</summary>
-<br>
 
 ```rust
 // benches/order_bench.rs

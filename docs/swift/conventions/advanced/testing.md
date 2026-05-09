@@ -1,3 +1,7 @@
+---
+title: "Testing"
+---
+
 # Testing
 
 > Escopo: Swift 6.1, XCTest / Swift Testing.
@@ -20,7 +24,6 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 
 <details>
 <summary>❌ Bad — setup, ação e assert misturados</summary>
-<br>
 
 ```swift
 @Test func testOrder() async throws {
@@ -31,11 +34,10 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — AAA explícito com nomes expressivos</summary>
-<br>
 
 ```swift
 @Test("findOrder returns paid order when found")
@@ -59,7 +61,6 @@ func findOrderReturnsPaidOrderWhenFound() async throws {
 
 <details>
 <summary>❌ Bad — dependência concreta impede teste unitário</summary>
-<br>
 
 ```swift
 class OrderService {
@@ -71,11 +72,10 @@ class OrderService {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — protocolo injetado; mock implementa protocolo</summary>
-<br>
 
 ```swift
 protocol OrderRepository {
@@ -106,7 +106,6 @@ struct OrderService {
 
 <details>
 <summary>❌ Bad — testes duplicados com dados diferentes</summary>
-<br>
 
 ```swift
 @Test func rateZeroIsValid() { #expect(validateRate(0.0).isSuccess) }
@@ -116,11 +115,10 @@ struct OrderService {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — @Test com argumentos cobre todos os cenários</summary>
-<br>
 
 ```swift
 @Test("validateRate", arguments: [
@@ -142,7 +140,6 @@ func validateRateSucceedsOnlyInRange(rate: Double, isValid: Bool) {
 
 <details>
 <summary>❌ Bad — expectation manual para async (padrão XCTest antigo)</summary>
-<br>
 
 ```swift
 func testFindUser() {
@@ -157,11 +154,10 @@ func testFindUser() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — async throws nativo nos dois frameworks</summary>
-<br>
 
 ```swift
 // Swift Testing

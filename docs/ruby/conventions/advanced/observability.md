@@ -1,3 +1,7 @@
+---
+title: "Observability"
+---
+
 # Observability
 
 > Escopo: Ruby 4.0. Padrões transversais de observabilidade em [shared/standards/observability.md](../../../../shared/standards/observability.md).
@@ -19,7 +23,6 @@ correlação por tag e integração com Rails.
 
 <details>
 <summary>❌ Bad — log de texto livre sem estrutura</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -36,11 +39,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — log estruturado com campos semânticos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -129,7 +131,6 @@ email, CPF e senha nunca entram em logs.
 
 <details>
 <summary>❌ Bad — dados pessoais no log</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -139,11 +140,10 @@ logger.info("user login", email: user.email, password: params[:password])
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — apenas identificadores opacos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

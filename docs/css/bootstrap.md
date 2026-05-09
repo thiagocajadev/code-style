@@ -1,3 +1,7 @@
+---
+title: "Bootstrap"
+---
+
 # Bootstrap
 
 Bootstrap fornece componentes prontos via classes. Sobrescrever com `!important` ou redefinir
@@ -11,7 +15,6 @@ visual sem alterar a especificidade do framework.
 
 <details>
 <summary>❌ Bad — sobrescrita por seletor ou !important</summary>
-<br>
 
 ```css
 .btn-primary {
@@ -26,11 +29,10 @@ visual sem alterar a especificidade do framework.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — override via custom properties do Bootstrap</summary>
-<br>
 
 ```css
 :root {
@@ -51,7 +53,6 @@ que duplica o componente Bootstrap desacopla do framework.
 
 <details>
 <summary>❌ Bad — duplica o componente base, desacopla do framework</summary>
-<br>
 
 ```html
 <div class="my-card">...</div>
@@ -69,11 +70,10 @@ que duplica o componente Bootstrap desacopla do framework.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — compõe sobre a classe base, adiciona apenas o delta</summary>
-<br>
 
 ```html
 <div class="card card--product">...</div>

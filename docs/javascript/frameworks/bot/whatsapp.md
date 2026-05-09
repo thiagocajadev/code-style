@@ -1,3 +1,7 @@
+---
+title: "WhatsApp — Baileys e Meta Cloud API"
+---
+
 # WhatsApp — Baileys e Meta Cloud API
 
 > Escopo: JavaScript/Node.js. Guia baseado em **Baileys v7** e **Meta Cloud API v21.0** com **Node.js 22**.
@@ -25,7 +29,6 @@ Baileys v7 é **ESM-only**: `require` é quebrado. `makeWASocket` é `default ex
 
 <details>
 <summary>❌ Bad — CommonJS quebrado no v7; makeWASocket como named import</summary>
-<br>
 
 ```js
 const { makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys');
@@ -33,11 +36,10 @@ const { makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ESM; makeWASocket como default import; named imports separados</summary>
-<br>
 
 ```js
 import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
@@ -49,7 +51,6 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeys
 
 <details>
 <summary>❌ Bad — sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
-<br>
 
 ```js
 import makeWASocket, { useMultiFileAuthState } from '@whiskeysockets/baileys';
@@ -61,11 +62,10 @@ socket.ev.on('creds.update', saveCreds);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — reconnect automático; guard para logout; printQRInTerminal ativo</summary>
-<br>
 
 ```js
 import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
@@ -107,7 +107,6 @@ startBot();
 
 <details>
 <summary>❌ Bad — sem guard para fromMe; routing inline com texto; lógica misturada</summary>
-<br>
 
 ```js
 socket.ev.on('messages.upsert', async ({ messages }) => {
@@ -121,11 +120,10 @@ socket.ev.on('messages.upsert', async ({ messages }) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard fromMe; extração e routing separados; Strategy Map</summary>
-<br>
 
 ```js
 function processIncomingMessage(socket, message) {
@@ -193,7 +191,6 @@ async function orderCommand(socket, chatId, messageText) {
 
 <details>
 <summary>❌ Bad — sem verificação de hub.mode; responde 200 sem checar token</summary>
-<br>
 
 ```js
 app.get('/webhook', (req, res) => {
@@ -203,11 +200,10 @@ app.get('/webhook', (req, res) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verifica mode e token antes de responder com o challenge</summary>
-<br>
 
 ```js
 app.get('/webhook', (request, response) => {
@@ -234,7 +230,6 @@ Responda `200 OK` imediatamente. A Meta cancela a entrega se o endpoint demorar 
 
 <details>
 <summary>❌ Bad — req/res abreviados; processamento síncrono; sem checar body.object</summary>
-<br>
 
 ```js
 app.post('/webhook', async (req, res) => {
@@ -246,11 +241,10 @@ app.post('/webhook', async (req, res) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — request/response sem abreviação; 200 imediato; check de body.object; async após resposta</summary>
-<br>
 
 ```js
 import express from 'express';
@@ -290,7 +284,6 @@ async function processMessage(message) {
 
 <details>
 <summary>❌ Bad — endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
-<br>
 
 ```js
 async function sendText(chatId, text) {
@@ -304,11 +297,10 @@ async function sendText(chatId, text) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — endpoint v21.0; env vars padrão Meta; recipient_type explícito; headers completos</summary>
-<br>
 
 ```js
 async function sendTextMessage(chatId, text) {

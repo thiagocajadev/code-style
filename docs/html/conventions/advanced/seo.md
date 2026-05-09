@@ -1,3 +1,7 @@
+---
+title: "SEO"
+---
+
 # SEO
 
 > Escopo: HTML. Idiomas específicos deste ecossistema.
@@ -21,7 +25,6 @@
 
 <details>
 <summary>❌ Bad — title genérico, description ausente ou duplicada</summary>
-<br>
 
 ```html
 <head>
@@ -39,11 +42,10 @@
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — title e description únicos, concisos e descritivos</summary>
-<br>
 
 ```html
 <head>
@@ -64,7 +66,6 @@ a plataforma escolhe, geralmente mal.
 
 <details>
 <summary>❌ Bad — sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
-<br>
 
 ```html
 <head>
@@ -74,11 +75,10 @@ a plataforma escolhe, geralmente mal.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
-<br>
 
 ```html
 <head>
@@ -110,7 +110,6 @@ conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de ra
 
 <details>
 <summary>❌ Bad — sem canonical em página com parâmetros UTM</summary>
-<br>
 
 ```html
 <!-- URL: /products?utm_source=email&utm_campaign=spring -->
@@ -121,11 +120,10 @@ conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de ra
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — canonical aponta para URL limpa</summary>
-<br>
 
 ```html
 <head>
@@ -143,7 +141,6 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 <details>
 <summary>❌ Bad — dados estruturados ausentes, sem rich snippet</summary>
-<br>
 
 ```html
 <body>
@@ -155,11 +152,10 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — JSON-LD com schema Product, preço e avaliação</summary>
-<br>
 
 ```html
 <body>

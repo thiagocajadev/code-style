@@ -1,3 +1,7 @@
+---
+title: "Validation"
+---
+
 # Validation
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
@@ -17,7 +21,6 @@ validação suja: um email com espaço passa no validator mas falha na busca no 
 
 <details>
 <summary>❌ Bad — dados brutos chegam direto na validação</summary>
-<br>
 
 ```csharp
 public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
@@ -34,11 +37,10 @@ public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, Cance
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sanitize antes de validar</summary>
-<br>
 
 ```csharp
 private static CreateUserRequest Sanitize(CreateUserRequest request)
@@ -75,7 +77,6 @@ técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
 <summary>❌ Bad — validação manual espalhada no handler</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, CancellationToken ct)
@@ -93,11 +94,10 @@ public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, Cance
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — AbstractValidator centraliza o contrato, handler recebe dado validado</summary>
-<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -123,7 +123,6 @@ domínio: dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviços e
 
 <details>
 <summary>❌ Bad — I/O dentro do validator mistura camadas</summary>
-<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -143,11 +142,10 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — validator valida shape, regras de negócio no handler após</summary>
-<br>
 
 ```csharp
 public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
@@ -192,7 +190,6 @@ um `record` de resposta como projeção explícita, nunca a entidade do banco.
 
 <details>
 <summary>❌ Bad — entidade direta vaza campos internos</summary>
-<br>
 
 ```csharp
 public async Task<User?> FindUserByIdAsync(Guid id, CancellationToken ct)
@@ -205,11 +202,10 @@ public async Task<User?> FindUserByIdAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — response record como projeção explícita do que sai</summary>
-<br>
 
 ```csharp
 public record UserResponse(Guid Id, string Name, string Email, DateTime CreatedAt);

@@ -1,3 +1,7 @@
+---
+title: "Null Safety"
+---
+
 # Null Safety
 
 > Escopo: VB.NET. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
@@ -15,7 +19,6 @@ função de compatibilidade do VB6 — idêntica em resultado, mas idiomática d
 
 <details>
 <summary>❌ Bad — IsNothing() é legado do VB6</summary>
-<br>
 
 ```vbnet
 If IsNothing(order) Then Return
@@ -26,11 +29,10 @@ Dim name As String = If(IsNothing(user.Name), "Unknown", user.Name)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Is Nothing / IsNot Nothing como operadores nativos</summary>
-<br>
 
 ```vbnet
 If order Is Nothing Then Return
@@ -49,7 +51,6 @@ acessar com segurança.
 
 <details>
 <summary>❌ Bad — valor sentinela para representar ausência</summary>
-<br>
 
 ```vbnet
 Public Class OrderItem
@@ -64,11 +65,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Nullable(Of T) expressa ausência explicitamente</summary>
-<br>
 
 ```vbnet
 Public Class OrderItem
@@ -99,7 +99,6 @@ segundo.
 
 <details>
 <summary>❌ Bad — If/Else verboso para default de null</summary>
-<br>
 
 ```vbnet
 Dim city As String
@@ -119,11 +118,10 @@ End If
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — If() de dois argumentos como null-coalescing</summary>
-<br>
 
 ```vbnet
 Dim city As String = If(user.Address?.City, "Unknown")
@@ -140,7 +138,6 @@ não precisa verificar `Nothing` antes de iterar.
 
 <details>
 <summary>❌ Bad — Nothing em coleção força defesa em cada caller</summary>
-<br>
 
 ```vbnet
 Public Function FindOrdersByUser(userId As Guid) As List(Of Order)
@@ -161,11 +158,10 @@ End If
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — lista vazia como estado neutro, sem Nothing</summary>
-<br>
 
 ```vbnet
 Public Function FindOrdersByUser(userId As Guid) As List(Of Order)
@@ -191,7 +187,6 @@ Verificar argumentos de construtor garante que o objeto nunca é criado em estad
 
 <details>
 <summary>❌ Bad — construtor aceita Nothing silenciosamente</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -207,11 +202,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clause no construtor</summary>
-<br>
 
 ```vbnet
 Public Class OrderService

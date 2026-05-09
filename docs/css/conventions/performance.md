@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 CSS controla como o browser renderiza a página. Seletores complexos, propriedades que disparam
@@ -10,7 +14,6 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 
 <details>
 <summary>❌ Bad — anima propriedades de layout, dispara reflow por frame</summary>
-<br>
 
 ```css
 .modal {
@@ -35,11 +38,10 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — transform e opacity: compositor sem reflow</summary>
-<br>
 
 ```css
 .modal {
@@ -75,7 +77,6 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 
 <details>
 <summary>❌ Bad — will-change em tudo, pressão de memória desnecessária</summary>
-<br>
 
 ```css
 /* aplicado globalmente — cada card vira uma camada de GPU */
@@ -90,11 +91,10 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — will-change aplicado via JS só durante a animação</summary>
-<br>
 
 ```css
 .card {
@@ -123,7 +123,6 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 <details>
 <summary>❌ Bad — especificidade alta força escalada de força bruta</summary>
-<br>
 
 ```css
 #main-content .product-list .product-card .product-card__title {
@@ -141,11 +140,10 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — classe simples, sobrescrita trivial</summary>
-<br>
 
 ```css
 .product-card__title {
@@ -170,7 +168,6 @@ para o resto da página.
 
 <details>
 <summary>✅ Good — contain isola o impacto de reflow por componente</summary>
-<br>
 
 ```css
 .product-card {
@@ -194,7 +191,6 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 
 <details>
 <summary>❌ Bad — seletor descendente profundo recalcula a árvore</summary>
-<br>
 
 ```css
 /* percorre todos os filhos de .form para encontrar input */
@@ -210,11 +206,10 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — classe direta no elemento</summary>
-<br>
 
 ```css
 .form__input {

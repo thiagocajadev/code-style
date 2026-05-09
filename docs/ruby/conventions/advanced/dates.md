@@ -1,3 +1,7 @@
+---
+title: "Dates"
+---
+
 # Dates
 
 > Escopo: Ruby 4.0. Padrão ISO 8601 em [shared/standards/editorconfig.md](../../../../shared/standards/editorconfig.md).
@@ -20,7 +24,6 @@ para o fuso do usuário apenas na camada de apresentação.
 
 <details>
 <summary>❌ Bad — hora local sem fuso explícito</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -32,11 +35,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — UTC explícito no armazenamento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -55,7 +57,6 @@ valida o formato e lança `ArgumentError` para entradas inválidas.
 
 <details>
 <summary>❌ Bad — parse de string sem validação de formato</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -69,11 +70,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — iso8601 valida formato + UTC explícito</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -96,7 +96,6 @@ Converta para o fuso do usuário apenas na apresentação.
 
 <details>
 <summary>❌ Bad — Time.now ignora config.time_zone</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -108,11 +107,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — conversão para fuso do usuário na apresentação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +131,6 @@ aritmética legível. Para Ruby puro, use `Time` com segundos explícitos.
 
 <details>
 <summary>❌ Bad — aritmética em segundos mágicos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -145,11 +142,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — duração nomeada com ActiveSupport</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -172,7 +168,6 @@ de data.
 
 <details>
 <summary>❌ Bad — comparação de strings de data</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -184,11 +179,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — comparação de objetos Time</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

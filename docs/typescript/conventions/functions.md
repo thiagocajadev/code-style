@@ -1,3 +1,7 @@
+---
+title: "Functions"
+---
+
 # Functions
 
 Os princípios de funções do JavaScript: responsabilidade única, top-down, sem lógica no retorno.
@@ -11,7 +15,6 @@ leitor e para garantir que a assinatura pública não mude silenciosamente.
 
 <details>
 <summary>❌ Bad — return type implícito em função exportada</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string) {
@@ -27,11 +30,10 @@ export function calculateInvoiceTotal(items: LineItem[]) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — return type explícito nas funções exportadas</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -55,7 +57,6 @@ separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](..
 
 <details>
 <summary>❌ Bad — tipo inline obscurece a assinatura</summary>
-<br>
 
 ```ts
 function createInvoice(data: {
@@ -69,11 +70,10 @@ function createInvoice(data: {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface separada, assinatura limpa</summary>
-<br>
 
 ```ts
 interface CreateInvoiceInput {
@@ -96,7 +96,6 @@ Isso os distingue dos tipos de domínio puros como `User` e `Invoice`.
 
 <details>
 <summary>❌ Bad — primitivos soltos sem interface, contrato sem nome</summary>
-<br>
 
 ```ts
 async function createUser(
@@ -115,11 +114,10 @@ async function createUser(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
-<br>
 
 ```ts
 interface CreateUserInput {
@@ -152,7 +150,6 @@ Use apenas quando a variação é real e precisa ser capturada pelo compilador.
 
 <details>
 <summary>❌ Bad — union type no retorno sem discriminação — o caller recebe `string | number` sem saber qual</summary>
-<br>
 
 ```ts
 function parse(value: string | number): string | number {
@@ -165,11 +162,10 @@ const result = parse("42"); // string | number — compilador não sabe que é n
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — overloads tornam o contrato preciso</summary>
-<br>
 
 ```ts
 function parse(value: string): number;
@@ -192,7 +188,6 @@ relação, é só complexidade.
 
 <details>
 <summary>❌ Bad — genérico sem propósito, poderia ser unknown ou o tipo concreto</summary>
-<br>
 
 ```ts
 function logAndReturn<T>(value: T): T {
@@ -207,11 +202,10 @@ function validateSchema<T>(schema: ZodSchema<T>, data: unknown): boolean {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — genérico quando o tipo do retorno depende do argumento</summary>
-<br>
 
 ```ts
 function firstOrThrow<TItem>(items: TItem[]): TItem {

@@ -1,3 +1,7 @@
+---
+title: "HTMX"
+---
+
 # HTMX
 
 > Escopo: Python · HTML. Guia baseado em **HTMX 2.0.10** integrado com **FastAPI** e **Jinja2**.
@@ -43,8 +47,7 @@ O handler Python retorna um fragmento HTML, não a página completa. Templates p
 arquivos separados (convenção: prefixo `_`).
 
 <details>
-<summary>❌ Bad — handler retorna página completa; HTMX recebe <html> inteiro</summary>
-<br>
+<summary>❌ Bad — handler retorna página completa; HTMX recebe &lt;html&gt; inteiro</summary>
 
 ```python
 @router.get("/orders")
@@ -73,11 +76,10 @@ async def list_orders(request: Request):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — handler retorna fragmento; template parcial em arquivo separado</summary>
-<br>
 
 ```html
 <!-- trigger na página principal -->
@@ -122,7 +124,6 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 
 <details>
 <summary>❌ Bad — sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
-<br>
 
 ```html
 <button hx-get="/orders/partial">Carregar</button>
@@ -134,11 +135,10 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — hx-target explícito, hx-swap intencional por caso de uso</summary>
-<br>
 
 ```html
 <!-- substituir conteúdo existente -->
@@ -172,7 +172,6 @@ IDs, sem requisições adicionais.
 
 <details>
 <summary>❌ Bad — duas requisições separadas para atualizar lista e contador</summary>
-<br>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -187,11 +186,10 @@ IDs, sem requisições adicionais.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — uma resposta atualiza lista e contador via out-of-band</summary>
-<br>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -232,7 +230,6 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 
 <details>
 <summary>❌ Bad — sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
-<br>
 
 ```html
 <button hx-get="/orders/partial" hx-target="#order-list">
@@ -244,11 +241,10 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — indicador visível durante a requisição via hx-indicator</summary>
-<br>
 
 ```html
 <button

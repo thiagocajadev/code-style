@@ -1,3 +1,7 @@
+---
+title: "Fluxos de Backend"
+---
+
 # Fluxos de Backend
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -136,7 +140,6 @@ A comparação usa `timingSafeEqual` para evitar timing attack (ataque de tempor
 
 <details>
 <summary>❌ Bad — valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
-<br>
 
 ```js
 async function handleWebhook(request) {
@@ -157,11 +160,10 @@ async function handleWebhook(request) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — valida sobre raw body, comparação timing-safe</summary>
-<br>
 
 ```js
 async function handleWebhook(request) {
@@ -204,7 +206,6 @@ crescente:
 
 <details>
 <summary>✅ Good — registry de handlers por tipo de evento</summary>
-<br>
 
 ```js
 const eventHandlers = {
@@ -269,7 +270,6 @@ consumer idempotente** entrega a mesma garantia com menos complexidade.
 
 <details>
 <summary>✅ Good — consumer verifica idempotência antes de processar</summary>
-<br>
 
 ```js
 async function consumeEvent(event) {

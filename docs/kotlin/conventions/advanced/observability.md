@@ -1,3 +1,7 @@
+---
+title: "Observability"
+---
+
 # Observability
 
 > Escopo: Kotlin 2.2, SLF4J 2.x / Logback.
@@ -21,7 +25,6 @@ contexto de diagnóstico mapeado) propaga identificadores de correlação automa
 
 <details>
 <summary>❌ Bad — string concatenada sem campos estruturados</summary>
-<br>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
@@ -33,11 +36,10 @@ fun processOrder(orderId: Long, userId: Long) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — campos nomeados com contexto completo</summary>
-<br>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
@@ -53,7 +55,6 @@ fun processOrder(orderId: Long, userId: Long) {
 
 <details>
 <summary>❌ Bad — correlationId passado manualmente em cada chamada</summary>
-<br>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -65,11 +66,10 @@ fun handleRequest(requestId: String, userId: Long) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — MDC propagado automaticamente em todos os logs do request</summary>
-<br>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -100,7 +100,6 @@ fun handleRequest(requestId: String, userId: Long) {
 
 <details>
 <summary>❌ Bad — ERROR para situação esperada; INFO para exceção</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Order? {
@@ -122,11 +121,10 @@ fun chargeCard(cardId: Long) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nível proporcional à severidade</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Order? {

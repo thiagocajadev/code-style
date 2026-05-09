@@ -1,3 +1,7 @@
+---
+title: "Validation"
+---
+
 # Validation
 
 > Escopo: PHP 8.4 + Symfony Validator 7.
@@ -10,7 +14,6 @@ O service recebe objetos já validados e tipados — nunca arrays brutos sem val
 
 <details>
 <summary>❌ Bad — validação manual espalhada no service</summary>
-<br>
 
 ```php
 public function createOrder(array $data): Order
@@ -30,11 +33,10 @@ public function createOrder(array $data): Order
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — atributos de validação no DTO + validação na fronteira</summary>
-<br>
 
 ```php
 use Symfony\Component\Validator\Constraints as Assert;
@@ -100,7 +102,6 @@ Converta `ConstraintViolationListInterface` em resposta com campo e mensagem.
 
 <details>
 <summary>✅ Good — response estruturado de validação</summary>
-<br>
 
 ```php
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -130,7 +131,6 @@ Crie constraints customizados para regras de domínio reutilizáveis.
 
 <details>
 <summary>✅ Good — constraint customizado para moeda suportada</summary>
-<br>
 
 ```php
 use Symfony\Component\Validator\Constraint;
@@ -182,7 +182,6 @@ Use `#[Assert\Valid]` para validar objetos nested automaticamente.
 
 <details>
 <summary>✅ Good — Valid para validação cascata em objetos aninhados</summary>
-<br>
 
 ```php
 final readonly class CreateOrderInput

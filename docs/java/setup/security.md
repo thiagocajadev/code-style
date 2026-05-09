@@ -1,3 +1,7 @@
+---
+title: "Security"
+---
+
 # Security
 
 > Escopo: Java 25 LTS — Spring Security 7 + Spring Boot 4.
@@ -8,7 +12,6 @@ Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-
 
 <details>
 <summary>❌ Bad — segredo hardcoded no código</summary>
-<br>
 
 ```java
 private static final String JWT_SECRET = "minha-chave-super-secreta"; // no repositório
@@ -25,11 +28,10 @@ public DataSource dataSource() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — variáveis de ambiente via @ConfigurationProperties</summary>
-<br>
 
 ```yaml
 # application.yml
@@ -60,7 +62,6 @@ public record SecurityProperties(
 
 <details>
 <summary>✅ Good — SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
-<br>
 
 ```java
 @Configuration
@@ -97,7 +98,6 @@ Nunca armazene senhas em texto puro. Nunca use MD5 ou SHA-1.
 
 <details>
 <summary>❌ Bad — senha em texto puro ou hash fraco</summary>
-<br>
 
 ```java
 user.setPassword(input.password());                        // texto puro
@@ -106,11 +106,10 @@ user.setPassword(DigestUtils.md5Hex(input.password()));    // MD5 é reversível
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — BCrypt com custo configurável</summary>
-<br>
 
 ```java
 @Service
@@ -138,7 +137,6 @@ Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens 
 
 <details>
 <summary>✅ Good — filtro JWT com validação completa</summary>
-<br>
 
 ```java
 @Component
@@ -184,7 +182,6 @@ Use `@PreAuthorize` para autorização granular por role (papel) ou permissão e
 
 <details>
 <summary>✅ Good — autorização declarativa no método</summary>
-<br>
 
 ```java
 @RestController
@@ -218,7 +215,6 @@ Nunca deixe CORS permissivo em produção. Configure origens, métodos e headers
 
 <details>
 <summary>❌ Bad — CORS aberto para tudo</summary>
-<br>
 
 ```java
 corsConfig.addAllowedOrigin("*"); // permite qualquer origem
@@ -227,11 +223,10 @@ corsConfig.addAllowedMethod("*"); // permite qualquer método
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — CORS restrito por ambiente</summary>
-<br>
 
 ```java
 @Bean

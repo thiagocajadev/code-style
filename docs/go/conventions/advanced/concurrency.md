@@ -1,3 +1,7 @@
+---
+title: "Concurrency"
+---
+
 # Concurrency
 
 > Escopo: Go 1.26.
@@ -27,7 +31,6 @@ Goroutines soltas vazam e podem corromper estado.
 
 <details>
 <summary>❌ Bad — goroutine lançada sem espera ou cancelamento</summary>
-<br>
 
 ```go
 func processOrders(orders []Order) {
@@ -40,11 +43,10 @@ func processOrders(orders []Order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — WaitGroup garante que todas as goroutines terminam</summary>
-<br>
 
 ```go
 func processOrders(ctx context.Context, orders []Order) error {
@@ -83,7 +85,6 @@ a mutexes quando o fluxo de dados é unidirecional.
 
 <details>
 <summary>❌ Bad — slice compartilhado sem sincronização</summary>
-<br>
 
 ```go
 var results []Result
@@ -98,11 +99,10 @@ for _, item := range items {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — channel transfere propriedade, sem data race</summary>
-<br>
 
 ```go
 func processAllItems(ctx context.Context, items []Item) ([]Result, error) {
@@ -144,7 +144,6 @@ Use `select` para multiplexar channels com cancelamento e timeout.
 
 <details>
 <summary>✅ Good — select com contexto e canal de resultado</summary>
-<br>
 
 ```go
 func fetchWithTimeout(ctx context.Context, orderID int64) (*Order, error) {
@@ -181,7 +180,6 @@ Leitura usa `RLock`; escrita usa `Lock`.
 
 <details>
 <summary>✅ Good — cache thread-safe com RWMutex</summary>
-<br>
 
 ```go
 type OrderCache struct {
@@ -215,7 +213,6 @@ independente de quantas goroutines a acionem.
 
 <details>
 <summary>✅ Good — singleton thread-safe com sync.Once</summary>
-<br>
 
 ```go
 type ConnectionPool struct {
@@ -252,7 +249,6 @@ Use um pool de workers para limitar a concorrência em processamento de filas.
 
 <details>
 <summary>✅ Good — worker pool com channel de trabalho</summary>
-<br>
 
 ```go
 const maxWorkers = 5

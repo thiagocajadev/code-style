@@ -1,3 +1,7 @@
+---
+title: "Design Thinking"
+---
+
 # Design Thinking
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

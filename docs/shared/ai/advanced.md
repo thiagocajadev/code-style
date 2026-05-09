@@ -1,3 +1,7 @@
+---
+title: "Conceitos Avançados de IA (Advanced AI Concepts)"
+---
+
 # Conceitos Avançados de IA (Advanced AI Concepts)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -81,7 +85,6 @@ base nos documentos fornecidos e cita a origem de cada afirmação.
 
 <details>
 <summary>❌ Bad: sem grounding — modelo inventa para preencher a lacuna</summary>
-<br>
 
 ```
 Quais foram os resultados financeiros da Acme Corp no Q3 2024?
@@ -89,11 +92,10 @@ Quais foram os resultados financeiros da Acme Corp no Q3 2024?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: com grounding — modelo responde apenas com base no conteúdo fornecido</summary>
-<br>
 
 ```
 Com base no relatório abaixo, quais foram os resultados financeiros da Acme Corp no Q3 2024?
@@ -104,11 +106,10 @@ Se a informação não estiver no relatório, responda "não encontrado".
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad: sem restrição de fonte — modelo cita referências inexistentes</summary>
-<br>
 
 ```
 Liste 3 artigos acadêmicos sobre RAG publicados em 2024.
@@ -116,11 +117,10 @@ Liste 3 artigos acadêmicos sobre RAG publicados em 2024.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: restrito a fontes verificadas — modelo não inventa referências</summary>
-<br>
 
 ```
 Liste apenas artigos que estejam na lista abaixo.
@@ -131,11 +131,10 @@ Se não houver artigos sobre RAG, diga que não encontrou.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad: sem instrução de incerteza — modelo afirma o que não sabe</summary>
-<br>
 
 ```
 Qual a versão atual do framework X?
@@ -143,11 +142,10 @@ Qual a versão atual do framework X?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: com instrução explícita de incerteza</summary>
-<br>
 
 ```
 Qual a versão atual do framework X?
@@ -163,7 +161,6 @@ parseável sem regex, sem pós-processamento frágil.
 
 <details>
 <summary>❌ Bad: sem schema — resposta em texto livre, parsing manual e frágil</summary>
-<br>
 
 ```js
 const response = await client.messages.create({
@@ -175,11 +172,10 @@ const rawText = response.content[0].text;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good: schema forçado via tool — output parseável diretamente</summary>
-<br>
 
 ```js
 const response = await client.messages.create({

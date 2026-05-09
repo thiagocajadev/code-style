@@ -1,3 +1,7 @@
+---
+title: "Variables"
+---
+
 # Variables
 
 > Escopo: PHP 8.4.
@@ -24,7 +28,6 @@ Use ponteiros (`&`) apenas quando a semântica de referência for realmente nece
 
 <details>
 <summary>❌ Bad — propriedade mutável sem motivo</summary>
-<br>
 
 ```php
 class OrderID
@@ -43,11 +46,10 @@ $id->value = 99; // mutação acidental
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — readonly garante imutabilidade de value object</summary>
-<br>
 
 ```php
 class OrderID
@@ -72,7 +74,6 @@ Substitua literais inline por constantes de classe nomeadas.
 
 <details>
 <summary>❌ Bad — literais sem nome</summary>
-<br>
 
 ```php
 if ($attempts > 3) {
@@ -86,11 +87,10 @@ if ($order->status === 'pending') {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constantes nomeadas revelam intenção</summary>
-<br>
 
 ```php
 class OrderProcessor
@@ -127,7 +127,6 @@ separados. Mantenha hooks simples; extraia para métodos se a lógica crescer.
 
 <details>
 <summary>❌ Bad — getters/setters boilerplate para lógica simples</summary>
-<br>
 
 ```php
 class User
@@ -148,11 +147,10 @@ class User
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — property hook com lógica inline</summary>
-<br>
 
 ```php
 class User
@@ -177,7 +175,6 @@ pode ser nulo. Evite `mixed` onde o tipo é conhecido.
 
 <details>
 <summary>❌ Bad — propriedades sem tipo</summary>
-<br>
 
 ```php
 class Order
@@ -191,11 +188,10 @@ class Order
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipos explícitos em todas as propriedades</summary>
-<br>
 
 ```php
 class Order
@@ -222,7 +218,6 @@ Nunca use `global` ou `$GLOBALS`. Passe dependências via construtor ou parâmet
 
 <details>
 <summary>❌ Bad — variável global</summary>
-<br>
 
 ```php
 $db = new PDO('...');
@@ -236,11 +231,10 @@ function findUser(int $userID): ?array
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dependência injetada via construtor</summary>
-<br>
 
 ```php
 final class UserRepository

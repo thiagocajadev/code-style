@@ -1,3 +1,7 @@
+---
+title: "Async"
+---
+
 # Async
 
 > Escopo: Ruby 4.0. Padrões agnósticos de I/O assíncrono em [shared/platform/backend-flow.md](../../../../shared/platform/backend-flow.md).
@@ -25,7 +29,6 @@ um job. Rails 8 usa **Solid Queue** como padrão; **Sidekiq** é preferido para 
 
 <details>
 <summary>❌ Bad — I/O pesado dentro do request</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -44,11 +47,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — I/O longo delegado para jobs</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -75,7 +77,6 @@ serializados — passe apenas IDs, não objetos ActiveRecord.
 
 <details>
 <summary>❌ Bad — objeto ActiveRecord como argumento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -91,11 +92,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ID como argumento, objeto carregado dentro do job</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

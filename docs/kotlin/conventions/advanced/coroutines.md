@@ -1,3 +1,7 @@
+---
+title: "Coroutines"
+---
+
 # Coroutines
 
 > Escopo: Kotlin 2.2, kotlinx.coroutines 1.9.
@@ -21,7 +25,6 @@ coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas 
 
 <details>
 <summary>❌ Bad — GlobalScope vaza ciclo de vida</summary>
-<br>
 
 ```kotlin
 fun loadUser(userId: Long) {
@@ -34,11 +37,10 @@ fun loadUser(userId: Long) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — escopo vinculado ao ciclo de vida</summary>
-<br>
 
 ```kotlin
 class UserViewModel(
@@ -60,7 +62,6 @@ class UserViewModel(
 
 <details>
 <summary>❌ Bad — async sequencial não tem ganho de paralelismo</summary>
-<br>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -73,11 +74,10 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — async antes do await permite execução paralela</summary>
-<br>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -97,7 +97,6 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 
 <details>
 <summary>❌ Bad — I/O no dispatcher Main (congela UI)</summary>
-<br>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -107,11 +106,10 @@ suspend fun saveOrder(order: Order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — withContext isola o dispatcher de I/O</summary>
-<br>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -127,7 +125,6 @@ suspend fun saveOrder(order: Order) {
 
 <details>
 <summary>❌ Bad — callback manual para stream de eventos</summary>
-<br>
 
 ```kotlin
 fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
@@ -137,11 +134,10 @@ fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Flow tipado e cancelável</summary>
-<br>
 
 ```kotlin
 fun observeOrders(userId: Long): Flow<List<Order>> {
@@ -162,7 +158,6 @@ viewModelScope.launch {
 
 <details>
 <summary>❌ Bad — MutableLiveData com mutação direta</summary>
-<br>
 
 ```kotlin
 private val _orders = MutableLiveData<List<Order>>()
@@ -175,11 +170,10 @@ fun loadOrders() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — StateFlow com UiState sealed class</summary>
-<br>
 
 ```kotlin
 sealed class OrdersUiState {
@@ -211,7 +205,6 @@ fun loadOrders() {
 
 <details>
 <summary>❌ Bad — falha em um filho cancela todos os outros</summary>
-<br>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {
@@ -225,11 +218,10 @@ suspend fun sendNotifications(users: List<User>) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — supervisorScope isola falhas por filho</summary>
-<br>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {

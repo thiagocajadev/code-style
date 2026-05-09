@@ -1,3 +1,7 @@
+---
+title: "Methods"
+---
+
 # Methods
 
 Métodos em VB.NET distinguem `Sub` (sem retorno) e `Function` (com retorno). A escolha é semântica, não estética: comunica a intenção da operação antes mesmo do nome. Orquestrador fica no topo; helpers `Private` descem em ordem de leitura.
@@ -8,7 +12,6 @@ Métodos em VB.NET distinguem `Sub` (sem retorno) e `Function` (com retorno). A 
 
 <details>
 <summary>❌ Bad — Sub com ByRef para comunicar resultado</summary>
-<br>
 
 ```vbnet
 Public Sub ProcessPayment(payment As Payment, ByRef success As Boolean, ByRef errorMessage As String)
@@ -32,11 +35,10 @@ If Not ok Then HandleError(msg)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Function retorna o resultado, caller lê diretamente</summary>
-<br>
 
 ```vbnet
 Public Function ProcessPayment(payment As Payment) As PaymentResult
@@ -65,7 +67,6 @@ O método de entrada declara o fluxo de alto nível: o quê, não o como. Helper
 
 <details>
 <summary>❌ Bad — implementação misturada com orquestração</summary>
-<br>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -93,11 +94,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador declara o fluxo, helpers implementam cada passo</summary>
-<br>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -147,7 +147,6 @@ Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um pas
 
 <details>
 <summary>❌ Bad — orquestração e implementação no mesmo método</summary>
-<br>
 
 ```vbnet
 Public Async Function BuildPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
@@ -166,11 +165,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador chama helpers, cada um com uma responsabilidade</summary>
-<br>
 
 ```vbnet
 Public Async Function BuildPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
@@ -206,7 +204,6 @@ O `Return` declara o que sai, não calcula. Uma variável nomeada antes do retor
 
 <details>
 <summary>❌ Bad — construção inline no Return</summary>
-<br>
 
 ```vbnet
 Public Function BuildSummary(purchase As Purchase) As PurchaseSummary
@@ -220,11 +217,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — variável expressiva antes do Return</summary>
-<br>
 
 ```vbnet
 Public Function BuildSummary(purchase As Purchase) As PurchaseSummary
@@ -244,7 +240,6 @@ Valide as pré-condições no topo e saia cedo. O fluxo principal fica plano e s
 
 <details>
 <summary>❌ Bad — lógica principal enterrada em aninhamento</summary>
-<br>
 
 ```vbnet
 Public Function ApprovePurchase(purchase As Purchase, user As User) As String
@@ -271,11 +266,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guards no topo, fluxo principal limpo</summary>
-<br>
 
 ```vbnet
 Public Function ApprovePurchase(purchase As Purchase, user As User) As String
@@ -297,7 +291,6 @@ Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Pas
 
 <details>
 <summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>
-<br>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -315,11 +308,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — um grupo por passo, separados por uma linha em branco</summary>
-<br>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)

@@ -1,3 +1,7 @@
+---
+title: "Python"
+---
+
 # Python
 
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](https://docs.python.org/3.14/)
@@ -68,7 +72,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [SLA](conventions/functions.md#sla--orquestrador-ou-implementação)                           | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                      | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
-<br>
+<br />
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -81,7 +85,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                              | Constantes nomeadas no lugar de literais inline                      |
 | [CQS](conventions/variables.md#mutação-direta)                                               | Retornar novo estado, sem efeitos colaterais ocultos                 |
 
-<br>
+<br />
 
 **Controle de qualidade**: estado, erros, async e testes
 

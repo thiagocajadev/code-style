@@ -1,3 +1,7 @@
+---
+title: "Variables"
+---
+
 # Variables
 
 > Escopo: Ruby 4.0.
@@ -22,7 +26,6 @@ Adicione `# frozen_string_literal: true` no topo de cada arquivo Ruby.
 
 <details>
 <summary>❌ Bad — string mutable alocada em loop</summary>
-<br>
 
 ```ruby
 def build_labels(orders)
@@ -34,11 +37,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — frozen_string_literal + interpolação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -56,7 +58,6 @@ Prefira valores fixos. Mutação explícita deve ser justificada pelo fluxo.
 
 <details>
 <summary>❌ Bad — variável reatribuída sem necessidade</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -70,11 +71,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sem mutação; resultado derivado diretamente</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -93,7 +93,6 @@ encapsuladas; não use constantes globais soltas.
 
 <details>
 <summary>❌ Bad — valores mágicos espalhados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -109,11 +108,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constantes nomeadas e encapsuladas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -141,7 +139,6 @@ Use strings para texto visível ao usuário ou dados externos.
 
 <details>
 <summary>❌ Bad — string como chave de hash interno</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -153,11 +150,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — símbolo para chave e estado interno</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -178,7 +174,6 @@ fora da classe.
 
 <details>
 <summary>❌ Bad — acesso direto a @variável de fora</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -196,11 +191,10 @@ puts order.instance_variable_get(:@total)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface explícita com attr_reader</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

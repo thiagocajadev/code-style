@@ -1,3 +1,7 @@
+---
+title: "Metodologias e Estilos Arquiteturais"
+---
+
 # Metodologias e Estilos Arquiteturais
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,3 +1,7 @@
+---
+title: "Legacy Desktop — Setup Enxuto"
+---
+
 # Legacy Desktop — Setup Enxuto
 
 > Escopo: VB.NET / Windows Forms / .NET Framework 4.8
@@ -22,7 +26,6 @@ A connection string (string de conexão) pertence ao `App.config`, nunca ao cód
 
 <details>
 <summary>❌ Bad — connection string hardcoded no código</summary>
-<br>
 
 ```vbnet
 Public Module CustomerDataAccess
@@ -37,11 +40,10 @@ End Module
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — connection string no App.config, lida uma vez</summary>
-<br>
 
 ```xml
 <!-- App.config -->
@@ -74,7 +76,6 @@ Um módulo por domínio. Cada função executa uma query e retorna o resultado �
 
 <details>
 <summary>❌ Bad — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
-<br>
 
 ```vbnet
 Public Class ProductForm
@@ -99,11 +100,10 @@ End Class
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — módulo thin isolado, formulário só chama e exibe</summary>
-<br>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb
@@ -171,7 +171,6 @@ O mesmo princípio: uma função por operação, parâmetros tipados, `Using` ga
 
 <details>
 <summary>✅ Good — INSERT com parâmetros tipados</summary>
-<br>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb (continuação)
@@ -237,7 +236,6 @@ Se o `App.config` não tiver a connection string, `ConfigurationManager.Connecti
 
 <details>
 <summary>✅ Good — fail-fast na inicialização, antes de abrir qualquer formulário</summary>
-<br>
 
 ```vbnet
 ' ApplicationEntry.vb

@@ -1,3 +1,7 @@
+---
+title: "Modelos de IA (AI Models)"
+---
+
 # Modelos de IA (AI Models)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

@@ -1,3 +1,7 @@
+---
+title: "TypeScript"
+---
+
 # TypeScript
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/docs/)
@@ -63,7 +67,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | [Nunca any](conventions/variables.md#any-vs-unknown)                                | `unknown` força narrowing; `any` desativa o compilador                     |
 | [Tipos sem prefixo](conventions/naming.md#prefixo-i)                                | Sem `I` em interfaces; o contexto já diz que é contrato                   |
 
-<br>
+<br />
 
 **Contratos**: types, interfaces e modelos de domínio
 
@@ -74,7 +78,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | [Union types > enums](conventions/types.md#enums)                            | Const object + union type: sem runtime overhead, sem conversão                  |
 | [Genérico com propósito](conventions/types.md#genéricos)                     | Genérico quando a função precisa preservar o tipo do chamador, sem especulação  |
 
-<br>
+<br />
 
 **Narrowing**: transitar entre tipos com segurança
 

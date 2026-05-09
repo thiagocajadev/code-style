@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: Rust 1.95.
@@ -11,7 +15,6 @@ Código sem respiro força o leitor a segmentar mentalmente blocos que deveriam 
 
 <details>
 <summary>❌ Bad — nenhuma separação entre fases lógicas</summary>
-<br>
 
 ```rust
 async fn create_order(pool: &sqlx::PgPool, request: CreateOrderRequest) -> anyhow::Result<Order> {
@@ -28,11 +31,10 @@ async fn create_order(pool: &sqlx::PgPool, request: CreateOrderRequest) -> anyho
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases separadas por linha em branco</summary>
-<br>
 
 ```rust
 async fn create_order(pool: &sqlx::PgPool, request: CreateOrderRequest) -> anyhow::Result<Order> {
@@ -60,7 +62,6 @@ Funções de uma linha ou expressão simples não precisam.
 
 <details>
 <summary>❌ Bad — return colado ao último passo</summary>
-<br>
 
 ```rust
 fn calculate_invoice_total(order: &Order) -> f64 {
@@ -73,11 +74,10 @@ fn calculate_invoice_total(order: &Order) -> f64 {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — return separado por blank</summary>
-<br>
 
 ```rust
 fn calculate_invoice_total(order: &Order) -> f64 {
@@ -98,7 +98,6 @@ Agrupe atomics relacionados ou separe em dois grupos distintos.
 
 <details>
 <summary>❌ Bad — linha isolada no meio do fluxo</summary>
-<br>
 
 ```rust
 let customer = find_customer(pool, request.customer_id).await?;
@@ -112,11 +111,10 @@ let order_id = insert_order(pool, customer.id, final_total).await?;
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — agrupamento semântico coeso</summary>
-<br>
 
 ```rust
 let customer = find_customer(pool, request.customer_id).await?;
@@ -136,7 +134,6 @@ Separe campos de struct por grupo semântico. Em `impl`, separe métodos por lin
 
 <details>
 <summary>❌ Bad — campos e métodos sem respiração</summary>
-<br>
 
 ```rust
 struct Order {
@@ -157,11 +154,10 @@ impl Order {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — grupos semânticos com respiro</summary>
-<br>
 
 ```rust
 struct Order {

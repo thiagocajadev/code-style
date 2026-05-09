@@ -1,3 +1,7 @@
+---
+title: "Types"
+---
+
 # Types
 
 O sistema de tipos do TypeScript tem duas construções principais para descrever formas: `interface`
@@ -12,7 +16,6 @@ ser reaberta.
 
 <details>
 <summary>❌ Bad — type onde interface seria natural, interface onde type seria correto</summary>
-<br>
 
 ```ts
 // type para shape de objeto — funciona, mas não é a convenção
@@ -27,11 +30,10 @@ interface OrderStatus = "pending" | "approved"; // erro de sintaxe
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface para objetos e contratos</summary>
-<br>
 
 ```ts
 interface User {
@@ -52,11 +54,10 @@ interface UserService extends EventEmitter {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — type para uniões, intersections e aliases</summary>
-<br>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "cancelled" | "shipped";
@@ -78,7 +79,6 @@ Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo.
 
 <details>
 <summary>❌ Bad — genérico que não muda o shape</summary>
-<br>
 
 ```ts
 interface Response<T> {
@@ -89,11 +89,10 @@ interface Response<T> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — genérico quando o shape depende do tipo</summary>
-<br>
 
 ```ts
 interface ApiResponse<TData> {
@@ -124,7 +123,6 @@ os tipos sincronizados quando o tipo base muda.
 
 <details>
 <summary>❌ Bad — duplicação manual do shape com diferenças</summary>
-<br>
 
 ```ts
 interface User {
@@ -151,11 +149,10 @@ interface UpdateUserInput {  // duplica User com todos os campos opcionais
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — derivar a partir do tipo base</summary>
-<br>
 
 ```ts
 interface User {
@@ -180,7 +177,6 @@ um campo literal discriminante permite narrowing automático, sem type assertion
 
 <details>
 <summary>❌ Bad — campo opcional para cada variant, sem discriminante</summary>
-<br>
 
 ```ts
 interface PaymentResult {
@@ -199,11 +195,10 @@ function handlePayment(result: PaymentResult) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — campo discriminante com narrowing automático</summary>
-<br>
 
 ```ts
 interface PaymentSuccess {
@@ -238,7 +233,6 @@ classes.
 
 <details>
 <summary>❌ Bad — duplicação manual de campos de shapes existentes</summary>
-<br>
 
 ```ts
 interface Auditable {
@@ -266,11 +260,10 @@ interface Order {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — intersection para compor shapes independentes</summary>
-<br>
 
 ```ts
 interface Auditable {
@@ -295,7 +288,6 @@ compilador precisa de convencimento, geralmente é o shape que está errado.
 
 <details>
 <summary>❌ Bad — as Type para forçar o compilador a aceitar</summary>
-<br>
 
 ```ts
 const user = await fetchUser(id) as User; // e se retornar null?
@@ -305,11 +297,10 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any — qualq
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — narrowing real ou validação de schema</summary>
-<br>
 
 ```ts
 const raw = await fetchUser(id);

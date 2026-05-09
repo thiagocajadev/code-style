@@ -1,3 +1,7 @@
+---
+title: "API Design"
+---
+
 # API Design
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
@@ -58,7 +62,6 @@ em todo o código e o handler continuasse funcionando, o boundary está no lugar
 
 <details>
 <summary>❌ Bad — controller com acesso a banco e regra de negócio</summary>
-<br>
 
 ```js
 app.post('/api/orders', async (httpRequest, httpResponse) => {
@@ -85,11 +88,10 @@ storage exige mexer no controller. Testar a regra de preço exige subir um servi
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — controller fino, handler orquestra, service e repository isolados</summary>
-<br>
 
 ```js
 // features/orders/ordersController.js
@@ -152,7 +154,6 @@ Dois sinais de um contrato de request saudável: campos com nome de domínio (`p
 
 <details>
 <summary>❌ Bad — objeto mutável montado ad-hoc, sem validação explícita</summary>
-<br>
 
 ```js
 app.post('/api/orders', async (httpRequest, httpResponse) => {
@@ -171,11 +172,10 @@ depois, em runtime, com stack trace confuso.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — schema de validação no boundary, DTO tipado para o handler</summary>
-<br>
 
 ```js
 // features/orders/orderRequest.js
@@ -225,7 +225,6 @@ controle interno).
 
 <details>
 <summary>❌ Bad — entidade de domínio retornada direto</summary>
-<br>
 
 ```js
 async function handle(id) {
@@ -241,11 +240,10 @@ ninguém revisar.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — DTO de resposta explícito, montado a partir do domínio</summary>
-<br>
 
 ```js
 async function handle(id) {
@@ -295,7 +293,6 @@ na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). 
 
 <details>
 <summary>❌ Bad — shapes inconsistentes entre sucesso e erro</summary>
-<br>
 
 ```js
 // 200: { "id": "01HV...", "productId": "...", "quantity": 3 }
@@ -307,11 +304,10 @@ O cliente precisa de três parsers diferentes para três tipos de resposta do me
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — envelope consistente em sucesso e erro</summary>
-<br>
 
 ```js
 // shared/envelope.js
@@ -409,7 +405,6 @@ visível e não espalhada pelo handler.
 
 <details>
 <summary>❌ Bad — handler constrói resposta HTTP, mistura domínio e transporte</summary>
-<br>
 
 ```js
 async function handle(id, res) {
@@ -426,11 +421,10 @@ async function handle(id, res) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — handler retorna Result, controller traduz no boundary</summary>
-<br>
 
 ```js
 // features/orders/findOrderByIdHandler.js

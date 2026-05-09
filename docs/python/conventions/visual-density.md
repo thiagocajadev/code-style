@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: Python. Idioma nativo aplicado à densidade visual.
@@ -9,7 +13,6 @@ Nunca duas. O return fica separado do último grupo de trabalho.
 
 <details>
 <summary>❌ Bad — parede de código sem respiro entre grupos</summary>
-<br>
 
 ```python
 async def process_order(order_id: int):
@@ -25,11 +28,10 @@ async def process_order(order_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — parágrafos de intenção</summary>
-<br>
 
 ```python
 async def process_order(order_id: int):
@@ -55,7 +57,6 @@ colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
 <summary>❌ Bad — espaço dentro dos grupos, sem separação entre grupos</summary>
-<br>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -76,11 +77,10 @@ async def register_user(name: str, email: str, password: str):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — 0 linhas dentro do grupo, 1 entre grupos</summary>
-<br>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -106,7 +106,6 @@ a função tem um único statement.
 
 <details>
 <summary>❌ Bad — return colado no último grupo</summary>
-<br>
 
 ```python
 def calculate_order_total(items: list) -> float:
@@ -118,11 +117,10 @@ def calculate_order_total(items: list) -> float:
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — return separado por blank line</summary>
-<br>
 
 ```python
 def calculate_order_total(items: list) -> float:
@@ -142,7 +140,6 @@ formam um único grupo: sem blank entre elas.
 
 <details>
 <summary>❌ Bad — blank entre declaração e guarda dispersa o que é um grupo</summary>
-<br>
 
 ```python
 async def process_checkout(user_id: int, cart_id: int):
@@ -166,11 +163,10 @@ async def process_checkout(user_id: int, cart_id: int):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — declaração e guarda coladas; grupos distintos separados</summary>
-<br>
 
 ```python
 async def process_checkout(user_id: int, cart_id: int):
@@ -197,7 +193,6 @@ f-string gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
 <summary>❌ Bad — todos os detalhes interpolados inline</summary>
-<br>
 
 ```python
 def build_confirmation_email(user, order) -> str:
@@ -208,11 +203,10 @@ def build_confirmation_email(user, order) -> str:
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — compostos extraídos, string final legível</summary>
-<br>
 
 ```python
 def build_confirmation_email(user, order) -> str:

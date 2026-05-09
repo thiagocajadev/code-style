@@ -1,3 +1,7 @@
+---
+title: "Visual Density"
+---
+
 # Visual Density
 
 > Escopo: Ruby 4.0.
@@ -10,7 +14,6 @@ consecutivas; nunca parede de código sem respiração.
 
 <details>
 <summary>❌ Bad — sem separação entre fases</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -28,11 +31,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fases separadas por linha em branco</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -60,7 +62,6 @@ Separe-o do bloco lógico anterior com uma linha em branco quando o bloco tem 2+
 
 <details>
 <summary>❌ Bad — resultado colado ao bloco</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -75,11 +76,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — resultado separado, retorno implícito limpo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -102,7 +102,6 @@ linha em branco acima.
 
 <details>
 <summary>❌ Bad — métodos colados, private sem separação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -127,11 +126,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — métodos separados, private com espaçamento correto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -167,7 +165,6 @@ Agrupe `attr_reader`, `attr_writer`, `attr_accessor` em blocos por acesso, separ
 
 <details>
 <summary>❌ Bad — atributos misturados sem padrão</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -184,11 +181,10 @@ end
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — atributos agrupados acima do initialize</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

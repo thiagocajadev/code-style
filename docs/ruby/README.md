@@ -1,3 +1,7 @@
+---
+title: "Ruby"
+---
+
 # Ruby
 
 [![Ruby](https://img.shields.io/badge/Ruby-4.0-CC342D?logo=ruby&logoColor=white)](https://www.ruby-lang.org/en/)
@@ -61,7 +65,7 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | [SLA](conventions/methods.md#sla--uma-responsabilidade-um-nível)                                  | Uma responsabilidade, um nível de abstração                             |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                             | Extraia o resultado antes de retornar (implicit ou explicit return)     |
 
-<br>
+<br />
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -73,7 +77,7 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | [Valor fixo por padrão](conventions/variables.md#mutabilidade)                                    | `freeze` explícito; mutação é exceção declarada                           |
 | [Sem valores mágicos](conventions/variables.md#constantes-nomeadas)                               | Constantes nomeadas no lugar de literais inline                           |
 
-<br>
+<br />
 
 **Controle de qualidade**: erros, async e testes
 

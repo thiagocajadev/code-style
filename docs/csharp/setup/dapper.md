@@ -1,3 +1,7 @@
+---
+title: "Dapper"
+---
+
 # Dapper
 
 > [!NOTE]
@@ -11,7 +15,6 @@ Cada operação de domínio tem sua própria procedure. O repositório chama e m
 
 <details>
 <summary>❌ Bad — SQL de domínio inline no repositório</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customerId, CancellationToken ct)
@@ -32,11 +35,10 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — procedure encapsula a lógica, repositório só mapeia</summary>
-<br>
 
 ```sql
 -- FindOrdersByCustomer.sql
@@ -84,11 +86,10 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — procedure de escrita com OUTPUT param</summary>
-<br>
 
 ```sql
 -- CreateOrder.sql
@@ -140,7 +141,6 @@ Quando a operação é simples demais para justificar uma procedure (lookup por 
 
 <details>
 <summary>✅ Good — lookup simples por chave primária</summary>
-<br>
 
 ```csharp
 public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
@@ -155,11 +155,10 @@ public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verificação de existência</summary>
-<br>
 
 ```csharp
 public async Task<bool> ExistsAsync(string email, CancellationToken ct)
@@ -183,7 +182,6 @@ Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e
 
 <details>
 <summary>❌ Bad — concatenação deixa o atacante escrever SQL</summary>
-<br>
 
 ```csharp
 // email recebido: ' OR '1'='1
@@ -199,11 +197,10 @@ var sql = $"SELECT Id, Name FROM Customers WHERE Email = '{email}'";
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, CancellationToken ct)
@@ -220,11 +217,10 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
-<br>
 
 ```csharp
 public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct)
@@ -239,11 +235,10 @@ public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
-<br>
 
 ```csharp
 // tentação comum: $"WHERE Name LIKE '%{term}%'" — SQL injection
@@ -266,7 +261,6 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 
 <details>
 <summary>❌ Bad — conexão instanciada dentro do repositório</summary>
-<br>
 
 ```csharp
 public class OrderRepository
@@ -281,11 +275,10 @@ public class OrderRepository
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — IDbConnection injetado via construtor</summary>
-<br>
 
 ```csharp
 public class OrderRepository(IDbConnection connection)

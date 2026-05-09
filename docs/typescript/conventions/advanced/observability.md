@@ -1,3 +1,7 @@
+---
+title: "Observability"
+---
+
 # Observability
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
@@ -17,7 +21,6 @@ e permite trocar a implementação (Pino, Winston, mock) sem alterar os callers.
 
 <details>
 <summary>❌ Bad — logger sem tipo aceita qualquer forma de chamada</summary>
-<br>
 
 ```ts
 // qualquer assinatura passa — strings, objetos, mistura
@@ -27,11 +30,10 @@ logger.error(error);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface tipada, caller obrigado a estruturar</summary>
-<br>
 
 ```ts
 interface Logger {
@@ -54,7 +56,6 @@ estão presentes. O caller não pode omitir `correlationId` por engano.
 
 <details>
 <summary>❌ Bad — contexto sem tipo, campos podem estar ausentes</summary>
-<br>
 
 ```ts
 const requestStore = new AsyncLocalStorage<Record<string, unknown>>();
@@ -71,11 +72,10 @@ logger.info({ ...context }, "processing"); // context pode ser undefined
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — store tipado, campos obrigatórios em compilação</summary>
-<br>
 
 ```ts
 interface RequestContext {
@@ -124,7 +124,6 @@ a verificação em compilação.
 
 <details>
 <summary>❌ Bad — nível como string, qualquer valor aceito</summary>
-<br>
 
 ```ts
 function createLogger(level: string) {
@@ -134,11 +133,10 @@ function createLogger(level: string) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — union type nos níveis</summary>
-<br>
 
 ```ts
 type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";

@@ -1,3 +1,7 @@
+---
+title: "Testing"
+---
+
 # Testing
 
 > Escopo: Java 25 LTS — JUnit 6 + AssertJ + Mockito.
@@ -23,7 +27,6 @@ todo teste.
 
 <details>
 <summary>❌ Bad — fases misturadas, sem separação visual</summary>
-<br>
 
 ```java
 @Test
@@ -38,11 +41,10 @@ void appliesDiscountToOrder() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — AAA explícito: fases separadas por blank line</summary>
-<br>
 
 ```java
 @Test
@@ -66,7 +68,6 @@ AssertJ (biblioteca de assertions fluentes) produz mensagens de falha legíveis 
 
 <details>
 <summary>❌ Bad — assert genérico, mensagem de falha obscura</summary>
-<br>
 
 ```java
 @Test
@@ -79,11 +80,10 @@ void findsActiveUsers() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — AssertJ: assert expressivo, mensagem de falha clara</summary>
-<br>
 
 ```java
 @Test
@@ -104,7 +104,6 @@ resultado**.
 
 <details>
 <summary>❌ Bad — nome genérico não documenta o comportamento</summary>
-<br>
 
 ```java
 @Test
@@ -116,11 +115,10 @@ void test1() { /* ... */ }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — nome descreve o cenário e o resultado esperado</summary>
-<br>
 
 ```java
 @Test
@@ -142,7 +140,6 @@ reais. Use `@Mock` para dependências e `@InjectMocks` para a classe sob teste.
 
 <details>
 <summary>❌ Bad — teste depende de implementação real do repositório</summary>
-<br>
 
 ```java
 @Test
@@ -157,11 +154,10 @@ void findsUserById() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — mock isola a dependência; teste foca no comportamento do serviço</summary>
-<br>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -203,7 +199,6 @@ class UserServiceTest {
 
 <details>
 <summary>✅ Good — @Nested organiza por cenário</summary>
-<br>
 
 ```java
 class OrderServiceTest {
@@ -235,7 +230,6 @@ Extraia setup repetido para `@BeforeEach`. Cada teste inicia com estado limpo.
 
 <details>
 <summary>✅ Good — @BeforeEach inicializa o estado compartilhado</summary>
-<br>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -273,7 +267,6 @@ Cada teste verifica um comportamento. Verificar demais acopla o teste ao detalhe
 
 <details>
 <summary>❌ Bad — verifica estado interno que não é contrato público</summary>
-<br>
 
 ```java
 @Test
@@ -288,11 +281,10 @@ void createsUser() {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — verifica o contrato: o que o chamador observa</summary>
-<br>
 
 ```java
 @Test

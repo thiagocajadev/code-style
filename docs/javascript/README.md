@@ -1,3 +1,7 @@
+---
+title: "JavaScript"
+---
+
 # JavaScript
 
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES2025-F7DF1E?logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
@@ -63,7 +67,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Detalhes abaixo](conventions/functions.md#direct-return)                                                        | Helpers ficam abaixo do orquestrador (step-down rule)                |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                                          | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
-<br>
+<br />
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -76,7 +80,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Código como documentação](conventions/naming.md#código-como-documentação)                            | Nomes substituem comentários; comentários mentem                     |
 | [Sem valores mágicos](conventions/variables.md#evitar-valores-mágicos)                                | Constantes nomeadas no lugar de números e strings soltos             |
 
-<br>
+<br />
 
 **Controle de qualidade**: estado, erros, async e testes
 

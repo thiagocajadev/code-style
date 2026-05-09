@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > Escopo: Ruby 4.0.
@@ -42,7 +46,6 @@ Para aplicações Rails a estrutura é gerada pelo `rails new`.
 
 <details>
 <summary>❌ Bad — versões sem constraints, grupo de test misturado</summary>
-<br>
 
 ```ruby
 source "https://rubygems.org"
@@ -55,11 +58,10 @@ gem "factory_bot_rails"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — constraints semânticas, grupos declarados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

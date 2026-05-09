@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 Controle de fluxo em VB.NET prioriza retorno antecipado e guard clauses sobre aninhamento. Cada `If` que não guarda cedo acumula profundidade; cada `Else` após `Return` é ruído que o leitor precisa descartar. O objetivo é que o olho percorra o método em linha reta.
@@ -8,7 +12,6 @@ O ponto de partida. Para dois caminhos, `If/Else` funciona, mas `Else` após um 
 
 <details>
 <summary>❌ Bad — ElseIf desnecessário após Return</summary>
-<br>
 
 ```vbnet
 Public Function GetDiscount(customerType As String) As Decimal
@@ -24,11 +27,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — early return elimina o ElseIf</summary>
-<br>
 
 ```vbnet
 Public Function GetDiscount(customerType As String) As Decimal
@@ -49,7 +51,6 @@ lançam exceções. O operador `If(condition, truePart, falsePart)` usa curto-ci
 
 <details>
 <summary>❌ Bad — IIf avalia os dois lados sempre</summary>
-<br>
 
 ```vbnet
 Dim label = IIf(isActive, "Active", "Inactive")
@@ -58,11 +59,10 @@ Dim count = IIf(items IsNot Nothing, items.Count, 0)  ' items.Count avaliado mes
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — If ternário com curto-circuito</summary>
-<br>
 
 ```vbnet
 Dim label = If(isActive, "Active", "Inactive")
@@ -73,7 +73,6 @@ Dim count = If(items IsNot Nothing, items.Count, 0)
 
 <details>
 <summary>❌ Bad — If ternário aninhado para 3+ alternativas</summary>
-<br>
 
 ```vbnet
 Dim priority = If(isUrgent, If(isCritical, "Critical", "High"), "Normal")
@@ -81,11 +80,10 @@ Dim priority = If(isUrgent, If(isCritical, "Critical", "High"), "Normal")
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Select Case para 3+ alternativas</summary>
-<br>
 
 ```vbnet
 Dim priority As String
@@ -104,7 +102,6 @@ Quando as condições crescem e se aninham, o fluxo vira uma pirâmide — o _ar
 
 <details>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
-<br>
 
 ```vbnet
 Public Async Function CheckoutAsync(request As CartRequest) As Task(Of Invoice)
@@ -126,11 +123,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guards no topo, caminho feliz sem aninhamento</summary>
-<br>
 
 ```vbnet
 Public Async Function CheckoutAsync(request As CartRequest) As Task(Of Invoice)
@@ -155,7 +151,6 @@ quando os dados são dinâmicos ou o conjunto é extensível sem recompilar.
 
 <details>
 <summary>❌ Bad — If/ElseIf para mapeamento estático de chave → valor</summary>
-<br>
 
 ```vbnet
 Public Function GetCurrencyCode(region As String) As String
@@ -169,11 +164,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Dictionary para lookup dinâmico</summary>
-<br>
 
 ```vbnet
 Private ReadOnly _currencyByRegion As New Dictionary(Of String, String) From {
@@ -198,7 +192,6 @@ End Function
 
 <details>
 <summary>❌ Bad — cadeia de ElseIf para valor único</summary>
-<br>
 
 ```vbnet
 Public Function GetStatusLabel(status As String) As String
@@ -218,11 +211,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Select Case, legível e extensível</summary>
-<br>
 
 ```vbnet
 Public Function GetStatusLabel(status As String) As String
@@ -238,13 +230,12 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 `Select Case` também aceita intervalos e múltiplos valores por `Case`:
 
 <details>
 <summary>✅ Good — Select Case com intervalos e múltiplos valores</summary>
-<br>
 
 ```vbnet
 Public Function ClassifyScore(score As Integer) As String
@@ -274,7 +265,6 @@ métodos param no primeiro match — sem percorrer o resto.
 
 <details>
 <summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
-<br>
 
 ```vbnet
 Dim expiredOrder As Order = Nothing
@@ -288,11 +278,10 @@ Next
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — For Each com Return antecipado sai no primeiro match</summary>
-<br>
 
 ```vbnet
 Function FindFirstExpiredOrder(orders As IEnumerable(Of Order)) As Order
@@ -306,11 +295,10 @@ End Function
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
-<br>
 
 ```vbnet
 ' para no primeiro match
@@ -331,7 +319,6 @@ Use `For Each` quando não precisa do índice — comunica iteração pura sem r
 
 <details>
 <summary>❌ Bad — For com índice quando não é necessário</summary>
-<br>
 
 ```vbnet
 For i = 0 To purchases.Count - 1
@@ -345,11 +332,10 @@ Next
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — For Each para iteração simples</summary>
-<br>
 
 ```vbnet
 For Each purchase In purchases
@@ -363,11 +349,10 @@ Next
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — For...Next quando o índice é parte da lógica</summary>
-<br>
 
 ```vbnet
 ' índice usado para posição ou offset
@@ -391,7 +376,6 @@ independente da condição.
 
 <details>
 <summary>❌ Bad — For simulando condição de parada por estado</summary>
-<br>
 
 ```vbnet
 For attempt = 0 To maxAttempts - 1
@@ -402,11 +386,10 @@ Next
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — While para condição de parada por estado</summary>
-<br>
 
 ```vbnet
 Dim attempt = 0
@@ -421,11 +404,10 @@ End While
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Do...Loop Until quando a primeira execução é garantida</summary>
-<br>
 
 ```vbnet
 ' drena a fila — processa pelo menos um item antes de verificar
@@ -449,7 +431,6 @@ VB.NET oferece três formas de conversão. A escolha importa para segurança e c
 
 <details>
 <summary>❌ Bad — CType onde o tipo é incerto, exceção genérica se falhar</summary>
-<br>
 
 ```vbnet
 Dim service = CType(container.Resolve("IPurchaseService"), IPurchaseService)
@@ -458,11 +439,10 @@ Dim handler = CType(e.Item.FindControl("handler"), Button)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — TryCast com verificação explícita</summary>
-<br>
 
 ```vbnet
 Dim service = TryCast(container.Resolve("IPurchaseService"), IPurchaseService)
@@ -480,7 +460,6 @@ If handler Is Nothing Then Return
 
 <details>
 <summary>❌ Bad — GoTo como substituto de estruturas modernas</summary>
-<br>
 
 ```vbnet
 Sub ProcessFile(path As String)
@@ -500,11 +479,10 @@ End Sub
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Return antecipado e Using/Finally</summary>
-<br>
 
 ```vbnet
 Sub ProcessFile(path As String)

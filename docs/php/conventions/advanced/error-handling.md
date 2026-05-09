@@ -1,3 +1,7 @@
+---
+title: "Error Handling"
+---
+
 # Error Handling
 
 > Escopo: PHP 8.4.
@@ -14,7 +18,6 @@ de domínio para que os callers possam tratar tipos específicos.
 
 <details>
 <summary>❌ Bad — Exception genérica sem tipo</summary>
-<br>
 
 ```php
 function findOrder(int $orderID): Order
@@ -36,11 +39,10 @@ try {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — hierarquia de exceções de domínio</summary>
-<br>
 
 ```php
 // Exceção base do domínio
@@ -101,7 +103,6 @@ try {
 
 <details>
 <summary>❌ Bad — try/catch no meio do domínio</summary>
-<br>
 
 ```php
 class OrderService
@@ -126,11 +127,10 @@ class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — domínio lança, fronteira captura</summary>
-<br>
 
 ```php
 // Domínio: apenas lança
@@ -185,7 +185,6 @@ Valide na fronteira antes de chegar ao domínio. O service não deve receber dad
 
 <details>
 <summary>❌ Bad — validação no service, tarde demais</summary>
-<br>
 
 ```php
 class OrderService
@@ -206,11 +205,10 @@ class OrderService
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — validação na fronteira, service recebe dados válidos</summary>
-<br>
 
 ```php
 // Fronteira: valida e converte
@@ -251,7 +249,6 @@ Use `finally` para liberar recursos independente de sucesso ou falha.
 
 <details>
 <summary>✅ Good — finally garante cleanup em qualquer saída</summary>
-<br>
 
 ```php
 public function processWithLock(int $orderID): Order

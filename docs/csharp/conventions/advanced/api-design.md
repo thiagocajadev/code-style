@@ -1,3 +1,7 @@
+---
+title: "API Design"
+---
+
 # API Design
 
 > Escopo: C#. Idiomas .NET deste arquivo.
@@ -45,7 +49,6 @@ Features/
 
 <details>
 <summary>❌ Bad — lógica de negócio inline na rota</summary>
-<br>
 
 ```csharp
 // ❌ rota grossa: DbContext injetado direto, regra de negócio inline, sem repository,
@@ -70,11 +73,10 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — handler que busca dependências via service locator</summary>
-<br>
 
 ```csharp
 // Features/Orders/CreateOrderHandler.cs
@@ -96,11 +98,10 @@ public class CreateOrderHandler
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — rotas mapeadas no extension method, handler injetado</summary>
-<br>
 
 ```csharp
 // Features/Orders/OrdersExtensions.cs
@@ -140,11 +141,10 @@ public static class OrdersExtensions
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — handler com dependências no construtor, request como parâmetro</summary>
-<br>
 
 ```csharp
 // Features/Orders/CreateOrderHandler.cs
@@ -173,7 +173,6 @@ individualmente via DI, como se fossem parâmetros avulsos.
 
 <details>
 <summary>❌ Bad — assinatura longa, dependências espalhadas no handler</summary>
-<br>
 
 ```csharp
 // ❌ cada dependência é um parâmetro avulso — cresce a cada nova injeção
@@ -190,11 +189,10 @@ app.MapPost("/orders", async (
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — context record agrupa dependências, handler recebe um parâmetro</summary>
-<br>
 
 ```csharp
 // Features/Orders/OrderContexts.cs
@@ -227,7 +225,6 @@ lógica, apenas orquestra.
 
 <details>
 <summary>❌ Bad — controller com lógica de negócio</summary>
-<br>
 
 ```csharp
 // ❌ controller gordo: DbContext no construtor, cálculo de preço na lambda,
@@ -258,11 +255,10 @@ public class OrdersController(AppDbContext db) : ControllerBase
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — controller thin, delega para o service</summary>
-<br>
 
 ```csharp
 [ApiController]
@@ -317,7 +313,6 @@ documentação para cada um e o compilador garante que nenhum caminho retorna fo
 
 <details>
 <summary>❌ Bad — Results apaga o tipo de retorno</summary>
-<br>
 
 ```csharp
 // ❌ IResult é opaco: Swagger não sabe se é 200 ou 404 sem [ProducesResponseType]
@@ -333,11 +328,10 @@ app.MapGet("/orders/{id}", async (Guid id, OrderService orderService, Cancellati
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — TypedResults + union type na assinatura</summary>
-<br>
 
 ```csharp
 app.MapGet("/orders/{id}", FindOrder);
@@ -362,7 +356,6 @@ nomeada antes do retorno — o `return` nomeia, não computa.
 
 <details>
 <summary>❌ Bad — interpolação no return</summary>
-<br>
 
 ```csharp
 // ❌ URL construída na linha do return: lógica inline, difícil inspecionar no debugger
@@ -371,11 +364,10 @@ return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — URL em variável nomeada</summary>
-<br>
 
 ```csharp
 var orderLocation = $"/api/orders/{createdOrder.Id}";
@@ -395,7 +387,6 @@ status.
 
 <details>
 <summary>❌ Bad — tipo union verboso repetido em cada handler</summary>
-<br>
 
 ```csharp
 // ❌ namespaces completos repetidos a cada handler que retorna esse tipo
@@ -410,11 +401,10 @@ public static async Task<Results<
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — alias declarado uma vez, handler usa nome semântico</summary>
-<br>
 
 ```csharp
 // Features/Orders/OrderAliases.cs — um arquivo por feature, uma linha por status possível
@@ -447,7 +437,6 @@ save.
 
 <details>
 <summary>❌ Bad — SaveAsync retorna entidade (CQS violado)</summary>
-<br>
 
 ```csharp
 // ❌ salva e retorna — command e query no mesmo método
@@ -458,11 +447,10 @@ return TypedResults.Created($"/orders/{saved.Id}", saved);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — SaveAsync void, IOrderReader separado para leitura</summary>
-<br>
 
 ```csharp
 // IOrderRepository — contrato de persistência (command)

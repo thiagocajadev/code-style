@@ -1,3 +1,7 @@
+---
+title: "Performance"
+---
+
 # Performance
 
 > Escopo: C#. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
@@ -13,7 +17,6 @@ mesma posição de memória, janela diferente.
 
 <details>
 <summary>❌ Bad — Split aloca array e strings intermediárias</summary>
-<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -27,11 +30,10 @@ public string ExtractProductCode(string sku)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Span fatia sem alocar</summary>
-<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -45,13 +47,12 @@ public string ExtractProductCode(string sku)
 ```
 
 </details>
-<br>
+<br />
 
 `Span<T>` também funciona sobre arrays. Quando o método recebe `T[]` e itera em alta frequência, `ReadOnlySpan<T>` elimina a indireção do enumerador.
 
 <details>
 <summary>❌ Bad — foreach sobre array em hot path</summary>
-<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -68,11 +69,10 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ReadOnlySpan elimina a indireção do enumerador</summary>
-<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -99,7 +99,6 @@ interno e aloca uma vez no final.
 
 <details>
 <summary>❌ Bad — nova string alocada por iteração</summary>
-<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -116,11 +115,10 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — StringBuilder reutiliza o buffer</summary>
-<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -146,7 +144,6 @@ já computado. Indicado para métodos de alta frequência: repositórios, caches
 
 <details>
 <summary>❌ Bad — <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
-<br>
 
 ```csharp
 public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -161,11 +158,10 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — <b>ValueTask</b> sem alocação no caminho síncrono</summary>
-<br>
 
 ```csharp
 public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -179,7 +175,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 ```
 
 </details>
-<br>
+<br />
 
 `ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task` tem menos overhead de leitura e não oferece risco de double-await.
 
@@ -191,7 +187,6 @@ da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advan
 
 <details>
 <summary>❌ Bad — Guid.NewGuid() é v4: random, fragmenta índice</summary>
-<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
@@ -205,11 +200,10 @@ public Order CreateOrder(CreateOrderRequest request)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
-<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)

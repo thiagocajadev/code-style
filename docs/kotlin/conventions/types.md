@@ -1,3 +1,7 @@
+---
+title: "Types"
+---
+
 # Types
 
 > Escopo: Kotlin 2.2.
@@ -21,7 +25,6 @@ nulidade em tempo de compilação — sem NullPointerException em código idiom�
 
 <details>
 <summary>❌ Bad — classe manual com boilerplate</summary>
-<br>
 
 ```kotlin
 class User(val id: Long, val name: String, val email: String) {
@@ -33,11 +36,10 @@ class User(val id: Long, val name: String, val email: String) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — data class elimina o boilerplate</summary>
-<br>
 
 ```kotlin
 data class User(
@@ -56,7 +58,6 @@ val updated = user.copy(email = "new@email.com")
 
 <details>
 <summary>❌ Bad — String como discriminante de estado</summary>
-<br>
 
 ```kotlin
 data class OrderResult(
@@ -68,11 +69,10 @@ data class OrderResult(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sealed class: o compilador verifica todas as branches</summary>
-<br>
 
 ```kotlin
 sealed class OrderResult {
@@ -97,7 +97,6 @@ fun describeResult(result: OrderResult): String {
 
 <details>
 <summary>❌ Bad — primitivo sem semântica, fácil de confundir</summary>
-<br>
 
 ```kotlin
 fun chargeCustomer(userId: Long, amount: Double) { ... }
@@ -108,11 +107,10 @@ chargeCustomer(100.0, 42L)  // compilador não pega
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — value class dá semântica sem overhead</summary>
-<br>
 
 ```kotlin
 @JvmInline
@@ -132,7 +130,6 @@ chargeCustomer(UserId(42L), Amount(100.0))
 
 <details>
 <summary>❌ Bad — herança para compartilhar comportamento</summary>
-<br>
 
 ```kotlin
 abstract class BaseRepository {
@@ -146,11 +143,10 @@ class UserRepository : BaseRepository() { ... }
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — interface define contrato; comportamento via composição</summary>
-<br>
 
 ```kotlin
 interface OrderRepository {
@@ -173,7 +169,6 @@ class SqlOrderRepository(
 
 <details>
 <summary>❌ Bad — tipo genérico invariante força cast desnecessário</summary>
-<br>
 
 ```kotlin
 fun printAll(items: List<Any>) {
@@ -187,11 +182,10 @@ fun printAll(items: List<Any>) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — out-projection para leitura; in-projection para escrita</summary>
-<br>
 
 ```kotlin
 fun printAll(items: List<out Any>) {
@@ -210,7 +204,6 @@ printAll(listOf("Alice", "Bob"))
 
 <details>
 <summary>❌ Bad — construtor com lógica de criação</summary>
-<br>
 
 ```kotlin
 class Token(val value: String, val expiresAt: Instant) {
@@ -220,11 +213,10 @@ class Token(val value: String, val expiresAt: Instant) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — companion object com factory method nomeado</summary>
-<br>
 
 ```kotlin
 class Token private constructor(

@@ -1,3 +1,7 @@
+---
+title: "Navigation"
+---
+
 # Navigation
 
 > Escopo: Flutter 3.29, GoRouter 14.x.
@@ -24,7 +28,6 @@ routes (tabs com estado persistente).
 
 <details>
 <summary>❌ Bad — Navigator.push imperativo sem URL</summary>
-<br>
 
 ```dart
 ElevatedButton(
@@ -40,11 +43,10 @@ ElevatedButton(
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — GoRouter declarativo com URL tipada</summary>
-<br>
 
 ```dart
 // router.dart
@@ -79,7 +81,6 @@ ElevatedButton(
 
 <details>
 <summary>❌ Bad — verificação de auth dentro de cada tela</summary>
-<br>
 
 ```dart
 class OrderListScreen extends StatelessWidget {
@@ -98,11 +99,10 @@ class OrderListScreen extends StatelessWidget {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — redirect centralizado no GoRouter</summary>
-<br>
 
 ```dart
 final router = GoRouter(
@@ -125,7 +125,6 @@ final router = GoRouter(
 
 <details>
 <summary>❌ Bad — IndexedStack sem URLs — deep links impossíveis</summary>
-<br>
 
 ```dart
 class MainScreen extends StatefulWidget { ... }
@@ -151,11 +150,10 @@ class _MainScreenState extends State<MainScreen> {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ShellRoute com tab bar e URLs independentes</summary>
-<br>
 
 ```dart
 final router = GoRouter(

@@ -1,3 +1,7 @@
+---
+title: "HTML"
+---
+
 # HTML
 
 [![HTML](https://img.shields.io/badge/HTML-5-E34F26?logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference)
@@ -45,7 +49,7 @@ propósito e acessibilidade como padrão, não como adição.
 | [Nomes que descrevem propósito](conventions/naming.md#ids-e-classes)         | IDs e classes descrevem papel, não aparência                        |
 | [data-* para comportamento](conventions/naming.md#data-attributes)           | `data-*` para JS; classes só para CSS                               |
 
-<br>
+<br />
 
 **Acessibilidade:** legível por todos
 
@@ -56,7 +60,7 @@ propósito e acessibilidade como padrão, não como adição.
 | [Botão vs link](conventions/advanced/accessibility.md#botão-vs-link)               | `<button>` para ação, `<a>` para navegação                          |
 | [lang no html](conventions/structure.md#lang-e-charset)                            | `lang` correto habilita pronúncia e hifenização do leitor de tela   |
 
-<br>
+<br />
 
 **Performance e SEO:** produção
 

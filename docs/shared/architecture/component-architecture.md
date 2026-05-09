@@ -1,3 +1,7 @@
+---
+title: "Componentização e Arquitetura de Módulos"
+---
+
 # Componentização e Arquitetura de Módulos
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.

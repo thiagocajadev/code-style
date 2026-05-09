@@ -1,3 +1,7 @@
+---
+title: "Go"
+---
+
 # Go
 
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev/doc/)
@@ -54,7 +58,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                            | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
-<br>
+<br />
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
@@ -66,7 +70,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [Zero value por padrão](conventions/variables.md#zero-values)                                 | Go inicializa tudo; declare com intenção, não com ruído              |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
 
-<br>
+<br />
 
 **Controle de qualidade**: erros, concorrência e testes
 

@@ -1,3 +1,7 @@
+---
+title: "Quick Reference — Rust"
+---
+
 # Quick Reference — Rust
 
 > Escopo: Rust 1.95 (2024 Edition). Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.

@@ -1,3 +1,7 @@
+---
+title: "Null Safety"
+---
+
 # Null Safety
 
 CSS não tem `null` como tipo, mas tem o equivalente: uma custom property referenciada antes de
@@ -14,7 +18,6 @@ browser descarta a declaração sem aviso.
 
 <details>
 <summary>❌ Bad — custom property sem fallback, componente quebra se o token não existir</summary>
-<br>
 
 ```css
 .button {
@@ -26,11 +29,10 @@ browser descarta a declaração sem aviso.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — fallback garante que o componente sempre renderiza</summary>
-<br>
 
 ```css
 .button {
@@ -50,7 +52,6 @@ usar quando a propriedade não foi atribuída.
 
 <details>
 <summary>❌ Bad — custom property sem registro: tipo desconhecido, animação não funciona</summary>
-<br>
 
 ```css
 /* sem @property: o browser trata --color-primary como string opaca */
@@ -68,11 +69,10 @@ usar quando a propriedade não foi atribuída.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — @property define contrato e previne valor inválido</summary>
-<br>
 
 ```css
 @property --color-primary {
@@ -112,7 +112,6 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 <details>
 <summary>❌ Bad — var() sem fallback em cadeia: falha silenciosa quando token não existe</summary>
-<br>
 
 ```css
 :root {
@@ -132,11 +131,10 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — cadeia de fallback para tokens com herança de tema</summary>
-<br>
 
 ```css
 :root {
@@ -170,7 +168,6 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 
 <details>
 <summary>❌ Bad — valores hardcoded como sentinela para "sem estilo"</summary>
-<br>
 
 ```css
 /* valores mágicos para "remover" estilo — frágeis e sem intenção clara */
@@ -192,11 +189,10 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — keywords semânticos no lugar de valores sentinela</summary>
-<br>
 
 ```css
 /* remover estilo aplicado por classe pai */

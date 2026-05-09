@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
@@ -10,7 +14,6 @@ estrutural: o compilador já descartou o branch anterior.
 
 <details>
 <summary>❌ Bad — else desnecessário após return</summary>
-<br>
 
 ```csharp
 public decimal GetDiscount(string customerType)
@@ -26,11 +29,10 @@ public decimal GetDiscount(string customerType)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — early return elimina o else</summary>
-<br>
 
 ```csharp
 public decimal GetDiscount(string customerType)
@@ -51,7 +53,6 @@ expression. Nunca aninhar ternários.
 
 <details>
 <summary>❌ Bad — if/else imperativo para atribuição simples</summary>
-<br>
 
 ```csharp
 string label;
@@ -63,11 +64,10 @@ else
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ternário na atribuição</summary>
-<br>
 
 ```csharp
 var label = order.IsPaid ? "Paid" : "Pending";
@@ -77,7 +77,6 @@ var label = order.IsPaid ? "Paid" : "Pending";
 
 <details>
 <summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
-<br>
 
 ```csharp
 var priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal";
@@ -85,11 +84,10 @@ var priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal";
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch expression para 3+ alternativas</summary>
-<br>
 
 ```csharp
 var priority = (isUrgent, isCritical) switch
@@ -109,7 +107,6 @@ clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
 
 <details>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, CancellationToken ct)
@@ -136,11 +133,10 @@ public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, Cancellati
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clauses no topo, fluxo principal livre</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, CancellationToken ct)
@@ -171,7 +167,6 @@ extrai e verifica em uma única expressão, sem cast manual, com escopo garantid
 
 <details>
 <summary>❌ Bad — cast manual após verificação de tipo</summary>
-<br>
 
 ```csharp
 public string SummarizePayment(object payment)
@@ -194,11 +189,10 @@ public string SummarizePayment(object payment)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pattern matching extrai e verifica em uma expressão</summary>
-<br>
 
 ```csharp
 public string SummarizePayment(object payment)
@@ -229,7 +223,6 @@ esquecido, sem caso não tratado.
 
 <details>
 <summary>❌ Bad — if/else encadeado para mapeamento de valor</summary>
-<br>
 
 ```csharp
 public string GetStatusLabel(string status)
@@ -243,11 +236,10 @@ public string GetStatusLabel(string status)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch expression declarativo e exaustivo</summary>
-<br>
 
 ```csharp
 public string GetStatusLabel(string status)
@@ -266,11 +258,10 @@ public string GetStatusLabel(string status)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
-<br>
 
 ```csharp
 public IResult MapResult(Result<Order> result)
@@ -288,11 +279,10 @@ public IResult MapResult(Result<Order> result)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch expression com pattern matching em Result</summary>
-<br>
 
 ```csharp
 public IResult MapResult(Result<Order> result)
@@ -320,7 +310,6 @@ silencioso.
 
 <details>
 <summary>❌ Bad — if/else encadeado para despacho de ações</summary>
-<br>
 
 ```csharp
 public void ProcessOrderEvent(OrderEvent orderEvent)
@@ -345,11 +334,10 @@ public void ProcessOrderEvent(OrderEvent orderEvent)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch statement para despacho de comportamento</summary>
-<br>
 
 ```csharp
 public void ProcessOrderEvent(OrderEvent orderEvent)
@@ -384,7 +372,6 @@ Quando os dados são dinâmicos (carregados de config, banco ou fonte externa),
 
 <details>
 <summary>❌ Bad — lógica hardcoded para dados que vêm de fonte externa</summary>
-<br>
 
 ```csharp
 public string GetCurrencyCode(string region)
@@ -398,11 +385,10 @@ public string GetCurrencyCode(string region)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Dictionary para lookup dinâmico</summary>
-<br>
 
 ```csharp
 private readonly Dictionary<string, string> _currencyByRegion = new()
@@ -433,7 +419,6 @@ LINQ param no primeiro match — sem percorrer o resto. Para busca com lógica d
 
 <details>
 <summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
-<br>
 
 ```csharp
 public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
@@ -452,11 +437,10 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — foreach com return antecipado</summary>
-<br>
 
 ```csharp
 public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
@@ -472,11 +456,10 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
-<br>
 
 ```csharp
 public bool HasExpiredOrders(IEnumerable<Order> orders)
@@ -495,11 +478,10 @@ public bool HasExpiredOrders(IEnumerable<Order> orders)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
-<br>
 
 ```csharp
 // para no primeiro match
@@ -521,7 +503,6 @@ variável de controle, com suporte nativo a `break` e `continue`.
 
 <details>
 <summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
-<br>
 
 ```csharp
 for (int i = 0; i < orders.Count; i++)
@@ -532,11 +513,10 @@ for (int i = 0; i < orders.Count; i++)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — foreach para iteração sobre valores</summary>
-<br>
 
 ```csharp
 foreach (var order in orders)
@@ -555,7 +535,6 @@ independente da condição.
 
 <details>
 <summary>❌ Bad — for simulando condição de parada por estado</summary>
-<br>
 
 ```csharp
 for (int attempt = 0; attempt < maxAttempts; attempt++)
@@ -567,11 +546,10 @@ for (int attempt = 0; attempt < maxAttempts; attempt++)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — while para condição de parada por estado</summary>
-<br>
 
 ```csharp
 var attempt = 0;
@@ -587,11 +565,10 @@ while (attempt < maxAttempts)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — while com verificação duplicada antes do loop</summary>
-<br>
 
 ```csharp
 // verifica a condição antes de entrar, mas a primeira iteração é sempre necessária
@@ -607,11 +584,10 @@ if (taskQueue.Count > 0)
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — do...while quando a primeira execução é garantida</summary>
-<br>
 
 ```csharp
 // drena a fila — processa pelo menos um item antes de verificar

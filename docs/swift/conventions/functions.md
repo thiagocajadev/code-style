@@ -1,3 +1,7 @@
+---
+title: "Functions"
+---
+
 # Functions
 
 > Escopo: Swift 6.1.
@@ -20,7 +24,6 @@ por uma `let`.
 
 <details>
 <summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
-<br>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -48,11 +51,10 @@ func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
-<br>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -83,7 +85,6 @@ private func notifyConfirmation(to email: String) async { ... }
 
 <details>
 <summary>❌ Bad — função mistura nível de abstração</summary>
-<br>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -100,11 +101,10 @@ func generateReport(orders: [Order]) -> Report {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — cada função em um único nível</summary>
-<br>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -130,7 +130,6 @@ private func calculateRevenue(_ orders: [Order]) -> Double {
 
 <details>
 <summary>❌ Bad — lógica inline no return</summary>
-<br>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -143,11 +142,10 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — explaining return com let nomeada</summary>
-<br>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -167,7 +165,6 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 
 <details>
 <summary>❌ Bad — chamada ambígua sem labels</summary>
-<br>
 
 ```swift
 func move(_ source: Index, _ destination: Index) { }
@@ -177,11 +174,10 @@ move(2, 5)   // o que é 2 e o que é 5?
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — labels que leem como prosa</summary>
-<br>
 
 ```swift
 func move(from source: Index, to destination: Index) { }
@@ -195,7 +191,6 @@ move(from: 2, to: 5)
 
 <details>
 <summary>❌ Bad — warning desnecessário em função de efeito colateral</summary>
-<br>
 
 ```swift
 func registerEvent(_ event: AnalyticsEvent) -> Bool {
@@ -207,11 +202,10 @@ registerEvent(.pageView("Home"))   // ⚠️ result of call is unused
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — @discardableResult quando o retorno é opcional para o chamador</summary>
-<br>
 
 ```swift
 @discardableResult

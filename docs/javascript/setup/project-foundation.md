@@ -1,3 +1,7 @@
+---
+title: "Project Foundation"
+---
+
 # Project Foundation
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são referências
@@ -38,7 +42,6 @@ serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
 <summary>❌ Bad — server.js como dumping ground de configuração</summary>
-<br>
 
 ```js
 import express from "express";
@@ -83,11 +86,10 @@ app.listen(process.env.PORT || 3000);
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — server.js como índice, configuração delegada</summary>
-<br>
 
 ```js
 import { config } from "./config.js";
@@ -106,7 +108,6 @@ apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que r
 
 <details>
 <summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
-<br>
 
 ```js
 // app.js
@@ -138,11 +139,10 @@ app.post("/api/orders", async (req, res) => {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>❌ Bad — rotas definidas fora do domínio, em arquivo centralizado</summary>
-<br>
 
 ```js
 // routes.js — arquivo monolítico de rotas
@@ -163,11 +163,10 @@ export function registerRoutes(app, orderService, userService) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ponto de entrada agrega os módulos</summary>
-<br>
 
 ```js
 // app.js
@@ -189,11 +188,10 @@ export function createApp(config) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — domínio de Orders dono das suas rotas</summary>
-<br>
 
 ```js
 // features/orders/orders.module.js
@@ -243,7 +241,6 @@ diretamente: apenas importa a seção que precisa.
 
 <details>
 <summary>❌ Bad — process.env espalhado em todo lugar</summary>
-<br>
 
 ```js
 // auth/auth.middleware.js
@@ -258,11 +255,10 @@ const port = process.env.PORT || 3000; // leitura direta
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — config.js como único ponto de entrada de env vars</summary>
-<br>
 
 ```js
 // config.js
@@ -306,7 +302,6 @@ rotas              → handlers recebem o usuário já autenticado no contexto
 
 <details>
 <summary>❌ Bad — authenticate depois das rotas</summary>
-<br>
 
 ```js
 app.use(express.json());
@@ -320,11 +315,10 @@ app.use(authenticate(config.auth)); // tarde demais
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ordem correta do pipeline</summary>
-<br>
 
 ```js
 // middleware.js

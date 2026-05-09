@@ -1,3 +1,7 @@
+---
+title: "Control Flow"
+---
+
 # Control Flow
 
 > Escopo: Java 25 LTS.
@@ -12,7 +16,6 @@ o fluxo já saiu.
 
 <details>
 <summary>❌ Bad — else desnecessário após return</summary>
-<br>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -26,11 +29,10 @@ private BigDecimal getDiscount(User user) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — early return elimina o else</summary>
-<br>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -53,7 +55,6 @@ vira puzzle (quebra-cabeça). Três ou mais alternativas → guard clauses ou sw
 
 <details>
 <summary>❌ Bad — ternário encadeado ilegível</summary>
-<br>
 
 ```java
 final var label = score >= 90 ? "A"
@@ -65,11 +66,10 @@ final var label = score >= 90 ? "A"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — ternário para dois valores; guard clauses para três ou mais</summary>
-<br>
 
 ```java
 final var label = user.isPremium() ? "Premium" : "Standard";
@@ -93,7 +93,6 @@ Guard clauses invertem: valide as saídas no topo e deixe o caminho feliz limpo.
 
 <details>
 <summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
-<br>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -112,11 +111,10 @@ private Invoice processOrder(Order order) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — guard clauses, caminho feliz ao fundo</summary>
-<br>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -141,7 +139,6 @@ sem `break`.
 
 <details>
 <summary>❌ Bad — switch tradicional verboso com fall-through implícito</summary>
-<br>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -165,11 +162,10 @@ private String getStatusLabel(OrderStatus status) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch expression: compacto, sem fall-through, sem break</summary>
-<br>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -192,7 +188,6 @@ Quando cada caso precisa executar múltiplas ações (não retornar um valor, ma
 
 <details>
 <summary>❌ Bad — if/else encadeado para despacho de ações</summary>
-<br>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -211,11 +206,10 @@ private void processPaymentEvent(PaymentEvent event) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — switch para despacho de comportamento</summary>
-<br>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -245,7 +239,6 @@ classes, o compilador garante exaustividade — sem `default` necessário.
 
 <details>
 <summary>❌ Bad — instanceof + cast manual</summary>
-<br>
 
 ```java
 private String describePayment(PaymentResult result) {
@@ -262,11 +255,10 @@ private String describePayment(PaymentResult result) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pattern matching com desestruturação; sealed garante exaustividade</summary>
-<br>
 
 ```java
 // sealed interface PaymentResult permits PaymentSuccess, PaymentFailure, PaymentPending {}
@@ -295,7 +287,6 @@ Esses métodos param no primeiro match — sem percorrer o resto.
 
 <details>
 <summary>❌ Bad — loop manual com flag percorre tudo</summary>
-<br>
 
 ```java
 private Product findFirstExpiredProduct(List<Product> products) {
@@ -313,11 +304,10 @@ private Product findFirstExpiredProduct(List<Product> products) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — stream para no primeiro match</summary>
-<br>
 
 ```java
 // para no primeiro match
@@ -339,7 +329,6 @@ sem índice, sem variável de controle.
 
 <details>
 <summary>❌ Bad — for indexado quando o índice nunca é usado</summary>
-<br>
 
 ```java
 for (int i = 0; i < orders.size(); i++) {
@@ -349,11 +338,10 @@ for (int i = 0; i < orders.size(); i++) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — for-each para efeitos colaterais por item</summary>
-<br>
 
 ```java
 for (final var order : orders) {
@@ -372,7 +360,6 @@ tamanho, `while` é a escolha natural.
 
 <details>
 <summary>❌ Bad — for simulando condição de parada por estado</summary>
-<br>
 
 ```java
 for (int attempt = 0; attempt < maxAttempts; attempt++) {
@@ -383,11 +370,10 @@ for (int attempt = 0; attempt < maxAttempts; attempt++) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — while para condição de parada por estado</summary>
-<br>
 
 ```java
 var attempt = 0;
@@ -408,7 +394,6 @@ Use `do-while` quando a primeira iteração deve sempre executar, independente d
 
 <details>
 <summary>❌ Bad — while quando a fila deve processar ao menos um item</summary>
-<br>
 
 ```java
 // verifica antes de executar — se a fila já estiver vazia, nunca executa
@@ -420,11 +405,10 @@ while (!taskQueue.isEmpty()) {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — do-while quando a primeira execução é garantida</summary>
-<br>
 
 ```java
 // drena a fila: processa pelo menos um item antes de verificar

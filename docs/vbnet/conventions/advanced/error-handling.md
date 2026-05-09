@@ -1,3 +1,7 @@
+---
+title: "Error Handling"
+---
+
 # Error Handling
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
@@ -10,7 +14,6 @@ Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado d
 
 <details>
 <summary>❌ Bad — On Error GoTo, modelo VB clássico</summary>
-<br>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -26,11 +29,10 @@ End Sub
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Try/Catch estruturado, tipado e propagável</summary>
-<br>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -51,7 +53,6 @@ Catch mais específico captura primeiro. `Exception` genérico no topo silencia 
 
 <details>
 <summary>❌ Bad — Exception genérico silencia falhas específicas</summary>
-<br>
 
 ```vbnet
 Try
@@ -66,11 +67,10 @@ End Try
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — tipos específicos, cada um com tratamento adequado</summary>
-<br>
 
 ```vbnet
 Try
@@ -96,7 +96,6 @@ Um `Catch` sem tratamento é pior que não ter `Try`: silencia o erro, esconde o
 
 <details>
 <summary>❌ Bad — Catch silencioso oculta falha</summary>
-<br>
 
 ```vbnet
 Try
@@ -114,11 +113,10 @@ End Try
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — loga e relança, ou trata com intenção clara</summary>
-<br>
 
 ```vbnet
 Try
@@ -145,7 +143,6 @@ A cláusula `When` filtra a exceção por condição sem capturá-la quando a co
 
 <details>
 <summary>✅ Good — Catch When filtra sem captura desnecessária</summary>
-<br>
 
 ```vbnet
 Try
@@ -171,7 +168,6 @@ Qualquer objeto que implementa `IDisposable` deve ser criado dentro de `Using`. 
 
 <details>
 <summary>❌ Bad — Dispose manual, não garante limpeza em exceção</summary>
-<br>
 
 ```vbnet
 Dim connection = New SqlConnection(_connectionString)
@@ -188,11 +184,10 @@ connection.Dispose()
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — Using garante Dispose em qualquer caminho</summary>
-<br>
 
 ```vbnet
 Using connection = New SqlConnection(_connectionString)
@@ -217,7 +212,6 @@ Quando o recurso não implementa `IDisposable` mas precisa de limpeza, use `Fina
 
 <details>
 <summary>✅ Good — Finally garante limpeza em qualquer saída</summary>
-<br>
 
 ```vbnet
 Dim lockAcquired = False
@@ -238,7 +232,6 @@ Exceções sinalizam condições inesperadas — bugs, falhas de infraestrutura,
 
 <details>
 <summary>❌ Bad — exceção como controle de fluxo de negócio</summary>
-<br>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As Purchase
@@ -260,11 +253,10 @@ End Try
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — resultado tipado para falhas previsíveis</summary>
-<br>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As OperationResult(Of Purchase)

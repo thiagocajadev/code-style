@@ -1,3 +1,7 @@
+---
+title: "Validation"
+---
+
 # Validation
 
 > Escopo: Swift 6.1.
@@ -20,7 +24,6 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 
 <details>
 <summary>❌ Bad — guard espalhado pela função de negócio</summary>
-<br>
 
 ```swift
 func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order {
@@ -40,11 +43,10 @@ func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — init valida; função recebe objeto já válido</summary>
-<br>
 
 ```swift
 struct OrderRequest {
@@ -77,7 +79,6 @@ func processOrder(_ request: OrderRequest) async throws -> Order {
 
 <details>
 <summary>❌ Bad — para no primeiro erro</summary>
-<br>
 
 ```swift
 func validateProfile(_ profile: UserProfile) throws {
@@ -89,11 +90,10 @@ func validateProfile(_ profile: UserProfile) throws {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — acumula todos os erros</summary>
-<br>
 
 ```swift
 enum ProfileValidationError: Error {
@@ -123,7 +123,6 @@ func validateProfile(_ profile: UserProfile) throws {
 
 <details>
 <summary>❌ Bad — guard/return silencia um invariante</summary>
-<br>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {
@@ -134,11 +133,10 @@ func applyDiscount(_ amount: Double, rate: Double) -> Double {
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — precondition falha com mensagem clara</summary>
-<br>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {

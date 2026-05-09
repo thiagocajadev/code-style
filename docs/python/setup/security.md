@@ -1,3 +1,7 @@
+---
+title: "Security"
+---
+
 # Security
 
 > Escopo: Python. Especificidades do ecossistema; princípios em [shared/platform/security.md](../../shared/platform/security.md).
@@ -11,7 +15,6 @@ para produção — nunca commite o arquivo `.env`.
 
 <details>
 <summary>❌ Bad — credencial no código-fonte</summary>
-<br>
 
 ```python
 DATABASE_URL = "postgresql://admin:s3cr3t@localhost/app"
@@ -20,11 +23,10 @@ JWT_SECRET = "my-super-secret-key"
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — pydantic-settings lê e valida variáveis de ambiente</summary>
-<br>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -64,7 +66,6 @@ de produção: falha rápido se a variável não existir.
 
 <details>
 <summary>❌ Bad — os.getenv sem validação de presença</summary>
-<br>
 
 ```python
 import os
@@ -74,11 +75,10 @@ db_url = os.getenv("DATABASE_URL")  # None se ausente — bug silencioso
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — dotenv + os.environ falha se a variável não existir</summary>
-<br>
 
 ```python
 import os
@@ -125,7 +125,6 @@ a aplicação não deve subir.
 
 <details>
 <summary>❌ Bad — variável obrigatória com default silencioso</summary>
-<br>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -137,11 +136,10 @@ class Settings(BaseSettings):
 
 </details>
 
-<br>
+<br />
 
 <details>
 <summary>✅ Good — sem default para secrets; Pydantic falha na inicialização</summary>
-<br>
 
 ```python
 from pydantic import field_validator
