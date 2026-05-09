@@ -19,6 +19,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" \
+                      /opt/hostedtoolcache/CodeQL
+          sudo apt-get clean
+          df -h /
+
       - name: Checkout code-style
         uses: actions/checkout@v4
         with:
@@ -53,6 +61,15 @@ jobs:
         run: |
           rm -rf docs-renderer/docs
           cp -r code-style/docs docs-renderer/docs
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: docs-renderer/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('docs-renderer/pnpm-lock.yaml') }}-${{ hashFiles('code-style/docs/**/*.md') }}
+          restore-keys: |
+            nextjs-${{ runner.os }}-${{ hashFiles('docs-renderer/pnpm-lock.yaml') }}-
+            nextjs-${{ runner.os }}-
 
       - name: Install dependencies
         working-directory: docs-renderer
