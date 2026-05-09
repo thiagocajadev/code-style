@@ -11,21 +11,88 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code-style
+        uses: actions/checkout@v4
+        with:
+          path: code-style
+
+      - name: Checkout pmndrs/docs fork
+        uses: actions/checkout@v4
+        with:
+          repository: thiagocajadev/docs
+          ref: main
+          path: docs-renderer
+
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.28.1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: docs-renderer/pnpm-lock.yaml
+
+      - name: Sync docs content into renderer
+        run: |
+          rm -rf docs-renderer/docs
+          cp -r code-style/docs docs-renderer/docs
+
+      - name: Install dependencies
+        working-directory: docs-renderer
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        working-directory: docs-renderer
+        env:
+          MDX: docs
+          DIST_DIR: out
+          OUTPUT: export
+          STATIC_PAGE_GENERATION_TIMEOUT: "300"
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          HOME_REDIRECT: /javascript/README
+          NEXT_PUBLIC_LIBNAME: Code Style
+          NEXT_PUBLIC_LIBNAME_SHORT: code-style
+          NEXT_PUBLIC_LIBNAME_DOTSUFFIX_LABEL: docs
+          GITHUB: https://github.com/thiagocajadev/code-style
+          THEME_PRIMARY: "#4CAF50"
+          THEME_SCHEME: tonalSpot
+          THEME_CONTRAST: "0"
+          THEME_NOTE: "#1f6feb"
+          THEME_TIP: "#238636"
+          THEME_IMPORTANT: "#8957e5"
+          THEME_WARNING: "#d29922"
+          THEME_CAUTION: "#da3633"
+        run: pnpm run build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs-renderer/out
+
   deploy:
-    uses: pmndrs/docs/.github/workflows/build.yml@v2
-    with:
-      mdx: "docs"
-      libname: "Code Style"
-      libname_short: "code-style"
-      libname_dotsuffix_label: "docs"
-      home_redirect: "/javascript/README"
-      github: "https://github.com/thiagocajadev/code-style"
-      theme_primary: "#4CAF50"
-      theme_scheme: "tonalSpot"
-      theme_contrast: "0"
-      theme_note: "#1f6feb"
-      theme_tip: "#238636"
-      theme_important: "#8957e5"
-      theme_warning: "#d29922"
-      theme_caution: "#da3633"
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
