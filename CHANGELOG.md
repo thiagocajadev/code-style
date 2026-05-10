@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.5] - 2026-05-10
+
+### Fixed
+
+- `.github/workflows/docs.yml` — bump de 6 actions para majors que rodam em Node 24, eliminando warnings de deprecation de Node 20 antes da força-migração do GitHub em 2/jun/2026: `actions/checkout@v4→v6` (2x), `actions/configure-pages@v5→v6`, `actions/setup-node@v4→v6`, `actions/cache@v4→v5`, `actions/upload-pages-artifact@v3→v5`, `actions/deploy-pages@v4→v5`. `node-version: 24` (Active LTS até abr/2028) mantido; `pnpm/action-setup@v4` permanece (sem deprecation)
+- `docs/javascript/conventions/naming.md` — parágrafo de abertura reescrito sem forçar metáfora: "Nomear bem as coisas ajuda o programador a ler e entender o código". A referência a **API** (Application Programming Interface) fica restrita a funções e módulos, onde o termo é tecnicamente correto. Variável local não é API; o texto antigo confundia o programador iniciante
+
 ## [1.28.4] - 2026-05-10
 
 ### Added

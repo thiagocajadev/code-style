@@ -1,20 +1,28 @@
 # Naming
 
-Nome é a **API** (Application Programming Interface, Interface de Programação de Aplicações) que o código expõe ao próximo leitor. Um identificador expressivo elimina comentários, encurta a leitura e revela intenção. Um genérico (`data`, `result`, `tmp`) força o leitor a abrir o corpo da função pra entender o que está acontecendo.
+Nomear bem as coisas ajuda o programador a ler e entender o código. Um
+identificador expressivo elimina comentários, encurta a leitura e revela
+intenção.
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
+Um nome genérico (`data`, `result`, `tmp`) força o programador a abrir o corpo
+da função pra entender o que está acontecendo. Em funções e módulos, o nome
+ainda compõe a **API** (Application Programming Interface, Interface de
+Programação) que outro código vai consumir — errar ali custa mais caro.
+
+Nomes bons tornam comentários desnecessários. O código deve contar a história
+por si só.
 
 ## Conceitos fundamentais
 
-| Conceito | O que é |
-| --- | --- |
-| **identifier** (identificador) | Nome dado a variável, função, classe ou propriedade |
-| **camelCase** (estilo camelo) | Convenção JS para variáveis e funções: primeira palavra minúscula, demais capitalizadas (`fetchUser`) |
-| **PascalCase** (estilo Pascal) | Convenção JS para classes e construtores: todas as palavras capitalizadas (`UserService`) |
-| **UPPER_SNAKE_CASE** (maiúsculas com sublinhado) | Convenção JS para constantes globais e enums (`MAX_RETRIES`) |
-| **magic number** (número mágico) | Literal numérico sem nome no meio do código; perde contexto e dificulta troca |
-| **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` — torna o nome legível como pergunta (`isActive`, `hasPermission`) |
-| **domain term** (termo de domínio) | Palavra que pertence ao negócio (`invoice`, `subscriber`), não ao tipo técnico (`object`, `entity`) |
+| Conceito                                         | O que é                                                                                               |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| **identifier** (identificador)                   | Nome dado a variável, função, classe ou propriedade                                                   |
+| **camelCase** (estilo camelo)                    | Convenção JS para variáveis e funções: primeira palavra minúscula, demais capitalizadas (`fetchUser`) |
+| **PascalCase** (estilo Pascal)                   | Convenção JS para classes e construtores: todas as palavras capitalizadas (`UserService`)             |
+| **UPPER_SNAKE_CASE** (maiúsculas com sublinhado) | Convenção JS para constantes globais e enums (`MAX_RETRIES`)                                          |
+| **magic number** (número mágico)                 | Literal numérico sem nome no meio do código; perde contexto e dificulta troca                         |
+| **boolean prefix** (prefixo booleano)            | `is`, `has`, `can`, `should` — torna o nome legível como pergunta (`isActive`, `hasPermission`)       |
+| **domain term** (termo de domínio)               | Palavra que pertence ao negócio (`invoice`, `subscriber`), não ao tipo técnico (`object`, `entity`)   |
 
 ## Identificadores sem significado
 
@@ -217,7 +225,8 @@ function applySeasonalDiscount(order) {
 
 ## Domain-first naming
 
-O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
+O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a
+operação acontece.
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
@@ -275,8 +284,8 @@ function searchProducts(term) {
 
 ## Código como documentação
 
-Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. Um nome expressivo
-substitui qualquer comentário.
+Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. Um
+nome expressivo substitui qualquer comentário.
 
 <details>
 <summary>❌ Ruim — comentário repete o que o código já diz</summary>
@@ -301,7 +310,8 @@ attempts++;
 <br>
 
 ```js
-const canDeleteRecord = user.status === "active" && user.roles.includes("admin");
+const canDeleteRecord =
+  user.status === "active" && user.roles.includes("admin");
 if (canDeleteRecord) {
   deleteRecord(id);
 }
