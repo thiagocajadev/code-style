@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.4] - 2026-05-10
+
+### Added
+
+- `docs/javascript/conventions/functions.md` — nova seção `## Arrow function — preservar this em callbacks`: 3 pares Ruim/Bom mostrando como `() => {}` evita confusão com `this` (callback em `forEach`, `setInterval` em classe, e o caso inverso de arrow indevida como método de objeto). Descritivo pedagógico com causa-raiz ("`this` é decidido por quem chama"), comparação `function` vs arrow em bullets paralelos, e regra prática (arrow em callback / shorthand em método). Termos EN com tradução PT na primeira ocorrência: callback, strict mode, arrow function, lexical, method shorthand, call site
+
+### Changed
+
+- `.github/workflows/docs.yml` — copiar `assets/` para o renderer (`cp -r code-style/assets docs-renderer/assets`); resolve as imagens referenciadas via `../../../assets/...` em `docs/shared/process/ci-cd.md`, `docs/shared/platform/integrations.md` e `docs/css/conventions/formatting.md`
+
 ## [1.28.3] - 2026-05-10
 
 ### Changed

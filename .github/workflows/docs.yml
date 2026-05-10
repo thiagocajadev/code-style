@@ -65,6 +65,7 @@ jobs:
           # Ampliar adicionando subpastas conforme o disco permitir.
           cp -r code-style/docs/javascript docs-renderer/docs/javascript
           cp -r code-style/docs/shared docs-renderer/docs/shared
+          cp -r code-style/assets docs-renderer/assets
 
       - name: Cache Next.js build
         uses: actions/cache@v4

@@ -590,6 +590,161 @@ createInvoice({
 
 </details>
 
+## Arrow function — preservar `this` em callbacks
+
+Em JavaScript, o `this` é decidido por **quem chama** a função, não por quem a escreve. É daí que vêm os bugs sutis: você escreve um método, passa `function () {}` como **callback** (função de retorno), e dentro dele o `this` deixa de ser o objeto que você esperava.
+
+Duas formas de declarar uma função, dois comportamentos diferentes:
+
+- `function () {}` tem `this` próprio. Em callbacks de `setInterval`, `forEach` ou `addEventListener`, o `this` esperado se perde — vira `undefined` em **strict mode** (modo estrito) ou o objeto global.
+- `() => {}` **não tem `this` próprio**. A **arrow function** (função flecha) herda o `this` **lexical** (léxico) — o `this` do escopo onde ela foi escrita. Por isso preserva a referência da instância dentro do método.
+
+Regra prática: em callbacks dentro de métodos, use arrow. Em métodos de objeto e classe, use **method shorthand** (método curto, `obj.foo() {}`) — o `this` é resolvido no **call site** (ponto de chamada): `obj.foo()` → `this === obj`.
+
+<details>
+<summary>❌ Ruim — callback `function` dentro do método quebra o `this` da instância</summary>
+<br>
+
+```js
+class Cart {
+  constructor() {
+    this.items = [];
+    this.total = 0;
+  }
+
+  addAll(prices) {
+    prices.forEach(function (price) {
+      this.total += price; // this é undefined em strict mode
+      this.items.push(price);
+    });
+  }
+}
+
+const cart = new Cart();
+cart.addAll([10, 20, 30]); // TypeError: Cannot read properties of undefined (reading 'total')
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Bom — arrow function captura o `this` léxico do método</summary>
+<br>
+
+```js
+class Cart {
+  constructor() {
+    this.items = [];
+    this.total = 0;
+  }
+
+  addAll(prices) {
+    prices.forEach((price) => {
+      this.total += price;
+      this.items.push(price);
+    });
+  }
+}
+
+const cart = new Cart();
+cart.addAll([10, 20, 30]);
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Ruim — `setInterval` com `function` perde acesso aos campos da instância</summary>
+<br>
+
+```js
+class BuildTimer {
+  constructor(label) {
+    this.label = label;
+    this.elapsed = 0;
+  }
+
+  start() {
+    setInterval(function () {
+      this.elapsed += 1;
+      console.log(`${this.label}: ${this.elapsed}s`); // imprime "undefined: NaNs"
+    }, 1000);
+  }
+}
+
+new BuildTimer("build").start();
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Bom — arrow herda `this`; `label` e `elapsed` continuam acessíveis</summary>
+<br>
+
+```js
+class BuildTimer {
+  constructor(label) {
+    this.label = label;
+    this.elapsed = 0;
+  }
+
+  start() {
+    setInterval(() => {
+      this.elapsed += 1;
+      console.log(`${this.label}: ${this.elapsed}s`);
+    }, 1000);
+  }
+}
+
+new BuildTimer("build").start();
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>❌ Ruim — arrow como método de objeto: o `this` léxico não é o objeto</summary>
+<br>
+
+```js
+const counter = {
+  count: 0,
+  increment: () => {
+    this.count += 1; // this é o módulo, não counter
+  },
+};
+
+counter.increment();
+console.log(counter.count); // 0
+```
+
+</details>
+
+<br>
+
+<details>
+<summary>✅ Bom — method shorthand mantém `this` ligado ao objeto na chamada</summary>
+<br>
+
+```js
+const counter = {
+  count: 0,
+  increment() {
+    this.count += 1;
+  },
+};
+
+counter.increment();
+console.log(counter.count); // 1
+```
+
+</details>
+
 ## Código morto
 
 <details>
