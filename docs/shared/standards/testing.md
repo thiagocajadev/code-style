@@ -9,16 +9,16 @@ história: quem chamou, o que recebeu, o que esperava.
 
 | Conceito                                                | O que é                                                                                                                            |
 | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | Estrutura de três fases para cada teste: montagem do contexto, execução e verificação do resultado                                 |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Estrutura de três fases para cada teste: montagem do contexto, execução e verificação do resultado                                 |
 | **Unit test** (teste unitário)                          | Teste de uma função em isolamento, sem I/O real; dependências externas são substituídas por doubles                                |
 | **Integration test** (teste de integração)              | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos                               |
 | **Doubles** (substitutos de teste)                      | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
 | **Fixture** (dado de teste pré-definido)                | Contexto ou dado passado para configurar o estado do teste                                                                         |
-| **Complexidade ciclomática** (cyclomatic complexity)    | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
+| **cyclomatic complexity** (complexidade ciclomática)    | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
 
 ## AAA
 
-O padrão **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) divide cada
+O padrão **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) divide cada
 teste em três fases explícitas, separadas por uma linha em branco.
 
 ```

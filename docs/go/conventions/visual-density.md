@@ -6,6 +6,16 @@ Densidade visual regula o espaçamento entre linhas para comunicar agrupamento l
 A regra é simples: linhas relacionadas ficam juntas, grupos distintos ficam separados por
 uma linha em branco. Nunca duas linhas em branco consecutivas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **blank line** (linha em branco) | separador único entre grupos lógicos; nunca duas consecutivas |
+| **atomic block** (bloco atômico) | sequência coesa de linhas que executa uma intenção — sem linhas em branco internas |
+| **declaration grouping** (agrupamento de declarações) | declarações relacionadas ficam coladas; não-relacionadas separadas por linha em branco |
+| **import grouping** (agrupamento de imports) | bloco padrão da stdlib, depois bloco de terceiros, depois bloco interno; `goimports` enforça |
+| **Explaining Return** (retorno explicado) | nomear o resultado em uma `var` antes do `return` quando agrega valor à leitura |
+
 ## Parede de código
 
 <details>

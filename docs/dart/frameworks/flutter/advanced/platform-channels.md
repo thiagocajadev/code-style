@@ -13,8 +13,8 @@ Android, Swift/ObjC no iOS). Existem três tipos: `MethodChannel` (chamada únic
 | `MethodChannel` | invoca método no nativo e aguarda retorno; caso mais comum |
 | `EventChannel` | stream de eventos emitidos pelo nativo (ex: sensores, localização) |
 | `BasicMessageChannel` | canal bidirecional para mensagens arbitrárias com codec customizado |
-| **codec** | serialização da mensagem entre Dart e nativo: `StandardMessageCodec`, `JSONMessageCodec` |
-| **platform thread** | código nativo roda na main thread nativa; I/O pesado usa background thread |
+| **codec** (codificador) | serialização da mensagem entre Dart e nativo: `StandardMessageCodec`, `JSONMessageCodec` |
+| **platform thread** (thread de plataforma) | código nativo roda na main thread nativa; I/O pesado usa background thread |
 
 ## MethodChannel — estrutura básica
 

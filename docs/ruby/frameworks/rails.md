@@ -14,12 +14,12 @@ Cache** e **Solid Queue**.
 | Conceito                                                  | O que é                                                                                                     |
 | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Model (domínio + banco), View (templates), Controller (entrada + roteamento)                                |
-| **ActiveRecord**                                          | **ORM** (Object-Relational Mapper, mapeador objeto-relacional) embutido; cada classe mapeia uma tabela      |
-| **Strong Parameters**                                     | Whitelist (lista de permissões) de params no controller — previne **mass assignment** (atribuição em massa) |
-| **Concerns**                                              | Módulos de comportamento compartilhado entre models ou controllers                                          |
-| **Migrations**                                            | Arquivos versionados de alteração de **schema** (esquema) do banco de dados                                 |
-| **Solid Queue**                                           | Backend de jobs baseado em banco (sem Redis); padrão Rails 8                                                |
-| **Kamal**                                                 | Ferramenta de **deploy** (implantação) para VMs Linux com Docker; padrão Rails 8                            |
+| **ActiveRecord** (ORM do Rails)                           | **ORM** (Object-Relational Mapper, mapeador objeto-relacional) embutido; cada classe mapeia uma tabela      |
+| **Strong Parameters** (parâmetros restritos)              | Whitelist (lista de permissões) de params no controller — previne **mass assignment** (atribuição em massa) |
+| **Concerns** (módulos de responsabilidade)                | Módulos de comportamento compartilhado entre models ou controllers                                          |
+| **Migrations** (migrações de banco)                       | Arquivos versionados de alteração de **schema** (esquema) do banco de dados                                 |
+| **Solid Queue** (sistema de jobs do Rails)                | Backend de jobs baseado em banco (sem Redis); padrão Rails 8                                                |
+| **Kamal** (ferramenta de deploy do Rails)                 | Para VMs Linux com Docker; padrão Rails 8                            |
 
 ## Controller thin
 

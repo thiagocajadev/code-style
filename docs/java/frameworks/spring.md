@@ -3,7 +3,20 @@
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 
 Spring Boot 4 é o framework Java mais popular para aplicações web e APIs REST. Esta versão
-requer Java 21+ e habilita virtual threads por padrão via `spring.threads.virtual.enabled=true`.
+requer Java 21+ e habilita **virtual threads** (threads leves gerenciadas pela JVM) por padrão
+via `spring.threads.virtual.enabled=true`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **@RestController** (anotação de controlador REST) | combina `@Controller` e `@ResponseBody`; cada método retorna o corpo HTTP serializado |
+| **@Service** (anotação de serviço) | marca a camada de negócio; orquestra regras e dependências |
+| **@Repository** (anotação de repositório) | marca a camada de acesso a dados; traduz exceções de persistência |
+| **JPA** (Jakarta Persistence API, API de Persistência Java) | especificação Java para mapeamento objeto-relacional |
+| **DI** (Dependency Injection, Injeção de Dependência) | o container Spring fornece dependências via construtor |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | record para input/output HTTP; não vaza entidade JPA |
+| **virtual threads** (threads leves gerenciadas pela JVM) | habilitadas no Spring Boot 4 por padrão; código bloqueante escala como reativo |
 
 ## Controller — camada HTTP
 

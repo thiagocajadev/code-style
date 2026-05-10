@@ -1,6 +1,18 @@
 # Control Flow
 
-Controle de fluxo em VB.NET prioriza retorno antecipado e guard clauses sobre aninhamento. Cada `If` que não guarda cedo acumula profundidade; cada `Else` após `Return` é ruído que o leitor precisa descartar. O objetivo é que o olho percorra o método em linha reta.
+Controle de fluxo em VB.NET prioriza retorno antecipado e **guard clauses** (cláusulas de proteção) sobre aninhamento. Cada `If` que não guarda cedo acumula profundidade; cada `Else` após `Return` é ruído que o leitor precisa descartar. O objetivo é que o olho percorra o método em linha reta.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `If` no topo do método que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | Sair do método assim que o resultado for conhecido, sem `Else` desnecessário |
+| **Select Case** (selecionar caso) | Comando de despacho por valor; bom para enums e mapeamento explícito |
+| **If / ElseIf** (se / senão se) | Cadeia condicional para múltiplos ramos; quebrar em guard clauses quando crescer |
+| **lookup table** (tabela de busca) | `Dictionary(Of K, V)` que substitui cadeias longas de `If/ElseIf` |
+| **AndAlso / OrElse** (curto-circuito condicional) | Operadores que avaliam o segundo operando só se necessário; preferidos a `And`/`Or` |
+| **Exit For / Exit While** (saída antecipada de laço) | Comandos que abandonam laços assim que a condição for atendida |
 
 ## If e ElseIf
 

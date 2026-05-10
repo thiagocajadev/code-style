@@ -5,6 +5,17 @@
 Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco.
 Nunca duas. O return fica separado do último grupo de trabalho.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | quantidade de informação por unidade de espaço; legibilidade vs ruído |
+| **atomic group** (grupo atômico) | linhas que pertencem ao mesmo passo lógico; ficam juntas sem blank line |
+| **blank line** (linha em branco) | separador semântico entre grupos atômicos; nunca decorativo |
+| **orphan** (órfão) | grupo de uma única linha isolado; evite — junte ao grupo vizinho |
+| **explaining return** (retorno explicativo) | atribui a uma variável local com nome de domínio antes do `return` |
+| **boundary** (limite) | onde Result vira HTTP, exception vira resposta, ou input vira domínio |
+
 ## Parede de código
 
 <details>

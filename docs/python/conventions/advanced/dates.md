@@ -9,11 +9,11 @@ instante no tempo deve ser _aware_ — com fuso horário explícito.
 
 | Conceito | O que é |
 | --- | --- |
-| **naive datetime** | `datetime` sem informação de fuso — comparações e aritmética são ambíguas |
-| **aware datetime** | `datetime` com `tzinfo` definido — instante no tempo inequívoco |
+| **naive datetime** (datetime sem fuso) | `datetime` sem informação de fuso — comparações e aritmética são ambíguas |
+| **aware datetime** (datetime com fuso) | `datetime` com `tzinfo` definido — instante no tempo inequívoco |
 | **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Fuso de referência; armazene sempre em UTC, converta apenas para exibição |
-| **zoneinfo** | Módulo padrão (Python 3.9+) para fusos com suporte a DST (Daylight Saving Time, horário de verão) |
-| **ISO 8601** | Formato de serialização universal: `2026-04-22T15:30:00+00:00` |
+| **zoneinfo** (módulo padrão de fusos horários) | Módulo padrão (Python 3.9+) para fusos com suporte a DST (Daylight Saving Time, horário de verão) |
+| **ISO 8601** (norma ISO de datas) | Formato de serialização universal: `2026-04-22T15:30:00+00:00` |
 
 ## naive vs aware
 

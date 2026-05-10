@@ -13,8 +13,8 @@ Information, Informação Pessoalmente Identificável).
 
 | Conceito | O que é |
 | -------- | ------- |
-| **Monolog** | Biblioteca de logging mais usada em PHP; implementa PSR-3 com handlers e formatters configuráveis |
-| **PSR-3** | Interface padrão de logger PHP: `LoggerInterface` com métodos `debug`, `info`, `warning`, `error`, etc. |
+| **Monolog** (biblioteca de logging PHP, padrão PSR-3) | Implementação mais usada de logger em PHP; oferece handlers e formatters configuráveis |
+| **PSR-3** (PHP Standards Recommendation 3, recomendação de padrão para logger) | Interface `LoggerInterface` com métodos `debug`, `info`, `warning`, `error`, etc. |
 | **handler** (manipulador) | Destino do log: arquivo, stdout, Slack, Sentry; configurado no Monolog |
 | **formatter** (formatador) | Define o formato de saída do log: JSON, texto simples, etc. |
 | **context** (contexto) | Array de pares chave-valor passado junto com a mensagem de log |

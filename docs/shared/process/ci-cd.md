@@ -20,7 +20,7 @@ esse fluxo está em [git.md](git.md).
 | Conceito | O que é |
 |---|---|
 | **Pipeline** (sequência de etapas de verificação) | Conjunto ordenado de estágios que todo código deve passar; cada estágio é um portão |
-| **Lint** | Verificação estática de estilo e formatação do código |
+| **Lint** (análise estática de estilo) | Verificação estática de estilo e formatação do código |
 | **Smoke test** (teste de fumaça) | Teste rápido do fluxo crítico após deploy para confirmar que o sistema responde |
 | **Fix forward** (corrigir para frente) | Estratégia de corrigir bugs com um novo commit e deploy, sem reverter o histórico |
 | **Rollback** (reversão) | Retorno do artefato em produção à versão anterior; reservado para emergências |

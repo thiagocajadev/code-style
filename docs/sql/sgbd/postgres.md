@@ -14,13 +14,13 @@ PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window f
 
 | Conceito | O que é |
 | --- | --- |
-| **PL/pgSQL** | Linguagem procedural nativa do PostgreSQL para functions e procedures |
-| **RETURNING** | Cláusula que retorna linhas afetadas por INSERT, UPDATE, DELETE ou MERGE |
-| **JSONB** | JSON armazenado em formato binário com suporte a índices GIN; preferível a `JSON` |
+| **PL/pgSQL** (Procedural Language/PostgreSQL, linguagem procedural do PostgreSQL) | Linguagem nativa do PostgreSQL para functions e procedures |
+| **RETURNING** (cláusula de retorno) | Cláusula que retorna linhas afetadas por INSERT, UPDATE, DELETE ou MERGE |
+| **JSONB** (JSON Binário) | JSON armazenado em formato binário com suporte a índices GIN; preferível a `JSON` |
 | **CTE** (Common Table Expression, Expressão de Tabela Comum) | Resultado nomeado via `WITH`; no PostgreSQL, `WITH` em DML pode ser usado com `RETURNING` |
 | **AIO** (Asynchronous I/O, Entrada e Saída Assíncrona) | Subsistema do PostgreSQL 18 que emite múltiplas operações de I/O em paralelo |
-| **UUID v7** | UUID com prefixo de timestamp; gerado via `uuidv7()` nativo no PostgreSQL 18 |
-| **Temporal constraint** | Constraint sobre intervalos de tempo (PRIMARY KEY, UNIQUE, FK); disponível no PostgreSQL 18 |
+| **UUID v7** (Universally Unique Identifier versão 7) | UUID com prefixo de timestamp; gerado via `uuidv7()` nativo no PostgreSQL 18 |
+| **Temporal constraint** (restrição temporal) | Constraint sobre intervalos de tempo (PRIMARY KEY, UNIQUE, FK); disponível no PostgreSQL 18 |
 
 ## Tipos de dados
 

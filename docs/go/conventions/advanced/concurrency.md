@@ -13,7 +13,7 @@ comunique para compartilhar memória.)
 
 | Conceito | O que é |
 | -------- | ------- |
-| **goroutine** | Função executada de forma concorrente; iniciada com `go`; muito mais leve que uma thread do SO |
+| **goroutine** (rotina concorrente) | função executada de forma concorrente; iniciada com `go`; muito mais leve que uma thread do SO |
 | **channel** (canal) | Pipe tipado para comunicação entre goroutines; sincroniza e transfere dados |
 | **buffered channel** (canal com buffer) | Channel com capacidade N; produtor não bloqueia até o buffer encher |
 | `select` | Aguarda múltiplos channels simultaneamente; executa o primeiro que estiver pronto |

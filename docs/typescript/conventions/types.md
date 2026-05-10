@@ -1,8 +1,19 @@
 # Types
 
-O sistema de tipos do TypeScript tem duas construções principais para descrever formas: `interface`
-e `type`. Cada uma tem um domínio natural. Usá-las nos lugares errados não quebra, mas cria
-inconsistência que escala mal.
+O sistema de tipos do TypeScript tem duas construções principais para descrever formas: **interface** (contrato de objeto) e **type alias** (apelido de tipo). Cada uma tem um domínio natural. Usá-las nos lugares errados não quebra, mas cria inconsistência que escala mal. Acima delas, **structural typing** (tipagem estrutural) determina compatibilidade pelo formato, não pelo nome.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **interface** (contrato de objeto) | Forma de objeto extensível via `extends` e implementável via `implements` |
+| **type alias** (apelido de tipo) | `type X = ...` — apelido para union, intersection, mapped, primitivo ou shape |
+| **structural typing** (tipagem estrutural) | Compatibilidade decidida pelo formato; tipos com mesmo shape são compatíveis |
+| **union** (união) | `A | B` — valor que pode ser de um ou outro tipo |
+| **intersection** (interseção) | `A & B` — valor que satisfaz ambos os tipos simultaneamente |
+| **literal type** (tipo literal) | Valor exato como tipo (`"active"`, `42`); usado em discriminated unions |
+| **utility type** (tipo utilitário) | `Partial`, `Pick`, `Omit`, `Record` — derivam tipos de outros sem repetição |
+| **branded type** (tipo marcado) | Primitivo + tag de tipo para distinguir valores semânticos (`UserId`, `Email`) |
 
 ## type vs interface
 
@@ -308,7 +319,7 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any — qualq
 <br>
 
 <details>
-<summary>✅ Good — narrowing real ou validação de schema</summary>
+<summary>✅ Good — narrowing real ou validação de esquema</summary>
 <br>
 
 ```ts

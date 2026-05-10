@@ -14,7 +14,7 @@ compilador impede `NullPointerException` em tempo de compilação. O operador `!
 | `?.` | safe call — acesso ou invocação segura; retorna `null` se receptor for `null` |
 | `?:` | **Elvis operator** — valor padrão ou saída antecipada quando `null` |
 | `!!` | assert não-null; lança `NullPointerException` se `null` — proibido em produção |
-| **smart cast** | após verificação de null em `if`, o compilador trata como não-nulo |
+| **smart cast** (cast inteligente) | após verificação de null em `if`, o compilador trata como não-nulo |
 | `requireNotNull` | falha rápida com mensagem na fronteira de entrada |
 
 ## `!!` em produção

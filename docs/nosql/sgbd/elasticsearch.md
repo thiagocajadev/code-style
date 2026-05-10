@@ -12,7 +12,7 @@ Elasticsearch é um motor de busca e analytics. Funciona como camada de busca so
 | --- | --- |
 | **Index** (índice) | Container de documentos; equivale a uma tabela; tem mapping e settings |
 | **Document** (documento) | Unidade de dado em JSON indexada e pesquisável |
-| **Mapping** | Schema do índice: define tipos de campos (`text`, `keyword`, `date`, `integer`) |
+| **Mapping** (mapeamento) | Schema do índice: define tipos de campos (`text`, `keyword`, `date`, `integer`) |
 | **Shard** (fragmento) | Divisão do índice em partições para paralelismo; número definido na criação |
 | **Replica** (réplica) | Cópia de shard; aumenta disponibilidade e throughput de leitura |
 | **Inverted index** (índice invertido) | Estrutura interna que mapeia termos para documentos; base da busca full-text |
@@ -20,7 +20,7 @@ Elasticsearch é um motor de busca e analytics. Funciona como camada de busca so
 | **Query context** (contexto de query) | Calcula relevância (score); mais lento |
 | **Filter context** (contexto de filtro) | Resultado binário sim/não; cacheado; mais rápido |
 | **Aggregation** (agregação) | Cálculos sobre o resultado: métricas (avg, sum) ou buckets (terms, range) |
-| **Bulk API** | Inserção ou atualização de múltiplos documentos em uma única requisição |
+| **Bulk API** (API em lote) | Inserção ou atualização de múltiplos documentos em uma única requisição |
 
 ---
 

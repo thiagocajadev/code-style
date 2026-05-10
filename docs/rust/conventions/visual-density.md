@@ -5,6 +5,16 @@
 Densidade visual é o espaçamento intencional entre grupos de código. Linhas semanticamente
 relacionadas ficam juntas; grupos distintos são separados por uma linha em branco.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | Separador entre grupos lógicos; uma só, nunca duas consecutivas |
+| **atomic block** (bloco atômico) | Conjunto de linhas que executam uma intenção única; sem linha em branco interna |
+| **indentation** (indentação) | Quatro espaços por nível em Rust; aplicado por `rustfmt` |
+| **explaining return** (retorno explicado) | Linha de preparação imediatamente antes do retorno final, sem blank line entre elas |
+| **method chain** (cadeia de métodos) | Sequência de chamadas; quebra uma chamada por linha quando ultrapassa `printWidth` |
+
 ## Parede de código
 
 Código sem respiro força o leitor a segmentar mentalmente blocos que deveriam ser visíveis.

@@ -1,7 +1,18 @@
 # Variables
 
-Dúvida? Use `final`. Só omita quando precisar reatribuir. Imutabilidade reduz bugs e torna o
-fluxo previsível.
+Dúvida? Use `final`. Só omita quando precisar reatribuir. **Immutability** (imutabilidade) reduz
+bugs e torna o fluxo previsível.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **final** (referência fixa) | modificador que impede reatribuição da variável após inicialização |
+| **var** (inferência de tipo local) | declaração `var` (Java 10+) deixa o compilador inferir o tipo da variável local |
+| **immutability** (imutabilidade) | propriedade de um valor que não muda após criado; reduz bugs e facilita concorrência |
+| **shadowing** (sombreamento) | variável local que oculta uma de mesmo nome em escopo externo |
+| **scope** (escopo) | região do código em que a variável é visível; declarar perto do uso encurta o escopo |
+| **effectively final** (efetivamente final) | variável que nunca é reatribuída, mesmo sem `final`; lambdas exigem isso |
 
 ## Mutação desnecessária
 

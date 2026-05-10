@@ -9,10 +9,10 @@ estrutura de diretórios.
 
 | Conceito | O que é |
 | --- | --- |
-| **pub** | gerenciador de pacotes do Dart; `pubspec.yaml` descreve dependências |
+| **pub** (gerenciador de pacotes do Dart) | resolve dependências e publica pacotes; `pubspec.yaml` descreve dependências |
 | `dart analyze` | análise estática nativa; usa regras do `analysis_options.yaml` |
 | `dart format` | formatador oficial; opinionado, sem configurações de estilo |
-| **dart_code_metrics** | análise extra: complexidade ciclomática, linhas por método, cobertura |
+| **dart_code_metrics** (métricas de código Dart) | análise extra: complexidade ciclomática, linhas por método, cobertura |
 | `dart fix` | aplica fixes automáticos sugeridos pelo analyzer |
 
 ## Estrutura de projeto

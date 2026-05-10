@@ -15,7 +15,7 @@ transferência usa ISO 8601; a formatação para o usuário aplica o fuso e o lo
 | `LocalDateTime` | data + hora sem fuso — usar com cuidado; prefira `ZonedDateTime` |
 | `ZonedDateTime` | data + hora + fuso horário; correto para exibição ao usuário |
 | `ZoneId` | identificador de fuso — sempre por nome (ex: `America/Sao_Paulo`), nunca offset fixo |
-| **ISO 8601** | formato padrão: `2026-04-26T14:30:00Z` (UTC) ou `2026-04-26` (data) |
+| **ISO 8601** (padrão internacional de data e hora) | formato textual: `2026-04-26T14:30:00Z` (UTC) ou `2026-04-26` (data) |
 
 ## Date e Calendar legados
 

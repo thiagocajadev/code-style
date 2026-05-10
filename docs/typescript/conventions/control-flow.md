@@ -1,10 +1,20 @@
 # Control Flow
 
-Os padrões de controle de fluxo do JavaScript se aplicam sem mudança. O TypeScript adiciona:
-narrowing pelo sistema de tipos, discriminated unions em switch e exhaustiveness check para
-garantir que todos os casos são tratados.
+Os padrões de controle de fluxo do JavaScript se aplicam sem mudança. O TypeScript adiciona: **narrowing** (estreitamento) pelo sistema de tipos, **discriminated union** (união discriminada) em `switch` e **exhaustiveness check** (verificação de exaustividade) para garantir que todos os casos são tratados.
 
 > Base JavaScript: [javascript/conventions/control-flow.md](../../javascript/conventions/control-flow.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **narrowing** (estreitamento) | Refinamento de um tipo amplo para um específico após guard ou comparação |
+| **type guard** (guarda de tipo) | Expressão que estreita o tipo (`typeof`, `instanceof`, predicate) |
+| **discriminated union** (união discriminada) | Union cujo membro é identificado por um campo literal (`kind`, `type`) |
+| **exhaustiveness check** (verificação de exaustividade) | Garantia em compilação de que todos os casos da union foram tratados |
+| **never** (tipo impossível) | Tipo sem valores; usado em ramos inalcançáveis e checagem de exaustividade |
+| **assertion function** (função de afirmação) | Função que lança se a condição falha e estreita o tipo no caller (`asserts x is T`) |
+| **early return** (retorno antecipado) | Sair da função assim que o resultado é conhecido; reduz aninhamento |
 
 ## Narrowing como guard clause
 

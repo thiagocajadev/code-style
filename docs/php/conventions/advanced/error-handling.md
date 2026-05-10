@@ -7,6 +7,19 @@ do sistema (handlers HTTP, workers de fila). O domínio lança exceções; a fro
 as converte em resposta apropriada. Nunca capture `\Throwable` ou `\Exception` sem
 propósito específico.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Exception** (exceção) | Objeto que representa um erro; herda de `\Throwable` em PHP |
+| **Throwable** (lançável) | Interface raiz que cobre `Exception` e `Error`; raramente capturada diretamente |
+| **domain exception** (exceção de domínio) | Tipo específico criado pelo projeto, ex.: `OrderNotFoundException`; permite tratar casos por tipo |
+| **boundary** (limite) | Camada onde a exceção vira resposta: handler HTTP, worker de fila, comando CLI |
+| **try / catch** (tentar / capturar) | Bloco de tratamento; só na fronteira, nunca para esconder erros |
+| **finally** (cláusula final) | Bloco que executa sempre, mesmo com exceção; usar para liberar recursos |
+| **exception chaining** (encadeamento de exceções) | `previous` parameter no construtor; preserva a causa original ao relançar |
+| **error suppression** (supressão de erro) | Operador `@`; nunca usar — esconde problemas e dificulta diagnóstico |
+
 ## Exceção como string
 
 Nunca lance strings ou `\Exception` diretamente. Crie uma hierarquia de exceções

@@ -9,10 +9,10 @@ Configuração inicial de um projeto Swift: gerenciador de pacotes, formatação
 | Conceito | O que é |
 | --- | --- |
 | **SPM** (Swift Package Manager) | gerenciador de dependências nativo da Apple; `Package.swift` descreve o pacote |
-| **SwiftLint** | linter de estilo e qualidade; enforça convenções do Swift API Design Guidelines |
-| **swift-format** | formatador oficial da Apple; opcionado pelo SPM |
-| **Swift 6 language mode** | strict concurrency checking ativado; data races são erros de compilação |
-| **Xcode scheme** | configuração de build que define o alvo, ambiente e destino de execução |
+| **SwiftLint** (linter de Swift) | Enforça convenções do Swift API Design Guidelines |
+| **swift-format** (formatador oficial da Apple) | Opcionado pelo SPM |
+| **Swift 6 language mode** (modo de linguagem do Swift 6) | Strict concurrency checking ativado; data races são erros de compilação |
+| **Xcode scheme** (esquema de build do Xcode) | Configuração que define o alvo, ambiente e destino de execução |
 
 ## Estrutura de projeto (SPM)
 

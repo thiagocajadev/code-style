@@ -2,9 +2,19 @@
 
 > Escopo: HTML. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-**HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão;
-imagens fora da viewport consomem banda desnecessária; recursos críticos chegam tarde sem dica
-explícita.
+**HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão; imagens fora da **viewport** (área visível) consomem banda desnecessária; recursos críticos chegam tarde sem **preload** (pré-carregamento) explícito.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **critical render path** (caminho crítico de renderização) | Sequência mínima que o browser executa pra pintar a primeira tela |
+| **defer** (adiar execução) | Atributo que baixa o script em paralelo e executa após o parse, na ordem do documento |
+| **async** (assíncrono) | Atributo que baixa em paralelo e executa imediatamente, sem garantia de ordem |
+| **lazy loading** (carregamento preguiçoso) | `loading="lazy"` em `<img>`/`<iframe>`: só baixa quando próximo da viewport |
+| **preload** (pré-carregamento) | `<link rel="preload">` antecipa um recurso crítico identificado tarde no parse |
+| **preconnect** (pré-conexão) | `<link rel="preconnect">` abre conexão TCP/TLS com origem externa antes do uso |
+| **picture** (imagem responsiva) | `<picture>` com `<source>` serve a imagem certa por viewport ou formato |
 
 ## defer e async
 

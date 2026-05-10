@@ -5,6 +5,18 @@
 Testes são especificações executáveis. Um teste bem escrito falha com uma mensagem que diz
 exatamente o que quebrou — sem precisar abrir o código.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **pytest** (framework de testes) | runner padrão do ecossistema Python; usa funções e fixtures |
+| **fixture** (acessório reutilizável) | função decorada com `@pytest.fixture` que prepara estado de teste |
+| **parametrize** (parametrização de teste) | `@pytest.mark.parametrize` roda o mesmo teste com várias entradas |
+| **mock** (objeto fictício) | substituto de uma dependência real; criado via `unittest.mock` |
+| **monkeypatch** (substituição em tempo de teste) | fixture que substitui atributos durante o teste e restaura ao final |
+| **assert** (afirmação) | comando que falha o teste se a expressão for falsa; `pytest` mostra o diff |
+
 ## Fases misturadas — AAA
 
 Arrange → Act → Assert: três fases separadas por uma linha em branco. Misturá-las esconde o que
@@ -24,7 +36,7 @@ def test_apply_discount():
 <br>
 
 <details>
-<summary>✅ Good — **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar): fases explícitas</summary>
+<summary>✅ Good — **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar): fases explícitas</summary>
 <br>
 
 ```python

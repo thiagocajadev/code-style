@@ -11,11 +11,11 @@ Este guia cobre as particularidades de cada plataforma: como autenticar, quais p
 |---|---|
 | **Gateway Intent** (intenção de gateway) | Declaração de quais categorias de eventos o bot quer receber do Discord; reduz tráfego desnecessário |
 | **Slash Command** (comando de barra) | Comando registrado na plataforma com `/prefixo`; aparece com autocomplete para o usuário |
-| **Embed** | Mensagem rica do Discord com título, descrição, cor, imagem e campos estruturados |
+| **Embed** (mensagem incorporada) | Mensagem rica do Discord com título, descrição, cor, imagem e campos estruturados |
 | **Inline Keyboard** (teclado inline) | Botões renderizados abaixo de uma mensagem no Telegram; cada botão dispara um **callback** |
-| **BotFather** | Bot oficial do Telegram para criar e configurar bots: gera o token de autenticação |
+| **BotFather** (bot pai do Telegram) | Bot oficial do Telegram para criar e configurar bots: gera o token de autenticação |
 | **Bot Token** (token do bot) | Credencial de autenticação emitida pela plataforma; nunca exposta em código ou repositório |
-| **Business API** | API oficial do WhatsApp para envio de mensagens; exige aprovação Meta e número homologado |
+| **Business API** (API empresarial) | API oficial do WhatsApp para envio de mensagens; exige aprovação Meta e número homologado |
 | **Unofficial Client** (cliente não-oficial) | Biblioteca que simula o cliente WhatsApp Web para automação; sem suporte oficial e sujeita a banimento |
 | **Template Message** (mensagem de modelo) | Formato de mensagem pré-aprovado pela Meta para o primeiro contato com o usuário no WhatsApp |
 

@@ -11,12 +11,12 @@ forma de objetos.
 
 | Conceito                    | O que é                                                                         |
 | --------------------------- | ------------------------------------------------------------------------------- |
-| **Duck typing**             | Um objeto responde a uma mensagem se implementa o método — não exige herança     |
-| **Mixin**                   | Módulo incluído em uma classe para adicionar comportamento sem herança           |
+| **Duck typing** (tipagem por comportamento) | Um objeto responde a uma mensagem se implementa o método — não exige herança     |
+| **Mixin** (módulo de comportamento) | Módulo incluído em uma classe para adicionar comportamento sem herança           |
 | `Data.define`               | Cria classe imutável com campos nomeados (Ruby 3.2+)                             |
-| **nil**                     | Ausência de valor — único objeto da classe `NilClass`; diferente de `false`     |
+| **nil** (ausência de valor) | Único objeto da classe `NilClass`; diferente de `false`     |
 | `respond_to?`               | Verifica se um objeto implementa um método antes de chamá-lo                    |
-| **Pattern matching**        | `case/in` que desestrutura a forma do objeto para ramificação segura            |
+| **Pattern matching** (correspondência por forma) | `case/in` que desestrutura a forma do objeto para ramificação segura            |
 
 ## Classes
 

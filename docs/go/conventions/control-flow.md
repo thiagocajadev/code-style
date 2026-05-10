@@ -5,6 +5,17 @@
 Go favorece fluxo linear e retorno antecipado. O padrão idiomático é: valide na entrada,
 retorne cedo na falha, execute no caminho feliz sem aninhamento.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo no caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **switch** (selecionar caso) | despacho por valor; cada `case` não cai no próximo, `fallthrough` é explícito |
+| **type switch** (switch por tipo) | `switch v := x.(type)` extrai o tipo concreto de uma interface |
+| **for** (laço) | único laço de Go: `for cond`, `for init; cond; post`, `for range` |
+| **defer** (adiar execução) | empilha chamada para executar no retorno; ideal para fechar recursos |
+
 ## if e else
 
 Após um `return`, `panic` ou `continue`, o `else` é desnecessário e cria aninhamento sem valor.

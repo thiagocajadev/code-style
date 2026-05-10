@@ -1,7 +1,18 @@
 # Responsive
 
-Mobile-first significa definir o estilo base para mobile e **expandir** com `min-width`. Começar
-no desktop e restringir com `max-width` cria sobreposições e resets desnecessários.
+**mobile-first** (mobile primeiro) significa definir o estilo base pra mobile e expandir com `min-width`. Começar no desktop e restringir com `max-width` cria sobreposições e resets desnecessários.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **mobile-first** (mobile primeiro) | Base pra tela pequena; `min-width` adiciona regras pra telas maiores |
+| **breakpoint** (ponto de quebra) | Largura em que o layout muda; convenções: 640px, 768px, 1024px, 1280px |
+| **media query** (consulta de mídia) | `@media (min-width: 768px)`; aplica regras condicionalmente |
+| **container query** (consulta de container) | `@container (min-width: 320px)`; responde ao tamanho do pai, não da viewport |
+| **viewport unit** (unidade de viewport) | `vw`, `vh`, `dvh`, `svh`; medidas relativas à área visível |
+| **fluid type** (tipografia fluida) | `clamp(min, preferred, max)`; escala suave entre limites |
+| **aspect-ratio** (razão de aspecto) | Reserva proporção de espaço (`16/9`); previne layout shift |
 
 ## Mobile-first
 

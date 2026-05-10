@@ -10,12 +10,12 @@ Um modelo de IA é um conjunto de pesos e parâmetros resultado de treinamento e
 |---|---|
 | **Parameters** (parâmetros) | Valores numéricos aprendidos durante o treinamento; "tamanho" do modelo, medido em bilhões (B) |
 | **MoE** (Mixture of Experts, Mistura de Especialistas) | Arquitetura que ativa apenas uma fração dos parâmetros por inferência, reduzindo custo computacional |
-| **Multimodal** | Modelo que processa mais de um tipo de entrada: texto, imagem, áudio |
+| **Multimodal** (multimodal) | Modelo que processa mais de um tipo de entrada: texto, imagem, áudio |
 | **Open weights** (pesos abertos) | Modelo cujos pesos são públicos, podendo ser rodados localmente |
 | **Proprietary** (proprietário) | Modelo cujos pesos não são públicos; acesso via API |
 | **Context window** (janela de contexto) | Total de tokens (entrada + saída) processados em uma chamada |
-| **Quantização** | Técnica que reduz a precisão dos pesos (ex: de 32 bits para 4 bits) para diminuir uso de memória |
-| **GGUF** | Formato binário do llama.cpp para armazenar e executar modelos quantizados localmente |
+| **quantization** (quantização) | Técnica que reduz a precisão dos pesos (ex: de 32 bits para 4 bits) para diminuir uso de memória |
+| **GGUF** (GPT-Generated Unified Format, formato unificado gerado por GPT) | Formato binário do llama.cpp para armazenar e executar modelos quantizados localmente |
 
 ## Modelos em nuvem (Cloud Models)
 

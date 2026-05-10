@@ -2,7 +2,19 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-LINQ é a linguagem de transformação de coleções em C#: declarativa, composável e lazy. Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
+**LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) é a linguagem de transformação de coleções em C#: declarativa, composável e com avaliação preguiçosa. Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) | API de C# para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
+| **IEnumerable\<T\>** (sequência iterável) | Interface que expõe iteração em memória; cada operador aplica em sequência |
+| **IQueryable\<T\>** (sequência consultável) | Interface que constrói árvore de expressão; provedor traduz para SQL/remote query |
+| **lazy evaluation** (avaliação preguiçosa) | A query só executa no momento da iteração (`ToList`, `foreach`); permite composição |
+| **side effect** (efeito colateral) | Mudança de estado externo (log, mutação, I/O); proibido dentro de queries LINQ |
+| **deferred execution** (execução adiada) | Resultado materializado só quando enumerado; `ToList()`/`ToArray()` força execução |
+| **method syntax** (sintaxe de método) | Forma fluente `xs.Where(...).Select(...)`; preferida no projeto sobre query syntax |
 
 ## LINQ puro: sem side effects
 

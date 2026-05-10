@@ -13,7 +13,7 @@ ou implementa, nunca os dois. O **explaining return** nomeia o resultado antes d
 | **receiver** (receptor) | Parâmetro especial que associa uma função a um tipo; escrito antes do nome da função |
 | **value receiver** (receptor por valor) | Recebe uma cópia do tipo; não modifica o original |
 | **pointer receiver** (receptor por ponteiro) | Recebe o endereço do tipo; pode modificar o original |
-| **SLA** | Single Level of Abstraction — cada função opera em um único nível: orquestra chamadas OU implementa detalhe |
+| **SLA** (Single Level of Abstraction, nível único de abstração) | cada função opera em um único nível: orquestra chamadas OU implementa detalhe |
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
 
 ## Funções vs métodos

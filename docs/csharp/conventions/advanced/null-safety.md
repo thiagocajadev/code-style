@@ -2,12 +2,24 @@
 
 > Escopo: C#. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-C# 8 introduziu nullable reference types: o compilador passou a distinguir `string` (não-nulo
-garantido) de `string?` (pode ser null). C# 14 adicionou null-conditional assignment, completando
+C# 8 introduziu **nullable reference types**: o compilador passou a distinguir `string` (não-nulo
+garantido) de `string?` (pode ser null). C# 14 adicionou **null-conditional assignment**, completando
 o conjunto de operadores null-safe. Ativado globalmente, o compilador bloqueia violações antes do
 runtime.
 
 > Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **nullable reference types** (tipos de referência anuláveis) | Recurso do C# 8+ que distingue `string` (não-nulo) de `string?` (pode ser null) no compilador |
+| **null** (ausência de valor) | Valor que indica ausência; o objetivo é tornar essa possibilidade explícita no tipo |
+| **null-conditional** (acesso seguro a nulo, `?.`) | Operador que retorna null em vez de lançar `NullReferenceException` ao acessar membro de null |
+| **null-coalescing** (coalescência de ausente, `??`) | Operador que devolve o lado direito quando o esquerdo é null |
+| **null-forgiving** (supressão de aviso, `!`) | Operador que silencia análise de null; usar só quando há garantia que o compilador não enxerga |
+| **NullReferenceException** (exceção de referência nula) | Exceção runtime ao desreferenciar null; o objetivo é eliminá-la em tempo de compilação |
+| **Nullable\<T\>** (tipo de valor anulável) | Wrapper para tipos de valor (`int?`, `bool?`); equivale a `Nullable<int>` |
 
 ## Configuração: habilitar globalmente
 

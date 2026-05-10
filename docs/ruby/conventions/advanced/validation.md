@@ -10,10 +10,10 @@ eventos externos. Dentro do domínio, confie nos tipos. Ruby oferece **ActiveMod
 
 | Conceito                    | O que é                                                                      |
 | --------------------------- | ---------------------------------------------------------------------------- |
-| **ActiveModel::Validations**| Módulo extraído do Rails; adiciona `validates`, `errors` a qualquer classe   |
-| **dry-validation**          | Gem para contratos declarativos com predicados compostos e mensagens tipadas |
-| **Strong Parameters**       | Mecanismo Rails que exige whitelist (lista de permissões) de params de controller |
-| **fail-fast**               | Validar cedo e abortar fluxo inválido antes de chegar ao domínio             |
+| **ActiveModel::Validations** (módulo de validações do Rails) | Adiciona `validates`, `errors` a qualquer classe   |
+| **dry-validation** (gem de validação declarativa) | Contratos com predicados compostos e mensagens tipadas |
+| **Strong Parameters** (parâmetros restritos) | Mecanismo Rails que exige whitelist (lista de permissões) de params de controller |
+| **fail-fast** (falhar rápido) | Validar cedo e abortar fluxo inválido antes de chegar ao domínio             |
 
 ## ActiveModel::Validations
 

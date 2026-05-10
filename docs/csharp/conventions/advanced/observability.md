@@ -3,7 +3,21 @@
 > Escopo: C#. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
+**ILogger** preserva campos como propriedades; **message template** evita interpolação. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
 Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **ILogger** (interface de logging do .NET) | Abstração de logging do `Microsoft.Extensions.Logging`; sinks (Serilog, Application Insights) consomem os campos estruturados |
+| **structured logging** (logging estruturado) | Cada argumento vira propriedade indexável no sink, não texto formatado |
+| **message template** (template de mensagem) | String com placeholders nomeados (`{OrderId}`) que preservam a estrutura |
+| **log level** (nível de severidade) | `Trace`/`Debug`/`Information`/`Warning`/`Error`/`Critical`; controla volume e roteamento |
+| **scope** (escopo de log) | `BeginScope` adiciona campos a todos os logs dentro do bloco; correlaciona requisição e operação |
+| **correlation ID** (identificador de correlação) | ID único por requisição que conecta logs entre serviços |
+| **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) | Dados que identificam pessoa: nunca em logs sem mascaramento |
+| **Activity** (atividade de tracing) | API do .NET para distributed tracing (OpenTelemetry); cobre spans e propagação de contexto |
 
 ## Logging estruturado
 

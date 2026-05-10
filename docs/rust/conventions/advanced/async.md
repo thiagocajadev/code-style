@@ -13,7 +13,7 @@ Funções `async fn` retornam um `Future` que só executa quando aguardado com `
 | -------- | ------- |
 | `async fn` | Declara uma função assíncrona; retorna um `Future<Output = T>` implicitamente |
 | `.await` | Suspende a task corrente até o `Future` resolver; não bloqueia a thread |
-| **Tokio** | Runtime async mais usado; gerencia thread pool, I/O e timers |
+| **Tokio** (runtime async para Rust) | Gerencia thread pool, I/O e timers |
 | `tokio::spawn` | Lança uma task independente no runtime; retorna `JoinHandle<T>` |
 | `tokio::select!` | Aguarda múltiplos `Future`s em paralelo; retorna o que resolver primeiro |
 | `tokio::join!` | Aguarda múltiplos `Future`s em paralelo; retorna todos os resultados |

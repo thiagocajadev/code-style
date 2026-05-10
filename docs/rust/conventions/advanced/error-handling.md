@@ -12,8 +12,8 @@ na presença de `Err` ou `None` e não tem lugar em código de produção.
 | -------- | ------- |
 | `Result<T, E>` | `Ok(T)` em sucesso, `Err(E)` em falha; retornado explicitamente |
 | `?` | Propaga `Err` para o chamador; equivalente a `return Err(e.into())` |
-| **thiserror** | Crate para definir tipos de erro tipados em bibliotecas |
-| **anyhow** | Crate para contexto de erro progressivo em aplicações |
+| **thiserror** (crate para erros tipados em bibliotecas) | Macro `derive` que gera `Display`, `Error` e `From` |
+| **anyhow** (crate para contexto de erro em aplicações) | Tipo `anyhow::Error` com chain de causas e `.context()` |
 | `.context()` | Método de `anyhow` que adiciona uma mensagem ao erro original |
 | `unwrap()` / `expect()` | Pânico imediato em `Err` ou `None`; permitido apenas em testes e demos |
 

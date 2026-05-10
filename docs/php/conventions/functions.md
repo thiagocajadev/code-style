@@ -11,9 +11,9 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 
 | Conceito | O que é |
 | -------- | ------- |
-| **named argument** | Argumento passado pelo nome do parâmetro: `create(name: 'Alice', age: 30)`; disponível desde PHP 8.0 |
-| **arrow function** | `fn($x) => expr` — closure de uma linha que captura escopo externo automaticamente |
-| **SLA** | Single Level of Abstraction — cada função opera em um único nível |
+| **named argument** (argumento nomeado) | Passado pelo nome do parâmetro: `create(name: 'Alice', age: 30)`; disponível desde PHP 8.0 |
+| **arrow function** (função em flecha) | `fn($x) => expr` — closure de uma linha que captura escopo externo automaticamente |
+| **SLA** (Single Level of Abstraction, nível único de abstração) | Cada função opera em um único nível: orquestra ou implementa, nunca os dois |
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
 
 ## SLA — orquestrador ou implementação

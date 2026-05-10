@@ -12,7 +12,7 @@ inverte esse default em todo o arquivo.
 | ------------------------------ | --------------------------------------------------------------------------- |
 | `frozen_string_literal`        | Diretiva que congela todas as strings literais do arquivo, reduzindo alocação |
 | **Symbol** (símbolo)           | String leve e imutável usada como chave ou identificador (`:status`)        |
-| **freeze**                     | Método que torna qualquer objeto imutável em tempo de execução               |
+| **freeze** (congelar objeto) | Método que torna qualquer objeto imutável em tempo de execução               |
 | `@variável`                    | Variável de instância — pertence ao objeto, visível dentro da classe        |
 | `CONSTANTE`                    | Valor fixo em nível de módulo ou classe; `SCREAMING_SNAKE_CASE`             |
 

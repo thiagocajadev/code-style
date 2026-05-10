@@ -2,7 +2,7 @@
 
 > Escopo: Kotlin 2.2, JUnit 5, Kotest 5.9, MockK 1.13.
 
-Testes seguem o padrão AAA (Arrange, Act, Assert, Arrumar, Agir, Atestar) com fases explícitas. Todo comportamento novo
+Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. Todo comportamento novo
 ganha um teste; toda correção de bug ganha um teste de regressão. Coroutines têm suporte nativo
 via `runTest`.
 
@@ -10,11 +10,11 @@ via `runTest`.
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
-| **kotest** | framework de asserções expressivas para Kotlin |
-| **mockk** | biblioteca de mocking idiomática para Kotlin (suporte a `suspend`, `object`, `companion`) |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **kotest** (framework de testes Kotlin) | asserções expressivas e estilos `Spec` (`StringSpec`, `BehaviorSpec`) |
+| **mockk** (biblioteca de mocking) | mocks idiomáticos para Kotlin com suporte a `suspend`, `object` e `companion` |
 | `runTest` | executor de coroutines em testes; controla tempo virtual com `advanceTimeBy` |
-| **table-driven test** | parametrização de cenários via `@ParameterizedTest` ou `forAll` do Kotest |
+| **table-driven test** (teste guiado por tabela) | parametrização de cenários via `@ParameterizedTest` ou `forAll` do Kotest |
 
 ## Fases misturadas — AAA
 

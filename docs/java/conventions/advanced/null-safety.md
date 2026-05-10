@@ -2,8 +2,20 @@
 
 > Escopo: Java 25 LTS.
 
-`null` em Java é a ausência de valor — mas não diz _por que_ o valor está ausente. `Optional<T>`
-torna a ausência explícita no contrato do método e força o chamador a lidar com ela.
+`null` em Java é a ausência de valor — mas não diz _por que_ o valor está ausente. **Optional**
+(contêiner de valor opcional) torna a ausência explícita no contrato do método e força o
+chamador a lidar com ela.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Optional** (contêiner de valor opcional) | tipo que representa presença ou ausência de valor de forma explícita |
+| **NullPointerException** (exceção de referência nula) | erro lançado ao acessar membro de referência `null` |
+| **null check** (verificação de nulo) | comparação explícita com `null` antes de usar a referência |
+| **@Nullable** (anotação de valor possivelmente nulo) | marca um parâmetro ou retorno que pode ser `null` |
+| **@NonNull** (anotação de valor garantidamente não-nulo) | marca um parâmetro ou retorno que nunca é `null` |
+| **Objects.requireNonNull** (verificação fail-fast de nulo) | método que lança `NullPointerException` cedo se o valor for `null` |
 
 ## null direto no retorno
 

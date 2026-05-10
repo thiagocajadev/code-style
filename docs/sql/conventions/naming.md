@@ -3,6 +3,18 @@
 Código em inglês. Tabelas no plural, colunas no singular. Nomes descritivos eliminam conflito com
 palavras reservadas sem precisar de delimitadores.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **PascalCase** (caixa Pascal) | Convenção do SQL Server: `FootballTeams`, `SquadNumber` |
+| **snake_case** (caixa com sublinhado) | Convenção do PostgreSQL: `football_teams`, `squad_number` |
+| **reserved keyword** (palavra reservada) | Termo da linguagem SQL: `Date`, `Time`, `Status`; evitar como nome de coluna |
+| **delimiter** (delimitador) | `[ ]` (T-SQL) ou `" "` (PostgreSQL) para escapar nomes; sintoma de naming ruim |
+| **plural table** (tabela no plural) | `Users`, `Players`; coleção de entidades |
+| **singular column** (coluna no singular) | `Name`, `Email`; representa uma propriedade da entidade |
+| **prefix convention** (convenção de prefixo) | `IX_` para índice, `FK_` para foreign key, `SP_` para procedure |
+
 > Os exemplos deste guia seguem a convenção do SQL Server. No PostgreSQL, aplique `snake_case` em
 > minúsculas; os princípios de nomenclatura são os mesmos.
 >

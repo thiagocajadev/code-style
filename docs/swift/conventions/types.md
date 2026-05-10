@@ -10,8 +10,8 @@ a identidade importa ou o ciclo de vida é gerenciado externamente.
 
 | Conceito | O que é |
 | --- | --- |
-| **value type** | cópia em atribuição ou passagem como argumento; `struct`, `enum`, `tuple` |
-| **reference type** | referência compartilhada; `class`, `actor` |
+| **value type** (tipo de valor) | Cópia em atribuição ou passagem como argumento; `struct`, `enum`, `tuple` |
+| **reference type** (tipo de referência) | Referência compartilhada; `class`, `actor` |
 | `struct` | tipo de valor imutável por padrão; cópia eficiente com copy-on-write |
 | `enum` com associated values | hierarquia fechada de estados; pattern matching exaustivo |
 | `protocol` | contrato sem implementação; favorito sobre herança |

@@ -8,14 +8,14 @@ Token é a unidade mínima de texto que um modelo de linguagem processa. Entende
 
 | Conceito | O que é |
 |---|---|
-| **Token** | Sequência de caracteres que o tokenizador trata como unidade: pode ser uma palavra, parte de palavra ou pontuação |
+| **token** (token, unidade mínima) | Sequência de caracteres que o tokenizador trata como unidade: pode ser uma palavra, parte de palavra ou pontuação |
 | **Tokenizer** (tokenizador) | Algoritmo que converte texto em tokens antes de enviar ao modelo |
 | **Input tokens** (tokens de entrada) | Tokens do prompt: system prompt, mensagens, tool schemas e tool results |
 | **Output tokens** (tokens de saída) | Tokens gerados pelo modelo na resposta |
 | **Context window** (janela de contexto) | Limite máximo de tokens (entrada + saída) em uma única chamada à API |
 | **Prompt caching** (cache de prompt) | Mecanismo que reutiliza tokens de entrada já processados, reduzindo custo e latência |
 | **Cache hit** (acerto de cache) | Quando o prefixo do prompt está em cache e não precisa ser reprocessado |
-| **Batch API** | Processamento assíncrono de múltiplas requisições com desconto no custo |
+| **Batch API** (API de lote) | Processamento assíncrono de múltiplas requisições com desconto no custo |
 
 ## O que é um token
 

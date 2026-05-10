@@ -9,9 +9,9 @@ Configuração inicial de um projeto Kotlin: gerenciador de build, formatação 
 | Conceito | O que é |
 | --- | --- |
 | **Gradle KTS** (Kotlin Gradle DSL) | script de build escrito em Kotlin, com type-safety e autocompletar na IDE |
-| **ktlint** | formatador e linter de estilo Kotlin; enforça convenções oficiais do Kotlin Style Guide |
-| **detekt** | análise estática; detecta code smells, complexidade ciclomática e problemas de design |
-| **K2 compiler** | compilador reescrito do Kotlin 2.0+; análise semântica mais precisa e erros melhores |
+| **ktlint** (formatador e linter de Kotlin) | enforça convenções oficiais do Kotlin Style Guide |
+| **detekt** (análise estática para Kotlin) | detecta code smells, complexidade ciclomática e problemas de design |
+| **K2 compiler** (compilador K2) | reescrita do compilador no Kotlin 2.0+; análise semântica mais precisa e erros melhores |
 | **KMP** (Kotlin Multiplatform) | compartilhar lógica entre Android, iOS, Web e Desktop em um único código-fonte |
 
 ## Estrutura de projeto

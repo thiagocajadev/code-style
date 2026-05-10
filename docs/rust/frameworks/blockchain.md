@@ -14,9 +14,9 @@ em tempo de compilação via macros.
 | **program** (programa) | Contrato inteligente implantado on-chain; identificado por um `Pubkey` único |
 | **account** (conta) | Unidade de armazenamento na Solana; toda instrução declara quais accounts acessa |
 | **instruction** (instrução) | Chamada a um programa com accounts e dados de entrada; equivale a uma transação |
-| **signer** | Account que assinou a transação; garante autorização da operação |
+| **signer** (assinante) | Account que assinou a transação; garante autorização da operação |
 | **PDA** (Program Derived Address) | Endereço determinístico derivado do program; não tem chave privada |
-| **lamport** | Menor unidade de SOL (10⁻⁹ SOL); usado para fees e rent |
+| **lamport** (menor unidade de SOL) | 10⁻⁹ SOL; usado para fees e rent |
 | `anchor-lang` | Crate Anchor para Rust; define macros `#[program]`, `#[derive(Accounts)]`, `#[account]` |
 | **IDL** (Interface Description Language) | JSON gerado pelo Anchor descrevendo o programa; usado pelos clients |
 

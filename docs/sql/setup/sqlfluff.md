@@ -2,6 +2,18 @@
 
 SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Enforça automaticamente as convenções de formatação deste guia.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **SQLFluff** (linter e formatter de SQL) | Ferramenta Python que valida e formata SQL conforme dialeto e regras configuráveis |
+| **dialect** (dialeto) | SGBD-alvo: `tsql`, `postgres`, `sqlite`, `bigquery`; define palavras-chave e sintaxe aceita |
+| **rule** (regra) | Verificação individual identificada por código (`L010`, `LT01`); pode ser ativada ou silenciada |
+| **lint** (análise de estilo) | Detecção de violações sem alterar o arquivo; usado em CI para falhar o build |
+| **fix** (correção automática) | Reescrita do arquivo aplicando as regras corrigíveis; complementa o lint |
+| **template** (template) | `jinja`, `dbt` ou `python`; permite que SQLFluff entenda placeholders antes de analisar |
+| **`.sqlfluff`** (arquivo de configuração) | Configuração na raiz do projeto; define dialeto, regras ativas e exceções |
+
 ## Instalação
 
 SQLFluff é uma ferramenta Python. Escolha a opção que melhor se encaixa no seu ambiente:

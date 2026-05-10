@@ -7,6 +7,18 @@
 
 Um projeto Python bem fundado começa com `pyproject.toml` concentrando deps, linter (ruff), type checker (mypy) e runner de testes (pytest). O entry point carrega configuração, registra dependências e sobe a aplicação; módulos ficam organizados por domínio, não por camada técnica.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **pyproject.toml** (manifesto de projeto Python) | arquivo único com deps, build, ruff, mypy e pytest |
+| **virtualenv** (ambiente virtual isolado) | diretório que isola pacotes do projeto do Python global |
+| **ruff** (linter e formatter Python) | linter rápido (Rust) com regras combinadas; substitui flake8 + isort |
+| **mypy** (type checker estático) | verificador de tipos baseado em type hints; pega bugs antes do runtime |
+| **pytest** (framework de testes) | runner padrão de testes; usa funções e fixtures |
+| **entry point** (ponto de entrada) | módulo que carrega configuração e sobe a aplicação |
+| **feature module** (módulo por domínio) | pacote que reúne handler, service e modelos de uma feature |
+
 ## Estrutura de arquivos
 
 ```

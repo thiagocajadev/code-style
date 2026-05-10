@@ -13,7 +13,7 @@ código bloqueante com throughput (vazão) de código reativo, sem callback hell
 | **virtual threads** (threads virtuais) | threads leves gerenciadas pela JVM; bloquear é barato |
 | **platform threads** (threads de plataforma) | threads do SO; bloquear em I/O desperdiça recurso caro |
 | **throughput** (vazão) | número de operações concluídas por unidade de tempo |
-| **CompletableFuture** | contêiner de resultado futuro; compõe operações assíncronas |
+| **CompletableFuture** (futuro completável) | contêiner de resultado futuro; compõe operações assíncronas |
 | **Structured Concurrency** (concorrência estruturada) | escopo que garante que todas as tarefas filhas encerrem antes do pai |
 | **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; não I/O |
 | **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco |

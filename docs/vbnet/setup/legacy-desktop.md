@@ -2,9 +2,22 @@
 
 > Escopo: VB.NET / Windows Forms / .NET Framework 4.8
 
-Aplicativos desktop com escopo limitado — consultas operacionais, relatórios locais, cadastros simples — não precisam de container de injeção de dependência (IoC), camadas de serviço ou padrões elaborados. A configuração do banco no `App.config` e um módulo de acesso a dados thin (enxuto) já resolvem o problema.
+Aplicativos desktop com escopo limitado — consultas operacionais, relatórios locais, cadastros simples — não precisam de container de injeção de dependência (**IoC**), camadas de serviço ou padrões elaborados. A configuração do banco no **App.config** e um módulo de acesso a dados **thin** (enxuto) já resolvem o problema.
 
 Fluxo: `Formulário (tela) → DataAccess (acesso mínimo) → banco → resultado`
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Windows Forms** (framework de UI desktop do .NET) | Plataforma de janelas para aplicativos desktop; padrão histórico em VB.NET |
+| **App.config** (arquivo de configuração) | XML com connection strings e parâmetros do app; carregado em runtime |
+| **connectionStrings** (seção de cadeias de conexão) | Bloco do `App.config` que centraliza credenciais e endpoint do banco |
+| **DataAccess** (módulo de acesso a dados) | Módulo `thin` (enxuto) com funções de leitura/escrita; substitui camada de serviço em apps simples |
+| **Module** (módulo VB.NET) | Container de membros compartilhados; equivale a `static class` em C# |
+| **IoC** (Inversion of Control, Inversão de Controle) | Padrão evitado em desktop legado simples; manter dependências explícitas via parâmetros |
+| **Async / Await** (assíncrono / aguardar) | Mantém a UI responsiva durante I/O; obrigatório mesmo em apps simples |
+| **DataGridView** (grid de dados do WinForms) | Componente padrão para listagem; bind direto a `DataTable` ou `BindingList` |
 
 Use este setup quando:
 - O formulário é o único consumidor do dado

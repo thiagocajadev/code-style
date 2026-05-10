@@ -2,7 +2,20 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C# — com uma diferença crítica: VB.NET tem `Async Sub`, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos.
+Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C# — com uma diferença crítica: VB.NET tem **Async Sub**, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos. **Async Function** retorna `Task`, é aguardável e propaga exceções.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Task** (tarefa assíncrona) | Tipo `Task` / `Task(Of T)` que representa o resultado futuro de uma operação assíncrona |
+| **Async/Await** (assíncrono / aguardar) | Palavras-chave que marcam um método como assíncrono e suspendem a execução até o resultado |
+| **Async Function** (função assíncrona) | Forma aguardável: retorna `Task` ou `Task(Of T)`; exceções propagam ao caller |
+| **Async Sub** (subrotina assíncrona) | Não é aguardável; usar APENAS em event handlers do Windows Forms/WebForms |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
+| **deadlock** (impasse) | Travamento por bloqueio síncrono (`.Result`, `.Wait()`) sobre código assíncrono |
+| **CancellationToken** (sinalizador de cancelamento) | Token propagado pela cadeia para abortar operações longas com cooperação |
+| **ConfigureAwait** (configurar continuação) | Método que controla retorno ao contexto original; em libraries usa-se `False` |
 
 ## Async Function vs Async Sub
 

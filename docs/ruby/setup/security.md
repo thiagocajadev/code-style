@@ -5,6 +5,17 @@
 Secrets (segredos) nunca entram no repositório. Ruby on Rails usa `credentials.yml.enc`
 para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via `dotenv`.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **secret** (segredo) | Credencial sensível: API key, token, senha de DB; nunca commitar em texto plano |
+| **environment variable** (variável de ambiente) | Configuração lida do processo via `ENV[...]`; isola valor por ambiente |
+| **dotenv** (carregador de `.env`) | Gem que lê `.env` local e popula `ENV` em desenvolvimento |
+| **bundler-audit** (auditor de dependências) | Ferramenta que checa `Gemfile.lock` contra base de CVEs conhecidas |
+| **Brakeman** (analisador estático de segurança Rails) | Analisa código Rails buscando vulnerabilidades comuns (SQLi, XSS, mass assignment) |
+| **Rails credentials** (credenciais criptografadas) | `config/credentials.yml.enc` decriptado por `RAILS_MASTER_KEY` em runtime |
+
 ## Variáveis de ambiente
 
 <details>

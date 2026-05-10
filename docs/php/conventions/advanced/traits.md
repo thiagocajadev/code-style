@@ -12,9 +12,9 @@ traits para substituir composição quando a dependência pode ser injetada.
 | Conceito | O que é |
 | -------- | ------- |
 | `trait` | Mecanismo de reutilização de código: métodos e propriedades incluídos em classes via `use` |
-| **abstract method in trait** | Método declarado no trait sem implementação; força a classe que usa o trait a implementá-lo |
+| **abstract method in trait** (método abstrato em trait) | Método declarado no trait sem implementação; força a classe que usa o trait a implementá-lo |
 | **conflict resolution** (resolução de conflito) | `insteadof` e `as` para resolver colisão de nomes quando dois traits têm método com mesmo nome |
-| **visibility override** | `use Trait { method as private; }` para alterar a visibilidade do método incluído |
+| **visibility override** (alteração de visibilidade) | `use Trait { method as private; }` para mudar a visibilidade do método incluído |
 
 ## Uso correto de traits
 

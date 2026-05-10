@@ -5,6 +5,17 @@
 Nomes bons tornam comentários desnecessários. PHP segue **PSR-1** e **PSR-12** como padrões
 de nomenclatura. Dentro dessas convenções, o mesmo princípio vale: o código conta a história.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **PSR-1** (PHP Standards Recommendation 1, padrão básico de código) | Define `PascalCase` para classes, `camelCase` para métodos e `UPPER_SNAKE_CASE` para constantes |
+| **PSR-12** (PHP Standards Recommendation 12, padrão estendido de estilo) | Estende PSR-1 com regras de indentação, namespace, declarações de tipo |
+| **PSR-4** (PHP Standards Recommendation 4, padrão de autoload) | Mapeia namespace para diretório; nome do arquivo casa com nome da classe |
+| **namespace** (espaço de nomes) | Agrupamento lógico que evita colisão de nomes; reflete o caminho do diretório |
+| **ubiquitous language** (linguagem onipresente) | Termos do domínio que aparecem idênticos no código, no banco e na conversa com produto |
+| **intention-revealing name** (nome que revela intenção) | Identificador que descreve o propósito sem precisar de comentário |
+
 ## Identificadores sem significado
 
 <details>

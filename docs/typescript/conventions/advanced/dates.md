@@ -2,11 +2,22 @@
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona: branded types
-para distinguir timestamps de datas formatadas em nível de tipo, e tipagem das funções utilitárias
-de data.
+Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona: **branded type** (tipo marcado) para distinguir **timestamps** (carimbos de tempo) de datas formatadas em nível de tipo, e tipagem das funções utilitárias de data.
 
 > Base JavaScript: [javascript/conventions/advanced/dates.md](../../../../javascript/conventions/advanced/dates.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
+| **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ss.sssZ` para datas em texto |
+| **branded type** (tipo marcado) | `string & { __brand: "IsoTimestamp" }` — distingue valores semânticos em nível de tipo |
+| **timestamp** (carimbo de tempo) | Instante no tempo em UTC, normalmente como string ISO ou epoch ms |
+| **epoch** (época) | Milissegundos desde 1970-01-01T00:00:00Z; representação numérica do instante |
+| **timezone** (fuso horário) | Deslocamento regional aplicado na exibição; nunca no armazenamento |
+| **`Date`** (tipo nativo) | Tipo built-in que mistura local e UTC; usar atrás de fronteira tipada |
+| **`Temporal`** (proposta de API moderna) | API que substitui `Date`; separa tipos por intenção (instant, zoned, plain) |
 
 ## Branded types para timestamps
 

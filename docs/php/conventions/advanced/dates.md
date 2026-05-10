@@ -14,7 +14,7 @@ use `DateTimeInterface` como tipo de parâmetro. Armazene e transmita datas em
 | `DateTimeImmutable` | Objeto de data e hora que não pode ser alterado após criação; operações retornam nova instância |
 | `DateTimeInterface` | Interface implementada por `DateTime` e `DateTimeImmutable`; use em assinaturas para flexibilidade |
 | `DateTimeZone` | Representa um fuso horário; sempre especifique explicitamente |
-| **ISO 8601** | Formato padrão internacional para datas: `2026-01-15T10:00:00+00:00` |
+| **ISO 8601** (padrão internacional de data e hora) | Formato textual com timezone explícito: `2026-01-15T10:00:00+00:00` |
 | `\DateTimeImmutable::createFromFormat` | Parse de string em formato específico com verificação de erro |
 
 ## DateTime vs DateTimeImmutable

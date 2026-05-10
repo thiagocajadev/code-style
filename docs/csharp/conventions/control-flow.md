@@ -1,7 +1,19 @@
 # Control Flow
 
 Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
-existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
+existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada. **Guard clauses** (cláusulas de proteção) achatam aninhamento; **pattern matching** do C# moderno substitui cadeias longas de `if/else` por `switch` expressivos.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo do método que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | Sair do método assim que o resultado for conhecido, sem `else` desnecessário |
+| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta; legível só quando as três partes são curtas |
+| **switch expression** (expressão switch) | Forma de C# 8+ que devolve valor: `x switch { 1 => "a", _ => "b" }` |
+| **pattern matching** (correspondência de padrões) | Recurso do C# moderno para casar tipo, propriedade, tupla; usado em `is` e `switch` |
+| **null-conditional** (acesso seguro a nulo, `?.`) | Operador que evita `NullReferenceException` ao acessar membro de null |
+| **null-coalescing** (coalescência de ausente, `??`) | Operador que devolve o lado direito quando o esquerdo é null |
 
 ## If e else
 

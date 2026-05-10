@@ -2,7 +2,20 @@
 
 > Escopo: **idioma C# / .NET moderno**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
-O sistema de tipos do C# oferece várias formas de descrever contratos: `interface`, `abstract class`, `class`, `record`, `struct`. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
+O sistema de tipos do C# oferece várias formas de descrever contratos: **interface**, **abstract class**, **class**, **record**, **struct**. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **interface** (contrato sem estado) | Descreve capacidade; suporta múltipla implementação; sem campos nem implementação obrigatória |
+| **abstract class** (classe abstrata) | Identidade parcial: estado e comportamento compartilhados, completados pelas filhas |
+| **class** (tipo de referência) | Tipo padrão: identidade por referência, mutável, alocado no heap |
+| **record** (tipo com igualdade por valor) | Tipo imutável por padrão com igualdade estrutural; ideal para DTOs e value objects |
+| **struct** (tipo de valor) | Tipo alocado em pilha, igualdade por valor; para dados pequenos e sem identidade |
+| **sealed** (selada) | Modificador que impede herança; comunica que a classe não foi pensada para ser estendida |
+| **generic** (tipo genérico) | Parâmetro de tipo (`Result<T>`); reaproveita o contrato sem perder verificação |
+| **value object** (objeto de valor) | Tipo cuja igualdade é definida pelos campos, não pela referência (`record` cobre o caso) |
 
 ## Interface vs abstract class
 

@@ -2,10 +2,23 @@
 
 > Escopo: **idioma VB.NET sobre .NET Framework 4.8**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
-VB.NET oferece `Interface`, `MustInherit Class` (abstract), `Class`, `Structure`, `Enum`. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
+VB.NET oferece **Interface**, **MustInherit Class** (equivalente a abstract), **Class**, **Structure**, **Enum**. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
 
 > [!IMPORTANT]
 > Tudo aqui assume `Option Strict On` e `Option Infer On`. Sem eles, o sistema de tipos vira sugestão: conversões implícitas viajam e late binding entra sem aviso. Veja [Variables](./variables.md#option-strict-e-option-explicit).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Interface** (contrato sem estado) | Descreve capacidade; suporta múltipla `Implements`; sem campos nem implementação |
+| **MustInherit Class** (classe abstrata) | Identidade parcial: estado e comportamento compartilhados, completados pelas filhas via `Inherits` |
+| **Class** (tipo de referência) | Tipo padrão: identidade por referência, alocado no heap |
+| **Structure** (tipo de valor) | Alocada em pilha, igualdade por valor; para dados pequenos e sem identidade |
+| **Enum** (enumeração) | Conjunto fechado de valores nomeados; preferido a constantes mágicas |
+| **NotInheritable** (selada) | Modificador que impede herança; comunica que a classe não foi pensada para ser estendida |
+| **Generic** (tipo genérico) | Parâmetro de tipo (`Result(Of T)`); reaproveita o contrato sem perder verificação |
+| **Option Strict On** (modo estrito de tipos) | Diretiva que proíbe conversões implícitas perigosas; obrigatório no projeto |
 
 ## Interface vs MustInherit Class
 

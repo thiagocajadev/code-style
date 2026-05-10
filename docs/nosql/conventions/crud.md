@@ -9,8 +9,8 @@ As convenções abaixo usam MongoDB como referência primária. Princípios de p
 | Conceito | O que é |
 | --- | --- |
 | **Repository pattern** (padrão de repositório) | Camada que encapsula o acesso ao banco; expõe métodos de domínio, esconde o driver |
-| **Upsert** | Operação que insere o documento se não existir ou atualiza se já existir |
-| **Soft delete** | Remoção lógica via campo `isDeleted: true`; o documento permanece no banco |
+| **Upsert** (inserir ou atualizar) | Operação que insere o documento se não existir ou atualiza se já existir |
+| **Soft delete** (exclusão lógica) | Remoção via campo `isDeleted: true`; o documento permanece no banco |
 | **Projection** (projeção) | Lista de campos a retornar; reduz tráfego e consumo de memória |
 | **Filter** (filtro) | Condição de seleção executada no banco, não no cliente |
 

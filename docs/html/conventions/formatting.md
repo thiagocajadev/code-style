@@ -1,7 +1,18 @@
 # Formatting
 
-Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) escaneável: indentação revela hierarquia, ordem de atributos
-cria previsibilidade e aspas duplas eliminam ambiguidade.
+Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) escaneável: **indentation** (indentação) revela hierarquia, ordem de **attribute** (atributo) cria previsibilidade e aspas duplas eliminam ambiguidade.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>` no topo; ativa modo padrão do browser |
+| **tag** (marcação) | Abertura `<el>` e fechamento `</el>` que delimitam o conteúdo |
+| **attribute** (atributo) | Par `nome="valor"` dentro da tag de abertura; configura o elemento |
+| **void element** (elemento vazio) | Tag sem fechamento (`<img>`, `<br>`, `<meta>`); não aceita conteúdo |
+| **self-closing** (autofechamento) | Sintaxe `<el />`; opcional em HTML5, obrigatória em XHTML/JSX |
+| **indentation** (indentação) | 2 espaços por nível; revela hierarquia do documento |
+| **block vs inline** (bloco vs em linha) | Bloco quebra linha (`<section>`, `<div>`); inline flui no texto (`<a>`, `<span>`) |
 
 ## Indentação
 

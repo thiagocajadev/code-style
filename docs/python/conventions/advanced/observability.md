@@ -5,6 +5,18 @@
 Log é a primeira linha de diagnóstico. Um log útil diz quem, o quê e por quê — sem expor dados
 sensíveis e sem poluir com ruído.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **logging** (módulo padrão de log) | módulo da stdlib com níveis, handlers e formatters configuráveis |
+| **structlog** (biblioteca de log estruturado) | biblioteca para logs em chave-valor ou JSON, prontos para agregadores |
+| **log level** (nível de log) | severidade do evento: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` |
+| **structured log** (log estruturado) | log em chave-valor ou JSON; consultável em ferramentas de observabilidade |
+| **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
+| **correlation id** (identificador de correlação) | identificador único de uma requisição, propagado em todos os logs |
+| **OpenTelemetry** (padrão de telemetria distribuída) | padrão aberto para traces, métricas e logs entre serviços |
+
 ## print() em produção
 
 `print()` não tem nível, não tem contexto e não é capturável por sistemas de log. Use o módulo

@@ -19,7 +19,7 @@ Projetar sistemas em escala exige vocabulário preciso: acordos de nível de ser
 | **Replication** (replicação) | Manter cópias dos mesmos dados em nós diferentes para leitura e disponibilidade |
 | **Quorum** (quórum) | Número mínimo de nós que precisam concordar para uma operação ser aceita |
 | **QPS** (Queries Per Second, Consultas Por Segundo) | Medida de carga: quantas operações o sistema recebe por segundo |
-| **p50 / p95 / p99** | Percentis de latência: mediana, cauda e cauda longa das respostas |
+| **p50 / p95 / p99** (percentis 50, 95 e 99) | Percentis de latência: mediana, cauda e cauda longa das respostas |
 
 ## SLA, SLO e SLI
 

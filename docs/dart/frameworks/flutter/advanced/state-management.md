@@ -12,9 +12,9 @@ dado) é modelado com sealed classes ou `AsyncValue`.
 
 | Conceito | O que é |
 | --- | --- |
-| **UI state** | estado visual efêmero: carregando, erro, dado exibido |
-| **domain state** | estado de negócio: lista de pedidos, usuário autenticado |
-| **unidirectional data flow** | dados fluem em uma direção: evento → state → UI |
+| **UI state** (estado de interface) | estado visual efêmero: carregando, erro, dado exibido |
+| **domain state** (estado de domínio) | estado de negócio: lista de pedidos, usuário autenticado |
+| **unidirectional data flow** (fluxo de dados unidirecional) | dados fluem em uma direção: evento → state → UI |
 | `AsyncValue<T>` | sealed type do Riverpod: `loading`, `data`, `error` |
 | `StateNotifier` | ViewModel no Riverpod — gerencia estado e expõe para os widgets |
 | `BlocBuilder` | widget que reconstrói quando o Bloc emite novo estado |

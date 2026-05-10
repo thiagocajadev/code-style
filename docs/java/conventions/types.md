@@ -1,8 +1,21 @@
 # Types
 
 Java moderno (25 LTS) oferece ferramentas para modelar domínio com precisão:
-records para dados imutáveis, sealed classes para hierarquias fechadas, enums
-com comportamento, e generics para contratos reutilizáveis.
+**records** (registros imutáveis) para dados, **sealed classes** (classes seladas) para
+hierarquias fechadas, **enums** (enumerações) com comportamento e **generics** (tipos
+genéricos) para contratos reutilizáveis.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **record** (registro imutável) | tipo de dados imutável e compacto; gera construtor, getters e `equals` |
+| **sealed class** (classe selada) | hierarquia fechada com `permits`; o compilador verifica a exaustividade |
+| **enum** (enumeração) | conjunto fixo de instâncias nomeadas; pode ter campos e métodos |
+| **generics** (tipos genéricos) | parâmetros de tipo que dão segurança em coleções e contratos |
+| **wildcard** (curinga) | `? extends T` e `? super T` ampliam ou restringem o tipo aceito |
+| **pattern matching** (correspondência de padrão) | desconstrói records e tipos no `switch` ou `instanceof` |
+| **boilerplate** (código burocrático) | código repetitivo sem valor de domínio; records e Lombok eliminam |
 
 ## Records — dados sem boilerplate (código burocrático)
 

@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.2] - 2026-05-09
+
+### Changed
+
+- `docs/<lang>/` e `docs/shared/` — `## Conceitos fundamentais` replicado em todas as 18 linguagens + shared (~200 arquivos editados): csharp+vbnet (37), typescript (16), java+python (29), php+sql+nosql (28), html+css (17), shared (24), dart+go+kotlin (43), ruby+rust+swift (44). Padrão: `**termo-en ou sigla** (tradução pt-br)` no campo "Conceito"; bold sempre EN, parens sempre PT
+- Padronização de termos transversais: `**AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar)` em 12 arquivos (cognato direto de "Arrange", preserva o A do mnemônico); `**DTO** (Data Transfer Object, Objeto de Transferência de Dados)` consolidado em 11 arquivos; `validação de schema` → `validação de esquema` em 4 arquivos
+- Auditoria final: `audit-concepts.py` 0 MISSING / 0 NO-PARENS / 0 PT-IN-BOLD em 355 arquivos com a seção; `npm run audit:docs` 2113 blocos Good em 373 arquivos
+
+### Added
+
+- `.ai/tooling/scripts/audit-concepts.py` — auditoria SSOT da seção Conceitos fundamentais por linguagem (`python3 .ai/tooling/scripts/audit-concepts.py <lang...>`)
+
 ## [1.28.1] - 2026-05-09
 
 ### Changed

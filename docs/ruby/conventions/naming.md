@@ -5,6 +5,17 @@
 Nomes bons tornam comentários desnecessários. Ruby usa capitalização e sufixos (`?`, `!`)
 como parte da semântica da linguagem — convenções que o RuboCop enforça automaticamente.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **snake_case** (palavras separadas por underscore) | Convenção para métodos e variáveis locais (`user_id`, `find_by_email`) |
+| **CamelCase** (palavras concatenadas com inicial maiúscula) | Convenção para classes e módulos (`UserRepository`) |
+| **SCREAMING_SNAKE_CASE** (maiúsculas com underscore) | Convenção para constantes (`MAX_RETRIES`) |
+| **predicate method** (método que termina em `?`) | Retorna `true`/`false`; convenção para perguntas (`empty?`, `valid?`) |
+| **bang method** (método que termina em `!`) | Sinaliza versão alternativa perigosa: alteração in-place ou que pode lançar exceção |
+| **sigil** (prefixo que indica escopo) | `@` (instância), `@@` (classe), `$` (global), `:` (símbolo) |
+
 ## Identificadores sem significado
 
 <details>

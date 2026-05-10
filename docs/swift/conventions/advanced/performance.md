@@ -12,9 +12,9 @@ alocações intermediárias. Instruments (Xcode) é a ferramenta de diagnóstico
 | --- | --- |
 | **ARC** (Automatic Reference Counting) | gerenciamento automático de memória para reference types (`class`, `actor`) |
 | `@inlinable` | permite ao compilador substituir chamadas cross-módulo pelo corpo da função |
-| **lazy collection** | operações adiadas em sequências — sem alocação intermediária |
-| **copy-on-write** | structs compartilham buffer até a primeira mutação; eficiente para coleções |
-| **Instruments** | ferramenta do Xcode para profiling: Time Profiler, Allocations, Leaks |
+| **lazy collection** (coleção tardia) | Operações adiadas em sequências — sem alocação intermediária |
+| **copy-on-write** (cópia ao escrever) | Structs compartilham buffer até a primeira mutação; eficiente para coleções |
+| **Instruments** (ferramenta de profiling do Xcode) | Time Profiler, Allocations, Leaks |
 
 ## Classe onde struct resolve
 

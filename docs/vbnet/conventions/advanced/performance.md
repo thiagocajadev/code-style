@@ -2,8 +2,21 @@
 
 > Escopo: VB.NET. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar.
+Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
+contexto, prefira legibilidade. Meça antes de otimizar — **StringBuilder** evita realocações; **GC** pressiona a aplicação quando alocações crescem em laço.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
+| **StringBuilder** (construtor de strings) | Tipo que acumula strings com buffer interno reutilizado; substitui `&` em laço |
+| **GC** (Garbage Collector, Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
+| **allocation** (alocação) | Reserva de memória no heap gerenciado; `New`, boxing e concatenação alocam |
+| **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `Object`; evite em laços |
+| **Dictionary lookup** (busca em dicionário) | `Dictionary(Of K,V)` substitui `For Each` linear quando a coleção é grande |
+| **For Each vs For** (iteração) | `For` indexado é mais rápido em arrays grandes; `For Each` legível em uso normal |
+| **profiling** (medição de desempenho) | Medir antes de otimizar; números reais antes de mudar código |
 
 ## StringBuilder
 

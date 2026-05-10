@@ -2,7 +2,19 @@
 
 > Escopo: SQL. Idiomas específicos deste ecossistema.
 
-Migrações são incrementais e irreversíveis. Cada arquivo representa uma mudança atômica no schema.
+Migrações são incrementais e irreversíveis. Cada arquivo representa uma mudança atômica no schema. **Forward-only migrations** (migrações apenas para frente) eliminam ambiguidade e simplificam pipelines de **CI** (Continuous Integration, Integração Contínua).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **migration** (migração) | Arquivo SQL versionado que altera o schema; ordenado por timestamp |
+| **forward-only** (apenas para frente) | Política de não escrever rollback; reverte aplicando nova migração |
+| **idempotent migration** (migração idempotente) | Pode ser aplicada várias vezes sem efeito colateral; usar `IF NOT EXISTS` |
+| **schema drift** (desvio de schema) | Diferença entre o schema esperado e o real; sintoma de migrações fora de versionamento |
+| **DDL** (Data Definition Language, linguagem de definição de dados) | `CREATE`, `ALTER`, `DROP`; o que migrações executam |
+| **breaking change** (alteração quebradora) | Mudança incompatível com código antigo; aplicar em duas etapas (expand → contract) |
+| **backfill** (preenchimento retroativo) | Popular nova coluna ou tabela com dados históricos; rodar em lotes |
 
 ## Convenção de nomenclatura
 

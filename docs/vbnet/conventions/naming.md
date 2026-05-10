@@ -1,6 +1,18 @@
 # Naming
 
-Nomes em VB.NET seguem as convenções da plataforma .NET: `PascalCase` para tipos, métodos, propriedades e parâmetros públicos; `camelCase` para locais privadas. A regra sobre propósito do domínio vem antes da convenção visual: o identificador nomeia o papel, não o tipo técnico.
+Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para tipos, métodos, propriedades e parâmetros públicos; **camelCase** para locais privadas. A regra sobre propósito do domínio vem antes da convenção visual: o identificador nomeia o papel, não o tipo técnico.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **PascalCase** (capitalização inicial em cada palavra) | Convenção `OrderService`, `CalculateTotal`; usada para tipos, métodos e propriedades |
+| **camelCase** (capitalização a partir da segunda palavra) | Convenção `orderTotal`, `customerId`; usada para parâmetros e variáveis locais |
+| **interface prefix** (prefixo `I` em interfaces) | Convenção .NET: `IOrderRepository`, `ILogger`; identifica contrato visualmente |
+| **Async suffix** (sufixo `Async` em métodos assíncronos) | Sinaliza retorno `Task`/`Task(Of T)`: `LoadAsync`, `SaveAsync` |
+| **domain term** (termo de domínio) | Nome reflete propósito de negócio (`pendingPurchase`), não tipo técnico (`purchaseList`) |
+| **Hungarian notation** (notação húngara) | Antipadrão: prefixos como `strName`, `intCount`; evitar em VB.NET moderno |
+| **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
 ## Nomes em português
 

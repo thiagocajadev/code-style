@@ -2,8 +2,20 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Validação acontece na fronteira do sistema — onde dados externos entram. Uma vez validado, o dado
+Validação acontece no limite do sistema — onde dados externos entram. Uma vez validado, o dado
 circula com tipos garantidos. Revalidar dados internos é sinal de desconfiança no próprio código.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **boundary** (limite) | onde input externo entra na aplicação; único lugar que precisa validar |
+| **Pydantic** (biblioteca de validação por tipos) | biblioteca que valida e serializa dados a partir de type hints |
+| **BaseModel** (modelo base do Pydantic) | classe que vira schema validado; campos com type hints viram constraints |
+| **type hint** (anotação de tipo) | anotação `x: int` que documenta tipo esperado; Pydantic e mypy usam |
+| **schema** (esquema de validação) | descrição estrutural dos dados; Pydantic gera a partir do `BaseModel` |
+| **ValidationError** (erro de validação) | exceção do Pydantic que lista todos os campos inválidos de uma vez |
+| **dataclass** (classe de dados) | decorator da stdlib para gerar `__init__`, `__repr__`, `__eq__` automaticamente |
 
 <details>
 <summary>❌ Bad — verificações manuais duplicadas, sem contrato</summary>

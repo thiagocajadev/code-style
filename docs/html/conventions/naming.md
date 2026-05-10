@@ -1,8 +1,18 @@
 # Naming
 
-IDs e classes descrevem **propósito**: o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência nem
-sua posição no layout. `data-*` é para JavaScript; classes são para CSS. As duas responsabilidades
-não se misturam.
+**id** (identificador) e **class** (classe) descrevem o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência nem sua posição no layout. **data attribute** (atributo de dados) é pra JavaScript; classes são pra CSS. As duas responsabilidades não se misturam.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **id** (identificador) | Único por página; alvo de anchor, `<label for>` e seletor de JavaScript |
+| **class** (classe) | Reutilizável; nome semântico que descreve o papel, não a aparência |
+| **data attribute** (atributo de dados) | `data-*` exposto via `dataset`; canal de JavaScript, não de CSS |
+| **kebab-case** (palavras separadas por hífen) | Convenção de nomes em HTML/CSS (`product-card`, não `productCard`) |
+| **BEM** (Block Element Modifier, Bloco-Elemento-Modificador) | `block__element--modifier`; vincula classe ao papel no componente |
+| **semantic class** (classe semântica) | Nome descreve o papel (`alert--danger`), sobrevive a mudanças de design |
+| **presentational class** (classe de aparência) | Nome descreve o visual (`red-text`); quebra ao redesenhar |
 
 ## IDs e classes
 

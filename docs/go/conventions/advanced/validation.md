@@ -6,6 +6,17 @@ Validação acontece na fronteira do sistema: handler HTTP, worker de fila, cons
 Use o pacote `github.com/go-playground/validator/v10` com struct tags para validações declarativas.
 Valide cedo; nunca confie em input não validado dentro do service.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema (handler, worker, consumer) |
+| **struct tag** (etiqueta de struct) | metadado em campo: `validate:"required,email"` — lido por reflection |
+| **parse, don't validate** (decodifique, não valide) | converter input bruto em tipo de domínio uma única vez na fronteira |
+| **sentinel error** (erro sentinela) | erro exportado (`var ErrXxx = errors.New(...)`) comparado com `errors.Is` |
+| **domain invariant** (invariante de domínio) | regra que deve ser verdadeira em qualquer estado válido do objeto |
+| `validator/v10` | pacote idiomático de validação por struct tag para input externo |
+
 ## Validação com struct tags
 
 <details>

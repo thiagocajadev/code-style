@@ -12,10 +12,10 @@ irrecuperáveis de infraestrutura.
 | --- | --- |
 | `Result<T>` | tipo sealed da stdlib: `Success(value)` ou `Failure(exception)` |
 | `runCatching` | executa bloco e captura qualquer exceção em `Result` |
-| **sealed class de erro** | hierarquia fechada de erros de domínio com `when` exaustivo |
+| **sealed error class** (classe selada de erro) | hierarquia fechada de erros de domínio com `when` exaustivo |
 | `require` | lança `IllegalArgumentException` para pré-condições de entrada |
 | `check` | lança `IllegalStateException` para invariantes internas |
-| **erro silencioso** | capturar e ignorar uma exceção sem log ou propagação |
+| **silent failure** (erro silencioso) | capturar e ignorar uma exceção sem log ou propagação |
 
 ## Exceção como controle de fluxo
 

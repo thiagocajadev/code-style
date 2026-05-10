@@ -6,6 +6,17 @@ Densidade visual é o sinal de intenção no código. Uma linha em branco separa
 grupos lógicos. Zero linhas dentro de um grupo. Nunca duas linhas em branco
 consecutivas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | separador único entre grupos lógicos; nunca duas consecutivas |
+| **atomic block** (bloco atômico) | conjunto coeso de linhas que executa uma intenção — sem linhas em branco internas |
+| **declaration grouping** (agrupamento de declarações) | declarações relacionadas ficam coladas; não-relacionadas separadas por linha em branco |
+| **Explaining Return** (retorno explicado) | atribuir o resultado a uma `final` nomeada antes do `return`, sem blank entre eles |
+| **cascade** (cascata, `..`) | operador para encadear chamadas no mesmo objeto sem repetir o receptor |
+| **indentation** (indentação) | dois espaços por nível; máximo dois níveis dentro do corpo de função |
+
 ## Parede de código
 
 <details>

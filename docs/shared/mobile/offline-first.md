@@ -20,7 +20,7 @@ verdade da UI. A rede atualiza o banco; o banco atualiza a UI.
 | **Optimistic update** (atualização otimista) | Aplicar a mudança localmente antes da confirmação do servidor |
 | **Stale-while-revalidate** (cache imediato com revalidação ao fundo) | Exibir dado em cache enquanto busca versão atualizada em background |
 | **Queue** (fila de operações) | Lista de ações locais pendentes de sincronização com o servidor |
-| **Idempotência** | Operação que produz o mesmo resultado independente de quantas vezes é executada |
+| **idempotency** (operação repetível sem efeito adicional) | Operação que produz o mesmo resultado independente de quantas vezes é executada |
 | **Tombstone** (marcador de deleção) | Registro de deleção local que o servidor ainda não confirmou |
 
 ## O modelo offline-first

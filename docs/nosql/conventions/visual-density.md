@@ -4,6 +4,18 @@
 
 As regras gerais de densidade visual estão em [shared/standards/visual-density.md](../../../shared/standards/visual-density.md). Esta seção aplica essas regras ao contexto específico de drivers **NoSQL** (Not Only SQL, Não Apenas SQL) em JavaScript.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | Espaçamento entre linhas que comunica agrupamento lógico ao leitor |
+| **semantic group** (grupo semântico) | Conexão, query, resultado: cada um é um bloco coeso isolado por blank |
+| **blank line separator** (linha em branco como separador) | Uma linha em branco entre grupos; zero dentro do grupo |
+| **aggregation pipeline** (pipeline de agregação) | Array de estágios; um objeto por linha, agrupados por propósito |
+| **query options** (opções de query) | `projection`, `sort`, `limit`; coladas ao filtro como parte do mesmo grupo |
+| **explaining return** (retorno explicativo) | `const result = ...; return result;` em vez de retornar o `await` direto |
+| **driver call** (chamada ao driver) | Invocação do cliente NoSQL (`db.collection(...)`); cada chamada com `await` em linha própria |
+
 ## Regras
 
 - Um grupo semântico por bloco: conexão, query, resultado

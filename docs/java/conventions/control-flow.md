@@ -4,6 +4,19 @@
 
 Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
 existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
+**Guard clauses** (cláusulas de proteção) achatam aninhamento; **switch expressions**
+(expressões de seleção) substituem cadeias longas de `if/else`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo do método que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | sair do método assim que o resultado for conhecido, sem `else` desnecessário |
+| **ternary** (operador ternário) | `cond ? a : b`; expressão condicional curta para valores simples |
+| **switch expression** (expressão de seleção) | `switch` que retorna valor; suporta `->` e pattern matching no Java moderno |
+| **pattern matching** (correspondência de padrão) | desconstrói tipos no `switch` ou `instanceof` sem cast manual |
+| **sealed class** (classe selada) | hierarquia fechada; o `switch` cobre todos os casos sem `default` |
 
 ## If e else
 

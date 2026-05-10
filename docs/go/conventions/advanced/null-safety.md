@@ -12,7 +12,7 @@ maps, slices, channels e funções podem ser `nil` — verifique antes de usar.
 | -------- | ------- |
 | **zero value** (valor zero) | Valor inicial de qualquer variável não atribuída: `0`, `false`, `""`, `nil` conforme o tipo |
 | `nil` | Valor zero de ponteiros, interfaces, maps, slices, channels e funções |
-| **nil pointer dereference** | Panic ao acessar campo ou método de um ponteiro nil; a verificação é a defesa |
+| **nil pointer dereference** (desreferenciar ponteiro nulo) | panic ao acessar campo ou método de um ponteiro nil; a verificação é a defesa |
 | **optional pattern** (padrão opcional) | Retornar `*T, error` ou `T, bool` para sinalizar ausência sem nil implícito |
 
 ## Nil pointer dereference

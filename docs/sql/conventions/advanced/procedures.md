@@ -5,6 +5,18 @@
 Procedures decompõem queries complexas em etapas nomeadas. Tabelas temporárias materializam
 resultados intermediários, tornando cada passo testável e legível.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **stored procedure** (procedimento armazenado) | Bloco SQL compilado e armazenado no banco; executável com `EXEC`/`CALL` |
+| **temp table** (tabela temporária) | Tabela criada em sessão com `#` (T-SQL) ou `TEMP` (PostgreSQL); descartada ao final |
+| **table variable** (variável de tabela) | `DECLARE @t TABLE` em T-SQL; vive em memória, sem estatísticas |
+| **transaction** (transação) | `BEGIN`/`COMMIT`/`ROLLBACK`; agrupa operações como unidade atômica |
+| **TRY/CATCH** (tentar/capturar) | Bloco de tratamento de erro em T-SQL; equivalente do `try/except` em PL/pgSQL |
+| **idempotent procedure** (procedure idempotente) | Pode ser executada várias vezes com o mesmo efeito; chave para retry seguro |
+| **stepdown rule** (regra de descida) | Orquestrador no topo, etapas detalhadas abaixo na ordem de leitura |
+
 ## Query monolítica vs etapas com temp tables
 
 <details>

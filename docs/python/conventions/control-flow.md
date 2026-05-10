@@ -2,6 +2,19 @@
 
 Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
 existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
+**Guard clauses** (cláusulas de proteção) achatam aninhamento; **lookup tables** (tabelas de
+busca) eliminam cadeias longas de `if/elif`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **ternary** (operador ternário) | `a if cond else b` — expressão condicional curta para valores simples |
+| **match statement** (correspondência estrutural) | `match` (Python 3.10+) com pattern matching para mapear estrutura de dados |
+| **lookup table** (tabela de busca) | `dict` `{ chave: valor }` que substitui cadeias de `if/elif` ou `match` simples |
+| **truthy / falsy** (avalia como verdadeiro / como falso) | valores que coercionam para `True` ou `False` (`0`, `""`, `None`, `[]` são falsy) |
 
 ## If e else
 

@@ -2,8 +2,19 @@
 
 > Escopo: HTML. Idiomas específicos deste ecossistema.
 
-Formulários acessíveis associam labels a inputs, agrupam campos relacionados e usam tipos nativos.
-O browser entrega validação, teclado virtual e autopreenchimento sem JavaScript adicional.
+Formulários acessíveis associam **label** (rótulo) a **input** (campo), agrupam campos relacionados em **fieldset** (conjunto de campos) e usam tipos nativos. O browser entrega validação, teclado virtual e **autocomplete** (autopreenchimento) sem JavaScript adicional.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **form** (formulário) | Container que agrupa campos e dispara o envio via `action`/`method` |
+| **input** (campo) | Elemento de entrada; o atributo `type` define teclado virtual e validação |
+| **label** (rótulo) | Texto associado ao campo via `for`/`id`; alvo de clique e leitor de tela |
+| **fieldset** (conjunto de campos) | Agrupa campos relacionados; `<legend>` descreve o grupo |
+| **autocomplete** (autopreenchimento) | Atributo que sinaliza o tipo do dado (`email`, `name`, `tel`) ao browser |
+| **client-side validation** (validação no cliente) | `required`, `type`, `pattern`, `min`/`max` aplicados pelo browser antes do submit |
+| **placeholder** (texto auxiliar) | Dica que desaparece ao digitar; não substitui label |
 
 ## Label
 

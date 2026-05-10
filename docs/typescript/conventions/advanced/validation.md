@@ -2,11 +2,22 @@
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript adiciona: inferência
-de tipo a partir do schema Zod, tipos derivados em vez de declarados manualmente e garantia de
-que o output do parse corresponde ao tipo esperado.
+Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript adiciona: **type inference** (inferência de tipo) a partir do schema **Zod** (biblioteca de validação por schema), tipos derivados em vez de declarados manualmente e garantia de que o output do **parse** (transformação) corresponde ao tipo esperado.
 
 > Base JavaScript: [javascript/conventions/advanced/validation.md](../../../../javascript/conventions/advanced/validation.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Zod** (biblioteca de validação por schema) | Biblioteca de schemas componíveis com tipo inferido a partir do schema |
+| **`z.infer`** (inferência de tipo a partir do schema) | Utilitário que extrai o tipo TS de um schema Zod; uma só fonte de verdade |
+| **schema** (descrição declarativa de formato) | Objeto que descreve a forma esperada dos dados em runtime |
+| **parse, don't validate** (transforme, não só verifique) | Princípio: converter a entrada em tipo seguro de uma vez, em vez de só checar e seguir com `unknown` |
+| **`safeParse`** (parse com resultado tipado) | Variante que retorna `{ success, data }` ou `{ success, error }` em vez de lançar |
+| **branded type** (tipo marcado) | Primitivo + tag (`z.string().brand<"Email">()`) para distinguir valores semânticos |
+| **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas; derivada do schema |
 
 ## z.infer: tipo deriva do schema
 

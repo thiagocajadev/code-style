@@ -8,7 +8,20 @@ O pipeline de validação tem três responsabilidades distintas, cada uma no seu
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
 ```
 
-Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
+Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. **FluentValidation** cobre validação de esquema; **business rules** vivem no domínio.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **sanitization** (sanitização) | Limpeza de entrada antes de validar: `Trim`, `ToLowerInvariant`, normalização de Unicode |
+| **schema validation** (validação de esquema) | Checagem de forma e tipo: campo obrigatório, formato, faixa numérica |
+| **business rule** (regra de negócio) | Validação que depende de estado do domínio (ex: e-mail já existe) |
+| **FluentValidation** (biblioteca de validação para .NET) | API fluente para definir regras de schema fora dos atributos do modelo |
+| **DataAnnotations** (atributos de validação do .NET) | `[Required]`, `[StringLength]` etc. aplicados ao modelo; útil para casos simples |
+| **ModelState** (estado do modelo no MVC) | Coleção que agrega erros de binding e validação na pipeline ASP.NET |
+| **input boundary** (limite de entrada) | Camada externa onde dados crus entram e são sanitizados antes de qualquer regra |
+| **output filter** (filtro de saída) | Etapa final que remove campos sensíveis antes de serializar a resposta |
 
 ## Sanitização de entrada
 

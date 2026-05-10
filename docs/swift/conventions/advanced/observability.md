@@ -16,8 +16,8 @@ marcar regiões de código para profiling no Instruments.
 | `subsystem` | identificador do app ou framework — geralmente reverse-DNS: `com.acme.app` |
 | `category` | subdivisão do subsystem: `"network"`, `"payment"`, `"ui"` |
 | `OSSignpostID` | marcador para regiões de código no Instruments |
-| **log level** | `debug`, `info`, `notice`, `warning`, `error`, `critical`, `fault` |
-| **privacy** | `\(value, privacy: .public)` vs `.private` — dados sensíveis são redacted por padrão |
+| **log level** (nível de severidade) | `debug`, `info`, `notice`, `warning`, `error`, `critical`, `fault` |
+| **privacy** (controle de privacidade no log) | `\(value, privacy: .public)` vs `.private` — dados sensíveis são redacted por padrão |
 
 ## `print()` em produção
 

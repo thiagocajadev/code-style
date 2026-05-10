@@ -2,7 +2,19 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-Tratamento de erros em C# separa dois mundos: falhas inesperadas (exceções) e falhas esperadas de negócio (`Result<T>`). A distinção é semântica: exceção é evento excepcional, resultado é parte do contrato. Confundir os dois produz código defensivo em excesso ou silêncio perigoso.
+Tratamento de erros em C# separa dois mundos: falhas inesperadas (**exception**) e falhas esperadas de negócio (**Result**). A distinção é semântica: exceção é evento excepcional, resultado é parte do contrato. Confundir os dois produz código defensivo em excesso ou silêncio perigoso.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **exception** (exceção) | Evento excepcional para falhas inesperadas: bugs, infraestrutura indisponível, estado impossível |
+| **Result\<T\>** (tipo de resultado) | Valor que representa sucesso (`Value`) ou falha (`Error`); torna o contrato de erro explícito |
+| **try/catch** (tentar / capturar) | Bloco que captura exceções; usado no limite externo, não para fluxo de negócio |
+| **rethrow** (relançar) | `throw;` que preserva o stack trace original ao propagar a mesma exceção |
+| **exception filter** (filtro de exceção) | `when (...)` em `catch` que avalia condição sem desempilhar; mantém o stack trace |
+| **business rule** (regra de negócio) | Falha esperada modelada como dado, não como exceção; retornada via `Result<T>` |
+| **boundary** (limite do sistema) | Camada externa (controller, handler) onde o `Result` é convertido em resposta HTTP/JSON |
 
 ## Result\<T\>
 

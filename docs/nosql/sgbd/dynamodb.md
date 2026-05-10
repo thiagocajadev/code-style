@@ -18,7 +18,7 @@ DynamoDB é o banco **NoSQL** (Not Only SQL, Não Apenas SQL) gerenciado da AWS.
 | **RCU** (Read Capacity Unit, Unidade de Capacidade de Leitura) | Unidade de leitura: 1 RCU = uma leitura fortemente consistente de até 4 KB |
 | **WCU** (Write Capacity Unit, Unidade de Capacidade de Escrita) | Unidade de escrita: 1 WCU = uma escrita de até 1 KB |
 | **Hot spot** (ponto quente) | Partição sobrecarregada pela má distribuição do partition key |
-| **Scan** | Lê todos os itens da tabela; anti-padrão em produção |
+| **Scan** (varredura) | Lê todos os itens da tabela; anti-padrão em produção |
 
 ---
 

@@ -5,6 +5,18 @@
 Funções Rust retornam a última expressão implicitamente ou usam `return` explícito para
 saída antecipada. O operador `?` propaga erros sem ruído. Closures são primeiro-classe.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **fn** (função) | Unidade de comportamento declarada com `fn`; última expressão sem `;` é o retorno |
+| **closure** (função anônima que captura escopo) | `|x| x + 1`; pode capturar por referência, mut ou move conforme uso |
+| **ownership** (posse) | Cada valor tem um único dono; sair do escopo libera memória sem GC |
+| **borrow** (empréstimo) | Referência `&T` (imutável) ou `&mut T` (mutável) que não transfere posse |
+| **lifetime** (tempo de vida) | Anotação `'a` que diz ao compilador por quanto uma referência é válida |
+| **return expression** (expressão de retorno) | Última linha sem `;`; `return` explícito só em early return |
+| **`impl Trait`** (tipo de retorno opaco) | Indica "alguma coisa que implementa este trait" sem expor o tipo concreto |
+
 ## SLA — uma responsabilidade, um nível
 
 Cada função executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.

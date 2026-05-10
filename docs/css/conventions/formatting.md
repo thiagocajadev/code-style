@@ -1,8 +1,18 @@
 # Formatting
 
-A ordem de propriedades não é arbitrária. Agrupar por responsabilidade (posicionamento, box model,
-tipografia, visual) torna um bloco CSS legível de cima pra baixo: de "onde está e qual o tamanho"
-para "como parece".
+A ordem de **declaration** (declaração) não é arbitrária. Agrupar por responsabilidade (**positioning**, **box model**, **typography**, visual) torna um **ruleset** (bloco de regras) legível de cima pra baixo: de "onde está e qual o tamanho" pra "como parece".
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **ruleset** (bloco de regras) | Seletor + declarações entre chaves: `.card { ... }` |
+| **selector** (seletor) | Padrão que escolhe os elementos: `.card`, `nav > a`, `[type="email"]` |
+| **declaration** (declaração) | Par `propriedade: valor;` dentro do ruleset |
+| **shorthand** (forma resumida) | `margin: 8px 16px` em vez de quatro `margin-*`; cuidado com sobrescrita acidental |
+| **box model** (modelo de caixa) | `content` → `padding` → `border` → `margin`; base do dimensionamento |
+| **positioning** (posicionamento) | Grupo de `position`, `top`/`right`/`bottom`/`left`, `z-index` |
+| **typography** (tipografia) | Grupo de `font-*`, `line-height`, `letter-spacing`, `text-*` |
 
 ## Ordem de propriedades
 

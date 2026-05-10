@@ -18,7 +18,7 @@ routes (tabs com estado persistente).
 | `context.go` | navega para rota e substitui o histórico |
 | `context.push` | empilha rota no histórico (back button retorna) |
 | `redirect` | função executada antes de cada navegação — guarda de autenticação |
-| **deep link** | URL externa que abre diretamente uma tela específica do app |
+| **deep link** (link profundo) | URL externa que abre diretamente uma tela específica do app |
 
 ## Rota imperativa
 

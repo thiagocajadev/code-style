@@ -11,11 +11,11 @@ Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo d
 | **Agent** (agente) | Sistema autônomo que combina LLM com ferramentas e executa tarefas em múltiplos passos |
 | **Harness** (estrutura de execução) | Código que envolve o agente: gerencia o loop de raciocínio, chama ferramentas e mantém estado |
 | **Orchestration** (orquestração) | Coordenação de múltiplos agentes ou etapas em um fluxo de trabalho |
-| **ReAct** | Padrão de raciocínio: o agente alterna entre Reason (raciocinar) e Act (agir) em cada passo |
+| **ReAct** (Reason + Act, raciocinar e agir) | Padrão de raciocínio: o agente alterna entre Reason (raciocinar) e Act (agir) em cada passo |
 | **Plan-and-Execute** (planejar e executar) | Padrão em que o agente gera um plano completo antes de executar qualquer ação |
 | **Handoff** (transferência) | Passagem de controle de um agente para outro em um pipeline multi-agente |
 | **Memory** (memória) | Capacidade do agente de reter informações entre chamadas ou entre sessões |
-| **Checkpoint** | Estado salvo do agente que permite retomar a execução após falha ou interrupção |
+| **Checkpoint** (ponto de salvamento) | Estado salvo do agente que permite retomar a execução após falha ou interrupção |
 
 ## Agent (Agente)
 

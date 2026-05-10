@@ -10,13 +10,13 @@ Redis é um banco de dados em memória com persistência opcional. Funciona como
 
 | Conceito | O que é |
 | --- | --- |
-| **String** | Tipo base: qualquer valor até 512 MB — texto, JSON serializado, número |
-| **Hash** | Mapa de campos e valores; ideal para objetos com campos nomeados |
+| **String** (cadeia de caracteres) | Tipo base: qualquer valor até 512 MB — texto, JSON serializado, número |
+| **Hash** (mapa de campo-valor) | Mapa de campos e valores; ideal para objetos com campos nomeados |
 | **List** (lista) | Lista duplamente encadeada; suporta push/pop nas duas extremidades |
 | **Set** (conjunto) | Coleção não ordenada de strings únicas |
 | **Sorted Set** (conjunto ordenado) | Set com score numérico por membro; ordenado por score |
 | **TTL** (Time To Live, tempo de vida) | Expiração automática da chave após o intervalo configurado |
-| **Cache-aside** | Padrão: verificar cache → miss → buscar no banco → preencher cache |
+| **Cache-aside** (cache ao lado) | Padrão: verificar cache → miss → buscar no banco → preencher cache |
 | **Pub/Sub** (publish/subscribe) | Canal de mensagens: publicadores emitem, assinantes recebem |
 | **Atomic operation** (operação atômica) | Operação que executa como unidade indivisível; INCR é atômico por natureza |
 | **Keyspace** (espaço de chaves) | Conjunto de todas as chaves do banco Redis |

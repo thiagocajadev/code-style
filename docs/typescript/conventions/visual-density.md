@@ -1,8 +1,21 @@
 # Visual density: TypeScript
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript. Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em TypeScript. Anotações de tipo não adicionam densidade: ficam na mesma linha que a declaração. **Semantic group** (grupo semântico), **blank line** (linha em branco) e **explaining return** (retorno explicativo) seguem inalterados; **type annotation** (anotação de tipo) e **generic** (tipo paramétrico) acompanham o passo a que pertencem.
 
 > Base JavaScript: [javascript/conventions/visual-density.md](../../javascript/conventions/visual-density.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo |
+| **semantic group** (grupo semântico) | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (validar, calcular, persistir) |
+| **blank line** (linha em branco) | Separador entre grupos semânticos; substitui comentário de seção |
+| **single-line orphan** (órfão de 1) | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
+| **explaining return** (retorno explicativo) | Linha solta antes do `return` que dá nome ao valor retornado; nunca há lógica no `return` |
+| **type annotation** (anotação de tipo) | Anotação inline (`: T`) na mesma linha da declaração; não conta como passo |
+| **generic** (tipo paramétrico) | Parâmetro de tipo (`<T>`) inline na assinatura; acompanha a função sem quebrar grupo |
+| **boundary** (limite) | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes |
 
 ## A regra central
 

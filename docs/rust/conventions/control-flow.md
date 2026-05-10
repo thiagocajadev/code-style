@@ -6,6 +6,18 @@
 Rust favorece fluxo linear e explícito. O operador `?` propaga erros cedo sem aninhamento.
 `match` é exaustivo por design: o compilador rejeita casos não cobertos.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **expression-oriented** (orientado a expressão) | Quase tudo retorna valor: `if`, `match`, `loop` são expressões e podem aparecer no `let` |
+| **match** (despacho exaustivo) | Pattern matching sobre todas as variantes possíveis; compilador rejeita casos faltantes |
+| **if let** (extrair se variante) | Açúcar para `match` com um único braço; pega valor de `Option`/`Result`/enum |
+| **while let** (loop enquanto variante) | Loop que continua enquanto o pattern casa; útil para drenar iteradores |
+| **loop** (loop infinito) | `loop { ... }` com `break value` que retorna valor; mais explícito que `while true` |
+| **`?` operator** (propagador de erro) | Após `Result` ou `Option`: retorna cedo na variante de erro/none, segue com o valor no Ok/Some |
+| **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+
 ## if/else
 
 Dois caminhos mutuamente exclusivos. Nunca use `else` após um `return` — isso cria

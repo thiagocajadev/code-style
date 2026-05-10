@@ -13,7 +13,7 @@ de fila) em vez de async dentro de um único processo.
 | -------- | ------- |
 | **Fiber** (fibra) | Corrotina nativa do PHP 8.1+: execução pausável e retomável dentro de um único processo |
 | **event loop** (laço de eventos) | Estrutura que monitora múltiplos I/Os e despacha callbacks quando prontos; base de ReactPHP e Revolt |
-| **Revolt** | Event loop moderno baseado em Fibers para PHP 8.1+; substitui o loop de callbacks do ReactPHP |
+| **Revolt** (event loop baseado em Fibers) | Loop de eventos moderno para PHP 8.1+; substitui o loop de callbacks do ReactPHP |
 | **worker** (trabalhador) | Processo separado que consome fila de mensagens; padrão mais comum para concorrência em PHP |
 | `suspend` | Método de Fiber que pausa a execução e devolve controle ao chamador externo |
 

@@ -1,6 +1,20 @@
 # ADO.NET
 
-ADO.NET é a camada de acesso a dados nativa do .NET Framework — presente em todo legado. Não tem mapeamento automático: o código lê coluna a coluna do `SqlDataReader` ou carrega em `DataTable` via `SqlDataAdapter`. Em troca, oferece controle total sobre a query, o resultado e a transação.
+**ADO.NET** (ActiveX Data Objects para .NET) é a camada de acesso a dados nativa do .NET Framework — presente em todo legado. Não tem mapeamento automático: o código lê coluna a coluna do **SqlDataReader** ou carrega em **DataTable** via **SqlDataAdapter**. Em troca, oferece controle total sobre a query, o resultado e a transação.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **ADO.NET** (ActiveX Data Objects para .NET) | Camada de acesso a dados nativa do .NET Framework; sem ORM, controle total |
+| **SqlConnection** (conexão SQL Server) | Abre o canal com o banco; implementa `IDisposable`, sempre dentro de `Using` |
+| **SqlCommand** (comando SQL) | Encapsula a instrução a executar; aceita parâmetros e tipo de comando |
+| **SqlDataReader** (leitor sequencial de resultado) | Stream forward-only de linhas; eficiente em grandes resultados |
+| **SqlDataAdapter** (adaptador de dados) | Preenche `DataTable`/`DataSet` em memória; útil para resultados pequenos |
+| **DataTable** (tabela em memória) | Tabela genérica com linhas e colunas; carregada via `Fill` do adapter |
+| **parameterized query** (consulta parametrizada) | SQL com `@param`; previne SQL injection e permite cache de plano |
+| **Using** (descarte determinístico) | Bloco que garante `Dispose()` mesmo sob exceção; obrigatório em `IDisposable` |
+| **SQL injection** (injeção de SQL) | Vulnerabilidade ao concatenar entrada do usuário em SQL; parametrização elimina o risco |
 
 ## SqlConnection e SqlCommand
 

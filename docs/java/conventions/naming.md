@@ -1,6 +1,18 @@
 # Naming
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
+Nomes bons tornam comentários desnecessários. O código deve contar a história por si só. Use
+**camelCase** (camelo) para identificadores e **PascalCase** (pascal) para tipos.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **camelCase** (camelo) | convenção para variáveis, métodos e parâmetros: `userName`, `findById` |
+| **PascalCase** (pascal) | convenção para classes, records, enums e interfaces: `OrderService`, `UserRole` |
+| **SCREAMING_SNAKE_CASE** (caixa-alta com underline) | convenção para constantes `static final`: `MAX_RETRIES`, `DEFAULT_TIMEOUT` |
+| **intention-revealing name** (nome que revela intenção) | nome que descreve o propósito, não o tipo: `expirationDays`, não `intD` |
+| **domain language** (linguagem do domínio) | termos do negócio na assinatura: `Customer`, `Invoice`, não `Obj1`, `Data` |
+| **boolean prefix** (prefixo booleano) | `is`, `has`, `should` deixa booleanos óbvios: `isActive`, `hasPermission` |
 
 ## Identificadores sem significado
 

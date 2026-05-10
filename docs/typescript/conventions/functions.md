@@ -1,8 +1,19 @@
 # Functions
 
-Os princípios de funções do JavaScript: responsabilidade única, top-down, sem lógica no retorno.
-Aplicam-se aqui sem exceção. O TypeScript adiciona: anotar o return type de funções exportadas e
-tipar parâmetros de forma que o contrato se sustente sem comentários.
+Os princípios de funções do JavaScript: responsabilidade única, top-down, sem lógica no retorno. Aplicam-se aqui sem exceção. O TypeScript adiciona: anotar o **return type** (tipo de retorno) de funções exportadas e tipar parâmetros de forma que o **signature** (assinatura) se sustente sem comentários, com **generics** (tipos paramétricos) quando o contrato precisar carregar tipos.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **return type** (tipo de retorno) | Anotação do que a função devolve; obrigatória em função exportada |
+| **signature** (assinatura) | Lista de parâmetros tipados + return type; o contrato público da função |
+| **generic** (tipo paramétrico) | Parâmetro de tipo (`<T>`) que carrega tipo do caller para o retorno |
+| **overload** (sobrecarga) | Múltiplas assinaturas para a mesma implementação; usar com parcimônia |
+| **parameter type** (tipo de parâmetro) | Tipo do argumento na entrada; aceita union, intersection ou genérico |
+| **default parameter** (parâmetro padrão) | Valor usado quando o argumento é `undefined` (`function f(x = 0)`) |
+| **arrow function** (função flecha) | `() => {}` — sintaxe curta sem `this` próprio; ideal para callbacks |
+| **void return** (retorno vazio) | Função sem valor de retorno significativo; declara `: void` explicitamente |
 
 ## Return type
 

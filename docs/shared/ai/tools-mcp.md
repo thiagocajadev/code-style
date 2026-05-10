@@ -16,7 +16,7 @@ Modelos de linguagem, por si só, só produzem texto. **Tool use** (uso de ferra
 | **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo) | Protocolo cliente/servidor para expor ferramentas, recursos e prompts a modelos de IA |
 | **MCP Server** (servidor MCP) | Processo que expõe ferramentas e recursos seguindo o protocolo MCP |
 | **MCP Client** (cliente MCP) | Componente do harness que conecta ao MCP Server e traduz chamadas para o modelo |
-| **Host** | Aplicação que instancia o MCP Client e gerencia a conversa (ex: Claude Code, Cursor) |
+| **Host** (hospedeiro) | Aplicação que instancia o MCP Client e gerencia a conversa (ex: Claude Code, Cursor) |
 | **Transport** (transporte) | Canal de comunicação entre cliente e servidor: `stdio` (local) ou Streamable HTTP (remoto) |
 
 ## Tool Use (Uso de ferramentas)

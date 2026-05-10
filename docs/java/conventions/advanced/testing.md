@@ -3,16 +3,16 @@
 > Escopo: Java 25 LTS — JUnit 6 + AssertJ + Mockito.
 
 Testes bem estruturados documentam o comportamento, isolam falhas e resistem ao refactor
-(refatoração). **AAA** (Arrange, Act, Assert — Preparar, Agir, Verificar) é o esqueleto de
+(refatoração). **AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar) é o esqueleto de
 todo teste.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert — Preparar, Agir, Verificar) | estrutura que separa setup, execução e verificação |
-| **AssertJ** | biblioteca de assertions (afirmações) fluentes para Java |
-| **Mockito** | biblioteca de mocks (objetos simulados) para Java |
+| **AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AssertJ** (biblioteca de afirmações fluentes para Java) | biblioteca de assertions (afirmações) fluentes para Java |
+| **Mockito** (biblioteca de dados fictícios para Java) | biblioteca de mocks (objetos simulados) para Java |
 | **mock** (objeto simulado) | substituto de uma dependência real que responde conforme programado |
 | `@Mock` | cria um mock gerenciado pelo Mockito |
 | `@InjectMocks` | injeta os mocks nas dependências da classe sob teste |

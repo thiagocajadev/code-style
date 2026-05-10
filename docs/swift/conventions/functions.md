@@ -11,9 +11,9 @@ por uma `let`.
 | Conceito | O que é |
 | --- | --- |
 | **SLA** (Single Level of Abstraction) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo |
-| **Explaining Return** | atribuir o resultado a uma `let` nomeada antes de retornar |
-| **Stepdown Rule** | chamador visível antes do detalhe; helpers abaixo do chamador |
-| **label de argumento** | rótulo externo de parâmetro que torna a chamada legível como prosa |
+| **Explaining Return** (retorno explicado) | Atribuir o resultado a uma `let` nomeada antes de retornar |
+| **Stepdown Rule** (regra do stepdown) | Chamador visível antes do detalhe; helpers abaixo do chamador |
+| **argument label** (rótulo de argumento) | Rótulo externo de parâmetro que torna a chamada legível como prosa |
 | `@discardableResult` | indica que o valor de retorno pode ser ignorado sem warning |
 
 ## God function — múltiplas responsabilidades

@@ -13,8 +13,8 @@ seriam suficientes.
 | -------- | ------- |
 | **ownership** (posse) | Cada valor tem um único dono; transferir ownership move o valor sem copiar |
 | **borrowing** (empréstimo) | Referência temporária ao valor sem transferir ownership: `&T` (imutável) ou `&mut T` (mutável) |
-| **clone** | Cópia profunda explícita; nunca implícita em Rust; use quando necessário |
-| **zero-cost abstraction** | Iteradores, closures e generics compilam para código equivalente ao manual |
+| **clone** (cópia profunda explícita) | Nunca implícita em Rust; use quando necessário |
+| **zero-cost abstraction** (abstração sem custo em runtime) | Iteradores, closures e generics compilam para código equivalente ao manual |
 | `Cow<'a, T>` | Clone-on-write: usa referência quando possível, aloca apenas ao modificar |
 | `Arc<T>` | Referência contada para ownership compartilhado entre threads |
 

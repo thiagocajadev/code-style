@@ -1,8 +1,19 @@
 # Variables
 
-As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que TypeScript
-adiciona é o sistema de tipos: quando anotar, quando deixar a inferência trabalhar, e como evitar
-buracos no contrato.
+As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que TypeScript adiciona é o sistema de tipos: quando anotar, quando deixar a **type inference** (inferência de tipo) trabalhar, e como evitar buracos no contrato com `as const`, `satisfies` e tipos não-`any`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **type inference** (inferência de tipo) | Compilador deduz o tipo a partir da atribuição; padrão preferido |
+| **type annotation** (anotação de tipo) | Declaração explícita do tipo (`const x: number = 0`); usar quando agrega informação |
+| **`as const`** (afirmação literal) | Congela o valor como literal exato e torna campos `readonly` |
+| **`satisfies`** (operador de conformidade) | Valida que o valor cumpre o tipo sem alargar a tipagem inferida |
+| **`any`** (tipo escape) | Desliga a checagem; anti-padrão exceto na fronteira controlada |
+| **`unknown`** (tipo seguro de origem desconhecida) | Tipo amplo que exige narrowing antes de uso; substituto correto de `any` |
+| **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; evitar fora de testes ou inicialização garantida |
+| **definite assignment** (atribuição garantida) | `let x!: T` — promete ao compilador que será atribuído antes do uso |
 
 ## Inferência por padrão
 

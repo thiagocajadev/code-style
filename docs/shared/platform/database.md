@@ -13,11 +13,11 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 | **ACID** (Atomicity, Consistency, Isolation, Durability, Atomicidade, Consistência, Isolamento, Durabilidade) | Garantias de transação que asseguram integridade dos dados em bancos relacionais |
 | **Index** (Índice) | Estrutura auxiliar que acelera buscas em uma coluna sem varrer a tabela inteira |
 | **Full scan** (varredura completa) | Leitura de todas as linhas da tabela para encontrar os registros; evitar em tabelas grandes |
-| **EXPLAIN** | Comando que mostra o plano de execução de uma query sem executá-la |
+| **EXPLAIN** (explicar plano) | Comando que mostra o plano de execução de uma query sem executá-la |
 | **Query plan** (plano de execução) | Sequência de operações que o banco escolhe para executar uma query |
 | **Seq Scan** (varredura sequencial) | Leitura linha a linha da tabela; indica ausência de índice útil |
 | **Index Scan** (varredura por índice) | Leitura via índice; muito mais eficiente que Seq Scan para filtros seletivos |
-| **N+1** | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
+| **N+1** (consulta repetida em loop, anti-padrão) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Slow query log** (log de queries lentas) | Registro automático de queries que excedem um tempo limite configurado |
 | **Lock** (bloqueio) | Mecanismo que impede acesso simultâneo conflitante a um recurso; pode causar espera ou deadlock |
 | **Deadlock** (bloqueio morto) | Situação onde duas transações esperam uma pela outra indefinidamente |

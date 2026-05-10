@@ -10,14 +10,14 @@ Cassandra é otimizado para escrita de alto volume com disponibilidade e tolerâ
 
 | Conceito | O que é |
 | --- | --- |
-| **Keyspace** | Namespace que agrupa tabelas; define estratégia de replicação |
+| **Keyspace** (espaço de chaves) | Namespace que agrupa tabelas; define estratégia de replicação |
 | **Partition key** (chave de partição) | Parte do PRIMARY KEY que determina o nó de armazenamento; design crítico |
 | **Clustering key** (chave de agrupamento) | Parte do PRIMARY KEY que define a ordem dos dados dentro da partição |
 | **CQL** (Cassandra Query Language) | Linguagem de query similar ao SQL; sem JOINs, sem subqueries |
 | **Prepared statement** (instrução preparada) | Query pré-compilada e armazenada no driver; obrigatória em produção |
 | **Consistency level** (nível de consistência) | Define quantas réplicas devem responder para confirmar a operação |
-| **Tombstone** | Marcador de deleção; não remove o dado imediatamente; tem custo de leitura |
-| **Compaction** | Processo de mesclagem de arquivos que remove tombstones |
+| **Tombstone** (lápide) | Marcador de deleção; não remove o dado imediatamente; tem custo de leitura |
+| **Compaction** (compactação) | Processo de mesclagem de arquivos que remove tombstones |
 | **Materialized view** (visão materializada) | Tabela derivada que mantém sincronizada automaticamente com a tabela base |
 
 ---

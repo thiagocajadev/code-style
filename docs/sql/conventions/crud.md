@@ -1,6 +1,18 @@
 # CRUD
 
-INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão.
+INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão. **CRUD** (Create, Read, Update, Delete; criar, ler, atualizar, excluir) cobre as quatro operações básicas sobre uma tabela.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **CRUD** (Create, Read, Update, Delete; criar, ler, atualizar, excluir) | As quatro operações básicas sobre uma tabela: `INSERT`, `SELECT`, `UPDATE`, `DELETE` |
+| **vertical formatting** (formatação vertical) | Cada coluna ou cláusula em sua linha; legível de cima para baixo, sem scroll horizontal |
+| **soft delete** (exclusão lógica) | Marcar a linha como removida (`DeletedAt`) sem apagar do disco |
+| **hard delete** (exclusão física) | `DELETE` que remove do disco; irreversível |
+| **upsert** (inserir ou atualizar) | `MERGE` ou `INSERT ... ON CONFLICT`; insere se a chave não existe, atualiza se existe |
+| **WHERE clause** (cláusula WHERE) | Filtro de linhas; sem `WHERE`, `UPDATE`/`DELETE` afeta toda a tabela |
+| **RETURNING / OUTPUT** (cláusula de retorno) | Recupera linhas afetadas pelo DML em uma única ida ao banco |
 
 ## INSERT horizontal
 

@@ -10,11 +10,24 @@ O [code style](../../variables.md) se aplica dentro dos testes. O assert recebe 
 
 As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 
-Usa [NUnit](https://nunit.org/) como referência: amplamente adotado no ecossistema .NET Framework.
+Usa **NUnit** (framework de testes para .NET) como referência: amplamente adotado no ecossistema .NET Framework.
 
 ```vbnet
 Imports NUnit.Framework
 ```
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **AAA** (Arrange Act Assert, Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
+| **NUnit** (framework de testes para .NET) | Framework popular em .NET Framework: `<Test>` para casos, `<TestCase>` parametrizadas |
+| **mock** (dados fictícios e dublê de comportamento) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
+| **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
+| **fake** (implementação simplificada) | Substituto funcional, mais leve que o real (ex: repositório em memória) |
+| **fixture** (estado compartilhado de teste) | Estado preparado e reutilizado entre testes na mesma classe |
+| **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
+| **TestCase** (caso parametrizado) | Atributo que executa o mesmo teste com múltiplas combinações de entrada |
 
 > [!NOTE]
 > A ordem do assert varia por framework:

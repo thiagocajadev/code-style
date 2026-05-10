@@ -12,11 +12,11 @@ pacotes se organizam por domínio, e como o entry point orquestra o boot da apli
 | Conceito                        | O que é                                                                          |
 | ------------------------------- | -------------------------------------------------------------------------------- |
 | **DI** (Dependency Injection, Injeção de Dependência) | Framework provê dependências, não o componente as busca |
-| **Bean**                        | Objeto gerenciado pelo container Spring                                          |
-| **Controller**                  | Camada HTTP: recebe requisições, retorna respostas                               |
-| **Service**                     | Camada de negócio: orquestra regras e coordena dependências                      |
-| **Repository**                  | Camada de dados: abstração de acesso ao banco                                    |
-| **virtual threads**             | Threads leves do Project Loom, habilitadas por padrão no Spring Boot 4           |
+| **Bean** (componente gerenciado)                      | Objeto gerenciado pelo container Spring                                          |
+| **Controller** (controlador HTTP)                     | Camada HTTP: recebe requisições, retorna respostas                               |
+| **Service** (serviço de negócio)                      | Camada de negócio: orquestra regras e coordena dependências                      |
+| **Repository** (repositório de dados)                 | Camada de dados: abstração de acesso ao banco                                    |
+| **virtual threads** (threads leves gerenciadas pela JVM) | Threads leves do Project Loom, habilitadas por padrão no Spring Boot 4           |
 
 ## Ambiente
 

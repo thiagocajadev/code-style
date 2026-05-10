@@ -7,6 +7,17 @@ tipos declarados, muitos erros de null são capturados em tempo de execução co
 clara. PHP 8.0+ adicionou o operador nullsafe `?->` e PHP 7.4+ tem nullable types `?Type`
 para tornar a presença de null explícita na assinatura.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **nullable type** (tipo que admite null) | `?Type` na assinatura — sinaliza que `null` é retorno ou parâmetro válido |
+| **nullsafe operator** (operador seguro contra null) | `?->` curto-circuita o encadeamento quando o alvo é `null`, sem lançar erro |
+| **null coalescing** (coalescência de nulos) | `??` retorna o operando à direita quando o da esquerda é `null`; `??=` atribui se for `null` |
+| **strict types** (tipos estritos) | `declare(strict_types=1)` no topo do arquivo; força conferência de tipos sem coerção implícita |
+| **type juggling** (coerção implícita de tipos) | Conversão silenciosa: `'0' == false` é `true`; evitar com `===` e tipos estritos |
+| **boundary** (limite) | Camada onde dado externo entra: validar e converter ali, não no domínio |
+
 ## Tipos nullable — explicitar null
 
 Declare `?Type` quando null é um retorno válido com semântica específica ("não encontrado",

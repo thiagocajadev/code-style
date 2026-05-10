@@ -12,9 +12,9 @@ de widgets pequenos e focados é preferível a widgets grandes com múltiplas re
 | `StatelessWidget` | widget sem estado mutável; `build` sempre retorna o mesmo resultado para os mesmos inputs |
 | `StatefulWidget` | widget com `State` mutável; `setState` dispara rebuild |
 | `build` | método chamado pelo framework para descrever a UI; deve ser puro e rápido |
-| **widget tree** | hierarquia de widgets que descreve toda a UI |
-| **const constructor** | widget const é comparado por identidade — Flutter evita rebuild se o mesmo widget é retornado |
-| **composição** | widgets pequenos combinados formam a interface; preferível a herança |
+| **widget tree** (árvore de widgets) | hierarquia de widgets que descreve toda a UI |
+| **const constructor** (construtor const) | widget const é comparado por identidade — Flutter evita rebuild se o mesmo widget é retornado |
+| **composition** (composição) | widgets pequenos combinados formam a interface; preferível a herança |
 
 ## Widget grande com múltiplas responsabilidades
 

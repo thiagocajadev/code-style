@@ -1,7 +1,19 @@
 # Performance
 
-CSS controla como o browser renderiza a página. Seletores complexos, propriedades que disparam
-reflow e animações na thread principal degradam a experiência. Meça com DevTools antes de otimizar.
+CSS controla como o browser renderiza a página. Seletores complexos, propriedades que disparam **reflow** (recálculo de layout) e animações na **main thread** (thread principal) degradam a experiência. Meça com DevTools antes de otimizar.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **layout** (cálculo de layout) | Etapa em que o browser calcula geometria; disparada por `width`, `top`, `padding` |
+| **paint** (pintura) | Etapa em que o browser preenche pixels; disparada por `color`, `background` |
+| **composite** (composição) | Etapa em que camadas são unidas na GPU; barata, ideal pra animação |
+| **reflow** (recálculo de layout) | Recalcular o layout de um elemento e seus afetados; caro |
+| **GPU layer** (camada de GPU) | Camada renderizada pela placa gráfica; alvo de `transform` e `opacity` |
+| **will-change** (vai mudar) | Avisa o browser que a propriedade vai animar; criar camada antes do estresse |
+| **contain** (isolamento de layout) | `contain: layout/paint` impede que mudanças vazem pro resto da árvore |
+| **selector specificity** (especificidade do seletor) | Custo de match cresce com `>`, `~`, `:nth-*`; prefira classes diretas |
 
 ## Propriedades que não disparam reflow
 

@@ -10,9 +10,9 @@ um `OrderId` válido nunca chega ao service como zero ou negativo se o handler v
 
 | Conceito | O que é |
 | -------- | ------- |
-| **fronteira de validação** | Ponto de entrada de dados externos (handler HTTP, CLI, mensagem de fila) |
-| **tipo como contrato** | Encapsula invariantes no tipo; se compilou, o invariante está garantido |
-| **parse, don't validate** | Transforme o dado bruto em um tipo validado imediatamente; não repasse `String` bruta |
+| **validation boundary** (limite de validação) | Ponto de entrada de dados externos (handler HTTP, CLI, mensagem de fila) |
+| **type as contract** (tipo como contrato) | Encapsula invariantes no tipo; se compilou, o invariante está garantido |
+| **parse, don't validate** (transforme em vez de validar) | Transforme o dado bruto em um tipo validado imediatamente; não repasse `String` bruta |
 | `validator` | Crate que deriva regras de validação via `#[validate(...)]` em structs |
 
 ## Parse, don't validate

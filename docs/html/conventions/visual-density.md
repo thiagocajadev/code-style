@@ -1,7 +1,17 @@
 # Visual density: HTML
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar
-o que pertence junto, separar o que é distinto.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | Separa blocos semanticamente distintos; revela seções no scan vertical |
+| **indentation** (indentação) | 2 espaços por nível; representa a hierarquia DOM no arquivo |
+| **sibling block** (bloco irmão) | Elementos no mesmo nível; uma linha em branco entre eles separa seções |
+| **attribute order** (ordem de atributos) | `id` → `class` → `data-*` → ARIA → eventos; previsível e escaneável |
+| **attribute wrap** (quebra de atributos) | Tag com muitos atributos quebra um por linha, alinhados |
+| **scannability** (legibilidade vertical) | Capacidade de entender a estrutura sem ler todo o conteúdo |
 
 ## Entre blocos irmãos
 

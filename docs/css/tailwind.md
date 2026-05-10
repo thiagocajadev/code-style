@@ -1,7 +1,19 @@
 # Tailwind
 
-Tailwind é utility-first. A produtividade vem de não sair do **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto), mas há um limite.
-Quando a lista de utilities cresce, o HTML vira ruído e o padrão se repete sem nome.
+**Tailwind** (framework de CSS utility-first) é **utility-first** (utilidades em primeiro lugar). A produtividade vem de não sair do **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto), mas há um limite. Quando a lista de **utility class** (classe utilitária) cresce, o HTML vira ruído e o padrão se repete sem nome.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Tailwind** (framework de CSS utility-first) | Conjunto de classes atômicas geradas a partir de um `theme` configurável |
+| **utility-first** (utilidades em primeiro lugar) | Compor estilo via classes atômicas no HTML, sem CSS por componente |
+| **utility class** (classe utilitária) | Classe que faz uma coisa só: `p-4`, `text-center`, `bg-blue-600` |
+| **JIT** (Just-In-Time, compilação sob demanda) | Compilador gera só as classes detectadas nos arquivos escaneados |
+| **arbitrary value** (valor arbitrário) | `bg-[#1da1f2]`, `top-[117px]`; escapa do **theme** quando necessário |
+| **theme** (tema) | Objeto em `tailwind.config` que define escalas de cor, espaço, tipografia |
+| **@apply** (extrair utilidades) | Diretiva pra agrupar utilities em uma classe de componente em `@layer components` |
+| **variant** (variante) | Prefixo de estado/breakpoint: `hover:`, `md:`, `dark:` |
 
 ## Utility sprawl
 

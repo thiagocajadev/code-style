@@ -1,6 +1,18 @@
 # Naming
 
-Nomes em C# seguem convenções da plataforma .NET: `PascalCase` para tipos, métodos e propriedades; `camelCase` para parâmetros e variáveis locais. A regra mais forte vem antes da convenção visual: o identificador expressa propósito do domínio, não tipo técnico.
+Nomes em C# seguem convenções da plataforma .NET: **PascalCase** para tipos, métodos e propriedades; **camelCase** para parâmetros e variáveis locais. A regra mais forte vem antes da convenção visual: o identificador expressa propósito do domínio, não tipo técnico.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **PascalCase** (capitalização inicial em cada palavra) | Convenção `OrderService`, `CalculateTotal`; usada para tipos, métodos e propriedades |
+| **camelCase** (capitalização a partir da segunda palavra) | Convenção `orderTotal`, `customerId`; usada para parâmetros e variáveis locais |
+| **interface prefix** (prefixo `I` em interfaces) | Convenção .NET: `IOrderRepository`, `ILogger`; identifica contrato visualmente |
+| **Async suffix** (sufixo `Async` em métodos assíncronos) | Sinaliza retorno `Task`/`Task<T>`: `LoadAsync`, `SaveAsync` |
+| **domain term** (termo de domínio) | Nome reflete propósito de negócio (`pendingInvoice`), não tipo técnico (`invoiceList`) |
+| **abbreviation** (abreviação) | Evite contrações ambíguas (`mgr`, `svc`); siglas conhecidas mantêm forma do .NET (`Id`, `Url`) |
+| **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
 ## Nomes em português
 

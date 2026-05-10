@@ -5,6 +5,18 @@
 Controle de fluxo em Ruby favorece legibilidade: guard clauses eliminam aninhamento,
 `unless` simplifica negações, `case/in` (pattern matching) desestrutura por forma.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if`/`unless` no topo do método que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | Sair do método assim que o resultado for conhecido, sem `else` desnecessário |
+| **unless** (a menos que) | Inverte a condição de `if`; só legível com expressão simples e sem `else` |
+| **case/when** (selecionar caso) | Despacho por valor com `===`; bom para listas de literais ou ranges |
+| **case/in** (selecionar por forma) | Pattern matching que desestrutura hashes, arrays e objetos por forma |
+| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta; legível só quando as três partes são curtas |
+| **until** (até que) | Loop que executa enquanto a condição for falsa; inverso de `while` |
+
 ## Guard clauses
 
 Saia cedo na falha. Sem `else` após `return`.

@@ -17,7 +17,7 @@ conceito impacta diretamente decisões de arquitetura e custo.
 | **Extended thinking** (raciocínio estendido)                                                       | Modo em que o modelo raciocina em passos internos antes de gerar a resposta final                         |
 | **Chain-of-thought** (cadeia de raciocínio)                                                        | Técnica de prompt que instrui o modelo a raciocinar passo a passo antes de responder                      |
 | **Inference engine** (motor de inferência)                                                         | Software que executa o modelo para gerar tokens: llama.cpp, vLLM, Ollama                                  |
-| **AI Gateway**                                                                                     | Camada intermediária entre o cliente e as APIs de LLM: roteamento, cache, rate limiting e observabilidade |
+| **AI Gateway** (gateway de IA)                                                                     | Camada intermediária entre o cliente e as APIs de LLM: roteamento, cache, rate limiting e observabilidade |
 | **RLHF** (Reinforcement Learning from Human Feedback, Aprendizado por Reforço com Feedback Humano) | Técnica usada no pós-treinamento para alinhar o modelo com preferências humanas                           |
 
 ## Fine-tuning (Ajuste fino)

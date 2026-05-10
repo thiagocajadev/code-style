@@ -6,6 +6,17 @@ Em SQL, as cláusulas (`SELECT`, `FROM`, `WHERE`, `JOIN`) já funcionam como sep
 
 **A exceção é CTE.** Cada `WITH nome AS (...)` é uma etapa nomeada, semanticamente equivalente a uma variável. Cada CTE merece uma linha em branco de separação.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | Espaçamento entre linhas que comunica agrupamento lógico ao leitor |
+| **clause separator** (separador de cláusula) | `SELECT`, `FROM`, `WHERE` já agem como marcos visuais; não adicionar blank entre eles |
+| **CTE separator** (separador de CTE) | Cada `WITH nome AS (...)` é uma etapa nomeada; merece linha em branco antes da próxima |
+| **signature / body boundary** (limite assinatura/corpo) | Em procedures, blank entre `AS`/`$$` e a primeira instrução; deixa a fronteira visível |
+| **temp table boundary** (limite de tabela temporária) | Cada bloco que popula uma `#temp` ou CTE intermediária é um grupo semântico isolado |
+| **wall of code** (parede de código) | Bloco grande sem separação visual; sintoma de múltiplas responsabilidades misturadas |
+
 ## Assinatura e corpo
 
 Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros, tipo de retorno) e corpo (lógica). Uma linha em branco entre eles deixa essa fronteira visível.

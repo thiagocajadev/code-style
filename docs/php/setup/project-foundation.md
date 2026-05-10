@@ -17,9 +17,9 @@ módulos ficam organizados por domínio.
 
 | Conceito | O que é |
 | -------- | ------- |
-| **Composer** | Gerenciador de dependências e autoload do PHP; `composer.json` é o `package.json` do ecossistema |
-| **PSR-12** | Padrão de estilo de código PHP: indentação, espaços, chaves, declarações de tipo |
-| **PHPStan** | Analisador estático que detecta erros de tipo sem executar o código; nível 9 é o mais estrito |
+| **Composer** (gerenciador de dependências PHP) | Ferramenta de autoload e dependências; `composer.json` é o `package.json` do ecossistema |
+| **PSR-12** (PHP Standards Recommendation 12, padrão de estilo de código) | Define indentação, espaços, chaves e declarações de tipo |
+| **PHPStan** (analisador estático para PHP) | Detecta erros de tipo sem executar o código; nível 9 é o mais estrito |
 | **PSR-4** (PHP Standards Recommendation 4) | Padrão de autoload que mapeia namespaces para diretórios |
 | `readonly` | Propriedade que não pode ser alterada após a inicialização; disponível desde PHP 8.1 |
 

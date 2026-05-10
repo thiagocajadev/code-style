@@ -6,6 +6,18 @@
 suporta pattern matching avançado. `if let` e `guard let` fazem unwrap de optionals sem `!`.
 Máximo dois níveis de indentação.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard** (cláusula de saída antecipada) | Inverso do `if`; obriga retorno/throw no `else`, mantém o caminho feliz no nível de cima |
+| **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **switch** (despacho exaustivo) | Comando que cobre todos os casos; compilador exige `default` ou enumeração completa |
+| **if let** (extrair se não-nil) | Faz unwrap de optional dentro de `if`, expõe valor não-opcional no escopo |
+| **guard let** (extrair ou sair) | Faz unwrap de optional e exige saída antecipada se for `nil` |
+| **defer** (executar antes de sair do escopo) | Bloco que roda quando o escopo termina, mesmo em throw; usado para cleanup |
+| **pattern matching** (correspondência por forma) | `switch` com `where`, ranges, tuplas e bindings que desestruturam o valor |
+
 ## if e else
 
 O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:

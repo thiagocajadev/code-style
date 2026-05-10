@@ -1,10 +1,20 @@
 # Null Safety
 
-CSS não tem `null` como tipo, mas tem o equivalente: uma custom property referenciada antes de
-ser definida produz um valor inválido que o browser descarta sem aviso. O mecanismo de defesa é
-o **fallback** em `var()` e o `@property` com `initial-value`.
+CSS não tem `null` como tipo, mas tem o equivalente: uma **custom property** (propriedade customizada) referenciada antes de ser definida produz um **invalid value** (valor inválido) que o browser descarta sem aviso. O mecanismo de defesa é o **fallback** (valor de reserva) em `var()` e o **@property** com **initial-value** (valor inicial).
 
 > Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **custom property** (propriedade customizada) | Variável CSS definida com `--nome: valor` e lida via `var(--nome)` |
+| **fallback** (valor de reserva) | Segundo argumento de `var(--nome, fallback)`; aplicado se a variável for inválida |
+| **invalid value** (valor inválido) | Valor que o browser não consegue interpretar; descarta a declaração inteira |
+| **initial value** (valor inicial) | Valor padrão da propriedade definido pela spec; restaurado por `initial` |
+| **@property** (propriedade tipada) | Registra tipo, herança e `initial-value` de uma custom property |
+| **unset** (limpa o valor) | Volta ao valor herdado se a propriedade herda; senão ao initial |
+| **revert** (reverte) | Volta ao valor da camada anterior (browser, autor, usuário) |
 
 ## var() com fallback: o operador ?? do CSS
 

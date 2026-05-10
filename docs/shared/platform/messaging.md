@@ -10,12 +10,12 @@ O resultado é desacoplamento temporal: producer e consumer não precisam estar 
 
 | Conceito | O que é |
 |---|---|
-| **Producer** | Quem envia a mensagem |
-| **Consumer** | Quem processa a mensagem |
-| **Broker** | Serviço que recebe, armazena e entrega mensagens |
+| **Producer** (produtor) | Quem envia a mensagem |
+| **Consumer** (consumidor) | Quem processa a mensagem |
+| **Broker** (intermediário) | Serviço que recebe, armazena e entrega mensagens |
 | **Queue** (fila) | Canal ponto-a-ponto: cada mensagem é consumida por um único consumer |
 | **Topic** (tópico) | Canal pub/sub: cada mensagem é entregue a todos os subscribers |
-| **Payload** | Corpo da mensagem: os dados que o consumer vai processar |
+| **Payload** (carga útil) | Corpo da mensagem: os dados que o consumer vai processar |
 
 ## Queue vs Pub/Sub
 

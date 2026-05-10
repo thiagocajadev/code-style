@@ -5,6 +5,17 @@
 Nomes bons tornam comentários desnecessários. Swift API Design Guidelines reforçam que o
 ponto de uso deve ler como prosa: `users.remove(at: index)` é mais claro que `users.remove(index)`.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **lowerCamelCase** (camelCase com inicial minúscula) | Convenção para funções, métodos, variáveis e propriedades (`findUser`, `userId`) |
+| **UpperCamelCase** (PascalCase) | Convenção para tipos: `class`, `struct`, `enum`, `protocol` (`UserRepository`) |
+| **argument label** (rótulo de argumento) | Nome visto no call site; lê como prosa (`remove(at:)`, `move(from:to:)`) |
+| **parameter name** (nome do parâmetro) | Identificador usado dentro da função; pode diferir do argument label |
+| **fluent usage** (uso fluente) | API legível como frase em inglês no call site, princípio das Swift API Design Guidelines |
+| **`_` underscore label** (sem rótulo no call site) | Suprime argument label; usado quando o tipo já carrega o significado |
+
 ## Identificadores sem significado
 
 <details>

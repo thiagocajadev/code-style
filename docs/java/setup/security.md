@@ -2,6 +2,21 @@
 
 > Escopo: Java 25 LTS — Spring Security 7 + Spring Boot 4.
 
+Segurança começa no limite do sistema: nunca confie em **input** (entrada), nunca persista
+**secrets** (segredos) no código, e sempre valide **JWT** (JSON Web Token) na fronteira HTTP.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **secret** (segredo) | credencial, token ou chave que nunca pode aparecer no código-fonte |
+| **JWT** (JSON Web Token, Token Web JSON) | token assinado para autenticação stateless |
+| **CSRF** (Cross-Site Request Forgery, Falsificação de Requisição entre Sites) | ataque que executa ações em nome do usuário autenticado |
+| **CORS** (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens) | mecanismo que controla qual origem pode chamar a API |
+| **BCrypt** (algoritmo de hash de senha) | função adaptativa para armazenar senhas com salt embutido |
+| **RBAC** (Role-Based Access Control, Controle de Acesso Baseado em Papéis) | autorização por papel atribuído ao usuário |
+| **principal** (identidade autenticada) | objeto que representa o usuário corrente após autenticação |
+
 ## Secrets fora do código
 
 Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-fonte.

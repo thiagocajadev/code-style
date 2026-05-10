@@ -14,7 +14,7 @@ dentro do domínio, propague com contexto.
 | `rescue`           | Captura exceção em um bloco `begin/rescue/end` ou no corpo do método            |
 | `ensure`           | Bloco executado sempre, com ou sem exceção (equivalente a `finally`)            |
 | `StandardError`    | Classe base para exceções de aplicação; `Exception` é a raiz — não capture ela |
-| **Bang method**    | Método `!` que lança exceção em vez de retornar `nil`/`false`                   |
+| **Bang method** (método com `!`) | Lança exceção em vez de retornar `nil`/`false`                   |
 
 ## Tipos de exceção
 

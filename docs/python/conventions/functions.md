@@ -1,6 +1,20 @@
 # Functions
 
-Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
+Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela. **SRP** (Single
+Responsibility Principle, Princípio da Responsabilidade Única) e **cohesion** (coesão) guiam o
+desenho.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada função tem uma única razão para mudar |
+| **cohesion** (coesão) | grau em que as instruções da função pertencem à mesma tarefa |
+| **god function** (função-deus) | função que faz tudo: busca, valida, calcula, persiste, loga |
+| **side effect** (efeito colateral) | alteração observável fora do retorno (I/O, estado global, mutação de argumento) |
+| **pure function** (função pura) | sem efeito colateral; mesma entrada produz mesma saída |
+| **type hint** (anotação de tipo) | `def f(x: int) -> str` documenta contrato e habilita type checker |
+| **keyword-only argument** (argumento exclusivo por nome) | argumento após `*` na assinatura; obriga chamada nominal e elimina ambiguidade |
 
 ## God function — múltiplas responsabilidades
 

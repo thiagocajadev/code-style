@@ -15,7 +15,7 @@ coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas 
 | `Flow` | stream assíncrono e reativo; cold por padrão — executa ao coletar |
 | `StateFlow` | `Flow` hot com estado atual sempre disponível |
 | `Dispatchers` | escolha de thread pool: `IO`, `Default`, `Main`, `Unconfined` |
-| **structured concurrency** | filhos não sobrevivem ao pai; cancelamento se propaga hierarquicamente |
+| **structured concurrency** (concorrência estruturada) | filhos não sobrevivem ao pai; cancelamento se propaga hierarquicamente |
 
 ## Coroutine solta — sem escopo definido
 

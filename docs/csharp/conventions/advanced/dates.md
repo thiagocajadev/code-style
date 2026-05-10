@@ -4,7 +4,19 @@
 
 `DateTime` em C# tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou
 `Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira
-`DateTimeOffset` para eliminar a ambiguidade: o offset está embutido no tipo.
+**DateTimeOffset** para eliminar a ambiguidade: o offset está embutido no tipo. **UTC** é o ponto comum entre servidores; conversão para timezone do usuário é responsabilidade da camada de apresentação.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **DateTime** (data e hora) | Tipo de data/hora cujo campo `Kind` pode ser `Local`, `Utc` ou `Unspecified`; ambíguo por padrão |
+| **DateTimeOffset** (data, hora e deslocamento) | Tipo que carrega o offset junto com o instante; elimina ambiguidade entre fusos |
+| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência global de tempo sem fuso; padrão para armazenamento e troca entre serviços |
+| **Kind** (tipo de instante) | Campo de `DateTime` que indica se o valor é local, UTC ou indefinido |
+| **TimeZoneInfo** (informação de fuso horário) | Tipo que descreve um fuso e suas regras; usado para converter UTC em hora local |
+| **DateOnly / TimeOnly** (apenas data / apenas hora) | Tipos do .NET 6+ para representar apenas data ou apenas hora, sem componente residual |
+| **ISO 8601** (padrão internacional de formato de data) | Formato textual `YYYY-MM-DDTHH:mm:ssZ` para troca interoperável de instantes |
 
 ## DateTime.Now vs DateTimeOffset.UtcNow
 

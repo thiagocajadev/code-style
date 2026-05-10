@@ -16,10 +16,10 @@ Workspaces organizam múltiplos crates com dependências compartilhadas.
 | Conceito | O que é |
 | -------- | ------- |
 | **crate** (pacote) | Unidade de compilação Rust; pode ser binário (`main.rs`) ou biblioteca (`lib.rs`) |
-| **workspace** | Agrupa múltiplos crates sob um `Cargo.toml` raiz; dependências compartilhadas |
-| **Cargo.toml** | Manifesto do crate: nome, versão, dependências, features |
-| **Cargo.lock** | Versões exatas de todas as dependências; commitado em binários, ignorado em libs |
-| **feature flags** | Compilação condicional de dependências opcionais declaradas em `[features]` |
+| **workspace** (espaço de trabalho com múltiplos crates) | Agrupa crates sob um `Cargo.toml` raiz; dependências compartilhadas |
+| **Cargo.toml** (manifesto do crate) | Nome, versão, dependências, features |
+| **Cargo.lock** (lockfile de versões resolvidas) | Versões exatas; commitado em binários, ignorado em libs |
+| **feature flags** (chaves de compilação condicional) | Dependências opcionais declaradas em `[features]` |
 | `rustup` | Gerenciador de toolchain: instala versões do compilador e targets cross-compile |
 
 ## Estrutura de arquivos

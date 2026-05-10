@@ -2,7 +2,19 @@
 
 > Escopo: SQL. Idiomas específicos deste ecossistema.
 
-Subqueries aninhadas são difíceis de rastrear. CTEs nomeiam os passos e tornam a intenção legível.
+Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressions, expressões de tabela comum) nomeiam os passos e tornam a intenção legível. Quando o pipeline cresce, **window functions** (funções de janela) substituem subqueries correlacionadas e mantêm a query plana.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **CTE** (Common Table Expression, expressão de tabela comum) | Resultado nomeado via `WITH ... AS (...)`; cada CTE é um passo legível |
+| **subquery** (subconsulta) | Query aninhada dentro de outra; sem nome próprio, dificulta leitura quando aninhada |
+| **window function** (função de janela) | `OVER (PARTITION BY ... ORDER BY ...)`; calcula sobre uma faixa sem agrupar |
+| **recursive CTE** (CTE recursiva) | `WITH RECURSIVE` — referencia a si mesma; usada para hierarquias e grafos |
+| **derived table** (tabela derivada) | Subquery na cláusula `FROM` com alias; alternativa local à CTE |
+| **lateral join** (junção lateral) | `LATERAL` permite que a subquery referencie colunas da tabela à esquerda |
+| **set operation** (operação de conjunto) | `UNION`, `INTERSECT`, `EXCEPT`; combinam resultados de queries com schema compatível |
 
 ## Subquery aninhada
 

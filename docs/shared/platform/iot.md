@@ -13,7 +13,7 @@ alimentação por bateria e conectividade instável. As boas práticas derivam d
 | **debounce** (filtragem de ruído) | Ignorar leituras redundantes de sensor durante uma janela de tempo após a primeira leitura |
 | **FSM** (Finite State Machine, Máquina de Estados Finitos) | Modelo de controle onde o sistema está sempre em um estado definido; transições são explícitas |
 | **watchdog** (cão de guarda) | Timer de hardware que reinicia o dispositivo se o firmware travar |
-| **idempotência** | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
+| **idempotency** (idempotência) | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
 | **polling** (varredura) | Leitura periódica de um sensor; alternativa a interrupções quando GPIO não suporta IRQ |
 | **IRQ** (Interrupt Request, Requisição de Interrupção) | Sinal de hardware que interrompe o loop principal para tratar um evento |
 | `machine` | Módulo MicroPython de acesso ao hardware: GPIO, I2C, SPI, UART, Timer, WDT |

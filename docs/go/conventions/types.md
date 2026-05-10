@@ -10,7 +10,7 @@ de uma interface a satisfaz, sem declaração explícita.
 
 | Conceito | O que é |
 | -------- | ------- |
-| **interface** | Conjunto de assinaturas de método; satisfeita implicitamente por qualquer tipo que implemente os métodos |
+| **interface** (contrato de tipo) | conjunto de assinaturas de método; satisfeita implicitamente por qualquer tipo que implemente os métodos |
 | **embedding** (incorporação) | Incluir um tipo dentro de outro struct para reutilizar seus métodos sem herança |
 | **type assertion** (asserção de tipo) | Extrair o tipo concreto de uma interface; retorna o valor e um bool de sucesso |
 | **generics** (genéricos) | Parâmetros de tipo que permitem funções e tipos reutilizáveis sem duplicação desde Go 1.18 |

@@ -10,10 +10,10 @@ correlação por tag e integração com Rails.
 
 | Conceito              | O que é                                                                       |
 | --------------------- | ----------------------------------------------------------------------------- |
-| **Logger**            | Classe stdlib para logging com níveis (DEBUG, INFO, WARN, ERROR, FATAL)       |
-| **semantic_logger**   | Gem que substitui Logger; emite JSON estruturado com campos padronizados       |
-| **correlation_id**    | Identificador único de requisição propagado entre serviços para rastreamento  |
-| **tag**               | Contexto fixo adicionado ao logger (user_id, request_id) para todos os logs   |
+| **Logger** (registrador de eventos) | Classe stdlib para logging com níveis (DEBUG, INFO, WARN, ERROR, FATAL)       |
+| **semantic_logger** (gem de logger estruturado) | Substitui Logger; emite JSON estruturado com campos padronizados       |
+| **correlation_id** (identificador de correlação) | Identificador único de requisição propagado entre serviços para rastreamento  |
+| **tag** (etiqueta de contexto) | Contexto fixo adicionado ao logger (user_id, request_id) para todos os logs   |
 
 ## Log estruturado com semantic_logger
 

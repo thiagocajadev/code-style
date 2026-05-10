@@ -10,11 +10,11 @@ negócio: dados chegam válidos ou o fluxo para antes de começar.
 
 | Conceito | O que é |
 | --- | --- |
-| **Bean Validation** | anotações em data classes (`@NotNull`, `@Size`, `@Email`) processadas pelo framework |
+| **Bean Validation** (validação por anotações JSR-380) | anotações em data classes (`@NotNull`, `@Size`, `@Email`) processadas pelo framework |
 | `require` | lança `IllegalArgumentException` — pré-condição de argumento |
 | `check` | lança `IllegalStateException` — invariante interna do objeto |
-| **fronteira de validação** | ponto onde dados externos entram no sistema (controller, use case input) |
-| **domain invariant** | regra que deve ser verdadeira em qualquer estado válido do objeto |
+| **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema (controller, use case input) |
+| **domain invariant** (invariante de domínio) | regra que deve ser verdadeira em qualquer estado válido do objeto |
 
 ## Validação no meio da lógica de negócio
 

@@ -11,11 +11,11 @@ OpenTelemetry, Jaeger e Datadog.
 
 | Conceito | O que é |
 | -------- | ------- |
-| **span** | Unidade de trabalho com início, fim e campos estruturados; rastreável em distributed tracing |
-| **event** | Ponto no tempo dentro de um span; equivale a uma linha de log |
+| **span** (unidade rastreável de trabalho) | Início, fim e campos estruturados; rastreável em distributed tracing |
+| **event** (evento pontual) | Ponto no tempo dentro de um span; equivale a uma linha de log |
 | `#[instrument]` | Macro que cria um span automaticamente para a função anotada |
-| **subscriber** | Consumidor dos eventos de tracing; configura saída (stdout, JSON, OTLP) |
-| **level** | Severidade do evento: `trace`, `debug`, `info`, `warn`, `error` |
+| **subscriber** (consumidor de eventos de tracing) | Configura saída (stdout, JSON, OTLP) |
+| **level** (nível de severidade) | `trace`, `debug`, `info`, `warn`, `error` |
 
 ## Setup do subscriber
 

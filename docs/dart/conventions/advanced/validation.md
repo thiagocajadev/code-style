@@ -13,8 +13,8 @@ e verificações explícitas com `throw` atuam em produção.
 | `assert` | verificação de invariante removida em produção — só em debug/test |
 | `ArgumentError` | erro de argumento inválido; subclasse de `Error` (bug de chamada) |
 | `StateError` | estado inválido do objeto; invariante quebrada |
-| **fronteira de validação** | ponto onde dados externos entram no sistema |
-| **domain invariant** | regra que deve ser verdadeira em qualquer estado válido do objeto |
+| **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema |
+| **domain invariant** (invariante de domínio) | regra que deve ser verdadeira em qualquer estado válido do objeto |
 
 ## Validação espalhada pela lógica
 

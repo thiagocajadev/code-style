@@ -10,12 +10,12 @@ o `Gemfile` declara as dependências.
 
 | Conceito         | O que é                                                                 |
 | ---------------- | ----------------------------------------------------------------------- |
-| **Bundler**      | Gerenciador de dependências; resolve e instala gems do `Gemfile`        |
-| **Gemfile**      | Manifesto de dependências do projeto                                    |
-| **Gemfile.lock** | Versões exatas resolvidas; deve ser commitado no controle de versão     |
-| **RuboCop**      | Linter e formatter; enforça convenções via `.rubocop.yml`              |
-| **Zeitwerk**     | Autoloader (carregador automático) de código por convenção de nomes     |
-| **.ruby-version**| Arquivo que declara a versão Ruby do projeto; lido por rbenv e chruby   |
+| **Bundler** (gerenciador de dependências do Ruby) | Resolve e instala gems do `Gemfile`        |
+| **Gemfile** (manifesto de dependências) | Lista as gems do projeto                                    |
+| **Gemfile.lock** (lockfile de versões resolvidas) | Versões exatas; deve ser commitado no controle de versão     |
+| **RuboCop** (linter e formatter de Ruby) | Enforça convenções via `.rubocop.yml`              |
+| **Zeitwerk** (autoloader do Ruby/Rails) | Carregador automático de código por convenção de nomes     |
+| **.ruby-version** (arquivo de versão do Ruby) | Declara a versão do projeto; lido por rbenv e chruby   |
 
 ## Estrutura de projeto
 

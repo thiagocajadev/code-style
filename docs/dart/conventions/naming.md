@@ -6,6 +6,17 @@ Nomes bons tornam comentários desnecessários. Dart usa `camelCase` para identi
 `snake_case` para arquivos. O prefixo `_` é o único mecanismo de visibilidade de biblioteca
 — não há `private` por classe.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **lowerCamelCase** (camelo minúsculo) | funções, métodos, variáveis, parâmetros e constantes — primeira letra minúscula |
+| **UpperCamelCase** (camelo maiúsculo) | classes, enums, typedefs e extensions — primeira letra maiúscula |
+| **lowercase_with_underscores** (minúsculas com sublinhado) | nomes de arquivos, diretórios e bibliotecas Dart |
+| **library privacy** (privacidade de biblioteca) | prefixo `_` torna o membro privado à biblioteca; único mecanismo de visibilidade |
+| **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` revelam intenção em variáveis e métodos lógicos |
+| **domain-first naming** (nome do domínio primeiro) | nome reflete o conceito de negócio, não a infraestrutura (`chargeCustomer` vs `callStripe`) |
+
 ## Identificadores sem significado
 
 <details>

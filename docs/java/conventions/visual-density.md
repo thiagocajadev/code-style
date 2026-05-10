@@ -2,6 +2,17 @@
 
 Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em Java.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | quantidade de informação por unidade de espaço; legibilidade vs ruído |
+| **atomic group** (grupo atômico) | linhas que pertencem ao mesmo passo lógico; ficam juntas sem blank line |
+| **blank line** (linha em branco) | separador semântico entre grupos atômicos; nunca decorativo |
+| **orphan** (órfão) | grupo de uma única linha isolado; evite — junte ao grupo vizinho |
+| **explaining return** (retorno explicativo) | atribui a uma variável local com nome de domínio antes do `return` |
+| **boundary** (limite) | onde Result vira HTTP, exception vira resposta, ou input vira domínio |
+
 ## A regra central
 
 **Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido

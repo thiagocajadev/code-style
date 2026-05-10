@@ -10,7 +10,7 @@
 | **overhead** (custo adicional) | processamento extra além da lógica de negócio; alocações, boxing, chamadas de método |
 | **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; parallelStream() pode ajudar |
 | **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco; virtual threads resolvem melhor |
-| **pré-alocação** | informar a capacidade inicial de uma coleção para evitar realocações internas |
+| **preallocation** (pré-alocação) | informar a capacidade inicial de uma coleção para evitar realocações internas |
 | **ForkJoinPool** (pool de roubo de trabalho) | pool compartilhado da JVM usado por `parallelStream()`; não bloquear nele com I/O |
 
 ## Streams vs loops — escolha consciente

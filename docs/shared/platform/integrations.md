@@ -13,13 +13,13 @@ legados.
 
 | Conceito                                                                                    | O que é                                                                                                                 |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **GraphQL**                                                                                 | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer — não é banco de dados                   |
+| **GraphQL** (Graph Query Language, linguagem de consulta em grafo)                          | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer — não é banco de dados                   |
 | **TOML** (Tom's Obvious, Minimal Language)                                                  | Formato de configuração legível com semântica clara e tipos nativos; comum em Rust, Python e Go                         |
 | **YAML** (YAML Ain't Markup Language, YAML Não é uma Linguagem de Marcação)                 | Formato hierárquico baseado em indentação; dominante em CI/CD, Kubernetes e automação                                   |
 | **SOAP** (Simple Object Access Protocol, Protocolo Simples de Acesso a Objetos)             | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros                   |
 | **WSDL** (Web Services Description Language, Linguagem de Descrição de WebServices)         | Documento XML que descreve métodos, tipos e endereços de um WebService SOAP                                             |
 | **XSD** (XML Schema Definition, Definição de Esquema XML)                                   | Define a estrutura válida de um documento XML; usado para validar NF-e, CT-e e outros documentos fiscais                |
-| **Namespace XML**                                                                           | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML                                        |
+| **Namespace XML** (espaço de nomes XML)                                                     | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML                                        |
 | **CSV** (Comma-Separated Values, valores separados por vírgula)                             | Formato tabular em texto plano; separador pode ser vírgula, ponto-e-vírgula ou pipe                                     |
 | **Fixed-width** (largura fixa)                                                              | Formato de arquivo texto onde cada campo ocupa posições fixas na linha; comum em CNAB e SINTEGRA                        |
 | **CNAB** (Centro Nacional de Automação Bancária, Centro Nacional de Automação Bancária)     | Padrão de arquivo texto para remessa e retorno bancário (cobranças, pagamentos); linhas de 240 ou 400 caracteres        |
@@ -29,7 +29,7 @@ legados.
 | **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra)                        | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios              |
 | **RS-232** (Recommended Standard 232)                                                       | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
 | **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor)                                | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM                    |
-| **LLM API**                                                                                 | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
+| **LLM API** (API de modelo de linguagem grande)                                             | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
 
 ---
 

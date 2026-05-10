@@ -1,8 +1,18 @@
 # Variables
 
-Custom properties são o mecanismo nativo do CSS para design tokens. Nomes semânticos que
-descrevem o **papel** do valor, não a aparência, permitem mudar o design sem caçar ocorrências
-espalhadas pelo código.
+**custom property** (propriedade customizada) é o mecanismo nativo do CSS pra **design token** (token de design). Nomes semânticos que descrevem o papel do valor, não a aparência, permitem mudar o design sem caçar ocorrências espalhadas pelo código.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **custom property** (propriedade customizada) | Variável CSS declarada com `--nome: valor`; lida via `var(--nome)` |
+| **design token** (token de design) | Valor nomeado por papel (`--color-primary`); fonte única da verdade do design |
+| **cascade** (cascata) | Ordem de aplicação por origem, especificidade e ordem do código |
+| **scope** (escopo) | Custom property vale pro elemento e descendentes; `:root` cobre o documento |
+| **fallback** (valor de reserva) | Segundo argumento de `var(--nome, fallback)`; cobre ausência da variável |
+| **theme switch** (troca de tema) | Redefinir tokens em `[data-theme="dark"]` ou `:root.dark` |
+| **semantic token** (token semântico) | Nome descreve o papel (`--surface-card`), não a aparência (`--white`) |
 
 ## Tokens semânticos
 

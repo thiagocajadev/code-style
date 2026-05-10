@@ -1,6 +1,20 @@
 # Naming
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
+Nomes bons tornam comentários desnecessários. O código deve contar a história por si só. Use
+**snake_case** (caixa-baixa com underline) para identificadores e **PascalCase** (pascal) para
+classes — é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8) | guia oficial de estilo da linguagem; define convenções de nome |
+| **snake_case** (caixa-baixa com underline) | convenção para variáveis, funções e módulos: `user_name`, `find_by_id` |
+| **PascalCase** (pascal) | convenção para classes e exceções: `OrderService`, `ValidationError` |
+| **SCREAMING_SNAKE_CASE** (caixa-alta com underline) | convenção para constantes de módulo: `MAX_RETRIES`, `DEFAULT_TIMEOUT` |
+| **dunder** (double underscore, duplo sublinhado) | nomes `__nome__` reservados pela linguagem: `__init__`, `__repr__` |
+| **intention-revealing name** (nome que revela intenção) | nome que descreve propósito, não tipo: `expiration_days`, não `int_d` |
+| **boolean prefix** (prefixo booleano) | `is_`, `has_`, `should_` deixa booleanos óbvios: `is_active`, `has_permission` |
 
 ## Identificadores sem significado
 

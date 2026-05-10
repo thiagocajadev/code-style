@@ -12,10 +12,10 @@
 | Conceito | O que é |
 | --- | --- |
 | **T-SQL** (Transact-SQL) | Extensão SQL da Microsoft com suporte a variáveis, fluxo de controle e funções do sistema |
-| **Stored Procedure** | Bloco T-SQL compilado e armazenado no banco, executável com `EXEC` |
-| **Temp Table** | Tabela temporária prefixada com `#` (sessão) ou `##` (global), útil para etapas intermediárias |
+| **Stored Procedure** (procedimento armazenado) | Bloco T-SQL compilado e armazenado no banco, executável com `EXEC` |
+| **Temp Table** (tabela temporária) | Prefixada com `#` (sessão) ou `##` (global), útil para etapas intermediárias |
 | **CTE** (Common Table Expression, Expressão de Tabela Comum) | Resultado nomeado via `WITH`, descartado após a query |
-| **DiskANN** | Algoritmo de indexação vetorial usado em vector search no SQL Server 2025 |
+| **DiskANN** (Disk-based Approximate Nearest Neighbor, vizinho mais próximo aproximado em disco) | Algoritmo de indexação vetorial usado em vector search no SQL Server 2025 |
 | **OPPO** (Optional Parameter Plan Optimization, Otimização de Plano com Parâmetros Opcionais) | Recurso de SQL Server 2025 que gera planos distintos para cada valor de parâmetro, reduzindo parameter sniffing |
 
 ## Tipos de dados

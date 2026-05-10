@@ -5,6 +5,18 @@
 Erros bem estruturados separam o que é **problema de negócio** do que é **falha técnica**.
 `try/except` existe para capturar, nunca para esconder.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Exception** (exceção) | classe base de erros; subclasse para criar tipos de domínio |
+| **EAFP** (Easier to Ask Forgiveness than Permission, Mais fácil pedir perdão que permissão) | estilo idiomático Python: tente a operação e capture a falha |
+| **LBYL** (Look Before You Leap, Olhe antes de saltar) | estilo defensivo com `if` antes da operação; menos pythônico |
+| **context manager** (gerenciador de contexto) | objeto usado com `with` que garante setup e teardown mesmo em erro |
+| **traceback** (rastreamento de pilha) | sequência de chamadas que levou à exceção |
+| **exception chaining** (encadeamento de exceções) | `raise ... from err` preserva a causa raiz |
+| **bare except** (except genérico) | `except:` sem tipo; mascara erros e nunca deve ser usado |
+
 ## Múltiplos tipos de retorno
 
 <details>

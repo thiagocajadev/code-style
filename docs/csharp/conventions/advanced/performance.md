@@ -2,8 +2,21 @@
 
 > Escopo: C#. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar.
+Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
+contexto, prefira legibilidade. Meça antes de otimizar — **Span\<T\>** elimina alocações em fatiamento de string; **GC** pressiona a aplicação quando alocações crescem em laço.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
+| **Span\<T\>** (fatia de memória) | Tipo do .NET que representa janela sobre memória existente; sem alocação |
+| **ReadOnlySpan\<char\>** (fatia somente leitura) | Janela imutável sobre uma string; substitui `Substring` em hot paths |
+| **GC** (Garbage Collector, Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
+| **allocation** (alocação) | Reserva de memória no heap gerenciado; `new`, boxing e concatenação alocam |
+| **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `object`/interface; evite em laços |
+| **StringBuilder** (construtor de strings) | Tipo que acumula strings sem realocar a cada concatenação |
+| **BenchmarkDotNet** (biblioteca de benchmarking) | Ferramenta padrão para medir antes de decidir; números reais antes de mudar código |
 
 ## Span\<T\>
 

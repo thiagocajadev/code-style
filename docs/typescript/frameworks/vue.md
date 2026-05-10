@@ -10,14 +10,14 @@ Vue é uma library reativa de **UI** (User Interface, Interface do Usuário). Nu
 |---|---|
 | **SFC** (Single File Component, Componente em Arquivo Único) | Arquivo `.vue` com `<template>`, `<script setup>` e `<style>` no mesmo módulo |
 | **Composition API** (API de Composição) | Estilo de autoria que organiza a lógica do componente em funções reativas, sem `this` |
-| **`<script setup>`** | Açúcar de compilação que executa o bloco como `setup()` e expõe identificadores ao template |
-| **`ref`** | Container reativo para primitivos: leitura e escrita via `.value` no script, automático no template |
-| **`reactive`** | Proxy reativo para objetos: campos acessados diretamente, sem `.value` |
+| **`<script setup>`** (bloco setup do SFC) | Açúcar de compilação que executa o bloco como `setup()` e expõe identificadores ao template |
+| **`ref`** (referência reativa) | Container reativo para primitivos: leitura e escrita via `.value` no script, automático no template |
+| **`reactive`** (objeto reativo) | Proxy reativo para objetos: campos acessados diretamente, sem `.value` |
 | **`computed`** (derivado) | Valor reativo calculado a partir de outras fontes: recalcula quando os inputs mudam |
-| **`watch`** / **`watchEffect`** | Observadores que disparam quando o valor reativo muda: sincronização com sistemas externos |
-| **`defineModel`** | Macro de `v-model` em componentes filhos: cria a prop e o evento de update juntos |
+| **`watch`** / **`watchEffect`** (observadores reativos) | Observadores que disparam quando o valor reativo muda: sincronização com sistemas externos |
+| **`defineModel`** (macro de `v-model`) | Macro de `v-model` em componentes filhos: cria a prop e o evento de update juntos |
 | **Composable** (composável) | Função que começa com `use`, encapsula estado reativo e lógica reutilizável (análogo a hook) |
-| **Pinia** | Store oficial do Vue 3: tipada por inferência, suporta setup syntax e devtools |
+| **Pinia** (biblioteca de state management do Vue) | Store oficial do Vue 3: tipada por inferência, suporta setup syntax e devtools |
 | **Smart Component** (componente inteligente) | Componente que orquestra dados e estado, delega renderização a **Dumb Components** |
 | **Dumb Component** (componente de apresentação) | Componente que recebe dados via `defineProps` e emite eventos via `defineEmits`; sem lógica de negócio |
 | **Route Middleware** (proteção de rota Nuxt) | Função executada antes de qualquer página montar, definida em `middleware/` |

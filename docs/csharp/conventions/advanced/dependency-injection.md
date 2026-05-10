@@ -2,7 +2,20 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-DI torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+**DI** (Dependency Injection, Injeção de Dependências) torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **DI** (Dependency Injection, Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
+| **IoC container** (Inversion of Control, Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências por construtor |
+| **Service Locator** (localizador de serviços) | Antipadrão: buscar dependências do container dentro da classe; torna dependências implícitas |
+| **constructor injection** (injeção via construtor) | Forma preferida: parâmetros do construtor declaram tudo que a classe precisa |
+| **Singleton** (instância única) | Tempo de vida em que uma única instância serve todo o app |
+| **Scoped** (por escopo de requisição) | Tempo de vida em que uma instância dura por requisição/escopo |
+| **Transient** (por chamada) | Tempo de vida em que cada resolução cria uma nova instância |
+| **captive dependency** (dependência cativa) | Bug em que `Singleton` mantém referência a `Scoped`/`Transient`, vazando além do escopo |
 
 ## Service locator
 

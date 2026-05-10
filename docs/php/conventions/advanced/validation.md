@@ -6,6 +6,18 @@ Validação acontece na fronteira: handler HTTP, consumer de fila, comando CLI.
 Use **Symfony Validator** com atributos PHP 8.x para validações declarativas.
 O service recebe objetos já validados e tipados — nunca arrays brutos sem validação.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Symfony Validator** (biblioteca de validação do Symfony) | Componente que aplica regras declarativas via atributos PHP em DTOs |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura tipada que carrega dados entre camadas; alvo das regras de validação |
+| **PHP attribute** (atributo PHP 8) | Sintaxe `#[NotBlank]` que anota classes, propriedades e métodos com metadados |
+| **constraint** (restrição) | Regra individual: `NotBlank`, `Email`, `Range`; agrupa-se sobre um DTO |
+| **boundary** (limite) | Camada onde a validação acontece: handler HTTP, consumer de fila, comando CLI |
+| **ConstraintViolationList** (lista de violações de restrição) | Coleção retornada pelo validador; vazia significa entrada válida |
+| **strict types** (tipos estritos) | `declare(strict_types=1)` complementa a validação ao impedir coerção implícita |
+
 ## Validação com atributos
 
 <details>

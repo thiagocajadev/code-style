@@ -15,9 +15,9 @@ SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language,
 
 | Conceito | O que é |
 | --- | --- |
-| **Type affinity** | Sistema de tipos do SQLite: colunas têm "afinidade" de tipo, não tipo rígido — qualquer valor pode ser armazenado em qualquer coluna |
+| **Type affinity** (afinidade de tipo) | Sistema de tipos do SQLite: colunas têm "afinidade", não tipo rígido — qualquer valor pode ser armazenado em qualquer coluna |
 | **WAL** (Write-Ahead Logging, Registro Antecipado de Escrita) | Modo de journaling que permite leituras concorrentes durante uma escrita; ativar em produção |
-| **rowid** | ID inteiro implícito em toda tabela SQLite; PRIMARY KEY INTEGER é um alias de rowid |
+| **rowid** (identificador de linha) | ID inteiro implícito em toda tabela SQLite; PRIMARY KEY INTEGER é um alias de rowid |
 | **FTS5** (Full-Text Search 5, Busca de Texto Integral 5) | Extensão embutida para indexação e busca textual eficiente |
 | **OPFS** (Origin Private File System) | Sistema de arquivos privado de origem do navegador; suportado via WebAssembly no SQLite 3.53 |
 

@@ -13,7 +13,7 @@ O princípio é sempre o mesmo: sair cedo na falha, nunca aninhar o caminho feli
 | **Guard clause** (cláusula de guarda) | Condição que retorna cedo na falha, antes do caminho feliz |
 | **Early return** (retorno antecipado) | Saída imediata que elimina o `else` e reduz profundidade de indentação |
 | **Arrow antipattern** (pirâmide de condições) | Aninhamento excessivo de `if/else` que enterra a lógica principal |
-| **Ternário** | Operador inline `condição ? valorVerdadeiro : valorFalso`; limitado a duas alternativas |
+| **ternary** (ternário) | Operador inline `condição ? valorVerdadeiro : valorFalso`; limitado a duas alternativas |
 | **Lookup table** (tabela de mapeamento) | Objeto, mapa ou dicionário que substitui chains de `if` para mapeamento de chave → valor |
 | **Fallthrough** (queda entre casos) | Execução automática do próximo `case` em `switch`; bug silencioso quando acidental |
 | **Exhaustiveness check** (verificação de exaustividade) | Garantia de que todos os casos de um tipo são tratados; o compilador avisa quando um falta |

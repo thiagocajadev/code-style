@@ -1,8 +1,19 @@
 # Naming
 
-As convenções de nomenclatura do JavaScript: camelCase, verbos de intenção, domain-first.
-Aplicam-se integralmente. O TypeScript adiciona três categorias novas: interfaces, type aliases e
-parâmetros genéricos.
+As convenções de nomenclatura do JavaScript: camelCase, verbos de intenção, **domain-first** (domínio primeiro). Aplicam-se integralmente. O TypeScript adiciona três categorias novas: **interface** (contrato de objeto), **type alias** (apelido de tipo) e **generic parameter** (parâmetro genérico).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **interface** (contrato de objeto) | Forma de objeto extensível e implementável; usada para shapes públicos |
+| **type alias** (apelido de tipo) | `type X = ...` — apelido para union, intersection, mapped ou primitivo |
+| **generic parameter** (parâmetro genérico) | Variável de tipo na assinatura (`T`, `K`); ganha nome longo quando o domínio pede |
+| **PascalCase** (estilo Pascal) | Convenção para tipos, classes e enums (`UserService`, `OrderStatus`) |
+| **camelCase** (estilo camelo) | Convenção para variáveis e funções (`fetchUser`, `currentOrder`) |
+| **domain term** (termo de domínio) | Palavra que pertence ao negócio (`invoice`, `subscriber`); evita rótulos técnicos (`object`, `entity`) |
+| **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` — torna o nome legível como pergunta (`isActive`) |
+| **suffix convention** (convenção de sufixo) | `Props`, `Result`, `Options` — sinaliza papel sem repetir tipo |
 
 ## Prefixo I
 

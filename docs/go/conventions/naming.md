@@ -4,6 +4,17 @@
 
 Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **MixedCaps** (CamelCase em Go) | convenção idiomática: `OrderService`, `findActiveOrder`; sem underscore em identificadores |
+| **exported** (exportado) | identificador iniciado em maiúscula é visível fora do pacote |
+| **unexported** (não exportado) | identificador iniciado em minúscula só é acessível dentro do pacote |
+| **package name** (nome de pacote) | curto, em minúsculas, sem underscore; um nome por diretório (`order`, `payment`) |
+| **receiver name** (nome de receptor) | abreviação consistente do tipo, geralmente 1–2 letras (`o *Order`, `s *Service`) |
+| **boolean prefix** (prefixo booleano) | `Is`, `Has`, `Can`, `Should` revelam intenção em flags e métodos lógicos |
+
 ## Identificadores sem significado
 
 <details>

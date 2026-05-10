@@ -3,7 +3,20 @@
 > [!NOTE]
 > Essa estrutura reflete como costumo usar Dapper em projetos C#. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples.
 
-A preferência é usar stored procedures para operações de domínio: a lógica de acesso a dados fica no banco, o C# só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
+A preferência é usar **stored procedures** para operações de domínio: a lógica de acesso a dados fica no banco, o C# só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Dapper** (micro-ORM para .NET) | Biblioteca leve que mapeia linhas para tipos sem o peso de um ORM completo |
+| **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Camada que mapeia tabelas para classes; Dapper fica entre ADO.NET cru e Entity Framework |
+| **stored procedure** (procedimento armazenado) | Operação SQL nomeada e versionada no banco; encapsula lógica de acesso a dados |
+| **parameterized query** (consulta parametrizada) | SQL com `@param`; previne SQL injection e permite cache de plano |
+| **DbConnection** (conexão com o banco) | Abstração ADO.NET; Dapper estende com `Query`, `Execute`, `QueryAsync` |
+| **multi-mapping** (mapeamento múltiplo) | Recurso do Dapper para popular grafo de objetos a partir de uma única query |
+| **CommandType.StoredProcedure** (tipo de comando: procedure) | Flag que indica ao Dapper executar via `EXEC` em vez de SQL inline |
+| **SQL injection** (injeção de SQL) | Vulnerabilidade ao concatenar entrada do usuário em SQL; parametrização elimina o risco |
 
 ## Procedure por domínio
 

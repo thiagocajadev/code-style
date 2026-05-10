@@ -17,7 +17,7 @@ por domínio, não por camada técnica.
 | -------- | ------- |
 | **module** (módulo) | Unidade de versionamento em Go; declarado em `go.mod` com um caminho de importação único |
 | **package** (pacote) | Unidade de compilação e encapsulamento; arquivos `.go` no mesmo diretório pertencem ao mesmo pacote |
-| **toolchain** | Versão do compilador Go gerenciada pelo `go.mod` desde Go 1.21; garantia de build reproduzível |
+| **toolchain** (cadeia de ferramentas) | versão do compilador Go gerenciada pelo `go.mod` desde Go 1.21; garantia de build reproduzível |
 | `internal/` | Diretório que restringe importações externas ao módulo; convenção de encapsulamento |
 | `cmd/` | Diretório de entry points executáveis; cada subdiretório vira um binário separado |
 

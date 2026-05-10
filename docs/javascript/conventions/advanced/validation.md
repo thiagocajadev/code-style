@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Validação não é uma única coisa: é um pipeline com três responsabilidades distintas, cada uma no seu lugar — limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de schema com tipos inferidos.
+Validação não é uma única coisa: é um pipeline com três responsabilidades distintas, cada uma no seu lugar — limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
 
 ```javascript
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -13,10 +13,10 @@ Validação não é uma única coisa: é um pipeline com três responsabilidades
 | Conceito | O que é |
 | --- | --- |
 | **sanitization** (saneamento) | Limpeza de entrada: `trim`, `toLowerCase`, normalização de unicode; antes de validar |
-| **schema validation** (validação de schema) | Conferência de formato: tipos, comprimento, presença de campos obrigatórios |
+| **schema validation** (validação de esquema) | Conferência de formato: tipos, comprimento, presença de campos obrigatórios |
 | **business rule** (regra de negócio) | Validação que depende do estado do sistema (ex: email já cadastrado, saldo suficiente) |
 | **output filter** (filtro de saída) | Remoção de campos sensíveis ou internos antes de responder ao cliente |
-| **DTO** (Data Transfer Object, Objeto de Transferência) | Estrutura sem comportamento usada para mover dados entre camadas |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas |
 | **parse, don't validate** (transforme, não só verifique) | Princípio: converter a entrada em tipo seguro de uma vez, em vez de só checar e seguir com `unknown` |
 | **Zod** (biblioteca de validação) | Biblioteca JS de validação com schemas componíveis e tipo inferido |
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |

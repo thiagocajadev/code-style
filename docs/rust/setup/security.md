@@ -7,6 +7,18 @@ Rust elimina classes inteiras de vulnerabilidade por design (buffer overflow, us
 data races). O que resta requer atenção explícita: gestão de secrets, validação de entrada
 e uso seguro de `unsafe`.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **secret** (segredo) | Credencial sensível: API key, token, senha de DB; nunca commitar em texto plano |
+| **environment variable** (variável de ambiente) | Configuração lida via `std::env::var`; isola valor por ambiente |
+| **dotenvy** (carregador de `.env` para Rust) | Crate que lê `.env` local e popula `std::env` em desenvolvimento |
+| **cargo audit** (auditor de dependências Rust) | Checa `Cargo.lock` contra a RustSec Advisory Database |
+| **Dependabot** (atualizador automatizado de dependências) | Bot do GitHub que abre PRs para versões com fix de segurança |
+| **supply chain** (cadeia de suprimento de dependências) | Risco que vem de crates transitivos; mitigado por audit, lockfile e versionamento conservador |
+| **`unsafe` block** (bloco de código não verificado) | Escopo onde o compilador relaxa garantias de memória; usar só na fronteira de FFI ou abstração validada |
+
 ## Secrets e variáveis de ambiente
 
 Use `dotenvy` para carregar `.env` localmente. Nunca commite `.env`. Centralize

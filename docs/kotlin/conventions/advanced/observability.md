@@ -14,7 +14,7 @@ contexto de diagnóstico mapeado) propaga identificadores de correlação automa
 | --- | --- |
 | **SLF4J** (Simple Logging Facade for Java) | abstração de logging; a implementação (Logback, Log4j2) é trocável |
 | **MDC** (Mapped Diagnostic Context) | mapa de contexto na thread atual; propagado para todos os logs do request |
-| **structured logging** | log em JSON com campos fixos; indexável por ferramentas de observabilidade |
+| **structured logging** (logging estruturado) | log em JSON com campos fixos; indexável por ferramentas de observabilidade |
 | `TRACE` / `DEBUG` / `INFO` / `WARN` / `ERROR` | níveis de severidade — cada um com critério de uso |
 
 ## Log sem contexto

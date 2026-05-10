@@ -13,14 +13,14 @@ MongoDB é um banco de documentos baseado em BSON, com sharding nativo, pipeline
 | --- | --- |
 | **Collection** (coleção) | Agrupamento de documentos BSON; equivale a uma tabela SQL |
 | **Document** (documento) | Objeto JSON/BSON que representa um registro; sem schema fixo |
-| **ObjectId** | Identificador de 12 bytes gerado automaticamente pelo MongoDB; inclui timestamp |
+| **ObjectId** (identificador de objeto) | Valor de 12 bytes gerado automaticamente pelo MongoDB; inclui timestamp |
 | **BSON** (Binary JSON) | Formato binário que estende JSON com tipos adicionais (Date, ObjectId, Decimal128) |
-| **MongoClient** | Objeto de conexão com pool interno; deve ser criado uma vez e reutilizado |
+| **MongoClient** (cliente MongoDB) | Objeto de conexão com pool interno; deve ser criado uma vez e reutilizado |
 | **Connection pool** (pool de conexões) | Conjunto de conexões mantidas abertas para reutilização; `maxPoolSize` controla o limite |
 | **Aggregation pipeline** (pipeline de agregação) | Sequência de estágios que transforma documentos; substitui JOIN + GROUP BY do SQL |
 | **Index** (índice) | Estrutura auxiliar que acelera buscas sem varrer toda a coleção |
 | **TTL index** (índice de expiração automática) | Índice especial que remove documentos automaticamente após o campo `expiresAt` |
-| **$lookup** | Estágio de pipeline que faz join com outra coleção |
+| **$lookup** (estágio de junção) | Estágio de pipeline que faz join com outra coleção |
 | **explain()** | Método que mostra o plano de execução de uma query sem executá-la |
 
 ---

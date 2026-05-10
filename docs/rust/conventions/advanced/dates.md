@@ -13,7 +13,7 @@ armazenamento e transmissão; timezone local só na camada de apresentação.
 | `DateTime<Local>` | Instante no timezone local do sistema; use apenas na UI |
 | `NaiveDateTime` | Data/hora sem timezone; nunca use em produção |
 | `NaiveDate` | Data sem hora e sem timezone; aceitável para datas de calendário |
-| **RFC 3339** | Formato padrão de serialização: `2026-04-26T14:30:00Z` |
+| **RFC 3339** (perfil do ISO 8601 para internet) | Formato padrão de serialização: `2026-04-26T14:30:00Z` |
 | `Utc::now()` | Instante atual em UTC; substitui `Local::now()` em qualquer lógica de negócio |
 
 ## Timezone explícito

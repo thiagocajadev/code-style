@@ -13,7 +13,7 @@ declara referência mutável. Prefira `val` e escreva `var` somente quando o flu
 | `var` | referência que pode ser reatribuída |
 | `const val` | constante resolvida em tempo de compilação; só em top-level ou `companion object` |
 | `lazy` | inicialização adiada; calculada na primeira leitura, depois em cache |
-| **smart cast** | cast automático feito pelo compilador após verificação de tipo |
+| **smart cast** (cast inteligente) | cast automático feito pelo compilador após verificação de tipo |
 
 ## `var` onde `val` resolve
 

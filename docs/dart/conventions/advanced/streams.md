@@ -11,8 +11,8 @@ de UI em Flutter e de I/O em Dart puro.
 | Conceito | O que é |
 | --- | --- |
 | `Stream<T>` | sequência assíncrona de eventos do tipo `T` |
-| **single-subscription** | um único listener; padrão para I/O (arquivo, socket) |
-| **broadcast** | múltiplos listeners simultâneos; padrão para eventos de UI |
+| **single-subscription** (assinatura única) | um único listener; padrão para I/O (arquivo, socket) |
+| **broadcast** (transmissão) | múltiplos listeners simultâneos; padrão para eventos de UI |
 | `StreamController<T>` | fonte programática de eventos; expõe `.stream` e `.sink` |
 | `StreamSubscription` | handle do listener; cancelar ao descartar o receptor |
 | `async*` / `yield` | gerador assíncrono; produz eventos em uma função |

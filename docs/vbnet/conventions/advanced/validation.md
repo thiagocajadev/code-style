@@ -152,7 +152,7 @@ End Class
 O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio: dependem de I/O (banco, serviços externos) e não pertencem ao validator.
 
 <details>
-<summary>❌ Bad — I/O e regra de domínio misturados na validação de schema</summary>
+<summary>❌ Bad — I/O e regra de domínio misturados na validação de esquema</summary>
 <br>
 
 ```vbnet

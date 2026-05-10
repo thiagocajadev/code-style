@@ -6,6 +6,17 @@ Densidade visual é o sinal de intenção no código. Uma linha em branco separa
 Zero linhas dentro de um grupo. Nunca duas linhas em branco consecutivas. O olho lê o código
 como parágrafos — cada parágrafo é uma fase da função.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | separador único entre grupos lógicos; nunca duas consecutivas |
+| **atomic block** (bloco atômico) | conjunto coeso de linhas que executa uma intenção — sem linhas em branco internas |
+| **declaration grouping** (agrupamento de declarações) | declarações relacionadas ficam coladas; não-relacionadas separadas por linha em branco |
+| **Explaining Return** (retorno explicado) | atribuir o resultado a uma `val` nomeada antes do `return`, sem blank entre eles |
+| **indentation** (indentação) | quatro espaços por nível segundo o Kotlin Style Guide; máximo dois níveis no corpo |
+| **trailing comma** (vírgula final) | vírgula após o último argumento; reduz ruído em diffs e melhora reordenação |
+
 ## Parede de código
 
 <details>

@@ -3,20 +3,20 @@
 > Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../../shared/standards/testing.md).
 
 RSpec (Ruby Specification Framework, framework de especificação) é o padrão para projetos
-Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert — Preparar, Agir,
-Verificar), com fases explícitas e assertions (verificações) sem expressões inline.
+Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert — Arrumar, Agir,
+Atestar), com fases explícitas e assertions (verificações) sem expressões inline.
 
 ## Conceitos fundamentais
 
 | Conceito         | O que é                                                                         |
 | ---------------- | ------------------------------------------------------------------------------- |
-| **RSpec**        | Framework de testes orientado a comportamento; DSL fluente com `describe/it`    |
+| **RSpec** (framework de testes para Ruby) | Orientado a comportamento; DSL fluente com `describe/it`    |
 | `describe`       | Agrupa testes por classe ou método                                               |
 | `context`        | Sub-agrupamento por cenário ou estado                                            |
 | `it`             | Um caso de teste; deve ter 1 assertion semântica                                 |
 | `let`            | Define variável lazy (avaliada sob demanda), memo-izada por exemplo              |
 | `subject`        | O objeto principal do teste; inferido ou declarado                               |
-| **FactoryBot**   | Fábrica de objetos de teste; substitui fixtures com dados expressivos            |
+| **FactoryBot** (gem de fábrica de objetos de teste) | Substitui fixtures com dados expressivos            |
 
 ## AAA — Arrange, Act, Assert
 

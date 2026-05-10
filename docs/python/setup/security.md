@@ -2,7 +2,22 @@
 
 > Escopo: Python. Especificidades do ecossistema; princípios em [shared/platform/security.md](../../shared/platform/security.md).
 
-Segurança em Python concentra-se em três frentes: gerenciamento de segredos (variáveis de ambiente, nunca commits), validação de entrada (pydantic no boundary) e dependências (pinning + auditoria). Os princípios conceituais vivem no guia transversal; aqui ficam apenas as escolhas idiomáticas do ecossistema.
+Segurança em Python concentra-se em três frentes: gerenciamento de **secrets** (segredos) em
+variáveis de ambiente, validação de input no **boundary** (limite) com Pydantic e
+**pinning** (fixação de versões) + auditoria de dependências. Os princípios conceituais vivem no
+guia transversal; aqui ficam apenas as escolhas idiomáticas do ecossistema.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **secret** (segredo) | credencial, token ou chave que nunca pode aparecer no código-fonte |
+| **boundary** (limite) | onde input externo entra na aplicação; único lugar que precisa validar |
+| **pinning** (fixação de versões) | travar versões exatas de dependências para builds reprodutíveis |
+| **JWT** (JSON Web Token, Token Web JSON) | token assinado para autenticação stateless |
+| **CSRF** (Cross-Site Request Forgery, Falsificação de Requisição entre Sites) | ataque que executa ações em nome do usuário autenticado |
+| **bcrypt** (algoritmo de hash de senha) | função adaptativa para armazenar senhas com salt embutido |
+| **pip-audit** (auditor de dependências) | ferramenta que checa vulnerabilidades conhecidas nos pacotes instalados |
 
 ## Secrets em variáveis de ambiente
 

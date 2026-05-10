@@ -9,13 +9,13 @@
 | Conceito | O que é |
 | --- | --- |
 | **Stage** (estágio) | Operação do pipeline que transforma documentos (`$match`, `$group`, `$lookup`) |
-| **$match** | Filtra documentos; equivale ao WHERE; usar no início para reduzir volume antes dos estágios seguintes |
-| **$group** | Agrupa documentos por campo e aplica acumuladores (`$sum`, `$avg`, `$count`) |
-| **$lookup** | Junta documentos de outra coleção; equivale ao LEFT JOIN |
-| **$unwind** | Deconstrói um campo array em múltiplos documentos — um documento por elemento |
-| **$project** | Seleciona e renomeia campos; equivale ao SELECT; eliminar campos desnecessários no final |
-| **$sort** | Ordena documentos pelo campo especificado |
-| **$limit** | Limita o número de documentos no resultado |
+| **$match** (estágio de filtragem) | Filtra documentos; equivale ao `WHERE`; usar no início para reduzir volume antes dos estágios seguintes |
+| **$group** (estágio de agrupamento) | Agrupa documentos por campo e aplica acumuladores (`$sum`, `$avg`, `$count`) |
+| **$lookup** (estágio de junção) | Junta documentos de outra coleção; equivale ao `LEFT JOIN` |
+| **$unwind** (estágio de desempacotamento) | Deconstrói um campo array em múltiplos documentos — um documento por elemento |
+| **$project** (estágio de projeção) | Seleciona e renomeia campos; equivale ao `SELECT`; eliminar campos desnecessários no final |
+| **$sort** (estágio de ordenação) | Ordena documentos pelo campo especificado |
+| **$limit** (estágio de limite) | Limita o número de documentos no resultado |
 | **Accumulator** (acumulador) | Operador de `$group` que calcula valores agregados: `$sum`, `$avg`, `$min`, `$max`, `$push`, `$first` |
 
 ---

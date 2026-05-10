@@ -10,10 +10,10 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 | Conceito | O que é |
 | --- | --- |
 | **SLA** (Single Level of Abstraction) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo |
-| **Explaining Return** | atribuir o resultado a uma `val` nomeada antes de retornar |
-| **Stepdown Rule** | chamador visível antes do detalhe; helpers abaixo do chamador |
-| **extension function** | função adicionada a um tipo existente sem herança; sintaxe `fun Type.name()` |
-| **top-level function** | função declarada fora de qualquer classe; favorita ao utilitário estático |
+| **Explaining Return** (retorno explicado) | atribuir o resultado a uma `val` nomeada antes de retornar |
+| **Stepdown Rule** (regra de descida) | chamador visível antes do detalhe; helpers abaixo do chamador |
+| **extension function** (função de extensão) | função adicionada a um tipo existente sem herança; sintaxe `fun Type.name()` |
+| **top-level function** (função de topo) | função declarada fora de qualquer classe; favorita ao utilitário estático |
 
 ## God function — múltiplas responsabilidades
 

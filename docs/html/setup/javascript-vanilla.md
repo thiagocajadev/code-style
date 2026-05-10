@@ -1,8 +1,18 @@
 # JavaScript Vanilla
 
-Padrões modernos de JavaScript para projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) sem bundler. O objetivo aqui é o contexto de
-integração com o DOM. Para convenções da linguagem em si, veja a
-[documentação completa de JavaScript](../../javascript/README.md).
+Padrões modernos de JavaScript pra projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) sem **bundler** (empacotador). O objetivo aqui é o contexto de integração com o **DOM** (Document Object Model, Modelo de Objeto do Documento). Pra convenções da linguagem em si, veja a [documentação completa de JavaScript](../../javascript/README.md).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **DOM** (Document Object Model, Modelo de Objeto do Documento) | Árvore de objetos que representa o HTML em memória; alvo das APIs do browser |
+| **type module** (módulo nativo) | `<script type="module">` ativa `import`/`export`, strict mode e `defer` automático |
+| **defer** (adiar execução) | Baixa em paralelo e executa após o parse, na ordem do documento |
+| **event delegation** (delegação de eventos) | Listener no ancestral; usa `event.target` pra identificar a origem |
+| **querySelector** (seletor único) | API de seleção via CSS; substitui `getElementById` e seletores jQuery |
+| **classList** (lista de classes) | API moderna pra `add`/`remove`/`toggle` classes em um elemento |
+| **AbortController** (controlador de cancelamento) | `controller.abort()` remove listeners e cancela `fetch` pendente |
 
 ## Script como módulo
 

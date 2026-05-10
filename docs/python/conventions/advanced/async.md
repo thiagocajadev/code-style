@@ -2,7 +2,20 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o event loop congela a aplicação inteira.
+Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o
+**event loop** (laço de eventos) congela a aplicação inteira.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **I/O** (Input/Output, Entrada/Saída) | operação que atravessa o limite do processo: rede, disco, banco |
+| **event loop** (laço de eventos) | despachante de tarefas async; processa coroutines até `await` |
+| **coroutine** (corrotina) | função `async def` que pode pausar com `await` sem bloquear o thread |
+| **await** (palavra-chave de espera) | suspende a coroutine atual até o awaitable resolver |
+| **asyncio.gather** (execução concorrente de coroutines) | roda várias coroutines em paralelo e coleta os resultados |
+| **TaskGroup** (grupo estruturado de tarefas) | escopo (Python 3.11+) que cancela todas as tarefas se uma falhar |
+| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; não escala com asyncio |
 
 ## Bloqueio síncrono
 

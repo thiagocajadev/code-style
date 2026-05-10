@@ -6,6 +6,17 @@ Meça antes de otimizar. Go tem ferramentas de profiling e benchmark na stdlib.
 As otimizações mais impactantes envolvem evitar alocações desnecessárias, reutilizar
 buffers com `sync.Pool` e escolher estruturas de dados adequadas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **benchmark** (medição de desempenho) | função `BenchmarkX` em `*_test.go` executada por `go test -bench=.` |
+| **allocation** (alocação) | criar valor no heap; medido com `-benchmem` e `b.ReportAllocs()` |
+| `sync.Pool` | pool de objetos reutilizáveis para reduzir alocações em hot path |
+| **escape analysis** (análise de escape) | compilador decide stack ou heap; objetos que não escapam ficam na stack |
+| **pprof** (profiler de Go) | gera perfil de CPU, memória ou bloqueios para análise pós-execução |
+| **hot path** (caminho quente) | código executado com alta frequência; alvo prioritário de otimização |
+
 ## Benchmarks
 
 Escreva benchmarks antes de otimizar. `go test -bench=.` mede throughput e alocações.

@@ -1,8 +1,18 @@
 # Bootstrap
 
-Bootstrap fornece componentes prontos via classes. Sobrescrever com `!important` ou redefinir
-seletores internos cria CSS que briga com o framework e perde. Override via custom properties
-é o caminho suportado desde o Bootstrap 5.
+**Bootstrap** (framework de CSS baseado em componentes) fornece componentes prontos via classes. Sobrescrever com `!important` ou redefinir seletores internos cria CSS que briga com o framework e perde. **override** (sobrescrita) via **custom property** (propriedade customizada) é o caminho suportado desde o Bootstrap 5.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Bootstrap** (framework de CSS baseado em componentes) | Biblioteca com `.btn`, `.card`, `.modal` prontos e grid de 12 colunas |
+| **utility class** (classe utilitária) | Classe atômica como `.mt-3`, `.text-center`; modifica uma propriedade |
+| **component class** (classe de componente) | Classe de papel como `.btn`, `.alert`; aplica o conjunto de estilos |
+| **modifier** (modificador) | Variante de componente: `.btn-primary`, `.alert-danger` |
+| **breakpoint** (ponto de quebra) | Sufixos `-sm`, `-md`, `-lg`, `-xl`, `-xxl` ativam regra a partir do tamanho |
+| **grid** (sistema de grade) | `.container`/`.row`/`.col-*`; layout de 12 colunas responsivo |
+| **custom property override** (sobrescrita por propriedade customizada) | Redefinir `--bs-*` no escopo do componente; não altera especificidade |
 
 ## Override via custom properties
 

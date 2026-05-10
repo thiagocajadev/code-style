@@ -5,6 +5,18 @@
 Use **sempre** a API `java.time` (Java 8+). `java.util.Date` e `java.util.Calendar` são
 legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código novo.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Instant** (instante UTC) | timestamp em UTC sem fuso; ideal para persistência e logs |
+| **LocalDate** (data local sem fuso) | data calendário sem hora e sem fuso; aniversários, datas de negócio |
+| **LocalDateTime** (data e hora local sem fuso) | data + hora sem fuso; só para uso local/temporário |
+| **ZonedDateTime** (data e hora com fuso) | data + hora + fuso; exibição localizada ao usuário |
+| **Duration** (duração absoluta) | duração em segundos e nanosegundos; tempo físico |
+| **Period** (período de calendário) | duração em dias, meses, anos; tempo de calendário |
+| **ISO 8601** (norma ISO de datas) | formato textual padronizado para datas e horários |
+
 ## Tipos corretos para cada contexto
 
 | Tipo            | Quando usar                                                |

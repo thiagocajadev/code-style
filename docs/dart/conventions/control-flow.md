@@ -6,6 +6,18 @@ Fluxo limpo sai cedo na falha, nunca aninha o caminho feliz. `switch` como expre
 substitui chains de `if/else if`. `?.` e `??` eliminam null-checks verbosos. Máximo dois níveis
 de indentação.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta para 2 alternativas |
+| **switch expression** (expressão switch) | `switch` como expressão (Dart 3+) com pattern matching e exaustividade |
+| **pattern matching** (correspondência por padrão) | desestruturar e casar valores em `switch` ou `if-case` |
+| **null-coalescing** (coalescência de ausente) | `??` retorna o primeiro valor não-nulo; `?.` faz acesso seguro |
+| **lookup map** (mapa de busca) | `Map` que substitui cadeias de `if/else` quando as chaves são dinâmicas |
+
 ## if e else
 
 O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:

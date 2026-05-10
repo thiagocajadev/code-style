@@ -1,7 +1,19 @@
 # Narrowing
 
-Narrowing é o processo de mover de um tipo amplo para um tipo específico dentro de um bloco. O
-TypeScript rastreia cada verificação e refina o tipo automaticamente, sem cast, sem assertion.
+**Narrowing** (estreitamento) é o processo de mover de um tipo amplo para um tipo específico dentro de um bloco. O TypeScript rastreia cada verificação via **type guard** (guarda de tipo) e refina o tipo automaticamente — sem `as`, sem **type assertion** (afirmação de tipo).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **narrowing** (estreitamento) | Refinamento de um tipo amplo para um específico dentro de um bloco |
+| **type guard** (guarda de tipo) | Expressão que estreita o tipo (`typeof`, `instanceof`, `in`, predicate) |
+| **type predicate** (predicado de tipo) | Função `(x): x is T` que diz ao compilador o tipo após retornar `true` |
+| **type assertion** (afirmação de tipo) | `as T` — força o tipo sem checagem; último recurso, evitar |
+| **discriminated union** (união discriminada) | Union cujo membro é identificado por campo literal (`kind`, `type`) |
+| **in operator** (operador `in`) | Verifica presença de propriedade; estreita union por shape |
+| **instanceof** (verificação de instância) | Estreita pelo construtor; usado com classes e erros customizados |
+| **never** (tipo impossível) | Tipo sem valores; resultado da exhaustiveness check no `default` |
 
 ## typeof: primitivos
 

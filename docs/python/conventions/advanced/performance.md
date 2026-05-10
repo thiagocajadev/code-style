@@ -5,6 +5,18 @@
 Python prioriza legibilidade. Otimize onde há medição — não por antecipação. As regras abaixo
 resolvem problemas reais e frequentes no ecossistema.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **generator** (gerador) | função com `yield` que produz valores sob demanda; não materializa lista intermediária |
+| **list comprehension** (compreensão de lista) | sintaxe declarativa para construir listas: `[f(x) for x in xs if p(x)]` |
+| **hot path** (caminho crítico de execução) | trecho chamado com altíssima frequência; overhead é amplificado |
+| **GIL** (Global Interpreter Lock, Trava Global do Interpretador) | trava do CPython que serializa execução de bytecode em um único thread |
+| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; `multiprocessing` ajuda |
+| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco; `asyncio` resolve melhor |
+| **profiler** (perfilador) | ferramenta como `cProfile` que mede onde o tempo é gasto antes de otimizar |
+
 ## Generators vs listas
 
 Quando o resultado é consumido uma vez (loop, `sum`, `any`, `next`), um generator evita criar

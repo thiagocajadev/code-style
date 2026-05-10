@@ -11,12 +11,12 @@ Performance é uma decisão de design. As escolhas de paginação, cache (armaze
 | **Cache** (armazenamento temporário) | Resposta armazenada para evitar recomputação ou nova consulta ao banco |
 | **TTL** (Time To Live, tempo de vida) | Tempo durante o qual uma entrada em cache é considerada válida |
 | **Offset/limit** (paginação por deslocamento e quantidade) | Modelo de paginação que pula N registros e retorna os próximos M |
-| **Cursor** | Referência ao último item retornado, usada para paginação estável em dados que mudam |
+| **Cursor** (ponteiro de paginação) | Referência ao último item retornado, usada para paginação estável em dados que mudam |
 | **Lazy loading** (carregamento sob demanda) | Carregar dados ou código apenas no momento em que são necessários |
-| **N+1** | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
+| **N+1** (consulta repetida em loop, anti-padrão) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Connection pooling** (agrupamento de conexões) | Reutilização de conexões abertas com o banco para reduzir o custo de handshake por requisição |
 | **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
-| **Big O** | Notação que descreve como o tempo ou espaço de um algoritmo cresce em função do tamanho da entrada |
+| **Big O** (notação de complexidade assintótica) | Notação que descreve como o tempo ou espaço de um algoritmo cresce em função do tamanho da entrada |
 | **Time complexity** (complexidade de tempo) | Quantas operações o algoritmo executa em relação ao tamanho da entrada |
 | **Space complexity** (complexidade de espaço) | Quanta memória o algoritmo usa em relação ao tamanho da entrada |
 

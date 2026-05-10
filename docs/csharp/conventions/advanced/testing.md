@@ -13,6 +13,19 @@ O [code style](../variables.md) se aplica dentro dos testes. O assert recebe var
 
 As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **AAA** (Arrange Act Assert, Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
+| **xUnit** (framework de teste do .NET) | Framework padrão do projeto: `[Fact]` para casos únicos, `[Theory]` parametrizadas |
+| **mock** (dados fictícios e dublê de comportamento) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
+| **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
+| **fake** (implementação simplificada) | Substituto funcional, mais leve que o real (ex: `InMemoryRepository`) |
+| **fixture** (estado compartilhado de teste) | Objeto que prepara contexto reutilizado entre testes (`IClassFixture<T>`) |
+| **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
+| **FluentAssertions** (biblioteca de asserts fluentes) | API que torna asserts legíveis: `actualOrder.Should().BeEquivalentTo(expectedOrder)` |
+
 Usa [xUnit](https://xunit.net/) como referência: o framework mais adotado no ecossistema .NET, sem boilerplate de `[TestClass]`.
 
 ```csharp

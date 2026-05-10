@@ -1,6 +1,20 @@
 # Methods
 
-Um método faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
+Um método faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela. **SRP** (Single
+Responsibility Principle, Princípio da Responsabilidade Única) e **cohesion** (coesão)
+guiam o desenho.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada método tem uma única razão para mudar |
+| **cohesion** (coesão) | grau em que as instruções do método pertencem à mesma tarefa |
+| **god method** (método-deus) | método que faz tudo: busca, valida, calcula, persiste, loga |
+| **side effect** (efeito colateral) | alteração observável fora do retorno do método (I/O, mutação de estado) |
+| **pure function** (função pura) | função sem efeito colateral; mesma entrada produz mesma saída |
+| **method extraction** (extração de método) | extrair bloco coeso para método nomeado, reduzindo o tamanho do original |
+| **builder** (construtor fluente) | padrão para construir objetos com muitos parâmetros sem listas longas |
 
 ## God method — múltiplas responsabilidades
 

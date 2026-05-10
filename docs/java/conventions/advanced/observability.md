@@ -11,11 +11,11 @@ para Java) como abstração, Logback como implementação e Micrometer para mét
 | Conceito | O que é |
 | --- | --- |
 | **SLF4J** (Simple Logging Facade for Java, Fachada de Log para Java) | abstração de log; a implementação (Logback, Log4j2) é trocável sem alterar o código |
-| **Logback** | implementação de log padrão do Spring Boot; sucessor do Log4j |
-| **Micrometer** | fachada de métricas da JVM; exporta para Prometheus, Datadog e outros |
+| **Logback** (biblioteca de log padrão do Spring Boot) | implementação de log padrão do Spring Boot; sucessor do Log4j |
+| **Micrometer** (fachada de métricas para JVM) | fachada de métricas da JVM; exporta para Prometheus, Datadog e outros |
 | **MDC** (Mapped Diagnostic Context, Contexto de Diagnóstico Mapeado) | mapa de contexto na thread atual; propagado para todos os logs da requisição |
 | **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
-| **correlationId** | identificador único de uma requisição; propagado via MDC |
+| **correlationId** (identificador de correlação) | identificador único de uma requisição; propagado via MDC |
 
 ## SLF4J — abstração de log
 

@@ -15,7 +15,7 @@ Identifiable Information, Informação Pessoalmente Identificável). Propague `c
 | -------- | ------- |
 | `slog` | Pacote de logging estruturado da stdlib desde Go 1.21; substitui `log` para produção |
 | **structured logging** (logging estruturado) | Log com pares chave-valor em vez de strings livres; facilita busca e alerta |
-| **correlation ID** | Identificador único de requisição propagado em todos os logs de uma mesma operação |
+| **correlation ID** (identificador de correlação) | identificador único de requisição propagado em todos os logs de uma mesma operação |
 | **log level** (nível de log) | Debug, Info, Warn, Error — filtre por nível em produção para reduzir ruído |
 
 ## Configuração do logger

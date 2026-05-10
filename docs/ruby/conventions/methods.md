@@ -5,6 +5,18 @@
 Métodos Ruby retornam implicitamente a última expressão avaliada. Use `return` explícito
 apenas para saída antecipada (guard clause). Blocks, procs e lambdas são primeiro-classe.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **method** (método) | Unidade de comportamento definida com `def`; retorna a última expressão por padrão |
+| **block** (bloco) | Pedaço de código passado a um método entre `do...end` ou `{ }`; invocado via `yield` |
+| **yield** (entregar controle ao bloco) | Palavra-chave que executa o bloco recebido pelo método chamado |
+| **proc** (objeto de bloco) | Bloco capturado como objeto; argumentos extras são ignorados, `return` sai do escopo enclosing |
+| **lambda** (função anônima estrita) | Proc com checagem estrita de aridade e `return` que sai apenas da lambda |
+| **splat** (`*args`, `**kwargs`) | Coleta argumentos posicionais ou nomeados em array/hash dentro do método |
+| **keyword arguments** (argumentos nomeados) | Parâmetros declarados com `:`, passados pelo nome no call site |
+
 ## SLA — uma responsabilidade, um nível
 
 Cada método executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.

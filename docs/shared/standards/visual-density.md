@@ -4,6 +4,19 @@
 
 Código é lido muito mais vezes do que escrito. Densidade visual é sobre agrupar o que pertence junto e separar o que é distinto, sem precisar de comentários para guiar o olho.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+|---|---|
+| **blank line** (linha em branco) | Separador entre grupos coesos; uma só, nunca duas seguidas |
+| **atomic block** (bloco atômico) | Sequência de declarações simples (`const`, `let`, `var`, atributos) que se leem como um único grupo |
+| **explaining return** (return explicativo) | `const X = …; return X;` — par tight em que a constante nomeia o valor retornado |
+| **semantic pair** (par semântico) | Duas linhas em que a final depende diretamente da penúltima; ficam tight, sem blank entre elas |
+| **orphan line** (linha órfã) | Declaração isolada entre blanks que pertence ao grupo anterior; cria pausa sem motivo |
+| **declaration + guard** (declaração e guarda) | Variável seguida do `if` que a valida; juntas formam um par; o blank vem depois |
+| **wall of code** (muralha de código) | Quatro ou mais linhas relacionadas sem respiro; sempre quebrar em 2+2 |
+| **method phase** (fase do método) | Etapa lógica (preparar, transformar, persistir, responder); cada fase fica visível com seu próprio respiro |
+
 ## Referência rápida
 
 | Regra | Descrição |

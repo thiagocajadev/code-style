@@ -6,6 +6,17 @@ Performance em Ruby começa com o básico: `frozen_string_literal` reduz alocaç
 lazy enumerators (enumeradores tardios) evitam processar coleções inteiras, e
 `each_with_object` substitui `inject` quando o acumulador é mutado.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **object allocation** (alocação de objeto) | Criação de instância na heap; cada literal de string sem freeze gera uma |
+| **GC** (coletor de lixo) | Garbage collector que recupera memória de objetos sem referência; mais alocação significa mais pausas |
+| **memoization** (cache de resultado) | Guardar resultado de cálculo caro em variável de instância (`@user ||= ...`) |
+| **lazy enumerator** (enumerador tardio) | `Enumerator::Lazy` que processa elementos sob demanda; evita materializar arrays intermediários |
+| **frozen string literal** (literal de string congelada) | Diretiva `# frozen_string_literal: true` que reusa o mesmo objeto para strings idênticas |
+| **each_with_object** (iteração com acumulador) | Itera passando um acumulador mutável; substitui `inject` quando o acumulador não é reatribuído |
+
 ## frozen_string_literal
 
 Cada literal de string sem `frozen_string_literal: true` cria um novo objeto na heap

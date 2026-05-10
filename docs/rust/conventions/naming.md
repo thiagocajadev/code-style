@@ -5,6 +5,16 @@
 Nomes bons tornam comentários desnecessários. O compilador Rust usa capitalização para
 determinar visibilidade e categoria do símbolo, tornando as convenções parte da semântica da linguagem.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **snake_case** (palavras separadas por underscore) | Convenção para funções, variáveis e módulos (`find_user`, `user_id`) |
+| **PascalCase** (palavras concatenadas com inicial maiúscula) | Convenção para tipos: `struct`, `enum`, `trait` (`UserRepository`) |
+| **SCREAMING_SNAKE_CASE** (maiúsculas com underscore) | Convenção para `const` e `static` (`MAX_RETRIES`) |
+| **lifetime parameter** (parâmetro de tempo de vida) | Identificador curto começando com `'` (`'a`, `'src`); minúsculo |
+| **type parameter** (parâmetro de tipo genérico) | Letra maiúscula curta (`T`, `E`) ou nome PascalCase descritivo |
+
 ## Identificadores sem significado
 
 <details>

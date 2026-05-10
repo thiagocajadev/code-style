@@ -7,6 +7,18 @@ atualizações e exclusões de grande escala, o padrão é dividir em lotes de t
 transação que modifica milhões de linhas mantém o lock por toda a duração, bloqueando outras
 operações. Lotes menores liberam o lock entre cada commit.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **batch** (lote) | Conjunto de operações enviadas juntas para reduzir round trips com o banco |
+| **multi-row INSERT** (INSERT de múltiplas linhas) | `INSERT ... VALUES (...), (...), (...)`; uma única instrução insere várias linhas |
+| **chunked update** (atualização em pedaços) | Dividir um `UPDATE` grande em lotes de tamanho fixo para liberar lock entre commits |
+| **bulk load** (carga em massa) | Mecanismo nativo do SGBD: `COPY` (PostgreSQL), `BULK INSERT` (SQL Server) |
+| **transaction lock** (bloqueio de transação) | Lock mantido pela transação enquanto modifica linhas; lotes menores reduzem contenção |
+| **round trip** (ida e volta) | Latência de uma requisição cliente-banco; lotes amortizam o custo por linha |
+| **MERGE** (mesclar) | Comando que faz `INSERT` ou `UPDATE` conforme a chave existe ou não; útil para upsert em lote |
+
 ## Batch INSERT multi-row
 
 <details>

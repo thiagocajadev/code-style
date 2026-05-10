@@ -10,11 +10,11 @@ evitam cópias intermediárias.
 
 | Conceito | O que é |
 | --- | --- |
-| **inline function** | compilador substitui a chamada pelo corpo da função — sem alocação de lambda |
+| **inline function** (função em linha) | compilador substitui a chamada pelo corpo da função — sem alocação de lambda |
 | `Sequence` | stream lazy; operações só executam ao materializar com `toList`/`first`/etc. |
 | `buildList` / `buildMap` | constroem coleções mutáveis internamente e retornam imutáveis — sem cópia final |
 | `lazy` | inicializa propriedade na primeira leitura e armazena em cache |
-| **escape analysis** | JVM detecta objetos que não saem do escopo e os aloca na stack |
+| **escape analysis** (análise de escape) | JVM detecta objetos que não saem do escopo e os aloca na stack |
 
 ## Operações encadeadas em listas grandes
 

@@ -2,6 +2,18 @@
 
 Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) legível de cima pra baixo, sem scroll horizontal.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **clause-per-line** (uma cláusula por linha) | `SELECT`, `FROM`, `WHERE`, `JOIN` em linhas separadas; cada cláusula é um marco visual |
+| **indentation** (indentação) | 2 espaços para colunas, expressões e subqueries; mantém alinhamento sem ambiguidade |
+| **vertical layout** (layout vertical) | Query cresce para baixo, não para a direita; elimina scroll horizontal |
+| **comma style** (estilo de vírgula) | Vírgula no final da linha — padrão; vírgula no início preserva diffs limpos |
+| **keyword case** (caixa de palavra-chave) | `UPPERCASE` para palavras reservadas (`SELECT`, `WHERE`); identificadores em PascalCase ou snake_case |
+| **trailing whitespace** (espaço em branco final) | Remover sempre; ruído invisível em diffs |
+| **line length** (comprimento de linha) | Limite de 120 colunas; sqlfluff aplica automaticamente |
+
 ## Consulta em linha única
 
 <details>

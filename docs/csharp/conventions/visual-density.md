@@ -1,6 +1,18 @@
 # Visual Density: C#
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em C#/.NET.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em C#/.NET. Cada **phase** (fase) do método ganha respiro; **atomic lines** (linhas atômicas) podem aparecer juntas; **explaining return** (retorno explicativo) destaca o resultado final.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | Distribuição entre código e respiro: blocos lógicos separados por linha em branco |
+| **phase** (fase do método) | Etapa lógica (validar, buscar, transformar, persistir, responder) com até 2 linhas antes do respiro |
+| **atomic line** (linha atômica) | Instrução curta e independente; até 3 atômicas homogêneas podem ficar juntas |
+| **explaining return** (retorno explicativo) | Linha em branco antes do `return` final para destacar o resultado |
+| **breathing room** (espaço de respiro) | Linha em branco que separa fases e ajuda o olho a achar o início de cada bloco |
+| **block** (bloco lógico) | Conjunto de linhas que pertencem ao mesmo passo conceitual |
+| **orphan line** (linha órfã) | Uma linha solta de um grupo de 4+ atômicas; quebrar em 2+2 evita |
 
 ## Fases de um método
 

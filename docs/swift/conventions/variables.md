@@ -6,6 +6,17 @@ Swift faz imutabilidade a escolha padrão. `let` declara constante; `var` declar
 Propriedades computadas transformam dados sem armazenar estado extra. Prefira `let` e escreva
 `var` somente quando o fluxo exige.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **let** (constante) | Binding que não aceita reatribuição; default em Swift |
+| **var** (variável) | Binding que aceita reatribuição; usar só quando o fluxo exige |
+| **optional** (opcional) | Tipo `T?` que pode ser valor ou `nil`; modela ausência sem null pointer |
+| **lazy** (avaliação tardia) | Propriedade armazenada calculada na primeira leitura; só dentro de classes/structs |
+| **type inference** (inferência de tipo) | Compilador deduz o tipo a partir do valor; anote em assinaturas públicas e literais ambíguos |
+| **computed property** (propriedade computada) | Calcula valor sob demanda via `get` (e opcionalmente `set`); não armazena estado |
+
 ## `var` onde `let` resolve
 
 <details>

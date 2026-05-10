@@ -9,13 +9,13 @@ enums e traits eliminam classes de bugs em tempo de compilação, sem custo em r
 
 | Conceito | O que é |
 | -------- | ------- |
-| **struct** | Produto de tipos: agrupa campos nomeados em um tipo composto |
-| **enum** | Soma de tipos: uma variante de um conjunto fixo, cada uma podendo carregar dados |
-| **trait** | Conjunto de comportamentos que um tipo pode implementar; equivalente a interface |
-| **impl** | Bloco de implementação de métodos para um tipo ou trait |
-| **Option\<T\>** | `Some(T)` ou `None`; substitui ponteiros nulos |
-| **Result\<T, E\>** | `Ok(T)` ou `Err(E)`; operação que pode falhar |
-| **newtype** | Wrapper de um único campo para distinguir tipos com o mesmo dado bruto |
+| **struct** (estrutura de produto) | Agrupa campos nomeados em um tipo composto |
+| **enum** (soma de tipos) | Uma variante de um conjunto fixo, cada uma podendo carregar dados |
+| **trait** (conjunto de comportamentos) | Tipo pode implementar; equivalente a interface |
+| **impl** (bloco de implementação) | Define métodos para um tipo ou trait |
+| **Option\<T\>** (tipo opcional, valor pode existir ou não) | `Some(T)` ou `None`; substitui ponteiros nulos |
+| **Result\<T, E\>** (resultado com sucesso ou erro) | `Ok(T)` ou `Err(E)`; operação que pode falhar |
+| **newtype** (tipo wrapper de um único campo) | Distingue tipos com o mesmo dado bruto |
 | **generics** (genéricos) | Parâmetros de tipo `<T>` para reutilizar código sem perda de tipo |
 
 ## Struct — campos nomeados

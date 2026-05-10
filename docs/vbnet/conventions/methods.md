@@ -1,6 +1,19 @@
 # Methods
 
-Métodos em VB.NET distinguem `Sub` (sem retorno) e `Function` (com retorno). A escolha é semântica, não estética: comunica a intenção da operação antes mesmo do nome. Orquestrador fica no topo; helpers `Private` descem em ordem de leitura.
+Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno). A escolha é semântica, não estética: comunica a intenção da operação antes mesmo do nome. **Orquestrador** fica no topo; **helpers** `Private` descem em ordem de leitura.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Sub** (subrotina sem retorno) | Método sem valor de retorno; equivale a `void` em C# |
+| **Function** (função com retorno) | Método que retorna valor; preferida sempre que houver resultado a comunicar |
+| **ByVal / ByRef** (por valor / por referência) | Modos de passagem; `ByRef` apenas em casos legítimos, jamais para devolver resultado |
+| **orchestrator** (orquestrador) | Método público de entrada que descreve o fluxo em alto nível |
+| **helper** (método auxiliar) | Método `Private` abaixo do orquestrador, com responsabilidade única |
+| **Optional** (parâmetro opcional) | Parâmetro com valor padrão; `Optional ByVal logger As ILogger = Nothing` |
+| **Overloads** (sobrecarga) | Múltiplas assinaturas do mesmo nome; comunica variantes da operação |
+| **single responsibility** (responsabilidade única) | Um método faz uma coisa; o nome descreve essa coisa por completo |
 
 ## Sub vs Function
 

@@ -2,11 +2,22 @@
 
 > Escopo: TypeScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript adiciona:
-evitar padrões que forçam trabalho desnecessário no compilador e no runtime.
-Meça antes de otimizar.
+As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript adiciona: evitar padrões que forçam trabalho desnecessário no **compiler** (compilador) e no **runtime** (tempo de execução). **`enum`** (enumeração com runtime) gera código; **`as const`** (afirmação literal) não. Meça antes de otimizar.
 
 > Base JavaScript: [javascript/conventions/advanced/performance.md](../../../../javascript/conventions/advanced/performance.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **hot path** (caminho quente) | Trecho de código executado em volume ou frequência alta; otimizar aqui rende |
+| **`enum`** (enumeração com runtime) | Constrói objeto bidirecional em runtime; tipo + valor; mais peso que `as const` |
+| **`as const`** (afirmação literal) | Congela como literal; não gera nada em runtime; substituto idiomático de `enum` |
+| **type complexity** (complexidade de tipo) | Custo do compilador resolver tipos profundos, recursivos ou condicionais |
+| **conditional type** (tipo condicional) | `T extends U ? A : B` — poderoso mas custoso quando aninhado |
+| **declaration merging** (fusão de declarações) | Múltiplas `interface` com mesmo nome se combinam; pode inflar tipos |
+| **bundle size** (tamanho do bundle) | Peso final do JS entregue; `enum` adiciona, `as const` não |
+| **profiling** (perfilamento) | Medição empírica de onde tempo e memória são gastos; meça antes de otimizar |
 
 ## Enums em runtime vs const objects
 

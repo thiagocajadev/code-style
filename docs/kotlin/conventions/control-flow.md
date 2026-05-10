@@ -5,6 +5,17 @@
 Fluxo limpo sai cedo na falha, nunca aninha o caminho feliz. `when` substitui chains de
 `if/else if`. `?.let` e `?:` eliminam blocos de null-check. Máximo dois níveis de indentação.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **if-expression** (`if` como expressão) | `if/else` retorna valor — substitui o ternário de outras linguagens |
+| **when** (despacho exaustivo) | substitui chains de `if/else if`; com sealed/enum o compilador exige cobrir todos os casos |
+| **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **scope function** (função de escopo) | `let`, `run`, `also`, `apply`, `with` — operam dentro do contexto de um receptor |
+| **Elvis operator** (operador Elvis, `?:`) | valor padrão ou retorno antecipado quando o lado esquerdo é `null` |
+| **smart cast** (cast inteligente) | após verificação de tipo ou null em `if`/`when`, o compilador trata como o tipo testado |
+
 ## if-expression — atribuição de 2 valores
 
 `if/else` em Kotlin é uma expressão que retorna valor — substitui o ternário `? :` de outras

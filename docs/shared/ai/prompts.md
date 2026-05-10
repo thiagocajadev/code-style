@@ -8,14 +8,14 @@ Prompt engineering é a prática de estruturar entradas para modelos de linguage
 
 | Conceito | O que é |
 |---|---|
-| **System prompt** | Instrução persistente que define papel, comportamento e restrições do modelo para toda a conversa |
-| **User prompt** | Mensagem do usuário em cada turno; o pedido concreto |
+| **system prompt** (prompt de sistema) | Instrução persistente que define papel, comportamento e restrições do modelo para toda a conversa |
+| **user prompt** (prompt do usuário) | Mensagem do usuário em cada turno; o pedido concreto |
 | **Temperature** (temperatura) | Parâmetro que controla aleatoriedade da saída: 0 = determinístico, 1 = criativo |
 | **Few-shot examples** (exemplos de referência) | Exemplos de entrada/saída incluídos no prompt para guiar o formato da resposta |
 | **Chain-of-thought** (cadeia de raciocínio) | Instrução para o modelo raciocinar passo a passo antes de responder |
 | **Role prompting** (atribuição de papel) | Instrução que define a persona ou especialidade do modelo |
 | **Output format** (formato de saída) | Especificação explícita do formato esperado: JSON, tabela, lista, texto livre |
-| **Grounding** | Técnica de fornecer fatos concretos no prompt para ancorar a resposta e reduzir alucinações |
+| **grounding** (ancoragem) | Técnica de fornecer fatos concretos no prompt para ancorar a resposta e reduzir alucinações |
 
 ## Anatomia de um prompt eficiente
 

@@ -19,7 +19,7 @@ de [functions.md](../conventions/functions.md) e
 | **Path Operation** (Operação de rota) | Função decorada com `@router.get()`, `@router.post()` etc.; ponto de entrada de uma requisição       |
 | **Schema** (Esquema)                  | Modelo Pydantic que define o contrato de entrada ou saída; separado da camada de domínio             |
 | **Dependency** (Dependência)          | Função injetada via `Depends()`: resolve autenticação, sessão de banco, paginação                    |
-| **response_model**                    | Parâmetro do decorator: define e valida o contrato de saída; exposto no OpenAPI                      |
+| **response_model** (modelo de resposta)                    | Parâmetro do decorator: define e valida o contrato de saída; exposto no OpenAPI                      |
 | **Lifespan** (Ciclo de vida)          | Contexto assíncrono que inicializa e encerra recursos (pool de banco, cliente HTTP) no startup/shutdown |
 
 ## Arquitetura

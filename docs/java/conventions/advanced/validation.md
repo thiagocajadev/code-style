@@ -9,11 +9,11 @@ confie nos contratos já validados.
 
 | Conceito | O que é |
 | --- | --- |
-| **Bean Validation** | especificação Jakarta para validação declarativa via anotações |
-| **Hibernate Validator** | implementação de referência do Bean Validation |
+| **Bean Validation** (validação de bean) | especificação Jakarta para validação declarativa via anotações |
+| **Hibernate Validator** (implementação de Bean Validation) | implementação de referência do Bean Validation |
 | **constraint** (restrição) | regra de validação declarada via anotação (`@NotBlank`, `@Size`, etc.) |
 | **ConstraintViolation** (violação de restrição) | objeto que descreve um campo inválido e a mensagem de erro |
-| **@Valid** | instrui o Spring a validar o objeto anotado antes de chamar o método |
+| **@Valid** (anotação que dispara validação) | instrui o Spring a validar o objeto anotado antes de chamar o método |
 | **consumer** (consumidor de mensagem) | componente que lê e processa mensagens de uma fila ou tópico |
 
 ## Validação inline no service

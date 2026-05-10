@@ -15,7 +15,7 @@ a formatação para o usuário usa `intl`.
 | `DateTime.now()` | cria instância no fuso local — usar somente para exibição |
 | `Duration` | intervalo de tempo: `Duration(days: 7, hours: 2)` |
 | `intl` | pacote para formatação de datas com locale e fuso |
-| **ISO 8601** | formato padrão: `2026-04-26T14:30:00.000Z` (UTC) ou `2026-04-26` (data) |
+| **ISO 8601** (padrão internacional de data e hora) | formato textual: `2026-04-26T14:30:00.000Z` (UTC) ou `2026-04-26` (data) |
 
 ## Fuso de DateTime.now() em persistência
 

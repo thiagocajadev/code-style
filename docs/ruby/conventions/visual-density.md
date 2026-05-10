@@ -6,6 +6,16 @@ Densidade visual é o espaço em branco que separa intenções. Linhas relaciona
 grupos lógicos distintos são separados por uma linha em branco. Nunca 2 linhas em branco
 consecutivas; nunca parede de código sem respiração.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | Separador entre grupos lógicos; uma só, nunca duas consecutivas |
+| **atomic block** (bloco atômico) | Conjunto de linhas que executam uma intenção única; sem linha em branco interna |
+| **indentation** (indentação) | Dois espaços por nível em Ruby; nunca tabs |
+| **end alignment** (alinhamento de `end`) | `end` na mesma coluna da palavra que abriu o bloco (`def`, `do`, `if`) |
+| **explaining return** (retorno explicado) | Linha de preparação imediatamente antes do retorno final, sem blank line entre elas |
+
 ## Parede de código
 
 <details>

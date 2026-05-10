@@ -12,7 +12,7 @@ do código que testam, em um módulo `#[cfg(test)]`. Testes de integração fica
 | `#[test]` | Marca uma função como teste unitário; executada por `cargo test` |
 | `#[cfg(test)]` | Compila o bloco apenas durante `cargo test`; não vai para o binário de produção |
 | `#[tokio::test]` | Variante async de `#[test]` para código que usa `.await` |
-| **table-driven tests** | Vec de structs com entrada + saída esperada; um loop roda todos os casos |
+| **table-driven tests** (testes guiados por tabela) | Vec de structs com entrada + saída esperada; um loop roda todos os casos |
 | `assert_eq!` | Falha com mensagem legível se os dois valores não forem iguais; exige `PartialEq + Debug` |
 | `assert!` | Falha se a expressão booleana for `false` |
 | `tests/` | Diretório para testes de integração; cada arquivo é uma crate separada |
@@ -260,7 +260,7 @@ mod tests {
 
 </details>
 
-## Fases AAA — Arrange, Act, Assert, Arrumar, Agir, Atestar
+## Fases AAA — Arrange, Act, Assert, Arranjar, Agir, Atestar
 
 Testes Rust são funções comuns: AAA aplica sem adaptação. Separe as fases por linha em branco.
 

@@ -5,6 +5,17 @@
 Rust é imutável por padrão. `let` cria uma ligação imutável; `let mut` é necessário apenas
 quando o valor precisa mudar. O compilador avisa sobre `mut` desnecessário.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **let** (ligação imutável) | Declara binding que não pode ser reatribuído; default em Rust |
+| **let mut** (ligação alterável) | Declara binding que aceita reatribuição ou alteração in-place |
+| **shadowing** (sombreamento) | Redeclarar `let x` no mesmo escopo; cria novo binding, pode mudar tipo |
+| **type inference** (inferência de tipo) | Compilador deduz o tipo a partir do uso; anote só quando ambíguo ou na fronteira pública |
+| **const** (constante avaliada em compilação) | Valor inlinado em todo call site; tipo obrigatório, sem endereço de memória |
+| **static** (variável global de duração `'static`) | Item com endereço fixo durante a execução do programa |
+
 ## let vs let mut
 
 <details>

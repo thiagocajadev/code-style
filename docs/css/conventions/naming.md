@@ -1,7 +1,19 @@
 # Naming
 
-Nomes de classe descrevem **propósito** (o que o elemento representa no domínio da UI), não sua
-aparência visual. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
+Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **class** (classe) | Identificador reutilizável aplicado via `class="..."`; alvo do seletor `.nome` |
+| **kebab-case** (palavras separadas por hífen) | Convenção CSS: `product-card`, não `productCard` |
+| **BEM** (Block Element Modifier, Bloco-Elemento-Modificador) | `block__element--modifier`; vincula classe ao papel no componente |
+| **block** (bloco) | Componente raiz no BEM: `.card`, `.menu` |
+| **element** (elemento) | Parte do bloco no BEM: `.card__title`, `.menu__item` |
+| **modifier** (modificador) | Variante de estado/aparência: `.button--danger`, `.menu--open` |
+| **semantic class** (classe semântica) | Nome descreve o papel; sobrevive a mudanças de design |
+| **utility class** (classe utilitária) | Classe atômica focada em uma propriedade: `.text-center`, `.mt-2` |
 
 ## Semântico vs presentacional
 

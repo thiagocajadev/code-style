@@ -3,7 +3,20 @@
 > [!NOTE]
 > Essa estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
 
-Um projeto .NET bem fundado define três coisas antes da primeira linha de domínio: editor e linter alinhados, `Program.cs` como índice legível da aplicação, e configuração delegada a `appsettings` com secrets fora do repositório. O resto cresce a partir daí.
+Um projeto .NET bem fundado define três coisas antes da primeira linha de domínio: editor e linter alinhados, `Program.cs` como índice legível da aplicação, e configuração delegada a **appsettings** com secrets fora do repositório. O resto cresce a partir daí.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **SDK-style project** (projeto no formato SDK) | Formato moderno de `.csproj`: enxuto, sem listar arquivos, com `<Project Sdk="...">` |
+| **Program.cs** (ponto de entrada da aplicação) | Arquivo top-level statements onde a aplicação é configurada e iniciada |
+| **appsettings.json** (arquivo de configuração) | Configuração estática por ambiente; valores sensíveis ficam em variáveis de ambiente ou secrets |
+| **EditorConfig** (configuração de editor compartilhada) | Arquivo `.editorconfig` que padroniza indentação, charset e fim de linha entre IDEs |
+| **dotnet format** (formatador nativo do .NET) | Ferramenta CLI que aplica regras de formatação sem dependências externas |
+| **User Secrets** (segredos de usuário em desenvolvimento) | Mecanismo do .NET para armazenar segredos fora do repositório em dev |
+| **NuGet** (gerenciador de pacotes do .NET) | Sistema de pacotes; dependências declaradas no `.csproj` via `<PackageReference>` |
+| **TargetFramework** (framework-alvo do projeto) | Define a versão do .NET (`net8.0`, `net9.0`); fixar para reproduzibilidade |
 
 ## Ambiente
 

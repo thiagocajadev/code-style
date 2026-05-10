@@ -3,8 +3,19 @@
 > Escopo: Dart 3.7.
 
 Dart oferece três níveis de imutabilidade: `const` (compilação), `final` (runtime, uma atribuição),
-e `var` (mutável). Prefira `final` em todo lugar e escreva `var` somente quando o fluxo exige
-reatribuição.
+e `var` (referência pode ser alterada). Prefira `final` em todo lugar e escreva `var` somente
+quando o fluxo exige reatribuição.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **var** (referência alterável) | declara variável cuja referência pode ser reatribuída depois |
+| **final** (uma atribuição) | referência atribuída uma única vez em runtime; não pode ser reatribuída |
+| **const** (constante de compilação) | valor resolvido em tempo de compilação; canonicalizado pelo compilador |
+| **late** (inicialização postergada) | declara não-nullable inicializado depois da declaração; falha se lido antes |
+| **nullable type** (tipo anulável) | sufixo `?` permite `null`; sem sufixo, nunca pode ser `null` |
+| **type inference** (inferência de tipo) | compilador deduz o tipo a partir da inicialização; reduz ruído em locais |
 
 ## `var` onde `final` resolve
 

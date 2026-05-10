@@ -1,6 +1,18 @@
 # Variables
 
-Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A decisão não é estilística: quando o tipo está óbvio no lado direito, `var` reduz ruído; quando o leitor precisa rastrear, o tipo explícito é obrigação.
+Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A decisão não é estilística: quando o tipo está óbvio no lado direito, `var` reduz ruído; quando o leitor precisa rastrear, o tipo explícito é obrigação. **readonly** comunica que o valor não é alterado depois da atribuição.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **var** (inferência de tipo local) | Palavra-chave que deixa o compilador inferir o tipo; usar quando o lado direito deixa óbvio |
+| **explicit type** (tipo explícito) | Declarar o tipo (`Order order = ...`); obrigatório quando a leitura precisa rastrear o tipo |
+| **readonly** (somente leitura) | Modificador que impede reatribuição de campo após o construtor; comunica valor fixo |
+| **const** (constante de compilação) | Valor literal conhecido em tempo de compilação; embutido nos chamadores |
+| **scope** (escopo) | Região onde a variável é visível; manter o escopo curto reduz superfície de bugs |
+| **target-typed new** (`new()` com alvo inferido) | Sintaxe C# 9+ que omite o tipo: `List<int> xs = new();` |
+| **domain term** (termo de domínio) | Nome reflete propósito (`pendingInvoice`), não estrutura técnica (`invoiceVar`) |
 
 ## `var` e tipo explícito
 

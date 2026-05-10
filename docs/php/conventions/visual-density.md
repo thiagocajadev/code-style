@@ -7,6 +7,17 @@ Linhas relacionadas ficam juntas; grupos distintos ficam separados por uma linha
 Nunca duas linhas em branco consecutivas. PSR-12 define o estilo de chaves e indentação;
 a densidade visual é a camada do desenvolvedor por cima.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **visual density** (densidade visual) | Espaçamento entre linhas que comunica agrupamento lógico ao leitor |
+| **semantic group** (grupo semântico) | Conjunto de linhas que executam uma sub-tarefa: validar, calcular, persistir |
+| **blank line separator** (linha em branco como separador) | Marca a fronteira entre grupos semânticos sem precisar de comentário |
+| **wall of code** (parede de código) | Bloco grande sem separação visual; sinal de que múltiplas responsabilidades estão misturadas |
+| **explaining return** (retorno explicativo) | Variável nomeada na linha anterior ao `return` para tornar o resultado autodocumentado |
+| **PSR-12 style** (estilo PSR-12) | Camada de formatação que define chaves, indentação e quebras; precede a densidade visual |
+
 ## Parede de código
 
 <details>

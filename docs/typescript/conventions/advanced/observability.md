@@ -2,13 +2,24 @@
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-Os padrões de logging estruturado do JavaScript se aplicam sem mudança. O TypeScript adiciona:
-interface tipada para o logger, contexto de correlação tipado e garantia em compilação de que
-campos obrigatórios não são omitidos.
+Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam sem mudança. O TypeScript adiciona: **interface** (contrato de objeto) tipada para o logger, contexto de correlação tipado e garantia em compilação de que campos obrigatórios não são omitidos.
 
 > Base JavaScript: [javascript/conventions/advanced/observability.md](../../../../javascript/conventions/advanced/observability.md)
 
 > Conceitos agnósticos: [shared/standards/observability.md](../../../../shared/standards/observability.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **structured logging** (log estruturado) | Log emitido como objeto JSON com campos pesquisáveis, não string concatenada |
+| **`Logger`** (interface tipada de log) | Contrato que o logger deve cumprir; força chamador a passar objeto estruturado |
+| **log level** (nível de log) | Severidade tipada por união literal: `"trace" | "debug" | "info" | "warn" | "error"` |
+| **correlation ID** (ID de correlação) | Identificador único por requisição que aparece em todos os logs do mesmo fluxo |
+| **`LogContext`** (contexto tipado) | Tipo do payload do log; campos obrigatórios não podem ser omitidos |
+| **redaction** (redação) | Remoção ou mascaramento de campos sensíveis antes de emitir |
+| **PII** (Personally Identifiable Information, Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
+| **trace** (rastro) | Caminho de uma requisição atravessando múltiplos serviços; cada salto é um span |
 
 ## Interface tipada para o logger
 

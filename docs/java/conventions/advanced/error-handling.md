@@ -12,7 +12,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 | **checked exception** (exceção verificada) | exceção que o compilador obriga a declarar ou capturar; ex.: `IOException` |
 | **unchecked exception** (exceção não verificada) | subclasse de `RuntimeException`; não obrigada a declarar; preferida em código moderno |
 | **try-with-resources** (bloco de recursos gerenciados) | bloco que fecha recursos `AutoCloseable` automaticamente ao sair, com ou sem exceção |
-| **AutoCloseable** | interface que marca um recurso fechável automaticamente pelo `try-with-resources` |
+| **AutoCloseable** (autofechável) | interface que marca um recurso fechável automaticamente pelo `try-with-resources` |
 | **stack trace** (rastreamento de pilha) | sequência de chamadas que levou à exceção |
 
 ## Múltiplos tipos de retorno

@@ -4,7 +4,20 @@
 > referências conceituais. O que importa é o princípio: strict mode sempre ativo, path aliases
 > para importações limpas, e o compilador como primeira linha de defesa.
 
-A fundação de um projeto TypeScript define três decisões-chave: `tsconfig.json` com `strict: true` ativado (nada de `any` implícito), path aliases configurados em `compilerOptions.paths` para evitar `../../../`, e o compilador integrado ao pipeline (pre-commit, **CI** (Continuous Integration, Integração Contínua)) como primeira linha de defesa contra regressões de tipo.
+A fundação de um projeto TypeScript define três decisões-chave: **`tsconfig.json`** (arquivo de configuração do compilador) com **`strict`** (modo estrito) ativado (nada de `any` implícito), **path alias** (apelido de caminho) configurado em `compilerOptions.paths` para evitar `../../../`, e o compilador integrado ao pipeline (pre-commit, **CI** (Continuous Integration, Integração Contínua)) como primeira linha de defesa contra regressões de tipo.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **`tsconfig.json`** (arquivo de configuração do compilador) | Manifesto que controla parsing, checagem e emissão; raiz do projeto TS |
+| **`strict`** (modo estrito) | Flag que liga um pacote de checagens (`strictNullChecks`, `noImplicitAny`, etc.) |
+| **path alias** (apelido de caminho) | Mapeamento `@/x` → `src/x` em `compilerOptions.paths`; elimina `../../../` |
+| **module resolution** (resolução de módulos) | Estratégia (`bundler`, `node16`) que define como imports são localizados |
+| **CI** (Continuous Integration, Integração Contínua) | Pipeline automatizado que roda checagens a cada push; última linha de defesa |
+| **ESLint** (linter de JS/TS) | Linter que aplica regras estáticas; com `typescript-eslint` ganha contexto de tipo |
+| **`tsc`** (TypeScript Compiler) | Compilador oficial; valida tipos e emite JS conforme o target |
+| **target** (versão de saída) | Nível de ECMAScript que o compilador emite (`ES2022`, `ESNext`) |
 
 ## Ambiente
 

@@ -2,12 +2,24 @@
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
 
-Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adiciona: fixtures
-tipadas com `satisfies`, mocks com contratos explícitos e verificação de tipos nos testes.
+Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adiciona: **fixture** (massa de teste) tipada com **`satisfies`** (operador de conformidade), **mock** (dados fictícios) com contratos explícitos e verificação de tipos nos testes.
 
 > Base JavaScript: [javascript/conventions/advanced/testing.md](../../../../javascript/conventions/advanced/testing.md)
 
 Usa [Vitest](https://vitest.dev/) nos exemplos — mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Estrutura em três fases: preparar contexto, executar comportamento, verificar resultado |
+| **fixture** (massa de teste) | Dado de entrada conhecido reutilizado entre testes; tipado com `satisfies` |
+| **`satisfies`** (operador de conformidade) | Valida que a fixture cumpre o tipo sem alargar a tipagem inferida |
+| **mock** (dados fictícios) | Objeto falso que substitui dependência real e devolve respostas pré-definidas |
+| **stub** (resposta fixa) | Substituto simples que retorna valor fixo, sem registrar chamadas |
+| **type-only test** (teste só de tipo) | Verificação de comportamento do compilador (`expectTypeOf`); não roda em runtime |
+| **`Vitest`** (test runner com TS nativo) | Runner moderno com integração TypeScript, compatível com a API do Jest |
+| **expressive naming** (nomeação expressiva) | Variáveis de assert com nome do conceito (`actualPrice`, `expectedName`) |
 
 ## Fixtures tipadas com satisfies
 

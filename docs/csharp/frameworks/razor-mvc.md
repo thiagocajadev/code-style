@@ -15,14 +15,14 @@ Este guia aplica os princípios de [methods.md](../conventions/methods.md) e
 
 | Conceito                          | O que é                                                                                            |
 | --------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **PageModel**                     | Classe base de uma Razor Page: define handlers `OnGet`/`OnPost` e propriedades disponíveis na view |
-| **[BindProperty]**                | Atributo que vincula uma propriedade do `PageModel` ao POST do formulário automaticamente          |
-| **Tag Helper**                    | Extensão de atributo HTML (prefixo `asp-`) que gera markup correto a partir do model              |
-| **ModelState**                    | Dicionário de erros de validação preenchido pelo framework após o binding                         |
-| **IActionResult**                 | Tipo de retorno polimórfico de action methods MVC; concretizado por `View()`, `Ok()`, `RedirectToAction()` |
-| **ViewModel**                     | Classe tipada criada para a view: contém exatamente os dados que a página precisa, sem expor a entidade |
+| **PageModel** (modelo de página)  | Classe base de uma Razor Page: define handlers `OnGet`/`OnPost` e propriedades disponíveis na view |
+| **[BindProperty]** (atributo de vinculação) | Atributo que vincula uma propriedade do `PageModel` ao POST do formulário automaticamente |
+| **Tag Helper** (auxiliar de tag)  | Extensão de atributo HTML (prefixo `asp-`) que gera markup correto a partir do model              |
+| **ModelState** (estado do modelo) | Dicionário de erros de validação preenchido pelo framework após o binding                         |
+| **IActionResult** (resultado de ação) | Tipo de retorno polimórfico de action methods MVC; concretizado por `View()`, `Ok()`, `RedirectToAction()` |
+| **ViewModel** (modelo da view)    | Classe tipada criada para a view: contém exatamente os dados que a página precisa, sem expor a entidade |
 | **Partial View** (View parcial)   | Fragmento de marcação reutilizável renderizado com `<partial name="..." />`                        |
-| **Layout**                        | Template mestre declarado com `Layout`; define estrutura HTML compartilhada entre páginas          |
+| **Layout** (layout mestre)        | Template mestre declarado com `Layout`; define estrutura HTML compartilhada entre páginas          |
 
 ## Razor Pages
 

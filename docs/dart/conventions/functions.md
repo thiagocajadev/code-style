@@ -11,10 +11,10 @@ para corpo de uma única expressão.
 | Conceito                              | O que é                                                                |
 | ------------------------------------- | ---------------------------------------------------------------------- |
 | **SLA** (Single Level of Abstraction) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo       |
-| **Explaining Return**                 | atribuir o resultado a uma `final` nomeada antes de retornar           |
-| **named parameter**                   | parâmetro com rótulo na chamada; `{required T param}`                  |
-| **arrow function**                    | `=>` para corpo de uma única expressão — sem `{ return }`              |
-| **Stepdown Rule**                     | chamador visível antes do detalhe; helpers privados abaixo do chamador |
+| **Explaining Return** (retorno explicado) | atribuir o resultado a uma `final` nomeada antes de retornar           |
+| **named parameter** (parâmetro nomeado)   | parâmetro com rótulo na chamada; `{required T param}`                  |
+| **arrow function** (função flecha)        | `=>` para corpo de uma única expressão — sem `{ return }`              |
+| **Stepdown Rule** (regra de descida)      | chamador visível antes do detalhe; helpers privados abaixo do chamador |
 
 ## God function — múltiplas responsabilidades
 

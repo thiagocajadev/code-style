@@ -1,6 +1,17 @@
 # Visual density: CSS
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar o que pertence junto, separar o que é distinto.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar **declaration** (declaração) por responsabilidade e separar **ruleset** (bloco de regras) distintos com **blank line** (linha em branco).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **ruleset** (bloco de regras) | Seletor + declarações entre chaves; unidade semântica do arquivo |
+| **declaration** (declaração) | Par `propriedade: valor;` dentro do ruleset |
+| **blank line** (linha em branco) | Separa rulesets distintos; revela a estrutura no scan vertical |
+| **declaration grouping** (agrupamento de declarações) | Posição → box model → tipografia → visual; ordem previsível |
+| **alignment** (alinhamento) | Manter `:` e `;` em posições previsíveis ajuda o olho a comparar valores |
+| **scannability** (legibilidade vertical) | Capacidade de localizar uma regra ou propriedade sem ler o arquivo todo |
 
 ## Entre regras
 

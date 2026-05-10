@@ -14,9 +14,9 @@ reduzida. O código Python é o mesmo em sintaxe, mas as restrições de hardwar
 | `machine` | Módulo de acesso ao hardware: GPIO, ADC, PWM, I2C, SPI, Timer, WDT |
 | `utime` | Versão reduzida de `time`; use `ticks_ms()` e `ticks_diff()` para medir intervalos |
 | `micropython-lib` | Coleção de módulos compatíveis com MicroPython; substituto parcial de PyPI |
-| **heap** | Memória de alocação dinâmica; limitada; alocações excessivas causam `MemoryError` |
+| **heap** (memória dinâmica) | Memória de alocação dinâmica; limitada; alocações excessivas causam `MemoryError` |
 | `gc` | Garbage collector; pode ser chamado manualmente com `gc.collect()` em loops longos |
-| **frozen module** | Módulo compilado em bytecode e gravado na flash do dispositivo; economiza RAM |
+| **frozen module** (módulo congelado em flash) | Módulo compilado em bytecode e gravado na flash do dispositivo; economiza RAM |
 
 ## Diferenças da stdlib CPython
 

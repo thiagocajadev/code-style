@@ -2,9 +2,20 @@
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os princípios de tratamento de erros do JavaScript: erros tipados, try/catch nas fronteiras,
-não engolir exceções. Aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes
-tipadas com contratos explícitos e `instanceof` como mecanismo de narrowing.
+Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` nas fronteiras, não engolir exceções. Aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes tipadas com contratos explícitos, **`instanceof`** (verificação de instância) como mecanismo de narrowing e **`Result<T, E>`** (resultado tipado) para sinalizar falha sem `throw`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **`Error`** (classe nativa de erro) | Classe base do JS; toda exceção customizada deve estendê-la |
+| **custom error** (erro customizado) | Subclasse de `Error` com nome semântico (`NotFoundError`, `ConflictError`) |
+| **business error** (erro de negócio) | Regra de domínio violada; chamador precisa saber para responder |
+| **technical error** (erro técnico) | Falha de infraestrutura (rede, banco, timeout); chamador raramente trata |
+| **`instanceof`** (verificação de instância) | Operador que estreita o tipo do erro pelo construtor no `catch` |
+| **`Result<T, E>`** (resultado tipado) | União discriminada `{ ok: true, value } | { ok: false, error }` no retorno |
+| **`unknown`** (tipo seguro de origem desconhecida) | Tipo do `catch` por padrão; exige narrowing antes de uso |
+| **error cause** (causa do erro) | Erro original encapsulado no novo (`new Error(msg, { cause: original })`) |
 
 ## Múltiplos tipos de retorno
 

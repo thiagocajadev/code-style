@@ -18,11 +18,11 @@ com JavaScript seguindo os princípios de [methods.md](../conventions/methods.md
 | **Render Mode** (Modo de renderização) | Define onde o componente é executado: servidor via SignalR, browser via WebAssembly, ou híbrido     |
 | **Component** (Componente)        | Arquivo `.razor` com marcação HTML e bloco `@code { }` com lógica C#                                    |
 | **Parameter** (Parâmetro)         | Propriedade com `[Parameter]` que recebe dados do componente pai                                         |
-| **EventCallback**                 | Delegate tipado para comunicação filho para pai; dispara método assíncrono no componente pai             |
-| **CascadingParameter**            | Dado propagado pela árvore de componentes sem passar manualmente em cada nível                           |
-| **[PersistentState]**             | Atributo .NET 10 que persiste estado durante a prerenderização, evitando chamadas duplicadas ao servidor |
-| **EditForm**                      | Componente de formulário Blazor: gerencia `EditContext`, validação e submissão                           |
-| **IJSRuntime**                    | Serviço para interoperabilidade JavaScript: invoca funções JS e recebe retornos no C#                    |
+| **EventCallback** (callback de evento)   | Delegate tipado para comunicação filho para pai; dispara método assíncrono no componente pai             |
+| **CascadingParameter** (parâmetro em cascata) | Dado propagado pela árvore de componentes sem passar manualmente em cada nível                       |
+| **[PersistentState]** (atributo de estado persistente) | Atributo .NET 10 que persiste estado durante a prerenderização, evitando chamadas duplicadas ao servidor |
+| **EditForm** (formulário editável)       | Componente de formulário Blazor: gerencia `EditContext`, validação e submissão                           |
+| **IJSRuntime** (runtime de interop com JS) | Serviço para interoperabilidade JavaScript: invoca funções JS e recebe retornos no C#                  |
 
 ## Render Modes
 

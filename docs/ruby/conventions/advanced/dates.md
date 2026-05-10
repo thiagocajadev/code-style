@@ -10,8 +10,8 @@ para o fuso do usuário apenas na camada de apresentação.
 
 | Conceito                    | O que é                                                                        |
 | --------------------------- | ------------------------------------------------------------------------------ |
-| **UTC**                     | Universal Time Coordinated — fuso padrão para armazenamento e processamento   |
-| **ISO 8601**                | Formato de data/hora: `"2026-04-26T14:30:00Z"` ou `"2026-04-26"`              |
+| **UTC** (Universal Time Coordinated, tempo universal coordenado) | Fuso padrão para armazenamento e processamento   |
+| **ISO 8601** (padrão internacional de data/hora) | Formato `"2026-04-26T14:30:00Z"` ou `"2026-04-26"`              |
 | `Time.now.utc`              | Instância de `Time` no fuso UTC                                                |
 | `ActiveSupport::TimeZone`   | Wrapper Rails sobre TZInfo; converte entre fusos de forma segura               |
 | `in_time_zone`              | Converte `Time` para `ActiveSupport::TimeWithZone` no fuso informado           |

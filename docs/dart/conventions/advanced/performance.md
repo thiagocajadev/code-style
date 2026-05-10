@@ -12,7 +12,7 @@ e Futures têm custo de microtask — lazy evaluation adia trabalho desnecessár
 | --- | --- |
 | `const` constructor | objeto criado em tempo de compilação; canonicalizado — a mesma instância é reusada |
 | `Uint8List` | buffer de bytes de baixo nível; muito mais eficiente que `List<int>` para I/O |
-| **lazy evaluation** | iterable lazy com `where`/`map` sem materializar lista intermediária |
+| **lazy evaluation** (avaliação adiada) | iterable lazy com `where`/`map` sem materializar lista intermediária |
 | `dart:typed_data` | coleções tipadas de primitivos (int, double) sem boxing |
 | `profile mode` | build intermediário entre debug e release; ideal para medir performance real |
 

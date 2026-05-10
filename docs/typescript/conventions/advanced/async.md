@@ -2,9 +2,19 @@
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os padrões assíncronos do JavaScript: async/await, Promise.all, **API** (Application Programming Interface, Interface de Programação de Aplicações) client centralizado.
-Aplicam-se sem mudança. O TypeScript adiciona: `Promise<T>` com tipo explícito no retorno,
-generics em clientes de **I/O** (Input/Output, Entrada/Saída) e tipagem correta de `Promise.all`.
+Os padrões assíncronos do JavaScript: async/await, Promise.all, **API** (Application Programming Interface, Interface de Programação de Aplicações) client centralizado. Aplicam-se sem mudança. O TypeScript adiciona: **`Promise<T>`** (promessa tipada) com tipo explícito no retorno, **generic** (tipo paramétrico) em clientes de **I/O** (Input/Output, Entrada/Saída) e tipagem correta de `Promise.all`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
+| **`Promise<T>`** (promessa tipada) | Objeto que representa o resultado futuro tipado de uma operação assíncrona |
+| **`async`/`await`** (assíncrono/aguardar) | Açúcar sobre Promises; permite escrever assíncrono com fluxo linear |
+| **generic** (tipo paramétrico) | Parâmetro de tipo (`<T>`) que carrega o shape esperado da resposta para o caller |
+| **`Awaited<T>`** (utilitário de desembrulho) | Utilitário que extrai o tipo de dentro de uma `Promise<T>` |
+| **`Promise.all`** (paralelismo tipado) | Resolve um array de promises em paralelo; preserva tuple de tipos |
+| **`Result<T, E>`** (resultado tipado) | Padrão de retorno que carrega sucesso ou erro tipado, sem `throw` |
 
 ## Return type de funções async
 

@@ -1,7 +1,18 @@
 # Structure
 
-**HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) semântico usa o elemento correto para cada propósito. O elemento carrega significado, dispensa
-classes explicativas e melhora acessibilidade sem custo extra.
+**semantic HTML** (HTML semântico) usa o elemento correto pra cada propósito. **landmark** (marco de página) e **sectioning** (seccionamento) carregam significado, dispensam classes explicativas e melhoram acessibilidade sem custo extra.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **semantic HTML** (HTML semântico) | Usar o elemento que descreve o papel (`<nav>`, `<article>`) em vez de `<div>` |
+| **landmark** (marco de página) | Elemento que define região navegável: `<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>` |
+| **sectioning element** (elemento de seção) | `<article>`, `<section>`, `<nav>`, `<aside>`; cria escopo no document outline |
+| **heading hierarchy** (hierarquia de títulos) | `<h1>`–`<h6>` em ordem, sem pular nível; revela a estrutura do conteúdo |
+| **document outline** (estrutura do documento) | Árvore de seções e títulos que leitores de tela percorrem |
+| **div soup** (sopa de divs) | Anti-padrão: estrutura feita só de `<div>`/`<span>`, sem significado |
+| **figure** (figura) | `<figure>` com `<figcaption>`; agrupa mídia ao seu rótulo |
 
 ## Elementos semânticos
 

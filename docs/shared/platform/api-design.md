@@ -18,12 +18,12 @@ evolui sem quebrar integração.
 | **Envelope** (envelope de resposta) | Estrutura padrão `{ data, meta }` que dá shape consistente a sucesso, erro, objeto único e coleção |
 | **Correlation ID** (identificador de correlação) | Id gerado na borda, propagado em `meta` e logs, que rastreia uma requisição ponta a ponta |
 | **Result** (resultado) | Tipo de domínio que carrega sucesso ou falha sem usar exceções; o controller traduz para HTTP no boundary |
-| **Idempotência** (operação repetível sem efeito adicional) | Propriedade de uma operação que produz o mesmo estado quando repetida com os mesmos parâmetros |
+| **idempotency** (operação repetível sem efeito adicional) | Propriedade de uma operação que produz o mesmo estado quando repetida com os mesmos parâmetros |
 
 ## Pipeline de uma requisição
 
 Toda requisição atravessa o mesmo caminho, do cliente até a persistência e de volta. O **BFF** é o
-boundary (fronteira) externo; o handler é o coração do caso de uso; o service concentra a lógica
+boundary (limite) externo; o handler é o coração do caso de uso; o service concentra a lógica
 compartilhada; o repository isola o acesso a dados.
 
 ```

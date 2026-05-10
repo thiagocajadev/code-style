@@ -8,17 +8,17 @@ Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma 
 
 | Conceito | O que é |
 |---|---|
-| **Bot** | Programa que interage com usuários em nome de um serviço via plataforma de mensagens |
+| **Bot** (agente automatizado) | Programa que interage com usuários em nome de um serviço via plataforma de mensagens |
 | **Gateway** (porta de entrada) | Servidor da plataforma que recebe eventos e os entrega ao bot |
 | **Event** (evento) | Unidade de dado que o gateway envia ao bot: nova mensagem, reação, callback de botão |
 | **Command** (comando) | Instrução enviada pelo usuário, tipicamente prefixada com `/` ou uma palavra-chave |
 | **Handler** (tratador) | Função registrada para processar um tipo específico de evento ou comando |
-| **Webhook** | Endpoint HTTP do bot onde a plataforma envia eventos via POST; o bot fica passivo |
+| **Webhook** (callback HTTP) | Endpoint HTTP do bot onde a plataforma envia eventos via POST; o bot fica passivo |
 | **Polling** (consulta periódica) | Bot consulta o gateway em intervalo fixo para buscar novos eventos; o bot fica ativo |
 | **Rate limit** (limite de taxa) | Número máximo de requisições que o bot pode enviar à plataforma por unidade de tempo |
 | **Session** (sessão) | Estado mantido entre mensagens de um mesmo usuário dentro de uma conversa |
 | **Intent** (intenção) | Objetivo semântico por trás de uma mensagem do usuário: comprar, consultar, cancelar |
-| **Callback** | Dado enviado de volta ao bot quando o usuário interage com um botão inline |
+| **Callback** (retorno) | Dado enviado de volta ao bot quando o usuário interage com um botão inline |
 
 ## Webhook vs Polling
 

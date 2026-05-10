@@ -2,7 +2,20 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-LINQ em VB.NET tem duas sintaxes: method syntax (mesma do C#) e query syntax (com palavras-chave `From`, `Where`, `Select`). Prefira method syntax para consistência e capacidade de encadeamento — query syntax é mais verbosa e se fragmenta quando o encadeamento cresce.
+**LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) em VB.NET tem duas sintaxes: **method syntax** (mesma do C#) e **query syntax** (com palavras-chave `From`, `Where`, `Select`). Prefira method syntax para consistência e capacidade de encadeamento — query syntax é mais verbosa e se fragmenta quando o encadeamento cresce.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) | API de .NET para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
+| **method syntax** (sintaxe de método) | Forma fluente `xs.Where(...).Select(...)`; preferida no projeto sobre query syntax |
+| **query syntax** (sintaxe de consulta) | Forma com `From`, `Where`, `Select`; mais verbosa e difícil de encadear |
+| **IEnumerable(Of T)** (sequência iterável) | Interface que expõe iteração em memória; cada operador aplica em sequência |
+| **IQueryable(Of T)** (sequência consultável) | Interface que constrói árvore de expressão; provedor traduz para SQL |
+| **lazy evaluation** (avaliação preguiçosa) | A query só executa no momento da iteração; permite composição |
+| **side effect** (efeito colateral) | Mudança de estado externo (log, mutação, I/O); proibido dentro de queries LINQ |
+| **deferred execution** (execução adiada) | Resultado materializado só quando enumerado; `ToList()` força execução |
 
 ## Method syntax vs query syntax
 

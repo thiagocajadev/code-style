@@ -2,7 +2,7 @@
 
 > Escopo: Swift 6.1, XCTest / Swift Testing.
 
-Testes seguem o padrão AAA (Arrange, Act, Assert, Arrumar, Agir, Atestar) com fases explícitas. Swift Testing (framework
+Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. Swift Testing (framework
 moderno introduzido no Swift 5.9/Xcode 16) é preferível para novos projetos. XCTest continua
 válido em projetos existentes. Mocking é feito via protocolos — sem frameworks externos.
 
@@ -10,10 +10,10 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
-| **Swift Testing** | framework moderno com `@Test`, `#expect`, `@Suite`; melhor diagnósticos |
-| **XCTest** | framework clássico da Apple; `XCTestCase`, `XCTAssert*` |
-| **protocol mock** | stub criado via conformance de protocolo; sem dependência de framework |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **Swift Testing** (framework de testes moderno do Swift) | `@Test`, `#expect`, `@Suite`; melhor diagnósticos |
+| **XCTest** (framework de testes clássico da Apple) | `XCTestCase`, `XCTAssert*` |
+| **protocol mock** (mock via protocolo) | Stub criado via conformance de protocolo; sem dependência de framework |
 | `async throws` em testes | suporte nativo para funções assíncronas nos dois frameworks |
 
 ## Fases misturadas — AAA

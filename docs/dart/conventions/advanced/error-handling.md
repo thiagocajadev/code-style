@@ -15,7 +15,7 @@ bugs de programação (não capturar em produção).
 | `throw` | lança Exception ou Error |
 | `try/catch/finally` | captura exceção; `finally` sempre executa |
 | `on ExceptionType` | captura tipo específico — mais preciso que `catch (e)` genérico |
-| **Result pattern** | sealed class com `Success` e `Failure` como alternativa ao throw |
+| **Result pattern** (padrão Resultado) | sealed class com `Success` e `Failure` como alternativa ao throw |
 
 ## Exception genérica
 

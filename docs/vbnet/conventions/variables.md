@@ -1,6 +1,19 @@
 # Variables
 
-Variáveis em VB.NET começam antes da primeira linha de código: `Option Strict On` e `Option Explicit On` precisam estar ativos em todo arquivo. Sem isso, o compilador aceita conversões implícitas perigosas e variáveis não declaradas. A partir daí, `Dim` tipado, uso consciente de `ByVal`/`ByRef` e nomes por propósito do domínio.
+Variáveis em VB.NET começam antes da primeira linha de código: **Option Strict On** e **Option Explicit On** precisam estar ativos em todo arquivo. Sem isso, o compilador aceita conversões implícitas perigosas e variáveis não declaradas. A partir daí, **Dim** tipado, uso consciente de **ByVal**/**ByRef** e nomes por propósito do domínio.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Option Strict On** (modo estrito de tipos) | Diretiva que proíbe conversões implícitas perigosas e late binding |
+| **Option Explicit On** (declaração obrigatória) | Diretiva que exige `Dim` para toda variável; bloqueia uso sem declaração |
+| **Option Infer On** (inferência local) | Permite ao compilador inferir tipo via `Dim x = ...` quando o lado direito é claro |
+| **Dim** (declaração de variável) | Palavra-chave que declara variável local; primeiro gesto após sanidade do compilador |
+| **ByVal** (passagem por valor) | Modo padrão: o método recebe uma cópia do argumento |
+| **ByRef** (passagem por referência) | Modo que permite escrever no argumento original; usar com parcimônia |
+| **ReadOnly** (somente leitura) | Modificador que impede reatribuição após o construtor; comunica valor fixo |
+| **Const** (constante de compilação) | Valor literal conhecido em tempo de compilação; embutido nos chamadores |
 
 ## Option Strict e Option Explicit
 

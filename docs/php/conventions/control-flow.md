@@ -6,6 +6,18 @@ PHP favorece fluxo linear e retorno antecipado. Use `===` para comparação estr
 O `match` (PHP 8.0+) substitui cadeias de `if/elseif` para mapeamento de valores.
 O operador nullsafe `?->` elimina verificações de null encadeadas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **strict comparison** (comparação estrita) | `===` e `!==` comparam valor e tipo; `==` faz coerção e introduz bugs sutis |
+| **match expression** (expressão de mapeamento) | `match($v) { ... }` — comparação estrita por valor com retorno explícito; PHP 8.0+ |
+| **nullsafe operator** (operador seguro contra null) | `?->` curto-circuita encadeamentos quando o alvo é `null` |
+| **null coalescing** (coalescência de nulos) | `??` retorna o operando à direita quando o da esquerda é `null` |
+| **truthy / falsy** (avalia como verdadeiro / como falso) | Em PHP, `0`, `'0'`, `''`, `null` e `[]` são falsy — preferir comparação explícita |
+
 ## if e else
 
 Após um `return` ou `throw`, o `else` é desnecessário e cria aninhamento sem valor.

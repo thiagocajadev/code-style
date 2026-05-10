@@ -6,6 +6,17 @@ A otimização mais impactante em PHP é **OPcache** (habilitado por padrão no 
 Além disso, evite N+1 em queries, use generators para datasets grandes e lazy objects
 (PHP 8.4) para inicialização diferida de dependências pesadas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **OPcache** (cache de bytecode do PHP) | Mantém o bytecode compilado em memória, eliminando o parse a cada requisição |
+| **JIT** (Just-In-Time, compilação em tempo de execução) | Componente do OPcache que compila trechos quentes para código nativo; ganhos em CPU-bound |
+| **N+1 query** (consulta N+1) | Anti-padrão: uma query principal seguida de N queries derivadas; resolver com eager loading |
+| **generator** (gerador) | Função com `yield` que produz valores sob demanda; uso de memória constante para datasets grandes |
+| **lazy object** (objeto preguiçoso) | Instância criada apenas quando usada pela primeira vez; PHP 8.4 traz suporte nativo |
+| **autoloading** (carregamento automático) | Inclusão de classes sob demanda via Composer; OPcache torna o custo desprezível |
+
 ## OPcache
 
 OPcache armazena o bytecode compilado em memória, eliminando o parse do PHP a cada

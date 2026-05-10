@@ -12,8 +12,8 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 | --- | --- |
 | `precondition` | falha rápida em qualquer build se a condição for falsa |
 | `assert` | falha em debug apenas — removido em release; para invariantes de desenvolvimento |
-| **fronteira de validação** | ponto onde dados externos entram no sistema |
-| **domain invariant** | regra que deve ser verdadeira em qualquer estado válido do objeto |
+| **validation boundary** (limite de validação) | Ponto onde dados externos entram no sistema |
+| **domain invariant** (invariante de domínio) | Regra que deve ser verdadeira em qualquer estado válido do objeto |
 | `init` com `throws` | construtor que valida e lança erro antes de criar o objeto |
 
 ## Validação no meio da lógica

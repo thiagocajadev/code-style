@@ -2,7 +2,19 @@
 
 > Escopo: SQL. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Erros comuns que tornam consultas lentas e como corrigi-los.
+Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (uso de índice) e ordem de filtros dominam o custo: o otimizador escolhe um plano só pode escolher entre os caminhos disponíveis.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **execution plan** (plano de execução) | Sequência de operadores que o otimizador escolhe para resolver a query; visualizar com `EXPLAIN` |
+| **covering index** (índice de cobertura) | Índice que contém todas as colunas necessárias; evita acesso ao heap |
+| **index seek** (busca por índice) | Acesso direto a poucas linhas via índice; oposto a `index scan` |
+| **table scan** (varredura de tabela) | Lê todas as linhas; aceitável só em tabelas pequenas |
+| **N+1 query** (consulta N+1) | Uma query principal seguida de N derivadas; resolver com `JOIN` ou batch |
+| **SARGable predicate** (predicado pesquisável por índice) | Filtro que permite uso de índice; envolver coluna em função quebra esse uso |
+| **statistics** (estatísticas) | Distribuição de dados que o otimizador consulta para escolher o plano; manter atualizadas |
 
 ## SELECT *
 

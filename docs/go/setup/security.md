@@ -6,6 +6,17 @@
 Secrets em Go ficam em variáveis de ambiente, nunca em arquivos versionados. O pacote `internal/config`
 é o único ponto de leitura; todos os outros módulos recebem a configuração já validada via injeção.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| -------- | ------- |
+| **secret** (segredo) | credencial sensível (senha, token, chave) — nunca versionar; ler de variável de ambiente |
+| **env var** (variável de ambiente) | configuração injetada pelo orquestrador no processo; lida via `os.Getenv` |
+| **fail-fast** (falha imediata) | encerrar o processo no startup se config obrigatória estiver ausente ou inválida |
+| **constant-time compare** (comparação em tempo constante) | `crypto/subtle.ConstantTimeCompare` para tokens, evita timing attack |
+| **input sanitization** (saneamento de entrada) | escapar/normalizar dados externos antes de usar em SQL, HTML ou shell |
+| **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites) | ataque em que site malicioso faz request autenticado pelo cookie da vítima |
+
 ## Secrets e variáveis de ambiente
 
 <details>

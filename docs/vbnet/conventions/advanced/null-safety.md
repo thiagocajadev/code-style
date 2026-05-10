@@ -2,11 +2,24 @@
 
 > Escopo: VB.NET. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-VB.NET representa ausência de valor com `Nothing`. Com `Option Strict On` e `Option Infer On`,
+VB.NET representa ausência de valor com **Nothing**. Com **Option Strict On** e **Option Infer On**,
 o compilador bloqueia a maior parte dos acessos a `Nothing` em tempo de compilação — mas não
 todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica sozinho.
 
 > Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **Nothing** (ausência de valor em VB.NET) | Equivalente ao `null` do C#: ausência de referência ou valor padrão de tipo de valor |
+| **Option Strict On** (modo estrito de tipos) | Diretiva que proíbe conversões implícitas perigosas; obrigatório no projeto |
+| **Option Infer On** (inferência de tipos local) | Permite ao compilador inferir tipo via `Dim x = ...` quando o lado direito é claro |
+| **Is Nothing** (operador nativo de comparação com nulo) | Operador `.NET` para checar referências nulas; padrão moderno |
+| **IsNothing()** (função de compatibilidade VB6) | Função legada com mesmo resultado, mas idiomática do Basic clássico; evitar |
+| **NullReferenceException** (exceção de referência nula) | Exceção runtime ao desreferenciar `Nothing`; o objetivo é eliminar via checagem antecipada |
+| **Nullable(Of T)** (tipo de valor anulável) | Wrapper para tipos de valor (`Integer?`, `Boolean?`); equivale a `Nullable(Of Integer)` |
+| **DBNull** (valor nulo no banco de dados) | Representação de NULL em ADO.NET; diferente de `Nothing` em código |
 
 ## Is Nothing vs IsNothing()
 

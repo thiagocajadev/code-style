@@ -13,7 +13,7 @@ o mecanismo de concorrência, mas o controle de ciclo de vida fica com `context`
 | Conceito | O que é |
 | -------- | ------- |
 | `context.Context` | Carrega deadline, cancelamento e valores de escopo de requisição; propagado em toda cadeia de chamadas |
-| **deadline** | Ponto absoluto no tempo após o qual o contexto é cancelado automaticamente |
+| **deadline** (prazo limite) | ponto absoluto no tempo após o qual o contexto é cancelado automaticamente |
 | **timeout** (tempo limite) | Duração relativa convertida em deadline via `context.WithTimeout` |
 | `errgroup` | Pacote `golang.org/x/sync/errgroup` — executa goroutines em paralelo e coleta o primeiro erro |
 | **cancellation propagation** (propagação de cancelamento) | Quando o contexto pai é cancelado, todos os filhos são cancelados em cascata |

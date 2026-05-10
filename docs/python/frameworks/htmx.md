@@ -14,12 +14,12 @@ com HTMX, seguindo os princípios de [functions.md](../conventions/functions.md)
 
 | Conceito                          | O que é                                                                                     |
 | --------------------------------- | ------------------------------------------------------------------------------------------- |
-| **hx-get / hx-post**              | Atributos que disparam uma requisição HTTP ao servidor no evento configurado                |
-| **hx-target**                     | Seletor CSS do elemento onde o fragmento retornado será inserido                            |
-| **hx-swap**                       | Estratégia de inserção: `innerHTML`, `outerHTML`, `beforeend`, `afterend`, `delete`         |
-| **hx-trigger**                    | Evento que dispara a requisição: `click` (padrão), `change`, `load`, `revealed`             |
-| **hx-indicator**                  | ID do elemento exibido enquanto a requisição está em andamento                              |
-| **hx-swap-oob**                   | Out-of-band swap (troca fora de banda): atualiza elementos adicionais na mesma resposta     |
+| **hx-get / hx-post** (atributos para disparar HTTP via HTMX)             | Atributos que disparam uma requisição HTTP ao servidor no evento configurado                |
+| **hx-target** (atributo de elemento alvo)                    | Seletor CSS do elemento onde o fragmento retornado será inserido                            |
+| **hx-swap** (atributo de estratégia de inserção)                      | Estratégia de inserção: `innerHTML`, `outerHTML`, `beforeend`, `afterend`, `delete`         |
+| **hx-trigger** (atributo de evento disparador)                   | Evento que dispara a requisição: `click` (padrão), `change`, `load`, `revealed`             |
+| **hx-indicator** (atributo de indicador de carregamento)                 | ID do elemento exibido enquanto a requisição está em andamento                              |
+| **hx-swap-oob** (atributo de troca fora de banda)                  | Out-of-band swap (troca fora de banda): atualiza elementos adicionais na mesma resposta     |
 | **Fragmento** (partial response)  | HTML parcial retornado pelo servidor; sem `<html>`, `<head>` ou `<body>`                    |
 
 ## Como funciona

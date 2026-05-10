@@ -2,7 +2,20 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado da plataforma .NET (`Try/Catch/Finally`) e o `On Error GoTo` do Basic clássico. O padrão atual é `Try/Catch` em tudo; `On Error` só sobrevive em código legado e nunca se mistura com o modelo estruturado no mesmo método.
+Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado da plataforma .NET (**Try/Catch/Finally**) e o **On Error GoTo** do Basic clássico. O padrão atual é `Try/Catch` em tudo; `On Error` só sobrevive em código legado e nunca se mistura com o modelo estruturado no mesmo método.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **exception** (exceção) | Evento excepcional para falhas inesperadas: bugs, infraestrutura indisponível, estado impossível |
+| **Try/Catch/Finally** (tentar / capturar / por fim) | Modelo estruturado de tratamento de exceções da plataforma .NET |
+| **On Error GoTo** (ao erro, vá para) | Modelo do Basic clássico; só sobrevive em código legado e nunca se mistura com `Try/Catch` |
+| **Throw** (relançar) | `Throw` (sem expressão) preserva o stack trace original ao propagar a mesma exceção |
+| **When clause** (cláusula When) | Filtro condicional em `Catch ... When (...)`; mantém o stack trace ao decidir capturar |
+| **business rule** (regra de negócio) | Falha esperada modelada como dado, não como exceção; retornada via tipo de resultado |
+| **Result(Of T)** (tipo de resultado) | Valor que representa sucesso ou falha; torna o contrato de erro explícito |
+| **boundary** (limite do sistema) | Camada externa onde o `Result` é convertido em resposta HTTP/JSON |
 
 ## Try/Catch vs On Error GoTo
 

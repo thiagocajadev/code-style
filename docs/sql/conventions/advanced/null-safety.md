@@ -10,6 +10,18 @@ NULL em **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) n
 > Os exemplos seguem a convenção SQL Server (PascalCase). Exemplos específicos de PostgreSQL são
 > marcados com `-- PostgreSQL`.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **NULL** (ausência de valor) | Marca de "desconhecido"; não é `0`, `false` nem string vazia |
+| **three-valued logic** (lógica de três valores) | `TRUE`, `FALSE`, `UNKNOWN`; toda comparação com NULL retorna `UNKNOWN` |
+| **IS NULL / IS NOT NULL** (é nulo / não é nulo) | Únicos operadores que testam NULL corretamente; `= NULL` nunca funciona |
+| **COALESCE** (coalescência) | Retorna o primeiro argumento não-nulo; substitui NULL por valor padrão |
+| **NULLIF** (anular se igual) | Retorna NULL quando dois argumentos são iguais; útil para evitar divisão por zero |
+| **NOT NULL constraint** (restrição NOT NULL) | Garante que a coluna nunca aceita NULL; aplicar quando o domínio exige presença |
+| **NULL-safe equals** (igualdade segura contra NULL) | `IS NOT DISTINCT FROM` (PostgreSQL) ou `INTERSECT` (SQL Server); compara tratando NULL como valor |
+
 ## `= NULL` nunca funciona
 
 A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verdadeira. Use

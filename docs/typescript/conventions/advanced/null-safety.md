@@ -2,10 +2,22 @@
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-TypeScript tem dois mecanismos complementares: o sistema de tipos em compile time e os operadores
-de runtime. Juntos, eles eliminam null inesperado sem obrigar checagem manual em cada ponto de uso.
+TypeScript tem dois mecanismos complementares: o sistema de tipos em **compile time** (tempo de compilação) e os operadores de **runtime** (tempo de execução). Juntos, eles eliminam null inesperado sem obrigar checagem manual em cada ponto de uso. **`strictNullChecks`** (checagem estrita de nulos) inclui `null` e `undefined` no tipo só quando declarado.
 
 > Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **`strictNullChecks`** (checagem estrita de nulos) | Flag do compilador que separa `null`/`undefined` dos demais tipos |
+| **`noUncheckedIndexedAccess`** (acesso por índice checado) | Flag que faz `arr[i]` retornar `T | undefined`, forçando tratamento |
+| **nullish coalescing** (coalescência de ausente, `??`) | Retorna o lado direito apenas se o esquerdo for `null` ou `undefined` |
+| **optional chaining** (encadeamento opcional, `?.`) | Acessa propriedade ou método sem lançar erro se a base for nullish |
+| **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; último recurso, evitar |
+| **definite assignment** (atribuição garantida, `!:`) | Promete ao compilador que o campo será atribuído antes do uso |
+| **type guard** (guarda de tipo) | `if (x !== null)` — estreita o tipo após a checagem dentro do bloco |
+| **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
 
 ## Configuração: compilador como primeira linha de defesa
 

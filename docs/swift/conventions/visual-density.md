@@ -5,6 +5,16 @@
 Densidade visual é o sinal de intenção no código. Uma linha em branco separa grupos lógicos.
 Zero linhas dentro de um grupo. Nunca duas linhas em branco consecutivas.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **blank line** (linha em branco) | Separador entre grupos lógicos; uma só, nunca duas consecutivas |
+| **atomic block** (bloco atômico) | Conjunto de linhas que executam uma intenção única; sem linha em branco interna |
+| **indentation** (indentação) | Quatro espaços por nível em Swift; sem tabs |
+| **declaration grouping** (agrupamento de declarações) | Stored properties juntas, computed properties juntas, métodos por responsabilidade |
+| **explaining return** (retorno explicado) | Linha de preparação imediatamente antes do retorno final, sem blank line entre elas |
+
 ## Parede de código
 
 <details>

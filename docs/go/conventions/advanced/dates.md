@@ -12,10 +12,10 @@ ao ISO 8601 com timezone obrigatório.
 | Conceito | O que é |
 | -------- | ------- |
 | `time.Time` | Estrutura de data e hora com localização embutida; valor zero é 1 de janeiro, ano 1, 00:00:00 UTC |
-| **RFC 3339** | Formato textual para data e hora: `2006-01-02T15:04:05Z07:00` |
+| **RFC 3339** (Requests for Comments 3339, formato de data e hora na internet) | formato textual: `2006-01-02T15:04:05Z07:00` |
 | `time.UTC` | Fuso horário UTC (sem offset); use para datas de sistema e persistência |
 | `time.Local` | Fuso horário local do sistema; evite em APIs e persistência |
-| **zero time** | `time.Time{}` — valor zero; distingue "não informado" de "é UTC" |
+| **zero time** (tempo zero) | `time.Time{}` — valor zero; distingue "não informado" de "é UTC" |
 
 ## Fuso horário explícito
 

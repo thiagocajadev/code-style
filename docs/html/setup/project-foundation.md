@@ -1,7 +1,18 @@
 # Project Foundation: HTML
 
-Template base para novos projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: charset e viewport
-primeiro, recursos críticos antes do CSS, scripts com `defer`.
+Template base pra novos projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: **charset** (codificação de caracteres) e **viewport** (área visível) primeiro, recursos críticos antes do CSS, scripts com **defer** (adiar execução).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>` ativa o modo padrão do browser; sempre na primeira linha |
+| **lang attribute** (atributo de idioma) | `<html lang="pt-BR">`; informa o idioma a leitores de tela e tradutores |
+| **charset** (codificação de caracteres) | `<meta charset="UTF-8">`; declarada antes de qualquer texto pra evitar reparse |
+| **viewport** (área visível) | `<meta name="viewport">` controla escala e largura inicial em mobile |
+| **head order** (ordem do head) | Charset → viewport → SEO → preconnect → CSS → scripts; afeta performance |
+| **favicon** (ícone do site) | `<link rel="icon">`; identifica o site na aba e nos favoritos |
+| **canonical** (URL canônica) | `<link rel="canonical">`; sinaliza ao buscador a URL preferida |
 
 ## Template base
 

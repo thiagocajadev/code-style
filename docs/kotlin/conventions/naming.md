@@ -4,6 +4,17 @@
 
 Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
 
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **camelCase** (camelo minúsculo) | funções, métodos, variáveis e parâmetros — primeira letra minúscula |
+| **PascalCase** (camelo maiúsculo) | classes, interfaces, enums, objects e type aliases — primeira letra maiúscula |
+| **SCREAMING_SNAKE_CASE** (maiúsculas com sublinhado) | `const val` em top-level ou `companion object` |
+| **file naming** (nome de arquivo) | nome do arquivo reflete a classe principal em PascalCase (`OrderService.kt`) |
+| **package naming** (nome de pacote) | minúsculas, sem underscore, hierárquico por domínio (`com.acme.order`) |
+| **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` revelam intenção em variáveis e métodos lógicos |
+
 ## Identificadores sem significado
 
 <details>
