@@ -63,7 +63,6 @@ jobs:
           mkdir -p docs-renderer/docs
           # Escopo reduzido enquanto o build não cabe no runner free.
           # Ampliar adicionando subpastas conforme o disco permitir.
-          cp -r code-style/docs/shared     docs-renderer/docs/shared
           cp -r code-style/docs/javascript docs-renderer/docs/javascript
 
       - name: Cache Next.js build
@@ -87,12 +86,12 @@ jobs:
           OUTPUT: export
           STATIC_PAGE_GENERATION_TIMEOUT: "300"
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
-          HOME_REDIRECT: /javascript/README
+          HOME_REDIRECT: /javascript/readme
           NEXT_PUBLIC_LIBNAME: Code Style
           NEXT_PUBLIC_LIBNAME_SHORT: code-style
           NEXT_PUBLIC_LIBNAME_DOTSUFFIX_LABEL: docs
           GITHUB: https://github.com/thiagocajadev/code-style
-          THEME_PRIMARY: "#4CAF50"
+          THEME_PRIMARY: "#1f6feb"
           THEME_SCHEME: tonalSpot
           THEME_CONTRAST: "0"
           THEME_NOTE: "#1f6feb"
