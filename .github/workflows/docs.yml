@@ -60,7 +60,11 @@ jobs:
       - name: Sync docs content into renderer
         run: |
           rm -rf docs-renderer/docs
-          cp -r code-style/docs docs-renderer/docs
+          mkdir -p docs-renderer/docs
+          # Escopo reduzido enquanto o build não cabe no runner free.
+          # Ampliar adicionando subpastas conforme o disco permitir.
+          cp -r code-style/docs/shared     docs-renderer/docs/shared
+          cp -r code-style/docs/javascript docs-renderer/docs/javascript
 
       - name: Cache Next.js build
         uses: actions/cache@v4
