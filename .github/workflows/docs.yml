@@ -64,6 +64,7 @@ jobs:
           # Escopo reduzido enquanto o build não cabe no runner free.
           # Ampliar adicionando subpastas conforme o disco permitir.
           cp -r code-style/docs/javascript docs-renderer/docs/javascript
+          cp -r code-style/docs/shared docs-renderer/docs/shared
 
       - name: Cache Next.js build
         uses: actions/cache@v4
