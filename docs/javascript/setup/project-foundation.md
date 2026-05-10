@@ -1,26 +1,32 @@
 # Project Foundation
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são referências
-> conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
-> evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
-> configuração centralizada, módulos por domínio.
+> [!NOTE]  
+> Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são
+> referências conceituais: podem não cobrir todos os detalhes de implementação
+> e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que
+> importa é o princípio: entry point como índice, configuração centralizada,
+> módulos por domínio.
 
-A fundação de um projeto Node.js define três decisões estruturantes: onde fica a configuração, como módulos se organizam por domínio, e como o entry point orquestra o boot da aplicação. Editor, linter e gerenciador de pacotes ficam alinhados antes da primeira linha de domínio.
+A fundação de um projeto Node.js define três decisões estruturantes: onde fica a
+configuração, como módulos se organizam por domínio, e como o entry point
+orquestra o boot da aplicação. Editor, linter e gerenciador de pacotes ficam
+alinhados antes da primeira linha de domínio.
 
 ## Conceitos fundamentais
 
-| Conceito | O que é |
-|---|---|
-| **Entry point** (ponto de entrada) | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor |
-| **Middleware** (componente de pipeline) | Função que intercepta a requisição antes ou depois do handler |
-| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado usado para autenticação stateless |
-| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM |
+| Conceito                                                               | O que é                                                                    |
+| ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| **Entry point** (ponto de entrada)                                     | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor |
+| **Middleware** (componente de pipeline)                                | Função que intercepta a requisição antes ou depois do handler              |
+| **JWT** (JSON Web Token, Token Web em JSON)                            | Token assinado usado para autenticação stateless                           |
+| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM         |
 
 ## Ambiente
 
 Antes de iniciar, configure o editor:
 
-- [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
+- [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset,
+  trailing whitespace
 - ESLint + Prettier: linting e formatação de código
 
 ```bash
@@ -28,13 +34,15 @@ npm init @eslint/config
 npm install --save-dev prettier
 ```
 
-> [!NOTE] [Biome](https://biomejs.dev) é uma alternativa moderna que substitui ESLint + Prettier em
-> um único binário: mais rápido e sem conflito de configuração entre as duas ferramentas.
+> [!NOTE] [Biome](https://biomejs.dev) é uma alternativa moderna que substitui
+> ESLint + Prettier em um único binário: mais rápido e sem conflito de
+> configuração entre as duas ferramentas.
 
 ## Entry point enxuto
 
-`server.js` declara intenção, não implementa. Toda configuração é delegada para módulos. O arquivo
-serve como índice do projeto: o leitor vê o que existe, não como funciona.
+`server.js` declara intenção, não implementa. Toda configuração é delegada para
+módulos. O arquivo serve como índice do projeto: o leitor vê o que existe, não
+como funciona.
 
 <details>
 <summary>❌ Bad — server.js como dumping ground de configuração</summary>
@@ -69,7 +77,9 @@ app.use((req, res, next) => {
 });
 
 app.get("/users/:id", async (req, res) => {
-  const user = await db.query("SELECT * FROM users WHERE id = $1", [req.params.id]);
+  const user = await db.query("SELECT * FROM users WHERE id = $1", [
+    req.params.id,
+  ]);
   res.json(user.rows[0]);
 });
 
@@ -101,8 +111,9 @@ app.listen(config.port);
 
 ## Módulos por domínio
 
-Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece SQL, JWT ou validação:
-apenas chama quem conhece. Os módulos ficam co-localizados com o domínio que representam.
+Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece
+SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam
+co-localizados com o domínio que representam.
 
 <details>
 <summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
@@ -123,7 +134,9 @@ app.get("/api/orders", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
   const { userId } = jwt.verify(token, process.env.JWT_SECRET);
 
-  const { rows } = await db.query("SELECT * FROM orders WHERE user_id = $1", [userId]);
+  const { rows } = await db.query("SELECT * FROM orders WHERE user_id = $1", [
+    userId,
+  ]);
   res.json(rows);
 });
 
@@ -146,7 +159,11 @@ app.post("/api/orders", async (req, res) => {
 
 ```js
 // routes.js — arquivo monolítico de rotas
-import { listOrders, getOrder, createOrder } from "./features/orders/order.endpoints.js";
+import {
+  listOrders,
+  getOrder,
+  createOrder,
+} from "./features/orders/order.endpoints.js";
 import { listUsers, getUser } from "./features/users/user.endpoints.js";
 
 export function registerRoutes(app, orderService, userService) {
@@ -238,8 +255,8 @@ export function create(orderService) {
 
 ## Configuração centralizada
 
-`config.js` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo acessa `process.env`
-diretamente: apenas importa a seção que precisa.
+`config.js` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo
+acessa `process.env` diretamente: apenas importa a seção que precisa.
 
 <details>
 <summary>❌ Bad — process.env espalhado em todo lugar</summary>
@@ -294,7 +311,8 @@ export function registerOrders(app, config) {
 
 ## Middleware pipeline
 
-A ordem do **middleware** (componente de pipeline) é determinística e importa. Registrar autenticação após roteamento não protege as rotas.
+A ordem do **middleware** (componente de pipeline) é determinística e importa.
+Registrar autenticação após roteamento não protege as rotas.
 
 ```
 express.json()     → parseia o body antes de qualquer handler
