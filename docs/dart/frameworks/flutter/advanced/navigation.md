@@ -23,7 +23,7 @@ routes (tabs com estado persistente).
 ## Rota imperativa
 
 <details>
-<summary>❌ Bad — Navigator.push imperativo sem URL</summary>
+<summary>❌ Ruim — Navigator.push imperativo sem URL</summary>
 <br>
 
 ```dart
@@ -43,7 +43,7 @@ ElevatedButton(
 <br>
 
 <details>
-<summary>✅ Good — GoRouter declarativo com URL tipada</summary>
+<summary>✅ Bom — GoRouter declarativo com URL tipada</summary>
 <br>
 
 ```dart
@@ -78,7 +78,7 @@ ElevatedButton(
 ## Guarda de autenticação com redirect
 
 <details>
-<summary>❌ Bad — verificação de auth dentro de cada tela</summary>
+<summary>❌ Ruim — verificação de auth dentro de cada tela</summary>
 <br>
 
 ```dart
@@ -101,7 +101,7 @@ class OrderListScreen extends StatelessWidget {
 <br>
 
 <details>
-<summary>✅ Good — redirect centralizado no GoRouter</summary>
+<summary>✅ Bom — redirect centralizado no GoRouter</summary>
 <br>
 
 ```dart
@@ -124,7 +124,7 @@ final router = GoRouter(
 ## ShellRoute para bottom tab bar
 
 <details>
-<summary>❌ Bad — IndexedStack sem URLs — deep links impossíveis</summary>
+<summary>❌ Ruim — IndexedStack sem URLs — deep links impossíveis</summary>
 <br>
 
 ```dart
@@ -154,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
 <br>
 
 <details>
-<summary>✅ Good — ShellRoute com tab bar e URLs independentes</summary>
+<summary>✅ Bom — ShellRoute com tab bar e URLs independentes</summary>
 <br>
 
 ```dart

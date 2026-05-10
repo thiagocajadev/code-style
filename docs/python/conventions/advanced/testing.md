@@ -23,7 +23,7 @@ Arrange → Act → Assert: três fases separadas por uma linha em branco. Mistu
 está sendo testado.
 
 <details>
-<summary>❌ Bad — fases misturadas, intenção obscura</summary>
+<summary>❌ Ruim — fases misturadas, intenção obscura</summary>
 <br>
 
 ```python
@@ -36,7 +36,7 @@ def test_apply_discount():
 <br>
 
 <details>
-<summary>✅ Good — **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar): fases explícitas</summary>
+<summary>✅ Bom — **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar): fases explícitas</summary>
 <br>
 
 ```python
@@ -56,7 +56,7 @@ def test_apply_discount_reduces_total():
 O nome do teste e o assert precisam dizer o que falhou — sem precisar inspecionar o valor.
 
 <details>
-<summary>❌ Bad — assert genérico, mensagem de falha inútil</summary>
+<summary>❌ Ruim — assert genérico, mensagem de falha inútil</summary>
 <br>
 
 ```python
@@ -71,7 +71,7 @@ def test_user():
 <br>
 
 <details>
-<summary>✅ Good — assert expressivo com campo específico</summary>
+<summary>✅ Bom — assert expressivo com campo específico</summary>
 <br>
 
 ```python
@@ -89,7 +89,7 @@ Fixtures do pytest evitam duplicação de setup entre testes. Cada fixture decla
 os testes recebem por injeção de parâmetro.
 
 <details>
-<summary>❌ Bad — setup duplicado em cada teste</summary>
+<summary>❌ Ruim — setup duplicado em cada teste</summary>
 <br>
 
 ```python
@@ -115,7 +115,7 @@ def test_order_with_discount():
 <br>
 
 <details>
-<summary>✅ Good — fixture compartilhada, sem duplicação</summary>
+<summary>✅ Bom — fixture compartilhada, sem duplicação</summary>
 <br>
 
 ```python
@@ -147,7 +147,7 @@ Use `pytest.raises` como context manager para verificar que uma exceção espec�
 Verificar o tipo não basta — valide a mensagem quando ela carrega a intenção.
 
 <details>
-<summary>❌ Bad — captura genérica sem verificação da causa</summary>
+<summary>❌ Ruim — captura genérica sem verificação da causa</summary>
 <br>
 
 ```python
@@ -163,7 +163,7 @@ def test_invalid_order():
 <br>
 
 <details>
-<summary>✅ Good — pytest.raises com tipo e mensagem verificados</summary>
+<summary>✅ Bom — pytest.raises com tipo e mensagem verificados</summary>
 <br>
 
 ```python
@@ -182,7 +182,7 @@ Use `pytest-asyncio` para testar coroutines. Marque a função com `@pytest.mark
 configure `asyncio_mode = "auto"` no `pyproject.toml`.
 
 <details>
-<summary>❌ Bad — coroutine não aguardada, teste passa sem executar</summary>
+<summary>❌ Ruim — coroutine não aguardada, teste passa sem executar</summary>
 <br>
 
 ```python
@@ -197,7 +197,7 @@ def test_fetch_user():
 <br>
 
 <details>
-<summary>✅ Good — pytest.mark.asyncio aguarda a coroutine</summary>
+<summary>✅ Bom — pytest.mark.asyncio aguarda a coroutine</summary>
 <br>
 
 ```python

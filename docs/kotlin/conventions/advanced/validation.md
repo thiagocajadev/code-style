@@ -19,7 +19,7 @@ negócio: dados chegam válidos ou o fluxo para antes de começar.
 ## Validação no meio da lógica de negócio
 
 <details>
-<summary>❌ Bad — validação espalhada pela função</summary>
+<summary>❌ Ruim — validação espalhada pela função</summary>
 <br>
 
 ```kotlin
@@ -47,7 +47,7 @@ fun processOrder(userId: Long, items: List<Item>, discount: Double): Order {
 <br>
 
 <details>
-<summary>✅ Good — validação na entrada, lógica limpa depois</summary>
+<summary>✅ Bom — validação na entrada, lógica limpa depois</summary>
 <br>
 
 ```kotlin
@@ -77,7 +77,7 @@ fun processOrder(request: ProcessOrderRequest): Order {
 ## Bean Validation com Spring Boot
 
 <details>
-<summary>❌ Bad — validação manual no controller</summary>
+<summary>❌ Ruim — validação manual no controller</summary>
 <br>
 
 ```kotlin
@@ -98,7 +98,7 @@ fun createOrder(@RequestBody request: CreateOrderRequest): ResponseEntity<Order>
 <br>
 
 <details>
-<summary>✅ Good — @Valid delega ao Bean Validation; controller fica limpo</summary>
+<summary>✅ Bom — @Valid delega ao Bean Validation; controller fica limpo</summary>
 <br>
 
 ```kotlin
@@ -120,7 +120,7 @@ fun createOrder(@Valid @RequestBody request: CreateOrderRequest): ResponseEntity
 ## Acumulação de erros
 
 <details>
-<summary>❌ Bad — para no primeiro erro (usuário precisa corrigir um campo por vez)</summary>
+<summary>❌ Ruim — para no primeiro erro (usuário precisa corrigir um campo por vez)</summary>
 <br>
 
 ```kotlin
@@ -137,7 +137,7 @@ fun validateProfile(profile: UserProfile): Result<Unit> {
 <br>
 
 <details>
-<summary>✅ Good — acumula todos os erros e retorna de uma vez</summary>
+<summary>✅ Bom — acumula todos os erros e retorna de uma vez</summary>
 <br>
 
 ```kotlin

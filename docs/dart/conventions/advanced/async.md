@@ -22,7 +22,7 @@ operações. `unawaited` marca fire-and-forget intencional.
 ## `await` sequencial quando paralelismo é possível
 
 <details>
-<summary>❌ Bad — awaits em série sem necessidade de ordem</summary>
+<summary>❌ Ruim — awaits em série sem necessidade de ordem</summary>
 <br>
 
 ```dart
@@ -39,7 +39,7 @@ Future<Dashboard> loadDashboard(int userId) async {
 <br>
 
 <details>
-<summary>✅ Good — Future.wait executa em paralelo</summary>
+<summary>✅ Bom — Future.wait executa em paralelo</summary>
 <br>
 
 ```dart
@@ -63,7 +63,7 @@ Future<Dashboard> loadDashboard(int userId) async {
 ## `unawaited` para fire-and-forget intencional
 
 <details>
-<summary>❌ Bad — await esquecido ou Future ignorado sem intenção clara</summary>
+<summary>❌ Ruim — await esquecido ou Future ignorado sem intenção clara</summary>
 <br>
 
 ```dart
@@ -78,7 +78,7 @@ void confirmOrder(Order order) async {
 <br>
 
 <details>
-<summary>✅ Good — unawaited declara a intenção de não esperar</summary>
+<summary>✅ Bom — unawaited declara a intenção de não esperar</summary>
 <br>
 
 ```dart
@@ -95,7 +95,7 @@ void confirmOrder(Order order) async {
 ## `Completer` para integração com callbacks
 
 <details>
-<summary>❌ Bad — callback exposto ao chamador sem Future</summary>
+<summary>❌ Ruim — callback exposto ao chamador sem Future</summary>
 <br>
 
 ```dart
@@ -109,7 +109,7 @@ void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onEr
 <br>
 
 <details>
-<summary>✅ Good — Completer wraps callback em Future</summary>
+<summary>✅ Bom — Completer wraps callback em Future</summary>
 <br>
 
 ```dart
@@ -131,7 +131,7 @@ Future<User> fetchUser(int id) {
 ## Timeout em operações externas
 
 <details>
-<summary>❌ Bad — sem limite de tempo em chamada externa</summary>
+<summary>❌ Ruim — sem limite de tempo em chamada externa</summary>
 <br>
 
 ```dart
@@ -146,7 +146,7 @@ Future<double> fetchExchangeRate(String currency) async {
 <br>
 
 <details>
-<summary>✅ Good — timeout cancela se exceder o prazo</summary>
+<summary>✅ Bom — timeout cancela se exceder o prazo</summary>
 <br>
 
 ```dart
@@ -164,7 +164,7 @@ Future<double> fetchExchangeRate(String currency) async {
 ## Tratamento de erro em async
 
 <details>
-<summary>❌ Bad — catchError com tipo Any</summary>
+<summary>❌ Ruim — catchError com tipo Any</summary>
 <br>
 
 ```dart
@@ -180,7 +180,7 @@ Future<Order> findOrder(int id) {
 <br>
 
 <details>
-<summary>✅ Good — try/catch com tipo explícito</summary>
+<summary>✅ Bom — try/catch com tipo explícito</summary>
 <br>
 
 ```dart

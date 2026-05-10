@@ -19,7 +19,7 @@ guiam o desenho.
 ## God method — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
 <br>
 
 ```java
@@ -54,7 +54,7 @@ public Order realizaVenda(String id) {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
 <br>
 
 ```java
@@ -92,7 +92,7 @@ private Order issueInvoice(Order order) {
 ## SLA — orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Bad — mesmo método orquestra e implementa</summary>
+<summary>❌ Ruim — mesmo método orquestra e implementa</summary>
 <br>
 
 ```java
@@ -113,7 +113,7 @@ public String buildOrderSummary(Order order) {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
 <br>
 
 ```java
@@ -143,7 +143,7 @@ private String buildLineItems(Order order) {
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Bad — cálculo e formatação misturados</summary>
+<summary>❌ Ruim — cálculo e formatação misturados</summary>
 <br>
 
 ```java
@@ -163,7 +163,7 @@ public String getOrderSummary(Order order) {
 <br>
 
 <details>
-<summary>✅ Good — cálculo separado da formatação</summary>
+<summary>✅ Bom — cálculo separado da formatação</summary>
 <br>
 
 ```java
@@ -197,7 +197,7 @@ private String formatSummary(String orderId, OrderTotals totals) {
 O retorno fica no topo do método, com os detalhes encapsulados em auxiliares abaixo.
 
 <details>
-<summary>❌ Bad — variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim — variável auxiliar desnecessária, else após throw</summary>
 <br>
 
 ```java
@@ -221,7 +221,7 @@ public Product findProductById(String id) {
 <br>
 
 <details>
-<summary>✅ Good — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
 <br>
 
 ```java
@@ -244,7 +244,7 @@ private Product fetchProduct(String id) {
 O caller expressa o quê, não o como. Toda construção de contexto fica dentro do método.
 
 <details>
-<summary>❌ Bad — caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim — caller monta lógica inline antes de chamar</summary>
 <br>
 
 ```java
@@ -262,7 +262,7 @@ submitOrder(
 <br>
 
 <details>
-<summary>✅ Good — entrada de uma linha, detalhes dentro</summary>
+<summary>✅ Bom — entrada de uma linha, detalhes dentro</summary>
 <br>
 
 ```java
@@ -285,7 +285,7 @@ O retorno nomeia o resultado, não o computa. A variável é expressiva e simét
 do método.
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```java
@@ -305,7 +305,7 @@ public List<User> getActiveUsers(List<User> users) {
 <br>
 
 <details>
-<summary>✅ Good — variável expressiva antes do return</summary>
+<summary>✅ Bom — variável expressiva antes do return</summary>
 <br>
 
 ```java
@@ -331,7 +331,7 @@ Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma
 Nunca duas.
 
 <details>
-<summary>❌ Bad — parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim — parede de código sem respiro entre grupos</summary>
 <br>
 
 ```java
@@ -351,7 +351,7 @@ public Invoice processOrder(String orderId) {
 <br>
 
 <details>
-<summary>✅ Good — parágrafos de intenção</summary>
+<summary>✅ Bom — parágrafos de intenção</summary>
 <br>
 
 ```java
@@ -376,7 +376,7 @@ public Invoice processOrder(String orderId) {
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um record.
 
 <details>
-<summary>❌ Bad — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
 <br>
 
 ```java
@@ -390,7 +390,7 @@ createInvoice("ord-1", "cust-99", new BigDecimal("149.90"), LocalDate.of(2026, 5
 <br>
 
 <details>
-<summary>✅ Good — record quando 4+ parâmetros</summary>
+<summary>✅ Bom — record quando 4+ parâmetros</summary>
 <br>
 
 ```java

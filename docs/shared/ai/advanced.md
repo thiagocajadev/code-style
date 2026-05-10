@@ -80,7 +80,7 @@ A mitigação mais eficaz para domínios críticos é **RAG com grounding**: o m
 base nos documentos fornecidos e cita a origem de cada afirmação.
 
 <details>
-<summary>❌ Bad: sem grounding — modelo inventa para preencher a lacuna</summary>
+<summary>❌ Ruim: sem grounding — modelo inventa para preencher a lacuna</summary>
 <br>
 
 ```
@@ -92,7 +92,7 @@ Quais foram os resultados financeiros da Acme Corp no Q3 2024?
 <br>
 
 <details>
-<summary>✅ Good: com grounding — modelo responde apenas com base no conteúdo fornecido</summary>
+<summary>✅ Bom: com grounding — modelo responde apenas com base no conteúdo fornecido</summary>
 <br>
 
 ```
@@ -107,7 +107,7 @@ Se a informação não estiver no relatório, responda "não encontrado".
 <br>
 
 <details>
-<summary>❌ Bad: sem restrição de fonte — modelo cita referências inexistentes</summary>
+<summary>❌ Ruim: sem restrição de fonte — modelo cita referências inexistentes</summary>
 <br>
 
 ```
@@ -119,7 +119,7 @@ Liste 3 artigos acadêmicos sobre RAG publicados em 2024.
 <br>
 
 <details>
-<summary>✅ Good: restrito a fontes verificadas — modelo não inventa referências</summary>
+<summary>✅ Bom: restrito a fontes verificadas — modelo não inventa referências</summary>
 <br>
 
 ```
@@ -134,7 +134,7 @@ Se não houver artigos sobre RAG, diga que não encontrou.
 <br>
 
 <details>
-<summary>❌ Bad: sem instrução de incerteza — modelo afirma o que não sabe</summary>
+<summary>❌ Ruim: sem instrução de incerteza — modelo afirma o que não sabe</summary>
 <br>
 
 ```
@@ -146,7 +146,7 @@ Qual a versão atual do framework X?
 <br>
 
 <details>
-<summary>✅ Good: com instrução explícita de incerteza</summary>
+<summary>✅ Bom: com instrução explícita de incerteza</summary>
 <br>
 
 ```
@@ -162,7 +162,7 @@ Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notat
 parseável sem regex, sem pós-processamento frágil.
 
 <details>
-<summary>❌ Bad: sem schema — resposta em texto livre, parsing manual e frágil</summary>
+<summary>❌ Ruim: sem schema — resposta em texto livre, parsing manual e frágil</summary>
 <br>
 
 ```js
@@ -178,7 +178,7 @@ const rawText = response.content[0].text;
 <br>
 
 <details>
-<summary>✅ Good: schema forçado via tool — output parseável diretamente</summary>
+<summary>✅ Bom: schema forçado via tool — output parseável diretamente</summary>
 <br>
 
 ```js

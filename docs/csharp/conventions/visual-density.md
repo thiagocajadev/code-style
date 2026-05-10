@@ -19,7 +19,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 Métodos com múltiplos passos (validar, buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter até 2 linhas antes de um respiro; 3 quando são atômicas homogêneas.
 
 <details>
-<summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
+<summary>❌ Ruim — todos os passos colados, fases invisíveis</summary>
 <br>
 
 ```csharp
@@ -41,7 +41,7 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 <br>
 
 <details>
-<summary>✅ Good — fases separadas, fluxo legível de cima pra baixo</summary>
+<summary>✅ Bom — fases separadas, fluxo legível de cima pra baixo</summary>
 <br>
 
 ```csharp
@@ -70,7 +70,7 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 Uma `var` nomeada acima do `return` explica o valor retornado. Quando há **apenas esse passo** antes do `return`, os dois formam par de 2 linhas sem blank. A linha em branco separa o par do que vem antes, não fragmenta o par.
 
 <details>
-<summary>❌ Bad — blank fragmenta o par</summary>
+<summary>❌ Ruim — blank fragmenta o par</summary>
 <br>
 
 ```csharp
@@ -87,7 +87,7 @@ public int MapErrorToStatus(DomainError error)
 <br>
 
 <details>
-<summary>✅ Good — par tight</summary>
+<summary>✅ Bom — par tight</summary>
 <br>
 
 ```csharp
@@ -105,7 +105,7 @@ public int MapErrorToStatus(DomainError error)
 Quando o `return` é precedido por dois ou mais passos distintos, a linha em branco antes dele marca a transição.
 
 <details>
-<summary>✅ Good — 2 preps + return separado</summary>
+<summary>✅ Bom — 2 preps + return separado</summary>
 <br>
 
 ```csharp
@@ -132,7 +132,7 @@ public IEnumerable<Order> GetPendingOrders(Guid userId) =>
 Uma variável seguida do `if` que a valida formam par semântico. A linha em branco vem **depois** do par, não entre eles.
 
 <details>
-<summary>❌ Bad — variável solta do seu guarda</summary>
+<summary>❌ Ruim — variável solta do seu guarda</summary>
 <br>
 
 ```csharp
@@ -147,7 +147,7 @@ var invoice = BuildInvoice(order);
 <br>
 
 <details>
-<summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<summary>✅ Bom — variável e guarda juntos, separados do próximo passo</summary>
 <br>
 
 ```csharp
@@ -164,7 +164,7 @@ var invoice = BuildInvoice(order);
 Três declarações simples consecutivas (const, readonly, var com literal) formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Bad — órfão entre blanks</summary>
+<summary>❌ Ruim — órfão entre blanks</summary>
 <br>
 
 ```csharp
@@ -182,7 +182,7 @@ public static class DomainLimits
 <br>
 
 <details>
-<summary>✅ Good — trio tight</summary>
+<summary>✅ Bom — trio tight</summary>
 <br>
 
 ```csharp
@@ -201,7 +201,7 @@ public static class DomainLimits
 Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam par. A quebra natural fica antes do par, não entre ele e sua dependência direta.
 
 <details>
-<summary>❌ Bad — dependência direta partida</summary>
+<summary>❌ Ruim — dependência direta partida</summary>
 <br>
 
 ```csharp
@@ -223,7 +223,7 @@ public string BuildShippingLabel(Order order)
 <br>
 
 <details>
-<summary>✅ Good — par semântico tight</summary>
+<summary>✅ Bom — par semântico tight</summary>
 <br>
 
 ```csharp
@@ -246,7 +246,7 @@ public string BuildShippingLabel(Order order)
 Em métodos de teste, o `Assert` é fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim — Assert colado ao setup, fases invisíveis</summary>
 <br>
 
 ```csharp
@@ -265,7 +265,7 @@ public void AppliesTenPercentDiscountToPrice()
 <br>
 
 <details>
-<summary>✅ Good — Assert separado, assertion como fase própria</summary>
+<summary>✅ Bom — Assert separado, assertion como fase própria</summary>
 <br>
 
 ```csharp
@@ -287,7 +287,7 @@ public void AppliesTenPercentDiscountToPrice()
 Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Bad — interpolação densa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim — interpolação densa inline, sem semântica nas partes</summary>
 <br>
 
 ```csharp
@@ -302,7 +302,7 @@ public string BuildShippingMessage(Order order)
 <br>
 
 <details>
-<summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
 <br>
 
 ```csharp

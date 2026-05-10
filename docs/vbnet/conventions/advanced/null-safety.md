@@ -27,7 +27,7 @@ todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica so
 função de compatibilidade do VB6 — idêntica em resultado, mas idiomática do legado.
 
 <details>
-<summary>❌ Bad — IsNothing() é legado do VB6</summary>
+<summary>❌ Ruim — IsNothing() é legado do VB6</summary>
 <br>
 
 ```vbnet
@@ -42,7 +42,7 @@ Dim name As String = If(IsNothing(user.Name), "Unknown", user.Name)
 <br>
 
 <details>
-<summary>✅ Good — Is Nothing / IsNot Nothing como operadores nativos</summary>
+<summary>✅ Bom — Is Nothing / IsNot Nothing como operadores nativos</summary>
 <br>
 
 ```vbnet
@@ -61,7 +61,7 @@ Tipos de valor (`Integer`, `Decimal`, `Date`, `Boolean`) não aceitam `Nothing` 
 acessar com segurança.
 
 <details>
-<summary>❌ Bad — valor sentinela para representar ausência</summary>
+<summary>❌ Ruim — valor sentinela para representar ausência</summary>
 <br>
 
 ```vbnet
@@ -80,7 +80,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Nullable(Of T) expressa ausência explicitamente</summary>
+<summary>✅ Bom — Nullable(Of T) expressa ausência explicitamente</summary>
 <br>
 
 ```vbnet
@@ -111,7 +111,7 @@ como `??` em C#: retorna o primeiro argumento se não for `Nothing`, caso contr�
 segundo.
 
 <details>
-<summary>❌ Bad — If/Else verboso para default de null</summary>
+<summary>❌ Ruim — If/Else verboso para default de null</summary>
 <br>
 
 ```vbnet
@@ -135,7 +135,7 @@ End If
 <br>
 
 <details>
-<summary>✅ Good — If() de dois argumentos como null-coalescing</summary>
+<summary>✅ Bom — If() de dois argumentos como null-coalescing</summary>
 <br>
 
 ```vbnet
@@ -152,7 +152,7 @@ Métodos e propriedades que retornam coleções retornam lista vazia, nunca `Not
 não precisa verificar `Nothing` antes de iterar.
 
 <details>
-<summary>❌ Bad — Nothing em coleção força defesa em cada caller</summary>
+<summary>❌ Ruim — Nothing em coleção força defesa em cada caller</summary>
 <br>
 
 ```vbnet
@@ -177,7 +177,7 @@ End If
 <br>
 
 <details>
-<summary>✅ Good — lista vazia como estado neutro, sem Nothing</summary>
+<summary>✅ Bom — lista vazia como estado neutro, sem Nothing</summary>
 <br>
 
 ```vbnet
@@ -203,7 +203,7 @@ Verificar argumentos de construtor garante que o objeto nunca é criado em estad
 **Fail-fast** (falhar cedo): melhor do que descobrir o `Nothing` mais tarde na cadeia.
 
 <details>
-<summary>❌ Bad — construtor aceita Nothing silenciosamente</summary>
+<summary>❌ Ruim — construtor aceita Nothing silenciosamente</summary>
 <br>
 
 ```vbnet
@@ -223,7 +223,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — guard clause no construtor</summary>
+<summary>✅ Bom — guard clause no construtor</summary>
 <br>
 
 ```vbnet

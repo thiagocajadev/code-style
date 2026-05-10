@@ -22,7 +22,7 @@ todo teste.
 ## Fases misturadas — AAA
 
 <details>
-<summary>❌ Bad — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
 <br>
 
 ```java
@@ -41,7 +41,7 @@ void appliesDiscountToOrder() {
 <br>
 
 <details>
-<summary>✅ Good — AAA explícito: fases separadas por blank line</summary>
+<summary>✅ Bom — AAA explícito: fases separadas por blank line</summary>
 <br>
 
 ```java
@@ -65,7 +65,7 @@ AssertJ (biblioteca de assertions fluentes) produz mensagens de falha legíveis 
 `assertTrue(a.equals(b))` genérico.
 
 <details>
-<summary>❌ Bad — assert genérico, mensagem de falha obscura</summary>
+<summary>❌ Ruim — assert genérico, mensagem de falha obscura</summary>
 <br>
 
 ```java
@@ -82,7 +82,7 @@ void findsActiveUsers() {
 <br>
 
 <details>
-<summary>✅ Good — AssertJ: assert expressivo, mensagem de falha clara</summary>
+<summary>✅ Bom — AssertJ: assert expressivo, mensagem de falha clara</summary>
 <br>
 
 ```java
@@ -103,7 +103,7 @@ O nome do teste documenta o comportamento: **dado um contexto, quando uma ação
 resultado**.
 
 <details>
-<summary>❌ Bad — nome genérico não documenta o comportamento</summary>
+<summary>❌ Ruim — nome genérico não documenta o comportamento</summary>
 <br>
 
 ```java
@@ -119,7 +119,7 @@ void test1() { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — nome descreve o cenário e o resultado esperado</summary>
+<summary>✅ Bom — nome descreve o cenário e o resultado esperado</summary>
 <br>
 
 ```java
@@ -141,7 +141,7 @@ Mockito cria mocks (objetos simulados) que isolam a unidade testada das suas dep
 reais. Use `@Mock` para dependências e `@InjectMocks` para a classe sob teste.
 
 <details>
-<summary>❌ Bad — teste depende de implementação real do repositório</summary>
+<summary>❌ Ruim — teste depende de implementação real do repositório</summary>
 <br>
 
 ```java
@@ -160,7 +160,7 @@ void findsUserById() {
 <br>
 
 <details>
-<summary>✅ Good — mock isola a dependência; teste foca no comportamento do serviço</summary>
+<summary>✅ Bom — mock isola a dependência; teste foca no comportamento do serviço</summary>
 <br>
 
 ```java
@@ -202,7 +202,7 @@ class UserServiceTest {
 `@Nested` agrupa testes por estado ou contexto, deixando a estrutura legível como documentação.
 
 <details>
-<summary>✅ Good — @Nested organiza por cenário</summary>
+<summary>✅ Bom — @Nested organiza por cenário</summary>
 <br>
 
 ```java
@@ -234,7 +234,7 @@ class OrderServiceTest {
 Extraia setup repetido para `@BeforeEach`. Cada teste inicia com estado limpo.
 
 <details>
-<summary>✅ Good — @BeforeEach inicializa o estado compartilhado</summary>
+<summary>✅ Bom — @BeforeEach inicializa o estado compartilhado</summary>
 <br>
 
 ```java
@@ -272,7 +272,7 @@ class DiscountServiceTest {
 Cada teste verifica um comportamento. Verificar demais acopla o teste ao detalhe de implementação.
 
 <details>
-<summary>❌ Bad — verifica estado interno que não é contrato público</summary>
+<summary>❌ Ruim — verifica estado interno que não é contrato público</summary>
 <br>
 
 ```java
@@ -291,7 +291,7 @@ void createsUser() {
 <br>
 
 <details>
-<summary>✅ Good — verifica o contrato: o que o chamador observa</summary>
+<summary>✅ Bom — verifica o contrato: o que o chamador observa</summary>
 <br>
 
 ```java

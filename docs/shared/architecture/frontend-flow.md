@@ -31,7 +31,7 @@ Ação do usuário → URL atualiza → rota correspondida (tipada) → guard ex
 O guard (proteção de rota) verifica autorização durante a resolução da rota, antes de qualquer componente renderizar. Colocar essa verificação dentro do componente é um anti-pattern: o componente monta antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
 
 <details>
-<summary>❌ Bad — guard no componente renderiza antes de redirecionar</summary>
+<summary>❌ Ruim — guard no componente renderiza antes de redirecionar</summary>
 <br>
 
 ```js
@@ -49,7 +49,7 @@ function OrdersPage() {
 <br>
 
 <details>
-<summary>✅ Good — guard na resolução da rota, antes de qualquer componente montar</summary>
+<summary>✅ Bom — guard na resolução da rota, antes de qualquer componente montar</summary>
 <br>
 
 ```js
@@ -79,7 +79,7 @@ Rotas com restrição por papel (role) são aninhadas sob um guard compartilhado
 O loader (carregador de dados) busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos. Sem estado de loading interno, sem `useEffect` de busca disparado após o mount (montagem).
 
 <details>
-<summary>❌ Bad — busca dentro do componente, após montar</summary>
+<summary>❌ Ruim — busca dentro do componente, após montar</summary>
 <br>
 
 ```js
@@ -99,7 +99,7 @@ function OrderDetailPage({ orderId }) {
 <br>
 
 <details>
-<summary>✅ Good — loader na rota, componente recebe dados prontos</summary>
+<summary>✅ Bom — loader na rota, componente recebe dados prontos</summary>
 <br>
 
 ```js
@@ -150,7 +150,7 @@ Usuário submete → schema.parse (cliente) → inválido: erros de campo | vál
 O schema (esquema de validação) é a fonte da verdade para formato e regras de campo. Definido uma vez, usado tanto no cliente quanto no servidor.
 
 <details>
-<summary>✅ Good — schema único como contrato entre cliente e servidor</summary>
+<summary>✅ Bom — schema único como contrato entre cliente e servidor</summary>
 <br>
 
 ```js
@@ -170,7 +170,7 @@ Validação no cliente é **UX** (User Experience, experiência do usuário): re
 O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) isolado:
 
 <details>
-<summary>✅ Good — retorno estruturado de erros do servidor</summary>
+<summary>✅ Bom — retorno estruturado de erros do servidor</summary>
 <br>
 
 ```js

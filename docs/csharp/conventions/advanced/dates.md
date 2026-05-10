@@ -24,7 +24,7 @@
 timezones diferentes, o mesmo código produz valores incomparáveis.
 
 <details>
-<summary>❌ Bad — hora local do servidor, Kind implícito</summary>
+<summary>❌ Ruim — hora local do servidor, Kind implícito</summary>
 <br>
 
 ```csharp
@@ -38,7 +38,7 @@ var createdAt = DateTime.Now;
 <br>
 
 <details>
-<summary>✅ Good — UTC explícito, comparável em qualquer ambiente</summary>
+<summary>✅ Bom — UTC explícito, comparável em qualquer ambiente</summary>
 <br>
 
 ```csharp
@@ -55,7 +55,7 @@ var createdAt = DateTimeOffset.UtcNow;
 sem precisar de contexto externo para interpretar o instante.
 
 <details>
-<summary>❌ Bad — DateTime sem Kind perde contexto de timezone</summary>
+<summary>❌ Ruim — DateTime sem Kind perde contexto de timezone</summary>
 <br>
 
 ```csharp
@@ -72,7 +72,7 @@ public record OrderResponse
 <br>
 
 <details>
-<summary>✅ Good — DateTimeOffset carrega o offset, sem ambiguidade</summary>
+<summary>✅ Bom — DateTimeOffset carrega o offset, sem ambiguidade</summary>
 <br>
 
 ```csharp
@@ -93,7 +93,7 @@ significado, que pode causar bugs de timezone ao ser serializado. `DateOnly` e `
 (.NET 6+) expressam a intenção com precisão.
 
 <details>
-<summary>❌ Bad — DateTime para data pura, hora fantasma causa bugs</summary>
+<summary>❌ Ruim — DateTime para data pura, hora fantasma causa bugs</summary>
 <br>
 
 ```csharp
@@ -110,7 +110,7 @@ public record CustomerRequest
 <br>
 
 <details>
-<summary>✅ Good — DateOnly para data, TimeOnly para hora — intenção clara</summary>
+<summary>✅ Bom — DateOnly para data, TimeOnly para hora — intenção clara</summary>
 <br>
 
 ```csharp
@@ -137,7 +137,7 @@ EF Core serializa `DateTime` conforme o `Kind`. Sem configuração explícita, v
 são salvos sem conversão; o que for lido do banco volta como `Unspecified` também.
 
 <details>
-<summary>❌ Bad — DateTime sem Kind, round-trip ambíguo com o banco</summary>
+<summary>❌ Ruim — DateTime sem Kind, round-trip ambíguo com o banco</summary>
 <br>
 
 ```csharp
@@ -153,7 +153,7 @@ public class Order
 <br>
 
 <details>
-<summary>✅ Good — DateTimeOffset no modelo, EF preserva offset no banco</summary>
+<summary>✅ Bom — DateTimeOffset no modelo, EF preserva offset no banco</summary>
 <br>
 
 ```csharp

@@ -24,7 +24,7 @@ O controller recebe a requisição, delega ao service e retorna a resposta. Nenh
 negócio fica aqui.
 
 <details>
-<summary>❌ Bad — controller com lógica de negócio e acesso direto ao banco</summary>
+<summary>❌ Ruim — controller com lógica de negócio e acesso direto ao banco</summary>
 <br>
 
 ```java
@@ -54,7 +54,7 @@ public class OrderController {
 <br>
 
 <details>
-<summary>✅ Good — controller delega ao service; request e response são records tipados</summary>
+<summary>✅ Bom — controller delega ao service; request e response são records tipados</summary>
 <br>
 
 ```java
@@ -94,7 +94,7 @@ Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos D
 (Data Transfer Objects, Objetos de Transferência de Dados).
 
 <details>
-<summary>✅ Good — records como contrato de API</summary>
+<summary>✅ Bom — records como contrato de API</summary>
 <br>
 
 ```java
@@ -140,7 +140,7 @@ public record OrderResponse(
 O service orquestra as regras de negócio. Não conhece HTTP nem detalhes de banco.
 
 <details>
-<summary>✅ Good — service orquestra, não implementa detalhes de infra</summary>
+<summary>✅ Bom — service orquestra, não implementa detalhes de infra</summary>
 <br>
 
 ```java
@@ -199,7 +199,7 @@ complexas, use JPQL (Java Persistence Query Language) com `@Query` — referenci
 pelo nome da classe — ou SQL nativo com `nativeQuery = true` — referencia a tabela real do banco.
 
 <details>
-<summary>✅ Good — JPQL: referencia a entidade Java, alias expressivo</summary>
+<summary>✅ Bom — JPQL: referencia a entidade Java, alias expressivo</summary>
 <br>
 
 ```java
@@ -237,7 +237,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 <br>
 
 <details>
-<summary>✅ Good — SQL nativo: tabela real, padrão Tabela.coluna</summary>
+<summary>✅ Bom — SQL nativo: tabela real, padrão Tabela.coluna</summary>
 <br>
 
 ```java
@@ -276,7 +276,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 de escrita.
 
 <details>
-<summary>❌ Bad — @Transactional no controller ou sem readOnly</summary>
+<summary>❌ Ruim — @Transactional no controller ou sem readOnly</summary>
 <br>
 
 ```java
@@ -294,7 +294,7 @@ public class OrderService { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
+<summary>✅ Bom — readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
 <br>
 
 ```java
@@ -316,7 +316,7 @@ public class OrderService {
 Centralize o mapeamento de exceções para respostas HTTP em um `@RestControllerAdvice`.
 
 <details>
-<summary>✅ Good — tratamento centralizado por tipo de exceção</summary>
+<summary>✅ Bom — tratamento centralizado por tipo de exceção</summary>
 <br>
 
 ```java
@@ -355,7 +355,7 @@ record ErrorResponse(String message, String action) {}
 Use `Pageable` e `Page<T>` para endpoints que retornam listas potencialmente grandes.
 
 <details>
-<summary>✅ Good — paginação via Pageable</summary>
+<summary>✅ Bom — paginação via Pageable</summary>
 <br>
 
 ```java

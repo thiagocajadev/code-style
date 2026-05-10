@@ -20,7 +20,7 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 ## God function — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
 <br>
 
 ```js
@@ -75,7 +75,7 @@ function realizaVenda(x) {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
 <br>
 
 ```js
@@ -109,7 +109,7 @@ async function processOrder(orderId) {
 ## SLA — orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Bad — mesma função orquestra e implementa</summary>
+<summary>❌ Ruim — mesma função orquestra e implementa</summary>
 <br>
 
 ```js
@@ -130,7 +130,7 @@ function buildOrderSummary(order) {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
 <br>
 
 ```js
@@ -160,7 +160,7 @@ function buildOrderSummary(order) {
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Bad — cálculo e formatação misturados</summary>
+<summary>❌ Ruim — cálculo e formatação misturados</summary>
 <br>
 
 ```js
@@ -179,7 +179,7 @@ function getOrderSummary(order) {
 <br>
 
 <details>
-<summary>✅ Good — cálculo separado da formatação</summary>
+<summary>✅ Bom — cálculo separado da formatação</summary>
 <br>
 
 ```js
@@ -214,7 +214,7 @@ function getOrderSummary(order) {
 O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
 
 <details>
-<summary>❌ Bad — variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim — variável auxiliar desnecessária, else após throw</summary>
 <br>
 
 ```js
@@ -238,7 +238,7 @@ async function findProductById(id) {
 <br>
 
 <details>
-<summary>✅ Good — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
 <br>
 
 ```js
@@ -263,7 +263,7 @@ async function findProductById(id) {
 O caller expressa o quê, não o como. Toda construção de contexto fica dentro da função.
 
 <details>
-<summary>❌ Bad — caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim — caller monta lógica inline antes de chamar</summary>
 <br>
 
 ```js
@@ -279,7 +279,7 @@ await submitOrder({
 <br>
 
 <details>
-<summary>✅ Good — entrada de uma linha, detalhes dentro</summary>
+<summary>✅ Bom — entrada de uma linha, detalhes dentro</summary>
 <br>
 
 ```js
@@ -301,7 +301,7 @@ async function submitOrder(orderId) {
 O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção da função.
 
 <details>
-<summary>❌ Bad — lógica ou objeto anônimo direto no return</summary>
+<summary>❌ Ruim — lógica ou objeto anônimo direto no return</summary>
 <br>
 
 ```js
@@ -319,7 +319,7 @@ function getActiveUsers(users) {
 <br>
 
 <details>
-<summary>✅ Good — variável expressiva antes do return</summary>
+<summary>✅ Bom — variável expressiva antes do return</summary>
 <br>
 
 ```js
@@ -340,7 +340,7 @@ function getActiveUsers(users) {
 <br>
 
 <details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
 <br>
 
 ```js
@@ -358,7 +358,7 @@ async function processCheckout(cartId) {
 <br>
 
 <details>
-<summary>✅ Good — nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom — nome simétrico com a função deixa claro o que sai</summary>
 <br>
 
 ```js
@@ -378,7 +378,7 @@ async function processCheckout(cartId) {
 <br>
 
 <details>
-<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<summary>❌ Ruim — string imensa montada inline: ilegível e sem semântica</summary>
 <br>
 
 ```js
@@ -392,7 +392,7 @@ function buildShippingLabel(order) {
 <br>
 
 <details>
-<summary>✅ Good — partes nomeadas antes de montar o resultado</summary>
+<summary>✅ Bom — partes nomeadas antes de montar o resultado</summary>
 <br>
 
 ```js
@@ -414,7 +414,7 @@ function buildShippingLabel(order) {
 Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco. Nunca duas.
 
 <details>
-<summary>❌ Bad — parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim — parede de código sem respiro entre grupos</summary>
 <br>
 
 ```js
@@ -435,7 +435,7 @@ async function processOrder(orderId) {
 <br>
 
 <details>
-<summary>✅ Good — parágrafos de intenção</summary>
+<summary>✅ Bom — parágrafos de intenção</summary>
 <br>
 
 ```js
@@ -460,7 +460,7 @@ async function processOrder(orderId) {
 Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
-<summary>❌ Bad — espaço dentro dos grupos, sem separação entre grupos</summary>
+<summary>❌ Ruim — espaço dentro dos grupos, sem separação entre grupos</summary>
 <br>
 
 ```js
@@ -487,7 +487,7 @@ async function registerUser(input) {
 <br>
 
 <details>
-<summary>✅ Good — 0 linhas dentro do grupo, 1 entre grupos</summary>
+<summary>✅ Bom — 0 linhas dentro do grupo, 1 entre grupos</summary>
 <br>
 
 ```js
@@ -514,7 +514,7 @@ async function registerUser(input) {
 Template literal gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
-<summary>❌ Bad — todos os detalhes interpolados inline</summary>
+<summary>❌ Ruim — todos os detalhes interpolados inline</summary>
 <br>
 
 ```js
@@ -530,7 +530,7 @@ function buildConfirmationEmail(user, order) {
 <br>
 
 <details>
-<summary>✅ Good — compostos extraídos, string final legível</summary>
+<summary>✅ Bom — compostos extraídos, string final legível</summary>
 <br>
 
 ```js
@@ -555,7 +555,7 @@ function buildConfirmationEmail(user, order) {
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto.
 
 <details>
-<summary>❌ Bad — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
 <br>
 
 ```js
@@ -569,7 +569,7 @@ createInvoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL");
 <br>
 
 <details>
-<summary>✅ Good — objeto quando 4+ parâmetros</summary>
+<summary>✅ Bom — objeto quando 4+ parâmetros</summary>
 <br>
 
 ```js
@@ -593,7 +593,7 @@ createInvoice({
 ## Código morto
 
 <details>
-<summary>❌ Bad — condição impossível, função nunca chamada</summary>
+<summary>❌ Ruim — condição impossível, função nunca chamada</summary>
 <br>
 
 ```js
@@ -616,7 +616,7 @@ function legacyTransform(items) {
 <br>
 
 <details>
-<summary>✅ Good — remove o que não é usado</summary>
+<summary>✅ Bom — remove o que não é usado</summary>
 <br>
 
 ```js

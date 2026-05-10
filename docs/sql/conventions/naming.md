@@ -31,7 +31,7 @@ Palavras comuns no português colidem com tipos e funções **SQL** (Structured 
 type), `Status` (usado em comandos).
 
 <details>
-<summary>❌ Bad — delimitadores para escapar palavras reservadas</summary>
+<summary>❌ Ruim — delimitadores para escapar palavras reservadas</summary>
 <br>
 
 ```sql
@@ -43,7 +43,7 @@ SELECT [Data], [Time] FROM [TimesDeFutebol];
 <br>
 
 <details>
-<summary>✅ Good — inglês elimina a ambiguidade</summary>
+<summary>✅ Bom — inglês elimina a ambiguidade</summary>
 <br>
 
 ```sql
@@ -55,7 +55,7 @@ SELECT MatchDate, TeamName FROM FootballTeams;
 ## Tabelas no plural, colunas no singular
 
 <details>
-<summary>❌ Bad — singular em tabelas, português, sem padrão</summary>
+<summary>❌ Ruim — singular em tabelas, português, sem padrão</summary>
 <br>
 
 ```sql
@@ -72,7 +72,7 @@ CREATE TABLE Time
 <br>
 
 <details>
-<summary>✅ Good — plural na tabela, singular nas colunas, inglês</summary>
+<summary>✅ Bom — plural na tabela, singular nas colunas, inglês</summary>
 <br>
 
 ```sql
@@ -94,7 +94,7 @@ CREATE TABLE FootballTeams
 ## Prefixo da tabela no nome da coluna
 
 <details>
-<summary>❌ Bad — nome da tabela repetido em cada coluna</summary>
+<summary>❌ Ruim — nome da tabela repetido em cada coluna</summary>
 <br>
 
 ```sql
@@ -111,7 +111,7 @@ FROM
 <br>
 
 <details>
-<summary>✅ Good — nome da tabela qualifica a coluna diretamente</summary>
+<summary>✅ Bom — nome da tabela qualifica a coluna diretamente</summary>
 <br>
 
 ```sql
@@ -130,7 +130,7 @@ FROM
 Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma letra (`u`, `t`, `c`).
 
 <details>
-<summary>❌ Bad — colunas sem qualificação, alias de letra</summary>
+<summary>❌ Ruim — colunas sem qualificação, alias de letra</summary>
 <br>
 
 ```sql
@@ -149,7 +149,7 @@ JOIN
 <br>
 
 <details>
-<summary>✅ Good — nome completo da tabela em todas as referências</summary>
+<summary>✅ Bom — nome completo da tabela em todas as referências</summary>
 <br>
 
 ```sql
@@ -187,7 +187,7 @@ Toda constraint deve ser declarada com `CONSTRAINT` e um nome explícito. Constr
 tornam erros difíceis de identificar e impossibilitam `ALTER TABLE ... DROP CONSTRAINT`.
 
 <details>
-<summary>❌ Bad — constraints inline sem nome</summary>
+<summary>❌ Ruim — constraints inline sem nome</summary>
 <br>
 
 ```sql
@@ -204,7 +204,7 @@ CREATE TABLE Players
 <br>
 
 <details>
-<summary>✅ Good — constraints nomeadas, removíveis e identificáveis</summary>
+<summary>✅ Bom — constraints nomeadas, removíveis e identificáveis</summary>
 <br>
 
 ```sql

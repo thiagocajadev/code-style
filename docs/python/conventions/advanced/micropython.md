@@ -39,7 +39,7 @@ Evite criar listas e strings grandes em loops. Prefira operações in-place.
 Chame `gc.collect()` periodicamente em loops que alocam muito.
 
 <details>
-<summary>❌ Bad — lista crescente em memória limitada</summary>
+<summary>❌ Ruim — lista crescente em memória limitada</summary>
 <br>
 
 ```python
@@ -66,7 +66,7 @@ while True:
 <br>
 
 <details>
-<summary>✅ Good — acumulador com tamanho fixo, sem lista</summary>
+<summary>✅ Bom — acumulador com tamanho fixo, sem lista</summary>
 <br>
 
 ```python
@@ -101,7 +101,7 @@ while True:
 MicroPython não tem `datetime`. Use `utime.localtime()` para decompor timestamps Unix.
 
 <details>
-<summary>❌ Bad — import que falha em MicroPython</summary>
+<summary>❌ Ruim — import que falha em MicroPython</summary>
 <br>
 
 ```python
@@ -116,7 +116,7 @@ expiry = now + timedelta(hours=1)
 <br>
 
 <details>
-<summary>✅ Good — utime como substituto</summary>
+<summary>✅ Bom — utime como substituto</summary>
 <br>
 
 ```python
@@ -139,7 +139,7 @@ MicroPython 1.20+ inclui `uasyncio` compatível com `asyncio`. Permite concorrê
 sem threads — essencial para ler sensores e manter rede ao mesmo tempo.
 
 <details>
-<summary>✅ Good — leitura de sensor + keep-alive de rede com asyncio</summary>
+<summary>✅ Bom — leitura de sensor + keep-alive de rede com asyncio</summary>
 <br>
 
 ```python

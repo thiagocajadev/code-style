@@ -19,7 +19,7 @@ Controle de fluxo em VB.NET prioriza retorno antecipado e **guard clauses** (cl�
 O ponto de partida. Para dois caminhos, `If/Else` funciona, mas `Else` após um `Return` é ruído estrutural: o compilador já descartou o branch anterior.
 
 <details>
-<summary>❌ Bad — ElseIf desnecessário após Return</summary>
+<summary>❌ Ruim — ElseIf desnecessário após Return</summary>
 <br>
 
 ```vbnet
@@ -39,7 +39,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — early return elimina o ElseIf</summary>
+<summary>✅ Bom — early return elimina o ElseIf</summary>
 <br>
 
 ```vbnet
@@ -60,7 +60,7 @@ Para atribuição de dois valores possíveis em uma linha. Três ou mais alterna
 lançam exceções. O operador `If(condition, truePart, falsePart)` usa curto-circuito.
 
 <details>
-<summary>❌ Bad — IIf avalia os dois lados sempre</summary>
+<summary>❌ Ruim — IIf avalia os dois lados sempre</summary>
 <br>
 
 ```vbnet
@@ -73,7 +73,7 @@ Dim count = IIf(items IsNot Nothing, items.Count, 0)  ' items.Count avaliado mes
 <br>
 
 <details>
-<summary>✅ Good — If ternário com curto-circuito</summary>
+<summary>✅ Bom — If ternário com curto-circuito</summary>
 <br>
 
 ```vbnet
@@ -84,7 +84,7 @@ Dim count = If(items IsNot Nothing, items.Count, 0)
 </details>
 
 <details>
-<summary>❌ Bad — If ternário aninhado para 3+ alternativas</summary>
+<summary>❌ Ruim — If ternário aninhado para 3+ alternativas</summary>
 <br>
 
 ```vbnet
@@ -96,7 +96,7 @@ Dim priority = If(isUrgent, If(isCritical, "Critical", "High"), "Normal")
 <br>
 
 <details>
-<summary>✅ Good — Select Case para 3+ alternativas</summary>
+<summary>✅ Bom — Select Case para 3+ alternativas</summary>
 <br>
 
 ```vbnet
@@ -115,7 +115,7 @@ End Select
 Quando as condições crescem e se aninham, o fluxo vira uma pirâmide — o _arrow antipattern_. Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
 
 <details>
-<summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
 <br>
 
 ```vbnet
@@ -141,7 +141,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — guards no topo, caminho feliz sem aninhamento</summary>
+<summary>✅ Bom — guards no topo, caminho feliz sem aninhamento</summary>
 <br>
 
 ```vbnet
@@ -166,7 +166,7 @@ End Function
 quando os dados são dinâmicos ou o conjunto é extensível sem recompilar.
 
 <details>
-<summary>❌ Bad — If/ElseIf para mapeamento estático de chave → valor</summary>
+<summary>❌ Ruim — If/ElseIf para mapeamento estático de chave → valor</summary>
 <br>
 
 ```vbnet
@@ -184,7 +184,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Dictionary para lookup dinâmico</summary>
+<summary>✅ Bom — Dictionary para lookup dinâmico</summary>
 <br>
 
 ```vbnet
@@ -209,7 +209,7 @@ End Function
 `Select Case` substitui cadeias de `If/ElseIf` quando o valor de uma única expressão determina o caminho. Mais legível, mais rápido de escanear e extensível sem aninhamento extra.
 
 <details>
-<summary>❌ Bad — cadeia de ElseIf para valor único</summary>
+<summary>❌ Ruim — cadeia de ElseIf para valor único</summary>
 <br>
 
 ```vbnet
@@ -233,7 +233,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Select Case, legível e extensível</summary>
+<summary>✅ Bom — Select Case, legível e extensível</summary>
 <br>
 
 ```vbnet
@@ -255,7 +255,7 @@ End Function
 `Select Case` também aceita intervalos e múltiplos valores por `Case`:
 
 <details>
-<summary>✅ Good — Select Case com intervalos e múltiplos valores</summary>
+<summary>✅ Bom — Select Case com intervalos e múltiplos valores</summary>
 <br>
 
 ```vbnet
@@ -285,7 +285,7 @@ Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` (LINQ) 
 métodos param no primeiro match — sem percorrer o resto.
 
 <details>
-<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
 <br>
 
 ```vbnet
@@ -303,7 +303,7 @@ Next
 <br>
 
 <details>
-<summary>✅ Good — For Each com Return antecipado sai no primeiro match</summary>
+<summary>✅ Bom — For Each com Return antecipado sai no primeiro match</summary>
 <br>
 
 ```vbnet
@@ -321,7 +321,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
+<summary>✅ Bom — LINQ declarativo com circuit break nativo</summary>
 <br>
 
 ```vbnet
@@ -342,7 +342,7 @@ Dim allActive = orders.All(Function(o) o.IsActive)
 Use `For Each` quando não precisa do índice — comunica iteração pura sem ruído de contador. Reserve `For...Next` para quando o índice é parte da lógica.
 
 <details>
-<summary>❌ Bad — For com índice quando não é necessário</summary>
+<summary>❌ Ruim — For com índice quando não é necessário</summary>
 <br>
 
 ```vbnet
@@ -360,7 +360,7 @@ Next
 <br>
 
 <details>
-<summary>✅ Good — For Each para iteração simples</summary>
+<summary>✅ Bom — For Each para iteração simples</summary>
 <br>
 
 ```vbnet
@@ -378,7 +378,7 @@ Next
 <br>
 
 <details>
-<summary>✅ Good — For...Next quando o índice é parte da lógica</summary>
+<summary>✅ Bom — For...Next quando o índice é parte da lógica</summary>
 <br>
 
 ```vbnet
@@ -402,7 +402,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 independente da condição.
 
 <details>
-<summary>❌ Bad — For simulando condição de parada por estado</summary>
+<summary>❌ Ruim — For simulando condição de parada por estado</summary>
 <br>
 
 ```vbnet
@@ -417,7 +417,7 @@ Next
 <br>
 
 <details>
-<summary>✅ Good — While para condição de parada por estado</summary>
+<summary>✅ Bom — While para condição de parada por estado</summary>
 <br>
 
 ```vbnet
@@ -436,7 +436,7 @@ End While
 <br>
 
 <details>
-<summary>✅ Good — Do...Loop Until quando a primeira execução é garantida</summary>
+<summary>✅ Bom — Do...Loop Until quando a primeira execução é garantida</summary>
 <br>
 
 ```vbnet
@@ -460,7 +460,7 @@ VB.NET oferece três formas de conversão. A escolha importa para segurança e c
 | `CType` | Tenta converter, pode fazer coerção | Conversões numéricas ou quando `Option Strict` exige |
 
 <details>
-<summary>❌ Bad — CType onde o tipo é incerto, exceção genérica se falhar</summary>
+<summary>❌ Ruim — CType onde o tipo é incerto, exceção genérica se falhar</summary>
 <br>
 
 ```vbnet
@@ -473,7 +473,7 @@ Dim handler = CType(e.Item.FindControl("handler"), Button)
 <br>
 
 <details>
-<summary>✅ Good — TryCast com verificação explícita</summary>
+<summary>✅ Bom — TryCast com verificação explícita</summary>
 <br>
 
 ```vbnet
@@ -491,7 +491,7 @@ If handler Is Nothing Then Return
 `GoTo` é proibido. VB.NET herdou `GoTo` do Basic clássico — em .NET não há justificativa para uso. `Try/Catch/Finally` cobre tratamento de erro; `Return` antecipado cobre saída condicional; `Using` cobre limpeza de recursos.
 
 <details>
-<summary>❌ Bad — GoTo como substituto de estruturas modernas</summary>
+<summary>❌ Ruim — GoTo como substituto de estruturas modernas</summary>
 <br>
 
 ```vbnet
@@ -515,7 +515,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — Return antecipado e Using/Finally</summary>
+<summary>✅ Bom — Return antecipado e Using/Finally</summary>
 <br>
 
 ```vbnet

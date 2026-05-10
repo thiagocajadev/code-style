@@ -57,7 +57,7 @@ O sinal de que o boundary foi respeitado é simples: se você renomeasse `HttpCo
 em todo o código e o handler continuasse funcionando, o boundary está no lugar.
 
 <details>
-<summary>❌ Bad — controller com acesso a banco e regra de negócio</summary>
+<summary>❌ Ruim — controller com acesso a banco e regra de negócio</summary>
 <br>
 
 ```js
@@ -88,7 +88,7 @@ storage exige mexer no controller. Testar a regra de preço exige subir um servi
 <br>
 
 <details>
-<summary>✅ Good — controller fino, handler orquestra, service e repository isolados</summary>
+<summary>✅ Bom — controller fino, handler orquestra, service e repository isolados</summary>
 <br>
 
 ```js
@@ -151,7 +151,7 @@ Dois sinais de um contrato de request saudável: campos com nome de domínio (`p
 `product_id_str`) e validação centralizada antes do handler receber o objeto.
 
 <details>
-<summary>❌ Bad — objeto mutável montado ad-hoc, sem validação explícita</summary>
+<summary>❌ Ruim — objeto mutável montado ad-hoc, sem validação explícita</summary>
 <br>
 
 ```js
@@ -174,7 +174,7 @@ depois, em runtime, com stack trace confuso.
 <br>
 
 <details>
-<summary>✅ Good — schema de validação no boundary, DTO tipado para o handler</summary>
+<summary>✅ Bom — schema de validação no boundary, DTO tipado para o handler</summary>
 <br>
 
 ```js
@@ -224,7 +224,7 @@ invariantes, comportamentos e campos que não devem vazar (hash de senha, flags 
 controle interno).
 
 <details>
-<summary>❌ Bad — entidade de domínio retornada direto</summary>
+<summary>❌ Ruim — entidade de domínio retornada direto</summary>
 <br>
 
 ```js
@@ -244,7 +244,7 @@ ninguém revisar.
 <br>
 
 <details>
-<summary>✅ Good — DTO de resposta explícito, montado a partir do domínio</summary>
+<summary>✅ Bom — DTO de resposta explícito, montado a partir do domínio</summary>
 <br>
 
 ```js
@@ -294,7 +294,7 @@ na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). 
 | `error.details` | Lista de issues de validação | Apenas em `400 Bad Request` |
 
 <details>
-<summary>❌ Bad — shapes inconsistentes entre sucesso e erro</summary>
+<summary>❌ Ruim — shapes inconsistentes entre sucesso e erro</summary>
 <br>
 
 ```js
@@ -310,7 +310,7 @@ O cliente precisa de três parsers diferentes para três tipos de resposta do me
 <br>
 
 <details>
-<summary>✅ Good — envelope consistente em sucesso e erro</summary>
+<summary>✅ Bom — envelope consistente em sucesso e erro</summary>
 <br>
 
 ```js
@@ -408,7 +408,7 @@ Essa tradução acontece em um único lugar, perto da porta, para que a regra de
 visível e não espalhada pelo handler.
 
 <details>
-<summary>❌ Bad — handler constrói resposta HTTP, mistura domínio e transporte</summary>
+<summary>❌ Ruim — handler constrói resposta HTTP, mistura domínio e transporte</summary>
 <br>
 
 ```js
@@ -429,7 +429,7 @@ async function handle(id, res) {
 <br>
 
 <details>
-<summary>✅ Good — handler retorna Result, controller traduz no boundary</summary>
+<summary>✅ Bom — handler retorna Result, controller traduz no boundary</summary>
 <br>
 
 ```js

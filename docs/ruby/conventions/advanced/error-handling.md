@@ -22,7 +22,7 @@ Crie hierarquia de exceções por domínio. Herdar de `StandardError` permite qu
 genérico não engula erros do sistema (como `SignalException`).
 
 <details>
-<summary>❌ Bad — strings ou RuntimeError sem tipo</summary>
+<summary>❌ Ruim — strings ou RuntimeError sem tipo</summary>
 <br>
 
 ```ruby
@@ -39,7 +39,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — exceções tipadas e hierarquia de domínio</summary>
+<summary>✅ Bom — exceções tipadas e hierarquia de domínio</summary>
 <br>
 
 ```ruby
@@ -77,7 +77,7 @@ Capture exceções nas fronteiras de entrada (controllers, workers, CLIs). Dentr
 deixe propagar — não engula erros silenciosamente.
 
 <details>
-<summary>❌ Bad — rescue silencioso dentro do domínio</summary>
+<summary>❌ Ruim — rescue silencioso dentro do domínio</summary>
 <br>
 
 ```ruby
@@ -97,7 +97,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — rescue específico na fronteira com log e re-raise</summary>
+<summary>✅ Bom — rescue específico na fronteira com log e re-raise</summary>
 <br>
 
 ```ruby
@@ -121,7 +121,7 @@ Use `begin/rescue/ensure/end` quando precisar de cleanup garantido (fechar conex
 lock). No corpo de um método, omita `begin` — o método inteiro funciona como bloco.
 
 <details>
-<summary>❌ Bad — begin desnecessário no corpo do método</summary>
+<summary>❌ Ruim — begin desnecessário no corpo do método</summary>
 <br>
 
 ```ruby
@@ -144,7 +144,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — rescue direto no método, ensure para cleanup</summary>
+<summary>✅ Bom — rescue direto no método, ensure para cleanup</summary>
 <br>
 
 ```ruby
@@ -169,7 +169,7 @@ Use `retry` dentro do `rescue` para retentar operações transitórias. Sempre l
 tentativas para evitar loop infinito.
 
 <details>
-<summary>❌ Bad — retry sem limite</summary>
+<summary>❌ Ruim — retry sem limite</summary>
 <br>
 
 ```ruby
@@ -188,7 +188,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — retry limitado com backoff</summary>
+<summary>✅ Bom — retry limitado com backoff</summary>
 <br>
 
 ```ruby

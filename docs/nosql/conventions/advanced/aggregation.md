@@ -40,7 +40,7 @@ Regras:
 ## $match
 
 <details>
-<summary>❌ Bad — $match após $lookup: join sobre toda a coleção antes de filtrar</summary>
+<summary>❌ Ruim — $match após $lookup: join sobre toda a coleção antes de filtrar</summary>
 <br>
 
 ```js
@@ -62,7 +62,7 @@ const pipeline = [
 <br>
 
 <details>
-<summary>✅ Good — $match primeiro; lookup apenas sobre o subconjunto filtrado</summary>
+<summary>✅ Bom — $match primeiro; lookup apenas sobre o subconjunto filtrado</summary>
 <br>
 
 ```js
@@ -100,7 +100,7 @@ async function fetchActiveTeamsWithPlayers() {
 ## $group
 
 <details>
-<summary>❌ Bad — agrupamento sem $match primeiro; acumulador sem nome de domínio</summary>
+<summary>❌ Ruim — agrupamento sem $match primeiro; acumulador sem nome de domínio</summary>
 <br>
 
 ```js
@@ -121,7 +121,7 @@ const pipeline = [
 <br>
 
 <details>
-<summary>✅ Good — $match antes do $group; nomes de domínio nos acumuladores</summary>
+<summary>✅ Bom — $match antes do $group; nomes de domínio nos acumuladores</summary>
 <br>
 
 ```js
@@ -154,7 +154,7 @@ async function computeTopScorersBySeason(season) {
 ## $lookup
 
 <details>
-<summary>❌ Bad — $lookup sem projeção final; trafega todos os campos dos documentos joined</summary>
+<summary>❌ Ruim — $lookup sem projeção final; trafega todos os campos dos documentos joined</summary>
 <br>
 
 ```js
@@ -177,7 +177,7 @@ const pipeline = [
 <br>
 
 <details>
-<summary>✅ Good — $lookup com pipeline interno para projetar apenas os campos necessários</summary>
+<summary>✅ Bom — $lookup com pipeline interno para projetar apenas os campos necessários</summary>
 <br>
 
 ```js
@@ -223,7 +223,7 @@ async function fetchTeamRoster(teamId) {
 `$unwind` gera um documento por elemento do array. Documentos sem o campo são descartados por padrão.
 
 <details>
-<summary>❌ Bad — $unwind sem preserveNullAndEmptyArrays; times sem jogadores são excluídos silenciosamente</summary>
+<summary>❌ Ruim — $unwind sem preserveNullAndEmptyArrays; times sem jogadores são excluídos silenciosamente</summary>
 <br>
 
 ```js
@@ -245,7 +245,7 @@ const pipeline = [
 <br>
 
 <details>
-<summary>✅ Good — preserveNullAndEmptyArrays mantém times sem jogadores no resultado</summary>
+<summary>✅ Bom — preserveNullAndEmptyArrays mantém times sem jogadores no resultado</summary>
 <br>
 
 ```js

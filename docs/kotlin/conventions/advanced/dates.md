@@ -20,7 +20,7 @@ transferência usa ISO 8601; a formatação para o usuário aplica o fuso e o lo
 ## Date e Calendar legados
 
 <details>
-<summary>❌ Bad — java.util.Date e Calendar têm comportamento imprevisível</summary>
+<summary>❌ Ruim — java.util.Date e Calendar têm comportamento imprevisível</summary>
 <br>
 
 ```kotlin
@@ -36,7 +36,7 @@ val nextWeek = cal.time
 <br>
 
 <details>
-<summary>✅ Good — java.time é imutável e explícito</summary>
+<summary>✅ Bom — java.time é imutável e explícito</summary>
 <br>
 
 ```kotlin
@@ -49,7 +49,7 @@ val nextWeek = now.plus(7, ChronoUnit.DAYS)
 ## Fuso horário hardcoded
 
 <details>
-<summary>❌ Bad — offset fixo quebra no horário de verão</summary>
+<summary>❌ Ruim — offset fixo quebra no horário de verão</summary>
 <br>
 
 ```kotlin
@@ -63,7 +63,7 @@ val now = ZonedDateTime.now(saoPaulo)
 <br>
 
 <details>
-<summary>✅ Good — nome IANA do fuso inclui regras de horário de verão</summary>
+<summary>✅ Bom — nome IANA do fuso inclui regras de horário de verão</summary>
 <br>
 
 ```kotlin
@@ -77,7 +77,7 @@ val now = ZonedDateTime.now(saoPaulo)
 ## String como data
 
 <details>
-<summary>❌ Bad — string interpretada como data sem parse explícito</summary>
+<summary>❌ Ruim — string interpretada como data sem parse explícito</summary>
 <br>
 
 ```kotlin
@@ -90,7 +90,7 @@ val isOverdue = dueDate < today.toString()   // comparação lexicográfica, nã
 <br>
 
 <details>
-<summary>✅ Good — LocalDate com comparação tipada</summary>
+<summary>✅ Bom — LocalDate com comparação tipada</summary>
 <br>
 
 ```kotlin
@@ -103,7 +103,7 @@ val isOverdue = dueDate.isBefore(LocalDate.now())
 ## Serialização ISO 8601
 
 <details>
-<summary>❌ Bad — formato de data local varia por máquina</summary>
+<summary>❌ Ruim — formato de data local varia por máquina</summary>
 <br>
 
 ```kotlin
@@ -118,7 +118,7 @@ data class OrderResponse(
 <br>
 
 <details>
-<summary>✅ Good — ISO 8601 é portável e indexável</summary>
+<summary>✅ Bom — ISO 8601 é portável e indexável</summary>
 <br>
 
 ```kotlin

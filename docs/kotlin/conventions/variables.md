@@ -18,7 +18,7 @@ declara referência mutável. Prefira `val` e escreva `var` somente quando o flu
 ## `var` onde `val` resolve
 
 <details>
-<summary>❌ Bad — var desnecessário</summary>
+<summary>❌ Ruim — var desnecessário</summary>
 <br>
 
 ```kotlin
@@ -34,7 +34,7 @@ isActive = user.status == "active"
 <br>
 
 <details>
-<summary>✅ Good — val com inicialização direta</summary>
+<summary>✅ Bom — val com inicialização direta</summary>
 <br>
 
 ```kotlin
@@ -48,7 +48,7 @@ val isActive = user.status == "active"
 ## `const val` para constantes de compilação
 
 <details>
-<summary>❌ Bad — número mágico inline</summary>
+<summary>❌ Ruim — número mágico inline</summary>
 <br>
 
 ```kotlin
@@ -62,7 +62,7 @@ fun shouldRetry(attempt: Int): Boolean {
 <br>
 
 <details>
-<summary>✅ Good — constante nomeada</summary>
+<summary>✅ Bom — constante nomeada</summary>
 <br>
 
 ```kotlin
@@ -78,7 +78,7 @@ fun shouldRetry(attempt: Int): Boolean {
 ## `by lazy` para inicialização custosa
 
 <details>
-<summary>❌ Bad — recalcula em cada acesso</summary>
+<summary>❌ Ruim — recalcula em cada acesso</summary>
 <br>
 
 ```kotlin
@@ -92,7 +92,7 @@ class ReportService {
 <br>
 
 <details>
-<summary>✅ Good — inicializa apenas quando acessado</summary>
+<summary>✅ Bom — inicializa apenas quando acessado</summary>
 <br>
 
 ```kotlin
@@ -106,7 +106,7 @@ class ReportService {
 ## Valores mágicos
 
 <details>
-<summary>❌ Bad — literais inline sem contexto</summary>
+<summary>❌ Ruim — literais inline sem contexto</summary>
 <br>
 
 ```kotlin
@@ -122,7 +122,7 @@ val discount = price * 0.15
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas com intenção</summary>
+<summary>✅ Bom — constantes nomeadas com intenção</summary>
 <br>
 
 ```kotlin
@@ -142,7 +142,7 @@ val discount = price * SEASONAL_DISCOUNT_RATE
 ## Destructuring declarations
 
 <details>
-<summary>❌ Bad — acesso por índice ou nome repetido</summary>
+<summary>❌ Ruim — acesso por índice ou nome repetido</summary>
 <br>
 
 ```kotlin
@@ -160,7 +160,7 @@ for (entry in map.entries) {
 <br>
 
 <details>
-<summary>✅ Good — destructuring que nomeia o conteúdo</summary>
+<summary>✅ Bom — destructuring que nomeia o conteúdo</summary>
 <br>
 
 ```kotlin
@@ -178,7 +178,7 @@ for ((key, value) in map) {
 Declare a variável no escopo mais restrito possível.
 
 <details>
-<summary>❌ Bad — variável declarada antes do escopo real</summary>
+<summary>❌ Ruim — variável declarada antes do escopo real</summary>
 <br>
 
 ```kotlin
@@ -198,7 +198,7 @@ sendNotification(message)
 <br>
 
 <details>
-<summary>✅ Good — val com when como expressão</summary>
+<summary>✅ Bom — val com when como expressão</summary>
 <br>
 
 ```kotlin

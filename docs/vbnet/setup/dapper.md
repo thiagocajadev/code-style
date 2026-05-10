@@ -23,7 +23,7 @@ A preferência é usar **stored procedures** para operações de domínio: a ló
 Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
 
 <details>
-<summary>❌ Bad — SQL de domínio inline no repositório</summary>
+<summary>❌ Ruim — SQL de domínio inline no repositório</summary>
 <br>
 
 ```vbnet
@@ -47,7 +47,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — procedure encapsula a lógica, repositório só mapeia</summary>
+<summary>✅ Bom — procedure encapsula a lógica, repositório só mapeia</summary>
 <br>
 
 ```sql
@@ -98,7 +98,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — procedure de escrita com OUTPUT param</summary>
+<summary>✅ Bom — procedure de escrita com OUTPUT param</summary>
 <br>
 
 ```sql
@@ -148,7 +148,7 @@ End Function
 Quando a operação é simples demais para justificar uma procedure (lookup por chave, contagem, existência), query aberta é aceitável.
 
 <details>
-<summary>✅ Good — lookup simples por chave primária</summary>
+<summary>✅ Bom — lookup simples por chave primária</summary>
 <br>
 
 ```vbnet
@@ -166,7 +166,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — verificação de existência</summary>
+<summary>✅ Bom — verificação de existência</summary>
 <br>
 
 ```vbnet
@@ -187,7 +187,7 @@ End Function
 SQL injection acontece quando um valor externo é interpretado como código SQL em vez de dado. Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e o banco trata como dado puro.
 
 <details>
-<summary>❌ Bad — concatenação deixa o atacante escrever SQL</summary>
+<summary>❌ Ruim — concatenação deixa o atacante escrever SQL</summary>
 <br>
 
 ```vbnet
@@ -207,7 +207,7 @@ Dim sql = "SELECT Id, Name FROM Customers WHERE Email = '" & email & "'"
 <br>
 
 <details>
-<summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
+<summary>❌ Ruim — LIKE com concatenação, wildcard no SQL permite injeção</summary>
 <br>
 
 ```vbnet
@@ -227,7 +227,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
+<summary>✅ Bom — parâmetro nomeado, valor tratado como dado pelo banco</summary>
 <br>
 
 ```vbnet
@@ -245,7 +245,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
+<summary>✅ Bom — LIKE com parâmetro, wildcard no valor não no SQL</summary>
 <br>
 
 ```vbnet
@@ -266,7 +266,7 @@ End Function
 `IDbConnection` é injetado no repositório via construtor, nunca instanciado internamente. O ciclo de vida da conexão é responsabilidade do container de DI.
 
 <details>
-<summary>❌ Bad — conexão instanciada dentro do repositório</summary>
+<summary>❌ Ruim — conexão instanciada dentro do repositório</summary>
 <br>
 
 ```vbnet
@@ -284,7 +284,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — IDbConnection injetado via construtor</summary>
+<summary>✅ Bom — IDbConnection injetado via construtor</summary>
 <br>
 
 ```vbnet
@@ -332,7 +332,7 @@ container.RegisterType(Of IPurchaseRepository, PurchaseRepository)(
 Quando uma procedure retorna múltiplos result sets, `QueryMultiple` lê cada um em sequência com uma única viagem ao banco.
 
 <details>
-<summary>✅ Good — procedure com múltiplos SELECTs, uma única chamada</summary>
+<summary>✅ Bom — procedure com múltiplos SELECTs, uma única chamada</summary>
 <br>
 
 ```sql

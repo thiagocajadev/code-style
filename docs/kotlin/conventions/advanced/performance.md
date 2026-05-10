@@ -19,7 +19,7 @@ evitam cópias intermediárias.
 ## Operações encadeadas em listas grandes
 
 <details>
-<summary>❌ Bad — cada operação cria uma lista intermediária</summary>
+<summary>❌ Ruim — cada operação cria uma lista intermediária</summary>
 <br>
 
 ```kotlin
@@ -37,7 +37,7 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 <br>
 
 <details>
-<summary>✅ Good — Sequence processa elemento a elemento sem cópias intermediárias</summary>
+<summary>✅ Bom — Sequence processa elemento a elemento sem cópias intermediárias</summary>
 <br>
 
 ```kotlin
@@ -58,7 +58,7 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 ## Lambda com alocação desnecessária
 
 <details>
-<summary>❌ Bad — lambda captura contexto, aloca objeto a cada chamada</summary>
+<summary>❌ Ruim — lambda captura contexto, aloca objeto a cada chamada</summary>
 <br>
 
 ```kotlin
@@ -75,7 +75,7 @@ fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 <br>
 
 <details>
-<summary>✅ Good — inline elimina alocação do lambda</summary>
+<summary>✅ Bom — inline elimina alocação do lambda</summary>
 <br>
 
 ```kotlin
@@ -92,7 +92,7 @@ inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 ## buildList para construção com lógica
 
 <details>
-<summary>❌ Bad — mutableListOf + toList gera cópia extra</summary>
+<summary>❌ Ruim — mutableListOf + toList gera cópia extra</summary>
 <br>
 
 ```kotlin
@@ -112,7 +112,7 @@ fun buildMenuItems(user: User): List<MenuItem> {
 <br>
 
 <details>
-<summary>✅ Good — buildList sem cópia final</summary>
+<summary>✅ Bom — buildList sem cópia final</summary>
 <br>
 
 ```kotlin
@@ -132,7 +132,7 @@ fun buildMenuItems(user: User): List<MenuItem> {
 ## Inicialização custosa com lazy
 
 <details>
-<summary>❌ Bad — objeto pesado inicializado mesmo quando não usado</summary>
+<summary>❌ Ruim — objeto pesado inicializado mesmo quando não usado</summary>
 <br>
 
 ```kotlin
@@ -146,7 +146,7 @@ class ReportService {
 <br>
 
 <details>
-<summary>✅ Good — lazy adia até o primeiro acesso</summary>
+<summary>✅ Bom — lazy adia até o primeiro acesso</summary>
 <br>
 
 ```kotlin

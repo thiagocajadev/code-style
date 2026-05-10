@@ -19,7 +19,7 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 ## Validação no meio da lógica
 
 <details>
-<summary>❌ Bad — guard espalhado pela função de negócio</summary>
+<summary>❌ Ruim — guard espalhado pela função de negócio</summary>
 <br>
 
 ```swift
@@ -43,7 +43,7 @@ func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order
 <br>
 
 <details>
-<summary>✅ Good — init valida; função recebe objeto já válido</summary>
+<summary>✅ Bom — init valida; função recebe objeto já válido</summary>
 <br>
 
 ```swift
@@ -76,7 +76,7 @@ func processOrder(_ request: OrderRequest) async throws -> Order {
 ## Acumulação de erros de formulário
 
 <details>
-<summary>❌ Bad — para no primeiro erro</summary>
+<summary>❌ Ruim — para no primeiro erro</summary>
 <br>
 
 ```swift
@@ -92,7 +92,7 @@ func validateProfile(_ profile: UserProfile) throws {
 <br>
 
 <details>
-<summary>✅ Good — acumula todos os erros</summary>
+<summary>✅ Bom — acumula todos os erros</summary>
 <br>
 
 ```swift
@@ -122,7 +122,7 @@ func validateProfile(_ profile: UserProfile) throws {
 ## `precondition` para invariantes de domínio
 
 <details>
-<summary>❌ Bad — guard/return silencia um invariante</summary>
+<summary>❌ Ruim — guard/return silencia um invariante</summary>
 <br>
 
 ```swift
@@ -137,7 +137,7 @@ func applyDiscount(_ amount: Double, rate: Double) -> Double {
 <br>
 
 <details>
-<summary>✅ Good — precondition falha com mensagem clara</summary>
+<summary>✅ Bom — precondition falha com mensagem clara</summary>
 <br>
 
 ```swift

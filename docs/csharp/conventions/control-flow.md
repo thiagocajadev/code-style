@@ -21,7 +21,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona, mas o `else` após u
 estrutural: o compilador já descartou o branch anterior.
 
 <details>
-<summary>❌ Bad — else desnecessário após return</summary>
+<summary>❌ Ruim — else desnecessário após return</summary>
 <br>
 
 ```csharp
@@ -41,7 +41,7 @@ public decimal GetDiscount(string customerType)
 <br>
 
 <details>
-<summary>✅ Good — early return elimina o else</summary>
+<summary>✅ Bom — early return elimina o else</summary>
 <br>
 
 ```csharp
@@ -62,7 +62,7 @@ Para atribuição de dois valores possíveis em uma linha. Três ou mais alterna
 expression. Nunca aninhar ternários.
 
 <details>
-<summary>❌ Bad — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
 <br>
 
 ```csharp
@@ -78,7 +78,7 @@ else
 <br>
 
 <details>
-<summary>✅ Good — ternário na atribuição</summary>
+<summary>✅ Bom — ternário na atribuição</summary>
 <br>
 
 ```csharp
@@ -88,7 +88,7 @@ var label = order.IsPaid ? "Paid" : "Pending";
 </details>
 
 <details>
-<summary>❌ Bad — ternário aninhado para 3+ alternativas</summary>
+<summary>❌ Ruim — ternário aninhado para 3+ alternativas</summary>
 <br>
 
 ```csharp
@@ -100,7 +100,7 @@ var priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal";
 <br>
 
 <details>
-<summary>✅ Good — switch expression para 3+ alternativas</summary>
+<summary>✅ Bom — switch expression para 3+ alternativas</summary>
 <br>
 
 ```csharp
@@ -120,7 +120,7 @@ Quando as condições crescem e se aninham, o fluxo vira uma pirâmide: o _arrow
 clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
 
 <details>
-<summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
 <br>
 
 ```csharp
@@ -151,7 +151,7 @@ public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, Cancellati
 <br>
 
 <details>
-<summary>✅ Good — guard clauses no topo, fluxo principal livre</summary>
+<summary>✅ Bom — guard clauses no topo, fluxo principal livre</summary>
 <br>
 
 ```csharp
@@ -182,7 +182,7 @@ Guard clauses resolvem pré-condições simples. Quando a condição envolve ver
 extrai e verifica em uma única expressão, sem cast manual, com escopo garantido pelo compilador.
 
 <details>
-<summary>❌ Bad — cast manual após verificação de tipo</summary>
+<summary>❌ Ruim — cast manual após verificação de tipo</summary>
 <br>
 
 ```csharp
@@ -209,7 +209,7 @@ public string SummarizePayment(object payment)
 <br>
 
 <details>
-<summary>✅ Good — pattern matching extrai e verifica em uma expressão</summary>
+<summary>✅ Bom — pattern matching extrai e verifica em uma expressão</summary>
 <br>
 
 ```csharp
@@ -240,7 +240,7 @@ clareza declarativa. Cada arm retorna um valor e o compilador exige exaustividad
 esquecido, sem caso não tratado.
 
 <details>
-<summary>❌ Bad — if/else encadeado para mapeamento de valor</summary>
+<summary>❌ Ruim — if/else encadeado para mapeamento de valor</summary>
 <br>
 
 ```csharp
@@ -258,7 +258,7 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<summary>✅ Good — switch expression declarativo e exaustivo</summary>
+<summary>✅ Bom — switch expression declarativo e exaustivo</summary>
 <br>
 
 ```csharp
@@ -281,7 +281,7 @@ public string GetStatusLabel(string status)
 <br>
 
 <details>
-<summary>❌ Bad — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
+<summary>❌ Ruim — if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
 <br>
 
 ```csharp
@@ -303,7 +303,7 @@ public IResult MapResult(Result<Order> result)
 <br>
 
 <details>
-<summary>✅ Good — switch expression com pattern matching em Result</summary>
+<summary>✅ Bom — switch expression com pattern matching em Result</summary>
 <br>
 
 ```csharp
@@ -331,7 +331,7 @@ Switch expression resolve mapeamento de valores. Quando cada caso precisa execut
 silencioso.
 
 <details>
-<summary>❌ Bad — if/else encadeado para despacho de ações</summary>
+<summary>❌ Ruim — if/else encadeado para despacho de ações</summary>
 <br>
 
 ```csharp
@@ -360,7 +360,7 @@ public void ProcessOrderEvent(OrderEvent orderEvent)
 <br>
 
 <details>
-<summary>✅ Good — switch statement para despacho de comportamento</summary>
+<summary>✅ Bom — switch statement para despacho de comportamento</summary>
 <br>
 
 ```csharp
@@ -395,7 +395,7 @@ Quando os dados são dinâmicos (carregados de config, banco ou fonte externa),
 `Dictionary<TKey, TValue>` é a estrutura certa.
 
 <details>
-<summary>❌ Bad — lógica hardcoded para dados que vêm de fonte externa</summary>
+<summary>❌ Ruim — lógica hardcoded para dados que vêm de fonte externa</summary>
 <br>
 
 ```csharp
@@ -413,7 +413,7 @@ public string GetCurrencyCode(string region)
 <br>
 
 <details>
-<summary>✅ Good — Dictionary para lookup dinâmico</summary>
+<summary>✅ Bom — Dictionary para lookup dinâmico</summary>
 <br>
 
 ```csharp
@@ -444,7 +444,7 @@ LINQ param no primeiro match — sem percorrer o resto. Para busca com lógica d
 `foreach` com `return` antecipado é direto.
 
 <details>
-<summary>❌ Bad — percorre tudo mesmo após encontrar o resultado</summary>
+<summary>❌ Ruim — percorre tudo mesmo após encontrar o resultado</summary>
 <br>
 
 ```csharp
@@ -467,7 +467,7 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 <br>
 
 <details>
-<summary>✅ Good — foreach com return antecipado</summary>
+<summary>✅ Bom — foreach com return antecipado</summary>
 <br>
 
 ```csharp
@@ -487,7 +487,7 @@ public Order? FindFirstExpiredOrder(IEnumerable<Order> orders)
 <br>
 
 <details>
-<summary>❌ Bad — percorre tudo com flag booleana para verificar existência</summary>
+<summary>❌ Ruim — percorre tudo com flag booleana para verificar existência</summary>
 <br>
 
 ```csharp
@@ -510,7 +510,7 @@ public bool HasExpiredOrders(IEnumerable<Order> orders)
 <br>
 
 <details>
-<summary>✅ Good — LINQ declarativo com circuit break nativo</summary>
+<summary>✅ Bom — LINQ declarativo com circuit break nativo</summary>
 <br>
 
 ```csharp
@@ -532,7 +532,7 @@ Para iterar sobre uma coleção executando ações por item, `foreach` é direto
 variável de controle, com suporte nativo a `break` e `continue`.
 
 <details>
-<summary>❌ Bad — for com índice quando o índice nunca é usado</summary>
+<summary>❌ Ruim — for com índice quando o índice nunca é usado</summary>
 <br>
 
 ```csharp
@@ -547,7 +547,7 @@ for (int i = 0; i < orders.Count; i++)
 <br>
 
 <details>
-<summary>✅ Good — foreach para iteração sobre valores</summary>
+<summary>✅ Bom — foreach para iteração sobre valores</summary>
 <br>
 
 ```csharp
@@ -566,7 +566,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 independente da condição.
 
 <details>
-<summary>❌ Bad — for simulando condição de parada por estado</summary>
+<summary>❌ Ruim — for simulando condição de parada por estado</summary>
 <br>
 
 ```csharp
@@ -582,7 +582,7 @@ for (int attempt = 0; attempt < maxAttempts; attempt++)
 <br>
 
 <details>
-<summary>✅ Good — while para condição de parada por estado</summary>
+<summary>✅ Bom — while para condição de parada por estado</summary>
 <br>
 
 ```csharp
@@ -602,7 +602,7 @@ while (attempt < maxAttempts)
 <br>
 
 <details>
-<summary>❌ Bad — while com verificação duplicada antes do loop</summary>
+<summary>❌ Ruim — while com verificação duplicada antes do loop</summary>
 <br>
 
 ```csharp
@@ -622,7 +622,7 @@ if (taskQueue.Count > 0)
 <br>
 
 <details>
-<summary>✅ Good — do...while quando a primeira execução é garantida</summary>
+<summary>✅ Bom — do...while quando a primeira execução é garantida</summary>
 <br>
 
 ```csharp

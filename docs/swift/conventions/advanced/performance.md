@@ -19,7 +19,7 @@ alocações intermediárias. Instruments (Xcode) é a ferramenta de diagnóstico
 ## Classe onde struct resolve
 
 <details>
-<summary>❌ Bad — classe com ARC overhead desnecessário</summary>
+<summary>❌ Ruim — classe com ARC overhead desnecessário</summary>
 <br>
 
 ```swift
@@ -40,7 +40,7 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de referê
 <br>
 
 <details>
-<summary>✅ Good — struct: sem ARC, cópia eficiente</summary>
+<summary>✅ Bom — struct: sem ARC, cópia eficiente</summary>
 <br>
 
 ```swift
@@ -57,7 +57,7 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de values,
 ## Pipelines com lazy
 
 <details>
-<summary>❌ Bad — cada operação aloca array intermediário</summary>
+<summary>❌ Ruim — cada operação aloca array intermediário</summary>
 <br>
 
 ```swift
@@ -75,7 +75,7 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 <br>
 
 <details>
-<summary>✅ Good — lazy adia operações sem alocação intermediária</summary>
+<summary>✅ Bom — lazy adia operações sem alocação intermediária</summary>
 <br>
 
 ```swift
@@ -96,7 +96,7 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 ## Retain cycles com closures
 
 <details>
-<summary>❌ Bad — closure captura self fortemente — memory leak</summary>
+<summary>❌ Ruim — closure captura self fortemente — memory leak</summary>
 <br>
 
 ```swift
@@ -117,7 +117,7 @@ class OrderViewModel {
 <br>
 
 <details>
-<summary>✅ Good — [weak self] quebra o retain cycle</summary>
+<summary>✅ Bom — [weak self] quebra o retain cycle</summary>
 <br>
 
 ```swift

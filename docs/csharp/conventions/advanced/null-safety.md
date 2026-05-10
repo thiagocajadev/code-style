@@ -44,7 +44,7 @@ imutável após a construção. Juntos, eliminam a necessidade de checar null em
 sempre devem ter valor.
 
 <details>
-<summary>❌ Bad — propriedades com setter público sem garantia de valor</summary>
+<summary>❌ Ruim — propriedades com setter público sem garantia de valor</summary>
 <br>
 
 ```csharp
@@ -64,7 +64,7 @@ order.Items?.ForEach(ProcessItem); // defesa em cascata
 <br>
 
 <details>
-<summary>✅ Good — required + init + coleção inicializada</summary>
+<summary>✅ Bom — required + init + coleção inicializada</summary>
 <br>
 
 ```csharp
@@ -89,7 +89,7 @@ Propriedades e retornos de coleção sempre têm valor: `[]` quando vazias, nunc
 `Array.Empty<T>()` não aloca, sendo preferido para retornos de método.
 
 <details>
-<summary>❌ Bad — null em coleção força defesa em cada caller</summary>
+<summary>❌ Ruim — null em coleção força defesa em cada caller</summary>
 <br>
 
 ```csharp
@@ -112,7 +112,7 @@ if (orders is not null)
 <br>
 
 <details>
-<summary>✅ Good — lista vazia como estado neutro, sem null</summary>
+<summary>✅ Bom — lista vazia como estado neutro, sem null</summary>
 <br>
 
 ```csharp
@@ -146,7 +146,7 @@ foreach (var order in orders) ProcessOrder(order);
 Usado nas fronteiras do sistema: construtores, métodos públicos, endpoints.
 
 <details>
-<summary>❌ Bad — verificação manual verbosa ou ausente</summary>
+<summary>❌ Ruim — verificação manual verbosa ou ausente</summary>
 <br>
 
 ```csharp
@@ -173,7 +173,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — ThrowIfNull no construtor e nas fronteiras públicas</summary>
+<summary>✅ Bom — ThrowIfNull no construtor e nas fronteiras públicas</summary>
 <br>
 
 ```csharp
@@ -199,7 +199,7 @@ public class OrderService(IOrderRepository repo)
 Quando a ausência é um erro de negócio, guard clause é mais expressivo.
 
 <details>
-<summary>❌ Bad — encadeamento que esconde condição de negócio</summary>
+<summary>❌ Ruim — encadeamento que esconde condição de negócio</summary>
 <br>
 
 ```csharp
@@ -215,7 +215,7 @@ public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken 
 <br>
 
 <details>
-<summary>✅ Good — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<summary>✅ Bom — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
 <br>
 
 ```csharp
@@ -245,7 +245,7 @@ C# 14 permite usar `?.` no lado esquerdo de uma atribuição. A operação só e
 não for null, sem `if` explícito, sem guard clause desnecessário.
 
 <details>
-<summary>❌ Bad — if apenas para proteger a atribuição</summary>
+<summary>❌ Ruim — if apenas para proteger a atribuição</summary>
 <br>
 
 ```csharp
@@ -261,7 +261,7 @@ if (session?.User is not null)
 <br>
 
 <details>
-<summary>✅ Good — null-conditional assignment elimina o if</summary>
+<summary>✅ Bom — null-conditional assignment elimina o if</summary>
 <br>
 
 ```csharp
@@ -281,7 +281,7 @@ session?.User?.LastSeenAt = DateTimeOffset.UtcNow;
 sem repetir o nome da variável.
 
 <details>
-<summary>❌ Bad — verificação manual de null antes da atribuição</summary>
+<summary>❌ Ruim — verificação manual de null antes da atribuição</summary>
 <br>
 
 ```csharp
@@ -306,7 +306,7 @@ public class ReportConfig
 <br>
 
 <details>
-<summary>✅ Good — ??= para defaults e lazy init</summary>
+<summary>✅ Bom — ??= para defaults e lazy init</summary>
 <br>
 
 ```csharp
@@ -333,7 +333,7 @@ O operador `!` suprime o aviso de null do compilador. Aceitável apenas quando v
 externa que o compilador não consegue inferir. Documentar o motivo.
 
 <details>
-<summary>❌ Bad — ! para silenciar o compilador sem garantia</summary>
+<summary>❌ Ruim — ! para silenciar o compilador sem garantia</summary>
 <br>
 
 ```csharp
@@ -346,7 +346,7 @@ var config = _options.Value!;   // e se Value for null?
 <br>
 
 <details>
-<summary>✅ Good — guard clause no lugar de !</summary>
+<summary>✅ Bom — guard clause no lugar de !</summary>
 <br>
 
 ```csharp
@@ -365,7 +365,7 @@ Para métodos que já fazem a verificação internamente, atributos do namespace
 repetir a checagem.
 
 <details>
-<summary>❌ Bad — parâmetro nullable sem atributo, compilador não propaga garantia</summary>
+<summary>❌ Ruim — parâmetro nullable sem atributo, compilador não propaga garantia</summary>
 <br>
 
 ```csharp
@@ -398,7 +398,7 @@ if (Guard.IsValid(email))
 <br>
 
 <details>
-<summary>✅ Good — atributos que propagam a garantia de non-null</summary>
+<summary>✅ Bom — atributos que propagam a garantia de non-null</summary>
 <br>
 
 ```csharp

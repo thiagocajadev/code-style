@@ -21,7 +21,7 @@ a identidade importa ou o ciclo de vida é gerenciado externamente.
 ## Struct vs Class
 
 <details>
-<summary>❌ Bad — classe onde struct é suficiente</summary>
+<summary>❌ Ruim — classe onde struct é suficiente</summary>
 <br>
 
 ```swift
@@ -45,7 +45,7 @@ b.x = 99   // muta 'a' também — referência compartilhada
 <br>
 
 <details>
-<summary>✅ Good — struct: cópia independente, sem surpresas</summary>
+<summary>✅ Bom — struct: cópia independente, sem surpresas</summary>
 <br>
 
 ```swift
@@ -64,7 +64,7 @@ b.x = 99   // 'a' não muda — cópia independente
 ## Enum com associated values para estados
 
 <details>
-<summary>❌ Bad — Bool + optional para modelar estado</summary>
+<summary>❌ Ruim — Bool + optional para modelar estado</summary>
 <br>
 
 ```swift
@@ -80,7 +80,7 @@ struct LoadingState {
 <br>
 
 <details>
-<summary>✅ Good — enum exaustivo com associated values</summary>
+<summary>✅ Bom — enum exaustivo com associated values</summary>
 <br>
 
 ```swift
@@ -103,7 +103,7 @@ case .failed(let message): showError(message)
 ## Protocol para abstração
 
 <details>
-<summary>❌ Bad — herança de classe para compartilhar comportamento</summary>
+<summary>❌ Ruim — herança de classe para compartilhar comportamento</summary>
 <br>
 
 ```swift
@@ -121,7 +121,7 @@ class UserRepository: BaseRepository { ... }
 <br>
 
 <details>
-<summary>✅ Good — protocol define contrato; struct implementa sem herança</summary>
+<summary>✅ Bom — protocol define contrato; struct implementa sem herança</summary>
 <br>
 
 ```swift
@@ -143,7 +143,7 @@ struct SQLOrderRepository: OrderRepository {
 ## Actor para estado compartilhado
 
 <details>
-<summary>❌ Bad — classe com estado mutável acessado de múltiplas tasks</summary>
+<summary>❌ Ruim — classe com estado mutável acessado de múltiplas tasks</summary>
 <br>
 
 ```swift
@@ -165,7 +165,7 @@ class Cache {
 <br>
 
 <details>
-<summary>✅ Good — actor serializa acessos automaticamente</summary>
+<summary>✅ Bom — actor serializa acessos automaticamente</summary>
 <br>
 
 ```swift
@@ -189,7 +189,7 @@ actor Cache {
 ## Sendable para transferência entre tasks
 
 <details>
-<summary>❌ Bad — tipo não-Sendable passado entre tasks (warning no Swift 6)</summary>
+<summary>❌ Ruim — tipo não-Sendable passado entre tasks (warning no Swift 6)</summary>
 <br>
 
 ```swift
@@ -208,7 +208,7 @@ Task {
 <br>
 
 <details>
-<summary>✅ Good — struct imutável é automaticamente Sendable</summary>
+<summary>✅ Bom — struct imutável é automaticamente Sendable</summary>
 <br>
 
 ```swift

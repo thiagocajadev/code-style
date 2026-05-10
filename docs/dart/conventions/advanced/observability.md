@@ -21,7 +21,7 @@ de produção com ferramentas externas.
 ## `print()` em produção
 
 <details>
-<summary>❌ Bad — print() não tem contexto, nível nem filtro</summary>
+<summary>❌ Ruim — print() não tem contexto, nível nem filtro</summary>
 <br>
 
 ```dart
@@ -37,7 +37,7 @@ void processOrder(int orderId) {
 <br>
 
 <details>
-<summary>✅ Good — developer.log com name e contexto</summary>
+<summary>✅ Bom — developer.log com name e contexto</summary>
 <br>
 
 ```dart
@@ -79,7 +79,7 @@ developer.log('payment.failed', name: 'PaymentService', level: levelSevere, erro
 ## Zone para captura de erros não tratados
 
 <details>
-<summary>❌ Bad — erros assíncronos escapam sem captura</summary>
+<summary>❌ Ruim — erros assíncronos escapam sem captura</summary>
 <br>
 
 ```dart
@@ -93,7 +93,7 @@ void main() {
 <br>
 
 <details>
-<summary>✅ Good — runZonedGuarded captura erros de qualquer zona</summary>
+<summary>✅ Bom — runZonedGuarded captura erros de qualquer zona</summary>
 <br>
 
 ```dart

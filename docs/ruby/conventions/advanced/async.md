@@ -24,7 +24,7 @@ I/O longo (emails, webhooks, relatórios, chamadas externas) sai do request cycl
 um job. Rails 8 usa **Solid Queue** como padrão; **Sidekiq** é preferido para alto volume.
 
 <details>
-<summary>❌ Bad — I/O pesado dentro do request</summary>
+<summary>❌ Ruim — I/O pesado dentro do request</summary>
 <br>
 
 ```ruby
@@ -47,7 +47,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — I/O longo delegado para jobs</summary>
+<summary>✅ Bom — I/O longo delegado para jobs</summary>
 <br>
 
 ```ruby
@@ -74,7 +74,7 @@ Jobs herdam de `ApplicationJob` (que herda de `ActiveJob::Base`). Parâmetros s�
 serializados — passe apenas IDs, não objetos ActiveRecord.
 
 <details>
-<summary>❌ Bad — objeto ActiveRecord como argumento</summary>
+<summary>❌ Ruim — objeto ActiveRecord como argumento</summary>
 <br>
 
 ```ruby
@@ -94,7 +94,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — ID como argumento, objeto carregado dentro do job</summary>
+<summary>✅ Bom — ID como argumento, objeto carregado dentro do job</summary>
 <br>
 
 ```ruby

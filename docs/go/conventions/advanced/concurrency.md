@@ -26,7 +26,7 @@ Toda goroutine precisa de um dono que espera seu término e propaga cancelamento
 Goroutines soltas vazam e podem corromper estado.
 
 <details>
-<summary>❌ Bad — goroutine lançada sem espera ou cancelamento</summary>
+<summary>❌ Ruim — goroutine lançada sem espera ou cancelamento</summary>
 <br>
 
 ```go
@@ -43,7 +43,7 @@ func processOrders(orders []Order) {
 <br>
 
 <details>
-<summary>✅ Good — WaitGroup garante que todas as goroutines terminam</summary>
+<summary>✅ Bom — WaitGroup garante que todas as goroutines terminam</summary>
 <br>
 
 ```go
@@ -82,7 +82,7 @@ Use channels para transferir propriedade de dados entre goroutines. Prefira chan
 a mutexes quando o fluxo de dados é unidirecional.
 
 <details>
-<summary>❌ Bad — slice compartilhado sem sincronização</summary>
+<summary>❌ Ruim — slice compartilhado sem sincronização</summary>
 <br>
 
 ```go
@@ -101,7 +101,7 @@ for _, item := range items {
 <br>
 
 <details>
-<summary>✅ Good — channel transfere propriedade, sem data race</summary>
+<summary>✅ Bom — channel transfere propriedade, sem data race</summary>
 <br>
 
 ```go
@@ -143,7 +143,7 @@ func processAllItems(ctx context.Context, items []Item) ([]Result, error) {
 Use `select` para multiplexar channels com cancelamento e timeout.
 
 <details>
-<summary>✅ Good — select com contexto e canal de resultado</summary>
+<summary>✅ Bom — select com contexto e canal de resultado</summary>
 <br>
 
 ```go
@@ -180,7 +180,7 @@ Quando múltiplas goroutines precisam ler e escrever no mesmo estado, use `sync.
 Leitura usa `RLock`; escrita usa `Lock`.
 
 <details>
-<summary>✅ Good — cache thread-safe com RWMutex</summary>
+<summary>✅ Bom — cache thread-safe com RWMutex</summary>
 <br>
 
 ```go
@@ -214,7 +214,7 @@ Use `sync.Once` para inicialização que deve acontecer exatamente uma vez,
 independente de quantas goroutines a acionem.
 
 <details>
-<summary>✅ Good — singleton thread-safe com sync.Once</summary>
+<summary>✅ Bom — singleton thread-safe com sync.Once</summary>
 <br>
 
 ```go
@@ -251,7 +251,7 @@ func (c *ConnectionPool) Pool(ctx context.Context, dsn string) (*pgx.Pool, error
 Use um pool de workers para limitar a concorrência em processamento de filas.
 
 <details>
-<summary>✅ Good — worker pool com channel de trabalho</summary>
+<summary>✅ Bom — worker pool com channel de trabalho</summary>
 <br>
 
 ```go

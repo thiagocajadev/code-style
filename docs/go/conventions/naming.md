@@ -18,7 +18,7 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```go
@@ -35,7 +35,7 @@ func apply(x interface{}, p map[string]interface{}, c func(interface{}) interfac
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```go
@@ -55,7 +55,7 @@ func applyDiscount(order Order, calculate func(Order) Order) *Order {
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — identificadores em português ficam desajeitados no idioma Go</summary>
+<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Go</summary>
 <br>
 
 ```go
@@ -71,7 +71,7 @@ func buscaEnderecoDoCliente(id int) *Endereco { ... }
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```go
@@ -99,7 +99,7 @@ Essa não é uma convenção opcional — é parte da semântica da linguagem.
 | Pacotes                            | `lowercase` simples | `order`, `auth`, `httputil`             |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```go
@@ -116,7 +116,7 @@ func (service *OrderService) FindByID(id int64) { ... }
 <br>
 
 <details>
-<summary>✅ Good — convenções Go respeitadas</summary>
+<summary>✅ Bom — convenções Go respeitadas</summary>
 <br>
 
 ```go
@@ -137,7 +137,7 @@ func (s *OrderService) FindByID(id int64) { ... }
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```go
@@ -151,7 +151,7 @@ func CalculateTotalInvoice(invoiceID int64) {}
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```go
@@ -165,7 +165,7 @@ func CalculateInvoiceTotal(invoiceID int64) {}
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — Handle, Process, Manage não dizem nada</summary>
+<summary>❌ Ruim — Handle, Process, Manage não dizem nada</summary>
 <br>
 
 ```go
@@ -180,7 +180,7 @@ func DoStuff(x interface{}) {}
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```go
@@ -197,7 +197,7 @@ func ApplySeasonalDiscount(order Order) Order { ... }
 O nome reflete a intenção de negócio, não o detalhe técnico de onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```go
@@ -212,7 +212,7 @@ func SaveToS3(file []byte) error { ... }
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```go
@@ -227,7 +227,7 @@ func ArchiveDocument(file []byte) error { ... }
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```go
@@ -241,7 +241,7 @@ valid := strings.Contains(email, "@")
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```go
@@ -259,7 +259,7 @@ shouldRetry := attempt < MaxRetries
 Variáveis de erro exportadas recebem o prefixo `Err`; tipos de erro recebem o sufixo `Error`.
 
 <details>
-<summary>❌ Bad — nome de erro sem convenção</summary>
+<summary>❌ Ruim — nome de erro sem convenção</summary>
 <br>
 
 ```go
@@ -274,7 +274,7 @@ type ValidationProblem struct { Field string }
 <br>
 
 <details>
-<summary>✅ Good — prefixo Err + sufixo Error</summary>
+<summary>✅ Bom — prefixo Err + sufixo Error</summary>
 <br>
 
 ```go

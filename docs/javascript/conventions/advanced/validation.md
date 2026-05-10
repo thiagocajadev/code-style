@@ -30,7 +30,7 @@ sujos entram em validação suja: um email com espaço passa no schema mas falha
 busca no banco.
 
 <details>
-<summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<summary>❌ Ruim — dados brutos chegam direto na validação</summary>
 <br>
 
 ```js
@@ -47,7 +47,7 @@ async function createUserHandler(req, res) {
 <br>
 
 <details>
-<summary>✅ Good — sanitize antes de validar</summary>
+<summary>✅ Bom — sanitize antes de validar</summary>
 <br>
 
 ```js
@@ -79,7 +79,7 @@ Zod valida shape, tipos e constraints, nunca regras de negócio. Centraliza o
 contrato técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
-<summary>❌ Bad — validação manual espalhada no handler</summary>
+<summary>❌ Ruim — validação manual espalhada no handler</summary>
 <br>
 
 ```js
@@ -99,7 +99,7 @@ async function createOrder(body) {
 <br>
 
 <details>
-<summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
+<summary>✅ Bom — schema centralizado, handler recebe dado tipado e validado</summary>
 <br>
 
 ```js
@@ -126,7 +126,7 @@ sentido no domínio: dependem de **I/O** (Input/Output, Entrada/Saída) (banco,
 serviços externos) e não pertencem ao schema.
 
 <details>
-<summary>❌ Bad — I/O dentro do schema (refine async) mistura camadas</summary>
+<summary>❌ Ruim — I/O dentro do schema (refine async) mistura camadas</summary>
 <br>
 
 ```js
@@ -149,7 +149,7 @@ const createOrderSchema = z.object({
 <br>
 
 <details>
-<summary>✅ Good — schema valida shape, domínio valida regras após</summary>
+<summary>✅ Bom — schema valida shape, domínio valida regras após</summary>
 <br>
 
 ```js
@@ -191,7 +191,7 @@ Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`,
 diretamente.
 
 <details>
-<summary>❌ Bad — entidade direta vaza campos internos</summary>
+<summary>❌ Ruim — entidade direta vaza campos internos</summary>
 <br>
 
 ```js
@@ -207,7 +207,7 @@ async function findUserByIdHandler(req, res) {
 <br>
 
 <details>
-<summary>✅ Good — projeção explícita do que sai na resposta</summary>
+<summary>✅ Bom — projeção explícita do que sai na resposta</summary>
 <br>
 
 ```js

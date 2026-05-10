@@ -20,7 +20,7 @@ PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 ## Fases misturadas — AAA
 
 <details>
-<summary>❌ Bad — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
 <br>
 
 ```php
@@ -40,7 +40,7 @@ public function testApplyDiscount(): void
 <br>
 
 <details>
-<summary>✅ Good — data provider + AAA com fases separadas</summary>
+<summary>✅ Bom — data provider + AAA com fases separadas</summary>
 <br>
 
 ```php
@@ -75,7 +75,7 @@ Crie mocks das interfaces que o service consome. Nunca instancie repositórios r
 em testes unitários.
 
 <details>
-<summary>✅ Good — mock de repositório + service isolado</summary>
+<summary>✅ Bom — mock de repositório + service isolado</summary>
 <br>
 
 ```php
@@ -130,7 +130,7 @@ final class OrderServiceTest extends TestCase
 Use `expectException` antes da ação para verificar que a exceção certa é lançada.
 
 <details>
-<summary>✅ Good — teste de exceção com tipo e mensagem</summary>
+<summary>✅ Bom — teste de exceção com tipo e mensagem</summary>
 <br>
 
 ```php
@@ -156,7 +156,7 @@ Organize testes espelhando a estrutura de `src/`. Um arquivo de teste por classe
 Nomeie os métodos com `test` + comportamento esperado + contexto.
 
 <details>
-<summary>✅ Good — nomenclatura e estrutura</summary>
+<summary>✅ Bom — nomenclatura e estrutura</summary>
 <br>
 
 ```php
@@ -183,7 +183,7 @@ Use `setUp` para instanciar dependências antes de cada teste. Use `tearDown`
 para liberar recursos externos (arquivos, conexões de teste).
 
 <details>
-<summary>✅ Good — setUp cria um estado limpo por teste</summary>
+<summary>✅ Bom — setUp cria um estado limpo por teste</summary>
 <br>
 
 ```php

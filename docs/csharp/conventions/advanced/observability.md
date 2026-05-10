@@ -26,7 +26,7 @@ templates preservam cada argumento como propriedade estruturada no sink (Serilog
 Insights, etc.).
 
 <details>
-<summary>❌ Bad — interpolação destrói campos, perde stack trace</summary>
+<summary>❌ Ruim — interpolação destrói campos, perde stack trace</summary>
 <br>
 
 ```csharp
@@ -39,7 +39,7 @@ _logger.LogError($"Payment failed: {ex.Message} for order {order.Id}");
 <br>
 
 <details>
-<summary>✅ Good — message templates: cada argumento vira campo estruturado</summary>
+<summary>✅ Bom — message templates: cada argumento vira campo estruturado</summary>
 <br>
 
 ```csharp
@@ -55,7 +55,7 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 ## Níveis de log
 
 <details>
-<summary>❌ Bad — LogInformation para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim — LogInformation para tudo, sem distinção de severidade</summary>
 <br>
 
 ```csharp
@@ -69,7 +69,7 @@ _logger.LogInformation("User {UserId} not found", userId);
 <br>
 
 <details>
-<summary>✅ Good — nível correto por situação</summary>
+<summary>✅ Bom — nível correto por situação</summary>
 <br>
 
 ```csharp
@@ -85,7 +85,7 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 ## O que nunca logar
 
 <details>
-<summary>❌ Bad — PII e credenciais em log</summary>
+<summary>❌ Ruim — PII e credenciais em log</summary>
 <br>
 
 ```csharp
@@ -99,7 +99,7 @@ _logger.LogInformation("Token issued: {Token}", token);
 <br>
 
 <details>
-<summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
 <br>
 
 ```csharp
@@ -119,7 +119,7 @@ Um **middleware** (componente de pipeline) injeta o `correlationId` no `LogConte
 requisição automaticamente.
 
 <details>
-<summary>❌ Bad — logs sem contexto de requisição</summary>
+<summary>❌ Ruim — logs sem contexto de requisição</summary>
 <br>
 
 ```csharp
@@ -139,7 +139,7 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 <br>
 
 <details>
-<summary>✅ Good — correlationId enriquecido via LogContext para toda a request</summary>
+<summary>✅ Bom — correlationId enriquecido via LogContext para toda a request</summary>
 <br>
 
 ```csharp

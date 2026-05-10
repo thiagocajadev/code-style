@@ -19,7 +19,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Bad — denso demais: todos os passos colados</summary>
+<summary>❌ Ruim — denso demais: todos os passos colados</summary>
 <br>
 
 ```java
@@ -41,7 +41,7 @@ public User registerUser(UserInput input) {
 <br>
 
 <details>
-<summary>✅ Good — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
 <br>
 
 ```java
@@ -70,7 +70,7 @@ passo** antes do `return`, os dois formam par de 2 linhas sem blank. A linha em 
 o par do que vem antes, não fragmenta o par.
 
 <details>
-<summary>❌ Bad — blank fragmenta o par</summary>
+<summary>❌ Ruim — blank fragmenta o par</summary>
 <br>
 
 ```java
@@ -86,7 +86,7 @@ private String mapErrorToStatus(AppException error) {
 <br>
 
 <details>
-<summary>✅ Good — par tight</summary>
+<summary>✅ Bom — par tight</summary>
 <br>
 
 ```java
@@ -104,7 +104,7 @@ Quando há dois ou mais passos distintos antes do `return`, o blank line marca a
 "preparar" para o "entregar".
 
 <details>
-<summary>✅ Good — 3 passos antes do return</summary>
+<summary>✅ Bom — 3 passos antes do return</summary>
 <br>
 
 ```java
@@ -125,7 +125,7 @@ Uma variável seguida do seu `if` de guarda formam par semântico. A linha em br
 **depois** do par, nunca entre eles.
 
 <details>
-<summary>❌ Bad — variável solta do seu guarda</summary>
+<summary>❌ Ruim — variável solta do seu guarda</summary>
 <br>
 
 ```java
@@ -140,7 +140,7 @@ final var invoice = buildInvoice(order);
 <br>
 
 <details>
-<summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<summary>✅ Bom — variável e guarda juntos, separados do próximo passo</summary>
 <br>
 
 ```java
@@ -158,7 +158,7 @@ Três declarações simples consecutivas formam grupo coeso. Partir em 2+1 deixa
 solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Bad — órfão entre blanks</summary>
+<summary>❌ Ruim — órfão entre blanks</summary>
 <br>
 
 ```java
@@ -173,7 +173,7 @@ private static final long ONE_DAY_MS = 86_400_000L;
 <br>
 
 <details>
-<summary>✅ Good — trio tight</summary>
+<summary>✅ Bom — trio tight</summary>
 <br>
 
 ```java
@@ -187,7 +187,7 @@ private static final long ONE_DAY_MS = 86_400_000L;
 <br>
 
 <details>
-<summary>✅ Good — 4 atomics viram 2+2</summary>
+<summary>✅ Bom — 4 atomics viram 2+2</summary>
 <br>
 
 ```java
@@ -206,7 +206,7 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 A quebra natural fica antes do par, não entre ele e sua dependência direta.
 
 <details>
-<summary>❌ Bad — dependência direta partida</summary>
+<summary>❌ Ruim — dependência direta partida</summary>
 <br>
 
 ```java
@@ -226,7 +226,7 @@ public String buildShippingLabel(Order order) {
 <br>
 
 <details>
-<summary>✅ Good — par semântico tight</summary>
+<summary>✅ Bom — par semântico tight</summary>
 <br>
 
 ```java
@@ -249,7 +249,7 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 visível.
 
 <details>
-<summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
 <br>
 
 ```java
@@ -267,7 +267,7 @@ public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request)
 <br>
 
 <details>
-<summary>✅ Good — fases explícitas</summary>
+<summary>✅ Bom — fases explícitas</summary>
 <br>
 
 ```java
@@ -290,7 +290,7 @@ O assert é fase distinta. A linha em branco antes dele separa o que está sendo
 como está sendo verificado.
 
 <details>
-<summary>❌ Bad — assertion colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim — assertion colado ao setup, fases invisíveis</summary>
 <br>
 
 ```java
@@ -308,7 +308,7 @@ void appliesPercentageDiscountToOrderPrice() {
 <br>
 
 <details>
-<summary>✅ Good — assertion separado, como fase própria</summary>
+<summary>✅ Bom — assertion separado, como fase própria</summary>
 <br>
 
 ```java

@@ -21,7 +21,7 @@ de UI em Flutter e de I/O em Dart puro.
 ## Single-subscription vs broadcast
 
 <details>
-<summary>❌ Bad — múltiplos listeners em single-subscription stream</summary>
+<summary>❌ Ruim — múltiplos listeners em single-subscription stream</summary>
 <br>
 
 ```dart
@@ -36,7 +36,7 @@ stream.listen((chunk) => logChunk(chunk));   // StateError: Stream has already b
 <br>
 
 <details>
-<summary>✅ Good — broadcast para múltiplos listeners</summary>
+<summary>✅ Bom — broadcast para múltiplos listeners</summary>
 <br>
 
 ```dart
@@ -54,7 +54,7 @@ controller.add(data);
 ## `async*` para gerador de stream
 
 <details>
-<summary>❌ Bad — StreamController manual para sequência simples</summary>
+<summary>❌ Ruim — StreamController manual para sequência simples</summary>
 <br>
 
 ```dart
@@ -77,7 +77,7 @@ Stream<int> countDown(int from) {
 <br>
 
 <details>
-<summary>✅ Good — async* é mais legível e gerencia ciclo de vida automaticamente</summary>
+<summary>✅ Bom — async* é mais legível e gerencia ciclo de vida automaticamente</summary>
 <br>
 
 ```dart
@@ -94,7 +94,7 @@ Stream<int> countDown(int from) async* {
 ## Cancelamento de subscription
 
 <details>
-<summary>❌ Bad — subscription sem cancelamento — memory leak</summary>
+<summary>❌ Ruim — subscription sem cancelamento — memory leak</summary>
 <br>
 
 ```dart
@@ -115,7 +115,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 <br>
 
 <details>
-<summary>✅ Good — subscription cancelada no dispose</summary>
+<summary>✅ Bom — subscription cancelada no dispose</summary>
 <br>
 
 ```dart
@@ -166,7 +166,7 @@ final debouncedStream = searchStream.debounceTime(
 ## StreamController com fechamento correto
 
 <details>
-<summary>❌ Bad — controller nunca fechado</summary>
+<summary>❌ Ruim — controller nunca fechado</summary>
 <br>
 
 ```dart
@@ -184,7 +184,7 @@ class EventBus {
 <br>
 
 <details>
-<summary>✅ Good — dispose fecha o controller</summary>
+<summary>✅ Bom — dispose fecha o controller</summary>
 <br>
 
 ```dart

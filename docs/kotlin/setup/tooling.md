@@ -55,7 +55,7 @@ dependencies {
 ## ktlint
 
 <details>
-<summary>❌ Bad — sem formatação padronizada</summary>
+<summary>❌ Ruim — sem formatação padronizada</summary>
 <br>
 
 ```kotlin
@@ -69,7 +69,7 @@ return items.sumOf{it.price}*(1-discount)
 <br>
 
 <details>
-<summary>✅ Good — ktlint aplicado</summary>
+<summary>✅ Bom — ktlint aplicado</summary>
 <br>
 
 ```kotlin

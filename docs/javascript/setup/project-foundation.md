@@ -45,7 +45,7 @@ módulos. O arquivo serve como índice do projeto: o leitor vê o que existe, n�
 como funciona.
 
 <details>
-<summary>❌ Bad — server.js como dumping ground de configuração</summary>
+<summary>❌ Ruim — server.js como dumping ground de configuração</summary>
 <br>
 
 ```js
@@ -96,7 +96,7 @@ app.listen(process.env.PORT || 3000);
 <br>
 
 <details>
-<summary>✅ Good — server.js como índice, configuração delegada</summary>
+<summary>✅ Bom — server.js como índice, configuração delegada</summary>
 <br>
 
 ```js
@@ -116,7 +116,7 @@ SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam
 co-localizados com o domínio que representam.
 
 <details>
-<summary>❌ Bad — app.js conhece SQL, validação e regras de negócio</summary>
+<summary>❌ Ruim — app.js conhece SQL, validação e regras de negócio</summary>
 <br>
 
 ```js
@@ -154,7 +154,7 @@ app.post("/api/orders", async (req, res) => {
 <br>
 
 <details>
-<summary>❌ Bad — rotas definidas fora do domínio, em arquivo centralizado</summary>
+<summary>❌ Ruim — rotas definidas fora do domínio, em arquivo centralizado</summary>
 <br>
 
 ```js
@@ -183,7 +183,7 @@ export function registerRoutes(app, orderService, userService) {
 <br>
 
 <details>
-<summary>✅ Good — ponto de entrada agrega os módulos</summary>
+<summary>✅ Bom — ponto de entrada agrega os módulos</summary>
 <br>
 
 ```js
@@ -209,7 +209,7 @@ export function createApp(config) {
 <br>
 
 <details>
-<summary>✅ Good — domínio de Orders dono das suas rotas</summary>
+<summary>✅ Bom — domínio de Orders dono das suas rotas</summary>
 <br>
 
 ```js
@@ -259,7 +259,7 @@ export function create(orderService) {
 acessa `process.env` diretamente: apenas importa a seção que precisa.
 
 <details>
-<summary>❌ Bad — process.env espalhado em todo lugar</summary>
+<summary>❌ Ruim — process.env espalhado em todo lugar</summary>
 <br>
 
 ```js
@@ -278,7 +278,7 @@ const port = process.env.PORT || 3000; // leitura direta
 <br>
 
 <details>
-<summary>✅ Good — config.js como único ponto de entrada de env vars</summary>
+<summary>✅ Bom — config.js como único ponto de entrada de env vars</summary>
 <br>
 
 ```js
@@ -323,7 +323,7 @@ rotas              → handlers recebem o usuário já autenticado no contexto
 ```
 
 <details>
-<summary>❌ Bad — authenticate depois das rotas</summary>
+<summary>❌ Ruim — authenticate depois das rotas</summary>
 <br>
 
 ```js
@@ -341,7 +341,7 @@ app.use(authenticate(config.auth)); // tarde demais
 <br>
 
 <details>
-<summary>✅ Good — ordem correta do pipeline</summary>
+<summary>✅ Bom — ordem correta do pipeline</summary>
 <br>
 
 ```js

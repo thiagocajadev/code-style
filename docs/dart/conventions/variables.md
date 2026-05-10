@@ -20,7 +20,7 @@ quando o fluxo exige reatribuição.
 ## `var` onde `final` resolve
 
 <details>
-<summary>❌ Bad — var desnecessário</summary>
+<summary>❌ Ruim — var desnecessário</summary>
 <br>
 
 ```dart
@@ -36,7 +36,7 @@ isActive = user.status == 'active';
 <br>
 
 <details>
-<summary>✅ Good — final com inicialização direta</summary>
+<summary>✅ Bom — final com inicialização direta</summary>
 <br>
 
 ```dart
@@ -50,7 +50,7 @@ final isActive = user.status == 'active';
 ## `const` para constantes de compilação
 
 <details>
-<summary>❌ Bad — número mágico inline</summary>
+<summary>❌ Ruim — número mágico inline</summary>
 <br>
 
 ```dart
@@ -64,7 +64,7 @@ bool shouldRetry(int attempt) {
 <br>
 
 <details>
-<summary>✅ Good — constante nomeada com intenção</summary>
+<summary>✅ Bom — constante nomeada com intenção</summary>
 <br>
 
 ```dart
@@ -80,7 +80,7 @@ bool shouldRetry(int attempt) {
 ## `late` para inicialização postergada
 
 <details>
-<summary>❌ Bad — nullable onde o valor sempre existirá</summary>
+<summary>❌ Ruim — nullable onde o valor sempre existirá</summary>
 <br>
 
 ```dart
@@ -98,7 +98,7 @@ class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — late final declara intenção sem nullable</summary>
+<summary>✅ Bom — late final declara intenção sem nullable</summary>
 <br>
 
 ```dart
@@ -116,7 +116,7 @@ class OrderService {
 ## Valores mágicos
 
 <details>
-<summary>❌ Bad — literais inline sem contexto</summary>
+<summary>❌ Ruim — literais inline sem contexto</summary>
 <br>
 
 ```dart
@@ -132,7 +132,7 @@ final discount = price * 0.15;
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas com intenção</summary>
+<summary>✅ Bom — constantes nomeadas com intenção</summary>
 <br>
 
 ```dart
@@ -155,7 +155,7 @@ Prefira inferência quando o tipo é óbvio pela atribuição. Anote explicitame
 função e em declarações públicas de API.
 
 <details>
-<summary>❌ Bad — anotação redundante em variável local</summary>
+<summary>❌ Ruim — anotação redundante em variável local</summary>
 <br>
 
 ```dart
@@ -169,7 +169,7 @@ final int count = items.length;
 <br>
 
 <details>
-<summary>✅ Good — inferência onde é óbvio; anotação em APIs</summary>
+<summary>✅ Bom — inferência onde é óbvio; anotação em APIs</summary>
 <br>
 
 ```dart

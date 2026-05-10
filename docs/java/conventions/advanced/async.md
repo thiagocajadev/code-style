@@ -24,7 +24,7 @@ Antes de virtual threads, threads de plataforma eram caras — bloquear em I/O d
 recursos. Com virtual threads, bloquear é barato e o código fica simples.
 
 <details>
-<summary>❌ Bad — CompletableFuture encadeado apenas para "não bloquear"</summary>
+<summary>❌ Ruim — CompletableFuture encadeado apenas para "não bloquear"</summary>
 <br>
 
 ```java
@@ -44,7 +44,7 @@ public CompletableFuture<Invoice> processOrder(String orderId) {
 <br>
 
 <details>
-<summary>✅ Good — virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
+<summary>✅ Bom — virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
 <br>
 
 ```java
@@ -69,7 +69,7 @@ Quando múltiplas operações independentes podem ocorrer em paralelo, `Completa
 combina os resultados sem bloquear por cada um sequencialmente.
 
 <details>
-<summary>❌ Bad — operações independentes executadas em sequência</summary>
+<summary>❌ Ruim — operações independentes executadas em sequência</summary>
 <br>
 
 ```java
@@ -88,7 +88,7 @@ public DashboardData loadDashboard(String userId) {
 <br>
 
 <details>
-<summary>✅ Good — operações independentes em paralelo</summary>
+<summary>✅ Bom — operações independentes em paralelo</summary>
 <br>
 
 ```java
@@ -118,7 +118,7 @@ tarefas filhas encerrem antes que o escopo pai retorne. Mais seguro que `Complet
 livre: falha em uma cancela as demais.
 
 <details>
-<summary>✅ Good — ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
+<summary>✅ Bom — ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
 <br>
 
 ```java
@@ -148,7 +148,7 @@ Quando precisar de controle de pool, prefira `Executors.newVirtualThreadPerTaskE
 em vez de pools de threads de plataforma de tamanho fixo.
 
 <details>
-<summary>❌ Bad — pool de tamanho fixo limita throughput de I/O</summary>
+<summary>❌ Ruim — pool de tamanho fixo limita throughput de I/O</summary>
 <br>
 
 ```java
@@ -160,7 +160,7 @@ final var executor = Executors.newFixedThreadPool(10); // 10 threads — gargalo
 <br>
 
 <details>
-<summary>✅ Good — executor de virtual threads: sem limite artificial</summary>
+<summary>✅ Bom — executor de virtual threads: sem limite artificial</summary>
 <br>
 
 ```java

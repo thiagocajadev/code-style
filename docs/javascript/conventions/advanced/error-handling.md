@@ -20,7 +20,7 @@ Erros bem estruturados separam o que é **problema de negócio** (regra violada,
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Bad — null, undefined, false e objeto na mesma função</summary>
+<summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
 <br>
 
 ```js
@@ -45,7 +45,7 @@ if (result !== null) { /* ... */ }  // e undefined?
 <br>
 
 <details>
-<summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
+<summary>✅ Bom — contrato consistente, sempre o mesmo formato</summary>
 <br>
 
 ```js
@@ -66,7 +66,7 @@ function processOrder(order) {
 ## Erro como string
 
 <details>
-<summary>❌ Bad — string solta, impossível tratar com instanceof</summary>
+<summary>❌ Ruim — string solta, impossível tratar com instanceof</summary>
 <br>
 
 ```js
@@ -86,7 +86,7 @@ async function findUser(id) {
 <br>
 
 <details>
-<summary>✅ Good — erros tipados, identificáveis e tratáveis</summary>
+<summary>✅ Bom — erros tipados, identificáveis e tratáveis</summary>
 <br>
 
 ```js
@@ -104,7 +104,7 @@ async function findUser(id) {
 ## BaseError: abstração centralizada
 
 <details>
-<summary>❌ Bad — throw com string solta, sem tipo, sem contrato</summary>
+<summary>❌ Ruim — throw com string solta, sem tipo, sem contrato</summary>
 <br>
 
 ```js
@@ -132,7 +132,7 @@ async function processOrder(orderId) {
 <br>
 
 <details>
-<summary>✅ Good — contrato único para todos os erros da aplicação</summary>
+<summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
 <br>
 
 ```js
@@ -201,7 +201,7 @@ export class InternalServerError extends BaseError {
 ## try/catch que engole o erro
 
 <details>
-<summary>❌ Bad — captura, loga e retorna null</summary>
+<summary>❌ Ruim — captura, loga e retorna null</summary>
 <br>
 
 ```js
@@ -226,7 +226,7 @@ async function findProductById(id) {
 <br>
 
 <details>
-<summary>✅ Good — propaga com contexto, trata no limite do sistema</summary>
+<summary>✅ Bom — propaga com contexto, trata no limite do sistema</summary>
 <br>
 
 ```js
@@ -255,7 +255,7 @@ async function findProductById(id) {
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
+<summary>❌ Ruim — try/catch controlando lógica de negócio normal</summary>
 <br>
 
 ```js
@@ -273,7 +273,7 @@ function getUser(id) {
 <br>
 
 <details>
-<summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
 <br>
 
 ```js

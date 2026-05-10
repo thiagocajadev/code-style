@@ -38,7 +38,7 @@ Configure como padrão de projeto no `.vbproj` para não precisar repetir em cad
 ```
 
 <details>
-<summary>❌ Bad — sem Option Strict, conversões silenciosas e late binding</summary>
+<summary>❌ Ruim — sem Option Strict, conversões silenciosas e late binding</summary>
 <br>
 
 ```vbnet
@@ -54,7 +54,7 @@ Dim value As Integer = 3.7   ' truncamento silencioso
 <br>
 
 <details>
-<summary>✅ Good — Option Strict On, compilador captura os erros</summary>
+<summary>✅ Bom — Option Strict On, compilador captura os erros</summary>
 <br>
 
 ```vbnet
@@ -73,7 +73,7 @@ Dim value As Integer = CInt(3.7)  ' conversão explícita e intencional
 Com `Option Infer On`, o compilador infere o tipo quando o lado direito é inequívoco. Use inferência quando o tipo é óbvio pela expressão; declare explicitamente quando o tipo não é imediato.
 
 <details>
-<summary>❌ Bad — tipo redundante quando a construção já o declara</summary>
+<summary>❌ Ruim — tipo redundante quando a construção já o declara</summary>
 <br>
 
 ```vbnet
@@ -88,7 +88,7 @@ Dim name As String = customer.Name
 <br>
 
 <details>
-<summary>✅ Good — inferência onde o tipo é óbvio, explícito onde não é</summary>
+<summary>✅ Bom — inferência onde o tipo é óbvio, explícito onde não é</summary>
 <br>
 
 ```vbnet
@@ -113,7 +113,7 @@ Dim discount As Decimal = ApplyPromotion(purchase, promoCode)
 | `Dim` | Mutável, precisa mudar | `Dim attempt As Integer = 0` |
 
 <details>
-<summary>❌ Bad — constante como variável mutável</summary>
+<summary>❌ Ruim — constante como variável mutável</summary>
 <br>
 
 ```vbnet
@@ -129,7 +129,7 @@ Dim apiVersion = "v2"
 <br>
 
 <details>
-<summary>✅ Good — semântica declarada no modificador</summary>
+<summary>✅ Bom — semântica declarada no modificador</summary>
 <br>
 
 ```vbnet
@@ -145,7 +145,7 @@ Private ReadOnly _defaultTimeout As TimeSpan = TimeSpan.FromSeconds(30)
 Para verificar `Nothing`, use os operadores `Is` e `IsNot`. `IsNothing()` é uma função legacy do módulo `Microsoft.VisualBasic` — verbosa e inconsistente com o resto do .NET. Comparar com `= Nothing` é um erro semântico: `=` testa igualdade de valor, não referência nula.
 
 <details>
-<summary>❌ Bad — verificações de nulo inconsistentes</summary>
+<summary>❌ Ruim — verificações de nulo inconsistentes</summary>
 <br>
 
 ```vbnet
@@ -160,7 +160,7 @@ If purchase <> Nothing Then SaveAsync() ' erro silencioso para value types
 <br>
 
 <details>
-<summary>✅ Good — Is e IsNot, consistentes com o padrão .NET</summary>
+<summary>✅ Bom — Is e IsNot, consistentes com o padrão .NET</summary>
 <br>
 
 ```vbnet
@@ -175,7 +175,7 @@ If purchase IsNot Nothing Then ProcessPurchase(purchase)
 `And` e `Or` avaliam **ambos** os operandos sempre. `AndAlso` e `OrElse` fazem curto-circuito: param assim que o resultado é determinado. Usar `And`/`Or` em condições com objetos que podem ser `Nothing` causa `NullReferenceException`.
 
 <details>
-<summary>❌ Bad — And/Or avaliam os dois lados, NullReferenceException em runtime</summary>
+<summary>❌ Ruim — And/Or avaliam os dois lados, NullReferenceException em runtime</summary>
 <br>
 
 ```vbnet
@@ -193,7 +193,7 @@ End If
 <br>
 
 <details>
-<summary>✅ Good — AndAlso/OrElse com curto-circuito seguro</summary>
+<summary>✅ Bom — AndAlso/OrElse com curto-circuito seguro</summary>
 <br>
 
 ```vbnet
@@ -213,7 +213,7 @@ End If
 Números e strings literais inline são código sem contexto. O leitor precisa deduzir o significado. Uma constante nomeada declara a intenção e centraliza a mudança.
 
 <details>
-<summary>❌ Bad — literais sem contexto</summary>
+<summary>❌ Ruim — literais sem contexto</summary>
 <br>
 
 ```vbnet
@@ -233,7 +233,7 @@ Dim tax = subtotal * 0.15D
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas declaram a intenção</summary>
+<summary>✅ Bom — constantes nomeadas declaram a intenção</summary>
 <br>
 
 ```vbnet

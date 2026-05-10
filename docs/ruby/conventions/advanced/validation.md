@@ -20,7 +20,7 @@ eventos externos. Dentro do domínio, confie nos tipos. Ruby oferece **ActiveMod
 Use para modelos de domínio ou objetos de formulário sem ActiveRecord.
 
 <details>
-<summary>❌ Bad — validação manual espalhada no método</summary>
+<summary>❌ Ruim — validação manual espalhada no método</summary>
 <br>
 
 ```ruby
@@ -40,7 +40,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — validação declarativa com ActiveModel</summary>
+<summary>✅ Bom — validação declarativa com ActiveModel</summary>
 <br>
 
 ```ruby
@@ -114,7 +114,7 @@ Em controllers Rails, use `permit` para declarar explicitamente quais parâmetro
 aceitos. Nunca passe `params` diretamente para o modelo.
 
 <details>
-<summary>❌ Bad — mass assignment sem whitelist</summary>
+<summary>❌ Ruim — mass assignment sem whitelist</summary>
 <br>
 
 ```ruby
@@ -130,7 +130,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — strong parameters com whitelist explícita</summary>
+<summary>✅ Bom — strong parameters com whitelist explícita</summary>
 <br>
 
 ```ruby
@@ -157,7 +157,7 @@ Use `Integer()` e `Float()` (com maiúscula) para converter e validar em uma eta
 Eles lançam `ArgumentError` para entradas inválidas — ao contrário de `.to_i` que retorna `0`.
 
 <details>
-<summary>❌ Bad — to_i silencia entrada inválida</summary>
+<summary>❌ Ruim — to_i silencia entrada inválida</summary>
 <br>
 
 ```ruby
@@ -174,7 +174,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — Integer() lança ArgumentError em entrada inválida</summary>
+<summary>✅ Bom — Integer() lança ArgumentError em entrada inválida</summary>
 <br>
 
 ```ruby

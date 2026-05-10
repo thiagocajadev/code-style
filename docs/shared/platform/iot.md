@@ -2,9 +2,7 @@
 
 > Escopo: transversal — padrões de domínio IoT com exemplos em MicroPython 1.28.
 
-Sistemas IoT (Internet of Things, Internet das Coisas) têm restrições que não existem
-em servidores: memória em kilobytes, CPU em megahertz, sem sistema operacional completo,
-alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
+Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit, unidade central de processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
 
 ## Conceitos fundamentais
 
@@ -23,7 +21,7 @@ alimentação por bateria e conectividade instável. As boas práticas derivam d
 Nomes refletem o papel do sensor no domínio, não o tipo de hardware.
 
 <details>
-<summary>❌ Bad — nome técnico sem contexto de domínio</summary>
+<summary>❌ Ruim — nome técnico sem contexto de domínio</summary>
 <br>
 
 ```python
@@ -37,7 +35,7 @@ pwm_out = machine.PWM(machine.Pin(2))
 <br>
 
 <details>
-<summary>✅ Good — nome de domínio revela intenção</summary>
+<summary>✅ Bom — nome de domínio revela intenção</summary>
 <br>
 
 ```python
@@ -54,7 +52,7 @@ Sensores físicos produzem leituras ruidosas na transição. Ignore leituras den
 de tempo após a primeira detecção.
 
 <details>
-<summary>❌ Bad — sem debounce, evento disparado múltiplas vezes</summary>
+<summary>❌ Ruim — sem debounce, evento disparado múltiplas vezes</summary>
 <br>
 
 ```python
@@ -73,7 +71,7 @@ button.irq(trigger=machine.Pin.IRQ_FALLING, handler=on_press)
 <br>
 
 <details>
-<summary>✅ Good — debounce por timestamp</summary>
+<summary>✅ Bom — debounce por timestamp</summary>
 <br>
 
 ```python
@@ -110,7 +108,7 @@ def handle_door_open():
 Modele o comportamento do dispositivo como estados explícitos. Evite flags booleanos soltos.
 
 <details>
-<summary>❌ Bad — flags soltos sem estado explícito</summary>
+<summary>❌ Ruim — flags soltos sem estado explícito</summary>
 <br>
 
 ```python
@@ -129,7 +127,7 @@ if is_door_open and not is_alarm_active:
 <br>
 
 <details>
-<summary>✅ Good — FSM com estados nomeados e transições explícitas</summary>
+<summary>✅ Bom — FSM com estados nomeados e transições explícitas</summary>
 <br>
 
 ```python
@@ -180,7 +178,7 @@ Envie alertas com identificador único. O servidor ignora duplicatas. Evite re-e
 o mesmo alerta enquanto a condição não mudar.
 
 <details>
-<summary>❌ Bad — alerta reenviado a cada tick enquanto condição persiste</summary>
+<summary>❌ Ruim — alerta reenviado a cada tick enquanto condição persiste</summary>
 <br>
 
 ```python
@@ -197,7 +195,7 @@ def check_temperature(temp_celsius):
 <br>
 
 <details>
-<summary>✅ Good — alerta enviado uma vez por evento, com ID único</summary>
+<summary>✅ Bom — alerta enviado uma vez por evento, com ID único</summary>
 <br>
 
 ```python
@@ -237,7 +235,7 @@ O **Watchdog** reinicia o dispositivo se o loop principal parar de alimentá-lo.
 Útil para recuperação automática de travamentos ou deadlocks de rede.
 
 <details>
-<summary>❌ Bad — watchdog nunca alimentado, ou ausente</summary>
+<summary>❌ Ruim — watchdog nunca alimentado, ou ausente</summary>
 <br>
 
 ```python
@@ -256,7 +254,7 @@ def main_loop():
 <br>
 
 <details>
-<summary>✅ Good — watchdog alimentado a cada iteração do loop</summary>
+<summary>✅ Bom — watchdog alimentado a cada iteração do loop</summary>
 <br>
 
 ```python
@@ -289,7 +287,7 @@ Use IRQ para eventos rápidos (botão, borda de sinal). Use polling para leitura
 de sensores analógicos ou quando o hardware não suporta interrupção.
 
 <details>
-<summary>✅ Good — polling periódico com sleep para sensores analógicos</summary>
+<summary>✅ Bom — polling periódico com sleep para sensores analógicos</summary>
 <br>
 
 ```python

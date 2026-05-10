@@ -20,7 +20,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Bad — None, False e objeto na mesma função</summary>
+<summary>❌ Ruim — None, False e objeto na mesma função</summary>
 <br>
 
 ```python
@@ -45,7 +45,7 @@ if result:  # False passa, None também
 <br>
 
 <details>
-<summary>✅ Good — contrato consistente, sempre o mesmo formato</summary>
+<summary>✅ Bom — contrato consistente, sempre o mesmo formato</summary>
 <br>
 
 ```python
@@ -68,7 +68,7 @@ def process_order(order):
 ## Exceção como string
 
 <details>
-<summary>❌ Bad — string solta, impossível tratar com isinstance</summary>
+<summary>❌ Ruim — string solta, impossível tratar com isinstance</summary>
 <br>
 
 ```python
@@ -86,7 +86,7 @@ async def find_user(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — exceções tipadas, identificáveis e tratáveis</summary>
+<summary>✅ Bom — exceções tipadas, identificáveis e tratáveis</summary>
 <br>
 
 ```python
@@ -104,7 +104,7 @@ async def find_user(user_id: int):
 ## BaseError: abstração centralizada
 
 <details>
-<summary>❌ Bad — raise com string solta, sem tipo, sem contrato</summary>
+<summary>❌ Ruim — raise com string solta, sem tipo, sem contrato</summary>
 <br>
 
 ```python
@@ -129,7 +129,7 @@ async def process_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — hierarquia centralizada para todos os erros da aplicação</summary>
+<summary>✅ Bom — hierarquia centralizada para todos os erros da aplicação</summary>
 <br>
 
 ```python
@@ -180,7 +180,7 @@ class InternalServerError(AppError):
 ## try/except que engole o erro
 
 <details>
-<summary>❌ Bad — captura, loga e retorna None</summary>
+<summary>❌ Ruim — captura, loga e retorna None</summary>
 <br>
 
 ```python
@@ -202,7 +202,7 @@ async def find_product_by_id(product_id: int):
 <br>
 
 <details>
-<summary>✅ Good — propaga com contexto, trata na fronteira</summary>
+<summary>✅ Bom — propaga com contexto, trata na fronteira</summary>
 <br>
 
 ```python
@@ -231,7 +231,7 @@ Python 3.14 (PEP 758) permite agrupar exceções sem parênteses quando não há
 Use parênteses quando precisar de `as` ou quando o grupo tiver mais de dois tipos.
 
 <details>
-<summary>❌ Bad — except separado para tipos que recebem o mesmo tratamento</summary>
+<summary>❌ Ruim — except separado para tipos que recebem o mesmo tratamento</summary>
 <br>
 
 ```python
@@ -248,7 +248,7 @@ except ConnectionRefusedError:
 <br>
 
 <details>
-<summary>✅ Good — excpet agrupado sem parênteses (Python 3.14+)</summary>
+<summary>✅ Bom — excpet agrupado sem parênteses (Python 3.14+)</summary>
 <br>
 
 ```python
@@ -263,7 +263,7 @@ except TimeoutError, ConnectionRefusedError:
 <br>
 
 <details>
-<summary>✅ Good — parênteses quando há cláusula as ou 3+ tipos</summary>
+<summary>✅ Bom — parênteses quando há cláusula as ou 3+ tipos</summary>
 <br>
 
 ```python
@@ -279,7 +279,7 @@ except (TimeoutError, ConnectionRefusedError) as error:
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Bad — try/except controlando lógica de negócio normal</summary>
+<summary>❌ Ruim — try/except controlando lógica de negócio normal</summary>
 <br>
 
 ```python
@@ -295,7 +295,7 @@ def get_user(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
 <br>
 
 ```python

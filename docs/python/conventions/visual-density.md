@@ -19,7 +19,7 @@ Nunca duas. O return fica separado do último grupo de trabalho.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim — parede de código sem respiro entre grupos</summary>
 <br>
 
 ```python
@@ -39,7 +39,7 @@ async def process_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — parágrafos de intenção</summary>
+<summary>✅ Bom — parágrafos de intenção</summary>
 <br>
 
 ```python
@@ -65,7 +65,7 @@ Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes 
 colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
-<summary>❌ Bad — espaço dentro dos grupos, sem separação entre grupos</summary>
+<summary>❌ Ruim — espaço dentro dos grupos, sem separação entre grupos</summary>
 <br>
 
 ```python
@@ -90,7 +90,7 @@ async def register_user(name: str, email: str, password: str):
 <br>
 
 <details>
-<summary>✅ Good — 0 linhas dentro do grupo, 1 entre grupos</summary>
+<summary>✅ Bom — 0 linhas dentro do grupo, 1 entre grupos</summary>
 <br>
 
 ```python
@@ -116,7 +116,7 @@ O `return` final fica separado do último grupo de trabalho por uma linha em bra
 a função tem um único statement.
 
 <details>
-<summary>❌ Bad — return colado no último grupo</summary>
+<summary>❌ Ruim — return colado no último grupo</summary>
 <br>
 
 ```python
@@ -132,7 +132,7 @@ def calculate_order_total(items: list) -> float:
 <br>
 
 <details>
-<summary>✅ Good — return separado por blank line</summary>
+<summary>✅ Bom — return separado por blank line</summary>
 <br>
 
 ```python
@@ -152,7 +152,7 @@ Quando uma variável é declarada e imediatamente guardada contra um estado inv�
 formam um único grupo: sem blank entre elas.
 
 <details>
-<summary>❌ Bad — blank entre declaração e guarda dispersa o que é um grupo</summary>
+<summary>❌ Ruim — blank entre declaração e guarda dispersa o que é um grupo</summary>
 <br>
 
 ```python
@@ -180,7 +180,7 @@ async def process_checkout(user_id: int, cart_id: int):
 <br>
 
 <details>
-<summary>✅ Good — declaração e guarda coladas; grupos distintos separados</summary>
+<summary>✅ Bom — declaração e guarda coladas; grupos distintos separados</summary>
 <br>
 
 ```python
@@ -207,7 +207,7 @@ async def process_checkout(user_id: int, cart_id: int):
 f-string gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
-<summary>❌ Bad — todos os detalhes interpolados inline</summary>
+<summary>❌ Ruim — todos os detalhes interpolados inline</summary>
 <br>
 
 ```python
@@ -222,7 +222,7 @@ def build_confirmation_email(user, order) -> str:
 <br>
 
 <details>
-<summary>✅ Good — compostos extraídos, string final legível</summary>
+<summary>✅ Bom — compostos extraídos, string final legível</summary>
 <br>
 
 ```python

@@ -20,7 +20,7 @@ widget são o ponto de equilíbrio entre velocidade e cobertura.
 ## Bombeando o widget
 
 <details>
-<summary>❌ Bad — sem pump o widget não é construído</summary>
+<summary>❌ Ruim — sem pump o widget não é construído</summary>
 <br>
 
 ```dart
@@ -36,7 +36,7 @@ testWidgets('shows order list', (tester) async {
 <br>
 
 <details>
-<summary>✅ Good — pumpAndSettle aguarda renders e animações</summary>
+<summary>✅ Bom — pumpAndSettle aguarda renders e animações</summary>
 <br>
 
 ```dart
@@ -63,7 +63,7 @@ testWidgets('shows order list when orders are loaded', (tester) async {
 ## Interação com widgets
 
 <details>
-<summary>✅ Good — tap, type e verificação de estado</summary>
+<summary>✅ Bom — tap, type e verificação de estado</summary>
 <br>
 
 ```dart
@@ -91,7 +91,7 @@ testWidgets('submits form and shows confirmation', (tester) async {
 ## Golden test para snapshot visual
 
 <details>
-<summary>✅ Good — golden registra e verifica aparência visual</summary>
+<summary>✅ Bom — golden registra e verifica aparência visual</summary>
 <br>
 
 ```dart

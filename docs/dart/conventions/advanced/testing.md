@@ -18,7 +18,7 @@ framework padrão. `mocktail` cria mocks sem geração de código (ao contrário
 ## Fases misturadas — AAA
 
 <details>
-<summary>❌ Bad — setup, ação e assert misturados</summary>
+<summary>❌ Ruim — setup, ação e assert misturados</summary>
 <br>
 
 ```dart
@@ -35,7 +35,7 @@ test('findOrder', () async {
 <br>
 
 <details>
-<summary>✅ Good — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
 <br>
 
 ```dart
@@ -59,7 +59,7 @@ test('find returns paid order when order exists', () async {
 ## Grupos e nomes de teste
 
 <details>
-<summary>❌ Bad — nomes genéricos sem contexto</summary>
+<summary>❌ Ruim — nomes genéricos sem contexto</summary>
 <br>
 
 ```dart
@@ -73,7 +73,7 @@ test('order', () { ... });
 <br>
 
 <details>
-<summary>✅ Good — group + nome descreve comportamento</summary>
+<summary>✅ Bom — group + nome descreve comportamento</summary>
 <br>
 
 ```dart
@@ -91,7 +91,7 @@ group('OrderService', () {
 ## Mock com mocktail
 
 <details>
-<summary>❌ Bad — implementação fake inline dificulta leitura</summary>
+<summary>❌ Ruim — implementação fake inline dificulta leitura</summary>
 <br>
 
 ```dart
@@ -108,7 +108,7 @@ class FakeOrderRepository implements OrderRepository {
 <br>
 
 <details>
-<summary>✅ Good — Mock com mocktail, comportamento declarado no teste</summary>
+<summary>✅ Bom — Mock com mocktail, comportamento declarado no teste</summary>
 <br>
 
 ```dart
@@ -136,7 +136,7 @@ test('find returns order when found', () async {
 ## Testes de stream
 
 <details>
-<summary>❌ Bad — listen manual sem controle de tempo</summary>
+<summary>❌ Ruim — listen manual sem controle de tempo</summary>
 <br>
 
 ```dart
@@ -153,7 +153,7 @@ test('emits orders', () {
 <br>
 
 <details>
-<summary>✅ Good — expectLater com emitsInOrder</summary>
+<summary>✅ Bom — expectLater com emitsInOrder</summary>
 <br>
 
 ```dart
@@ -169,7 +169,7 @@ test('countDown emits from 3 to 1', () async {
 ## setUp para estado compartilhado
 
 <details>
-<summary>❌ Bad — repositório e serviço recriados em cada teste</summary>
+<summary>❌ Ruim — repositório e serviço recriados em cada teste</summary>
 <br>
 
 ```dart
@@ -192,7 +192,7 @@ test('find fails on null', () async {
 <br>
 
 <details>
-<summary>✅ Good — setUp inicializa uma vez por grupo</summary>
+<summary>✅ Bom — setUp inicializa uma vez por grupo</summary>
 <br>
 
 ```dart

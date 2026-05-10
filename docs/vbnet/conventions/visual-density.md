@@ -19,7 +19,7 @@ Os mesmos princípios de [densidade visual](../../../shared/standards/visual-den
 Métodos com múltiplos passos (validar, buscar, transformar, persistir, responder) devem deixar cada fase visível.
 
 <details>
-<summary>❌ Bad — todos os passos colados, fases invisíveis</summary>
+<summary>❌ Ruim — todos os passos colados, fases invisíveis</summary>
 <br>
 
 ```vbnet
@@ -40,7 +40,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — fases separadas, fluxo legível de cima pra baixo</summary>
+<summary>✅ Bom — fases separadas, fluxo legível de cima pra baixo</summary>
 <br>
 
 ```vbnet
@@ -68,7 +68,7 @@ End Function
 Quando há **apenas um passo** antes do `Return`, os dois formam par de 2 linhas sem blank.
 
 <details>
-<summary>❌ Bad — blank fragmenta o par</summary>
+<summary>❌ Ruim — blank fragmenta o par</summary>
 <br>
 
 ```vbnet
@@ -84,7 +84,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — par tight</summary>
+<summary>✅ Bom — par tight</summary>
 <br>
 
 ```vbnet
@@ -99,7 +99,7 @@ End Function
 ## Return separado: quando há 2+ passos antes
 
 <details>
-<summary>✅ Good — 2 preps + Return separado</summary>
+<summary>✅ Bom — 2 preps + Return separado</summary>
 <br>
 
 ```vbnet
@@ -126,7 +126,7 @@ End Function
 Uma variável seguida do `If` que a valida formam par semântico. A linha em branco vem **depois** do par.
 
 <details>
-<summary>❌ Bad — variável solta do seu guarda</summary>
+<summary>❌ Ruim — variável solta do seu guarda</summary>
 <br>
 
 ```vbnet
@@ -141,7 +141,7 @@ Dim invoice = BuildInvoice(order)
 <br>
 
 <details>
-<summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<summary>✅ Bom — variável e guarda juntos, separados do próximo passo</summary>
 <br>
 
 ```vbnet
@@ -158,7 +158,7 @@ Dim invoice = BuildInvoice(order)
 Três declarações simples consecutivas (Const, ReadOnly, Dim com literal) formam grupo coeso.
 
 <details>
-<summary>❌ Bad — órfão entre blanks</summary>
+<summary>❌ Ruim — órfão entre blanks</summary>
 <br>
 
 ```vbnet
@@ -175,7 +175,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — trio tight</summary>
+<summary>✅ Bom — trio tight</summary>
 <br>
 
 ```vbnet
@@ -191,7 +191,7 @@ End Class
 ## Par semântico encadeado
 
 <details>
-<summary>✅ Good — penúltima consumida pela última, par tight</summary>
+<summary>✅ Bom — penúltima consumida pela última, par tight</summary>
 <br>
 
 ```vbnet
@@ -211,7 +211,7 @@ End Function
 ## Testes: Assert como fase própria
 
 <details>
-<summary>❌ Bad — Assert colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim — Assert colado ao setup, fases invisíveis</summary>
 <br>
 
 ```vbnet
@@ -229,7 +229,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — Assert separado, assertion como fase própria</summary>
+<summary>✅ Bom — Assert separado, assertion como fase própria</summary>
 <br>
 
 ```vbnet
@@ -248,7 +248,7 @@ End Sub
 ## Strings longas
 
 <details>
-<summary>❌ Bad — concatenação densa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim — concatenação densa inline, sem semântica nas partes</summary>
 <br>
 
 ```vbnet
@@ -262,7 +262,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
 <br>
 
 ```vbnet

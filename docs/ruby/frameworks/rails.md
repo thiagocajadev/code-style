@@ -27,7 +27,7 @@ Controllers são finos. Validam a entrada, delegam para serviços, traduzem para
 HTTP. Nenhuma lógica de negócio dentro do controller.
 
 <details>
-<summary>❌ Bad — lógica de negócio no controller</summary>
+<summary>❌ Ruim — lógica de negócio no controller</summary>
 <br>
 
 ```ruby
@@ -55,7 +55,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — controller delega para serviço, traduz resultado para HTTP</summary>
+<summary>✅ Bom — controller delega para serviço, traduz resultado para HTTP</summary>
 <br>
 
 ```ruby
@@ -89,7 +89,7 @@ Models declaram validações e associações. Lógica de negócio complexa fica 
 service objects (objetos de serviço), não no model.
 
 <details>
-<summary>❌ Bad — model com lógica de negócio e callbacks ocultos</summary>
+<summary>❌ Ruim — model com lógica de negócio e callbacks ocultos</summary>
 <br>
 
 ```ruby
@@ -120,7 +120,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — model declara dados e validações; lógica fica no serviço</summary>
+<summary>✅ Bom — model declara dados e validações; lógica fica no serviço</summary>
 <br>
 
 ```ruby
@@ -150,7 +150,7 @@ Migrations são versionadas e irreversíveis em produção. Sempre implemente
 `change` (ou `up`/`down`) com operações reversíveis quando possível.
 
 <details>
-<summary>❌ Bad — migration sem índice em foreign key</summary>
+<summary>❌ Ruim — migration sem índice em foreign key</summary>
 <br>
 
 ```ruby
@@ -173,7 +173,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — references com índice, tipos explícitos</summary>
+<summary>✅ Bom — references com índice, tipos explícitos</summary>
 <br>
 
 ```ruby
@@ -201,7 +201,7 @@ Use recursos RESTful (`resources`, `resource`) sempre que possível. Rotas
 customizadas são exceção — declare `only:` para limitar os verbos gerados.
 
 <details>
-<summary>❌ Bad — rotas manuais onde resources resolveria</summary>
+<summary>❌ Ruim — rotas manuais onde resources resolveria</summary>
 <br>
 
 ```ruby
@@ -222,7 +222,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — resources + member action semântica</summary>
+<summary>✅ Bom — resources + member action semântica</summary>
 <br>
 
 ```ruby

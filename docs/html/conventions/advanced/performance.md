@@ -23,7 +23,7 @@ executa após o parse, na ordem do documento: ficam no `<head>`, sem necessidade
 fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia de ordem.
 
 <details>
-<summary>❌ Bad — script no head sem defer, bloqueia o parse</summary>
+<summary>❌ Ruim — script no head sem defer, bloqueia o parse</summary>
 <br>
 
 ```html
@@ -38,7 +38,7 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 <br>
 
 <details>
-<summary>✅ Good — defer para scripts dependentes de DOM; async para scripts independentes</summary>
+<summary>✅ Bom — defer para scripts dependentes de DOM; async para scripts independentes</summary>
 <br>
 
 ```html
@@ -66,7 +66,7 @@ Imagens e iframes abaixo da dobra (`loading="lazy"`) só são carregados quando 
 aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 <details>
-<summary>❌ Bad — todas as imagens carregam imediatamente</summary>
+<summary>❌ Ruim — todas as imagens carregam imediatamente</summary>
 <br>
 
 ```html
@@ -81,7 +81,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 <br>
 
 <details>
-<summary>✅ Good — hero sem lazy (above the fold), demais com lazy</summary>
+<summary>✅ Bom — hero sem lazy (above the fold), demais com lazy</summary>
 <br>
 
 ```html
@@ -99,7 +99,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas antecipadamente.
 
 <details>
-<summary>❌ Bad — fonte crítica descoberta tarde, origem externa sem preconnect</summary>
+<summary>❌ Ruim — fonte crítica descoberta tarde, origem externa sem preconnect</summary>
 <br>
 
 ```html
@@ -114,7 +114,7 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 <br>
 
 <details>
-<summary>✅ Good — preconnect abre conexão, preload antecipa recursos críticos</summary>
+<summary>✅ Bom — preconnect abre conexão, preload antecipa recursos críticos</summary>
 <br>
 
 ```html
@@ -142,7 +142,7 @@ Declarar `width` e `height` em imagens previne layout shift (CLS). O browser res
 antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 <details>
-<summary>❌ Bad — sem dimensões, layout shift ao carregar</summary>
+<summary>❌ Ruim — sem dimensões, layout shift ao carregar</summary>
 <br>
 
 ```html
@@ -154,7 +154,7 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 <br>
 
 <details>
-<summary>✅ Good — dimensões declaradas, CSS mantém proporção</summary>
+<summary>✅ Bom — dimensões declaradas, CSS mantém proporção</summary>
 <br>
 
 ```html

@@ -20,7 +20,7 @@ sobre coleções pequenas, a diferença de performance é irrelevante. Para hot 
 (caminhos críticos de execução), prefira `for-each`.
 
 <details>
-<summary>✅ Good — stream para transformação declarativa</summary>
+<summary>✅ Bom — stream para transformação declarativa</summary>
 <br>
 
 ```java
@@ -35,7 +35,7 @@ final var activeUserIds = users.stream()
 <br>
 
 <details>
-<summary>✅ Good — for-each em hot path: sem overhead de stream</summary>
+<summary>✅ Bom — for-each em hot path: sem overhead de stream</summary>
 <br>
 
 ```java
@@ -53,7 +53,7 @@ for (final var item : items) {
 para evitar realocações.
 
 <details>
-<summary>❌ Bad — ArrayList cresce dinamicamente com realocação</summary>
+<summary>❌ Ruim — ArrayList cresce dinamicamente com realocação</summary>
 <br>
 
 ```java
@@ -69,7 +69,7 @@ for (final var item : items) {
 <br>
 
 <details>
-<summary>✅ Good — tamanho inicial conhecido</summary>
+<summary>✅ Bom — tamanho inicial conhecido</summary>
 <br>
 
 ```java
@@ -87,7 +87,7 @@ for (final var item : items) {
 O operador `+` em loop cria um objeto `String` por iteração. `StringBuilder` reutiliza o buffer.
 
 <details>
-<summary>❌ Bad — concatenação cria N objetos</summary>
+<summary>❌ Ruim — concatenação cria N objetos</summary>
 <br>
 
 ```java
@@ -102,7 +102,7 @@ for (final var item : items) {
 <br>
 
 <details>
-<summary>✅ Good — StringBuilder ou String.join()</summary>
+<summary>✅ Bom — StringBuilder ou String.join()</summary>
 <br>
 
 ```java
@@ -126,7 +126,7 @@ for (final var item : items) {
 de tamanho conhecido, calcule a capacidade inicial: `tamanho / 0.75 + 1`.
 
 <details>
-<summary>❌ Bad — HashMap com capacidade padrão (16), realoca se >12 entradas</summary>
+<summary>❌ Ruim — HashMap com capacidade padrão (16), realoca se >12 entradas</summary>
 <br>
 
 ```java
@@ -139,7 +139,7 @@ final var cache = new HashMap<String, User>(); // padrão: 16
 <br>
 
 <details>
-<summary>✅ Good — capacidade calculada</summary>
+<summary>✅ Bom — capacidade calculada</summary>
 <br>
 
 ```java
@@ -156,7 +156,7 @@ apenas para operações CPU-bound sobre grandes datasets (conjuntos de dados). P
 use virtual threads.
 
 <details>
-<summary>❌ Bad — parallel para operação I/O-bound (piora o throughput)</summary>
+<summary>❌ Ruim — parallel para operação I/O-bound (piora o throughput)</summary>
 <br>
 
 ```java
@@ -170,7 +170,7 @@ final var results = orders.parallelStream()
 <br>
 
 <details>
-<summary>✅ Good — parallel apenas para CPU-bound com dados grandes</summary>
+<summary>✅ Bom — parallel apenas para CPU-bound com dados grandes</summary>
 <br>
 
 ```java
@@ -188,7 +188,7 @@ Para coleções que não devem ser modificadas após criação, prefira `List.of
 `Map.of` (imutáveis por construção) a `Collections.unmodifiableList` (wrapper mutável).
 
 <details>
-<summary>❌ Bad — wrapper ainda permite mutação se a referência original vazar</summary>
+<summary>❌ Ruim — wrapper ainda permite mutação se a referência original vazar</summary>
 <br>
 
 ```java
@@ -203,7 +203,7 @@ mutableList.add(newItem); // readOnly reflete a mudança!
 <br>
 
 <details>
-<summary>✅ Good — List.of() é imutável por construção</summary>
+<summary>✅ Bom — List.of() é imutável por construção</summary>
 <br>
 
 ```java

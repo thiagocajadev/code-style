@@ -20,7 +20,7 @@ Propriedades computadas transformam dados sem armazenar estado extra. Prefira `l
 ## `var` onde `let` resolve
 
 <details>
-<summary>❌ Bad — var desnecessário</summary>
+<summary>❌ Ruim — var desnecessário</summary>
 <br>
 
 ```swift
@@ -36,7 +36,7 @@ isActive = user.status == .active
 <br>
 
 <details>
-<summary>✅ Good — let com inicialização direta</summary>
+<summary>✅ Bom — let com inicialização direta</summary>
 <br>
 
 ```swift
@@ -50,7 +50,7 @@ let isActive = user.status == .active
 ## Valores mágicos
 
 <details>
-<summary>❌ Bad — literais inline sem contexto</summary>
+<summary>❌ Ruim — literais inline sem contexto</summary>
 <br>
 
 ```swift
@@ -66,7 +66,7 @@ let discount = price * 0.15
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas com intenção</summary>
+<summary>✅ Bom — constantes nomeadas com intenção</summary>
 <br>
 
 ```swift
@@ -89,7 +89,7 @@ Propriedades computadas modelam atributos derivados (sem parâmetros). Funções
 (com parâmetros ou efeitos colaterais).
 
 <details>
-<summary>❌ Bad — função para atributo derivado simples</summary>
+<summary>❌ Ruim — função para atributo derivado simples</summary>
 <br>
 
 ```swift
@@ -107,7 +107,7 @@ struct Order {
 <br>
 
 <details>
-<summary>✅ Good — propriedade computada para valor derivado</summary>
+<summary>✅ Bom — propriedade computada para valor derivado</summary>
 <br>
 
 ```swift
@@ -125,7 +125,7 @@ struct Order {
 ## Lazy para inicialização custosa
 
 <details>
-<summary>❌ Bad — objeto pesado criado mesmo quando não usado</summary>
+<summary>❌ Ruim — objeto pesado criado mesmo quando não usado</summary>
 <br>
 
 ```swift
@@ -139,7 +139,7 @@ class ReportService {
 <br>
 
 <details>
-<summary>✅ Good — lazy adia até o primeiro acesso</summary>
+<summary>✅ Bom — lazy adia até o primeiro acesso</summary>
 <br>
 
 ```swift
@@ -155,7 +155,7 @@ class ReportService {
 Declare no escopo mais restrito possível.
 
 <details>
-<summary>❌ Bad — var declarado antes do escopo real</summary>
+<summary>❌ Ruim — var declarado antes do escopo real</summary>
 <br>
 
 ```swift
@@ -175,7 +175,7 @@ sendNotification(message)
 <br>
 
 <details>
-<summary>✅ Good — let com expressão condicional</summary>
+<summary>✅ Bom — let com expressão condicional</summary>
 <br>
 
 ```swift
@@ -189,7 +189,7 @@ sendNotification(message)
 ## `didSet` e `willSet` para reação a mudanças
 
 <details>
-<summary>❌ Bad — observação de estado via polling</summary>
+<summary>❌ Ruim — observação de estado via polling</summary>
 <br>
 
 ```swift
@@ -206,7 +206,7 @@ func updateUI() {
 <br>
 
 <details>
-<summary>✅ Good — didSet reage à mudança de estado</summary>
+<summary>✅ Bom — didSet reage à mudança de estado</summary>
 <br>
 
 ```swift

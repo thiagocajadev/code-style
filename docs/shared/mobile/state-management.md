@@ -26,7 +26,8 @@ formulários que resetam sem motivo, e dados inconsistentes entre telas.
 ## UI state vs domain state
 
 A distinção mais importante em state management mobile é separar o estado que controla a tela do
-estado que representa o domínio.
+estado que representa o domínio. Aqui, **UI** (User Interface, interface do usuário) é a camada que
+o usuário vê e toca; **domínio** é o conjunto de regras e dados de negócio que vivem por trás dela.
 
 **UI state** é efêmero e pertence à tela:
 

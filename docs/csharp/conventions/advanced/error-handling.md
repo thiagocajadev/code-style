@@ -33,7 +33,7 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 ```
 
 <details>
-<summary>❌ Bad — exceção como controle de fluxo de negócio</summary>
+<summary>❌ Ruim — exceção como controle de fluxo de negócio</summary>
 <br>
 
 ```csharp
@@ -66,7 +66,7 @@ public async Task<IResult> GetOrder(Guid orderId)
 <br>
 
 <details>
-<summary>✅ Good — falha de negócio como valor, contrato explícito</summary>
+<summary>✅ Bom — falha de negócio como valor, contrato explícito</summary>
 <br>
 
 ```csharp
@@ -101,7 +101,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) status no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
-<summary>❌ Bad — strings mágicas sem contrato</summary>
+<summary>❌ Ruim — strings mágicas sem contrato</summary>
 <br>
 
 ```csharp
@@ -115,7 +115,7 @@ return Result<Order>.Fail("unauthorized", "401");
 <br>
 
 <details>
-<summary>✅ Good — códigos semânticos, mapeamento centralizado</summary>
+<summary>✅ Bom — códigos semânticos, mapeamento centralizado</summary>
 <br>
 
 ```csharp
@@ -142,7 +142,7 @@ private static int MapStatusCode(string code) => code switch
 O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automaticamente. O caminho feliz retorna o valor diretamente — sem `Success(...)` explícito em cada ponto de retorno.
 
 <details>
-<summary>❌ Bad — Success() explícito repetido em cada retorno bem-sucedido</summary>
+<summary>❌ Ruim — Success() explícito repetido em cada retorno bem-sucedido</summary>
 <br>
 
 ```csharp
@@ -163,7 +163,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 <br>
 
 <details>
-<summary>✅ Good — implicit operator, happy path retorna o valor diretamente</summary>
+<summary>✅ Bom — implicit operator, happy path retorna o valor diretamente</summary>
 <br>
 
 ```csharp
@@ -186,7 +186,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output, Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
-<summary>❌ Bad — validação tardia, trabalho desnecessário antes de falhar</summary>
+<summary>❌ Ruim — validação tardia, trabalho desnecessário antes de falhar</summary>
 <br>
 
 ```csharp
@@ -211,7 +211,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 <br>
 
 <details>
-<summary>✅ Good — validação antes do I/O, falha rápida</summary>
+<summary>✅ Bom — validação antes do I/O, falha rápida</summary>
 <br>
 
 ```csharp
@@ -238,7 +238,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 `try/catch` tem custo: é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
 
 <details>
-<summary>❌ Bad — try/catch como desvio de fluxo esperado</summary>
+<summary>❌ Ruim — try/catch como desvio de fluxo esperado</summary>
 <br>
 
 ```csharp
@@ -261,7 +261,7 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 <br>
 
 <details>
-<summary>✅ Good — retorno explícito para ausência, try/catch apenas na fronteira</summary>
+<summary>✅ Bom — retorno explícito para ausência, try/catch apenas na fronteira</summary>
 <br>
 
 ```csharp
@@ -284,7 +284,7 @@ Exceções não capturadas borbulham até o topo. Sem um handler global, o runti
 O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura: nada disso chega ao cliente.
 
 <details>
-<summary>❌ Bad — sem handler global, detalhe interno vaza</summary>
+<summary>❌ Ruim — sem handler global, detalhe interno vaza</summary>
 <br>
 
 ```csharp
@@ -297,7 +297,7 @@ O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: inte
 <br>
 
 <details>
-<summary>✅ Good — IExceptionHandler como barreira final</summary>
+<summary>✅ Bom — IExceptionHandler como barreira final</summary>
 <br>
 
 ```csharp

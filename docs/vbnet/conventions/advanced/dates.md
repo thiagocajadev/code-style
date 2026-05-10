@@ -19,7 +19,7 @@
 `DateTime.Now` captura a hora local do servidor. Em deploys com servidores em timezones diferentes, o mesmo código produz valores incomparáveis.
 
 <details>
-<summary>❌ Bad — hora local do servidor, Kind implícito</summary>
+<summary>❌ Ruim — hora local do servidor, Kind implícito</summary>
 <br>
 
 ```vbnet
@@ -33,7 +33,7 @@ Dim createdAt = DateTime.Now
 <br>
 
 <details>
-<summary>✅ Good — UTC explícito, comparável em qualquer ambiente</summary>
+<summary>✅ Bom — UTC explícito, comparável em qualquer ambiente</summary>
 <br>
 
 ```vbnet
@@ -49,7 +49,7 @@ Dim createdAt = DateTimeOffset.UtcNow
 `DateTime` perde a informação de timezone. `DateTimeOffset` carrega o offset junto ao valor, sem precisar de contexto externo para interpretar o instante.
 
 <details>
-<summary>❌ Bad — DateTime sem Kind perde contexto de timezone</summary>
+<summary>❌ Ruim — DateTime sem Kind perde contexto de timezone</summary>
 <br>
 
 ```vbnet
@@ -65,7 +65,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — DateTimeOffset carrega o offset, sem ambiguidade</summary>
+<summary>✅ Bom — DateTimeOffset carrega o offset, sem ambiguidade</summary>
 <br>
 
 ```vbnet
@@ -83,7 +83,7 @@ End Class
 `DateTime.SpecifyKind` apenas muda o campo `Kind` sem converter o valor. Um `DateTime` local marcado como `Utc` tem o valor errado — a hora não é ajustada.
 
 <details>
-<summary>❌ Bad — SpecifyKind muda o rótulo, não o valor</summary>
+<summary>❌ Ruim — SpecifyKind muda o rótulo, não o valor</summary>
 <br>
 
 ```vbnet
@@ -98,7 +98,7 @@ Dim wrongUtc = DateTime.SpecifyKind(local, DateTimeKind.Utc)
 <br>
 
 <details>
-<summary>✅ Good — conversão explícita preserva o instante correto</summary>
+<summary>✅ Bom — conversão explícita preserva o instante correto</summary>
 <br>
 
 ```vbnet
@@ -115,7 +115,7 @@ Dim createdAt = DateTimeOffset.UtcNow
 .NET Framework 4.8 não tem `DateOnly` (disponível só no .NET 6+). Para representar apenas uma data, use `DateTime` com hora zerada — mas documente a convenção e garanta consistência na serialização para evitar shifts de timezone.
 
 <details>
-<summary>❌ Bad — DateTime com hora fantasma, sujeita a shift na serialização</summary>
+<summary>❌ Ruim — DateTime com hora fantasma, sujeita a shift na serialização</summary>
 <br>
 
 ```vbnet
@@ -132,7 +132,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — string **ISO** (International Organization for Standardization, Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
+<summary>✅ Bom — string **ISO** (International Organization for Standardization, Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
 <br>
 
 ```vbnet
@@ -170,7 +170,7 @@ End Function
 Ao ler `DateTime` do banco, o valor volta como `DateTimeKind.Unspecified`. Trate na camada de dados: converta para UTC explicitamente ou use `DateTimeOffset` na coluna (`datetimeoffset` no SQL Server).
 
 <details>
-<summary>❌ Bad — DateTime lido do banco sem Kind, interpretação ambígua</summary>
+<summary>❌ Ruim — DateTime lido do banco sem Kind, interpretação ambígua</summary>
 <br>
 
 ```vbnet
@@ -188,7 +188,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — coluna datetimeoffset no banco, DateTimeOffset no modelo</summary>
+<summary>✅ Bom — coluna datetimeoffset no banco, DateTimeOffset no modelo</summary>
 <br>
 
 ```sql
@@ -220,7 +220,7 @@ End Function
 `ToString()` sem cultura usa a cultura do thread atual — varia entre servidores e máquinas. Sempre passe a cultura explicitamente ao formatar datas.
 
 <details>
-<summary>❌ Bad — formatação dependente da cultura do servidor</summary>
+<summary>❌ Ruim — formatação dependente da cultura do servidor</summary>
 <br>
 
 ```vbnet
@@ -233,7 +233,7 @@ Dim label = order.CreatedAt.ToString("dd/MM/yyyy")
 <br>
 
 <details>
-<summary>✅ Good — cultura explícita, resultado previsível</summary>
+<summary>✅ Bom — cultura explícita, resultado previsível</summary>
 <br>
 
 ```vbnet

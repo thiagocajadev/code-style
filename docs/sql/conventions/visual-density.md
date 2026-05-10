@@ -24,7 +24,7 @@ Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros
 Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de abertura e antes do `$$` de fechamento.
 
 <details>
-<summary>❌ Bad — T-SQL: assinatura e corpo colados, sem separação visual</summary>
+<summary>❌ Ruim — T-SQL: assinatura e corpo colados, sem separação visual</summary>
 <br>
 
 ```sql
@@ -50,7 +50,7 @@ END;
 <br>
 
 <details>
-<summary>❌ Bad — PostgreSQL: function sem linhas em branco internas, bloco opaco</summary>
+<summary>❌ Ruim — PostgreSQL: function sem linhas em branco internas, bloco opaco</summary>
 <br>
 
 ```sql
@@ -83,7 +83,7 @@ $$ LANGUAGE plpgsql;
 <br>
 
 <details>
-<summary>✅ Good — T-SQL: linha em branco entre AS e BEGIN</summary>
+<summary>✅ Bom — T-SQL: linha em branco entre AS e BEGIN</summary>
 <br>
 
 ```sql
@@ -110,7 +110,7 @@ END;
 <br>
 
 <details>
-<summary>✅ Good — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
+<summary>✅ Bom — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
 <br>
 
 ```sql
@@ -145,7 +145,7 @@ $$ LANGUAGE plpgsql;
 ## CTEs encadeadas
 
 <details>
-<summary>❌ Bad — CTEs coladas, sem separação entre as etapas</summary>
+<summary>❌ Ruim — CTEs coladas, sem separação entre as etapas</summary>
 <br>
 
 ```sql
@@ -172,7 +172,7 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 <br>
 
 <details>
-<summary>✅ Good — linha em branco entre CTEs, cada etapa legível</summary>
+<summary>✅ Bom — linha em branco entre CTEs, cada etapa legível</summary>
 <br>
 
 ```sql
@@ -216,7 +216,7 @@ JOIN
 Procedures com múltiplas etapas (filtrar, enriquecer, agregar, inserir) seguem a mesma lógica: cada bloco lógico separado por uma linha em branco. Queries longas e distintas nunca ficam coladas.
 
 <details>
-<summary>❌ Bad — etapas coladas, sem separação entre blocos distintos</summary>
+<summary>❌ Ruim — etapas coladas, sem separação entre blocos distintos</summary>
 <br>
 
 ```sql
@@ -247,7 +247,7 @@ JOIN
 <br>
 
 <details>
-<summary>✅ Good — etapas separadas, fluxo da procedure legível</summary>
+<summary>✅ Bom — etapas separadas, fluxo da procedure legível</summary>
 <br>
 
 ```sql

@@ -41,7 +41,7 @@ npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslin
 em runtime.
 
 <details>
-<summary>❌ Bad — tsconfig sem strict, com padrões obsoletos do TS5</summary>
+<summary>❌ Ruim — tsconfig sem strict, com padrões obsoletos do TS5</summary>
 <br>
 
 ```json
@@ -69,7 +69,7 @@ em runtime.
 <br>
 
 <details>
-<summary>✅ Good — tsconfig base com strict e paths</summary>
+<summary>✅ Bom — tsconfig base com strict e paths</summary>
 <br>
 
 ```json
@@ -115,7 +115,7 @@ Path aliases tornam as importações independentes de onde o arquivo está na hi
 contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no bundler ou loader.
 
 <details>
-<summary>❌ Bad — importações relativas profundas</summary>
+<summary>❌ Ruim — importações relativas profundas</summary>
 <br>
 
 ```ts
@@ -129,7 +129,7 @@ import { config } from "../../../config";
 <br>
 
 <details>
-<summary>✅ Good — alias limpo e independente de profundidade</summary>
+<summary>✅ Bom — alias limpo e independente de profundidade</summary>
 <br>
 
 ```ts
@@ -166,7 +166,7 @@ import { config } from "@/config";
 O arquivo serve como índice do projeto.
 
 <details>
-<summary>✅ Good — server.ts como índice, configuração delegada</summary>
+<summary>✅ Bom — server.ts como índice, configuração delegada</summary>
 <br>
 
 ```ts
@@ -186,7 +186,7 @@ app.listen(config.port);
 acessa `process.env` diretamente e que os campos obrigatórios são verificados na inicialização.
 
 <details>
-<summary>❌ Bad — process.env espalhado e sem validação</summary>
+<summary>❌ Ruim — process.env espalhado e sem validação</summary>
 <br>
 
 ```ts
@@ -202,7 +202,7 @@ const url = process.env.DATABASE_URL!; // non-null assertion sem garantia
 <br>
 
 <details>
-<summary>✅ Good — config.ts como único ponto, com validação na inicialização</summary>
+<summary>✅ Bom — config.ts como único ponto, com validação na inicialização</summary>
 <br>
 
 ```ts

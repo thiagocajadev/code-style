@@ -18,7 +18,7 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```kotlin
@@ -35,7 +35,7 @@ fun apply(x: Any, p: Map<String, Any>, c: (Any) -> Any): Any {
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```kotlin
@@ -55,7 +55,7 @@ fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — identificadores em português ficam desajeitados no idioma Kotlin</summary>
+<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Kotlin</summary>
 <br>
 
 ```kotlin
@@ -71,7 +71,7 @@ fun buscaEnderecoDoCliente(id: Long): Address? { ... }
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```kotlin
@@ -95,7 +95,7 @@ fun findCustomerAddress(customerId: Long): Address? { ... }
 | Pacotes | `lowercase` sem underscores | `com.acme.order` |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```kotlin
@@ -111,7 +111,7 @@ val UserName = "Alice"           // var com PascalCase
 <br>
 
 <details>
-<summary>✅ Good — convenções Kotlin respeitadas</summary>
+<summary>✅ Bom — convenções Kotlin respeitadas</summary>
 <br>
 
 ```kotlin
@@ -131,7 +131,7 @@ val userName = "Alice"
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```kotlin
@@ -147,7 +147,7 @@ fun totalCalculateInvoice(invoiceId: Long): Double { ... }
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```kotlin
@@ -161,7 +161,7 @@ fun calculateInvoiceTotal(invoiceId: Long): Double { ... }
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
 <br>
 
 ```kotlin
@@ -176,7 +176,7 @@ fun doStuff(x: Any) { }
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```kotlin
@@ -191,7 +191,7 @@ fun applySeasonalDiscount(order: Order): Order { ... }
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```kotlin
@@ -205,7 +205,7 @@ val valid = email.contains("@")
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```kotlin
@@ -223,7 +223,7 @@ val shouldRetry = attempt < MAX_RETRIES
 O nome reflete a intenção de negócio, não o detalhe técnico de onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```kotlin
@@ -238,7 +238,7 @@ fun saveToS3(file: ByteArray) { ... }
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```kotlin

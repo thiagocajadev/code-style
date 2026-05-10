@@ -33,7 +33,7 @@ Código em um módulo não precisa de wrapper `DOMContentLoaded`: o script execu
 Cache a seleção quando reutilizar o elemento.
 
 <details>
-<summary>❌ Bad — seleção repetida, sem cache</summary>
+<summary>❌ Ruim — seleção repetida, sem cache</summary>
 <br>
 
 ```js
@@ -46,7 +46,7 @@ document.querySelector(".card__title").textContent = "Updated";
 <br>
 
 <details>
-<summary>✅ Good — cache da seleção, operações encadeadas no mesmo elemento</summary>
+<summary>✅ Bom — cache da seleção, operações encadeadas no mesmo elemento</summary>
 <br>
 
 ```js
@@ -64,7 +64,7 @@ Um único listener no container estático cobre elementos presentes e futuros. `
 filtra o target pelo seletor.
 
 <details>
-<summary>❌ Bad — listener em cada item, não cobre elementos dinâmicos</summary>
+<summary>❌ Ruim — listener em cada item, não cobre elementos dinâmicos</summary>
 <br>
 
 ```js
@@ -78,7 +78,7 @@ document.querySelectorAll(".product-card").forEach((card) => {
 <br>
 
 <details>
-<summary>✅ Good — delegation no container, matches como filtro</summary>
+<summary>✅ Bom — delegation no container, matches como filtro</summary>
 <br>
 
 ```js
@@ -96,7 +96,7 @@ document.getElementById("product-list").addEventListener("click", (event) => {
 `fetch` é o substituto nativo de `$.ajax`. Retorna uma Promise; use `async/await` para clareza.
 
 <details>
-<summary>❌ Bad — sem verificação de status, sem tratamento de erro</summary>
+<summary>❌ Ruim — sem verificação de status, sem tratamento de erro</summary>
 <br>
 
 ```js
@@ -110,7 +110,7 @@ fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
 <br>
 
 <details>
-<summary>✅ Good — status verificado, erro tratado, Content-Type explícito</summary>
+<summary>✅ Bom — status verificado, erro tratado, Content-Type explícito</summary>
 <br>
 
 ```js

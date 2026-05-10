@@ -20,7 +20,7 @@ IDs são únicos por página, usados para anchors, labels de formulário e targe
 use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS).
 
 <details>
-<summary>❌ Bad — ID duplicável, classe descreve aparência</summary>
+<summary>❌ Ruim — ID duplicável, classe descreve aparência</summary>
 <br>
 
 ```html
@@ -37,7 +37,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 <br>
 
 <details>
-<summary>✅ Good — ID único e semântico, classe descreve papel</summary>
+<summary>✅ Bom — ID único e semântico, classe descreve papel</summary>
 <br>
 
 ```html
@@ -57,7 +57,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 reutilize classes CSS como gatilhos de comportamento: isso acopla estilo e lógica.
 
 <details>
-<summary>❌ Bad — classe CSS usada como gatilho JS, sem data-*</summary>
+<summary>❌ Ruim — classe CSS usada como gatilho JS, sem data-*</summary>
 <br>
 
 ```html
@@ -75,7 +75,7 @@ document.querySelectorAll('.open-modal').forEach((btn) => { ... });
 <br>
 
 <details>
-<summary>✅ Good — data-* para comportamento, classe só para estilo</summary>
+<summary>✅ Bom — data-* para comportamento, classe só para estilo</summary>
 <br>
 
 ```html
@@ -96,7 +96,7 @@ document.querySelectorAll('[data-modal-target]').forEach((btn) => { ... });
 repetir o elemento pai).
 
 <details>
-<summary>❌ Bad — prefixo redundante, nome opaco</summary>
+<summary>❌ Ruim — prefixo redundante, nome opaco</summary>
 <br>
 
 ```html
@@ -108,7 +108,7 @@ repetir o elemento pai).
 <br>
 
 <details>
-<summary>✅ Good — nome direto, kebab-case, sem redundância</summary>
+<summary>✅ Bom — nome direto, kebab-case, sem redundância</summary>
 <br>
 
 ```html

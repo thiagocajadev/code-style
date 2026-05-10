@@ -18,7 +18,7 @@ Zero linhas dentro de um grupo. Nunca duas linhas em branco consecutivas.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — sem separação entre fases</summary>
+<summary>❌ Ruim — sem separação entre fases</summary>
 <br>
 
 ```swift
@@ -42,7 +42,7 @@ func processPayment(request: PaymentRequest) async throws -> Receipt {
 <br>
 
 <details>
-<summary>✅ Good — fases separadas por linha em branco</summary>
+<summary>✅ Bom — fases separadas por linha em branco</summary>
 <br>
 
 ```swift
@@ -71,7 +71,7 @@ func processPayment(request: PaymentRequest) async throws -> Receipt {
 ## Explaining Return — tight
 
 <details>
-<summary>❌ Bad — blank entre let e return</summary>
+<summary>❌ Ruim — blank entre let e return</summary>
 <br>
 
 ```swift
@@ -87,7 +87,7 @@ func buildWelcomeMessage(for user: User) -> String {
 <br>
 
 <details>
-<summary>✅ Good — let + return sem blank (explaining return tight)</summary>
+<summary>✅ Bom — let + return sem blank (explaining return tight)</summary>
 <br>
 
 ```swift
@@ -102,7 +102,7 @@ func buildWelcomeMessage(for user: User) -> String {
 ## Chains longas
 
 <details>
-<summary>❌ Bad — chain em uma linha só</summary>
+<summary>❌ Ruim — chain em uma linha só</summary>
 <br>
 
 ```swift
@@ -114,7 +114,7 @@ let result = orders.filter { $0.isPaid }.sorted { $0.createdAt > $1.createdAt }.
 <br>
 
 <details>
-<summary>✅ Good — uma operação por linha</summary>
+<summary>✅ Bom — uma operação por linha</summary>
 <br>
 
 ```swift
@@ -133,7 +133,7 @@ return recentPaid
 ## Construção de structs — sem lógica inline
 
 <details>
-<summary>❌ Bad — lógica embutida na inicialização</summary>
+<summary>❌ Ruim — lógica embutida na inicialização</summary>
 <br>
 
 ```swift
@@ -150,7 +150,7 @@ return Order(
 <br>
 
 <details>
-<summary>✅ Good — lógica extraída antes da construção</summary>
+<summary>✅ Bom — lógica extraída antes da construção</summary>
 <br>
 
 ```swift
@@ -174,7 +174,7 @@ return order
 Extensions organizam conformances sem aumentar a densidade do tipo principal.
 
 <details>
-<summary>❌ Bad — tudo no corpo da struct</summary>
+<summary>❌ Ruim — tudo no corpo da struct</summary>
 <br>
 
 ```swift
@@ -196,7 +196,7 @@ struct Order: Codable, Equatable, CustomStringConvertible {
 <br>
 
 <details>
-<summary>✅ Good — uma extension por conformance</summary>
+<summary>✅ Bom — uma extension por conformance</summary>
 <br>
 
 ```swift

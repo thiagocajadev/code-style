@@ -16,7 +16,7 @@ Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo
 ## Final — valor fixo por padrão
 
 <details>
-<summary>❌ Bad — constante sem tipo, reatribuível sem aviso</summary>
+<summary>❌ Ruim — constante sem tipo, reatribuível sem aviso</summary>
 <br>
 
 ```python
@@ -31,7 +31,7 @@ MAX_RETRIES = 5  # reatribuição silenciosa
 <br>
 
 <details>
-<summary>✅ Good — Final sinaliza intenção ao type checker</summary>
+<summary>✅ Bom — Final sinaliza intenção ao type checker</summary>
 <br>
 
 ```python
@@ -46,7 +46,7 @@ API_URL: Final = "https://api.example.com"
 ## Dataclass frozen — objetos de valor não mutáveis
 
 <details>
-<summary>❌ Bad — objeto de valor mutável por padrão</summary>
+<summary>❌ Ruim — objeto de valor mutável por padrão</summary>
 <br>
 
 ```python
@@ -64,7 +64,7 @@ price.amount = 0  # alteração acidental sem aviso
 <br>
 
 <details>
-<summary>✅ Good — frozen=True garante imutabilidade</summary>
+<summary>✅ Bom — frozen=True garante imutabilidade</summary>
 <br>
 
 ```python
@@ -87,7 +87,7 @@ Objetos passados como parâmetro são referências. Alterar um parâmetro muda o
 um efeito colateral invisível e difícil de rastrear. Prefira retornar um novo objeto.
 
 <details>
-<summary>❌ Bad — mutação acoplada e difícil de rastrear</summary>
+<summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
 <br>
 
 ```python
@@ -101,7 +101,7 @@ def apply_discount(order):
 <br>
 
 <details>
-<summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
 <br>
 
 ```python
@@ -122,7 +122,7 @@ def apply_discount(order):
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Bad — o que significa 18? e 86400?</summary>
+<summary>❌ Ruim — o que significa 18? e 86400?</summary>
 <br>
 
 ```python
@@ -140,7 +140,7 @@ time.sleep(86400)
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas</summary>
+<summary>✅ Bom — constantes nomeadas</summary>
 <br>
 
 ```python
@@ -167,7 +167,7 @@ Use a sintaxe `X | Y` no lugar de `Optional[X]` e `Union[X, Y]`. Com as anotaç�
 Python 3.14 (PEP 649), forward references não precisam mais de aspas.
 
 <details>
-<summary>❌ Bad — sintaxe legada, verbose</summary>
+<summary>❌ Ruim — sintaxe legada, verbose</summary>
 <br>
 
 ```python
@@ -188,7 +188,7 @@ def load_config() -> Dict[str, str]:
 <br>
 
 <details>
-<summary>✅ Good — sintaxe moderna, sem imports extras</summary>
+<summary>✅ Bom — sintaxe moderna, sem imports extras</summary>
 <br>
 
 ```python
@@ -211,7 +211,7 @@ conter conteúdo malicioso (SQL, HTML, shell). `t-strings` (Python 3.14, PEP 750
 objeto `Template` que pode ser sanitizado antes de produzir a string final.
 
 <details>
-<summary>❌ Bad — f-string em contexto sensível a injeção</summary>
+<summary>❌ Ruim — f-string em contexto sensível a injeção</summary>
 <br>
 
 ```python
@@ -226,7 +226,7 @@ def build_query(user_input: str) -> str:
 <br>
 
 <details>
-<summary>✅ Good — t-string para contextos que exigem sanitização</summary>
+<summary>✅ Bom — t-string para contextos que exigem sanitização</summary>
 <br>
 
 ```python
@@ -257,7 +257,7 @@ def build_safe_query(user_input: str) -> Template:
 `.copy()` e `.move()` nativos; substitua `shutil` onde possível.
 
 <details>
-<summary>❌ Bad — os.path e shutil fragmentados</summary>
+<summary>❌ Ruim — os.path e shutil fragmentados</summary>
 <br>
 
 ```python
@@ -274,7 +274,7 @@ if os.path.exists(config_path):
 <br>
 
 <details>
-<summary>✅ Good — pathlib.Path fluente e legível</summary>
+<summary>✅ Bom — pathlib.Path fluente e legível</summary>
 <br>
 
 ```python

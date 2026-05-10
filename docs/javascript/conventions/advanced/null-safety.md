@@ -26,7 +26,7 @@ JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possi
 na maioria dos casos.
 
 <details>
-<summary>❌ Bad — || descarta valores falsy válidos</summary>
+<summary>❌ Ruim — || descarta valores falsy válidos</summary>
 <br>
 
 ```js
@@ -41,7 +41,7 @@ const debug = options.debug || false;   // false → false — ok aqui, mas por 
 <br>
 
 <details>
-<summary>✅ Good — ?? respeita 0, "" e false</summary>
+<summary>✅ Bom — ?? respeita 0, "" e false</summary>
 <br>
 
 ```js
@@ -59,7 +59,7 @@ const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbac
 A mesma distinção de `??` vs `||`, aplicada à atribuição lógica.
 
 <details>
-<summary>❌ Bad — ||= sobrescreve zero, que é um valor válido</summary>
+<summary>❌ Ruim — ||= sobrescreve zero, que é um valor válido</summary>
 <br>
 
 ```js
@@ -72,7 +72,7 @@ count ||= 10; // count vira 10 — zero é falsy, então ||= dispara
 <br>
 
 <details>
-<summary>✅ Good — ??= respeita zero e false</summary>
+<summary>✅ Bom — ??= respeita zero e false</summary>
 <br>
 
 ```js
@@ -95,7 +95,7 @@ Tem lugar para campos **opcionais por design**. Quando o campo deveria sempre ex
 é um bug: use guard clause.
 
 <details>
-<summary>❌ Bad — ?. esconde contrato fraco</summary>
+<summary>❌ Ruim — ?. esconde contrato fraco</summary>
 <br>
 
 ```js
@@ -111,7 +111,7 @@ async function getOrderTotal(orderId) {
 <br>
 
 <details>
-<summary>✅ Good — guard clause quando ausência é erro; ?. quando é esperada</summary>
+<summary>✅ Bom — guard clause quando ausência é erro; ?. quando é esperada</summary>
 <br>
 
 ```js
@@ -139,7 +139,7 @@ Funções que retornam listas sempre retornam `[]`, nunca `null`. No limite com 
 normalize com `?? []`.
 
 <details>
-<summary>❌ Bad — null em lista força defesa no caller</summary>
+<summary>❌ Ruim — null em lista força defesa no caller</summary>
 <br>
 
 ```js
@@ -154,7 +154,7 @@ async function findOrdersByUser(userId) {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia como estado neutro</summary>
+<summary>✅ Bom — lista vazia como estado neutro</summary>
 <br>
 
 ```js
@@ -180,7 +180,7 @@ async function fetchUserOrders(userId) {
 uma transformação: mais expressivo que `.filter().map()` por percorrer o array uma única vez.
 
 <details>
-<summary>❌ Bad — filter + map percorre o array duas vezes</summary>
+<summary>❌ Ruim — filter + map percorre o array duas vezes</summary>
 <br>
 
 ```js
@@ -196,7 +196,7 @@ const parsed = rawItems
 <br>
 
 <details>
-<summary>✅ Good — flatMap filtra e transforma em uma passagem</summary>
+<summary>✅ Bom — flatMap filtra e transforma em uma passagem</summary>
 <br>
 
 ```js
@@ -217,7 +217,7 @@ const parsed = rawItems.flatMap((item) => {
 prototype pollution. Substitui o padrão antigo `obj.hasOwnProperty(key)`.
 
 <details>
-<summary>❌ Bad — hasOwnProperty vulnerável a prototype pollution</summary>
+<summary>❌ Ruim — hasOwnProperty vulnerável a prototype pollution</summary>
 <br>
 
 ```js
@@ -231,7 +231,7 @@ config.hasOwnProperty("timeout"); // funciona, mas pode ser sobrescrito via prot
 <br>
 
 <details>
-<summary>✅ Good — Object.hasOwn seguro e direto</summary>
+<summary>✅ Bom — Object.hasOwn seguro e direto</summary>
 <br>
 
 ```js
@@ -261,7 +261,7 @@ function mergeConfig(defaults, overrides) {
 `Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.
 
 <details>
-<summary>❌ Bad — **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
+<summary>❌ Ruim — **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
 <br>
 
 ```js
@@ -284,7 +284,7 @@ const clone = JSON.parse(JSON.stringify(order));
 <br>
 
 <details>
-<summary>✅ Good — structuredClone preserva todos os tipos</summary>
+<summary>✅ Bom — structuredClone preserva todos os tipos</summary>
 <br>
 
 ```js

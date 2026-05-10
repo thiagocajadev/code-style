@@ -43,7 +43,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 ## Command Router
 
 <details>
-<summary>❌ Bad — ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
+<summary>❌ Ruim — ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
 <br>
 
 ```js
@@ -60,7 +60,7 @@ bot.command('order', async (ctx) => {
 <br>
 
 <details>
-<summary>✅ Good — context sem abreviação; handlers importados; router só delega</summary>
+<summary>✅ Bom — context sem abreviação; handlers importados; router só delega</summary>
 <br>
 
 ```js
@@ -80,7 +80,7 @@ bot.command('status', statusCommand);
 Use o `message` filter de `telegraf/filters` para reagir a tipos específicos de conteúdo sem verificações manuais.
 
 <details>
-<summary>❌ Bad — ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
+<summary>❌ Ruim — ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
 <br>
 
 ```js
@@ -102,7 +102,7 @@ bot.on('message', (ctx) => {
 <br>
 
 <details>
-<summary>✅ Good — message filter declarativo; compute extraído; format separado do argumento</summary>
+<summary>✅ Bom — message filter declarativo; compute extraído; format separado do argumento</summary>
 <br>
 
 ```js
@@ -122,7 +122,7 @@ bot.on(message('text'), (context) => {
 ## Implementando um Command
 
 <details>
-<summary>❌ Bad — ctx abreviado; property access direto no argumento; format inline na chamada</summary>
+<summary>❌ Ruim — ctx abreviado; property access direto no argumento; format inline na chamada</summary>
 <br>
 
 ```js
@@ -138,7 +138,7 @@ export async function orderCommand(ctx) {
 <br>
 
 <details>
-<summary>✅ Good — compute extraído antes do argumento; guard clause; format em função separada</summary>
+<summary>✅ Bom — compute extraído antes do argumento; guard clause; format em função separada</summary>
 <br>
 
 ```js
@@ -180,7 +180,7 @@ function buildOrderSummary(order) {
 Botões inline enviam um `callback_query` silencioso ao bot. Sempre chame `answerCbQuery` ao final — sem isso o Telegram exibe o indicador de carregamento no botão indefinidamente.
 
 <details>
-<summary>❌ Bad — ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
+<summary>❌ Ruim — ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
 <br>
 
 ```js
@@ -204,7 +204,7 @@ bot.action(/^cancel_(.+)$/, async (ctx) => {
 <br>
 
 <details>
-<summary>✅ Good — compute extraído; format nomeado antes do reply; answerCbQuery antes do editMessageText</summary>
+<summary>✅ Bom — compute extraído; format nomeado antes do reply; answerCbQuery antes do editMessageText</summary>
 <br>
 
 ```js
@@ -247,7 +247,7 @@ bot.action(/^cancel_(.+)$/, async (context) => {
 Use `bot.createWebhook()` com `secretToken` para validar que os updates vêm do Telegram.
 
 <details>
-<summary>❌ Bad — webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
+<summary>❌ Ruim — webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
 <br>
 
 ```js
@@ -266,7 +266,7 @@ app.listen(3000);
 <br>
 
 <details>
-<summary>✅ Good — bot.createWebhook() com secretToken; await extraído do argumento; shutdown limpo</summary>
+<summary>✅ Bom — bot.createWebhook() com secretToken; await extraído do argumento; shutdown limpo</summary>
 <br>
 
 ```js

@@ -19,7 +19,7 @@ desenho.
 ## God function — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
 <br>
 
 ```python
@@ -58,7 +58,7 @@ def realiza_venda(x):
 <br>
 
 <details>
-<summary>✅ Good — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
 <br>
 
 ```python
@@ -92,7 +92,7 @@ async def issue_invoice(order):
 ## SLA — orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Bad — mesma função orquestra e implementa</summary>
+<summary>❌ Ruim — mesma função orquestra e implementa</summary>
 <br>
 
 ```python
@@ -111,7 +111,7 @@ def build_order_summary(order):
 <br>
 
 <details>
-<summary>✅ Good — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
 <br>
 
 ```python
@@ -140,7 +140,7 @@ def build_line_items(order) -> str:
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Bad — cálculo e formatação misturados</summary>
+<summary>❌ Ruim — cálculo e formatação misturados</summary>
 <br>
 
 ```python
@@ -157,7 +157,7 @@ def get_order_summary(order):
 <br>
 
 <details>
-<summary>✅ Good — cálculo separado da formatação</summary>
+<summary>✅ Bom — cálculo separado da formatação</summary>
 <br>
 
 ```python
@@ -192,7 +192,7 @@ def format_summary(order_id: int, totals: dict) -> str:
 O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
 
 <details>
-<summary>❌ Bad — variável auxiliar desnecessária, else após raise</summary>
+<summary>❌ Ruim — variável auxiliar desnecessária, else após raise</summary>
 <br>
 
 ```python
@@ -214,7 +214,7 @@ async def find_product_by_id(product_id: int):
 <br>
 
 <details>
-<summary>✅ Good — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
 <br>
 
 ```python
@@ -240,7 +240,7 @@ O retorno nomeia o resultado, não o computa. A variável é expressiva e simét
 função.
 
 <details>
-<summary>❌ Bad — lógica ou expressão inline direto no return</summary>
+<summary>❌ Ruim — lógica ou expressão inline direto no return</summary>
 <br>
 
 ```python
@@ -256,7 +256,7 @@ def get_active_users(users):
 <br>
 
 <details>
-<summary>✅ Good — variável expressiva antes do return</summary>
+<summary>✅ Bom — variável expressiva antes do return</summary>
 <br>
 
 ```python
@@ -276,7 +276,7 @@ def get_active_users(users) -> list:
 <br>
 
 <details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
 <br>
 
 ```python
@@ -292,7 +292,7 @@ async def process_checkout(cart_id: int):
 <br>
 
 <details>
-<summary>✅ Good — nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom — nome simétrico com a função deixa claro o que sai</summary>
 <br>
 
 ```python
@@ -314,7 +314,7 @@ async def process_checkout(cart_id: int):
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto (dataclass ou dict).
 
 <details>
-<summary>❌ Bad — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
 <br>
 
 ```python
@@ -329,7 +329,7 @@ create_invoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL")
 <br>
 
 <details>
-<summary>✅ Good — dataclass quando 4+ parâmetros</summary>
+<summary>✅ Bom — dataclass quando 4+ parâmetros</summary>
 <br>
 
 ```python
@@ -360,7 +360,7 @@ create_invoice(InvoiceData(
 ## Código morto
 
 <details>
-<summary>❌ Bad — condição impossível, função nunca chamada</summary>
+<summary>❌ Ruim — condição impossível, função nunca chamada</summary>
 <br>
 
 ```python
@@ -380,7 +380,7 @@ def legacy_transform(items):
 <br>
 
 <details>
-<summary>✅ Good — remove o que não é usado</summary>
+<summary>✅ Bom — remove o que não é usado</summary>
 <br>
 
 ```python

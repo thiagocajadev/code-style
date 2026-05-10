@@ -25,14 +25,14 @@ public class VariablesExamples {
 
     // ─── final por padrão ─────────────────────────────────────────────────────
 
-    // ❌ Bad: variável reatribuída sem necessidade
+    // ❌ Ruim: variável reatribuída sem necessidade
     public void mutationBad() {
         String userName = "Alice";
         int maxRetries = 3;
         // userName e maxRetries nunca reatribuídos
     }
 
-    // ✅ Good: final por padrão, mutável só quando necessário
+    // ✅ Bom: final por padrão, mutável só quando necessário
     public void mutationGood() {
         final var userName = "Alice";
         final var maxRetries = MAX_RETRY_ATTEMPTS;
@@ -45,13 +45,13 @@ public class VariablesExamples {
 
     // ─── Mutação de parâmetros ────────────────────────────────────────────────
 
-    // ❌ Bad: mutação do parâmetro recebido
+    // ❌ Ruim: mutação do parâmetro recebido
     private void applyDiscountBad(Order order) {
         order.setDiscount(BigDecimal.TEN);
         order.setTotal(order.getTotal().subtract(BigDecimal.TEN));
     }
 
-    // ✅ Good: retorna novo estado, sem efeitos colaterais
+    // ✅ Bom: retorna novo estado, sem efeitos colaterais
     private Order applyDiscount(Order order) {
         final var discount = BigDecimal.TEN;
         final var discountedTotal = order.getTotal().subtract(discount);
@@ -62,13 +62,13 @@ public class VariablesExamples {
 
     // ─── Valores mágicos ──────────────────────────────────────────────────────
 
-    // ❌ Bad: o que significa 18? e 86400000?
+    // ❌ Ruim: o que significa 18? e 86400000?
     public void magicValuesBad(User user, Order order) {
         if (user.getAge() >= 18) { /* ... */ }
         if (order.getStatus() == 2) { /* ... */ }
     }
 
-    // ✅ Good: constantes nomeadas
+    // ✅ Bom: constantes nomeadas
     public void magicValuesGood(User user, Order order) {
         if (user.getAge() >= MINIMUM_DRIVING_AGE) { /* ... */ }
         if (order.getStatus() == ORDER_STATUS_APPROVED) { /* ... */ }
@@ -76,7 +76,7 @@ public class VariablesExamples {
 
     // ─── Records — imutabilidade estrutural ───────────────────────────────────
 
-    // ❌ Bad: classe mutável para transportar dados
+    // ❌ Ruim: classe mutável para transportar dados
     static class InvoiceDataBad {
         private String orderId;
         private String customerId;
@@ -84,7 +84,7 @@ public class VariablesExamples {
         // getters e setters manuais, equals/hashCode verbosos
     }
 
-    // ✅ Good: record elimina o boilerplate e garante imutabilidade
+    // ✅ Bom: record elimina o boilerplate e garante imutabilidade
     record InvoiceData(String orderId, String customerId, BigDecimal amount, String currency) {}
 
     public void recordExample() {
@@ -94,12 +94,12 @@ public class VariablesExamples {
 
     // ─── var — inferência de tipo ─────────────────────────────────────────────
 
-    // ❌ Bad: var obscurece o tipo
+    // ❌ Ruim: var obscurece o tipo
     public void varBad() {
         final var result = repository.fetch();  // qual é o tipo?
     }
 
-    // ✅ Good: var quando o tipo é óbvio; tipo explícito quando agrega clareza
+    // ✅ Bom: var quando o tipo é óbvio; tipo explícito quando agrega clareza
     public void varGood() {
         final var orders = orderRepository.findAll();             // List<Order> — óbvio
         final var user = new User("Alice", "alice@example.com");  // User — óbvio
@@ -109,14 +109,14 @@ public class VariablesExamples {
 
     // ─── Primitivos vs wrappers ───────────────────────────────────────────────
 
-    // ❌ Bad: wrapper desnecessário
+    // ❌ Ruim: wrapper desnecessário
     public void wrapperBad() {
         Integer count = 0;
         Boolean isActive = true;
         Long totalMs = 86_400_000L;
     }
 
-    // ✅ Good: primitivo por padrão, wrapper só quando necessário
+    // ✅ Bom: primitivo por padrão, wrapper só quando necessário
     public void wrapperGood() {
         int count = 0;
         boolean isActive = true;

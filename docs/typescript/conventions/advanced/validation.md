@@ -26,7 +26,7 @@ Declarar o tipo separado e o schema separado cria duas fontes de verdade que pod
 divergência.
 
 <details>
-<summary>❌ Bad — tipo declarado manualmente, pode divergir do schema</summary>
+<summary>❌ Ruim — tipo declarado manualmente, pode divergir do schema</summary>
 <br>
 
 ```ts
@@ -50,7 +50,7 @@ const createOrderSchema = z.object({
 <br>
 
 <details>
-<summary>✅ Good — tipo inferido do schema, fonte única</summary>
+<summary>✅ Bom — tipo inferido do schema, fonte única</summary>
 <br>
 
 ```ts
@@ -75,7 +75,7 @@ retorna `{ success, data, error }` — adequado quando a falha de validação é
 no fluxo de negócio.
 
 <details>
-<summary>❌ Bad — parse lança exceção tratada com try/catch para fluxo de negócio</summary>
+<summary>❌ Ruim — parse lança exceção tratada com try/catch para fluxo de negócio</summary>
 <br>
 
 ```ts
@@ -100,7 +100,7 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 <br>
 
 <details>
-<summary>✅ Good — safeParse retorna Result, sem try/catch para validação</summary>
+<summary>✅ Bom — safeParse retorna Result, sem try/catch para validação</summary>
 <br>
 
 ```ts
@@ -122,7 +122,7 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 narrowing automático no switch sem type assertions.
 
 <details>
-<summary>❌ Bad — z.union sem discriminante, narrowing manual com as</summary>
+<summary>❌ Ruim — z.union sem discriminante, narrowing manual com as</summary>
 <br>
 
 ```ts
@@ -146,7 +146,7 @@ function processPayment(payment: Payment): void {
 <br>
 
 <details>
-<summary>✅ Good — discriminatedUnion com narrowing automático</summary>
+<summary>✅ Bom — discriminatedUnion com narrowing automático</summary>
 <br>
 
 ```ts
@@ -178,7 +178,7 @@ O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object, Objeto de
 explícito documentam o contrato publicamente e impedem o vazamento acidental de campos.
 
 <details>
-<summary>❌ Bad — retorna a entidade completa, sem contrato explícito</summary>
+<summary>❌ Ruim — retorna a entidade completa, sem contrato explícito</summary>
 <br>
 
 ```ts
@@ -194,7 +194,7 @@ async function findUserHandler(req: Request, res: Response): Promise<void> {
 <br>
 
 <details>
-<summary>✅ Good — DTO tipado define o contrato da resposta</summary>
+<summary>✅ Bom — DTO tipado define o contrato da resposta</summary>
 <br>
 
 ```ts

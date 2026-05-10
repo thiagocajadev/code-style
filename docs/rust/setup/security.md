@@ -25,7 +25,7 @@ Use `dotenvy` para carregar `.env` localmente. Nunca commite `.env`. Centralize
 toda leitura de env vars em `src/config.rs`.
 
 <details>
-<summary>❌ Bad — secret hardcoded</summary>
+<summary>❌ Ruim — secret hardcoded</summary>
 <br>
 
 ```rust
@@ -46,7 +46,7 @@ fn sign_token(user_id: u64) -> String {
 <br>
 
 <details>
-<summary>✅ Good — secret via variável de ambiente</summary>
+<summary>✅ Bom — secret via variável de ambiente</summary>
 <br>
 
 ```rust
@@ -89,7 +89,7 @@ Valide toda entrada externa no handler antes de passar para o service.
 Use tipos como contratos: se o compilador aceita o tipo, os invariantes estão garantidos.
 
 <details>
-<summary>❌ Bad — dado cru repassado sem validação</summary>
+<summary>❌ Ruim — dado cru repassado sem validação</summary>
 <br>
 
 ```rust
@@ -108,7 +108,7 @@ async fn create_order(
 <br>
 
 <details>
-<summary>✅ Good — tipo validado na fronteira do handler</summary>
+<summary>✅ Bom — tipo validado na fronteira do handler</summary>
 <br>
 
 ```rust
@@ -143,7 +143,7 @@ async fn create_order(
 e revisão obrigatória em code review.
 
 <details>
-<summary>❌ Bad — unsafe sem justificativa</summary>
+<summary>❌ Ruim — unsafe sem justificativa</summary>
 <br>
 
 ```rust
@@ -157,7 +157,7 @@ fn read_config_ptr(ptr: *const u8, len: usize) -> &'static str {
 <br>
 
 <details>
-<summary>✅ Good — unsafe justificado ou eliminado com safe alternative</summary>
+<summary>✅ Bom — unsafe justificado ou eliminado com safe alternative</summary>
 <br>
 
 ```rust

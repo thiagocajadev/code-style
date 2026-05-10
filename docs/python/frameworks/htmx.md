@@ -43,7 +43,7 @@ O handler Python retorna um fragmento HTML, não a página completa. Templates p
 arquivos separados (convenção: prefixo `_`).
 
 <details>
-<summary>❌ Bad — handler retorna página completa; HTMX recebe <html> inteiro</summary>
+<summary>❌ Ruim — handler retorna página completa; HTMX recebe <html> inteiro</summary>
 <br>
 
 ```python
@@ -76,7 +76,7 @@ async def list_orders(request: Request):
 <br>
 
 <details>
-<summary>✅ Good — handler retorna fragmento; template parcial em arquivo separado</summary>
+<summary>✅ Bom — handler retorna fragmento; template parcial em arquivo separado</summary>
 <br>
 
 ```html
@@ -121,7 +121,7 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 `beforeend` adiciona ao final da lista sem apagar o que já existe.
 
 <details>
-<summary>❌ Bad — sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
+<summary>❌ Ruim — sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
 <br>
 
 ```html
@@ -137,7 +137,7 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 <br>
 
 <details>
-<summary>✅ Good — hx-target explícito, hx-swap intencional por caso de uso</summary>
+<summary>✅ Bom — hx-target explícito, hx-swap intencional por caso de uso</summary>
 <br>
 
 ```html
@@ -171,7 +171,7 @@ inserido no `hx-target`; os elementos com `hx-swap-oob="true"` são inseridos no
 IDs, sem requisições adicionais.
 
 <details>
-<summary>❌ Bad — duas requisições separadas para atualizar lista e contador</summary>
+<summary>❌ Ruim — duas requisições separadas para atualizar lista e contador</summary>
 <br>
 
 ```html
@@ -190,7 +190,7 @@ IDs, sem requisições adicionais.
 <br>
 
 <details>
-<summary>✅ Good — uma resposta atualiza lista e contador via out-of-band</summary>
+<summary>✅ Bom — uma resposta atualiza lista e contador via out-of-band</summary>
 <br>
 
 ```html
@@ -231,7 +231,7 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 `htmx-request` ao elemento enquanto aguarda a resposta.
 
 <details>
-<summary>❌ Bad — sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
+<summary>❌ Ruim — sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
 <br>
 
 ```html
@@ -247,7 +247,7 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 <br>
 
 <details>
-<summary>✅ Good — indicador visível durante a requisição via hx-indicator</summary>
+<summary>✅ Bom — indicador visível durante a requisição via hx-indicator</summary>
 <br>
 
 ```html

@@ -25,7 +25,7 @@ Nunca hardcode credenciais. Use `.env` para desenvolvimento local e variáveis d
 para produção — nunca commite o arquivo `.env`.
 
 <details>
-<summary>❌ Bad — credencial no código-fonte</summary>
+<summary>❌ Ruim — credencial no código-fonte</summary>
 <br>
 
 ```python
@@ -38,7 +38,7 @@ JWT_SECRET = "my-super-secret-key"
 <br>
 
 <details>
-<summary>✅ Good — pydantic-settings lê e valida variáveis de ambiente</summary>
+<summary>✅ Bom — pydantic-settings lê e valida variáveis de ambiente</summary>
 <br>
 
 ```python
@@ -78,7 +78,7 @@ inicialização. Leia as variáveis via `os.environ` — nunca `os.getenv` sem d
 de produção: falha rápido se a variável não existir.
 
 <details>
-<summary>❌ Bad — os.getenv sem validação de presença</summary>
+<summary>❌ Ruim — os.getenv sem validação de presença</summary>
 <br>
 
 ```python
@@ -92,7 +92,7 @@ db_url = os.getenv("DATABASE_URL")  # None se ausente — bug silencioso
 <br>
 
 <details>
-<summary>✅ Good — dotenv + os.environ falha se a variável não existir</summary>
+<summary>✅ Bom — dotenv + os.environ falha se a variável não existir</summary>
 <br>
 
 ```python
@@ -139,7 +139,7 @@ Falhe na inicialização, não em tempo de requisição. Se uma variável obriga
 a aplicação não deve subir.
 
 <details>
-<summary>❌ Bad — variável obrigatória com default silencioso</summary>
+<summary>❌ Ruim — variável obrigatória com default silencioso</summary>
 <br>
 
 ```python
@@ -155,7 +155,7 @@ class Settings(BaseSettings):
 <br>
 
 <details>
-<summary>✅ Good — sem default para secrets; Pydantic falha na inicialização</summary>
+<summary>✅ Bom — sem default para secrets; Pydantic falha na inicialização</summary>
 <br>
 
 ```python

@@ -54,7 +54,7 @@ my-app/
 `Cargo.toml` declara o crate, versão mínima e dependências. Versões fixas garantem builds reproduzíveis.
 
 <details>
-<summary>❌ Bad — versões sem pin, sem toolchain</summary>
+<summary>❌ Ruim — versões sem pin, sem toolchain</summary>
 <br>
 
 ```toml
@@ -72,7 +72,7 @@ serde = "*"
 <br>
 
 <details>
-<summary>✅ Good — dependências versionadas e features explícitas</summary>
+<summary>✅ Bom — dependências versionadas e features explícitas</summary>
 <br>
 
 ```toml
@@ -109,7 +109,7 @@ channel = "stable"
 `src/main.rs` declara intenção, não implementa. Toda lógica fica em módulos.
 
 <details>
-<summary>❌ Bad — main.rs como dumping ground</summary>
+<summary>❌ Ruim — main.rs como dumping ground</summary>
 <br>
 
 ```rust
@@ -135,7 +135,7 @@ async fn main() {
 <br>
 
 <details>
-<summary>✅ Good — main.rs como índice, lógica delegada</summary>
+<summary>✅ Bom — main.rs como índice, lógica delegada</summary>
 <br>
 
 ```rust
@@ -170,7 +170,7 @@ async fn main() -> anyhow::Result<()> {
 Nenhum módulo acessa `std::env::var` diretamente.
 
 <details>
-<summary>❌ Bad — env var lida em qualquer lugar</summary>
+<summary>❌ Ruim — env var lida em qualquer lugar</summary>
 <br>
 
 ```rust
@@ -189,7 +189,7 @@ let secret = std::env::var("JWT_SECRET").unwrap(); // espalhado
 <br>
 
 <details>
-<summary>✅ Good — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
 <br>
 
 ```rust
@@ -240,7 +240,7 @@ impl OrderRepository {
 Cada domínio agrupa handler, service e repository. Evite estrutura por camada técnica.
 
 <details>
-<summary>❌ Bad — estrutura por camada</summary>
+<summary>❌ Ruim — estrutura por camada</summary>
 <br>
 
 ```
@@ -261,7 +261,7 @@ src/
 <br>
 
 <details>
-<summary>✅ Good — estrutura por domínio</summary>
+<summary>✅ Bom — estrutura por domínio</summary>
 <br>
 
 ```

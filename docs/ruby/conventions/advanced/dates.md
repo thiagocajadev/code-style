@@ -19,7 +19,7 @@ para o fuso do usuário apenas na camada de apresentação.
 ## UTC por padrão
 
 <details>
-<summary>❌ Bad — hora local sem fuso explícito</summary>
+<summary>❌ Ruim — hora local sem fuso explícito</summary>
 <br>
 
 ```ruby
@@ -35,7 +35,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — UTC explícito no armazenamento</summary>
+<summary>✅ Bom — UTC explícito no armazenamento</summary>
 <br>
 
 ```ruby
@@ -54,7 +54,7 @@ Use `Time.parse` ou `Time.iso8601` para converter strings. Prefira `Time.iso8601
 valida o formato e lança `ArgumentError` para entradas inválidas.
 
 <details>
-<summary>❌ Bad — parse de string sem validação de formato</summary>
+<summary>❌ Ruim — parse de string sem validação de formato</summary>
 <br>
 
 ```ruby
@@ -72,7 +72,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — iso8601 valida formato + UTC explícito</summary>
+<summary>✅ Bom — iso8601 valida formato + UTC explícito</summary>
 <br>
 
 ```ruby
@@ -95,7 +95,7 @@ Use `Time.zone.now` no lugar de `Time.now` em projetos Rails — respeita `confi
 Converta para o fuso do usuário apenas na apresentação.
 
 <details>
-<summary>❌ Bad — Time.now ignora config.time_zone</summary>
+<summary>❌ Ruim — Time.now ignora config.time_zone</summary>
 <br>
 
 ```ruby
@@ -111,7 +111,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — conversão para fuso do usuário na apresentação</summary>
+<summary>✅ Bom — conversão para fuso do usuário na apresentação</summary>
 <br>
 
 ```ruby
@@ -132,7 +132,7 @@ Use os helpers de duração do ActiveSupport (`1.day`, `2.weeks`, `3.months`) pa
 aritmética legível. Para Ruby puro, use `Time` com segundos explícitos.
 
 <details>
-<summary>❌ Bad — aritmética em segundos mágicos</summary>
+<summary>❌ Ruim — aritmética em segundos mágicos</summary>
 <br>
 
 ```ruby
@@ -148,7 +148,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — duração nomeada com ActiveSupport</summary>
+<summary>✅ Bom — duração nomeada com ActiveSupport</summary>
 <br>
 
 ```ruby
@@ -171,7 +171,7 @@ Use os operadores `<`, `>`, `between?` diretamente em objetos `Time`. Nunca comp
 de data.
 
 <details>
-<summary>❌ Bad — comparação de strings de data</summary>
+<summary>❌ Ruim — comparação de strings de data</summary>
 <br>
 
 ```ruby
@@ -187,7 +187,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — comparação de objetos Time</summary>
+<summary>✅ Bom — comparação de objetos Time</summary>
 <br>
 
 ```ruby

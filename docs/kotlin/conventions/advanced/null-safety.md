@@ -20,7 +20,7 @@ compilador impede `NullPointerException` em tempo de compilação. O operador `!
 ## `!!` em produção
 
 <details>
-<summary>❌ Bad — !! como atalho perigoso</summary>
+<summary>❌ Ruim — !! como atalho perigoso</summary>
 <br>
 
 ```kotlin
@@ -35,7 +35,7 @@ fun getCustomerEmail(userId: Long): String {
 <br>
 
 <details>
-<summary>✅ Good — elvis com saída antecipada e erro expressivo</summary>
+<summary>✅ Bom — elvis com saída antecipada e erro expressivo</summary>
 <br>
 
 ```kotlin
@@ -52,7 +52,7 @@ fun getCustomerEmail(userId: Long): String {
 ## Cadeia de safe calls
 
 <details>
-<summary>❌ Bad — verificações manuais aninhadas</summary>
+<summary>❌ Ruim — verificações manuais aninhadas</summary>
 <br>
 
 ```kotlin
@@ -73,7 +73,7 @@ fun getCity(order: Order?): String {
 <br>
 
 <details>
-<summary>✅ Good — safe call chain com elvis no final</summary>
+<summary>✅ Bom — safe call chain com elvis no final</summary>
 <br>
 
 ```kotlin
@@ -88,7 +88,7 @@ fun getCity(order: Order?): String {
 ## `?.let` para bloco condicional
 
 <details>
-<summary>❌ Bad — if de null-check antes de bloco</summary>
+<summary>❌ Ruim — if de null-check antes de bloco</summary>
 <br>
 
 ```kotlin
@@ -104,7 +104,7 @@ if (promo != null) {
 <br>
 
 <details>
-<summary>✅ Good — let executa somente quando não-null</summary>
+<summary>✅ Bom — let executa somente quando não-null</summary>
 <br>
 
 ```kotlin
@@ -119,7 +119,7 @@ order.activePromotion?.let { promo ->
 ## Validação na fronteira com requireNotNull
 
 <details>
-<summary>❌ Bad — null chega até a lógica de negócio</summary>
+<summary>❌ Ruim — null chega até a lógica de negócio</summary>
 <br>
 
 ```kotlin
@@ -135,7 +135,7 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 <br>
 
 <details>
-<summary>✅ Good — falha rápida na fronteira com mensagem expressiva</summary>
+<summary>✅ Bom — falha rápida na fronteira com mensagem expressiva</summary>
 <br>
 
 ```kotlin
@@ -156,7 +156,7 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 ## Elvis como guard clause de retorno
 
 <details>
-<summary>❌ Bad — if/else para null-check com retorno</summary>
+<summary>❌ Ruim — if/else para null-check com retorno</summary>
 <br>
 
 ```kotlin
@@ -174,7 +174,7 @@ fun findProductPrice(productId: Long): Double {
 <br>
 
 <details>
-<summary>✅ Good — elvis guard em uma linha</summary>
+<summary>✅ Bom — elvis guard em uma linha</summary>
 <br>
 
 ```kotlin
@@ -191,7 +191,7 @@ fun findProductPrice(productId: Long): Double {
 ## Coleções e null — preferir empty collection
 
 <details>
-<summary>❌ Bad — null para representar lista vazia</summary>
+<summary>❌ Ruim — null para representar lista vazia</summary>
 <br>
 
 ```kotlin
@@ -206,7 +206,7 @@ fun findOrdersByUser(userId: Long): List<Order>? {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia; null nunca representa ausência de itens</summary>
+<summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
 <br>
 
 ```kotlin

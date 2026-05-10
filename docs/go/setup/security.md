@@ -20,7 +20,7 @@ Secrets em Go ficam em variáveis de ambiente, nunca em arquivos versionados. O 
 ## Secrets e variáveis de ambiente
 
 <details>
-<summary>❌ Bad — secret no código-fonte</summary>
+<summary>❌ Ruim — secret no código-fonte</summary>
 <br>
 
 ```go
@@ -37,7 +37,7 @@ func validateToken(token string) bool {
 <br>
 
 <details>
-<summary>✅ Good — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<summary>✅ Bom — secret lido de variável de ambiente, fail-fast se ausente</summary>
 <br>
 
 ```go
@@ -56,7 +56,7 @@ Valide toda entrada na camada de handler, antes de chegar ao service.
 Use o pacote `github.com/go-playground/validator/v10` para struct tags.
 
 <details>
-<summary>❌ Bad — validação ausente na fronteira</summary>
+<summary>❌ Ruim — validação ausente na fronteira</summary>
 <br>
 
 ```go
@@ -80,7 +80,7 @@ func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 <br>
 
 <details>
-<summary>✅ Good — validação explícita antes de delegar ao service</summary>
+<summary>✅ Bom — validação explícita antes de delegar ao service</summary>
 <br>
 
 ```go
@@ -121,7 +121,7 @@ func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 Nunca concatene input do usuário em queries. Use sempre placeholders parametrizados.
 
 <details>
-<summary>❌ Bad — concatenação de string em query SQL</summary>
+<summary>❌ Ruim — concatenação de string em query SQL</summary>
 <br>
 
 ```go
@@ -134,7 +134,7 @@ rows, err := db.Query(query)
 <br>
 
 <details>
-<summary>✅ Good — placeholder parametrizado</summary>
+<summary>✅ Bom — placeholder parametrizado</summary>
 <br>
 
 ```go
@@ -164,7 +164,7 @@ func (r *Repository) FindByEmail(ctx context.Context, email string) (*User, erro
 Toda chamada externa (banco, HTTP, fila) deve respeitar um `context.Context` com timeout.
 
 <details>
-<summary>❌ Bad — chamada sem timeout</summary>
+<summary>❌ Ruim — chamada sem timeout</summary>
 <br>
 
 ```go
@@ -184,7 +184,7 @@ func fetchPrice(productID int64) (*Price, error) {
 <br>
 
 <details>
-<summary>✅ Good — contexto com timeout propagado</summary>
+<summary>✅ Bom — contexto com timeout propagado</summary>
 <br>
 
 ```go

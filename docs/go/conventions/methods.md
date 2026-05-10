@@ -22,7 +22,7 @@ Use funções livres quando a operação não pertence semanticamente a um tipo.
 Use métodos quando a operação opera sobre o estado de um struct.
 
 <details>
-<summary>❌ Bad — método onde função seria mais claro</summary>
+<summary>❌ Ruim — método onde função seria mais claro</summary>
 <br>
 
 ```go
@@ -42,7 +42,7 @@ func (m MathHelper) Multiply(a, b float64) float64 {
 <br>
 
 <details>
-<summary>✅ Good — funções para operações sem estado; métodos para operações com estado</summary>
+<summary>✅ Bom — funções para operações sem estado; métodos para operações com estado</summary>
 <br>
 
 ```go
@@ -67,7 +67,7 @@ Use pointer receiver quando o método modifica o estado ou quando o struct é gr
 Use value receiver para structs pequenas somente de leitura.
 
 <details>
-<summary>❌ Bad — value receiver tenta modificar estado</summary>
+<summary>❌ Ruim — value receiver tenta modificar estado</summary>
 <br>
 
 ```go
@@ -86,7 +86,7 @@ func (o Order) Cancel() {
 <br>
 
 <details>
-<summary>✅ Good — pointer receiver para mutação; value receiver para leitura</summary>
+<summary>✅ Bom — pointer receiver para mutação; value receiver para leitura</summary>
 <br>
 
 ```go
@@ -116,7 +116,7 @@ func (o Order) IsCancelable() bool {
 Cada função deve operar em um único nível de abstração.
 
 <details>
-<summary>❌ Bad — god function: orquestra e implementa ao mesmo tempo</summary>
+<summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
 <br>
 
 ```go
@@ -151,7 +151,7 @@ func processOrder(order Order) error {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador delega para funções de um nível abaixo</summary>
+<summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
 <br>
 
 ```go
@@ -204,7 +204,7 @@ func applyCustomerDiscount(order Order) Order {
 Atribua a uma variável nomeada antes de retornar. O retorno nomeia o resultado, não o computa.
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```go
@@ -226,7 +226,7 @@ func findActiveUsers(users []User) []User {
 <br>
 
 <details>
-<summary>✅ Good — explaining return: resultado nomeado antes do return</summary>
+<summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
 <br>
 
 ```go
@@ -254,7 +254,7 @@ func findActiveUsers(users []User) []User {
 Até 3 parâmetros na assinatura. Com 4 ou mais, agrupe em uma struct.
 
 <details>
-<summary>❌ Bad — assinatura com muitos parâmetros</summary>
+<summary>❌ Ruim — assinatura com muitos parâmetros</summary>
 <br>
 
 ```go
@@ -269,7 +269,7 @@ func createOrder(customerID int64, amount float64, currency string,
 <br>
 
 <details>
-<summary>✅ Good — struct para agrupar parâmetros relacionados</summary>
+<summary>✅ Bom — struct para agrupar parâmetros relacionados</summary>
 <br>
 
 ```go
@@ -294,7 +294,7 @@ func createOrder(ctx context.Context, input CreateOrderInput) (*Order, error) {
 O orquestrador aparece primeiro. Os helpers ficam abaixo, na ordem em que são chamados.
 
 <details>
-<summary>✅ Good — leitura top-down natural</summary>
+<summary>✅ Bom — leitura top-down natural</summary>
 <br>
 
 ```go

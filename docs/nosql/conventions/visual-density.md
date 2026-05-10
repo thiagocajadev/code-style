@@ -27,7 +27,7 @@ As regras gerais de densidade visual estão em [shared/standards/visual-density.
 ---
 
 <details>
-<summary>❌ Bad — blocos compactados sem separação, pipeline inline, nomes genéricos</summary>
+<summary>❌ Ruim — blocos compactados sem separação, pipeline inline, nomes genéricos</summary>
 <br>
 
 ```js
@@ -47,7 +47,7 @@ const data = await db.collection('matches').aggregate([{$match:{season:'2026'}},
 <br>
 
 <details>
-<summary>✅ Good — grupos semânticos separados, pipeline legível, nomes de domínio</summary>
+<summary>✅ Bom — grupos semânticos separados, pipeline legível, nomes de domínio</summary>
 <br>
 
 ```js
@@ -94,7 +94,7 @@ Cada estágio é um objeto literal separado no array. Nunca inline todos em uma 
 ---
 
 <details>
-<summary>❌ Bad — pipeline colapsado em uma linha, sem separação por propósito</summary>
+<summary>❌ Ruim — pipeline colapsado em uma linha, sem separação por propósito</summary>
 <br>
 
 ```js
@@ -106,7 +106,7 @@ const results = await col.aggregate([{$match:{status:'active'}},{$lookup:{from:'
 <br>
 
 <details>
-<summary>✅ Good — pipeline com estágios separados e comentários de propósito</summary>
+<summary>✅ Bom — pipeline com estágios separados e comentários de propósito</summary>
 <br>
 
 ```js

@@ -25,7 +25,7 @@ VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (container DI
 Service locator é o antipadrão clássico de DI: buscar dependências diretamente do container dentro da classe. Torna dependências implícitas, dificulta testes e cria acoplamento ao container.
 
 <details>
-<summary>❌ Bad — dependência implícita, acoplado ao container</summary>
+<summary>❌ Ruim — dependência implícita, acoplado ao container</summary>
 <br>
 
 ```vbnet
@@ -50,7 +50,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — dependências explícitas no construtor</summary>
+<summary>✅ Bom — dependências explícitas no construtor</summary>
 <br>
 
 ```vbnet
@@ -77,7 +77,7 @@ End Class
 Property injection (setter injection) cria objetos em estado inválido: a dependência pode estar `Nothing` até alguém injetar. Constructor injection garante que o objeto nasce completo.
 
 <details>
-<summary>❌ Bad — property injection, dependência opcional implícita</summary>
+<summary>❌ Ruim — property injection, dependência opcional implícita</summary>
 <br>
 
 ```vbnet
@@ -99,7 +99,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — constructor injection, objeto nasce válido</summary>
+<summary>✅ Bom — constructor injection, objeto nasce válido</summary>
 <br>
 
 ```vbnet
@@ -133,7 +133,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 **Captive dependency**: um `ContainerControlledLifetimeManager` (singleton) que recebe um `HierarchicalLifetimeManager` (scoped) captura a instância na primeira resolução. O scoped passa a viver para sempre: comportamento incorreto e difícil de rastrear.
 
 <details>
-<summary>❌ Bad — singleton captura scoped</summary>
+<summary>❌ Ruim — singleton captura scoped</summary>
 <br>
 
 ```vbnet
@@ -155,7 +155,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — lifetimes compatíveis</summary>
+<summary>✅ Bom — lifetimes compatíveis</summary>
 <br>
 
 ```vbnet
@@ -170,7 +170,7 @@ container.RegisterType(Of IOrderRepository, SqlOrderRepository)(New Hierarchical
 Depender de interfaces, não de implementações concretas. Permite substituição em testes sem alterar o código de produção.
 
 <details>
-<summary>❌ Bad — dependência concreta, impossível substituir em testes</summary>
+<summary>❌ Ruim — dependência concreta, impossível substituir em testes</summary>
 <br>
 
 ```vbnet
@@ -189,7 +189,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — dependência por interface, substituível</summary>
+<summary>✅ Bom — dependência por interface, substituível</summary>
 <br>
 
 ```vbnet
@@ -216,7 +216,7 @@ container.RegisterType(Of IOrderRepository, FakeOrderRepository)(New TransientLi
 Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. Unity permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora.
 
 <details>
-<summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
+<summary>❌ Ruim — registro manual, cresce junto com os handlers</summary>
 <br>
 
 ```vbnet
@@ -240,7 +240,7 @@ End Module
 <br>
 
 <details>
-<summary>✅ Good — registro por convenção via reflection</summary>
+<summary>✅ Bom — registro por convenção via reflection</summary>
 <br>
 
 ```vbnet

@@ -18,7 +18,7 @@ correlação por tag e integração com Rails.
 ## Log estruturado com semantic_logger
 
 <details>
-<summary>❌ Bad — log de texto livre sem estrutura</summary>
+<summary>❌ Ruim — log de texto livre sem estrutura</summary>
 <br>
 
 ```ruby
@@ -39,7 +39,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — log estruturado com campos semânticos</summary>
+<summary>✅ Bom — log estruturado com campos semânticos</summary>
 <br>
 
 ```ruby
@@ -128,7 +128,7 @@ logger.info("application started")
 email, CPF e senha nunca entram em logs.
 
 <details>
-<summary>❌ Bad — dados pessoais no log</summary>
+<summary>❌ Ruim — dados pessoais no log</summary>
 <br>
 
 ```ruby
@@ -142,7 +142,7 @@ logger.info("user login", email: user.email, password: params[:password])
 <br>
 
 <details>
-<summary>✅ Good — apenas identificadores opacos</summary>
+<summary>✅ Bom — apenas identificadores opacos</summary>
 <br>
 
 ```ruby

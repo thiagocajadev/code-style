@@ -23,7 +23,7 @@ não estiver definida. Sem fallback, uma propriedade indefinida resulta em valor
 browser descarta a declaração sem aviso.
 
 <details>
-<summary>❌ Bad — custom property sem fallback, componente quebra se o token não existir</summary>
+<summary>❌ Ruim — custom property sem fallback, componente quebra se o token não existir</summary>
 <br>
 
 ```css
@@ -39,7 +39,7 @@ browser descarta a declaração sem aviso.
 <br>
 
 <details>
-<summary>✅ Good — fallback garante que o componente sempre renderiza</summary>
+<summary>✅ Bom — fallback garante que o componente sempre renderiza</summary>
 <br>
 
 ```css
@@ -59,7 +59,7 @@ ao `required + tipo não-nulo` das linguagens tipadas: o browser sabe o tipo esp
 usar quando a propriedade não foi atribuída.
 
 <details>
-<summary>❌ Bad — custom property sem registro: tipo desconhecido, animação não funciona</summary>
+<summary>❌ Ruim — custom property sem registro: tipo desconhecido, animação não funciona</summary>
 <br>
 
 ```css
@@ -81,7 +81,7 @@ usar quando a propriedade não foi atribuída.
 <br>
 
 <details>
-<summary>✅ Good — @property define contrato e previne valor inválido</summary>
+<summary>✅ Bom — @property define contrato e previne valor inválido</summary>
 <br>
 
 ```css
@@ -121,7 +121,7 @@ Fallbacks podem referenciar outras custom properties. O browser resolve a cadeia
 primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 <details>
-<summary>❌ Bad — var() sem fallback em cadeia: falha silenciosa quando token não existe</summary>
+<summary>❌ Ruim — var() sem fallback em cadeia: falha silenciosa quando token não existe</summary>
 <br>
 
 ```css
@@ -145,7 +145,7 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 <br>
 
 <details>
-<summary>✅ Good — cadeia de fallback para tokens com herança de tema</summary>
+<summary>✅ Bom — cadeia de fallback para tokens com herança de tema</summary>
 <br>
 
 ```css
@@ -179,7 +179,7 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 | `revert-layer` | Valor da cascade layer anterior |
 
 <details>
-<summary>❌ Bad — valores hardcoded como sentinela para "sem estilo"</summary>
+<summary>❌ Ruim — valores hardcoded como sentinela para "sem estilo"</summary>
 <br>
 
 ```css
@@ -205,7 +205,7 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 <br>
 
 <details>
-<summary>✅ Good — keywords semânticos no lugar de valores sentinela</summary>
+<summary>✅ Bom — keywords semânticos no lugar de valores sentinela</summary>
 <br>
 
 ```css

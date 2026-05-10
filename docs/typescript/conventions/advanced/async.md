@@ -21,7 +21,7 @@ Os padrões assíncronos do JavaScript: async/await, Promise.all, **API** (Appli
 Toda função `async` retorna uma `Promise`. O tipo do retorno deve declarar o que está dentro dela.
 
 <details>
-<summary>❌ Bad — return type implícito em função async exportada</summary>
+<summary>❌ Ruim — return type implícito em função async exportada</summary>
 <br>
 
 ```ts
@@ -36,7 +36,7 @@ export async function findUserById(id: string) {
 <br>
 
 <details>
-<summary>✅ Good — Promise<T> explícito</summary>
+<summary>✅ Bom — Promise<T> explícito</summary>
 <br>
 
 ```ts
@@ -59,7 +59,7 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
 infere cada posição corretamente.
 
 <details>
-<summary>❌ Bad — await sequencial quando não há dependência</summary>
+<summary>❌ Ruim — await sequencial quando não há dependência</summary>
 <br>
 
 ```ts
@@ -79,7 +79,7 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
 <br>
 
 <details>
-<summary>✅ Good — Promise.all com tipos preservados</summary>
+<summary>✅ Bom — Promise.all com tipos preservados</summary>
 <br>
 
 ```ts
@@ -108,7 +108,7 @@ Um cliente genérico com `get<T>` e `post<T>` transfere a responsabilidade de ti
 caller, que sabe o shape esperado, sem usar `any`.
 
 <details>
-<summary>❌ Bad — fetch direto com any espalhado pelo código</summary>
+<summary>❌ Ruim — fetch direto com any espalhado pelo código</summary>
 <br>
 
 ```ts
@@ -128,7 +128,7 @@ async function fetchUser(id: string) {
 <br>
 
 <details>
-<summary>✅ Good — cliente genérico, caller declara o tipo esperado</summary>
+<summary>✅ Bom — cliente genérico, caller declara o tipo esperado</summary>
 <br>
 
 ```ts
@@ -189,7 +189,7 @@ Métodos de array como `map` e `filter` não são `async-aware`: retornam `Promi
 resolvidos. Use `Promise.all` para aguardar.
 
 <details>
-<summary>❌ Bad — map com async retorna Promise[], não os valores</summary>
+<summary>❌ Ruim — map com async retorna Promise[], não os valores</summary>
 <br>
 
 ```ts
@@ -209,7 +209,7 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
 <br>
 
 <details>
-<summary>✅ Good — Promise.all resolve o array de promises</summary>
+<summary>✅ Bom — Promise.all resolve o array de promises</summary>
 <br>
 
 ```ts

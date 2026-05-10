@@ -22,7 +22,7 @@ marcar regiões de código para profiling no Instruments.
 ## `print()` em produção
 
 <details>
-<summary>❌ Bad — print() não tem nível, subsystem nem controle de privacidade</summary>
+<summary>❌ Ruim — print() não tem nível, subsystem nem controle de privacidade</summary>
 <br>
 
 ```swift
@@ -38,7 +38,7 @@ func processPayment(userId: UUID, amount: Double) {
 <br>
 
 <details>
-<summary>✅ Good — os.Logger com categoria e nível correto</summary>
+<summary>✅ Bom — os.Logger com categoria e nível correto</summary>
 <br>
 
 ```swift
@@ -61,7 +61,7 @@ Por padrão, valores interpolados em os.Logger são redacted em builds de releas
 do usuário. Marque explicitamente o que pode ser público.
 
 <details>
-<summary>❌ Bad — dados sensíveis em log público</summary>
+<summary>❌ Ruim — dados sensíveis em log público</summary>
 <br>
 
 ```swift
@@ -73,7 +73,7 @@ logger.debug("Charging card \(cardNumber)")   // número de cartão em plain tex
 <br>
 
 <details>
-<summary>✅ Good — privacidade explícita por campo</summary>
+<summary>✅ Bom — privacidade explícita por campo</summary>
 <br>
 
 ```swift
@@ -98,7 +98,7 @@ logger.debug("Full card id: \(cardId, privacy: .private)")   // redacted em rele
 ## Signposts para profiling
 
 <details>
-<summary>✅ Good — signpost marca início e fim de operação crítica</summary>
+<summary>✅ Bom — signpost marca início e fim de operação crítica</summary>
 <br>
 
 ```swift

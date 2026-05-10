@@ -18,7 +18,7 @@ instante no tempo deve ser _aware_ — com fuso horário explícito.
 ## naive vs aware
 
 <details>
-<summary>❌ Bad — datetime sem fuso: comparação ambígua</summary>
+<summary>❌ Ruim — datetime sem fuso: comparação ambígua</summary>
 <br>
 
 ```python
@@ -36,7 +36,7 @@ if created_at > expires_at:   # comparação ambígua: qual timezone?
 <br>
 
 <details>
-<summary>✅ Good — datetime aware com UTC explícito</summary>
+<summary>✅ Bom — datetime aware com UTC explícito</summary>
 <br>
 
 ```python
@@ -57,7 +57,7 @@ Para fusos que respeitam horário de verão (DST), use `zoneinfo.ZoneInfo` em ve
 Um offset fixo como `+03:00` não muda com o DST — um fuso nomeado sim.
 
 <details>
-<summary>❌ Bad — offset fixo ignora DST</summary>
+<summary>❌ Ruim — offset fixo ignora DST</summary>
 <br>
 
 ```python
@@ -72,7 +72,7 @@ local_time = datetime.now(tz=brasilia)
 <br>
 
 <details>
-<summary>✅ Good — ZoneInfo aplica DST automaticamente</summary>
+<summary>✅ Bom — ZoneInfo aplica DST automaticamente</summary>
 <br>
 
 ```python
@@ -90,7 +90,7 @@ Armazene e transmita datas como strings **ISO** (International Organization for 
 `datetime.fromisoformat()` para desserializar.
 
 <details>
-<summary>❌ Bad — formato não padronizado, parsing frágil</summary>
+<summary>❌ Ruim — formato não padronizado, parsing frágil</summary>
 <br>
 
 ```python
@@ -105,7 +105,7 @@ parsed = datetime.strptime("22/04/2026 15:30", "%d/%m/%Y %H:%M")  # naive, frág
 <br>
 
 <details>
-<summary>✅ Good — ISO 8601 com fuso, round-trip garantido</summary>
+<summary>✅ Bom — ISO 8601 com fuso, round-trip garantido</summary>
 <br>
 
 ```python
@@ -126,7 +126,7 @@ Quando você precisa apenas da parte da data ou do horário, use o método corre
 construir um `datetime` completo para descartar metade.
 
 <details>
-<summary>❌ Bad — datetime completo só para extrair a data</summary>
+<summary>❌ Ruim — datetime completo só para extrair a data</summary>
 <br>
 
 ```python
@@ -141,7 +141,7 @@ due_date = parsed.date()  # descarta o horário depois
 <br>
 
 <details>
-<summary>✅ Good — date.strptime direto (Python 3.14+)</summary>
+<summary>✅ Bom — date.strptime direto (Python 3.14+)</summary>
 <br>
 
 ```python
@@ -158,7 +158,7 @@ Use `timedelta` para somar ou subtrair intervalos. Nunca calcule com timestamps 
 diretamente — erros de DST e overflow são difíceis de rastrear.
 
 <details>
-<summary>❌ Bad — aritmética com timestamp numérico</summary>
+<summary>❌ Ruim — aritmética com timestamp numérico</summary>
 <br>
 
 ```python
@@ -173,7 +173,7 @@ tomorrow_ts = now_ts + 86400  # pode estar errado no dia de mudança de DST
 <br>
 
 <details>
-<summary>✅ Good — timedelta com aware datetime</summary>
+<summary>✅ Bom — timedelta com aware datetime</summary>
 <br>
 
 ```python

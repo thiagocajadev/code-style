@@ -48,7 +48,7 @@ const playersCollection = database.collection('players');
 ```
 
 <details>
-<summary>❌ Bad — novo cliente por requisição: pool destruído e recriado a cada chamada</summary>
+<summary>❌ Ruim — novo cliente por requisição: pool destruído e recriado a cada chamada</summary>
 <br>
 
 ```js
@@ -70,7 +70,7 @@ async function findTeam(teamId) {
 <br>
 
 <details>
-<summary>✅ Good — cliente singleton; pool reutilizado em toda a aplicação</summary>
+<summary>✅ Bom — cliente singleton; pool reutilizado em toda a aplicação</summary>
 <br>
 
 ```js

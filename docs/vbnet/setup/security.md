@@ -90,7 +90,7 @@ End Module
 Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na controller ou action garante cobertura uniforme antes de qualquer código executar.
 
 <details>
-<summary>❌ Bad — verificação manual de role no corpo</summary>
+<summary>❌ Ruim — verificação manual de role no corpo</summary>
 <br>
 
 ```vbnet
@@ -113,7 +113,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — atributo declarativo, action sem lógica de autorização</summary>
+<summary>✅ Bom — atributo declarativo, action sem lógica de autorização</summary>
 <br>
 
 ```vbnet

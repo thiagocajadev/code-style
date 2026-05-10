@@ -28,7 +28,7 @@ Por padrão o Visual Studio configura o formulário de inicialização diretamen
 Para ativar: **Project Properties → Application → Startup object → Sub Main**.
 
 <details>
-<summary>❌ Bad — formulário de inicialização direto, sem ponto de controle</summary>
+<summary>❌ Ruim — formulário de inicialização direto, sem ponto de controle</summary>
 <br>
 
 ```vbnet
@@ -42,7 +42,7 @@ Para ativar: **Project Properties → Application → Startup object → Sub Mai
 <br>
 
 <details>
-<summary>✅ Good — Sub Main como ponto de controle único</summary>
+<summary>✅ Bom — Sub Main como ponto de controle único</summary>
 <br>
 
 ```vbnet
@@ -77,7 +77,7 @@ WinForms expõe dois eventos para capturar exceções não tratadas: `Applicatio
 Registre ambos antes de `Application.Run` — exceções antes desse ponto não são capturadas por nenhum dos dois.
 
 <details>
-<summary>❌ Bad — aplicação encerra com diálogo do Windows sem log</summary>
+<summary>❌ Ruim — aplicação encerra com diálogo do Windows sem log</summary>
 <br>
 
 ```vbnet
@@ -96,7 +96,7 @@ End Module
 <br>
 
 <details>
-<summary>✅ Good — exceções capturadas, logadas e apresentadas ao usuário</summary>
+<summary>✅ Bom — exceções capturadas, logadas e apresentadas ao usuário</summary>
 <br>
 
 ```vbnet
@@ -146,7 +146,7 @@ Use configurações de usuário para preferências de UI — janela maximizada, 
 | `User` | Sim, com `My.Settings.Save()` | `%AppData%\...\user.config` |
 
 <details>
-<summary>❌ Bad — preferências de UI hardcoded ou em variáveis locais</summary>
+<summary>❌ Ruim — preferências de UI hardcoded ou em variáveis locais</summary>
 <br>
 
 ```vbnet
@@ -165,7 +165,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — My.Settings persiste preferências entre sessões</summary>
+<summary>✅ Bom — My.Settings persiste preferências entre sessões</summary>
 <br>
 
 ```vbnet
@@ -209,7 +209,7 @@ End Class
 WinForms não tem container de DI nativo. O padrão mais pragmático é **manual constructor injection**: serviços são criados em `Sub Main` e passados para o formulário raiz. Formulários filhos recebem apenas o que precisam — nunca o container inteiro.
 
 <details>
-<summary>❌ Bad — Form instancia serviços diretamente ou acessa estado global</summary>
+<summary>❌ Ruim — Form instancia serviços diretamente ou acessa estado global</summary>
 <br>
 
 ```vbnet
@@ -232,7 +232,7 @@ End Module
 <br>
 
 <details>
-<summary>✅ Good — serviços injetados via construtor, formulário não conhece a implementação</summary>
+<summary>✅ Bom — serviços injetados via construtor, formulário não conhece a implementação</summary>
 <br>
 
 ```vbnet
@@ -276,7 +276,7 @@ End Class
 `My.Application` expõe eventos de ciclo de vida (`Startup`, `Shutdown`) e permite configurar a aplicação como single-instance — útil para ferramentas de desktop que não devem abrir duas vezes. Ative em **Project Properties → Application → Make single instance application**.
 
 <details>
-<summary>✅ Good — inicialização e limpeza no ciclo de vida da aplicação</summary>
+<summary>✅ Bom — inicialização e limpeza no ciclo de vida da aplicação</summary>
 <br>
 
 ```vbnet
@@ -353,7 +353,7 @@ ASP.NET MVC 5 e Web API 2 em .NET Framework 4.8 seguem um modelo de bootstrap ba
 Connection strings e parâmetros de ambiente pertencem ao arquivo de configuração, nunca ao código. `ConfigurationManager` é o ponto de acesso central — nunca passe strings diretamente para `New SqlConnection(...)`.
 
 <details>
-<summary>❌ Bad — connection string hardcoded no código</summary>
+<summary>❌ Ruim — connection string hardcoded no código</summary>
 <br>
 
 ```vbnet
@@ -371,7 +371,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — connection string no Web.config, lida via ConfigurationManager</summary>
+<summary>✅ Bom — connection string no Web.config, lida via ConfigurationManager</summary>
 <br>
 
 ```xml
@@ -402,7 +402,7 @@ End Module
 `Global.asax.vb` é o equivalente ao `Program.cs` em projetos web .NET Framework. Deve declarar intenção — registrar rotas, filtros e container de DI — sem implementar nada diretamente.
 
 <details>
-<summary>❌ Bad — Global.asax.vb com lógica de negócio e configuração misturadas</summary>
+<summary>❌ Ruim — Global.asax.vb com lógica de negócio e configuração misturadas</summary>
 <br>
 
 ```vbnet
@@ -435,7 +435,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — entry point como índice, configuração delegada</summary>
+<summary>✅ Bom — entry point como índice, configuração delegada</summary>
 <br>
 
 ```vbnet
@@ -488,7 +488,7 @@ End Module
 Para aplicações console ou Windows Services, o entry point é um `Module` com um `Sub Main`. Mesma regra: declara intenção, delega implementação.
 
 <details>
-<summary>✅ Good — Module Main como índice</summary>
+<summary>✅ Bom — Module Main como índice</summary>
 <br>
 
 ```vbnet
@@ -521,7 +521,7 @@ End Module
 VB.NET não tem primary constructors (C# 12+). O padrão é construtor explícito com campos `ReadOnly`. Cada serviço declara suas dependências via construtor — nunca instancia ou localiza dependências internamente.
 
 <details>
-<summary>❌ Bad — dependências instanciadas internamente</summary>
+<summary>❌ Ruim — dependências instanciadas internamente</summary>
 <br>
 
 ```vbnet
@@ -541,7 +541,7 @@ End Class
 <br>
 
 <details>
-<summary>❌ Bad — Service Locator: dependências buscadas no container</summary>
+<summary>❌ Ruim — Service Locator: dependências buscadas no container</summary>
 <br>
 
 ```vbnet
@@ -560,7 +560,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — constructor injection, dependências declaradas na assinatura</summary>
+<summary>✅ Bom — constructor injection, dependências declaradas na assinatura</summary>
 <br>
 
 ```vbnet
@@ -586,7 +586,7 @@ End Class
 Cada domínio registra suas próprias dependências em um extension method de `IUnityContainer`. `ContainerConfig` agrega, sem conhecer os detalhes de nenhum domínio.
 
 <details>
-<summary>✅ Good — domínio de Purchases dono da sua configuração</summary>
+<summary>✅ Bom — domínio de Purchases dono da sua configuração</summary>
 <br>
 
 ```vbnet
@@ -635,7 +635,7 @@ End Sub
 Evite ler chaves de configuração com strings espalhadas pelo código. Centralize em uma classe ou módulo de configuração — qualquer mudança de chave tem um único ponto de atualização.
 
 <details>
-<summary>❌ Bad — chaves de configuração espalhadas no código</summary>
+<summary>❌ Ruim — chaves de configuração espalhadas no código</summary>
 <br>
 
 ```vbnet
@@ -654,7 +654,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — configuração centralizada, lida uma vez</summary>
+<summary>✅ Bom — configuração centralizada, lida uma vez</summary>
 <br>
 
 ```xml

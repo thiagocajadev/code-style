@@ -17,7 +17,7 @@ bugs e torna o fluxo previsível.
 ## Mutação desnecessária
 
 <details>
-<summary>❌ Bad — variável reatribuída sem necessidade</summary>
+<summary>❌ Ruim — variável reatribuída sem necessidade</summary>
 <br>
 
 ```java
@@ -30,7 +30,7 @@ int maxRetries = 3;        // nunca reatribuído
 <br>
 
 <details>
-<summary>✅ Good — final por padrão, mutável só quando necessário</summary>
+<summary>✅ Bom — final por padrão, mutável só quando necessário</summary>
 <br>
 
 ```java
@@ -51,7 +51,7 @@ Parâmetros são passados por referência para objetos. Alterar o estado de um p
 objeto do chamador: efeito colateral invisível e difícil de rastrear.
 
 <details>
-<summary>❌ Bad — mutação do parâmetro recebido</summary>
+<summary>❌ Ruim — mutação do parâmetro recebido</summary>
 <br>
 
 ```java
@@ -66,7 +66,7 @@ private void applyDiscount(Order order) {
 <br>
 
 <details>
-<summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
 <br>
 
 ```java
@@ -86,7 +86,7 @@ private Order applyDiscount(Order order) {
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Bad — o que significa 18? e 86400000?</summary>
+<summary>❌ Ruim — o que significa 18? e 86400000?</summary>
 <br>
 
 ```java
@@ -101,7 +101,7 @@ scheduler.schedule(this::syncData, 86400000, TimeUnit.MILLISECONDS);
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas</summary>
+<summary>✅ Bom — constantes nomeadas</summary>
 <br>
 
 ```java
@@ -123,7 +123,7 @@ Para objetos de dados que não mudam após a criação, use `record`. O compilad
 getters, `equals`, `hashCode` e `toString` automaticamente.
 
 <details>
-<summary>❌ Bad — classe mutável para transportar dados</summary>
+<summary>❌ Ruim — classe mutável para transportar dados</summary>
 <br>
 
 ```java
@@ -142,7 +142,7 @@ public class InvoiceData {
 <br>
 
 <details>
-<summary>✅ Good — record elimina o boilerplate e garante imutabilidade</summary>
+<summary>✅ Bom — record elimina o boilerplate e garante imutabilidade</summary>
 <br>
 
 ```java
@@ -165,7 +165,7 @@ final var invoice = new InvoiceData("ord-1", "cust-99", new BigDecimal("149.90")
 tipo inferido não é imediatamente claro.
 
 <details>
-<summary>❌ Bad — var obscurece o tipo</summary>
+<summary>❌ Ruim — var obscurece o tipo</summary>
 <br>
 
 ```java
@@ -178,7 +178,7 @@ final var x = buildSomething();        // sem contexto
 <br>
 
 <details>
-<summary>✅ Good — var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
+<summary>✅ Bom — var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
 <br>
 
 ```java
@@ -197,7 +197,7 @@ wrappers (tipos de referência: `Integer`, `Long`, `Boolean`) apenas quando nuli
 coleções genéricas for necessário.
 
 <details>
-<summary>❌ Bad — wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
+<summary>❌ Ruim — wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
 <br>
 
 ```java
@@ -211,7 +211,7 @@ Long totalMs = 86_400_000L;  // valor fixo, nunca null
 <br>
 
 <details>
-<summary>✅ Good — primitivo por padrão, wrapper só quando necessário</summary>
+<summary>✅ Bom — primitivo por padrão, wrapper só quando necessário</summary>
 <br>
 
 ```java

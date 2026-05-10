@@ -23,7 +23,7 @@ Nunca crie um `time.Time` sem fuso horário definido. Use `time.Now().UTC()` par
 timestamps do sistema e `time.ParseInLocation` para input do usuário com timezone.
 
 <details>
-<summary>❌ Bad — time sem fuso horário definido</summary>
+<summary>❌ Ruim — time sem fuso horário definido</summary>
 <br>
 
 ```go
@@ -37,7 +37,7 @@ scheduledAt, _ := time.Parse("2006-01-02", "2026-01-15")
 <br>
 
 <details>
-<summary>✅ Good — fuso horário explícito em toda criação de time</summary>
+<summary>✅ Bom — fuso horário explícito em toda criação de time</summary>
 <br>
 
 ```go
@@ -59,7 +59,7 @@ Use `time.RFC3339` (ou `time.RFC3339Nano` para precisão de nanosegundo) ao seri
 e desserializar datas em APIs e bancos de dados.
 
 <details>
-<summary>❌ Bad — formato de data não padronizado</summary>
+<summary>❌ Ruim — formato de data não padronizado</summary>
 <br>
 
 ```go
@@ -75,7 +75,7 @@ scheduledAt, _ := time.Parse("02/01/2006", req.ScheduledAt)
 <br>
 
 <details>
-<summary>✅ Good — RFC 3339 com parsing explícito</summary>
+<summary>✅ Bom — RFC 3339 com parsing explícito</summary>
 <br>
 
 ```go
@@ -104,7 +104,7 @@ Defina campos de data como `time.Time`. Use ponteiro `*time.Time` apenas quando
 o campo é opcionalmente nulo (diferente de zero time).
 
 <details>
-<summary>✅ Good — time.Time direto para campos obrigatórios</summary>
+<summary>✅ Bom — time.Time direto para campos obrigatórios</summary>
 <br>
 
 ```go
@@ -131,7 +131,7 @@ Para durations, componha usando as constantes de `time`: `time.Second`, `time.Mi
 `time.Hour`. Nunca use números mágicos de nanosegundos.
 
 <details>
-<summary>❌ Bad — número mágico de nanosegundos</summary>
+<summary>❌ Ruim — número mágico de nanosegundos</summary>
 <br>
 
 ```go
@@ -144,7 +144,7 @@ timeout := 300000000000        // 5 minutos em nanosegundos
 <br>
 
 <details>
-<summary>✅ Good — constantes compostas e nomeadas</summary>
+<summary>✅ Bom — constantes compostas e nomeadas</summary>
 <br>
 
 ```go
@@ -167,7 +167,7 @@ Use `time.Before`, `time.After` e `time.Equal` para comparar `time.Time`.
 Nunca compare strings de datas.
 
 <details>
-<summary>❌ Bad — comparação via string</summary>
+<summary>❌ Ruim — comparação via string</summary>
 <br>
 
 ```go
@@ -181,7 +181,7 @@ if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) 
 <br>
 
 <details>
-<summary>✅ Good — comparação via métodos de time.Time</summary>
+<summary>✅ Bom — comparação via métodos de time.Time</summary>
 <br>
 
 ```go
@@ -200,7 +200,7 @@ Bancos de dados têm precisão menor que Go (microsegundos vs nanosegundos). Tru
 antes de salvar evita divergência entre o que foi salvo e o que foi retornado.
 
 <details>
-<summary>✅ Good — truncar para microsegundos antes de persistir</summary>
+<summary>✅ Bom — truncar para microsegundos antes de persistir</summary>
 <br>
 
 ```go

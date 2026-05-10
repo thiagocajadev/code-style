@@ -23,7 +23,7 @@ Nunca use a implementação diretamente (`java.util.logging`, `Log4j`). Use semp
 troca a implementação sem alterar o código.
 
 <details>
-<summary>❌ Bad — log direto para stdout, sem estrutura</summary>
+<summary>❌ Ruim — log direto para stdout, sem estrutura</summary>
 <br>
 
 ```java
@@ -42,7 +42,7 @@ public class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — SLF4J com placeholders, sem concatenação</summary>
+<summary>✅ Bom — SLF4J com placeholders, sem concatenação</summary>
 <br>
 
 ```java
@@ -74,7 +74,7 @@ public class OrderService {
 | `TRACE` | Rastreamento granular de execução; nunca em prod                       |
 
 <details>
-<summary>❌ Bad — nível errado obscurece o problema</summary>
+<summary>❌ Ruim — nível errado obscurece o problema</summary>
 <br>
 
 ```java
@@ -87,7 +87,7 @@ log.error("User logged in: {}", user.getId()); // deveria ser INFO ou DEBUG
 <br>
 
 <details>
-<summary>✅ Good — nível adequado ao evento</summary>
+<summary>✅ Bom — nível adequado ao evento</summary>
 <br>
 
 ```java
@@ -104,7 +104,7 @@ MDC adiciona contexto ao log de uma thread inteira sem alterar cada chamada de l
 Use para propagar `correlationId` e `userId` entre todas as mensagens de uma requisição.
 
 <details>
-<summary>❌ Bad — correlationId repetido em cada log</summary>
+<summary>❌ Ruim — correlationId repetido em cada log</summary>
 <br>
 
 ```java
@@ -118,7 +118,7 @@ log.info("Invoice saved: invoiceId={} correlationId={}", invoiceId, correlationI
 <br>
 
 <details>
-<summary>✅ Good — MDC popula o contexto uma vez; Logback inclui em todos os logs</summary>
+<summary>✅ Bom — MDC popula o contexto uma vez; Logback inclui em todos os logs</summary>
 <br>
 
 ```java
@@ -153,7 +153,7 @@ Nunca logue PII (Personally Identifiable Information, Informações de Identific
 senhas, tokens, CPF, cartão de crédito, endereços completos.
 
 <details>
-<summary>❌ Bad — PII nos logs</summary>
+<summary>❌ Ruim — PII nos logs</summary>
 <br>
 
 ```java
@@ -166,7 +166,7 @@ log.debug("Payment: card={} cvv={}", card.getNumber(), card.getCvv());
 <br>
 
 <details>
-<summary>✅ Good — apenas identificadores não sensíveis</summary>
+<summary>✅ Bom — apenas identificadores não sensíveis</summary>
 <br>
 
 ```java
@@ -182,7 +182,7 @@ Micrometer é a fachada de métricas do Spring Boot 4. Exponha contadores e time
 operações críticas.
 
 <details>
-<summary>✅ Good — contador e timer para operação de negócio</summary>
+<summary>✅ Bom — contador e timer para operação de negócio</summary>
 <br>
 
 ```java

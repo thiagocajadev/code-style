@@ -23,7 +23,7 @@ A preferência é usar **stored procedures** para operações de domínio: a ló
 Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
 
 <details>
-<summary>❌ Bad — SQL de domínio inline no repositório</summary>
+<summary>❌ Ruim — SQL de domínio inline no repositório</summary>
 <br>
 
 ```csharp
@@ -48,7 +48,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 <br>
 
 <details>
-<summary>✅ Good — procedure encapsula a lógica, repositório só mapeia</summary>
+<summary>✅ Bom — procedure encapsula a lógica, repositório só mapeia</summary>
 <br>
 
 ```sql
@@ -100,7 +100,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindByCustomerAsync(Guid customer
 <br>
 
 <details>
-<summary>✅ Good — procedure de escrita com OUTPUT param</summary>
+<summary>✅ Bom — procedure de escrita com OUTPUT param</summary>
 <br>
 
 ```sql
@@ -152,7 +152,7 @@ public async Task<Guid> CreateAsync(Guid customerId, decimal total, Cancellation
 Quando a operação é simples demais para justificar uma procedure (lookup por chave, contagem, existência), query aberta é aceitável.
 
 <details>
-<summary>✅ Good — lookup simples por chave primária</summary>
+<summary>✅ Bom — lookup simples por chave primária</summary>
 <br>
 
 ```csharp
@@ -171,7 +171,7 @@ public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<summary>✅ Good — verificação de existência</summary>
+<summary>✅ Bom — verificação de existência</summary>
 <br>
 
 ```csharp
@@ -195,7 +195,7 @@ SQL injection acontece quando um valor externo é interpretado como código SQL 
 Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e o banco trata como dado puro, sem interpretar.
 
 <details>
-<summary>❌ Bad — concatenação deixa o atacante escrever SQL</summary>
+<summary>❌ Ruim — concatenação deixa o atacante escrever SQL</summary>
 <br>
 
 ```csharp
@@ -215,7 +215,7 @@ var sql = $"SELECT Id, Name FROM Customers WHERE Email = '{email}'";
 <br>
 
 <details>
-<summary>❌ Bad — LIKE com concatenação, wildcard no SQL permite injeção</summary>
+<summary>❌ Ruim — LIKE com concatenação, wildcard no SQL permite injeção</summary>
 <br>
 
 ```csharp
@@ -236,7 +236,7 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 <br>
 
 <details>
-<summary>✅ Good — parâmetro nomeado, valor tratado como dado pelo banco</summary>
+<summary>✅ Bom — parâmetro nomeado, valor tratado como dado pelo banco</summary>
 <br>
 
 ```csharp
@@ -255,7 +255,7 @@ public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct
 <br>
 
 <details>
-<summary>✅ Good — LIKE com parâmetro, wildcard no valor não no SQL</summary>
+<summary>✅ Bom — LIKE com parâmetro, wildcard no valor não no SQL</summary>
 <br>
 
 ```csharp
@@ -278,7 +278,7 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 `IDbConnection` é injetado no repositório, nunca instanciado internamente com connection string hardcoded. O ciclo de vida da conexão é responsabilidade do chamador.
 
 <details>
-<summary>❌ Bad — conexão instanciada dentro do repositório</summary>
+<summary>❌ Ruim — conexão instanciada dentro do repositório</summary>
 <br>
 
 ```csharp
@@ -297,7 +297,7 @@ public class OrderRepository
 <br>
 
 <details>
-<summary>✅ Good — IDbConnection injetado via construtor</summary>
+<summary>✅ Bom — IDbConnection injetado via construtor</summary>
 <br>
 
 ```csharp

@@ -7,18 +7,18 @@ história: quem chamou, o que recebeu, o que esperava.
 
 ## Conceitos fundamentais
 
-| Conceito                                                | O que é                                                                                                                            |
-| ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Estrutura de três fases para cada teste: montagem do contexto, execução e verificação do resultado                                 |
-| **Unit test** (teste unitário)                          | Teste de uma função em isolamento, sem I/O real; dependências externas são substituídas por doubles                                |
-| **Integration test** (teste de integração)              | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos                               |
-| **Doubles** (substitutos de teste)                      | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
-| **Fixture** (dado de teste pré-definido)                | Contexto ou dado passado para configurar o estado do teste                                                                         |
-| **cyclomatic complexity** (complexidade ciclomática)    | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
+| Conceito                                                 | O que é                                                                                                                            |
+| -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | Estrutura de três fases para cada teste: montagem do contexto, execução e verificação do resultado                                 |
+| **Unit test** (teste unitário)                           | Teste de uma função em isolamento, sem I/O real; dependências externas são substituídas por doubles                                |
+| **Integration test** (teste de integração)               | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos                               |
+| **Doubles** (substitutos de teste)                       | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
+| **Fixture** (dado de teste pré-definido)                 | Contexto ou dado passado para configurar o estado do teste                                                                         |
+| **cyclomatic complexity** (complexidade ciclomática)     | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
 
 ## AAA
 
-O padrão **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) divide cada
+O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) divide cada
 teste em três fases explícitas, separadas por uma linha em branco.
 
 ```
@@ -90,11 +90,7 @@ desenvolvimento e cobertura exaustiva de casos de borda.
 Verificam como múltiplos componentes funcionam juntos, com infraestrutura real:
 banco de dados, APIs externas, filas, sistema de arquivos.
 
-O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O
-benefício é verificar o que testes unitários não alcançam: que a query **SQL**
-(Structured Query Language, Linguagem de Consulta Estruturada) está correta, que
-a migration não quebrou o mapeamento, que o endpoint retorna o contrato
-esperado.
+O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) gerada está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
 
 | Característica    | Detalhe                                              |
 | ----------------- | ---------------------------------------------------- |

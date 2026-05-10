@@ -34,7 +34,7 @@ Use este setup quando:
 A connection string (string de conexão) pertence ao `App.config`, nunca ao código. Isso permite trocar o banco sem recompilar.
 
 <details>
-<summary>❌ Bad — connection string hardcoded no código</summary>
+<summary>❌ Ruim — connection string hardcoded no código</summary>
 <br>
 
 ```vbnet
@@ -53,7 +53,7 @@ End Module
 <br>
 
 <details>
-<summary>✅ Good — connection string no App.config, lida uma vez</summary>
+<summary>✅ Bom — connection string no App.config, lida uma vez</summary>
 <br>
 
 ```xml
@@ -86,7 +86,7 @@ End Module
 Um módulo por domínio. Cada função executa uma query e retorna o resultado — sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
 
 <details>
-<summary>❌ Bad — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
+<summary>❌ Ruim — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
 <br>
 
 ```vbnet
@@ -115,7 +115,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — módulo thin isolado, formulário só chama e exibe</summary>
+<summary>✅ Bom — módulo thin isolado, formulário só chama e exibe</summary>
 <br>
 
 ```vbnet
@@ -183,7 +183,7 @@ End Class
 O mesmo princípio: uma função por operação, parâmetros tipados, `Using` garante descarte da conexão.
 
 <details>
-<summary>✅ Good — INSERT com parâmetros tipados</summary>
+<summary>✅ Bom — INSERT com parâmetros tipados</summary>
 <br>
 
 ```vbnet
@@ -249,7 +249,7 @@ End Sub
 Se o `App.config` não tiver a connection string, `ConfigurationManager.ConnectionStrings` retorna `Nothing`. Falhar rápido (fail-fast) com mensagem clara é preferível a uma `NullReferenceException` genérica na primeira operação de banco.
 
 <details>
-<summary>✅ Good — fail-fast na inicialização, antes de abrir qualquer formulário</summary>
+<summary>✅ Bom — fail-fast na inicialização, antes de abrir qualquer formulário</summary>
 <br>
 
 ```vbnet

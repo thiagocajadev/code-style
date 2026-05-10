@@ -44,7 +44,7 @@ Features/
 ```
 
 <details>
-<summary>❌ Bad — lógica de negócio inline na rota</summary>
+<summary>❌ Ruim — lógica de negócio inline na rota</summary>
 <br>
 
 ```csharp
@@ -73,7 +73,7 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
 <br>
 
 <details>
-<summary>❌ Bad — handler que busca dependências via service locator</summary>
+<summary>❌ Ruim — handler que busca dependências via service locator</summary>
 <br>
 
 ```csharp
@@ -99,7 +99,7 @@ public class CreateOrderHandler
 <br>
 
 <details>
-<summary>✅ Good — rotas mapeadas no extension method, handler injetado</summary>
+<summary>✅ Bom — rotas mapeadas no extension method, handler injetado</summary>
 <br>
 
 ```csharp
@@ -143,7 +143,7 @@ public static class OrdersExtensions
 <br>
 
 <details>
-<summary>✅ Good — handler com dependências no construtor, request como parâmetro</summary>
+<summary>✅ Bom — handler com dependências no construtor, request como parâmetro</summary>
 <br>
 
 ```csharp
@@ -172,7 +172,7 @@ permite agrupar todos os parâmetros em um context record — o framework resolv
 individualmente via DI, como se fossem parâmetros avulsos.
 
 <details>
-<summary>❌ Bad — assinatura longa, dependências espalhadas no handler</summary>
+<summary>❌ Ruim — assinatura longa, dependências espalhadas no handler</summary>
 <br>
 
 ```csharp
@@ -193,7 +193,7 @@ app.MapPost("/orders", async (
 <br>
 
 <details>
-<summary>✅ Good — context record agrupa dependências, handler recebe um parâmetro</summary>
+<summary>✅ Bom — context record agrupa dependências, handler recebe um parâmetro</summary>
 <br>
 
 ```csharp
@@ -226,7 +226,7 @@ globais, model binding por atributo, scaffolding). O mesmo princípio se aplica:
 lógica, apenas orquestra.
 
 <details>
-<summary>❌ Bad — controller com lógica de negócio</summary>
+<summary>❌ Ruim — controller com lógica de negócio</summary>
 <br>
 
 ```csharp
@@ -261,7 +261,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
 <br>
 
 <details>
-<summary>✅ Good — controller thin, delega para o service</summary>
+<summary>✅ Bom — controller thin, delega para o service</summary>
 <br>
 
 ```csharp
@@ -316,7 +316,7 @@ O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possí
 documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
 
 <details>
-<summary>❌ Bad — Results apaga o tipo de retorno</summary>
+<summary>❌ Ruim — Results apaga o tipo de retorno</summary>
 <br>
 
 ```csharp
@@ -336,7 +336,7 @@ app.MapGet("/orders/{id}", async (Guid id, OrderService orderService, Cancellati
 <br>
 
 <details>
-<summary>✅ Good — TypedResults + union type na assinatura</summary>
+<summary>✅ Bom — TypedResults + union type na assinatura</summary>
 <br>
 
 ```csharp
@@ -361,7 +361,7 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 nomeada antes do retorno — o `return` nomeia, não computa.
 
 <details>
-<summary>❌ Bad — interpolação no return</summary>
+<summary>❌ Ruim — interpolação no return</summary>
 <br>
 
 ```csharp
@@ -374,7 +374,7 @@ return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
 <br>
 
 <details>
-<summary>✅ Good — URL em variável nomeada</summary>
+<summary>✅ Bom — URL em variável nomeada</summary>
 <br>
 
 ```csharp
@@ -394,7 +394,7 @@ completos em cada handler polui o código. `global using` aliasa o tipo uma vez 
 status.
 
 <details>
-<summary>❌ Bad — tipo union verboso repetido em cada handler</summary>
+<summary>❌ Ruim — tipo union verboso repetido em cada handler</summary>
 <br>
 
 ```csharp
@@ -413,7 +413,7 @@ public static async Task<Results<
 <br>
 
 <details>
-<summary>✅ Good — alias declarado uma vez, handler usa nome semântico</summary>
+<summary>✅ Bom — alias declarado uma vez, handler usa nome semântico</summary>
 <br>
 
 ```csharp
@@ -446,7 +446,7 @@ query no mesmo método — viola CQS e acopla a leitura à escrita. Um `IOrderRe
 save.
 
 <details>
-<summary>❌ Bad — SaveAsync retorna entidade (CQS violado)</summary>
+<summary>❌ Ruim — SaveAsync retorna entidade (CQS violado)</summary>
 <br>
 
 ```csharp
@@ -461,7 +461,7 @@ return TypedResults.Created($"/orders/{saved.Id}", saved);
 <br>
 
 <details>
-<summary>✅ Good — SaveAsync void, IOrderReader separado para leitura</summary>
+<summary>✅ Bom — SaveAsync void, IOrderReader separado para leitura</summary>
 <br>
 
 ```csharp

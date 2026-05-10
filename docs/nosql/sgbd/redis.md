@@ -40,7 +40,7 @@ await client.connect();
 ```
 
 <details>
-<summary>❌ Bad — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
+<summary>❌ Ruim — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
 <br>
 
 ```js
@@ -54,7 +54,7 @@ await client.connect();
 <br>
 
 <details>
-<summary>✅ Good — URL por variável de ambiente; handler de erro; connect aguardado</summary>
+<summary>✅ Bom — URL por variável de ambiente; handler de erro; connect aguardado</summary>
 <br>
 
 ```js
@@ -89,7 +89,7 @@ O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScr
 | `MGET key1 key2` | Ler múltiplos valores |
 
 <details>
-<summary>❌ Bad — SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
+<summary>❌ Ruim — SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
 <br>
 
 ```js
@@ -108,7 +108,7 @@ const cached = JSON.parse(await client.get('team:profile:42'));
 <br>
 
 <details>
-<summary>✅ Good — SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
+<summary>✅ Bom — SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
 <br>
 
 ```js
@@ -150,7 +150,7 @@ cache miss → busca no banco → salva no cache → retorna valor
 ```
 
 <details>
-<summary>✅ Good — cache-aside com TTL; sem duplicação de lógica de busca</summary>
+<summary>✅ Bom — cache-aside com TTL; sem duplicação de lógica de busca</summary>
 <br>
 
 ```js
@@ -226,7 +226,7 @@ Ideal para rankings, leaderboards e filas com prioridade.
 | `ZREM key member` | Remover membro |
 
 <details>
-<summary>✅ Good — leaderboard de gols com Sorted Set</summary>
+<summary>✅ Bom — leaderboard de gols com Sorted Set</summary>
 <br>
 
 ```js

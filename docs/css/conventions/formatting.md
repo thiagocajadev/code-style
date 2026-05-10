@@ -17,7 +17,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 ## Ordem de propriedades
 
 <details>
-<summary>❌ Bad — ordem aleatória, difícil de escanear</summary>
+<summary>❌ Ruim — ordem aleatória, difícil de escanear</summary>
 <br>
 
 ```css
@@ -42,7 +42,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 <br>
 
 <details>
-<summary>✅ Good — agrupado por responsabilidade, legível de cima pra baixo</summary>
+<summary>✅ Bom — agrupado por responsabilidade, legível de cima pra baixo</summary>
 <br>
 
 ```css
@@ -74,7 +74,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 ## Uma propriedade por linha
 
 <details>
-<summary>❌ Bad — múltiplas propriedades em uma linha, diff ilegível</summary>
+<summary>❌ Ruim — múltiplas propriedades em uma linha, diff ilegível</summary>
 <br>
 
 <!-- prettier-ignore -->
@@ -87,7 +87,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 <br>
 
 <details>
-<summary>✅ Good — uma propriedade por linha, diff limpo</summary>
+<summary>✅ Bom — uma propriedade por linha, diff limpo</summary>
 <br>
 
 ```css

@@ -135,7 +135,7 @@ cálculo. O webhook handler precisa receber o stream bruto diretamente.
 A comparação usa `timingSafeEqual` para evitar timing attack (ataque de temporização):
 
 <details>
-<summary>❌ Bad — valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
+<summary>❌ Ruim — valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
 <br>
 
 ```js
@@ -160,7 +160,7 @@ async function handleWebhook(request) {
 <br>
 
 <details>
-<summary>✅ Good — valida sobre raw body, comparação timing-safe</summary>
+<summary>✅ Bom — valida sobre raw body, comparação timing-safe</summary>
 <br>
 
 ```js
@@ -203,7 +203,7 @@ O processador roteia o evento pelo tipo usando um registry (registro de handlers
 crescente:
 
 <details>
-<summary>✅ Good — registry de handlers por tipo de evento</summary>
+<summary>✅ Bom — registry de handlers por tipo de evento</summary>
 <br>
 
 ```js
@@ -268,7 +268,7 @@ transacional com overhead (custo extra) de 10–30% de throughput. Na prática, 
 consumer idempotente** entrega a mesma garantia com menos complexidade.
 
 <details>
-<summary>✅ Good — consumer verifica idempotência antes de processar</summary>
+<summary>✅ Bom — consumer verifica idempotência antes de processar</summary>
 <br>
 
 ```js

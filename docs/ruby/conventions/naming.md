@@ -19,7 +19,7 @@ como parte da semântica da linguagem — convenções que o RuboCop enforça au
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```ruby
@@ -37,7 +37,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```ruby
@@ -68,7 +68,7 @@ Ruby usa capitalização como sinal semântico. O RuboCop avisa sobre violaçõe
 | Método destrutivo / que lança exceção  | `snake_case!`          | `save!`, `destroy!`, `validate!`            |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```ruby
@@ -85,7 +85,7 @@ def isActive?; end
 <br>
 
 <details>
-<summary>✅ Good — convenções Ruby respeitadas</summary>
+<summary>✅ Bom — convenções Ruby respeitadas</summary>
 <br>
 
 ```ruby
@@ -109,7 +109,7 @@ end
 Em inglês, o nome segue a ordem natural da fala: **verbo + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```ruby
@@ -125,7 +125,7 @@ def calculate_total_invoice(invoice_id) = nil
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```ruby
@@ -141,7 +141,7 @@ def calculate_invoice_total(invoice_id) = nil
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
 <br>
 
 ```ruby
@@ -158,7 +158,7 @@ def do_stuff(x) = nil
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```ruby
@@ -177,7 +177,7 @@ def apply_seasonal_discount(order) = nil
 O nome reflete a intenção de negócio, não o detalhe técnico de onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```ruby
@@ -194,7 +194,7 @@ def save_to_s3(file) = nil
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```ruby
@@ -213,7 +213,7 @@ def archive_document(file) = nil
 Variáveis booleanas usam prefixo semântico. Métodos predicados usam sufixo `?` (idioma Ruby).
 
 <details>
-<summary>❌ Bad — booleanos sem sinal semântico</summary>
+<summary>❌ Ruim — booleanos sem sinal semântico</summary>
 <br>
 
 ```ruby
@@ -229,7 +229,7 @@ valid = email.include?("@")
 <br>
 
 <details>
-<summary>✅ Good — variáveis com prefixo; métodos com sufixo ?</summary>
+<summary>✅ Bom — variáveis com prefixo; métodos com sufixo ?</summary>
 <br>
 
 ```ruby
@@ -253,7 +253,7 @@ def has_open_orders? = orders.any?(&:pending?)
 Métodos com `!` sinalizam comportamento destrutivo ou que lança exceção em vez de retornar `nil`/`false`.
 
 <details>
-<summary>❌ Bad — bang em método que não tem par sem bang</summary>
+<summary>❌ Ruim — bang em método que não tem par sem bang</summary>
 <br>
 
 ```ruby
@@ -270,7 +270,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — par save / save! com comportamentos distintos</summary>
+<summary>✅ Bom — par save / save! com comportamentos distintos</summary>
 <br>
 
 ```ruby
@@ -298,7 +298,7 @@ end
 Trate acrônimos como palavras normais em `PascalCase`. Evite maiúsculas em sequência.
 
 <details>
-<summary>❌ Bad — acrônimo inteiro em maiúsculas</summary>
+<summary>❌ Ruim — acrônimo inteiro em maiúsculas</summary>
 <br>
 
 ```ruby
@@ -314,7 +314,7 @@ def parseJSON(raw) = nil
 <br>
 
 <details>
-<summary>✅ Good — acrônimo como palavra normal</summary>
+<summary>✅ Bom — acrônimo como palavra normal</summary>
 <br>
 
 ```ruby

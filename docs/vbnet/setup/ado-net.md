@@ -21,7 +21,7 @@
 O par fundamental. `SqlConnection` abre o canal com o banco; `SqlCommand` executa a instrução. Ambos implementam `IDisposable` — sempre dentro de `Using`.
 
 <details>
-<summary>✅ Good — query com SqlDataReader, Using garante descarte</summary>
+<summary>✅ Bom — query com SqlDataReader, Using garante descarte</summary>
 <br>
 
 ```vbnet
@@ -56,7 +56,7 @@ End Function
 A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução — o banco nunca o interpreta como código.
 
 <details>
-<summary>❌ Bad — concatenação de strings abre porta para SQL injection</summary>
+<summary>❌ Ruim — concatenação de strings abre porta para SQL injection</summary>
 <br>
 
 ```vbnet
@@ -73,7 +73,7 @@ command.CommandText = $"SELECT Id FROM Customers WHERE Name = '{name}'"
 <br>
 
 <details>
-<summary>✅ Good — parâmetro nomeado, valor isolado do SQL</summary>
+<summary>✅ Bom — parâmetro nomeado, valor isolado do SQL</summary>
 <br>
 
 ```vbnet
@@ -88,7 +88,7 @@ command.Parameters.Add("@Name", SqlDbType.NVarChar, 200).Value = name
 Prefira `Add` com tipo explícito a `AddWithValue`. `AddWithValue` infere o tipo do valor .NET, o que pode causar conversões inesperadas — especialmente com `String` sendo mapeada para `NVarChar` de tamanho arbitrário, afetando o plano de execução.
 
 <details>
-<summary>❌ Bad — AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
+<summary>❌ Ruim — AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
 <br>
 
 ```vbnet
@@ -102,7 +102,7 @@ command.Parameters.AddWithValue("@CreatedAt", date)         ' DateTime vs DateTi
 <br>
 
 <details>
-<summary>✅ Good — Add com tipo explícito, sem surpresas de conversão</summary>
+<summary>✅ Bom — Add com tipo explícito, sem surpresas de conversão</summary>
 <br>
 
 ```vbnet
@@ -118,7 +118,7 @@ command.Parameters.Add("@CreatedAt", SqlDbType.DateTime2).Value = createdAt
 Para operações que não retornam linhas. Retorna o número de linhas afetadas — útil para detectar se o registro existia.
 
 <details>
-<summary>✅ Good — INSERT com ExecuteNonQueryAsync</summary>
+<summary>✅ Bom — INSERT com ExecuteNonQueryAsync</summary>
 <br>
 
 ```vbnet
@@ -147,7 +147,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — UPDATE verificando se o registro foi encontrado</summary>
+<summary>✅ Bom — UPDATE verificando se o registro foi encontrado</summary>
 <br>
 
 ```vbnet
@@ -178,7 +178,7 @@ End Function
 `CommandType.StoredProcedure` instrui o driver a chamar a procedure pelo nome em vez de executar SQL literal. Os parâmetros são os mesmos — o driver cuida da sintaxe `EXEC`.
 
 <details>
-<summary>✅ Good — procedure de leitura</summary>
+<summary>✅ Bom — procedure de leitura</summary>
 <br>
 
 ```vbnet
@@ -218,7 +218,7 @@ End Function
 Procedures que retornam um valor via `OUTPUT` exigem um `SqlParameter` com `Direction = ParameterDirection.Output`. O valor fica disponível após `ExecuteNonQueryAsync`.
 
 <details>
-<summary>✅ Good — procedure com OUTPUT param para Id gerado no banco</summary>
+<summary>✅ Bom — procedure com OUTPUT param para Id gerado no banco</summary>
 <br>
 
 ```vbnet
@@ -253,7 +253,7 @@ End Function
 `DataTable` é o padrão de fato em WebForms e WinForms legados: carrega um result set inteiro em memória, serve como `DataSource` direto de grids e relatórios. `SqlDataAdapter` preenche o `DataTable` sem precisar de `Open()` explícito.
 
 <details>
-<summary>✅ Good — SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
+<summary>✅ Bom — SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
 <br>
 
 ```vbnet
@@ -286,7 +286,7 @@ GridView1.DataBind()
 <br>
 
 <details>
-<summary>✅ Good — DataTable via stored procedure</summary>
+<summary>✅ Bom — DataTable via stored procedure</summary>
 <br>
 
 ```vbnet
@@ -313,7 +313,7 @@ End Function
 `SqlTransaction` garante atomicidade: ou tudo persiste, ou nada persiste. Sempre associe cada `SqlCommand` à transação via `.Transaction`. Em caso de exceção, `Rollback` desfaz tudo.
 
 <details>
-<summary>❌ Bad — sem transação, operações parcialmente persistidas em caso de erro</summary>
+<summary>❌ Ruim — sem transação, operações parcialmente persistidas em caso de erro</summary>
 <br>
 
 ```vbnet
@@ -329,7 +329,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — transação garante consistência entre as operações</summary>
+<summary>✅ Bom — transação garante consistência entre as operações</summary>
 <br>
 
 ```vbnet
@@ -396,7 +396,7 @@ End Function
 `SqlDataReader` retorna `DBNull.Value` para colunas `NULL`. Verificar com `IsDBNull` antes de ler evita `InvalidCastException`.
 
 <details>
-<summary>❌ Bad — leitura direta sem verificar DBNull</summary>
+<summary>❌ Ruim — leitura direta sem verificar DBNull</summary>
 <br>
 
 ```vbnet
@@ -409,7 +409,7 @@ Dim deletedAt = reader.GetDateTime(reader.GetOrdinal("DeletedAt"))
 <br>
 
 <details>
-<summary>✅ Good — IsDBNull antes de ler coluna anulável</summary>
+<summary>✅ Bom — IsDBNull antes de ler coluna anulável</summary>
 <br>
 
 ```vbnet
@@ -427,7 +427,7 @@ Dim deletedAt As DateTime? = If(
 Para queries que retornam um único valor (COUNT, MAX, SUM, ou uma coluna de uma linha).
 
 <details>
-<summary>✅ Good — contagem e verificação de existência com ExecuteScalar</summary>
+<summary>✅ Bom — contagem e verificação de existência com ExecuteScalar</summary>
 <br>
 
 ```vbnet

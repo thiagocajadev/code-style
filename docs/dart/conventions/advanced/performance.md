@@ -19,7 +19,7 @@ e Futures têm custo de microtask — lazy evaluation adia trabalho desnecessár
 ## `dynamic` e `Object`
 
 <details>
-<summary>❌ Bad — dynamic desabilita verificação de tipo</summary>
+<summary>❌ Ruim — dynamic desabilita verificação de tipo</summary>
 <br>
 
 ```dart
@@ -33,7 +33,7 @@ List<dynamic> processItems(List<dynamic> items) {
 <br>
 
 <details>
-<summary>✅ Good — genérico tipado; erros em compile-time</summary>
+<summary>✅ Bom — genérico tipado; erros em compile-time</summary>
 <br>
 
 ```dart
@@ -47,7 +47,7 @@ List<String> extractNames(List<Map<String, dynamic>> items) {
 ## `const` constructors para widgets e objetos imutáveis
 
 <details>
-<summary>❌ Bad — objeto novo criado a cada chamada</summary>
+<summary>❌ Ruim — objeto novo criado a cada chamada</summary>
 <br>
 
 ```dart
@@ -60,7 +60,7 @@ final color = Colors.blue;             // nova instância sempre
 <br>
 
 <details>
-<summary>✅ Good — const canonicaliza e reusa a mesma instância</summary>
+<summary>✅ Bom — const canonicaliza e reusa a mesma instância</summary>
 <br>
 
 ```dart
@@ -73,7 +73,7 @@ const color = Colors.blue;
 ## Lazy evaluation em coleções grandes
 
 <details>
-<summary>❌ Bad — cada operação cria lista intermediária</summary>
+<summary>❌ Ruim — cada operação cria lista intermediária</summary>
 <br>
 
 ```dart
@@ -91,7 +91,7 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 <br>
 
 <details>
-<summary>✅ Good — lazy até o toList() final</summary>
+<summary>✅ Bom — lazy até o toList() final</summary>
 <br>
 
 ```dart
@@ -111,7 +111,7 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 ## `Uint8List` para I/O de bytes
 
 <details>
-<summary>❌ Bad — List<int> com boxing para cada byte</summary>
+<summary>❌ Ruim — List<int> com boxing para cada byte</summary>
 <br>
 
 ```dart
@@ -125,7 +125,7 @@ Future<List<int>> readFile(String path) async {
 <br>
 
 <details>
-<summary>✅ Good — Uint8List é buffer nativo sem boxing</summary>
+<summary>✅ Bom — Uint8List é buffer nativo sem boxing</summary>
 <br>
 
 ```dart

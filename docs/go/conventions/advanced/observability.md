@@ -24,7 +24,7 @@ Configure um único logger com `slog.NewJSONHandler` para produção. Injete via
 ou como dependência explícita.
 
 <details>
-<summary>✅ Good — slog com JSON handler para produção</summary>
+<summary>✅ Bom — slog com JSON handler para produção</summary>
 <br>
 
 ```go
@@ -47,7 +47,7 @@ func main() {
 Sempre use pares chave-valor nos logs. Evite interpolação de string — dificulta parsing.
 
 <details>
-<summary>❌ Bad — string interpolada, sem estrutura</summary>
+<summary>❌ Ruim — string interpolada, sem estrutura</summary>
 <br>
 
 ```go
@@ -60,7 +60,7 @@ log.Printf("error saving order: %v", err)
 <br>
 
 <details>
-<summary>✅ Good — slog com chave-valor</summary>
+<summary>✅ Bom — slog com chave-valor</summary>
 <br>
 
 ```go
@@ -88,7 +88,7 @@ slog.Error("save order failed",
 | Error  | Falha que requer atenção; sistema não conseguiu executar |
 
 <details>
-<summary>❌ Bad — Error para log de fluxo normal</summary>
+<summary>❌ Ruim — Error para log de fluxo normal</summary>
 <br>
 
 ```go
@@ -104,7 +104,7 @@ if errors.Is(err, ErrNotFound) {
 <br>
 
 <details>
-<summary>✅ Good — Info/Warn para fluxo esperado; Error para falha real</summary>
+<summary>✅ Bom — Info/Warn para fluxo esperado; Error para falha real</summary>
 <br>
 
 ```go
@@ -127,7 +127,7 @@ if err != nil {
 Propague o correlation ID em todos os logs de uma requisição usando o context.
 
 <details>
-<summary>✅ Good — correlation ID extraído do context e adicionado ao log</summary>
+<summary>✅ Bom — correlation ID extraído do context e adicionado ao log</summary>
 <br>
 
 ```go
@@ -184,7 +184,7 @@ func (s *OrderService) ProcessOrder(ctx context.Context, order Order) error {
 Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
-<summary>❌ Bad — PII nos logs</summary>
+<summary>❌ Ruim — PII nos logs</summary>
 <br>
 
 ```go
@@ -200,7 +200,7 @@ slog.Info("user logged in",
 <br>
 
 <details>
-<summary>✅ Good — apenas ID e evento, sem PII</summary>
+<summary>✅ Bom — apenas ID e evento, sem PII</summary>
 <br>
 
 ```go

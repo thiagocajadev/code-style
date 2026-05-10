@@ -19,7 +19,7 @@ via `runTest`.
 ## Fases misturadas — AAA
 
 <details>
-<summary>❌ Bad — setup, ação e assert misturados</summary>
+<summary>❌ Ruim — setup, ação e assert misturados</summary>
 <br>
 
 ```kotlin
@@ -37,7 +37,7 @@ fun testOrder() {
 <br>
 
 <details>
-<summary>✅ Good — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
 <br>
 
 ```kotlin
@@ -65,7 +65,7 @@ fun `findOrder returns paid order when found`() {
 ## Nomes de teste expressivos
 
 <details>
-<summary>❌ Bad — nomes genéricos sem contexto</summary>
+<summary>❌ Ruim — nomes genéricos sem contexto</summary>
 <br>
 
 ```kotlin
@@ -84,7 +84,7 @@ fun orderTest() { ... }
 <br>
 
 <details>
-<summary>✅ Good — backtick notation descreve comportamento</summary>
+<summary>✅ Bom — backtick notation descreve comportamento</summary>
 <br>
 
 ```kotlin
@@ -103,7 +103,7 @@ fun `applyDiscount throws when rate is outside 0-1 range`() { ... }
 ## Testes de coroutines com runTest
 
 <details>
-<summary>❌ Bad — runBlocking não controla tempo virtual</summary>
+<summary>❌ Ruim — runBlocking não controla tempo virtual</summary>
 <br>
 
 ```kotlin
@@ -119,7 +119,7 @@ fun testRetryWithDelay() = runBlocking {
 <br>
 
 <details>
-<summary>✅ Good — runTest com advanceTimeBy</summary>
+<summary>✅ Bom — runTest com advanceTimeBy</summary>
 <br>
 
 ```kotlin
@@ -141,7 +141,7 @@ fun `retryWithDelay retries after 1 second`() = runTest {
 ## Mocking com mockk
 
 <details>
-<summary>❌ Bad — stub genérico sem verificação de comportamento</summary>
+<summary>❌ Ruim — stub genérico sem verificação de comportamento</summary>
 <br>
 
 ```kotlin
@@ -161,7 +161,7 @@ fun testSendNotification() {
 <br>
 
 <details>
-<summary>✅ Good — verify com exatamente o que deve ser chamado</summary>
+<summary>✅ Bom — verify com exatamente o que deve ser chamado</summary>
 <br>
 
 ```kotlin
@@ -189,7 +189,7 @@ fun `confirmOrder sends confirmation email to customer`() {
 ## Testes parametrizados
 
 <details>
-<summary>❌ Bad — testes duplicados com dados diferentes</summary>
+<summary>❌ Ruim — testes duplicados com dados diferentes</summary>
 <br>
 
 ```kotlin
@@ -217,7 +217,7 @@ fun `rate -0_1 is invalid`() {
 <br>
 
 <details>
-<summary>✅ Good — tabela de dados cobre todos os cenários</summary>
+<summary>✅ Bom — tabela de dados cobre todos os cenários</summary>
 <br>
 
 ```kotlin

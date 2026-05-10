@@ -20,7 +20,7 @@ bugs de programação (não capturar em produção).
 ## Exception genérica
 
 <details>
-<summary>❌ Bad — throw de string ou Exception genérica</summary>
+<summary>❌ Ruim — throw de string ou Exception genérica</summary>
 <br>
 
 ```dart
@@ -38,7 +38,7 @@ Future<Order> findOrder(int id) async {
 <br>
 
 <details>
-<summary>✅ Good — Exception subclassificada por tipo de erro</summary>
+<summary>✅ Bom — Exception subclassificada por tipo de erro</summary>
 <br>
 
 ```dart
@@ -63,7 +63,7 @@ Future<Order> findOrder(int id) async {
 ## Erro silencioso
 
 <details>
-<summary>❌ Bad — catch engole sem log</summary>
+<summary>❌ Ruim — catch engole sem log</summary>
 <br>
 
 ```dart
@@ -81,7 +81,7 @@ Future<void> sendNotification(int userId) async {
 <br>
 
 <details>
-<summary>✅ Good — log estruturado + decisão explícita de continuar</summary>
+<summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
 <br>
 
 ```dart
@@ -103,7 +103,7 @@ Future<void> sendNotification(int userId) async {
 ## Captura por tipo específico
 
 <details>
-<summary>❌ Bad — catch genérico captura até Errors de programação</summary>
+<summary>❌ Ruim — catch genérico captura até Errors de programação</summary>
 <br>
 
 ```dart
@@ -121,7 +121,7 @@ Future<Order?> processOrder(int orderId) async {
 <br>
 
 <details>
-<summary>✅ Good — on com tipo específico; re-throw o resto</summary>
+<summary>✅ Bom — on com tipo específico; re-throw o resto</summary>
 <br>
 
 ```dart
@@ -140,7 +140,7 @@ Future<Order?> processOrder(int orderId) async {
 ## Result pattern com sealed class
 
 <details>
-<summary>❌ Bad — Exception para controle de fluxo no chamador</summary>
+<summary>❌ Ruim — Exception para controle de fluxo no chamador</summary>
 <br>
 
 ```dart
@@ -161,7 +161,7 @@ Future<void> submitOrder(OrderRequest request) async {
 <br>
 
 <details>
-<summary>✅ Good — Result como valor; switch exaustivo no chamador</summary>
+<summary>✅ Bom — Result como valor; switch exaustivo no chamador</summary>
 <br>
 
 ```dart

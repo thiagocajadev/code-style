@@ -19,7 +19,7 @@ As convenções abaixo usam MongoDB como referência primária. Princípios de p
 ## Insert
 
 <details>
-<summary>❌ Bad — inserção fora do repository, sem campo de auditoria, dado inline no driver</summary>
+<summary>❌ Ruim — inserção fora do repository, sem campo de auditoria, dado inline no driver</summary>
 <br>
 
 ```js
@@ -41,7 +41,7 @@ async function createTeam(name, city, year) {
 <br>
 
 <details>
-<summary>✅ Good — repository encapsula o driver; campos de auditoria; nomes de domínio</summary>
+<summary>✅ Bom — repository encapsula o driver; campos de auditoria; nomes de domínio</summary>
 <br>
 
 ```js
@@ -68,7 +68,7 @@ class TeamRepository {
 ## Find
 
 <details>
-<summary>❌ Bad — sem projeção, filtro no cliente, nome genérico</summary>
+<summary>❌ Ruim — sem projeção, filtro no cliente, nome genérico</summary>
 <br>
 
 ```js
@@ -95,7 +95,7 @@ async function getActiveTeams() {
 <br>
 
 <details>
-<summary>✅ Good — projeção limita campos; filtro no banco; repository</summary>
+<summary>✅ Bom — projeção limita campos; filtro no banco; repository</summary>
 <br>
 
 ```js
@@ -129,7 +129,7 @@ class TeamRepository {
 ## Update
 
 <details>
-<summary>❌ Bad — replace completo em vez de patch; sem campo de auditoria; expõe driver</summary>
+<summary>❌ Ruim — replace completo em vez de patch; sem campo de auditoria; expõe driver</summary>
 <br>
 
 ```js
@@ -152,7 +152,7 @@ async function setManager(id, manager) {
 <br>
 
 <details>
-<summary>✅ Good — patch com $set; updatedAt de auditoria; repository</summary>
+<summary>✅ Bom — patch com $set; updatedAt de auditoria; repository</summary>
 <br>
 
 ```js
@@ -196,7 +196,7 @@ class TeamRepository {
 ## Delete
 
 <details>
-<summary>❌ Bad — hard delete sem auditoria; condição fraca; expõe driver</summary>
+<summary>❌ Ruim — hard delete sem auditoria; condição fraca; expõe driver</summary>
 <br>
 
 ```js
@@ -216,7 +216,7 @@ async function cleanup() {
 <br>
 
 <details>
-<summary>✅ Good — soft delete com campo de auditoria; hard delete explícito e restrito</summary>
+<summary>✅ Bom — soft delete com campo de auditoria; hard delete explícito e restrito</summary>
 <br>
 
 ```js
@@ -257,7 +257,7 @@ class TeamRepository {
 ## Upsert
 
 <details>
-<summary>❌ Bad — find + insert manual, não atômico, condição de corrida</summary>
+<summary>❌ Ruim — find + insert manual, não atômico, condição de corrida</summary>
 <br>
 
 ```js
@@ -278,7 +278,7 @@ async function saveStandings(teamId, points) {
 <br>
 
 <details>
-<summary>✅ Good — **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
+<summary>✅ Bom — **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
 <br>
 
 ```js

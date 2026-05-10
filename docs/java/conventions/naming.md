@@ -17,7 +17,7 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```java
@@ -34,7 +34,7 @@ private Order apply(Object x, Order p, Function<Order, Order> c) {
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```java
@@ -53,7 +53,7 @@ private Order applyDiscount(Order order, UnaryOperator<Order> calculateDiscount)
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — camelCase com português fica desajeitado</summary>
+<summary>❌ Ruim — camelCase com português fica desajeitado</summary>
 <br>
 
 ```java
@@ -69,7 +69,7 @@ private Address buscaEnderecoDoCliente(String id) { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```java
@@ -85,7 +85,7 @@ private Address getCustomerAddress(String id) { /* ... */ }
 ## Mistura de idiomas
 
 <details>
-<summary>❌ Bad — português e inglês no mesmo arquivo</summary>
+<summary>❌ Ruim — português e inglês no mesmo arquivo</summary>
 <br>
 
 ```java
@@ -101,7 +101,7 @@ final var resultado = processOrder(pedido);
 <br>
 
 <details>
-<summary>✅ Good — consistência de idioma</summary>
+<summary>✅ Bom — consistência de idioma</summary>
 <br>
 
 ```java
@@ -119,7 +119,7 @@ final var invoice = processOrder(order);
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```java
@@ -133,7 +133,7 @@ calculateTotalInvoice();// "invoice total" é a expressão natural
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```java
@@ -147,7 +147,7 @@ calculateInvoiceTotal();
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
 <br>
 
 ```java
@@ -163,7 +163,7 @@ private void doStuff(Object x) { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```java
@@ -192,7 +192,7 @@ private Order applySeasonalDiscount(Order order) { /* ... */ }
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```java
@@ -208,7 +208,7 @@ private void saveToS3(byte[] file) { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```java
@@ -227,7 +227,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 substitui qualquer comentário.
 
 <details>
-<summary>❌ Bad — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim — comentário repete o que o código já diz</summary>
 <br>
 
 ```java
@@ -245,7 +245,7 @@ attempts++;
 <br>
 
 <details>
-<summary>✅ Good — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
 <br>
 
 ```java
@@ -264,7 +264,7 @@ attempts++;
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```java
@@ -280,7 +280,7 @@ final var valid = email.contains("@");
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```java
@@ -299,7 +299,7 @@ Java não usa o prefixo `I` para interfaces (diferente de C#). O nome deve expre
 não o artefato.
 
 <details>
-<summary>❌ Bad — prefixo I revela o artefato, não o papel</summary>
+<summary>❌ Ruim — prefixo I revela o artefato, não o papel</summary>
 <br>
 
 ```java
@@ -313,7 +313,7 @@ public class UserRepositoryImpl implements IUserRepository { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — nome expressa o papel; implementação detalha a tecnologia</summary>
+<summary>✅ Bom — nome expressa o papel; implementação detalha a tecnologia</summary>
 <br>
 
 ```java

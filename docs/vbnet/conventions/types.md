@@ -27,7 +27,7 @@ VB.NET oferece **Interface**, **MustInherit Class** (equivalente a abstract), **
 A regra prática: se duas implementações vão compartilhar código, `MustInherit Class`. Se só compartilham contrato, `Interface`.
 
 <details>
-<summary>❌ Bad — interface usada para compartilhar código entre implementações</summary>
+<summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
 <br>
 
 ```vbnet
@@ -54,7 +54,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — MustInherit Class quando há estado ou template method</summary>
+<summary>✅ Bom — MustInherit Class quando há estado ou template method</summary>
 <br>
 
 ```vbnet
@@ -104,7 +104,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — interface quando só o contrato importa</summary>
+<summary>✅ Bom — interface quando só o contrato importa</summary>
 <br>
 
 ```vbnet
@@ -131,7 +131,7 @@ End Class
 `NotInheritable` (equivalente ao `sealed` do C#) impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `NotInheritable`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade — e contrato implícito é contrato errado.
 
 <details>
-<summary>❌ Bad — classe concreta sem NotInheritable, extensibilidade acidental</summary>
+<summary>❌ Ruim — classe concreta sem NotInheritable, extensibilidade acidental</summary>
 <br>
 
 ```vbnet
@@ -160,7 +160,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — NotInheritable por padrão, extensibilidade exige decisão</summary>
+<summary>✅ Bom — NotInheritable por padrão, extensibilidade exige decisão</summary>
 <br>
 
 ```vbnet
@@ -187,7 +187,7 @@ End Class
 A regra prática: **default é `Class`**. `Structure` só quando a semântica de valor é parte do domínio (coordenadas, dimensões, dinheiro quando não há identidade) e o tipo é pequeno — tipicamente abaixo de 16 bytes.
 
 <details>
-<summary>❌ Bad — Structure grande, cópia custosa a cada passagem</summary>
+<summary>❌ Ruim — Structure grande, cópia custosa a cada passagem</summary>
 <br>
 
 ```vbnet
@@ -212,7 +212,7 @@ End Structure
 <br>
 
 <details>
-<summary>✅ Good — Structure pequena com semântica de valor</summary>
+<summary>✅ Bom — Structure pequena com semântica de valor</summary>
 <br>
 
 ```vbnet
@@ -242,7 +242,7 @@ VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (featu
 - `Nullable(Of T)` (`T?` em C#) aplica-se apenas a value types (`Integer?`, `DateTime?`, `Guid?`).
 
 <details>
-<summary>❌ Bad — Integer para valor opcional, sentinela mágica</summary>
+<summary>❌ Ruim — Integer para valor opcional, sentinela mágica</summary>
 <br>
 
 ```vbnet
@@ -261,7 +261,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Nullable(Of Integer), ausência explícita no tipo</summary>
+<summary>✅ Bom — Nullable(Of Integer), ausência explícita no tipo</summary>
 <br>
 
 ```vbnet
@@ -294,7 +294,7 @@ Pattern matching completo (`switch` expressions, property patterns do C# 8+) **n
 A ferramenta idiomática para checagem + narrowing é `TryCast`: tenta a conversão, devolve `Nothing` se falhar, sem exception.
 
 <details>
-<summary>❌ Bad — DirectCast após TypeOf, dupla checagem</summary>
+<summary>❌ Ruim — DirectCast após TypeOf, dupla checagem</summary>
 <br>
 
 ```vbnet
@@ -318,7 +318,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — TryCast combina checagem e narrowing</summary>
+<summary>✅ Bom — TryCast combina checagem e narrowing</summary>
 <br>
 
 ```vbnet
@@ -346,7 +346,7 @@ End Function
 Para variantes fechadas de um domínio, a herança hierárquica substitui o pattern matching:
 
 <details>
-<summary>✅ Good — hierarquia fechada com método polimórfico</summary>
+<summary>✅ Bom — hierarquia fechada com método polimórfico</summary>
 <br>
 
 ```vbnet
@@ -396,7 +396,7 @@ End Class
 Generic sem constraint (`Of T`) descreve qualquer tipo — é abstração sem propósito. Constraints (`As Class`, `As Structure`, `As IEntity`, `As New`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
 
 <details>
-<summary>❌ Bad — genérico sem constraint, reflection para descobrir capability</summary>
+<summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
 <br>
 
 ```vbnet
@@ -417,7 +417,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — constraint declara capability, compilador valida</summary>
+<summary>✅ Bom — constraint declara capability, compilador valida</summary>
 <br>
 
 ```vbnet
@@ -439,7 +439,7 @@ End Function
 `Object` em VB.NET é o equivalente ao `dynamic` do C# quando `Option Strict Off` está ativo — e mesmo com `Option Strict On`, `Object` como parâmetro ou retorno desliga a garantia de tipo. Erros que seriam de compilação viram `InvalidCastException` em runtime.
 
 <details>
-<summary>❌ Bad — Object para conveniência, tipo real perdido</summary>
+<summary>❌ Ruim — Object para conveniência, tipo real perdido</summary>
 <br>
 
 ```vbnet
@@ -454,7 +454,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — tipo concreto, contrato explícito</summary>
+<summary>✅ Bom — tipo concreto, contrato explícito</summary>
 <br>
 
 ```vbnet

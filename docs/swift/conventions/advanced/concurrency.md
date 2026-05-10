@@ -21,7 +21,7 @@ que tipos são seguros para transferência entre tasks.
 ## Task solta — sem escopo estruturado
 
 <details>
-<summary>❌ Bad — Task não estruturado vaza ciclo de vida</summary>
+<summary>❌ Ruim — Task não estruturado vaza ciclo de vida</summary>
 <br>
 
 ```swift
@@ -39,7 +39,7 @@ func loadUser(userId: UUID) {
 <br>
 
 <details>
-<summary>✅ Good — Task vinculado ao ciclo de vida via async context</summary>
+<summary>✅ Bom — Task vinculado ao ciclo de vida via async context</summary>
 <br>
 
 ```swift
@@ -60,7 +60,7 @@ class UserViewModel: ObservableObject {
 ## `async let` para paralelismo
 
 <details>
-<summary>❌ Bad — await sequencial sem paralelismo</summary>
+<summary>❌ Ruim — await sequencial sem paralelismo</summary>
 <br>
 
 ```swift
@@ -77,7 +77,7 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 <br>
 
 <details>
-<summary>✅ Good — async let executa em paralelo</summary>
+<summary>✅ Bom — async let executa em paralelo</summary>
 <br>
 
 ```swift
@@ -99,7 +99,7 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 ## Race condition em classe
 
 <details>
-<summary>❌ Bad — classe mutável acessada de múltiplas tasks (erro no Swift 6)</summary>
+<summary>❌ Ruim — classe mutável acessada de múltiplas tasks (erro no Swift 6)</summary>
 <br>
 
 ```swift
@@ -115,7 +115,7 @@ class RequestCounter {
 <br>
 
 <details>
-<summary>✅ Good — actor serializa acesso ao estado</summary>
+<summary>✅ Bom — actor serializa acesso ao estado</summary>
 <br>
 
 ```swift
@@ -138,7 +138,7 @@ let total = await counter.currentCount()
 ## `@MainActor` para UI
 
 <details>
-<summary>❌ Bad — atualização de UI em background thread</summary>
+<summary>❌ Ruim — atualização de UI em background thread</summary>
 <br>
 
 ```swift
@@ -154,7 +154,7 @@ func loadOrders() async {
 <br>
 
 <details>
-<summary>✅ Good — @MainActor garante execução na main thread</summary>
+<summary>✅ Bom — @MainActor garante execução na main thread</summary>
 <br>
 
 ```swift
@@ -171,7 +171,7 @@ func loadOrders() async {
 ## `withTaskGroup` para fan-out
 
 <details>
-<summary>❌ Bad — loop de tasks sem controle de falhas</summary>
+<summary>❌ Ruim — loop de tasks sem controle de falhas</summary>
 <br>
 
 ```swift
@@ -187,7 +187,7 @@ func sendNotifications(to users: [User]) async {
 <br>
 
 <details>
-<summary>✅ Good — withTaskGroup com tratamento de falhas por filho</summary>
+<summary>✅ Bom — withTaskGroup com tratamento de falhas por filho</summary>
 <br>
 
 ```swift
@@ -211,7 +211,7 @@ func sendNotifications(to users: [User]) async {
 ## Cancelamento cooperativo
 
 <details>
-<summary>❌ Bad — loop longo ignora cancelamento</summary>
+<summary>❌ Ruim — loop longo ignora cancelamento</summary>
 <br>
 
 ```swift
@@ -227,7 +227,7 @@ func processItems(_ items: [Item]) async throws {
 <br>
 
 <details>
-<summary>✅ Good — verificação explícita de cancelamento</summary>
+<summary>✅ Bom — verificação explícita de cancelamento</summary>
 <br>
 
 ```swift

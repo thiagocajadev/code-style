@@ -19,7 +19,7 @@ de widgets pequenos e focados é preferível a widgets grandes com múltiplas re
 ## Widget grande com múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — widget único com layout, lista e lógica de formatação</summary>
+<summary>❌ Ruim — widget único com layout, lista e lógica de formatação</summary>
 <br>
 
 ```dart
@@ -59,7 +59,7 @@ class OrderScreen extends StatelessWidget {
 <br>
 
 <details>
-<summary>✅ Good — widget principal compõe widgets menores e focados</summary>
+<summary>✅ Bom — widget principal compõe widgets menores e focados</summary>
 <br>
 
 ```dart
@@ -125,7 +125,7 @@ class OrderListItem extends StatelessWidget {
 ## `const` em widgets
 
 <details>
-<summary>❌ Bad — widgets sem const causam rebuild desnecessário</summary>
+<summary>❌ Ruim — widgets sem const causam rebuild desnecessário</summary>
 <br>
 
 ```dart
@@ -145,7 +145,7 @@ Widget build(BuildContext context) {
 <br>
 
 <details>
-<summary>✅ Good — const reutiliza a mesma instância</summary>
+<summary>✅ Bom — const reutiliza a mesma instância</summary>
 <br>
 
 ```dart
@@ -168,7 +168,7 @@ Widget build(BuildContext context) {
 Estado de negócio pertence ao ViewModel ou Notifier.
 
 <details>
-<summary>❌ Bad — lógica de negócio dentro do State</summary>
+<summary>❌ Ruim — lógica de negócio dentro do State</summary>
 <br>
 
 ```dart
@@ -194,7 +194,7 @@ class _OrderListState extends State<OrderList> {
 <br>
 
 <details>
-<summary>✅ Good — State contém somente estado de UI; dados vêm do ViewModel</summary>
+<summary>✅ Bom — State contém somente estado de UI; dados vêm do ViewModel</summary>
 <br>
 
 ```dart
@@ -220,7 +220,7 @@ class OrderListScreen extends ConsumerWidget {
 ## Composição sobre herança
 
 <details>
-<summary>❌ Bad — herança para reutilizar estilo de card</summary>
+<summary>❌ Ruim — herança para reutilizar estilo de card</summary>
 <br>
 
 ```dart
@@ -249,7 +249,7 @@ abstract class BaseCard extends StatelessWidget {
 <br>
 
 <details>
-<summary>✅ Good — widget de container composto recebe filho via parâmetro</summary>
+<summary>✅ Bom — widget de container composto recebe filho via parâmetro</summary>
 <br>
 
 ```dart

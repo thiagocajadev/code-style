@@ -25,7 +25,7 @@ Funções `async fn` retornam um `Future` que só executa quando aguardado com `
 Use `#[tokio::test]` nos testes assíncronos.
 
 <details>
-<summary>❌ Bad — runtime bloqueante misturado com async</summary>
+<summary>❌ Ruim — runtime bloqueante misturado com async</summary>
 <br>
 
 ```rust
@@ -42,7 +42,7 @@ fn main() {
 <br>
 
 <details>
-<summary>✅ Good — #[tokio::main] no entry point</summary>
+<summary>✅ Bom — #[tokio::main] no entry point</summary>
 <br>
 
 ```rust
@@ -66,7 +66,7 @@ async fn main() -> anyhow::Result<()> {
 Para operações independentes, execute em paralelo com `tokio::join!` em vez de `.await` sequencial.
 
 <details>
-<summary>❌ Bad — .await sequencial quando as operações são independentes</summary>
+<summary>❌ Ruim — .await sequencial quando as operações são independentes</summary>
 <br>
 
 ```rust
@@ -84,7 +84,7 @@ async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
 <br>
 
 <details>
-<summary>✅ Good — tokio::join! executa em paralelo</summary>
+<summary>✅ Bom — tokio::join! executa em paralelo</summary>
 <br>
 
 ```rust
@@ -110,7 +110,7 @@ Use `spawn` para tasks que devem rodar em segundo plano, independentes do fluxo 
 Sempre faça `await` no `JoinHandle` ou capture erros.
 
 <details>
-<summary>❌ Bad — spawn sem controle de ciclo de vida</summary>
+<summary>❌ Ruim — spawn sem controle de ciclo de vida</summary>
 <br>
 
 ```rust
@@ -127,7 +127,7 @@ async fn process_order(order: Order) {
 <br>
 
 <details>
-<summary>✅ Good — JoinHandle capturado e erro registrado</summary>
+<summary>✅ Bom — JoinHandle capturado e erro registrado</summary>
 <br>
 
 ```rust
@@ -154,7 +154,7 @@ Use `tokio::signal` para capturar `SIGTERM`/`Ctrl-C` e encerrar o servidor sem c
 requisições em andamento.
 
 <details>
-<summary>❌ Bad — processo encerrado abruptamente</summary>
+<summary>❌ Ruim — processo encerrado abruptamente</summary>
 <br>
 
 ```rust
@@ -170,7 +170,7 @@ async fn main() -> anyhow::Result<()> {
 <br>
 
 <details>
-<summary>✅ Good — shutdown signal aguardado antes de encerrar</summary>
+<summary>✅ Bom — shutdown signal aguardado antes de encerrar</summary>
 <br>
 
 ```rust
@@ -214,7 +214,7 @@ Nunca execute operações bloqueantes diretamente em tasks async. Use `spawn_blo
 código CPU-intensivo ou I/O síncrono.
 
 <details>
-<summary>❌ Bad — bloqueio na thread do runtime</summary>
+<summary>❌ Ruim — bloqueio na thread do runtime</summary>
 <br>
 
 ```rust
@@ -229,7 +229,7 @@ async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {
 <br>
 
 <details>
-<summary>✅ Good — CPU-bound em thread dedicada via spawn_blocking</summary>
+<summary>✅ Bom — CPU-bound em thread dedicada via spawn_blocking</summary>
 <br>
 
 ```rust

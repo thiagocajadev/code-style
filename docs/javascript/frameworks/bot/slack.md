@@ -31,7 +31,7 @@ npm install @slack/bolt
 Use `process.env` para todas as credenciais. O `await` em `app.start()` é obrigatório: sem ele, erros de inicialização são silenciados.
 
 <details>
-<summary>❌ Bad — credenciais hardcoded; sem await no start</summary>
+<summary>❌ Ruim — credenciais hardcoded; sem await no start</summary>
 <br>
 
 ```js
@@ -50,7 +50,7 @@ app.start(3000);
 <br>
 
 <details>
-<summary>✅ Good — credenciais via env; await no start; port via env</summary>
+<summary>✅ Bom — credenciais via env; await no start; port via env</summary>
 <br>
 
 ```js
@@ -71,7 +71,7 @@ await app.start(process.env.PORT ?? 3000);
 `ack()` deve ser chamado antes de qualquer operação assíncrona. A Slack aguarda o reconhecimento em até 3 segundos; operações longas são iniciadas após o `ack()`.
 
 <details>
-<summary>❌ Bad — sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
+<summary>❌ Ruim — sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
 <br>
 
 ```js
@@ -87,7 +87,7 @@ app.command('/order', async ({ ack, say, command }) => {
 <br>
 
 <details>
-<summary>✅ Good — ack() primeiro; destructuring no corpo; orquestrador + helpers abaixo</summary>
+<summary>✅ Bom — ack() primeiro; destructuring no corpo; orquestrador + helpers abaixo</summary>
 <br>
 
 ```js
@@ -124,7 +124,7 @@ function buildOrderReply(order) {
 Use `app.event()` para reagir a eventos da Events API. Em listeners de mensagem, adicione um guard para `event.bot_id`: sem ele, o bot responde aos próprios envios e entra em loop.
 
 <details>
-<summary>❌ Bad — destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
+<summary>❌ Ruim — destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
 <br>
 
 ```js
@@ -142,7 +142,7 @@ app.event('message', async ({ event, say }) => {
 <br>
 
 <details>
-<summary>✅ Good — destructuring no corpo; guard para bot messages; compute extraído antes do say()</summary>
+<summary>✅ Bom — destructuring no corpo; guard para bot messages; compute extraído antes do say()</summary>
 <br>
 
 ```js
@@ -178,7 +178,7 @@ function buildEchoReply(messageText) {
 Block Kit é a primitiva de UI interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, a Slack exibe um spinner indefinido no botão.
 
 <details>
-<summary>❌ Bad — blocks montados inline; action_id como string solta; sem ack() na ação</summary>
+<summary>❌ Ruim — blocks montados inline; action_id como string solta; sem ack() na ação</summary>
 <br>
 
 ```js
@@ -207,7 +207,7 @@ app.action('view_orders', async ({ say }) => {
 <br>
 
 <details>
-<summary>✅ Good — blocks extraídos; action_id como constante; ack() antes do processamento</summary>
+<summary>✅ Bom — blocks extraídos; action_id como constante; ack() antes do processamento</summary>
 <br>
 
 ```js
@@ -268,7 +268,7 @@ function buildOrdersReply(orders) {
 Socket Mode elimina a necessidade de URL pública e é recomendado para bots internos e desenvolvimento local. O `appToken` deve ter o scope `connections:write`.
 
 <details>
-<summary>❌ Bad — tokens hardcoded; sem await no start</summary>
+<summary>❌ Ruim — tokens hardcoded; sem await no start</summary>
 <br>
 
 ```js
@@ -288,7 +288,7 @@ app.start();
 <br>
 
 <details>
-<summary>✅ Good — tokens via env; await no start; sem port (Socket Mode não usa porta)</summary>
+<summary>✅ Bom — tokens via env; await no start; sem port (Socket Mode não usa porta)</summary>
 <br>
 
 ```js

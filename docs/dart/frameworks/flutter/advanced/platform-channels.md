@@ -91,7 +91,7 @@ override func application(_ application: UIApplication,
 ## EventChannel — stream de eventos nativos
 
 <details>
-<summary>❌ Bad — polling via MethodChannel para dados contínuos</summary>
+<summary>❌ Ruim — polling via MethodChannel para dados contínuos</summary>
 <br>
 
 ```dart
@@ -110,7 +110,7 @@ Future<void> trackLocation() async {
 <br>
 
 <details>
-<summary>✅ Good — EventChannel entrega eventos quando disponíveis</summary>
+<summary>✅ Bom — EventChannel entrega eventos quando disponíveis</summary>
 <br>
 
 ```dart
@@ -132,7 +132,7 @@ Stream<Coordinate> get locationStream {
 ## Tratamento de erro em MethodChannel
 
 <details>
-<summary>❌ Bad — PlatformException não tratada — crash</summary>
+<summary>❌ Ruim — PlatformException não tratada — crash</summary>
 <br>
 
 ```dart
@@ -146,7 +146,7 @@ Future<String> readNfcTag() async {
 <br>
 
 <details>
-<summary>✅ Good — PlatformException mapeada para erro de domínio</summary>
+<summary>✅ Bom — PlatformException mapeada para erro de domínio</summary>
 <br>
 
 ```dart

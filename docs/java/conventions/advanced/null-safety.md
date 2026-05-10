@@ -20,7 +20,7 @@ chamador a lidar com ela.
 ## null direto no retorno
 
 <details>
-<summary>❌ Bad — null silencioso: o chamador pode esquecer de verificar</summary>
+<summary>❌ Ruim — null silencioso: o chamador pode esquecer de verificar</summary>
 <br>
 
 ```java
@@ -38,7 +38,7 @@ final var email = user.getEmail(); // NullPointerException em runtime
 <br>
 
 <details>
-<summary>✅ Good — Optional torna a ausência explícita no contrato</summary>
+<summary>✅ Bom — Optional torna a ausência explícita no contrato</summary>
 <br>
 
 ```java
@@ -61,7 +61,7 @@ Quando a ausência é um erro de negócio (recurso obrigatório não encontrado)
 em vez de verificar o `Optional` manualmente.
 
 <details>
-<summary>❌ Bad — verificação manual verbosa</summary>
+<summary>❌ Ruim — verificação manual verbosa</summary>
 <br>
 
 ```java
@@ -79,7 +79,7 @@ public User getUser(String id) {
 <br>
 
 <details>
-<summary>✅ Good — orElseThrow expressa a intenção diretamente</summary>
+<summary>✅ Bom — orElseThrow expressa a intenção diretamente</summary>
 <br>
 
 ```java
@@ -98,7 +98,7 @@ Para parâmetros que podem ser null mas têm um padrão razoável, `Objects.requ
 é mais expressivo que o operador ternário.
 
 <details>
-<summary>❌ Bad — ternário com verificação de null</summary>
+<summary>❌ Ruim — ternário com verificação de null</summary>
 <br>
 
 ```java
@@ -112,7 +112,7 @@ public String getDisplayName(String name) {
 <br>
 
 <details>
-<summary>✅ Good — semântica declarativa</summary>
+<summary>✅ Bom — semântica declarativa</summary>
 <br>
 
 ```java
@@ -130,7 +130,7 @@ Quando null é uma pré-condição inválida (o método não deve receber null),
 topo — não deixe o null propagar.
 
 <details>
-<summary>❌ Bad — null propaga para NullPointerException interno</summary>
+<summary>❌ Ruim — null propaga para NullPointerException interno</summary>
 <br>
 
 ```java
@@ -145,7 +145,7 @@ public Invoice processOrder(Order order) {
 <br>
 
 <details>
-<summary>✅ Good — guard clause no topo, falha rápida e mensagem clara</summary>
+<summary>✅ Bom — guard clause no topo, falha rápida e mensagem clara</summary>
 <br>
 
 ```java
@@ -166,7 +166,7 @@ public Invoice processOrder(Order order) {
 em coleções.
 
 <details>
-<summary>❌ Bad — Optional em lugares errados</summary>
+<summary>❌ Ruim — Optional em lugares errados</summary>
 <br>
 
 ```java
@@ -184,7 +184,7 @@ final var users = List.of(Optional.of(user1), Optional.empty()); // em coleção
 <br>
 
 <details>
-<summary>✅ Good — Optional apenas no retorno de método</summary>
+<summary>✅ Bom — Optional apenas no retorno de método</summary>
 <br>
 
 ```java

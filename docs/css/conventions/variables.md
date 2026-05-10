@@ -17,7 +17,7 @@
 ## Tokens semânticos
 
 <details>
-<summary>❌ Bad — valores mágicos espalhados e nomes não-semânticos</summary>
+<summary>❌ Ruim — valores mágicos espalhados e nomes não-semânticos</summary>
 <br>
 
 ```css
@@ -36,7 +36,7 @@
 <br>
 
 <details>
-<summary>✅ Good — token semântico definido uma vez, referenciado em todo lugar</summary>
+<summary>✅ Bom — token semântico definido uma vez, referenciado em todo lugar</summary>
 <br>
 
 ```css
@@ -69,7 +69,7 @@ Custom properties se propagam em cascata. Quando um valor faz sentido apenas den
 componente, defini-lo no `:root` polui o namespace global.
 
 <details>
-<summary>❌ Bad — variáveis de componente expostas globalmente</summary>
+<summary>❌ Ruim — variáveis de componente expostas globalmente</summary>
 <br>
 
 ```css
@@ -91,7 +91,7 @@ componente, defini-lo no `:root` polui o namespace global.
 <br>
 
 <details>
-<summary>✅ Good — variáveis de componente escopadas ao bloco</summary>
+<summary>✅ Bom — variáveis de componente escopadas ao bloco</summary>
 <br>
 
 ```css

@@ -20,7 +20,7 @@
 Uma lista longa de utilities não é componente: é o estado antes de extrair um.
 
 <details>
-<summary>❌ Bad — lista inlegível, sem nome, não reutilizável</summary>
+<summary>❌ Ruim — lista inlegível, sem nome, não reutilizável</summary>
 <br>
 
 ```html
@@ -34,7 +34,7 @@ Uma lista longa de utilities não é componente: é o estado antes de extrair um
 <br>
 
 <details>
-<summary>✅ Good — utilities extraídas para componente com @layer</summary>
+<summary>✅ Bom — utilities extraídas para componente com @layer</summary>
 <br>
 
 ```css
@@ -64,7 +64,7 @@ Valores arbitrários (`text-[14px]`, `bg-[#3b82f6]`) espalham magic numbers pelo
 tokens no config gera classes semânticas e mantém o design system consistente.
 
 <details>
-<summary>❌ Bad — valores arbitrários, magic numbers espalhados</summary>
+<summary>❌ Ruim — valores arbitrários, magic numbers espalhados</summary>
 <br>
 
 ```html
@@ -76,7 +76,7 @@ tokens no config gera classes semânticas e mantém o design system consistente.
 <br>
 
 <details>
-<summary>✅ Good — tokens no tailwind.config, classes semânticas no HTML</summary>
+<summary>✅ Bom — tokens no tailwind.config, classes semânticas no HTML</summary>
 <br>
 
 ```js

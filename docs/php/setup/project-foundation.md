@@ -58,7 +58,7 @@ my-app/
 instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
-<summary>✅ Good — composer.json com PSR-4, PHPStan e scripts</summary>
+<summary>✅ Bom — composer.json com PSR-4, PHPStan e scripts</summary>
 <br>
 
 ```json
@@ -102,7 +102,7 @@ instalar e `composer dump-autoload` após adicionar classes.
 `getenv()` ou `$_ENV` diretamente. Falhe na inicialização se variáveis obrigatórias estiverem ausentes.
 
 <details>
-<summary>❌ Bad — getenv() espalhado em todo lugar</summary>
+<summary>❌ Ruim — getenv() espalhado em todo lugar</summary>
 <br>
 
 ```php
@@ -124,7 +124,7 @@ $jwtSecret = $_ENV['JWT_SECRET']; // leitura direta
 <br>
 
 <details>
-<summary>✅ Good — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
 <br>
 
 ```php
@@ -175,7 +175,7 @@ final class OrderRepository implements OrderRepositoryInterface
 registra rotas; handlers ficam no domínio.
 
 <details>
-<summary>✅ Good — index.php como índice, lógica delegada</summary>
+<summary>✅ Bom — index.php como índice, lógica delegada</summary>
 <br>
 
 ```php
@@ -226,7 +226,7 @@ Sempre declare `strict_types=1` em todos os arquivos PHP. Isso habilita verifica
 estrita de tipos em chamadas de função e previne coerções silenciosas.
 
 <details>
-<summary>❌ Bad — sem strict_types, coerção silenciosa</summary>
+<summary>❌ Ruim — sem strict_types, coerção silenciosa</summary>
 <br>
 
 ```php
@@ -245,7 +245,7 @@ calculateTotal("5", "3"); // "5" é convertido para 5 silenciosamente
 <br>
 
 <details>
-<summary>✅ Good — strict_types em todos os arquivos</summary>
+<summary>✅ Bom — strict_types em todos os arquivos</summary>
 <br>
 
 ```php

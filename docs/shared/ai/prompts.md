@@ -49,7 +49,7 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 ### 1. Instrução vaga vs. específica
 
 <details>
-<summary>❌ Bad: instrução vaga — modelo escolhe escopo, formato e tamanho</summary>
+<summary>❌ Ruim: instrução vaga — modelo escolhe escopo, formato e tamanho</summary>
 <br>
 
 ```
@@ -61,7 +61,7 @@ Faça um resumo.
 <br>
 
 <details>
-<summary>✅ Good: instrução específica — cada restrição elimina uma classe de resposta errada</summary>
+<summary>✅ Bom: instrução específica — cada restrição elimina uma classe de resposta errada</summary>
 <br>
 
 ```
@@ -75,7 +75,7 @@ Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicaçõ
 ### 2. Sem contexto vs. com contexto
 
 <details>
-<summary>❌ Bad: sem contexto — modelo só pode especular</summary>
+<summary>❌ Ruim: sem contexto — modelo só pode especular</summary>
 <br>
 
 ```
@@ -87,7 +87,7 @@ Por que meu código não funciona?
 <br>
 
 <details>
-<summary>✅ Good: com contexto — resposta direta e aplicável</summary>
+<summary>✅ Bom: com contexto — resposta direta e aplicável</summary>
 <br>
 
 ```
@@ -101,7 +101,7 @@ Este código TypeScript lança `TypeError: Cannot read properties of undefined` 
 ### 3. Sem formato vs. formato especificado
 
 <details>
-<summary>❌ Bad: sem formato — modelo decide estrutura e escopo</summary>
+<summary>❌ Ruim: sem formato — modelo decide estrutura e escopo</summary>
 <br>
 
 ```
@@ -113,7 +113,7 @@ Liste boas práticas de API REST.
 <br>
 
 <details>
-<summary>✅ Good: formato definido — output previsível e parseável</summary>
+<summary>✅ Bom: formato definido — output previsível e parseável</summary>
 <br>
 
 ```
@@ -127,7 +127,7 @@ Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). F
 ### 4. Sem papel vs. papel atribuído
 
 <details>
-<summary>❌ Bad: sem papel — revisão genérica e subjetiva</summary>
+<summary>❌ Ruim: sem papel — revisão genérica e subjetiva</summary>
 <br>
 
 ```
@@ -139,7 +139,7 @@ Revise esse texto.
 <br>
 
 <details>
-<summary>✅ Good: papel definido — instruções operacionais e acionáveis</summary>
+<summary>✅ Bom: papel definido — instruções operacionais e acionáveis</summary>
 <br>
 
 ```
@@ -153,7 +153,7 @@ Você é um tech writer sênior com foco em documentação de APIs. Revise o tex
 ### 5. Sem raciocínio vs. chain-of-thought
 
 <details>
-<summary>❌ Bad: sem instrução de raciocínio — modelo pode errar em cálculos diretos</summary>
+<summary>❌ Ruim: sem instrução de raciocínio — modelo pode errar em cálculos diretos</summary>
 <br>
 
 ```
@@ -165,7 +165,7 @@ Qual o resultado de 17 × 24 + 89 ÷ 7?
 <br>
 
 <details>
-<summary>✅ Good: chain-of-thought explícito — modelo externaliza raciocínio antes de concluir</summary>
+<summary>✅ Bom: chain-of-thought explícito — modelo externaliza raciocínio antes de concluir</summary>
 <br>
 
 ```
@@ -179,7 +179,7 @@ Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo an
 ### 6. Prompt sem grounding vs. com grounding
 
 <details>
-<summary>❌ Bad: sem grounding — modelo pode alucinar valores desatualizados</summary>
+<summary>❌ Ruim: sem grounding — modelo pode alucinar valores desatualizados</summary>
 <br>
 
 ```
@@ -191,7 +191,7 @@ Quais são os limites de rate limiting da API do GitHub?
 <br>
 
 <details>
-<summary>✅ Good: com grounding — resposta ancorada em fatos fornecidos</summary>
+<summary>✅ Bom: com grounding — resposta ancorada em fatos fornecidos</summary>
 <br>
 
 ```

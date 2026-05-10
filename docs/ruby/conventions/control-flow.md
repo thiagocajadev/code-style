@@ -22,7 +22,7 @@ Controle de fluxo em Ruby favorece legibilidade: guard clauses eliminam aninhame
 Saia cedo na falha. Sem `else` após `return`.
 
 <details>
-<summary>❌ Bad — aninhamento em cascata</summary>
+<summary>❌ Ruim — aninhamento em cascata</summary>
 <br>
 
 ```ruby
@@ -44,7 +44,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — guard clauses, fluxo plano</summary>
+<summary>✅ Bom — guard clauses, fluxo plano</summary>
 <br>
 
 ```ruby
@@ -67,7 +67,7 @@ Use `unless` para negações simples de uma única condição. Nunca `unless ...
 lógica com `if`.
 
 <details>
-<summary>❌ Bad — unless com else (confuso) / unless com condição composta</summary>
+<summary>❌ Ruim — unless com else (confuso) / unless com condição composta</summary>
 <br>
 
 ```ruby
@@ -85,7 +85,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — unless para 1 condição simples; if para o resto</summary>
+<summary>✅ Bom — unless para 1 condição simples; if para o resto</summary>
 <br>
 
 ```ruby
@@ -107,7 +107,7 @@ end
 Use ternário apenas para atribuição de 2 valores. Nunca encadeie ternários.
 
 <details>
-<summary>❌ Bad — ternário aninhado</summary>
+<summary>❌ Ruim — ternário aninhado</summary>
 <br>
 
 ```ruby
@@ -121,7 +121,7 @@ label = admin? ? "Admin" : verified? ? "Verified" : "Guest"
 <br>
 
 <details>
-<summary>✅ Good — ternário simples ou case/when para 3+</summary>
+<summary>✅ Bom — ternário simples ou case/when para 3+</summary>
 <br>
 
 ```ruby
@@ -144,7 +144,7 @@ label = case role
 Use para 3 ou mais ramos sobre um mesmo valor. Mais limpo que `if/elsif` em cascata.
 
 <details>
-<summary>❌ Bad — if/elsif em cascata</summary>
+<summary>❌ Ruim — if/elsif em cascata</summary>
 <br>
 
 ```ruby
@@ -168,7 +168,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — case/when declarativo</summary>
+<summary>✅ Bom — case/when declarativo</summary>
 <br>
 
 ```ruby
@@ -194,7 +194,7 @@ end
 objetos com deconstruct.
 
 <details>
-<summary>❌ Bad — acesso manual a campos sem garantia de forma</summary>
+<summary>❌ Ruim — acesso manual a campos sem garantia de forma</summary>
 <br>
 
 ```ruby
@@ -213,7 +213,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — pattern matching desestrutura e garante forma</summary>
+<summary>✅ Bom — pattern matching desestrutura e garante forma</summary>
 <br>
 
 ```ruby
@@ -238,7 +238,7 @@ end
 Prefira `map`, `filter`/`select`, `reject`, `reduce`/`sum` no lugar de loops imperativos.
 
 <details>
-<summary>❌ Bad — loop imperativo com mutação</summary>
+<summary>❌ Ruim — loop imperativo com mutação</summary>
 <br>
 
 ```ruby
@@ -260,7 +260,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — pipeline funcional sem mutação</summary>
+<summary>✅ Bom — pipeline funcional sem mutação</summary>
 <br>
 
 ```ruby

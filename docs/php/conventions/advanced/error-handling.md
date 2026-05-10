@@ -26,7 +26,7 @@ Nunca lance strings ou `\Exception` diretamente. Crie uma hierarquia de exceçõ
 de domínio para que os callers possam tratar tipos específicos.
 
 <details>
-<summary>❌ Bad — Exception genérica sem tipo</summary>
+<summary>❌ Ruim — Exception genérica sem tipo</summary>
 <br>
 
 ```php
@@ -52,7 +52,7 @@ try {
 <br>
 
 <details>
-<summary>✅ Good — hierarquia de exceções de domínio</summary>
+<summary>✅ Bom — hierarquia de exceções de domínio</summary>
 <br>
 
 ```php
@@ -113,7 +113,7 @@ try {
 `try/catch` pertence às fronteiras do sistema. O domínio lança, a fronteira captura e traduz.
 
 <details>
-<summary>❌ Bad — try/catch no meio do domínio</summary>
+<summary>❌ Ruim — try/catch no meio do domínio</summary>
 <br>
 
 ```php
@@ -142,7 +142,7 @@ class OrderService
 <br>
 
 <details>
-<summary>✅ Good — domínio lança, fronteira captura</summary>
+<summary>✅ Bom — domínio lança, fronteira captura</summary>
 <br>
 
 ```php
@@ -197,7 +197,7 @@ class OrderHandler
 Valide na fronteira antes de chegar ao domínio. O service não deve receber dados inválidos.
 
 <details>
-<summary>❌ Bad — validação no service, tarde demais</summary>
+<summary>❌ Ruim — validação no service, tarde demais</summary>
 <br>
 
 ```php
@@ -222,7 +222,7 @@ class OrderService
 <br>
 
 <details>
-<summary>✅ Good — validação na fronteira, service recebe dados válidos</summary>
+<summary>✅ Bom — validação na fronteira, service recebe dados válidos</summary>
 <br>
 
 ```php
@@ -263,7 +263,7 @@ class OrderService
 Use `finally` para liberar recursos independente de sucesso ou falha.
 
 <details>
-<summary>✅ Good — finally garante cleanup em qualquer saída</summary>
+<summary>✅ Bom — finally garante cleanup em qualquer saída</summary>
 <br>
 
 ```php

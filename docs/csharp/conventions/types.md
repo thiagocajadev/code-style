@@ -24,7 +24,7 @@ O sistema de tipos do C# oferece várias formas de descrever contratos: **interf
 A regra prática: se duas implementações vão compartilhar código, `abstract class`. Se só compartilham contrato, `interface`.
 
 <details>
-<summary>❌ Bad — interface usada para compartilhar código entre implementações</summary>
+<summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
 <br>
 
 ```csharp
@@ -48,7 +48,7 @@ public interface OrderProcessor
 <br>
 
 <details>
-<summary>✅ Good — abstract class quando há estado ou template method</summary>
+<summary>✅ Bom — abstract class quando há estado ou template method</summary>
 <br>
 
 ```csharp
@@ -85,7 +85,7 @@ public sealed class StandardOrderProcessor(ILogger logger) : OrderProcessor(logg
 <br>
 
 <details>
-<summary>✅ Good — interface quando só o contrato importa</summary>
+<summary>✅ Bom — interface quando só o contrato importa</summary>
 <br>
 
 ```csharp
@@ -106,7 +106,7 @@ public sealed class InMemoryOrderRepository : IOrderRepository { /* testes */ }
 `sealed` impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `sealed`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade — e contrato implícito é contrato errado.
 
 <details>
-<summary>❌ Bad — classe concreta sem sealed, extensibilidade acidental</summary>
+<summary>❌ Ruim — classe concreta sem sealed, extensibilidade acidental</summary>
 <br>
 
 ```csharp
@@ -127,7 +127,7 @@ public class CustomOrderService : OrderService
 <br>
 
 <details>
-<summary>✅ Good — sealed por padrão, extensibilidade exige decisão</summary>
+<summary>✅ Bom — sealed por padrão, extensibilidade exige decisão</summary>
 <br>
 
 ```csharp
@@ -146,7 +146,7 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 `record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de **API** (Application Programming Interface, Interface de Programação de Aplicações), resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem boilerplate. `class` fica para tipos com identidade, estado mutável ou comportamento rico.
 
 <details>
-<summary>❌ Bad — class mutable para dados immutable</summary>
+<summary>❌ Ruim — class mutable para dados immutable</summary>
 <br>
 
 ```csharp
@@ -165,7 +165,7 @@ public class OrderResponse
 <br>
 
 <details>
-<summary>✅ Good — record para dados, igualdade estrutural sem boilerplate</summary>
+<summary>✅ Bom — record para dados, igualdade estrutural sem boilerplate</summary>
 <br>
 
 ```csharp
@@ -188,7 +188,7 @@ var updated = orderResponse with { Total = newTotal };
 Habilitar `<Nullable>enable</Nullable>` no `.csproj` torna a ausência de valor parte do contrato. `string` nunca é nulo; `string?` pode ser. O compilador obriga o tratamento antes de usar.
 
 <details>
-<summary>❌ Bad — nullable desligado, null silencioso no contrato</summary>
+<summary>❌ Ruim — nullable desligado, null silencioso no contrato</summary>
 <br>
 
 ```csharp
@@ -208,7 +208,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — nullable habilitado, contrato explícito</summary>
+<summary>✅ Bom — nullable habilitado, contrato explícito</summary>
 <br>
 
 ```csharp
@@ -238,7 +238,7 @@ O operador `!` (null-forgiving) suprime o aviso do compilador. Usar apenas quand
 Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e property patterns. Reduz boilerplate e faz narrowing automático. O compilador garante exaustividade quando o input é uma hierarquia fechada.
 
 <details>
-<summary>❌ Bad — cadeia de if com cast explícito</summary>
+<summary>❌ Ruim — cadeia de if com cast explícito</summary>
 <br>
 
 ```csharp
@@ -265,7 +265,7 @@ public string DescribePayment(IPayment payment)
 <br>
 
 <details>
-<summary>✅ Good — is-expression com narrowing e descrição nomeada por variante</summary>
+<summary>✅ Bom — is-expression com narrowing e descrição nomeada por variante</summary>
 <br>
 
 ```csharp
@@ -293,7 +293,7 @@ public string DescribePayment(IPayment payment)
 Quando o domínio tem variantes fechadas, o pattern matching troca o discriminador implícito por estrutura:
 
 <details>
-<summary>✅ Good — discriminated result via pattern matching</summary>
+<summary>✅ Bom — discriminated result via pattern matching</summary>
 <br>
 
 ```csharp
@@ -333,7 +333,7 @@ public IActionResult HandlePayment(PaymentResult result)
 Generic sem constraint descreve qualquer tipo — é abstração sem propósito. Constraints (`where T : IEntity`, `where T : struct`, `where T : new()`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
 
 <details>
-<summary>❌ Bad — genérico sem constraint, reflection para descobrir capability</summary>
+<summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
 <br>
 
 ```csharp
@@ -354,7 +354,7 @@ public T? Find<T>(Guid id) where T : class
 <br>
 
 <details>
-<summary>✅ Good — constraint declara capability, compilador valida</summary>
+<summary>✅ Bom — constraint declara capability, compilador valida</summary>
 <br>
 
 ```csharp
@@ -379,7 +379,7 @@ public T? Find<T>(Guid id) where T : class, IEntity
 Existem dois casos legítimos: interop com COM/Office e desserialização de shapes genuinamente dinâmicos (e mesmo assim, preferir `JsonElement` / `JsonNode`).
 
 <details>
-<summary>❌ Bad — dynamic para conveniência</summary>
+<summary>❌ Ruim — dynamic para conveniência</summary>
 <br>
 
 ```csharp
@@ -395,7 +395,7 @@ public void ProcessConfig(dynamic config)
 <br>
 
 <details>
-<summary>✅ Good — tipo concreto ou JsonElement</summary>
+<summary>✅ Bom — tipo concreto ou JsonElement</summary>
 <br>
 
 ```csharp

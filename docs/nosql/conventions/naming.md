@@ -84,7 +84,7 @@ Regras:
 ---
 
 <details>
-<summary>❌ Bad — nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
+<summary>❌ Ruim — nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
 <br>
 
 ```js
@@ -108,7 +108,7 @@ await redis.set('s42', JSON.stringify(stats));  // opaco
 <br>
 
 <details>
-<summary>✅ Good — nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
+<summary>✅ Bom — nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
 <br>
 
 ```js

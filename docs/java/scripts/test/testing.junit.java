@@ -116,7 +116,7 @@ class DiscountServiceTest {
         baseOrder = new Order("ord-1", "cust-99", new BigDecimal("100"));
     }
 
-    // ❌ Bad: fases misturadas, assertion colado ao setup
+    // ❌ Ruim: fases misturadas, assertion colado ao setup
     @Test
     void appliesDiscountBad() {
         final var order = new Order("ord-1", new BigDecimal("100"), 10);
@@ -125,7 +125,7 @@ class DiscountServiceTest {
         assertThat(result.getTotal()).isEqualByComparingTo(expectedPrice);
     }
 
-    // ✅ Good: AAA explícito, assertion como fase própria
+    // ✅ Bom: AAA explícito, assertion como fase própria
     @Test
     void appliesTenPercentDiscount() {
         baseOrder.setDiscountPct(10);

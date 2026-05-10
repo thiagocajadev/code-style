@@ -19,7 +19,7 @@ Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressi
 ## Subquery aninhada
 
 <details>
-<summary>❌ Bad — subquery no WHERE sem nome</summary>
+<summary>❌ Ruim — subquery no WHERE sem nome</summary>
 <br>
 
 ```sql
@@ -44,7 +44,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — CTE nomeada no topo</summary>
+<summary>✅ Bom — CTE nomeada no topo</summary>
 <br>
 
 ```sql
@@ -72,7 +72,7 @@ JOIN
 ## CTEs encadeadas
 
 <details>
-<summary>❌ Bad — JOIN de subqueries, difícil de acompanhar</summary>
+<summary>❌ Ruim — JOIN de subqueries, difícil de acompanhar</summary>
 <br>
 
 ```sql
@@ -89,7 +89,7 @@ JOIN
 <br>
 
 <details>
-<summary>✅ Good — duas CTEs separadas, JOIN no SELECT final</summary>
+<summary>✅ Bom — duas CTEs separadas, JOIN no SELECT final</summary>
 <br>
 
 ```sql
@@ -132,7 +132,7 @@ JOIN
 ## Procedure: SQL Server
 
 <details>
-<summary>❌ Bad — prefixo genérico, nome vago, sem formatação vertical</summary>
+<summary>❌ Ruim — prefixo genérico, nome vago, sem formatação vertical</summary>
 <br>
 
 ```sql
@@ -147,7 +147,7 @@ END
 <br>
 
 <details>
-<summary>✅ Good — nome descritivo, parâmetro tipado, formatação vertical</summary>
+<summary>✅ Bom — nome descritivo, parâmetro tipado, formatação vertical</summary>
 <br>
 
 ```sql
@@ -174,7 +174,7 @@ END;
 ## Function: PostgreSQL
 
 <details>
-<summary>❌ Bad — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
+<summary>❌ Ruim — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
 <br>
 
 ```sql
@@ -190,7 +190,7 @@ $$ LANGUAGE plpgsql;
 <br>
 
 <details>
-<summary>✅ Good — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
+<summary>✅ Bom — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
 <br>
 
 ```sql

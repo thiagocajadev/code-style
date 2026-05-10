@@ -19,7 +19,7 @@ uma linha em branco. Nunca duas linhas em branco consecutivas.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — bloco sem separação entre grupos lógicos</summary>
+<summary>❌ Ruim — bloco sem separação entre grupos lógicos</summary>
 <br>
 
 ```go
@@ -46,7 +46,7 @@ func processOrder(ctx context.Context, orderID int64) (*Order, error) {
 <br>
 
 <details>
-<summary>✅ Good — grupos separados por linha em branco; return separado do último grupo</summary>
+<summary>✅ Bom — grupos separados por linha em branco; return separado do último grupo</summary>
 <br>
 
 ```go
@@ -80,7 +80,7 @@ A linha de `return` nomeia o resultado. Um blank antes do return separa a saída
 último grupo de processamento.
 
 <details>
-<summary>❌ Bad — return com lógica inline, sem separação</summary>
+<summary>❌ Ruim — return com lógica inline, sem separação</summary>
 <br>
 
 ```go
@@ -98,7 +98,7 @@ func buildOrderSummary(orders []Order) OrderSummary {
 <br>
 
 <details>
-<summary>✅ Good — resultado calculado antes, return limpo</summary>
+<summary>✅ Bom — resultado calculado antes, return limpo</summary>
 <br>
 
 ```go
@@ -121,7 +121,7 @@ Campos de um struct ficam agrupados por responsabilidade. Separação por linha 
 entre grupos lógicos (identificação, configuração, dependências).
 
 <details>
-<summary>❌ Bad — campos sem separação lógica</summary>
+<summary>❌ Ruim — campos sem separação lógica</summary>
 <br>
 
 ```go
@@ -141,7 +141,7 @@ type OrderService struct {
 <br>
 
 <details>
-<summary>✅ Good — campos agrupados por responsabilidade</summary>
+<summary>✅ Bom — campos agrupados por responsabilidade</summary>
 <br>
 
 ```go
@@ -166,7 +166,7 @@ Funções com múltiplas fases (leitura → transformação → escrita) devem t
 separada por uma linha em branco.
 
 <details>
-<summary>❌ Bad — fases misturadas, sem separação</summary>
+<summary>❌ Ruim — fases misturadas, sem separação</summary>
 <br>
 
 ```go
@@ -195,7 +195,7 @@ func generateInvoice(ctx context.Context, orderID int64) (*Invoice, error) {
 <br>
 
 <details>
-<summary>✅ Good — fases distintas separadas por linha em branco</summary>
+<summary>✅ Bom — fases distintas separadas por linha em branco</summary>
 <br>
 
 ```go
@@ -236,7 +236,7 @@ func generateInvoice(ctx context.Context, orderID int64) (*Invoice, error) {
 Agrupe importações em blocos: stdlib, externos, internos. `goimports` faz isso automaticamente.
 
 <details>
-<summary>✅ Good — importações em 3 grupos separados por linha em branco</summary>
+<summary>✅ Bom — importações em 3 grupos separados por linha em branco</summary>
 <br>
 
 ```go
@@ -261,7 +261,7 @@ Literals de struct, slice e map com múltiplos campos ficam em múltiplas linhas
 Literals de um único campo podem ficar em uma linha.
 
 <details>
-<summary>❌ Bad — literal multi-campo inline</summary>
+<summary>❌ Ruim — literal multi-campo inline</summary>
 <br>
 
 ```go
@@ -273,7 +273,7 @@ user := User{ID: 42, Name: "Alice", Email: "alice@example.com", Role: "admin", A
 <br>
 
 <details>
-<summary>✅ Good — cada campo em sua própria linha</summary>
+<summary>✅ Bom — cada campo em sua própria linha</summary>
 <br>
 
 ```go

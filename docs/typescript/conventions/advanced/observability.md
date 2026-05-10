@@ -27,7 +27,7 @@ Tipar a interface do logger força o caller a passar um objeto estruturado — n
 e permite trocar a implementação (Pino, Winston, mock) sem alterar os callers.
 
 <details>
-<summary>❌ Bad — logger sem tipo aceita qualquer forma de chamada</summary>
+<summary>❌ Ruim — logger sem tipo aceita qualquer forma de chamada</summary>
 <br>
 
 ```ts
@@ -41,7 +41,7 @@ logger.error(error);
 <br>
 
 <details>
-<summary>✅ Good — interface tipada, caller obrigado a estruturar</summary>
+<summary>✅ Bom — interface tipada, caller obrigado a estruturar</summary>
 <br>
 
 ```ts
@@ -64,7 +64,7 @@ logger.info(orderContext, "order created");
 estão presentes. O caller não pode omitir `correlationId` por engano.
 
 <details>
-<summary>❌ Bad — contexto sem tipo, campos podem estar ausentes</summary>
+<summary>❌ Ruim — contexto sem tipo, campos podem estar ausentes</summary>
 <br>
 
 ```ts
@@ -85,7 +85,7 @@ logger.info({ ...context }, "processing"); // context pode ser undefined
 <br>
 
 <details>
-<summary>✅ Good — store tipado, campos obrigatórios em compilação</summary>
+<summary>✅ Bom — store tipado, campos obrigatórios em compilação</summary>
 <br>
 
 ```ts
@@ -134,7 +134,7 @@ Tipar os níveis impede strings inválidas e permite que o caller seja configur�
 a verificação em compilação.
 
 <details>
-<summary>❌ Bad — nível como string, qualquer valor aceito</summary>
+<summary>❌ Ruim — nível como string, qualquer valor aceito</summary>
 <br>
 
 ```ts
@@ -148,7 +148,7 @@ function createLogger(level: string) {
 <br>
 
 <details>
-<summary>✅ Good — union type nos níveis</summary>
+<summary>✅ Bom — union type nos níveis</summary>
 <br>
 
 ```ts

@@ -34,7 +34,7 @@ os dados da view e o `OnPost` para processar o formulário.
 **Fluxo POST:** `POST /orders/create → Binding → OnPost → Validate → Service → Redirect`
 
 <details>
-<summary>❌ Bad — lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
+<summary>❌ Ruim — lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
 <br>
 
 ```csharp
@@ -69,7 +69,7 @@ public class CreateModel(AppDbContext db) : PageModel
 <br>
 
 <details>
-<summary>✅ Good — PageModel delega para Service; validação via DataAnnotations</summary>
+<summary>✅ Bom — PageModel delega para Service; validação via DataAnnotations</summary>
 <br>
 
 ```csharp
@@ -120,7 +120,7 @@ do `PageModel`; `asp-validation-for` exibe erros por campo; `asp-page` gera a **
 e injeta o token anti-falsificação automaticamente.
 
 <details>
-<summary>❌ Bad — HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
+<summary>❌ Ruim — HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
 <br>
 
 ```html
@@ -139,7 +139,7 @@ e injeta o token anti-falsificação automaticamente.
 <br>
 
 <details>
-<summary>✅ Good — Tag Helpers vinculam ao model; anti-forgery e erros automáticos</summary>
+<summary>✅ Bom — Tag Helpers vinculam ao model; anti-forgery e erros automáticos</summary>
 <br>
 
 ```html
@@ -173,7 +173,7 @@ controller. O acesso ao banco passa pelo **Repository**; o controller nunca inje
 **Fluxo:** `HTTP Request → Controller → Service → Result<T> → IActionResult → HTTP Response`
 
 <details>
-<summary>❌ Bad — lógica de negócio no controller; DbContext injetado diretamente</summary>
+<summary>❌ Ruim — lógica de negócio no controller; DbContext injetado diretamente</summary>
 <br>
 
 ```csharp
@@ -201,7 +201,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
 <br>
 
 <details>
-<summary>✅ Good — controller delega para Service; traduz Result em HTTP no boundary</summary>
+<summary>✅ Bom — controller delega para Service; traduz Result em HTTP no boundary</summary>
 <br>
 
 ```csharp
@@ -243,7 +243,7 @@ A view só recebe o que precisa. Um **ViewModel** tipado evita expor entidades d
 diretamente na view e impede que campos sensíveis vazem para o HTML.
 
 <details>
-<summary>❌ Bad — entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
+<summary>❌ Ruim — entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
 <br>
 
 ```csharp
@@ -263,7 +263,7 @@ public async Task<IActionResult> DetailAsync(Guid id, CancellationToken ct)
 <br>
 
 <details>
-<summary>✅ Good — ViewModel tipado projetado para a view</summary>
+<summary>✅ Bom — ViewModel tipado projetado para a view</summary>
 <br>
 
 ```csharp
@@ -301,7 +301,7 @@ corrente. **Partial Views** encapsulam fragmentos reutilizáveis, como tabelas e
 cada view focada em seu próprio conteúdo.
 
 <details>
-<summary>❌ Bad — HTML estrutural duplicado em cada página</summary>
+<summary>❌ Ruim — HTML estrutural duplicado em cada página</summary>
 <br>
 
 ```html
@@ -324,7 +324,7 @@ cada view focada em seu próprio conteúdo.
 <br>
 
 <details>
-<summary>✅ Good — _Layout.cshtml compartilhado; partial view para fragmentos</summary>
+<summary>✅ Bom — _Layout.cshtml compartilhado; partial view para fragmentos</summary>
 <br>
 
 ```html

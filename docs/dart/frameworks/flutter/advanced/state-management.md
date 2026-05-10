@@ -22,7 +22,7 @@ dado) é modelado com sealed classes ou `AsyncValue`.
 ## Lógica na UI
 
 <details>
-<summary>❌ Bad — I/O e lógica de negócio direto no build</summary>
+<summary>❌ Ruim — I/O e lógica de negócio direto no build</summary>
 <br>
 
 ```dart
@@ -58,7 +58,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 <br>
 
 <details>
-<summary>✅ Good — AsyncNotifier (Riverpod) separa lógica da UI</summary>
+<summary>✅ Bom — AsyncNotifier (Riverpod) separa lógica da UI</summary>
 <br>
 
 ```dart
@@ -98,7 +98,7 @@ class OrderListScreen extends ConsumerWidget {
 ## Estado de UI modelado com sealed class
 
 <details>
-<summary>❌ Bad — múltiplos booleanos para estado</summary>
+<summary>❌ Ruim — múltiplos booleanos para estado</summary>
 <br>
 
 ```dart
@@ -117,7 +117,7 @@ class OrdersState {
 <br>
 
 <details>
-<summary>✅ Good — sealed class com exatamente 3 estados válidos</summary>
+<summary>✅ Bom — sealed class com exatamente 3 estados válidos</summary>
 <br>
 
 ```dart

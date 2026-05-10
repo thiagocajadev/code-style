@@ -21,7 +21,7 @@ Reflow recalcula a geometria de todos os elementos afetados: caro. `transform` e
 operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas duas propriedades.
 
 <details>
-<summary>❌ Bad — anima propriedades de layout, dispara reflow por frame</summary>
+<summary>❌ Ruim — anima propriedades de layout, dispara reflow por frame</summary>
 <br>
 
 ```css
@@ -50,7 +50,7 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 <br>
 
 <details>
-<summary>✅ Good — transform e opacity: compositor sem reflow</summary>
+<summary>✅ Bom — transform e opacity: compositor sem reflow</summary>
 <br>
 
 ```css
@@ -86,7 +86,7 @@ antes da animação começar, eliminando o jank do primeiro frame. Mas cada cama
 use apenas em elementos que realmente animam, e remova depois da animação se possível.
 
 <details>
-<summary>❌ Bad — will-change em tudo, pressão de memória desnecessária</summary>
+<summary>❌ Ruim — will-change em tudo, pressão de memória desnecessária</summary>
 <br>
 
 ```css
@@ -105,7 +105,7 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 <br>
 
 <details>
-<summary>✅ Good — will-change aplicado via JS só durante a animação</summary>
+<summary>✅ Bom — will-change aplicado via JS só durante a animação</summary>
 <br>
 
 ```css
@@ -134,7 +134,7 @@ dependências de ordem que precisam ser sobrescritas com especificidade ainda ma
 vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 <details>
-<summary>❌ Bad — especificidade alta força escalada de força bruta</summary>
+<summary>❌ Ruim — especificidade alta força escalada de força bruta</summary>
 <br>
 
 ```css
@@ -156,7 +156,7 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 <br>
 
 <details>
-<summary>✅ Good — classe simples, sobrescrita trivial</summary>
+<summary>✅ Bom — classe simples, sobrescrita trivial</summary>
 <br>
 
 ```css
@@ -181,7 +181,7 @@ externos. Útil em componentes que renderizam em lista: o reflow de um card não
 para o resto da página.
 
 <details>
-<summary>✅ Good — contain isola o impacto de reflow por componente</summary>
+<summary>✅ Bom — contain isola o impacto de reflow por componente</summary>
 <br>
 
 ```css
@@ -205,7 +205,7 @@ para o resto da página.
 inteira a cada recálculo. Quanto mais específico o seletor, menos elementos são percorridos.
 
 <details>
-<summary>❌ Bad — seletor descendente profundo recalcula a árvore</summary>
+<summary>❌ Ruim — seletor descendente profundo recalcula a árvore</summary>
 <br>
 
 ```css
@@ -225,7 +225,7 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 <br>
 
 <details>
-<summary>✅ Good — classe direta no elemento</summary>
+<summary>✅ Bom — classe direta no elemento</summary>
 <br>
 
 ```css

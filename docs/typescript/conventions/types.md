@@ -22,7 +22,7 @@ A distinção prática: `interface` descreve o shape de um objeto e pode ser est
 ser reaberta.
 
 <details>
-<summary>❌ Bad — type onde interface seria natural, interface onde type seria correto</summary>
+<summary>❌ Ruim — type onde interface seria natural, interface onde type seria correto</summary>
 <br>
 
 ```ts
@@ -41,7 +41,7 @@ interface OrderStatus = "pending" | "approved"; // erro de sintaxe
 <br>
 
 <details>
-<summary>✅ Good — interface para objetos e contratos</summary>
+<summary>✅ Bom — interface para objetos e contratos</summary>
 <br>
 
 ```ts
@@ -66,7 +66,7 @@ interface UserService extends EventEmitter {
 <br>
 
 <details>
-<summary>✅ Good — type para uniões, intersections e aliases</summary>
+<summary>✅ Bom — type para uniões, intersections e aliases</summary>
 <br>
 
 ```ts
@@ -88,7 +88,7 @@ Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo.
 é abstração sem propósito.
 
 <details>
-<summary>❌ Bad — genérico que não muda o shape</summary>
+<summary>❌ Ruim — genérico que não muda o shape</summary>
 <br>
 
 ```ts
@@ -103,7 +103,7 @@ interface Response<T> {
 <br>
 
 <details>
-<summary>✅ Good — genérico quando o shape depende do tipo</summary>
+<summary>✅ Bom — genérico quando o shape depende do tipo</summary>
 <br>
 
 ```ts
@@ -134,7 +134,7 @@ Utility types permitem derivar contratos a partir de tipos existentes. Evitam du
 os tipos sincronizados quando o tipo base muda.
 
 <details>
-<summary>❌ Bad — duplicação manual do shape com diferenças</summary>
+<summary>❌ Ruim — duplicação manual do shape com diferenças</summary>
 <br>
 
 ```ts
@@ -165,7 +165,7 @@ interface UpdateUserInput {  // duplica User com todos os campos opcionais
 <br>
 
 <details>
-<summary>✅ Good — derivar a partir do tipo base</summary>
+<summary>✅ Bom — derivar a partir do tipo base</summary>
 <br>
 
 ```ts
@@ -190,7 +190,7 @@ Quando um valor pode ser de formas diferentes dependendo do contexto, uma union 
 um campo literal discriminante permite narrowing automático, sem type assertion, sem cast.
 
 <details>
-<summary>❌ Bad — campo opcional para cada variant, sem discriminante</summary>
+<summary>❌ Ruim — campo opcional para cada variant, sem discriminante</summary>
 <br>
 
 ```ts
@@ -213,7 +213,7 @@ function handlePayment(result: PaymentResult) {
 <br>
 
 <details>
-<summary>✅ Good — campo discriminante com narrowing automático</summary>
+<summary>✅ Bom — campo discriminante com narrowing automático</summary>
 <br>
 
 ```ts
@@ -248,7 +248,7 @@ Intersection combina dois tipos em um. Útil para compor shapes ortogonais sem c
 classes.
 
 <details>
-<summary>❌ Bad — duplicação manual de campos de shapes existentes</summary>
+<summary>❌ Ruim — duplicação manual de campos de shapes existentes</summary>
 <br>
 
 ```ts
@@ -280,7 +280,7 @@ interface Order {
 <br>
 
 <details>
-<summary>✅ Good — intersection para compor shapes independentes</summary>
+<summary>✅ Bom — intersection para compor shapes independentes</summary>
 <br>
 
 ```ts
@@ -305,7 +305,7 @@ type Order = BaseOrder & Auditable & SoftDeletable;
 compilador precisa de convencimento, geralmente é o shape que está errado.
 
 <details>
-<summary>❌ Bad — as Type para forçar o compilador a aceitar</summary>
+<summary>❌ Ruim — as Type para forçar o compilador a aceitar</summary>
 <br>
 
 ```ts
@@ -319,7 +319,7 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any — qualq
 <br>
 
 <details>
-<summary>✅ Good — narrowing real ou validação de esquema</summary>
+<summary>✅ Bom — narrowing real ou validação de esquema</summary>
 <br>
 
 ```ts

@@ -44,7 +44,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
 <br>
 
 ```csharp
@@ -60,7 +60,7 @@ public void AppliesDiscount()
 <br>
 
 <details>
-<summary>✅ Good — arrange, act e assert separados</summary>
+<summary>✅ Bom — arrange, act e assert separados</summary>
 <br>
 
 ```csharp
@@ -83,7 +83,7 @@ public void AppliesTenPercentDiscountToOrderPrice()
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
-<summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
 <br>
 
 ```csharp
@@ -106,7 +106,7 @@ public void ReturnsActiveUsersOnly()
 <br>
 
 <details>
-<summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
 <br>
 
 ```csharp
@@ -139,7 +139,7 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome do méto
 vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
 
 <details>
-<summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
 <br>
 
 ```csharp
@@ -158,7 +158,7 @@ public void ApplyDiscount() { /* ... */ }
 <br>
 
 <details>
-<summary>✅ Good — cenário + resultado esperado no título</summary>
+<summary>✅ Bom — cenário + resultado esperado no título</summary>
 <br>
 
 ```csharp
@@ -179,7 +179,7 @@ public void ThrowsValidationExceptionWhenDiscountIsNegative() { /* ... */ }
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Bad — campo estático mutável compartilhado entre testes</summary>
+<summary>❌ Ruim — campo estático mutável compartilhado entre testes</summary>
 <br>
 
 ```csharp
@@ -212,7 +212,7 @@ public class OrderTests
 <br>
 
 <details>
-<summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
 <br>
 
 ```csharp
@@ -250,7 +250,7 @@ Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado.
 verifica o tipo, não apenas a presença.
 
 <details>
-<summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
 <br>
 
 ```csharp
@@ -273,7 +273,7 @@ public async Task ThrowsOnMissingOrder()
 <br>
 
 <details>
-<summary>✅ Good — Assert.ThrowsAsync com tipo explícito</summary>
+<summary>✅ Bom — Assert.ThrowsAsync com tipo explícito</summary>
 <br>
 
 ```csharp

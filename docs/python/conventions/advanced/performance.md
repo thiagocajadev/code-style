@@ -23,7 +23,7 @@ Quando o resultado é consumido uma vez (loop, `sum`, `any`, `next`), um generat
 uma lista intermediária em memória.
 
 <details>
-<summary>❌ Bad — lista completa criada antes de consumir</summary>
+<summary>❌ Ruim — lista completa criada antes de consumir</summary>
 <br>
 
 ```python
@@ -39,7 +39,7 @@ def sum_active_prices(products: list) -> float:
 <br>
 
 <details>
-<summary>✅ Good — generator expression, sem lista intermediária</summary>
+<summary>✅ Bom — generator expression, sem lista intermediária</summary>
 <br>
 
 ```python
@@ -57,7 +57,7 @@ Busca em `list` é O(n). Busca em `set` é O(1). Quando a ordem não importa e a
 "está contido?", `set` é a escolha correta.
 
 <details>
-<summary>❌ Bad — in list: percorre tudo a cada verificação</summary>
+<summary>❌ Ruim — in list: percorre tudo a cada verificação</summary>
 <br>
 
 ```python
@@ -72,7 +72,7 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 <br>
 
 <details>
-<summary>✅ Good — in set: O(1) por verificação</summary>
+<summary>✅ Bom — in set: O(1) por verificação</summary>
 <br>
 
 ```python
@@ -91,7 +91,7 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 use `"".join()`.
 
 <details>
-<summary>❌ Bad — concatenação O(n²) em loop</summary>
+<summary>❌ Ruim — concatenação O(n²) em loop</summary>
 <br>
 
 ```python
@@ -108,7 +108,7 @@ def build_csv_row(fields: list[str]) -> str:
 <br>
 
 <details>
-<summary>✅ Good — join: uma única alocação</summary>
+<summary>✅ Bom — join: uma única alocação</summary>
 <br>
 
 ```python
@@ -126,7 +126,7 @@ def build_csv_row(fields: list[str]) -> str:
 mantém o uso de memória constante.
 
 <details>
-<summary>❌ Bad — arquivo inteiro em memória</summary>
+<summary>❌ Ruim — arquivo inteiro em memória</summary>
 <br>
 
 ```python
@@ -144,7 +144,7 @@ def count_error_lines(log_path: str) -> int:
 <br>
 
 <details>
-<summary>✅ Good — iteração linha a linha, memória constante</summary>
+<summary>✅ Bom — iteração linha a linha, memória constante</summary>
 <br>
 
 ```python
@@ -162,7 +162,7 @@ def count_error_lines(log_path: str) -> int:
 default sem exceção — sem try/except desnecessário.
 
 <details>
-<summary>❌ Bad — try/except para controle de fluxo normal</summary>
+<summary>❌ Ruim — try/except para controle de fluxo normal</summary>
 <br>
 
 ```python
@@ -180,7 +180,7 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 <br>
 
 <details>
-<summary>✅ Good — dict.get com default declarativo</summary>
+<summary>✅ Bom — dict.get com default declarativo</summary>
 <br>
 
 ```python
@@ -198,7 +198,7 @@ Classes sem `__slots__` armazenam atributos em um `__dict__` por instância. Em 
 milhares de objetos, `__slots__` reduz o uso de memória consideravelmente.
 
 <details>
-<summary>❌ Bad — __dict__ implícito em classe de dado intensivo</summary>
+<summary>❌ Ruim — __dict__ implícito em classe de dado intensivo</summary>
 <br>
 
 ```python
@@ -214,7 +214,7 @@ class OrderItem:
 <br>
 
 <details>
-<summary>✅ Good — dataclass com slots=True</summary>
+<summary>✅ Bom — dataclass com slots=True</summary>
 <br>
 
 ```python

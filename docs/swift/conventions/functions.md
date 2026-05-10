@@ -19,7 +19,7 @@ por uma `let`.
 ## God function — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
 <br>
 
 ```swift
@@ -51,7 +51,7 @@ func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
 <br>
 
 ```swift
@@ -82,7 +82,7 @@ private func notifyConfirmation(to email: String) async { ... }
 ## SLA — orquestrador ou implementação
 
 <details>
-<summary>❌ Bad — função mistura nível de abstração</summary>
+<summary>❌ Ruim — função mistura nível de abstração</summary>
 <br>
 
 ```swift
@@ -103,7 +103,7 @@ func generateReport(orders: [Order]) -> Report {
 <br>
 
 <details>
-<summary>✅ Good — cada função em um único nível</summary>
+<summary>✅ Bom — cada função em um único nível</summary>
 <br>
 
 ```swift
@@ -129,7 +129,7 @@ private func calculateRevenue(_ orders: [Order]) -> Double {
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```swift
@@ -146,7 +146,7 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 <br>
 
 <details>
-<summary>✅ Good — explaining return com let nomeada</summary>
+<summary>✅ Bom — explaining return com let nomeada</summary>
 <br>
 
 ```swift
@@ -166,7 +166,7 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 ## Labels de argumento
 
 <details>
-<summary>❌ Bad — chamada ambígua sem labels</summary>
+<summary>❌ Ruim — chamada ambígua sem labels</summary>
 <br>
 
 ```swift
@@ -180,7 +180,7 @@ move(2, 5)   // o que é 2 e o que é 5?
 <br>
 
 <details>
-<summary>✅ Good — labels que leem como prosa</summary>
+<summary>✅ Bom — labels que leem como prosa</summary>
 <br>
 
 ```swift
@@ -194,7 +194,7 @@ move(from: 2, to: 5)
 ## `@discardableResult` para comandos opcionais
 
 <details>
-<summary>❌ Bad — warning desnecessário em função de efeito colateral</summary>
+<summary>❌ Ruim — warning desnecessário em função de efeito colateral</summary>
 <br>
 
 ```swift
@@ -210,7 +210,7 @@ registerEvent(.pageView("Home"))   // ⚠️ result of call is unused
 <br>
 
 <details>
-<summary>✅ Good — @discardableResult quando o retorno é opcional para o chamador</summary>
+<summary>✅ Bom — @discardableResult quando o retorno é opcional para o chamador</summary>
 <br>
 
 ```swift

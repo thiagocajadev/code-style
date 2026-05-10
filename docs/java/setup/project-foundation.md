@@ -42,7 +42,7 @@ Nunca injete com `@Autowired` em campo. Construtor torna as dependências explí
 testável sem o container Spring.
 
 <details>
-<summary>❌ Bad — @Autowired em campo: dependências ocultas, dificulta teste</summary>
+<summary>❌ Ruim — @Autowired em campo: dependências ocultas, dificulta teste</summary>
 <br>
 
 ```java
@@ -62,7 +62,7 @@ public class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — injeção via construtor: dependências explícitas</summary>
+<summary>✅ Bom — injeção via construtor: dependências explícitas</summary>
 <br>
 
 ```java
@@ -99,7 +99,7 @@ public class OrderService {
 diretamente. Use `@ConfigurationProperties` para agrupar propriedades por domínio.
 
 <details>
-<summary>❌ Bad — System.getenv() espalhado em todo lugar</summary>
+<summary>❌ Ruim — System.getenv() espalhado em todo lugar</summary>
 <br>
 
 ```java
@@ -118,7 +118,7 @@ public class PaymentService {
 <br>
 
 <details>
-<summary>✅ Good — @ConfigurationProperties agrupa e valida a configuração</summary>
+<summary>✅ Bom — @ConfigurationProperties agrupa e valida a configuração</summary>
 <br>
 
 ```java
@@ -152,7 +152,7 @@ spring:
 Organize por domínio (feature), não por camada técnica. O código de um domínio fica co-localizado.
 
 <details>
-<summary>❌ Bad — pacotes por camada técnica: acopla tudo</summary>
+<summary>❌ Ruim — pacotes por camada técnica: acopla tudo</summary>
 <br>
 
 ```
@@ -173,7 +173,7 @@ src/main/java/com/example/
 <br>
 
 <details>
-<summary>✅ Good — pacotes por domínio: cada domínio é dono do seu código</summary>
+<summary>✅ Bom — pacotes por domínio: cada domínio é dono do seu código</summary>
 <br>
 
 ```

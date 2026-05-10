@@ -116,7 +116,7 @@ estado, efeitos ou eventos de browser.
 estado de loading, sem waterfall.
 
 <details>
-<summary>❌ Bad — RCC desnecessário para conteúdo sem interatividade</summary>
+<summary>❌ Ruim — RCC desnecessário para conteúdo sem interatividade</summary>
 <br>
 
 ```tsx
@@ -144,7 +144,7 @@ export function ProductDetail({ id }: { id: string }) {
 <br>
 
 <details>
-<summary>✅ Good — RSC acessa dados diretamente, sem loading state</summary>
+<summary>✅ Bom — RSC acessa dados diretamente, sem loading state</summary>
 <br>
 
 ```tsx
@@ -169,7 +169,7 @@ O `page.tsx` é o orquestrador da rota: delega renderização a componentes e da
 Sem lógica de negócio inline.
 
 <details>
-<summary>❌ Bad — lógica de dados e negócio misturada no page.tsx</summary>
+<summary>❌ Ruim — lógica de dados e negócio misturada no page.tsx</summary>
 <br>
 
 ```tsx
@@ -196,7 +196,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 <br>
 
 <details>
-<summary>✅ Good — page.tsx como orquestrador</summary>
+<summary>✅ Bom — page.tsx como orquestrador</summary>
 <br>
 
 ```tsx
@@ -226,7 +226,7 @@ Props de componentes seguem a mesma regra das funções TypeScript: objetos com 
 usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
 
 <details>
-<summary>❌ Bad — tipo inline na assinatura do componente</summary>
+<summary>❌ Ruim — tipo inline na assinatura do componente</summary>
 <br>
 
 ```tsx
@@ -254,7 +254,7 @@ export function OrderCard({
 <br>
 
 <details>
-<summary>✅ Good — interface separada com sufixo Props</summary>
+<summary>✅ Bom — interface separada com sufixo Props</summary>
 <br>
 
 ```tsx
@@ -285,7 +285,7 @@ aplica diretamente: o hook encapsula estado de UI (`data`, `error`, `isLoading`)
 O retorno do hook é tipado com interface quando tem três ou mais valores.
 
 <details>
-<summary>❌ Bad — fetch dentro do componente, pipeline colapsado</summary>
+<summary>❌ Ruim — fetch dentro do componente, pipeline colapsado</summary>
 <br>
 
 ```tsx
@@ -315,7 +315,7 @@ export function OrderList() {
 <br>
 
 <details>
-<summary>✅ Good — hook encapsula estado; service encapsula chamada de rede</summary>
+<summary>✅ Bom — hook encapsula estado; service encapsula chamada de rede</summary>
 <br>
 
 ```ts
@@ -387,7 +387,7 @@ conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow
 componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
 
 <details>
-<summary>❌ Bad — guard no componente, expõe conteúdo por um frame</summary>
+<summary>❌ Ruim — guard no componente, expõe conteúdo por um frame</summary>
 <br>
 
 ```tsx
@@ -409,7 +409,7 @@ export default function DashboardPage() {
 <br>
 
 <details>
-<summary>✅ Good — guard no Proxy, antes de qualquer render</summary>
+<summary>✅ Bom — guard no Proxy, antes de qualquer render</summary>
 <br>
 
 ```ts
@@ -447,7 +447,7 @@ implementa o pipeline de escrita: valida → regras de negócio → persiste →
 O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
 
 <details>
-<summary>❌ Bad — validação manual sem schema, erros sem estrutura</summary>
+<summary>❌ Ruim — validação manual sem schema, erros sem estrutura</summary>
 <br>
 
 ```tsx
@@ -471,7 +471,7 @@ export async function createOrder(formData: FormData) {
 <br>
 
 <details>
-<summary>✅ Good — schema compartilhado, Server Action tipada com Result estruturado</summary>
+<summary>✅ Bom — schema compartilhado, Server Action tipada com Result estruturado</summary>
 <br>
 
 ```ts
@@ -567,7 +567,7 @@ segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operatio
 regras de negócio → persiste → retorna Response.
 
 <details>
-<summary>❌ Bad — lógica de negócio inline, sem schema, status code hardcoded</summary>
+<summary>❌ Ruim — lógica de negócio inline, sem schema, status code hardcoded</summary>
 <br>
 
 ```ts
@@ -590,7 +590,7 @@ export async function POST(request: NextRequest) {
 <br>
 
 <details>
-<summary>✅ Good — schema Zod, repository, resposta estruturada</summary>
+<summary>✅ Bom — schema Zod, repository, resposta estruturada</summary>
 <br>
 
 ```ts
@@ -641,7 +641,7 @@ POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa ide
 ```
 
 <details>
-<summary>❌ Bad — valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<summary>❌ Ruim — valida sobre JSON parseado, comparação direta, processa no handler</summary>
 <br>
 
 ```ts
@@ -669,7 +669,7 @@ export async function POST(request: NextRequest) {
 <br>
 
 <details>
-<summary>✅ Good — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
+<summary>✅ Bom — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
 <br>
 
 ```ts
@@ -731,7 +731,7 @@ requisição por padrão; cache é declarado explicitamente por função ou comp
 usuário vê as próprias mudanças na hora.
 
 <details>
-<summary>✅ Good — função cacheada com perfil e tag</summary>
+<summary>✅ Bom — função cacheada com perfil e tag</summary>
 <br>
 
 ```ts
@@ -755,7 +755,7 @@ export async function getCachedOrders(): Promise<Order[]> {
 <br>
 
 <details>
-<summary>✅ Good — Server Action invalida o cache após escrita</summary>
+<summary>✅ Bom — Server Action invalida o cache após escrita</summary>
 <br>
 
 ```ts

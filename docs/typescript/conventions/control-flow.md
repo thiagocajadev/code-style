@@ -22,7 +22,7 @@ Guard clauses em TypeScript estreitam o tipo além de controlar o fluxo. Após o
 compilador sabe que a variável é não-nula — sem assertions.
 
 <details>
-<summary>❌ Bad — tipo nullable navega pelo código inteiro com ?.</summary>
+<summary>❌ Ruim — tipo nullable navega pelo código inteiro com ?.</summary>
 <br>
 
 ```ts
@@ -39,7 +39,7 @@ async function processOrder(orderId: string): Promise<void> {
 <br>
 
 <details>
-<summary>✅ Good — guard estreita o tipo, resto do código é não-nulo</summary>
+<summary>✅ Bom — guard estreita o tipo, resto do código é não-nulo</summary>
 <br>
 
 ```ts
@@ -61,7 +61,7 @@ async function processOrder(orderId: string): Promise<void> {
 sabe o shape completo de cada variante sem type assertions.
 
 <details>
-<summary>❌ Bad — if/else com type assertions manuais</summary>
+<summary>❌ Ruim — if/else com type assertions manuais</summary>
 <br>
 
 ```ts
@@ -86,7 +86,7 @@ function handlePaymentEvent(event: PaymentEvent): void {
 <br>
 
 <details>
-<summary>✅ Good — switch com narrowing automático por discriminante</summary>
+<summary>✅ Bom — switch com narrowing automático por discriminante</summary>
 <br>
 
 ```ts
@@ -115,7 +115,7 @@ function handlePaymentEvent(event: PaymentEvent): void {
 um novo variant é adicionado ao tipo, o compilador aponta o switch que precisa ser atualizado.
 
 <details>
-<summary>❌ Bad — novo variant ignorado silenciosamente</summary>
+<summary>❌ Ruim — novo variant ignorado silenciosamente</summary>
 <br>
 
 ```ts
@@ -137,7 +137,7 @@ function getStatusLabel(status: OrderStatus): string {
 <br>
 
 <details>
-<summary>✅ Good — never no default, compilador avisa se faltar um caso</summary>
+<summary>✅ Bom — never no default, compilador avisa se faltar um caso</summary>
 <br>
 
 ```ts
@@ -165,7 +165,7 @@ Quando o mesmo narrowing é necessário em múltiplos lugares, extraia para uma 
 O compilador propaga o contrato para todos os callers.
 
 <details>
-<summary>❌ Bad — verificação inline repetida, narrowing não reutilizável</summary>
+<summary>❌ Ruim — verificação inline repetida, narrowing não reutilizável</summary>
 <br>
 
 ```ts
@@ -187,7 +187,7 @@ function processApiResponse(data: unknown): void {
 <br>
 
 <details>
-<summary>✅ Good — type predicate nomeia e reutiliza o narrowing</summary>
+<summary>✅ Bom — type predicate nomeia e reutiliza o narrowing</summary>
 <br>
 
 ```ts

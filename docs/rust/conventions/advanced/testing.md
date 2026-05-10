@@ -22,7 +22,7 @@ do código que testam, em um módulo `#[cfg(test)]`. Testes de integração fica
 ## Estrutura do módulo de teste
 
 <details>
-<summary>❌ Bad — teste misturado com código de produção, sem módulo</summary>
+<summary>❌ Ruim — teste misturado com código de produção, sem módulo</summary>
 <br>
 
 ```rust
@@ -41,7 +41,7 @@ fn test_discount() {
 <br>
 
 <details>
-<summary>✅ Good — testes isolados em #[cfg(test)]</summary>
+<summary>✅ Bom — testes isolados em #[cfg(test)]</summary>
 <br>
 
 ```rust
@@ -77,7 +77,7 @@ Agrupe variações do mesmo comportamento em uma tabela de casos. Evite copiar o
 teste com valores diferentes.
 
 <details>
-<summary>❌ Bad — um test por variação</summary>
+<summary>❌ Ruim — um test por variação</summary>
 <br>
 
 ```rust
@@ -99,7 +99,7 @@ fn no_discount_99() { assert_eq!(calculate_discount(99.0), 0.0); }
 <br>
 
 <details>
-<summary>✅ Good — table-driven com casos nomeados</summary>
+<summary>✅ Bom — table-driven com casos nomeados</summary>
 <br>
 
 ```rust
@@ -129,7 +129,7 @@ mod tests {
 ## Testes assíncronos com tokio::test
 
 <details>
-<summary>❌ Bad — block_on manual em teste async</summary>
+<summary>❌ Ruim — block_on manual em teste async</summary>
 <br>
 
 ```rust
@@ -147,7 +147,7 @@ fn find_order_returns_none_when_missing() {
 <br>
 
 <details>
-<summary>✅ Good — #[tokio::test] como runtime do teste</summary>
+<summary>✅ Bom — #[tokio::test] como runtime do teste</summary>
 <br>
 
 ```rust
@@ -174,7 +174,7 @@ O nome do teste descreve o comportamento esperado, não o método chamado.
 Formato: `<contexto>_<ação>_<resultado esperado>` ou `<comportamento em prosa>`.
 
 <details>
-<summary>❌ Bad — nome que repete o método</summary>
+<summary>❌ Ruim — nome que repete o método</summary>
 <br>
 
 ```rust
@@ -188,7 +188,7 @@ Formato: `<contexto>_<ação>_<resultado esperado>` ou `<comportamento em prosa>
 <br>
 
 <details>
-<summary>✅ Good — nome que descreve o comportamento</summary>
+<summary>✅ Bom — nome que descreve o comportamento</summary>
 <br>
 
 ```rust
@@ -205,7 +205,7 @@ Formato: `<contexto>_<ação>_<resultado esperado>` ou `<comportamento em prosa>
 Sem essas derives, o compilador rejeita o assert. Adicione-as em todos os tipos usados em testes.
 
 <details>
-<summary>❌ Bad — tipo sem PartialEq e Debug</summary>
+<summary>❌ Ruim — tipo sem PartialEq e Debug</summary>
 <br>
 
 ```rust
@@ -233,7 +233,7 @@ mod tests {
 <br>
 
 <details>
-<summary>✅ Good — derives que habilitam assert_eq! e mensagem de falha legível</summary>
+<summary>✅ Bom — derives que habilitam assert_eq! e mensagem de falha legível</summary>
 <br>
 
 ```rust
@@ -265,7 +265,7 @@ mod tests {
 Testes Rust são funções comuns: AAA aplica sem adaptação. Separe as fases por linha em branco.
 
 <details>
-<summary>❌ Bad — fases misturadas, dois comportamentos no mesmo teste</summary>
+<summary>❌ Ruim — fases misturadas, dois comportamentos no mesmo teste</summary>
 <br>
 
 ```rust
@@ -283,7 +283,7 @@ fn applies_vip_discount() {
 <br>
 
 <details>
-<summary>✅ Good — um comportamento por teste, fases explícitas</summary>
+<summary>✅ Bom — um comportamento por teste, fases explícitas</summary>
 <br>
 
 ```rust

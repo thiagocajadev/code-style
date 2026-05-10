@@ -24,7 +24,7 @@ Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados
 execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iterável, sem callback.
 
 <details>
-<summary>❌ Bad — callback alocado por iteração</summary>
+<summary>❌ Ruim — callback alocado por iteração</summary>
 <br>
 
 ```js
@@ -43,7 +43,7 @@ function calculateTotalRevenue(orders) {
 <br>
 
 <details>
-<summary>✅ Good — for...of sem overhead de callback</summary>
+<summary>✅ Bom — for...of sem overhead de callback</summary>
 <br>
 
 ```js
@@ -66,7 +66,7 @@ O(1) via hash. Para listas fixas verificadas com frequência, defina o `Set` uma
 reutilize.
 
 <details>
-<summary>❌ Bad — Array.includes percorre tudo a cada chamada</summary>
+<summary>❌ Ruim — Array.includes percorre tudo a cada chamada</summary>
 <br>
 
 ```js
@@ -86,7 +86,7 @@ function filterPremiumProducts(products) {
 <br>
 
 <details>
-<summary>✅ Good — Set.has resolve em O(1)</summary>
+<summary>✅ Bom — Set.has resolve em O(1)</summary>
 <br>
 
 ```js
@@ -110,7 +110,7 @@ progressivamente. UUID v7 é time-ordered: insere sempre próximo ao fim da B-tr
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
-<summary>❌ Bad — crypto.randomUUID() é v4: random, fragmenta índice</summary>
+<summary>❌ Ruim — crypto.randomUUID() é v4: random, fragmenta índice</summary>
 <br>
 
 ```js
@@ -126,7 +126,7 @@ function createOrder(request) {
 <br>
 
 <details>
-<summary>✅ Good — UUID v7: time-ordered, sequencial no índice</summary>
+<summary>✅ Bom — UUID v7: time-ordered, sequencial no índice</summary>
 <br>
 
 ```js
@@ -148,7 +148,7 @@ strings são imutáveis em JavaScript. Para construir strings dinamicamente, acu
 `join()` no final. Uma alocação, resultado único.
 
 <details>
-<summary>❌ Bad — nova string alocada por iteração</summary>
+<summary>❌ Ruim — nova string alocada por iteração</summary>
 <br>
 
 ```js
@@ -167,7 +167,7 @@ function buildOrderReport(orders) {
 <br>
 
 <details>
-<summary>✅ Good — array + join, uma alocação no final</summary>
+<summary>✅ Bom — array + join, uma alocação no final</summary>
 <br>
 
 ```js

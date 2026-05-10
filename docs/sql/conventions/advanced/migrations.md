@@ -21,7 +21,7 @@ Migrações são incrementais e irreversíveis. Cada arquivo representa uma muda
 Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 <details>
-<summary>❌ Bad — numeração sequencial, sem contexto temporal</summary>
+<summary>❌ Ruim — numeração sequencial, sem contexto temporal</summary>
 <br>
 
 ```
@@ -34,7 +34,7 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 <br>
 
 <details>
-<summary>✅ Good — timestamp + descrição em snake_case</summary>
+<summary>✅ Bom — timestamp + descrição em snake_case</summary>
 <br>
 
 ```
@@ -50,7 +50,7 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 Nunca editar uma migration já executada. Para ajustes, criar uma nova migration.
 
 <details>
-<summary>❌ Bad — editar migration existente para corrigir schema</summary>
+<summary>❌ Ruim — editar migration existente para corrigir schema</summary>
 <br>
 
 ```sql
@@ -68,7 +68,7 @@ CREATE TABLE FootballTeams
 <br>
 
 <details>
-<summary>✅ Good — nova migration para cada mudança</summary>
+<summary>✅ Bom — nova migration para cada mudança</summary>
 <br>
 
 ```sql
@@ -86,7 +86,7 @@ ADD
 Cada migration faz uma coisa. Não misturar criação de tabelas com inserção de dados ou criação de índices não relacionados.
 
 <details>
-<summary>❌ Bad — migration faz tudo de uma vez</summary>
+<summary>❌ Ruim — migration faz tudo de uma vez</summary>
 <br>
 
 ```sql
@@ -102,7 +102,7 @@ CREATE INDEX IX_Players_TeamId ON Players(TeamId);
 <br>
 
 <details>
-<summary>✅ Good — arquivos separados por responsabilidade</summary>
+<summary>✅ Bom — arquivos separados por responsabilidade</summary>
 <br>
 
 ```

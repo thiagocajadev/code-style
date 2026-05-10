@@ -69,7 +69,7 @@ pip install ruff
 `requirements.txt`, `.flake8` e `mypy.ini` em um único lugar.
 
 <details>
-<summary>❌ Bad — configuração fragmentada em múltiplos arquivos</summary>
+<summary>❌ Ruim — configuração fragmentada em múltiplos arquivos</summary>
 <br>
 
 ```
@@ -86,7 +86,7 @@ mypy.ini
 <br>
 
 <details>
-<summary>✅ Good — pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
+<summary>✅ Bom — pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
 <br>
 
 ```toml
@@ -134,7 +134,7 @@ asyncio_mode = "auto"
 `os.environ` diretamente. Use `pydantic-settings` para validação e tipagem automáticas.
 
 <details>
-<summary>❌ Bad — os.environ espalhado em todo lugar</summary>
+<summary>❌ Ruim — os.environ espalhado em todo lugar</summary>
 <br>
 
 ```python
@@ -152,7 +152,7 @@ secret = os.environ["JWT_SECRET"]  # leitura direta
 <br>
 
 <details>
-<summary>✅ Good — Settings como único ponto de entrada de env vars</summary>
+<summary>✅ Bom — Settings como único ponto de entrada de env vars</summary>
 <br>
 
 ```python
@@ -185,7 +185,7 @@ class OrderService:
 O arquivo serve como índice do projeto.
 
 <details>
-<summary>❌ Bad — main.py como dumping ground de configuração</summary>
+<summary>❌ Ruim — main.py como dumping ground de configuração</summary>
 <br>
 
 ```python
@@ -218,7 +218,7 @@ async def create_order(data: dict):
 <br>
 
 <details>
-<summary>✅ Good — main.py como índice, configuração delegada</summary>
+<summary>✅ Bom — main.py como índice, configuração delegada</summary>
 <br>
 
 ```python
@@ -236,7 +236,7 @@ Cada domínio registra suas próprias rotas e dependências. O factory não conh
 de cada módulo — apenas monta o app.
 
 <details>
-<summary>❌ Bad — factory conhece os internos de cada domínio</summary>
+<summary>❌ Ruim — factory conhece os internos de cada domínio</summary>
 <br>
 
 ```python
@@ -266,7 +266,7 @@ def create_app(settings) -> FastAPI:
 <br>
 
 <details>
-<summary>✅ Good — cada domínio encapsula o próprio registro</summary>
+<summary>✅ Bom — cada domínio encapsula o próprio registro</summary>
 <br>
 
 ```python

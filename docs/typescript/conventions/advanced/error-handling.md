@@ -20,7 +20,7 @@ Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` 
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Bad — null, undefined, false e objeto na mesma função</summary>
+<summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
 <br>
 
 ```ts
@@ -39,7 +39,7 @@ function processOrder(order: Order | null): { success: boolean; order: Order } |
 <br>
 
 <details>
-<summary>✅ Good — contrato consistente, lança exceções tipadas</summary>
+<summary>✅ Bom — contrato consistente, lança exceções tipadas</summary>
 <br>
 
 ```ts
@@ -60,7 +60,7 @@ function processOrder(order: Order | null): ProcessedOrder {
 ## BaseError: hierarquia tipada
 
 <details>
-<summary>❌ Bad — erros sem hierarquia, sem contrato, sem contexto</summary>
+<summary>❌ Ruim — erros sem hierarquia, sem contrato, sem contexto</summary>
 <br>
 
 ```ts
@@ -100,7 +100,7 @@ try {
 <br>
 
 <details>
-<summary>✅ Good — contrato único para todos os erros da aplicação</summary>
+<summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
 <br>
 
 ```ts
@@ -209,7 +209,7 @@ export class InternalServerError extends BaseError {
 O `catch` recebe `unknown` em TypeScript estrito. Antes de usar o erro, é preciso fazer narrowing.
 
 <details>
-<summary>❌ Bad — acessa propriedades de error sem narrowing</summary>
+<summary>❌ Ruim — acessa propriedades de error sem narrowing</summary>
 <br>
 
 ```ts
@@ -229,7 +229,7 @@ async function findProductById(id: string): Promise<Product> {
 <br>
 
 <details>
-<summary>✅ Good — instanceof para narrowing, propaga com contexto</summary>
+<summary>✅ Bom — instanceof para narrowing, propaga com contexto</summary>
 <br>
 
 ```ts

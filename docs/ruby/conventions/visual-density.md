@@ -19,7 +19,7 @@ consecutivas; nunca parede de código sem respiração.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — sem separação entre fases</summary>
+<summary>❌ Ruim — sem separação entre fases</summary>
 <br>
 
 ```ruby
@@ -41,7 +41,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — fases separadas por linha em branco</summary>
+<summary>✅ Bom — fases separadas por linha em branco</summary>
 <br>
 
 ```ruby
@@ -69,7 +69,7 @@ O resultado nomeado fica na linha anterior ao retorno implícito ou `return` exp
 Separe-o do bloco lógico anterior com uma linha em branco quando o bloco tem 2+ linhas.
 
 <details>
-<summary>❌ Bad — resultado colado ao bloco</summary>
+<summary>❌ Ruim — resultado colado ao bloco</summary>
 <br>
 
 ```ruby
@@ -88,7 +88,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — resultado separado, retorno implícito limpo</summary>
+<summary>✅ Bom — resultado separado, retorno implícito limpo</summary>
 <br>
 
 ```ruby
@@ -111,7 +111,7 @@ Separe métodos públicos entre si com uma linha em branco. Separe a seção `pr
 linha em branco acima.
 
 <details>
-<summary>❌ Bad — métodos colados, private sem separação</summary>
+<summary>❌ Ruim — métodos colados, private sem separação</summary>
 <br>
 
 ```ruby
@@ -140,7 +140,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — métodos separados, private com espaçamento correto</summary>
+<summary>✅ Bom — métodos separados, private com espaçamento correto</summary>
 <br>
 
 ```ruby
@@ -176,7 +176,7 @@ Agrupe `attr_reader`, `attr_writer`, `attr_accessor` em blocos por acesso, separ
 `initialize` por uma linha em branco.
 
 <details>
-<summary>❌ Bad — atributos misturados sem padrão</summary>
+<summary>❌ Ruim — atributos misturados sem padrão</summary>
 <br>
 
 ```ruby
@@ -197,7 +197,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — atributos agrupados acima do initialize</summary>
+<summary>✅ Bom — atributos agrupados acima do initialize</summary>
 <br>
 
 ```ruby

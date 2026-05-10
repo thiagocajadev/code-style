@@ -19,7 +19,7 @@ para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via 
 ## Variáveis de ambiente
 
 <details>
-<summary>❌ Bad — secret hardcoded no código</summary>
+<summary>❌ Ruim — secret hardcoded no código</summary>
 <br>
 
 ```ruby
@@ -40,7 +40,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — lido do ambiente na inicialização</summary>
+<summary>✅ Bom — lido do ambiente na inicialização</summary>
 <br>
 
 ```ruby
@@ -124,7 +124,7 @@ end
 ## Validação na fronteira
 
 <details>
-<summary>❌ Bad — parâmetro de usuário usado diretamente</summary>
+<summary>❌ Ruim — parâmetro de usuário usado diretamente</summary>
 <br>
 
 ```ruby
@@ -140,7 +140,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — tipagem e sanitização antes de usar</summary>
+<summary>✅ Bom — tipagem e sanitização antes de usar</summary>
 <br>
 
 ```ruby

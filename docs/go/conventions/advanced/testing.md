@@ -21,7 +21,7 @@ Go tem um framework de testes na stdlib. O padrão idiomático é **table-driven
 Cada teste deve ter fases explícitas: Arrange (preparar), Act (executar), Assert (verificar).
 
 <details>
-<summary>❌ Bad — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
 <br>
 
 ```go
@@ -44,7 +44,7 @@ func TestApplyDiscount(t *testing.T) {
 <br>
 
 <details>
-<summary>✅ Good — table-driven + AAA + testify</summary>
+<summary>✅ Bom — table-driven + AAA + testify</summary>
 <br>
 
 ```go
@@ -83,7 +83,7 @@ Use `require` quando o teste não tem sentido se falhar nesse ponto (guarda o ce
 Use `assert` para verificações adicionais onde a execução pode continuar.
 
 <details>
-<summary>✅ Good — require para precondição, assert para verificações</summary>
+<summary>✅ Bom — require para precondição, assert para verificações</summary>
 <br>
 
 ```go
@@ -113,7 +113,7 @@ Defina uma interface mínima no pacote sendo testado. Implemente um fake (estrut
 na suite de testes. Prefira fakes a mocks gerados automaticamente para lógica simples.
 
 <details>
-<summary>❌ Bad — dependência concreta no teste, impossível isolar</summary>
+<summary>❌ Ruim — dependência concreta no teste, impossível isolar</summary>
 <br>
 
 ```go
@@ -130,7 +130,7 @@ func TestOrderService(t *testing.T) {
 <br>
 
 <details>
-<summary>✅ Good — interface + fake em memória para testes unitários</summary>
+<summary>✅ Bom — interface + fake em memória para testes unitários</summary>
 <br>
 
 ```go
@@ -190,7 +190,7 @@ Sempre teste o caminho de erro além do caminho feliz. Use `assert.ErrorIs` para
 sentinel errors e `assert.ErrorAs` para tipos customizados.
 
 <details>
-<summary>✅ Good — happy path + error path + edge case</summary>
+<summary>✅ Bom — happy path + error path + edge case</summary>
 <br>
 
 ```go
@@ -242,7 +242,7 @@ Extraia setup repetitivo em helpers. Marque-os com `t.Helper()` para que erros
 apareçam na linha do teste, não no helper.
 
 <details>
-<summary>✅ Good — helper com t.Helper()</summary>
+<summary>✅ Bom — helper com t.Helper()</summary>
 <br>
 
 ```go

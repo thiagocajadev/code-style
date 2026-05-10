@@ -18,7 +18,7 @@ determinar visibilidade e categoria do símbolo, tornando as convenções parte 
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```rust
@@ -35,7 +35,7 @@ fn apply(x: &dyn std::any::Any, p: std::collections::HashMap<String, bool>, c: f
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```rust
@@ -67,7 +67,7 @@ Rust usa capitalização como sinal semântico. Clippy avisa sobre violações a
 | Variantes de enum                      | `PascalCase`           | `Active`, `Pending`, `NotFound`            |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```rust
@@ -86,7 +86,7 @@ enum Status {
 <br>
 
 <details>
-<summary>✅ Good — convenções Rust respeitadas</summary>
+<summary>✅ Bom — convenções Rust respeitadas</summary>
 <br>
 
 ```rust
@@ -110,7 +110,7 @@ enum Status {
 Em inglês, o nome segue a ordem natural da fala: **verbo + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```rust
@@ -124,7 +124,7 @@ fn calculate_total_invoice(invoice_id: u64) {}
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```rust
@@ -138,7 +138,7 @@ fn calculate_invoice_total(invoice_id: u64) {}
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
 <br>
 
 ```rust
@@ -153,7 +153,7 @@ fn do_stuff(x: &str) {}
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```rust
@@ -170,7 +170,7 @@ fn apply_seasonal_discount(order: Order) -> Order {}
 O nome reflete a intenção de negócio, não o detalhe técnico de onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```rust
@@ -185,7 +185,7 @@ fn save_to_s3(file: &[u8]) -> anyhow::Result<()> {}
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```rust
@@ -200,7 +200,7 @@ fn archive_document(file: &[u8]) -> anyhow::Result<()> {}
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```rust
@@ -214,7 +214,7 @@ let valid = email.contains('@');
 <br>
 
 <details>
-<summary>✅ Good — prefixos is_, has_, can_, should_</summary>
+<summary>✅ Bom — prefixos is_, has_, can_, should_</summary>
 <br>
 
 ```rust
@@ -232,7 +232,7 @@ let should_retry = attempt < MAX_RETRIES;
 Trate acrônimos como palavras normais em `PascalCase`. Evite maiúsculas em sequência.
 
 <details>
-<summary>❌ Bad — acrônimo inteiro em maiúsculas</summary>
+<summary>❌ Ruim — acrônimo inteiro em maiúsculas</summary>
 <br>
 
 ```rust
@@ -246,7 +246,7 @@ fn parseJSON(raw: &str) {}
 <br>
 
 <details>
-<summary>✅ Good — acrônimo como palavra normal</summary>
+<summary>✅ Bom — acrônimo como palavra normal</summary>
 <br>
 
 ```rust

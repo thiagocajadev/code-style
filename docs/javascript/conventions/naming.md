@@ -19,7 +19,7 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```js
@@ -36,7 +36,7 @@ function apply(x, p, c) {
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```js
@@ -55,7 +55,7 @@ function applyDiscount(order, calculateDiscount) {
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — camelCase com português fica desajeitado</summary>
+<summary>❌ Ruim — camelCase com português fica desajeitado</summary>
 <br>
 
 ```js
@@ -75,7 +75,7 @@ function buscaEnderecoDoCliente(id) {
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```js
@@ -95,7 +95,7 @@ function getCustomerAddress(id) {
 ## Mistura de idiomas
 
 <details>
-<summary>❌ Bad — português e inglês no mesmo arquivo</summary>
+<summary>❌ Ruim — português e inglês no mesmo arquivo</summary>
 <br>
 
 ```js
@@ -111,7 +111,7 @@ const resultado = processOrder(pedido);
 <br>
 
 <details>
-<summary>✅ Good — consistência de idioma</summary>
+<summary>✅ Bom — consistência de idioma</summary>
 <br>
 
 ```js
@@ -129,7 +129,7 @@ const result = processOrder(order);
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```js
@@ -144,7 +144,7 @@ calculateTotalInvoice(); // "invoice total" é a expressão natural
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```js
@@ -159,7 +159,7 @@ calculateInvoiceTotal();
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
 <br>
 
 ```js
@@ -183,7 +183,7 @@ function doStuff(x) {
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```js
@@ -220,7 +220,7 @@ function applySeasonalDiscount(order) {
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```js
@@ -248,7 +248,7 @@ function queryElastic(term) {
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```js
@@ -279,7 +279,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 substitui qualquer comentário.
 
 <details>
-<summary>❌ Bad — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim — comentário repete o que o código já diz</summary>
 <br>
 
 ```js
@@ -297,7 +297,7 @@ attempts++;
 <br>
 
 <details>
-<summary>✅ Good — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
 <br>
 
 ```js
@@ -314,7 +314,7 @@ attempts++;
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```js
@@ -330,7 +330,7 @@ const valid = email.includes("@");
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```js

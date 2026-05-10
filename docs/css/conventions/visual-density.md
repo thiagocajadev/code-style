@@ -18,7 +18,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores distintos separa responsabilidades e torna o arquivo escaneável.
 
 <details>
-<summary>❌ Bad — regras coladas, sem respiro entre blocos</summary>
+<summary>❌ Ruim — regras coladas, sem respiro entre blocos</summary>
 <br>
 
 ```css
@@ -41,7 +41,7 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 <br>
 
 <details>
-<summary>✅ Good — uma linha em branco entre cada regra</summary>
+<summary>✅ Bom — uma linha em branco entre cada regra</summary>
 <br>
 
 ```css
@@ -70,7 +70,7 @@ Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: pos
 A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedades).
 
 <details>
-<summary>❌ Bad — propriedades longas sem separação entre grupos</summary>
+<summary>❌ Ruim — propriedades longas sem separação entre grupos</summary>
 <br>
 
 ```css
@@ -96,7 +96,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 <br>
 
 <details>
-<summary>✅ Good — grupos separados, cada responsabilidade legível</summary>
+<summary>✅ Bom — grupos separados, cada responsabilidade legível</summary>
 <br>
 
 ```css
@@ -127,7 +127,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 `@media` queries funcionam como fases do mesmo seletor. Cada uma é separada do bloco principal e entre si por uma linha em branco.
 
 <details>
-<summary>❌ Bad — @media colados, sem separação visual</summary>
+<summary>❌ Ruim — @media colados, sem separação visual</summary>
 <br>
 
 ```css
@@ -154,7 +154,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 <br>
 
 <details>
-<summary>✅ Good — uma linha em branco entre cada bloco</summary>
+<summary>✅ Bom — uma linha em branco entre cada bloco</summary>
 <br>
 
 ```css
@@ -185,7 +185,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linha em branco antes de cada bloco filho mantém a hierarquia clara.
 
 <details>
-<summary>❌ Bad — tudo colado, hierarquia difícil de ler</summary>
+<summary>❌ Ruim — tudo colado, hierarquia difícil de ler</summary>
 <br>
 
 ```css
@@ -211,7 +211,7 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 <br>
 
 <details>
-<summary>✅ Good — cada bloco aninhado separado, hierarquia visível</summary>
+<summary>✅ Bom — cada bloco aninhado separado, hierarquia visível</summary>
 <br>
 
 ```css

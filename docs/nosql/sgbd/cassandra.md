@@ -84,7 +84,7 @@ CREATE TABLE football.match_events (
 ## Insert (Prepared Statement)
 
 <details>
-<summary>❌ Bad — query sem prepare; string interpolada; sem consistency level</summary>
+<summary>❌ Ruim — query sem prepare; string interpolada; sem consistency level</summary>
 <br>
 
 ```js
@@ -104,7 +104,7 @@ async function insertMatchEvent(event) {
 <br>
 
 <details>
-<summary>✅ Good — prepared statement; parâmetros posicionais; consistency level explícito</summary>
+<summary>✅ Bom — prepared statement; parâmetros posicionais; consistency level explícito</summary>
 <br>
 
 ```js
@@ -139,7 +139,7 @@ class MatchEventRepository {
 ## Select
 
 <details>
-<summary>❌ Bad — query sem partition key: full cluster scan</summary>
+<summary>❌ Ruim — query sem partition key: full cluster scan</summary>
 <br>
 
 ```js
@@ -153,7 +153,7 @@ await client.execute(query, ['goal'], { prepare: true });
 <br>
 
 <details>
-<summary>✅ Good — query com partition key; LIMIT obrigatório; projeção de campos</summary>
+<summary>✅ Bom — query com partition key; LIMIT obrigatório; projeção de campos</summary>
 <br>
 
 ```js

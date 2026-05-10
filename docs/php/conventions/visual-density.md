@@ -21,7 +21,7 @@ a densidade visual é a camada do desenvolvedor por cima.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — bloco sem separação entre grupos lógicos</summary>
+<summary>❌ Ruim — bloco sem separação entre grupos lógicos</summary>
 <br>
 
 ```php
@@ -47,7 +47,7 @@ public function processOrder(int $orderID): Order
 <br>
 
 <details>
-<summary>✅ Good — grupos separados por linha em branco; return separado do último grupo</summary>
+<summary>✅ Bom — grupos separados por linha em branco; return separado do último grupo</summary>
 <br>
 
 ```php
@@ -81,7 +81,7 @@ A linha de `return` nomeia o resultado. Um blank antes do `return` separa a saí
 do último grupo de processamento.
 
 <details>
-<summary>❌ Bad — return com lógica inline, sem separação</summary>
+<summary>❌ Ruim — return com lógica inline, sem separação</summary>
 <br>
 
 ```php
@@ -100,7 +100,7 @@ public function buildOrderSummary(array $orders): array
 <br>
 
 <details>
-<summary>✅ Good — resultado calculado antes, return limpo</summary>
+<summary>✅ Bom — resultado calculado antes, return limpo</summary>
 <br>
 
 ```php
@@ -123,7 +123,7 @@ public function buildOrderSummary(array $orders): array
 Agrupe propriedades por responsabilidade com linha em branco entre grupos.
 
 <details>
-<summary>❌ Bad — propriedades sem separação lógica</summary>
+<summary>❌ Ruim — propriedades sem separação lógica</summary>
 <br>
 
 ```php
@@ -144,7 +144,7 @@ class OrderService
 <br>
 
 <details>
-<summary>✅ Good — propriedades agrupadas por responsabilidade</summary>
+<summary>✅ Bom — propriedades agrupadas por responsabilidade</summary>
 <br>
 
 ```php
@@ -170,7 +170,7 @@ Funções com múltiplas fases (leitura → transformação → escrita) devem t
 separada por linha em branco.
 
 <details>
-<summary>❌ Bad — fases misturadas, sem separação</summary>
+<summary>❌ Ruim — fases misturadas, sem separação</summary>
 <br>
 
 ```php
@@ -192,7 +192,7 @@ public function generateInvoice(int $orderID): Invoice
 <br>
 
 <details>
-<summary>✅ Good — fases distintas separadas por linha em branco</summary>
+<summary>✅ Bom — fases distintas separadas por linha em branco</summary>
 <br>
 
 ```php
@@ -225,7 +225,7 @@ public function generateInvoice(int $orderID): Invoice
 Com PHP 8.0+ promoted properties, use uma declaração por linha para manter legibilidade.
 
 <details>
-<summary>✅ Good — promoted properties em múltiplas linhas</summary>
+<summary>✅ Bom — promoted properties em múltiplas linhas</summary>
 <br>
 
 ```php

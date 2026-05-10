@@ -57,7 +57,7 @@ PK: MATCH#1099       SK: EVENT#002
 ```
 
 <details>
-<summary>❌ Bad — partition key de baixa cardinalidade; hot spot; Scan em produção</summary>
+<summary>❌ Ruim — partition key de baixa cardinalidade; hot spot; Scan em produção</summary>
 <br>
 
 ```js
@@ -89,7 +89,7 @@ const item = {
 <br>
 
 <details>
-<summary>✅ Good — Query por partition key; GSI para access patterns alternativos</summary>
+<summary>✅ Bom — Query por partition key; GSI para access patterns alternativos</summary>
 <br>
 
 ```js

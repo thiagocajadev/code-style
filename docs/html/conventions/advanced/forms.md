@@ -22,7 +22,7 @@ Todo input tem um `<label>` explícito associado via `for`/`id`. Placeholder nã
 desaparece ao digitar e tem contraste insuficiente.
 
 <details>
-<summary>❌ Bad — sem label, placeholder como único texto</summary>
+<summary>❌ Ruim — sem label, placeholder como único texto</summary>
 <br>
 
 ```html
@@ -36,7 +36,7 @@ desaparece ao digitar e tem contraste insuficiente.
 <br>
 
 <details>
-<summary>✅ Good — label explícita com for/id; placeholder complementa</summary>
+<summary>✅ Bom — label explícita com for/id; placeholder complementa</summary>
 <br>
 
 ```html
@@ -58,7 +58,7 @@ desaparece ao digitar e tem contraste insuficiente.
 recomendado para seções de formulário com múltiplos campos.
 
 <details>
-<summary>❌ Bad — grupo de radio sem fieldset, sem contexto semântico</summary>
+<summary>❌ Ruim — grupo de radio sem fieldset, sem contexto semântico</summary>
 <br>
 
 ```html
@@ -74,7 +74,7 @@ recomendado para seções de formulário com múltiplos campos.
 <br>
 
 <details>
-<summary>✅ Good — fieldset + legend contextualiza o grupo</summary>
+<summary>✅ Bom — fieldset + legend contextualiza o grupo</summary>
 <br>
 
 ```html
@@ -101,7 +101,7 @@ O tipo correto entrega teclado virtual otimizado no mobile, validação nativa e
 contextual, sem JavaScript adicional.
 
 <details>
-<summary>❌ Bad — type="text" para tudo</summary>
+<summary>❌ Ruim — type="text" para tudo</summary>
 <br>
 
 ```html
@@ -117,7 +117,7 @@ contextual, sem JavaScript adicional.
 <br>
 
 <details>
-<summary>✅ Good — tipo correto para cada dado</summary>
+<summary>✅ Bom — tipo correto para cada dado</summary>
 <br>
 
 ```html
@@ -137,7 +137,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 `setCustomValidity` ou `aria-describedby`.
 
 <details>
-<summary>❌ Bad — validação só em JS, sem atributos nativos</summary>
+<summary>❌ Ruim — validação só em JS, sem atributos nativos</summary>
 <br>
 
 ```html
@@ -150,7 +150,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 <br>
 
 <details>
-<summary>✅ Good — atributos nativos + mensagem de erro acessível</summary>
+<summary>✅ Bom — atributos nativos + mensagem de erro acessível</summary>
 <br>
 
 ```html

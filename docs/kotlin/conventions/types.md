@@ -20,7 +20,7 @@ nulidade em tempo de compilação — sem NullPointerException em código idiom�
 ## Data class para modelos de dados
 
 <details>
-<summary>❌ Bad — classe manual com boilerplate</summary>
+<summary>❌ Ruim — classe manual com boilerplate</summary>
 <br>
 
 ```kotlin
@@ -36,7 +36,7 @@ class User(val id: Long, val name: String, val email: String) {
 <br>
 
 <details>
-<summary>✅ Good — data class elimina o boilerplate</summary>
+<summary>✅ Bom — data class elimina o boilerplate</summary>
 <br>
 
 ```kotlin
@@ -55,7 +55,7 @@ val updated = user.copy(email = "new@email.com")
 ## Sealed class para estados e resultados
 
 <details>
-<summary>❌ Bad — String como discriminante de estado</summary>
+<summary>❌ Ruim — String como discriminante de estado</summary>
 <br>
 
 ```kotlin
@@ -71,7 +71,7 @@ data class OrderResult(
 <br>
 
 <details>
-<summary>✅ Good — sealed class: o compilador verifica todas as branches</summary>
+<summary>✅ Bom — sealed class: o compilador verifica todas as branches</summary>
 <br>
 
 ```kotlin
@@ -96,7 +96,7 @@ fun describeResult(result: OrderResult): String {
 ## Value class para wrappers tipados
 
 <details>
-<summary>❌ Bad — primitivo sem semântica, fácil de confundir</summary>
+<summary>❌ Ruim — primitivo sem semântica, fácil de confundir</summary>
 <br>
 
 ```kotlin
@@ -111,7 +111,7 @@ chargeCustomer(100.0, 42L)  // compilador não pega
 <br>
 
 <details>
-<summary>✅ Good — value class dá semântica sem overhead</summary>
+<summary>✅ Bom — value class dá semântica sem overhead</summary>
 <br>
 
 ```kotlin
@@ -131,7 +131,7 @@ chargeCustomer(UserId(42L), Amount(100.0))
 ## Interface sobre herança
 
 <details>
-<summary>❌ Bad — herança para compartilhar comportamento</summary>
+<summary>❌ Ruim — herança para compartilhar comportamento</summary>
 <br>
 
 ```kotlin
@@ -149,7 +149,7 @@ class UserRepository : BaseRepository() { ... }
 <br>
 
 <details>
-<summary>✅ Good — interface define contrato; comportamento via composição</summary>
+<summary>✅ Bom — interface define contrato; comportamento via composição</summary>
 <br>
 
 ```kotlin
@@ -172,7 +172,7 @@ class SqlOrderRepository(
 ## Generics com variância
 
 <details>
-<summary>❌ Bad — tipo genérico invariante força cast desnecessário</summary>
+<summary>❌ Ruim — tipo genérico invariante força cast desnecessário</summary>
 <br>
 
 ```kotlin
@@ -190,7 +190,7 @@ fun printAll(items: List<Any>) {
 <br>
 
 <details>
-<summary>✅ Good — out-projection para leitura; in-projection para escrita</summary>
+<summary>✅ Bom — out-projection para leitura; in-projection para escrita</summary>
 <br>
 
 ```kotlin
@@ -209,7 +209,7 @@ printAll(listOf("Alice", "Bob"))
 ## Companion object para factory
 
 <details>
-<summary>❌ Bad — construtor com lógica de criação</summary>
+<summary>❌ Ruim — construtor com lógica de criação</summary>
 <br>
 
 ```kotlin
@@ -223,7 +223,7 @@ class Token(val value: String, val expiresAt: Instant) {
 <br>
 
 <details>
-<summary>✅ Good — companion object com factory method nomeado</summary>
+<summary>✅ Bom — companion object com factory method nomeado</summary>
 <br>
 
 ```kotlin

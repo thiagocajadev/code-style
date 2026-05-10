@@ -32,7 +32,7 @@ equivalente. Prefira `DOMContentLoaded` nativo em código novo; use jQuery ready
 está em contexto jQuery.
 
 <details>
-<summary>❌ Bad — inline no head, DOM ainda não existe</summary>
+<summary>❌ Ruim — inline no head, DOM ainda não existe</summary>
 <br>
 
 ```html
@@ -48,7 +48,7 @@ está em contexto jQuery.
 <br>
 
 <details>
-<summary>✅ Good — aguarda DOM com $(fn) ou script defer</summary>
+<summary>✅ Bom — aguarda DOM com $(fn) ou script defer</summary>
 <br>
 
 ```js
@@ -65,7 +65,7 @@ Seletores por ID são os mais rápidos (mapeiam para `getElementById`). Seletore
 atributo percorrem o DOM. Reduzir o escopo com contexto ou cache melhora performance.
 
 <details>
-<summary>❌ Bad — seletor global repetido, sem cache</summary>
+<summary>❌ Ruim — seletor global repetido, sem cache</summary>
 <br>
 
 ```js
@@ -79,7 +79,7 @@ $('.card .title').addClass('active');
 <br>
 
 <details>
-<summary>✅ Good — seleção cacheada, escopo limitado</summary>
+<summary>✅ Bom — seleção cacheada, escopo limitado</summary>
 <br>
 
 ```js
@@ -100,7 +100,7 @@ um único handler no pai e usa `event.target` para filtrar. Funciona para elemen
 depois do bind.
 
 <details>
-<summary>❌ Bad — handler em cada item, não funciona com itens adicionados dinamicamente</summary>
+<summary>❌ Ruim — handler em cada item, não funciona com itens adicionados dinamicamente</summary>
 <br>
 
 ```js
@@ -114,7 +114,7 @@ $('.product-card').on('click', function () {
 <br>
 
 <details>
-<summary>✅ Good — delegation no container estático, selector como filtro</summary>
+<summary>✅ Bom — delegation no container estático, selector como filtro</summary>
 <br>
 
 ```js
@@ -131,7 +131,7 @@ jQuery retorna `this` na maioria dos métodos. O encadeamento agrupa operações
 repetir a seleção. Cada nível de chain é uma operação, não uma nova query.
 
 <details>
-<summary>❌ Bad — seleção repetida para cada operação</summary>
+<summary>❌ Ruim — seleção repetida para cada operação</summary>
 <br>
 
 ```js
@@ -146,7 +146,7 @@ $('#notification').fadeIn(300);
 <br>
 
 <details>
-<summary>✅ Good — chain, uma seleção, múltiplas operações</summary>
+<summary>✅ Bom — chain, uma seleção, múltiplas operações</summary>
 <br>
 
 ```js
@@ -166,7 +166,7 @@ $('#notification')
 compatível com `.then()` / `.catch()`.
 
 <details>
-<summary>❌ Bad — sem contentType, callback no sucesso, sem tratamento de erro</summary>
+<summary>❌ Ruim — sem contentType, callback no sucesso, sem tratamento de erro</summary>
 <br>
 
 ```js
@@ -180,7 +180,7 @@ $.post('/api/orders', orderData, function (createdOrder) {
 <br>
 
 <details>
-<summary>✅ Good — JSON explícito, Promise com then/catch</summary>
+<summary>✅ Bom — JSON explícito, Promise com then/catch</summary>
 <br>
 
 ```js

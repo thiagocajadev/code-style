@@ -22,7 +22,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `r
 o fluxo já saiu.
 
 <details>
-<summary>❌ Bad — else desnecessário após return</summary>
+<summary>❌ Ruim — else desnecessário após return</summary>
 <br>
 
 ```python
@@ -38,7 +38,7 @@ def get_discount(user) -> float:
 <br>
 
 <details>
-<summary>✅ Good — early return elimina o else</summary>
+<summary>✅ Bom — early return elimina o else</summary>
 <br>
 
 ```python
@@ -57,7 +57,7 @@ Para atribuição de dois valores possíveis em uma linha. Três ou mais alterna
 lookup ou `match/case`. Nunca aninhar expressões condicionais.
 
 <details>
-<summary>❌ Bad — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
 <br>
 
 ```python
@@ -72,7 +72,7 @@ else:
 <br>
 
 <details>
-<summary>✅ Good — expressão condicional na atribuição</summary>
+<summary>✅ Bom — expressão condicional na atribuição</summary>
 <br>
 
 ```python
@@ -82,7 +82,7 @@ label = "Paid" if order.is_paid else "Pending"
 </details>
 
 <details>
-<summary>❌ Bad — expressão condicional aninhada para 3+ alternativas</summary>
+<summary>❌ Ruim — expressão condicional aninhada para 3+ alternativas</summary>
 <br>
 
 ```python
@@ -94,7 +94,7 @@ priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else
 <br>
 
 <details>
-<summary>✅ Good — dicionário de lookup para 3+ alternativas</summary>
+<summary>✅ Bom — dicionário de lookup para 3+ alternativas</summary>
 <br>
 
 ```python
@@ -115,7 +115,7 @@ vira uma pirâmide: o _arrow antipattern_. Guard clauses invertem: valide as sa�
 o fluxo principal limpo.
 
 <details>
-<summary>❌ Bad — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
 <br>
 
 ```python
@@ -132,7 +132,7 @@ def process_order(order):
 <br>
 
 <details>
-<summary>✅ Good — guard clauses, fluxo principal ao fundo</summary>
+<summary>✅ Bom — guard clauses, fluxo principal ao fundo</summary>
 <br>
 
 ```python
@@ -160,7 +160,7 @@ Quando múltiplos `if/elif` retornam um valor para cada chave, substitua por um 
 lookup ou um `match` com guard:
 
 <details>
-<summary>❌ Bad — if/elif repetitivo mapeando chave → valor</summary>
+<summary>❌ Ruim — if/elif repetitivo mapeando chave → valor</summary>
 <br>
 
 ```python
@@ -182,7 +182,7 @@ def get_status_label(status: str) -> str:
 <br>
 
 <details>
-<summary>✅ Good — lookup dict: legível e extensível</summary>
+<summary>✅ Bom — lookup dict: legível e extensível</summary>
 <br>
 
 ```python
@@ -207,7 +207,7 @@ def get_status_label(status: str) -> str:
 por valor. Cada `case` termina de forma explícita — não há fall-through acidental como em C.
 
 <details>
-<summary>❌ Bad — if/elif encadeado para despacho de ações</summary>
+<summary>❌ Ruim — if/elif encadeado para despacho de ações</summary>
 <br>
 
 ```python
@@ -228,7 +228,7 @@ def process_payment_event(event):
 <br>
 
 <details>
-<summary>✅ Good — match/case para despacho de comportamento</summary>
+<summary>✅ Bom — match/case para despacho de comportamento</summary>
 <br>
 
 ```python
@@ -255,7 +255,7 @@ def process_payment_event(event):
 o código de validação de tipo e forma.
 
 <details>
-<summary>❌ Bad — isinstance + acesso de atributo manual</summary>
+<summary>❌ Ruim — isinstance + acesso de atributo manual</summary>
 <br>
 
 ```python
@@ -273,7 +273,7 @@ def build_notification_message(event):
 <br>
 
 <details>
-<summary>✅ Good — match/case desestrutura e nomeia</summary>
+<summary>✅ Bom — match/case desestrutura e nomeia</summary>
 <br>
 
 ```python
@@ -299,7 +299,7 @@ Antes de escrever um loop, verifique se `next()`, `any()` ou `all()` já resolve
 param no primeiro match — sem percorrer o resto.
 
 <details>
-<summary>❌ Bad — loop com flag força percorrer tudo</summary>
+<summary>❌ Ruim — loop com flag força percorrer tudo</summary>
 <br>
 
 ```python
@@ -318,7 +318,7 @@ def find_first_expired_product(products: list):
 <br>
 
 <details>
-<summary>✅ Good — next() sai no primeiro match</summary>
+<summary>✅ Bom — next() sai no primeiro match</summary>
 <br>
 
 ```python
@@ -336,7 +336,7 @@ def find_first_expired_product(products: list):
 <br>
 
 <details>
-<summary>✅ Good — any() e all() com circuit break nativo</summary>
+<summary>✅ Bom — any() e all() com circuit break nativo</summary>
 <br>
 
 ```python
@@ -353,7 +353,7 @@ Para transformação pura de coleção, list/dict/set comprehensions são declar
 efeitos colaterais por item, use `for`.
 
 <details>
-<summary>❌ Bad — loop imperativo para transformação pura</summary>
+<summary>❌ Ruim — loop imperativo para transformação pura</summary>
 <br>
 
 ```python
@@ -371,7 +371,7 @@ def get_active_user_emails(users: list) -> list[str]:
 <br>
 
 <details>
-<summary>✅ Good — list comprehension para transformação pura</summary>
+<summary>✅ Bom — list comprehension para transformação pura</summary>
 <br>
 
 ```python
@@ -386,7 +386,7 @@ def get_active_user_emails(users: list) -> list[str]:
 <br>
 
 <details>
-<summary>❌ Bad — comprehension para efeitos colaterais</summary>
+<summary>❌ Ruim — comprehension para efeitos colaterais</summary>
 <br>
 
 ```python
@@ -398,7 +398,7 @@ def get_active_user_emails(users: list) -> list[str]:
 <br>
 
 <details>
-<summary>✅ Good — for loop quando há efeito colateral</summary>
+<summary>✅ Bom — for loop quando há efeito colateral</summary>
 <br>
 
 ```python
@@ -415,7 +415,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 execução é garantida.
 
 <details>
-<summary>❌ Bad — for simulando condição de parada por estado</summary>
+<summary>❌ Ruim — for simulando condição de parada por estado</summary>
 <br>
 
 ```python
@@ -430,7 +430,7 @@ for attempt in range(max_attempts):
 <br>
 
 <details>
-<summary>✅ Good — while para condição de parada por estado</summary>
+<summary>✅ Bom — while para condição de parada por estado</summary>
 <br>
 
 ```python
@@ -449,7 +449,7 @@ while attempt < max_attempts:
 <br>
 
 <details>
-<summary>✅ Good — while True com break quando a primeira execução é garantida</summary>
+<summary>✅ Bom — while True com break quando a primeira execução é garantida</summary>
 <br>
 
 ```python

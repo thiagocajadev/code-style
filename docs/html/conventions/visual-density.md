@@ -19,7 +19,7 @@ Elementos de bloco semanticamente distintos são separados por uma linha em bran
 arquivo escaneável e revela a estrutura de cima pra baixo sem precisar ler o conteúdo.
 
 <details>
-<summary>❌ Bad — blocos colados, sem respiro entre seções</summary>
+<summary>❌ Ruim — blocos colados, sem respiro entre seções</summary>
 <br>
 
 ```html
@@ -47,7 +47,7 @@ arquivo escaneável e revela a estrutura de cima pra baixo sem precisar ler o co
 <br>
 
 <details>
-<summary>✅ Good — uma linha em branco entre blocos distintos</summary>
+<summary>✅ Bom — uma linha em branco entre blocos distintos</summary>
 <br>
 
 ```html
@@ -82,7 +82,7 @@ Cada campo de formulário (label + input + mensagem de erro) é uma unidade. Uma
 separa campos distintos. O formulário torna-se legível de cima pra baixo.
 
 <details>
-<summary>❌ Bad — campos colados, unidades indistintas</summary>
+<summary>❌ Ruim — campos colados, unidades indistintas</summary>
 <br>
 
 ```html
@@ -102,7 +102,7 @@ separa campos distintos. O formulário torna-se legível de cima pra baixo.
 <br>
 
 <details>
-<summary>✅ Good — campos separados, unidades visíveis</summary>
+<summary>✅ Bom — campos separados, unidades visíveis</summary>
 <br>
 
 ```html
@@ -128,7 +128,7 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 fechamento identifica o bloco, não o elemento.
 
 <details>
-<summary>❌ Bad — comentário sobre o que o código faz, não onde termina</summary>
+<summary>❌ Ruim — comentário sobre o que o código faz, não onde termina</summary>
 <br>
 
 ```html
@@ -142,7 +142,7 @@ fechamento identifica o bloco, não o elemento.
 <br>
 
 <details>
-<summary>✅ Good — comentário de fechamento identifica a seção</summary>
+<summary>✅ Bom — comentário de fechamento identifica a seção</summary>
 <br>
 
 ```html

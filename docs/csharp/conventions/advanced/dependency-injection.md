@@ -22,7 +22,7 @@
 Service locator é o antipadrão clássico de DI: buscar dependências diretamente do container dentro da classe. Torna dependências implícitas, dificulta testes e cria acoplamento ao container.
 
 <details>
-<summary>❌ Bad — dependência implícita, acoplado ao container</summary>
+<summary>❌ Ruim — dependência implícita, acoplado ao container</summary>
 <br>
 
 ```csharp
@@ -42,7 +42,7 @@ public class OrderService(IServiceProvider services)
 <br>
 
 <details>
-<summary>✅ Good — dependências explícitas no contrato</summary>
+<summary>✅ Bom — dependências explícitas no contrato</summary>
 <br>
 
 ```csharp
@@ -62,7 +62,7 @@ public class OrderService(IOrderRepository orderRepository, INotifier notifier)
 C# 12 introduziu primary constructors para classes. Substitui o padrão verboso de campo + construtor explícito. Parâmetros são promovidos a campos `readonly` com `_camelCase`.
 
 <details>
-<summary>❌ Bad — construtor explícito verboso</summary>
+<summary>❌ Ruim — construtor explícito verboso</summary>
 <br>
 
 ```csharp
@@ -84,7 +84,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — primary constructor, DI direta e concisa</summary>
+<summary>✅ Bom — primary constructor, DI direta e concisa</summary>
 <br>
 
 ```csharp
@@ -110,7 +110,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 **Captive dependency**: um `Singleton` que recebe um `Scoped` captura a instância na primeira resolução. O `Scoped` passa a viver para sempre: comportamento incorreto e difícil de rastrear.
 
 <details>
-<summary>❌ Bad — singleton captura scoped</summary>
+<summary>❌ Ruim — singleton captura scoped</summary>
 <br>
 
 ```csharp
@@ -125,7 +125,7 @@ public class ReportService(IOrderRepository orderRepository) { } // capturado na
 <br>
 
 <details>
-<summary>✅ Good — lifetimes compatíveis</summary>
+<summary>✅ Bom — lifetimes compatíveis</summary>
 <br>
 
 ```csharp
@@ -140,7 +140,7 @@ builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
 Depender de interfaces, não de implementações concretas. Permite substituição em testes sem alterar o código de produção.
 
 <details>
-<summary>❌ Bad — dependência concreta, impossível substituir em testes</summary>
+<summary>❌ Ruim — dependência concreta, impossível substituir em testes</summary>
 <br>
 
 ```csharp
@@ -152,7 +152,7 @@ public class OrderService(SqlOrderRepository orderRepository) { }
 <br>
 
 <details>
-<summary>✅ Good — dependência por interface, substituível</summary>
+<summary>✅ Bom — dependência por interface, substituível</summary>
 <br>
 
 ```csharp
@@ -172,7 +172,7 @@ services.AddScoped<IOrderRepository, FakeOrderRepository>();
 Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. O .NET permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora, sem dependência externa.
 
 <details>
-<summary>❌ Bad — registro manual, cresce junto com os handlers</summary>
+<summary>❌ Ruim — registro manual, cresce junto com os handlers</summary>
 <br>
 
 ```csharp
@@ -196,7 +196,7 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 <br>
 
 <details>
-<summary>✅ Good — registro por convenção via reflection</summary>
+<summary>✅ Bom — registro por convenção via reflection</summary>
 <br>
 
 ```csharp

@@ -24,7 +24,7 @@ Declare `?Type` quando null é um retorno válido com semântica específica ("n
 "não preenchido"). Não use `?Type` para esconder que a função pode falhar.
 
 <details>
-<summary>❌ Bad — null implícito sem tipo declarado</summary>
+<summary>❌ Ruim — null implícito sem tipo declarado</summary>
 <br>
 
 ```php
@@ -46,7 +46,7 @@ class UserRepository
 <br>
 
 <details>
-<summary>✅ Good — nullable type explicita ausência</summary>
+<summary>✅ Bom — nullable type explicita ausência</summary>
 <br>
 
 ```php
@@ -81,7 +81,7 @@ final class UserRepository
 Encadeie acessos opcionais com `?->` para evitar verificações de null intermediárias.
 
 <details>
-<summary>❌ Bad — verificações manuais encadeadas</summary>
+<summary>❌ Ruim — verificações manuais encadeadas</summary>
 <br>
 
 ```php
@@ -103,7 +103,7 @@ if ($order !== null) {
 <br>
 
 <details>
-<summary>✅ Good — nullsafe operator</summary>
+<summary>✅ Bom — nullsafe operator</summary>
 <br>
 
 ```php
@@ -118,7 +118,7 @@ Use `??` para fornecer um valor padrão quando a expressão da esquerda é null 
 variável não definida).
 
 <details>
-<summary>✅ Good — ?? para valores com default</summary>
+<summary>✅ Bom — ?? para valores com default</summary>
 <br>
 
 ```php
@@ -137,7 +137,7 @@ Null para "operação falhou" esconde o motivo da falha. Use exceções para fal
 e null apenas para "ausência esperada de um valor".
 
 <details>
-<summary>❌ Bad — null para indicar falha sem contexto</summary>
+<summary>❌ Ruim — null para indicar falha sem contexto</summary>
 <br>
 
 ```php
@@ -161,7 +161,7 @@ public function processOrder(int $orderID): ?Order
 <br>
 
 <details>
-<summary>✅ Good — exceções para falhas; null apenas para ausência legítima</summary>
+<summary>✅ Bom — exceções para falhas; null apenas para ausência legítima</summary>
 <br>
 
 ```php
@@ -205,7 +205,7 @@ Propriedades tipadas sem valor padrão devem ser inicializadas antes do primeiro
 PHP lança `Error` se você tentar ler uma propriedade não inicializada.
 
 <details>
-<summary>✅ Good — propriedades inicializadas no construtor</summary>
+<summary>✅ Bom — propriedades inicializadas no construtor</summary>
 <br>
 
 ```php

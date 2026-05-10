@@ -20,7 +20,7 @@ Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem 
 inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 
 <details>
-<summary>❌ Bad — indentação inconsistente, bloco colado ao pai</summary>
+<summary>❌ Ruim — indentação inconsistente, bloco colado ao pai</summary>
 <br>
 
 ```html
@@ -37,7 +37,7 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 <br>
 
 <details>
-<summary>✅ Good — 2 espaços, hierarquia visível</summary>
+<summary>✅ Bom — 2 espaços, hierarquia visível</summary>
 <br>
 
 ```html
@@ -60,7 +60,7 @@ id → class → name → type → src | href → value → placeholder → for
 ```
 
 <details>
-<summary>❌ Bad — atributos em ordem aleatória</summary>
+<summary>❌ Ruim — atributos em ordem aleatória</summary>
 <br>
 
 ```html
@@ -73,7 +73,7 @@ id → class → name → type → src | href → value → placeholder → for
 <br>
 
 <details>
-<summary>✅ Good — ordem consistente, fácil de escanear</summary>
+<summary>✅ Bom — ordem consistente, fácil de escanear</summary>
 <br>
 
 ```html
@@ -89,7 +89,7 @@ Quando um elemento tem muitos atributos, um por linha. O fechamento `>` ou `/>` 
 linha do atributo ou em linha própria; o padrão do projeto define qual, mas deve ser consistente.
 
 <details>
-<summary>❌ Bad — atributos numa linha longa, difícil de ler</summary>
+<summary>❌ Ruim — atributos numa linha longa, difícil de ler</summary>
 <br>
 
 ```html
@@ -101,7 +101,7 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 <br>
 
 <details>
-<summary>✅ Good — um atributo por linha, fechamento alinhado</summary>
+<summary>✅ Bom — um atributo por linha, fechamento alinhado</summary>
 <br>
 
 ```html
@@ -125,7 +125,7 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 `readonly`) não precisam de valor; a presença já é `true`.
 
 <details>
-<summary>❌ Bad — aspas simples, valor redundante em boolean</summary>
+<summary>❌ Ruim — aspas simples, valor redundante em boolean</summary>
 <br>
 
 ```html
@@ -138,7 +138,7 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 <br>
 
 <details>
-<summary>✅ Good — aspas duplas, booleanos sem valor</summary>
+<summary>✅ Bom — aspas duplas, booleanos sem valor</summary>
 <br>
 
 ```html

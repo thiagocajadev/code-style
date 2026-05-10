@@ -3,7 +3,7 @@
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 > Pré-requisito: [bots.md](bots.md) — conceitos fundamentais (webhook, polling, command routing, session, rate limit).
 
-Este guia cobre as particularidades de cada plataforma: como autenticar, quais primitivas de UI cada uma oferece e onde estão os limites de cada **gateway** (ponto de entrada da plataforma).
+Este guia cobre as particularidades de cada plataforma: como autenticar, quais primitivas de **UI** (User Interface, interface do usuário) cada uma oferece e onde estão os limites de cada **gateway** (ponto de entrada da plataforma).
 
 ## Conceitos fundamentais
 
@@ -25,7 +25,7 @@ Este guia cobre as particularidades de cada plataforma: como autenticar, quais p
 
 ### Autenticação e setup
 
-O bot autentica via **Bot Token** obtido no [Discord Developer Portal](https://discord.com/developers/applications). O token é enviado no header `Authorization: Bot <token>` em todas as chamadas à API REST e na conexão com o **Gateway** via WebSocket.
+O bot autentica via **Bot Token** obtido no [Discord Developer Portal](https://discord.com/developers/applications). O token é enviado no header `Authorization: Bot <token>` em todas as chamadas à **API** (Application Programming Interface, Interface de Programação de Aplicações) **REST** (Representational State Transfer, Transferência de Estado Representacional) e na conexão com o **Gateway** via WebSocket.
 
 ```
 Criar Application → Add Bot → copiar token → convidar bot ao servidor com OAuth2 URL
@@ -71,7 +71,7 @@ Limites de embed:
 
 ### Autenticação e setup
 
-O bot autentica via **Bot Token** gerado pelo **BotFather** ([@BotFather](https://t.me/BotFather) no Telegram). Todas as requisições à **Bot API** usam o token na URL: `https://api.telegram.org/bot<token>/método`.
+O bot autentica via **Bot Token** gerado pelo **BotFather** ([@BotFather](https://t.me/BotFather) no Telegram). Todas as requisições à **Bot API** usam o token na **URL** (Uniform Resource Locator, Localizador Uniforme de Recursos): `https://api.telegram.org/bot<token>/método`.
 
 ```
 /newbot no BotFather → define nome e username → BotFather entrega o token
@@ -98,7 +98,7 @@ O Telegram oferece dois tipos de botões:
 | `InlineKeyboardButton` com `url` | Abre link externo no browser do usuário |
 | `ReplyKeyboardMarkup` | Botões que substituem o teclado do usuário; cria mensagem de texto ao clicar |
 
-O bot recebe o callback via evento `callback_query`. Após processar, deve chamar `answerCallbackQuery` para remover o indicador de carregamento na UI do usuário.
+O bot recebe o **callback** (retorno de interação) via evento `callback_query`. Após processar, deve chamar `answerCallbackQuery` para remover o indicador de carregamento na UI do usuário.
 
 ### Tipos de chat
 
@@ -167,7 +167,7 @@ Bot responde: 200 OK com body = hub.challenge
 
 ### Autenticação e setup
 
-O app autentica via **Bot Token** (`xoxb-...`) emitido na seção OAuth & Permissions do painel da Slack. O **Signing Secret** valida que as requisições HTTP recebidas vêm da Slack. Para Socket Mode, um **App-Level Token** (`xapp-...`) com scope `connections:write` substitui a necessidade de URL pública.
+O app autentica via **Bot Token** (`xoxb-...`) emitido na seção OAuth & Permissions do painel da Slack. O **Signing Secret** (segredo de assinatura) valida que as requisições **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) recebidas vêm da Slack. Para Socket Mode, um **App-Level Token** (`xapp-...`) com scope `connections:write` substitui a necessidade de URL pública.
 
 ```
 Criar app em api.slack.com → Basic Information → Signing Secret
@@ -175,7 +175,7 @@ Criar app em api.slack.com → Basic Information → Signing Secret
                            → App-Level Tokens (para Socket Mode) → Generate → connections:write
 ```
 
-Nunca expor Bot Token, Signing Secret ou App-Level Token em código. Armazenar em variáveis de ambiente.
+Nunca expor o `Bot Token`, o `Signing Secret` ou o `App-Level Token` em código. Armazenar em variáveis de ambiente.
 
 ### Socket Mode vs HTTP Mode
 

@@ -23,7 +23,7 @@ Cada literal de string sem `frozen_string_literal: true` cria um novo objeto na 
 (memória dinâmica). Com a diretiva, strings idênticas compartilham o mesmo objeto.
 
 <details>
-<summary>❌ Bad — string alocada a cada iteração</summary>
+<summary>❌ Ruim — string alocada a cada iteração</summary>
 <br>
 
 ```ruby
@@ -37,7 +37,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — frozen_string_literal + interpolação</summary>
+<summary>✅ Bom — frozen_string_literal + interpolação</summary>
 <br>
 
 ```ruby
@@ -56,7 +56,7 @@ Use `.lazy` quando a coleção é grande e você precisa apenas dos primeiros N 
 Evita processar o array inteiro.
 
 <details>
-<summary>❌ Bad — processa toda a coleção mesmo precisando de poucos</summary>
+<summary>❌ Ruim — processa toda a coleção mesmo precisando de poucos</summary>
 <br>
 
 ```ruby
@@ -75,7 +75,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — lazy avalia só até encontrar 10 elementos</summary>
+<summary>✅ Bom — lazy avalia só até encontrar 10 elementos</summary>
 <br>
 
 ```ruby
@@ -100,7 +100,7 @@ Use `each_with_object` quando o acumulador é mutado a cada iteração. Use `inj
 quando constrói um novo valor (soma, produto, string concatenada).
 
 <details>
-<summary>❌ Bad — inject com mutação do acumulador</summary>
+<summary>❌ Ruim — inject com mutação do acumulador</summary>
 <br>
 
 ```ruby
@@ -120,7 +120,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — each_with_object para acumulador mutável</summary>
+<summary>✅ Bom — each_with_object para acumulador mutável</summary>
 <br>
 
 ```ruby
@@ -142,7 +142,7 @@ end
 `filter_map` substitui `map` + `compact` (remoção de nils) em uma passagem.
 
 <details>
-<summary>❌ Bad — dois passes na coleção</summary>
+<summary>❌ Ruim — dois passes na coleção</summary>
 <br>
 
 ```ruby
@@ -160,7 +160,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — filter_map em uma passagem</summary>
+<summary>✅ Bom — filter_map em uma passagem</summary>
 <br>
 
 ```ruby
@@ -181,7 +181,7 @@ Use `includes` para pré-carregar associações (eager loading, carregamento ant
 evitar N+1 queries (N+1 consultas ao banco).
 
 <details>
-<summary>❌ Bad — N+1: 1 query por ordem para buscar o usuário</summary>
+<summary>❌ Ruim — N+1: 1 query por ordem para buscar o usuário</summary>
 <br>
 
 ```ruby
@@ -197,7 +197,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — includes pré-carrega em 2 queries</summary>
+<summary>✅ Bom — includes pré-carrega em 2 queries</summary>
 <br>
 
 ```ruby

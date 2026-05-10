@@ -19,7 +19,7 @@ classes — é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta d
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```python
@@ -36,7 +36,7 @@ def apply(x, p, c):
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```python
@@ -56,7 +56,7 @@ def apply_discount(order, calculate_discount):
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — snake_case com português fica desajeitado</summary>
+<summary>❌ Ruim — snake_case com português fica desajeitado</summary>
 <br>
 
 ```python
@@ -75,7 +75,7 @@ def busca_endereco_do_cliente(id):
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```python
@@ -105,7 +105,7 @@ Python tem convenções fortes definidas pela PEP 8. Segui-las é parte do idiom
 | Parâmetro descartado                  | `_`               | `for _ in range(3):`                  |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```python
@@ -122,7 +122,7 @@ class order_repository:
 <br>
 
 <details>
-<summary>✅ Good — convenções PEP 8 respeitadas</summary>
+<summary>✅ Bom — convenções PEP 8 respeitadas</summary>
 <br>
 
 ```python
@@ -142,7 +142,7 @@ class OrderRepository:
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```python
@@ -157,7 +157,7 @@ calculate_total_invoice()
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```python
@@ -172,7 +172,7 @@ calculate_invoice_total()
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
 <br>
 
 ```python
@@ -194,7 +194,7 @@ def do_stuff(x):
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```python
@@ -229,7 +229,7 @@ def apply_seasonal_discount(order):
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```python
@@ -251,7 +251,7 @@ def save_to_s3(file):
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```python
@@ -276,7 +276,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 substitui qualquer comentário.
 
 <details>
-<summary>❌ Bad — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim — comentário repete o que o código já diz</summary>
 <br>
 
 ```python
@@ -293,7 +293,7 @@ attempts += 1
 <br>
 
 <details>
-<summary>✅ Good — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
 <br>
 
 ```python
@@ -309,7 +309,7 @@ attempts += 1
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```python
@@ -325,7 +325,7 @@ valid = "@" in email
 <br>
 
 <details>
-<summary>✅ Good — prefixos is_, has_, can_, should_</summary>
+<summary>✅ Bom — prefixos is_, has_, can_, should_</summary>
 <br>
 
 ```python

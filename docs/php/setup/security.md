@@ -23,7 +23,7 @@ na fronteira antes de chegar ao domínio.
 ## Secrets e variáveis de ambiente
 
 <details>
-<summary>❌ Bad — secret no código-fonte</summary>
+<summary>❌ Ruim — secret no código-fonte</summary>
 <br>
 
 ```php
@@ -43,7 +43,7 @@ class AuthService
 <br>
 
 <details>
-<summary>✅ Good — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<summary>✅ Bom — secret lido de variável de ambiente, fail-fast se ausente</summary>
 <br>
 
 ```php
@@ -74,7 +74,7 @@ final class AuthService
 Nunca concatene input do usuário em queries. Use sempre PDO com `prepare()` e `bindValue()`.
 
 <details>
-<summary>❌ Bad — concatenação em query SQL</summary>
+<summary>❌ Ruim — concatenação em query SQL</summary>
 <br>
 
 ```php
@@ -87,7 +87,7 @@ $result = $pdo->query($query); // SQL injection
 <br>
 
 <details>
-<summary>✅ Good — prepared statement com bind</summary>
+<summary>✅ Bom — prepared statement com bind</summary>
 <br>
 
 ```php
@@ -120,7 +120,7 @@ final class UserRepository
 Sempre escape output em templates HTML. Nunca exiba input do usuário sem tratar.
 
 <details>
-<summary>❌ Bad — output sem escaping</summary>
+<summary>❌ Ruim — output sem escaping</summary>
 <br>
 
 ```php
@@ -132,7 +132,7 @@ echo "<h1>Olá, " . $_GET['name'] . "</h1>"; // XSS
 <br>
 
 <details>
-<summary>✅ Good — htmlspecialchars para output HTML</summary>
+<summary>✅ Bom — htmlspecialchars para output HTML</summary>
 <br>
 
 ```php
@@ -148,7 +148,7 @@ Use `password_hash` com `PASSWORD_BCRYPT` ou `PASSWORD_ARGON2ID`. Nunca MD5, SHA
 para senhas.
 
 <details>
-<summary>❌ Bad — hash fraco para senha</summary>
+<summary>❌ Ruim — hash fraco para senha</summary>
 <br>
 
 ```php
@@ -161,7 +161,7 @@ $passwordHash = sha256($password); // sem salt, vulnerável
 <br>
 
 <details>
-<summary>✅ Good — password_hash + password_verify</summary>
+<summary>✅ Bom — password_hash + password_verify</summary>
 <br>
 
 ```php
@@ -190,7 +190,7 @@ final class PasswordHasher
 Proteja formulários com token CSRF gerado por sessão.
 
 <details>
-<summary>✅ Good — geração e verificação de token CSRF</summary>
+<summary>✅ Bom — geração e verificação de token CSRF</summary>
 <br>
 
 ```php

@@ -25,7 +25,7 @@ Configure Monolog com `JsonFormatter` para produção. Injete `LoggerInterface` 
 nunca use o logger global ou Facade.
 
 <details>
-<summary>✅ Good — Monolog com JsonFormatter para produção</summary>
+<summary>✅ Bom — Monolog com JsonFormatter para produção</summary>
 <br>
 
 ```php
@@ -65,7 +65,7 @@ final class OrderService
 Passe contexto como array de pares chave-valor. Nunca interpole variáveis na mensagem.
 
 <details>
-<summary>❌ Bad — interpolação na mensagem, sem estrutura</summary>
+<summary>❌ Ruim — interpolação na mensagem, sem estrutura</summary>
 <br>
 
 ```php
@@ -78,7 +78,7 @@ $this->logger->error("Error saving order {$order->id}: {$e->getMessage()}");
 <br>
 
 <details>
-<summary>✅ Good — contexto como array, mensagem fixa</summary>
+<summary>✅ Bom — contexto como array, mensagem fixa</summary>
 <br>
 
 ```php
@@ -107,7 +107,7 @@ $this->logger->error('Save order failed', [
 | `critical`| Falha grave; impacta funcionalidade central do sistema  |
 
 <details>
-<summary>❌ Bad — error para evento esperado</summary>
+<summary>❌ Ruim — error para evento esperado</summary>
 <br>
 
 ```php
@@ -123,7 +123,7 @@ if ($order === null) {
 <br>
 
 <details>
-<summary>✅ Good — info para evento esperado; error para falha real</summary>
+<summary>✅ Bom — info para evento esperado; error para falha real</summary>
 <br>
 
 ```php
@@ -154,7 +154,7 @@ Propague um `correlation_id` (identificador de correlação) em todos os logs de
 requisição. Use um middleware HTTP para gerar ou extrair o ID do header.
 
 <details>
-<summary>✅ Good — correlation ID via processor do Monolog</summary>
+<summary>✅ Bom — correlation ID via processor do Monolog</summary>
 <br>
 
 ```php
@@ -201,7 +201,7 @@ final class CorrelationMiddleware
 Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
-<summary>❌ Bad — PII nos logs</summary>
+<summary>❌ Ruim — PII nos logs</summary>
 <br>
 
 ```php
@@ -217,7 +217,7 @@ $this->logger->info('User logged in', [
 <br>
 
 <details>
-<summary>✅ Good — apenas ID e evento, sem PII</summary>
+<summary>✅ Bom — apenas ID e evento, sem PII</summary>
 <br>
 
 ```php

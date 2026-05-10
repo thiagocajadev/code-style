@@ -20,7 +20,7 @@ Toda `<img>` tem `alt`. Imagens de conteúdo: texto descritivo. Imagens decorati
 Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do arquivo.
 
 <details>
-<summary>❌ Bad — sem alt, alt genérico, alt repete o contexto</summary>
+<summary>❌ Ruim — sem alt, alt genérico, alt repete o contexto</summary>
 <br>
 
 ```html
@@ -37,7 +37,7 @@ Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do ar
 <br>
 
 <details>
-<summary>✅ Good — alt descritivo, decorativo com alt vazio</summary>
+<summary>✅ Bom — alt descritivo, decorativo com alt vazio</summary>
 <br>
 
 ```html
@@ -57,7 +57,7 @@ Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do ar
 quebra o comportamento esperado com teclado e leitores de tela.
 
 <details>
-<summary>❌ Bad — div/span clicável, link que age como botão</summary>
+<summary>❌ Ruim — div/span clicável, link que age como botão</summary>
 <br>
 
 ```html
@@ -72,7 +72,7 @@ quebra o comportamento esperado com teclado e leitores de tela.
 <br>
 
 <details>
-<summary>✅ Good — button para ação, a para navegação</summary>
+<summary>✅ Bom — button para ação, a para navegação</summary>
 <br>
 
 ```html
@@ -92,7 +92,7 @@ O fluxo de foco segue a ordem do DOM. `tabindex="0"` adiciona um elemento não-f
 natural, portanto deve ser evitado.
 
 <details>
-<summary>❌ Bad — tabindex positivo bagunça a ordem, div interativo sem foco</summary>
+<summary>❌ Ruim — tabindex positivo bagunça a ordem, div interativo sem foco</summary>
 <br>
 
 ```html
@@ -106,7 +106,7 @@ natural, portanto deve ser evitado.
 <br>
 
 <details>
-<summary>✅ Good — ordem natural do DOM, elemento customizado com tabindex="0" e role</summary>
+<summary>✅ Bom — ordem natural do DOM, elemento customizado com tabindex="0" e role</summary>
 <br>
 
 ```html
@@ -130,7 +130,7 @@ ARIA não substitui HTML semântico; complementa quando não há elemento nativo
 um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 
 <details>
-<summary>❌ Bad — ARIA desnecessário em elemento semântico</summary>
+<summary>❌ Ruim — ARIA desnecessário em elemento semântico</summary>
 <br>
 
 ```html
@@ -144,7 +144,7 @@ um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 <br>
 
 <details>
-<summary>✅ Good — ARIA só onde não existe elemento nativo</summary>
+<summary>✅ Bom — ARIA só onde não existe elemento nativo</summary>
 <br>
 
 ```html
@@ -170,7 +170,7 @@ um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 quando não há elemento visual. Prefira `aria-labelledby`; o texto fica sincronizado com a UI.
 
 <details>
-<summary>❌ Bad — aria-label duplica texto já visível</summary>
+<summary>❌ Ruim — aria-label duplica texto já visível</summary>
 <br>
 
 ```html
@@ -187,7 +187,7 @@ quando não há elemento visual. Prefira `aria-labelledby`; o texto fica sincron
 <br>
 
 <details>
-<summary>✅ Good — aria-labelledby aponta pro heading; aria-label só quando não há texto visível</summary>
+<summary>✅ Bom — aria-labelledby aponta pro heading; aria-label só quando não há texto visível</summary>
 <br>
 
 ```html

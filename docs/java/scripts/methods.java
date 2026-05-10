@@ -14,7 +14,7 @@ public class MethodsExamples {
 
     // ─── God method ───────────────────────────────────────────────────────────
 
-    // ❌ Bad: busca, valida, calcula, persiste e loga na mesma função
+    // ❌ Ruim: busca, valida, calcula, persiste e loga na mesma função
     public Order realizaVendaBad(String id) {
         Order p = orderRepository.findById(id).orElse(null);
         Order resultado = null;
@@ -40,7 +40,7 @@ public class MethodsExamples {
         return resultado;
     }
 
-    // ✅ Good: orquestrador no topo, responsabilidades separadas
+    // ✅ Bom: orquestrador no topo, responsabilidades separadas
     public Order processOrder(String orderId) {
         final var order = fetchOrder(orderId);
         if (isInvalid(order)) return null;
@@ -71,7 +71,7 @@ public class MethodsExamples {
 
     // ─── SLA: orquestrador ou implementação ───────────────────────────────────
 
-    // ❌ Bad: mesmo método orquestra e implementa
+    // ❌ Ruim: mesmo método orquestra e implementa
     public String buildOrderSummaryBad(Order order) {
         final var header = "Order #" + order.getId();
         final var lineItems = order.getItems().stream()
@@ -81,7 +81,7 @@ public class MethodsExamples {
         return header + "\n" + lineItems;
     }
 
-    // ✅ Good: orquestrador chama helpers, cada um faz uma coisa
+    // ✅ Bom: orquestrador chama helpers, cada um faz uma coisa
     public String buildOrderSummary(Order order) {
         final var header = buildHeader(order);
         final var lineItems = buildLineItems(order);
@@ -104,7 +104,7 @@ public class MethodsExamples {
 
     // ─── Direct return ────────────────────────────────────────────────────────
 
-    // ❌ Bad: variável auxiliar desnecessária, else após throw
+    // ❌ Ruim: variável auxiliar desnecessária, else após throw
     public Product findProductByIdBad(String id) {
         Product productFound = null;
 
@@ -119,7 +119,7 @@ public class MethodsExamples {
         return productFound;
     }
 
-    // ✅ Good: intenção clara no topo, detalhe abaixo
+    // ✅ Bom: intenção clara no topo, detalhe abaixo
     public Product findProductById(String id) {
         final var product = fetchProduct(id);
         return product;
@@ -133,12 +133,12 @@ public class MethodsExamples {
 
     // ─── Sem lógica no retorno ────────────────────────────────────────────────
 
-    // ❌ Bad: lógica inline no return
+    // ❌ Ruim: lógica inline no return
     public String buildGreetingBad(User user) {
         return "Hello, " + user.getName() + "! You have " + user.getNotifications().size() + " notifications.";
     }
 
-    // ✅ Good: variável expressiva antes do return
+    // ✅ Bom: variável expressiva antes do return
     public String buildGreeting(User user) {
         final var greeting = "Hello, %s! You have %d notifications."
             .formatted(user.getName(), user.getNotifications().size());
@@ -147,12 +147,12 @@ public class MethodsExamples {
 
     // ─── Parâmetros: record para 4+ ───────────────────────────────────────────
 
-    // ❌ Bad: 4+ parâmetros inline
+    // ❌ Ruim: 4+ parâmetros inline
     private Invoice createInvoiceBad(String orderId, String customerId, BigDecimal amount, String dueDate, String currency) {
         return null;
     }
 
-    // ✅ Good: record para 4+ parâmetros
+    // ✅ Bom: record para 4+ parâmetros
     record InvoiceRequest(String orderId, String customerId, BigDecimal amount, String dueDate, String currency) {}
 
     private Invoice createInvoice(InvoiceRequest request) {

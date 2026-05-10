@@ -19,7 +19,7 @@ ponto de uso deve ler como prosa: `users.remove(at: index)` é mais claro que `u
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```swift
@@ -34,7 +34,7 @@ func apply(_ x: Any, _ p: [String: Any], _ c: (Any) -> Any) -> Any {
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```swift
@@ -51,7 +51,7 @@ func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — identificadores em português ficam desajeitados no idioma Swift</summary>
+<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Swift</summary>
 <br>
 
 ```swift
@@ -67,7 +67,7 @@ func buscaEnderecoDoCliente(id: Int64) -> Address? { ... }
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```swift
@@ -90,7 +90,7 @@ func findCustomerAddress(customerId: Int64) -> Address? { ... }
 | Módulos e pacotes | `UpperCamelCase` | `OrderDomain`, `NetworkLayer` |
 
 <details>
-<summary>❌ Bad — case errado</summary>
+<summary>❌ Ruim — case errado</summary>
 <br>
 
 ```swift
@@ -104,7 +104,7 @@ let MaxRetries = 3               // constante com UpperCamelCase
 <br>
 
 <details>
-<summary>✅ Good — convenções Swift respeitadas</summary>
+<summary>✅ Bom — convenções Swift respeitadas</summary>
 <br>
 
 ```swift
@@ -123,7 +123,7 @@ Labels tornam a chamada legível como prosa. O primeiro label é frequentemente 
 nome da função já o implica.
 
 <details>
-<summary>❌ Bad — labels que repetem o tipo ou são desnecessários</summary>
+<summary>❌ Ruim — labels que repetem o tipo ou são desnecessários</summary>
 <br>
 
 ```swift
@@ -136,7 +136,7 @@ func send(message message: String, toUser user: User) { }
 <br>
 
 <details>
-<summary>✅ Good — chamada lê como prosa</summary>
+<summary>✅ Bom — chamada lê como prosa</summary>
 <br>
 
 ```swift
@@ -152,7 +152,7 @@ func move(from source: Index, to destination: Index) { }
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```swift
@@ -166,7 +166,7 @@ let valid = email.contains("@")
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```swift
@@ -188,7 +188,7 @@ let shouldRetry = attempt < maxRetries
 | substantivo | papel: `Collection`, `Sequence`, `UserRepository` |
 
 <details>
-<summary>❌ Bad — sufixo genérico ou ambíguo</summary>
+<summary>❌ Ruim — sufixo genérico ou ambíguo</summary>
 <br>
 
 ```swift
@@ -201,7 +201,7 @@ protocol IRepository { }     // prefixo I ao estilo C#, não idiomático em Swif
 <br>
 
 <details>
-<summary>✅ Good — nome que descreve o papel</summary>
+<summary>✅ Bom — nome que descreve o papel</summary>
 <br>
 
 ```swift
@@ -215,7 +215,7 @@ protocol Cacheable { }
 ## Domain-first naming
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura</summary>
+<summary>❌ Ruim — nome revela infraestrutura</summary>
 <br>
 
 ```swift
@@ -228,7 +228,7 @@ func getUserFromCoreData(id: UUID) -> User? { }
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```swift

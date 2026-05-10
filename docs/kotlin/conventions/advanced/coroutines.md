@@ -20,7 +20,7 @@ coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas 
 ## Coroutine solta — sem escopo definido
 
 <details>
-<summary>❌ Bad — GlobalScope vaza ciclo de vida</summary>
+<summary>❌ Ruim — GlobalScope vaza ciclo de vida</summary>
 <br>
 
 ```kotlin
@@ -37,7 +37,7 @@ fun loadUser(userId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — escopo vinculado ao ciclo de vida</summary>
+<summary>✅ Bom — escopo vinculado ao ciclo de vida</summary>
 <br>
 
 ```kotlin
@@ -59,7 +59,7 @@ class UserViewModel(
 ## `async`/`await` mal usado
 
 <details>
-<summary>❌ Bad — async sequencial não tem ganho de paralelismo</summary>
+<summary>❌ Ruim — async sequencial não tem ganho de paralelismo</summary>
 <br>
 
 ```kotlin
@@ -76,7 +76,7 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 <br>
 
 <details>
-<summary>✅ Good — async antes do await permite execução paralela</summary>
+<summary>✅ Bom — async antes do await permite execução paralela</summary>
 <br>
 
 ```kotlin
@@ -96,7 +96,7 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 ## `withContext` para mudar dispatcher
 
 <details>
-<summary>❌ Bad — I/O no dispatcher Main (congela UI)</summary>
+<summary>❌ Ruim — I/O no dispatcher Main (congela UI)</summary>
 <br>
 
 ```kotlin
@@ -110,7 +110,7 @@ suspend fun saveOrder(order: Order) {
 <br>
 
 <details>
-<summary>✅ Good — withContext isola o dispatcher de I/O</summary>
+<summary>✅ Bom — withContext isola o dispatcher de I/O</summary>
 <br>
 
 ```kotlin
@@ -126,7 +126,7 @@ suspend fun saveOrder(order: Order) {
 ## Flow para streams de dados
 
 <details>
-<summary>❌ Bad — callback manual para stream de eventos</summary>
+<summary>❌ Ruim — callback manual para stream de eventos</summary>
 <br>
 
 ```kotlin
@@ -140,7 +140,7 @@ fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
 <br>
 
 <details>
-<summary>✅ Good — Flow tipado e cancelável</summary>
+<summary>✅ Bom — Flow tipado e cancelável</summary>
 <br>
 
 ```kotlin
@@ -161,7 +161,7 @@ viewModelScope.launch {
 ## StateFlow para estado de UI
 
 <details>
-<summary>❌ Bad — MutableLiveData com mutação direta</summary>
+<summary>❌ Ruim — MutableLiveData com mutação direta</summary>
 <br>
 
 ```kotlin
@@ -178,7 +178,7 @@ fun loadOrders() {
 <br>
 
 <details>
-<summary>✅ Good — StateFlow com UiState sealed class</summary>
+<summary>✅ Bom — StateFlow com UiState sealed class</summary>
 <br>
 
 ```kotlin
@@ -210,7 +210,7 @@ fun loadOrders() {
 ## supervisorScope para falhas independentes
 
 <details>
-<summary>❌ Bad — falha em um filho cancela todos os outros</summary>
+<summary>❌ Ruim — falha em um filho cancela todos os outros</summary>
 <br>
 
 ```kotlin
@@ -228,7 +228,7 @@ suspend fun sendNotifications(users: List<User>) {
 <br>
 
 <details>
-<summary>✅ Good — supervisorScope isola falhas por filho</summary>
+<summary>✅ Bom — supervisorScope isola falhas por filho</summary>
 <br>
 
 ```kotlin

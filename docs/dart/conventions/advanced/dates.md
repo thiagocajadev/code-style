@@ -20,7 +20,7 @@ a formatação para o usuário usa `intl`.
 ## Fuso de DateTime.now() em persistência
 
 <details>
-<summary>❌ Bad — DateTime.now() em UTC sem conversão</summary>
+<summary>❌ Ruim — DateTime.now() em UTC sem conversão</summary>
 <br>
 
 ```dart
@@ -37,7 +37,7 @@ final json = {'id': 1, 'createdAt': order.createdAt.toString()};   // formato n�
 <br>
 
 <details>
-<summary>✅ Good — DateTime.now().toUtc() + toIso8601String()</summary>
+<summary>✅ Bom — DateTime.now().toUtc() + toIso8601String()</summary>
 <br>
 
 ```dart
@@ -55,7 +55,7 @@ final json = {'id': 1, 'createdAt': order.createdAt.toIso8601String()};
 ## String como data
 
 <details>
-<summary>❌ Bad — string comparada como texto</summary>
+<summary>❌ Ruim — string comparada como texto</summary>
 <br>
 
 ```dart
@@ -68,7 +68,7 @@ final isOverdue = dueDate.compareTo(DateTime.now().toString()) < 0;   // compara
 <br>
 
 <details>
-<summary>✅ Good — DateTime.parse com comparação tipada</summary>
+<summary>✅ Bom — DateTime.parse com comparação tipada</summary>
 <br>
 
 ```dart
@@ -81,7 +81,7 @@ final isOverdue = dueDate.isBefore(DateTime.now().toUtc());
 ## Formatação para exibição com intl
 
 <details>
-<summary>❌ Bad — toString() com formato indefinido</summary>
+<summary>❌ Ruim — toString() com formato indefinido</summary>
 <br>
 
 ```dart
@@ -93,7 +93,7 @@ Text(order.createdAt.toString())   // "2026-04-26 14:30:00.000Z" — não é lab
 <br>
 
 <details>
-<summary>✅ Good — DateFormat com locale e fuso do usuário</summary>
+<summary>✅ Bom — DateFormat com locale e fuso do usuário</summary>
 <br>
 
 ```dart

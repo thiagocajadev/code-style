@@ -35,7 +35,7 @@ passa a retornar `T | undefined`, forçando o tratamento de posições que podem
 ```
 
 <details>
-<summary>❌ Bad — sem strictNullChecks, null passa silenciosamente</summary>
+<summary>❌ Ruim — sem strictNullChecks, null passa silenciosamente</summary>
 <br>
 
 ```ts
@@ -53,7 +53,7 @@ console.log(user.name); // ReferenceError em runtime
 <br>
 
 <details>
-<summary>✅ Good — compilador aponta os problemas antes do runtime</summary>
+<summary>✅ Bom — compilador aponta os problemas antes do runtime</summary>
 <br>
 
 ```ts
@@ -87,7 +87,7 @@ Prefira `undefined` para opcionais: é o padrão da linguagem. Reserve `null` pa
 ausência precisa ser **atribuída** explicitamente (ex: limpar um campo em um update).
 
 <details>
-<summary>❌ Bad — null e undefined misturados sem intenção</summary>
+<summary>❌ Ruim — null e undefined misturados sem intenção</summary>
 <br>
 
 ```ts
@@ -106,7 +106,7 @@ function findUser(id: string): User | null | undefined {
 <br>
 
 <details>
-<summary>✅ Good — um tipo de ausência por contexto</summary>
+<summary>✅ Bom — um tipo de ausência por contexto</summary>
 <br>
 
 ```ts
@@ -135,7 +135,7 @@ Função que retorna uma coleção **sempre retorna** `[]` quando não há eleme
 tem semântica útil. Quem chama não deveria precisar checar antes de iterar.
 
 <details>
-<summary>❌ Bad — null em coleção quebra qualquer iteração</summary>
+<summary>❌ Ruim — null em coleção quebra qualquer iteração</summary>
 <br>
 
 ```ts
@@ -156,7 +156,7 @@ if (orders) {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia como estado neutro</summary>
+<summary>✅ Bom — lista vazia como estado neutro</summary>
 <br>
 
 ```ts
@@ -178,7 +178,7 @@ Propriedades que representam listas sempre têm tipo `T[]`, nunca `T[] | null`. 
 como `[]` na declaração ou no construtor.
 
 <details>
-<summary>❌ Bad — null como estado inicial de lista</summary>
+<summary>❌ Ruim — null como estado inicial de lista</summary>
 <br>
 
 ```ts
@@ -201,7 +201,7 @@ class Cart {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia como default, sem null</summary>
+<summary>✅ Bom — lista vazia como default, sem null</summary>
 <br>
 
 ```ts
@@ -228,7 +228,7 @@ Dados externos: resposta de **API** (Application Programming Interface, Interfac
 com `?? []` no ponto de entrada, antes de propagar para o domínio.
 
 <details>
-<summary>❌ Bad — campos null/undefined da API propagam direto para o domínio</summary>
+<summary>❌ Ruim — campos null/undefined da API propagam direto para o domínio</summary>
 <br>
 
 ```ts
@@ -257,7 +257,7 @@ async function buildUserSummary(userId: string) {
 <br>
 
 <details>
-<summary>✅ Good — normalização na fronteira, domínio trabalha com tipos limpos</summary>
+<summary>✅ Bom — normalização na fronteira, domínio trabalha com tipos limpos</summary>
 <br>
 
 ```ts
@@ -278,7 +278,7 @@ quando a ausência é um caso esperado e tratável inline. Quando a ausência é
 clause.
 
 <details>
-<summary>❌ Bad — encadeamento que esconde condição de negócio</summary>
+<summary>❌ Ruim — encadeamento que esconde condição de negócio</summary>
 <br>
 
 ```ts
@@ -293,7 +293,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 <br>
 
 <details>
-<summary>✅ Good — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<summary>✅ Bom — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
 <br>
 
 ```ts
@@ -321,7 +321,7 @@ O operador `!` diz ao compilador "confie em mim, não é null". Desliga a verifi
 Aceitável apenas quando você tem garantia externa que o compilador não consegue verificar.
 
 <details>
-<summary>❌ Bad — ! para silenciar o compilador sem garantia real</summary>
+<summary>❌ Ruim — ! para silenciar o compilador sem garantia real</summary>
 <br>
 
 ```ts
@@ -334,7 +334,7 @@ const email = form.fields.get("email")!.value; // e se a chave não existir?
 <br>
 
 <details>
-<summary>✅ Good — guard clause no lugar de !</summary>
+<summary>✅ Bom — guard clause no lugar de !</summary>
 <br>
 
 ```ts
@@ -352,7 +352,7 @@ const email = emailField.value;
 <br>
 
 <details>
-<summary>✅ Good — ! aceitável com garantia documentada</summary>
+<summary>✅ Bom — ! aceitável com garantia documentada</summary>
 <br>
 
 ```ts

@@ -27,7 +27,7 @@ Usa [Vitest](https://vitest.dev/) nos exemplos — mesma **API** (Application Pr
 tipo errado geram erro de compilação antes de rodar o teste.
 
 <details>
-<summary>❌ Bad — fixture sem tipo, campo errado passa sem erro</summary>
+<summary>❌ Ruim — fixture sem tipo, campo errado passa sem erro</summary>
 <br>
 
 ```ts
@@ -50,7 +50,7 @@ test("applies discount to order", () => {
 <br>
 
 <details>
-<summary>✅ Good — satisfies valida o shape em compilação</summary>
+<summary>✅ Bom — satisfies valida o shape em compilação</summary>
 <br>
 
 ```ts
@@ -76,7 +76,7 @@ Mocks implementam a interface explicitamente. O compilador verifica que todos os
 necessários estão presentes e com as assinaturas corretas.
 
 <details>
-<summary>❌ Bad — mock como objeto genérico, sem contrato</summary>
+<summary>❌ Ruim — mock como objeto genérico, sem contrato</summary>
 <br>
 
 ```ts
@@ -98,7 +98,7 @@ test("saves order and sends notification", async () => {
 <br>
 
 <details>
-<summary>✅ Good — mock implementa a interface, compilador verifica o contrato</summary>
+<summary>✅ Bom — mock implementa a interface, compilador verifica o contrato</summary>
 <br>
 
 ```ts
@@ -125,7 +125,7 @@ test("saves order on creation", async () => {
 Útil para funções de utilidade de tipos e garantias de que generics preservam o tipo.
 
 <details>
-<summary>✅ Good — expectTypeOf verifica o contrato em compilação e runtime</summary>
+<summary>✅ Bom — expectTypeOf verifica o contrato em compilação e runtime</summary>
 <br>
 
 ```ts
@@ -153,7 +153,7 @@ test("applyDiscount preserves Order shape", () => {
 Testar que o tipo de erro correto foi lançado, não apenas que algum erro foi lançado.
 
 <details>
-<summary>❌ Bad — qualquer erro passa</summary>
+<summary>❌ Ruim — qualquer erro passa</summary>
 <br>
 
 ```ts
@@ -167,7 +167,7 @@ test("throws on invalid order", async () => {
 <br>
 
 <details>
-<summary>✅ Good — tipo e mensagem verificados</summary>
+<summary>✅ Bom — tipo e mensagem verificados</summary>
 <br>
 
 ```ts

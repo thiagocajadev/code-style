@@ -23,7 +23,7 @@ enums e traits eliminam classes de bugs em tempo de compilação, sem custo em r
 Derive traits comuns com `#[derive]`. Não derive o que não vai usar.
 
 <details>
-<summary>❌ Bad — struct anêmica sem semântica</summary>
+<summary>❌ Ruim — struct anêmica sem semântica</summary>
 <br>
 
 ```rust
@@ -39,7 +39,7 @@ struct Data {
 <br>
 
 <details>
-<summary>✅ Good — campos nomeados por domínio + derives úteis</summary>
+<summary>✅ Bom — campos nomeados por domínio + derives úteis</summary>
 <br>
 
 ```rust
@@ -61,7 +61,7 @@ Enums Rust são **tipos de soma** (Algebraic Data Types): cada variante pode car
 dados diferentes. Use para modelar estados e resultados distintos.
 
 <details>
-<summary>❌ Bad — status como string magic</summary>
+<summary>❌ Ruim — status como string magic</summary>
 <br>
 
 ```rust
@@ -79,7 +79,7 @@ fn is_paid(order: &Order) -> bool {
 <br>
 
 <details>
-<summary>✅ Good — enum exaustivo com dados por variante</summary>
+<summary>✅ Bom — enum exaustivo com dados por variante</summary>
 <br>
 
 ```rust
@@ -104,7 +104,7 @@ Traits definem contratos. Tipos implementam traits independentemente.
 Prefira `impl Trait` em parâmetros para funções simples; `Box<dyn Trait>` para despacho dinâmico.
 
 <details>
-<summary>❌ Bad — lógica acoplada a um tipo concreto</summary>
+<summary>❌ Ruim — lógica acoplada a um tipo concreto</summary>
 <br>
 
 ```rust
@@ -120,7 +120,7 @@ fn notify_order_paid_sms(notifier: &SmsNotifier, order: &Order) {}
 <br>
 
 <details>
-<summary>✅ Good — trait como contrato, impl por tipo</summary>
+<summary>✅ Bom — trait como contrato, impl por tipo</summary>
 <br>
 
 ```rust
@@ -157,7 +157,7 @@ async fn notify_order_paid(notifier: &impl Notifier, order: &Order) -> anyhow::R
 `Option<T>` força o tratamento explícito da ausência. Nunca use `unwrap()` em código de produção.
 
 <details>
-<summary>❌ Bad — unwrap que pânica em Option None</summary>
+<summary>❌ Ruim — unwrap que pânica em Option None</summary>
 <br>
 
 ```rust
@@ -172,7 +172,7 @@ fn get_discount_label(order: &Order) -> String {
 <br>
 
 <details>
-<summary>✅ Good — Option tratado com map ou let-else</summary>
+<summary>✅ Bom — Option tratado com map ou let-else</summary>
 <br>
 
 ```rust
@@ -191,7 +191,7 @@ Use newtype para distinguir valores com o mesmo tipo primitivo mas significados 
 O compilador rejeita trocas acidentais.
 
 <details>
-<summary>❌ Bad — IDs intercambiáveis pelo compilador</summary>
+<summary>❌ Ruim — IDs intercambiáveis pelo compilador</summary>
 <br>
 
 ```rust
@@ -206,7 +206,7 @@ transfer(to_id, from_id, 100.0);
 <br>
 
 <details>
-<summary>✅ Good — newtype impede inversão silenciosa</summary>
+<summary>✅ Bom — newtype impede inversão silenciosa</summary>
 <br>
 
 ```rust
@@ -228,7 +228,7 @@ fn transfer(from: AccountId, to: AccountId, amount: Amount) {}
 Generics evitam duplicação sem perder informação de tipo.
 
 <details>
-<summary>❌ Bad — lógica duplicada por tipo</summary>
+<summary>❌ Ruim — lógica duplicada por tipo</summary>
 <br>
 
 ```rust
@@ -246,7 +246,7 @@ fn find_first_active_product(products: &[Product]) -> Option<&Product> {
 <br>
 
 <details>
-<summary>✅ Good — trait bound genérico</summary>
+<summary>✅ Bom — trait bound genérico</summary>
 <br>
 
 ```rust

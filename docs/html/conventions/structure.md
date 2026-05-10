@@ -20,7 +20,7 @@
 uso, ele substitui o genérico.
 
 <details>
-<summary>❌ Bad — div soup, estrutura sem significado</summary>
+<summary>❌ Ruim — div soup, estrutura sem significado</summary>
 <br>
 
 ```html
@@ -46,7 +46,7 @@ uso, ele substitui o genérico.
 <br>
 
 <details>
-<summary>✅ Good — elementos semânticos, estrutura legível</summary>
+<summary>✅ Bom — elementos semânticos, estrutura legível</summary>
 <br>
 
 ```html
@@ -76,7 +76,7 @@ a estrutura e prejudica leitores de tela. Use CSS para ajustar tamanho; nunca es
 tamanho padrão.
 
 <details>
-<summary>❌ Bad — nível pulado, h3 sem h2 pai</summary>
+<summary>❌ Ruim — nível pulado, h3 sem h2 pai</summary>
 <br>
 
 ```html
@@ -90,7 +90,7 @@ tamanho padrão.
 <br>
 
 <details>
-<summary>✅ Good — hierarquia contínua, sem saltos</summary>
+<summary>✅ Bom — hierarquia contínua, sem saltos</summary>
 <br>
 
 ```html
@@ -111,7 +111,7 @@ cada `<section>` pode ter seu próprio `<h2>`.
 garante codificação. Ambos são obrigatórios e devem aparecer antes de qualquer outro metadado.
 
 <details>
-<summary>❌ Bad — sem lang, charset fora de posição</summary>
+<summary>❌ Ruim — sem lang, charset fora de posição</summary>
 <br>
 
 ```html
@@ -129,7 +129,7 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 <br>
 
 <details>
-<summary>✅ Good — lang e charset corretos, na ordem certa</summary>
+<summary>✅ Bom — lang e charset corretos, na ordem certa</summary>
 <br>
 
 ```html
@@ -152,7 +152,7 @@ agrupamento sem significado semântico (layout, JS hooks). Não substitua `<div>
 para parecer mais semântico.
 
 <details>
-<summary>❌ Bad — section sem heading, usado como div</summary>
+<summary>❌ Ruim — section sem heading, usado como div</summary>
 <br>
 
 ```html
@@ -169,7 +169,7 @@ para parecer mais semântico.
 <br>
 
 <details>
-<summary>✅ Good — section com heading, div para layout</summary>
+<summary>✅ Bom — section com heading, div para layout</summary>
 <br>
 
 ```html

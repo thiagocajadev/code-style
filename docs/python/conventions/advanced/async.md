@@ -20,7 +20,7 @@ Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assínc
 ## Bloqueio síncrono
 
 <details>
-<summary>❌ Bad — I/O síncrono dentro de função async bloqueia o event loop</summary>
+<summary>❌ Ruim — I/O síncrono dentro de função async bloqueia o event loop</summary>
 <br>
 
 ```python
@@ -38,7 +38,7 @@ async def process_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — asyncio.sleep libera o event loop enquanto aguarda</summary>
+<summary>✅ Bom — asyncio.sleep libera o event loop enquanto aguarda</summary>
 <br>
 
 ```python
@@ -56,7 +56,7 @@ async def process_order(order_id: int):
 ## await sequencial desnecessário
 
 <details>
-<summary>❌ Bad — await encadeado quando não há dependência</summary>
+<summary>❌ Ruim — await encadeado quando não há dependência</summary>
 <br>
 
 ```python
@@ -75,7 +75,7 @@ async def fetch_user_data(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — async/await linear e legível</summary>
+<summary>✅ Bom — async/await linear e legível</summary>
 <br>
 
 ```python
@@ -96,7 +96,7 @@ async def fetch_user_data(user_id: int):
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
 <details>
-<summary>❌ Bad — await sequencial quando não há dependência entre chamadas</summary>
+<summary>❌ Ruim — await sequencial quando não há dependência entre chamadas</summary>
 <br>
 
 ```python
@@ -115,7 +115,7 @@ async def fetch_dashboard(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — asyncio.gather dispara tudo ao mesmo tempo</summary>
+<summary>✅ Bom — asyncio.gather dispara tudo ao mesmo tempo</summary>
 <br>
 
 ```python
@@ -145,7 +145,7 @@ async def fetch_dashboard(user_id: int):
 arquivo em código async.
 
 <details>
-<summary>❌ Bad — open() síncrono bloqueia o event loop</summary>
+<summary>❌ Ruim — open() síncrono bloqueia o event loop</summary>
 <br>
 
 ```python
@@ -163,7 +163,7 @@ async def read_config() -> dict:
 <br>
 
 <details>
-<summary>✅ Good — asyncio.to_thread para I/O de arquivo</summary>
+<summary>✅ Bom — asyncio.to_thread para I/O de arquivo</summary>
 <br>
 
 ```python
@@ -187,7 +187,7 @@ Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões 
 caso de exceção.
 
 <details>
-<summary>❌ Bad — conexão aberta sem garantia de fechamento</summary>
+<summary>❌ Ruim — conexão aberta sem garantia de fechamento</summary>
 <br>
 
 ```python
@@ -204,7 +204,7 @@ async def fetch_orders(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — async with garante fechamento em qualquer cenário</summary>
+<summary>✅ Bom — async with garante fechamento em qualquer cenário</summary>
 <br>
 
 ```python
@@ -224,7 +224,7 @@ Toda função que contém um `await` deve ser `async`. Funções que não fazem 
 aguardar sem ganho algum.
 
 <details>
-<summary>❌ Bad — async sem await, e I/O síncrono sem async</summary>
+<summary>❌ Ruim — async sem await, e I/O síncrono sem async</summary>
 <br>
 
 ```python
@@ -241,7 +241,7 @@ def fetch_user(user_id: int):  # I/O sem async
 <br>
 
 <details>
-<summary>✅ Good — async só quando há I/O; funções puras são síncronas</summary>
+<summary>✅ Bom — async só quando há I/O; funções puras são síncronas</summary>
 <br>
 
 ```python

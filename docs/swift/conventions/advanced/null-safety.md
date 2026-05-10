@@ -20,7 +20,7 @@ unwrap) é o único ponto de falha explícita e deve ser evitado em produção.
 ## Forced unwrap em produção
 
 <details>
-<summary>❌ Bad — ! como atalho perigoso</summary>
+<summary>❌ Ruim — ! como atalho perigoso</summary>
 <br>
 
 ```swift
@@ -35,7 +35,7 @@ func getCustomerEmail(userId: UUID) -> String {
 <br>
 
 <details>
-<summary>✅ Good — guard com saída antecipada e erro expressivo</summary>
+<summary>✅ Bom — guard com saída antecipada e erro expressivo</summary>
 <br>
 
 ```swift
@@ -53,7 +53,7 @@ func getCustomerEmail(userId: UUID) throws -> String {
 ## Optional chaining em cadeia
 
 <details>
-<summary>❌ Bad — verificações manuais aninhadas</summary>
+<summary>❌ Ruim — verificações manuais aninhadas</summary>
 <br>
 
 ```swift
@@ -74,7 +74,7 @@ func getCity(order: Order?) -> String {
 <br>
 
 <details>
-<summary>✅ Good — optional chaining com nil-coalescing no final</summary>
+<summary>✅ Bom — optional chaining com nil-coalescing no final</summary>
 <br>
 
 ```swift
@@ -88,7 +88,7 @@ func getCity(order: Order?) -> String {
 ## Unwrap múltiplo com guard
 
 <details>
-<summary>❌ Bad — guard separado para cada optional</summary>
+<summary>❌ Ruim — guard separado para cada optional</summary>
 <br>
 
 ```swift
@@ -102,7 +102,7 @@ guard let phone = user.phone else { return }
 <br>
 
 <details>
-<summary>✅ Good — guard com vírgula une condições</summary>
+<summary>✅ Bom — guard com vírgula une condições</summary>
 <br>
 
 ```swift
@@ -118,7 +118,7 @@ guard let name = user.name,
 ## `if let` para bloco condicional
 
 <details>
-<summary>❌ Bad — if com nil-check explícito</summary>
+<summary>❌ Ruim — if com nil-check explícito</summary>
 <br>
 
 ```swift
@@ -133,7 +133,7 @@ if order.promotion != nil {
 <br>
 
 <details>
-<summary>✅ Good — if let faz unwrap e bind em um passo</summary>
+<summary>✅ Bom — if let faz unwrap e bind em um passo</summary>
 <br>
 
 ```swift
@@ -147,7 +147,7 @@ if let promo = order.promotion {
 ## Nil-coalescing para valor padrão
 
 <details>
-<summary>❌ Bad — if/else para optional com default</summary>
+<summary>❌ Ruim — if/else para optional com default</summary>
 <br>
 
 ```swift
@@ -164,7 +164,7 @@ if let name = user.name {
 <br>
 
 <details>
-<summary>✅ Good — ?? em uma linha</summary>
+<summary>✅ Bom — ?? em uma linha</summary>
 <br>
 
 ```swift
@@ -176,7 +176,7 @@ let displayName = user.name ?? "Anonymous"
 ## Coleções — preferir vazio a optional
 
 <details>
-<summary>❌ Bad — nil para representar lista vazia</summary>
+<summary>❌ Ruim — nil para representar lista vazia</summary>
 <br>
 
 ```swift
@@ -191,7 +191,7 @@ func findOrdersByUser(userId: UUID) -> [Order]? {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia; nil nunca representa ausência de itens</summary>
+<summary>✅ Bom — lista vazia; nil nunca representa ausência de itens</summary>
 <br>
 
 ```swift

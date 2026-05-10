@@ -19,7 +19,7 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 ## SLA — orquestrador ou implementação
 
 <details>
-<summary>❌ Bad — god function: orquestra e implementa ao mesmo tempo</summary>
+<summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
 <br>
 
 ```php
@@ -52,7 +52,7 @@ public function processOrder(array $data): void
 <br>
 
 <details>
-<summary>✅ Good — orquestrador delega para funções de um nível abaixo</summary>
+<summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
 <br>
 
 ```php
@@ -100,7 +100,7 @@ private function applyCustomerDiscount(CreateOrderInput $input): CreateOrderInpu
 Atribua a uma variável nomeada antes de retornar.
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```php
@@ -119,7 +119,7 @@ public function buildSummary(array $orders): array
 <br>
 
 <details>
-<summary>✅ Good — explaining return: resultado nomeado antes do return</summary>
+<summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
 <br>
 
 ```php
@@ -142,7 +142,7 @@ Use named arguments quando a posição dos parâmetros não é óbvia ou quando 
 parâmetros opcionais.
 
 <details>
-<summary>❌ Bad — chamada com múltiplos literais sem contexto</summary>
+<summary>❌ Ruim — chamada com múltiplos literais sem contexto</summary>
 <br>
 
 ```php
@@ -155,7 +155,7 @@ $order = createOrder(42, 150.0, 'BRL', true, false, null);
 <br>
 
 <details>
-<summary>✅ Good — named arguments tornam a chamada autodocumentada</summary>
+<summary>✅ Bom — named arguments tornam a chamada autodocumentada</summary>
 <br>
 
 ```php
@@ -176,7 +176,7 @@ $order = createOrder(
 Com 4 ou mais parâmetros, agrupe em um objeto de entrada.
 
 <details>
-<summary>❌ Bad — muitos parâmetros na assinatura</summary>
+<summary>❌ Ruim — muitos parâmetros na assinatura</summary>
 <br>
 
 ```php
@@ -195,7 +195,7 @@ function createOrder(
 <br>
 
 <details>
-<summary>✅ Good — objeto de entrada agrupa parâmetros relacionados</summary>
+<summary>✅ Bom — objeto de entrada agrupa parâmetros relacionados</summary>
 <br>
 
 ```php
@@ -221,7 +221,7 @@ function createOrder(CreateOrderInput $input): Order {}
 Use arrow functions para transformações curtas em `array_map`, `array_filter`, `usort`.
 
 <details>
-<summary>❌ Bad — closures tradicionais: verbosas e exigem `use` explícito</summary>
+<summary>❌ Ruim — closures tradicionais: verbosas e exigem `use` explícito</summary>
 <br>
 
 ```php
@@ -251,7 +251,7 @@ usort($orders, function (Order $a, Order $b) {
 <br>
 
 <details>
-<summary>✅ Good — arrow functions para pipelines de transformação</summary>
+<summary>✅ Bom — arrow functions para pipelines de transformação</summary>
 <br>
 
 ```php
@@ -277,7 +277,7 @@ O método público orquestrador aparece primeiro. Os métodos privados de suport
 abaixo, na ordem em que são chamados.
 
 <details>
-<summary>❌ Bad — helpers antes do orquestrador: leitura de baixo para cima</summary>
+<summary>❌ Ruim — helpers antes do orquestrador: leitura de baixo para cima</summary>
 <br>
 
 ```php
@@ -313,7 +313,7 @@ final class InvoiceService
 <br>
 
 <details>
-<summary>✅ Good — leitura top-down natural</summary>
+<summary>✅ Bom — leitura top-down natural</summary>
 <br>
 
 ```php

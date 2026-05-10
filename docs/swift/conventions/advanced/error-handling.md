@@ -20,7 +20,7 @@ Exceções irrecuperáveis usam `preconditionFailure` ou `fatalError`.
 ## Enum de erros de domínio
 
 <details>
-<summary>❌ Bad — String como erro (sem exaustividade)</summary>
+<summary>❌ Ruim — String como erro (sem exaustividade)</summary>
 <br>
 
 ```swift
@@ -37,7 +37,7 @@ func findOrder(id: UUID) throws -> Order {
 <br>
 
 <details>
-<summary>✅ Good — enum tipado com LocalizedError</summary>
+<summary>✅ Bom — enum tipado com LocalizedError</summary>
 <br>
 
 ```swift
@@ -69,7 +69,7 @@ func findOrder(id: UUID) throws -> Order {
 ## `try?` quando a ausência é válida
 
 <details>
-<summary>❌ Bad — do-catch para silenciar erro sem contexto</summary>
+<summary>❌ Ruim — do-catch para silenciar erro sem contexto</summary>
 <br>
 
 ```swift
@@ -87,7 +87,7 @@ func loadCachedUser(id: UUID) -> User? {
 <br>
 
 <details>
-<summary>✅ Good — try? quando nil é a semântica correta</summary>
+<summary>✅ Bom — try? quando nil é a semântica correta</summary>
 <br>
 
 ```swift
@@ -102,7 +102,7 @@ func loadCachedUser(id: UUID) -> User? {
 ## Propagação vs tratamento
 
 <details>
-<summary>❌ Bad — catch no lugar errado, propagação perdida</summary>
+<summary>❌ Ruim — catch no lugar errado, propagação perdida</summary>
 <br>
 
 ```swift
@@ -123,7 +123,7 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
 <br>
 
 <details>
-<summary>✅ Good — tratar somente o que pode tratar; propagar o resto</summary>
+<summary>✅ Bom — tratar somente o que pode tratar; propagar o resto</summary>
 <br>
 
 ```swift
@@ -154,7 +154,7 @@ func handleSubmit() async {
 ## `Result` para APIs sem throws
 
 <details>
-<summary>❌ Bad — closure com dois parâmetros opcionais ambíguos</summary>
+<summary>❌ Ruim — closure com dois parâmetros opcionais ambíguos</summary>
 <br>
 
 ```swift
@@ -168,7 +168,7 @@ func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
 <br>
 
 <details>
-<summary>✅ Good — Result torna os estados explícitos</summary>
+<summary>✅ Bom — Result torna os estados explícitos</summary>
 <br>
 
 ```swift
@@ -186,7 +186,7 @@ func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
 ## `preconditionFailure` para invariantes
 
 <details>
-<summary>❌ Bad — fatalError com mensagem genérica</summary>
+<summary>❌ Ruim — fatalError com mensagem genérica</summary>
 <br>
 
 ```swift
@@ -200,7 +200,7 @@ guard let config = Configuration.shared else {
 <br>
 
 <details>
-<summary>✅ Good — preconditionFailure com contexto do invariante</summary>
+<summary>✅ Bom — preconditionFailure com contexto do invariante</summary>
 <br>
 
 ```swift

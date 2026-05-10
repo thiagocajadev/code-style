@@ -21,7 +21,7 @@ Records (Dart 3+) criam tipos de produto imutáveis sem boilerplate.
 ## Sealed class para estados e resultados
 
 <details>
-<summary>❌ Bad — String como discriminante de estado</summary>
+<summary>❌ Ruim — String como discriminante de estado</summary>
 <br>
 
 ```dart
@@ -39,7 +39,7 @@ class OrderResult {
 <br>
 
 <details>
-<summary>✅ Good — sealed class com switch exaustivo</summary>
+<summary>✅ Bom — sealed class com switch exaustivo</summary>
 <br>
 
 ```dart
@@ -72,7 +72,7 @@ String describeResult(OrderResult result) {
 ## Records para tipos de produto simples
 
 <details>
-<summary>❌ Bad — classe com boilerplate para par de valores</summary>
+<summary>❌ Ruim — classe com boilerplate para par de valores</summary>
 <br>
 
 ```dart
@@ -88,7 +88,7 @@ class Coordinate {
 <br>
 
 <details>
-<summary>✅ Good — record: imutável, destructuring, equals automático</summary>
+<summary>✅ Bom — record: imutável, destructuring, equals automático</summary>
 <br>
 
 ```dart
@@ -104,7 +104,7 @@ final (latitude: lat, longitude: lng) = location;   // destructuring
 ## Mixin para comportamento reutilizável
 
 <details>
-<summary>❌ Bad — herança para compartilhar comportamento</summary>
+<summary>❌ Ruim — herança para compartilhar comportamento</summary>
 <br>
 
 ```dart
@@ -121,7 +121,7 @@ class UserRepository extends BaseRepository { ... }
 <br>
 
 <details>
-<summary>✅ Good — mixin compartilha comportamento sem acoplamento de hierarquia</summary>
+<summary>✅ Bom — mixin compartilha comportamento sem acoplamento de hierarquia</summary>
 <br>
 
 ```dart
@@ -140,7 +140,7 @@ class UserRepository with Loggable { ... }
 ## Extension para comportamento adicional
 
 <details>
-<summary>❌ Bad — método utilitário em classe separada</summary>
+<summary>❌ Ruim — método utilitário em classe separada</summary>
 <br>
 
 ```dart
@@ -156,7 +156,7 @@ class OrderUtils {
 <br>
 
 <details>
-<summary>✅ Good — extension no tipo correto</summary>
+<summary>✅ Bom — extension no tipo correto</summary>
 <br>
 
 ```dart
@@ -175,7 +175,7 @@ final recentPaid = orders.where((o) => o.isPaidAndRecent(cutoff)).toList();
 ## Enum com métodos
 
 <details>
-<summary>❌ Bad — switch de string para mapeamento de enum</summary>
+<summary>❌ Ruim — switch de string para mapeamento de enum</summary>
 <br>
 
 ```dart
@@ -191,7 +191,7 @@ String getStatusLabel(String status) {
 <br>
 
 <details>
-<summary>✅ Good — enum com getter carrega o comportamento</summary>
+<summary>✅ Bom — enum com getter carrega o comportamento</summary>
 <br>
 
 ```dart

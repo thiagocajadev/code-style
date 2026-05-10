@@ -20,7 +20,7 @@ Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno)
 `Sub` não retorna valor — equivalente a `void`. `Function` retorna. A escolha é semântica: se a operação produz um resultado, use `Function`. `Sub` com parâmetro `ByRef` para comunicar resultado é um cheiro de design — na dúvida, prefira `Function`.
 
 <details>
-<summary>❌ Bad — Sub com ByRef para comunicar resultado</summary>
+<summary>❌ Ruim — Sub com ByRef para comunicar resultado</summary>
 <br>
 
 ```vbnet
@@ -48,7 +48,7 @@ If Not ok Then HandleError(msg)
 <br>
 
 <details>
-<summary>✅ Good — Function retorna o resultado, caller lê diretamente</summary>
+<summary>✅ Bom — Function retorna o resultado, caller lê diretamente</summary>
 <br>
 
 ```vbnet
@@ -77,7 +77,7 @@ If Not result.IsSuccess Then HandleError(result.ErrorMessage)
 O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
-<summary>❌ Bad — implementação misturada com orquestração</summary>
+<summary>❌ Ruim — implementação misturada com orquestração</summary>
 <br>
 
 ```vbnet
@@ -109,7 +109,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — orquestrador declara o fluxo, helpers implementam cada passo</summary>
+<summary>✅ Bom — orquestrador declara o fluxo, helpers implementam cada passo</summary>
 <br>
 
 ```vbnet
@@ -159,7 +159,7 @@ End Function
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
 <details>
-<summary>❌ Bad — orquestração e implementação no mesmo método</summary>
+<summary>❌ Ruim — orquestração e implementação no mesmo método</summary>
 <br>
 
 ```vbnet
@@ -182,7 +182,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — orquestrador chama helpers, cada um com uma responsabilidade</summary>
+<summary>✅ Bom — orquestrador chama helpers, cada um com uma responsabilidade</summary>
 <br>
 
 ```vbnet
@@ -218,7 +218,7 @@ End Function
 O `Return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
 
 <details>
-<summary>❌ Bad — construção inline no Return</summary>
+<summary>❌ Ruim — construção inline no Return</summary>
 <br>
 
 ```vbnet
@@ -236,7 +236,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — variável expressiva antes do Return</summary>
+<summary>✅ Bom — variável expressiva antes do Return</summary>
 <br>
 
 ```vbnet
@@ -256,7 +256,7 @@ End Function
 Valide as pré-condições no topo e saia cedo. O fluxo principal fica plano e sem aninhamento. Cada guarda remove um nível de indentação.
 
 <details>
-<summary>❌ Bad — lógica principal enterrada em aninhamento</summary>
+<summary>❌ Ruim — lógica principal enterrada em aninhamento</summary>
 <br>
 
 ```vbnet
@@ -287,7 +287,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — guards no topo, fluxo principal limpo</summary>
+<summary>✅ Bom — guards no topo, fluxo principal limpo</summary>
 <br>
 
 ```vbnet
@@ -309,7 +309,7 @@ End Function
 Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
-<summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>
+<summary>❌ Ruim — sem separação entre passos ou separação excessiva</summary>
 <br>
 
 ```vbnet
@@ -331,7 +331,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — um grupo por passo, separados por uma linha em branco</summary>
+<summary>✅ Bom — um grupo por passo, separados por uma linha em branco</summary>
 <br>
 
 ```vbnet

@@ -19,7 +19,7 @@ quando o valor precisa mudar. O compilador avisa sobre `mut` desnecessário.
 ## let vs let mut
 
 <details>
-<summary>❌ Bad — mut desnecessário</summary>
+<summary>❌ Ruim — mut desnecessário</summary>
 <br>
 
 ```rust
@@ -35,7 +35,7 @@ println!("{}", status);        // status nunca alterado após a declaração
 <br>
 
 <details>
-<summary>✅ Good — mut apenas onde necessário</summary>
+<summary>✅ Bom — mut apenas onde necessário</summary>
 <br>
 
 ```rust
@@ -57,7 +57,7 @@ Evite literais mágicos inline. `const` é avaliada em tempo de compilação e p
 usada em qualquer escopo, incluindo dentro de funções.
 
 <details>
-<summary>❌ Bad — valores mágicos sem nome</summary>
+<summary>❌ Ruim — valores mágicos sem nome</summary>
 <br>
 
 ```rust
@@ -75,7 +75,7 @@ fn retry_request(attempt: u32) -> bool {
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas com intenção</summary>
+<summary>✅ Bom — constantes nomeadas com intenção</summary>
 <br>
 
 ```rust
@@ -99,7 +99,7 @@ Shadowing substitui uma ligação no mesmo escopo ou em um escopo interno.
 É idiomático para transformações progressivas do mesmo dado.
 
 <details>
-<summary>❌ Bad — variáveis intermediárias desnecessárias</summary>
+<summary>❌ Ruim — variáveis intermediárias desnecessárias</summary>
 <br>
 
 ```rust
@@ -114,7 +114,7 @@ let order_from_input = build_order(validated_input);
 <br>
 
 <details>
-<summary>✅ Good — shadowing para transformações progressivas</summary>
+<summary>✅ Bom — shadowing para transformações progressivas</summary>
 <br>
 
 ```rust
@@ -132,7 +132,7 @@ O compilador infere tipos na maioria dos casos. Anote explicitamente quando a in
 não fica óbvia ou quando o tipo comunica intenção.
 
 <details>
-<summary>❌ Bad — anotação redundante onde a inferência é clara</summary>
+<summary>❌ Ruim — anotação redundante onde a inferência é clara</summary>
 <br>
 
 ```rust
@@ -146,7 +146,7 @@ let items: Vec<Item> = vec![item_a, item_b];
 <br>
 
 <details>
-<summary>✅ Good — anote quando agrega informação</summary>
+<summary>✅ Bom — anote quando agrega informação</summary>
 <br>
 
 ```rust
@@ -165,7 +165,7 @@ Declare variáveis no escopo mais estreito possível. Evite declarar no topo da 
 variáveis que só serão usadas no final.
 
 <details>
-<summary>❌ Bad — variáveis declaradas longe do uso</summary>
+<summary>❌ Ruim — variáveis declaradas longe do uso</summary>
 <br>
 
 ```rust
@@ -189,7 +189,7 @@ fn process_order(order: &Order) -> anyhow::Result<Receipt> {
 <br>
 
 <details>
-<summary>✅ Good — declaração próxima ao uso</summary>
+<summary>✅ Bom — declaração próxima ao uso</summary>
 <br>
 
 ```rust

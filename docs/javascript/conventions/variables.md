@@ -18,7 +18,7 @@ Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use
 ## var — escopo de função, não de bloco
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```js
@@ -37,7 +37,7 @@ var count = 20; // redeclaração silenciosa
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```js
@@ -53,7 +53,7 @@ console.log(contained); // ReferenceError — escopo correto
 ## let desnecessário
 
 <details>
-<summary>❌ Bad — let onde const seria suficiente</summary>
+<summary>❌ Ruim — let onde const seria suficiente</summary>
 <br>
 
 ```js
@@ -66,7 +66,7 @@ let userName = "Alice"; // nunca reatribuído
 <br>
 
 <details>
-<summary>✅ Good — const por padrão, let só quando necessário</summary>
+<summary>✅ Bom — const por padrão, let só quando necessário</summary>
 <br>
 
 ```js
@@ -88,7 +88,7 @@ colateral invisível e difícil de rastrear. Prefira retornar um novo objeto com
 desejadas.
 
 <details>
-<summary>❌ Bad — mutação acoplada e difícil de rastrear</summary>
+<summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
 <br>
 
 ```js
@@ -103,7 +103,7 @@ function applyDiscount(order) {
 <br>
 
 <details>
-<summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
 <br>
 
 ```js
@@ -125,7 +125,7 @@ function applyDiscount(order) {
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Bad — o que significa 18? e 86400000?</summary>
+<summary>❌ Ruim — o que significa 18? e 86400000?</summary>
 <br>
 
 ```js
@@ -143,7 +143,7 @@ setTimeout(syncData, 86400000);
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas</summary>
+<summary>✅ Bom — constantes nomeadas</summary>
 <br>
 
 ```js

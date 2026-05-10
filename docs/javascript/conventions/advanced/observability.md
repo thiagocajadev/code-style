@@ -23,7 +23,7 @@
 objetos estruturados: cada campo vira uma propriedade pesquisável.
 
 <details>
-<summary>❌ Bad — string concatenada, ilegível para ferramentas</summary>
+<summary>❌ Ruim — string concatenada, ilegível para ferramentas</summary>
 <br>
 
 ```js
@@ -36,7 +36,7 @@ logger.error(`Payment failed: ${error.message} for order ${order.id}`);
 <br>
 
 <details>
-<summary>✅ Good — objeto estruturado com campos semânticos</summary>
+<summary>✅ Bom — objeto estruturado com campos semânticos</summary>
 <br>
 
 ```js
@@ -52,7 +52,7 @@ logger.error(paymentErrorContext, "payment failed");
 ## Níveis de log
 
 <details>
-<summary>❌ Bad — console.log para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim — console.log para tudo, sem distinção de severidade</summary>
 <br>
 
 ```js
@@ -67,7 +67,7 @@ console.log(`User ${userId} not found`);
 <br>
 
 <details>
-<summary>✅ Good — nível correto por situação</summary>
+<summary>✅ Bom — nível correto por situação</summary>
 <br>
 
 ```js
@@ -86,7 +86,7 @@ logger.error(userNotFoundContext, "user not found during checkout");
 ## O que nunca logar
 
 <details>
-<summary>❌ Bad — PII e credenciais em log</summary>
+<summary>❌ Ruim — PII e credenciais em log</summary>
 <br>
 
 ```js
@@ -101,7 +101,7 @@ logger.info({ token }, "user authenticated");
 <br>
 
 <details>
-<summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
 <br>
 
 ```js
@@ -123,7 +123,7 @@ Sem um identificador comum, logs de uma mesma requisição são ilhas: impossív
 `AsyncLocalStorage` propaga o `correlationId` para todos os logs sem passar por parâmetro.
 
 <details>
-<summary>❌ Bad — logs sem contexto de requisição</summary>
+<summary>❌ Ruim — logs sem contexto de requisição</summary>
 <br>
 
 ```js
@@ -144,7 +144,7 @@ async function processOrder(orderId) {
 <br>
 
 <details>
-<summary>✅ Good — correlationId propagado via AsyncLocalStorage</summary>
+<summary>✅ Bom — correlationId propagado via AsyncLocalStorage</summary>
 <br>
 
 ```js

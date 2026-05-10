@@ -63,7 +63,7 @@ Auth__Authority="https://login.microsoftonline.com/tenant-id"
 Ler `builder.Configuration["Auth:Secret"]` espalha strings mágicas e não detecta null em compile time. Options pattern amarra a seção a um record fortemente tipado.
 
 <details>
-<summary>❌ Bad — chaves soltas no código</summary>
+<summary>❌ Ruim — chaves soltas no código</summary>
 <br>
 
 ```csharp
@@ -76,7 +76,7 @@ var secret    = builder.Configuration["Auth:Secret"]; // string? — null passa 
 <br>
 
 <details>
-<summary>✅ Good — record tipado resolvido uma vez no startup</summary>
+<summary>✅ Bom — record tipado resolvido uma vez no startup</summary>
 <br>
 
 ```csharp
@@ -114,7 +114,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 `ReadJwtToken()` lê o **payload** (corpo da mensagem) sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
 
 <details>
-<summary>❌ Bad — ReadJwtToken dentro do handler</summary>
+<summary>❌ Ruim — ReadJwtToken dentro do handler</summary>
 <br>
 
 ```csharp
@@ -134,7 +134,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 <br>
 
 <details>
-<summary>✅ Good — **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
+<summary>✅ Bom — **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
 <br>
 
 ```csharp

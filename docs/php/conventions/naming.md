@@ -19,7 +19,7 @@ de nomenclatura. Dentro dessas convenções, o mesmo princípio vale: o código 
 ## Identificadores sem significado
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```php
@@ -39,7 +39,7 @@ function apply($x, array $p, callable $c)
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```php
@@ -62,7 +62,7 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
 ## Nomes em português
 
 <details>
-<summary>❌ Bad — nomes em português no código</summary>
+<summary>❌ Ruim — nomes em português no código</summary>
 <br>
 
 ```php
@@ -78,7 +78,7 @@ function buscaEnderecoDoCliente(int $id): Address { ... }
 <br>
 
 <details>
-<summary>✅ Good — inglês: curto, direto, universal</summary>
+<summary>✅ Bom — inglês: curto, direto, universal</summary>
 <br>
 
 ```php
@@ -103,7 +103,7 @@ function findCustomerAddress(int $customerID): Address { ... }
 | Namespaces                     | `PascalCase`     | `App\Domain\Order`, `App\Infrastructure`     |
 
 <details>
-<summary>❌ Bad — case errado para o contexto</summary>
+<summary>❌ Ruim — case errado para o contexto</summary>
 <br>
 
 ```php
@@ -120,7 +120,7 @@ $order_id = 42;                 // variável com underscore
 <br>
 
 <details>
-<summary>✅ Good — convenções PSR respeitadas</summary>
+<summary>✅ Bom — convenções PSR respeitadas</summary>
 <br>
 
 ```php
@@ -143,7 +143,7 @@ $orderID = 42;
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Bad — ordem invertida</summary>
+<summary>❌ Ruim — ordem invertida</summary>
 <br>
 
 ```php
@@ -159,7 +159,7 @@ function statusUpdateOrder(int $orderID): void {}
 <br>
 
 <details>
-<summary>✅ Good — ordem natural</summary>
+<summary>✅ Bom — ordem natural</summary>
 <br>
 
 ```php
@@ -173,7 +173,7 @@ function calculateInvoiceTotal(Invoice $invoice): float {}
 ## Verbos genéricos
 
 <details>
-<summary>❌ Bad — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
 <br>
 
 ```php
@@ -188,7 +188,7 @@ function doStuff($x): mixed {}
 <br>
 
 <details>
-<summary>✅ Good — verbo de intenção</summary>
+<summary>✅ Bom — verbo de intenção</summary>
 <br>
 
 ```php
@@ -203,7 +203,7 @@ function applySeasonalDiscount(Order $order): Order {}
 ## Domain-first naming
 
 <details>
-<summary>❌ Bad — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
 <br>
 
 ```php
@@ -217,7 +217,7 @@ function postToSlack(string $message): void {}
 <br>
 
 <details>
-<summary>✅ Good — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom — nome fala a linguagem do negócio</summary>
 <br>
 
 ```php
@@ -231,7 +231,7 @@ function notifyTeam(string $message): void {}
 ## Boolean naming
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```php
@@ -245,7 +245,7 @@ $valid = str_contains($email, '@');
 <br>
 
 <details>
-<summary>✅ Good — prefixos is, has, can, should</summary>
+<summary>✅ Bom — prefixos is, has, can, should</summary>
 <br>
 
 ```php

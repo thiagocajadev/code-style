@@ -37,7 +37,7 @@ pull main → nova branch → commits atômicos → fetch origin/main → merge 
 | `deletar branch` | Remove a branch após confirmar que o merge chegou na main e o deploy está estável |
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```bash
@@ -52,7 +52,7 @@ git push origin main
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -99,7 +99,7 @@ stash → trocar de branch → trabalhar → voltar → stash pop → continuar
 ```
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```bash
@@ -114,7 +114,7 @@ git checkout feat/other-priority-task
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -143,7 +143,7 @@ WIP → fix typo → esqueci de salvar → arrumei → squash → feat(auth): ad
 ```
 
 <details>
-<summary>❌ Bad — histórico fragmentado no merge</summary>
+<summary>❌ Ruim — histórico fragmentado no merge</summary>
 <br>
 
 ```
@@ -161,7 +161,7 @@ feat: email
 <br>
 
 <details>
-<summary>✅ Good — GitHub (padrão)</summary>
+<summary>✅ Bom — GitHub (padrão)</summary>
 <br>
 
 No PR aberto, clique no dropdown ao lado de "Merge pull request" e selecione **Squash and merge**. O
@@ -189,7 +189,7 @@ rápida.
 | PR pequeno (menos de 400 linhas como referência) | Diffs grandes cansam e geram reviews superficiais                     |
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```
@@ -205,7 +205,7 @@ linhas alteradas: 1.200
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```
@@ -236,7 +236,7 @@ linhas alteradas: 180
 ### Inspecionando antes de agir
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -258,7 +258,7 @@ git clean -n -fd
 ### Guardando trabalho temporário
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -285,7 +285,7 @@ squash no merge do PR limpa tudo depois.
 `main avança → merge main na branch → conflito resolvido → PR → squash`
 
 <details>
-<summary>❌ Bad — rebase de rotina</summary>
+<summary>❌ Ruim — rebase de rotina</summary>
 <br>
 
 ```bash
@@ -299,7 +299,7 @@ git push --force origin feat/user-email-verification
 <br>
 
 <details>
-<summary>✅ Good — forward-only</summary>
+<summary>✅ Bom — forward-only</summary>
 <br>
 
 ```bash
@@ -323,7 +323,7 @@ O **Reflog** registra todas as posições que HEAD ocupou. Funciona como um hist
 local, independente de push.
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -350,7 +350,7 @@ Use rebase apenas em branches **locais** (não publicadas) ou em situações pon
 Nunca em branches compartilhadas.
 
 <details>
-<summary>✅ Good — limpar commits antes do primeiro push</summary>
+<summary>✅ Bom — limpar commits antes do primeiro push</summary>
 <br>
 
 ```bash
@@ -369,7 +369,7 @@ git rebase -i HEAD~4
 <br>
 
 <details>
-<summary>✅ Good — remover commit com dado sensível (branch local)</summary>
+<summary>✅ Bom — remover commit com dado sensível (branch local)</summary>
 <br>
 
 ```bash
@@ -392,7 +392,7 @@ desfaz mudanças de outros devs que chegaram junto.
 `bug identificado → fix/ branch da main → correção → PR → squash and merge → deploy`
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash
@@ -438,7 +438,7 @@ main: estado estável → feat(auth): add email verification → revert: feat(au
 Com a `main` revertida, o caminho para entregar o fix é:
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```bash

@@ -23,7 +23,7 @@ Padrões de performance **SQL** (Structured Query Language, Linguagem de Consult
 Sempre limitar os campos retornados ao mínimo necessário para a operação.
 
 <details>
-<summary>❌ Bad — documento inteiro trafegado para usar dois campos</summary>
+<summary>❌ Ruim — documento inteiro trafegado para usar dois campos</summary>
 <br>
 
 ```js
@@ -42,7 +42,7 @@ async function fetchTeamSummary(teamId) {
 <br>
 
 <details>
-<summary>✅ Good — projeção limita o tráfego ao mínimo</summary>
+<summary>✅ Bom — projeção limita o tráfego ao mínimo</summary>
 <br>
 
 ```js
@@ -95,7 +95,7 @@ await sessionsCollection.createIndex(
 ```
 
 <details>
-<summary>❌ Bad — campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
+<summary>❌ Ruim — campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
 <br>
 
 ```js
@@ -113,7 +113,7 @@ await teamsCollection.createIndex({ isActive: 1 });
 <br>
 
 <details>
-<summary>✅ Good — índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
+<summary>✅ Bom — índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
 <br>
 
 ```js
@@ -150,7 +150,7 @@ N+1 não aparece no código; aparece no log. O sinal é um padrão de queries id
 ```
 
 <details>
-<summary>❌ Bad — uma query por item para buscar documento relacionado</summary>
+<summary>❌ Ruim — uma query por item para buscar documento relacionado</summary>
 <br>
 
 ```js
@@ -177,7 +177,7 @@ async function fetchTeamsWithPlayers(teamIds) {
 <br>
 
 <details>
-<summary>✅ Good — $lookup resolve em uma única passagem no banco</summary>
+<summary>✅ Bom — $lookup resolve em uma única passagem no banco</summary>
 <br>
 
 ```js
@@ -216,7 +216,7 @@ async function fetchTeamsWithPlayers(teamIds) {
 TTL é responsabilidade do código na inserção, não de um job de limpeza externo.
 
 <details>
-<summary>❌ Bad — sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
+<summary>❌ Ruim — sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
 <br>
 
 ```js
@@ -236,7 +236,7 @@ async function createSession(userId, token) {
 <br>
 
 <details>
-<summary>✅ Good — TTL index + expiresAt definido no insert</summary>
+<summary>✅ Bom — TTL index + expiresAt definido no insert</summary>
 <br>
 
 ```js

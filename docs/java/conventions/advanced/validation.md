@@ -19,7 +19,7 @@ confie nos contratos já validados.
 ## Validação inline no service
 
 <details>
-<summary>❌ Bad — validação espalhada em múltiplos serviços</summary>
+<summary>❌ Ruim — validação espalhada em múltiplos serviços</summary>
 <br>
 
 ```java
@@ -37,7 +37,7 @@ public User createUser(String name, String email) {
 <br>
 
 <details>
-<summary>✅ Good — anotações de Bean Validation no record de input</summary>
+<summary>✅ Bom — anotações de Bean Validation no record de input</summary>
 <br>
 
 ```java
@@ -81,7 +81,7 @@ public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserInput inp
 Quando precisar validar fora de um controller Spring, injete o `Validator` programaticamente.
 
 <details>
-<summary>✅ Good — validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
+<summary>✅ Bom — validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
 <br>
 
 ```java
@@ -117,7 +117,7 @@ public class OrderMessageConsumer {
 Quando as anotações padrão não cobrem uma regra de negócio, crie um validator customizado.
 
 <details>
-<summary>✅ Good — validator customizado para CPF</summary>
+<summary>✅ Bom — validator customizado para CPF</summary>
 <br>
 
 ```java
@@ -153,7 +153,7 @@ public record CustomerInput(
 ## @ControllerAdvice — tratamento centralizado de erros de validação
 
 <details>
-<summary>✅ Good — mapeia MethodArgumentNotValidException para resposta padronizada</summary>
+<summary>✅ Bom — mapeia MethodArgumentNotValidException para resposta padronizada</summary>
 <br>
 
 ```java

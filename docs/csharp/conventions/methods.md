@@ -19,7 +19,7 @@ Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de
 O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
-<summary>❌ Bad — implementação misturada com orquestração</summary>
+<summary>❌ Ruim — implementação misturada com orquestração</summary>
 <br>
 
 ```csharp
@@ -49,7 +49,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 <br>
 
 <details>
-<summary>✅ Good — orquestrador declara o fluxo, helpers implementam cada passo</summary>
+<summary>✅ Bom — orquestrador declara o fluxo, helpers implementam cada passo</summary>
 <br>
 
 ```csharp
@@ -86,7 +86,7 @@ private static Invoice BuildInvoice(Order order) { ... }
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
 <details>
-<summary>❌ Bad — orquestração e implementação no mesmo método</summary>
+<summary>❌ Ruim — orquestração e implementação no mesmo método</summary>
 <br>
 
 ```csharp
@@ -111,7 +111,7 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 <br>
 
 <details>
-<summary>✅ Good — orquestrador chama helpers, cada um com uma responsabilidade</summary>
+<summary>✅ Bom — orquestrador chama helpers, cada um com uma responsabilidade</summary>
 <br>
 
 ```csharp
@@ -152,7 +152,7 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 O `return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
 
 <details>
-<summary>❌ Bad — lógica e construção inline no return</summary>
+<summary>❌ Ruim — lógica e construção inline no return</summary>
 <br>
 
 ```csharp
@@ -169,7 +169,7 @@ public OrderSummary BuildSummary(Order order) =>
 <br>
 
 <details>
-<summary>❌ Bad — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
 <br>
 
 ```csharp
@@ -185,7 +185,7 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 <br>
 
 <details>
-<summary>❌ Bad — string imensa montada inline: ilegível e sem semântica</summary>
+<summary>❌ Ruim — string imensa montada inline: ilegível e sem semântica</summary>
 <br>
 
 ```csharp
@@ -198,7 +198,7 @@ public string BuildShippingLabel(Order order) =>
 <br>
 
 <details>
-<summary>✅ Good — variável expressiva antes do return</summary>
+<summary>✅ Bom — variável expressiva antes do return</summary>
 <br>
 
 ```csharp
@@ -217,7 +217,7 @@ public OrderSummary BuildSummary(Order order)
 <br>
 
 <details>
-<summary>✅ Good — nome simétrico com o método deixa claro o que sai</summary>
+<summary>✅ Bom — nome simétrico com o método deixa claro o que sai</summary>
 <br>
 
 ```csharp
@@ -239,7 +239,7 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 <br>
 
 <details>
-<summary>✅ Good — partes nomeadas antes de montar o resultado</summary>
+<summary>✅ Bom — partes nomeadas antes de montar o resultado</summary>
 <br>
 
 ```csharp
@@ -262,7 +262,7 @@ public string BuildShippingLabel(Order order)
 C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
 
 <details>
-<summary>❌ Bad — boilerplate de construtor tradicional</summary>
+<summary>❌ Ruim — boilerplate de construtor tradicional</summary>
 <br>
 
 ```csharp
@@ -294,7 +294,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — primary constructor, DI sem cerimônia</summary>
+<summary>✅ Bom — primary constructor, DI sem cerimônia</summary>
 <br>
 
 ```csharp
@@ -319,7 +319,7 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
-<summary>❌ Bad — sem separação entre passos ou separação excessiva</summary>
+<summary>❌ Ruim — sem separação entre passos ou separação excessiva</summary>
 <br>
 
 ```csharp
@@ -346,7 +346,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 <br>
 
 <details>
-<summary>✅ Good — um grupo por passo, separados por uma linha em branco</summary>
+<summary>✅ Bom — um grupo por passo, separados por uma linha em branco</summary>
 <br>
 
 ```csharp

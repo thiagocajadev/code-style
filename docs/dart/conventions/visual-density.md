@@ -20,7 +20,7 @@ consecutivas.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — sem separação entre fases</summary>
+<summary>❌ Ruim — sem separação entre fases</summary>
 <br>
 
 ```dart
@@ -42,7 +42,7 @@ Future<Receipt> processPayment(PaymentRequest request) async {
 <br>
 
 <details>
-<summary>✅ Good — fases separadas por linha em branco</summary>
+<summary>✅ Bom — fases separadas por linha em branco</summary>
 <br>
 
 ```dart
@@ -73,7 +73,7 @@ Future<Receipt> processPayment(PaymentRequest request) async {
 ## Explaining Return — tight
 
 <details>
-<summary>❌ Bad — blank entre final e return</summary>
+<summary>❌ Ruim — blank entre final e return</summary>
 <br>
 
 ```dart
@@ -89,7 +89,7 @@ String buildWelcomeMessage(User user) {
 <br>
 
 <details>
-<summary>✅ Good — final + return sem blank (explaining return tight)</summary>
+<summary>✅ Bom — final + return sem blank (explaining return tight)</summary>
 <br>
 
 ```dart
@@ -104,7 +104,7 @@ String buildWelcomeMessage(User user) {
 ## Chains longas
 
 <details>
-<summary>❌ Bad — chain em uma linha só</summary>
+<summary>❌ Ruim — chain em uma linha só</summary>
 <br>
 
 ```dart
@@ -116,7 +116,7 @@ final result = orders.where((o) => o.isPaid).toList()..sort((a, b) => b.createdA
 <br>
 
 <details>
-<summary>✅ Good — uma operação por linha</summary>
+<summary>✅ Bom — uma operação por linha</summary>
 <br>
 
 ```dart
@@ -134,7 +134,7 @@ return recentPaid;
 ## Construção de objetos — sem lógica inline
 
 <details>
-<summary>❌ Bad — lógica embutida no construtor</summary>
+<summary>❌ Ruim — lógica embutida no construtor</summary>
 <br>
 
 ```dart
@@ -151,7 +151,7 @@ return Order(
 <br>
 
 <details>
-<summary>✅ Good — lógica extraída antes da construção</summary>
+<summary>✅ Bom — lógica extraída antes da construção</summary>
 <br>
 
 ```dart
@@ -176,7 +176,7 @@ Cascade é idiomático para configuração de objetos. Evitar quando as operaç�
 têm efeitos colaterais não óbvios.
 
 <details>
-<summary>❌ Bad — cascade misturado com lógica</summary>
+<summary>❌ Ruim — cascade misturado com lógica</summary>
 <br>
 
 ```dart
@@ -192,7 +192,7 @@ final buffer = StringBuffer()
 <br>
 
 <details>
-<summary>✅ Good — lógica extraída; cascade apenas para operações de configuração</summary>
+<summary>✅ Bom — lógica extraída; cascade apenas para operações de configuração</summary>
 <br>
 
 ```dart

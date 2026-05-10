@@ -21,7 +21,7 @@ nunca para fluxo de controle esperado.
 Nunca ignore um erro com `_`. Todo erro deve ser verificado ou explicitamente propagado.
 
 <details>
-<summary>❌ Bad — erro ignorado</summary>
+<summary>❌ Ruim — erro ignorado</summary>
 <br>
 
 ```go
@@ -35,7 +35,7 @@ config, _ := parseConfig(data)
 <br>
 
 <details>
-<summary>✅ Good — todo erro verificado</summary>
+<summary>✅ Bom — todo erro verificado</summary>
 <br>
 
 ```go
@@ -64,7 +64,7 @@ Adicione contexto ao propagar um erro. Use `%w` para preservar a cadeia e permit
 `errors.Is`/`errors.As`.
 
 <details>
-<summary>❌ Bad — erro propagado sem contexto</summary>
+<summary>❌ Ruim — erro propagado sem contexto</summary>
 <br>
 
 ```go
@@ -83,7 +83,7 @@ func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
 <br>
 
 <details>
-<summary>✅ Good — erro empacotado com contexto da operação</summary>
+<summary>✅ Bom — erro empacotado com contexto da operação</summary>
 <br>
 
 ```go
@@ -108,7 +108,7 @@ func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
 Use sentinel errors para condições que o chamador precisa tratar de forma específica.
 
 <details>
-<summary>❌ Bad — erro como string, difícil de comparar</summary>
+<summary>❌ Ruim — erro como string, difícil de comparar</summary>
 <br>
 
 ```go
@@ -130,7 +130,7 @@ if err.Error() == "user not found" {  // frágil
 <br>
 
 <details>
-<summary>✅ Good — sentinel error exportado, verificado com errors.Is</summary>
+<summary>✅ Bom — sentinel error exportado, verificado com errors.Is</summary>
 <br>
 
 ```go
@@ -169,7 +169,7 @@ Use tipos de erro customizados quando o chamador precisa acessar campos do erro 
 da mensagem de texto.
 
 <details>
-<summary>✅ Good — tipo de erro com campos estruturados</summary>
+<summary>✅ Bom — tipo de erro com campos estruturados</summary>
 <br>
 
 ```go
@@ -215,7 +215,7 @@ if err := validateOrder(order); err != nil {
 Nunca use para erros esperados como "não encontrado" ou "input inválido".
 
 <details>
-<summary>❌ Bad — panic para erro esperado</summary>
+<summary>❌ Ruim — panic para erro esperado</summary>
 <br>
 
 ```go
@@ -233,7 +233,7 @@ func findUser(userID int64) *User {
 <br>
 
 <details>
-<summary>✅ Good — panic apenas para invariantes; erros esperados retornados</summary>
+<summary>✅ Bom — panic apenas para invariantes; erros esperados retornados</summary>
 <br>
 
 ```go
@@ -265,7 +265,7 @@ Converta `error` em resposta HTTP apenas na camada de handler. O service retorna
 erros tipados; o handler decide o status code.
 
 <details>
-<summary>✅ Good — fronteira error → HTTP no handler</summary>
+<summary>✅ Bom — fronteira error → HTTP no handler</summary>
 <br>
 
 ```go

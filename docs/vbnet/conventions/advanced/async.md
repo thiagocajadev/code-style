@@ -22,7 +22,7 @@ Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmo
 `Async Sub` não é aguardável. Exceções lançadas dentro de `Async Sub` não podem ser capturadas pelo caller — vão direto para o thread pool e travam a aplicação. Use `Async Sub` **apenas** para event handlers do Windows Forms ou WebForms, onde o assinante não pode retornar `Task`.
 
 <details>
-<summary>❌ Bad — Async Sub fora de event handler</summary>
+<summary>❌ Ruim — Async Sub fora de event handler</summary>
 <br>
 
 ```vbnet
@@ -41,7 +41,7 @@ SavePurchaseAsync(purchase)  ' não há como saber se concluiu ou falhou
 <br>
 
 <details>
-<summary>✅ Good — Async Function: aguardável, exceções propagam corretamente</summary>
+<summary>✅ Bom — Async Function: aguardável, exceções propagam corretamente</summary>
 <br>
 
 ```vbnet
@@ -68,7 +68,7 @@ End Sub
 `.Result` e `.Wait()` bloqueiam a thread atual até a Task completar. Em contextos com SynchronizationContext (ASP.NET, Windows Forms), causam deadlock: a Task espera a thread, a thread espera a Task.
 
 <details>
-<summary>❌ Bad — .Result e .Wait() bloqueiam e causam deadlock</summary>
+<summary>❌ Ruim — .Result e .Wait() bloqueiam e causam deadlock</summary>
 <br>
 
 ```vbnet
@@ -88,7 +88,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — Await propaga o contexto corretamente</summary>
+<summary>✅ Bom — Await propaga o contexto corretamente</summary>
 <br>
 
 ```vbnet
@@ -109,7 +109,7 @@ End Function
 Chamadas de **I/O** (Input/Output, Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
 
 <details>
-<summary>❌ Bad — chamadas independentes em sequência</summary>
+<summary>❌ Ruim — chamadas independentes em sequência</summary>
 <br>
 
 ```vbnet
@@ -129,7 +129,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — Task.WhenAll dispara em paralelo</summary>
+<summary>✅ Bom — Task.WhenAll dispara em paralelo</summary>
 <br>
 
 ```vbnet
@@ -152,7 +152,7 @@ End Function
 Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita — o contexto é necessário para atualizar UI ou HttpContext.
 
 <details>
-<summary>✅ Good — ConfigureAwait(False) em código de biblioteca</summary>
+<summary>✅ Bom — ConfigureAwait(False) em código de biblioteca</summary>
 <br>
 
 ```vbnet
@@ -172,7 +172,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — sem ConfigureAwait em code-behind (contexto necessário)</summary>
+<summary>✅ Bom — sem ConfigureAwait em code-behind (contexto necessário)</summary>
 <br>
 
 ```vbnet
@@ -193,7 +193,7 @@ End Sub
 Async é contagioso. Quando um método torna-se `Async`, seus callers devem tornar-se `Async` também — até o ponto de entrada (event handler, endpoint, thread entry point). Misturar síncrono e assíncrono no meio da cadeia causa deadlock.
 
 <details>
-<summary>❌ Bad — mistura síncrono/assíncrono na cadeia</summary>
+<summary>❌ Ruim — mistura síncrono/assíncrono na cadeia</summary>
 <br>
 
 ```vbnet
@@ -210,7 +210,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — cadeia async até o ponto de entrada</summary>
+<summary>✅ Bom — cadeia async até o ponto de entrada</summary>
 <br>
 
 ```vbnet

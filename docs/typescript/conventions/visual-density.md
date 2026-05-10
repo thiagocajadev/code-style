@@ -22,7 +22,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 **Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2. Anotações de tipo não contam como passo separado.
 
 <details>
-<summary>❌ Bad — todos os passos colados</summary>
+<summary>❌ Ruim — todos os passos colados</summary>
 <br>
 
 ```ts
@@ -43,7 +43,7 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 <br>
 
 <details>
-<summary>✅ Good — passos separados, anotações de tipo na mesma linha</summary>
+<summary>✅ Bom — passos separados, anotações de tipo na mesma linha</summary>
 <br>
 
 ```ts
@@ -69,7 +69,7 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 Quando há **apenas um passo** antes do `return`, os dois formam par de 2 linhas sem blank.
 
 <details>
-<summary>❌ Bad — blank fragmenta o par</summary>
+<summary>❌ Ruim — blank fragmenta o par</summary>
 <br>
 
 ```ts
@@ -85,7 +85,7 @@ function mapErrorToStatus(error: DomainError): number {
 <br>
 
 <details>
-<summary>✅ Good — par tight</summary>
+<summary>✅ Bom — par tight</summary>
 <br>
 
 ```ts
@@ -100,7 +100,7 @@ function mapErrorToStatus(error: DomainError): number {
 ## Return separado: quando há 2+ passos antes
 
 <details>
-<summary>✅ Good — 3 passos antes do return</summary>
+<summary>✅ Bom — 3 passos antes do return</summary>
 <br>
 
 ```ts
@@ -126,7 +126,7 @@ function findPendingOrders(userId: string): Promise<Order[]> {
 ## Declaração + guarda = 1 grupo
 
 <details>
-<summary>❌ Bad — variável solta do seu guarda</summary>
+<summary>❌ Ruim — variável solta do seu guarda</summary>
 <br>
 
 ```ts
@@ -141,7 +141,7 @@ const invoice = buildInvoice(order);
 <br>
 
 <details>
-<summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<summary>✅ Bom — variável e guarda juntos, separados do próximo passo</summary>
 <br>
 
 ```ts
@@ -156,7 +156,7 @@ const invoice = buildInvoice(order);
 ## Órfão de 1 linha: pior que trio atômico
 
 <details>
-<summary>❌ Bad — órfão entre blanks</summary>
+<summary>❌ Ruim — órfão entre blanks</summary>
 <br>
 
 ```ts
@@ -171,7 +171,7 @@ const ONE_DAY_MS: number = 86_400_000;
 <br>
 
 <details>
-<summary>✅ Good — trio tight</summary>
+<summary>✅ Bom — trio tight</summary>
 <br>
 
 ```ts
@@ -185,7 +185,7 @@ const ONE_DAY_MS: number = 86_400_000;
 ## Par semântico encadeado
 
 <details>
-<summary>✅ Good — penúltima consumida pela última, par tight</summary>
+<summary>✅ Bom — penúltima consumida pela última, par tight</summary>
 <br>
 
 ```ts
@@ -205,7 +205,7 @@ function buildShippingLabel(order: Order): string {
 ## Fases de um método
 
 <details>
-<summary>❌ Bad — todas as fases coladas</summary>
+<summary>❌ Ruim — todas as fases coladas</summary>
 <br>
 
 ```ts
@@ -223,7 +223,7 @@ async function createUserHandler(req: Request, res: Response): Promise<void> {
 <br>
 
 <details>
-<summary>✅ Good — fases explícitas</summary>
+<summary>✅ Bom — fases explícitas</summary>
 <br>
 
 ```ts
@@ -243,7 +243,7 @@ async function createUserHandler(request: Request, response: Response): Promise<
 ## Strings longas
 
 <details>
-<summary>❌ Bad — string imensa inline</summary>
+<summary>❌ Ruim — string imensa inline</summary>
 <br>
 
 ```ts
@@ -257,7 +257,7 @@ function buildDeliveryMessage(user: User, order: Order): string {
 <br>
 
 <details>
-<summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
 <br>
 
 ```ts

@@ -61,7 +61,7 @@ Expõe o system prompt ao usuário, revelando lógica de negócio, chaves de com
 Nunca interpole entrada do usuário diretamente no system prompt. Mantenha as fronteiras de confiança claras na estrutura da requisição.
 
 <details>
-<summary>❌ Bad: entrada do usuário interpola o system prompt — direct injection trivial</summary>
+<summary>❌ Ruim: entrada do usuário interpola o system prompt — direct injection trivial</summary>
 <br>
 
 ```js
@@ -77,7 +77,7 @@ const systemPrompt = `
 <br>
 
 <details>
-<summary>✅ Good: system prompt estático, entrada do usuário vai no papel correto</summary>
+<summary>✅ Bom: system prompt estático, entrada do usuário vai no papel correto</summary>
 <br>
 
 ```js
@@ -99,7 +99,7 @@ const reply = await anthropic.messages.create({
 Inclua no system prompt uma instrução explícita sobre como tratar tentativas de redirecionamento. O modelo não é imune, mas a instrução reduz a superfície.
 
 <details>
-<summary>❌ Bad: sem instrução de escopo — jailbreak e role-play redirecionam sem resistência</summary>
+<summary>❌ Ruim: sem instrução de escopo — jailbreak e role-play redirecionam sem resistência</summary>
 <br>
 
 ```
@@ -111,7 +111,7 @@ Você é um assistente de vendas. Responda perguntas sobre nossos produtos.
 <br>
 
 <details>
-<summary>✅ Good: instrução de escopo e recusa explícitas</summary>
+<summary>✅ Bom: instrução de escopo e recusa explícitas</summary>
 <br>
 
 ```
@@ -130,7 +130,7 @@ recuse educadamente e redirecione para o escopo de suporte.
 Nunca use a resposta do modelo diretamente como entrada de operações destrutivas ou com efeito externo. Valide estrutura, escopo e intenção antes de agir.
 
 <details>
-<summary>❌ Bad: resposta do modelo vira parâmetro de operação sem verificação</summary>
+<summary>❌ Ruim: resposta do modelo vira parâmetro de operação sem verificação</summary>
 <br>
 
 ```js
@@ -144,7 +144,7 @@ await deleteRecord(modelReply.recordId);
 <br>
 
 <details>
-<summary>✅ Good: estrutura e existência validadas antes de agir</summary>
+<summary>✅ Bom: estrutura e existência validadas antes de agir</summary>
 <br>
 
 ```js
@@ -169,7 +169,7 @@ await deleteRecord(modelReply.recordId);
 Dados lidos de fontes externas (documentos, páginas web, e-mails) devem ser sanitizados e enquadrados como dados, não como instruções.
 
 <details>
-<summary>❌ Bad: conteúdo externo vai direto ao modelo — indirect injection via página ou documento</summary>
+<summary>❌ Ruim: conteúdo externo vai direto ao modelo — indirect injection via página ou documento</summary>
 <br>
 
 ```js
@@ -183,7 +183,7 @@ const summary = await summarize(pageContent);
 <br>
 
 <details>
-<summary>✅ Good: conteúdo sanitizado e enquadrado como dado antes de enviar</summary>
+<summary>✅ Bom: conteúdo sanitizado e enquadrado como dado antes de enviar</summary>
 <br>
 
 ```js
@@ -209,7 +209,7 @@ const summary = await summarize(`
 Em sistemas agenticos, cada ferramenta exposta ao modelo deve ter o menor escopo possível. Um agente que só precisa ler não deve ter acesso a ferramentas de escrita.
 
 <details>
-<summary>❌ Bad: agente de consulta exposto a ferramentas com efeito colateral</summary>
+<summary>❌ Ruim: agente de consulta exposto a ferramentas com efeito colateral</summary>
 <br>
 
 ```js
@@ -226,7 +226,7 @@ const tools = [
 <br>
 
 <details>
-<summary>✅ Good: agente de consulta recebe apenas o que precisa</summary>
+<summary>✅ Bom: agente de consulta recebe apenas o que precisa</summary>
 <br>
 
 ```js

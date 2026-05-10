@@ -22,7 +22,7 @@ saída antecipada. O operador `?` propaga erros sem ruído. Closures são primei
 Cada função executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
 
 <details>
-<summary>❌ Bad — função que faz tudo</summary>
+<summary>❌ Ruim — função que faz tudo</summary>
 <br>
 
 ```rust
@@ -58,7 +58,7 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador + funções de detalhe</summary>
+<summary>✅ Bom — orquestrador + funções de detalhe</summary>
 <br>
 
 ```rust
@@ -95,7 +95,7 @@ fn calculate_total(cart: &Cart, user_id: u64) -> f64 {
 Leia o código de cima para baixo: funções de alto nível primeiro, detalhes depois.
 
 <details>
-<summary>❌ Bad — detalhes antes do orquestrador</summary>
+<summary>❌ Ruim — detalhes antes do orquestrador</summary>
 <br>
 
 ```rust
@@ -118,7 +118,7 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador declarado primeiro</summary>
+<summary>✅ Bom — orquestrador declarado primeiro</summary>
 <br>
 
 ```rust
@@ -149,7 +149,7 @@ Extraia o resultado antes de retornar. O `return` (ou a última expressão) nome
 não o computa.
 
 <details>
-<summary>❌ Bad — lógica inline no retorno</summary>
+<summary>❌ Ruim — lógica inline no retorno</summary>
 <br>
 
 ```rust
@@ -163,7 +163,7 @@ fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
 <br>
 
 <details>
-<summary>✅ Good — resultado extraído antes do retorno</summary>
+<summary>✅ Bom — resultado extraído antes do retorno</summary>
 <br>
 
 ```rust
@@ -184,7 +184,7 @@ fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
 Quando o retorno não é óbvio, nomeie o resultado para comunicar intenção.
 
 <details>
-<summary>❌ Bad — retorno anônimo obscuro</summary>
+<summary>❌ Ruim — retorno anônimo obscuro</summary>
 <br>
 
 ```rust
@@ -203,7 +203,7 @@ fn build_invoice(order: &Order) -> Invoice {
 <br>
 
 <details>
-<summary>✅ Good — resultado nomeado antes do retorno</summary>
+<summary>✅ Bom — resultado nomeado antes do retorno</summary>
 <br>
 
 ```rust
@@ -227,7 +227,7 @@ Closures capturam o ambiente. Prefira closures curtas inline; extraia para funç
 quando a lógica crescer além de uma expressão.
 
 <details>
-<summary>❌ Bad — closure longa e sem nome</summary>
+<summary>❌ Ruim — closure longa e sem nome</summary>
 <br>
 
 ```rust
@@ -243,7 +243,7 @@ let processed: Vec<_> = orders.iter().map(|o| {
 <br>
 
 <details>
-<summary>✅ Good — lógica nomeada, closure como delegate</summary>
+<summary>✅ Bom — lógica nomeada, closure como delegate</summary>
 <br>
 
 ```rust

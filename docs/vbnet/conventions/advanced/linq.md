@@ -20,7 +20,7 @@
 ## Method syntax vs query syntax
 
 <details>
-<summary>❌ Bad — query syntax verbosa, difícil de encadear</summary>
+<summary>❌ Ruim — query syntax verbosa, difícil de encadear</summary>
 <br>
 
 ```vbnet
@@ -39,7 +39,7 @@ Dim totals = From purchase In purchases
 <br>
 
 <details>
-<summary>✅ Good — method syntax, encadeável e consistente</summary>
+<summary>✅ Bom — method syntax, encadeável e consistente</summary>
 <br>
 
 ```vbnet
@@ -60,7 +60,7 @@ Dim totals = purchases _
 `Select`, `Where` e `Aggregate` são transformações — não devem ter efeitos colaterais. Salvar, logar, notificar dentro de um `Select` torna o código não determinístico e difícil de testar.
 
 <details>
-<summary>❌ Bad — side effect dentro de Select</summary>
+<summary>❌ Ruim — side effect dentro de Select</summary>
 <br>
 
 ```vbnet
@@ -76,7 +76,7 @@ End Function).ToList()
 <br>
 
 <details>
-<summary>✅ Good — LINQ para transformação, loop explícito para side effects</summary>
+<summary>✅ Bom — LINQ para transformação, loop explícito para side effects</summary>
 <br>
 
 ```vbnet
@@ -95,7 +95,7 @@ Dim dtos = purchases.Select(Function(purchase) MapToDto(purchase)).ToList()
 Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()` ou `ToArray()` no momento certo evita múltiplas execuções da query, garante snapshot dos dados e deixa explícito onde o **I/O** (Input/Output, Entrada/Saída) acontece.
 
 <details>
-<summary>❌ Bad — IEnumerable lazy enumerado múltiplas vezes</summary>
+<summary>❌ Ruim — IEnumerable lazy enumerado múltiplas vezes</summary>
 <br>
 
 ```vbnet
@@ -111,7 +111,7 @@ Dim first = activePurchases.FirstOrDefault() ' 3ª execução
 <br>
 
 <details>
-<summary>✅ Good — materializado uma vez, operações sobre List(Of T)</summary>
+<summary>✅ Bom — materializado uma vez, operações sobre List(Of T)</summary>
 <br>
 
 ```vbnet
@@ -129,7 +129,7 @@ Dim first = activePurchases.FirstOrDefault()
 `First` lança `InvalidOperationException` quando a sequência está vazia. `FirstOrDefault` retorna `Nothing`. Na maioria dos casos, o resultado ausente é um fluxo normal de negócio — trate explicitamente com `IsNot Nothing`.
 
 <details>
-<summary>❌ Bad — First lança exceção em fluxo normal</summary>
+<summary>❌ Ruim — First lança exceção em fluxo normal</summary>
 <br>
 
 ```vbnet
@@ -142,7 +142,7 @@ ProcessPurchase(found)
 <br>
 
 <details>
-<summary>✅ Good — FirstOrDefault com guard clause explícita</summary>
+<summary>✅ Bom — FirstOrDefault com guard clause explícita</summary>
 <br>
 
 ```vbnet
@@ -162,7 +162,7 @@ ProcessPurchase(found)
 `Select` projeta um item para um item. `SelectMany` achata uma sequência de sequências em uma sequência plana.
 
 <details>
-<summary>✅ Good — Select para projeção simples, SelectMany para achatar</summary>
+<summary>✅ Bom — Select para projeção simples, SelectMany para achatar</summary>
 <br>
 
 ```vbnet
@@ -188,7 +188,7 @@ Dim itemsWithPurchase = purchases _
 `Sum`, `Max`, `Min` em coleções vazias se comportam de forma diferente dependendo do tipo. `Sum` retorna 0, `Max` e `Min` lançam exceção. Verifique antes ou use `DefaultIfEmpty`.
 
 <details>
-<summary>❌ Bad — Max/Min em coleção possivelmente vazia</summary>
+<summary>❌ Ruim — Max/Min em coleção possivelmente vazia</summary>
 <br>
 
 ```vbnet
@@ -201,7 +201,7 @@ Dim oldestDate = purchases.Min(Function(purchase) purchase.CreatedAt) ' idem
 <br>
 
 <details>
-<summary>✅ Good — guard ou DefaultIfEmpty antes de Max/Min</summary>
+<summary>✅ Bom — guard ou DefaultIfEmpty antes de Max/Min</summary>
 <br>
 
 ```vbnet
@@ -222,7 +222,7 @@ Dim oldestDate = purchases _
 Encadeie `OrderBy` com `ThenBy` para ordenação composta. Usar `OrderBy` duas vezes descarta a primeira ordenação — cada `OrderBy` reinicia o critério.
 
 <details>
-<summary>❌ Bad — OrderBy duplo descarta a primeira ordenação</summary>
+<summary>❌ Ruim — OrderBy duplo descarta a primeira ordenação</summary>
 <br>
 
 ```vbnet
@@ -236,7 +236,7 @@ Dim sorted = purchases _
 <br>
 
 <details>
-<summary>✅ Good — ThenBy para ordenação secundária</summary>
+<summary>✅ Bom — ThenBy para ordenação secundária</summary>
 <br>
 
 ```vbnet

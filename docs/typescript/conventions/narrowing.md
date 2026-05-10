@@ -21,7 +21,7 @@ Para primitivos, `typeof` é a ferramenta correta. TypeScript entende os guards 
 o narrowing.
 
 <details>
-<summary>❌ Bad — type assertion no lugar de narrowing</summary>
+<summary>❌ Ruim — type assertion no lugar de narrowing</summary>
 <br>
 
 ```ts
@@ -36,7 +36,7 @@ function formatId(id: string | number): string {
 <br>
 
 <details>
-<summary>✅ Good — typeof para primitivos</summary>
+<summary>✅ Bom — typeof para primitivos</summary>
 <br>
 
 ```ts
@@ -57,7 +57,7 @@ function formatId(id: string | number): string {
 Para instâncias de classes, incluindo as de erro, `instanceof` é o operador correto.
 
 <details>
-<summary>❌ Bad — type assertion no lugar de instanceof</summary>
+<summary>❌ Ruim — type assertion no lugar de instanceof</summary>
 <br>
 
 ```ts
@@ -77,7 +77,7 @@ async function findUser(id: string): Promise<User> {
 <br>
 
 <details>
-<summary>✅ Good — instanceof para classes e erros tipados</summary>
+<summary>✅ Bom — instanceof para classes e erros tipados</summary>
 <br>
 
 ```ts
@@ -100,7 +100,7 @@ Quando a verificação é mais complexa que `typeof` ou `instanceof`, extraia em
 O nome expressa a intenção de negócio. O compilador entende o `is` como estreitamento de tipo.
 
 <details>
-<summary>❌ Bad — verificação inline repetida, sem nome, sem reutilização</summary>
+<summary>❌ Ruim — verificação inline repetida, sem nome, sem reutilização</summary>
 <br>
 
 ```ts
@@ -122,7 +122,7 @@ function processPayment(event: unknown) {
 <br>
 
 <details>
-<summary>✅ Good — função predicado nomeada, reutilizável e tipada</summary>
+<summary>✅ Bom — função predicado nomeada, reutilizável e tipada</summary>
 <br>
 
 ```ts
@@ -151,7 +151,7 @@ Quando um union type tem um campo literal discriminante, o TypeScript aplica nar
 automaticamente dentro de cada branch, sem type guard manual.
 
 <details>
-<summary>❌ Bad — acessa campo de variant específica sem narrowing</summary>
+<summary>❌ Ruim — acessa campo de variant específica sem narrowing</summary>
 <br>
 
 ```ts
@@ -171,7 +171,7 @@ function sendNotification(event: NotificationEvent) {
 <br>
 
 <details>
-<summary>✅ Good — narrowing automático via campo discriminante</summary>
+<summary>✅ Bom — narrowing automático via campo discriminante</summary>
 <br>
 
 ```ts
@@ -206,7 +206,7 @@ garante em compile time que nenhum variant foi esquecido. Se um novo variant for
 tipo, o compilador aponta o erro antes do runtime.
 
 <details>
-<summary>❌ Bad — switch sem cobertura total, novo caso passa silenciosamente</summary>
+<summary>❌ Ruim — switch sem cobertura total, novo caso passa silenciosamente</summary>
 <br>
 
 ```ts
@@ -227,7 +227,7 @@ function getStatusLabel(status: OrderStatus): string {
 <br>
 
 <details>
-<summary>✅ Good — never no default garante cobertura total</summary>
+<summary>✅ Bom — never no default garante cobertura total</summary>
 <br>
 
 ```ts
@@ -255,7 +255,7 @@ function getStatusLabel(status: OrderStatus): string {
 clause é mais legível quando a ausência do valor é uma condição de negócio que precisa de nome.
 
 <details>
-<summary>❌ Bad — nullish chaining esconde a condição de negócio</summary>
+<summary>❌ Ruim — nullish chaining esconde a condição de negócio</summary>
 <br>
 
 ```ts
@@ -270,7 +270,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 <br>
 
 <details>
-<summary>✅ Good — guard clause explicita a condição</summary>
+<summary>✅ Bom — guard clause explicita a condição</summary>
 <br>
 
 ```ts

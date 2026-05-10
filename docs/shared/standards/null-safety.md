@@ -49,7 +49,7 @@ Funções internas, serviços de domínio, cálculos: tudo que recebe dados **qu
 fronteira**. Essas funções confiam que quem chamou já garantiu o contrato.
 
 <details>
-<summary>❌ Bad: interior checando null que não deveria existir</summary>
+<summary>❌ Ruim: interior checando null que não deveria existir</summary>
 <br>
 
 ```js
@@ -66,7 +66,7 @@ function calculateDiscount(order) {
 <br>
 
 <details>
-<summary>✅ Good: interior opera com contrato garantido</summary>
+<summary>✅ Bom: interior opera com contrato garantido</summary>
 <br>
 
 ```js
@@ -130,7 +130,7 @@ Esses operadores têm lugar nos campos **opcionais por design no domínio**, sem
 contra contratos mal fechados.
 
 <details>
-<summary>❌ Bad: ?. como defesa contra contrato que deveria ser fechado</summary>
+<summary>❌ Ruim: ?. como defesa contra contrato que deveria ser fechado</summary>
 <br>
 
 ```js
@@ -143,7 +143,7 @@ const discount = order?.discountRate ? order.total * order.discountRate : 0;
 <br>
 
 <details>
-<summary>✅ Good: ?. e ?? para campos opcionais por design</summary>
+<summary>✅ Bom: ?. e ?? para campos opcionais por design</summary>
 <br>
 
 ```js

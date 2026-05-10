@@ -61,7 +61,7 @@ Schemas de entrada e saída são Pydantic models separados. O schema de resposta
 campos internos (senhas, tokens, IDs de banco não destinados ao cliente).
 
 <details>
-<summary>❌ Bad — dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
+<summary>❌ Ruim — dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
 <br>
 
 ```python
@@ -76,7 +76,7 @@ async def create_order(data: dict):
 <br>
 
 <details>
-<summary>✅ Good — schemas separados, response_model declarado</summary>
+<summary>✅ Bom — schemas separados, response_model declarado</summary>
 <br>
 
 ```python
@@ -114,7 +114,7 @@ O handler é fino: recebe parâmetros, delega ao serviço e retorna. Sem lógica
 sem acesso direto ao banco.
 
 <details>
-<summary>❌ Bad — lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
+<summary>❌ Ruim — lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
 <br>
 
 ```python
@@ -137,7 +137,7 @@ async def get_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — handler fino, delega ao serviço, response_model declarado</summary>
+<summary>✅ Bom — handler fino, delega ao serviço, response_model declarado</summary>
 <br>
 
 ```python
@@ -170,7 +170,7 @@ async def find_by_id(self, order_id: int) -> Order:
 definidas uma vez e compartilhadas entre rotas.
 
 <details>
-<summary>❌ Bad — auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
+<summary>❌ Ruim — auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
 <br>
 
 ```python
@@ -192,7 +192,7 @@ async def list_orders(token: str = Header()):
 <br>
 
 <details>
-<summary>✅ Good — auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
+<summary>✅ Bom — auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
 <br>
 
 ```python
@@ -231,7 +231,7 @@ Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O*
 `time.sleep`, biblioteca `requests`) congestionam todas as requisições em andamento.
 
 <details>
-<summary>❌ Bad — I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
+<summary>❌ Ruim — I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
 <br>
 
 ```python
@@ -251,7 +251,7 @@ async def get_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — I/O assíncrono com httpx, sem bloqueio do event loop</summary>
+<summary>✅ Bom — I/O assíncrono com httpx, sem bloqueio do event loop</summary>
 <br>
 
 ```python

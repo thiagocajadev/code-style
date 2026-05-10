@@ -18,7 +18,7 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 ## God function — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
 <br>
 
 ```kotlin
@@ -55,7 +55,7 @@ fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
 <br>
 
 ```kotlin
@@ -86,7 +86,7 @@ private fun notifyConfirmation(email: String) { ... }
 ## SLA — orquestrador ou implementação
 
 <details>
-<summary>❌ Bad — função mistura nível de abstração</summary>
+<summary>❌ Ruim — função mistura nível de abstração</summary>
 <br>
 
 ```kotlin
@@ -107,7 +107,7 @@ fun generateReport(orders: List<Order>): Report {
 <br>
 
 <details>
-<summary>✅ Good — cada função em um único nível</summary>
+<summary>✅ Bom — cada função em um único nível</summary>
 <br>
 
 ```kotlin
@@ -130,7 +130,7 @@ private fun calculateRevenue(orders: List<Order>): Double =
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```kotlin
@@ -146,7 +146,7 @@ fun findActiveCustomers(customers: List<Customer>): List<Customer> {
 <br>
 
 <details>
-<summary>✅ Good — explaining return com val nomeada</summary>
+<summary>✅ Bom — explaining return com val nomeada</summary>
 <br>
 
 ```kotlin
@@ -168,7 +168,7 @@ Extension functions adicionam comportamento a tipos existentes sem herança. Fic
 domínio que as usa, não em um arquivo de utilitários genérico.
 
 <details>
-<summary>❌ Bad — utilitário genérico sem contexto</summary>
+<summary>❌ Ruim — utilitário genérico sem contexto</summary>
 <br>
 
 ```kotlin
@@ -186,7 +186,7 @@ val label = formatCurrency(order.total)
 <br>
 
 <details>
-<summary>✅ Good — extension function no tipo correto</summary>
+<summary>✅ Bom — extension function no tipo correto</summary>
 <br>
 
 ```kotlin
@@ -204,7 +204,7 @@ val label = order.total.toCurrencyLabel()
 ## Parâmetros — objeto para 4+
 
 <details>
-<summary>❌ Bad — assinatura com muitos parâmetros posicionais</summary>
+<summary>❌ Ruim — assinatura com muitos parâmetros posicionais</summary>
 <br>
 
 ```kotlin
@@ -216,7 +216,7 @@ fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, 
 <br>
 
 <details>
-<summary>✅ Good — data class agrupa parâmetros com semântica</summary>
+<summary>✅ Bom — data class agrupa parâmetros com semântica</summary>
 <br>
 
 ```kotlin

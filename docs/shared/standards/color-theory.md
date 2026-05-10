@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer interface, em qualquer linguagem ou stack do projeto.
 
-Cor não é decoração. Cada cor numa interface comunica hierarquia, estado, temperatura emocional e legibilidade. Decisões aleatórias produzem interfaces que cansam o olho, falham em acessibilidade e se descontrolam em escala. Este guia consolida a teoria mínima necessária para decidir cores com intenção: do círculo cromático ao espaço **OKLCH**, das harmonias ao **WCAG**, da hierarquia de superfícies à escala tonal.
+Cor não é decoração. Cada cor numa interface comunica hierarquia, estado, temperatura emocional e legibilidade. Decisões aleatórias produzem interfaces que cansam o olho, falham em acessibilidade e se descontrolam em escala. Este guia consolida a teoria mínima necessária para decidir cores com intenção: do círculo cromático ao espaço **OKLCH** (Lightness, Chroma, Hue, espaço de cor perceptualmente uniforme), das harmonias ao **WCAG** (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web), da hierarquia de superfícies à escala tonal.
 
 Para padrões de espaçamento, tipografia e estados, consulte [ui-ux.md](ui-ux.md). Para densidade visual em código, consulte [visual-density.md](visual-density.md).
 
@@ -97,13 +97,13 @@ Combinar os dois (texto escuro frio sobre fundo claro quente) produz separação
 
 ### Espaço em branco como cor
 
-O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em UI ou em código, agrupamento por respiro é a estrutura que guia a leitura.
+O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em **UI** (User Interface, interface do usuário) ou em código, agrupamento por respiro é a estrutura que guia a leitura.
 
 Não tente preencher todos os espaços. Interface sem respiro tem o mesmo problema que código sem linhas em branco entre grupos: o olho não sabe onde uma seção termina e outra começa.
 
 ## WCAG e contraste
 
-**WCAG** define critérios mensuráveis de acessibilidade em três níveis: **A** (mínimo), **AA** (padrão da indústria) e **AAA** (excelência). A maioria dos produtos digitais busca AA. AAA é exigido em contextos críticos como saúde e serviços governamentais.
+**WCAG** define critérios mensuráveis de acessibilidade em três níveis: **A** (mínimo), **AA** (padrão da indústria) e **AAA** (Triple-A, excelência). A maioria dos produtos digitais busca AA. AAA é exigido em contextos críticos como saúde e serviços governamentais.
 
 ### Critério 1.4.3 — Contraste mínimo de texto
 

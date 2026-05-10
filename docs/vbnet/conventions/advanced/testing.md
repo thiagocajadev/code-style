@@ -39,7 +39,7 @@ Imports NUnit.Framework
 Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto, execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
 <br>
 
 ```vbnet
@@ -54,7 +54,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — arrange, act e assert separados</summary>
+<summary>✅ Bom — arrange, act e assert separados</summary>
 <br>
 
 ```vbnet
@@ -76,7 +76,7 @@ End Sub
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
-<summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
 <br>
 
 ```vbnet
@@ -97,7 +97,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
 <br>
 
 ```vbnet
@@ -127,7 +127,7 @@ End Sub
 O nome do teste descreve o cenário e o resultado esperado, não o nome do método nem uma afirmação vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
 
 <details>
-<summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
 <br>
 
 ```vbnet
@@ -146,7 +146,7 @@ Public Sub ApplyDiscount() : End Sub
 <br>
 
 <details>
-<summary>✅ Good — cenário + resultado esperado no título</summary>
+<summary>✅ Bom — cenário + resultado esperado no título</summary>
 <br>
 
 ```vbnet
@@ -167,7 +167,7 @@ Public Sub ThrowsValidationExceptionWhenDiscountIsNegative() : End Sub
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Bad — campo compartilhado entre testes, ordem importa</summary>
+<summary>❌ Ruim — campo compartilhado entre testes, ordem importa</summary>
 <br>
 
 ```vbnet
@@ -197,7 +197,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
 <br>
 
 ```vbnet
@@ -232,7 +232,7 @@ End Class
 Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado. `Assert.Throws(Of T)` verifica o tipo, não apenas a presença.
 
 <details>
-<summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
 <br>
 
 ```vbnet
@@ -251,7 +251,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — Assert.Throws(Of T) com tipo explícito</summary>
+<summary>✅ Bom — Assert.Throws(Of T) com tipo explícito</summary>
 <br>
 
 ```vbnet
@@ -270,7 +270,7 @@ End Sub
 NUnit 3 suporta testes assíncronos com `Async Function` retornando `Task`.
 
 <details>
-<summary>❌ Bad — .Result bloqueia thread e esconde falhas async</summary>
+<summary>❌ Ruim — .Result bloqueia thread e esconde falhas async</summary>
 <br>
 
 ```vbnet
@@ -286,7 +286,7 @@ End Sub
 <br>
 
 <details>
-<summary>✅ Good — Async Function com Await, NUnit aguarda corretamente</summary>
+<summary>✅ Bom — Async Function com Await, NUnit aguarda corretamente</summary>
 <br>
 
 ```vbnet

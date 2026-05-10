@@ -22,7 +22,7 @@ OpenTelemetry, Jaeger e Datadog.
 Configure `tracing_subscriber` no entry point. Use `env-filter` para controle por nível.
 
 <details>
-<summary>❌ Bad — println! como logging</summary>
+<summary>❌ Ruim — println! como logging</summary>
 <br>
 
 ```rust
@@ -37,7 +37,7 @@ fn main() {
 <br>
 
 <details>
-<summary>✅ Good — tracing_subscriber inicializado no entry point</summary>
+<summary>✅ Bom — tracing_subscriber inicializado no entry point</summary>
 <br>
 
 ```rust
@@ -63,7 +63,7 @@ fn main() -> anyhow::Result<()> {
 Use `skip` para omitir campos sensíveis ou grandes.
 
 <details>
-<summary>❌ Bad — sem span, sem contexto de rastreamento</summary>
+<summary>❌ Ruim — sem span, sem contexto de rastreamento</summary>
 <br>
 
 ```rust
@@ -81,7 +81,7 @@ async fn find_order(pool: &sqlx::PgPool, order_id: u64) -> anyhow::Result<Option
 <br>
 
 <details>
-<summary>✅ Good — #[instrument] com campos estruturados</summary>
+<summary>✅ Bom — #[instrument] com campos estruturados</summary>
 <br>
 
 ```rust
@@ -111,7 +111,7 @@ Use o nível adequado para cada tipo de informação.
 | `error!` | Falha que impede a operação; requer atenção |
 
 <details>
-<summary>❌ Bad — tudo em info, campos como strings</summary>
+<summary>❌ Ruim — tudo em info, campos como strings</summary>
 <br>
 
 ```rust
@@ -125,7 +125,7 @@ tracing::info!("db query: SELECT * FROM orders WHERE id = {}", order_id);
 <br>
 
 <details>
-<summary>✅ Good — nível adequado + campos estruturados</summary>
+<summary>✅ Bom — nível adequado + campos estruturados</summary>
 <br>
 
 ```rust
@@ -142,7 +142,7 @@ Campos estruturados são indexáveis em ferramentas como Grafana Loki e Datadog.
 Use `%value` para Display, `?value` para Debug, `field = value` para valores próprios.
 
 <details>
-<summary>❌ Bad — contexto embutido na string</summary>
+<summary>❌ Ruim — contexto embutido na string</summary>
 <br>
 
 ```rust
@@ -154,7 +154,7 @@ tracing::error!("failed to charge customer {} for order {} with amount {:.2}", c
 <br>
 
 <details>
-<summary>✅ Good — campos estruturados separados da mensagem</summary>
+<summary>✅ Bom — campos estruturados separados da mensagem</summary>
 <br>
 
 ```rust

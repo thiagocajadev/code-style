@@ -155,7 +155,7 @@ A regra prática: **O(n²) é o limite onde a maioria dos problemas de escala co
 O caso mais frequente de O(n²) oculto. Para cada item externo, itera todos os itens internos.
 
 <details>
-<summary>❌ Bad: O(n²) com loop aninhado sobre a mesma coleção</summary>
+<summary>❌ Ruim: O(n²) com loop aninhado sobre a mesma coleção</summary>
 <br>
 
 ```javascript
@@ -171,7 +171,7 @@ for (const order of orders) {
 <br>
 
 <details>
-<summary>✅ Good: indexar em O(n), acessar em O(1)</summary>
+<summary>✅ Bom: indexar em O(n), acessar em O(1)</summary>
 <br>
 
 ```javascript
@@ -194,7 +194,7 @@ function findRelatedOrders(orders) {
 Carregar uma lista e fazer uma query para cada item. O(n) queries em vez de O(1).
 
 <details>
-<summary>❌ Bad: N+1, uma query por item da lista</summary>
+<summary>❌ Ruim: N+1, uma query por item da lista</summary>
 <br>
 
 ```javascript
@@ -210,7 +210,7 @@ for (const order of orders) {
 <br>
 
 <details>
-<summary>✅ Good: duas queries no total com busca em lote</summary>
+<summary>✅ Bom: duas queries no total com busca em lote</summary>
 <br>
 
 ```javascript
@@ -236,7 +236,7 @@ async function loadOrdersWithCustomers() {
 Encadeamento de `.filter().map()` quando uma única passagem resolve.
 
 <details>
-<summary>❌ Bad: dois passes sobre a mesma lista</summary>
+<summary>❌ Ruim: dois passes sobre a mesma lista</summary>
 <br>
 
 ```javascript
@@ -250,7 +250,7 @@ const activeUserNames = users
 <br>
 
 <details>
-<summary>✅ Good: um passe com reduce quando o volume importa</summary>
+<summary>✅ Bom: um passe com reduce quando o volume importa</summary>
 <br>
 
 ```javascript
@@ -273,7 +273,7 @@ function extractActiveUserNames(users) {
 `Array.sort()` é O(n log n). Se o objetivo é encontrar o máximo ou mínimo, uma iteração linear O(n) resolve.
 
 <details>
-<summary>❌ Bad: sort() para obter o maior valor (O(n log n))</summary>
+<summary>❌ Ruim: sort() para obter o maior valor (O(n log n))</summary>
 <br>
 
 ```javascript
@@ -285,7 +285,7 @@ const highestScore = scores.sort((a, b) => b - a)[0];
 <br>
 
 <details>
-<summary>✅ Good: Math.max() em O(n)</summary>
+<summary>✅ Bom: Math.max() em O(n)</summary>
 <br>
 
 ```javascript

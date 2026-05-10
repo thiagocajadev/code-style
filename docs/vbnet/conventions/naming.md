@@ -19,7 +19,7 @@ Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para t
 Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `' why:`.
 
 <details>
-<summary>❌ Bad — mistura de idiomas</summary>
+<summary>❌ Ruim — mistura de idiomas</summary>
 <br>
 
 ```vbnet
@@ -36,7 +36,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — inglês consistente</summary>
+<summary>✅ Bom — inglês consistente</summary>
 <br>
 
 ```vbnet
@@ -66,7 +66,7 @@ A linguagem não diferencia `purchase` de `Purchase` — a convenção é o úni
 | `Module` | `PascalCase` | `DateHelpers`, `StringExtensions` |
 
 <details>
-<summary>❌ Bad — convenção inconsistente</summary>
+<summary>❌ Ruim — convenção inconsistente</summary>
 <br>
 
 ```vbnet
@@ -85,7 +85,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — escopo declarado pela convenção</summary>
+<summary>✅ Bom — escopo declarado pela convenção</summary>
 <br>
 
 ```vbnet
@@ -110,7 +110,7 @@ End Class
 Todo método que retorna `Task` ou `Task(Of T)` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada. Sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
 
 <details>
-<summary>❌ Bad — sem sufixo, natureza da operação obscura</summary>
+<summary>❌ Ruim — sem sufixo, natureza da operação obscura</summary>
 <br>
 
 ```vbnet
@@ -124,7 +124,7 @@ Public Async Function ValidatePayment(request As PaymentRequest) As Task(Of Bool
 <br>
 
 <details>
-<summary>✅ Good — sufixo declara a natureza assíncrona</summary>
+<summary>✅ Bom — sufixo declara a natureza assíncrona</summary>
 <br>
 
 ```vbnet
@@ -140,7 +140,7 @@ Public Async Function ValidatePaymentAsync(request As PaymentRequest) As Task(Of
 Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base`: o nome descreve a implementação pelo domínio ou tecnologia.
 
 <details>
-<summary>❌ Bad — distinção entre interface e classe ausente ou com sufixo ruído</summary>
+<summary>❌ Ruim — distinção entre interface e classe ausente ou com sufixo ruído</summary>
 <br>
 
 ```vbnet
@@ -159,7 +159,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — interface clara, implementação pelo domínio</summary>
+<summary>✅ Bom — interface clara, implementação pelo domínio</summary>
 <br>
 
 ```vbnet
@@ -189,7 +189,7 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 | `should` | Diretiva comportamental | `shouldRetry`, `shouldRedirect` |
 
 <details>
-<summary>❌ Bad — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
 <br>
 
 ```vbnet
@@ -203,7 +203,7 @@ Dim delete = user.Role = "ADMIN"
 <br>
 
 <details>
-<summary>✅ Good — prefixo declara a semântica</summary>
+<summary>✅ Bom — prefixo declara a semântica</summary>
 <br>
 
 ```vbnet
@@ -219,7 +219,7 @@ Dim canDelete = user.Role = "ADMIN"
 O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`, `item`, `result`, `temp`) são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
 
 <details>
-<summary>❌ Bad — nomes genéricos sem contexto de domínio</summary>
+<summary>❌ Ruim — nomes genéricos sem contexto de domínio</summary>
 <br>
 
 ```vbnet
@@ -235,7 +235,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — nomes expressivos pelo domínio</summary>
+<summary>✅ Bom — nomes expressivos pelo domínio</summary>
 <br>
 
 ```vbnet
@@ -253,7 +253,7 @@ End Function
 Prefixos de tipo (`str`, `int`, `obj`, `tbl`, `btn`) eram comuns em VB clássico. Em VB.NET com `Option Strict On`, o compilador conhece o tipo — o prefixo é redundância que polui o nome.
 
 <details>
-<summary>❌ Bad — prefixo de tipo no nome</summary>
+<summary>❌ Ruim — prefixo de tipo no nome</summary>
 <br>
 
 ```vbnet
@@ -268,7 +268,7 @@ Dim btnSubmit As Button = FindControl("btnSubmit")
 <br>
 
 <details>
-<summary>✅ Good — nome pelo domínio, tipo pelo compilador</summary>
+<summary>✅ Bom — nome pelo domínio, tipo pelo compilador</summary>
 <br>
 
 ```vbnet
@@ -285,7 +285,7 @@ Dim submitButton = TryCast(FindControl("submitButton"), Button)
 Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura. Use `' why:` apenas para restrições ocultas ou invariantes não óbvios.
 
 <details>
-<summary>❌ Bad — comentários repetem o código</summary>
+<summary>❌ Ruim — comentários repetem o código</summary>
 <br>
 
 ```vbnet
@@ -303,7 +303,7 @@ End If
 <br>
 
 <details>
-<summary>✅ Good — código se explica; comentário só para restrições não óbvias</summary>
+<summary>✅ Bom — código se explica; comentário só para restrições não óbvias</summary>
 <br>
 
 ```vbnet

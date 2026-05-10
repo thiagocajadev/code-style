@@ -35,7 +35,7 @@ Features/
 ```
 
 <details>
-<summary>❌ Bad — controller com lógica de negócio inline</summary>
+<summary>❌ Ruim — controller com lógica de negócio inline</summary>
 <br>
 
 ```vbnet
@@ -76,7 +76,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — controller delega para handler, traduz Result no boundary</summary>
+<summary>✅ Bom — controller delega para handler, traduz Result no boundary</summary>
 <br>
 
 ```vbnet
@@ -144,7 +144,7 @@ End Class
 Handler não conhece HTTP. Retorna `Result(Of T)` — success com valor de domínio ou failure com mensagem. O controller traduz para `IHttpActionResult` no boundary. Assim o handler fica testável sem `HttpContext` e reaproveitável fora de Web API.
 
 <details>
-<summary>❌ Bad — handler retorna IHttpActionResult, acoplado a HTTP</summary>
+<summary>❌ Ruim — handler retorna IHttpActionResult, acoplado a HTTP</summary>
 <br>
 
 ```vbnet
@@ -169,7 +169,7 @@ End Class
 <br>
 
 <details>
-<summary>✅ Good — handler retorna Result(Of T), domínio puro</summary>
+<summary>✅ Bom — handler retorna Result(Of T), domínio puro</summary>
 <br>
 
 ```vbnet
@@ -254,7 +254,7 @@ End Class
 Web API 2 suporta roteamento convencional (`config.Routes.MapHttpRoute(...)`) e roteamento por atributo (`<Route(...)>`, `<RoutePrefix(...)>`). O roteamento por atributo é preferido: rota colocalizada com o controller, sem tabela global.
 
 <details>
-<summary>❌ Bad — rotas convencionais, descoberta distante do handler</summary>
+<summary>❌ Ruim — rotas convencionais, descoberta distante do handler</summary>
 <br>
 
 ```vbnet
@@ -272,7 +272,7 @@ Qualquer alteração de rota exige mexer no arquivo central. Três actions no me
 <br>
 
 <details>
-<summary>✅ Good — roteamento por atributo, rota no próprio controller</summary>
+<summary>✅ Bom — roteamento por atributo, rota no próprio controller</summary>
 <br>
 
 ```vbnet
@@ -301,7 +301,7 @@ Web API 2 sobre IIS expõe um `SynchronizationContext`. Chamar `.Result` ou `.Wa
 A regra é `Async/Await` ponta a ponta. Controller `Async Function`, handler `Async Function`, service `Async Function`. Nunca quebrar a cadeia.
 
 <details>
-<summary>❌ Bad — .Result em handler async</summary>
+<summary>❌ Ruim — .Result em handler async</summary>
 <br>
 
 ```vbnet
@@ -318,7 +318,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — async ponta a ponta</summary>
+<summary>✅ Bom — async ponta a ponta</summary>
 <br>
 
 ```vbnet

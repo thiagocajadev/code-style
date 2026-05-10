@@ -42,7 +42,7 @@ main → branch → commits → PR → review → merge → main
 ```
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```
@@ -58,7 +58,7 @@ branch-do-joao-refactor-e-tambem-o-bug-do-login
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```
@@ -96,7 +96,7 @@ Uma ótima estratégia para nomear commits (registro das alterações) é o
 | `revert`   | Reverte um commit anterior                                       |
 
 <details>
-<summary>❌ Bad</summary>
+<summary>❌ Ruim</summary>
 <br>
 
 ```
@@ -113,7 +113,7 @@ feat: adiciona validação no campo de e-mail do usuário no formulário de cada
 <br>
 
 <details>
-<summary>✅ Good</summary>
+<summary>✅ Bom</summary>
 <br>
 
 ```

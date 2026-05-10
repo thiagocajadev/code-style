@@ -28,7 +28,7 @@ A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verd
 `IS NULL` e `IS NOT NULL`.
 
 <details>
-<summary>❌ Bad — = NULL não retorna nenhuma linha</summary>
+<summary>❌ Ruim — = NULL não retorna nenhuma linha</summary>
 <br>
 
 ```sql
@@ -46,7 +46,7 @@ WHERE assigned_to != NULL;    -- retorna 0 linhas sempre
 <br>
 
 <details>
-<summary>✅ Good — IS NULL / IS NOT NULL</summary>
+<summary>✅ Bom — IS NULL / IS NOT NULL</summary>
 <br>
 
 ```sql
@@ -88,7 +88,7 @@ WHERE
 Indispensável para fallbacks e para tornar cálculos seguros.
 
 <details>
-<summary>❌ Bad — CASE WHEN para fallback: verboso e difícil de encadear</summary>
+<summary>❌ Ruim — CASE WHEN para fallback: verboso e difícil de encadear</summary>
 <br>
 
 ```sql
@@ -114,7 +114,7 @@ FROM Orders;
 <br>
 
 <details>
-<summary>✅ Good — fallback e cálculo null-safe</summary>
+<summary>✅ Bom — fallback e cálculo null-safe</summary>
 <br>
 
 ```sql
@@ -148,7 +148,7 @@ FROM
 por zero e tratar string vazia como NULL.
 
 <details>
-<summary>❌ Bad — CASE WHEN para divisão segura e normalização: mais verboso</summary>
+<summary>❌ Ruim — CASE WHEN para divisão segura e normalização: mais verboso</summary>
 <br>
 
 ```sql
@@ -176,7 +176,7 @@ FROM Users;
 <br>
 
 <details>
-<summary>✅ Good — divisão segura e normalização de string vazia</summary>
+<summary>✅ Bom — divisão segura e normalização de string vazia</summary>
 <br>
 
 ```sql
@@ -203,7 +203,7 @@ A melhor defesa contra null é não deixá-lo entrar. `NOT NULL` e `DEFAULT` jun
 a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 
 <details>
-<summary>❌ Bad — coluna nullable sem default obriga COALESCE em todo lugar</summary>
+<summary>❌ Ruim — coluna nullable sem default obriga COALESCE em todo lugar</summary>
 <br>
 
 ```sql
@@ -229,7 +229,7 @@ FROM
 <br>
 
 <details>
-<summary>✅ Good — NOT NULL + DEFAULT fecha o problema na origem</summary>
+<summary>✅ Bom — NOT NULL + DEFAULT fecha o problema na origem</summary>
 <br>
 
 ```sql
@@ -260,7 +260,7 @@ FROM
 `COUNT(coluna)` ignora NULL; `COUNT(*)` conta todas as linhas.
 
 <details>
-<summary>❌ Bad — assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
+<summary>❌ Ruim — assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
 <br>
 
 ```sql
@@ -284,7 +284,7 @@ GROUP BY TeamId;
 <br>
 
 <details>
-<summary>✅ Good — comportamento de NULL em agregações</summary>
+<summary>✅ Bom — comportamento de NULL em agregações</summary>
 <br>
 
 ```sql
@@ -328,7 +328,7 @@ NULL nunca iguala NULL em condições de JOIN. Chaves estrangeiras devem ser `NO
 linhas fantasmas e comportamento inesperado.
 
 <details>
-<summary>❌ Bad — JOIN com chave nullable perde linhas silenciosamente</summary>
+<summary>❌ Ruim — JOIN com chave nullable perde linhas silenciosamente</summary>
 <br>
 
 ```sql
@@ -347,7 +347,7 @@ INNER JOIN Customers c ON o.CustomerId = c.Id;
 <br>
 
 <details>
-<summary>✅ Good — chave estrangeira NOT NULL, comportamento previsível</summary>
+<summary>✅ Bom — chave estrangeira NOT NULL, comportamento previsível</summary>
 <br>
 
 ```sql
@@ -380,7 +380,7 @@ Se a subquery retornar qualquer NULL, `NOT IN` retorna vazio: comportamento sile
 gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
 
 <details>
-<summary>❌ Bad — NOT IN retorna vazio se a subquery contiver NULL</summary>
+<summary>❌ Ruim — NOT IN retorna vazio se a subquery contiver NULL</summary>
 <br>
 
 ```sql
@@ -399,7 +399,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — filtrar NULL da subquery ou usar NOT EXISTS</summary>
+<summary>✅ Bom — filtrar NULL da subquery ou usar NOT EXISTS</summary>
 <br>
 
 ```sql
@@ -434,7 +434,7 @@ Múltiplos NULL são permitidos em colunas `UNIQUE` porque NULL não é igual a 
 quando quiser "único entre os preenchidos".
 
 <details>
-<summary>❌ Bad — intenção de "único quando preenchido" não está declarada explicitamente</summary>
+<summary>❌ Ruim — intenção de "único quando preenchido" não está declarada explicitamente</summary>
 <br>
 
 ```sql
@@ -453,7 +453,7 @@ CREATE TABLE Users
 <br>
 
 <details>
-<summary>✅ Good — índice filtrado declara explicitamente a intenção</summary>
+<summary>✅ Bom — índice filtrado declara explicitamente a intenção</summary>
 <br>
 
 ```sql
@@ -486,7 +486,7 @@ CREATE UNIQUE INDEX uq_users_phone_not_null
 (os valores são iguais). Útil para detectar mudanças reais em auditorias e updates condicionais.
 
 <details>
-<summary>❌ Bad — comparação sem IS DISTINCT FROM perde mudanças envolvendo NULL</summary>
+<summary>❌ Ruim — comparação sem IS DISTINCT FROM perde mudanças envolvendo NULL</summary>
 <br>
 
 ```sql
@@ -504,7 +504,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — IS DISTINCT FROM detecta qualquer mudança, incluindo de/para NULL</summary>
+<summary>✅ Bom — IS DISTINCT FROM detecta qualquer mudança, incluindo de/para NULL</summary>
 <br>
 
 ```sql
@@ -534,7 +534,7 @@ WHERE
 NULL ocupa uma posição diferente dependendo do banco. Controle explícito da posição evita surpresas.
 
 <details>
-<summary>❌ Bad — ORDER BY sem controle de NULL: posição varia por banco</summary>
+<summary>❌ Ruim — ORDER BY sem controle de NULL: posição varia por banco</summary>
 <br>
 
 ```sql
@@ -555,7 +555,7 @@ ORDER BY
 <br>
 
 <details>
-<summary>✅ Good — controle explícito da posição de NULL na ordenação</summary>
+<summary>✅ Bom — controle explícito da posição de NULL na ordenação</summary>
 <br>
 
 ```sql
@@ -587,7 +587,7 @@ Ver [Null Safety — Schema Evolution](../../../../shared/standards/null-safety.
 para a estratégia completa. O padrão SQL:
 
 <details>
-<summary>❌ Bad — NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>
+<summary>❌ Ruim — NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>
 <br>
 
 ```sql
@@ -604,7 +604,7 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL;
 <br>
 
 <details>
-<summary>✅ Good — DEFAULT garante que registros antigos nunca ficam NULL</summary>
+<summary>✅ Bom — DEFAULT garante que registros antigos nunca ficam NULL</summary>
 <br>
 
 ```sql
@@ -620,7 +620,7 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 <br>
 
 <details>
-<summary>✅ Good — migration em lotes para tabelas grandes em produção</summary>
+<summary>✅ Bom — migration em lotes para tabelas grandes em produção</summary>
 <br>
 
 ```sql

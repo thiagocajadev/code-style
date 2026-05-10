@@ -43,7 +43,7 @@ ou impede recursos interativos.
 | Interactive Auto        | `@rendermode InteractiveAuto`         | Carga inicial rápida com fallback para WASM em cache |
 
 <details>
-<summary>❌ Bad — rendermode global no App.razor força SignalR em páginas estáticas</summary>
+<summary>❌ Ruim — rendermode global no App.razor força SignalR em páginas estáticas</summary>
 <br>
 
 ```razor
@@ -56,7 +56,7 @@ ou impede recursos interativos.
 <br>
 
 <details>
-<summary>✅ Good — Static SSR como padrão; rendermode declarado por componente</summary>
+<summary>✅ Bom — Static SSR como padrão; rendermode declarado por componente</summary>
 <br>
 
 ```razor
@@ -91,7 +91,7 @@ a lógica fica no bloco `@code`. Cálculos e transformações nunca ficam inline
 properties no `@code` mantêm o template legível.
 
 <details>
-<summary>❌ Bad — cálculo e ternário inline na marcação</summary>
+<summary>❌ Ruim — cálculo e ternário inline na marcação</summary>
 <br>
 
 ```razor
@@ -112,7 +112,7 @@ properties no `@code` mantêm o template legível.
 <br>
 
 <details>
-<summary>✅ Good — computed properties no @code, marcação sem lógica</summary>
+<summary>✅ Bom — computed properties no @code, marcação sem lógica</summary>
 <br>
 
 ```razor
@@ -142,7 +142,7 @@ properties no `@code` mantêm o template legível.
 notifique o pai sobre eventos sem acoplar os dois componentes.
 
 <details>
-<summary>❌ Bad — filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
+<summary>❌ Ruim — filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
 <br>
 
 ```razor
@@ -164,7 +164,7 @@ notifique o pai sobre eventos sem acoplar os dois componentes.
 <br>
 
 <details>
-<summary>✅ Good — EventCallback notifica o pai; filho permanece sem efeitos colaterais</summary>
+<summary>✅ Bom — EventCallback notifica o pai; filho permanece sem efeitos colaterais</summary>
 <br>
 
 ```razor
@@ -203,7 +203,7 @@ na prerenderização e outra após a hidratação. O atributo `[PersistentState]
 o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 
 <details>
-<summary>❌ Bad — chamada duplicada ao repositório: prerenderização e hidratação</summary>
+<summary>❌ Ruim — chamada duplicada ao repositório: prerenderização e hidratação</summary>
 <br>
 
 ```razor
@@ -225,7 +225,7 @@ o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 <br>
 
 <details>
-<summary>✅ Good — [PersistentState] serializa o estado e evita chamada duplicada</summary>
+<summary>✅ Bom — [PersistentState] serializa o estado e evita chamada duplicada</summary>
 <br>
 
 ```razor
@@ -255,7 +255,7 @@ anotações do model (`[Required]`, `[Range]`) ao `EditContext`. `ValidationMess
 por campo; `ValidationSummary` exibe todos os erros consolidados.
 
 <details>
-<summary>❌ Bad — formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
+<summary>❌ Ruim — formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
 <br>
 
 ```razor
@@ -283,7 +283,7 @@ por campo; `ValidationSummary` exibe todos os erros consolidados.
 <br>
 
 <details>
-<summary>✅ Good — EditForm com DataAnnotationsValidator; submissão bloqueada enquanto inválida</summary>
+<summary>✅ Bom — EditForm com DataAnnotationsValidator; submissão bloqueada enquanto inválida</summary>
 <br>
 
 ```razor
@@ -342,7 +342,7 @@ devem ter o tipo correto declarado na constraint da rota. `NavigationManager` na
 programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 <details>
-<summary>❌ Bad — NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
+<summary>❌ Ruim — NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
 <br>
 
 ```razor
@@ -361,7 +361,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 <br>
 
 <details>
-<summary>✅ Good — rota tipada, navegação em método separado</summary>
+<summary>✅ Bom — rota tipada, navegação em método separado</summary>
 <br>
 
 ```razor
@@ -392,7 +392,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 `OnAfterRenderAsync` com o guard `firstRender` para não repetir a chamada a cada re-render.
 
 <details>
-<summary>❌ Bad — interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>
+<summary>❌ Ruim — interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>
 <br>
 
 ```razor
@@ -411,7 +411,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 <br>
 
 <details>
-<summary>✅ Good — interop em OnAfterRenderAsync com guard firstRender</summary>
+<summary>✅ Bom — interop em OnAfterRenderAsync com guard firstRender</summary>
 <br>
 
 ```razor

@@ -17,7 +17,7 @@
 ## Mobile-first
 
 <details>
-<summary>❌ Bad — desktop-first: base para tela grande, override para tela pequena</summary>
+<summary>❌ Ruim — desktop-first: base para tela grande, override para tela pequena</summary>
 <br>
 
 ```css
@@ -40,7 +40,7 @@
 <br>
 
 <details>
-<summary>✅ Good — mobile-first: base simples, expansão progressiva</summary>
+<summary>✅ Bom — mobile-first: base simples, expansão progressiva</summary>
 <br>
 
 ```css
@@ -66,7 +66,7 @@ Valores de breakpoint espalhados em vários arquivos criam inconsistência. Muda
 grep no projeto inteiro.
 
 <details>
-<summary>❌ Bad — pixel values mágicos e inconsistentes entre arquivos</summary>
+<summary>❌ Ruim — pixel values mágicos e inconsistentes entre arquivos</summary>
 <br>
 
 ```css
@@ -84,7 +84,7 @@ grep no projeto inteiro.
 <br>
 
 <details>
-<summary>✅ Good — breakpoints centralizados como fonte única de verdade</summary>
+<summary>✅ Bom — breakpoints centralizados como fonte única de verdade</summary>
 <br>
 
 ```css

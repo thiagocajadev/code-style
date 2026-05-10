@@ -20,7 +20,7 @@ zero value explícito ou declaração de pacote, `const` para valores que não m
 Go nunca deixa variáveis sem valor. Declare com `var` quando o zero value já é o estado correto.
 
 <details>
-<summary>❌ Bad — inicialização redundante com zero value</summary>
+<summary>❌ Ruim — inicialização redundante com zero value</summary>
 <br>
 
 ```go
@@ -35,7 +35,7 @@ var items []string = nil
 <br>
 
 <details>
-<summary>✅ Good — zero value é o estado inicial, var declara a intenção</summary>
+<summary>✅ Bom — zero value é o estado inicial, var declara a intenção</summary>
 <br>
 
 ```go
@@ -53,7 +53,7 @@ Use `:=` quando há um valor imediato. Use `var` para zero value explícito ou p
 legível em declarações longas.
 
 <details>
-<summary>❌ Bad — var onde := seria mais natural</summary>
+<summary>❌ Ruim — var onde := seria mais natural</summary>
 <br>
 
 ```go
@@ -70,7 +70,7 @@ func findUser(userID int64) (*User, error) {
 <br>
 
 <details>
-<summary>✅ Good — := para inicialização com valor imediato</summary>
+<summary>✅ Bom — := para inicialização com valor imediato</summary>
 <br>
 
 ```go
@@ -92,7 +92,7 @@ Substitua literais inline por constantes nomeadas. Qualquer número ou string cu
 é óbvio pelo contexto imediato é um valor mágico.
 
 <details>
-<summary>❌ Bad — literais sem nome</summary>
+<summary>❌ Ruim — literais sem nome</summary>
 <br>
 
 ```go
@@ -112,7 +112,7 @@ time.Sleep(5 * time.Second)
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas revelam intenção</summary>
+<summary>✅ Bom — constantes nomeadas revelam intenção</summary>
 <br>
 
 ```go
@@ -141,7 +141,7 @@ Use `iota` para sequências de constantes relacionadas. Exporte o tipo para que 
 verifique usos indevidos.
 
 <details>
-<summary>❌ Bad — strings mágicas para status</summary>
+<summary>❌ Ruim — strings mágicas para status</summary>
 <br>
 
 ```go
@@ -157,7 +157,7 @@ func updateOrderStatus(order *Order, status string) {
 <br>
 
 <details>
-<summary>✅ Good — tipo enumerado com iota</summary>
+<summary>✅ Bom — tipo enumerado com iota</summary>
 <br>
 
 ```go
@@ -189,7 +189,7 @@ Go não tem `const` para structs. Use ponteiros somente quando mutação for nec
 Prefira receber e retornar valores (não ponteiros) em structs pequenas.
 
 <details>
-<summary>❌ Bad — mutação desnecessária via ponteiro</summary>
+<summary>❌ Ruim — mutação desnecessária via ponteiro</summary>
 <br>
 
 ```go
@@ -206,7 +206,7 @@ applyTax(&total, 0.1)
 <br>
 
 <details>
-<summary>✅ Good — retornar novo valor sem efeito colateral</summary>
+<summary>✅ Bom — retornar novo valor sem efeito colateral</summary>
 <br>
 
 ```go
@@ -226,7 +226,7 @@ taxedTotal := applyTax(100.0, 0.1)
 Use `_` para descartar retornos que não serão usados. Nunca ignore erros com `_`.
 
 <details>
-<summary>❌ Bad — erro ignorado silenciosamente</summary>
+<summary>❌ Ruim — erro ignorado silenciosamente</summary>
 <br>
 
 ```go
@@ -239,7 +239,7 @@ file, _ := os.Open("data.csv") // falha silenciosa
 <br>
 
 <details>
-<summary>✅ Good — erros tratados; _ apenas para valores realmente descartáveis</summary>
+<summary>✅ Bom — erros tratados; _ apenas para valores realmente descartáveis</summary>
 <br>
 
 ```go

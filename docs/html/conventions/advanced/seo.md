@@ -20,7 +20,7 @@
 150–160 caracteres. Não melhora ranking, mas controla o snippet nos resultados.
 
 <details>
-<summary>❌ Bad — title genérico, description ausente ou duplicada</summary>
+<summary>❌ Ruim — title genérico, description ausente ou duplicada</summary>
 <br>
 
 ```html
@@ -42,7 +42,7 @@
 <br>
 
 <details>
-<summary>✅ Good — title e description únicos, concisos e descritivos</summary>
+<summary>✅ Bom — title e description únicos, concisos e descritivos</summary>
 <br>
 
 ```html
@@ -63,7 +63,7 @@ Tags **Open Graph** (protocolo de metadados sociais) controlam título, descriç
 a plataforma escolhe, geralmente mal.
 
 <details>
-<summary>❌ Bad — sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
+<summary>❌ Ruim — sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
 <br>
 
 ```html
@@ -77,7 +77,7 @@ a plataforma escolhe, geralmente mal.
 <br>
 
 <details>
-<summary>✅ Good — **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
+<summary>✅ Bom — **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
 <br>
 
 ```html
@@ -109,7 +109,7 @@ a plataforma escolhe, geralmente mal.
 conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de rastreamento, paginação).
 
 <details>
-<summary>❌ Bad — sem canonical em página com parâmetros UTM</summary>
+<summary>❌ Ruim — sem canonical em página com parâmetros UTM</summary>
 <br>
 
 ```html
@@ -124,7 +124,7 @@ conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de ra
 <br>
 
 <details>
-<summary>✅ Good — canonical aponta para URL limpa</summary>
+<summary>✅ Bom — canonical aponta para URL limpa</summary>
 <br>
 
 ```html
@@ -142,7 +142,7 @@ JSON-LD comunica dados estruturados a crawlers (Google, Bing) sem alterar o HTML
 artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 <details>
-<summary>❌ Bad — dados estruturados ausentes, sem rich snippet</summary>
+<summary>❌ Ruim — dados estruturados ausentes, sem rich snippet</summary>
 <br>
 
 ```html
@@ -158,7 +158,7 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 <br>
 
 <details>
-<summary>✅ Good — JSON-LD com schema Product, preço e avaliação</summary>
+<summary>✅ Bom — JSON-LD com schema Product, preço e avaliação</summary>
 <br>
 
 ```html

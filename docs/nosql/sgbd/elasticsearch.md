@@ -160,7 +160,7 @@ async function findTeamsByCity(city) {
 ### bool — combinação de condições
 
 <details>
-<summary>❌ Bad — match em campo keyword; filtro no query context; sem projeção</summary>
+<summary>❌ Ruim — match em campo keyword; filtro no query context; sem projeção</summary>
 <br>
 
 ```js
@@ -184,7 +184,7 @@ const response = await esClient.search({
 <br>
 
 <details>
-<summary>✅ Good — term/filter para condições exatas; must para relevância; _source para projeção</summary>
+<summary>✅ Bom — term/filter para condições exatas; must para relevância; _source para projeção</summary>
 <br>
 
 ```js

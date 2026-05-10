@@ -35,7 +35,7 @@ número. O tipo declarado define a **afinidade** usada para conversões implíci
 | `BLOB` | Sem correspondência — armazena como recebido | `BLOB`, ou coluna sem tipo |
 
 <details>
-<summary>❌ Bad — tipo não declarado, comportamento imprevisível</summary>
+<summary>❌ Ruim — tipo não declarado, comportamento imprevisível</summary>
 <br>
 
 ```sql
@@ -50,7 +50,7 @@ CREATE TABLE Orders (
 <br>
 
 <details>
-<summary>✅ Good — tipo declarado com afinidade explícita</summary>
+<summary>✅ Bom — tipo declarado com afinidade explícita</summary>
 <br>
 
 ```sql
@@ -75,7 +75,7 @@ CREATE TABLE Orders
 Foreign keys estão **desativadas por padrão** no SQLite. Precisam ser ativadas por conexão.
 
 <details>
-<summary>❌ Bad — FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
+<summary>❌ Ruim — FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
 <br>
 
 ```sql
@@ -88,7 +88,7 @@ INSERT INTO Orders (Id, CustomerId) VALUES (1, 999); -- CustomerId 999 não exis
 <br>
 
 <details>
-<summary>✅ Good — ativar FK no início de cada conexão</summary>
+<summary>✅ Bom — ativar FK no início de cada conexão</summary>
 <br>
 
 ```sql
@@ -116,7 +116,7 @@ VALUES
 eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifier, Identificador Universalmente Único) como `TEXT`.
 
 <details>
-<summary>✅ Good — BIGINT sequencial via rowid alias</summary>
+<summary>✅ Bom — BIGINT sequencial via rowid alias</summary>
 <br>
 
 ```sql
@@ -136,7 +136,7 @@ CREATE TABLE Customers
 <br>
 
 <details>
-<summary>✅ Good — UUID como TEXT quando unicidade global é requisito</summary>
+<summary>✅ Bom — UUID como TEXT quando unicidade global é requisito</summary>
 <br>
 
 ```sql
@@ -184,7 +184,7 @@ primeiro acesso). Para operações de escrita, use `IMMEDIATE` para adquirir o l
 | `EXCLUSIVE` | Lock exclusivo total | Operações críticas sem leitores concorrentes |
 
 <details>
-<summary>✅ Good — transação IMMEDIATE para operação de escrita</summary>
+<summary>✅ Bom — transação IMMEDIATE para operação de escrita</summary>
 <br>
 
 ```sql
@@ -230,7 +230,7 @@ SQLite 3.53 adicionou `json_array_insert()` para inserir elemento em posição e
 array JSON.
 
 <details>
-<summary>✅ Good — armazenar e consultar JSON em coluna TEXT</summary>
+<summary>✅ Bom — armazenar e consultar JSON em coluna TEXT</summary>
 <br>
 
 ```sql
@@ -267,7 +267,7 @@ WHERE
 Crie uma tabela virtual com `USING fts5`.
 
 <details>
-<summary>✅ Good — tabela FTS5 para busca textual em produtos</summary>
+<summary>✅ Bom — tabela FTS5 para busca textual em produtos</summary>
 <br>
 
 ```sql
@@ -311,7 +311,7 @@ SQLite tem suporte limitado a `ALTER TABLE`. Operações não suportadas exigem 
 | `MODIFY COLUMN` (alterar tipo) | Não suportado — recriar a tabela |
 
 <details>
-<summary>✅ Good — adicionar constraint NOT NULL (SQLite 3.53+)</summary>
+<summary>✅ Bom — adicionar constraint NOT NULL (SQLite 3.53+)</summary>
 <br>
 
 ```sql
@@ -326,7 +326,7 @@ ALTER TABLE Orders
 <br>
 
 <details>
-<summary>✅ Good — recriar tabela para alterar tipo de coluna</summary>
+<summary>✅ Bom — recriar tabela para alterar tipo de coluna</summary>
 <br>
 
 ```sql

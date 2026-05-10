@@ -18,7 +18,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 ## Semântico vs presentacional
 
 <details>
-<summary>❌ Bad — nome descreve aparência, quebra ao mudar o design</summary>
+<summary>❌ Ruim — nome descreve aparência, quebra ao mudar o design</summary>
 <br>
 
 ```css
@@ -43,7 +43,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 <br>
 
 <details>
-<summary>✅ Good — nome descreve papel, sobrevive a mudanças de design</summary>
+<summary>✅ Bom — nome descreve papel, sobrevive a mudanças de design</summary>
 <br>
 
 ```css
@@ -70,7 +70,7 @@ BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explíci
 relacionamento entre partes da **UI** (User Interface, Interface do Usuário) sem depender de aninhamento no CSS.
 
 <details>
-<summary>❌ Bad — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
+<summary>❌ Ruim — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
 <br>
 
 ```html
@@ -98,7 +98,7 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 <br>
 
 <details>
-<summary>✅ Good — BEM: bloco__elemento--modificador</summary>
+<summary>✅ Bom — BEM: bloco__elemento--modificador</summary>
 <br>
 
 ```html
@@ -129,7 +129,7 @@ Especificidade alta torna o CSS frágil. Qualquer override exige `!important` ou
 específico.
 
 <details>
-<summary>❌ Bad — IDs e seletores encadeados inflam a especificidade</summary>
+<summary>❌ Ruim — IDs e seletores encadeados inflam a especificidade</summary>
 <br>
 
 ```css
@@ -146,7 +146,7 @@ específico.
 <br>
 
 <details>
-<summary>✅ Good — classes simples, especificidade baixa e previsível</summary>
+<summary>✅ Bom — classes simples, especificidade baixa e previsível</summary>
 <br>
 
 ```css

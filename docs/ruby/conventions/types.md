@@ -24,7 +24,7 @@ Use `initialize` com keyword arguments para deixar a construção auto-documenta
 Prefira `attr_reader` sobre exposição de variáveis de instância diretamente.
 
 <details>
-<summary>❌ Bad — positional args, atributo exposto como accessor</summary>
+<summary>❌ Ruim — positional args, atributo exposto como accessor</summary>
 <br>
 
 ```ruby
@@ -46,7 +46,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — keyword args, reader apenas para campos imutáveis</summary>
+<summary>✅ Bom — keyword args, reader apenas para campos imutáveis</summary>
 <br>
 
 ```ruby
@@ -74,7 +74,7 @@ Use `Data.define` para estruturas imutáveis que representam conceitos de domín
 comportamento. Mais leve que uma classe completa.
 
 <details>
-<summary>❌ Bad — Struct mutável para dados que não deveriam mudar</summary>
+<summary>❌ Ruim — Struct mutável para dados que não deveriam mudar</summary>
 <br>
 
 ```ruby
@@ -91,7 +91,7 @@ address.city = "Rio de Janeiro"
 <br>
 
 <details>
-<summary>✅ Good — Data.define cria value object imutável</summary>
+<summary>✅ Bom — Data.define cria value object imutável</summary>
 <br>
 
 ```ruby
@@ -112,7 +112,7 @@ Use módulos para compartilhar comportamento entre classes sem herança. `includ
 comportamento de instância; `extend` para comportamento de classe.
 
 <details>
-<summary>❌ Bad — herança apenas para reutilizar comportamento</summary>
+<summary>❌ Ruim — herança apenas para reutilizar comportamento</summary>
 <br>
 
 ```ruby
@@ -132,7 +132,7 @@ class Product < Auditable; end
 <br>
 
 <details>
-<summary>✅ Good — mixin para comportamento transversal</summary>
+<summary>✅ Bom — mixin para comportamento transversal</summary>
 <br>
 
 ```ruby
@@ -164,7 +164,7 @@ Verifique `nil` antes de encadear chamadas. Use `&.` (safe navigation operator, 
 de navegação segura) para cadeia que pode retornar `nil`.
 
 <details>
-<summary>❌ Bad — NoMethodError em potencial</summary>
+<summary>❌ Ruim — NoMethodError em potencial</summary>
 <br>
 
 ```ruby
@@ -180,7 +180,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — safe navigation + guard clause</summary>
+<summary>✅ Bom — safe navigation + guard clause</summary>
 <br>
 
 ```ruby
@@ -203,7 +203,7 @@ Prefira verificar comportamento (`respond_to?`) no lugar de tipo (`is_a?`), exce
 fronteiras de domínio onde o tipo é parte do contrato.
 
 <details>
-<summary>❌ Bad — verificação de tipo rígida bloqueia polimorfismo</summary>
+<summary>❌ Ruim — verificação de tipo rígida bloqueia polimorfismo</summary>
 <br>
 
 ```ruby
@@ -221,7 +221,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — verificação de comportamento</summary>
+<summary>✅ Bom — verificação de comportamento</summary>
 <br>
 
 ```ruby

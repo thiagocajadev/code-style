@@ -20,7 +20,7 @@ contexto de diagnóstico mapeado) propaga identificadores de correlação automa
 ## Log sem contexto
 
 <details>
-<summary>❌ Bad — string concatenada sem campos estruturados</summary>
+<summary>❌ Ruim — string concatenada sem campos estruturados</summary>
 <br>
 
 ```kotlin
@@ -36,7 +36,7 @@ fun processOrder(orderId: Long, userId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — campos nomeados com contexto completo</summary>
+<summary>✅ Bom — campos nomeados com contexto completo</summary>
 <br>
 
 ```kotlin
@@ -52,7 +52,7 @@ fun processOrder(orderId: Long, userId: Long) {
 ## MDC para correlação de request
 
 <details>
-<summary>❌ Bad — correlationId passado manualmente em cada chamada</summary>
+<summary>❌ Ruim — correlationId passado manualmente em cada chamada</summary>
 <br>
 
 ```kotlin
@@ -68,7 +68,7 @@ fun handleRequest(requestId: String, userId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — MDC propagado automaticamente em todos os logs do request</summary>
+<summary>✅ Bom — MDC propagado automaticamente em todos os logs do request</summary>
 <br>
 
 ```kotlin
@@ -99,7 +99,7 @@ fun handleRequest(requestId: String, userId: Long) {
 | `ERROR` | falha que impede o fluxo e requer atenção: exceção não tratada, I/O irrecuperável |
 
 <details>
-<summary>❌ Bad — ERROR para situação esperada; INFO para exceção</summary>
+<summary>❌ Ruim — ERROR para situação esperada; INFO para exceção</summary>
 <br>
 
 ```kotlin
@@ -125,7 +125,7 @@ fun chargeCard(cardId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — nível proporcional à severidade</summary>
+<summary>✅ Bom — nível proporcional à severidade</summary>
 <br>
 
 ```kotlin

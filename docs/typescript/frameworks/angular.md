@@ -62,7 +62,7 @@ src/app/
 Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada componente declara as dependências que usa diretamente em `imports`.
 
 <details>
-<summary>❌ Bad — componente declarado em NgModule</summary>
+<summary>❌ Ruim — componente declarado em NgModule</summary>
 <br>
 
 ```ts
@@ -87,7 +87,7 @@ export class UserCardComponent {
 <br>
 
 <details>
-<summary>✅ Good — standalone com imports e @Input({ required: true })</summary>
+<summary>✅ Bom — standalone com imports e @Input({ required: true })</summary>
 <br>
 
 ```ts
@@ -120,7 +120,7 @@ Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de co
 Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
 
 <details>
-<summary>❌ Bad — BehaviorSubject para estado local simples</summary>
+<summary>❌ Ruim — BehaviorSubject para estado local simples</summary>
 <br>
 
 ```ts
@@ -146,7 +146,7 @@ export class CartComponent implements OnInit, OnDestroy {
 <br>
 
 <details>
-<summary>✅ Good — signal e computed para estado local</summary>
+<summary>✅ Bom — signal e computed para estado local</summary>
 <br>
 
 ```ts
@@ -188,7 +188,7 @@ O pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) s
 Fluxo: `Smart → @Input() → Dumb → @Output() → Smart`
 
 <details>
-<summary>❌ Bad — componente de lista com lógica de negócio misturada</summary>
+<summary>❌ Ruim — componente de lista com lógica de negócio misturada</summary>
 <br>
 
 ```ts
@@ -221,7 +221,7 @@ export class OrderListComponent implements OnInit {
 <br>
 
 <details>
-<summary>✅ Good — Smart orquestra com signals; Dumb apresenta</summary>
+<summary>✅ Bom — Smart orquestra com signals; Dumb apresenta</summary>
 <br>
 
 ```ts
@@ -290,7 +290,7 @@ Services encapsulam lógica de negócio e acesso a dados. Usam `inject()` em vez
 `providedIn: "root"` cria um singleton na aplicação. Use como padrão; escopos menores apenas quando houver razão explícita.
 
 <details>
-<summary>❌ Bad — injeção via construtor, return type implícito</summary>
+<summary>❌ Ruim — injeção via construtor, return type implícito</summary>
 <br>
 
 ```ts
@@ -309,7 +309,7 @@ export class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — inject(), return type explícito, tipos genéricos no HttpClient</summary>
+<summary>✅ Bom — inject(), return type explícito, tipos genéricos no HttpClient</summary>
 <br>
 
 ```ts
@@ -348,7 +348,7 @@ Guards de autorização ficam na definição da rota: executam antes de qualquer
 Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado; roda uma vez para o grupo, não individualmente em cada rota filha.
 
 <details>
-<summary>❌ Bad — guard no ngOnInit do componente</summary>
+<summary>❌ Ruim — guard no ngOnInit do componente</summary>
 <br>
 
 ```ts
@@ -370,7 +370,7 @@ export class DashboardComponent implements OnInit {
 <br>
 
 <details>
-<summary>✅ Good — CanActivateFn na definição da rota</summary>
+<summary>✅ Bom — CanActivateFn na definição da rota</summary>
 <br>
 
 ```ts
@@ -435,7 +435,7 @@ export const routes: Routes = [
 O **Resolver** cobre o papel do **Loader** definido em [frontend-flow.md](../../shared/architecture/frontend-flow.md): busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos via `ActivatedRoute`, sem estado de loading interno.
 
 <details>
-<summary>❌ Bad — busca no ngOnInit, componente monta sem dados</summary>
+<summary>❌ Ruim — busca no ngOnInit, componente monta sem dados</summary>
 <br>
 
 ```ts
@@ -460,7 +460,7 @@ export class OrderDetailComponent implements OnInit {
 <br>
 
 <details>
-<summary>✅ Good — ResolveFn na rota, componente recebe dados prontos via signal</summary>
+<summary>✅ Bom — ResolveFn na rota, componente recebe dados prontos via signal</summary>
 <br>
 
 ```ts
@@ -523,7 +523,7 @@ Angular tem `FormGroup` e `FormControl` com tipagem genérica. Use `FormBuilder`
 O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Angular valida a experiência do usuário no formulário; os dois executam sempre, conforme o padrão de [frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
 <details>
-<summary>❌ Bad — FormGroup não-tipado, acesso por string</summary>
+<summary>❌ Ruim — FormGroup não-tipado, acesso por string</summary>
 <br>
 
 ```ts
@@ -546,7 +546,7 @@ export class LoginFormComponent {
 <br>
 
 <details>
-<summary>✅ Good — FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
+<summary>✅ Bom — FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
 <br>
 
 ```ts
@@ -620,7 +620,7 @@ export class LoginFormComponent {
 Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient → API`
 
 <details>
-<summary>❌ Bad — token injetado manualmente em cada service</summary>
+<summary>❌ Ruim — token injetado manualmente em cada service</summary>
 <br>
 
 ```ts
@@ -644,7 +644,7 @@ export class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — auth interceptor centraliza o token em todas as requisições</summary>
+<summary>✅ Bom — auth interceptor centraliza o token em todas as requisições</summary>
 <br>
 
 ```ts
@@ -689,7 +689,7 @@ export const appConfig: ApplicationConfig = {
 <br>
 
 <details>
-<summary>✅ Good — error interceptor trata 401 e 500 globalmente</summary>
+<summary>✅ Bom — error interceptor trata 401 e 500 globalmente</summary>
 <br>
 
 ```ts

@@ -22,7 +22,7 @@ apenas para saída antecipada (guard clause). Blocks, procs e lambdas são prime
 Cada método executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
 
 <details>
-<summary>❌ Bad — método que faz tudo</summary>
+<summary>❌ Ruim — método que faz tudo</summary>
 <br>
 
 ```ruby
@@ -47,7 +47,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — orquestrador + métodos de detalhe</summary>
+<summary>✅ Bom — orquestrador + métodos de detalhe</summary>
 <br>
 
 ```ruby
@@ -94,7 +94,7 @@ Extraia o resultado para uma variável nomeada antes de retornar. O retorno impl
 expressão) é idiomático — mas sem lógica inline.
 
 <details>
-<summary>❌ Bad — lógica na última linha</summary>
+<summary>❌ Ruim — lógica na última linha</summary>
 <br>
 
 ```ruby
@@ -110,7 +110,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — resultado nomeado, retorno implícito limpo</summary>
+<summary>✅ Bom — resultado nomeado, retorno implícito limpo</summary>
 <br>
 
 ```ruby
@@ -131,7 +131,7 @@ Declare o método orquestrador antes dos métodos auxiliares. O leitor entende o
 principal antes de descer para os detalhes.
 
 <details>
-<summary>❌ Bad — auxiliares antes do orquestrador</summary>
+<summary>❌ Ruim — auxiliares antes do orquestrador</summary>
 <br>
 
 ```ruby
@@ -162,7 +162,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — orquestrador no topo, detalhes abaixo</summary>
+<summary>✅ Bom — orquestrador no topo, detalhes abaixo</summary>
 <br>
 
 ```ruby
@@ -194,7 +194,7 @@ Use keyword arguments (argumentos nomeados) quando o método recebe 3 ou mais pa
 Destructuring no corpo, não na assinatura.
 
 <details>
-<summary>❌ Bad — argumentos posicionais em excesso</summary>
+<summary>❌ Ruim — argumentos posicionais em excesso</summary>
 <br>
 
 ```ruby
@@ -212,7 +212,7 @@ create_order(1, 42, 3, "SAVE10", "Rua das Flores, 100")
 <br>
 
 <details>
-<summary>✅ Good — keyword arguments; chamada auto-documentada</summary>
+<summary>✅ Bom — keyword arguments; chamada auto-documentada</summary>
 <br>
 
 ```ruby
@@ -239,7 +239,7 @@ create_order(
 estilos em contextos equivalentes.
 
 <details>
-<summary>❌ Bad — estilos misturados</summary>
+<summary>❌ Ruim — estilos misturados</summary>
 <br>
 
 ```ruby
@@ -258,7 +258,7 @@ total = items.map do |item| item.price end
 <br>
 
 <details>
-<summary>✅ Good — {} para 1 linha, do...end para múltiplas</summary>
+<summary>✅ Bom — {} para 1 linha, do...end para múltiplas</summary>
 <br>
 
 ```ruby
@@ -280,7 +280,7 @@ Use **lambda** para comportamento de função (valida aridade, `return` local). 
 (procedimento) com `&` para passar um bloco como argumento.
 
 <details>
-<summary>❌ Bad — Proc onde lambda é necessário (return vaza)</summary>
+<summary>❌ Ruim — Proc onde lambda é necessário (return vaza)</summary>
 <br>
 
 ```ruby
@@ -299,7 +299,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — lambda para transformação com retorno local</summary>
+<summary>✅ Bom — lambda para transformação com retorno local</summary>
 <br>
 
 ```ruby

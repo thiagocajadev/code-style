@@ -20,7 +20,7 @@ irrecuperáveis de infraestrutura.
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Bad — exceção para erro esperado de negócio</summary>
+<summary>❌ Ruim — exceção para erro esperado de negócio</summary>
 <br>
 
 ```kotlin
@@ -45,7 +45,7 @@ fun processRequest(orderId: Long): Response {
 <br>
 
 <details>
-<summary>✅ Good — Result comunica explicitamente a ausência</summary>
+<summary>✅ Bom — Result comunica explicitamente a ausência</summary>
 <br>
 
 ```kotlin
@@ -71,7 +71,7 @@ fun processRequest(orderId: Long): Response {
 ## Erro silencioso
 
 <details>
-<summary>❌ Bad — exceção engolida sem rastro</summary>
+<summary>❌ Ruim — exceção engolida sem rastro</summary>
 <br>
 
 ```kotlin
@@ -89,7 +89,7 @@ fun sendNotification(userId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — log estruturado + decisão explícita de continuar</summary>
+<summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
 <br>
 
 ```kotlin
@@ -106,7 +106,7 @@ fun sendNotification(userId: Long) {
 ## Sealed class de erros de domínio
 
 <details>
-<summary>❌ Bad — string como discriminante de erro</summary>
+<summary>❌ Ruim — string como discriminante de erro</summary>
 <br>
 
 ```kotlin
@@ -124,7 +124,7 @@ fun validateOrder(order: Order): ServiceError? {
 <br>
 
 <details>
-<summary>✅ Good — sealed class com when exaustivo</summary>
+<summary>✅ Bom — sealed class com when exaustivo</summary>
 <br>
 
 ```kotlin
@@ -161,7 +161,7 @@ fun handleValidationError(error: OrderValidationError): String {
 ## `require` e `check` para invariantes
 
 <details>
-<summary>❌ Bad — if manual com mensagem genérica</summary>
+<summary>❌ Ruim — if manual com mensagem genérica</summary>
 <br>
 
 ```kotlin
@@ -178,7 +178,7 @@ fun applyDiscount(price: Double, rate: Double): Double {
 <br>
 
 <details>
-<summary>✅ Good — require com mensagem expressiva</summary>
+<summary>✅ Bom — require com mensagem expressiva</summary>
 <br>
 
 ```kotlin
@@ -197,7 +197,7 @@ fun applyDiscount(price: Double, rate: Double): Double {
 ## Fronteira de erro — mapear na borda da API
 
 <details>
-<summary>❌ Bad — sealed class de domínio exposta diretamente na resposta HTTP</summary>
+<summary>❌ Ruim — sealed class de domínio exposta diretamente na resposta HTTP</summary>
 <br>
 
 ```kotlin
@@ -216,7 +216,7 @@ fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
 <br>
 
 <details>
-<summary>✅ Good — tradução explícita do erro de domínio para HTTP</summary>
+<summary>✅ Bom — tradução explícita do erro de domínio para HTTP</summary>
 <br>
 
 ```kotlin

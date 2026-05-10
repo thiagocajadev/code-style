@@ -21,7 +21,7 @@
 LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
-<summary>❌ Bad — side effect dentro de query LINQ</summary>
+<summary>❌ Ruim — side effect dentro de query LINQ</summary>
 <br>
 
 ```csharp
@@ -41,7 +41,7 @@ var summaries = orders
 <br>
 
 <details>
-<summary>✅ Good — LINQ transforma, foreach executa side effects</summary>
+<summary>✅ Bom — LINQ transforma, foreach executa side effects</summary>
 <br>
 
 ```csharp
@@ -64,7 +64,7 @@ foreach (var order in activeOrders)
 `Select` é para transformação 1-para-1: cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
 
 <details>
-<summary>❌ Bad — Aggregate onde foreach é mais claro</summary>
+<summary>❌ Ruim — Aggregate onde foreach é mais claro</summary>
 <br>
 
 ```csharp
@@ -79,7 +79,7 @@ var totalRevenue = orders.Aggregate(
 <br>
 
 <details>
-<summary>❌ Bad — foreach manual para construir lista, sem Select</summary>
+<summary>❌ Ruim — foreach manual para construir lista, sem Select</summary>
 <br>
 
 ```csharp
@@ -96,7 +96,7 @@ foreach (var order in orders)
 <br>
 
 <details>
-<summary>✅ Good — foreach com variável de acumulação explícita</summary>
+<summary>✅ Bom — foreach com variável de acumulação explícita</summary>
 <br>
 
 ```csharp
@@ -111,7 +111,7 @@ foreach (var item in order.Items)
 <br>
 
 <details>
-<summary>✅ Good — Select para transformação 1-para-1</summary>
+<summary>✅ Bom — Select para transformação 1-para-1</summary>
 <br>
 
 ```csharp
@@ -127,7 +127,7 @@ var summaries = orders
 `IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
 
 <details>
-<summary>❌ Bad — materialização prematura no meio do pipeline</summary>
+<summary>❌ Ruim — materialização prematura no meio do pipeline</summary>
 <br>
 
 ```csharp
@@ -153,7 +153,7 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 <br>
 
 <details>
-<summary>✅ Good — pipeline lazy, materialização única na fronteira</summary>
+<summary>✅ Bom — pipeline lazy, materialização única na fronteira</summary>
 <br>
 
 ```csharp
@@ -176,7 +176,7 @@ public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, Dat
 Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas, cada uma com uma responsabilidade.
 
 <details>
-<summary>❌ Bad — chain monolítica, difícil de rastrear</summary>
+<summary>❌ Ruim — chain monolítica, difícil de rastrear</summary>
 <br>
 
 ```csharp
@@ -194,7 +194,7 @@ var report = orders
 <br>
 
 <details>
-<summary>✅ Good — etapas nomeadas, cada uma com responsabilidade clara</summary>
+<summary>✅ Bom — etapas nomeadas, cada uma com responsabilidade clara</summary>
 <br>
 
 ```csharp
@@ -240,7 +240,7 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 > Para queries EF Core 10+, use o operador `LeftJoin` nativo. Veja [Entity Framework](../../setup/entity-framework.md#left-join).
 
 <details>
-<summary>❌ Bad — Join exclui registros sem correspondência</summary>
+<summary>❌ Ruim — Join exclui registros sem correspondência</summary>
 <br>
 
 ```csharp
@@ -259,7 +259,7 @@ var result = orders
 <br>
 
 <details>
-<summary>✅ Good — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
+<summary>✅ Bom — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
 <br>
 
 ```csharp

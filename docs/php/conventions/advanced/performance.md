@@ -23,7 +23,7 @@ OPcache armazena o bytecode compilado em memória, eliminando o parse do PHP a c
 requisição. Certifique-se que está habilitado em produção.
 
 <details>
-<summary>✅ Good — configuração mínima do OPcache em php.ini</summary>
+<summary>✅ Bom — configuração mínima do OPcache em php.ini</summary>
 <br>
 
 ```ini
@@ -44,7 +44,7 @@ opcache.jit_buffer_size=128M
 Carregue dados em lote com uma única query, nunca uma query por item em loop.
 
 <details>
-<summary>❌ Bad — N+1: uma query por ordem</summary>
+<summary>❌ Ruim — N+1: uma query por ordem</summary>
 <br>
 
 ```php
@@ -62,7 +62,7 @@ foreach ($orders as $order) {
 <br>
 
 <details>
-<summary>✅ Good — carregamento em lote com uma query</summary>
+<summary>✅ Bom — carregamento em lote com uma query</summary>
 <br>
 
 ```php
@@ -86,7 +86,7 @@ foreach ($orders as $order) {
 Use `yield` para processar grandes volumes de dados sem carregar tudo na memória.
 
 <details>
-<summary>❌ Bad — carrega todos os registros em memória</summary>
+<summary>❌ Ruim — carrega todos os registros em memória</summary>
 <br>
 
 ```php
@@ -106,7 +106,7 @@ foreach ($this->repository->findAllOrders() as $order) {
 <br>
 
 <details>
-<summary>✅ Good — generator: processa um registro por vez</summary>
+<summary>✅ Bom — generator: processa um registro por vez</summary>
 <br>
 
 ```php
@@ -132,7 +132,7 @@ Use lazy objects para diferir a inicialização de objetos pesados até que seja
 realmente necessários.
 
 <details>
-<summary>✅ Good — lazy initializer com Reflection (PHP 8.4)</summary>
+<summary>✅ Bom — lazy initializer com Reflection (PHP 8.4)</summary>
 <br>
 
 ```php
@@ -171,7 +171,7 @@ Evite concatenação em loop. Use `implode` para juntar arrays ou `sprintf`/here
 para strings complexas.
 
 <details>
-<summary>❌ Bad — concatenação em loop, O(n²)</summary>
+<summary>❌ Ruim — concatenação em loop, O(n²)</summary>
 <br>
 
 ```php
@@ -186,7 +186,7 @@ foreach ($orders as $order) {
 <br>
 
 <details>
-<summary>✅ Good — array + implode: uma única alocação de string</summary>
+<summary>✅ Bom — array + implode: uma única alocação de string</summary>
 <br>
 
 ```php
@@ -206,7 +206,7 @@ Use `array_map` para transformações puras. Use `foreach` para efeitos colatera
 (salvar, enviar, logar). Nunca misture transformação e efeito colateral.
 
 <details>
-<summary>✅ Good — separação de transformação e efeito colateral</summary>
+<summary>✅ Bom — separação de transformação e efeito colateral</summary>
 <br>
 
 ```php

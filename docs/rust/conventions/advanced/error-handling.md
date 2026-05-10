@@ -22,7 +22,7 @@ na presença de `Err` ou `None` e não tem lugar em código de produção.
 Nunca use `unwrap()` ou `expect()` em código de produção. Use `?` ou trate o `Result`.
 
 <details>
-<summary>❌ Bad — unwrap que pânica em produção</summary>
+<summary>❌ Ruim — unwrap que pânica em produção</summary>
 <br>
 
 ```rust
@@ -37,7 +37,7 @@ fn load_config() -> Config {
 <br>
 
 <details>
-<summary>✅ Good — ? propaga o erro ao chamador</summary>
+<summary>✅ Bom — ? propaga o erro ao chamador</summary>
 <br>
 
 ```rust
@@ -60,7 +60,7 @@ fn load_config() -> anyhow::Result<Config> {
 propagar contexto legível até o ponto de log ou resposta HTTP.
 
 <details>
-<summary>❌ Bad — Box<dyn Error> sem contexto</summary>
+<summary>❌ Ruim — Box<dyn Error> sem contexto</summary>
 <br>
 
 ```rust
@@ -75,7 +75,7 @@ fn find_order(order_id: u64) -> Result<Order, Box<dyn std::error::Error>> {
 <br>
 
 <details>
-<summary>✅ Good — anyhow com contexto progressivo</summary>
+<summary>✅ Bom — anyhow com contexto progressivo</summary>
 <br>
 
 ```rust
@@ -100,7 +100,7 @@ Use `thiserror` em bibliotecas e módulos com múltiplos tipos de falha distinto
 Permite que o chamador faça match no tipo de erro.
 
 <details>
-<summary>❌ Bad — String como tipo de erro</summary>
+<summary>❌ Ruim — String como tipo de erro</summary>
 <br>
 
 ```rust
@@ -118,7 +118,7 @@ fn charge_customer(amount: f64) -> Result<Receipt, String> {
 <br>
 
 <details>
-<summary>✅ Good — enum de erro tipado com thiserror</summary>
+<summary>✅ Bom — enum de erro tipado com thiserror</summary>
 <br>
 
 ```rust
@@ -157,7 +157,7 @@ async fn charge_customer(amount: f64) -> Result<Receipt, PaymentError> {
 Nunca ignore um erro com `let _ = ...`. Propague ou registre no log.
 
 <details>
-<summary>❌ Bad — erro descartado silenciosamente</summary>
+<summary>❌ Ruim — erro descartado silenciosamente</summary>
 <br>
 
 ```rust
@@ -170,7 +170,7 @@ let _ = update_order_status(order_id, status).await;  // falha ignorada
 <br>
 
 <details>
-<summary>✅ Good — erro registrado ou propagado</summary>
+<summary>✅ Bom — erro registrado ou propagado</summary>
 <br>
 
 ```rust
@@ -190,7 +190,7 @@ Converta `Result` em resposta HTTP na fronteira do handler. Nunca deixe `anyhow:
 vazar para o cliente.
 
 <details>
-<summary>❌ Bad — erro interno exposto na resposta</summary>
+<summary>❌ Ruim — erro interno exposto na resposta</summary>
 <br>
 
 ```rust
@@ -205,7 +205,7 @@ async fn get_order(path: axum::extract::Path<u64>) -> String {
 <br>
 
 <details>
-<summary>✅ Good — Result mapeado para status HTTP na fronteira</summary>
+<summary>✅ Bom — Result mapeado para status HTTP na fronteira</summary>
 <br>
 
 ```rust

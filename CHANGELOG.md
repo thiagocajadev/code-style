@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.3] - 2026-05-10
+
+### Changed
+
+- `docs/shared/standards/visual-density.md` — refatoração: removido o vocabulário "atomic/atômico" (`atomic block`, `linhas atômicas`, `trio atômico`, `atomics`); substituído por terminologia transparente (`tight pair` → par grudado; `tight trio` → trio grudado; "três declarações simples"); explicações reescritas em voz mais direta; padrão EN→PT explícito em todos os conceitos
+- `docs/shared/` — gaps R3/R3b zerados (26 → 0): expansão `**SIGLA** (English, PT)` na primeira ocorrência em color-theory (WCAG/OKLCH/UI/AAA), testing (SQL), mobile/{navigation,offline-first,state-management} (URL/UI), platform/{bots,bots-advanced} (callback/UI/API/REST/URL/HTTP/Secret), platform/iot (IoT/CPU), platform/integrations (API/REST/CI/CD/XML/ISO/RTS/CTS/UX em linha única para o padrão capturar)
+- `docs/**/*.md` + `docs/**/*.java` — 3025 substituições em 299 arquivos: `❌ Bad` → `❌ Ruim`, `✅ Good` → `✅ Bom`. Classificação dos blocos pelos auditores continua via emoji ✅/❌, então `audit:docs` segue limpo
+
 ## [1.28.2] - 2026-05-09
 
 ### Changed

@@ -18,7 +18,7 @@ circula com tipos garantidos. Revalidar dados internos é sinal de desconfiança
 | **dataclass** (classe de dados) | decorator da stdlib para gerar `__init__`, `__repr__`, `__eq__` automaticamente |
 
 <details>
-<summary>❌ Bad — verificações manuais duplicadas, sem contrato</summary>
+<summary>❌ Ruim — verificações manuais duplicadas, sem contrato</summary>
 <br>
 
 ```python
@@ -40,7 +40,7 @@ def create_order(data: dict):
 <br>
 
 <details>
-<summary>✅ Good — Pydantic valida na fronteira, tipo garantido no domínio</summary>
+<summary>✅ Bom — Pydantic valida na fronteira, tipo garantido no domínio</summary>
 <br>
 
 ```python
@@ -69,7 +69,7 @@ O pipeline de validação tem responsabilidades distintas, cada uma no seu lugar
 Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
 
 <details>
-<summary>❌ Bad — sanitize, schema, regras de negócio e output misturados na mesma função</summary>
+<summary>❌ Ruim — sanitize, schema, regras de negócio e output misturados na mesma função</summary>
 <br>
 
 ```python
@@ -95,7 +95,7 @@ async def create_order(body: dict):
 <br>
 
 <details>
-<summary>✅ Good — cada camada no seu lugar</summary>
+<summary>✅ Bom — cada camada no seu lugar</summary>
 <br>
 
 ```python
@@ -118,7 +118,7 @@ Antes de validar, limpar: `.strip()` em strings, `.lower()` em emails. Dados suj
 validação suja: um email com espaço passa no schema mas falha na busca no banco.
 
 <details>
-<summary>❌ Bad — dados brutos chegam direto na validação</summary>
+<summary>❌ Ruim — dados brutos chegam direto na validação</summary>
 <br>
 
 ```python
@@ -133,7 +133,7 @@ async def create_user(body: dict):
 <br>
 
 <details>
-<summary>✅ Good — sanitize antes de validar</summary>
+<summary>✅ Bom — sanitize antes de validar</summary>
 <br>
 
 ```python
@@ -171,7 +171,7 @@ Pydantic valida shape, tipos e constraints — nunca regras de negócio. Central
 técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
-<summary>❌ Bad — verificações manuais duplicadas, sem contrato</summary>
+<summary>❌ Ruim — verificações manuais duplicadas, sem contrato</summary>
 <br>
 
 ```python
@@ -193,7 +193,7 @@ def create_order(data: dict):
 <br>
 
 <details>
-<summary>✅ Good — schema centralizado, handler recebe dado tipado e validado</summary>
+<summary>✅ Bom — schema centralizado, handler recebe dado tipado e validado</summary>
 <br>
 
 ```python
@@ -225,7 +225,7 @@ Schema valida se o dado tem o formato correto. Regras de negócio validam se faz
 domínio — dependem de **I/O** (Input/Output, Entrada/Saída) (banco, serviços externos) e não pertencem ao schema.
 
 <details>
-<summary>❌ Bad — I/O dentro do validador mistura camadas</summary>
+<summary>❌ Ruim — I/O dentro do validador mistura camadas</summary>
 <br>
 
 ```python
@@ -248,7 +248,7 @@ class OrderInput(BaseModel):
 <br>
 
 <details>
-<summary>✅ Good — schema valida shape; domínio valida regras após</summary>
+<summary>✅ Bom — schema valida shape; domínio valida regras após</summary>
 <br>
 
 ```python
@@ -273,7 +273,7 @@ async def create_order(data: OrderInput):
 Regras de negócio falham rápido: valide na entrada da função, não após percorrer o fluxo inteiro.
 
 <details>
-<summary>❌ Bad — dado inválido percorre o fluxo antes de falhar</summary>
+<summary>❌ Ruim — dado inválido percorre o fluxo antes de falhar</summary>
 <br>
 
 ```python
@@ -292,7 +292,7 @@ async def issue_invoice(order_id: int, discount: float):
 <br>
 
 <details>
-<summary>✅ Good — guard clause valida na entrada, falha imediata</summary>
+<summary>✅ Bom — guard clause valida na entrada, falha imediata</summary>
 <br>
 
 ```python
@@ -317,7 +317,7 @@ O modelo de resposta é independente do modelo de domínio. Filtrar campos sens�
 evita vazamento acidental de dados.
 
 <details>
-<summary>❌ Bad — entidade direta vaza campos internos</summary>
+<summary>❌ Ruim — entidade direta vaza campos internos</summary>
 <br>
 
 ```python
@@ -332,7 +332,7 @@ async def get_user_profile(user_id: int):
 <br>
 
 <details>
-<summary>✅ Good — modelo de resposta declara os campos permitidos</summary>
+<summary>✅ Bom — modelo de resposta declara os campos permitidos</summary>
 <br>
 
 ```python

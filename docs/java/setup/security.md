@@ -22,7 +22,7 @@ Segurança começa no limite do sistema: nunca confie em **input** (entrada), nu
 Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-fonte.
 
 <details>
-<summary>❌ Bad — segredo hardcoded no código</summary>
+<summary>❌ Ruim — segredo hardcoded no código</summary>
 <br>
 
 ```java
@@ -43,7 +43,7 @@ public DataSource dataSource() {
 <br>
 
 <details>
-<summary>✅ Good — variáveis de ambiente via @ConfigurationProperties</summary>
+<summary>✅ Bom — variáveis de ambiente via @ConfigurationProperties</summary>
 <br>
 
 ```yaml
@@ -74,7 +74,7 @@ public record SecurityProperties(
 ## Spring Security — configuração mínima
 
 <details>
-<summary>✅ Good — SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
+<summary>✅ Bom — SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
 <br>
 
 ```java
@@ -111,7 +111,7 @@ public class SecurityConfig {
 Nunca armazene senhas em texto puro. Nunca use MD5 ou SHA-1.
 
 <details>
-<summary>❌ Bad — senha em texto puro ou hash fraco</summary>
+<summary>❌ Ruim — senha em texto puro ou hash fraco</summary>
 <br>
 
 ```java
@@ -124,7 +124,7 @@ user.setPassword(DigestUtils.md5Hex(input.password()));    // MD5 é reversível
 <br>
 
 <details>
-<summary>✅ Good — BCrypt com custo configurável</summary>
+<summary>✅ Bom — BCrypt com custo configurável</summary>
 <br>
 
 ```java
@@ -152,7 +152,7 @@ public class UserService {
 Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens malformados.
 
 <details>
-<summary>✅ Good — filtro JWT com validação completa</summary>
+<summary>✅ Bom — filtro JWT com validação completa</summary>
 <br>
 
 ```java
@@ -198,7 +198,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 Use `@PreAuthorize` para autorização granular por role (papel) ou permissão específica.
 
 <details>
-<summary>✅ Good — autorização declarativa no método</summary>
+<summary>✅ Bom — autorização declarativa no método</summary>
 <br>
 
 ```java
@@ -232,7 +232,7 @@ public class AdminController {
 Nunca deixe CORS permissivo em produção. Configure origens, métodos e headers permitidos.
 
 <details>
-<summary>❌ Bad — CORS aberto para tudo</summary>
+<summary>❌ Ruim — CORS aberto para tudo</summary>
 <br>
 
 ```java
@@ -245,7 +245,7 @@ corsConfig.addAllowedMethod("*"); // permite qualquer método
 <br>
 
 <details>
-<summary>✅ Good — CORS restrito por ambiente</summary>
+<summary>✅ Bom — CORS restrito por ambiente</summary>
 <br>
 
 ```java

@@ -21,7 +21,7 @@ Converta o dado bruto em um tipo validado o mais cedo possível. Funções inter
 apenas o tipo validado.
 
 <details>
-<summary>❌ Bad — String bruta repassada para o domínio</summary>
+<summary>❌ Ruim — String bruta repassada para o domínio</summary>
 <br>
 
 ```rust
@@ -37,7 +37,7 @@ async fn create_order(email: String, amount: f64) -> anyhow::Result<Order> {
 <br>
 
 <details>
-<summary>✅ Good — tipo validado como contrato</summary>
+<summary>✅ Bom — tipo validado como contrato</summary>
 <br>
 
 ```rust
@@ -81,7 +81,7 @@ async fn create_order(email: ValidatedEmail, amount: PositiveAmount) -> anyhow::
 Use `#[derive(Validate)]` para validação declarativa de requests de entrada.
 
 <details>
-<summary>❌ Bad — validação manual espalhada no handler</summary>
+<summary>❌ Ruim — validação manual espalhada no handler</summary>
 <br>
 
 ```rust
@@ -108,7 +108,7 @@ async fn create_order_handler(
 <br>
 
 <details>
-<summary>✅ Good — validator derive + validação centralizada</summary>
+<summary>✅ Bom — validator derive + validação centralizada</summary>
 <br>
 
 ```rust
@@ -145,7 +145,7 @@ async fn create_order_handler(
 Mensagens de erro de validação devem ser legíveis e identificar o campo problemático.
 
 <details>
-<summary>❌ Bad — erro genérico sem campo</summary>
+<summary>❌ Ruim — erro genérico sem campo</summary>
 <br>
 
 ```rust
@@ -161,7 +161,7 @@ fn validate_payment(payment: &Payment) -> anyhow::Result<()> {
 <br>
 
 <details>
-<summary>✅ Good — erro com campo e valor</summary>
+<summary>✅ Bom — erro com campo e valor</summary>
 <br>
 
 ```rust

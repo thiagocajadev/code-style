@@ -23,7 +23,7 @@ Prefira `readonly` para propriedades que representam identidade ou configuraçã
 Use ponteiros (`&`) apenas quando a semântica de referência for realmente necessária.
 
 <details>
-<summary>❌ Bad — propriedade mutável sem motivo</summary>
+<summary>❌ Ruim — propriedade mutável sem motivo</summary>
 <br>
 
 ```php
@@ -46,7 +46,7 @@ $id->value = 99; // mutação acidental
 <br>
 
 <details>
-<summary>✅ Good — readonly garante imutabilidade de value object</summary>
+<summary>✅ Bom — readonly garante imutabilidade de value object</summary>
 <br>
 
 ```php
@@ -71,7 +71,7 @@ $id = new OrderID(42);
 Substitua literais inline por constantes de classe nomeadas.
 
 <details>
-<summary>❌ Bad — literais sem nome</summary>
+<summary>❌ Ruim — literais sem nome</summary>
 <br>
 
 ```php
@@ -89,7 +89,7 @@ if ($order->status === 'pending') {
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas revelam intenção</summary>
+<summary>✅ Bom — constantes nomeadas revelam intenção</summary>
 <br>
 
 ```php
@@ -126,7 +126,7 @@ Use property hooks para encapsular lógica simples de get/set sem criar métodos
 separados. Mantenha hooks simples; extraia para métodos se a lógica crescer.
 
 <details>
-<summary>❌ Bad — getters/setters boilerplate para lógica simples</summary>
+<summary>❌ Ruim — getters/setters boilerplate para lógica simples</summary>
 <br>
 
 ```php
@@ -151,7 +151,7 @@ class User
 <br>
 
 <details>
-<summary>✅ Good — property hook com lógica inline</summary>
+<summary>✅ Bom — property hook com lógica inline</summary>
 <br>
 
 ```php
@@ -176,7 +176,7 @@ Sempre declare o tipo de propriedades de classe. Use `?Type` para indicar que o 
 pode ser nulo. Evite `mixed` onde o tipo é conhecido.
 
 <details>
-<summary>❌ Bad — propriedades sem tipo</summary>
+<summary>❌ Ruim — propriedades sem tipo</summary>
 <br>
 
 ```php
@@ -194,7 +194,7 @@ class Order
 <br>
 
 <details>
-<summary>✅ Good — tipos explícitos em todas as propriedades</summary>
+<summary>✅ Bom — tipos explícitos em todas as propriedades</summary>
 <br>
 
 ```php
@@ -221,7 +221,7 @@ class Order
 Nunca use `global` ou `$GLOBALS`. Passe dependências via construtor ou parâmetro.
 
 <details>
-<summary>❌ Bad — variável global</summary>
+<summary>❌ Ruim — variável global</summary>
 <br>
 
 ```php
@@ -239,7 +239,7 @@ function findUser(int $userID): ?array
 <br>
 
 <details>
-<summary>✅ Good — dependência injetada via construtor</summary>
+<summary>✅ Bom — dependência injetada via construtor</summary>
 <br>
 
 ```php

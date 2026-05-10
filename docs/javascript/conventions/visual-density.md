@@ -27,7 +27,7 @@ JavaScript/Node.js.
 três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Bad — denso demais: todos os passos colados</summary>
+<summary>❌ Ruim — denso demais: todos os passos colados</summary>
 <br>
 
 ```js
@@ -48,7 +48,7 @@ async function registerUser(input) {
 <br>
 
 <details>
-<summary>✅ Good — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
 <br>
 
 ```js
@@ -76,7 +76,7 @@ Uma `const` nomeada acima do `return` explica o valor retornado. Quando há
 blank. A linha em branco separa o par do que vem antes, não fragmenta o par.
 
 <details>
-<summary>❌ Bad — blank fragmenta o par</summary>
+<summary>❌ Ruim — blank fragmenta o par</summary>
 <br>
 
 ```js
@@ -92,7 +92,7 @@ function mapErrorToStatus(error) {
 <br>
 
 <details>
-<summary>✅ Good — par tight</summary>
+<summary>✅ Bom — par tight</summary>
 <br>
 
 ```js
@@ -110,7 +110,7 @@ Quando há dois ou mais passos distintos antes do `return`, o blank line marca a
 transição do "preparar" para o "entregar".
 
 <details>
-<summary>✅ Good — 3 passos antes do return</summary>
+<summary>✅ Bom — 3 passos antes do return</summary>
 <br>
 
 ```js
@@ -145,7 +145,7 @@ Uma variável seguida do seu `if` de guarda formam par semântico. A linha em
 branco vem **depois** do par, nunca entre eles.
 
 <details>
-<summary>❌ Bad — variável solta do seu guarda</summary>
+<summary>❌ Ruim — variável solta do seu guarda</summary>
 <br>
 
 ```js
@@ -160,7 +160,7 @@ const invoice = buildInvoice(order);
 <br>
 
 <details>
-<summary>✅ Good — variável e guarda juntos, separados do próximo passo</summary>
+<summary>✅ Bom — variável e guarda juntos, separados do próximo passo</summary>
 <br>
 
 ```js
@@ -179,7 +179,7 @@ Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três
 juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Bad — órfão entre blanks</summary>
+<summary>❌ Ruim — órfão entre blanks</summary>
 <br>
 
 ```js
@@ -194,7 +194,7 @@ const ONE_DAY_MS = 86_400_000;
 <br>
 
 <details>
-<summary>✅ Good — trio tight</summary>
+<summary>✅ Bom — trio tight</summary>
 <br>
 
 ```js
@@ -208,7 +208,7 @@ const ONE_DAY_MS = 86_400_000;
 <br>
 
 <details>
-<summary>✅ Good — 4 atomics viram 2+2</summary>
+<summary>✅ Bom — 4 atomics viram 2+2</summary>
 <br>
 
 ```js
@@ -228,7 +228,7 @@ duas formam par. A quebra natural fica antes do par, não entre ele e sua
 dependência direta.
 
 <details>
-<summary>❌ Bad — dependência direta partida</summary>
+<summary>❌ Ruim — dependência direta partida</summary>
 <br>
 
 ```js
@@ -248,7 +248,7 @@ function buildShippingLabel(order) {
 <br>
 
 <details>
-<summary>✅ Good — par semântico tight</summary>
+<summary>✅ Bom — par semântico tight</summary>
 <br>
 
 ```js
@@ -271,7 +271,7 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
 são todas atômicas homogêneas.
 
 <details>
-<summary>❌ Bad — 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
 <br>
 
 ```js
@@ -287,7 +287,7 @@ while (attempt < maxAttempts) {
 <br>
 
 <details>
-<summary>✅ Good — declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
 <br>
 
 ```js
@@ -307,7 +307,7 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 deixar cada fase visível.
 
 <details>
-<summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
 <br>
 
 ```js
@@ -325,7 +325,7 @@ async function createUserHandler(req, res) {
 <br>
 
 <details>
-<summary>✅ Good — fases explícitas</summary>
+<summary>✅ Bom — fases explícitas</summary>
 <br>
 
 ```js
@@ -348,7 +348,7 @@ O `expect` é fase distinta. A linha em branco antes dele separa o que está sen
 verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
 <br>
 
 ```js
@@ -365,7 +365,7 @@ it("applies percentage discount to order price", () => {
 <br>
 
 <details>
-<summary>✅ Good — expect separado, assertion como fase própria</summary>
+<summary>✅ Bom — expect separado, assertion como fase própria</summary>
 <br>
 
 ```js
@@ -386,7 +386,7 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
 <br>
 
 ```js
@@ -400,7 +400,7 @@ function buildDeliveryMessage(user, order) {
 <br>
 
 <details>
-<summary>✅ Good — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
 <br>
 
 ```js

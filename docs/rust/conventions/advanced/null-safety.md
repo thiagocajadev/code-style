@@ -23,7 +23,7 @@ tratado antes de usar o valor interno.
 ## unwrap em produção
 
 <details>
-<summary>❌ Bad — unwrap pânica em None</summary>
+<summary>❌ Ruim — unwrap pânica em None</summary>
 <br>
 
 ```rust
@@ -37,7 +37,7 @@ fn get_shipping_address(order: &Order) -> String {
 <br>
 
 <details>
-<summary>✅ Good — Option propagada ou tratada explicitamente</summary>
+<summary>✅ Bom — Option propagada ou tratada explicitamente</summary>
 <br>
 
 ```rust
@@ -58,7 +58,7 @@ fn get_shipping_address_or_default(order: &Order) -> &str {
 `let-else` é a forma idiomática de guard clause com desestruturação de `Option`.
 
 <details>
-<summary>❌ Bad — if/else aninhado para Option</summary>
+<summary>❌ Ruim — if/else aninhado para Option</summary>
 <br>
 
 ```rust
@@ -77,7 +77,7 @@ fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
 <br>
 
 <details>
-<summary>✅ Good — let-else para guard, if para validação</summary>
+<summary>✅ Bom — let-else para guard, if para validação</summary>
 <br>
 
 ```rust
@@ -101,7 +101,7 @@ fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
 Transforme e encadeie `Option` sem sair da cadeia funcional.
 
 <details>
-<summary>❌ Bad — checagem manual com if let em cada passo</summary>
+<summary>❌ Ruim — checagem manual com if let em cada passo</summary>
 <br>
 
 ```rust
@@ -122,7 +122,7 @@ fn get_customer_city(order: &Order) -> Option<String> {
 <br>
 
 <details>
-<summary>✅ Good — cadeia map/and_then</summary>
+<summary>✅ Bom — cadeia map/and_then</summary>
 <br>
 
 ```rust
@@ -144,7 +144,7 @@ fn get_customer_city(order: &Order) -> Option<String> {
 Converta `Option` em `Result` quando precisar de `?` para propagação de erro.
 
 <details>
-<summary>❌ Bad — match manual para converter Option em Result</summary>
+<summary>❌ Ruim — match manual para converter Option em Result</summary>
 <br>
 
 ```rust
@@ -163,7 +163,7 @@ async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
 <br>
 
 <details>
-<summary>✅ Good — ok_or_else converte Option em Result idiomaticamente</summary>
+<summary>✅ Bom — ok_or_else converte Option em Result idiomaticamente</summary>
 <br>
 
 ```rust
@@ -184,7 +184,7 @@ Em contextos async, dados compartilhados entre tasks requerem `Arc` para contage
 referências thread-safe. `Mutex` ou `RwLock` para mutabilidade compartilhada.
 
 <details>
-<summary>❌ Bad — clone excessivo de dados grandes</summary>
+<summary>❌ Ruim — clone excessivo de dados grandes</summary>
 <br>
 
 ```rust
@@ -202,7 +202,7 @@ async fn process_batch(orders: Vec<Order>) {
 <br>
 
 <details>
-<summary>✅ Good — Arc para ownership compartilhado sem clone</summary>
+<summary>✅ Bom — Arc para ownership compartilhado sem clone</summary>
 <br>
 
 ```rust

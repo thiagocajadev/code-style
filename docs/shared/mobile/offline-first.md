@@ -8,7 +8,8 @@ túnel, roaming, sinal fraco. Um app que falha silenciosamente sem rede transfer
 problema que é responsabilidade do produto.
 
 A diferença em relação a um app com cache simples: no offline-first, o banco local é a fonte de
-verdade da UI. A rede atualiza o banco; o banco atualiza a UI.
+verdade da **UI** (User Interface, interface do usuário). A rede atualiza o banco; o banco atualiza
+a UI.
 
 ## Conceitos fundamentais
 

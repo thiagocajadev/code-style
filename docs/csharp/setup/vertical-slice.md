@@ -449,7 +449,7 @@ public static class OrderResponseFilterOutput
 O handler orquestra os 6 steps em sequência. Retorna cedo na falha, nunca implementa lógica diretamente.
 
 <details>
-<summary>❌ Bad — lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
+<summary>❌ Ruim — lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
 <br>
 
 ```csharp
@@ -473,7 +473,7 @@ public static async Task<IResult> Handle(
 <br>
 
 <details>
-<summary>✅ Good — orquestrador slim, 6 steps explícitos</summary>
+<summary>✅ Bom — orquestrador slim, 6 steps explícitos</summary>
 <br>
 
 ```csharp
@@ -609,7 +609,7 @@ Para convenções de teste completas, ver [testing.md](../advanced/testing.md).
 ## Anti-patterns
 
 <details>
-<summary>❌ Bad — violações frequentes no padrão vertical slice</summary>
+<summary>❌ Ruim — violações frequentes no padrão vertical slice</summary>
 <br>
 
 ```csharp

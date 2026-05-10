@@ -71,7 +71,7 @@ linter:
 ```
 
 <details>
-<summary>❌ Bad — análise estática ignorada</summary>
+<summary>❌ Ruim — análise estática ignorada</summary>
 <br>
 
 ```dart
@@ -85,7 +85,7 @@ dynamic processData(data) {   // sem tipo de retorno, parâmetro dynamic
 <br>
 
 <details>
-<summary>✅ Good — tipos explícitos, sem print</summary>
+<summary>✅ Bom — tipos explícitos, sem print</summary>
 <br>
 
 ```dart

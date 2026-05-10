@@ -38,7 +38,7 @@ my-program/
 ## Instrução — BAD/GOOD
 
 <details>
-<summary>❌ Bad — sem validação de accounts, lógica na instrução</summary>
+<summary>❌ Ruim — sem validação de accounts, lógica na instrução</summary>
 <br>
 
 ```rust
@@ -84,7 +84,7 @@ pub struct Product {
 <br>
 
 <details>
-<summary>✅ Good — constraint de autorização + validação de entrada</summary>
+<summary>✅ Bom — constraint de autorização + validação de entrada</summary>
 <br>
 
 ```rust
@@ -181,7 +181,7 @@ Cada instrução declara explicitamente os accounts que acessa. O runtime valida
 mutabilidade e assinatura antes de executar o programa.
 
 <details>
-<summary>❌ Bad — account sem constraint, mutabilidade excessiva</summary>
+<summary>❌ Ruim — account sem constraint, mutabilidade excessiva</summary>
 <br>
 
 ```rust
@@ -202,7 +202,7 @@ pub struct WithdrawFunds<'info> {
 <br>
 
 <details>
-<summary>✅ Good — account tipado, constraint de ownership, PDA verificado</summary>
+<summary>✅ Bom — account tipado, constraint de ownership, PDA verificado</summary>
 <br>
 
 ```rust

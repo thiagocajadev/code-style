@@ -18,7 +18,7 @@ Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mist
 `new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com timezones diferentes, o mesmo código produz resultados diferentes.
 
 <details>
-<summary>❌ Bad — captura hora local, comportamento depende do servidor</summary>
+<summary>❌ Ruim — captura hora local, comportamento depende do servidor</summary>
 <br>
 
 ```js
@@ -31,7 +31,7 @@ const createdAt = new Date().toString();
 <br>
 
 <details>
-<summary>✅ Good — UTC explícito, resultado idêntico em qualquer ambiente</summary>
+<summary>✅ Bom — UTC explícito, resultado idêntico em qualquer ambiente</summary>
 <br>
 
 ```js
@@ -46,7 +46,7 @@ const createdAt = new Date().toISOString();
 O comportamento de `new Date(string)` muda conforme o formato passado e varia entre engines.
 
 <details>
-<summary>❌ Bad — formato ambíguo, resultado local-dependente</summary>
+<summary>❌ Ruim — formato ambíguo, resultado local-dependente</summary>
 <br>
 
 ```js
@@ -63,7 +63,7 @@ const date2 = new Date("2026-01-15");
 <br>
 
 <details>
-<summary>✅ Good — **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
+<summary>✅ Bom — **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
 <br>
 
 ```js
@@ -79,7 +79,7 @@ Armazenar ou transmitir com `toLocaleDateString()` embute o fuso no valor: impos
 depois. Separar armazenamento de exibição mantém o dado portável.
 
 <details>
-<summary>❌ Bad — exibição misturada com armazenamento</summary>
+<summary>❌ Ruim — exibição misturada com armazenamento</summary>
 <br>
 
 ```js
@@ -95,7 +95,7 @@ const order = {
 <br>
 
 <details>
-<summary>✅ Good — armazenar UTC, formatar só na camada de exibição</summary>
+<summary>✅ Bom — armazenar UTC, formatar só na camada de exibição</summary>
 <br>
 
 ```js

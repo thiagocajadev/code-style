@@ -22,7 +22,7 @@ operações. Lotes menores liberam o lock entre cada commit.
 ## Batch INSERT multi-row
 
 <details>
-<summary>❌ Bad — um INSERT por linha, um round trip por registro</summary>
+<summary>❌ Ruim — um INSERT por linha, um round trip por registro</summary>
 <br>
 
 ```sql
@@ -36,7 +36,7 @@ INSERT INTO Players (Id, Name, Position, TeamId) VALUES (3, 'Carol', 'ST', @Team
 <br>
 
 <details>
-<summary>✅ Good — um INSERT com múltiplos VALUES</summary>
+<summary>✅ Bom — um INSERT com múltiplos VALUES</summary>
 <br>
 
 ```sql
@@ -61,7 +61,7 @@ Quando os dados vêm de outra tabela, `INSERT ... SELECT` é preferível: uma op
 construção de lista de VALUES no código.
 
 <details>
-<summary>✅ Good — INSERT ... SELECT de tabela de origem</summary>
+<summary>✅ Bom — INSERT ... SELECT de tabela de origem</summary>
 <br>
 
 ```sql
@@ -90,7 +90,7 @@ WHERE
 ## DELETE em lotes
 
 <details>
-<summary>❌ Bad — DELETE único em tabela grande: lock de longa duração</summary>
+<summary>❌ Ruim — DELETE único em tabela grande: lock de longa duração</summary>
 <br>
 
 ```sql
@@ -107,7 +107,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
+<summary>✅ Bom — DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
 <br>
 
 ```sql
@@ -131,7 +131,7 @@ END;
 ## UPDATE em lotes
 
 <details>
-<summary>❌ Bad — UPDATE único em tabela grande</summary>
+<summary>❌ Ruim — UPDATE único em tabela grande</summary>
 <br>
 
 ```sql
@@ -155,7 +155,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
+<summary>✅ Bom — UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
 <br>
 
 ```sql
@@ -186,7 +186,7 @@ END;
 ## Staging table
 
 <details>
-<summary>❌ Bad — inserir dados externos diretamente na tabela de produção sem validação</summary>
+<summary>❌ Ruim — inserir dados externos diretamente na tabela de produção sem validação</summary>
 <br>
 
 ```sql
@@ -212,7 +212,7 @@ FROM
 <br>
 
 <details>
-<summary>✅ Good — staging → validar → inserir apenas registros válidos</summary>
+<summary>✅ Bom — staging → validar → inserir apenas registros válidos</summary>
 <br>
 
 ```sql

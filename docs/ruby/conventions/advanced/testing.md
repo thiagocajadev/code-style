@@ -23,7 +23,7 @@ Atestar), com fases explícitas e assertions (verificações) sem expressões in
 Fases explícitas em cada `it`. Um `expect` por exemplo; sem lógica inline no assert.
 
 <details>
-<summary>❌ Bad — fases misturadas, assert com lógica inline</summary>
+<summary>❌ Ruim — fases misturadas, assert com lógica inline</summary>
 <br>
 
 ```ruby
@@ -42,7 +42,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — AAA explícito, resultado nomeado</summary>
+<summary>✅ Bom — AAA explícito, resultado nomeado</summary>
 <br>
 
 ```ruby
@@ -66,7 +66,7 @@ end
 declara a expectativa em linguagem de negócio.
 
 <details>
-<summary>❌ Bad — nomes sem contexto, fases coladas</summary>
+<summary>❌ Ruim — nomes sem contexto, fases coladas</summary>
 <br>
 
 ```ruby
@@ -89,7 +89,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — hierarquia semântica, 1 expectativa por exemplo</summary>
+<summary>✅ Bom — hierarquia semântica, 1 expectativa por exemplo</summary>
 <br>
 
 ```ruby
@@ -124,7 +124,7 @@ Factories criam objetos expressivos sem acoplar o teste ao schema. Defina o esta
 válido na factory base; use `trait` para variações.
 
 <details>
-<summary>❌ Bad — criação manual sem contexto</summary>
+<summary>❌ Ruim — criação manual sem contexto</summary>
 <br>
 
 ```ruby
@@ -138,7 +138,7 @@ let(:order) { Order.new(id: 1, user_id: 5, total: 200, status: "active", created
 <br>
 
 <details>
-<summary>✅ Good — factory com estado mínimo e traits semânticos</summary>
+<summary>✅ Bom — factory com estado mínimo e traits semânticos</summary>
 <br>
 
 ```ruby
@@ -170,7 +170,7 @@ Mock dependências externas (API, banco de dados de terceiros, email). Dentro do
 prefira objetos reais ou fakes nomeados — não inline stubs.
 
 <details>
-<summary>❌ Bad — stub inline sem nome</summary>
+<summary>❌ Ruim — stub inline sem nome</summary>
 <br>
 
 ```ruby
@@ -190,7 +190,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — double nomeado, interface explícita</summary>
+<summary>✅ Bom — double nomeado, interface explícita</summary>
 <br>
 
 ```ruby

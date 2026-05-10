@@ -21,7 +21,7 @@ TypeScript deriva o tipo quando a atribuição é óbvia. Anotar o que já é vi
 que polui sem agregar.
 
 <details>
-<summary>❌ Bad — anotação repete o que a atribuição já diz</summary>
+<summary>❌ Ruim — anotação repete o que a atribuição já diz</summary>
 <br>
 
 ```ts
@@ -36,7 +36,7 @@ const orders: Order[] = [];
 <br>
 
 <details>
-<summary>✅ Good — inferência quando o tipo é óbvio</summary>
+<summary>✅ Bom — inferência quando o tipo é óbvio</summary>
 <br>
 
 ```ts
@@ -54,7 +54,7 @@ Inferência quebra quando o tipo não pode ser derivado do valor inicial: variá
 arrays vazios, objetos parcialmente construídos.
 
 <details>
-<summary>❌ Bad — tipo implícito `any` sem aviso visual</summary>
+<summary>❌ Ruim — tipo implícito `any` sem aviso visual</summary>
 <br>
 
 ```ts
@@ -67,7 +67,7 @@ const results = []; // never[] — TypeScript não sabe o tipo dos elementos
 <br>
 
 <details>
-<summary>✅ Good — anotação explícita onde a inferência não alcança</summary>
+<summary>✅ Bom — anotação explícita onde a inferência não alcança</summary>
 <br>
 
 ```ts
@@ -83,7 +83,7 @@ const results: Order[] = [];
 contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
 
 <details>
-<summary>❌ Bad — any apaga todo o benefício do TypeScript</summary>
+<summary>❌ Ruim — any apaga todo o benefício do TypeScript</summary>
 <br>
 
 ```ts
@@ -101,7 +101,7 @@ data.user.name; // TypeScript aceita, mas pode explodir em runtime
 <br>
 
 <details>
-<summary>✅ Good — unknown força narrowing antes do uso</summary>
+<summary>✅ Bom — unknown força narrowing antes do uso</summary>
 <br>
 
 ```ts
@@ -125,7 +125,7 @@ const data = raw; // narrowado para ApiResponse — seguro usar
 type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables e enums sem enum.
 
 <details>
-<summary>❌ Bad — tipo inferido como string, perde a especificidade</summary>
+<summary>❌ Ruim — tipo inferido como string, perde a especificidade</summary>
 <br>
 
 ```ts
@@ -145,7 +145,7 @@ function updateStatus(status: string) { /* ... */ } // sem restrição real
 <br>
 
 <details>
-<summary>✅ Good — as const preserva os literais</summary>
+<summary>✅ Bom — as const preserva os literais</summary>
 <br>
 
 ```ts
@@ -169,7 +169,7 @@ function updateStatus(status: OrderStatus) { /* ... */ } // só aceita os valore
 Diferente da anotação direta, que alarga o tipo para a interface.
 
 <details>
-<summary>❌ Bad — anotação direta alarga para o tipo base</summary>
+<summary>❌ Ruim — anotação direta alarga para o tipo base</summary>
 <br>
 
 ```ts
@@ -191,7 +191,7 @@ createOrder.method; // tipo: "GET" | "POST" | "PUT" | "DELETE" — perde a espec
 <br>
 
 <details>
-<summary>✅ Good — satisfies valida e preserva o tipo literal</summary>
+<summary>✅ Bom — satisfies valida e preserva o tipo literal</summary>
 <br>
 
 ```ts

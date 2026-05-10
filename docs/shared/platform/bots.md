@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma de mensagens e responde a eventos em nome de um usuário ou serviço. O bot recebe eventos da plataforma (mensagem, reação, callback), executa lógica e devolve uma resposta. A plataforma age como intermediária: o **bot** nunca fala diretamente com o usuário final, a mensagem passa pelo **gateway** (ponto de entrada da plataforma) em ambas as direções.
+Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma de mensagens e responde a eventos em nome de um usuário ou serviço. O bot recebe eventos da plataforma (mensagem, reação, **callback** (retorno de interação)), executa lógica e devolve uma resposta. A plataforma age como intermediária: o **bot** nunca fala diretamente com o usuário final, a mensagem passa pelo **gateway** (ponto de entrada da plataforma) em ambas as direções.
 
 ## Conceitos fundamentais
 

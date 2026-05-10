@@ -19,7 +19,7 @@ Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A dec
 `var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente: o leitor não deve precisar inferir.
 
 <details>
-<summary>❌ Bad — tipo obscuro</summary>
+<summary>❌ Ruim — tipo obscuro</summary>
 <br>
 
 ```csharp
@@ -32,7 +32,7 @@ var discount = Calculate(order);    // decimal? int? percentual ou valor absolut
 <br>
 
 <details>
-<summary>✅ Good — tipo legível; `var` apenas onde óbvio</summary>
+<summary>✅ Bom — tipo legível; `var` apenas onde óbvio</summary>
 <br>
 
 ```csharp
@@ -49,7 +49,7 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 `const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` não pode ser alterado após o construtor, para valores determinados em runtime. Campos que mudam onde só leitura é necessária são um contrato fraco.
 
 <details>
-<summary>❌ Bad — campo mutable onde deveria ser immutable</summary>
+<summary>❌ Ruim — campo mutable onde deveria ser immutable</summary>
 <br>
 
 ```csharp
@@ -70,7 +70,7 @@ public class OrderService
 <br>
 
 <details>
-<summary>✅ Good — valor fixo declarado explicitamente</summary>
+<summary>✅ Bom — valor fixo declarado explicitamente</summary>
 <br>
 
 ```csharp
@@ -88,7 +88,7 @@ public class OrderService(IConfiguration config)
 `record` expressa um contrato de dados immutable (que não muda) sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
 
 <details>
-<summary>❌ Bad — class mutável como contrato de dados</summary>
+<summary>❌ Ruim — class mutável como contrato de dados</summary>
 <br>
 
 ```csharp
@@ -104,7 +104,7 @@ public class OrderRequest
 <br>
 
 <details>
-<summary>✅ Good — record immutable, contrato explícito</summary>
+<summary>✅ Bom — record immutable, contrato explícito</summary>
 <br>
 
 ```csharp
@@ -118,7 +118,7 @@ public record OrderRequest(string ProductId, int Quantity);
 Literais embutidos escondem intenção. `const` nomeado documenta o significado: o nome é a documentação.
 
 <details>
-<summary>❌ Bad — literais sem significado</summary>
+<summary>❌ Ruim — literais sem significado</summary>
 <br>
 
 ```csharp
@@ -134,7 +134,7 @@ if (discount > 0.15m)    // limite de desconto? taxa? de onde vem esse número?
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas</summary>
+<summary>✅ Bom — constantes nomeadas</summary>
 <br>
 
 ```csharp
@@ -155,7 +155,7 @@ if (discount > MaxDiscountRate)
 `record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido: o chamador não deve ter seu estado alterado silenciosamente.
 
 <details>
-<summary>❌ Bad — mutação acoplada e efeito colateral oculto</summary>
+<summary>❌ Ruim — mutação acoplada e efeito colateral oculto</summary>
 <br>
 
 ```csharp
@@ -171,7 +171,7 @@ public void ApplyDiscount(Order order)
 <br>
 
 <details>
-<summary>✅ Good — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
 <br>
 
 ```csharp

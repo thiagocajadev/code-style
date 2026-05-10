@@ -25,7 +25,7 @@ Os exemplos usam **NLog** (biblioteca de logging para .NET) — amplamente adota
 Concatenação de string em logs destrói a estrutura: o valor vira texto, não campo. Message templates do NLog preservam cada argumento como propriedade estruturada no sink (arquivo, banco, Seq, etc.).
 
 <details>
-<summary>❌ Bad — concatenação destrói campos, perde stack trace</summary>
+<summary>❌ Ruim — concatenação destrói campos, perde stack trace</summary>
 <br>
 
 ```vbnet
@@ -38,7 +38,7 @@ _logger.Error("Payment failed: " & ex.Message & " for order " & order.Id.ToStrin
 <br>
 
 <details>
-<summary>✅ Good — message templates: cada argumento vira campo estruturado</summary>
+<summary>✅ Bom — message templates: cada argumento vira campo estruturado</summary>
 <br>
 
 ```vbnet
@@ -53,7 +53,7 @@ _logger.Error(ex, "Payment failed for {OrderId}", order.Id)
 ## Níveis de log
 
 <details>
-<summary>❌ Bad — Info para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim — Info para tudo, sem distinção de severidade</summary>
 <br>
 
 ```vbnet
@@ -67,7 +67,7 @@ _logger.Info("User {UserId} not found", userId)
 <br>
 
 <details>
-<summary>✅ Good — nível correto por situação</summary>
+<summary>✅ Bom — nível correto por situação</summary>
 <br>
 
 ```vbnet
@@ -92,7 +92,7 @@ _logger.Error("User {UserId} not found during checkout", userId)
 ## O que nunca logar
 
 <details>
-<summary>❌ Bad — PII e credenciais em log</summary>
+<summary>❌ Ruim — PII e credenciais em log</summary>
 <br>
 
 ```vbnet
@@ -106,7 +106,7 @@ _logger.Info("Token issued: {Token}", token)
 <br>
 
 <details>
-<summary>✅ Good — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
 <br>
 
 ```vbnet
@@ -124,7 +124,7 @@ _logger.Info("Token issued for {UserId}", user.Id)
 Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear o fluxo se torna inviável. Um `ActionFilterAttribute` ou `HttpModule` injeta o `CorrelationId` no `MappedDiagnosticsContext` (MDC) do NLog, enriquecendo todos os logs da requisição automaticamente.
 
 <details>
-<summary>❌ Bad — logs sem contexto de requisição</summary>
+<summary>❌ Ruim — logs sem contexto de requisição</summary>
 <br>
 
 ```vbnet
@@ -142,7 +142,7 @@ End Function
 <br>
 
 <details>
-<summary>✅ Good — CorrelationId no MDC enriquece todos os logs da request</summary>
+<summary>✅ Bom — CorrelationId no MDC enriquece todos os logs da request</summary>
 <br>
 
 ```vbnet
@@ -198,7 +198,7 @@ End Function
 ## Configuração do NLog
 
 <details>
-<summary>✅ Good — NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
+<summary>✅ Bom — NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
 <br>
 
 ```xml

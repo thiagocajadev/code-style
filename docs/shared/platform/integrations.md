@@ -2,12 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation,
-Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol,
-Protocolo de Transferência de Hipertexto). Configuração de ferramentas, APIs de
-parceiros, integração fiscal e hardware periférico exigem conhecer outros
-formatos e protocolos. Este guia cobre os padrões mais comuns — dos modernos aos
-legados.
+Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Configuração de ferramentas, **API** (Application Programming Interface, Interface de Programação de Aplicações) de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns — dos modernos aos legados.
 
 ## Conceitos fundamentais
 
@@ -73,9 +68,7 @@ query {
 
 - Múltiplos clientes (mobile, web, parceiros) com necessidades de dados muito
   diferentes
-- Over-fetching recorrente em APIs **REST** (Representational State Transfer,
-  Transferência de Estado Representacional) existentes que não podem ser
-  quebradas
+- Over-fetching recorrente em APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) existentes que não podem ser quebradas
 - Produto com queries de alto dinamismo que mudam com frequência
 
 **Quando não usar:**
@@ -100,7 +93,7 @@ uma API GraphQL pública.
 representa uma relação entre eles.</sub>
 
 <details>
-<summary>❌ Bad — busca todos os países, filtra no cliente, query inline</summary>
+<summary>❌ Ruim — busca todos os países, filtra no cliente, query inline</summary>
 <br>
 
 ```js
@@ -121,7 +114,7 @@ const country = json.data.countries.find((c) => c.code === "BR");
 <br>
 
 <details>
-<summary>✅ Good — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
+<summary>✅ Bom — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
 <br>
 
 ```js
@@ -196,11 +189,7 @@ ferramentas CLI.
 
 ## YAML
 
-**YAML** domina configuração de infraestrutura: pipelines de **CI/CD**
-(Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas
-— **CI**, Integração Contínua; **CD**, Entrega Contínua), Kubernetes, Docker
-Compose e ferramentas de automação. A hierarquia via indentação é expressiva,
-mas um tab no lugar de espaço quebra silenciosamente o parse.
+**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. Esse termo combina **CI** (Continuous Integration, Integração Contínua) com **CD** (Continuous Delivery, Entrega Contínua). A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
 
 ```yaml
 # docker-compose.yml
@@ -230,11 +219,7 @@ integração fiscal, bancária, industrial e de hardware periférico.
 
 ### XML e WebServices SOAP
 
-WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros
-(**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A
-comunicação ocorre via **SOAP Envelope** (envelope SOAP) — um **XML**
-(eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura
-fixa — e o contrato do serviço é descrito em um arquivo **WSDL**.
+WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros (**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A comunicação ocorre via **SOAP Envelope** (envelope SOAP) — um **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura fixa — e o contrato do serviço é descrito em um arquivo **WSDL**.
 
 O erro mais comum é navegar o XML sem levar em conta os namespaces. Um documento
 NF-e tem namespace `http://www.portalfiscal.inf.br/nfe`; ignorá-lo faz toda
@@ -242,7 +227,7 @@ navegação retornar nulo silenciosamente. Em Node.js, a biblioteca
 `@xmldom/xmldom` fornece `DOMParser` com suporte a namespaces.
 
 <details>
-<summary>❌ Bad: getElementsByTagName ignora namespace — retorna null sem erro</summary>
+<summary>❌ Ruim: getElementsByTagName ignora namespace — retorna null sem erro</summary>
 <br>
 
 ```js
@@ -259,7 +244,7 @@ const invoiceNumber = doc.getElementsByTagName("nNF")[0].textContent;
 <br>
 
 <details>
-<summary>✅ Good: getElementsByTagNameNS com namespace explícito e navegação segura</summary>
+<summary>✅ Bom: getElementsByTagNameNS com namespace explícito e navegação segura</summary>
 <br>
 
 ```js
@@ -313,7 +298,7 @@ Arquivos **SPED** usam pipe como separador. Cada linha começa com o tipo de
 registro (`|0000|`, `|C100|`).
 
 <details>
-<summary>❌ Bad: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
+<summary>❌ Ruim: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
 <br>
 
 ```js
@@ -329,7 +314,7 @@ const periodStart = fields[3];
 <br>
 
 <details>
-<summary>✅ Good: parser dedicado com campos nomeados</summary>
+<summary>✅ Bom: parser dedicado com campos nomeados</summary>
 <br>
 
 ```js
@@ -356,7 +341,7 @@ posição e comprimento. Números sem nome espalhados pelo código tornam qualqu
 manutenção de layout um risco.
 
 <details>
-<summary>❌ Bad: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
+<summary>❌ Ruim: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
 <br>
 
 ```js
@@ -371,7 +356,7 @@ const companyRegistrationNumber = line.slice(18, 32); // CNPJ
 <br>
 
 <details>
-<summary>✅ Good: layout como objeto, helper nomeado — posição e comprimento declarados juntos</summary>
+<summary>✅ Bom: layout como objeto, helper nomeado — posição e comprimento declarados juntos</summary>
 <br>
 
 ```js
@@ -402,10 +387,7 @@ const companyRegistrationNumber = extractField(
 
 **Boas práticas para arquivos texto:**
 
-- Validar encoding antes de processar; arquivos legados brasileiros
-  frequentemente usam **ISO** (International Organization for Standardization,
-  Organização Internacional de Normalização)-8859-1 (Latin-1) — em Node.js, usar
-  `{ encoding: 'latin1' }` no `fs.readFile`
+- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO** (International Organization for Standardization, Organização Internacional de Normalização)-8859-1 (Latin-1) — em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
 - Verificar total de linhas e somatório de valores contra os registros de
   trailer antes de importar
 - Nunca processar arquivo parcialmente — ler tudo, validar estrutura, só então
@@ -433,7 +415,7 @@ Estrutura mínima de uma etiqueta ZPL:
 ```
 
 <details>
-<summary>❌ Bad: ZPL montado por concatenação — posições e campos difíceis de manter</summary>
+<summary>❌ Ruim: ZPL montado por concatenação — posições e campos difíceis de manter</summary>
 <br>
 
 ```js
@@ -456,7 +438,7 @@ port.write(zpl);
 <br>
 
 <details>
-<summary>✅ Good: template dedicado, campos via destructuring</summary>
+<summary>✅ Bom: template dedicado, campos via destructuring</summary>
 <br>
 
 ```js
@@ -504,7 +486,7 @@ o pacote `serialport` expõe a leitura via stream de eventos — sem timeout
 configurado, o processo aguarda indefinidamente se o equipamento não responder.
 
 <details>
-<summary>❌ Bad: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
+<summary>❌ Ruim: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
 <br>
 
 ```js
@@ -524,7 +506,7 @@ parser.on("data", (rawLine) => {
 <br>
 
 <details>
-<summary>✅ Good: timeout explícito, porta fechada em todos os caminhos</summary>
+<summary>✅ Bom: timeout explícito, porta fechada em todos os caminhos</summary>
 <br>
 
 ```js
@@ -573,11 +555,7 @@ function readWeight(path = "COM3") {
 | Parity (paridade)               | None             | Bit de detecção de erro por frame; `Even` (par) / `Odd` (ímpar) somam os bits para checar integridade, mas a maioria dos equipamentos modernos usa `None` e delega a verificação ao protocolo |
 | Handshake                       | None ou RTS/CTS  | Impressoras antigas frequentemente requerem RTS/CTS                                                                                                                                           |
 
-**RTS** (Ready to Send, Pronto para Enviar) e **CTS** (Clear to Send, Livre para
-Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a
-linha RTS para indicar que quer transmitir; o receptor responde com CTS para
-indicar que está pronto para receber. Sem esse handshake, equipamentos lentos
-podem perder bytes durante a transmissão.
+**RTS** (Ready to Send, Pronto para Enviar) e **CTS** (Clear to Send, Livre para Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a linha RTS para indicar que quer transmitir; o receptor responde com CTS para indicar que está pronto para receber. Sem esse handshake, equipamentos lentos podem perder bytes durante a transmissão.
 
 **Boas práticas:**
 
@@ -595,19 +573,14 @@ podem perder bytes durante a transmissão.
 
 ## APIs de Modelos de IA (LLM APIs)
 
-APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias:
-cobrança por token, respostas incrementais via streaming e rate limits por
-minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User
-Experience, Experiência do Usuário) ruim e falhas em produção.
+APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias: cobrança por token, respostas incrementais via streaming e rate limits por minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User Experience, Experiência do Usuário) ruim e falhas em produção.
 
 ### Autenticação
 
-A **API** (Application Programming Interface, Interface de Programação de
-Aplicações) key nunca entra no código. Ela é resolvida via variável de ambiente
-na inicialização da aplicação.
+A **API key** (chave da API) nunca entra no código. Ela é resolvida via variável de ambiente na inicialização da aplicação.
 
 <details>
-<summary>❌ Bad — API key hardcoded no código</summary>
+<summary>❌ Ruim — API key hardcoded no código</summary>
 <br>
 
 ```js
@@ -619,7 +592,7 @@ const client = new Anthropic({ apiKey: "sk-ant-..." });
 <br>
 
 <details>
-<summary>✅ Good — API key resolvida via variável de ambiente</summary>
+<summary>✅ Bom — API key resolvida via variável de ambiente</summary>
 <br>
 
 ```js
@@ -637,7 +610,7 @@ completo antes de renderizar — latência percebida alta para respostas longas.
 Com streaming, o primeiro token chega em milissegundos.
 
 <details>
-<summary>❌ Bad — aguarda resposta completa antes de renderizar</summary>
+<summary>❌ Ruim — aguarda resposta completa antes de renderizar</summary>
 <br>
 
 ```js
@@ -655,7 +628,7 @@ console.log(message.content[0].text);
 <br>
 
 <details>
-<summary>✅ Good — streaming token-a-token via chunks</summary>
+<summary>✅ Bom — streaming token-a-token via chunks</summary>
 <br>
 
 ```js
@@ -682,7 +655,7 @@ impõem rate limits por minuto (RPM) e por token (TPM). Erros
 **exponential backoff** (recuo exponencial).
 
 <details>
-<summary>❌ Bad — sem retry, qualquer 429 vira erro irrecuperável</summary>
+<summary>❌ Ruim — sem retry, qualquer 429 vira erro irrecuperável</summary>
 <br>
 
 ```js
@@ -698,7 +671,7 @@ if (!response.ok) {
 <br>
 
 <details>
-<summary>✅ Good — exponential backoff em 429 Too Many Requests</summary>
+<summary>✅ Bom — exponential backoff em 429 Too Many Requests</summary>
 <br>
 
 ```js

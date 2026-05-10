@@ -23,7 +23,7 @@ seriam suficientes.
 Clone só quando o valor precisa viver mais que a referência ou quando não é possível emprestar.
 
 <details>
-<summary>❌ Bad — clone onde &str seria suficiente</summary>
+<summary>❌ Ruim — clone onde &str seria suficiente</summary>
 <br>
 
 ```rust
@@ -42,7 +42,7 @@ fn find_by_name(orders: &[Order], name: String) -> Option<&Order> { // String qu
 <br>
 
 <details>
-<summary>✅ Good — referências onde o valor não precisa ser owned</summary>
+<summary>✅ Bom — referências onde o valor não precisa ser owned</summary>
 <br>
 
 ```rust
@@ -63,7 +63,7 @@ Parâmetros de função que apenas leem strings devem aceitar `&str` para ser co
 com tanto `String` quanto `&str` sem alocação.
 
 <details>
-<summary>❌ Bad — String em parâmetro que só lê</summary>
+<summary>❌ Ruim — String em parâmetro que só lê</summary>
 <br>
 
 ```rust
@@ -80,7 +80,7 @@ validate_email(user.email.clone());
 <br>
 
 <details>
-<summary>✅ Good — &str aceita String e &str sem alocação</summary>
+<summary>✅ Bom — &str aceita String e &str sem alocação</summary>
 <br>
 
 ```rust
@@ -100,7 +100,7 @@ validate_email("alice@example.com");
 Não colete em `Vec` antes de precisar do resultado final. Encadeie iteradores lazy.
 
 <details>
-<summary>❌ Bad — coleta intermediária desnecessária</summary>
+<summary>❌ Ruim — coleta intermediária desnecessária</summary>
 <br>
 
 ```rust
@@ -116,7 +116,7 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 <br>
 
 <details>
-<summary>✅ Good — pipeline lazy sem alocação intermediária</summary>
+<summary>✅ Bom — pipeline lazy sem alocação intermediária</summary>
 <br>
 
 ```rust
@@ -136,7 +136,7 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 Quando o tamanho do `HashMap` é conhecido de antemão, pré-aloque para evitar rehashing.
 
 <details>
-<summary>❌ Bad — HashMap sem capacidade inicial</summary>
+<summary>❌ Ruim — HashMap sem capacidade inicial</summary>
 <br>
 
 ```rust
@@ -156,7 +156,7 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 <br>
 
 <details>
-<summary>✅ Good — with_capacity evita rehashing</summary>
+<summary>✅ Bom — with_capacity evita rehashing</summary>
 <br>
 
 ```rust
@@ -178,7 +178,7 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 Use `criterion` para benchmarks reproduzíveis. Não confie em timing manual.
 
 <details>
-<summary>✅ Good — benchmark com criterion</summary>
+<summary>✅ Bom — benchmark com criterion</summary>
 <br>
 
 ```rust

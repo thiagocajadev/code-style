@@ -53,7 +53,7 @@ my-app/
 `go.sum` é gerado automaticamente e não deve ser editado manualmente.
 
 <details>
-<summary>❌ Bad — sem versão de toolchain, dependências soltas</summary>
+<summary>❌ Ruim — sem versão de toolchain, dependências soltas</summary>
 <br>
 
 ```go
@@ -71,7 +71,7 @@ require (
 <br>
 
 <details>
-<summary>✅ Good — módulo com toolchain fixo e dependências versionadas</summary>
+<summary>✅ Bom — módulo com toolchain fixo e dependências versionadas</summary>
 <br>
 
 ```go
@@ -101,7 +101,7 @@ Nenhum pacote acessa `os.Getenv` diretamente. Use `os.LookupEnv` para distinguir
 ausência de valor vazio.
 
 <details>
-<summary>❌ Bad — os.Getenv espalhado em todo lugar</summary>
+<summary>❌ Ruim — os.Getenv espalhado em todo lugar</summary>
 <br>
 
 ```go
@@ -124,7 +124,7 @@ secret := os.Getenv("JWT_SECRET") // leitura direta
 <br>
 
 <details>
-<summary>✅ Good — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
 <br>
 
 ```go
@@ -190,7 +190,7 @@ func NewRepository(db *sqlx.DB) *Repository {
 `cmd/api/main.go` declara intenção, não implementa. Toda inicialização é delegada para `internal/`.
 
 <details>
-<summary>❌ Bad — main.go como dumping ground</summary>
+<summary>❌ Ruim — main.go como dumping ground</summary>
 <br>
 
 ```go
@@ -220,7 +220,7 @@ func main() {
 <br>
 
 <details>
-<summary>✅ Good — main.go como índice, lógica delegada</summary>
+<summary>✅ Bom — main.go como índice, lógica delegada</summary>
 <br>
 
 ```go
@@ -291,7 +291,7 @@ func (s *Server) Start() error {
 Cada domínio encapsula handler, service e repository. O server não conhece os internos de cada domínio.
 
 <details>
-<summary>❌ Bad — estrutura por camada técnica</summary>
+<summary>❌ Ruim — estrutura por camada técnica</summary>
 <br>
 
 ```
@@ -312,7 +312,7 @@ internal/
 <br>
 
 <details>
-<summary>✅ Good — estrutura por domínio (feature-based)</summary>
+<summary>✅ Bom — estrutura por domínio (feature-based)</summary>
 <br>
 
 ```

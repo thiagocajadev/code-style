@@ -21,7 +21,7 @@ retorne cedo na falha, execute no caminho feliz sem aninhamento.
 Após um `return`, `panic` ou `continue`, o `else` é desnecessário e cria aninhamento sem valor.
 
 <details>
-<summary>❌ Bad — else após return</summary>
+<summary>❌ Ruim — else após return</summary>
 <br>
 
 ```go
@@ -44,7 +44,7 @@ func findActiveOrder(orderID int64) (*Order, error) {
 <br>
 
 <details>
-<summary>✅ Good — guard clauses, sem else após return</summary>
+<summary>✅ Bom — guard clauses, sem else após return</summary>
 <br>
 
 ```go
@@ -69,7 +69,7 @@ func findActiveOrder(orderID int64) (*Order, error) {
 Máximo 2 níveis de indentação. Extraia funções quando o aninhamento crescer.
 
 <details>
-<summary>❌ Bad — pyramid of doom</summary>
+<summary>❌ Ruim — pyramid of doom</summary>
 <br>
 
 ```go
@@ -100,7 +100,7 @@ func processPayment(order Order) error {
 <br>
 
 <details>
-<summary>✅ Good — guard clauses, fluxo linear</summary>
+<summary>✅ Bom — guard clauses, fluxo linear</summary>
 <br>
 
 ```go
@@ -134,7 +134,7 @@ func processPayment(order Order) error {
 Use `switch` para múltiplas condições sobre o mesmo valor. Go não faz fallthrough automático.
 
 <details>
-<summary>❌ Bad — if/else chain para múltiplos valores</summary>
+<summary>❌ Ruim — if/else chain para múltiplos valores</summary>
 <br>
 
 ```go
@@ -154,7 +154,7 @@ if status == "pending" {
 <br>
 
 <details>
-<summary>✅ Good — switch idiomático</summary>
+<summary>✅ Bom — switch idiomático</summary>
 <br>
 
 ```go
@@ -178,7 +178,7 @@ Antes de escrever um loop, verifique se `slices.ContainsFunc` ou `slices.IndexFu
 resolve. Para busca com lógica customizada, `range` com retorno antecipado é direto.
 
 <details>
-<summary>❌ Bad — loop com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
 <br>
 
 ```go
@@ -200,7 +200,7 @@ func findFirstExpiredItem(items []Item) *Item {
 <br>
 
 <details>
-<summary>✅ Good — range com retorno antecipado sai no primeiro match</summary>
+<summary>✅ Bom — range com retorno antecipado sai no primeiro match</summary>
 <br>
 
 ```go
@@ -220,7 +220,7 @@ func findFirstExpiredItem(items []Item) *Item {
 <br>
 
 <details>
-<summary>✅ Good — slices declarativo com circuit break nativo (Go 1.21+)</summary>
+<summary>✅ Bom — slices declarativo com circuit break nativo (Go 1.21+)</summary>
 <br>
 
 ```go
@@ -244,7 +244,7 @@ index := slices.IndexFunc(items, func(item Item) bool {
 Go tem apenas `for`. Use-o para while, loop infinito e iteração com range.
 
 <details>
-<summary>❌ Bad — loop com flag de controle desnecessária</summary>
+<summary>❌ Ruim — loop com flag de controle desnecessária</summary>
 <br>
 
 ```go
@@ -265,7 +265,7 @@ for i < len(items) {
 <br>
 
 <details>
-<summary>✅ Good — range + early break</summary>
+<summary>✅ Bom — range + early break</summary>
 <br>
 
 ```go
@@ -288,7 +288,7 @@ func hasExpiredItem(items []Item) bool {
 sair). Use para cleanup de recursos: fechar arquivos, liberar locks, fechar conexões.
 
 <details>
-<summary>❌ Bad — cleanup manual sem defer</summary>
+<summary>❌ Ruim — cleanup manual sem defer</summary>
 <br>
 
 ```go
@@ -320,7 +320,7 @@ func processFile(path string) error {
 <br>
 
 <details>
-<summary>✅ Good — defer garante cleanup em qualquer saída</summary>
+<summary>✅ Bom — defer garante cleanup em qualquer saída</summary>
 <br>
 
 ```go
@@ -353,7 +353,7 @@ Go permite declaração curta na cláusula de inicialização do `if`. Use para 
 de variáveis de erro ao bloco.
 
 <details>
-<summary>✅ Good — escopo de err limitado ao bloco</summary>
+<summary>✅ Bom — escopo de err limitado ao bloco</summary>
 <br>
 
 ```go
@@ -373,7 +373,7 @@ func findAndNotify(userID int64) error {
 Use type switch para inspecionar o tipo concreto de uma interface.
 
 <details>
-<summary>✅ Good — type switch idiomático</summary>
+<summary>✅ Bom — type switch idiomático</summary>
 <br>
 
 ```go

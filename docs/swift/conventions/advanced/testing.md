@@ -19,7 +19,7 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 ## Fases misturadas — AAA
 
 <details>
-<summary>❌ Bad — setup, ação e assert misturados</summary>
+<summary>❌ Ruim — setup, ação e assert misturados</summary>
 <br>
 
 ```swift
@@ -34,7 +34,7 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 <br>
 
 <details>
-<summary>✅ Good — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
 <br>
 
 ```swift
@@ -58,7 +58,7 @@ func findOrderReturnsPaidOrderWhenFound() async throws {
 ## Mocking via protocolo
 
 <details>
-<summary>❌ Bad — dependência concreta impede teste unitário</summary>
+<summary>❌ Ruim — dependência concreta impede teste unitário</summary>
 <br>
 
 ```swift
@@ -74,7 +74,7 @@ class OrderService {
 <br>
 
 <details>
-<summary>✅ Good — protocolo injetado; mock implementa protocolo</summary>
+<summary>✅ Bom — protocolo injetado; mock implementa protocolo</summary>
 <br>
 
 ```swift
@@ -105,7 +105,7 @@ struct OrderService {
 ## Testes parametrizados com Swift Testing
 
 <details>
-<summary>❌ Bad — testes duplicados com dados diferentes</summary>
+<summary>❌ Ruim — testes duplicados com dados diferentes</summary>
 <br>
 
 ```swift
@@ -119,7 +119,7 @@ struct OrderService {
 <br>
 
 <details>
-<summary>✅ Good — @Test com argumentos cobre todos os cenários</summary>
+<summary>✅ Bom — @Test com argumentos cobre todos os cenários</summary>
 <br>
 
 ```swift
@@ -141,7 +141,7 @@ func validateRateSucceedsOnlyInRange(rate: Double, isValid: Bool) {
 ## Teste de função async throws
 
 <details>
-<summary>❌ Bad — expectation manual para async (padrão XCTest antigo)</summary>
+<summary>❌ Ruim — expectation manual para async (padrão XCTest antigo)</summary>
 <br>
 
 ```swift
@@ -160,7 +160,7 @@ func testFindUser() {
 <br>
 
 <details>
-<summary>✅ Good — async throws nativo nos dois frameworks</summary>
+<summary>✅ Bom — async throws nativo nos dois frameworks</summary>
 <br>
 
 ```swift

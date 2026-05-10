@@ -21,7 +21,7 @@ inverte esse default em todo o arquivo.
 Adicione `# frozen_string_literal: true` no topo de cada arquivo Ruby.
 
 <details>
-<summary>❌ Bad — string mutable alocada em loop</summary>
+<summary>❌ Ruim — string mutable alocada em loop</summary>
 <br>
 
 ```ruby
@@ -37,7 +37,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — frozen_string_literal + interpolação</summary>
+<summary>✅ Bom — frozen_string_literal + interpolação</summary>
 <br>
 
 ```ruby
@@ -55,7 +55,7 @@ end
 Prefira valores fixos. Mutação explícita deve ser justificada pelo fluxo.
 
 <details>
-<summary>❌ Bad — variável reatribuída sem necessidade</summary>
+<summary>❌ Ruim — variável reatribuída sem necessidade</summary>
 <br>
 
 ```ruby
@@ -73,7 +73,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — sem mutação; resultado derivado diretamente</summary>
+<summary>✅ Bom — sem mutação; resultado derivado diretamente</summary>
 <br>
 
 ```ruby
@@ -92,7 +92,7 @@ Substitua literais inline por constantes nomeadas. Constantes em nível de módu
 encapsuladas; não use constantes globais soltas.
 
 <details>
-<summary>❌ Bad — valores mágicos espalhados</summary>
+<summary>❌ Ruim — valores mágicos espalhados</summary>
 <br>
 
 ```ruby
@@ -112,7 +112,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — constantes nomeadas e encapsuladas</summary>
+<summary>✅ Bom — constantes nomeadas e encapsuladas</summary>
 <br>
 
 ```ruby
@@ -140,7 +140,7 @@ Use símbolos (`:symbol`) para chaves de hash, identificadores de estado e opç�
 Use strings para texto visível ao usuário ou dados externos.
 
 <details>
-<summary>❌ Bad — string como chave de hash interno</summary>
+<summary>❌ Ruim — string como chave de hash interno</summary>
 <br>
 
 ```ruby
@@ -156,7 +156,7 @@ end
 <br>
 
 <details>
-<summary>✅ Good — símbolo para chave e estado interno</summary>
+<summary>✅ Bom — símbolo para chave e estado interno</summary>
 <br>
 
 ```ruby
@@ -177,7 +177,7 @@ Encapsule o acesso via `attr_reader` / `attr_accessor`. Não exponha `@variávei
 fora da classe.
 
 <details>
-<summary>❌ Bad — acesso direto a @variável de fora</summary>
+<summary>❌ Ruim — acesso direto a @variável de fora</summary>
 <br>
 
 ```ruby
@@ -199,7 +199,7 @@ puts order.instance_variable_get(:@total)
 <br>
 
 <details>
-<summary>✅ Good — interface explícita com attr_reader</summary>
+<summary>✅ Bom — interface explícita com attr_reader</summary>
 <br>
 
 ```ruby

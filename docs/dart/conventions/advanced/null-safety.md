@@ -20,7 +20,7 @@ O compilador impede uso não-seguro de valores nullable. O operador `!` (null as
 ## `!` em produção
 
 <details>
-<summary>❌ Bad — ! como atalho perigoso</summary>
+<summary>❌ Ruim — ! como atalho perigoso</summary>
 <br>
 
 ```dart
@@ -35,7 +35,7 @@ Future<String> getCustomerEmail(int userId) async {
 <br>
 
 <details>
-<summary>✅ Good — null-check explícito com throw expressivo</summary>
+<summary>✅ Bom — null-check explícito com throw expressivo</summary>
 <br>
 
 ```dart
@@ -52,7 +52,7 @@ Future<String> getCustomerEmail(int userId) async {
 ## Cadeia de safe calls
 
 <details>
-<summary>❌ Bad — null-checks aninhados</summary>
+<summary>❌ Ruim — null-checks aninhados</summary>
 <br>
 
 ```dart
@@ -73,7 +73,7 @@ String getCity(Order? order) {
 <br>
 
 <details>
-<summary>✅ Good — safe call chain com ?? no final</summary>
+<summary>✅ Bom — safe call chain com ?? no final</summary>
 <br>
 
 ```dart
@@ -87,7 +87,7 @@ String getCity(Order? order) {
 ## `late` para inicialização postergada garantida
 
 <details>
-<summary>❌ Bad — nullable onde o valor sempre existirá</summary>
+<summary>❌ Ruim — nullable onde o valor sempre existirá</summary>
 <br>
 
 ```dart
@@ -107,7 +107,7 @@ class UserBloc {
 <br>
 
 <details>
-<summary>✅ Good — late final declara intenção sem nullable</summary>
+<summary>✅ Bom — late final declara intenção sem nullable</summary>
 <br>
 
 ```dart
@@ -127,7 +127,7 @@ class UserBloc {
 ## `required` em named parameters
 
 <details>
-<summary>❌ Bad — parâmetro obrigatório nullable com verificação manual</summary>
+<summary>❌ Ruim — parâmetro obrigatório nullable com verificação manual</summary>
 <br>
 
 ```dart
@@ -147,7 +147,7 @@ final order = Order(userId: 42, items: [item]);
 <br>
 
 <details>
-<summary>✅ Good — required para parâmetros obrigatórios</summary>
+<summary>✅ Bom — required para parâmetros obrigatórios</summary>
 <br>
 
 ```dart
@@ -166,7 +166,7 @@ final order = Order(userId: 42, items: [item]);
 ## Coleções — preferir vazio a nullable
 
 <details>
-<summary>❌ Bad — null para representar lista vazia</summary>
+<summary>❌ Ruim — null para representar lista vazia</summary>
 <br>
 
 ```dart
@@ -181,7 +181,7 @@ Future<List<Order>?> findOrdersByUser(int userId) async {
 <br>
 
 <details>
-<summary>✅ Good — lista vazia; null nunca representa ausência de itens</summary>
+<summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
 <br>
 
 ```dart

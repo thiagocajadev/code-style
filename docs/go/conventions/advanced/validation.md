@@ -20,7 +20,7 @@ Valide cedo; nunca confie em input não validado dentro do service.
 ## Validação com struct tags
 
 <details>
-<summary>❌ Bad — validação manual espalhada no service</summary>
+<summary>❌ Ruim — validação manual espalhada no service</summary>
 <br>
 
 ```go
@@ -44,7 +44,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, input CreateOrderInput) 
 <br>
 
 <details>
-<summary>✅ Good — struct tags + validação no handler antes de chamar o service</summary>
+<summary>✅ Bom — struct tags + validação no handler antes de chamar o service</summary>
 <br>
 
 ```go
@@ -89,7 +89,7 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 Converta `validator.ValidationErrors` em resposta estruturada com o campo e a regra violada.
 
 <details>
-<summary>✅ Good — resposta estruturada de validação</summary>
+<summary>✅ Bom — resposta estruturada de validação</summary>
 <br>
 
 ```go
@@ -147,7 +147,7 @@ func buildValidationMessage(ve validator.FieldError) string {
 Registre validações de domínio como tags customizadas quando a lógica se repete.
 
 <details>
-<summary>✅ Good — tag customizada para validação de moeda</summary>
+<summary>✅ Bom — tag customizada para validação de moeda</summary>
 <br>
 
 ```go
@@ -178,7 +178,7 @@ type PaymentInput struct {
 Valide parâmetros de URL e query string antes de usar. Nunca assuma que são válidos.
 
 <details>
-<summary>✅ Good — validação explícita de path param e query string</summary>
+<summary>✅ Bom — validação explícita de path param e query string</summary>
 <br>
 
 ```go

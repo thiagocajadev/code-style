@@ -18,7 +18,7 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Bad — null, Optional vazio e objeto na mesma função com contrato inconsistente</summary>
+<summary>❌ Ruim — null, Optional vazio e objeto na mesma função com contrato inconsistente</summary>
 <br>
 
 ```java
@@ -39,7 +39,7 @@ public Order processOrder(String orderId) {
 <br>
 
 <details>
-<summary>✅ Good — contrato consistente: lança exceção tipada em caso de falha</summary>
+<summary>✅ Bom — contrato consistente: lança exceção tipada em caso de falha</summary>
 <br>
 
 ```java
@@ -61,7 +61,7 @@ public Order processOrder(String orderId) {
 ## BaseException — abstração centralizada
 
 <details>
-<summary>❌ Bad — RuntimeException genérica, sem tipo, sem contrato</summary>
+<summary>❌ Ruim — RuntimeException genérica, sem tipo, sem contrato</summary>
 <br>
 
 ```java
@@ -87,7 +87,7 @@ public Order processOrder(String orderId) {
 <br>
 
 <details>
-<summary>✅ Good — hierarquia de exceções tipada, contrato único</summary>
+<summary>✅ Bom — hierarquia de exceções tipada, contrato único</summary>
 <br>
 
 ```java
@@ -139,7 +139,7 @@ public class InternalException extends AppException {
 ## try/catch que engole o erro
 
 <details>
-<summary>❌ Bad — captura, loga e retorna null</summary>
+<summary>❌ Ruim — captura, loga e retorna null</summary>
 <br>
 
 ```java
@@ -159,7 +159,7 @@ public Product findProductById(String id) {
 <br>
 
 <details>
-<summary>✅ Good — propaga com contexto, trata na fronteira</summary>
+<summary>✅ Bom — propaga com contexto, trata na fronteira</summary>
 <br>
 
 ```java
@@ -184,7 +184,7 @@ Recursos que implementam `AutoCloseable` (interface que marca recursos fechávei
 devem ser abertos em `try-with-resources`. Garante fechamento mesmo em caso de exceção.
 
 <details>
-<summary>❌ Bad — fechamento manual em finally, propenso a erro</summary>
+<summary>❌ Ruim — fechamento manual em finally, propenso a erro</summary>
 <br>
 
 ```java
@@ -204,7 +204,7 @@ public String readFile(Path path) throws IOException {
 <br>
 
 <details>
-<summary>✅ Good — try-with-resources garante fechamento automático</summary>
+<summary>✅ Bom — try-with-resources garante fechamento automático</summary>
 <br>
 
 ```java
@@ -221,7 +221,7 @@ public String readFile(Path path) throws IOException {
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Bad — try/catch controlando lógica de negócio normal</summary>
+<summary>❌ Ruim — try/catch controlando lógica de negócio normal</summary>
 <br>
 
 ```java
@@ -239,7 +239,7 @@ public User getUser(String id) {
 <br>
 
 <details>
-<summary>✅ Good — verificação explícita, sem exceção para fluxo normal</summary>
+<summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
 <br>
 
 ```java

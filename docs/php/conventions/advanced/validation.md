@@ -21,7 +21,7 @@ O service recebe objetos já validados e tipados — nunca arrays brutos sem val
 ## Validação com atributos
 
 <details>
-<summary>❌ Bad — validação manual espalhada no service</summary>
+<summary>❌ Ruim — validação manual espalhada no service</summary>
 <br>
 
 ```php
@@ -45,7 +45,7 @@ public function createOrder(array $data): Order
 <br>
 
 <details>
-<summary>✅ Good — atributos de validação no DTO + validação na fronteira</summary>
+<summary>✅ Bom — atributos de validação no DTO + validação na fronteira</summary>
 <br>
 
 ```php
@@ -111,7 +111,7 @@ final class OrderHandler
 Converta `ConstraintViolationListInterface` em resposta com campo e mensagem.
 
 <details>
-<summary>✅ Good — response estruturado de validação</summary>
+<summary>✅ Bom — response estruturado de validação</summary>
 <br>
 
 ```php
@@ -141,7 +141,7 @@ private function buildErrorResponse(ConstraintViolationListInterface $violations
 Crie constraints customizados para regras de domínio reutilizáveis.
 
 <details>
-<summary>✅ Good — constraint customizado para moeda suportada</summary>
+<summary>✅ Bom — constraint customizado para moeda suportada</summary>
 <br>
 
 ```php
@@ -193,7 +193,7 @@ final readonly class PaymentInput
 Use `#[Assert\Valid]` para validar objetos nested automaticamente.
 
 <details>
-<summary>✅ Good — Valid para validação cascata em objetos aninhados</summary>
+<summary>✅ Bom — Valid para validação cascata em objetos aninhados</summary>
 <br>
 
 ```php

@@ -22,7 +22,7 @@ Sempre use `DateTime<Utc>` em structs de domínio, persistência e APIs.
 Nunca armazene `NaiveDateTime` sem documentar explicitamente que o timezone é implícito.
 
 <details>
-<summary>❌ Bad — NaiveDateTime sem timezone</summary>
+<summary>❌ Ruim — NaiveDateTime sem timezone</summary>
 <br>
 
 ```rust
@@ -45,7 +45,7 @@ fn order_is_expired(order: &Order) -> bool {
 <br>
 
 <details>
-<summary>✅ Good — DateTime<Utc> explícito</summary>
+<summary>✅ Bom — DateTime<Utc> explícito</summary>
 <br>
 
 ```rust
@@ -70,7 +70,7 @@ fn order_is_expired(order: &Order) -> bool {
 Parse datas de entrada com formato explícito. Nunca confie em inferência de formato.
 
 <details>
-<summary>❌ Bad — parse sem formato definido</summary>
+<summary>❌ Ruim — parse sem formato definido</summary>
 <br>
 
 ```rust
@@ -84,7 +84,7 @@ fn parse_due_date(raw: &str) -> chrono::NaiveDate {
 <br>
 
 <details>
-<summary>✅ Good — parse com Result e formato documentado</summary>
+<summary>✅ Bom — parse com Result e formato documentado</summary>
 <br>
 
 ```rust
@@ -104,7 +104,7 @@ fn parse_due_date(raw: &str) -> anyhow::Result<NaiveDate> {
 `chrono` integra com Serde via feature `serde`. Use o formato RFC 3339 para APIs.
 
 <details>
-<summary>❌ Bad — timestamp como inteiro sem contexto</summary>
+<summary>❌ Ruim — timestamp como inteiro sem contexto</summary>
 <br>
 
 ```rust
@@ -120,7 +120,7 @@ struct OrderResponse {
 <br>
 
 <details>
-<summary>✅ Good — DateTime<Utc> serializado como RFC 3339</summary>
+<summary>✅ Bom — DateTime<Utc> serializado como RFC 3339</summary>
 <br>
 
 ```rust
@@ -143,7 +143,7 @@ struct OrderResponse {
 Use `chrono::Duration` para operações de data. Evite aritmética manual com segundos.
 
 <details>
-<summary>❌ Bad — aritmética manual com segundos</summary>
+<summary>❌ Ruim — aritmética manual com segundos</summary>
 <br>
 
 ```rust
@@ -159,7 +159,7 @@ fn is_session_valid(created_at: DateTime<Utc>) -> bool {
 <br>
 
 <details>
-<summary>✅ Good — Duration com intenção legível</summary>
+<summary>✅ Bom — Duration com intenção legível</summary>
 <br>
 
 ```rust

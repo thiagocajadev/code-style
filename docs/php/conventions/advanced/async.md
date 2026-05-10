@@ -23,7 +23,7 @@ Para a maioria dos casos em PHP, concorrência é obtida com múltiplos processo
 consumindo uma fila (RabbitMQ, SQS, Redis Streams), não com async dentro de um processo.
 
 <details>
-<summary>✅ Good — worker simples de fila para tarefas concorrentes</summary>
+<summary>✅ Bom — worker simples de fila para tarefas concorrentes</summary>
 <br>
 
 ```php
@@ -77,7 +77,7 @@ Use Fibers quando precisar de cooperação explícita dentro de um processo (pip
 transformação, simulações de concorrência em testes).
 
 <details>
-<summary>✅ Good — Fiber básico com suspend/resume</summary>
+<summary>✅ Bom — Fiber básico com suspend/resume</summary>
 <br>
 
 ```php
@@ -105,7 +105,7 @@ $fiber->resume();                    // termina
 Use Revolt para I/O assíncrono nativo dentro de um único processo PHP com Fibers.
 
 <details>
-<summary>✅ Good — múltiplas chamadas HTTP paralelas com Revolt</summary>
+<summary>✅ Bom — múltiplas chamadas HTTP paralelas com Revolt</summary>
 <br>
 
 ```php
@@ -140,7 +140,7 @@ Para projetos síncronos, configure timeouts em todas as chamadas externas.
 Use `curl` com `CURLOPT_TIMEOUT` ou `stream_context_create` com timeout explícito.
 
 <details>
-<summary>❌ Bad — chamada HTTP sem timeout</summary>
+<summary>❌ Ruim — chamada HTTP sem timeout</summary>
 <br>
 
 ```php
@@ -153,7 +153,7 @@ $response = file_get_contents('https://payment-api/charge');
 <br>
 
 <details>
-<summary>✅ Good — curl com timeout explícito</summary>
+<summary>✅ Bom — curl com timeout explícito</summary>
 <br>
 
 ```php

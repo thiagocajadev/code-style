@@ -23,7 +23,7 @@ sensíveis e sem poluir com ruído.
 `logging` padrão ou uma biblioteca estruturada como `structlog`.
 
 <details>
-<summary>❌ Bad — print() sem nível, sem contexto</summary>
+<summary>❌ Ruim — print() sem nível, sem contexto</summary>
 <br>
 
 ```python
@@ -37,7 +37,7 @@ def process_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — logging com nível e contexto</summary>
+<summary>✅ Bom — logging com nível e contexto</summary>
 <br>
 
 ```python
@@ -69,7 +69,7 @@ Cada nível tem um significado fixo. Usar o nível errado polui o output e dific
 | `CRITICAL` | Falha que compromete o sistema inteiro: indisponibilidade de banco |
 
 <details>
-<summary>❌ Bad — nível errado para o contexto</summary>
+<summary>❌ Ruim — nível errado para o contexto</summary>
 <br>
 
 ```python
@@ -83,7 +83,7 @@ logger.debug("Payment processed successfully")  # deveria ser INFO
 <br>
 
 <details>
-<summary>✅ Good — nível correto para cada evento</summary>
+<summary>✅ Bom — nível correto para cada evento</summary>
 <br>
 
 ```python
@@ -101,7 +101,7 @@ Dados pessoais (nome, e-mail, CPF, número de cartão) não entram em logs. Loga
 identificadores opacos — IDs que não revelam a pessoa.
 
 <details>
-<summary>❌ Bad — dados pessoais expostos no log</summary>
+<summary>❌ Ruim — dados pessoais expostos no log</summary>
 <br>
 
 ```python
@@ -113,7 +113,7 @@ logger.info(f"processing payment for {user.name} ({user.email}), card {card.numb
 <br>
 
 <details>
-<summary>✅ Good — apenas identificadores opacos</summary>
+<summary>✅ Bom — apenas identificadores opacos</summary>
 <br>
 
 ```python
@@ -131,7 +131,7 @@ Em sistemas distribuídos, rastrear uma requisição entre serviços exige um id
 Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output, Entrada/Saída).
 
 <details>
-<summary>❌ Bad — logs sem contexto de rastreamento</summary>
+<summary>❌ Ruim — logs sem contexto de rastreamento</summary>
 <br>
 
 ```python
@@ -150,7 +150,7 @@ async def handle_order(order_id: int):
 <br>
 
 <details>
-<summary>✅ Good — correlation_id propagado em todos os logs da operação</summary>
+<summary>✅ Bom — correlation_id propagado em todos os logs da operação</summary>
 <br>
 
 ```python
@@ -177,7 +177,7 @@ Ao capturar uma exceção, use `exc_info=True` ou `logger.exception()` para incl
 Sem ele, o log não diz onde o erro ocorreu.
 
 <details>
-<summary>❌ Bad — exceção capturada sem traceback</summary>
+<summary>❌ Ruim — exceção capturada sem traceback</summary>
 <br>
 
 ```python
@@ -196,7 +196,7 @@ async def process_payment(payment_id: int):
 <br>
 
 <details>
-<summary>✅ Good — exc_info preserva o traceback completo</summary>
+<summary>✅ Bom — exc_info preserva o traceback completo</summary>
 <br>
 
 ```python

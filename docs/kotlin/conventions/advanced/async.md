@@ -21,7 +21,7 @@ a thread. O compilador transforma funções `suspend` em máquinas de estado efi
 ## Bloqueio de thread em suspend function
 
 <details>
-<summary>❌ Bad — Thread.sleep() bloqueia a thread da coroutine</summary>
+<summary>❌ Ruim — Thread.sleep() bloqueia a thread da coroutine</summary>
 <br>
 
 ```kotlin
@@ -37,7 +37,7 @@ suspend fun retryWithDelay(block: suspend () -> Unit) {
 <br>
 
 <details>
-<summary>✅ Good — delay() suspende sem bloquear</summary>
+<summary>✅ Bom — delay() suspende sem bloquear</summary>
 <br>
 
 ```kotlin
@@ -53,7 +53,7 @@ suspend fun retryWithDelay(block: suspend () -> Unit) {
 ## I/O sem withContext
 
 <details>
-<summary>❌ Bad — JDBC no Main dispatcher (travaria a UI)</summary>
+<summary>❌ Ruim — JDBC no Main dispatcher (travaria a UI)</summary>
 <br>
 
 ```kotlin
@@ -67,7 +67,7 @@ suspend fun findOrder(id: Long): Order {
 <br>
 
 <details>
-<summary>✅ Good — withContext(Dispatchers.IO) isola o I/O bloqueante</summary>
+<summary>✅ Bom — withContext(Dispatchers.IO) isola o I/O bloqueante</summary>
 <br>
 
 ```kotlin
@@ -84,7 +84,7 @@ suspend fun findOrder(id: Long): Order {
 ## Timeout em operações externas
 
 <details>
-<summary>❌ Bad — sem limite de tempo em chamada externa</summary>
+<summary>❌ Ruim — sem limite de tempo em chamada externa</summary>
 <br>
 
 ```kotlin
@@ -98,7 +98,7 @@ suspend fun fetchExchangeRate(currency: String): Double {
 <br>
 
 <details>
-<summary>✅ Good — withTimeout cancela se exceder o prazo</summary>
+<summary>✅ Bom — withTimeout cancela se exceder o prazo</summary>
 <br>
 
 ```kotlin
@@ -115,7 +115,7 @@ suspend fun fetchExchangeRate(currency: String): Double {
 ## Propagação de cancelamento
 
 <details>
-<summary>❌ Bad — try/catch engole CancellationException</summary>
+<summary>❌ Ruim — try/catch engole CancellationException</summary>
 <br>
 
 ```kotlin
@@ -134,7 +134,7 @@ suspend fun loadData(): Data {
 <br>
 
 <details>
-<summary>✅ Good — CancellationException é relançada</summary>
+<summary>✅ Bom — CancellationException é relançada</summary>
 <br>
 
 ```kotlin
@@ -155,7 +155,7 @@ suspend fun loadData(): Data {
 ## runCatching para resultado tipado
 
 <details>
-<summary>❌ Bad — try/catch na camada errada retorna null</summary>
+<summary>❌ Ruim — try/catch na camada errada retorna null</summary>
 <br>
 
 ```kotlin
@@ -173,7 +173,7 @@ suspend fun findUser(id: Long): User? {
 <br>
 
 <details>
-<summary>✅ Good — Result propaga contexto do erro</summary>
+<summary>✅ Bom — Result propaga contexto do erro</summary>
 <br>
 
 ```kotlin

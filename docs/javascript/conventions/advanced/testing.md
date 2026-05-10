@@ -54,7 +54,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco:
 preparação do contexto, execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Bad — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
 <br>
 
 ```js
@@ -68,7 +68,7 @@ test("applies discount", () => {
 <br>
 
 <details>
-<summary>✅ Good — arrange, act e assert separados</summary>
+<summary>✅ Bom — arrange, act e assert separados</summary>
 <br>
 
 ```js
@@ -92,7 +92,7 @@ nome, declare `expected` explicitamente para manter consistência e deixar o
 assert sem ambiguidade.
 
 <details>
-<summary>❌ Bad — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
 <br>
 
 ```js
@@ -116,7 +116,7 @@ test("returns active users only", () => {
 <br>
 
 <details>
-<summary>✅ Good — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
 <br>
 
 ```js
@@ -151,7 +151,7 @@ nem uma afirmação vaga. Sem prefixos: `should` não agrega informação e
 `given/when/then` é mecânico e verboso.
 
 <details>
-<summary>❌ Bad — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
 <br>
 
 ```js
@@ -172,7 +172,7 @@ test("applyDiscount function", () => {
 <br>
 
 <details>
-<summary>✅ Good — cenário + resultado esperado, sem prefixo</summary>
+<summary>✅ Bom — cenário + resultado esperado, sem prefixo</summary>
 <br>
 
 ```js
@@ -196,7 +196,7 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para
 funcionar.
 
 <details>
-<summary>❌ Bad — estado compartilhado que muda entre testes</summary>
+<summary>❌ Ruim — estado compartilhado que muda entre testes</summary>
 <br>
 
 ```js
@@ -222,7 +222,7 @@ test("applies discount to order", () => {
 <br>
 
 <details>
-<summary>✅ Good — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
 <br>
 
 ```js
@@ -253,7 +253,7 @@ Testar que um erro foi lançado é diferente de testar qual erro foi lançado.
 `assert.rejects` verifica tipo e mensagem, não apenas presença.
 
 <details>
-<summary>❌ Bad — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
 <br>
 
 ```js
@@ -271,7 +271,7 @@ test("throws on missing order", async () => {
 <br>
 
 <details>
-<summary>✅ Good — assert.rejects com matcher de tipo</summary>
+<summary>✅ Bom — assert.rejects com matcher de tipo</summary>
 <br>
 
 ```js

@@ -22,7 +22,7 @@ buffers com `sync.Pool` e escolher estruturas de dados adequadas.
 Escreva benchmarks antes de otimizar. `go test -bench=.` mede throughput e alocações.
 
 <details>
-<summary>✅ Good — benchmark com -benchmem para medir alocações</summary>
+<summary>✅ Bom — benchmark com -benchmem para medir alocações</summary>
 <br>
 
 ```go
@@ -51,7 +51,7 @@ Variáveis no stack são mais rápidas que no heap. Use `go build -gcflags="-m"`
 o que o compilador move para o heap (escape).
 
 <details>
-<summary>❌ Bad — retornar ponteiro força escape para heap</summary>
+<summary>❌ Ruim — retornar ponteiro força escape para heap</summary>
 <br>
 
 ```go
@@ -69,7 +69,7 @@ func buildSummary(orders []Order) *Summary {
 <br>
 
 <details>
-<summary>✅ Good — retornar valor quando o caller não precisa do ponteiro</summary>
+<summary>✅ Bom — retornar valor quando o caller não precisa do ponteiro</summary>
 <br>
 
 ```go
@@ -91,7 +91,7 @@ Quando o tamanho final é conhecido, pré-aloque com `make([]T, 0, n)` para evit
 realocações durante `append`.
 
 <details>
-<summary>❌ Bad — slice cresce com realocações</summary>
+<summary>❌ Ruim — slice cresce com realocações</summary>
 <br>
 
 ```go
@@ -109,7 +109,7 @@ func extractIDs(orders []Order) []int64 {
 <br>
 
 <details>
-<summary>✅ Good — pre-alocação com capacidade exata</summary>
+<summary>✅ Bom — pre-alocação com capacidade exata</summary>
 <br>
 
 ```go
@@ -131,7 +131,7 @@ func extractIDs(orders []Order) []int64 {
 Use `sync.Pool` para reutilizar objetos caros de alocar (buffers, encoders, decoders).
 
 <details>
-<summary>✅ Good — pool de buffers para operações de I/O frequentes</summary>
+<summary>✅ Bom — pool de buffers para operações de I/O frequentes</summary>
 <br>
 
 ```go
@@ -166,7 +166,7 @@ func marshalOrder(order Order) ([]byte, error) {
 Concatenação com `+` em loop cria uma nova string a cada iteração. Use `strings.Builder`.
 
 <details>
-<summary>❌ Bad — concatenação em loop, O(n²) em memória</summary>
+<summary>❌ Ruim — concatenação em loop, O(n²) em memória</summary>
 <br>
 
 ```go
@@ -184,7 +184,7 @@ func buildCSV(orders []Order) string {
 <br>
 
 <details>
-<summary>✅ Good — strings.Builder: uma única alocação</summary>
+<summary>✅ Bom — strings.Builder: uma única alocação</summary>
 <br>
 
 ```go
@@ -210,7 +210,7 @@ func buildCSV(orders []Order) string {
 Carregue dados em lote, não um a um dentro de um loop.
 
 <details>
-<summary>❌ Bad — N+1: uma query por item</summary>
+<summary>❌ Ruim — N+1: uma query por item</summary>
 <br>
 
 ```go
@@ -236,7 +236,7 @@ func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithC
 <br>
 
 <details>
-<summary>✅ Good — carga em lote com uma query</summary>
+<summary>✅ Bom — carga em lote com uma query</summary>
 <br>
 
 ```go

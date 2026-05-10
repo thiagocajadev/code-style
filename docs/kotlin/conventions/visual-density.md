@@ -20,7 +20,7 @@ como parágrafos — cada parágrafo é uma fase da função.
 ## Parede de código
 
 <details>
-<summary>❌ Bad — sem separação entre fases</summary>
+<summary>❌ Ruim — sem separação entre fases</summary>
 <br>
 
 ```kotlin
@@ -44,7 +44,7 @@ fun processPayment(request: PaymentRequest): Result<Receipt> {
 <br>
 
 <details>
-<summary>✅ Good — fases separadas por linha em branco</summary>
+<summary>✅ Bom — fases separadas por linha em branco</summary>
 <br>
 
 ```kotlin
@@ -76,7 +76,7 @@ O explaining return é a última linha da função. Atribui o resultado a uma `v
 na linha seguinte, sem linha em branco entre eles.
 
 <details>
-<summary>❌ Bad — blank entre val e return (explaining return com espaço)</summary>
+<summary>❌ Ruim — blank entre val e return (explaining return com espaço)</summary>
 <br>
 
 ```kotlin
@@ -92,7 +92,7 @@ fun buildWelcomeMessage(user: User): String {
 <br>
 
 <details>
-<summary>✅ Good — val + return sem blank (explaining return tight)</summary>
+<summary>✅ Bom — val + return sem blank (explaining return tight)</summary>
 <br>
 
 ```kotlin
@@ -110,7 +110,7 @@ Um único statement isolado parece "esquecido". Três atomics curtos ficam junto
 viram dois grupos de dois.
 
 <details>
-<summary>❌ Bad — statement isolado no topo</summary>
+<summary>❌ Ruim — statement isolado no topo</summary>
 <br>
 
 ```kotlin
@@ -129,7 +129,7 @@ fun activateAccount(userId: Long) {
 <br>
 
 <details>
-<summary>✅ Good — guard + grupo de ação bem dividido</summary>
+<summary>✅ Bom — guard + grupo de ação bem dividido</summary>
 <br>
 
 ```kotlin
@@ -151,7 +151,7 @@ fun activateAccount(userId: Long) {
 Chains longas quebram por linha, uma operação por linha.
 
 <details>
-<summary>❌ Bad — chain em uma linha só</summary>
+<summary>❌ Ruim — chain em uma linha só</summary>
 <br>
 
 ```kotlin
@@ -163,7 +163,7 @@ val result = orders.filter { it.isPaid }.sortedByDescending { it.createdAt }.tak
 <br>
 
 <details>
-<summary>✅ Good — uma operação por linha</summary>
+<summary>✅ Bom — uma operação por linha</summary>
 <br>
 
 ```kotlin
@@ -181,7 +181,7 @@ return recentPaidSummaries
 ## Data classes e inicialização
 
 <details>
-<summary>❌ Bad — construção de objeto inline com lógica</summary>
+<summary>❌ Ruim — construção de objeto inline com lógica</summary>
 <br>
 
 ```kotlin
@@ -198,7 +198,7 @@ return Order(
 <br>
 
 <details>
-<summary>✅ Good — lógica extraída antes da construção</summary>
+<summary>✅ Bom — lógica extraída antes da construção</summary>
 <br>
 
 ```kotlin

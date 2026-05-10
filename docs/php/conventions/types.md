@@ -23,7 +23,7 @@ Use union types quando uma função aceita ou retorna tipos legitimamente distin
 Não use como escape para falta de tipagem.
 
 <details>
-<summary>❌ Bad — mixed onde union type seria preciso</summary>
+<summary>❌ Ruim — mixed onde union type seria preciso</summary>
 <br>
 
 ```php
@@ -38,7 +38,7 @@ function findByIdentifier(mixed $identifier): mixed
 <br>
 
 <details>
-<summary>✅ Good — union type expressa os tipos aceitos</summary>
+<summary>✅ Bom — union type expressa os tipos aceitos</summary>
 <br>
 
 ```php
@@ -62,7 +62,7 @@ Use `enum` para conjuntos fechados de valores. Backed enums (`string` ou `int`) 
 serializáveis; enums puros são para modelagem sem serialização.
 
 <details>
-<summary>❌ Bad — strings mágicas para status</summary>
+<summary>❌ Ruim — strings mágicas para status</summary>
 <br>
 
 ```php
@@ -82,7 +82,7 @@ class Order
 <br>
 
 <details>
-<summary>✅ Good — enum backed para status com serialização</summary>
+<summary>✅ Bom — enum backed para status com serialização</summary>
 <br>
 
 ```php
@@ -126,7 +126,7 @@ Use `readonly class` para value objects e DTOs que não devem mudar após criaç
 Toda propriedade de uma readonly class é implicitamente `readonly`.
 
 <details>
-<summary>✅ Good — readonly class para value object imutável</summary>
+<summary>✅ Bom — readonly class para value object imutável</summary>
 <br>
 
 ```php
@@ -174,7 +174,7 @@ readonly class Money
 Use `never` como tipo de retorno para funções que sempre lançam exceção ou terminam o processo.
 
 <details>
-<summary>✅ Good — never para helper de falha e redirect</summary>
+<summary>✅ Bom — never para helper de falha e redirect</summary>
 <br>
 
 ```php
@@ -199,7 +199,7 @@ Defina interfaces para dependências que serão trocadas (repositórios, serviç
 Prefira interfaces pequenas e específicas.
 
 <details>
-<summary>✅ Good — interface mínima por consumidor</summary>
+<summary>✅ Bom — interface mínima por consumidor</summary>
 <br>
 
 ```php

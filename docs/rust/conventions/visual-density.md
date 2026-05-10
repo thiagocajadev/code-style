@@ -20,7 +20,7 @@ relacionadas ficam juntas; grupos distintos são separados por uma linha em bran
 Código sem respiro força o leitor a segmentar mentalmente blocos que deveriam ser visíveis.
 
 <details>
-<summary>❌ Bad — nenhuma separação entre fases lógicas</summary>
+<summary>❌ Ruim — nenhuma separação entre fases lógicas</summary>
 <br>
 
 ```rust
@@ -41,7 +41,7 @@ async fn create_order(pool: &sqlx::PgPool, request: CreateOrderRequest) -> anyho
 <br>
 
 <details>
-<summary>✅ Good — fases separadas por linha em branco</summary>
+<summary>✅ Bom — fases separadas por linha em branco</summary>
 <br>
 
 ```rust
@@ -69,7 +69,7 @@ Quando a função tem mais de uma fase, separe o return final por uma linha em b
 Funções de uma linha ou expressão simples não precisam.
 
 <details>
-<summary>❌ Bad — return colado ao último passo</summary>
+<summary>❌ Ruim — return colado ao último passo</summary>
 <br>
 
 ```rust
@@ -86,7 +86,7 @@ fn calculate_invoice_total(order: &Order) -> f64 {
 <br>
 
 <details>
-<summary>✅ Good — return separado por blank</summary>
+<summary>✅ Bom — return separado por blank</summary>
 <br>
 
 ```rust
@@ -107,7 +107,7 @@ Uma linha isolada entre dois grupos densos força o olho a parar sem motivo.
 Agrupe atomics relacionados ou separe em dois grupos distintos.
 
 <details>
-<summary>❌ Bad — linha isolada no meio do fluxo</summary>
+<summary>❌ Ruim — linha isolada no meio do fluxo</summary>
 <br>
 
 ```rust
@@ -125,7 +125,7 @@ let order_id = insert_order(pool, customer.id, final_total).await?;
 <br>
 
 <details>
-<summary>✅ Good — agrupamento semântico coeso</summary>
+<summary>✅ Bom — agrupamento semântico coeso</summary>
 <br>
 
 ```rust
@@ -145,7 +145,7 @@ let order_id = insert_order(pool, customer.id, final_total).await?;
 Separe campos de struct por grupo semântico. Em `impl`, separe métodos por linha em branco.
 
 <details>
-<summary>❌ Bad — campos e métodos sem respiração</summary>
+<summary>❌ Ruim — campos e métodos sem respiração</summary>
 <br>
 
 ```rust
@@ -170,7 +170,7 @@ impl Order {
 <br>
 
 <details>
-<summary>✅ Good — grupos semânticos com respiro</summary>
+<summary>✅ Bom — grupos semânticos com respiro</summary>
 <br>
 
 ```rust

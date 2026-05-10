@@ -36,7 +36,7 @@ Prefira tipos de precisão explícita. Evite aliases legados (`INT` é preferív
 | Vetor | `VECTOR(n)` | SQL Server 2025; embeddings de IA |
 
 <details>
-<summary>❌ Bad — tipos imprecisos e legados</summary>
+<summary>❌ Ruim — tipos imprecisos e legados</summary>
 <br>
 
 ```sql
@@ -54,7 +54,7 @@ CREATE TABLE Products
 <br>
 
 <details>
-<summary>✅ Good — tipos explícitos e precisos</summary>
+<summary>✅ Bom — tipos explícitos e precisos</summary>
 <br>
 
 ```sql
@@ -85,7 +85,7 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 | `NEWSEQUENTIALID()` | UUID sequencial gerado pelo banco; só como `DEFAULT`, não portável |
 
 <details>
-<summary>✅ Good — **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
+<summary>✅ Bom — **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
 <br>
 
 ```sql
@@ -124,7 +124,7 @@ Padrão: `SP_VERBO_TABELA` ou `SP_VERBO_TABELA_BY_CAMPO` em `UPPER_SNAKE_CASE`.
 | `DELETE` | Exclusão (preferencialmente soft) |
 
 <details>
-<summary>❌ Bad — nome genérico, sem parâmetros tipados, sem formatação vertical</summary>
+<summary>❌ Ruim — nome genérico, sem parâmetros tipados, sem formatação vertical</summary>
 <br>
 
 ```sql
@@ -139,7 +139,7 @@ END
 <br>
 
 <details>
-<summary>✅ Good — nome descritivo, parâmetro tipado, linha em branco entre AS e BEGIN</summary>
+<summary>✅ Bom — nome descritivo, parâmetro tipado, linha em branco entre AS e BEGIN</summary>
 <br>
 
 ```sql
@@ -168,7 +168,7 @@ END;
 ## Tratamento de erros: TRY / CATCH
 
 <details>
-<summary>❌ Bad — sem tratamento de erro, falha silenciosa</summary>
+<summary>❌ Ruim — sem tratamento de erro, falha silenciosa</summary>
 <br>
 
 ```sql
@@ -190,7 +190,7 @@ END;
 <br>
 
 <details>
-<summary>✅ Good — TRY/CATCH com ROLLBACK e THROW</summary>
+<summary>✅ Bom — TRY/CATCH com ROLLBACK e THROW</summary>
 <br>
 
 ```sql
@@ -234,7 +234,7 @@ END;
 Toda operação que modifica múltiplas tabelas deve estar em uma transação explícita.
 
 <details>
-<summary>❌ Bad — múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
+<summary>❌ Ruim — múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
 <br>
 
 ```sql
@@ -247,7 +247,7 @@ INSERT INTO OrderItems (OrderId, ProductId, Quantity) VALUES (@Id, @ProductId, @
 <br>
 
 <details>
-<summary>✅ Good — transação explícita garante atomicidade</summary>
+<summary>✅ Bom — transação explícita garante atomicidade</summary>
 <br>
 
 ```sql
@@ -317,7 +317,7 @@ SQL Server 2025 introduz funções `REGEXP_LIKE`, `REGEXP_REPLACE`, `REGEXP_SUBS
 `REGEXP_COUNT` diretamente em T-SQL.
 
 <details>
-<summary>✅ Good — validação de e-mail sem CLR ou função auxiliar</summary>
+<summary>✅ Bom — validação de e-mail sem CLR ou função auxiliar</summary>
 <br>
 
 ```sql
@@ -338,7 +338,7 @@ WHERE
 para deduplicação e busca tolerante a erros.
 
 <details>
-<summary>✅ Good — encontrar nomes similares com tolerância a typos</summary>
+<summary>✅ Bom — encontrar nomes similares com tolerância a typos</summary>
 <br>
 
 ```sql
@@ -362,7 +362,7 @@ O tipo `JSON` nativo armazena até 2 GB por linha com indexação direta, sem ne
 `NVARCHAR(MAX)` com funções JSON.
 
 <details>
-<summary>✅ Good — coluna JSON nativa com índice</summary>
+<summary>✅ Bom — coluna JSON nativa com índice</summary>
 <br>
 
 ```sql
@@ -388,7 +388,7 @@ O tipo `VECTOR(n)` e `VECTOR_DISTANCE` permitem busca semântica por similaridad
 em T-SQL, usando **DiskANN** para indexação eficiente.
 
 <details>
-<summary>✅ Good — busca por similaridade vetorial</summary>
+<summary>✅ Bom — busca por similaridade vetorial</summary>
 <br>
 
 ```sql
@@ -420,7 +420,7 @@ ORDER BY
 eliminando parameter sniffing sem `OPTION (RECOMPILE)`.
 
 <details>
-<summary>✅ Good — ativar OPPO na procedure</summary>
+<summary>✅ Bom — ativar OPPO na procedure</summary>
 <br>
 
 ```sql
@@ -460,7 +460,7 @@ END;
 linha a linha para volumes acima de milhares de registros.
 
 <details>
-<summary>✅ Good — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
+<summary>✅ Bom — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
 <br>
 
 ```sql
@@ -484,7 +484,7 @@ WITH
 mais etapas e um ou mais schedules.
 
 <details>
-<summary>✅ Good — criar job com etapa T-SQL e agendamento diário</summary>
+<summary>✅ Bom — criar job com etapa T-SQL e agendamento diário</summary>
 <br>
 
 ```sql

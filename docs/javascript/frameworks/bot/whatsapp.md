@@ -37,7 +37,7 @@ npm install @whiskeysockets/baileys
 Baileys v7 é **ESM-only**: `require` é quebrado. `makeWASocket` é `default export`; os utilitários são named imports.
 
 <details>
-<summary>❌ Bad — CommonJS quebrado no v7; makeWASocket como named import</summary>
+<summary>❌ Ruim — CommonJS quebrado no v7; makeWASocket como named import</summary>
 <br>
 
 ```js
@@ -49,7 +49,7 @@ const { makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys
 <br>
 
 <details>
-<summary>✅ Good — ESM; makeWASocket como default import; named imports separados</summary>
+<summary>✅ Bom — ESM; makeWASocket como default import; named imports separados</summary>
 <br>
 
 ```js
@@ -61,7 +61,7 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeys
 ### Setup do Client
 
 <details>
-<summary>❌ Bad — sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
+<summary>❌ Ruim — sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
 <br>
 
 ```js
@@ -77,7 +77,7 @@ socket.ev.on('creds.update', saveCreds);
 <br>
 
 <details>
-<summary>✅ Good — reconnect automático; guard para logout; printQRInTerminal ativo</summary>
+<summary>✅ Bom — reconnect automático; guard para logout; printQRInTerminal ativo</summary>
 <br>
 
 ```js
@@ -119,7 +119,7 @@ startBot();
 ### Processando Mensagens
 
 <details>
-<summary>❌ Bad — sem guard para fromMe; routing inline com texto; lógica misturada</summary>
+<summary>❌ Ruim — sem guard para fromMe; routing inline com texto; lógica misturada</summary>
 <br>
 
 ```js
@@ -137,7 +137,7 @@ socket.ev.on('messages.upsert', async ({ messages }) => {
 <br>
 
 <details>
-<summary>✅ Good — guard fromMe; extração e routing separados; Strategy Map</summary>
+<summary>✅ Bom — guard fromMe; extração e routing separados; Strategy Map</summary>
 <br>
 
 ```js
@@ -205,7 +205,7 @@ async function orderCommand(socket, chatId, messageText) {
 ### Verificação do Webhook
 
 <details>
-<summary>❌ Bad — sem verificação de hub.mode; responde 200 sem checar token</summary>
+<summary>❌ Ruim — sem verificação de hub.mode; responde 200 sem checar token</summary>
 <br>
 
 ```js
@@ -219,7 +219,7 @@ app.get('/webhook', (req, res) => {
 <br>
 
 <details>
-<summary>✅ Good — verifica mode e token antes de responder com o challenge</summary>
+<summary>✅ Bom — verifica mode e token antes de responder com o challenge</summary>
 <br>
 
 ```js
@@ -246,7 +246,7 @@ app.get('/webhook', (request, response) => {
 Responda `200 OK` imediatamente. A Meta cancela a entrega se o endpoint demorar para responder.
 
 <details>
-<summary>❌ Bad — req/res abreviados; processamento síncrono; sem checar body.object</summary>
+<summary>❌ Ruim — req/res abreviados; processamento síncrono; sem checar body.object</summary>
 <br>
 
 ```js
@@ -262,7 +262,7 @@ app.post('/webhook', async (req, res) => {
 <br>
 
 <details>
-<summary>✅ Good — request/response sem abreviação; 200 imediato; check de body.object; async após resposta</summary>
+<summary>✅ Bom — request/response sem abreviação; 200 imediato; check de body.object; async após resposta</summary>
 <br>
 
 ```js
@@ -302,7 +302,7 @@ async function processMessage(message) {
 ### Enviando Mensagens
 
 <details>
-<summary>❌ Bad — endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
+<summary>❌ Ruim — endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
 <br>
 
 ```js
@@ -320,7 +320,7 @@ async function sendText(chatId, text) {
 <br>
 
 <details>
-<summary>✅ Good — endpoint v21.0; env vars padrão Meta; recipient_type explícito; headers completos</summary>
+<summary>✅ Bom — endpoint v21.0; env vars padrão Meta; recipient_type explícito; headers completos</summary>
 <br>
 
 ```js

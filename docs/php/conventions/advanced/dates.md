@@ -23,7 +23,7 @@ Nunca use `DateTime` mutável. `DateTimeImmutable` é seguro para uso em value o
 e readonly classes.
 
 <details>
-<summary>❌ Bad — DateTime mutável causa bugs sutis</summary>
+<summary>❌ Ruim — DateTime mutável causa bugs sutis</summary>
 <br>
 
 ```php
@@ -45,7 +45,7 @@ echo $orderDate->format('Y-m-d'); // "2026-01-22" em vez de "2026-01-15"
 <br>
 
 <details>
-<summary>✅ Good — DateTimeImmutable: operações retornam nova instância</summary>
+<summary>✅ Bom — DateTimeImmutable: operações retornam nova instância</summary>
 <br>
 
 ```php
@@ -72,7 +72,7 @@ Sempre crie datas com timezone explícito. `new DateTimeImmutable()` sem argumen
 o timezone padrão do servidor — não determinístico em produção.
 
 <details>
-<summary>❌ Bad — timezone implícito do servidor</summary>
+<summary>❌ Ruim — timezone implícito do servidor</summary>
 <br>
 
 ```php
@@ -85,7 +85,7 @@ $scheduledAt = new \DateTime('2026-01-15 10:00:00'); // sem timezone
 <br>
 
 <details>
-<summary>✅ Good — timezone explícito sempre</summary>
+<summary>✅ Bom — timezone explícito sempre</summary>
 <br>
 
 ```php
@@ -108,7 +108,7 @@ Use `DateTimeImmutable::createFromFormat` para formatos conhecidos. Use
 `new DateTimeImmutable($string)` apenas para ISO 8601.
 
 <details>
-<summary>❌ Bad — parse sem verificação de erro</summary>
+<summary>❌ Ruim — parse sem verificação de erro</summary>
 <br>
 
 ```php
@@ -121,7 +121,7 @@ $date->format('Y-m-d'); // Fatal Error se false
 <br>
 
 <details>
-<summary>✅ Good — parse com verificação explícita de erro</summary>
+<summary>✅ Bom — parse com verificação explícita de erro</summary>
 <br>
 
 ```php
@@ -162,7 +162,7 @@ Use operadores de comparação ou `diff()` para comparar `DateTimeInterface`. Nu
 compare strings de datas.
 
 <details>
-<summary>✅ Good — comparação com operadores nativos</summary>
+<summary>✅ Bom — comparação com operadores nativos</summary>
 <br>
 
 ```php
@@ -181,7 +181,7 @@ $daysUntilExpiry = (int) $now->diff($expiry)->days;
 Serialize como ISO 8601 com timezone. Ao ler do banco, reconstituir com `DateTimeImmutable`.
 
 <details>
-<summary>✅ Good — ISO 8601 para API; DateTimeImmutable ao reconstruir</summary>
+<summary>✅ Bom — ISO 8601 para API; DateTimeImmutable ao reconstruir</summary>
 <br>
 
 ```php

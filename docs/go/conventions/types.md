@@ -22,7 +22,7 @@ Interfaces em Go são pequenas e compostas. Defina-as no pacote consumidor, não
 pacote que implementa. Isso inverte a dependência e facilita testes.
 
 <details>
-<summary>❌ Bad — interface grande definida no pacote de implementação</summary>
+<summary>❌ Ruim — interface grande definida no pacote de implementação</summary>
 <br>
 
 ```go
@@ -42,7 +42,7 @@ type OrderRepository interface {
 <br>
 
 <details>
-<summary>✅ Good — interface mínima no pacote consumidor</summary>
+<summary>✅ Bom — interface mínima no pacote consumidor</summary>
 <br>
 
 ```go
@@ -65,7 +65,7 @@ Use structs para modelar entidades de domínio. Prefira campos exportados para s
 de transferência de dados; campos unexported para structs com invariantes a proteger.
 
 <details>
-<summary>✅ Good — struct com construtor que valida invariantes</summary>
+<summary>✅ Bom — struct com construtor que valida invariantes</summary>
 <br>
 
 ```go
@@ -100,7 +100,7 @@ Crie tipos nomeados para primitivos com semântica específica. O compilador imp
 confusão entre tipos com a mesma representação subjacente.
 
 <details>
-<summary>❌ Bad — ID como int64 genérico, fácil de confundir</summary>
+<summary>❌ Ruim — ID como int64 genérico, fácil de confundir</summary>
 <br>
 
 ```go
@@ -114,7 +114,7 @@ func transferFunds(fromAccount int64, toAccount int64, amount float64) error {
 <br>
 
 <details>
-<summary>✅ Good — tipos nomeados: o compilador impede troca acidental</summary>
+<summary>✅ Bom — tipos nomeados: o compilador impede troca acidental</summary>
 <br>
 
 ```go
@@ -134,7 +134,7 @@ Use embedding para reutilizar comportamento sem herança. O tipo embedded expõe
 seus métodos diretamente no tipo externo.
 
 <details>
-<summary>❌ Bad — delegação manual método a método</summary>
+<summary>❌ Ruim — delegação manual método a método</summary>
 <br>
 
 ```go
@@ -156,7 +156,7 @@ func (a *AuditableOrder) IsCancelable() bool {
 <br>
 
 <details>
-<summary>✅ Good — embedding promove métodos automaticamente</summary>
+<summary>✅ Bom — embedding promove métodos automaticamente</summary>
 <br>
 
 ```go
@@ -177,7 +177,7 @@ Use generics quando a lógica é idêntica para múltiplos tipos. Evite generics
 quando uma interface resolve o problema com mais clareza.
 
 <details>
-<summary>❌ Bad — duplicação de lógica para diferentes tipos</summary>
+<summary>❌ Ruim — duplicação de lógica para diferentes tipos</summary>
 <br>
 
 ```go
@@ -205,7 +205,7 @@ func containsString(slice []string, value string) bool {
 <br>
 
 <details>
-<summary>✅ Good — função genérica com type constraint</summary>
+<summary>✅ Bom — função genérica com type constraint</summary>
 <br>
 
 ```go
@@ -228,7 +228,7 @@ Prefira type switch quando há múltiplos tipos possíveis. Use a forma de dois 
 `val, ok := x.(T)` para evitar panic.
 
 <details>
-<summary>❌ Bad — type assertion sem verificação, pode causar panic</summary>
+<summary>❌ Ruim — type assertion sem verificação, pode causar panic</summary>
 <br>
 
 ```go
@@ -243,7 +243,7 @@ func processEvent(event interface{}) {
 <br>
 
 <details>
-<summary>✅ Good — type assertion com verificação de ok</summary>
+<summary>✅ Bom — type assertion com verificação de ok</summary>
 <br>
 
 ```go
@@ -267,7 +267,7 @@ Use a declaração `var _ Interface = (*Type)(nil)` para verificar que um tipo
 implementa uma interface sem instanciar.
 
 <details>
-<summary>✅ Good — verificação de implementação em tempo de compilação</summary>
+<summary>✅ Bom — verificação de implementação em tempo de compilação</summary>
 <br>
 
 ```go

@@ -24,7 +24,7 @@ Dois caminhos mutuamente exclusivos. Nunca use `else` após um `return` — isso
 indentação desnecessária e esconde o caminho feliz.
 
 <details>
-<summary>❌ Bad — else após return</summary>
+<summary>❌ Ruim — else após return</summary>
 <br>
 
 ```rust
@@ -42,7 +42,7 @@ fn get_discount(order: &Order) -> f64 {
 <br>
 
 <details>
-<summary>✅ Good — retorno antecipado, sem else</summary>
+<summary>✅ Bom — retorno antecipado, sem else</summary>
 <br>
 
 ```rust
@@ -63,7 +63,7 @@ Rust não tem operador ternário (`?:`). Use `if` como expressão para atribuir 
 possíveis em uma linha. Nunca aninhe `if` expressões.
 
 <details>
-<summary>❌ Bad — variável mutável para simular ternário</summary>
+<summary>❌ Ruim — variável mutável para simular ternário</summary>
 <br>
 
 ```rust
@@ -80,7 +80,7 @@ if order.is_paid {
 <br>
 
 <details>
-<summary>✅ Good — if como expressão</summary>
+<summary>✅ Bom — if como expressão</summary>
 <br>
 
 ```rust
@@ -95,7 +95,7 @@ let label = if order.is_paid { "pago" } else { "pendente" };
 guard clause em funções que retornam `Result` ou `Option`.
 
 <details>
-<summary>❌ Bad — match aninhado para propagação de erro</summary>
+<summary>❌ Ruim — match aninhado para propagação de erro</summary>
 <br>
 
 ```rust
@@ -122,7 +122,7 @@ fn load_order(order_id: u64) -> Result<Order, AppError> {
 <br>
 
 <details>
-<summary>✅ Good — ? em cadeia linear</summary>
+<summary>✅ Bom — ? em cadeia linear</summary>
 <br>
 
 ```rust
@@ -145,7 +145,7 @@ Use `if let` quando apenas um braço tem ação. Use `let-else` para guard claus
 desestruturação de `Option` ou `Result` — saída antecipada se o valor não existe.
 
 <details>
-<summary>❌ Bad — unwrap que pânica em None</summary>
+<summary>❌ Ruim — unwrap que pânica em None</summary>
 <br>
 
 ```rust
@@ -160,7 +160,7 @@ fn apply_coupon(order: &mut Order, coupon: Option<String>) {
 <br>
 
 <details>
-<summary>✅ Good — let-else como guard clause</summary>
+<summary>✅ Bom — let-else como guard clause</summary>
 <br>
 
 ```rust
@@ -181,7 +181,7 @@ Substitua chains de `if/else` para mapeamento de chave → valor por um `HashMap
 Com 3 ou mais entradas, o mapa é mais legível e extensível.
 
 <details>
-<summary>❌ Bad — if/else chain para mapear chave em valor</summary>
+<summary>❌ Ruim — if/else chain para mapear chave em valor</summary>
 <br>
 
 ```rust
@@ -205,7 +205,7 @@ fn get_status_label(status: &str) -> &str {
 <br>
 
 <details>
-<summary>✅ Good — HashMap como tabela de mapeamento</summary>
+<summary>✅ Bom — HashMap como tabela de mapeamento</summary>
 <br>
 
 ```rust
@@ -231,7 +231,7 @@ fn get_status_label(status: &str) -> &str {
 todos os casos precisam ser cobertos. Evite `_ => {}` silencioso que esconde variantes.
 
 <details>
-<summary>❌ Bad — catch-all que esconde variantes não tratadas</summary>
+<summary>❌ Ruim — catch-all que esconde variantes não tratadas</summary>
 <br>
 
 ```rust
@@ -248,7 +248,7 @@ fn handle_status(status: OrderStatus) {
 <br>
 
 <details>
-<summary>✅ Good — match exaustivo, cada variante com ação explícita</summary>
+<summary>✅ Bom — match exaustivo, cada variante com ação explícita</summary>
 <br>
 
 ```rust
@@ -265,7 +265,7 @@ fn handle_status(status: OrderStatus) {
 </details>
 
 <details>
-<summary>✅ Good — match para 3+ variantes com valor (substitui ternário aninhado)</summary>
+<summary>✅ Bom — match para 3+ variantes com valor (substitui ternário aninhado)</summary>
 <br>
 
 ```rust
@@ -285,7 +285,7 @@ Para busca ou verificação que deve parar no primeiro match, use iteradores fun
 Evite `for` com `break` manual.
 
 <details>
-<summary>❌ Bad — for com flag e break manual</summary>
+<summary>❌ Ruim — for com flag e break manual</summary>
 <br>
 
 ```rust
@@ -304,7 +304,7 @@ for order in &orders {
 <br>
 
 <details>
-<summary>✅ Good — .any() para verificação que para no primeiro true</summary>
+<summary>✅ Bom — .any() para verificação que para no primeiro true</summary>
 <br>
 
 ```rust
@@ -314,7 +314,7 @@ let has_overdue = orders.iter().any(|order| order.is_overdue);
 </details>
 
 <details>
-<summary>✅ Good — .find() para busca do primeiro elemento que satisfaz condição</summary>
+<summary>✅ Bom — .find() para busca do primeiro elemento que satisfaz condição</summary>
 <br>
 
 ```rust
@@ -324,7 +324,7 @@ let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
 </details>
 
 <details>
-<summary>✅ Good — .all() para verificar se todos satisfazem condição</summary>
+<summary>✅ Bom — .all() para verificar se todos satisfazem condição</summary>
 <br>
 
 ```rust
@@ -339,7 +339,7 @@ Use `for` para iterar com efeito colateral por item. Prefira iteradores funciona
 o objetivo é transformar ou filtrar — reserve `for` para efeitos como enviar, salvar, logar.
 
 <details>
-<summary>❌ Bad — for com índice quando o índice não é usado</summary>
+<summary>❌ Ruim — for com índice quando o índice não é usado</summary>
 <br>
 
 ```rust
@@ -353,7 +353,7 @@ for i in 0..orders.len() {
 <br>
 
 <details>
-<summary>✅ Good — for sobre referência direta</summary>
+<summary>✅ Bom — for sobre referência direta</summary>
 <br>
 
 ```rust
@@ -365,7 +365,7 @@ for order in &orders {
 </details>
 
 <details>
-<summary>✅ Good — iterador funcional quando o resultado importa</summary>
+<summary>✅ Bom — iterador funcional quando o resultado importa</summary>
 <br>
 
 ```rust
@@ -384,7 +384,7 @@ let paid_totals: Vec<f64> = orders
 `while let` para consumir um `Option` iterativamente — para quando `None`.
 
 <details>
-<summary>❌ Bad — while com flag booleano desnecessário</summary>
+<summary>❌ Ruim — while com flag booleano desnecessário</summary>
 <br>
 
 ```rust
@@ -408,7 +408,7 @@ while !done {
 <br>
 
 <details>
-<summary>✅ Good — while let idiomático</summary>
+<summary>✅ Bom — while let idiomático</summary>
 <br>
 
 ```rust
@@ -430,7 +430,7 @@ while let Some(item) = queue.pop() {
 É o equivalente Rust de `do-while`. Use `break value` para retornar um resultado.
 
 <details>
-<summary>❌ Bad — while com inicialização fora do loop</summary>
+<summary>❌ Ruim — while com inicialização fora do loop</summary>
 <br>
 
 ```rust
@@ -451,7 +451,7 @@ while attempt < MAX_RETRIES {
 <br>
 
 <details>
-<summary>✅ Good — loop com break value</summary>
+<summary>✅ Bom — loop com break value</summary>
 <br>
 
 ```rust

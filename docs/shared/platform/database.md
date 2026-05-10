@@ -107,7 +107,7 @@ Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho
 Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../../nosql/conventions/).
 
 <details>
-<summary>❌ Bad: sem projeção — trafega o documento inteiro para usar um campo</summary>
+<summary>❌ Ruim: sem projeção — trafega o documento inteiro para usar um campo</summary>
 <br>
 
 ```js
@@ -120,7 +120,7 @@ const userName = user.name;
 <br>
 
 <details>
-<summary>✅ Good: projeção limita os campos retornados</summary>
+<summary>✅ Bom: projeção limita os campos retornados</summary>
 <br>
 
 ```js
@@ -141,7 +141,7 @@ class UserRepository {
 <br>
 
 <details>
-<summary>❌ Bad: filtro em memória — carrega a coleção inteira para filtrar no cliente</summary>
+<summary>❌ Ruim: filtro em memória — carrega a coleção inteira para filtrar no cliente</summary>
 <br>
 
 ```js
@@ -154,7 +154,7 @@ const pendingOrders = allOrders.filter(order => order.status === 'pending');
 <br>
 
 <details>
-<summary>✅ Good: filtro na query — banco usa índice em status</summary>
+<summary>✅ Bom: filtro na query — banco usa índice em status</summary>
 <br>
 
 ```js
@@ -175,7 +175,7 @@ class OrderRepository {
 <br>
 
 <details>
-<summary>❌ Bad: N+1 em document store — uma query por item para buscar documento relacionado</summary>
+<summary>❌ Ruim: N+1 em document store — uma query por item para buscar documento relacionado</summary>
 <br>
 
 ```js
@@ -195,7 +195,7 @@ const enrichedOrders = await Promise.all(
 <br>
 
 <details>
-<summary>✅ Good: $lookup resolve em uma única passagem no banco</summary>
+<summary>✅ Bom: $lookup resolve em uma única passagem no banco</summary>
 <br>
 
 ```js

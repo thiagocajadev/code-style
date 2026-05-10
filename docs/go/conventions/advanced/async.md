@@ -24,7 +24,7 @@ Toda função que faz I/O (banco, HTTP, fila) deve aceitar e propagar `context.C
 Nunca use `context.Background()` dentro de handlers — propague o contexto da requisição.
 
 <details>
-<summary>❌ Bad — contexto não propagado</summary>
+<summary>❌ Ruim — contexto não propagado</summary>
 <br>
 
 ```go
@@ -47,7 +47,7 @@ func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {
 <br>
 
 <details>
-<summary>✅ Good — contexto da requisição propagado em toda a cadeia</summary>
+<summary>✅ Bom — contexto da requisição propagado em toda a cadeia</summary>
 <br>
 
 ```go
@@ -87,7 +87,7 @@ Toda chamada a sistema externo deve ter um timeout. Use `context.WithTimeout` pa
 criar um sub-contexto com deadline.
 
 <details>
-<summary>❌ Bad — chamada HTTP sem timeout</summary>
+<summary>❌ Ruim — chamada HTTP sem timeout</summary>
 <br>
 
 ```go
@@ -107,7 +107,7 @@ func (c *PaymentClient) Charge(amount float64) (*ChargeResult, error) {
 <br>
 
 <details>
-<summary>✅ Good — sub-contexto com timeout por chamada</summary>
+<summary>✅ Bom — sub-contexto com timeout por chamada</summary>
 <br>
 
 ```go
@@ -152,7 +152,7 @@ Use `errgroup.WithContext` para executar chamadas independentes em paralelo e
 coletar o primeiro erro. O contexto do grupo é cancelado automaticamente no primeiro erro.
 
 <details>
-<summary>❌ Bad — chamadas sequenciais que poderiam ser paralelas</summary>
+<summary>❌ Ruim — chamadas sequenciais que poderiam ser paralelas</summary>
 <br>
 
 ```go
@@ -183,7 +183,7 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
 <br>
 
 <details>
-<summary>✅ Good — errgroup para chamadas independentes em paralelo</summary>
+<summary>✅ Bom — errgroup para chamadas independentes em paralelo</summary>
 <br>
 
 ```go
@@ -240,7 +240,7 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
 Em loops longos ou processamento em lote, verifique `ctx.Done()` periodicamente.
 
 <details>
-<summary>✅ Good — verificação de cancelamento em loop de processamento</summary>
+<summary>✅ Bom — verificação de cancelamento em loop de processamento</summary>
 <br>
 
 ```go

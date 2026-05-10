@@ -21,7 +21,7 @@ Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (us
 Trazer todas as colunas transfere dados desnecessários, impede covering indexes e acopla a query ao schema.
 
 <details>
-<summary>❌ Bad — todas as colunas, inclusive as não usadas</summary>
+<summary>❌ Ruim — todas as colunas, inclusive as não usadas</summary>
 <br>
 
 ```sql
@@ -38,7 +38,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — somente as colunas necessárias</summary>
+<summary>✅ Bom — somente as colunas necessárias</summary>
 <br>
 
 ```sql
@@ -62,7 +62,7 @@ ORDER BY
 Aplicar função sobre a coluna filtrada impede o uso do índice: o banco precisa avaliar cada linha.
 
 <details>
-<summary>❌ Bad — função no WHERE, índice ignorado</summary>
+<summary>❌ Ruim — função no WHERE, índice ignorado</summary>
 <br>
 
 ```sql
@@ -80,7 +80,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — intervalo direto na coluna, índice aproveitado</summary>
+<summary>✅ Bom — intervalo direto na coluna, índice aproveitado</summary>
 <br>
 
 ```sql
@@ -108,7 +108,7 @@ em silêncio, sem aviso, sem erro, com full scan.
 ### CAST explícito na coluna de filtro
 
 <details>
-<summary>❌ Bad — CAST na coluna: índice em SquadNumber ignorado</summary>
+<summary>❌ Ruim — CAST na coluna: índice em SquadNumber ignorado</summary>
 <br>
 
 ```sql
@@ -129,7 +129,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — parâmetro com o tipo correto, coluna intocada</summary>
+<summary>✅ Bom — parâmetro com o tipo correto, coluna intocada</summary>
 <br>
 
 ```sql
@@ -155,7 +155,7 @@ ORDER BY
 nenhum erro aparece, e o índice é ignorado em silêncio.
 
 <details>
-<summary>❌ Bad — literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
+<summary>❌ Ruim — literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
 <br>
 
 ```sql
@@ -176,7 +176,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
+<summary>✅ Bom — prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
 <br>
 
 ```sql
@@ -198,7 +198,7 @@ Type mismatch entre colunas de JOIN força conversão em cada linha de uma das t
 a coluna não indexada preserva o índice da principal.
 
 <details>
-<summary>❌ Bad — CAST na coluna indexada da tabela principal</summary>
+<summary>❌ Ruim — CAST na coluna indexada da tabela principal</summary>
 <br>
 
 ```sql
@@ -218,7 +218,7 @@ JOIN
 <br>
 
 <details>
-<summary>✅ Good — CAST na coluna não indexada; preferível: corrigir o schema</summary>
+<summary>✅ Bom — CAST na coluna não indexada; preferível: corrigir o schema</summary>
 <br>
 
 ```sql
@@ -244,7 +244,7 @@ A correção é normalizar o tipo no schema: `DATE` ou `DATETIME2` na definiçã
 converter na aplicação antes do `INSERT`.
 
 <details>
-<summary>❌ Bad — data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
+<summary>❌ Ruim — data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
 <br>
 
 ```sql
@@ -264,7 +264,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — JoinedAt como DATE: filtro direto, índice aproveitado</summary>
+<summary>✅ Bom — JoinedAt como DATE: filtro direto, índice aproveitado</summary>
 <br>
 
 ```sql
@@ -289,7 +289,7 @@ ORDER BY
 Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
 
 <details>
-<summary>❌ Bad — subquery executa N vezes, uma por time</summary>
+<summary>❌ Ruim — subquery executa N vezes, uma por time</summary>
 <br>
 
 ```sql
@@ -313,7 +313,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — CTE agrega uma vez, JOIN cruza o resultado</summary>
+<summary>✅ Bom — CTE agrega uma vez, JOIN cruza o resultado</summary>
 <br>
 
 ```sql
@@ -350,7 +350,7 @@ ORDER BY
 Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
 
 <details>
-<summary>❌ Bad — full scan em tabela grande sem índice na coluna filtrada</summary>
+<summary>❌ Ruim — full scan em tabela grande sem índice na coluna filtrada</summary>
 <br>
 
 ```sql
@@ -371,7 +371,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — índice na coluna principal do filtro</summary>
+<summary>✅ Bom — índice na coluna principal do filtro</summary>
 <br>
 
 ```sql
@@ -386,7 +386,7 @@ CREATE INDEX IX_Players_TeamId
 A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
 <details>
-<summary>❌ Bad — coluna de baixa seletividade isolada</summary>
+<summary>❌ Ruim — coluna de baixa seletividade isolada</summary>
 <br>
 
 ```sql
@@ -400,7 +400,7 @@ CREATE INDEX IX_Players_IsActive
 <br>
 
 <details>
-<summary>✅ Good — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
+<summary>✅ Bom — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
 <br>
 
 ```sql
@@ -415,7 +415,7 @@ CREATE INDEX IX_Players_TeamId_IsActive
 Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha, mesmo com índice.
 
 <details>
-<summary>❌ Bad — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
+<summary>❌ Ruim — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
 <br>
 
 ```sql
@@ -439,7 +439,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
+<summary>✅ Bom — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
 <br>
 
 ```sql
@@ -455,7 +455,7 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 Foreign key sem índice na coluna referenciadora força full table scan a cada `DELETE` ou `UPDATE` na tabela pai. O banco precisa verificar se existem filhos antes de executar a operação.
 
 <details>
-<summary>❌ Bad — FK declarada, coluna sem índice</summary>
+<summary>❌ Ruim — FK declarada, coluna sem índice</summary>
 <br>
 
 ```sql
@@ -477,7 +477,7 @@ CREATE TABLE Players
 <br>
 
 <details>
-<summary>✅ Good — índice na coluna FK, lookup eficiente</summary>
+<summary>✅ Bom — índice na coluna FK, lookup eficiente</summary>
 <br>
 
 ```sql
@@ -516,7 +516,7 @@ UUID v7 combina timestamp de alta resolução com aleatoriedade e insere sempre 
 B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
 
 <details>
-<summary>❌ Bad — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
+<summary>❌ Ruim — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
 <br>
 
 ```sql
@@ -535,7 +535,7 @@ CREATE TABLE Orders
 <br>
 
 <details>
-<summary>✅ Good — BIGINT quando unicidade global não é requisito</summary>
+<summary>✅ Bom — BIGINT quando unicidade global não é requisito</summary>
 <br>
 
 ```sql
@@ -554,7 +554,7 @@ CREATE TABLE Orders
 <br>
 
 <details>
-<summary>✅ Good — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
+<summary>✅ Bom — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
 <br>
 
 ```sql
@@ -582,7 +582,7 @@ CREATE TABLE Orders
 Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
 
 <details>
-<summary>❌ Bad — traz tudo e descarta em memória</summary>
+<summary>❌ Ruim — traz tudo e descarta em memória</summary>
 <br>
 
 ```sql
@@ -604,7 +604,7 @@ ORDER BY
 <br>
 
 <details>
-<summary>✅ Good — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
+<summary>✅ Bom — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
 <br>
 
 ```sql

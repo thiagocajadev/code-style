@@ -19,7 +19,7 @@ para corpo de uma única expressão.
 ## God function — múltiplas responsabilidades
 
 <details>
-<summary>❌ Bad — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
 <br>
 
 ```dart
@@ -50,7 +50,7 @@ Future<Order> submitOrder(int userId, List<Item> items) async {
 <br>
 
 <details>
-<summary>✅ Good — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
 <br>
 
 ```dart
@@ -83,7 +83,7 @@ Future<void> _notifyConfirmation(String email) async { ... }
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Bad — lógica inline no return</summary>
+<summary>❌ Ruim — lógica inline no return</summary>
 <br>
 
 ```dart
@@ -100,7 +100,7 @@ List<Customer> findActiveCustomers(List<Customer> customers) {
 <br>
 
 <details>
-<summary>✅ Good — explaining return com final nomeada</summary>
+<summary>✅ Bom — explaining return com final nomeada</summary>
 <br>
 
 ```dart
@@ -122,7 +122,7 @@ Named parameters tornam chamadas com múltiplos argumentos legíveis e resistent
 a erros de posição.
 
 <details>
-<summary>❌ Bad — parâmetros posicionais ambíguos</summary>
+<summary>❌ Ruim — parâmetros posicionais ambíguos</summary>
 <br>
 
 ```dart
@@ -136,7 +136,7 @@ createOrder(42, 100, 3, 0.15);   // qual é qual?
 <br>
 
 <details>
-<summary>✅ Good — named parameters com required</summary>
+<summary>✅ Bom — named parameters com required</summary>
 <br>
 
 ```dart
@@ -155,7 +155,7 @@ createOrder(userId: 42, productId: 100, quantity: 3, discount: 0.15);
 ## Arrow functions — corpo de uma expressão
 
 <details>
-<summary>❌ Bad — bloco com return para corpo trivial</summary>
+<summary>❌ Ruim — bloco com return para corpo trivial</summary>
 <br>
 
 ```dart
@@ -175,7 +175,7 @@ List<String> getOrderIds(List<Order> orders) {
 <br>
 
 <details>
-<summary>✅ Good — arrow para corpo de uma expressão</summary>
+<summary>✅ Bom — arrow para corpo de uma expressão</summary>
 <br>
 
 ```dart
@@ -190,7 +190,7 @@ List<String> getOrderIds(List<Order> orders) =>
 ## Extension para comportamento adicional
 
 <details>
-<summary>❌ Bad — função de utilitário sem contexto</summary>
+<summary>❌ Ruim — função de utilitário sem contexto</summary>
 <br>
 
 ```dart
@@ -206,7 +206,7 @@ final label = formatCurrency(order.total);
 <br>
 
 <details>
-<summary>✅ Good — extension method no tipo correto</summary>
+<summary>✅ Bom — extension method no tipo correto</summary>
 <br>
 
 ```dart

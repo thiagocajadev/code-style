@@ -17,7 +17,7 @@ INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão
 ## INSERT horizontal
 
 <details>
-<summary>❌ Bad — colunas e valores em linha única</summary>
+<summary>❌ Ruim — colunas e valores em linha única</summary>
 <br>
 
 ```sql
@@ -29,7 +29,7 @@ INSERT INTO Users(Id, Name, Email) VALUES(1, 'Alice', 'alice@email.com');
 <br>
 
 <details>
-<summary>✅ Good — colunas e valores em blocos verticais separados</summary>
+<summary>✅ Bom — colunas e valores em blocos verticais separados</summary>
 <br>
 
 ```sql
@@ -52,7 +52,7 @@ VALUES
 ## INSERT ... SELECT
 
 <details>
-<summary>❌ Bad — SELECT inline, sem correspondência visual entre colunas</summary>
+<summary>❌ Ruim — SELECT inline, sem correspondência visual entre colunas</summary>
 <br>
 
 ```sql
@@ -64,7 +64,7 @@ INSERT INTO Users(Id, Name, Email) SELECT ExternalId, FullName, ContactEmail FRO
 <br>
 
 <details>
-<summary>✅ Good — colunas do INSERT alinhadas com colunas do SELECT</summary>
+<summary>✅ Bom — colunas do INSERT alinhadas com colunas do SELECT</summary>
 <br>
 
 ```sql
@@ -89,7 +89,7 @@ WHERE
 ## UPDATE usando outra tabela
 
 <details>
-<summary>❌ Bad — subquery correlacionada no SET</summary>
+<summary>❌ Ruim — subquery correlacionada no SET</summary>
 <br>
 
 ```sql
@@ -107,7 +107,7 @@ WHERE Id IN (SELECT UserId FROM EmailUpdates);
 <br>
 
 <details>
-<summary>✅ Good — UPDATE ... FROM ... WHERE</summary>
+<summary>✅ Bom — UPDATE ... FROM ... WHERE</summary>
 <br>
 
 ```sql
@@ -128,7 +128,7 @@ WHERE
 Dados deletados são irrecuperáveis. Soft delete com coluna `IsActive = 0` preserva histórico e permite auditoria.
 
 <details>
-<summary>❌ Bad — remoção permanente sem rastro</summary>
+<summary>❌ Ruim — remoção permanente sem rastro</summary>
 <br>
 
 ```sql
@@ -143,7 +143,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — soft delete com timestamp de inativação</summary>
+<summary>✅ Bom — soft delete com timestamp de inativação</summary>
 <br>
 
 ```sql
@@ -161,7 +161,7 @@ WHERE
 ## UPDATE condicional em massa
 
 <details>
-<summary>❌ Bad — um UPDATE por condição, duas passagens na tabela</summary>
+<summary>❌ Ruim — um UPDATE por condição, duas passagens na tabela</summary>
 <br>
 
 ```sql
@@ -174,7 +174,7 @@ UPDATE Orders SET StatusId = 3 WHERE IsActive = 1 AND CustomerId NOT IN (SELECT 
 <br>
 
 <details>
-<summary>✅ Good — CASE numa única passagem</summary>
+<summary>✅ Bom — CASE numa única passagem</summary>
 <br>
 
 ```sql
@@ -202,7 +202,7 @@ WHERE
 Filtrar na tabela principal antes dos JOINs reduz o volume processado. WHERE na tabela driving, não após o JOIN.
 
 <details>
-<summary>❌ Bad — filtro aplicado depois do JOIN em tabela grande</summary>
+<summary>❌ Ruim — filtro aplicado depois do JOIN em tabela grande</summary>
 <br>
 
 ```sql
@@ -224,7 +224,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — CTE filtra a tabela principal antes do JOIN</summary>
+<summary>✅ Bom — CTE filtra a tabela principal antes do JOIN</summary>
 <br>
 
 ```sql
@@ -258,7 +258,7 @@ JOIN
 Nunca assumir ordem natural. Declarar ORDER BY em todo SELECT que retorna lista.
 
 <details>
-<summary>❌ Bad — sem ORDER BY, ordem indefinida</summary>
+<summary>❌ Ruim — sem ORDER BY, ordem indefinida</summary>
 <br>
 
 ```sql
@@ -276,7 +276,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — ORDER BY explícito</summary>
+<summary>✅ Bom — ORDER BY explícito</summary>
 <br>
 
 ```sql
@@ -298,7 +298,7 @@ ORDER BY
 Literais numéricos fixos perdem o significado fora do contexto. Comentário inline expõe a intenção sem criar abstração desnecessária.
 
 <details>
-<summary>❌ Bad — números sem contexto</summary>
+<summary>❌ Ruim — números sem contexto</summary>
 <br>
 
 ```sql
@@ -317,7 +317,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — comentário inline expõe a intenção</summary>
+<summary>✅ Bom — comentário inline expõe a intenção</summary>
 <br>
 
 ```sql
@@ -338,7 +338,7 @@ WHERE
 Literais inline tornam a query frágil e difícil de reusar. Usar parâmetros nomeados.
 
 <details>
-<summary>❌ Bad — literais inline, sem contexto</summary>
+<summary>❌ Ruim — literais inline, sem contexto</summary>
 <br>
 
 ```sql
@@ -357,7 +357,7 @@ WHERE
 <br>
 
 <details>
-<summary>✅ Good — parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
+<summary>✅ Bom — parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
 <br>
 
 ```sql

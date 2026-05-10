@@ -26,7 +26,7 @@ um timestamp UTC válido de uma string genérica: a fronteira é explícita, o r
 protegido.
 
 <details>
-<summary>❌ Bad — string genérica aceita qualquer valor em qualquer posição</summary>
+<summary>❌ Ruim — string genérica aceita qualquer valor em qualquer posição</summary>
 <br>
 
 ```ts
@@ -52,7 +52,7 @@ const order: Order = {
 <br>
 
 <details>
-<summary>✅ Good — branded type distingue timestamp de string genérica</summary>
+<summary>✅ Bom — branded type distingue timestamp de string genérica</summary>
 <br>
 
 ```ts
@@ -96,7 +96,7 @@ A [**Temporal** (padrão moderno de datas) **API** (Application Programming Inte
 disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambientes ES2026.
 
 <details>
-<summary>✅ Good — Temporal com tipos explícitos</summary>
+<summary>✅ Bom — Temporal com tipos explícitos</summary>
 <br>
 
 ```ts
@@ -132,7 +132,7 @@ Funções que convertem ou formatam datas devem ter retorno explícito. O caller
 sem inspecionar a implementação.
 
 <details>
-<summary>❌ Bad — retorno inferido, contrato invisível</summary>
+<summary>❌ Ruim — retorno inferido, contrato invisível</summary>
 <br>
 
 ```ts
@@ -147,7 +147,7 @@ function parseOrderDate(raw: unknown) {
 <br>
 
 <details>
-<summary>✅ Good — input validado, retorno explícito</summary>
+<summary>✅ Bom — input validado, retorno explícito</summary>
 <br>
 
 ```ts

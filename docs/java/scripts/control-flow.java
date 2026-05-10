@@ -12,7 +12,7 @@ public class ControlFlowExamples {
 
     // ─── If e else ────────────────────────────────────────────────────────────
 
-    // ❌ Bad: else desnecessário após return
+    // ❌ Ruim: else desnecessário após return
     private BigDecimal getDiscountBad(User user) {
         if (user.isPremium()) {
             return new BigDecimal("0.2");
@@ -21,7 +21,7 @@ public class ControlFlowExamples {
         }
     }
 
-    // ✅ Good: early return elimina o else
+    // ✅ Bom: early return elimina o else
     private BigDecimal getDiscount(User user) {
         if (user.isPremium()) return new BigDecimal("0.2");
         return new BigDecimal("0.05");
@@ -29,7 +29,7 @@ public class ControlFlowExamples {
 
     // ─── Ternário ─────────────────────────────────────────────────────────────
 
-    // ❌ Bad: ternário encadeado ilegível
+    // ❌ Ruim: ternário encadeado ilegível
     private String getGradeBad(int score) {
         return score >= 90 ? "A"
             : score >= 80 ? "B"
@@ -38,7 +38,7 @@ public class ControlFlowExamples {
             : "F";
     }
 
-    // ✅ Good: ternário para dois valores; guard clauses para 3+
+    // ✅ Bom: ternário para dois valores; guard clauses para 3+
     private String getLabelSimple(User user) {
         final var label = user.isPremium() ? "Premium" : "Standard";
         return label;
@@ -54,7 +54,7 @@ public class ControlFlowExamples {
 
     // ─── Guard clauses — aninhamento em cascata ───────────────────────────────
 
-    // ❌ Bad: lógica enterrada em múltiplos níveis
+    // ❌ Ruim: lógica enterrada em múltiplos níveis
     private Invoice processOrderBad(Order order) {
         if (order != null) {
             if (order.isActive()) {
@@ -68,7 +68,7 @@ public class ControlFlowExamples {
         return null;
     }
 
-    // ✅ Good: guard clauses, caminho feliz ao fundo
+    // ✅ Bom: guard clauses, caminho feliz ao fundo
     private Invoice processOrder(Order order) {
         if (order == null) return null;
         if (!order.isActive()) return null;
@@ -82,7 +82,7 @@ public class ControlFlowExamples {
 
     // ─── Switch expression — lookup de valor ──────────────────────────────────
 
-    // ❌ Bad: switch tradicional verboso com fall-through implícito
+    // ❌ Ruim: switch tradicional verboso com fall-through implícito
     private String getStatusLabelBad(OrderStatus status) {
         String label;
         switch (status) {
@@ -98,7 +98,7 @@ public class ControlFlowExamples {
         return label;
     }
 
-    // ✅ Good: switch expression — sem fall-through, sem break
+    // ✅ Bom: switch expression — sem fall-through, sem break
     private String getStatusLabel(OrderStatus status) {
         final var label = switch (status) {
             case PENDING   -> "Pending review";
@@ -111,7 +111,7 @@ public class ControlFlowExamples {
 
     // ─── Switch — despacho de ações ───────────────────────────────────────────
 
-    // ✅ Good: switch com bloco para múltiplas ações por caso
+    // ✅ Bom: switch com bloco para múltiplas ações por caso
     private void processPaymentEvent(PaymentEvent event) {
         switch (event.type()) {
             case SUCCESS -> {
@@ -131,7 +131,7 @@ public class ControlFlowExamples {
 
     // ─── Pattern matching — tipo e desestruturação ────────────────────────────
 
-    // ❌ Bad: instanceof + cast manual
+    // ❌ Ruim: instanceof + cast manual
     private String describePaymentBad(PaymentResult result) {
         if (result instanceof PaymentSuccess) {
             final var success = (PaymentSuccess) result;
@@ -143,7 +143,7 @@ public class ControlFlowExamples {
         return "Unknown";
     }
 
-    // ✅ Good: pattern matching com desestruturação; sealed garante exaustividade
+    // ✅ Bom: pattern matching com desestruturação; sealed garante exaustividade
     private String describePayment(PaymentResult result) {
         final var description = switch (result) {
             case PaymentSuccess s  -> "Paid: " + s.amount();
@@ -155,7 +155,7 @@ public class ControlFlowExamples {
 
     // ─── Circuit break ────────────────────────────────────────────────────────
 
-    // ❌ Bad: loop manual com flag percorre tudo
+    // ❌ Ruim: loop manual com flag percorre tudo
     private Product findFirstExpiredProductBad(List<Product> products) {
         Product expiredProduct = null;
         for (final var product : products) {
@@ -166,7 +166,7 @@ public class ControlFlowExamples {
         return expiredProduct;
     }
 
-    // ✅ Good: stream para no primeiro match
+    // ✅ Bom: stream para no primeiro match
     private void circuitBreakExamples(List<Product> products) {
         final var expiredProduct   = products.stream().filter(Product::isExpired).findFirst();
         final var hasExpiredProduct = products.stream().anyMatch(Product::isExpired);
@@ -175,14 +175,14 @@ public class ControlFlowExamples {
 
     // ─── for-each ─────────────────────────────────────────────────────────────
 
-    // ❌ Bad: for indexado quando o índice nunca é usado
+    // ❌ Ruim: for indexado quando o índice nunca é usado
     private void notifyAllBad(List<Order> orders) {
         for (int i = 0; i < orders.size(); i++) {
             notifyCustomer(orders.get(i));
         }
     }
 
-    // ✅ Good: for-each para efeitos colaterais por item
+    // ✅ Bom: for-each para efeitos colaterais por item
     private void notifyAll(List<Order> orders) {
         for (final var order : orders) {
             notifyCustomer(order);
@@ -191,7 +191,7 @@ public class ControlFlowExamples {
 
     // ─── while ────────────────────────────────────────────────────────────────
 
-    // ❌ Bad: for simulando condição de parada por estado
+    // ❌ Ruim: for simulando condição de parada por estado
     private void connectBad(int maxAttempts) {
         for (int attempt = 0; attempt < maxAttempts; attempt++) {
             final var connection = connectToDatabase();
@@ -199,7 +199,7 @@ public class ControlFlowExamples {
         }
     }
 
-    // ✅ Good: while para condição de parada por estado
+    // ✅ Bom: while para condição de parada por estado
     private void connect(int maxAttempts) {
         var attempt = 0;
 
@@ -213,7 +213,7 @@ public class ControlFlowExamples {
 
     // ─── do-while ─────────────────────────────────────────────────────────────
 
-    // ❌ Bad: while quando a fila deve processar ao menos um item
+    // ❌ Ruim: while quando a fila deve processar ao menos um item
     private void drainQueueBad(TaskQueue taskQueue) {
         while (!taskQueue.isEmpty()) {
             final var task = taskQueue.dequeue();
@@ -221,7 +221,7 @@ public class ControlFlowExamples {
         }
     }
 
-    // ✅ Good: do-while quando a primeira execução é garantida
+    // ✅ Bom: do-while quando a primeira execução é garantida
     private void drainQueue(TaskQueue taskQueue) {
         do {
             final var task = taskQueue.dequeue();

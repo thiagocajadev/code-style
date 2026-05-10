@@ -21,7 +21,7 @@ e o fuso corretos.
 ## String como data
 
 <details>
-<summary>❌ Bad — string comparada lexicograficamente</summary>
+<summary>❌ Ruim — string comparada lexicograficamente</summary>
 <br>
 
 ```swift
@@ -34,7 +34,7 @@ let isOverdue = dueDate < today   // comparação de string, não temporal
 <br>
 
 <details>
-<summary>✅ Good — Date com comparação tipada</summary>
+<summary>✅ Bom — Date com comparação tipada</summary>
 <br>
 
 ```swift
@@ -49,7 +49,7 @@ let isOverdue = dueDate < Date.now
 ## Fuso horário hardcoded
 
 <details>
-<summary>❌ Bad — offset fixo ignora horário de verão</summary>
+<summary>❌ Ruim — offset fixo ignora horário de verão</summary>
 <br>
 
 ```swift
@@ -61,7 +61,7 @@ let saoPaulo = TimeZone(secondsFromGMT: -3 * 3600)!   // errado: -3h fixo ignora
 <br>
 
 <details>
-<summary>✅ Good — identificador IANA inclui regras de horário de verão</summary>
+<summary>✅ Bom — identificador IANA inclui regras de horário de verão</summary>
 <br>
 
 ```swift
@@ -75,7 +75,7 @@ let saoPaulo = TimeZone(identifier: "America/Sao_Paulo")!
 `DateFormatter` é custoso de criar. Instanciar em cada chamada degrada performance.
 
 <details>
-<summary>❌ Bad — novo DateFormatter em cada chamada</summary>
+<summary>❌ Ruim — novo DateFormatter em cada chamada</summary>
 <br>
 
 ```swift
@@ -92,7 +92,7 @@ func formatDate(_ date: Date) -> String {
 <br>
 
 <details>
-<summary>✅ Good — DateFormatter como propriedade estática</summary>
+<summary>✅ Bom — DateFormatter como propriedade estática</summary>
 <br>
 
 ```swift

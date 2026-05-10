@@ -20,7 +20,7 @@ maps, slices, channels e funções podem ser `nil` — verifique antes de usar.
 Verifique ponteiros antes de acessar campos ou métodos.
 
 <details>
-<summary>❌ Bad — acesso sem verificação de nil</summary>
+<summary>❌ Ruim — acesso sem verificação de nil</summary>
 <br>
 
 ```go
@@ -35,7 +35,7 @@ func describeOrder(order *Order) string {
 <br>
 
 <details>
-<summary>✅ Good — verificação explícita antes do acesso</summary>
+<summary>✅ Bom — verificação explícita antes do acesso</summary>
 <br>
 
 ```go
@@ -58,7 +58,7 @@ Prefira valor ao invés de ponteiro para structs que têm um estado "vazio" repr
 pelo zero value. Ponteiro só quando nil tem semântica de "ausente".
 
 <details>
-<summary>❌ Bad — ponteiro para representar "vazio" onde zero value bastaria</summary>
+<summary>❌ Ruim — ponteiro para representar "vazio" onde zero value bastaria</summary>
 <br>
 
 ```go
@@ -86,7 +86,7 @@ func printAddress(user User) {
 <br>
 
 <details>
-<summary>✅ Good — zero value é estado vazio válido; ponteiro apenas com semântica clara</summary>
+<summary>✅ Bom — zero value é estado vazio válido; ponteiro apenas com semântica clara</summary>
 <br>
 
 ```go
@@ -121,7 +121,7 @@ Maps nil causam panic ao escrever. Slices nil são válidos para leitura e `appe
 mas comunique a ausência explicitamente.
 
 <details>
-<summary>❌ Bad — escrita em map nil</summary>
+<summary>❌ Ruim — escrita em map nil</summary>
 <br>
 
 ```go
@@ -140,7 +140,7 @@ func (oi *OrderIndex) Add(order Order) {
 <br>
 
 <details>
-<summary>✅ Good — map inicializado no construtor</summary>
+<summary>✅ Bom — map inicializado no construtor</summary>
 <br>
 
 ```go
@@ -169,7 +169,7 @@ Uma interface Go contém dois campos internos: tipo e valor. Uma interface é ni
 se ambos forem nil. Um ponteiro nil atribuído a uma interface não é nil.
 
 <details>
-<summary>❌ Bad — comparação incorreta de interface com nil</summary>
+<summary>❌ Ruim — comparação incorreta de interface com nil</summary>
 <br>
 
 ```go
@@ -196,7 +196,7 @@ if logger == nil {  // FALSO: interface tem tipo, não é nil
 <br>
 
 <details>
-<summary>✅ Good — retornar nil de interface diretamente</summary>
+<summary>✅ Bom — retornar nil de interface diretamente</summary>
 <br>
 
 ```go
@@ -222,7 +222,7 @@ Para mapas e type assertions, use a forma de dois retornos para distinguir ausê
 de zero value.
 
 <details>
-<summary>✅ Good — ok idiom para map lookup e type assertion</summary>
+<summary>✅ Bom — ok idiom para map lookup e type assertion</summary>
 <br>
 
 ```go
