@@ -10,12 +10,12 @@
 
 | Conceito | O que é |
 |---|---|
-| **Telegraf** | Instância principal do bot; gerencia polling, middleware e roteamento |
-| **Context** | Objeto com o evento atual e todos os métodos de resposta; passado a cada **Handler** |
-| **Middleware** | Função `(context, next) => void` encadeada antes ou depois dos **Handlers** |
-| **message filter** | Função importada de `telegraf/filters` para filtrar eventos por tipo de conteúdo |
-| **InlineKeyboard** | Objeto `Markup.inlineKeyboard` para construir botões renderizados abaixo de uma mensagem |
-| **callback_query** | Evento disparado quando o usuário clica em um botão inline; deve ser respondido com `answerCbQuery` |
+| **Telegraf** (framework de bot) | Instância principal do bot; gerencia polling, middleware e roteamento |
+| **Context** (contexto da requisição) | Objeto com o evento atual e todos os métodos de resposta; passado a cada **Handler** |
+| **Middleware** (componente de pipeline) | Função `(context, next) => void` encadeada antes ou depois dos **Handlers** |
+| **message filter** (filtro de mensagem) | Função importada de `telegraf/filters` para filtrar eventos por tipo de conteúdo |
+| **InlineKeyboard** (teclado embutido) | Objeto `Markup.inlineKeyboard` para construir botões renderizados abaixo de uma mensagem |
+| **callback_query** (consulta de retorno) | Evento disparado quando o usuário clica em um botão inline; deve ser respondido com `answerCbQuery` |
 
 ## Instalação
 

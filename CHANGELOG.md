@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.1] - 2026-05-09
+
+### Changed
+
+- `docs/javascript/` — `## Conceitos fundamentais` em todos os arquivos técnicos (12 adicionados, 7 já existiam): conventions/ (variables, naming, functions, control-flow, visual-density), conventions/advanced/ (error-handling, null-safety, observability, performance, testing, validation), frameworks/bot/whatsapp.md
+- `docs/javascript/` — padronização de termos: `fronteira/fronteiras` → `limite/limites` (8 ocorrências); `mutável/imutável/mutabilidade` → `pode mudar / não muda / fixo / valor pode ser alterado` (3 ocorrências)
+- `docs/javascript/` — todas as 132 linhas de Conceitos fundamentais em 19 tabelas seguem o padrão `**termo-en ou sigla** (tradução pt-br)`; descrições de `mock` (dados fictícios), `stub`, `spy` revisadas
+
 ## [1.28.0] - 2026-05-07
 
 ### Added

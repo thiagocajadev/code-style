@@ -1,10 +1,30 @@
 # Visual density: JavaScript
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em JavaScript/Node.js.
+**Visual density** (densidade visual) é a quantidade de informação por bloco
+visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
+quando trechos não relacionados ficam colados. A solução é agrupar por intenção
+semântica e separar grupos com linha em branco — cada grupo conta uma
+micro-história.
+
+Os mesmos princípios de
+[densidade visual](../../shared/standards/visual-density.md) com exemplos em
+JavaScript/Node.js.
+
+## Conceitos fundamentais
+
+| Conceito                                    | O que é                                                                                                  |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| **visual density** (densidade visual)       | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo                      |
+| **semantic group** (grupo semântico)        | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir)         |
+| **blank line** (linha em branco)            | Separador entre grupos semânticos; substitui comentário de seção                                         |
+| **single-line orphan** (órfão de 1)         | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
+| **explaining return** (retorno explicativo) | Linha solta antes do `return` que dá nome ao valor retornado; nunca há lógica no `return`                |
+| **boundary** (limite)                       | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes         |
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
+**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural;
+três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Bad — denso demais: todos os passos colados</summary>
@@ -51,7 +71,9 @@ async function registerUser(input) {
 
 ## Explaining Return: par tight
 
-Uma `const` nomeada acima do `return` explica o valor retornado. Quando há **apenas esse passo** antes do `return`, os dois formam par de 2 linhas sem blank. A linha em branco separa o par do que vem antes, não fragmenta o par.
+Uma `const` nomeada acima do `return` explica o valor retornado. Quando há
+**apenas esse passo** antes do `return`, os dois formam par de 2 linhas sem
+blank. A linha em branco separa o par do que vem antes, não fragmenta o par.
 
 <details>
 <summary>❌ Bad — blank fragmenta o par</summary>
@@ -84,7 +106,8 @@ function mapErrorToStatus(error) {
 
 ## Return separado: quando há 2+ passos antes
 
-Quando há dois ou mais passos distintos antes do `return`, o blank line marca a transição do "preparar" para o "entregar".
+Quando há dois ou mais passos distintos antes do `return`, o blank line marca a
+transição do "preparar" para o "entregar".
 
 <details>
 <summary>✅ Good — 3 passos antes do return</summary>
@@ -107,7 +130,8 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 
 </details>
 
-**Exceção:** funções de uma linha ficam compactas. O `return` é o único conteúdo.
+**Exceção:** funções de uma linha ficam compactas. O `return` é o único
+conteúdo.
 
 ```js
 function findPendingOrders(userId) {
@@ -117,7 +141,8 @@ function findPendingOrders(userId) {
 
 ## Declaração + guarda = 1 grupo
 
-Uma variável seguida do seu `if` de guarda formam par semântico. A linha em branco vem **depois** do par, nunca entre eles.
+Uma variável seguida do seu `if` de guarda formam par semântico. A linha em
+branco vem **depois** do par, nunca entre eles.
 
 <details>
 <summary>❌ Bad — variável solta do seu guarda</summary>
@@ -149,7 +174,9 @@ const invoice = buildInvoice(order);
 
 ## Órfão de 1 linha: pior que trio atômico
 
-Três declarações simples consecutivas (const, let, var) formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
+Três declarações simples consecutivas (const, let, var) formam grupo coeso.
+Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três
+juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Bad — órfão entre blanks</summary>
@@ -196,7 +223,9 @@ const MAX_RETRY_ATTEMPTS = 3;
 
 ## Par semântico encadeado
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam par. A quebra natural fica antes do par, não entre ele e sua dependência direta.
+Quando a linha final **depende** da penúltima (usa o valor recém declarado), as
+duas formam par. A quebra natural fica antes do par, não entre ele e sua
+dependência direta.
 
 <details>
 <summary>❌ Bad — dependência direta partida</summary>
@@ -238,7 +267,8 @@ function buildShippingLabel(order) {
 
 ## 2+1 dentro de blocos curtos
 
-Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não são todas atômicas homogêneas.
+Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
+são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Bad — 3 linhas heterogêneas coladas</summary>
@@ -273,7 +303,8 @@ while (attempt < maxAttempts) {
 
 ## Fases de um método
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível.
+Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
+deixar cada fase visível.
 
 <details>
 <summary>❌ Bad — todas as fases coladas, sem separação visual</summary>
@@ -313,14 +344,15 @@ async function createUserHandler(request, response) {
 
 ## Testes: expect como fase própria
 
-O `expect` é fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
+O `expect` é fase distinta. A linha em branco antes dele separa o que está sendo
+verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Bad — expect colado ao setup, fases invisíveis</summary>
 <br>
 
 ```js
-it('applies percentage discount to order price', () => {
+it("applies percentage discount to order price", () => {
   const order = { price: 100, discountPct: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
@@ -337,7 +369,7 @@ it('applies percentage discount to order price', () => {
 <br>
 
 ```js
-it('applies percentage discount to order price', () => {
+it("applies percentage discount to order price", () => {
   const order = { price: 100, discountPct: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
@@ -350,7 +382,8 @@ it('applies percentage discount to order price', () => {
 
 ## Strings longas
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
+Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
+fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Bad — string imensa inline, sem semântica nas partes</summary>

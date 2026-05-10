@@ -1,6 +1,21 @@
 # Functions
 
+Função é a unidade mínima de reuso e teste. Seu valor está em **single responsibility** (responsabilidade única, fazer uma coisa só), assinatura clara e tamanho que cabe na tela. Quando uma função busca, valida, calcula e persiste tudo junto, ela vira um ponto de acoplamento que ninguém consegue reaproveitar nem testar isoladamente.
+
 Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **single responsibility** (responsabilidade única) | Função tem uma razão para mudar; um motivo para existir |
+| **arrow function** (função flecha) | `() => {}` — sintaxe curta sem `this` próprio; ideal para callbacks |
+| **named function** (função nomeada) | `function name() {}` — aparece com nome no stack trace; ideal para topo de módulo |
+| **parameter** (parâmetro) | Nome declarado na assinatura; recebe o argumento na chamada |
+| **default parameter** (parâmetro padrão) | Valor usado quando o argumento é `undefined` (`function f(x = 0)`) |
+| **rest parameter** (parâmetro variádico) | `...args` — coleta argumentos restantes em array |
+| **pure function** (função pura) | Mesma entrada → mesma saída; sem efeito colateral observável |
+| **side effect** (efeito colateral) | Leitura ou escrita fora dos argumentos: I/O, mutação externa, log |
 
 ## God function — múltiplas responsabilidades
 

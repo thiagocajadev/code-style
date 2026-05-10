@@ -8,7 +8,7 @@ Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assínc
 
 | Conceito | O que é |
 |---|---|
-| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa fronteira do processo: rede, disco, banco |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
 | **callback** (função de retorno) | Função passada como argumento para executar quando a operação termina |
 | **Promise** (promessa de valor) | Objeto que representa o resultado futuro de uma operação assíncrona |
 | **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato público de uma biblioteca ou serviço externo |

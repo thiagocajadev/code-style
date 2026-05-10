@@ -2,8 +2,21 @@
 
 > Escopo: JavaScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a hot paths: fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar.
+Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados em volume ou frequência alta): loops apertados, handlers de requisição, processamento de stream. Fora desse contexto, prefira legibilidade. **Premature optimization** (otimização prematura) custa clareza sem ganho real — meça antes de otimizar.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **hot path** (caminho quente) | Trecho de código executado em volume ou frequência alta; otimizar aqui rende |
+| **cold path** (caminho frio) | Trecho raro (inicialização, erro); otimizar aqui é desperdício de clareza |
+| **V8** (engine do Chrome/Node.js) | Motor JavaScript do Node.js e Chrome; otimiza quando o código é previsível e mantém formas estáveis de objeto |
+| **JIT** (Just-In-Time, Compilação Sob Demanda) | Compilador que traduz JS para código de máquina em tempo de execução |
+| **allocation** (alocação) | Criação de objeto na heap; pressão de alocação custa GC |
+| **GC** (Garbage Collection, Coleta de Lixo) | Liberação automática de memória; pausas afetam latência |
+| **Big O** (notação assintótica) | Custo do algoritmo em função do tamanho da entrada (`O(n)`, `O(n²)`, `O(log n)`) |
+| **profiling** (perfilamento) | Medição empírica de onde tempo e memória são gastos; `node --prof`, `clinic`, Chrome DevTools |
+| **stream** (fluxo) | Leitura/escrita em pedaços; evita carregar arquivo inteiro na memória |
 
 ## for...of vs forEach
 

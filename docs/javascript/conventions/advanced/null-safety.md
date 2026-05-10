@@ -2,10 +2,22 @@
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-JavaScript não tem compilador que rastreie nullability. A responsabilidade é do código. A regra
-é a mesma: fechar null nas fronteiras, confiar no interior.
+JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possibilidade de o valor ser nulo). A responsabilidade é do código: validar nos **boundaries** (limites, pontos de entrada de dados externos) e confiar no interior. Operadores específicos (`??`, `?.`) tornam a intenção explícita; usar o operador errado (`||` em vez de `??`) descarta valores válidos como `0` ou `""`.
 
 > Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **null** (nulo) | Valor explícito que indica "ausência intencional"; atribuído pelo programador |
+| **undefined** (indefinido) | Valor padrão de variável não inicializada ou propriedade inexistente; atribuído pela engine |
+| **nullish** (ausente: nulo ou indefinido) | Conjunto que reúne `null` e `undefined`; o que `??` e `?.` tratam |
+| **falsy** (avalia como falso) | Valores que coercionam para `false` em booleano: `null`, `undefined`, `0`, `""`, `false`, `NaN` |
+| **nullish coalescing** (coalescência de ausente, `??`) | Retorna o lado direito apenas se o esquerdo for `null` ou `undefined` |
+| **optional chaining** (encadeamento opcional, `?.`) | Acessa propriedade ou chama método sem lançar erro se a base for nullish |
+| **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
+| **non-null assertion** (afirmação de não-nulo) | Garantia explícita ao leitor de que o valor não é nulo neste ponto; em JS via comentário ou guard |
 
 ## ?? vs ||
 
@@ -123,7 +135,7 @@ function formatUserCity(user) {
 
 ## Coleções nunca são nulas
 
-Funções que retornam listas sempre retornam `[]`, nunca `null`. Na fronteira com dados externos,
+Funções que retornam listas sempre retornam `[]`, nunca `null`. No limite com dados externos,
 normalize com `?? []`.
 
 <details>
@@ -151,7 +163,7 @@ async function findOrdersByUser(userId) {
   return orders; // ORM já retorna [] — nunca null
 }
 
-// fronteira com API externa: normaliza na entrada
+// limite com API externa: normaliza na entrada
 async function fetchUserOrders(userId) {
   const response = await externalApi.get(`/users/${userId}/orders`);
   const orders = response.orders ?? []; // normaliza aqui, não no caller

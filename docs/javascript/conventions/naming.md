@@ -1,6 +1,20 @@
 # Naming
 
+Nome é a **API** (Application Programming Interface, Interface de Programação de Aplicações) que o código expõe ao próximo leitor. Um identificador expressivo elimina comentários, encurta a leitura e revela intenção. Um genérico (`data`, `result`, `tmp`) força o leitor a abrir o corpo da função pra entender o que está acontecendo.
+
 Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **identifier** (identificador) | Nome dado a variável, função, classe ou propriedade |
+| **camelCase** (estilo camelo) | Convenção JS para variáveis e funções: primeira palavra minúscula, demais capitalizadas (`fetchUser`) |
+| **PascalCase** (estilo Pascal) | Convenção JS para classes e construtores: todas as palavras capitalizadas (`UserService`) |
+| **UPPER_SNAKE_CASE** (maiúsculas com sublinhado) | Convenção JS para constantes globais e enums (`MAX_RETRIES`) |
+| **magic number** (número mágico) | Literal numérico sem nome no meio do código; perde contexto e dificulta troca |
+| **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` — torna o nome legível como pergunta (`isActive`, `hasPermission`) |
+| **domain term** (termo de domínio) | Palavra que pertence ao negócio (`invoice`, `subscriber`), não ao tipo técnico (`object`, `entity`) |
 
 ## Identificadores sem significado
 

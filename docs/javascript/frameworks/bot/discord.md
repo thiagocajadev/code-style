@@ -10,14 +10,14 @@
 
 | Conceito | O que é |
 |---|---|
-| **Client** | Instância principal do bot; gerencia conexão com o Gateway e registro de eventos |
-| **Events** | Enum do discord.js com todos os nomes de eventos (`Events.InteractionCreate`, `Events.ClientReady`) |
-| **GatewayIntentBits** | Enum para declarar quais categorias de eventos o bot recebe; intents não declaradas não chegam |
-| **Interaction** | Objeto recebido quando o usuário usa slash command, botão ou select menu |
-| **isChatInputCommand()** | Type guard que confirma que a Interaction é um slash command; obrigatório antes de acessar `commandName` |
-| **SlashCommandBuilder** | Classe para definir o schema de um slash command antes de registrá-lo via REST |
-| **EmbedBuilder** | Classe para construir mensagens ricas; enviada dentro do array `embeds: [embed]`, nunca como objeto solto |
-| **REST** | Cliente HTTP do discord.js configurado com `version: '10'`; usado para registrar commands via API |
+| **Client** (cliente do bot) | Instância principal do bot; gerencia conexão com o Gateway e registro de eventos |
+| **Events** (enum de eventos) | Enum do discord.js com todos os nomes de eventos (`Events.InteractionCreate`, `Events.ClientReady`) |
+| **GatewayIntentBits** (flags de intenção do Gateway) | Enum para declarar quais categorias de eventos o bot recebe; intents não declaradas não chegam |
+| **Interaction** (interação do usuário) | Objeto recebido quando o usuário usa slash command, botão ou select menu |
+| **isChatInputCommand()** (verificação de tipo) | Type guard que confirma que a Interaction é um slash command; obrigatório antes de acessar `commandName` |
+| **SlashCommandBuilder** (construtor de comando barra) | Classe para definir o schema de um slash command antes de registrá-lo via REST |
+| **EmbedBuilder** (construtor de mensagem rica) | Classe para construir mensagens ricas; enviada dentro do array `embeds: [embed]`, nunca como objeto solto |
+| **REST** (Representational State Transfer, cliente HTTP) | Cliente HTTP do discord.js configurado com `version: '10'`; usado para registrar commands via API |
 
 ## Instalação
 

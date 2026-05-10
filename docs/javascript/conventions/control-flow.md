@@ -1,8 +1,18 @@
 # Control Flow
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de
-quantas condições existem, se mapeiam valores ou executam ações, e se o fluxo
-pode precisar de saída antecipada.
+Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada. **Guard clauses** (cláusulas de proteção) achatam aninhamento; **lookup tables** (tabelas de busca) eliminam cadeias longas de `if/else`.
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
+| **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
+| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta; legível só quando as três partes são curtas |
+| **switch** (selecionar caso) | Comando de despacho por valor; bom para enums e mapeamento explícito |
+| **lookup table** (tabela de busca) | Objeto `{ chave: valor }` que substitui cadeias de `if/else` ou `switch` simples |
+| **short-circuit** (curto-circuito) | `&&` retorna o primeiro falsy; `||` retorna o primeiro truthy; `??` retorna o primeiro não-nulo |
+| **truthy / falsy** (avalia como verdadeiro / como falso) | Valores que coercionam para `true` ou `false` em contexto booleano (`0`, `""`, `null` são falsy) |
 
 ## If e else
 

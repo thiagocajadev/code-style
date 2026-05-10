@@ -10,15 +10,15 @@
 
 | Conceito | O que é |
 |---|---|
-| **App** | Instância principal do bot; registra listeners e gerencia a conexão com o Slack |
-| **ack()** | Função de reconhecimento obrigatória; confirma ao Slack que o evento foi recebido em até 3 segundos |
-| **say()** | Envia uma mensagem ao canal onde o evento ocorreu; aceita string ou objeto com `blocks` |
-| **respond()** | Responde via `response_url`; funciona fora do canal original e aceita `thread_ts` para replies em thread |
-| **Block Kit** | Sistema de UI do Slack; mensagens compostas por blocos (`section`, `actions`, `image`) com elementos interativos |
-| **Socket Mode** | Conexão via WebSocket usando um App-Level Token; dispensa URL pública; indicado para desenvolvimento e bots internos |
-| **Bot Token** | Credencial `xoxb-...` emitida pela Slack para chamadas à API; obtida em OAuth & Permissions |
-| **Signing Secret** | Chave usada para validar que as requisições HTTP vêm da Slack; obtida em Basic Information |
-| **App-Level Token** | Credencial `xapp-...` usada exclusivamente no Socket Mode; requer scope `connections:write` |
+| **App** (aplicativo Bolt) | Instância principal do bot; registra listeners e gerencia a conexão com o Slack |
+| **ack()** (reconhecer recebimento) | Função de reconhecimento obrigatória; confirma ao Slack que o evento foi recebido em até 3 segundos |
+| **say()** (dizer no canal) | Envia uma mensagem ao canal onde o evento ocorreu; aceita string ou objeto com `blocks` |
+| **respond()** (responder via URL) | Responde via `response_url`; funciona fora do canal original e aceita `thread_ts` para replies em thread |
+| **Block Kit** (kit de blocos de UI) | Sistema de UI do Slack; mensagens compostas por blocos (`section`, `actions`, `image`) com elementos interativos |
+| **Socket Mode** (modo socket) | Conexão via WebSocket usando um App-Level Token; dispensa URL pública; indicado para desenvolvimento e bots internos |
+| **Bot Token** (token do bot) | Credencial `xoxb-...` emitida pela Slack para chamadas à API; obtida em OAuth & Permissions |
+| **Signing Secret** (segredo de assinatura) | Chave usada para validar que as requisições HTTP vêm da Slack; obtida em Basic Information |
+| **App-Level Token** (token de nível de aplicativo) | Credencial `xapp-...` usada exclusivamente no Socket Mode; requer scope `connections:write` |
 
 ## Instalação
 

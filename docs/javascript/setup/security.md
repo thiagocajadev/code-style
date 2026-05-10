@@ -69,7 +69,7 @@ Em staging e produção, `dotenv` não entra no bundle. As variáveis são injet
 
 ## config.js: único ponto de leitura
 
-`process.env` é fronteira. Ler diretamente no meio da lógica espalha dependência global e dificulta teste. O padrão é um `config.js` que lê uma vez, valida e exporta um objeto consumido por injeção.
+`process.env` é o limite entre o ambiente externo e o código. Ler diretamente no meio da lógica espalha dependência global e dificulta teste. O padrão é um `config.js` que lê uma vez, valida e exporta um objeto consumido por injeção.
 
 <details>
 <summary>❌ Bad — process.env espalhado pela aplicação</summary>

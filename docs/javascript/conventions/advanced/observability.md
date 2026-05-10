@@ -2,8 +2,20 @@
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Os princípios agnósticos estão em [shared/standards/observability.md](../../../shared/standards/observability.md).
+**Observability** (observabilidade) é a capacidade de entender o estado interno de um sistema a partir do que ele emite para fora. Em JS/Node, isso significa logging estruturado em vez de strings concatenadas, níveis de severidade corretos, proteção de dados sensíveis e um identificador de correlação que liga todos os logs de uma mesma requisição. Os princípios agnósticos estão em [shared/standards/observability.md](../../../shared/standards/observability.md).
+
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **structured logging** (log estruturado) | Log emitido como objeto JSON com campos pesquisáveis, não string concatenada |
+| **log level** (nível de log) | Severidade: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
+| **correlation ID** (ID de correlação) | Identificador único por requisição que aparece em todos os logs do mesmo fluxo |
+| **redaction** (redação) | Remoção ou mascaramento de campos sensíveis (senha, token, CPF) antes de emitir |
+| **PII** (Personally Identifiable Information, Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
+| **trace** (rastro) | Caminho de uma requisição atravessando múltiplos serviços; cada salto é um span |
+| **span** (trecho) | Unidade de trabalho dentro de um trace; tem início, fim e atributos |
+| **metric** (métrica) | Valor numérico agregado (contador, gauge, histograma) emitido periodicamente |
 
 ## Logging estruturado
 

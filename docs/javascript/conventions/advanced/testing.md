@@ -2,9 +2,23 @@
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
+Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava. Em JS, a base é `node:test` + `node:assert/strict` (built-in desde Node 18) e a estrutura é **AAA** (Arrange, Act, Assert) — três fases visíveis em todo teste, separadas por linha em branco.
 
-Os exemplos seguem a abordagem **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar), que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
+## Conceitos fundamentais
+
+| Conceito | O que é |
+| --- | --- |
+| **AAA** (Arrange, Act, Assert, Arrumar, Agir, Atestar) | Estrutura em três fases: preparar contexto, executar comportamento, verificar resultado |
+| **unit test** (teste unitário) | Testa uma função ou classe isolada; rápido; dependências externas são substituídas |
+| **integration test** (teste de integração) | Testa múltiplas peças juntas, incluindo banco real ou HTTP de teste |
+| **fixture** (massa de teste) | Dado de entrada conhecido reutilizado entre testes |
+| **mock** (dados fictícios) | Objeto falso que substitui dependência real (banco, API, relógio) e devolve respostas pré-definidas; isola o teste do mundo externo |
+| **stub** (resposta fixa) | Substituto simples que retorna valor fixo, sem registrar chamadas |
+| **spy** (espião) | Invólucro que registra chamadas mas mantém o comportamento original |
+| **assertion** (asserção) | Verificação explícita do resultado esperado (`assert.strictEqual`, `assert.deepStrictEqual`) |
+| **expressive naming** (nomeação expressiva) | Variáveis de assert com nome do conceito (`actualPrice`, `expectedName`), nunca genéricos |
+
+Os exemplos seguem a abordagem AAA, que divide cada teste em três fases explícitas: preparação do contexto, execução do comportamento e verificação do resultado.
 
 O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas: sem expressões, acessos de propriedade ou literais inline.
 
@@ -141,7 +155,7 @@ test('throws ValidationError when discount percentage is negative', () => { /* .
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Bad — estado mutável compartilhado entre testes</summary>
+<summary>❌ Bad — estado compartilhado que muda entre testes</summary>
 <br>
 
 ```js
