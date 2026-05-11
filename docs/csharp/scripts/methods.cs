@@ -16,7 +16,6 @@ IReadOnlyList<string> BuildWelcomeMessages(IEnumerable<User> users)
 {
     var activeUsers = GetActiveUsers(users);
     var messages = activeUsers.Select(BuildGreeting).ToList();
-
     return messages;
 }
 
@@ -30,7 +29,6 @@ string BuildGreeting(User user)
 {
     var name = user.Name.Trim();
     var greeting = $"Olá, {name}!";
-
     return greeting;
 }
 

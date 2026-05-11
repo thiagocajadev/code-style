@@ -69,7 +69,7 @@ foreach ($orders as $order) {
 $orders = $this->orderRepository->findAll();
 
 $customerIDs = array_unique(array_column($orders, 'customerID'));
-$customers   = $this->customerRepository->findByIDs($customerIDs);
+$customers = $this->customerRepository->findByIDs($customerIDs);
 $customerMap = array_column($customers, null, 'id');
 
 foreach ($orders as $order) {

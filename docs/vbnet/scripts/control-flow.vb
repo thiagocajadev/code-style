@@ -34,7 +34,6 @@ Function GetStatusLabel(status As String) As String
     If Not isKnown Then Return "Desconhecido"
 
     Dim label = STATUS_LABELS(status)
-
     Return label
 End Function
 

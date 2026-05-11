@@ -277,7 +277,7 @@ FROM
   Players
 WHERE
   Players.JoinedAt >= '2024-01-01' AND
-  Players.JoinedAt <  '2025-01-01'
+  Players.JoinedAt < '2025-01-01'
 ORDER BY
   Players.JoinedAt;
 ```
@@ -541,11 +541,11 @@ CREATE TABLE Orders
 ```sql
 CREATE TABLE Orders
 (
-    Id BIGINT NOT NULL IDENTITY(1, 1),
-    CustomerId BIGINT NOT NULL,
-    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+  Id BIGINT NOT NULL IDENTITY(1, 1),
+  CustomerId BIGINT NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
-    CONSTRAINT PK_Orders PRIMARY KEY (Id)
+  CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
 ```
 
@@ -564,11 +564,11 @@ CREATE TABLE Orders
 -- pg_uuidv7 — extensão PostgreSQL
 CREATE TABLE Orders
 (
-    Id UNIQUEIDENTIFIER NOT NULL, -- sem DEFAULT: valor vem da aplicação
-    CustomerId UNIQUEIDENTIFIER NOT NULL,
-    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+  Id UNIQUEIDENTIFIER NOT NULL, -- sem DEFAULT: valor vem da aplicação
+  CustomerId UNIQUEIDENTIFIER NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
-    CONSTRAINT PK_Orders PRIMARY KEY (Id)
+  CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
 ```
 

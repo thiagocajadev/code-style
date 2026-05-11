@@ -167,7 +167,7 @@ BEGIN
   UPDATE TOP (@ChunkSize)
     Players
   SET
-    Players.IsActive      = 0,
+    Players.IsActive = 0,
     Players.InactivatedAt = GETUTCDATE()
   FROM
     Players

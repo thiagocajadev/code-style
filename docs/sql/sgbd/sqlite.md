@@ -56,11 +56,11 @@ CREATE TABLE Orders (
 ```sql
 CREATE TABLE Orders
 (
-  Id          INTEGER  NOT NULL,
-  CustomerId  INTEGER  NOT NULL,
-  TotalAmount NUMERIC  NOT NULL,
-  Status      TEXT     NOT NULL DEFAULT 'Pending',
-  CreatedAt   DATETIME NOT NULL DEFAULT (DATETIME('now')),
+  Id INTEGER NOT NULL,
+  CustomerId INTEGER NOT NULL,
+  TotalAmount NUMERIC NOT NULL,
+  Status TEXT NOT NULL DEFAULT 'Pending',
+  CreatedAt DATETIME NOT NULL DEFAULT (DATETIME('now')),
 
   CONSTRAINT PK_Orders PRIMARY KEY (Id),
   CONSTRAINT FK_Orders_Customers FOREIGN KEY (CustomerId)
@@ -122,11 +122,11 @@ eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifi
 ```sql
 CREATE TABLE Customers
 (
-  Id   INTEGER NOT NULL,
-  Name TEXT    NOT NULL,
-  Email TEXT   NOT NULL,
+  Id INTEGER NOT NULL,
+  Name TEXT NOT NULL,
+  Email TEXT NOT NULL,
 
-  CONSTRAINT PK_Customers PRIMARY KEY (Id),  -- alias de rowid: auto-increment implícito
+  CONSTRAINT PK_Customers PRIMARY KEY (Id), -- alias de rowid: auto-increment implícito
   CONSTRAINT UQ_Customers_Email UNIQUE (Email)
 );
 ```
@@ -142,9 +142,9 @@ CREATE TABLE Customers
 ```sql
 CREATE TABLE Events
 (
-  Id        TEXT     NOT NULL,
-  Type      TEXT     NOT NULL,
-  Payload   TEXT     NOT NULL DEFAULT '{}', -- JSON armazenado como TEXT
+  Id TEXT NOT NULL,
+  Type TEXT NOT NULL,
+  Payload TEXT NOT NULL DEFAULT '{}', -- JSON armazenado como TEXT
   CreatedAt DATETIME NOT NULL DEFAULT (DATETIME('now')),
 
   CONSTRAINT PK_Events PRIMARY KEY (Id) -- UUID v7 gerado na aplicação
@@ -166,10 +166,10 @@ Ativar junto com `PRAGMA synchronous = NORMAL` para melhor equilíbrio entre dur
 performance em produção.
 
 ```sql
-PRAGMA journal_mode  = WAL;
-PRAGMA synchronous   = NORMAL;
-PRAGMA foreign_keys  = ON;
-PRAGMA cache_size    = -64000; -- 64 MB de cache em memória
+PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;
+PRAGMA foreign_keys = ON;
+PRAGMA cache_size = -64000; -- 64 MB de cache em memória
 ```
 
 ## Transações
@@ -333,10 +333,10 @@ ALTER TABLE Orders
 -- passo 1: criar nova tabela com o schema correto
 CREATE TABLE Orders_New
 (
-  Id          INTEGER  NOT NULL,
-  CustomerId  INTEGER  NOT NULL,
-  TotalAmount NUMERIC  NOT NULL,
-  Status      TEXT     NOT NULL DEFAULT 'Pending',
+  Id INTEGER NOT NULL,
+  CustomerId INTEGER NOT NULL,
+  TotalAmount NUMERIC NOT NULL,
+  Status TEXT NOT NULL DEFAULT 'Pending',
 
   CONSTRAINT PK_Orders_New PRIMARY KEY (Id)
 );
@@ -377,12 +377,12 @@ COMMIT;
 ## PRAGMAs recomendados
 
 ```sql
-PRAGMA journal_mode  = WAL;
-PRAGMA synchronous   = NORMAL;
-PRAGMA foreign_keys  = ON;
-PRAGMA cache_size    = -64000; -- 64 MB
-PRAGMA temp_store    = MEMORY;
-PRAGMA mmap_size     = 268435456; -- 256 MB de mmap
+PRAGMA journal_mode = WAL;
+PRAGMA synchronous = NORMAL;
+PRAGMA foreign_keys = ON;
+PRAGMA cache_size = -64000; -- 64 MB
+PRAGMA temp_store = MEMORY;
+PRAGMA mmap_size = 268435456; -- 256 MB de mmap
 ```
 
 ## Recursos relacionados

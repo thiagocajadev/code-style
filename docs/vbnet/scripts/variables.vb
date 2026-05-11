@@ -12,7 +12,6 @@ Console.WriteLine($"discounted: {discounted}")
 Function ApplyDiscount(order As Order) As Order
     Dim discountedTotal = order.Total - StandardDiscount
     Dim discountedOrder = New Order(order.Id, discountedTotal, order.Status)
-
     Return discountedOrder
 End Function
 

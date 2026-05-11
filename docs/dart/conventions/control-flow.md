@@ -230,6 +230,7 @@ String httpMessage(int code) {
     400: 'Bad Request',
     404: 'Not Found',
   };
+
   final message = messages[code] ?? 'Unknown';
   return message;
 }

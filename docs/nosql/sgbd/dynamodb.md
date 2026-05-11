@@ -119,7 +119,6 @@ async function findTeamsByCity(city) {
 
   const response = await docClient.send(command);
   const teams = response.Items;
-
   return teams;
 }
 ```
@@ -176,7 +175,6 @@ class TeamRepository {
 
     const response = await docClient.send(command);
     const team = response.Item ?? null;
-
     return team;
   }
 }
@@ -208,7 +206,6 @@ class TeamRepository {
 
     const response = await docClient.send(command);
     const updated = response.Attributes;
-
     return updated;
   }
 }
@@ -234,7 +231,6 @@ class TeamRepository {
 
     const response = await docClient.send(command);
     const deletedItem = response.Attributes ?? null;
-
     return deletedItem;
   }
 }
@@ -262,7 +258,6 @@ class TeamRepository {
 
     const response = await docClient.send(command);
     const players = response.Items;
-
     return players;
   }
 }

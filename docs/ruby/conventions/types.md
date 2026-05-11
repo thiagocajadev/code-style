@@ -62,7 +62,7 @@ class Order
   end
 
   def active? = status == :active
-  def paid?   = status == :paid
+  def paid? = status == :paid
 end
 ```
 
@@ -190,7 +190,6 @@ def shipping_city(order)
   return nil unless order.address
 
   city = order.address.city&.upcase
-
   city
 end
 ```

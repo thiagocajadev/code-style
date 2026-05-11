@@ -120,6 +120,7 @@ let order_from_input = build_order(validated_input);
 ```rust
 let order = read_input()?;
 let order = parse_order(order)?;
+
 let order = validate_order(order)?;
 let order = enrich_order(order)?;
 ```
@@ -198,8 +199,8 @@ fn process_order(order: &Order) -> anyhow::Result<Receipt> {
 
     let discount_rate = compute_discount(order);
     let final_total = order.total * (1.0 - discount_rate);
-    let receipt = Receipt::new(final_total);
 
+    let receipt = Receipt::new(final_total);
     Ok(receipt)
 }
 ```

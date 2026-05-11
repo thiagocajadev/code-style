@@ -88,7 +88,7 @@ usar quando a propriedade não foi atribuída.
 @property --color-primary {
   syntax: "<color>";
   inherits: true;
-  initial-value: #3b82f6;   /* valor quando não definido — nunca inválido */
+  initial-value: #3b82f6; /* valor quando não definido — nunca inválido */
 }
 
 @property --transition-duration {
@@ -105,7 +105,7 @@ usar quando a propriedade não foi atribuída.
 
 /* @property também habilita transições em custom properties */
 .button {
-  background: var(--color-primary);          /* usa initial-value se não definido */
+  background: var(--color-primary); /* usa initial-value se não definido */
   transition: background var(--transition-duration);
 }
 ```
@@ -211,14 +211,14 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 ```css
 /* remover estilo aplicado por classe pai */
 .card--plain {
-  box-shadow: unset;          /* sem sombra — não "none" como magic value */
-  border-radius: unset;       /* remove o border-radius herdado */
+  box-shadow: unset; /* sem sombra — não "none" como magic value */
+  border-radius: unset; /* remove o border-radius herdado */
 }
 
 /* resetar todos os estilos de um elemento */
 .unstyled-button {
-  all: unset;                 /* reseta tudo para o valor herdado ou initial */
-  cursor: pointer;            /* reaplica só o necessário */
+  all: unset; /* reseta tudo para o valor herdado ou initial */
+  cursor: pointer; /* reaplica só o necessário */
 }
 
 /* voltar ao estilo do browser para um elemento que foi sobrescrito */

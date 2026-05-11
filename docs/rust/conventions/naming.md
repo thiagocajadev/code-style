@@ -45,7 +45,6 @@ fn apply_discount(order: &Order, calculate: impl Fn(&Order) -> Order) -> Option<
     }
 
     let discounted = calculate(order);
-
     Some(discounted)
 }
 ```

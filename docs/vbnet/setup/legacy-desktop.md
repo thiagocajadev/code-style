@@ -71,7 +71,6 @@ Public Module ConnectionFactory
     Public Function Create() As SqlConnection
         Dim connectionString = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
         Dim connection = New SqlConnection(connectionString)
-
         Return connection
     End Function
 End Module
@@ -152,7 +151,6 @@ Public Module ProductDataAccess
                 If Not hasResult Then Return Nothing
 
                 Dim row = table.Rows(0)
-
                 Return row
             End Using
         End Using
@@ -203,7 +201,6 @@ Public Function SaveProduct(name As String, price As Decimal, stock As Integer) 
 
             Dim rowsAffected = command.ExecuteNonQuery()
             Dim wasSaved = rowsAffected > 0
-
             Return wasSaved
         End Using
     End Using

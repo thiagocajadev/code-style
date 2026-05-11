@@ -137,13 +137,11 @@ const correlationIDKey contextKey = "correlation_id"
 
 func withCorrelationID(ctx context.Context, id string) context.Context {
     newCtx := context.WithValue(ctx, correlationIDKey, id)
-
     return newCtx
 }
 
 func correlationIDFrom(ctx context.Context) string {
     id, _ := ctx.Value(correlationIDKey).(string)
-
     return id
 }
 

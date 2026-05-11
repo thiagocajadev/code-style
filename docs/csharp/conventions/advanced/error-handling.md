@@ -121,7 +121,6 @@ return Result<Order>.Fail("unauthorized", "401");
 ```csharp
 return Result<Order>.Fail("Order not found.", "NOT_FOUND");
 return Result<Order>.Fail("Product ID is required.", "INVALID_PRODUCT_ID");
-
 return Result<Order>.Fail("User is not authorized.", "UNAUTHORIZED");
 
 // mapeamento centralizado no adapter
@@ -222,7 +221,6 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
     var order = await _orders.FindByIdAsync(request.OrderId, ct);
     var customer = await _customers.FindByIdAsync(request.CustomerId, ct);
-
     var items = await _items.FindByOrderAsync(request.OrderId, ct);
 
     var invoice = BuildInvoice(order, customer, items, request.Description);

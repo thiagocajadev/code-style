@@ -8,7 +8,6 @@ Function ApplyDiscount(price As Decimal, discountPct As Integer) As Decimal
     If discountPct <= 0 Then Return price
 
     Dim discountedPrice = price * (1 - discountPct / 100D)
-
     Return discountedPrice
 End Function
 

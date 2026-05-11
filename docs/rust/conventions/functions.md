@@ -71,7 +71,6 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
     notify_customer(user_id, order_id).await?;
 
     let receipt = Receipt { order_id, total };
-
     Ok(receipt)
 }
 
@@ -124,8 +123,10 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
     validate_cart(&cart)?;
+
     let total = calculate_total(&cart, user_id);
     let order_id = persist_order(user_id, total).await?;
+
     notify_customer(user_id, order_id).await?;
 
     Ok(Receipt { order_id, total })

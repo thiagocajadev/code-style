@@ -67,11 +67,10 @@ public void AppliesDiscount()
 [Fact]
 public void AppliesTenPercentDiscountToOrderPrice()
 {
-    var order = new Order { Price = 100m, DiscountPct = 10 };         // arrange
+    var order = new Order { Price = 100m, DiscountPct = 10 };
+    var actualPrice = ApplyDiscount(order);
+    var expectedPrice = 90m;
 
-    var actualPrice = ApplyDiscount(order);                           // act
-
-    var expectedPrice = 90m;                                          // assert
     Assert.Equal(expectedPrice, actualPrice);
 }
 ```
@@ -114,8 +113,8 @@ public void ReturnsActiveUsersOnly()
 public void FormatsFullName()
 {
     var actualName = FormatName("John", "Doe");
-
     var expectedName = "John Doe";
+
     Assert.Equal(expectedName, actualName);
 }
 
@@ -123,10 +122,9 @@ public void FormatsFullName()
 public void ReturnsActiveUsersOnly()
 {
     var users = new[] { new User("Alice", true), new User("Bob", false) };
-
     var actualUsers = FilterActive(users);
-
     var expectedUsers = new[] { new User("Alice", true) };
+
     Assert.Equal(expectedUsers, actualUsers);
 }
 ```
@@ -222,7 +220,6 @@ public class OrderTests
     public void CreatesOrderWithGeneratedId()
     {
         var order = new Order { Items = [new Item(1, 50m)] };
-
         var actualId = order.Id;
 
         Assert.NotNull(actualId);
@@ -232,11 +229,11 @@ public class OrderTests
     public void AppliesTenPercentDiscountToOrderPrice()
     {
         var order = new Order { Items = [new Item(1, 50m)], Total = 100m };
-
         var actualOrder = ApplyDiscount(order, 10);
-        var actualPrice = actualOrder.Price;
 
+        var actualPrice = actualOrder.Price;
         var expectedPrice = 90m;
+
         Assert.Equal(expectedPrice, actualPrice);
     }
 }
@@ -281,7 +278,6 @@ public async Task ThrowsOnMissingOrder()
 public async Task ThrowsNotFoundExceptionWhenOrderDoesNotExist()
 {
     var invalidId = "nonexistent-id";
-
     var act = () => FindOrderAsync(invalidId);
 
     await Assert.ThrowsAsync<NotFoundException>(act);

@@ -134,7 +134,6 @@ def fetch_reports(report_ids)
     end
 
     reports = tasks.map(&:wait)
-
     reports
   end
 end
@@ -154,7 +153,6 @@ def parallel_compute(chunks)
   end
 
   results = ractors.map(&:take)
-
   results
 end
 ```

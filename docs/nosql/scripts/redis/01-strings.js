@@ -31,7 +31,6 @@ async function findTeamCached(teamId, fetchFromDatabase) {
 
 export async function invalidateTeamCache(teamId) {
   const cacheKey = `team:profile:${teamId}`;
-
   await client.del(cacheKey);
 }
 
@@ -39,10 +38,9 @@ export async function invalidateTeamCache(teamId) {
 
 async function incrementMatchViews(matchId) {
   const counterKey = `match:views:${matchId}`;
-
   const newTotal = await client.incr(counterKey);
-  await client.expire(counterKey, 60 * 60 * 24); // expira em 24h
 
+  await client.expire(counterKey, 60 * 60 * 24); // expira em 24h
   return newTotal;
 }
 

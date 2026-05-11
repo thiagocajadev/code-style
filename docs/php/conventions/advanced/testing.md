@@ -62,7 +62,7 @@ public static function discountCases(): array
     return [
         '10% discount on 100' => [100.0, 0.1, 90.0],
         '20% discount on 200' => [200.0, 0.2, 160.0],
-        'zero discount'       => [50.0, 0.0, 50.0],
+        'zero discount' => [50.0, 0.0, 50.0],
     ];
 }
 ```
@@ -88,7 +88,7 @@ final class OrderServiceTest extends TestCase
     protected function setUp(): void
     {
         $this->repositoryMock = $this->createMock(OrderRepositoryInterface::class);
-        $this->notifierMock   = $this->createMock(NotifierInterface::class);
+        $this->notifierMock = $this->createMock(NotifierInterface::class);
 
         $this->service = new OrderService(
             repository: $this->repositoryMock,

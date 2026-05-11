@@ -146,7 +146,6 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
     require(validItems.isNotEmpty()) { "Order must contain at least one item" }
 
     val order = Order(userId = validUserId, items = validItems)
-
     return order
 }
 ```

@@ -45,7 +45,6 @@ func describeOrder(order *Order) string {
     }
 
     description := fmt.Sprintf("order %d: %s", order.ID, order.Status)
-
     return description
 }
 ```

@@ -22,13 +22,13 @@ function saveProduct(product: Product): Result<Product> {
 
   try {
     persistProduct(product);
-    const success: Result<Product> = { ok: true, value: product };
 
+    const success: Result<Product> = { ok: true, value: product };
     return success;
   } catch (error) {
     const message = error instanceof Error ? error.message : "unknown error";
-    const failure: Result<Product> = { ok: false, error: `Unexpected error: ${message}` };
 
+    const failure: Result<Product> = { ok: false, error: `Unexpected error: ${message}` };
     return failure;
   }
 }
@@ -45,7 +45,6 @@ function validateProduct(product: Product): Result<Product> {
   }
 
   const valid: Result<Product> = { ok: true, value: product };
-
   return valid;
 }
 

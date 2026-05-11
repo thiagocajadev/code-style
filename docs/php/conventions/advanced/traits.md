@@ -187,7 +187,6 @@ trait SoftDeletable
     public function isDeleted(): bool
     {
         $isDeleted = $this->deletedAt !== null;
-
         return $isDeleted;
     }
 }

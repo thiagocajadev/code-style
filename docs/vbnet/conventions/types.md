@@ -74,7 +74,6 @@ Public MustInherit Class OrderProcessor
         End If
 
         Dim execution = Await ExecuteAsync(order)
-
         Return execution
     End Function
 
@@ -272,7 +271,6 @@ Public Function FindDiscount(productId As String) As Integer?
     End If
 
     Dim percentage = discount.Percentage
-
     Return percentage
 End Function
 
@@ -336,7 +334,6 @@ Public Function DescribePayment(payment As IPayment) As String
     End If
 
     Dim fallback = "Unknown payment"
-
     Return fallback
 End Function
 ```
@@ -365,7 +362,6 @@ Public NotInheritable Class PaymentSuccess
 
     Public Overrides Function Describe() As String
         Dim description = $"Success: {TransactionId}"
-
         Return description
     End Function
 End Class
@@ -383,7 +379,6 @@ Public NotInheritable Class PaymentFailure
 
     Public Overrides Function Describe() As String
         Dim description = $"Failure {ErrorCode}: {ErrorMessage}"
-
         Return description
     End Function
 End Class
@@ -427,7 +422,6 @@ End Interface
 
 Public Function FindById(Of T As {Class, IEntity})(id As Guid) As T
     Dim entity = _context.Set(Of T)().FirstOrDefault(Function(e) e.Id = id)
-
     Return entity
 End Function
 ```

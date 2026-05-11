@@ -61,7 +61,6 @@ Public Function ProcessPayment(payment As Payment) As PaymentResult
     _gateway.Charge(payment)
 
     Dim result = PaymentResult.Success()
-
     Return result
 End Function
 
@@ -191,7 +190,6 @@ Public Async Function BuildPurchaseSummaryAsync(purchaseId As Guid) As Task(Of P
 
     Dim totals = CalculateTotals(purchase)
     Dim summary = BuildSummary(purchase, totals)
-
     Return summary
 End Function
 

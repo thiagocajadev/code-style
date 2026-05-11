@@ -9,28 +9,24 @@ await client.connect();
 
 async function addFavoriteTeam(userId, teamId) {
   const setKey = `user:favorites:${userId}`;
-
   const isNew = await client.sAdd(setKey, `team:${teamId}`);
   return isNew === 1;
 }
 
 export async function removeFavoriteTeam(userId, teamId) {
   const setKey = `user:favorites:${userId}`;
-
   const wasRemoved = await client.sRem(setKey, `team:${teamId}`);
   return wasRemoved === 1;
 }
 
 export async function fetchFavoriteTeams(userId) {
   const setKey = `user:favorites:${userId}`;
-
   const favorites = await client.sMembers(setKey);
   return favorites;
 }
 
 async function isFavoriteTeam(userId, teamId) {
   const setKey = `user:favorites:${userId}`;
-
   const isFavorite = await client.sIsMember(setKey, `team:${teamId}`);
   return isFavorite;
 }
@@ -59,14 +55,12 @@ async function findExclusiveFavorites(userId1, userId2) {
 
 async function joinLiveMatch(matchId, userId) {
   const setKey = `match:live:viewers:${matchId}`;
-
   await client.sAdd(setKey, userId);
   await client.expire(setKey, 60 * 60 * 4); // expira em 4h
 }
 
 async function fetchLiveViewerCount(matchId) {
   const setKey = `match:live:viewers:${matchId}`;
-
   const count = await client.sCard(setKey);
   return count;
 }

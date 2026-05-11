@@ -44,6 +44,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 <div id="checkout-summary" class="order-summary">
   <span class="alert alert--error">Error</span>
 </div>
+
 <div id="cart-sidebar" class="order-summary order-summary--compact">
   <span class="alert alert--warning">Warning</span>
 </div>

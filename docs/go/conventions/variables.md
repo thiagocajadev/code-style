@@ -212,7 +212,6 @@ applyTax(&total, 0.1)
 ```go
 func applyTax(price float64, rate float64) float64 {
     taxedPrice := price * (1 + rate)
-
     return taxedPrice
 }
 

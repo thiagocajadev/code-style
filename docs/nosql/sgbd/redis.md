@@ -251,7 +251,6 @@ class LeaderboardRepository {
 
   async fetchPlayerRank(playerId) {
     const rank = await client.zRevRank(LEADERBOARD_KEY, playerId);
-
     return rank; // null se não existe; 0 = primeiro lugar
   }
 }

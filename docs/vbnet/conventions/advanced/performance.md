@@ -54,7 +54,6 @@ Public Function BuildOrderSummary(items As IEnumerable(Of OrderItem)) As String
     Next
 
     Dim summary As String = builder.ToString()
-
     Return summary
 End Function
 ```
@@ -233,7 +232,6 @@ Public Async Function FindProductAsync(id As Guid) As Task(Of Product)
     If cached IsNot Nothing Then Return cached
 
     Dim product = Await _repository.FindByIdAsync(id)
-
     Return product
 End Function
 ```

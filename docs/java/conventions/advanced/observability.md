@@ -56,6 +56,7 @@ public class OrderService {
             .orElseThrow(() -> new NotFoundException("Order " + orderId + " not found."));
 
         log.info("Order processed: orderId={} status={}", orderId, order.getStatus());
+
         return order;
     }
 }

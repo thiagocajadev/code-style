@@ -389,7 +389,6 @@ Public Module ConnectionFactory
     Public Function Create() As SqlConnection
         Dim connectionString = ConfigurationManager.ConnectionStrings("DefaultConnection").ConnectionString
         Dim connection = New SqlConnection(connectionString)
-
         Return connection
     End Function
 End Module

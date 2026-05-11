@@ -86,6 +86,7 @@ public User getUser(String id) {
 public User getUser(String id) {
     final var user = userRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("User " + id + " not found."));
+
     return user;
 }
 ```

@@ -52,7 +52,6 @@ async fn main() -> anyhow::Result<()> {
     let app = server::build(&cfg).await?;
 
     let listener = tokio::net::TcpListener::bind(&cfg.bind_addr).await?;
-
     axum::serve(listener, app).await?;
 
     Ok(())
@@ -97,7 +96,6 @@ async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
     // total: ~50ms
 
     let dashboard = Dashboard { orders, invoices, balance };
-
     Ok(dashboard)
 }
 ```

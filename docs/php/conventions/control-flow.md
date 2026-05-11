@@ -150,8 +150,8 @@ $priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
 ```php
 $priority = match (true) {
     $isUrgent && $isCritical => 'Critical',
-    $isUrgent                => 'High',
-    default                  => 'Normal',
+    $isUrgent => 'High',
+    default => 'Normal',
 };
 ```
 
@@ -253,11 +253,11 @@ switch ($status) {
 
 ```php
 $label = match($order->status) {
-    OrderStatus::Pending    => 'Pendente',
+    OrderStatus::Pending => 'Pendente',
     OrderStatus::Processing => 'Processando',
-    OrderStatus::Shipped    => 'Enviado',
-    OrderStatus::Delivered  => 'Entregue',
-    OrderStatus::Canceled   => 'Cancelado',
+    OrderStatus::Shipped => 'Enviado',
+    OrderStatus::Delivered => 'Entregue',
+    OrderStatus::Canceled => 'Cancelado',
 };
 ```
 

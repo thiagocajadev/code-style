@@ -88,17 +88,17 @@ class Order
 ```php
 enum OrderStatus: string
 {
-    case Pending    = 'pending';
+    case Pending = 'pending';
     case Processing = 'processing';
-    case Shipped    = 'shipped';
-    case Delivered  = 'delivered';
-    case Canceled   = 'canceled';
+    case Shipped = 'shipped';
+    case Delivered = 'delivered';
+    case Canceled = 'canceled';
 
     public function isTerminal(): bool
     {
         $isTerminal = match($this) {
             self::Delivered, self::Canceled => true,
-            default                         => false,
+            default => false,
         };
 
         return $isTerminal;
@@ -112,7 +112,6 @@ class Order
     public function isPending(): bool
     {
         $isPending = $this->status === OrderStatus::Pending;
-
         return $isPending;
     }
 }

@@ -103,7 +103,6 @@ pub mod store {
         require!(initial_price > 0, StoreError::InvalidPrice);
 
         let product = &mut context.accounts.product;
-
         product.price = initial_price;
         product.authority = context.accounts.authority.key();
 
@@ -117,7 +116,6 @@ pub mod store {
         require!(new_price > 0, StoreError::InvalidPrice);
 
         let product = &mut context.accounts.product;
-
         product.price = new_price;
 
         Ok(())

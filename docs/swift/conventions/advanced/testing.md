@@ -95,6 +95,7 @@ struct OrderService {
         guard let order = try await repository.find(id: id) else {
             throw OrderError.notFound(id)
         }
+
         return order
     }
 }

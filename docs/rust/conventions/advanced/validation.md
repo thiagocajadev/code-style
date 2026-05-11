@@ -133,7 +133,6 @@ async fn create_order_handler(
     body.validate()?;
 
     let order = order_service::create(body).await?;
-
     Ok(axum::Json(order))
 }
 ```

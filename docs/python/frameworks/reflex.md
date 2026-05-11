@@ -186,13 +186,11 @@ class CartState(rx.State):
     @rx.var
     def cart_total(self) -> float:
         total = sum(item.price for item in self.items)
-
         return total
 
     @rx.var
     def is_cart_empty(self) -> bool:
         is_empty = len(self.items) == 0
-
         return is_empty
 
     def add_item(self, item: CartItem):

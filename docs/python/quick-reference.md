@@ -124,7 +124,6 @@ def format_address(user):
     state = user.address.state
 
     address = f"{street}, {city} - {state}"
-
     return address
 ```
 

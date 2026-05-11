@@ -63,7 +63,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                   | Saída cedo na falha, sem else após return                            |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                            | Aninhamento em cascata substituído por fluxo plano                   |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                       | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Readonly por padrão](conventions/variables.md#mutação-direta)                                | `readonly` em propriedades e parâmetros; mutação é exceção           |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
 

@@ -80,7 +80,7 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 | --- | --- |
 | [Retorno antecipado](conventions/control-flow.md#aninhamento-em-cascata) | Saída cedo na falha, sem else após return |
 | [`switch` exaustivo](conventions/control-flow.md#switch-como-expressão) | switch expression substitui chains de if/else |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [`final` por padrão](conventions/variables.md#var-onde-final-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
 

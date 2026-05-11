@@ -170,14 +170,12 @@ final class PasswordHasher
     public function hash(string $password): string
     {
         $hash = password_hash($password, PASSWORD_ARGON2ID);
-
         return $hash;
     }
 
     public function verify(string $password, string $hash): bool
     {
         $isValid = password_verify($password, $hash);
-
         return $isValid;
     }
 }
@@ -210,7 +208,6 @@ final class CsrfProtection
         $storedToken = $_SESSION['csrf_token'] ?? '';
 
         $isValid = hash_equals($storedToken, $token);
-
         return $isValid;
     }
 }

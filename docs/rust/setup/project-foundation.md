@@ -141,6 +141,7 @@ async fn main() {
 ```rust
 mod config;
 mod error;
+
 mod order;
 mod user;
 
@@ -215,7 +216,6 @@ pub fn load() -> Result<Config> {
         .unwrap_or_else(|_| "0.0.0.0:3000".to_string());
 
     let cfg = Config { database_url, jwt_secret, bind_addr };
-
     Ok(cfg)
 }
 ```

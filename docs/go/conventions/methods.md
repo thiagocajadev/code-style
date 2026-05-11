@@ -49,7 +49,6 @@ func (m MathHelper) Multiply(a, b float64) float64 {
 // função livre: não depende de estado
 func calculateDiscount(price float64, rate float64) float64 {
     discountedPrice := price * (1 - rate)
-
     return discountedPrice
 }
 
@@ -104,7 +103,6 @@ func (o *Order) Cancel() {
 // value receiver: apenas lê, não precisa de ponteiro
 func (o Order) IsCancelable() bool {
     isCancelable := o.Status == OrderStatusPending || o.Status == OrderStatusProcessing
-
     return isCancelable
 }
 ```
@@ -314,8 +312,8 @@ func (s *InvoiceService) GenerateMonthlyReport(ctx context.Context, month time.M
 // Helpers abaixo, na ordem de chamada
 func buildInvoiceSummary(invoices []Invoice) InvoiceSummary {
     total := lo.SumBy(invoices, func(inv Invoice) float64 { return inv.Amount })
-    summary := InvoiceSummary{Count: len(invoices), Total: total}
 
+    summary := InvoiceSummary{Count: len(invoices), Total: total}
     return summary
 }
 

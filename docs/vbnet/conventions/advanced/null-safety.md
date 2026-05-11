@@ -97,7 +97,6 @@ Public Function GetDeliveryStatus(item As OrderItem) As String
     If Not item.DeliveredAt.HasValue Then Return "Pending"
 
     Dim deliveryDate As String = item.DeliveredAt.Value.ToString("dd/MM/yyyy")
-
     Return $"Delivered on {deliveryDate}"
 End Function
 ```

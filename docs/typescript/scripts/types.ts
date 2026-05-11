@@ -40,7 +40,6 @@ function paginate<T>(items: T[], page: number, pageSize: number): PaginatedResul
   const pageItems = items.slice(offset, offset + pageSize);
 
   const result: PaginatedResult<T> = { items: pageItems, total: items.length, page, pageSize };
-
   return result;
 }
 
@@ -64,7 +63,6 @@ function resolveLabel<T>(state: AsyncState<T>): string {
   if (state.kind === "error") return `Erro: ${state.message}`;
 
   const label = `Carregado: ${JSON.stringify(state.data)}`;
-
   return label;
 }
 

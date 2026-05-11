@@ -86,10 +86,13 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" fetchpriority="high" />
+
 <img src="/img/product-1.jpg" alt="Product 1" loading="lazy" />
 <img src="/img/product-2.jpg" alt="Product 2" loading="lazy" />
 <img src="/img/product-3.jpg" alt="Product 3" loading="lazy" />
 ```
+
+O hero tem papel distinto (above the fold, prioridade alta) — fase isolada. Os três produtos com `loading="lazy"` formam trio homogêneo e ficam tight.
 
 </details>
 

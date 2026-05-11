@@ -96,6 +96,7 @@ async def list_orders(request: Request):
 @router.get("/orders/partial")
 async def list_orders_partial(request: Request):
     orders = await order_service.fetch_all()
+
     partial = templates.TemplateResponse(
         "orders/_list.html", {"request": request, "orders": orders}
     )

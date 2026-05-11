@@ -178,7 +178,6 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
     repo := &Repository{db: db}
-
     return repo
 }
 ```
@@ -271,7 +270,6 @@ func New(cfg *config.Config) (*Server, error) {
     router := buildRouter(orderHandler)
 
     srv := &Server{cfg: cfg, router: router}
-
     return srv, nil
 }
 
@@ -279,7 +277,6 @@ func (s *Server) Start() error {
     addr := fmt.Sprintf(":%s", s.cfg.Port)
 
     err := http.ListenAndServe(addr, s.router)
-
     return err
 }
 ```

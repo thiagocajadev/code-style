@@ -126,9 +126,9 @@ public record PaymentPending(String transactionId) implements PaymentResult {}
 
 // compilador exige todos os cases — sem default necessário
 String message = switch (result) {
-    case PaymentSuccess s  -> "Paid: " + s.amount();
-    case PaymentFailure f  -> "Failed: " + f.reason();
-    case PaymentPending p  -> "Pending: " + p.transactionId();
+    case PaymentSuccess s -> "Paid: " + s.amount();
+    case PaymentFailure f -> "Failed: " + f.reason();
+    case PaymentPending p -> "Pending: " + p.transactionId();
 };
 ```
 
@@ -231,6 +231,7 @@ public BigDecimal calculateTotal(List<? extends Order> orders) {
     final var total = orders.stream()
         .map(Order::getTotal)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
+
     return total;
 }
 ```

@@ -187,11 +187,12 @@ private String getStatusLabel(OrderStatus status) {
 ```java
 private String getStatusLabel(OrderStatus status) {
     final var label = switch (status) {
-        case PENDING   -> "Pending review";
-        case APPROVED  -> "Approved";
-        case REJECTED  -> "Rejected";
+        case PENDING -> "Pending review";
+        case APPROVED -> "Approved";
+        case REJECTED -> "Rejected";
         case CANCELLED -> "Cancelled";
     };
+
     return label;
 }
 ```
@@ -286,10 +287,11 @@ private String describePayment(PaymentResult result) {
 
 private String describePayment(PaymentResult result) {
     final var description = switch (result) {
-        case PaymentSuccess s  -> "Paid: " + s.amount();
-        case PaymentFailure f  -> "Failed: " + f.reason();
-        case PaymentPending p  -> "Pending: " + p.transactionId();
+        case PaymentSuccess s -> "Paid: " + s.amount();
+        case PaymentFailure f -> "Failed: " + f.reason();
+        case PaymentPending p -> "Pending: " + p.transactionId();
     };
+
     return description;
 }
 ```

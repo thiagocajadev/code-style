@@ -21,8 +21,8 @@
   --primitive-yellow-500: #eab308;
   --primitive-yellow-600: #ca8a04;
 
-  --primitive-neutral-0:   #ffffff;
-  --primitive-neutral-50:  #f9fafb;
+  --primitive-neutral-0: #ffffff;
+  --primitive-neutral-50: #f9fafb;
   --primitive-neutral-100: #f3f4f6;
   --primitive-neutral-200: #e5e7eb;
   --primitive-neutral-500: #6b7280;
@@ -59,38 +59,38 @@
 /* --- Tokens semânticos: mapeiam primitivos a intenções de design --- */
 
 :root {
-  --color-primary:       var(--primitive-blue-500);
+  --color-primary: var(--primitive-blue-500);
   --color-primary-hover: var(--primitive-blue-600);
-  --color-on-primary:    var(--primitive-neutral-0);
+  --color-on-primary: var(--primitive-neutral-0);
 
-  --color-danger:        var(--primitive-red-500);
-  --color-on-danger:     var(--primitive-neutral-0);
+  --color-danger: var(--primitive-red-500);
+  --color-on-danger: var(--primitive-neutral-0);
 
-  --color-success:       var(--primitive-green-600);
-  --color-success-subtle:var(--primitive-green-50);
+  --color-success: var(--primitive-green-600);
+  --color-success-subtle: var(--primitive-green-50);
 
-  --color-warning:       var(--primitive-yellow-600);
-  --color-warning-subtle:var(--primitive-yellow-50);
+  --color-warning: var(--primitive-yellow-600);
+  --color-warning-subtle: var(--primitive-yellow-50);
 
-  --color-error:         var(--primitive-red-600);
-  --color-error-subtle:  var(--primitive-red-50);
+  --color-error: var(--primitive-red-600);
+  --color-error-subtle: var(--primitive-red-50);
 
-  --color-surface:       var(--primitive-neutral-0);
-  --color-background:    var(--primitive-neutral-50);
-  --color-border:        var(--primitive-neutral-200);
+  --color-surface: var(--primitive-neutral-0);
+  --color-background: var(--primitive-neutral-50);
+  --color-border: var(--primitive-neutral-200);
 
-  --color-text-primary:  var(--primitive-neutral-900);
-  --color-text-secondary:var(--primitive-neutral-500);
+  --color-text-primary: var(--primitive-neutral-900);
+  --color-text-secondary: var(--primitive-neutral-500);
 }
 
 /* --- Tema escuro: apenas tokens semânticos mudam --- */
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-surface:        var(--primitive-neutral-900);
-    --color-background:     #0f172a;
-    --color-border:         var(--primitive-neutral-700);
-    --color-text-primary:   var(--primitive-neutral-50);
+    --color-surface: var(--primitive-neutral-900);
+    --color-background: #0f172a;
+    --color-border: var(--primitive-neutral-700);
+    --color-text-primary: var(--primitive-neutral-50);
     --color-text-secondary: var(--primitive-neutral-500);
   }
 }

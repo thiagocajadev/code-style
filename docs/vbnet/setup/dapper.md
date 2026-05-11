@@ -88,7 +88,6 @@ Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOn
         commandType:=CommandType.StoredProcedure)
 
     Dim result = summaries.ToList()
-
     Return result
 End Function
 ```
@@ -136,7 +135,6 @@ Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(
         commandType:=CommandType.StoredProcedure)
 
     Dim newId = parameters.Get(Of Guid)("NewId")
-
     Return newId
 End Function
 ```
@@ -156,7 +154,6 @@ Public Async Function FindByIdAsync(id As Guid) As Task(Of Customer)
     Const sql = "SELECT Id, Name, Email FROM Customers WHERE Id = @Id"
 
     Dim customer = Await _connection.QueryFirstOrDefaultAsync(Of Customer)(sql, New With {.Id = id})
-
     Return customer
 End Function
 ```
@@ -175,7 +172,6 @@ Public Async Function ExistsAsync(email As String) As Task(Of Boolean)
 
     Dim count = Await _connection.ExecuteScalarAsync(Of Integer)(sql, New With {.Email = email})
     Dim exists = count > 0
-
     Return exists
 End Function
 ```
@@ -235,7 +231,6 @@ Public Async Function FindByEmailAsync(email As String) As Task(Of Customer)
     Const sql = "SELECT Id, Name FROM Customers WHERE Email = @Email"
 
     Dim customer = Await _connection.QueryFirstOrDefaultAsync(Of Customer)(sql, New With {.Email = email})
-
     Return customer
 End Function
 ```
@@ -254,7 +249,6 @@ Public Async Function SearchByNameAsync(term As String) As Task(Of IReadOnlyList
 
     Dim customers = Await _connection.QueryAsync(Of Customer)(sql, New With {.Term = $"%{term}%"})
     Dim result = customers.ToList()
-
     Return result
 End Function
 ```
@@ -309,7 +303,6 @@ Public Class PurchaseRepository
             commandType:=CommandType.StoredProcedure)
 
         Dim result = summaries.ToList()
-
         Return result
     End Function
 End Class
@@ -366,7 +359,6 @@ Public Async Function GetDashboardAsync(customerId As Guid) As Task(Of CustomerD
         Dim purchases = (Await reader.ReadAsync(Of PurchaseSummary)()).ToList()
 
         Dim dashboard = New CustomerDashboard(customer, purchases)
-
         Return dashboard
     End Using
 End Function

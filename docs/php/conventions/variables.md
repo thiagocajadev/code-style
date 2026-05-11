@@ -107,10 +107,10 @@ class OrderProcessor
 
 enum OrderStatus: string
 {
-    case Pending    = 'pending';
+    case Pending = 'pending';
     case Processing = 'processing';
-    case Shipped    = 'shipped';
-    case Canceled   = 'canceled';
+    case Shipped = 'shipped';
+    case Canceled = 'canceled';
 }
 
 if ($order->status === OrderStatus::Pending) {
@@ -208,7 +208,6 @@ class Order
     public function isCanceled(): bool
     {
         $isCanceled = $this->canceledAt !== null;
-
         return $isCanceled;
     }
 }

@@ -110,11 +110,9 @@ public static class OrdersExtensions
     {
         // handlers registrados como Scoped — o container os injeta nas rotas automaticamente
         builder.Services.AddScoped<FindOrdersHandler>();
-
         builder.Services.AddScoped<FindOrderByIdHandler>();
 
         builder.Services.AddScoped<CreateOrderHandler>();
-
         builder.Services.AddScoped<OrderService>();
 
         return builder;
@@ -380,7 +378,6 @@ return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
 ```csharp
 var orderLocation = $"/api/orders/{createdOrder.Id}";
 var response = TypedResults.Created(orderLocation, createdOrder);
-
 return response;
 ```
 
@@ -483,14 +480,13 @@ public interface IOrderReader
 await repository.SaveAsync(order, cancellationToken);
 
 var saved = await reader.FindByIdAsync(order.Id, cancellationToken);
-
 if (!saved.IsSuccess)
     return TypedResults.Problem(saved.Error!.Message);
 
 var orderLocation = $"/orders/{order.Id}";
 var orderResponse = OrderResponseFilterOutput.Apply(saved.Value!);
-var response = TypedResults.Created(orderLocation, orderResponse);
 
+var response = TypedResults.Created(orderLocation, orderResponse);
 return response;
 ```
 

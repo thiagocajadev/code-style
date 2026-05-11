@@ -78,7 +78,6 @@ func buildSummary(orders []Order) Summary {
     total := calculateTotal(orders)
 
     summary := Summary{Count: count, Total: total}
-
     return summary  // compilador pode manter no stack do caller
 }
 ```
@@ -198,7 +197,6 @@ func buildCSV(orders []Order) string {
     }
 
     result := builder.String()
-
     return result
 }
 ```

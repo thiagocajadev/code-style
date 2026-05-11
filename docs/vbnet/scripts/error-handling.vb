@@ -12,12 +12,11 @@ Function SaveProduct(product As Product) As OperationResult
 
     Try
         PersistProduct(product)
-        Dim success = OperationResult.Ok()
 
+        Dim success = OperationResult.Ok()
         Return success
     Catch ex As Exception
         Dim failure = OperationResult.Fail($"Unexpected error: {ex.Message}")
-
         Return failure
     End Try
 End Function

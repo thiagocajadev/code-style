@@ -151,15 +151,15 @@ FactoryBot.define do
     total { 100.0 }
     status { :pending }
 
-    trait :active   do status { :active } end
-    trait :paid     do status { :paid } end
-    trait :large    do total { 500.0 } end
+    trait :active do status { :active } end
+    trait :paid do status { :paid } end
+    trait :large do total { 500.0 } end
   end
 end
 
 # spec: estado declarado no contexto
 let(:active_order) { create(:order, :active) }
-let(:large_order)  { create(:order, :large) }
+let(:large_order) { create(:order, :large) }
 ```
 
 </details>

@@ -59,7 +59,6 @@ def process_order(order):
         raise BusinessError("Customer has unpaid debts.")
 
     processed_order = {"success": True, "order": order}
-
     return processed_order
 ```
 
@@ -301,7 +300,6 @@ def get_user(user_id: int):
 ```python
 def get_user(user_id: int):
     user = user_map.get(user_id)
-
     return user
 ```
 

@@ -19,8 +19,8 @@ End Function
 
 Async Function FetchUser(userId As Integer) As Task(Of User)
     Await Task.Delay(100)
-    Dim user = New User(userId, "Alice")
 
+    Dim user = New User(userId, "Alice")
     Return user
 End Function
 

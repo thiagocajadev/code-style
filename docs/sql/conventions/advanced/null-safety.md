@@ -235,10 +235,10 @@ FROM
 ```sql
 CREATE TABLE Orders
 (
-  Id        INT          NOT NULL IDENTITY(1, 1),
-  Status    NVARCHAR(20) NOT NULL DEFAULT 'Pending',
-  Priority  NVARCHAR(20) NOT NULL DEFAULT 'Normal',
-  CreatedAt DATETIME2    NOT NULL DEFAULT GETUTCDATE(),
+  Id INT NOT NULL IDENTITY(1, 1),
+  Status NVARCHAR(20) NOT NULL DEFAULT 'Pending',
+  Priority NVARCHAR(20) NOT NULL DEFAULT 'Normal',
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
   CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
@@ -291,8 +291,8 @@ GROUP BY TeamId;
 -- COUNT(*) vs COUNT(coluna)
 SELECT
   Orders.Status,
-  COUNT(*)                          AS TotalOrders,    -- conta todas as linhas
-  COUNT(Orders.AssignedTo)          AS AssignedOrders, -- ignora NULL
+  COUNT(*) AS TotalOrders, -- conta todas as linhas
+  COUNT(Orders.AssignedTo) AS AssignedOrders, -- ignora NULL
   COUNT(DISTINCT Orders.CustomerId) AS Customers
 FROM
   Orders
@@ -302,7 +302,7 @@ GROUP BY
 -- AVG ignora NULL — divisor é count de não-nulos
 SELECT
   Reviews.ProductId,
-  AVG(Reviews.Rating)   AS AvgRating,  -- apenas ratings preenchidos
+  AVG(Reviews.Rating) AS AvgRating, -- apenas ratings preenchidos
   COUNT(Reviews.Rating) AS RatingCount -- quantos avaliaram
 FROM
   Reviews
@@ -313,7 +313,7 @@ GROUP BY
 SELECT
   Employees.TeamId,
   COALESCE(SUM(Employees.Salary), 0) AS TotalSalary,
-  COUNT(*)                           AS Headcount
+  COUNT(*) AS Headcount
 FROM
   Employees
 GROUP BY
@@ -353,9 +353,9 @@ INNER JOIN Customers c ON o.CustomerId = c.Id;
 ```sql
 CREATE TABLE Orders
 (
-  Id         INT NOT NULL IDENTITY(1, 1),
+  Id INT NOT NULL IDENTITY(1, 1),
   CustomerId INT NOT NULL,
-  Status     NVARCHAR(20) NOT NULL DEFAULT 'Pending',
+  Status NVARCHAR(20) NOT NULL DEFAULT 'Pending',
 
   CONSTRAINT PK_Orders PRIMARY KEY (Id),
   CONSTRAINT FK_Orders_Customers FOREIGN KEY (CustomerId)
@@ -459,11 +459,11 @@ CREATE TABLE Users
 ```sql
 CREATE TABLE Users
 (
-  Id    INT          NOT NULL IDENTITY(1, 1),
+  Id INT NOT NULL IDENTITY(1, 1),
   Email VARCHAR(255) NOT NULL,
-  Phone VARCHAR(20)  NULL,
+  Phone VARCHAR(20) NULL,
 
-  CONSTRAINT PK_Users   PRIMARY KEY (Id),
+  CONSTRAINT PK_Users PRIMARY KEY (Id),
   CONSTRAINT UQ_Users_Email UNIQUE (Email)
 );
 

@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.7] - 2026-05-11
+
+### Changed
+
+- `docs/{csharp,typescript,python,java,kotlin,swift,dart,go,rust,ruby,php,vbnet,sql,nosql,css,html}/conventions/visual-density.md` — **doc canônica de densidade visual reescrita nas 16 linguagens** espelhando o JS canônico (regras: Explaining Return tight, Declaração + guarda com critério visual inline-vs-bloco, Multi-linha pede respiro depois, Ifs consecutivos cenário B, Sem column alignment, Fragmentos → montagem, par semântico encadeado, órfão de 1, atomic trio, fases de método, testes). Cada linguagem com exemplos idiomáticos (C# `var`, Python `=`/PEP 8, Java builders + switch expressions, Kotlin lambdas + `?:`, Swift `guard let`, Dart cascade, Go `err != nil`, Rust `Ok()`/`?`/`let else`, Ruby postfix-`if`/blocks, PHP enum match, VB.NET `If Then`, SQL/NoSQL pipelines, CSS rulesets, HTML landmarks). Tabela `**termo-en** (tradução pt-br)` mantida em Conceitos fundamentais
+- `docs/csharp/conventions/**` + `scripts/**` — 16 arquivos: 12 Explaining Return tight, 4 trios atômicos, 5 testes AAA reorganizados (`async.cs`, `methods.cs`, `test/testing.{xunit,mstest,nunit}.cs`)
+- `docs/typescript/conventions/**` + `scripts/**` — 15 arquivos: 19 Explaining Return tight + blank após side effects, trio inline guards em `error-handling.md`
+- `docs/python/conventions/**` + `frameworks/**` — 15 arquivos: ~25 Explaining Return tight, blank antes de blocos guarda em `control-flow.md` e `functions.md` (`is_valid`, `process_order`)
+- `docs/java/conventions/**` + `frameworks/spring.md` + `scripts/**` — 14 arquivos: 11 blanks antes de return após multi-linha, 6 column alignments removidos (switch arrows `case X    ->`)
+- `docs/kotlin/conventions/**` — 8 arquivos: 4 Explaining Return tight, 3 lambdas/builders multi-linha com blank depois
+- `docs/swift/conventions/**` — 4 arquivos: 4 blanks após guard/dict multi-linha em `control-flow.md`, `error-handling.md`, `testing.md`
+- `docs/dart/conventions/**` + `frameworks/flutter/**` + `README.md` — 4 arquivos: 1 Map multi-linha, 1 chamada `_channel.invokeMethod` multi-linha, 1 âncora morta corrigida
+- `docs/go/conventions/**` + `setup/project-foundation.md` — 15 arquivos: 25 Explaining Return tight em métodos de repository, validators, observability helpers
+- `docs/rust/conventions/**` + `setup/**` + `frameworks/blockchain.md` — 14 arquivos: 8 `Ok(x)` tight, walls 4→2+2 em `variables.md` e `setup/project-foundation.md`, column alignment removido em `control-flow.md`
+- `docs/ruby/conventions/**` + `frameworks/rails.md` — 9 arquivos: 6 Explaining Return tight, 5 column alignments removidos (scopes, traits, case/when)
+- `docs/php/conventions/**` + `setup/**` + `README.md` — 15 arquivos: ~30 violações corrigidas (Explaining Return + column alignment em enum cases/match), âncora morta corrigida
+- `docs/vbnet/conventions/**` + `setup/**` + `scripts/**` — 17 arquivos: 48 violações corrigidas (Explaining Return fragmentado + par semântico encadeado partido)
+- `docs/sql/conventions/**` + `sgbd/{sql-server,sqlite,postgres}.md` — 10 arquivos: 24 column alignments removidos em CREATE TABLE/CREATE INDEX/JOIN ON. Regras de Explaining Return e Declaração+Guarda descartadas (não aplicáveis a SQL declarativo); regra "4+ statements homogêneos quebra em 2+2" adaptada para ALTER/CREATE INDEX
+- `docs/nosql/conventions/**` + `sgbd/**` + `scripts/{mongodb,redis}/**` — 12 arquivos: 13 Explaining Return tight em repositórios (`findById`, `updateManager`, `softDelete`, `purgeExpired`, Redis hashes/sets)
+- `docs/css/conventions/**` + `scripts/variables.css` — 3 arquivos: column alignments removidos em tokens semânticos, primitivos neutros, tema dark. Regras descartadas (não aplicáveis a CSS declarativo): Explaining Return, par semântico, fragmentos → montagem, declaração + guarda
+- `docs/html/conventions/**` + `scripts/structure.html` — 6 arquivos: landmarks com blank entre `<header>`/`<main>`/`<footer>`, twitter cards reorganizadas em 2+2, lazy `<img>` em 1+3 (hero+trio)
+- `docs/{csharp,java}/conventions/visual-density.md` — 2 últimos `❌ no-logic-in-return`: `BuildOrderResponse`/`buildOrderResponse` extraem `response`/`new OrderResponse(...)` em variável nomeada antes do return (audit `npm run audit:docs` finalizou limpo: 2327 blocos Good em 373 arquivos)
+
 ## [1.28.6] - 2026-05-11
 
 ### Changed

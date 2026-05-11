@@ -119,7 +119,6 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
     {
         RuleFor(r => r.ProductId).NotEmpty().Must(BeValidGuid).WithMessage("Invalid product ID");
         RuleFor(r => r.Quantity).GreaterThan(0);
-
         RuleFor(r => r.CustomerId).NotEmpty().Must(BeValidGuid).WithMessage("Invalid customer ID");
     }
 

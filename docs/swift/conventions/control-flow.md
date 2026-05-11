@@ -229,6 +229,7 @@ func httpMessage(for code: Int) -> String {
         400: "Bad Request",
         404: "Not Found",
     ]
+
     let message = messages[code] ?? "Unknown"
     return message
 }

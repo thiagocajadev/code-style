@@ -68,7 +68,6 @@ final class UserRepository
         }
 
         $user = User::fromRow($row);
-
         return $user;
     }
 }
@@ -122,7 +121,7 @@ variável não definida).
 <br>
 
 ```php
-$page    = (int) ($_GET['page'] ?? 1);
+$page = (int) ($_GET['page'] ?? 1);
 $perPage = (int) ($_GET['per_page'] ?? 20);
 
 $name = $user?->name ?? 'Guest';
@@ -178,7 +177,6 @@ public function processOrder(int $orderID): Order
     }
 
     $savedOrder = $this->repository->save($order);
-
     return $savedOrder;
 }
 
@@ -192,7 +190,6 @@ public function findByEmail(string $email): ?User
     }
 
     $user = User::fromRow($row);
-
     return $user;
 }
 ```
@@ -223,9 +220,10 @@ final class Order
         float $amount,
     ) {
         $this->customerID = $customerID;
-        $this->amount     = $amount;
-        $this->status     = OrderStatus::Pending;
-        $this->createdAt  = new \DateTimeImmutable();
+        $this->amount = $amount;
+
+        $this->status = OrderStatus::Pending;
+        $this->createdAt = new \DateTimeImmutable();
         $this->canceledAt = null;
     }
 }

@@ -121,7 +121,6 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 
     var totals = CalculateTotals(order);
     var summary = BuildSummary(order, totals);
-
     return summary;
 }
 
@@ -132,7 +131,6 @@ private static OrderTotals CalculateTotals(Order order)
 
     var total = subtotal + tax;
     var totals = new OrderTotals(subtotal, tax, total);
-
     return totals;
 }
 
@@ -140,7 +138,6 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 {
     var lines = order.Items.Select(item => $"{item.Name} x{item.Quantity}").ToList();
     var summary = new OrderSummary(order.Id, lines, totals.Subtotal, totals.Tax, totals.Total);
-
     return summary;
 }
 ```
@@ -250,7 +247,6 @@ public string BuildShippingLabel(Order order)
 
     var cityLine = $"{order.Address.City} - {order.Address.State}, {order.Address.ZipCode}";
     var label = $"{fullName}\n{addressLine}\n{cityLine}\nOrder #{order.Id}";
-
     return label;
 }
 ```

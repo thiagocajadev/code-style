@@ -158,7 +158,6 @@ Public Function CreateCustomer(request As CustomerRequest) As OperationResult(Of
     Dim customer = New Customer With {.Name = request.Name, .BirthDate = birthDate.Date}
 
     Dim result = OperationResult(Of Customer).Success(customer)
-
     Return result
 End Function
 ```
@@ -205,9 +204,8 @@ End Class
 Public Function FindById(id As Guid) As Order
     Using connection = ConnectionFactory.Create()
         Dim sql = "SELECT Id, CreatedAt FROM Orders WHERE Id = @Id"
-        Dim order = connection.QueryFirstOrDefault(Of Order)(sql, New With {.Id = id})
-        ' CreatedAt: "2026-04-19T14:00:00+00:00" — offset preservado
 
+        Dim order = connection.QueryFirstOrDefault(Of Order)(sql, New With {.Id = id})
         Return order
     End Using
 End Function

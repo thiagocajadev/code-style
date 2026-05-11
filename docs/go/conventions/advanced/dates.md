@@ -91,7 +91,6 @@ func parseScheduledAt(raw string) (time.Time, error) {
     }
 
     utcTime := scheduledAt.UTC()
-
     return utcTime, nil
 }
 ```
@@ -118,7 +117,6 @@ type Order struct {
 
 func (o Order) IsCanceled() bool {
     isCanceled := o.CanceledAt != nil
-
     return isCanceled
 }
 ```
@@ -187,7 +185,6 @@ if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) 
 ```go
 func (o Order) IsExpired() bool {
     isExpired := o.ExpiresAt.Before(time.Now().UTC())
-
     return isExpired
 }
 ```

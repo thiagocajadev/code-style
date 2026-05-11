@@ -128,6 +128,7 @@ public class MethodsExamples {
     private Product fetchProduct(String id) {
         final var product = productRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Product " + id + " not found."));
+
         return product;
     }
 
@@ -142,6 +143,7 @@ public class MethodsExamples {
     public String buildGreeting(User user) {
         final var greeting = "Hello, %s! You have %d notifications."
             .formatted(user.getName(), user.getNotifications().size());
+
         return greeting;
     }
 

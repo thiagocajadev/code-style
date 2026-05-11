@@ -7,8 +7,8 @@ using NUnit.Framework;
 static decimal ApplyDiscount(decimal price, int discountPct)
 {
     if (discountPct <= 0) return price;
-    var discountedPrice = price * (1 - discountPct / 100m);
 
+    var discountedPrice = price * (1 - discountPct / 100m);
     return discountedPrice;
 }
 

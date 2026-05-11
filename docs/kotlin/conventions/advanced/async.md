@@ -75,6 +75,7 @@ suspend fun findOrder(id: Long): Order {
     val order = withContext(Dispatchers.IO) {
         jdbcTemplate.queryForObject("SELECT ...", id)
     }
+
     return order
 }
 ```
@@ -106,6 +107,7 @@ suspend fun fetchExchangeRate(currency: String): Double {
     val rate = withTimeout(3_000) {
         httpClient.get("https://api.rates.io/latest/$currency").body<ExchangeRateResponse>()
     }
+
     return rate.value
 }
 ```

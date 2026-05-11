@@ -63,7 +63,6 @@ public function processOrder(CreateOrderInput $input): Order
     $discountedInput = $this->applyCustomerDiscount($input);
 
     $savedOrder = $this->repository->save($discountedInput);
-
     $this->notifier->notifyOrderCreated($savedOrder);
 
     return $savedOrder;
@@ -87,8 +86,7 @@ private function applyCustomerDiscount(CreateOrderInput $input): CreateOrderInpu
     }
 
     $discountedAmount = $input->amount * 0.9;
-    $discountedInput  = $input->withAmount($discountedAmount);
-
+    $discountedInput = $input->withAmount($discountedAmount);
     return $discountedInput;
 }
 ```
@@ -127,7 +125,7 @@ public function buildSummary(array $orders): array
 {
     $count = count($orders);
     $total = array_sum(array_column($orders, 'amount'));
-    $ids   = array_column($orders, 'id');
+    $ids = array_column($orders, 'id');
 
     $summary = ['count' => $count, 'total' => $total, 'ids' => $ids];
     return $summary;
@@ -322,18 +320,18 @@ final class InvoiceService
     public function generateMonthlyReport(\DateTimeImmutable $month): Report
     {
         $invoices = $this->repository->findByMonth($month);
-        $summary  = $this->buildSummary($invoices);
-        $report   = $this->formatReport($summary, $month);
+        $summary = $this->buildSummary($invoices);
 
+        $report = $this->formatReport($summary, $month);
         return $report;
     }
 
     private function buildSummary(array $invoices): Summary
     {
-        $count   = count($invoices);
-        $total   = array_sum(array_column($invoices, 'amount'));
-        $summary = new Summary(count: $count, total: $total);
+        $count = count($invoices);
+        $total = array_sum(array_column($invoices, 'amount'));
 
+        $summary = new Summary(count: $count, total: $total);
         return $summary;
     }
 

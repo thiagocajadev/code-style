@@ -59,11 +59,11 @@ CREATE TABLE orders (
 
 ```sql
 CREATE TABLE orders (
-  id          UUID         NOT NULL DEFAULT uuidv7(),
-  customer_id UUID         NOT NULL,
-  total       NUMERIC(10, 2) NOT NULL,
-  status      VARCHAR(20)  NOT NULL DEFAULT 'pending',
-  created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
+  id UUID NOT NULL DEFAULT uuidv7(),
+  customer_id UUID NOT NULL,
+  total NUMERIC(10, 2) NOT NULL,
+  status VARCHAR(20) NOT NULL DEFAULT 'pending',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
   CONSTRAINT pk_orders PRIMARY KEY (id),
   CONSTRAINT fk_orders_customers FOREIGN KEY (customer_id)
@@ -84,9 +84,9 @@ Sequencial, sem fragmentação de índice, com unicidade global.
 
 ```sql
 CREATE TABLE events (
-  id         UUID        NOT NULL DEFAULT uuidv7(),
-  type       VARCHAR(50) NOT NULL,
-  payload    JSONB       NOT NULL DEFAULT '{}',
+  id UUID NOT NULL DEFAULT uuidv7(),
+  type VARCHAR(50) NOT NULL,
+  payload JSONB NOT NULL DEFAULT '{}',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
   CONSTRAINT pk_events PRIMARY KEY (id)
@@ -121,7 +121,7 @@ CREATE TABLE customers (
 
 ```sql
 CREATE TABLE customers (
-  id   INTEGER GENERATED ALWAYS AS IDENTITY,
+  id INTEGER GENERATED ALWAYS AS IDENTITY,
   name VARCHAR(200) NOT NULL,
 
   CONSTRAINT pk_customers PRIMARY KEY (id)
@@ -216,8 +216,8 @@ CREATE OR REPLACE FUNCTION fn_get_football_team_by_id
 )
 RETURNS TABLE
 (
-  id                UUID,
-  name              VARCHAR,
+  id UUID,
+  name VARCHAR,
   championships_won INT
 ) AS $$
 
@@ -308,7 +308,7 @@ WHERE events.payload->>'type' = 'order.created';
 
 ```sql
 CREATE TABLE events (
-  id      UUID  NOT NULL DEFAULT uuidv7(),
+  id UUID NOT NULL DEFAULT uuidv7(),
   payload JSONB NOT NULL DEFAULT '{}',
 
   CONSTRAINT pk_events PRIMARY KEY (id)
@@ -451,10 +451,10 @@ Colunas geradas agora são virtuais por padrão: calculadas na leitura, sem arma
 
 ```sql
 CREATE TABLE orders (
-  id          UUID           NOT NULL DEFAULT uuidv7(),
-  amount      NUMERIC(10, 2) NOT NULL,
-  tax_rate    NUMERIC(5, 4)  NOT NULL DEFAULT 0.12,
-  total       NUMERIC(10, 2) GENERATED ALWAYS AS (amount * (1 + tax_rate)) VIRTUAL,
+  id UUID NOT NULL DEFAULT uuidv7(),
+  amount NUMERIC(10, 2) NOT NULL,
+  tax_rate NUMERIC(5, 4) NOT NULL DEFAULT 0.12,
+  total NUMERIC(10, 2) GENERATED ALWAYS AS (amount * (1 + tax_rate)) VIRTUAL,
 
   CONSTRAINT pk_orders PRIMARY KEY (id)
 );
@@ -467,10 +467,10 @@ ou integridade referencial dentro de um período específico.
 
 ```sql
 CREATE TABLE employee_roles (
-  employee_id UUID     NOT NULL,
-  role        VARCHAR  NOT NULL,
-  valid_from  DATE     NOT NULL,
-  valid_until DATE     NOT NULL,
+  employee_id UUID NOT NULL,
+  role VARCHAR NOT NULL,
+  valid_from DATE NOT NULL,
+  valid_until DATE NOT NULL,
 
   CONSTRAINT pk_employee_roles
     PRIMARY KEY (employee_id, valid_from, valid_until)
@@ -499,8 +499,8 @@ COPY players
 FROM '/imports/players.csv'
 WITH
 (
-  FORMAT    csv,
-  HEADER    true,
+  FORMAT csv,
+  HEADER true,
   DELIMITER ','
 );
 ```
@@ -542,7 +542,7 @@ SELECT cron.schedule(
   $$
     DELETE FROM players
     WHERE
-      players.is_active      = FALSE AND
+      players.is_active = FALSE AND
       players.inactivated_at < NOW() - INTERVAL '1 year';
   $$
 );

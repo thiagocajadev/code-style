@@ -45,7 +45,6 @@ def sum_active_prices(products: list) -> float:
 ```python
 def sum_active_prices(products: list) -> float:
     total = sum(product.price for product in products if product.is_active)
-
     return total
 ```
 
@@ -79,7 +78,6 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
     blocked_set = set(blocked_ids)
     active_users = [user for user in users if user.user_id not in blocked_set]
-
     return active_users
 ```
 
@@ -114,7 +112,6 @@ def build_csv_row(fields: list[str]) -> str:
 ```python
 def build_csv_row(fields: list[str]) -> str:
     row = ",".join(fields)
-
     return row
 ```
 
@@ -150,7 +147,6 @@ def count_error_lines(log_path: str) -> int:
 ```python
 def count_error_lines(log_path: str) -> int:
     error_count = sum(1 for line in open(log_path) if "ERROR" in line)
-
     return error_count
 ```
 
@@ -186,7 +182,6 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
     role = permissions.get(user_id, "viewer")
-
     return role
 ```
 

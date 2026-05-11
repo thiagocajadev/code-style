@@ -99,7 +99,6 @@ class TeamRepository {
     const projection = { name: 1, city: 1, foundedYear: 1, _id: 0 };
 
     const team = await this.collection.findOne(filter, { projection });
-
     return team;
   }
 }

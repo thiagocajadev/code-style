@@ -57,6 +57,7 @@ public Invoice processOrder(String orderId) {
     final var invoice = invoiceRepository.save(discountedOrder);
 
     notificationService.send(invoice);
+
     return invoice;
 }
 ```
@@ -93,9 +94,9 @@ public DashboardData loadDashboard(String userId) {
 
 ```java
 public DashboardData loadDashboard(String userId) {
-    final var ordersFuture  = CompletableFuture.supplyAsync(() -> orderService.findByUser(userId));
+    final var ordersFuture = CompletableFuture.supplyAsync(() -> orderService.findByUser(userId));
     final var invoicesFuture = CompletableFuture.supplyAsync(() -> invoiceService.findByUser(userId));
-    final var profileFuture  = CompletableFuture.supplyAsync(() -> profileService.findByUser(userId));
+    final var profileFuture = CompletableFuture.supplyAsync(() -> profileService.findByUser(userId));
 
     CompletableFuture.allOf(ordersFuture, invoicesFuture, profileFuture).join();
     // total: ~300ms
@@ -105,6 +106,7 @@ public DashboardData loadDashboard(String userId) {
         invoicesFuture.join(),
         profileFuture.join()
     );
+
     return dashboard;
 }
 ```
@@ -124,9 +126,9 @@ livre: falha em uma cancela as demais.
 ```java
 public DashboardData loadDashboard(String userId) throws InterruptedException, ExecutionException {
     try (final var scope = new StructuredTaskScope.ShutdownOnFailure()) {
-        final var ordersFork  = scope.fork(() -> orderService.findByUser(userId));
+        final var ordersFork = scope.fork(() -> orderService.findByUser(userId));
         final var invoicesFork = scope.fork(() -> invoiceService.findByUser(userId));
-        final var profileFork  = scope.fork(() -> profileService.findByUser(userId));
+        final var profileFork = scope.fork(() -> profileService.findByUser(userId));
 
         scope.join().throwIfFailed();
 
@@ -135,6 +137,7 @@ public DashboardData loadDashboard(String userId) throws InterruptedException, E
             invoicesFork.get(),
             profileFork.get()
         );
+
         return dashboard;
     }
 }

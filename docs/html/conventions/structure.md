@@ -52,18 +52,22 @@ uso, ele substitui o genérico.
 ```html
 <header>
   <a href="/" class="brand">Brand</a>
+
   <nav>
     <a href="/about">About</a>
     <a href="/contact">Contact</a>
   </nav>
 </header>
+
 <main>
   <article>
     <h1>Post Title</h1>
     <p>...</p>
   </article>
+
   <aside>...</aside>
 </main>
+
 <footer>© 2026</footer>
 ```
 
@@ -175,6 +179,7 @@ para parecer mais semântico.
 ```html
 <section aria-labelledby="featured-heading">
   <h2 id="featured-heading">Featured Products</h2>
+
   <div class="card-grid">
     <div class="card">...</div>
     <div class="card">...</div>

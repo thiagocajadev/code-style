@@ -128,11 +128,9 @@ fn load_order(order_id: u64) -> Result<Order, AppError> {
 ```rust
 fn load_order(order_id: u64) -> anyhow::Result<Order> {
     let order = find_order(order_id)?;
-
     validate_order(&order)?;
 
     let enriched = enrich_order(order)?;
-
     Ok(enriched)
 }
 ```
@@ -213,10 +211,10 @@ use std::collections::HashMap;
 
 fn get_status_label(status: &str) -> &str {
     let labels: HashMap<&str, &str> = HashMap::from([
-        ("paid",      "Pago"),
-        ("pending",   "Pendente"),
+        ("paid", "Pago"),
+        ("pending", "Pendente"),
         ("cancelled", "Cancelado"),
-        ("refunded",  "Reembolsado"),
+        ("refunded", "Reembolsado"),
     ]);
 
     labels.get(status).copied().unwrap_or("Desconhecido")
@@ -254,10 +252,10 @@ fn handle_status(status: OrderStatus) {
 ```rust
 fn handle_status(status: OrderStatus) {
     match status {
-        OrderStatus::Paid      => process_payment(),
-        OrderStatus::Pending   => schedule_reminder(),
+        OrderStatus::Paid => process_payment(),
+        OrderStatus::Pending => schedule_reminder(),
         OrderStatus::Cancelled => archive_order(),
-        OrderStatus::Refunded  => notify_finance(),
+        OrderStatus::Refunded => notify_finance(),
     }
 }
 ```
@@ -270,10 +268,10 @@ fn handle_status(status: OrderStatus) {
 
 ```rust
 let label = match order.status {
-    OrderStatus::Paid      => "pago",
-    OrderStatus::Pending   => "pendente",
+    OrderStatus::Paid => "pago",
+    OrderStatus::Pending => "pendente",
     OrderStatus::Cancelled => "cancelado",
-    OrderStatus::Refunded  => "reembolsado",
+    OrderStatus::Refunded => "reembolsado",
 };
 ```
 

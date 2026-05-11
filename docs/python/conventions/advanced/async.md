@@ -46,8 +46,8 @@ import asyncio
 
 async def process_order(order_id: int):
     await asyncio.sleep(3)
-    order = await get_order(order_id)
 
+    order = await get_order(order_id)
     return order
 ```
 
@@ -85,7 +85,6 @@ async def fetch_user_data(user_id: int):
     invoices = await get_invoices(orders[0].order_id)
 
     user_data = {"user": user, "orders": orders, "invoices": invoices}
-
     return user_data
 ```
 
@@ -129,7 +128,6 @@ async def fetch_dashboard(user_id: int):
     )
 
     dashboard = {"orders": orders, "invoices": invoices, "profile": profile}
-
     return dashboard
 ```
 
@@ -174,7 +172,6 @@ from pathlib import Path
 async def read_config() -> dict:
     content = await asyncio.to_thread(Path("config.json").read_text)
     config = json.loads(content)
-
     return config
 ```
 
@@ -247,12 +244,10 @@ def fetch_user(user_id: int):  # I/O sem async
 ```python
 def calculate_tax(amount: float) -> float:
     tax = amount * 0.1
-
     return tax
 
 async def fetch_user(user_id: int):
     user = await user_repository.find_by_id(user_id)
-
     return user
 ```
 

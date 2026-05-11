@@ -164,7 +164,6 @@ Public Async Function UpdateStatusAsync(purchaseId As Guid, status As String) As
 
             Dim rowsAffected = Await command.ExecuteNonQueryAsync()
             Dim wasFound = rowsAffected > 0
-
             Return wasFound
         End Using
     End Using
@@ -239,7 +238,6 @@ Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(
             Await command.ExecuteNonQueryAsync()
 
             Dim newId = DirectCast(newIdParam.Value, Guid)
-
             Return newId
         End Using
     End Using
@@ -442,7 +440,6 @@ Public Async Function CountByCustomerAsync(customerId As Guid) As Task(Of Intege
 
             Dim count = Await command.ExecuteScalarAsync()
             Dim result = CInt(count)
-
             Return result
         End Using
     End Using
@@ -459,7 +456,6 @@ Public Async Function ExistsAsync(purchaseId As Guid) As Task(Of Boolean)
 
             Dim count = Await command.ExecuteScalarAsync()
             Dim exists = CInt(count) > 0
-
             Return exists
         End Using
     End Using

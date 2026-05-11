@@ -58,7 +58,6 @@ struct Order {
 
 fn order_is_expired(order: &Order) -> bool {
     let expiry = order.created_at + chrono::Duration::days(30);
-
     Utc::now() > expiry
 }
 ```
@@ -167,7 +166,6 @@ const SESSION_DURATION: chrono::Duration = chrono::Duration::hours(1);
 
 fn is_session_valid(created_at: DateTime<Utc>) -> bool {
     let elapsed = Utc::now() - created_at;
-
     elapsed < SESSION_DURATION
 }
 ```

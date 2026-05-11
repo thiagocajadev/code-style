@@ -37,7 +37,6 @@ function buildInvoice(cart: Cart): Invoice {
   const total = subtotal - discount;
 
   const invoice: Invoice = { userId: cart.userId, subtotal, discount, total };
-
   return invoice;
 }
 
@@ -54,7 +53,6 @@ function computeDiscount(subtotal: number): number {
   if (!isEligible) return 0;
 
   const discount = subtotal * DISCOUNT_RATE;
-
   return discount;
 }
 

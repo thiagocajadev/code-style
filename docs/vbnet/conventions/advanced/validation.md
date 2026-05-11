@@ -67,7 +67,6 @@ Public Function CreateUser(request As CreateUserRequest) As OperationResult(Of U
     Dim user = _repository.Create(sanitized)
 
     Dim result = OperationResult(Of User).Success(user)
-
     Return result
 End Function
 ```
@@ -139,7 +138,6 @@ Public Class OrdersController
 
         Dim location = $"api/orders/{result.Value.Id}"
         Dim response = Created(location, result.Value)
-
         Return response
     End Function
 End Class
@@ -200,7 +198,6 @@ Public Function CreateOrder(request As CreateOrderRequest) As OperationResult(Of
     Dim invoice = BuildInvoice(request, product)
 
     Dim result = OperationResult(Of Invoice).Success(invoice)
-
     Return result
 End Function
 ```
@@ -254,7 +251,6 @@ Public Function GetUser(id As Guid) As UserResponse
     If user Is Nothing Then Return Nothing
 
     Dim response = UserResponse.From(user)
-
     Return response
 End Function
 ```

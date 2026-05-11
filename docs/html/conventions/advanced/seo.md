@@ -84,18 +84,24 @@ a plataforma escolhe, geralmente mal.
 <head>
   <title>Running Shoes for Men — Acme Store</title>
 
+  <!-- Open Graph: identidade -->
   <meta property="og:type" content="product" />
   <meta property="og:title" content="Running Shoes for Men" />
   <meta property="og:description" content="Lightweight running shoes. Free shipping over $50." />
+
+  <!-- Open Graph: imagem -->
   <meta property="og:image" content="https://acme.com/img/og/running-shoes.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+
+  <!-- Open Graph: contexto -->
   <meta property="og:url" content="https://acme.com/shoes/running-mens" />
   <meta property="og:site_name" content="Acme Store" />
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Running Shoes for Men" />
+
   <meta name="twitter:description" content="Lightweight running shoes. Free shipping over $50." />
   <meta name="twitter:image" content="https://acme.com/img/og/running-shoes.jpg" />
 </head>

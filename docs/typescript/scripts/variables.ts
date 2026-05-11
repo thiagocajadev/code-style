@@ -19,6 +19,5 @@ type Order = {
 function applyDiscount(order: Order): Order {
   const discountedTotal = order.total - STANDARD_DISCOUNT;
   const discountedOrder: Order = { ...order, total: discountedTotal };
-
   return discountedOrder;
 }

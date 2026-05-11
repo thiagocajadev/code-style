@@ -167,16 +167,16 @@ final class HttpClient
 
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST           => true,
-            CURLOPT_POSTFIELDS     => json_encode($body),
-            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
-            CURLOPT_TIMEOUT        => self::TIMEOUT_SECONDS,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($body),
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+            CURLOPT_TIMEOUT => self::TIMEOUT_SECONDS,
             CURLOPT_CONNECTTIMEOUT => 2,
         ]);
 
         $responseBody = curl_exec($curl);
-        $statusCode   = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        $error        = curl_error($curl);
+        $statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $error = curl_error($curl);
 
         curl_close($curl);
 

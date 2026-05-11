@@ -66,7 +66,7 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Retorno antecipado com `?`](conventions/control-flow.md#operador-)                               | Propague erros cedo com `?`; sem else após retorno implícito              |
 | [Match exaustivo](conventions/control-flow.md#match)                                               | Todos os casos cobertos pelo compilador; sem padrão catch-all desnecessário |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código)                           | Linhas relacionadas juntas, grupos separados por linha em branco          |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                            | Linhas relacionadas juntas, grupos separados por linha em branco          |
 | [Imutável por padrão](conventions/variables.md#let-vs-let-mut)                                     | `let` é o padrão; `let mut` só quando necessário                         |
 | [Sem valores mágicos](conventions/variables.md#constantes-nomeadas)                                | `const` no lugar de literais inline                                      |
 

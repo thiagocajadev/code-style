@@ -60,12 +60,12 @@ CREATE TABLE Products
 ```sql
 CREATE TABLE Products
 (
-  Id          INT             NOT NULL IDENTITY(1, 1),
-  Name        NVARCHAR(200)   NOT NULL,
-  Price       DECIMAL(10, 2)  NOT NULL,
-  IsActive    BIT             NOT NULL DEFAULT 1,
-  Description NVARCHAR(MAX)   NULL,
-  CreatedAt   DATETIME2       NOT NULL DEFAULT GETUTCDATE(),
+  Id INT NOT NULL IDENTITY(1, 1),
+  Name NVARCHAR(200) NOT NULL,
+  Price DECIMAL(10, 2) NOT NULL,
+  IsActive BIT NOT NULL DEFAULT 1,
+  Description NVARCHAR(MAX) NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
   CONSTRAINT PK_Products PRIMARY KEY (Id)
 );
@@ -93,13 +93,13 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 -- Guid.CreateVersion7() — .NET 9+
 CREATE TABLE Orders
 (
-  Id          UNIQUEIDENTIFIER NOT NULL,
-  CustomerId  INT              NOT NULL,
-  TotalAmount DECIMAL(10, 2)   NOT NULL,
-  CreatedAt   DATETIME2        NOT NULL DEFAULT GETUTCDATE(),
+  Id UNIQUEIDENTIFIER NOT NULL,
+  CustomerId INT NOT NULL,
+  TotalAmount DECIMAL(10, 2) NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
-  CONSTRAINT PK_Orders            PRIMARY KEY (Id),
-  CONSTRAINT FK_Orders_Customers  FOREIGN KEY (CustomerId)
+  CONSTRAINT PK_Orders PRIMARY KEY (Id),
+  CONSTRAINT FK_Orders_Customers FOREIGN KEY (CustomerId)
     REFERENCES Customers (Id)
 );
 ```
@@ -368,8 +368,8 @@ O tipo `JSON` nativo armazena até 2 GB por linha com indexação direta, sem ne
 ```sql
 CREATE TABLE Events
 (
-  Id        BIGINT NOT NULL IDENTITY(1, 1),
-  Payload   JSON   NOT NULL,
+  Id BIGINT NOT NULL IDENTITY(1, 1),
+  Payload JSON NOT NULL,
   CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
   CONSTRAINT PK_Events PRIMARY KEY (Id)
@@ -394,9 +394,9 @@ em T-SQL, usando **DiskANN** para indexação eficiente.
 ```sql
 CREATE TABLE Documents
 (
-  Id        INT            NOT NULL IDENTITY(1, 1),
-  Content   NVARCHAR(MAX)  NOT NULL,
-  Embedding VECTOR(1536)   NOT NULL, -- dimensão do modelo de embedding
+  Id INT NOT NULL IDENTITY(1, 1),
+  Content NVARCHAR(MAX) NOT NULL,
+  Embedding VECTOR(1536) NOT NULL, -- dimensão do modelo de embedding
 
   CONSTRAINT PK_Documents PRIMARY KEY (Id)
 );
@@ -426,9 +426,9 @@ eliminando parameter sniffing sem `OPTION (RECOMPILE)`.
 ```sql
 CREATE OR ALTER PROCEDURE SP_LIST_ORDERS_BY_FILTER
 (
-  @CustomerId INT          = NULL,
-  @Status     NVARCHAR(20) = NULL,
-  @StartDate  DATE         = NULL
+  @CustomerId INT = NULL,
+  @Status NVARCHAR(20) = NULL,
+  @StartDate DATE = NULL
 )
 WITH OPPO
 AS
@@ -443,8 +443,8 @@ BEGIN
     Orders
   WHERE
     (Orders.CustomerId = @CustomerId OR @CustomerId IS NULL) AND
-    (Orders.Status     = @Status     OR @Status IS NULL) AND
-    (Orders.CreatedAt  >= @StartDate  OR @StartDate IS NULL)
+    (Orders.Status = @Status OR @Status IS NULL) AND
+    (Orders.CreatedAt >= @StartDate OR @StartDate IS NULL)
   ORDER BY
     Orders.CreatedAt DESC;
 END;
@@ -469,10 +469,10 @@ FROM 'C:\imports\players.csv'
 WITH
 (
   FIELDTERMINATOR = ',',
-  ROWTERMINATOR   = '\n',
-  FIRSTROW        = 2,     -- ignorar cabeçalho
-  BATCHSIZE       = 1000,  -- commit a cada 1000 linhas
-  TABLOCK          -- lock de tabela: mais rápido, bloqueia leituras simultâneas
+  ROWTERMINATOR = '\n',
+  FIRSTROW = 2, -- ignorar cabeçalho
+  BATCHSIZE = 1000, -- commit a cada 1000 linhas
+  TABLOCK -- lock de tabela: mais rápido, bloqueia leituras simultâneas
 );
 ```
 
@@ -494,19 +494,19 @@ EXEC sp_add_job
 
 -- adicionar etapa T-SQL
 EXEC sp_add_jobstep
-  @job_name      = N'CleanInactivePlayers',
-  @step_name     = N'DeleteInBatches',
-  @subsystem     = N'TSQL',
+  @job_name = N'CleanInactivePlayers',
+  @step_name = N'DeleteInBatches',
+  @subsystem = N'TSQL',
   @database_name = N'SportsDB',
-  @command       = N'
-    DECLARE @ChunkSize  INT = 1000;
+  @command = N'
+    DECLARE @ChunkSize INT = 1000;
     DECLARE @RowsDeleted INT = 1;
 
     WHILE @RowsDeleted > 0
     BEGIN
       DELETE TOP (@ChunkSize) FROM Players
       WHERE
-        Players.IsActive      = 0 AND
+        Players.IsActive = 0 AND
         Players.InactivatedAt < DATEADD(year, -1, GETUTCDATE());
 
       SET @RowsDeleted = @@ROWCOUNT;
@@ -515,14 +515,14 @@ EXEC sp_add_jobstep
 
 -- agendamento: todo dia às 02:00
 EXEC sp_add_schedule
-  @schedule_name     = N'DailyAt2AM',
-  @freq_type         = 4,      -- diário
-  @freq_interval     = 1,
-  @active_start_time = 20000;  -- 02:00:00
+  @schedule_name = N'DailyAt2AM',
+  @freq_type = 4, -- diário
+  @freq_interval = 1,
+  @active_start_time = 20000; -- 02:00:00
 
 -- vincular agendamento ao job
 EXEC sp_attach_schedule
-  @job_name      = N'CleanInactivePlayers',
+  @job_name = N'CleanInactivePlayers',
   @schedule_name = N'DailyAt2AM';
 
 -- habilitar no servidor local

@@ -125,7 +125,6 @@ import pytest
 def standard_order():
     customer = Customer(name="Alice", defaulted=False)
     order = Order(order_id=1, customer=customer, items=[Item(price=50.0), Item(price=30.0)])
-
     return order
 
 def test_order_total(standard_order):

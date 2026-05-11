@@ -149,7 +149,6 @@ async function createUser(input: CreateUserInput): Promise<CreateUserResult> {
   const token = generateToken(user.id);
 
   const result = { user, token };
-
   return result;
 }
 ```

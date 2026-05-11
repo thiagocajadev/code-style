@@ -47,7 +47,6 @@ def apply_discount(order, calculate_discount):
         return None
 
     discounted_order = calculate_discount(order)
-
     return discounted_order
 ```
 

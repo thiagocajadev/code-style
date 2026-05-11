@@ -178,7 +178,6 @@ public void ApplyDiscount(Order order)
 public Order ApplyDiscount(Order order)
 {
     var discountedOrder = order with { Discount = 10, Total = order.Total - 10 };
-
     return discountedOrder;
 }
 ```

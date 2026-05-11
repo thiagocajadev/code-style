@@ -308,13 +308,11 @@ def build_router(order_service: OrderService) -> APIRouter:
     @router.get("/{order_id}")
     async def get_order(order_id: int):
         order = await order_service.find_by_id(order_id)
-
         return order
 
     @router.post("/")
     async def create_order(data: dict):
         order = await order_service.create(data)
-
         return order
 
     return router

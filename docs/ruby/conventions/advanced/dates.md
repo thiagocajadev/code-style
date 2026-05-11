@@ -158,7 +158,6 @@ TOKEN_VALIDITY = 24.hours
 
 def token_expires_at
   expires_at = Time.now.utc + TOKEN_VALIDITY
-
   expires_at
 end
 ```

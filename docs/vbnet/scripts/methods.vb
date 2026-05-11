@@ -17,7 +17,6 @@ Function BuildInvoice(cart As Cart) As Invoice
     Dim total = subtotal - discount
 
     Dim invoice = New Invoice(cart.UserId, subtotal, discount, total)
-
     Return invoice
 End Function
 
@@ -34,7 +33,6 @@ Function ComputeDiscount(subtotal As Decimal, userId As Integer) As Decimal
     If Not isEligible Then Return 0D
 
     Dim discount = subtotal * DiscountRate
-
     Return discount
 End Function
 

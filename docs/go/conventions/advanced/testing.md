@@ -147,7 +147,6 @@ type fakeOrderRepository struct {
 
 func newFakeOrderRepository() *fakeOrderRepository {
     repo := &fakeOrderRepository{orders: make(map[int64]*Order)}
-
     return repo
 }
 

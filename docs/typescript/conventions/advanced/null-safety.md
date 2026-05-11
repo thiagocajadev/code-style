@@ -264,7 +264,6 @@ async function buildUserSummary(userId: string) {
 async function fetchUserOrders(userId: string): Promise<Order[]> {
   const response = await externalApi.get<{ orders?: Order[] }>(`/users/${userId}/orders`);
   const orders = response.orders ?? []; // normaliza na fronteira
-
   return orders;
 }
 ```

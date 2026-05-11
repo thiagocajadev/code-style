@@ -209,7 +209,6 @@ async function fetchTeamRoster(teamId) {
 
   const roster = await teamsCollection.aggregate(pipeline).toArray();
   const teamRoster = roster[0] ?? null;
-
   return teamRoster;
 }
 ```

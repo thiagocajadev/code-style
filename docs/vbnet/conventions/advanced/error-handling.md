@@ -89,8 +89,8 @@ End Try
 Try
     Dim response = Await _client.GetAsync(endpoint)
     Dim content = Await response.Content.ReadAsStringAsync()
-    Dim dto = JsonConvert.DeserializeObject(Of PurchaseDto)(content)
 
+    Dim dto = JsonConvert.DeserializeObject(Of PurchaseDto)(content)
     Return dto
 Catch ex As HttpRequestException
     _logger.LogWarning(ex, "HTTP error fetching purchase from {Endpoint}", endpoint)
@@ -288,7 +288,6 @@ Public Function FindPurchase(purchaseId As Guid) As OperationResult(Of Purchase)
     End If
 
     Dim result = OperationResult(Of Purchase).Success(purchase)
-
     Return result
 End Function
 

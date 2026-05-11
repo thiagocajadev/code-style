@@ -86,7 +86,6 @@ class TeamIndexRepository {
     });
 
     const result = response.result; // 'created' | 'updated'
-
     return result;
   }
 }

@@ -145,7 +145,6 @@ async fn charge_customer(amount: f64) -> Result<Receipt, PaymentError> {
     }
 
     let receipt = gateway::charge(amount).await?;
-
     Ok(receipt)
 }
 ```

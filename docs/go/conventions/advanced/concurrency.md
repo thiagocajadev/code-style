@@ -194,7 +194,6 @@ func (c *OrderCache) Get(orderID int64) (*Order, bool) {
     defer c.mu.RUnlock()
 
     order, ok := c.orders[orderID]
-
     return order, ok
 }
 
@@ -280,7 +279,6 @@ func processOrderQueue(ctx context.Context, orders <-chan Order) error {
     }
 
     err := g.Wait()
-
     return err
 }
 ```

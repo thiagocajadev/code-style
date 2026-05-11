@@ -52,12 +52,11 @@ echo $orderDate->format('Y-m-d'); // "2026-01-22" em vez de "2026-01-15"
 function addWorkdays(\DateTimeImmutable $date, int $days): \DateTimeImmutable
 {
     $newDate = $date->modify("+{$days} weekdays"); // retorna nova instância
-
     return $newDate;
 }
 
 $orderDate = new \DateTimeImmutable('2026-01-15');
-$dueDate   = addWorkdays($orderDate, 5);
+$dueDate = addWorkdays($orderDate, 5);
 
 // $orderDate intacto
 echo $orderDate->format('Y-m-d'); // "2026-01-15"
@@ -166,11 +165,10 @@ compare strings de datas.
 <br>
 
 ```php
-$now     = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
-$expiry  = $order->expiresAt;
+$now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'));
+$expiry = $order->expiresAt;
 
 $isExpired = $expiry < $now;
-
 $daysUntilExpiry = (int) $now->diff($expiry)->days;
 ```
 
@@ -196,8 +194,8 @@ final class Order implements \JsonSerializable
     public function jsonSerialize(): array
     {
         $data = [
-            'id'          => $this->id,
-            'created_at'  => $this->createdAt->format(\DateTimeInterface::ATOM),
+            'id' => $this->id,
+            'created_at' => $this->createdAt->format(\DateTimeInterface::ATOM),
             'canceled_at' => $this->canceledAt?->format(\DateTimeInterface::ATOM),
         ];
 

@@ -101,11 +101,12 @@ public class ControlFlowExamples {
     // ✅ Bom: switch expression — sem fall-through, sem break
     private String getStatusLabel(OrderStatus status) {
         final var label = switch (status) {
-            case PENDING   -> "Pending review";
-            case APPROVED  -> "Approved";
-            case REJECTED  -> "Rejected";
+            case PENDING -> "Pending review";
+            case APPROVED -> "Approved";
+            case REJECTED -> "Rejected";
             case CANCELLED -> "Cancelled";
         };
+
         return label;
     }
 
@@ -146,10 +147,11 @@ public class ControlFlowExamples {
     // ✅ Bom: pattern matching com desestruturação; sealed garante exaustividade
     private String describePayment(PaymentResult result) {
         final var description = switch (result) {
-            case PaymentSuccess s  -> "Paid: " + s.amount();
-            case PaymentFailure f  -> "Failed: " + f.reason();
-            case PaymentPending p  -> "Pending: " + p.transactionId();
+            case PaymentSuccess s -> "Paid: " + s.amount();
+            case PaymentFailure f -> "Failed: " + f.reason();
+            case PaymentPending p -> "Pending: " + p.transactionId();
         };
+
         return description;
     }
 
@@ -168,7 +170,7 @@ public class ControlFlowExamples {
 
     // ✅ Bom: stream para no primeiro match
     private void circuitBreakExamples(List<Product> products) {
-        final var expiredProduct   = products.stream().filter(Product::isExpired).findFirst();
+        final var expiredProduct = products.stream().filter(Product::isExpired).findFirst();
         final var hasExpiredProduct = products.stream().anyMatch(Product::isExpired);
         final var allProductsActive = products.stream().allMatch(Product::isActive);
     }

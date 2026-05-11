@@ -51,7 +51,6 @@ async function fetchTeamSummary(teamId) {
   const projection = { name: 1, city: 1, _id: 0 };
 
   const team = await teamsCollection.findOne(filter, { projection });
-
   return team;
 }
 ```
@@ -262,7 +261,6 @@ class SessionRepository {
     };
 
     const result = await this.collection.insertOne(session);
-
     return result.insertedId;
   }
 }

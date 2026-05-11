@@ -243,7 +243,6 @@ func NewOrderService(repo OrderRepository) *OrderService {
     }
 
     service := &OrderService{repository: repo}
-
     return service
 }
 

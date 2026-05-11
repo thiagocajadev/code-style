@@ -52,7 +52,6 @@ class OrderInput(BaseModel):
 
 def create_order(data: OrderInput):
     order = save_order(data)
-
     return order
 ```
 
@@ -106,7 +105,6 @@ async def create_order(body: dict):
 
     order = await order_repository.create(input_data)
     order_response = to_order_response(order)    # Output Filter
-
     return order_response
 ```
 
@@ -147,14 +145,12 @@ class CreateUserInput(BaseModel):
     @classmethod
     def strip_whitespace(cls, value):
         stripped = value.strip() if isinstance(value, str) else value
-
         return stripped
 
     @field_validator("email", mode="before")
     @classmethod
     def normalize_email(cls, value):
         normalized = value.strip().lower() if isinstance(value, str) else value
-
         return normalized
 
 async def create_user(body: dict):
@@ -213,7 +209,6 @@ class OrderInput(BaseModel):
 
 def create_order(data: OrderInput):
     order = save_order(data)
-
     return order
 ```
 
@@ -264,7 +259,6 @@ async def create_order(data: OrderInput):
         raise BusinessError("Customer has unpaid debts.")
 
     order = await order_repository.create(data)
-
     return order
 ```
 

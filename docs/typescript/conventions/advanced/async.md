@@ -92,7 +92,6 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
   // TypeScript infere: [Order[], Invoice[], UserProfile]
 
   const dashboard: Dashboard = { orders, invoices, profile };
-
   return dashboard;
 }
 ```
@@ -216,8 +215,8 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
   const enrichmentTasks = orders.map(async (order) => {
     const customer = await fetchCustomer(order.customerId);
-    const enrichedOrder: EnrichedOrder = { ...order, customer };
 
+    const enrichedOrder: EnrichedOrder = { ...order, customer };
     return enrichedOrder;
   });
 

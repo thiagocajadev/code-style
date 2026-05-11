@@ -234,7 +234,6 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 {
     var order = await _repo.FindByIdAsync(orderId, ct);
     var summary = MapToSummary(order);
-
     return summary;
 }
 ```

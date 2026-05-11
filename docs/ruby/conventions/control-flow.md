@@ -131,9 +131,9 @@ label = admin? ? "Admin" : "User"
 
 # 3+ ramos: case/when
 label = case role
-        when :admin    then "Admin"
+        when :admin then "Admin"
         when :verified then "Verified"
-        else                "Guest"
+        else "Guest"
         end
 ```
 
@@ -176,10 +176,10 @@ end
 
 def status_label(status)
   label = case status
-          when :active    then "Active"
-          when :pending   then "Pending"
+          when :active then "Active"
+          when :pending then "Pending"
           when :cancelled then "Cancelled"
-          else                 "Unknown"
+          else "Unknown"
           end
 
   label

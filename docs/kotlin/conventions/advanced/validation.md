@@ -67,7 +67,6 @@ fun processOrder(request: ProcessOrderRequest): Order {
     val finalTotal = total * (1 - request.discount)
 
     val order = Order(userId = request.userId, items = request.items, total = finalTotal)
-
     return order
 }
 ```

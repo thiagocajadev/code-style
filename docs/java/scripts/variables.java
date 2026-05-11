@@ -101,8 +101,8 @@ public class VariablesExamples {
 
     // ✅ Bom: var quando o tipo é óbvio; tipo explícito quando agrega clareza
     public void varGood() {
-        final var orders = orderRepository.findAll();             // List<Order> — óbvio
-        final var user = new User("Alice", "alice@example.com");  // User — óbvio
+        final var orders = orderRepository.findAll(); // List<Order> — óbvio
+        final var user = new User("Alice", "alice@example.com"); // User — óbvio
 
         final Optional<User> found = userRepository.findById("u-1"); // tipo explícito agrega contexto
     }

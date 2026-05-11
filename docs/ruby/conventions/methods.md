@@ -309,7 +309,6 @@ apply_discount = ->(order) { order.total * 0.9 }
 
 def run(order, transform)
   discounted = transform.call(order)
-
   discounted
 end
 

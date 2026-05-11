@@ -28,7 +28,6 @@ async function saveTeamStats(teamId, season, stats) {
 
 async function fetchTeamPoints(teamId, season) {
   const hashKey = `team:stats:${teamId}:${season}`;
-
   const points = await client.hGet(hashKey, "points");
   return points ? Number(points) : null;
 }
@@ -37,7 +36,6 @@ async function fetchTeamPoints(teamId, season) {
 
 async function fetchTeamStats(teamId, season) {
   const hashKey = `team:stats:${teamId}:${season}`;
-
   const hashFields = await client.hGetAll(hashKey);
 
   if (Object.keys(hashFields).length === 0) {
@@ -60,7 +58,6 @@ async function fetchTeamStats(teamId, season) {
 
 export async function incrementTeamWins(teamId, season) {
   const hashKey = `team:stats:${teamId}:${season}`;
-
   await client.hIncrBy(hashKey, "wins", 1);
   await client.hIncrBy(hashKey, "points", 3);
 }

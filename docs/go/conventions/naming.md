@@ -45,7 +45,6 @@ func applyDiscount(order Order, calculate func(Order) Order) *Order {
     }
 
     discountedOrder := calculate(order)
-
     return &discountedOrder
 }
 ```

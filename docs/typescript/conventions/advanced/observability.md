@@ -120,7 +120,6 @@ export const logger = pino({
     if (!context) return {};
 
     const mixin: Record<string, unknown> = { correlationId: context.correlationId };
-
     return mixin;
   },
 });

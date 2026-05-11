@@ -177,8 +177,8 @@ private OrderTotals calculateTotals(List<Item> items) {
     final var subtotal = items.stream()
         .map(Item::getPrice)
         .reduce(BigDecimal.ZERO, BigDecimal::add);
-    final var tax = subtotal.multiply(new BigDecimal("0.1"));
 
+    final var tax = subtotal.multiply(new BigDecimal("0.1"));
     final var totals = new OrderTotals(subtotal, tax, subtotal.add(tax));
     return totals;
 }
@@ -186,6 +186,7 @@ private OrderTotals calculateTotals(List<Item> items) {
 private String formatSummary(String orderId, OrderTotals totals) {
     final var summary = "Order #%s: $%s + tax $%s = $%s"
         .formatted(orderId, totals.subtotal(), totals.tax(), totals.total());
+
     return summary;
 }
 ```
@@ -233,6 +234,7 @@ public Product findProductById(String id) {
 private Product fetchProduct(String id) {
     final var product = productRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("Product " + id + " not found."));
+
     return product;
 }
 ```
@@ -312,6 +314,7 @@ public List<User> getActiveUsers(List<User> users) {
 public String buildGreeting(User user) {
     final var greeting = "Hello, %s! You have %d notifications."
         .formatted(user.getName(), user.getNotifications().size());
+
     return greeting;
 }
 
@@ -319,6 +322,7 @@ public List<User> getActiveUsers(List<User> users) {
     final var activeUsers = users.stream()
         .filter(user -> user.isActive() && !user.isBanned())
         .toList();
+
     return activeUsers;
 }
 ```

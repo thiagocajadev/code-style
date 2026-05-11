@@ -173,7 +173,6 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
     }
 
     details := &OrderDetails{Order: order, Customer: customer, Shipping: shipping}
-
     return details, nil
 }
 ```
@@ -228,7 +227,6 @@ func buildOrderDetails(ctx context.Context, orderID int64) (*OrderDetails, error
     }
 
     details := &OrderDetails{Order: order, Customer: customer, Shipping: shipping}
-
     return details, nil
 }
 ```

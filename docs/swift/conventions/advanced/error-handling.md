@@ -60,6 +60,7 @@ func findOrder(id: UUID) throws -> Order {
     guard let order = repository.find(id: id) else {
         throw OrderError.notFound(id)
     }
+
     return order
 }
 ```
@@ -177,6 +178,7 @@ func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
         completion(.failure(.notFound(id)))
         return
     }
+
     completion(.success(order))
 }
 ```

@@ -96,7 +96,6 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 {
     var userTask = _users.FindByIdAsync(userId, ct);
     var ordersTask = _orders.FindRecentAsync(userId, ct);
-
     var notificationsTask = _notifications.FindAsync(userId, ct);
 
     await Task.WhenAll(userTask, ordersTask, notificationsTask);

@@ -309,7 +309,6 @@ public IActionResult HandlePayment(PaymentResult result)
     {
         var successBody = new { success.TransactionId };
         var okResponse = Ok(successBody);
-
         return okResponse;
     }
 
@@ -317,7 +316,6 @@ public IActionResult HandlePayment(PaymentResult result)
     {
         var failureBody = new { failure.ErrorCode, failure.ErrorMessage };
         var badRequest = BadRequest(failureBody);
-
         return badRequest;
     }
 

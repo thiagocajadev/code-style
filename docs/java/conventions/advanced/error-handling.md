@@ -167,6 +167,7 @@ public Product findProductById(String id) {
     try {
         final var product = productRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Product " + id + " not found."));
+
         return product;
     } catch (NotFoundException e) {
         throw e;

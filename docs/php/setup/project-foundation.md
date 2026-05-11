@@ -142,8 +142,8 @@ final class Config
     public function __construct()
     {
         $this->databaseUrl = $this->require('DATABASE_URL');
-        $this->jwtSecret   = $this->require('JWT_SECRET');
-        $this->port        = (int) ($_ENV['PORT'] ?? 8080);
+        $this->jwtSecret = $this->require('JWT_SECRET');
+        $this->port = (int) ($_ENV['PORT'] ?? 8080);
     }
 
     private function require(string $key): string

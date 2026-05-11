@@ -55,7 +55,6 @@ class TeamRepository {
 
     const result = await this.collection.insertOne(document);
     const insertedId = result.insertedId;
-
     return insertedId;
   }
 }
@@ -105,7 +104,6 @@ class TeamRepository {
     const projection = { name: 1, city: 1, foundedYear: 1, _id: 0 };
 
     const team = await this.collection.findOne(filter, { projection });
-
     return team;
   }
 
@@ -168,7 +166,6 @@ class TeamRepository {
 
     const result = await this.collection.updateOne(filter, patch);
     const modifiedCount = result.modifiedCount;
-
     return modifiedCount;
   }
 
@@ -183,7 +180,6 @@ class TeamRepository {
 
     const result = await this.collection.updateOne(filter, patch);
     const modifiedCount = result.modifiedCount;
-
     return modifiedCount;
   }
 }
@@ -232,7 +228,6 @@ class TeamRepository {
 
     const result = await this.collection.updateOne(filter, patch);
     const modifiedCount = result.modifiedCount;
-
     return modifiedCount;
   }
 
@@ -244,7 +239,6 @@ class TeamRepository {
 
     const result = await this.collection.deleteMany(filter);
     const deletedCount = result.deletedCount;
-
     return deletedCount;
   }
 }

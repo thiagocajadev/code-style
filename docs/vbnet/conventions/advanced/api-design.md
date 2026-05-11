@@ -100,8 +100,8 @@ Public Class OrdersController
     <Route("")>
     Public Async Function FindAll() As Task(Of IHttpActionResult)
         Dim orders = Await _findOrders.HandleAsync()
-        Dim response = Ok(orders)
 
+        Dim response = Ok(orders)
         Return response
     End Function
 
@@ -115,7 +115,6 @@ Public Class OrdersController
         End If
 
         Dim response = Ok(result.Value)
-
         Return response
     End Function
 
@@ -130,8 +129,8 @@ Public Class OrdersController
 
         Dim createdOrder = result.Value
         Dim location = New Uri($"/api/orders/{createdOrder.Id}", UriKind.Relative)
-        Dim response = Created(location, createdOrder)
 
+        Dim response = Created(location, createdOrder)
         Return response
     End Function
 End Class
@@ -197,7 +196,6 @@ Public Class CreateOrderHandler
             order.CreatedAt)
 
         Dim success = Result(Of OrderResponse).Success(orderResponse)
-
         Return success
     End Function
 End Class
@@ -330,7 +328,6 @@ Public Async Function HandleAsync(request As OrderRequest) As Task(Of Result(Of 
     End If
 
     Dim success = Result(Of OrderResponse).Success(serviceResult.Value)
-
     Return success
 End Function
 ```

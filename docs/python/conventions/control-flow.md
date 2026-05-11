@@ -139,16 +139,17 @@ def process_order(order):
 def process_order(order):
     if not order:
         return None
+
     if not order.is_active:
         return None
 
     if not order.items:
         return None
+
     if not order.customer:
         return None
 
     invoice = process(order)
-
     return invoice
 ```
 
@@ -195,7 +196,6 @@ STATUS_LABELS: dict[str, str] = {
 
 def get_status_label(status: str) -> str:
     label = STATUS_LABELS.get(status, "Unknown")
-
     return label
 ```
 
@@ -377,7 +377,6 @@ def get_active_user_emails(users: list) -> list[str]:
 ```python
 def get_active_user_emails(users: list) -> list[str]:
     active_emails = [user.email for user in users if user.is_active]
-
     return active_emails
 ```
 

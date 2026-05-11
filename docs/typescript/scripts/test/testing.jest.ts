@@ -8,7 +8,6 @@ function applyDiscount(price: number, discountPct: number): number {
   if (discountPct <= 0) return price;
 
   const discountedPrice = price * (1 - discountPct / 100);
-
   return discountedPrice;
 }
 

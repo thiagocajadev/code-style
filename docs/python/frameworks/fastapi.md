@@ -102,7 +102,6 @@ async def create_order(
     order_service: OrderService = Depends(get_order_service),
 ):
     created_order = await order_service.create(order_input)
-
     return created_order
 ```
 
@@ -148,7 +147,6 @@ async def get_order(
     order_service: OrderService = Depends(get_order_service),
 ):
     order = await order_service.find_by_id(order_id)
-
     return order
 ```
 
@@ -219,7 +217,6 @@ async def list_orders(
     order_service: OrderService = Depends(get_order_service),
 ):
     orders = await order_service.fetch_all(claims.user_id, session)
-
     return orders
 ```
 
@@ -263,7 +260,6 @@ async def get_order(
     order_service: OrderService = Depends(get_order_service),
 ):
     order = await order_service.find_by_id(order_id, http_client)
-
     return order
 ```
 
@@ -275,7 +271,6 @@ async def find_by_id(self, order_id: int, http_client: AsyncClient) -> OrderResp
 
     order_data = response.json()
     order = OrderResponse.model_validate(order_data)
-
     return order
 ```
 

@@ -45,7 +45,6 @@ fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
     }
 
     val discountedOrder = calculate(order)
-
     return discountedOrder
 }
 ```

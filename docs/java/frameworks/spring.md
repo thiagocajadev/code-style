@@ -128,6 +128,7 @@ public record OrderResponse(
             order.getStatus().name(),
             order.getCreatedAt()
         );
+
         return response;
     }
 }
@@ -168,6 +169,7 @@ public class OrderService {
     public Order findById(String id) {
         final var order = orderRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Order " + id + " not found."));
+
         return order;
     }
 
@@ -185,6 +187,7 @@ public class OrderService {
             .map(item -> priceByProductId.get(item.productId())
                 .multiply(BigDecimal.valueOf(item.quantity())))
             .reduce(BigDecimal.ZERO, BigDecimal::add);
+
         return total;
     }
 }

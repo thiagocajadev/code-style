@@ -187,7 +187,6 @@ fun applyDiscount(price: Double, rate: Double): Double {
     require(price >= 0) { "Price must be non-negative, got $price" }
 
     val discountedPrice = price * (1 - rate)
-
     return discountedPrice
 }
 ```

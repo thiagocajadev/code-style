@@ -25,7 +25,6 @@ function processOrder(order: Order | null): string {
   if (order.total <= 0) return "total must be greater than zero";
 
   const label = buildOrderLabel(order);
-
   return label;
 }
 
@@ -37,7 +36,6 @@ function buildOrderLabel(order: Order): string {
   };
 
   const label = LABEL_BY_STATUS[order.status];
-
   return label;
 }
 

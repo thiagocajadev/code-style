@@ -86,19 +86,18 @@ final class OrderHandler
     public function createOrder(array $body): Response
     {
         $input = CreateOrderInput::fromArray($body);
-
         $violations = $this->validator->validate($input);
 
         if (count($violations) > 0) {
-            $errors   = $this->buildErrorResponse($violations);
-            $response = new Response(status: 422, body: $errors);
+            $errors = $this->buildErrorResponse($violations);
 
+            $response = new Response(status: 422, body: $errors);
             return $response;
         }
 
-        $order    = $this->service->createOrder($input);
-        $response = new Response(status: 201, body: $order->toArray());
+        $order = $this->service->createOrder($input);
 
+        $response = new Response(status: 201, body: $order->toArray());
         return $response;
     }
 }
@@ -123,13 +122,12 @@ private function buildErrorResponse(ConstraintViolationListInterface $violations
 
     foreach ($violations as $violation) {
         $errors[] = [
-            'field'   => $violation->getPropertyPath(),
+            'field' => $violation->getPropertyPath(),
             'message' => $violation->getMessage(),
         ];
     }
 
     $response = ['errors' => $errors];
-
     return $response;
 }
 ```

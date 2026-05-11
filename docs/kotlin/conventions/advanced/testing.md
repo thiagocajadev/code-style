@@ -48,6 +48,7 @@ fun `findOrder returns paid order when found`() {
     val repository = mockk<OrderRepository> {
         every { findById(1L) } returns paidOrder
     }
+
     val service = OrderService(repository)
 
     // Act

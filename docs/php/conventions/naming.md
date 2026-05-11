@@ -52,7 +52,6 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
     }
 
     $discountedOrder = $calculateDiscount($order);
-
     return $discountedOrder;
 }
 ```

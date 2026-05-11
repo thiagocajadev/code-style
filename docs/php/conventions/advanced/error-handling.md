@@ -97,11 +97,9 @@ try {
     $order = $this->service->findActiveOrder($orderID);
 } catch (OrderNotFoundException $e) {
     $response = new Response(status: 404, body: ['error' => 'order not found']);
-
     return $response;
 } catch (OrderCanceledException $e) {
     $response = new Response(status: 409, body: ['error' => 'order is canceled']);
-
     return $response;
 }
 ```
@@ -167,23 +165,20 @@ class OrderHandler
     {
         try {
             $input = $this->parseInput($request);
-            $order    = $this->service->processOrder($input);
-            $response = new Response(status: 201, body: $order->toArray());
+            $order = $this->service->processOrder($input);
 
+            $response = new Response(status: 201, body: $order->toArray());
             return $response;
         } catch (ValidationException $e) {
             $response = new Response(status: 422, body: ['errors' => $e->getErrors()]);
-
             return $response;
         } catch (DomainException $e) {
             $response = new Response(status: 409, body: ['error' => $e->getMessage()]);
-
             return $response;
         } catch (\Throwable $e) {
             $this->logger->error('Unexpected error', ['exception' => $e]);
 
             $response = new Response(status: 500, body: ['error' => 'internal error']);
-
             return $response;
         }
     }
@@ -236,9 +231,9 @@ class OrderHandler
             CreateOrderInput::class
         );
 
-        $order    = $this->service->createOrder($input);
-        $response = new Response(status: 201, body: $order->toArray());
+        $order = $this->service->createOrder($input);
 
+        $response = new Response(status: 201, body: $order->toArray());
         return $response;
     }
 }
@@ -249,8 +244,7 @@ class OrderService
     public function createOrder(CreateOrderInput $input): Order
     {
         $discountedInput = $this->applyCustomerDiscount($input);
-        $savedOrder      = $this->repository->save($discountedInput);
-
+        $savedOrder = $this->repository->save($discountedInput);
         return $savedOrder;
     }
 }

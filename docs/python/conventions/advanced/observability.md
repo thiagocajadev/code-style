@@ -184,7 +184,6 @@ Sem ele, o log não diz onde o erro ocorreu.
 async def process_payment(payment_id: int):
     try:
         result = await payment_gateway.charge(payment_id)
-
         return result
     except Exception as error:
         logger.error(f"payment failed: {error}")  # sem traceback
@@ -203,7 +202,6 @@ async def process_payment(payment_id: int):
 async def process_payment(payment_id: int):
     try:
         result = await payment_gateway.charge(payment_id)
-
         return result
     except Exception:
         logger.error("payment failed", extra={"payment_id": payment_id}, exc_info=True)

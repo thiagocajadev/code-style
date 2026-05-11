@@ -34,6 +34,7 @@ class BiometricAuthService {
         'authenticate',
         {'reason': reason},
       );
+
       return result ?? false;
     } on PlatformException catch (e) {
       throw BiometricAuthException(e.message ?? 'Authentication failed');

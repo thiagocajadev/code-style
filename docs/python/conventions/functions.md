@@ -68,12 +68,12 @@ async def process_order(order_id: int):
         return None
 
     invoice = await issue_invoice(order)
-
     return invoice
 
 def is_valid(order) -> bool:
     if not order or not order.items:
         return False
+
     if order.customer.defaulted:
         notify_default(order)
         return False
@@ -83,7 +83,6 @@ def is_valid(order) -> bool:
 async def issue_invoice(order):
     discounted_order = apply_discount(order)
     invoice = await save_order(discounted_order)
-
     return invoice
 ```
 
@@ -120,18 +119,15 @@ def build_order_summary(order) -> str:
     line_items = build_line_items(order)
 
     summary = f"{header}\n{line_items}"
-
     return summary
 
 def build_header(order) -> str:
     header = f"Order #{order.order_id}"
-
     return header
 
 def build_line_items(order) -> str:
     lines = [f"  - {item.name}: ${item.price:.2f}" for item in order.items]
     line_items = "\n".join(lines)
-
     return line_items
 ```
 
@@ -164,7 +160,6 @@ def get_order_summary(order):
 def get_order_summary(order) -> str:
     totals = calculate_totals(order.items)
     summary = format_summary(order.order_id, totals)
-
     return summary
 
 def calculate_totals(items) -> dict:
@@ -172,7 +167,6 @@ def calculate_totals(items) -> dict:
     tax = subtotal * 0.1
 
     totals = {"subtotal": subtotal, "tax": tax, "total": subtotal + tax}
-
     return totals
 
 def format_summary(order_id: int, totals: dict) -> str:
@@ -181,7 +175,6 @@ def format_summary(order_id: int, totals: dict) -> str:
     total = totals["total"]
 
     summary = f"Order #{order_id}: ${subtotal:.2f} + tax ${tax:.2f} = ${total:.2f}"
-
     return summary
 ```
 
@@ -220,7 +213,6 @@ async def find_product_by_id(product_id: int):
 ```python
 async def find_product_by_id(product_id: int):
     product = await fetch_product(product_id)
-
     return product
 
 async def fetch_product(product_id: int):
@@ -262,12 +254,10 @@ def get_active_users(users):
 ```python
 def build_greeting(user) -> str:
     greeting = f"Hello, {user.name}! You have {len(user.notifications)} notifications."
-
     return greeting
 
 def get_active_users(users) -> list:
     active_users = [user for user in users if user.is_active and not user.is_banned]
-
     return active_users
 ```
 
@@ -298,12 +288,10 @@ async def process_checkout(cart_id: int):
 ```python
 def find_pending_orders(user_id: int) -> list:
     pending_orders = order_repository.find_by_status(user_id, "pending")
-
     return pending_orders
 
 async def process_checkout(cart_id: int):
     invoice = await checkout_service.process(cart_id)
-
     return invoice
 ```
 
@@ -386,7 +374,6 @@ def legacy_transform(items):
 ```python
 def get_status(value: int) -> str:
     status = "active" if value > 0 else "inactive"
-
     return status
 ```
 

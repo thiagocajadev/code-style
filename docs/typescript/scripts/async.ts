@@ -25,21 +25,20 @@ async function fetchDashboard(userId: number): Promise<Dashboard> {
   ]);
 
   const dashboard: Dashboard = { user, orders };
-
   return dashboard;
 }
 
 async function fetchUser(id: number): Promise<User> {
   await wait(100);
-  const user: User = { id, name: "Alice" };
 
+  const user: User = { id, name: "Alice" };
   return user;
 }
 
 async function fetchOrders(userId: number): Promise<Order[]> {
   await wait(80);
-  const orders: Order[] = [{ id: 10, userId, total: 150 }];
 
+  const orders: Order[] = [{ id: 10, userId, total: 150 }];
   return orders;
 }
 

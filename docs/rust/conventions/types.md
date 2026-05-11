@@ -178,7 +178,6 @@ fn get_discount_label(order: &Order) -> String {
 ```rust
 fn get_discount_label(order: &Order) -> Option<String> {
     let label = order.discount_rate.map(|rate| format!("{:.0}% off", rate * 100.0));
-
     label
 }
 ```

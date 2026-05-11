@@ -229,7 +229,6 @@ public Order CreateOrder(CreateOrderRequest request)
 {
     var orderId = Guid.CreateVersion7(); // .NET 9+ — time-ordered, sequencial no índice
     var order = new Order(orderId, request.CustomerId, request.Total);
-
     return order;
 }
 ```

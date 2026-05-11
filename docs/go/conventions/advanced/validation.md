@@ -120,7 +120,6 @@ func buildValidationResponse(err error) ValidationResponse {
     }
 
     response := ValidationResponse{Errors: fieldErrors}
-
     return response
 }
 
@@ -160,7 +159,6 @@ var supportedCurrencies = map[string]bool{
 func registerCustomValidations(v *validator.Validate) {
     v.RegisterValidation("currency", func(fl validator.FieldLevel) bool {
         currency := fl.Field().String()
-
         return supportedCurrencies[currency]
     })
 }

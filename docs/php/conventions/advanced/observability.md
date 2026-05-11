@@ -83,14 +83,14 @@ $this->logger->error("Error saving order {$order->id}: {$e->getMessage()}");
 
 ```php
 $this->logger->info('Processing order', [
-    'order_id'    => $order->id,
+    'order_id' => $order->id,
     'customer_id' => $order->customerID,
-    'amount'      => $order->amount,
+    'amount' => $order->amount,
 ]);
 
 $this->logger->error('Save order failed', [
     'order_id' => $order->id,
-    'error'    => $e->getMessage(),
+    'error' => $e->getMessage(),
 ]);
 ```
 
@@ -139,7 +139,7 @@ try {
 } catch (\Throwable $e) {
     $this->logger->error('Save order failed', [
         'order_id' => $orderID,
-        'error'    => $e->getMessage(),
+        'error' => $e->getMessage(),
     ]);
 
     throw $e;
@@ -222,7 +222,7 @@ $this->logger->info('User logged in', [
 
 ```php
 $this->logger->info('User logged in', [
-    'user_id'        => $user->id,
+    'user_id' => $user->id,
     'correlation_id' => CorrelationIDProcessor::get(),
 ]);
 ```

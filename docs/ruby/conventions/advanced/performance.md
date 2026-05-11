@@ -168,7 +168,6 @@ end
 
 def active_order_ids(orders)
   active_ids = orders.filter_map { |o| o.id if o.active? }
-
   active_ids
 end
 ```
@@ -205,7 +204,6 @@ end
 
 def order_summaries
   summaries = Order.includes(:user).map { |order| "#{order.user.name}: #{order.total}" }
-
   summaries
 end
 ```

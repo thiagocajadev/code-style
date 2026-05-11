@@ -84,7 +84,6 @@ func NewMoney(amount int64, currency string) (Money, error) {
     }
 
     money := Money{amount: amount, currency: currency}
-
     return money, nil
 }
 
@@ -254,7 +253,6 @@ func processEvent(event interface{}) error {
     }
 
     err := processOrder(orderEvent)
-
     return err
 }
 ```
