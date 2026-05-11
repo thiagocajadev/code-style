@@ -13,7 +13,7 @@ Uma **skill** é uma habilidade empacotada que um agente pode invocar. Diferente
 | **Skill loading** (carregamento de habilidades) | Injeção dinâmica de uma skill no contexto do agente no momento da execução |
 | **Semantic router** (roteador semântico) | Componente que classifica a intenção da entrada e seleciona a skill correspondente |
 | **Tool** (ferramenta) | Função com schema: executa uma ação discreta e retorna um resultado estruturado |
-| **Prompt template** (modelo de prompt) | Texto parametrizado que serve de base para uma instrução — componente de uma skill |
+| **Prompt template** (modelo de prompt) | Texto parametrizado que serve de base para uma instrução; componente de uma skill |
 | **Agent persona** (persona do agente) | Papel e restrições de comportamento definidos no system prompt da skill |
 | **Token gate** (portão de tokens) | Estratégia que carrega skills apenas quando ativadas, evitando contexto desnecessário |
 
@@ -23,7 +23,7 @@ Skills e tools são complementares, não equivalentes.
 
 | Aspecto | Tool | Skill |
 |---|---|---|
-| Granularidade | Atômica — faz uma coisa | Composta — orquestra várias ações |
+| Granularidade | Atômica; faz uma coisa | Composta; orquestra várias ações |
 | Definição | Schema JSON (nome, params, tipos) | Arquivo de instrução (markdown, YAML, código) |
 | Executa | Código determinístico | LLM + tools + lógica de raciocínio |
 | Reutilização | Por API call | Por harness em múltiplos contextos |
@@ -73,7 +73,7 @@ Semântico:          LLM classifica a intenção → seleciona skill pelo score 
 Híbrido:            Prefixo tem prioridade; fallback para semântico se não houver prefixo
 ```
 
-O **prefixo explícito** é determinístico e barato — zero tokens de classificação. O **roteamento semântico** é mais flexível, mas adiciona uma chamada ao modelo (ou a um classificador menor). Para sistemas com poucos domínios, prefixo explícito é a escolha certa.
+O **prefixo explícito** é determinístico e barato: zero tokens de classificação. O **roteamento semântico** é mais flexível, mas adiciona uma chamada ao modelo (ou a um classificador menor). Para sistemas com poucos domínios, prefixo explícito é a escolha certa.
 
 ## Skill loading (Carregamento)
 
@@ -120,4 +120,4 @@ Em harnessses multi-agente, cada skill pode ser executada por um agente especial
 
 **Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura (tabela, lista numerada, **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript)) garante parsabilidade.
 
-**Versionar skills como código.** Skills em produção devem ter controle de versão, testes de output e processo de deploy — os mesmos critérios de qualquer artefato de software.
+**Versionar skills como código.** Skills em produção devem ter controle de versão, testes de output e processo de deploy: os mesmos critérios de qualquer artefato de software.

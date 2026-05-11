@@ -16,7 +16,7 @@ TypeScript tem dois mecanismos complementares: o sistema de tipos em **compile t
 | **optional chaining** (encadeamento opcional, `?.`) | Acessa propriedade ou método sem lançar erro se a base for nullish |
 | **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; último recurso, evitar |
 | **definite assignment** (atribuição garantida, `!:`) | Promete ao compilador que o campo será atribuído antes do uso |
-| **type guard** (guarda de tipo) | `if (x !== null)` — estreita o tipo após a checagem dentro do bloco |
+| **type guard** (guarda de tipo) | `if (x !== null)`; estreita o tipo após a checagem dentro do bloco |
 | **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
 
 ## Configuração: compilador como primeira linha de defesa
@@ -35,10 +35,10 @@ passa a retornar `T | undefined`, forçando o tratamento de posições que podem
 ```
 
 <details>
-<summary>❌ Ruim — sem strictNullChecks, null passa silenciosamente</summary>
+<summary>❌ Ruim: sem strictNullChecks, null passa silenciosamente</summary>
 
 ```ts
-// sem strict: true — TypeScript aceita tudo isso sem reclamar
+// sem strict: true: TypeScript aceita tudo isso sem reclamar
 function getFirstItem(items: string[]) {
   return items[0].toUpperCase(); // explode se items for vazio
 }
@@ -50,12 +50,12 @@ console.log(user.name); // ReferenceError em runtime
 </details>
 
 <details>
-<summary>✅ Bom — compilador aponta os problemas antes do runtime</summary>
+<summary>✅ Bom: compilador aponta os problemas antes do runtime</summary>
 
 ```ts
 // com strict + noUncheckedIndexedAccess
 function getFirstItem(items: string[]): string | undefined {
-  const first = items[0]; // tipo: string | undefined — noUncheckedIndexedAccess
+  const first = items[0]; // tipo: string | undefined: noUncheckedIndexedAccess
   return first;
 }
 
@@ -83,7 +83,7 @@ Prefira `undefined` para opcionais: é o padrão da linguagem. Reserve `null` pa
 ausência precisa ser **atribuída** explicitamente (ex: limpar um campo em um update).
 
 <details>
-<summary>❌ Ruim — null e undefined misturados sem intenção</summary>
+<summary>❌ Ruim: null e undefined misturados sem intenção</summary>
 
 ```ts
 interface User {
@@ -99,12 +99,12 @@ function findUser(id: string): User | null | undefined {
 </details>
 
 <details>
-<summary>✅ Bom — um tipo de ausência por contexto</summary>
+<summary>✅ Bom: um tipo de ausência por contexto</summary>
 
 ```ts
 interface User {
   id: string;
-  nickname?: string; // opcional — undefined quando não preenchido
+  nickname?: string; // opcional: undefined quando não preenchido
 }
 
 // busca de entidade: null quando não encontrada
@@ -127,7 +127,7 @@ Função que retorna uma coleção **sempre retorna** `[]` quando não há eleme
 tem semântica útil. Quem chama não deveria precisar checar antes de iterar.
 
 <details>
-<summary>❌ Ruim — null em coleção quebra qualquer iteração</summary>
+<summary>❌ Ruim: null em coleção quebra qualquer iteração</summary>
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[] | null> {
@@ -145,7 +145,7 @@ if (orders) {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia como estado neutro</summary>
+<summary>✅ Bom: lista vazia como estado neutro</summary>
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[]> {
@@ -153,7 +153,7 @@ async function findOrdersByUser(userId: string): Promise<Order[]> {
   return orders; // ORM já retorna [] quando não há resultados
 }
 
-// caller usa diretamente — sem defesa desnecessária
+// caller usa diretamente: sem defesa desnecessária
 const orders = await findOrdersByUser(userId);
 orders.forEach(processOrder);
 ```
@@ -166,7 +166,7 @@ Propriedades que representam listas sempre têm tipo `T[]`, nunca `T[] | null`. 
 como `[]` na declaração ou no construtor.
 
 <details>
-<summary>❌ Ruim — null como estado inicial de lista</summary>
+<summary>❌ Ruim: null como estado inicial de lista</summary>
 
 ```ts
 interface Order {
@@ -186,12 +186,12 @@ class Cart {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia como default, sem null</summary>
+<summary>✅ Bom: lista vazia como default, sem null</summary>
 
 ```ts
 interface Order {
   id: string;
-  items: LineItem[]; // sempre array — [] quando vazio
+  items: LineItem[]; // sempre array: [] quando vazio
 }
 
 class Cart {
@@ -212,7 +212,7 @@ Dados externos: resposta de **API** (Application Programming Interface, Interfac
 com `?? []` no ponto de entrada, antes de propagar para o domínio.
 
 <details>
-<summary>❌ Ruim — campos null/undefined da API propagam direto para o domínio</summary>
+<summary>❌ Ruim: campos null/undefined da API propagam direto para o domínio</summary>
 
 ```ts
 interface ApiUserResponse {
@@ -224,8 +224,8 @@ interface ApiUserResponse {
 async function fetchUserOrders(userId: string): Promise<Order[]> {
   const response = await externalApi.get<ApiUserResponse>(`/users/${userId}`);
 
-  // propaga null/undefined para quem chamou — domínio precisa se defender
-  return response.orders; // tipo: Order[] | null | undefined — erro de compilação com strict
+  // propaga null/undefined para quem chamou: domínio precisa se defender
+  return response.orders; // tipo: Order[] | null | undefined: erro de compilação com strict
 }
 
 // caller obrigado a se defender de null em cada uso
@@ -238,7 +238,7 @@ async function buildUserSummary(userId: string) {
 </details>
 
 <details>
-<summary>✅ Bom — normalização na fronteira, domínio trabalha com tipos limpos</summary>
+<summary>✅ Bom: normalização na fronteira, domínio trabalha com tipos limpos</summary>
 
 ```ts
 async function fetchUserOrders(userId: string): Promise<Order[]> {
@@ -257,7 +257,7 @@ quando a ausência é um caso esperado e tratável inline. Quando a ausência é
 clause.
 
 <details>
-<summary>❌ Ruim — encadeamento que esconde condição de negócio</summary>
+<summary>❌ Ruim: encadeamento que esconde condição de negócio</summary>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
@@ -269,7 +269,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 </details>
 
 <details>
-<summary>✅ Bom — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<summary>✅ Bom: guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
 
 ```ts
 // ausência é erro → guard clause
@@ -296,7 +296,7 @@ O operador `!` diz ao compilador "confie em mim, não é null". Desliga a verifi
 Aceitável apenas quando você tem garantia externa que o compilador não consegue verificar.
 
 <details>
-<summary>❌ Ruim — ! para silenciar o compilador sem garantia real</summary>
+<summary>❌ Ruim: ! para silenciar o compilador sem garantia real</summary>
 
 ```ts
 const user = findUser(id)!; // e se retornar null?
@@ -306,7 +306,7 @@ const email = form.fields.get("email")!.value; // e se a chave não existir?
 </details>
 
 <details>
-<summary>✅ Bom — guard clause no lugar de !</summary>
+<summary>✅ Bom: guard clause no lugar de !</summary>
 
 ```ts
 const user = await findUser(id);
@@ -321,14 +321,14 @@ const email = emailField.value;
 </details>
 
 <details>
-<summary>✅ Bom — ! aceitável com garantia documentada</summary>
+<summary>✅ Bom: ! aceitável com garantia documentada</summary>
 
 ```ts
 // após um type guard já verificado no bloco acima, ! é defensável
 const map = new Map<string, User>();
 map.set("admin", adminUser);
 
-// sabemos que "admin" existe — foi inserido duas linhas acima
+// sabemos que "admin" existe: foi inserido duas linhas acima
 const admin = map.get("admin")!;
 ```
 

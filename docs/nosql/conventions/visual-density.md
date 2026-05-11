@@ -1,4 +1,4 @@
-# Visual Density — NoSQL
+# Visual Density: NoSQL
 
 > Escopo: NoSQL. Aplica as regras de densidade visual a queries, pipelines e drivers de bancos não-relacionais.
 
@@ -43,7 +43,7 @@ As regras gerais estão em [shared/standards/visual-density.md](../../../shared/
 Filtros, projeções, updates e pipelines em várias linhas ocupam peso visual próprio. Cole linha em branco **depois** do bloco para isolá-lo do próximo passo.
 
 <details>
-<summary>❌ Ruim — projeção multi-linha colada à chamada ao driver</summary>
+<summary>❌ Ruim: projeção multi-linha colada à chamada ao driver</summary>
 
 ```js
 async function findTeamById(teamId) {
@@ -64,7 +64,7 @@ A projeção multi-linha termina e o `await` vem colado. O olho não distingue o
 </details>
 
 <details>
-<summary>✅ Bom — linha em branco depois do bloco multi-linha; retorno explicativo grudado</summary>
+<summary>✅ Bom: linha em branco depois do bloco multi-linha; retorno explicativo grudado</summary>
 
 ```js
 async function findTeamById(teamId) {
@@ -87,10 +87,10 @@ Duas fases visíveis: "definir query" (filtro + projeção multi-linha) e "execu
 
 ## Filtro + projeção: par coeso
 
-Quando o filtro e a projeção cabem em uma linha cada um, eles formam um grupo coeso — sem respiro entre eles. A linha em branco vem **depois** do par, antes da chamada ao driver.
+Quando o filtro e a projeção cabem em uma linha cada um, eles formam um grupo coeso, sem respiro entre eles. A linha em branco vem **depois** do par, antes da chamada ao driver.
 
 <details>
-<summary>✅ Bom — filtro e projeção como par; chamada isolada</summary>
+<summary>✅ Bom: filtro e projeção como par; chamada isolada</summary>
 
 ```js
 async function fetchTeamSummary(teamId) {
@@ -115,7 +115,7 @@ filtro → join → desempacotar → agrupar → ordenar → limitar → projeç
 ```
 
 <details>
-<summary>❌ Ruim — estágios colados sem distinção de propósito</summary>
+<summary>❌ Ruim: estágios colados sem distinção de propósito</summary>
 
 ```js
 const pipeline = [
@@ -145,7 +145,7 @@ Todas as fases coladas viram muralha. O olho não vê onde o filtro termina e on
 </details>
 
 <details>
-<summary>✅ Bom — fases isoladas; sort + limit coesos como mesmo propósito</summary>
+<summary>✅ Bom: fases isoladas; sort + limit coesos como mesmo propósito</summary>
 
 ```js
 async function fetchTopScorersBySeason(season) {
@@ -185,10 +185,10 @@ Quatro fases visíveis: filtro, join, agrupamento, "ordenar e limitar" (par coes
 
 ## Retorno explicativo grudado
 
-Quando a chamada ao driver cabe em uma linha e o `return` retorna exatamente a variável recém declarada, os dois formam par sem linha em branco — não importa quantos passos haja acima.
+Quando a chamada ao driver cabe em uma linha e o `return` retorna exatamente a variável recém declarada, os dois formam par sem linha em branco. Não importa quantos passos haja acima.
 
 <details>
-<summary>❌ Ruim — retorno fragmentado quando a linha acima é uma única linha que nomeia o valor</summary>
+<summary>❌ Ruim: retorno fragmentado quando a linha acima é uma única linha que nomeia o valor</summary>
 
 ```js
 async function findActivePlayers(teamId) {
@@ -201,12 +201,12 @@ async function findActivePlayers(teamId) {
 }
 ```
 
-A linha em branco isola o `return` como parágrafo de encerramento, mas só há uma linha acima — par semântico fragmentado.
+A linha em branco isola o `return` como parágrafo de encerramento, mas só há uma linha acima: o par semântico fica fragmentado.
 
 </details>
 
 <details>
-<summary>✅ Bom — par grudado</summary>
+<summary>✅ Bom: par grudado</summary>
 
 ```js
 async function findActivePlayers(teamId) {
@@ -230,7 +230,7 @@ Vai linha em branco antes do `return` quando:
 - `return` monta **objeto** com múltiplos fragmentos preparados acima.
 
 <details>
-<summary>✅ Bom — chain multi-linha exige respiro antes do return</summary>
+<summary>✅ Bom: chain multi-linha exige respiro antes do return</summary>
 
 ```js
 async function findPlayersByTeam(teamId) {
@@ -246,12 +246,12 @@ async function findPlayersByTeam(teamId) {
 }
 ```
 
-A chain ocupa quatro linhas físicas — peso visual próprio. O respiro antes do `return` marca a fronteira entre execução e entrega.
+A chain ocupa quatro linhas físicas com peso visual próprio. O respiro antes do `return` marca a fronteira entre execução e entrega.
 
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos → montagem com linha em branco antes do return</summary>
+<summary>✅ Bom: fragmentos → montagem com linha em branco antes do return</summary>
 
 ```js
 async function fetchTeamsPaged(page, pageSize) {
@@ -270,7 +270,7 @@ async function fetchTeamsPaged(page, pageSize) {
 }
 ```
 
-O `return` costura `teams`, `total` e `hasNextPage` — fase de montagem isolada por linha em branco.
+O `return` costura `teams`, `total` e `hasNextPage`: fase de montagem isolada por linha em branco.
 
 </details>
 
@@ -279,7 +279,7 @@ O `return` costura `teams`, `total` e `hasNextPage` — fase de montagem isolada
 Duas queries independentes na mesma função são fases distintas. Linha em branco entre elas, ainda que cada uma caiba em poucas linhas.
 
 <details>
-<summary>✅ Bom — duas operações separadas como fases</summary>
+<summary>✅ Bom: duas operações separadas como fases</summary>
 
 ```js
 async function softDeleteTeamAndPlayers(teamId) {
@@ -303,10 +303,10 @@ Duas operações homogêneas formam par coeso; o objeto multi-linha do `return` 
 
 ## Update parcial: filtro + patch como par
 
-Filtro e objeto de update (`$set`, `$inc`, etc.) formam um grupo coeso quando o patch é multi-linha — a linha em branco vem **depois** do bloco, separando a definição da query da execução.
+Filtro e objeto de update (`$set`, `$inc`, etc.) formam um grupo coeso quando o patch é multi-linha. A linha em branco vem **depois** do bloco, separando a definição da query da execução.
 
 <details>
-<summary>✅ Bom — filtro + patch coesos; chamada isolada; retorno explicativo grudado</summary>
+<summary>✅ Bom: filtro + patch coesos; chamada isolada; retorno explicativo grudado</summary>
 
 ```js
 async function updateManager(teamId, managerId) {
@@ -333,7 +333,7 @@ Trio final coeso: `result` é declarado, `modifiedCount` extrai dele (par semân
 Não alinhe verticalmente `:` ou `=` em objetos literais com espaços extras. Um espaço único.
 
 <details>
-<summary>❌ Ruim — projeção com colunas alinhadas</summary>
+<summary>❌ Ruim: projeção com colunas alinhadas</summary>
 
 ```js
 const projection = {
@@ -347,7 +347,7 @@ const projection = {
 </details>
 
 <details>
-<summary>✅ Bom — espaço único após o `:`</summary>
+<summary>✅ Bom: espaço único após o `:`</summary>
 
 ```js
 const projection = {

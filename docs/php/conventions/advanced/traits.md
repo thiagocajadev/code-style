@@ -22,7 +22,7 @@ Use traits para comportamentos transversais que não pertencem a uma herança na
 O trait deve ser coeso: todos os métodos servem ao mesmo propósito.
 
 <details>
-<summary>❌ Ruim — trait como dumping ground de métodos não relacionados</summary>
+<summary>❌ Ruim: trait como dumping ground de métodos não relacionados</summary>
 
 ```php
 trait Helpers
@@ -37,7 +37,7 @@ trait Helpers
 </details>
 
 <details>
-<summary>✅ Bom — trait coeso: um propósito, um conjunto de métodos</summary>
+<summary>✅ Bom: trait coeso: um propósito, um conjunto de métodos</summary>
 
 ```php
 trait Auditable
@@ -87,7 +87,7 @@ Declare um método abstrato no trait quando ele precisa de informação que só 
 que o usa pode fornecer. Isso cria um contrato implícito.
 
 <details>
-<summary>✅ Bom — trait com abstract method para contrato</summary>
+<summary>✅ Bom: trait com abstract method para contrato</summary>
 
 ```php
 trait HasTimestamps
@@ -124,7 +124,7 @@ Quando dois traits declaram um método com o mesmo nome, use `insteadof` para es
 qual usar e `as` para renomear o descartado se ainda precisar dele.
 
 <details>
-<summary>✅ Bom — insteadof e as para resolver conflito</summary>
+<summary>✅ Bom: insteadof e as para resolver conflito</summary>
 
 ```php
 trait LoggingA
@@ -164,7 +164,7 @@ class OrderService
 | Herança natural de um tipo específico de entidade | Classe abstrata |
 
 <details>
-<summary>✅ Bom — trait para comportamento transversal; injeção para dependências externas</summary>
+<summary>✅ Bom: trait para comportamento transversal; injeção para dependências externas</summary>
 
 ```php
 // Comportamento transversal sem dependência externa: trait

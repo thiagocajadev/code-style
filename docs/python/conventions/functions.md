@@ -16,10 +16,10 @@ desenho.
 | **type hint** (anotação de tipo) | `def f(x: int) -> str` documenta contrato e habilita type checker |
 | **keyword-only argument** (argumento exclusivo por nome) | argumento após `*` na assinatura; obriga chamada nominal e elimina ambiguidade |
 
-## God function — múltiplas responsabilidades
+## God function: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
 
 ```python
 def realiza_venda(x):
@@ -55,7 +55,7 @@ def realiza_venda(x):
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom: orquestrador no topo, responsabilidades separadas</summary>
 
 ```python
 async def process_order(order_id: int):
@@ -84,10 +84,10 @@ async def issue_invoice(order):
 
 </details>
 
-## SLA — orquestrador ou implementação, nunca os dois
+## SLA: orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Ruim — mesma função orquestra e implementa</summary>
+<summary>❌ Ruim: mesma função orquestra e implementa</summary>
 
 ```python
 def build_order_summary(order):
@@ -103,7 +103,7 @@ def build_order_summary(order):
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
 
 ```python
 def build_order_summary(order) -> str:
@@ -128,7 +128,7 @@ def build_line_items(order) -> str:
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Ruim — cálculo e formatação misturados</summary>
+<summary>❌ Ruim: cálculo e formatação misturados</summary>
 
 ```python
 def get_order_summary(order):
@@ -142,7 +142,7 @@ def get_order_summary(order):
 </details>
 
 <details>
-<summary>✅ Bom — cálculo separado da formatação</summary>
+<summary>✅ Bom: cálculo separado da formatação</summary>
 
 ```python
 def get_order_summary(order) -> str:
@@ -173,7 +173,7 @@ def format_summary(order_id: int, totals: dict) -> str:
 O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
 
 <details>
-<summary>❌ Ruim — variável auxiliar desnecessária, else após raise</summary>
+<summary>❌ Ruim: variável auxiliar desnecessária, else após raise</summary>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -192,7 +192,7 @@ async def find_product_by_id(product_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom: intenção clara no topo, detalhe abaixo</summary>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -216,7 +216,7 @@ O retorno nomeia o resultado, não o computa. A variável é expressiva e simét
 função.
 
 <details>
-<summary>❌ Ruim — lógica ou expressão inline direto no return</summary>
+<summary>❌ Ruim: lógica ou expressão inline direto no return</summary>
 
 ```python
 def build_greeting(user):
@@ -229,7 +229,7 @@ def get_active_users(users):
 </details>
 
 <details>
-<summary>✅ Bom — variável expressiva antes do return</summary>
+<summary>✅ Bom: variável expressiva antes do return</summary>
 
 ```python
 def build_greeting(user) -> str:
@@ -244,7 +244,7 @@ def get_active_users(users) -> list:
 </details>
 
 <details>
-<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim: bare return: pass-through sem nome, o retorno não diz o que é</summary>
 
 ```python
 def find_pending_orders(user_id: int):
@@ -257,7 +257,7 @@ async def process_checkout(cart_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom: nome simétrico com a função deixa claro o que sai</summary>
 
 ```python
 def find_pending_orders(user_id: int) -> list:
@@ -271,12 +271,12 @@ async def process_checkout(cart_id: int):
 
 </details>
 
-## Parâmetros — estilo vertical
+## Parâmetros: estilo vertical
 
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto (dataclass ou dict).
 
 <details>
-<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim: 4+ parâmetros inline, intenção obscura na chamada</summary>
 
 ```python
 def create_invoice(order_id, customer_id, amount, due_date, currency):
@@ -288,7 +288,7 @@ create_invoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL")
 </details>
 
 <details>
-<summary>✅ Bom — dataclass quando 4+ parâmetros</summary>
+<summary>✅ Bom: dataclass quando 4+ parâmetros</summary>
 
 ```python
 from dataclasses import dataclass
@@ -318,7 +318,7 @@ create_invoice(InvoiceData(
 ## Código morto
 
 <details>
-<summary>❌ Ruim — condição impossível, função nunca chamada</summary>
+<summary>❌ Ruim: condição impossível, função nunca chamada</summary>
 
 ```python
 def get_status(value: int) -> str:
@@ -335,7 +335,7 @@ def legacy_transform(items):
 </details>
 
 <details>
-<summary>✅ Bom — remove o que não é usado</summary>
+<summary>✅ Bom: remove o que não é usado</summary>
 
 ```python
 def get_status(value: int) -> str:

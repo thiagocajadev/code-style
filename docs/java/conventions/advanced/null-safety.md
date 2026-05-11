@@ -2,9 +2,7 @@
 
 > Escopo: Java 25 LTS.
 
-`null` em Java é a ausência de valor — mas não diz _por que_ o valor está ausente. **Optional**
-(contêiner de valor opcional) torna a ausência explícita no contrato do método e força o
-chamador a lidar com ela.
+`null` em Java é a ausência de valor, mas não diz _por que_ o valor está ausente. **Optional** (contêiner de valor opcional) torna a ausência explícita no contrato do método e força o chamador a lidar com ela.
 
 ## Conceitos fundamentais
 
@@ -20,7 +18,7 @@ chamador a lidar com ela.
 ## null direto no retorno
 
 <details>
-<summary>❌ Ruim — null silencioso: o chamador pode esquecer de verificar</summary>
+<summary>❌ Ruim: null silencioso: o chamador pode esquecer de verificar</summary>
 
 ```java
 public User findUser(String id) {
@@ -35,7 +33,7 @@ final var email = user.getEmail(); // NullPointerException em runtime
 </details>
 
 <details>
-<summary>✅ Bom — Optional torna a ausência explícita no contrato</summary>
+<summary>✅ Bom: Optional torna a ausência explícita no contrato</summary>
 
 ```java
 public Optional<User> findUser(String id) {
@@ -51,13 +49,13 @@ final var email = userService.findUser("u-1")
 
 </details>
 
-## orElseThrow — ausência como exceção
+## orElseThrow: ausência como exceção
 
 Quando a ausência é um erro de negócio (recurso obrigatório não encontrado), use `orElseThrow`
 em vez de verificar o `Optional` manualmente.
 
 <details>
-<summary>❌ Ruim — verificação manual verbosa</summary>
+<summary>❌ Ruim: verificação manual verbosa</summary>
 
 ```java
 public User getUser(String id) {
@@ -72,7 +70,7 @@ public User getUser(String id) {
 </details>
 
 <details>
-<summary>✅ Bom — orElseThrow expressa a intenção diretamente</summary>
+<summary>✅ Bom: orElseThrow expressa a intenção diretamente</summary>
 
 ```java
 public User getUser(String id) {
@@ -85,13 +83,13 @@ public User getUser(String id) {
 
 </details>
 
-## Objects.requireNonNullElse — valor padrão
+## Objects.requireNonNullElse: valor padrão
 
 Para parâmetros que podem ser null mas têm um padrão razoável, `Objects.requireNonNullElse`
 é mais expressivo que o operador ternário.
 
 <details>
-<summary>❌ Ruim — ternário com verificação de null</summary>
+<summary>❌ Ruim: ternário com verificação de null</summary>
 
 ```java
 public String getDisplayName(String name) {
@@ -102,7 +100,7 @@ public String getDisplayName(String name) {
 </details>
 
 <details>
-<summary>✅ Bom — semântica declarativa</summary>
+<summary>✅ Bom: semântica declarativa</summary>
 
 ```java
 public String getDisplayName(String name) {
@@ -115,11 +113,10 @@ public String getDisplayName(String name) {
 
 ## Guard clauses para null
 
-Quando null é uma pré-condição inválida (o método não deve receber null), lance exceção no
-topo — não deixe o null propagar.
+Quando null é uma pré-condição inválida (o método não deve receber null), lance exceção no topo, não deixe o null propagar.
 
 <details>
-<summary>❌ Ruim — null propaga para NullPointerException interno</summary>
+<summary>❌ Ruim: null propaga para NullPointerException interno</summary>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -131,7 +128,7 @@ public Invoice processOrder(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom — guard clause no topo, falha rápida e mensagem clara</summary>
+<summary>✅ Bom: guard clause no topo, falha rápida e mensagem clara</summary>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -151,7 +148,7 @@ public Invoice processOrder(Order order) {
 em coleções.
 
 <details>
-<summary>❌ Ruim — Optional em lugares errados</summary>
+<summary>❌ Ruim: Optional em lugares errados</summary>
 
 ```java
 public void notify(Optional<User> user) { /* ... */ } // parâmetro
@@ -166,7 +163,7 @@ final var users = List.of(Optional.of(user1), Optional.empty()); // em coleção
 </details>
 
 <details>
-<summary>✅ Bom — Optional apenas no retorno de método</summary>
+<summary>✅ Bom: Optional apenas no retorno de método</summary>
 
 ```java
 public Optional<User> findUser(String id) { /* ... */ }

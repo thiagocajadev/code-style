@@ -80,7 +80,7 @@ A mitigação mais eficaz para domínios críticos é **RAG com grounding**: o m
 base nos documentos fornecidos e cita a origem de cada afirmação.
 
 <details>
-<summary>❌ Ruim: sem grounding — modelo inventa para preencher a lacuna</summary>
+<summary>❌ Ruim: sem grounding, modelo inventa para preencher a lacuna</summary>
 
 ```
 Quais foram os resultados financeiros da Acme Corp no Q3 2024?
@@ -89,7 +89,7 @@ Quais foram os resultados financeiros da Acme Corp no Q3 2024?
 </details>
 
 <details>
-<summary>✅ Bom: com grounding — modelo responde apenas com base no conteúdo fornecido</summary>
+<summary>✅ Bom: com grounding, modelo responde apenas com base no conteúdo fornecido</summary>
 
 ```
 Com base no relatório abaixo, quais foram os resultados financeiros da Acme Corp no Q3 2024?
@@ -101,7 +101,7 @@ Se a informação não estiver no relatório, responda "não encontrado".
 </details>
 
 <details>
-<summary>❌ Ruim: sem restrição de fonte — modelo cita referências inexistentes</summary>
+<summary>❌ Ruim: sem restrição de fonte, modelo cita referências inexistentes</summary>
 
 ```
 Liste 3 artigos acadêmicos sobre RAG publicados em 2024.
@@ -110,7 +110,7 @@ Liste 3 artigos acadêmicos sobre RAG publicados em 2024.
 </details>
 
 <details>
-<summary>✅ Bom: restrito a fontes verificadas — modelo não inventa referências</summary>
+<summary>✅ Bom: restrito a fontes verificadas, modelo não inventa referências</summary>
 
 ```
 Liste apenas artigos que estejam na lista abaixo.
@@ -122,7 +122,7 @@ Se não houver artigos sobre RAG, diga que não encontrou.
 </details>
 
 <details>
-<summary>❌ Ruim: sem instrução de incerteza — modelo afirma o que não sabe</summary>
+<summary>❌ Ruim: sem instrução de incerteza, modelo afirma o que não sabe</summary>
 
 ```
 Qual a versão atual do framework X?
@@ -146,7 +146,7 @@ Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notat
 parseável sem regex, sem pós-processamento frágil.
 
 <details>
-<summary>❌ Ruim: sem schema — resposta em texto livre, parsing manual e frágil</summary>
+<summary>❌ Ruim: sem schema, resposta em texto livre, parsing manual e frágil</summary>
 
 ```js
 const response = await client.messages.create({
@@ -159,7 +159,7 @@ const rawText = response.content[0].text;
 </details>
 
 <details>
-<summary>✅ Bom: schema forçado via tool — output parseável diretamente</summary>
+<summary>✅ Bom: schema forçado via tool, output parseável diretamente</summary>
 
 ```js
 const response = await client.messages.create({
@@ -186,7 +186,7 @@ Nunca parsear texto livre em produção.
 
 ## Extended thinking (Raciocínio estendido)
 
-O modelo não pensa de fato — mas pode gerar tokens intermediários antes da resposta final,
+O modelo não pensa de fato, mas pode gerar tokens intermediários antes da resposta final,
 funcionando como um rascunho interno. Estatisticamente, produzir mais tokens de "rascunho" antes do
 output aumenta a precisão em tarefas complexas, pelo mesmo motivo que humanos erram menos quando
 escrevem os passos antes de concluir.
@@ -212,9 +212,9 @@ thinking adiciona latência e custo sem ganho proporcional. Use quando a precis�
 
 | Modelo                | Controle de thinking                                                      |
 | --------------------- | ------------------------------------------------------------------------- |
-| Claude (Anthropic)    | `thinking: { type: "enabled", budget_tokens: N }` — orçamento controlável |
+| Claude (Anthropic)    | `thinking: { type: "enabled", budget_tokens: N }`, orçamento controlável  |
 | o3 / o4-mini (OpenAI) | Automático; parâmetro `reasoning_effort` (low/medium/high)                |
-| Gemini 2.5 (Google)   | `thinking_config: { thinking_budget: N }` — orçamento controlável         |
+| Gemini 2.5 (Google)   | `thinking_config: { thinking_budget: N }`, orçamento controlável          |
 
 ## Inference engines (Motores de inferência)
 

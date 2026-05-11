@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Validação não é uma única coisa: é um pipeline com três responsabilidades distintas, cada uma no seu lugar — limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
+Validação não é uma única coisa: é um pipeline com três responsabilidades distintas, cada uma no seu lugar: limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
 
 ```javascript
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -30,7 +30,7 @@ sujos entram em validação suja: um email com espaço passa no schema mas falha
 busca no banco.
 
 <details>
-<summary>❌ Ruim — dados brutos chegam direto na validação</summary>
+<summary>❌ Ruim: dados brutos chegam direto na validação</summary>
 
 ```js
 async function createUserHandler(req, res) {
@@ -44,7 +44,7 @@ async function createUserHandler(req, res) {
 </details>
 
 <details>
-<summary>✅ Bom — sanitize antes de validar</summary>
+<summary>✅ Bom: sanitize antes de validar</summary>
 
 ```js
 function sanitizeCreateUser(body) {
@@ -75,7 +75,7 @@ Zod valida shape, tipos e constraints, nunca regras de negócio. Centraliza o
 contrato técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no handler</summary>
+<summary>❌ Ruim: validação manual espalhada no handler</summary>
 
 ```js
 async function createOrder(body) {
@@ -92,7 +92,7 @@ async function createOrder(body) {
 </details>
 
 <details>
-<summary>✅ Bom — schema centralizado, handler recebe dado tipado e validado</summary>
+<summary>✅ Bom: schema centralizado, handler recebe dado tipado e validado</summary>
 
 ```js
 const createOrderSchema = z.object({
@@ -118,7 +118,7 @@ sentido no domínio: dependem de **I/O** (Input/Output, Entrada/Saída) (banco,
 serviços externos) e não pertencem ao schema.
 
 <details>
-<summary>❌ Ruim — I/O dentro do schema (refine async) mistura camadas</summary>
+<summary>❌ Ruim: I/O dentro do schema (refine async) mistura camadas</summary>
 
 ```js
 const createOrderSchema = z.object({
@@ -138,7 +138,7 @@ const createOrderSchema = z.object({
 </details>
 
 <details>
-<summary>✅ Bom — schema valida shape, domínio valida regras após</summary>
+<summary>✅ Bom: schema valida shape, domínio valida regras após</summary>
 
 ```js
 const createOrderSchema = z.object({
@@ -180,7 +180,7 @@ Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`,
 diretamente.
 
 <details>
-<summary>❌ Ruim — entidade direta vaza campos internos</summary>
+<summary>❌ Ruim: entidade direta vaza campos internos</summary>
 
 ```js
 async function findUserByIdHandler(req, res) {
@@ -193,7 +193,7 @@ async function findUserByIdHandler(req, res) {
 </details>
 
 <details>
-<summary>✅ Bom — projeção explícita do que sai na resposta</summary>
+<summary>✅ Bom: projeção explícita do que sai na resposta</summary>
 
 ```js
 function toUserResponse(user) {

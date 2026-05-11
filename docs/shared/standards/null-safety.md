@@ -95,7 +95,7 @@ await createOrder(orderRequest); // domínio recebe dados garantidos
 const order = await orderRepository.findById(id);
 if (!order) throw new NotFoundError(`Order ${id} not found`);
 
-// a partir daqui, order é garantido — sem ?. no restante da função
+// a partir daqui, order é garantido: sem ?. no restante da função
 const total = calculateTotal(order);
 ```
 
@@ -193,7 +193,7 @@ async function findById(id) {
 campo é opcional por design, e o domínio tem uma função central que resolve a ausência.
 
 ```js
-// priority é opcional — ausência significa "criado antes dessa feature existir"
+// priority é opcional: ausência significa "criado antes dessa feature existir"
 function getEffectivePriority(order) {
   const priority = order.priority ?? "normal"; // uma função resolve, sem espalhar ?. pelo domínio
   return priority;

@@ -18,21 +18,21 @@ Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mist
 `new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com timezones diferentes, o mesmo código produz resultados diferentes.
 
 <details>
-<summary>❌ Ruim — captura hora local, comportamento depende do servidor</summary>
+<summary>❌ Ruim: captura hora local, comportamento depende do servidor</summary>
 
 ```js
 const createdAt = new Date().toString();
-// "Sat Apr 19 2026 11:00:00 GMT-0300" — timezone vazando para o valor
+// "Sat Apr 19 2026 11:00:00 GMT-0300": timezone vazando para o valor
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — UTC explícito, resultado idêntico em qualquer ambiente</summary>
+<summary>✅ Bom: UTC explícito, resultado idêntico em qualquer ambiente</summary>
 
 ```js
 const createdAt = new Date().toISOString();
-// "2026-04-19T14:00:00.000Z" — inequívoco, portável
+// "2026-04-19T14:00:00.000Z": inequívoco, portável
 ```
 
 </details>
@@ -42,21 +42,21 @@ const createdAt = new Date().toISOString();
 O comportamento de `new Date(string)` muda conforme o formato passado e varia entre engines.
 
 <details>
-<summary>❌ Ruim — formato ambíguo, resultado local-dependente</summary>
+<summary>❌ Ruim: formato ambíguo, resultado local-dependente</summary>
 
 ```js
 const date = new Date("01/15/2026");
-// Interpretado como meia-noite local — em UTC-3: "2026-01-15T03:00:00.000Z"
+// Interpretado como meia-noite local; em UTC-3: "2026-01-15T03:00:00.000Z"
 
 const date2 = new Date("2026-01-15");
-// Interpretado como meia-noite UTC — "2026-01-15T00:00:00.000Z"
+// Interpretado como meia-noite UTC: "2026-01-15T00:00:00.000Z"
 // Mesmo visual, resultados diferentes
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
+<summary>✅ Bom: **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
 
 ```js
 const date = new Date("2026-01-15T00:00:00.000Z");
@@ -71,20 +71,20 @@ Armazenar ou transmitir com `toLocaleDateString()` embute o fuso no valor: impos
 depois. Separar armazenamento de exibição mantém o dado portável.
 
 <details>
-<summary>❌ Ruim — exibição misturada com armazenamento</summary>
+<summary>❌ Ruim: exibição misturada com armazenamento</summary>
 
 ```js
 const order = {
   id: "ord_01HV...",
   createdAt: new Date().toLocaleDateString("pt-BR"),
-  // "19/04/2026" — timezone implícita, não parseável de volta para Date
+  // "19/04/2026": timezone implícita, não parseável de volta para Date
 };
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — armazenar UTC, formatar só na camada de exibição</summary>
+<summary>✅ Bom: armazenar UTC, formatar só na camada de exibição</summary>
 
 ```js
 const order = {
@@ -103,7 +103,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 
   return formattedDate;
 }
-// "19/04/2026" — formatação explícita, locale e timezone declarados
+// "19/04/2026": formatação explícita, locale e timezone declarados
 ```
 
 </details>

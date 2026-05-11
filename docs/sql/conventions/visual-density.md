@@ -15,7 +15,7 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 | **signature / body boundary** (limite assinatura/corpo) | Em procedures e functions, blank entre `AS`/`$$` e a primeira instrução; deixa a fronteira visível |
 | **statement separator** (separador de statement) | Dois ou mais statements consecutivos (`INSERT ...; SELECT ...`) ficam separados por linha em branco |
 | **control flow block** (bloco de fluxo de controle) | `IF ... THEN ... END IF`, `WHILE`, `BEGIN TRY/CATCH`; bloco multi-linha que pede respiro antes e depois |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=`, tipos ou aliases verticalmente; antipadrão — frágil a renomeações, gera diff ruidoso |
+| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=`, tipos ou aliases verticalmente; antipadrão frágil a renomeações, gera diff ruidoso |
 | **orphan statement** (statement órfão) | Statement isolado entre linhas em branco quando pertencia ao grupo anterior; em séries de 4+ statements homogêneos, quebrar em 2+2 |
 
 ## Referência rápida
@@ -23,7 +23,7 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 | Regra | Descrição |
 | --- | --- |
 | **Cláusulas da mesma query não levam blank** | `SELECT`, `FROM`, `WHERE`, `JOIN`, `ORDER BY` são partes de uma frase só |
-| **CTEs separadas por blank** | Cada `WITH nome AS (...)` é uma etapa nomeada — linha em branco entre elas |
+| **CTEs separadas por blank** | Cada `WITH nome AS (...)` é uma etapa nomeada, com linha em branco entre elas |
 | **Multi-linha pede blank depois** | CTE, subquery ou `CASE WHEN` expandido, quando seguidos de outro statement, exigem blank |
 | **Statements consecutivos = blank** | Dois `INSERT`, dois `UPDATE`, etc. ficam separados por linha em branco |
 | **Assinatura e corpo separados** | Blank entre `AS`/`$$` e a primeira instrução de procedure/function |
@@ -34,10 +34,10 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 
 ## Cláusulas da mesma query: sem blank
 
-`SELECT`, `FROM`, `WHERE`, `JOIN`, `ORDER BY` já são marcos visuais por si só — o olho reconhece cada palavra-chave. Adicionar linha em branco entre cláusulas da mesma query fragmenta a frase SQL.
+`SELECT`, `FROM`, `WHERE`, `JOIN`, `ORDER BY` já são marcos visuais por si só: o olho reconhece cada palavra-chave. Adicionar linha em branco entre cláusulas da mesma query fragmenta a frase SQL.
 
 <details>
-<summary>❌ Ruim — blank entre cláusulas da mesma query</summary>
+<summary>❌ Ruim: blank entre cláusulas da mesma query</summary>
 
 ```sql
 SELECT
@@ -54,7 +54,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — cláusulas grudadas formam uma frase</summary>
+<summary>✅ Bom: cláusulas grudadas formam uma frase</summary>
 
 ```sql
 SELECT
@@ -75,7 +75,7 @@ Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros
 Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de abertura e antes do `$$` de fechamento.
 
 <details>
-<summary>❌ Ruim — T-SQL: assinatura e corpo colados, sem separação visual</summary>
+<summary>❌ Ruim: T-SQL: assinatura e corpo colados, sem separação visual</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -98,7 +98,7 @@ END;
 </details>
 
 <details>
-<summary>✅ Bom — T-SQL: linha em branco entre AS e BEGIN</summary>
+<summary>✅ Bom: T-SQL: linha em branco entre AS e BEGIN</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -122,7 +122,7 @@ END;
 </details>
 
 <details>
-<summary>✅ Bom — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
+<summary>✅ Bom: PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById
@@ -155,10 +155,10 @@ $$ LANGUAGE plpgsql;
 
 ## CTEs encadeadas
 
-Cada `WITH nome AS (...)` é uma etapa nomeada — semanticamente equivalente a uma variável. Cada CTE merece linha em branco antes da próxima.
+Cada `WITH nome AS (...)` é uma etapa nomeada, semanticamente equivalente a uma variável. Cada CTE merece linha em branco antes da próxima.
 
 <details>
-<summary>❌ Ruim — CTEs coladas, sem separação entre as etapas</summary>
+<summary>❌ Ruim: CTEs coladas, sem separação entre as etapas</summary>
 
 ```sql
 WITH TeamCTE AS
@@ -181,7 +181,7 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 </details>
 
 <details>
-<summary>✅ Bom — linha em branco entre CTEs, cada etapa legível</summary>
+<summary>✅ Bom: linha em branco entre CTEs, cada etapa legível</summary>
 
 ```sql
 WITH TeamCTE AS
@@ -224,7 +224,7 @@ JOIN
 Dois ou mais statements distintos (`INSERT`, `UPDATE`, `CREATE`, `ALTER`) na mesma sequência são fases independentes. Linha em branco entre eles deixa o fluxo legível.
 
 <details>
-<summary>❌ Ruim — statements colados, sem separação entre blocos distintos</summary>
+<summary>❌ Ruim: statements colados, sem separação entre blocos distintos</summary>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -248,7 +248,7 @@ JOIN
 </details>
 
 <details>
-<summary>✅ Bom — statements separados, fluxo legível</summary>
+<summary>✅ Bom: statements separados, fluxo legível</summary>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -277,7 +277,7 @@ JOIN
 Blocos `IF ... END IF`, `WHILE`, `BEGIN TRY/CATCH` ocupam peso visual próprio. Aplica-se a regra de **multi-linha pede respiro**: linha em branco antes e depois do bloco.
 
 <details>
-<summary>❌ Ruim — bloco WHILE colado ao statement anterior</summary>
+<summary>❌ Ruim: bloco WHILE colado ao statement anterior</summary>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -295,7 +295,7 @@ END;
 </details>
 
 <details>
-<summary>✅ Bom — bloco isolado por linhas em branco</summary>
+<summary>✅ Bom: bloco isolado por linhas em branco</summary>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -318,10 +318,10 @@ END;
 
 Não alinhe verticalmente `=`, tipos de coluna ou aliases com múltiplos espaços. Use sempre **um espaço único**. Alinhamento artificial quebra com qualquer renomeação, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
 
-É um padrão comum em SQL — remover quando encontrado.
+É um padrão comum em SQL: remover quando encontrado.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar tipos e atribuições</summary>
+<summary>❌ Ruim: espaços extras para alinhar tipos e atribuições</summary>
 
 ```sql
 CREATE TABLE Orders
@@ -348,7 +348,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem espaçamento extra</summary>
+<summary>✅ Bom: espaço único, sem espaçamento extra</summary>
 
 ```sql
 CREATE TABLE Orders
@@ -379,7 +379,7 @@ WHERE
 Quando aparecem 4+ statements homogêneos consecutivos (`ALTER TABLE`, `CREATE INDEX`, `INSERT`), uma série inteira sem respiro forma muralha. Dividir em pares devolve ritmo visual sem fragmentar o grupo.
 
 <details>
-<summary>❌ Ruim — muralha de quatro ALTERs sem respiro</summary>
+<summary>❌ Ruim: muralha de quatro ALTERs sem respiro</summary>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;
@@ -391,7 +391,7 @@ ALTER TABLE FootballTeams ADD Country NVARCHAR(100);
 </details>
 
 <details>
-<summary>✅ Bom — quebra em 2+2</summary>
+<summary>✅ Bom: quebra em 2+2</summary>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;

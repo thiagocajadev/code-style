@@ -26,7 +26,7 @@ Declarar o tipo separado e o schema separado cria duas fontes de verdade que pod
 divergência.
 
 <details>
-<summary>❌ Ruim — tipo declarado manualmente, pode divergir do schema</summary>
+<summary>❌ Ruim: tipo declarado manualmente, pode divergir do schema</summary>
 
 ```ts
 type CreateOrderInput = {
@@ -47,7 +47,7 @@ const createOrderSchema = z.object({
 </details>
 
 <details>
-<summary>✅ Bom — tipo inferido do schema, fonte única</summary>
+<summary>✅ Bom: tipo inferido do schema, fonte única</summary>
 
 ```ts
 const createOrderSchema = z.object({
@@ -66,12 +66,12 @@ type CreateOrderInput = z.infer<typeof createOrderSchema>;
 
 ## safeParse para fluxo Result
 
-`parse` lança exceção — adequado em handlers de entrada onde o erro é fatal. `safeParse`
-retorna `{ success, data, error }` — adequado quando a falha de validação é um caso esperado
+`parse` lança exceção: adequado em handlers de entrada onde o erro é fatal. `safeParse`
+retorna `{ success, data, error }`: adequado quando a falha de validação é um caso esperado
 no fluxo de negócio.
 
 <details>
-<summary>❌ Ruim — parse lança exceção tratada com try/catch para fluxo de negócio</summary>
+<summary>❌ Ruim: parse lança exceção tratada com try/catch para fluxo de negócio</summary>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -93,7 +93,7 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 </details>
 
 <details>
-<summary>✅ Bom — safeParse retorna Result, sem try/catch para validação</summary>
+<summary>✅ Bom: safeParse retorna Result, sem try/catch para validação</summary>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -114,7 +114,7 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 narrowing automático no switch sem type assertions.
 
 <details>
-<summary>❌ Ruim — z.union sem discriminante, narrowing manual com as</summary>
+<summary>❌ Ruim: z.union sem discriminante, narrowing manual com as</summary>
 
 ```ts
 const paymentSchema = z.union([
@@ -135,7 +135,7 @@ function processPayment(payment: Payment): void {
 </details>
 
 <details>
-<summary>✅ Bom — discriminatedUnion com narrowing automático</summary>
+<summary>✅ Bom: discriminatedUnion com narrowing automático</summary>
 
 ```ts
 const paymentSchema = z.discriminatedUnion("method", [
@@ -148,7 +148,7 @@ type Payment = z.infer<typeof paymentSchema>;
 function processPayment(payment: Payment): void {
   switch (payment.method) {
     case "card":
-      chargeCard(payment.cardToken); // narrowing automático — sem cast
+      chargeCard(payment.cardToken); // narrowing automático: sem cast
       break;
 
     case "pix":
@@ -166,7 +166,7 @@ O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object, Objeto de
 explícito documentam o contrato publicamente e impedem o vazamento acidental de campos.
 
 <details>
-<summary>❌ Ruim — retorna a entidade completa, sem contrato explícito</summary>
+<summary>❌ Ruim: retorna a entidade completa, sem contrato explícito</summary>
 
 ```ts
 async function findUserHandler(req: Request, res: Response): Promise<void> {
@@ -179,7 +179,7 @@ async function findUserHandler(req: Request, res: Response): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom — DTO tipado define o contrato da resposta</summary>
+<summary>✅ Bom: DTO tipado define o contrato da resposta</summary>
 
 ```ts
 type UserResponse = Pick<User, "id" | "name" | "email" | "createdAt">;

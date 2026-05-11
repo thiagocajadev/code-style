@@ -13,16 +13,16 @@ marcar regiões de código para profiling no Instruments.
 | Conceito | O que é |
 | --- | --- |
 | `os.Logger` | API de logging unificado da Apple; bufferizado, eficiente, coletável via Console.app |
-| `subsystem` | identificador do app ou framework — geralmente reverse-DNS: `com.acme.app` |
+| `subsystem` | identificador do app ou framework; geralmente reverse-DNS: `com.acme.app` |
 | `category` | subdivisão do subsystem: `"network"`, `"payment"`, `"ui"` |
 | `OSSignpostID` | marcador para regiões de código no Instruments |
 | **log level** (nível de severidade) | `debug`, `info`, `notice`, `warning`, `error`, `critical`, `fault` |
-| **privacy** (controle de privacidade no log) | `\(value, privacy: .public)` vs `.private` — dados sensíveis são redacted por padrão |
+| **privacy** (controle de privacidade no log) | `\(value, privacy: .public)` vs `.private`; dados sensíveis são redacted por padrão |
 
 ## `print()` em produção
 
 <details>
-<summary>❌ Ruim — print() não tem nível, subsystem nem controle de privacidade</summary>
+<summary>❌ Ruim: print() não tem nível, subsystem nem controle de privacidade</summary>
 
 ```swift
 func processPayment(userId: UUID, amount: Double) {
@@ -35,7 +35,7 @@ func processPayment(userId: UUID, amount: Double) {
 </details>
 
 <details>
-<summary>✅ Bom — os.Logger com categoria e nível correto</summary>
+<summary>✅ Bom: os.Logger com categoria e nível correto</summary>
 
 ```swift
 import OSLog
@@ -53,11 +53,11 @@ func processPayment(userId: UUID, amount: Double) {
 
 ## Privacidade de dados nos logs
 
-Por padrão, valores interpolados em os.Logger são redacted em builds de release — protegem dados
+Por padrão, valores interpolados em os.Logger são redacted em builds de release. Isso protege dados
 do usuário. Marque explicitamente o que pode ser público.
 
 <details>
-<summary>❌ Ruim — dados sensíveis em log público</summary>
+<summary>❌ Ruim: dados sensíveis em log público</summary>
 
 ```swift
 logger.debug("Charging card \(cardNumber)")   // número de cartão em plain text no log
@@ -66,7 +66,7 @@ logger.debug("Charging card \(cardNumber)")   // número de cartão em plain tex
 </details>
 
 <details>
-<summary>✅ Bom — privacidade explícita por campo</summary>
+<summary>✅ Bom: privacidade explícita por campo</summary>
 
 ```swift
 logger.info("Charging card ending in \(cardLast4, privacy: .public) for \(amount, privacy: .public)")
@@ -79,18 +79,18 @@ logger.debug("Full card id: \(cardId, privacy: .private)")   // redacted em rele
 
 | Nível | Quando usar |
 | --- | --- |
-| `debug` | rastreamento de execução — desabilitado em release por padrão |
-| `info` | eventos de fluxo normal — buffered, disponível no Console |
+| `debug` | rastreamento de execução; desabilitado em release por padrão |
+| `info` | eventos de fluxo normal; buffered, disponível no Console |
 | `notice` | comportamento significativo mas esperado |
 | `warning` | situação inesperada que não impede o fluxo |
 | `error` | falha que afeta o fluxo atual; persiste mesmo sem Console conectado |
 | `critical` | falha grave que afeta múltiplos subsistemas |
-| `fault` | bug no sistema — deve ser investigado |
+| `fault` | bug no sistema; deve ser investigado |
 
 ## Signposts para profiling
 
 <details>
-<summary>✅ Bom — signpost marca início e fim de operação crítica</summary>
+<summary>✅ Bom: signpost marca início e fim de operação crítica</summary>
 
 ```swift
 import OSLog

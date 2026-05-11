@@ -18,7 +18,7 @@ propósito específico.
 | **try / catch** (tentar / capturar) | Bloco de tratamento; só na fronteira, nunca para esconder erros |
 | **finally** (cláusula final) | Bloco que executa sempre, mesmo com exceção; usar para liberar recursos |
 | **exception chaining** (encadeamento de exceções) | `previous` parameter no construtor; preserva a causa original ao relançar |
-| **error suppression** (supressão de erro) | Operador `@`; nunca usar — esconde problemas e dificulta diagnóstico |
+| **error suppression** (supressão de erro) | Operador `@`; nunca usar: esconde problemas e dificulta diagnóstico |
 
 ## Exceção como string
 
@@ -26,7 +26,7 @@ Nunca lance strings ou `\Exception` diretamente. Crie uma hierarquia de exceçõ
 de domínio para que os callers possam tratar tipos específicos.
 
 <details>
-<summary>❌ Ruim — Exception genérica sem tipo</summary>
+<summary>❌ Ruim: Exception genérica sem tipo</summary>
 
 ```php
 function findOrder(int $orderID): Order
@@ -49,7 +49,7 @@ try {
 </details>
 
 <details>
-<summary>✅ Bom — hierarquia de exceções de domínio</summary>
+<summary>✅ Bom: hierarquia de exceções de domínio</summary>
 
 ```php
 // Exceção base do domínio
@@ -107,7 +107,7 @@ try {
 `try/catch` pertence às fronteiras do sistema. O domínio lança, a fronteira captura e traduz.
 
 <details>
-<summary>❌ Ruim — try/catch no meio do domínio</summary>
+<summary>❌ Ruim: try/catch no meio do domínio</summary>
 
 ```php
 class OrderService
@@ -133,7 +133,7 @@ class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — domínio lança, fronteira captura</summary>
+<summary>✅ Bom: domínio lança, fronteira captura</summary>
 
 ```php
 // Domínio: apenas lança
@@ -184,7 +184,7 @@ class OrderHandler
 Valide na fronteira antes de chegar ao domínio. O service não deve receber dados inválidos.
 
 <details>
-<summary>❌ Ruim — validação no service, tarde demais</summary>
+<summary>❌ Ruim: validação no service, tarde demais</summary>
 
 ```php
 class OrderService
@@ -206,7 +206,7 @@ class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — validação na fronteira, service recebe dados válidos</summary>
+<summary>✅ Bom: validação na fronteira, service recebe dados válidos</summary>
 
 ```php
 // Fronteira: valida e converte
@@ -245,7 +245,7 @@ class OrderService
 Use `finally` para liberar recursos independente de sucesso ou falha.
 
 <details>
-<summary>✅ Bom — finally garante cleanup em qualquer saída</summary>
+<summary>✅ Bom: finally garante cleanup em qualquer saída</summary>
 
 ```php
 public function processWithLock(int $orderID): Order

@@ -6,7 +6,7 @@ Convenções Kotlin aplicando os mesmos princípios do guia. Os exemplos usam Ko
 compiler) como referência; diferenças relevantes com versões anteriores são destacadas onde
 necessário.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

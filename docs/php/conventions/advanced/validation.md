@@ -4,7 +4,7 @@
 
 Validação acontece na fronteira: handler HTTP, consumer de fila, comando CLI.
 Use **Symfony Validator** com atributos PHP 8.x para validações declarativas.
-O service recebe objetos já validados e tipados — nunca arrays brutos sem validação.
+O service recebe objetos já validados e tipados, nunca arrays brutos sem validação.
 
 ## Conceitos fundamentais
 
@@ -21,7 +21,7 @@ O service recebe objetos já validados e tipados — nunca arrays brutos sem val
 ## Validação com atributos
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no service</summary>
+<summary>❌ Ruim: validação manual espalhada no service</summary>
 
 ```php
 public function createOrder(array $data): Order
@@ -42,7 +42,7 @@ public function createOrder(array $data): Order
 </details>
 
 <details>
-<summary>✅ Bom — atributos de validação no DTO + validação na fronteira</summary>
+<summary>✅ Bom: atributos de validação no DTO + validação na fronteira</summary>
 
 ```php
 use Symfony\Component\Validator\Constraints as Assert;
@@ -106,7 +106,7 @@ final class OrderHandler
 Converta `ConstraintViolationListInterface` em resposta com campo e mensagem.
 
 <details>
-<summary>✅ Bom — response estruturado de validação</summary>
+<summary>✅ Bom: response estruturado de validação</summary>
 
 ```php
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -134,7 +134,7 @@ private function buildErrorResponse(ConstraintViolationListInterface $violations
 Crie constraints customizados para regras de domínio reutilizáveis.
 
 <details>
-<summary>✅ Bom — constraint customizado para moeda suportada</summary>
+<summary>✅ Bom: constraint customizado para moeda suportada</summary>
 
 ```php
 use Symfony\Component\Validator\Constraint;
@@ -185,7 +185,7 @@ final readonly class PaymentInput
 Use `#[Assert\Valid]` para validar objetos nested automaticamente.
 
 <details>
-<summary>✅ Bom — Valid para validação cascata em objetos aninhados</summary>
+<summary>✅ Bom: Valid para validação cascata em objetos aninhados</summary>
 
 ```php
 final readonly class CreateOrderInput

@@ -23,7 +23,7 @@ Cada literal de string sem `frozen_string_literal: true` cria um novo objeto na 
 (memória dinâmica). Com a diretiva, strings idênticas compartilham o mesmo objeto.
 
 <details>
-<summary>❌ Ruim — string alocada a cada iteração</summary>
+<summary>❌ Ruim: string alocada a cada iteração</summary>
 
 ```ruby
 def build_greetings(users)
@@ -34,7 +34,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — frozen_string_literal + interpolação</summary>
+<summary>✅ Bom: frozen_string_literal + interpolação</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -52,7 +52,7 @@ Use `.lazy` quando a coleção é grande e você precisa apenas dos primeiros N 
 Evita processar o array inteiro.
 
 <details>
-<summary>❌ Ruim — processa toda a coleção mesmo precisando de poucos</summary>
+<summary>❌ Ruim: processa toda a coleção mesmo precisando de poucos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -68,7 +68,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — lazy avalia só até encontrar 10 elementos</summary>
+<summary>✅ Bom: lazy avalia só até encontrar 10 elementos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -92,7 +92,7 @@ Use `each_with_object` quando o acumulador é mutado a cada iteração. Use `inj
 quando constrói um novo valor (soma, produto, string concatenada).
 
 <details>
-<summary>❌ Ruim — inject com mutação do acumulador</summary>
+<summary>❌ Ruim: inject com mutação do acumulador</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -109,7 +109,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — each_with_object para acumulador mutável</summary>
+<summary>✅ Bom: each_with_object para acumulador mutável</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -130,7 +130,7 @@ end
 `filter_map` substitui `map` + `compact` (remoção de nils) em uma passagem.
 
 <details>
-<summary>❌ Ruim — dois passes na coleção</summary>
+<summary>❌ Ruim: dois passes na coleção</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -145,7 +145,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — filter_map em uma passagem</summary>
+<summary>✅ Bom: filter_map em uma passagem</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -164,7 +164,7 @@ Use `includes` para pré-carregar associações (eager loading, carregamento ant
 evitar N+1 queries (N+1 consultas ao banco).
 
 <details>
-<summary>❌ Ruim — N+1: 1 query por ordem para buscar o usuário</summary>
+<summary>❌ Ruim: N+1, 1 query por ordem para buscar o usuário</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -177,7 +177,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — includes pré-carrega em 2 queries</summary>
+<summary>✅ Bom: includes pré-carrega em 2 queries</summary>
 
 ```ruby
 # frozen_string_literal: true

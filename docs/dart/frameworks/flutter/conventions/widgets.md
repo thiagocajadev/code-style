@@ -13,13 +13,13 @@ de widgets pequenos e focados é preferível a widgets grandes com múltiplas re
 | `StatefulWidget` | widget com `State` mutável; `setState` dispara rebuild |
 | `build` | método chamado pelo framework para descrever a UI; deve ser puro e rápido |
 | **widget tree** (árvore de widgets) | hierarquia de widgets que descreve toda a UI |
-| **const constructor** (construtor const) | widget const é comparado por identidade — Flutter evita rebuild se o mesmo widget é retornado |
+| **const constructor** (construtor const) | widget const é comparado por identidade; Flutter evita rebuild se o mesmo widget é retornado |
 | **composition** (composição) | widgets pequenos combinados formam a interface; preferível a herança |
 
 ## Widget grande com múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — widget único com layout, lista e lógica de formatação</summary>
+<summary>❌ Ruim: widget único com layout, lista e lógica de formatação</summary>
 
 ```dart
 class OrderScreen extends StatelessWidget {
@@ -56,7 +56,7 @@ class OrderScreen extends StatelessWidget {
 </details>
 
 <details>
-<summary>✅ Bom — widget principal compõe widgets menores e focados</summary>
+<summary>✅ Bom: widget principal compõe widgets menores e focados</summary>
 
 ```dart
 class OrderScreen extends StatelessWidget {
@@ -121,7 +121,7 @@ class OrderListItem extends StatelessWidget {
 ## `const` em widgets
 
 <details>
-<summary>❌ Ruim — widgets sem const causam rebuild desnecessário</summary>
+<summary>❌ Ruim: widgets sem const causam rebuild desnecessário</summary>
 
 ```dart
 Widget build(BuildContext context) {
@@ -138,7 +138,7 @@ Widget build(BuildContext context) {
 </details>
 
 <details>
-<summary>✅ Bom — const reutiliza a mesma instância</summary>
+<summary>✅ Bom: const reutiliza a mesma instância</summary>
 
 ```dart
 Widget build(BuildContext context) {
@@ -160,7 +160,7 @@ Widget build(BuildContext context) {
 Estado de negócio pertence ao ViewModel ou Notifier.
 
 <details>
-<summary>❌ Ruim — lógica de negócio dentro do State</summary>
+<summary>❌ Ruim: lógica de negócio dentro do State</summary>
 
 ```dart
 class _OrderListState extends State<OrderList> {
@@ -183,7 +183,7 @@ class _OrderListState extends State<OrderList> {
 </details>
 
 <details>
-<summary>✅ Bom — State contém somente estado de UI; dados vêm do ViewModel</summary>
+<summary>✅ Bom: State contém somente estado de UI; dados vêm do ViewModel</summary>
 
 ```dart
 class OrderListScreen extends ConsumerWidget {
@@ -208,7 +208,7 @@ class OrderListScreen extends ConsumerWidget {
 ## Composição sobre herança
 
 <details>
-<summary>❌ Ruim — herança para reutilizar estilo de card</summary>
+<summary>❌ Ruim: herança para reutilizar estilo de card</summary>
 
 ```dart
 abstract class BaseCard extends StatelessWidget {
@@ -234,7 +234,7 @@ abstract class BaseCard extends StatelessWidget {
 </details>
 
 <details>
-<summary>✅ Bom — widget de container composto recebe filho via parâmetro</summary>
+<summary>✅ Bom: widget de container composto recebe filho via parâmetro</summary>
 
 ```dart
 class AppCard extends StatelessWidget {

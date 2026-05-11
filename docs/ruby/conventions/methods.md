@@ -17,12 +17,12 @@ apenas para saída antecipada (guard clause). Blocks, procs e lambdas são prime
 | **splat** (`*args`, `**kwargs`) | Coleta argumentos posicionais ou nomeados em array/hash dentro do método |
 | **keyword arguments** (argumentos nomeados) | Parâmetros declarados com `:`, passados pelo nome no call site |
 
-## SLA — uma responsabilidade, um nível
+## SLA: uma responsabilidade, um nível
 
 Cada método executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
 
 <details>
-<summary>❌ Ruim — método que faz tudo</summary>
+<summary>❌ Ruim: método que faz tudo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -44,7 +44,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador + métodos de detalhe</summary>
+<summary>✅ Bom: orquestrador + métodos de detalhe</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -87,10 +87,10 @@ end
 ## Sem lógica no retorno
 
 Extraia o resultado para uma variável nomeada antes de retornar. O retorno implícito (última
-expressão) é idiomático — mas sem lógica inline.
+expressão) é idiomático, mas sem lógica inline.
 
 <details>
-<summary>❌ Ruim — lógica na última linha</summary>
+<summary>❌ Ruim: lógica na última linha</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -103,7 +103,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — resultado nomeado, retorno implícito limpo</summary>
+<summary>✅ Bom: resultado nomeado, retorno implícito limpo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -117,13 +117,13 @@ end
 
 </details>
 
-## Stepdown — orquestrador acima dos detalhes
+## Stepdown: orquestrador acima dos detalhes
 
 Declare o método orquestrador antes dos métodos auxiliares. O leitor entende o fluxo
 principal antes de descer para os detalhes.
 
 <details>
-<summary>❌ Ruim — auxiliares antes do orquestrador</summary>
+<summary>❌ Ruim: auxiliares antes do orquestrador</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -151,7 +151,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador no topo, detalhes abaixo</summary>
+<summary>✅ Bom: orquestrador no topo, detalhes abaixo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -176,13 +176,13 @@ end
 
 </details>
 
-## Assinatura — keyword arguments
+## Assinatura: keyword arguments
 
 Use keyword arguments (argumentos nomeados) quando o método recebe 3 ou mais parâmetros.
 Destructuring no corpo, não na assinatura.
 
 <details>
-<summary>❌ Ruim — argumentos posicionais em excesso</summary>
+<summary>❌ Ruim: argumentos posicionais em excesso</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -197,7 +197,7 @@ create_order(1, 42, 3, "SAVE10", "Rua das Flores, 100")
 </details>
 
 <details>
-<summary>✅ Bom — keyword arguments; chamada auto-documentada</summary>
+<summary>✅ Bom: keyword arguments; chamada auto-documentada</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -223,7 +223,7 @@ create_order(
 estilos em contextos equivalentes.
 
 <details>
-<summary>❌ Ruim — estilos misturados</summary>
+<summary>❌ Ruim: estilos misturados</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -239,7 +239,7 @@ total = items.map do |item| item.price end
 </details>
 
 <details>
-<summary>✅ Bom — {} para 1 linha, do...end para múltiplas</summary>
+<summary>✅ Bom: {} para 1 linha, do...end para múltiplas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -260,7 +260,7 @@ Use **lambda** para comportamento de função (valida aridade, `return` local). 
 (procedimento) com `&` para passar um bloco como argumento.
 
 <details>
-<summary>❌ Ruim — Proc onde lambda é necessário (return vaza)</summary>
+<summary>❌ Ruim: Proc onde lambda é necessário (return vaza)</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -276,7 +276,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — lambda para transformação com retorno local</summary>
+<summary>✅ Bom: lambda para transformação com retorno local</summary>
 
 ```ruby
 # frozen_string_literal: true

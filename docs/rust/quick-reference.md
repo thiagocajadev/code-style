@@ -1,4 +1,4 @@
-# Quick Reference — Rust
+# Quick Reference: Rust
 
 > Escopo: Rust 1.95 (2024 Edition). Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.
 
@@ -33,7 +33,7 @@
 | Validar            | `validate`, `check`, `assert`, `verify`    | `handle`, `test`    |
 | Notificar          | `send`, `dispatch`, `notify`, `emit`       | `fire`, `trigger`   |
 
-## Taboos — evitar sempre
+## Taboos: evitar sempre
 
 | Banido                                              | Substituir por                           |
 | --------------------------------------------------- | ---------------------------------------- |
@@ -90,9 +90,9 @@
 
 | Trait                 | Uso                                                       |
 | --------------------- | --------------------------------------------------------- |
-| `Debug`               | `#[derive(Debug)]` — formatação para debugging           |
-| `Clone`               | `#[derive(Clone)]` — cópia explícita de valores          |
+| `Debug`               | `#[derive(Debug)]`: formatação para debugging            |
+| `Clone`               | `#[derive(Clone)]`: cópia explícita de valores           |
 | `Display`             | Formatação legível para usuário final                    |
 | `From` / `Into`       | Conversão idiomática entre tipos                         |
-| `Default`             | `#[derive(Default)]` — valor padrão do tipo             |
+| `Default`             | `#[derive(Default)]`: valor padrão do tipo              |
 | `Serialize` / `Deserialize` | `#[derive(Serialize, Deserialize)]` via Serde    |

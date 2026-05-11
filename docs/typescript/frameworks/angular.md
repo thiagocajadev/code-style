@@ -62,7 +62,7 @@ src/app/
 Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada componente declara as dependências que usa diretamente em `imports`.
 
 <details>
-<summary>❌ Ruim — componente declarado em NgModule</summary>
+<summary>❌ Ruim: componente declarado em NgModule</summary>
 
 ```ts
 @NgModule({
@@ -84,7 +84,7 @@ export class UserCardComponent {
 </details>
 
 <details>
-<summary>✅ Bom — standalone com imports e @Input({ required: true })</summary>
+<summary>✅ Bom: standalone com imports e @Input({ required: true })</summary>
 
 ```ts
 import { Component, input } from "@angular/core";
@@ -116,7 +116,7 @@ Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de co
 Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
 
 <details>
-<summary>❌ Ruim — BehaviorSubject para estado local simples</summary>
+<summary>❌ Ruim: BehaviorSubject para estado local simples</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -139,7 +139,7 @@ export class CartComponent implements OnInit, OnDestroy {
 </details>
 
 <details>
-<summary>✅ Bom — signal e computed para estado local</summary>
+<summary>✅ Bom: signal e computed para estado local</summary>
 
 ```ts
 import { Component, signal, computed } from "@angular/core";
@@ -180,7 +180,7 @@ O pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) s
 Fluxo: `Smart → @Input() → Dumb → @Output() → Smart`
 
 <details>
-<summary>❌ Ruim — componente de lista com lógica de negócio misturada</summary>
+<summary>❌ Ruim: componente de lista com lógica de negócio misturada</summary>
 
 ```ts
 @Component({
@@ -210,7 +210,7 @@ export class OrderListComponent implements OnInit {
 </details>
 
 <details>
-<summary>✅ Bom — Smart orquestra com signals; Dumb apresenta</summary>
+<summary>✅ Bom: Smart orquestra com signals; Dumb apresenta</summary>
 
 ```ts
 // Smart Component
@@ -255,7 +255,7 @@ export class OrdersPageComponent {
     <ul>
       @for (order of orders(); track order.id) {
         <li>
-          {{ order.id }} — {{ order.total | currency }}
+          {{ order.id }}: {{ order.total | currency }}
           <button (click)="cancel.emit(order.id)">Cancelar</button>
         </li>
       }
@@ -278,7 +278,7 @@ Services encapsulam lógica de negócio e acesso a dados. Usam `inject()` em vez
 `providedIn: "root"` cria um singleton na aplicação. Use como padrão; escopos menores apenas quando houver razão explícita.
 
 <details>
-<summary>❌ Ruim — injeção via construtor, return type implícito</summary>
+<summary>❌ Ruim: injeção via construtor, return type implícito</summary>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -294,7 +294,7 @@ export class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — inject(), return type explícito, tipos genéricos no HttpClient</summary>
+<summary>✅ Bom: inject(), return type explícito, tipos genéricos no HttpClient</summary>
 
 ```ts
 import { Injectable, inject } from "@angular/core";
@@ -332,7 +332,7 @@ Guards de autorização ficam na definição da rota: executam antes de qualquer
 Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado; roda uma vez para o grupo, não individualmente em cada rota filha.
 
 <details>
-<summary>❌ Ruim — guard no ngOnInit do componente</summary>
+<summary>❌ Ruim: guard no ngOnInit do componente</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -351,7 +351,7 @@ export class DashboardComponent implements OnInit {
 </details>
 
 <details>
-<summary>✅ Bom — CanActivateFn na definição da rota</summary>
+<summary>✅ Bom: CanActivateFn na definição da rota</summary>
 
 ```ts
 // guards/auth.guard.ts
@@ -415,7 +415,7 @@ export const routes: Routes = [
 O **Resolver** cobre o papel do **Loader** definido em [frontend-flow.md](../../shared/architecture/frontend-flow.md): busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos via `ActivatedRoute`, sem estado de loading interno.
 
 <details>
-<summary>❌ Ruim — busca no ngOnInit, componente monta sem dados</summary>
+<summary>❌ Ruim: busca no ngOnInit, componente monta sem dados</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -437,7 +437,7 @@ export class OrderDetailComponent implements OnInit {
 </details>
 
 <details>
-<summary>✅ Bom — ResolveFn na rota, componente recebe dados prontos via signal</summary>
+<summary>✅ Bom: ResolveFn na rota, componente recebe dados prontos via signal</summary>
 
 ```ts
 // resolvers/order-detail.resolver.ts
@@ -499,7 +499,7 @@ Angular tem `FormGroup` e `FormControl` com tipagem genérica. Use `FormBuilder`
 O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Angular valida a experiência do usuário no formulário; os dois executam sempre, conforme o padrão de [frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
 <details>
-<summary>❌ Ruim — FormGroup não-tipado, acesso por string</summary>
+<summary>❌ Ruim: FormGroup não-tipado, acesso por string</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -519,7 +519,7 @@ export class LoginFormComponent {
 </details>
 
 <details>
-<summary>✅ Bom — FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
+<summary>✅ Bom: FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
 
 ```ts
 import { Component, inject, signal } from "@angular/core";
@@ -592,7 +592,7 @@ export class LoginFormComponent {
 Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient → API`
 
 <details>
-<summary>❌ Ruim — token injetado manualmente em cada service</summary>
+<summary>❌ Ruim: token injetado manualmente em cada service</summary>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -613,7 +613,7 @@ export class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — auth interceptor centraliza o token em todas as requisições</summary>
+<summary>✅ Bom: auth interceptor centraliza o token em todas as requisições</summary>
 
 ```ts
 // interceptors/auth.interceptor.ts
@@ -655,7 +655,7 @@ export const appConfig: ApplicationConfig = {
 </details>
 
 <details>
-<summary>✅ Bom — error interceptor trata 401 e 500 globalmente</summary>
+<summary>✅ Bom: error interceptor trata 401 e 500 globalmente</summary>
 
 ```ts
 // interceptors/error.interceptor.ts

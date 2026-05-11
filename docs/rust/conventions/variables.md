@@ -19,7 +19,7 @@ quando o valor precisa mudar. O compilador avisa sobre `mut` desnecessário.
 ## let vs let mut
 
 <details>
-<summary>❌ Ruim — mut desnecessário</summary>
+<summary>❌ Ruim: mut desnecessário</summary>
 
 ```rust
 let mut user_id = 42_u64;      // nunca muda
@@ -32,7 +32,7 @@ println!("{}", status);        // status nunca alterado após a declaração
 </details>
 
 <details>
-<summary>✅ Bom — mut apenas onde necessário</summary>
+<summary>✅ Bom: mut apenas onde necessário</summary>
 
 ```rust
 let user_id = 42_u64;
@@ -53,7 +53,7 @@ Evite literais mágicos inline. `const` é avaliada em tempo de compilação e p
 usada em qualquer escopo, incluindo dentro de funções.
 
 <details>
-<summary>❌ Ruim — valores mágicos sem nome</summary>
+<summary>❌ Ruim: valores mágicos sem nome</summary>
 
 ```rust
 fn is_order_eligible(total: f64) -> bool {
@@ -68,7 +68,7 @@ fn retry_request(attempt: u32) -> bool {
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas com intenção</summary>
+<summary>✅ Bom: constantes nomeadas com intenção</summary>
 
 ```rust
 const MINIMUM_ORDER_VALUE: f64 = 50.0;
@@ -91,7 +91,7 @@ Shadowing substitui uma ligação no mesmo escopo ou em um escopo interno.
 É idiomático para transformações progressivas do mesmo dado.
 
 <details>
-<summary>❌ Ruim — variáveis intermediárias desnecessárias</summary>
+<summary>❌ Ruim: variáveis intermediárias desnecessárias</summary>
 
 ```rust
 let raw_input = read_input();
@@ -103,7 +103,7 @@ let order_from_input = build_order(validated_input);
 </details>
 
 <details>
-<summary>✅ Bom — shadowing para transformações progressivas</summary>
+<summary>✅ Bom: shadowing para transformações progressivas</summary>
 
 ```rust
 let order = read_input()?;
@@ -121,7 +121,7 @@ O compilador infere tipos na maioria dos casos. Anote explicitamente quando a in
 não fica óbvia ou quando o tipo comunica intenção.
 
 <details>
-<summary>❌ Ruim — anotação redundante onde a inferência é clara</summary>
+<summary>❌ Ruim: anotação redundante onde a inferência é clara</summary>
 
 ```rust
 let user_id: u64 = 42_u64;
@@ -132,7 +132,7 @@ let items: Vec<Item> = vec![item_a, item_b];
 </details>
 
 <details>
-<summary>✅ Bom — anote quando agrega informação</summary>
+<summary>✅ Bom: anote quando agrega informação</summary>
 
 ```rust
 let user_id = 42_u64; // sufixo já diz o tipo
@@ -150,7 +150,7 @@ Declare variáveis no escopo mais estreito possível. Evite declarar no topo da 
 variáveis que só serão usadas no final.
 
 <details>
-<summary>❌ Ruim — variáveis declaradas longe do uso</summary>
+<summary>❌ Ruim: variáveis declaradas longe do uso</summary>
 
 ```rust
 fn process_order(order: &Order) -> anyhow::Result<Receipt> {
@@ -171,7 +171,7 @@ fn process_order(order: &Order) -> anyhow::Result<Receipt> {
 </details>
 
 <details>
-<summary>✅ Bom — declaração próxima ao uso</summary>
+<summary>✅ Bom: declaração próxima ao uso</summary>
 
 ```rust
 fn process_order(order: &Order) -> anyhow::Result<Receipt> {

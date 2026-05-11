@@ -21,7 +21,7 @@ Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (us
 Trazer todas as colunas transfere dados desnecessários, impede covering indexes e acopla a query ao schema.
 
 <details>
-<summary>❌ Ruim — todas as colunas, inclusive as não usadas</summary>
+<summary>❌ Ruim: todas as colunas, inclusive as não usadas</summary>
 
 ```sql
 SELECT
@@ -35,7 +35,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — somente as colunas necessárias</summary>
+<summary>✅ Bom: somente as colunas necessárias</summary>
 
 ```sql
 SELECT
@@ -58,7 +58,7 @@ ORDER BY
 Aplicar função sobre a coluna filtrada impede o uso do índice: o banco precisa avaliar cada linha.
 
 <details>
-<summary>❌ Ruim — função no WHERE, índice ignorado</summary>
+<summary>❌ Ruim: função no WHERE, índice ignorado</summary>
 
 ```sql
 SELECT
@@ -73,7 +73,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — intervalo direto na coluna, índice aproveitado</summary>
+<summary>✅ Bom: intervalo direto na coluna, índice aproveitado</summary>
 
 ```sql
 SELECT
@@ -100,7 +100,7 @@ em silêncio, sem aviso, sem erro, com full scan.
 ### CAST explícito na coluna de filtro
 
 <details>
-<summary>❌ Ruim — CAST na coluna: índice em SquadNumber ignorado</summary>
+<summary>❌ Ruim: CAST na coluna: índice em SquadNumber ignorado</summary>
 
 ```sql
 -- SquadNumber é INT; comparação como texto força conversão de cada linha
@@ -118,7 +118,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — parâmetro com o tipo correto, coluna intocada</summary>
+<summary>✅ Bom: parâmetro com o tipo correto, coluna intocada</summary>
 
 ```sql
 -- @SquadNumber declarado como INT na aplicação; zero conversão no banco
@@ -143,7 +143,7 @@ ORDER BY
 nenhum erro aparece, e o índice é ignorado em silêncio.
 
 <details>
-<summary>❌ Ruim — literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
+<summary>❌ Ruim: literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
 
 ```sql
 -- Players.Name é NVARCHAR; literal sem prefixo N é VARCHAR
@@ -161,7 +161,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
+<summary>✅ Bom: prefixo N alinha o tipo do literal com a coluna NVARCHAR</summary>
 
 ```sql
 SELECT
@@ -182,7 +182,7 @@ Type mismatch entre colunas de JOIN força conversão em cada linha de uma das t
 a coluna não indexada preserva o índice da principal.
 
 <details>
-<summary>❌ Ruim — CAST na coluna indexada da tabela principal</summary>
+<summary>❌ Ruim: CAST na coluna indexada da tabela principal</summary>
 
 ```sql
 -- FootballTeams.Id é INT; ExternalTeams.TeamReference é NVARCHAR
@@ -199,10 +199,10 @@ JOIN
 </details>
 
 <details>
-<summary>✅ Bom — CAST na coluna não indexada; preferível: corrigir o schema</summary>
+<summary>✅ Bom: CAST na coluna não indexada; preferível: corrigir o schema</summary>
 
 ```sql
--- opção 1: converter o lado não indexado — índice em FootballTeams.Id preservado
+-- opção 1: converter o lado não indexado, índice em FootballTeams.Id preservado
 SELECT
   FootballTeams.Name,
   ExternalTeams.LeagueName
@@ -224,7 +224,7 @@ A correção é normalizar o tipo no schema: `DATE` ou `DATETIME2` na definiçã
 converter na aplicação antes do `INSERT`.
 
 <details>
-<summary>❌ Ruim — data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
+<summary>❌ Ruim: data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
 
 ```sql
 -- JoinedAt definido como VARCHAR(10): '2024-01-15', '15/01/2024', '2024/01/15'
@@ -241,7 +241,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — JoinedAt como DATE: filtro direto, índice aproveitado</summary>
+<summary>✅ Bom: JoinedAt como DATE: filtro direto, índice aproveitado</summary>
 
 ```sql
 -- schema correto: JoinedAt DATE NOT NULL
@@ -265,7 +265,7 @@ ORDER BY
 Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
 
 <details>
-<summary>❌ Ruim — subquery executa N vezes, uma por time</summary>
+<summary>❌ Ruim: subquery executa N vezes, uma por time</summary>
 
 ```sql
 SELECT
@@ -286,7 +286,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — CTE agrega uma vez, JOIN cruza o resultado</summary>
+<summary>✅ Bom: CTE agrega uma vez, JOIN cruza o resultado</summary>
 
 ```sql
 WITH ActivePlayerCountCTE AS
@@ -322,7 +322,7 @@ ORDER BY
 Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
 
 <details>
-<summary>❌ Ruim — full scan em tabela grande sem índice na coluna filtrada</summary>
+<summary>❌ Ruim: full scan em tabela grande sem índice na coluna filtrada</summary>
 
 ```sql
 -- sem índice em TeamId: o banco lê todos os registros da tabela
@@ -340,7 +340,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — índice na coluna principal do filtro</summary>
+<summary>✅ Bom: índice na coluna principal do filtro</summary>
 
 ```sql
 CREATE INDEX IX_Players_TeamId
@@ -354,7 +354,7 @@ CREATE INDEX IX_Players_TeamId
 A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
 
 <details>
-<summary>❌ Ruim — coluna de baixa seletividade isolada</summary>
+<summary>❌ Ruim: coluna de baixa seletividade isolada</summary>
 
 ```sql
 -- IsActive tem apenas dois valores (0 / 1): índice ineficiente sozinho
@@ -365,7 +365,7 @@ CREATE INDEX IX_Players_IsActive
 </details>
 
 <details>
-<summary>✅ Bom — alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
+<summary>✅ Bom: alta seletividade primeiro, baixa seletividade filtra dentro do grupo</summary>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -379,7 +379,7 @@ CREATE INDEX IX_Players_TeamId_IsActive
 Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha, mesmo com índice.
 
 <details>
-<summary>❌ Ruim — índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
+<summary>❌ Ruim: índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive
@@ -400,7 +400,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
+<summary>✅ Bom: INCLUDE cobre todas as colunas do SELECT, zero key lookup</summary>
 
 ```sql
 CREATE INDEX IX_Players_TeamId_IsActive_Cover
@@ -415,7 +415,7 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 Foreign key sem índice na coluna referenciadora força full table scan a cada `DELETE` ou `UPDATE` na tabela pai. O banco precisa verificar se existem filhos antes de executar a operação.
 
 <details>
-<summary>❌ Ruim — FK declarada, coluna sem índice</summary>
+<summary>❌ Ruim: FK declarada, coluna sem índice</summary>
 
 ```sql
 CREATE TABLE Players
@@ -434,7 +434,7 @@ CREATE TABLE Players
 </details>
 
 <details>
-<summary>✅ Bom — índice na coluna FK, lookup eficiente</summary>
+<summary>✅ Bom: índice na coluna FK, lookup eficiente</summary>
 
 ```sql
 CREATE TABLE Players
@@ -454,7 +454,7 @@ CREATE INDEX IX_Players_TeamId
 </details>
 
 > [!NOTE]
-> Alguns sistemas de alta escala — como o GitHub — optam por **não usar FK no banco**, transferindo a responsabilidade de integridade referencial para a aplicação. O trade-off é consciente: FK tem custo em toda operação de escrita (INSERT, UPDATE, DELETE precisa validar a referência), e em volumes muito grandes esse overhead se torna relevante. O ganho é performance de escrita e flexibilidade de deploy; a contrapartida é que o banco não garante a integridade — qualquer falha na camada de aplicação pode gerar dados órfãos. Para a maioria dos sistemas, FK com índice é a escolha certa. A remoção é uma decisão arquitetural, não uma otimização prematura.
+> Alguns sistemas de alta escala (o GitHub é um exemplo público) optam por **não usar FK no banco** e transferem a integridade referencial para a aplicação. O trade-off é consciente: FK tem custo em toda operação de escrita, porque INSERT, UPDATE e DELETE precisam validar a referência, e em volumes muito grandes esse overhead se torna relevante. O ganho é performance de escrita e flexibilidade de deploy. A contrapartida é que o banco deixa de garantir a integridade: qualquer falha na camada de aplicação pode gerar dados órfãos. Para a maioria dos sistemas, FK com índice é a escolha certa. A remoção é uma decisão arquitetural, não uma otimização prematura.
 
 ## Tipo de ID: BIGINT vs UUID
 
@@ -472,7 +472,7 @@ UUID v7 combina timestamp de alta resolução com aleatoriedade e insere sempre 
 B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
 
 <details>
-<summary>❌ Ruim — NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
+<summary>❌ Ruim: NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
 
 ```sql
 CREATE TABLE Orders
@@ -488,7 +488,7 @@ CREATE TABLE Orders
 </details>
 
 <details>
-<summary>✅ Bom — BIGINT quando unicidade global não é requisito</summary>
+<summary>✅ Bom: BIGINT quando unicidade global não é requisito</summary>
 
 ```sql
 CREATE TABLE Orders
@@ -504,13 +504,13 @@ CREATE TABLE Orders
 </details>
 
 <details>
-<summary>✅ Bom — UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
+<summary>✅ Bom: UUID v7 gerado na aplicação: unicidade global + sequencial</summary>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
--- Guid.CreateVersion7() — .NET 9+
--- uuidv7() — npm uuid
--- pg_uuidv7 — extensão PostgreSQL
+-- Guid.CreateVersion7(): .NET 9+
+-- uuidv7(): npm uuid
+-- pg_uuidv7: extensão PostgreSQL
 CREATE TABLE Orders
 (
   Id UNIQUEIDENTIFIER NOT NULL, -- sem DEFAULT: valor vem da aplicação
@@ -531,7 +531,7 @@ CREATE TABLE Orders
 Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
 
 <details>
-<summary>❌ Ruim — traz tudo e descarta em memória</summary>
+<summary>❌ Ruim: traz tudo e descarta em memória</summary>
 
 ```sql
 SELECT
@@ -550,7 +550,7 @@ ORDER BY
 </details>
 
 <details>
-<summary>✅ Bom — OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
+<summary>✅ Bom: OFFSET / FETCH (SQL Server e PostgreSQL)</summary>
 
 ```sql
 -- SQL Server

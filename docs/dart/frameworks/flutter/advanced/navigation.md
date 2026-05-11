@@ -17,13 +17,13 @@ routes (tabs com estado persistente).
 | `ShellRoute` | rota container que persiste UI (ex: bottom tab bar) entre navegações |
 | `context.go` | navega para rota e substitui o histórico |
 | `context.push` | empilha rota no histórico (back button retorna) |
-| `redirect` | função executada antes de cada navegação — guarda de autenticação |
+| `redirect` | função executada antes de cada navegação; guarda de autenticação |
 | **deep link** (link profundo) | URL externa que abre diretamente uma tela específica do app |
 
 ## Rota imperativa
 
 <details>
-<summary>❌ Ruim — Navigator.push imperativo sem URL</summary>
+<summary>❌ Ruim: Navigator.push imperativo sem URL</summary>
 
 ```dart
 ElevatedButton(
@@ -40,7 +40,7 @@ ElevatedButton(
 </details>
 
 <details>
-<summary>✅ Bom — GoRouter declarativo com URL tipada</summary>
+<summary>✅ Bom: GoRouter declarativo com URL tipada</summary>
 
 ```dart
 // router.dart
@@ -74,7 +74,7 @@ ElevatedButton(
 ## Guarda de autenticação com redirect
 
 <details>
-<summary>❌ Ruim — verificação de auth dentro de cada tela</summary>
+<summary>❌ Ruim: verificação de auth dentro de cada tela</summary>
 
 ```dart
 class OrderListScreen extends StatelessWidget {
@@ -94,7 +94,7 @@ class OrderListScreen extends StatelessWidget {
 </details>
 
 <details>
-<summary>✅ Bom — redirect centralizado no GoRouter</summary>
+<summary>✅ Bom: redirect centralizado no GoRouter</summary>
 
 ```dart
 final router = GoRouter(
@@ -116,7 +116,7 @@ final router = GoRouter(
 ## ShellRoute para bottom tab bar
 
 <details>
-<summary>❌ Ruim — IndexedStack sem URLs — deep links impossíveis</summary>
+<summary>❌ Ruim: IndexedStack sem URLs (deep links impossíveis)</summary>
 
 ```dart
 class MainScreen extends StatefulWidget { ... }
@@ -143,7 +143,7 @@ class _MainScreenState extends State<MainScreen> {
 </details>
 
 <details>
-<summary>✅ Bom — ShellRoute com tab bar e URLs independentes</summary>
+<summary>✅ Bom: ShellRoute com tab bar e URLs independentes</summary>
 
 ```dart
 final router = GoRouter(

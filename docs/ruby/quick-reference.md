@@ -1,4 +1,4 @@
-# Quick Reference — Ruby
+# Quick Reference: Ruby
 
 > Escopo: Ruby 4.0. Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.
 
@@ -35,7 +35,7 @@
 | Validar            | `validate`, `check`, `assert`, `verify`    | `handle`, `test`    |
 | Notificar          | `send`, `dispatch`, `notify`, `emit`       | `fire`, `trigger`   |
 
-## Taboos — evitar sempre
+## Taboos: evitar sempre
 
 | Banido                                              | Substituir por                           |
 | --------------------------------------------------- | ---------------------------------------- |

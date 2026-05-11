@@ -2,8 +2,8 @@
 
 > Escopo: Kotlin 2.2.
 
-Erros esperados são valores — `Result<T>` ou sealed classes retornam o erro ao chamador sem lançar
-exceções. Exceções são reservadas para falhas de programação (invariantes quebradas) e erros
+Erros esperados são valores. `Result<T>` ou sealed classes retornam o erro ao chamador sem lançar
+exceções. Exceções ficam reservadas para falhas de programação (invariantes quebradas) e erros
 irrecuperáveis de infraestrutura.
 
 ## Conceitos fundamentais
@@ -20,7 +20,7 @@ irrecuperáveis de infraestrutura.
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Ruim — exceção para erro esperado de negócio</summary>
+<summary>❌ Ruim: exceção para erro esperado de negócio</summary>
 
 ```kotlin
 fun findOrder(id: Long): Order {
@@ -28,7 +28,7 @@ fun findOrder(id: Long): Order {
         ?: throw OrderNotFoundException("Order $id not found")
 }
 
-// chamador precisa capturar — acoplamento implícito
+// chamador precisa capturar: acoplamento implícito
 fun processRequest(orderId: Long): Response {
     return try {
         val order = findOrder(orderId)
@@ -42,7 +42,7 @@ fun processRequest(orderId: Long): Response {
 </details>
 
 <details>
-<summary>✅ Bom — Result comunica explicitamente a ausência</summary>
+<summary>✅ Bom: Result comunica explicitamente a ausência</summary>
 
 ```kotlin
 fun findOrder(id: Long): Result<Order> {
@@ -67,7 +67,7 @@ fun processRequest(orderId: Long): Response {
 ## Erro silencioso
 
 <details>
-<summary>❌ Ruim — exceção engolida sem rastro</summary>
+<summary>❌ Ruim: exceção engolida sem rastro</summary>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -82,7 +82,7 @@ fun sendNotification(userId: Long) {
 </details>
 
 <details>
-<summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
+<summary>✅ Bom: log estruturado + decisão explícita de continuar</summary>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -98,7 +98,7 @@ fun sendNotification(userId: Long) {
 ## Sealed class de erros de domínio
 
 <details>
-<summary>❌ Ruim — string como discriminante de erro</summary>
+<summary>❌ Ruim: string como discriminante de erro</summary>
 
 ```kotlin
 data class ServiceError(val code: String, val message: String)
@@ -113,7 +113,7 @@ fun validateOrder(order: Order): ServiceError? {
 </details>
 
 <details>
-<summary>✅ Bom — sealed class com when exaustivo</summary>
+<summary>✅ Bom: sealed class com when exaustivo</summary>
 
 ```kotlin
 sealed class OrderValidationError {
@@ -149,7 +149,7 @@ fun handleValidationError(error: OrderValidationError): String {
 ## `require` e `check` para invariantes
 
 <details>
-<summary>❌ Ruim — if manual com mensagem genérica</summary>
+<summary>❌ Ruim: if manual com mensagem genérica</summary>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -163,7 +163,7 @@ fun applyDiscount(price: Double, rate: Double): Double {
 </details>
 
 <details>
-<summary>✅ Bom — require com mensagem expressiva</summary>
+<summary>✅ Bom: require com mensagem expressiva</summary>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -177,10 +177,10 @@ fun applyDiscount(price: Double, rate: Double): Double {
 
 </details>
 
-## Fronteira de erro — mapear na borda da API
+## Fronteira de erro: mapear na borda da API
 
 <details>
-<summary>❌ Ruim — sealed class de domínio exposta diretamente na resposta HTTP</summary>
+<summary>❌ Ruim: sealed class de domínio exposta diretamente na resposta HTTP</summary>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
@@ -196,7 +196,7 @@ fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
 </details>
 
 <details>
-<summary>✅ Bom — tradução explícita do erro de domínio para HTTP</summary>
+<summary>✅ Bom: tradução explícita do erro de domínio para HTTP</summary>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {

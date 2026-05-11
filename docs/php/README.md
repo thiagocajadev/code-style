@@ -6,7 +6,7 @@ Convenções PHP aplicando os mesmos princípios do guia. Os exemplos usam PHP 8
 diferenças relevantes com versões anteriores são destacadas onde necessário. PHP 8.4 tem suporte
 ativo até novembro de 2027.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 
@@ -52,7 +52,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [PSR-12 nativo](conventions/naming.md#convenções-de-case)                                     | PascalCase para classes; camelCase para métodos e variáveis          |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                    | Variáveis e funções que dispensam explicação                         |
 | [Orquestrador no topo](conventions/functions.md#god-function--múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/functions.md#sla--orquestrador-ou-implementação)                            | Uma responsabilidade, um nível de abstração                          |
+| [SLA](conventions/functions.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>
@@ -76,4 +76,4 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [Exceções tipadas](conventions/advanced/error-handling.md#exceção-como-string)                | Subclasses de `\RuntimeException`, identificáveis e tratáveis|
 | [Falhar rápido](conventions/advanced/error-handling.md#validação-tardia)                       | Validar cedo, interromper fluxo inválido                     |
 | [Fronteira de erro](conventions/advanced/error-handling.md#trycatch-espalhado)                 | try/catch nas fronteiras, propagar com contexto              |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa)                   | AAA: fases explícitas; data providers para múltiplos casos   |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                    | AAA: fases explícitas; data providers para múltiplos casos   |

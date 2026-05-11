@@ -2,7 +2,7 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C# — com uma diferença crítica: VB.NET tem **Async Sub**, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos. **Async Function** retorna `Task`, é aguardável e propaga exceções.
+Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C#, com uma diferença crítica: VB.NET tem **Async Sub**, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos. **Async Function** retorna `Task`, é aguardável e propaga exceções.
 
 ## Conceitos fundamentais
 
@@ -19,10 +19,10 @@ Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmo
 
 ## Async Function vs Async Sub
 
-`Async Sub` não é aguardável. Exceções lançadas dentro de `Async Sub` não podem ser capturadas pelo caller — vão direto para o thread pool e travam a aplicação. Use `Async Sub` **apenas** para event handlers do Windows Forms ou WebForms, onde o assinante não pode retornar `Task`.
+`Async Sub` não é aguardável. Exceções lançadas dentro de `Async Sub` não podem ser capturadas pelo caller: vão direto para o thread pool e travam a aplicação. Use `Async Sub` **apenas** para event handlers do Windows Forms ou WebForms, onde o assinante não pode retornar `Task`.
 
 <details>
-<summary>❌ Ruim — Async Sub fora de event handler</summary>
+<summary>❌ Ruim: Async Sub fora de event handler</summary>
 
 ```vbnet
 ' caller não pode aguardar, exceções são indetectáveis
@@ -38,7 +38,7 @@ SavePurchaseAsync(purchase)  ' não há como saber se concluiu ou falhou
 </details>
 
 <details>
-<summary>✅ Bom — Async Function: aguardável, exceções propagam corretamente</summary>
+<summary>✅ Bom: Async Function: aguardável, exceções propagam corretamente</summary>
 
 ```vbnet
 Public Async Function SavePurchaseAsync(purchase As Purchase) As Task
@@ -64,11 +64,11 @@ End Sub
 `.Result` e `.Wait()` bloqueiam a thread atual até a Task completar. Em contextos com SynchronizationContext (ASP.NET, Windows Forms), causam deadlock: a Task espera a thread, a thread espera a Task.
 
 <details>
-<summary>❌ Ruim — .Result e .Wait() bloqueiam e causam deadlock</summary>
+<summary>❌ Ruim: .Result e .Wait() bloqueiam e causam deadlock</summary>
 
 ```vbnet
 Public Function GetPurchase(id As Guid) As Purchase
-    ' bloqueia a thread — deadlock em contextos com SynchronizationContext
+    ' bloqueia a thread: deadlock em contextos com SynchronizationContext
     Dim purchase = _repository.FindByIdAsync(id).Result
     Return purchase
 End Function
@@ -81,7 +81,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — Await propaga o contexto corretamente</summary>
+<summary>✅ Bom: Await propaga o contexto corretamente</summary>
 
 ```vbnet
 Public Async Function GetPurchaseAsync(id As Guid) As Task(Of Purchase)
@@ -101,7 +101,7 @@ End Function
 Chamadas de **I/O** (Input/Output, Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
 
 <details>
-<summary>❌ Ruim — chamadas independentes em sequência</summary>
+<summary>❌ Ruim: chamadas independentes em sequência</summary>
 
 ```vbnet
 Public Async Function GetDashboardAsync(userId As Guid) As Task(Of Dashboard)
@@ -109,7 +109,7 @@ Public Async Function GetDashboardAsync(userId As Guid) As Task(Of Dashboard)
     Dim purchases = Await _purchases.FindByUserAsync(userId)      ' 80ms
     Dim notifications = Await _notifications.FindAsync(userId) ' 60ms
 
-    ' total: ~240ms — poderia ser ~100ms
+    ' total: ~240ms: poderia ser ~100ms
     Dim dashboard = New Dashboard(user, purchases, notifications)
     Return dashboard
 End Function
@@ -118,7 +118,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — Task.WhenAll dispara em paralelo</summary>
+<summary>✅ Bom: Task.WhenAll dispara em paralelo</summary>
 
 ```vbnet
 Public Async Function GetDashboardAsync(userId As Guid) As Task(Of Dashboard)
@@ -137,10 +137,10 @@ End Function
 
 ## ConfigureAwait
 
-Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita — o contexto é necessário para atualizar UI ou HttpContext.
+Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita: o contexto é necessário para atualizar UI ou HttpContext.
 
 <details>
-<summary>✅ Bom — ConfigureAwait(False) em código de biblioteca</summary>
+<summary>✅ Bom: ConfigureAwait(False) em código de biblioteca</summary>
 
 ```vbnet
 ' em uma biblioteca de acesso a dados
@@ -157,14 +157,14 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — sem ConfigureAwait em code-behind (contexto necessário)</summary>
+<summary>✅ Bom: sem ConfigureAwait em code-behind (contexto necessário)</summary>
 
 ```vbnet
 ' em Windows Forms ou WebForms: contexto necessário para atualizar controles
 Private Async Sub BtnLoad_Click(sender As Object, e As EventArgs) Handles BtnLoad.Click
     Dim purchase = Await _service.FindPurchaseAsync(CurrentPurchaseId)  ' sem ConfigureAwait(False)
 
-    ' continua no UI thread — pode atualizar controles
+    ' continua no UI thread: pode atualizar controles
     LblTotal.Text = purchase.Total.ToString("C")
     GridItems.DataSource = purchase.Items
 End Sub
@@ -174,14 +174,14 @@ End Sub
 
 ## Async até a raiz
 
-Async é contagioso. Quando um método torna-se `Async`, seus callers devem tornar-se `Async` também — até o ponto de entrada (event handler, endpoint, thread entry point). Misturar síncrono e assíncrono no meio da cadeia causa deadlock.
+Async é contagioso. Quando um método torna-se `Async`, seus callers devem tornar-se `Async` também, até o ponto de entrada (event handler, endpoint, thread entry point). Misturar síncrono e assíncrono no meio da cadeia causa deadlock.
 
 <details>
-<summary>❌ Ruim — mistura síncrono/assíncrono na cadeia</summary>
+<summary>❌ Ruim: mistura síncrono/assíncrono na cadeia</summary>
 
 ```vbnet
 Public Function GetSummary(purchaseId As Guid) As PurchaseSummary
-    ' tenta chamar async de forma síncrona — deadlock
+    ' tenta chamar async de forma síncrona: deadlock
     Dim purchase = FindPurchaseAsync(purchaseId).Result
     Dim summary = BuildSummary(purchase)
     Return summary
@@ -191,7 +191,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — cadeia async até o ponto de entrada</summary>
+<summary>✅ Bom: cadeia async até o ponto de entrada</summary>
 
 ```vbnet
 Public Async Function GetSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)

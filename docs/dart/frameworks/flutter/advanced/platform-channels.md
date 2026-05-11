@@ -16,7 +16,7 @@ Android, Swift/ObjC no iOS). Existem três tipos: `MethodChannel` (chamada únic
 | **codec** (codificador) | serialização da mensagem entre Dart e nativo: `StandardMessageCodec`, `JSONMessageCodec` |
 | **platform thread** (thread de plataforma) | código nativo roda na main thread nativa; I/O pesado usa background thread |
 
-## MethodChannel — estrutura básica
+## MethodChannel: estrutura básica
 
 Dart invoca o método; nativo processa e retorna.
 
@@ -43,7 +43,7 @@ class BiometricAuthService {
 }
 ```
 
-**Android — Kotlin:**
+**Android (Kotlin):**
 
 ```kotlin
 class MainActivity : FlutterActivity() {
@@ -65,7 +65,7 @@ class MainActivity : FlutterActivity() {
 }
 ```
 
-**iOS — Swift:**
+**iOS (Swift):**
 
 ```swift
 override func application(_ application: UIApplication,
@@ -89,10 +89,10 @@ override func application(_ application: UIApplication,
 }
 ```
 
-## EventChannel — stream de eventos nativos
+## EventChannel: stream de eventos nativos
 
 <details>
-<summary>❌ Ruim — polling via MethodChannel para dados contínuos</summary>
+<summary>❌ Ruim: polling via MethodChannel para dados contínuos</summary>
 
 ```dart
 // polling: ineficiente e com latência
@@ -108,7 +108,7 @@ Future<void> trackLocation() async {
 </details>
 
 <details>
-<summary>✅ Bom — EventChannel entrega eventos quando disponíveis</summary>
+<summary>✅ Bom: EventChannel entrega eventos quando disponíveis</summary>
 
 ```dart
 const _locationChannel = EventChannel('com.acme.app/location');
@@ -129,7 +129,7 @@ Stream<Coordinate> get locationStream {
 ## Tratamento de erro em MethodChannel
 
 <details>
-<summary>❌ Ruim — PlatformException não tratada — crash</summary>
+<summary>❌ Ruim: PlatformException não tratada (crash)</summary>
 
 ```dart
 Future<String> readNfcTag() async {
@@ -140,7 +140,7 @@ Future<String> readNfcTag() async {
 </details>
 
 <details>
-<summary>✅ Bom — PlatformException mapeada para erro de domínio</summary>
+<summary>✅ Bom: PlatformException mapeada para erro de domínio</summary>
 
 ```dart
 Future<String> readNfcTag() async {

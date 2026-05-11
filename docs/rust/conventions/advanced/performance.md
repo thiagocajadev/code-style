@@ -23,7 +23,7 @@ seriam suficientes.
 Clone só quando o valor precisa viver mais que a referência ou quando não é possível emprestar.
 
 <details>
-<summary>❌ Ruim — clone onde &str seria suficiente</summary>
+<summary>❌ Ruim: clone onde &str seria suficiente</summary>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -39,7 +39,7 @@ fn find_by_name(orders: &[Order], name: String) -> Option<&Order> { // String qu
 </details>
 
 <details>
-<summary>✅ Bom — referências onde o valor não precisa ser owned</summary>
+<summary>✅ Bom: referências onde o valor não precisa ser owned</summary>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -59,7 +59,7 @@ Parâmetros de função que apenas leem strings devem aceitar `&str` para ser co
 com tanto `String` quanto `&str` sem alocação.
 
 <details>
-<summary>❌ Ruim — String em parâmetro que só lê</summary>
+<summary>❌ Ruim: String em parâmetro que só lê</summary>
 
 ```rust
 fn validate_email(email: String) -> bool {
@@ -73,7 +73,7 @@ validate_email(user.email.clone());
 </details>
 
 <details>
-<summary>✅ Bom — &str aceita String e &str sem alocação</summary>
+<summary>✅ Bom: &str aceita String e &str sem alocação</summary>
 
 ```rust
 fn validate_email(email: &str) -> bool {
@@ -92,7 +92,7 @@ validate_email("alice@example.com");
 Não colete em `Vec` antes de precisar do resultado final. Encadeie iteradores lazy.
 
 <details>
-<summary>❌ Ruim — coleta intermediária desnecessária</summary>
+<summary>❌ Ruim: coleta intermediária desnecessária</summary>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -105,7 +105,7 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 </details>
 
 <details>
-<summary>✅ Bom — pipeline lazy sem alocação intermediária</summary>
+<summary>✅ Bom: pipeline lazy sem alocação intermediária</summary>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -124,7 +124,7 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 Quando o tamanho do `HashMap` é conhecido de antemão, pré-aloque para evitar rehashing.
 
 <details>
-<summary>❌ Ruim — HashMap sem capacidade inicial</summary>
+<summary>❌ Ruim: HashMap sem capacidade inicial</summary>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -141,7 +141,7 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 </details>
 
 <details>
-<summary>✅ Bom — with_capacity evita rehashing</summary>
+<summary>✅ Bom: with_capacity evita rehashing</summary>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -162,7 +162,7 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 Use `criterion` para benchmarks reproduzíveis. Não confie em timing manual.
 
 <details>
-<summary>✅ Bom — benchmark com criterion</summary>
+<summary>✅ Bom: benchmark com criterion</summary>
 
 ```rust
 // benches/order_bench.rs

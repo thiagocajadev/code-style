@@ -4,7 +4,7 @@
 
 Em Go não existe `null`: o equivalente é `nil`. Todo tipo tem um **zero value** (valor zero)
 bem definido, o que elimina a maioria dos casos de null inesperado. Ponteiros, interfaces,
-maps, slices, channels e funções podem ser `nil` — verifique antes de usar.
+maps, slices, channels e funções podem ser `nil`; verifique antes de usar.
 
 ## Conceitos fundamentais
 
@@ -20,7 +20,7 @@ maps, slices, channels e funções podem ser `nil` — verifique antes de usar.
 Verifique ponteiros antes de acessar campos ou métodos.
 
 <details>
-<summary>❌ Ruim — acesso sem verificação de nil</summary>
+<summary>❌ Ruim: acesso sem verificação de nil</summary>
 
 ```go
 func describeOrder(order *Order) string {
@@ -32,7 +32,7 @@ func describeOrder(order *Order) string {
 </details>
 
 <details>
-<summary>✅ Bom — verificação explícita antes do acesso</summary>
+<summary>✅ Bom: verificação explícita antes do acesso</summary>
 
 ```go
 func describeOrder(order *Order) string {
@@ -53,7 +53,7 @@ Prefira valor ao invés de ponteiro para structs que têm um estado "vazio" repr
 pelo zero value. Ponteiro só quando nil tem semântica de "ausente".
 
 <details>
-<summary>❌ Ruim — ponteiro para representar "vazio" onde zero value bastaria</summary>
+<summary>❌ Ruim: ponteiro para representar "vazio" onde zero value bastaria</summary>
 
 ```go
 type Address struct {
@@ -78,7 +78,7 @@ func printAddress(user User) {
 </details>
 
 <details>
-<summary>✅ Bom — zero value é estado vazio válido; ponteiro apenas com semântica clara</summary>
+<summary>✅ Bom: zero value é estado vazio válido; ponteiro apenas com semântica clara</summary>
 
 ```go
 type Address struct {
@@ -112,7 +112,7 @@ Maps nil causam panic ao escrever. Slices nil são válidos para leitura e `appe
 mas comunique a ausência explicitamente.
 
 <details>
-<summary>❌ Ruim — escrita em map nil</summary>
+<summary>❌ Ruim: escrita em map nil</summary>
 
 ```go
 type OrderIndex struct {
@@ -128,7 +128,7 @@ func (oi *OrderIndex) Add(order Order) {
 </details>
 
 <details>
-<summary>✅ Bom — map inicializado no construtor</summary>
+<summary>✅ Bom: map inicializado no construtor</summary>
 
 ```go
 type OrderIndex struct {
@@ -150,13 +150,13 @@ func (oi *OrderIndex) Add(order Order) {
 
 </details>
 
-## Interface nil — armadilha
+## Interface nil: armadilha
 
 Uma interface Go contém dois campos internos: tipo e valor. Uma interface é nil apenas
 se ambos forem nil. Um ponteiro nil atribuído a uma interface não é nil.
 
 <details>
-<summary>❌ Ruim — comparação incorreta de interface com nil</summary>
+<summary>❌ Ruim: comparação incorreta de interface com nil</summary>
 
 ```go
 type Logger interface {
@@ -180,7 +180,7 @@ if logger == nil {  // FALSO: interface tem tipo, não é nil
 </details>
 
 <details>
-<summary>✅ Bom — retornar nil de interface diretamente</summary>
+<summary>✅ Bom: retornar nil de interface diretamente</summary>
 
 ```go
 func newLogger(debug bool) Logger {
@@ -199,13 +199,13 @@ if logger == nil {  // VERDADEIRO: nil de interface
 
 </details>
 
-## ok idiom — presença explícita
+## ok idiom: presença explícita
 
 Para mapas e type assertions, use a forma de dois retornos para distinguir ausência
 de zero value.
 
 <details>
-<summary>✅ Bom — ok idiom para map lookup e type assertion</summary>
+<summary>✅ Bom: ok idiom para map lookup e type assertion</summary>
 
 ```go
 // map: distingue "chave ausente" de "valor é zero"

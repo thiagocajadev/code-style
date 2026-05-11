@@ -33,7 +33,7 @@ Código em um módulo não precisa de wrapper `DOMContentLoaded`: o script execu
 Cache a seleção quando reutilizar o elemento.
 
 <details>
-<summary>❌ Ruim — seleção repetida, sem cache</summary>
+<summary>❌ Ruim: seleção repetida, sem cache</summary>
 
 ```js
 document.querySelector(".card__title").classList.add("active");
@@ -43,7 +43,7 @@ document.querySelector(".card__title").textContent = "Updated";
 </details>
 
 <details>
-<summary>✅ Bom — cache da seleção, operações encadeadas no mesmo elemento</summary>
+<summary>✅ Bom: cache da seleção, operações encadeadas no mesmo elemento</summary>
 
 ```js
 const title = document.querySelector(".card__title");
@@ -60,7 +60,7 @@ Um único listener no container estático cobre elementos presentes e futuros. `
 filtra o target pelo seletor.
 
 <details>
-<summary>❌ Ruim — listener em cada item, não cobre elementos dinâmicos</summary>
+<summary>❌ Ruim: listener em cada item, não cobre elementos dinâmicos</summary>
 
 ```js
 document.querySelectorAll(".product-card").forEach((card) => {
@@ -71,7 +71,7 @@ document.querySelectorAll(".product-card").forEach((card) => {
 </details>
 
 <details>
-<summary>✅ Bom — delegation no container, matches como filtro</summary>
+<summary>✅ Bom: delegation no container, matches como filtro</summary>
 
 ```js
 document.getElementById("product-list").addEventListener("click", (event) => {
@@ -88,7 +88,7 @@ document.getElementById("product-list").addEventListener("click", (event) => {
 `fetch` é o substituto nativo de `$.ajax`. Retorna uma Promise; use `async/await` para clareza.
 
 <details>
-<summary>❌ Ruim — sem verificação de status, sem tratamento de erro</summary>
+<summary>❌ Ruim: sem verificação de status, sem tratamento de erro</summary>
 
 ```js
 fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
@@ -99,7 +99,7 @@ fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
 </details>
 
 <details>
-<summary>✅ Bom — status verificado, erro tratado, Content-Type explícito</summary>
+<summary>✅ Bom: status verificado, erro tratado, Content-Type explícito</summary>
 
 ```js
 async function createOrder(orderData) {

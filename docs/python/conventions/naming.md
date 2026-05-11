@@ -1,8 +1,8 @@
 # Naming
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só. Use
+Quando o nome carrega a intenção, o comentário deixa de fazer falta. Use
 **snake_case** (caixa-baixa com underline) para identificadores e **PascalCase** (pascal) para
-classes — é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8).
+classes: é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8).
 
 ## Conceitos fundamentais
 
@@ -51,7 +51,7 @@ def apply_discount(order, calculate_discount):
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — snake_case com português fica desajeitado</summary>
+<summary>❌ Ruim: snake_case com português fica desajeitado</summary>
 
 ```python
 nome_do_usuario = "Alice"
@@ -67,7 +67,7 @@ def busca_endereco_do_cliente(id):
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```python
 user_name = "Alice"
@@ -96,7 +96,7 @@ Python tem convenções fortes definidas pela PEP 8. Segui-las é parte do idiom
 | Parâmetro descartado                  | `_`               | `for _ in range(3):`                  |
 
 <details>
-<summary>❌ Ruim — case errado para o contexto</summary>
+<summary>❌ Ruim: case errado para o contexto</summary>
 
 ```python
 maxRetries = 3
@@ -110,7 +110,7 @@ class order_repository:
 </details>
 
 <details>
-<summary>✅ Bom — convenções PEP 8 respeitadas</summary>
+<summary>✅ Bom: convenções PEP 8 respeitadas</summary>
 
 ```python
 MAX_RETRIES = 3
@@ -129,7 +129,7 @@ class OrderRepository:
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Ruim — ordem invertida</summary>
+<summary>❌ Ruim: ordem invertida</summary>
 
 ```python
 get_profile_user()
@@ -141,7 +141,7 @@ calculate_total_invoice()
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural</summary>
+<summary>✅ Bom: ordem natural</summary>
 
 ```python
 get_user_profile()
@@ -155,7 +155,7 @@ calculate_invoice_total()
 ## Verbos genéricos
 
 <details>
-<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim: handle, process, manage, do não dizem nada</summary>
 
 ```python
 def handle(data):
@@ -174,7 +174,7 @@ def do_stuff(x):
 </details>
 
 <details>
-<summary>✅ Bom — verbo de intenção</summary>
+<summary>✅ Bom: verbo de intenção</summary>
 
 ```python
 def validate_payment(payment):
@@ -208,7 +208,7 @@ def apply_seasonal_discount(order):
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
 
 ```python
 def call_stripe(amount):
@@ -227,7 +227,7 @@ def save_to_s3(file):
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```python
 def charge_customer(amount):
@@ -251,7 +251,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 substitui qualquer comentário.
 
 <details>
-<summary>❌ Ruim — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim: comentário repete o que o código já diz</summary>
 
 ```python
 # verifica se o usuário pode excluir registros
@@ -265,7 +265,7 @@ attempts += 1
 </details>
 
 <details>
-<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom: nome expressivo torna o comentário desnecessário</summary>
 
 ```python
 can_delete_record = user.status == "active" and "admin" in user.roles
@@ -280,7 +280,7 @@ attempts += 1
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```python
 loading = True
@@ -293,7 +293,7 @@ valid = "@" in email
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is_, has_, can_, should_</summary>
+<summary>✅ Bom: prefixos is_, has_, can_, should_</summary>
 
 ```python
 is_active = user.status == "active"

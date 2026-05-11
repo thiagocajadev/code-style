@@ -3,7 +3,7 @@
 > Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../../shared/standards/testing.md).
 
 RSpec (Ruby Specification Framework, framework de especificação) é o padrão para projetos
-Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert — Arrumar, Agir,
+Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert: Arrumar, Agir,
 Atestar), com fases explícitas e assertions (verificações) sem expressões inline.
 
 ## Conceitos fundamentais
@@ -18,12 +18,12 @@ Atestar), com fases explícitas e assertions (verificações) sem expressões in
 | `subject`        | O objeto principal do teste; inferido ou declarado                               |
 | **FactoryBot** (gem de fábrica de objetos de teste) | Substitui fixtures com dados expressivos            |
 
-## AAA — Arrange, Act, Assert
+## AAA: Arrange, Act, Assert
 
 Fases explícitas em cada `it`. Um `expect` por exemplo; sem lógica inline no assert.
 
 <details>
-<summary>❌ Ruim — fases misturadas, assert com lógica inline</summary>
+<summary>❌ Ruim: fases misturadas, assert com lógica inline</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -39,7 +39,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — AAA explícito, resultado nomeado</summary>
+<summary>✅ Bom: AAA explícito, resultado nomeado</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -62,7 +62,7 @@ end
 declara a expectativa em linguagem de negócio.
 
 <details>
-<summary>❌ Ruim — nomes sem contexto, fases coladas</summary>
+<summary>❌ Ruim: nomes sem contexto, fases coladas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -82,7 +82,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — hierarquia semântica, 1 expectativa por exemplo</summary>
+<summary>✅ Bom: hierarquia semântica, 1 expectativa por exemplo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -116,7 +116,7 @@ Factories criam objetos expressivos sem acoplar o teste ao schema. Defina o esta
 válido na factory base; use `trait` para variações.
 
 <details>
-<summary>❌ Ruim — criação manual sem contexto</summary>
+<summary>❌ Ruim: criação manual sem contexto</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -127,7 +127,7 @@ let(:order) { Order.new(id: 1, user_id: 5, total: 200, status: "active", created
 </details>
 
 <details>
-<summary>✅ Bom — factory com estado mínimo e traits semânticos</summary>
+<summary>✅ Bom: factory com estado mínimo e traits semânticos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -155,10 +155,10 @@ let(:large_order) { create(:order, :large) }
 ## Mocks e doubles
 
 Mock dependências externas (API, banco de dados de terceiros, email). Dentro do domínio,
-prefira objetos reais ou fakes nomeados — não inline stubs.
+prefira objetos reais ou fakes nomeados, não inline stubs.
 
 <details>
-<summary>❌ Ruim — stub inline sem nome</summary>
+<summary>❌ Ruim: stub inline sem nome</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -175,7 +175,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — double nomeado, interface explícita</summary>
+<summary>✅ Bom: double nomeado, interface explícita</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -195,7 +195,7 @@ end
 
 ## Shared examples
 
-Use `shared_examples` para comportamento comum entre múltiplas classes — evita duplicação
+Use `shared_examples` para comportamento comum entre múltiplas classes. Evita duplicação
 sem sacrificar clareza.
 
 ```ruby

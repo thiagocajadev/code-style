@@ -44,11 +44,11 @@ Features/
 ```
 
 <details>
-<summary>❌ Ruim — lógica de negócio inline na rota</summary>
+<summary>❌ Ruim: lógica de negócio inline na rota</summary>
 
 ```csharp
 // ❌ rota grossa: DbContext injetado direto, regra de negócio inline, sem repository,
-//    sem service, sem TypedResults — tudo junto na lambda
+//    sem service, sem TypedResults: tudo junto na lambda
 group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationToken ct) =>
 {
     if (string.IsNullOrWhiteSpace(request.ProductId))
@@ -70,7 +70,7 @@ group.MapPost("/", async (OrderRequest request, AppDbContext db, CancellationTok
 </details>
 
 <details>
-<summary>❌ Ruim — handler que busca dependências via service locator</summary>
+<summary>❌ Ruim: handler que busca dependências via service locator</summary>
 
 ```csharp
 // Features/Orders/CreateOrderHandler.cs
@@ -93,7 +93,7 @@ public class CreateOrderHandler
 </details>
 
 <details>
-<summary>✅ Bom — rotas mapeadas no extension method, handler injetado</summary>
+<summary>✅ Bom: rotas mapeadas no extension method, handler injetado</summary>
 
 ```csharp
 // Features/Orders/OrdersExtensions.cs
@@ -101,7 +101,7 @@ public static class OrdersExtensions
 {
     public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder)
     {
-        // handlers registrados como Scoped — o container os injeta nas rotas automaticamente
+        // handlers registrados como Scoped: o container os injeta nas rotas automaticamente
         builder.Services.AddScoped<FindOrdersHandler>();
         builder.Services.AddScoped<FindOrderByIdHandler>();
 
@@ -132,7 +132,7 @@ public static class OrdersExtensions
 </details>
 
 <details>
-<summary>✅ Bom — handler com dependências no construtor, request como parâmetro</summary>
+<summary>✅ Bom: handler com dependências no construtor, request como parâmetro</summary>
 
 ```csharp
 // Features/Orders/CreateOrderHandler.cs
@@ -153,17 +153,17 @@ public class CreateOrderHandler(OrderService orderService)
 
 </details>
 
-## [AsParameters] — context records
+## [AsParameters] e context records
 
 Em Minimal API, handlers com muitas dependências produzem assinaturas longas. `[AsParameters]`
-permite agrupar todos os parâmetros em um context record — o framework resolve cada propriedade
+permite agrupar todos os parâmetros em um context record. O framework resolve cada propriedade
 individualmente via DI, como se fossem parâmetros avulsos.
 
 <details>
-<summary>❌ Ruim — assinatura longa, dependências espalhadas no handler</summary>
+<summary>❌ Ruim: assinatura longa, dependências espalhadas no handler</summary>
 
 ```csharp
-// ❌ cada dependência é um parâmetro avulso — cresce a cada nova injeção
+// ❌ cada dependência é um parâmetro avulso: cresce a cada nova injeção
 app.MapPost("/orders", async (
     OrderCreateRequest request,
     IOrderRepository repository,
@@ -178,7 +178,7 @@ app.MapPost("/orders", async (
 </details>
 
 <details>
-<summary>✅ Bom — context record agrupa dependências, handler recebe um parâmetro</summary>
+<summary>✅ Bom: context record agrupa dependências, handler recebe um parâmetro</summary>
 
 ```csharp
 // Features/Orders/OrderContexts.cs
@@ -191,7 +191,7 @@ public sealed record OrderCreateContext(
 ```
 
 ```csharp
-// Features/Orders/Create.cs — handler recebe um parâmetro; DI resolve cada propriedade
+// Features/Orders/Create.cs: handler recebe um parâmetro; DI resolve cada propriedade
 public static async Task<OrderCreateResult> Handle(
     [AsParameters] OrderCreateContext context)
 {
@@ -210,11 +210,11 @@ globais, model binding por atributo, scaffolding). O mesmo princípio se aplica:
 lógica, apenas orquestra.
 
 <details>
-<summary>❌ Ruim — controller com lógica de negócio</summary>
+<summary>❌ Ruim: controller com lógica de negócio</summary>
 
 ```csharp
 // ❌ controller gordo: DbContext no construtor, cálculo de preço na lambda,
-//    interpolação no return — mesma regra que Minimal API, diferente só na sintaxe
+//    interpolação no return. Mesma regra que Minimal API, diferente só na sintaxe
 [ApiController]
 [Route("api/orders")]
 public class OrdersController(AppDbContext db) : ControllerBase
@@ -242,7 +242,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
 </details>
 
 <details>
-<summary>✅ Bom — controller thin, delega para o service</summary>
+<summary>✅ Bom: controller thin, delega para o service</summary>
 
 ```csharp
 [ApiController]
@@ -268,16 +268,16 @@ public class OrdersController(OrderService orderService) : ControllerBase
 
 ## TypedResults vs Results
 
-Minimal API oferece duas famílias de retorno: `Results` (`Microsoft.AspNetCore.Http.Results`) — o
-idioma histórico — e `TypedResults` — a variante tipada introduzida no .NET 7. Ambas produzem a
+Minimal API oferece duas famílias de retorno. `Results` (`Microsoft.AspNetCore.Http.Results`) é o
+idioma histórico; `TypedResults` é a variante tipada introduzida no .NET 7. Ambas produzem a
 mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
 
-`Results.Ok(order)` retorna `IResult` — tipo apagado. Quem assina a rota com `Results` perde
+`Results.Ok(order)` retorna `IResult`, um tipo apagado. Quem assina a rota com `Results` perde
 informação: OpenAPI/Swagger não infere o status nem o **payload** (corpo da mensagem), testes precisam de cast
 (`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]`
 redundantes.
 
-`TypedResults.Ok(order)` retorna `Ok<Order>` — tipo concreto. OpenAPI extrai status (200) e shape
+`TypedResults.Ok(order)` retorna `Ok<Order>`, um tipo concreto. OpenAPI extrai status (200) e shape
 (`Order`) automaticamente. Testes leem `result.Value` direto. A assinatura do handler passa a
 **dizer** exatamente o que retorna.
 
@@ -287,7 +287,7 @@ redundantes.
 | ---------------------------------------------- | ------------------------------------------------------------------------------ |
 | Minimal API, endpoint novo                     | `TypedResults.*`                                                               |
 | Endpoint com múltiplos status (ex: 200 ou 404) | `Results<Ok<T>, NotFound>` como tipo de retorno                                |
-| MVC Controller (`ControllerBase`)              | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`) — não `Results.*` |
+| MVC Controller (`ControllerBase`)              | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`), não `Results.*` |
 | Código legado usando `Results.*`               | manter até a próxima refatoração natural                                       |
 
 ### Assinatura rica para múltiplos status
@@ -296,7 +296,7 @@ O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possí
 documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
 
 <details>
-<summary>❌ Ruim — Results apaga o tipo de retorno</summary>
+<summary>❌ Ruim: Results apaga o tipo de retorno</summary>
 
 ```csharp
 // ❌ IResult é opaco: Swagger não sabe se é 200 ou 404 sem [ProducesResponseType]
@@ -313,7 +313,7 @@ app.MapGet("/orders/{id}", async (Guid id, OrderService orderService, Cancellati
 </details>
 
 <details>
-<summary>✅ Bom — TypedResults + union type na assinatura</summary>
+<summary>✅ Bom: TypedResults + union type na assinatura</summary>
 
 ```csharp
 app.MapGet("/orders/{id}", FindOrder);
@@ -334,10 +334,10 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 ### Location header sem lógica no return
 
 `TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) em variável
-nomeada antes do retorno — o `return` nomeia, não computa.
+nomeada antes do retorno; o `return` nomeia, não computa.
 
 <details>
-<summary>❌ Ruim — interpolação no return</summary>
+<summary>❌ Ruim: interpolação no return</summary>
 
 ```csharp
 // ❌ URL construída na linha do return: lógica inline, difícil inspecionar no debugger
@@ -347,7 +347,7 @@ return TypedResults.Created($"/api/orders/{createdOrder.Id}", createdOrder);
 </details>
 
 <details>
-<summary>✅ Bom — URL em variável nomeada</summary>
+<summary>✅ Bom: URL em variável nomeada</summary>
 
 ```csharp
 var orderLocation = $"/api/orders/{createdOrder.Id}";
@@ -360,12 +360,12 @@ return response;
 ## TypedResults aliases
 
 A assinatura `Results<T1, T2, T3>` enumera todos os retornos possíveis, mas repetir namespaces
-completos em cada handler polui o código. `global using` aliasa o tipo uma vez para todo o assembly
-— os handlers ficam limpos, o contrato permanece explícito e o OpenAPI continua enumerando cada
+completos em cada handler polui o código. `global using` aliasa o tipo uma vez para todo o assembly:
+os handlers ficam limpos, o contrato permanece explícito e o OpenAPI continua enumerando cada
 status.
 
 <details>
-<summary>❌ Ruim — tipo union verboso repetido em cada handler</summary>
+<summary>❌ Ruim: tipo union verboso repetido em cada handler</summary>
 
 ```csharp
 // ❌ namespaces completos repetidos a cada handler que retorna esse tipo
@@ -381,10 +381,10 @@ public static async Task<Results<
 </details>
 
 <details>
-<summary>✅ Bom — alias declarado uma vez, handler usa nome semântico</summary>
+<summary>✅ Bom: alias declarado uma vez, handler usa nome semântico</summary>
 
 ```csharp
-// Features/Orders/OrderAliases.cs — um arquivo por feature, uma linha por status possível
+// Features/Orders/OrderAliases.cs: um arquivo por feature, uma linha por status possível
 global using OrderCreateResult = Microsoft.AspNetCore.Http.HttpResults.Results<
     Microsoft.AspNetCore.Http.HttpResults.Created<Features.Orders.OrderResponse>,
     Microsoft.AspNetCore.Http.HttpResults.BadRequest<string>,
@@ -396,7 +396,7 @@ global using OrderGetResult = Microsoft.AspNetCore.Http.HttpResults.Results<
 ```
 
 ```csharp
-// handler — tipo de retorno expressivo, sem repetição de namespace
+// handler: tipo de retorno expressivo, sem repetição de namespace
 public static async Task<OrderCreateResult> Handle(
     [AsParameters] OrderCreateContext context)
 {
@@ -406,17 +406,17 @@ public static async Task<OrderCreateResult> Handle(
 
 </details>
 
-## CQS — Save sem retorno
+## CQS: Save sem retorno
 
 `SaveAsync` é um comando: persiste e retorna `void`. Retornar a entidade salva mistura command e
-query no mesmo método — viola CQS e acopla a leitura à escrita. Um `IOrderReader` separado lê após o
+query no mesmo método, viola CQS e acopla a leitura à escrita. Um `IOrderReader` separado lê após o
 save.
 
 <details>
-<summary>❌ Ruim — SaveAsync retorna entidade (CQS violado)</summary>
+<summary>❌ Ruim: SaveAsync retorna entidade (CQS violado)</summary>
 
 ```csharp
-// ❌ salva e retorna — command e query no mesmo método
+// ❌ salva e retorna: command e query no mesmo método
 var saved = await repository.SaveAsync(order, cancellationToken);
 
 return TypedResults.Created($"/orders/{saved.Id}", saved);
@@ -425,16 +425,16 @@ return TypedResults.Created($"/orders/{saved.Id}", saved);
 </details>
 
 <details>
-<summary>✅ Bom — SaveAsync void, IOrderReader separado para leitura</summary>
+<summary>✅ Bom: SaveAsync void, IOrderReader separado para leitura</summary>
 
 ```csharp
-// IOrderRepository — contrato de persistência (command)
+// IOrderRepository: contrato de persistência (command)
 public interface IOrderRepository
 {
     Task SaveAsync(Order order, CancellationToken cancellationToken);
 }
 
-// IOrderReader — contrato de leitura (query)
+// IOrderReader: contrato de leitura (query)
 public interface IOrderReader
 {
     Task<Result<Order>> FindByIdAsync(Guid id, CancellationToken cancellationToken);

@@ -19,7 +19,7 @@ Variáveis em C# equilibram ergonomia (`var`) e clareza (tipo explícito). A dec
 `var` é adequado quando o tipo é óbvio pelo lado direito. Quando a leitura exige rastrear o tipo mentalmente, declare explicitamente: o leitor não deve precisar inferir.
 
 <details>
-<summary>❌ Ruim — tipo obscuro</summary>
+<summary>❌ Ruim: tipo obscuro</summary>
 
 ```csharp
 var result = ProcessOrder(request); // Order? InvoiceResult? ViewModel? impossível saber
@@ -29,7 +29,7 @@ var discount = Calculate(order);    // decimal? int? percentual ou valor absolut
 </details>
 
 <details>
-<summary>✅ Bom — tipo legível; `var` apenas onde óbvio</summary>
+<summary>✅ Bom: tipo legível; `var` apenas onde óbvio</summary>
 
 ```csharp
 Order order = ProcessOrder(request);
@@ -45,12 +45,12 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 `const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` não pode ser alterado após o construtor, para valores determinados em runtime. Campos que mudam onde só leitura é necessária são um contrato fraco.
 
 <details>
-<summary>❌ Ruim — campo mutable onde deveria ser immutable</summary>
+<summary>❌ Ruim: campo mutable onde deveria ser immutable</summary>
 
 ```csharp
 public class OrderService
 {
-    private static int maxRetries = 3; // mutável — qualquer método pode alterar
+    private static int maxRetries = 3; // mutável: qualquer método pode alterar
     private string _apiUrl;             // reatribuível após o construtor
 
     public OrderService(IConfiguration config)
@@ -63,7 +63,7 @@ public class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — valor fixo declarado explicitamente</summary>
+<summary>✅ Bom: valor fixo declarado explicitamente</summary>
 
 ```csharp
 public class OrderService(IConfiguration config)
@@ -80,12 +80,12 @@ public class OrderService(IConfiguration config)
 `record` expressa um contrato de dados immutable (que não muda) sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
 
 <details>
-<summary>❌ Ruim — class mutável como contrato de dados</summary>
+<summary>❌ Ruim: class mutável como contrato de dados</summary>
 
 ```csharp
 public class OrderRequest
 {
-    public string ProductId { get; set; } // setter público — qualquer código pode mutar
+    public string ProductId { get; set; } // setter público: qualquer código pode mutar
     public int Quantity { get; set; }     // estado mutável sem controle
 }
 ```
@@ -93,7 +93,7 @@ public class OrderRequest
 </details>
 
 <details>
-<summary>✅ Bom — record immutable, contrato explícito</summary>
+<summary>✅ Bom: record immutable, contrato explícito</summary>
 
 ```csharp
 public record OrderRequest(string ProductId, int Quantity);
@@ -106,7 +106,7 @@ public record OrderRequest(string ProductId, int Quantity);
 Literais embutidos escondem intenção. `const` nomeado documenta o significado: o nome é a documentação.
 
 <details>
-<summary>❌ Ruim — literais sem significado</summary>
+<summary>❌ Ruim: literais sem significado</summary>
 
 ```csharp
 if (order.Status == 2)    // o que é 2?
@@ -119,7 +119,7 @@ if (discount > 0.15m)    // limite de desconto? taxa? de onde vem esse número?
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas</summary>
+<summary>✅ Bom: constantes nomeadas</summary>
 
 ```csharp
 private const int OrderStatusApproved = 2;
@@ -139,7 +139,7 @@ if (discount > MaxDiscountRate)
 `record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido: o chamador não deve ter seu estado alterado silenciosamente.
 
 <details>
-<summary>❌ Ruim — mutação acoplada e efeito colateral oculto</summary>
+<summary>❌ Ruim: mutação acoplada e efeito colateral oculto</summary>
 
 ```csharp
 public void ApplyDiscount(Order order)
@@ -152,7 +152,7 @@ public void ApplyDiscount(Order order)
 </details>
 
 <details>
-<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
 
 ```csharp
 public Order ApplyDiscount(Order order)

@@ -21,11 +21,11 @@ Converta o dado bruto em um tipo validado o mais cedo possível. Funções inter
 apenas o tipo validado.
 
 <details>
-<summary>❌ Ruim — String bruta repassada para o domínio</summary>
+<summary>❌ Ruim: String bruta repassada para o domínio</summary>
 
 ```rust
 async fn create_order(email: String, amount: f64) -> anyhow::Result<Order> {
-    // email pode ser inválido, amount pode ser negativo — sem garantia
+    // email pode ser inválido, amount pode ser negativo: sem garantia
     let order = OrderService::create(email, amount).await?;
     Ok(order)
 }
@@ -34,7 +34,7 @@ async fn create_order(email: String, amount: f64) -> anyhow::Result<Order> {
 </details>
 
 <details>
-<summary>✅ Bom — tipo validado como contrato</summary>
+<summary>✅ Bom: tipo validado como contrato</summary>
 
 ```rust
 pub struct ValidatedEmail(String);
@@ -72,12 +72,12 @@ async fn create_order(email: ValidatedEmail, amount: PositiveAmount) -> anyhow::
 
 </details>
 
-## validator — regras declarativas em structs
+## validator: regras declarativas em structs
 
 Use `#[derive(Validate)]` para validação declarativa de requests de entrada.
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no handler</summary>
+<summary>❌ Ruim: validação manual espalhada no handler</summary>
 
 ```rust
 async fn create_order_handler(
@@ -101,7 +101,7 @@ async fn create_order_handler(
 </details>
 
 <details>
-<summary>✅ Bom — validator derive + validação centralizada</summary>
+<summary>✅ Bom: validator derive + validação centralizada</summary>
 
 ```rust
 use serde::Deserialize;
@@ -131,12 +131,12 @@ async fn create_order_handler(
 
 </details>
 
-## Erros de validação — mensagem útil ao cliente
+## Erros de validação: mensagem útil ao cliente
 
 Mensagens de erro de validação devem ser legíveis e identificar o campo problemático.
 
 <details>
-<summary>❌ Ruim — erro genérico sem campo</summary>
+<summary>❌ Ruim: erro genérico sem campo</summary>
 
 ```rust
 fn validate_payment(payment: &Payment) -> anyhow::Result<()> {
@@ -149,7 +149,7 @@ fn validate_payment(payment: &Payment) -> anyhow::Result<()> {
 </details>
 
 <details>
-<summary>✅ Bom — erro com campo e valor</summary>
+<summary>✅ Bom: erro com campo e valor</summary>
 
 ```rust
 fn validate_payment(payment: &Payment) -> anyhow::Result<()> {

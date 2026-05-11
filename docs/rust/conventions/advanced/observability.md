@@ -22,7 +22,7 @@ OpenTelemetry, Jaeger e Datadog.
 Configure `tracing_subscriber` no entry point. Use `env-filter` para controle por nível.
 
 <details>
-<summary>❌ Ruim — println! como logging</summary>
+<summary>❌ Ruim: println! como logging</summary>
 
 ```rust
 fn main() {
@@ -34,7 +34,7 @@ fn main() {
 </details>
 
 <details>
-<summary>✅ Bom — tracing_subscriber inicializado no entry point</summary>
+<summary>✅ Bom: tracing_subscriber inicializado no entry point</summary>
 
 ```rust
 fn main() -> anyhow::Result<()> {
@@ -53,13 +53,13 @@ fn main() -> anyhow::Result<()> {
 
 </details>
 
-## #[instrument] — span automático
+## #[instrument]: span automático
 
 `#[instrument]` cria um span para a função e registra os parâmetros como campos.
 Use `skip` para omitir campos sensíveis ou grandes.
 
 <details>
-<summary>❌ Ruim — sem span, sem contexto de rastreamento</summary>
+<summary>❌ Ruim: sem span, sem contexto de rastreamento</summary>
 
 ```rust
 async fn find_order(pool: &sqlx::PgPool, order_id: u64) -> anyhow::Result<Option<Order>> {
@@ -74,7 +74,7 @@ async fn find_order(pool: &sqlx::PgPool, order_id: u64) -> anyhow::Result<Option
 </details>
 
 <details>
-<summary>✅ Bom — #[instrument] com campos estruturados</summary>
+<summary>✅ Bom: #[instrument] com campos estruturados</summary>
 
 ```rust
 #[tracing::instrument(skip(pool), fields(order_id))]
@@ -103,7 +103,7 @@ Use o nível adequado para cada tipo de informação.
 | `error!` | Falha que impede a operação; requer atenção |
 
 <details>
-<summary>❌ Ruim — tudo em info, campos como strings</summary>
+<summary>❌ Ruim: tudo em info, campos como strings</summary>
 
 ```rust
 tracing::info!("error processing order: {}", error);
@@ -114,7 +114,7 @@ tracing::info!("db query: SELECT * FROM orders WHERE id = {}", order_id);
 </details>
 
 <details>
-<summary>✅ Bom — nível adequado + campos estruturados</summary>
+<summary>✅ Bom: nível adequado + campos estruturados</summary>
 
 ```rust
 tracing::error!(%error, order_id, "failed to process order");
@@ -130,7 +130,7 @@ Campos estruturados são indexáveis em ferramentas como Grafana Loki e Datadog.
 Use `%value` para Display, `?value` para Debug, `field = value` para valores próprios.
 
 <details>
-<summary>❌ Ruim — contexto embutido na string</summary>
+<summary>❌ Ruim: contexto embutido na string</summary>
 
 ```rust
 tracing::error!("failed to charge customer {} for order {} with amount {:.2}", customer_id, order_id, amount);
@@ -139,7 +139,7 @@ tracing::error!("failed to charge customer {} for order {} with amount {:.2}", c
 </details>
 
 <details>
-<summary>✅ Bom — campos estruturados separados da mensagem</summary>
+<summary>✅ Bom: campos estruturados separados da mensagem</summary>
 
 ```rust
 tracing::error!(

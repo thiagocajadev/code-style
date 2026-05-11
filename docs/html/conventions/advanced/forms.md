@@ -22,7 +22,7 @@ Todo input tem um `<label>` explícito associado via `for`/`id`. Placeholder nã
 desaparece ao digitar e tem contraste insuficiente.
 
 <details>
-<summary>❌ Ruim — sem label, placeholder como único texto</summary>
+<summary>❌ Ruim: sem label, placeholder como único texto</summary>
 
 ```html
 <input type="text" placeholder="First name" />
@@ -33,7 +33,7 @@ desaparece ao digitar e tem contraste insuficiente.
 </details>
 
 <details>
-<summary>✅ Bom — label explícita com for/id; placeholder complementa</summary>
+<summary>✅ Bom: label explícita com for/id; placeholder complementa</summary>
 
 ```html
 <label for="first-name">First name</label>
@@ -54,7 +54,7 @@ desaparece ao digitar e tem contraste insuficiente.
 recomendado para seções de formulário com múltiplos campos.
 
 <details>
-<summary>❌ Ruim — grupo de radio sem fieldset, sem contexto semântico</summary>
+<summary>❌ Ruim: grupo de radio sem fieldset, sem contexto semântico</summary>
 
 ```html
 <p>Shipping method</p>
@@ -67,7 +67,7 @@ recomendado para seções de formulário com múltiplos campos.
 </details>
 
 <details>
-<summary>✅ Bom — fieldset + legend contextualiza o grupo</summary>
+<summary>✅ Bom: fieldset + legend contextualiza o grupo</summary>
 
 ```html
 <fieldset>
@@ -93,7 +93,7 @@ O tipo correto entrega teclado virtual otimizado no mobile, validação nativa e
 contextual, sem JavaScript adicional.
 
 <details>
-<summary>❌ Ruim — type="text" para tudo</summary>
+<summary>❌ Ruim: type="text" para tudo</summary>
 
 ```html
 <input type="text" name="email" />
@@ -106,7 +106,7 @@ contextual, sem JavaScript adicional.
 </details>
 
 <details>
-<summary>✅ Bom — tipo correto para cada dado</summary>
+<summary>✅ Bom: tipo correto para cada dado</summary>
 
 ```html
 <input type="email" name="email" autocomplete="email" />
@@ -125,7 +125,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 `setCustomValidity` ou `aria-describedby`.
 
 <details>
-<summary>❌ Ruim — validação só em JS, sem atributos nativos</summary>
+<summary>❌ Ruim: validação só em JS, sem atributos nativos</summary>
 
 ```html
 <input type="text" id="username" name="username" />
@@ -135,7 +135,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 </details>
 
 <details>
-<summary>✅ Bom — atributos nativos + mensagem de erro acessível</summary>
+<summary>✅ Bom: atributos nativos + mensagem de erro acessível</summary>
 
 ```html
 <label for="username">Username</label>

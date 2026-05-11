@@ -58,7 +58,7 @@ Idiomas e recursos específicos de cada banco.
 | --- | --- | --- | --- |
 | [MongoDB](sgbd/mongodb.md) | 8.2 | Document | Dados hierárquicos; schema flexível; queries variadas |
 | [Redis](sgbd/redis.md) | 8.x | Key-Value | Cache, sessão, pub/sub, filas, ranked lists |
-| [DynamoDB](sgbd/dynamodb.md) | — | Key-Value + Document | Stack AWS; escala serverless; acesso por padrão fixo |
+| [DynamoDB](sgbd/dynamodb.md) | n/a | Key-Value + Document | Stack AWS; escala serverless; acesso por padrão fixo |
 | [Cassandra](sgbd/cassandra.md) | 5.x | Column-Family | Escala de escrita alta; séries temporais; telemetria |
 | [Elasticsearch](sgbd/elasticsearch.md) | 8.x | Search / Document | Busca full-text; logs; análise de dados |
 
@@ -68,8 +68,8 @@ Idiomas e recursos específicos de cada banco.
 
 Exemplos reutilizáveis por banco:
 
-- [scripts/mongodb/](scripts/mongodb/) — insert, find, update, delete, aggregation
-- [scripts/redis/](scripts/redis/) — strings, hashes, sets, sorted-sets
+- [scripts/mongodb/](scripts/mongodb/): insert, find, update, delete, aggregation
+- [scripts/redis/](scripts/redis/): strings, hashes, sets, sorted-sets
 
 ---
 

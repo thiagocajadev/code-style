@@ -22,7 +22,7 @@ buffers com `sync.Pool` e escolher estruturas de dados adequadas.
 Escreva benchmarks antes de otimizar. `go test -bench=.` mede throughput e alocações.
 
 <details>
-<summary>✅ Bom — benchmark com -benchmem para medir alocações</summary>
+<summary>✅ Bom: benchmark com -benchmem para medir alocações</summary>
 
 ```go
 func BenchmarkBuildReport(b *testing.B) {
@@ -44,13 +44,13 @@ go test -bench=BenchmarkBuildReport -benchmem ./...
 
 </details>
 
-## Escape analysis — evitar heap
+## Escape analysis: evitar heap
 
 Variáveis no stack são mais rápidas que no heap. Use `go build -gcflags="-m"` para ver
 o que o compilador move para o heap (escape).
 
 <details>
-<summary>❌ Ruim — retornar ponteiro força escape para heap</summary>
+<summary>❌ Ruim: retornar ponteiro força escape para heap</summary>
 
 ```go
 func buildSummary(orders []Order) *Summary {
@@ -65,7 +65,7 @@ func buildSummary(orders []Order) *Summary {
 </details>
 
 <details>
-<summary>✅ Bom — retornar valor quando o caller não precisa do ponteiro</summary>
+<summary>✅ Bom: retornar valor quando o caller não precisa do ponteiro</summary>
 
 ```go
 func buildSummary(orders []Order) Summary {
@@ -85,7 +85,7 @@ Quando o tamanho final é conhecido, pré-aloque com `make([]T, 0, n)` para evit
 realocações durante `append`.
 
 <details>
-<summary>❌ Ruim — slice cresce com realocações</summary>
+<summary>❌ Ruim: slice cresce com realocações</summary>
 
 ```go
 func extractIDs(orders []Order) []int64 {
@@ -100,7 +100,7 @@ func extractIDs(orders []Order) []int64 {
 </details>
 
 <details>
-<summary>✅ Bom — pre-alocação com capacidade exata</summary>
+<summary>✅ Bom: pre-alocação com capacidade exata</summary>
 
 ```go
 func extractIDs(orders []Order) []int64 {
@@ -116,12 +116,12 @@ func extractIDs(orders []Order) []int64 {
 
 </details>
 
-## sync.Pool — reutilização de buffers
+## sync.Pool: reutilização de buffers
 
 Use `sync.Pool` para reutilizar objetos caros de alocar (buffers, encoders, decoders).
 
 <details>
-<summary>✅ Bom — pool de buffers para operações de I/O frequentes</summary>
+<summary>✅ Bom: pool de buffers para operações de I/O frequentes</summary>
 
 ```go
 var bufferPool = sync.Pool{
@@ -155,7 +155,7 @@ func marshalOrder(order Order) ([]byte, error) {
 Concatenação com `+` em loop cria uma nova string a cada iteração. Use `strings.Builder`.
 
 <details>
-<summary>❌ Ruim — concatenação em loop, O(n²) em memória</summary>
+<summary>❌ Ruim: concatenação em loop, O(n²) em memória</summary>
 
 ```go
 func buildCSV(orders []Order) string {
@@ -170,7 +170,7 @@ func buildCSV(orders []Order) string {
 </details>
 
 <details>
-<summary>✅ Bom — strings.Builder: uma única alocação</summary>
+<summary>✅ Bom: strings.Builder com uma única alocação</summary>
 
 ```go
 func buildCSV(orders []Order) string {
@@ -194,7 +194,7 @@ func buildCSV(orders []Order) string {
 Carregue dados em lote, não um a um dentro de um loop.
 
 <details>
-<summary>❌ Ruim — N+1: uma query por item</summary>
+<summary>❌ Ruim: N+1, uma query por item</summary>
 
 ```go
 func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithCustomer, error) {
@@ -217,7 +217,7 @@ func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithC
 </details>
 
 <details>
-<summary>✅ Bom — carga em lote com uma query</summary>
+<summary>✅ Bom: carga em lote com uma query</summary>
 
 ```go
 func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithCustomer, error) {

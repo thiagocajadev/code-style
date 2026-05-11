@@ -19,7 +19,7 @@ para o fuso do usuário apenas na camada de apresentação.
 ## UTC por padrão
 
 <details>
-<summary>❌ Ruim — hora local sem fuso explícito</summary>
+<summary>❌ Ruim: hora local sem fuso explícito</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -32,7 +32,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — UTC explícito no armazenamento</summary>
+<summary>✅ Bom: UTC explícito no armazenamento</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -46,11 +46,11 @@ end
 
 ## Parsing de string para Time
 
-Use `Time.parse` ou `Time.iso8601` para converter strings. Prefira `Time.iso8601` —
+Use `Time.parse` ou `Time.iso8601` para converter strings. Prefira `Time.iso8601`:
 valida o formato e lança `ArgumentError` para entradas inválidas.
 
 <details>
-<summary>❌ Ruim — parse de string sem validação de formato</summary>
+<summary>❌ Ruim: parse de string sem validação de formato</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -65,7 +65,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — iso8601 valida formato + UTC explícito</summary>
+<summary>✅ Bom: iso8601 valida formato + UTC explícito</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -83,11 +83,11 @@ end
 
 ## ActiveSupport::TimeZone (Rails)
 
-Use `Time.zone.now` no lugar de `Time.now` em projetos Rails — respeita `config.time_zone`.
+Use `Time.zone.now` no lugar de `Time.now` em projetos Rails para respeitar `config.time_zone`.
 Converta para o fuso do usuário apenas na apresentação.
 
 <details>
-<summary>❌ Ruim — Time.now ignora config.time_zone</summary>
+<summary>❌ Ruim: Time.now ignora config.time_zone</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -100,7 +100,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — conversão para fuso do usuário na apresentação</summary>
+<summary>✅ Bom: conversão para fuso do usuário na apresentação</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -120,7 +120,7 @@ Use os helpers de duração do ActiveSupport (`1.day`, `2.weeks`, `3.months`) pa
 aritmética legível. Para Ruby puro, use `Time` com segundos explícitos.
 
 <details>
-<summary>❌ Ruim — aritmética em segundos mágicos</summary>
+<summary>❌ Ruim: aritmética em segundos mágicos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +133,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — duração nomeada com ActiveSupport</summary>
+<summary>✅ Bom: duração nomeada com ActiveSupport</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -154,7 +154,7 @@ Use os operadores `<`, `>`, `between?` diretamente em objetos `Time`. Nunca comp
 de data.
 
 <details>
-<summary>❌ Ruim — comparação de strings de data</summary>
+<summary>❌ Ruim: comparação de strings de data</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -167,7 +167,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — comparação de objetos Time</summary>
+<summary>✅ Bom: comparação de objetos Time</summary>
 
 ```ruby
 # frozen_string_literal: true

@@ -10,8 +10,8 @@ property hooks. Use tipos sempre; `mixed` só quando genuinamente inevitável.
 
 | Conceito | O que é |
 | -------- | ------- |
-| **union type** (tipo união) | `int\|string` — aceita mais de um tipo; disponível desde PHP 8.0 |
-| **intersection type** (tipo interseção) | `Countable&Stringable` — deve satisfazer todos os tipos; desde PHP 8.1 |
+| **union type** (tipo união) | `int\|string`: aceita mais de um tipo; disponível desde PHP 8.0 |
+| **intersection type** (tipo interseção) | `Countable&Stringable`: deve satisfazer todos os tipos; desde PHP 8.1 |
 | `enum` | Tipo de enumeração com casos tipados (`string` ou `int`); desde PHP 8.1 |
 | **readonly class** (classe somente leitura) | Todas as propriedades são `readonly` por padrão; desde PHP 8.2 |
 | **property hooks** (ganchos de propriedade) | `get`/`set` inline na declaração da propriedade; desde PHP 8.4 |
@@ -23,7 +23,7 @@ Use union types quando uma função aceita ou retorna tipos legitimamente distin
 Não use como escape para falta de tipagem.
 
 <details>
-<summary>❌ Ruim — mixed onde union type seria preciso</summary>
+<summary>❌ Ruim: mixed onde union type seria preciso</summary>
 
 ```php
 function findByIdentifier(mixed $identifier): mixed
@@ -35,7 +35,7 @@ function findByIdentifier(mixed $identifier): mixed
 </details>
 
 <details>
-<summary>✅ Bom — union type expressa os tipos aceitos</summary>
+<summary>✅ Bom: union type expressa os tipos aceitos</summary>
 
 ```php
 function findByIdentifier(int|string $identifier): ?User
@@ -58,7 +58,7 @@ Use `enum` para conjuntos fechados de valores. Backed enums (`string` ou `int`) 
 serializáveis; enums puros são para modelagem sem serialização.
 
 <details>
-<summary>❌ Ruim — strings mágicas para status</summary>
+<summary>❌ Ruim: strings mágicas para status</summary>
 
 ```php
 class Order
@@ -75,7 +75,7 @@ class Order
 </details>
 
 <details>
-<summary>✅ Bom — enum backed para status com serialização</summary>
+<summary>✅ Bom: enum backed para status com serialização</summary>
 
 ```php
 enum OrderStatus: string
@@ -117,7 +117,7 @@ Use `readonly class` para value objects e DTOs que não devem mudar após criaç
 Toda propriedade de uma readonly class é implicitamente `readonly`.
 
 <details>
-<summary>✅ Bom — readonly class para value object imutável</summary>
+<summary>✅ Bom: readonly class para value object imutável</summary>
 
 ```php
 readonly class Money
@@ -159,12 +159,12 @@ readonly class Money
 
 </details>
 
-## never — funções que não retornam
+## never: funções que não retornam
 
 Use `never` como tipo de retorno para funções que sempre lançam exceção ou terminam o processo.
 
 <details>
-<summary>✅ Bom — never para helper de falha e redirect</summary>
+<summary>✅ Bom: never para helper de falha e redirect</summary>
 
 ```php
 function abort(int $statusCode, string $message): never
@@ -188,7 +188,7 @@ Defina interfaces para dependências que serão trocadas (repositórios, serviç
 Prefira interfaces pequenas e específicas.
 
 <details>
-<summary>✅ Bom — interface mínima por consumidor</summary>
+<summary>✅ Bom: interface mínima por consumidor</summary>
 
 ```php
 // Interface no namespace do consumidor

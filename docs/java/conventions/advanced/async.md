@@ -1,6 +1,6 @@
 # Async
 
-> Escopo: Java 25 LTS — Virtual Threads (Project Loom) + CompletableFuture.
+> Escopo: Java 25 LTS, Virtual Threads (Project Loom) e CompletableFuture.
 
 Java 21+ torna I/O assíncrono simples: **virtual threads** (threads virtuais) permitem escrever
 código bloqueante com throughput (vazão) de código reativo, sem callback hell
@@ -20,11 +20,10 @@ código bloqueante com throughput (vazão) de código reativo, sem callback hell
 
 ## Thread bloqueada desnecessariamente
 
-Antes de virtual threads, threads de plataforma eram caras — bloquear em I/O desperdiçava
-recursos. Com virtual threads, bloquear é barato e o código fica simples.
+Antes de virtual threads, threads de plataforma eram caras: bloquear em I/O desperdiçava recursos. Com virtual threads, bloquear é barato e o código fica simples.
 
 <details>
-<summary>❌ Ruim — CompletableFuture encadeado apenas para "não bloquear"</summary>
+<summary>❌ Ruim: CompletableFuture encadeado apenas para "não bloquear"</summary>
 
 ```java
 public CompletableFuture<Invoice> processOrder(String orderId) {
@@ -41,7 +40,7 @@ public CompletableFuture<Invoice> processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom — virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
+<summary>✅ Bom: virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
 
 ```java
 // application.yml: spring.threads.virtual.enabled=true (Spring Boot 4)
@@ -60,13 +59,13 @@ public Invoice processOrder(String orderId) {
 
 </details>
 
-## CompletableFuture — tarefas concorrentes independentes
+## CompletableFuture: tarefas concorrentes independentes
 
 Quando múltiplas operações independentes podem ocorrer em paralelo, `CompletableFuture.allOf`
 combina os resultados sem bloquear por cada um sequencialmente.
 
 <details>
-<summary>❌ Ruim — operações independentes executadas em sequência</summary>
+<summary>❌ Ruim: operações independentes executadas em sequência</summary>
 
 ```java
 public DashboardData loadDashboard(String userId) {
@@ -82,7 +81,7 @@ public DashboardData loadDashboard(String userId) {
 </details>
 
 <details>
-<summary>✅ Bom — operações independentes em paralelo</summary>
+<summary>✅ Bom: operações independentes em paralelo</summary>
 
 ```java
 public DashboardData loadDashboard(String userId) {
@@ -105,14 +104,14 @@ public DashboardData loadDashboard(String userId) {
 
 </details>
 
-## Structured Concurrency — escopo de vida explícito
+## Structured Concurrency: escopo de vida explícito
 
 Java 21+ oferece `StructuredTaskScope` (concorrência estruturada) para garantir que todas as
 tarefas filhas encerrem antes que o escopo pai retorne. Mais seguro que `CompletableFuture`
 livre: falha em uma cancela as demais.
 
 <details>
-<summary>✅ Bom — ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
+<summary>✅ Bom: ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
 
 ```java
 public DashboardData loadDashboard(String userId) throws InterruptedException, ExecutionException {
@@ -136,22 +135,22 @@ public DashboardData loadDashboard(String userId) throws InterruptedException, E
 
 </details>
 
-## Executors — pool explícito
+## Executors: pool explícito
 
 Quando precisar de controle de pool, prefira `Executors.newVirtualThreadPerTaskExecutor()`
 em vez de pools de threads de plataforma de tamanho fixo.
 
 <details>
-<summary>❌ Ruim — pool de tamanho fixo limita throughput de I/O</summary>
+<summary>❌ Ruim: pool de tamanho fixo limita throughput de I/O</summary>
 
 ```java
-final var executor = Executors.newFixedThreadPool(10); // 10 threads — gargalo em I/O
+final var executor = Executors.newFixedThreadPool(10); // 10 threads: gargalo em I/O
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — executor de virtual threads: sem limite artificial</summary>
+<summary>✅ Bom: executor de virtual threads: sem limite artificial</summary>
 
 ```java
 final var executor = Executors.newVirtualThreadPerTaskExecutor();

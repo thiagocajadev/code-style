@@ -1,8 +1,8 @@
-# Flutter — Quick Reference
+# Flutter: Quick Reference
 
-> Escopo: Flutter 3.29, Dart 3.7. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.
+> Escopo: Flutter 3.29, Dart 3.7. Cheat-sheet tabular para decisões rápidas, sem contexto narrativo.
 
-## Widget — qual usar
+## Widget: qual usar
 
 | Situação | Widget |
 | --- | --- |

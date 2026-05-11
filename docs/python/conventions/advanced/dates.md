@@ -3,14 +3,14 @@
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
 Datas sem fuso horário (_naive_) são uma fonte silenciosa de bugs. Toda data que representa um
-instante no tempo deve ser _aware_ — com fuso horário explícito.
+instante no tempo deve ser _aware_, com fuso horário explícito.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **naive datetime** (datetime sem fuso) | `datetime` sem informação de fuso — comparações e aritmética são ambíguas |
-| **aware datetime** (datetime com fuso) | `datetime` com `tzinfo` definido — instante no tempo inequívoco |
+| **naive datetime** (datetime sem fuso) | `datetime` sem informação de fuso; comparações e aritmética são ambíguas |
+| **aware datetime** (datetime com fuso) | `datetime` com `tzinfo` definido; instante no tempo inequívoco |
 | **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Fuso de referência; armazene sempre em UTC, converta apenas para exibição |
 | **zoneinfo** (módulo padrão de fusos horários) | Módulo padrão (Python 3.9+) para fusos com suporte a DST (Daylight Saving Time, horário de verão) |
 | **ISO 8601** (norma ISO de datas) | Formato de serialização universal: `2026-04-22T15:30:00+00:00` |
@@ -18,12 +18,12 @@ instante no tempo deve ser _aware_ — com fuso horário explícito.
 ## naive vs aware
 
 <details>
-<summary>❌ Ruim — datetime sem fuso: comparação ambígua</summary>
+<summary>❌ Ruim: datetime sem fuso: comparação ambígua</summary>
 
 ```python
 from datetime import datetime
 
-created_at = datetime.now()       # sem fuso — depende do relógio local
+created_at = datetime.now()       # sem fuso: depende do relógio local
 expires_at = datetime(2026, 12, 31)  # naive
 
 if created_at > expires_at:   # comparação ambígua: qual timezone?
@@ -33,7 +33,7 @@ if created_at > expires_at:   # comparação ambígua: qual timezone?
 </details>
 
 <details>
-<summary>✅ Bom — datetime aware com UTC explícito</summary>
+<summary>✅ Bom: datetime aware com UTC explícito</summary>
 
 ```python
 from datetime import datetime, timezone
@@ -47,25 +47,25 @@ if created_at > expires_at:
 
 </details>
 
-## zoneinfo — fusos nomeados
+## zoneinfo: fusos nomeados
 
 Para fusos que respeitam horário de verão (DST), use `zoneinfo.ZoneInfo` em vez de offsets fixos.
-Um offset fixo como `+03:00` não muda com o DST — um fuso nomeado sim.
+Um offset fixo como `+03:00` não muda com o DST; um fuso nomeado sim.
 
 <details>
-<summary>❌ Ruim — offset fixo ignora DST</summary>
+<summary>❌ Ruim: offset fixo ignora DST</summary>
 
 ```python
 from datetime import datetime, timezone, timedelta
 
-brasilia = timezone(timedelta(hours=-3))  # offset fixo — errado no horário de verão
+brasilia = timezone(timedelta(hours=-3))  # offset fixo: errado no horário de verão
 local_time = datetime.now(tz=brasilia)
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ZoneInfo aplica DST automaticamente</summary>
+<summary>✅ Bom: ZoneInfo aplica DST automaticamente</summary>
 
 ```python
 from datetime import datetime
@@ -76,13 +76,13 @@ local_time = datetime.now(tz=ZoneInfo("America/Sao_Paulo"))
 
 </details>
 
-## Serialização e parsing — ISO 8601
+## Serialização e parsing: ISO 8601
 
 Armazene e transmita datas como strings **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601. Use `isoformat()` para serializar e
 `datetime.fromisoformat()` para desserializar.
 
 <details>
-<summary>❌ Ruim — formato não padronizado, parsing frágil</summary>
+<summary>❌ Ruim: formato não padronizado, parsing frágil</summary>
 
 ```python
 from datetime import datetime
@@ -94,7 +94,7 @@ parsed = datetime.strptime("22/04/2026 15:30", "%d/%m/%Y %H:%M")  # naive, frág
 </details>
 
 <details>
-<summary>✅ Bom — ISO 8601 com fuso, round-trip garantido</summary>
+<summary>✅ Bom: ISO 8601 com fuso, round-trip garantido</summary>
 
 ```python
 from datetime import datetime, timezone
@@ -110,11 +110,11 @@ parsed = datetime.fromisoformat(serialized)  # aware, fuso preservado
 ## strptime em date e time (Python 3.14)
 
 Python 3.14 adiciona `date.strptime()` e `time.strptime()` além de `datetime.strptime()`.
-Quando você precisa apenas da parte da data ou do horário, use o método correspondente — sem
+Quando você precisa apenas da parte da data ou do horário, use o método correspondente, sem
 construir um `datetime` completo para descartar metade.
 
 <details>
-<summary>❌ Ruim — datetime completo só para extrair a data</summary>
+<summary>❌ Ruim: datetime completo só para extrair a data</summary>
 
 ```python
 from datetime import datetime
@@ -126,7 +126,7 @@ due_date = parsed.date()  # descarta o horário depois
 </details>
 
 <details>
-<summary>✅ Bom — date.strptime direto (Python 3.14+)</summary>
+<summary>✅ Bom: date.strptime direto (Python 3.14+)</summary>
 
 ```python
 from datetime import date
@@ -139,10 +139,10 @@ due_date = date.strptime("2026-04-22", "%Y-%m-%d")
 ## Aritmética de datas
 
 Use `timedelta` para somar ou subtrair intervalos. Nunca calcule com timestamps numéricos
-diretamente — erros de DST e overflow são difíceis de rastrear.
+diretamente: erros de DST e overflow são difíceis de rastrear.
 
 <details>
-<summary>❌ Ruim — aritmética com timestamp numérico</summary>
+<summary>❌ Ruim: aritmética com timestamp numérico</summary>
 
 ```python
 import time
@@ -154,7 +154,7 @@ tomorrow_ts = now_ts + 86400  # pode estar errado no dia de mudança de DST
 </details>
 
 <details>
-<summary>✅ Bom — timedelta com aware datetime</summary>
+<summary>✅ Bom: timedelta com aware datetime</summary>
 
 ```python
 from datetime import datetime, timedelta, timezone

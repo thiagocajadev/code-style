@@ -23,14 +23,14 @@ Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam
 
 ## Interface tipada para o logger
 
-Tipar a interface do logger força o caller a passar um objeto estruturado — não uma string —
+Tipar a interface do logger força o caller a passar um objeto estruturado (não uma string),
 e permite trocar a implementação (Pino, Winston, mock) sem alterar os callers.
 
 <details>
-<summary>❌ Ruim — logger sem tipo aceita qualquer forma de chamada</summary>
+<summary>❌ Ruim: logger sem tipo aceita qualquer forma de chamada</summary>
 
 ```ts
-// qualquer assinatura passa — strings, objetos, mistura
+// qualquer assinatura passa: strings, objetos, mistura
 logger.info(`Order ${orderId} created`);
 logger.error(error);
 ```
@@ -38,7 +38,7 @@ logger.error(error);
 </details>
 
 <details>
-<summary>✅ Bom — interface tipada, caller obrigado a estruturar</summary>
+<summary>✅ Bom: interface tipada, caller obrigado a estruturar</summary>
 
 ```ts
 interface Logger {
@@ -60,7 +60,7 @@ logger.info(orderContext, "order created");
 estão presentes. O caller não pode omitir `correlationId` por engano.
 
 <details>
-<summary>❌ Ruim — contexto sem tipo, campos podem estar ausentes</summary>
+<summary>❌ Ruim: contexto sem tipo, campos podem estar ausentes</summary>
 
 ```ts
 const requestStore = new AsyncLocalStorage<Record<string, unknown>>();
@@ -70,7 +70,7 @@ export function correlationMiddleware(req: Request, res: Response, next: NextFun
   requestStore.run({ correlationId }, next); // qualquer shape passa
 }
 
-// mixin — campo pode estar ausente sem erro de compilação
+// mixin: campo pode estar ausente sem erro de compilação
 const context = requestStore.getStore();
 logger.info({ ...context }, "processing"); // context pode ser undefined
 ```
@@ -78,7 +78,7 @@ logger.info({ ...context }, "processing"); // context pode ser undefined
 </details>
 
 <details>
-<summary>✅ Bom — store tipado, campos obrigatórios em compilação</summary>
+<summary>✅ Bom: store tipado, campos obrigatórios em compilação</summary>
 
 ```ts
 interface RequestContext {
@@ -125,18 +125,18 @@ Tipar os níveis impede strings inválidas e permite que o caller seja configur�
 a verificação em compilação.
 
 <details>
-<summary>❌ Ruim — nível como string, qualquer valor aceito</summary>
+<summary>❌ Ruim: nível como string, qualquer valor aceito</summary>
 
 ```ts
 function createLogger(level: string) {
-  return pino({ level }); // "debugg", "infoo" — sem erro de compilação
+  return pino({ level }); // "debugg", "infoo": sem erro de compilação
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — union type nos níveis</summary>
+<summary>✅ Bom: union type nos níveis</summary>
 
 ```ts
 type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";

@@ -44,7 +44,7 @@ export const docClient = DynamoDBDocumentClient.from(dynamoClient, {
 ### Design de chaves
 
 Regras:
-- Partition key com alta cardinalidade — evita hot spots
+- Partition key com alta cardinalidade: evita hot spots
 - Sort key define hierarquia dentro da partição
 - Prefixo de entidade em uppercase com `#` como separador
 
@@ -57,12 +57,12 @@ PK: MATCH#1099       SK: EVENT#002
 ```
 
 <details>
-<summary>❌ Ruim — partition key de baixa cardinalidade; hot spot; Scan em produção</summary>
+<summary>❌ Ruim: partition key de baixa cardinalidade; hot spot; Scan em produção</summary>
 
 ```js
 import { ScanCommand } from '@aws-sdk/lib-dynamodb';
 
-// Scan lê toda a tabela — custo proporcional ao tamanho total
+// Scan lê toda a tabela: custo proporcional ao tamanho total
 async function findActiveTeams() {
   const command = new ScanCommand({
     TableName: 'Sports',
@@ -75,7 +75,7 @@ async function findActiveTeams() {
   return response.Items;
 }
 
-// partition key por status — todos os itens 'active' na mesma partição
+// partition key por status: todos os itens 'active' na mesma partição
 // hot spot garantido em produção
 const item = {
   PK: 'STATUS#active', // baixa cardinalidade
@@ -86,7 +86,7 @@ const item = {
 </details>
 
 <details>
-<summary>✅ Bom — Query por partition key; GSI para access patterns alternativos</summary>
+<summary>✅ Bom: Query por partition key; GSI para access patterns alternativos</summary>
 
 ```js
 import { QueryCommand, PutCommand } from '@aws-sdk/lib-dynamodb';

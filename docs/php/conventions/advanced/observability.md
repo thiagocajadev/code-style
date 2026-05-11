@@ -25,7 +25,7 @@ Configure Monolog com `JsonFormatter` para produção. Injete `LoggerInterface` 
 nunca use o logger global ou Facade.
 
 <details>
-<summary>✅ Bom — Monolog com JsonFormatter para produção</summary>
+<summary>✅ Bom: Monolog com JsonFormatter para produção</summary>
 
 ```php
 use Monolog\Logger;
@@ -64,7 +64,7 @@ final class OrderService
 Passe contexto como array de pares chave-valor. Nunca interpole variáveis na mensagem.
 
 <details>
-<summary>❌ Ruim — interpolação na mensagem, sem estrutura</summary>
+<summary>❌ Ruim: interpolação na mensagem, sem estrutura</summary>
 
 ```php
 $this->logger->info("Processing order {$order->id} for customer {$order->customerID} with amount {$order->amount}");
@@ -74,7 +74,7 @@ $this->logger->error("Error saving order {$order->id}: {$e->getMessage()}");
 </details>
 
 <details>
-<summary>✅ Bom — contexto como array, mensagem fixa</summary>
+<summary>✅ Bom: contexto como array, mensagem fixa</summary>
 
 ```php
 $this->logger->info('Processing order', [
@@ -102,7 +102,7 @@ $this->logger->error('Save order failed', [
 | `critical`| Falha grave; impacta funcionalidade central do sistema  |
 
 <details>
-<summary>❌ Ruim — error para evento esperado</summary>
+<summary>❌ Ruim: error para evento esperado</summary>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -115,7 +115,7 @@ if ($order === null) {
 </details>
 
 <details>
-<summary>✅ Bom — info para evento esperado; error para falha real</summary>
+<summary>✅ Bom: info para evento esperado; error para falha real</summary>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -145,7 +145,7 @@ Propague um `correlation_id` (identificador de correlação) em todos os logs de
 requisição. Use um middleware HTTP para gerar ou extrair o ID do header.
 
 <details>
-<summary>✅ Bom — correlation ID via processor do Monolog</summary>
+<summary>✅ Bom: correlation ID via processor do Monolog</summary>
 
 ```php
 use Monolog\Processor\ProcessorInterface;
@@ -186,12 +186,12 @@ final class CorrelationMiddleware
 
 </details>
 
-## PII — dados pessoais
+## PII: dados pessoais
 
 Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
-<summary>❌ Ruim — PII nos logs</summary>
+<summary>❌ Ruim: PII nos logs</summary>
 
 ```php
 $this->logger->info('User logged in', [
@@ -204,7 +204,7 @@ $this->logger->info('User logged in', [
 </details>
 
 <details>
-<summary>✅ Bom — apenas ID e evento, sem PII</summary>
+<summary>✅ Bom: apenas ID e evento, sem PII</summary>
 
 ```php
 $this->logger->info('User logged in', [

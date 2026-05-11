@@ -35,10 +35,10 @@ my-program/
 └── Anchor.toml         ← config do workspace Anchor
 ```
 
-## Instrução — BAD/GOOD
+## Instrução: BAD/GOOD
 
 <details>
-<summary>❌ Ruim — sem validação de accounts, lógica na instrução</summary>
+<summary>❌ Ruim: sem validação de accounts, lógica na instrução</summary>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -81,7 +81,7 @@ pub struct Product {
 </details>
 
 <details>
-<summary>✅ Bom — constraint de autorização + validação de entrada</summary>
+<summary>✅ Bom: constraint de autorização + validação de entrada</summary>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -118,7 +118,7 @@ pub mod store {
     }
 }
 
-// Instrução de inicialização — cria o account via seeds (PDA)
+// Instrução de inicialização: cria o account via seeds (PDA)
 #[derive(Accounts)]
 pub struct InitializeProduct<'info> {
     #[account(
@@ -136,7 +136,7 @@ pub struct InitializeProduct<'info> {
     pub system_program: Program<'info, System>,
 }
 
-// Instrução de atualização — valida autorização via constraint
+// Instrução de atualização: valida autorização via constraint
 #[derive(Accounts)]
 pub struct UpdatePrice<'info> {
     #[account(
@@ -169,13 +169,13 @@ pub enum StoreError {
 
 </details>
 
-## Accounts — modelo de dados
+## Accounts: modelo de dados
 
 Cada instrução declara explicitamente os accounts que acessa. O runtime valida propriedade,
 mutabilidade e assinatura antes de executar o programa.
 
 <details>
-<summary>❌ Ruim — account sem constraint, mutabilidade excessiva</summary>
+<summary>❌ Ruim: account sem constraint, mutabilidade excessiva</summary>
 
 ```rust
 #[derive(Accounts)]
@@ -186,14 +186,14 @@ pub struct WithdrawFunds<'info> {
     #[account(mut)]
     pub destination: AccountInfo<'info>, // AccountInfo: sem validação de tipo
 
-    pub caller: Signer<'info>, // qualquer signer — sem verificação de ownership
+    pub caller: Signer<'info>, // qualquer signer: sem verificação de ownership
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — account tipado, constraint de ownership, PDA verificado</summary>
+<summary>✅ Bom: account tipado, constraint de ownership, PDA verificado</summary>
 
 ```rust
 #[derive(Accounts)]

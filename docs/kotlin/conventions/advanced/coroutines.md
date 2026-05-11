@@ -3,7 +3,7 @@
 > Escopo: Kotlin 2.2, kotlinx.coroutines 1.9.
 
 Coroutines são a primitiva de concorrência do Kotlin. Structured concurrency garante que toda
-coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas ou leaks de memória.
+coroutine tem escopo, cancelamento e espera definidos, sem goroutines soltas ou leaks de memória.
 
 ## Conceitos fundamentais
 
@@ -12,15 +12,15 @@ coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas 
 | `CoroutineScope` | escopo que define o ciclo de vida das coroutines filhas |
 | `launch` | inicia coroutine fire-and-forget dentro de um escopo |
 | `async`/`await` | inicia coroutine com valor futuro; `await()` suspende até o resultado |
-| `Flow` | stream assíncrono e reativo; cold por padrão — executa ao coletar |
+| `Flow` | stream assíncrono e reativo; cold por padrão, executa ao coletar |
 | `StateFlow` | `Flow` hot com estado atual sempre disponível |
 | `Dispatchers` | escolha de thread pool: `IO`, `Default`, `Main`, `Unconfined` |
 | **structured concurrency** (concorrência estruturada) | filhos não sobrevivem ao pai; cancelamento se propaga hierarquicamente |
 
-## Coroutine solta — sem escopo definido
+## Coroutine solta: sem escopo definido
 
 <details>
-<summary>❌ Ruim — GlobalScope vaza ciclo de vida</summary>
+<summary>❌ Ruim: GlobalScope vaza ciclo de vida</summary>
 
 ```kotlin
 fun loadUser(userId: Long) {
@@ -34,7 +34,7 @@ fun loadUser(userId: Long) {
 </details>
 
 <details>
-<summary>✅ Bom — escopo vinculado ao ciclo de vida</summary>
+<summary>✅ Bom: escopo vinculado ao ciclo de vida</summary>
 
 ```kotlin
 class UserViewModel(
@@ -55,7 +55,7 @@ class UserViewModel(
 ## `async`/`await` mal usado
 
 <details>
-<summary>❌ Ruim — async sequencial não tem ganho de paralelismo</summary>
+<summary>❌ Ruim: async sequencial não tem ganho de paralelismo</summary>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -69,7 +69,7 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 </details>
 
 <details>
-<summary>✅ Bom — async antes do await permite execução paralela</summary>
+<summary>✅ Bom: async antes do await permite execução paralela</summary>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -88,7 +88,7 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 ## `withContext` para mudar dispatcher
 
 <details>
-<summary>❌ Ruim — I/O no dispatcher Main (congela UI)</summary>
+<summary>❌ Ruim: I/O no dispatcher Main (congela UI)</summary>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -99,7 +99,7 @@ suspend fun saveOrder(order: Order) {
 </details>
 
 <details>
-<summary>✅ Bom — withContext isola o dispatcher de I/O</summary>
+<summary>✅ Bom: withContext isola o dispatcher de I/O</summary>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -114,7 +114,7 @@ suspend fun saveOrder(order: Order) {
 ## Flow para streams de dados
 
 <details>
-<summary>❌ Ruim — callback manual para stream de eventos</summary>
+<summary>❌ Ruim: callback manual para stream de eventos</summary>
 
 ```kotlin
 fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
@@ -125,7 +125,7 @@ fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
 </details>
 
 <details>
-<summary>✅ Bom — Flow tipado e cancelável</summary>
+<summary>✅ Bom: Flow tipado e cancelável</summary>
 
 ```kotlin
 fun observeOrders(userId: Long): Flow<List<Order>> {
@@ -145,7 +145,7 @@ viewModelScope.launch {
 ## StateFlow para estado de UI
 
 <details>
-<summary>❌ Ruim — MutableLiveData com mutação direta</summary>
+<summary>❌ Ruim: MutableLiveData com mutação direta</summary>
 
 ```kotlin
 private val _orders = MutableLiveData<List<Order>>()
@@ -159,7 +159,7 @@ fun loadOrders() {
 </details>
 
 <details>
-<summary>✅ Bom — StateFlow com UiState sealed class</summary>
+<summary>✅ Bom: StateFlow com UiState sealed class</summary>
 
 ```kotlin
 sealed class OrdersUiState {
@@ -190,7 +190,7 @@ fun loadOrders() {
 ## supervisorScope para falhas independentes
 
 <details>
-<summary>❌ Ruim — falha em um filho cancela todos os outros</summary>
+<summary>❌ Ruim: falha em um filho cancela todos os outros</summary>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {
@@ -205,7 +205,7 @@ suspend fun sendNotifications(users: List<User>) {
 </details>
 
 <details>
-<summary>✅ Bom — supervisorScope isola falhas por filho</summary>
+<summary>✅ Bom: supervisorScope isola falhas por filho</summary>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {

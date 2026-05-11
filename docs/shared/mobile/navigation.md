@@ -15,7 +15,7 @@ interagir com o conteúdo.
 
 | Conceito | O que é |
 |---|---|
-| **Stack** (pilha de telas) | Telas empilhadas — a nova tela cobre a anterior; voltar remove do topo |
+| **Stack** (pilha de telas) | Telas empilhadas; a nova tela cobre a anterior; voltar remove do topo |
 | **Tab bar** (barra de abas) | Navegação principal entre seções independentes; sem hierarquia entre elas |
 | **Modal** (janela sobreposta) | Tela que interrompe o fluxo atual; exige ação explícita para fechar |
 | **Bottom sheet** (painel inferior) | Painel que desliza de baixo; menos intrusivo que um modal completo |
@@ -45,16 +45,16 @@ Tab bar organiza seções independentes da aplicação. Cada aba mantém sua pr�
 
 ```
 [Home] [Busca] [Pedidos] [Perfil]
-  ↑ cada aba tem stack independente — mudar de aba não destrói o estado da anterior
+  ↑ cada aba tem stack independente: mudar de aba não destrói o estado da anterior
 ```
 
-Tab bar é indicado para as seções primárias do produto — geralmente no máximo 5 abas. Abas em
+Tab bar é indicado para as seções primárias do produto, geralmente no máximo 5 abas. Abas em
 excesso fragmentam a atenção e indicam falta de foco de produto.
 
 ### Modal
 
 Modal interrompe o fluxo atual para capturar atenção ou coletar entrada. O usuário deve fechar
-explicitamente — deslizando para baixo, tocando em cancelar ou completando a ação.
+explicitamente: deslizando para baixo, tocando em cancelar ou completando a ação.
 
 ```
 Fluxo normal → Modal aberto → [Confirma / Cancela] → Fluxo normal retomado
@@ -62,7 +62,7 @@ Fluxo normal → Modal aberto → [Confirma / Cancela] → Fluxo normal retomado
 
 Modal é indicado para ações destrutivas (confirmar exclusão), coleta de dados simples (formulário
 rápido) ou contexto que não pertence à hierarquia principal. Não é indicado para conteúdo que o
-usuário vai consultar frequentemente — isso pertence à stack ou à tab bar.
+usuário vai consultar frequentemente: isso pertence à stack ou à tab bar.
 
 ## Deep link
 
@@ -83,7 +83,7 @@ Um deep link bem implementado resolve dois cenários:
 | App fechado (cold start) | Inicializa o app e reconstrói o back stack até a tela destino |
 
 O segundo cenário é o mais crítico. Se o usuário tocar em voltar a partir de uma tela aberta via
-deep link, deve chegar em um estado coerente — não em uma tela em branco.
+deep link, deve chegar em um estado coerente, não em uma tela em branco.
 
 ## Passagem de parâmetros
 
@@ -109,4 +109,4 @@ Voltar: [Home → Lista]  ← Detalhe destruída
 
 Telas destruídas liberam memória. Telas na pilha podem ser pausadas pelo SO se a memória estiver
 baixa. A regra é a mesma do lifecycle: nunca assumir que a tela anterior ainda está no mesmo estado
-em que foi deixada — sempre restaurar o estado ao retomar.
+em que foi deixada. Sempre restaurar o estado ao retomar.

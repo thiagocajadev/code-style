@@ -10,7 +10,7 @@ Secrets em Go ficam em variáveis de ambiente, nunca em arquivos versionados. O 
 
 | Conceito | O que é |
 | -------- | ------- |
-| **secret** (segredo) | credencial sensível (senha, token, chave) — nunca versionar; ler de variável de ambiente |
+| **secret** (segredo) | credencial sensível (senha, token, chave); nunca versionar, ler de variável de ambiente |
 | **env var** (variável de ambiente) | configuração injetada pelo orquestrador no processo; lida via `os.Getenv` |
 | **fail-fast** (falha imediata) | encerrar o processo no startup se config obrigatória estiver ausente ou inválida |
 | **constant-time compare** (comparação em tempo constante) | `crypto/subtle.ConstantTimeCompare` para tokens, evita timing attack |
@@ -20,7 +20,7 @@ Secrets em Go ficam em variáveis de ambiente, nunca em arquivos versionados. O 
 ## Secrets e variáveis de ambiente
 
 <details>
-<summary>❌ Ruim — secret no código-fonte</summary>
+<summary>❌ Ruim: secret no código-fonte</summary>
 
 ```go
 const jwtSecret = "supersecret123"
@@ -34,7 +34,7 @@ func validateToken(token string) bool {
 </details>
 
 <details>
-<summary>✅ Bom — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<summary>✅ Bom: secret lido de variável de ambiente, fail-fast se ausente</summary>
 
 ```go
 // internal/config/config.go
@@ -52,7 +52,7 @@ Valide toda entrada na camada de handler, antes de chegar ao service.
 Use o pacote `github.com/go-playground/validator/v10` para struct tags.
 
 <details>
-<summary>❌ Ruim — validação ausente na fronteira</summary>
+<summary>❌ Ruim: validação ausente na fronteira</summary>
 
 ```go
 func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
@@ -73,7 +73,7 @@ func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 </details>
 
 <details>
-<summary>✅ Bom — validação explícita antes de delegar ao service</summary>
+<summary>✅ Bom: validação explícita antes de delegar ao service</summary>
 
 ```go
 type CreateOrderRequest struct {
@@ -108,12 +108,12 @@ func (h *Handler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 
 </details>
 
-## SQL — queries parametrizadas
+## SQL: queries parametrizadas
 
 Nunca concatene input do usuário em queries. Use sempre placeholders parametrizados.
 
 <details>
-<summary>❌ Ruim — concatenação de string em query SQL</summary>
+<summary>❌ Ruim: concatenação de string em query SQL</summary>
 
 ```go
 query := "SELECT * FROM users WHERE email = '" + email + "'"
@@ -123,7 +123,7 @@ rows, err := db.Query(query)
 </details>
 
 <details>
-<summary>✅ Bom — placeholder parametrizado</summary>
+<summary>✅ Bom: placeholder parametrizado</summary>
 
 ```go
 const queryFindUserByEmail = `
@@ -152,7 +152,7 @@ func (r *Repository) FindByEmail(ctx context.Context, email string) (*User, erro
 Toda chamada externa (banco, HTTP, fila) deve respeitar um `context.Context` com timeout.
 
 <details>
-<summary>❌ Ruim — chamada sem timeout</summary>
+<summary>❌ Ruim: chamada sem timeout</summary>
 
 ```go
 func fetchPrice(productID int64) (*Price, error) {
@@ -169,7 +169,7 @@ func fetchPrice(productID int64) (*Price, error) {
 </details>
 
 <details>
-<summary>✅ Bom — contexto com timeout propagado</summary>
+<summary>✅ Bom: contexto com timeout propagado</summary>
 
 ```go
 func (c *PricingClient) FetchPrice(ctx context.Context, productID int64) (*Price, error) {

@@ -13,10 +13,10 @@ Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo
 | **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) | Marcação da web; valores fixos típicos incluem nomes de classes e IDs |
 | **UI** (User Interface, Interface do Usuário) | Superfície visual; constantes de UI separam dados de apresentação |
 
-## Final — valor fixo por padrão
+## Final: valor fixo por padrão
 
 <details>
-<summary>❌ Ruim — constante sem tipo, reatribuível sem aviso</summary>
+<summary>❌ Ruim: constante sem tipo, reatribuível sem aviso</summary>
 
 ```python
 MAX_RETRIES = 3
@@ -28,7 +28,7 @@ MAX_RETRIES = 5  # reatribuição silenciosa
 </details>
 
 <details>
-<summary>✅ Bom — Final sinaliza intenção ao type checker</summary>
+<summary>✅ Bom: Final sinaliza intenção ao type checker</summary>
 
 ```python
 from typing import Final
@@ -39,10 +39,10 @@ API_URL: Final = "https://api.example.com"
 
 </details>
 
-## Dataclass frozen — objetos de valor não mutáveis
+## Dataclass frozen: objetos de valor não mutáveis
 
 <details>
-<summary>❌ Ruim — objeto de valor mutável por padrão</summary>
+<summary>❌ Ruim: objeto de valor mutável por padrão</summary>
 
 ```python
 class Money:
@@ -57,7 +57,7 @@ price.amount = 0  # alteração acidental sem aviso
 </details>
 
 <details>
-<summary>✅ Bom — frozen=True garante imutabilidade</summary>
+<summary>✅ Bom: frozen=True garante imutabilidade</summary>
 
 ```python
 from dataclasses import dataclass
@@ -79,7 +79,7 @@ Objetos passados como parâmetro são referências. Alterar um parâmetro muda o
 um efeito colateral invisível e difícil de rastrear. Prefira retornar um novo objeto.
 
 <details>
-<summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
+<summary>❌ Ruim: mutação acoplada e difícil de rastrear</summary>
 
 ```python
 def apply_discount(order):
@@ -90,7 +90,7 @@ def apply_discount(order):
 </details>
 
 <details>
-<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
 
 ```python
 def apply_discount(order):
@@ -110,7 +110,7 @@ def apply_discount(order):
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Ruim — o que significa 18? e 86400?</summary>
+<summary>❌ Ruim: o que significa 18? e 86400?</summary>
 
 ```python
 if user.age >= 18:
@@ -125,7 +125,7 @@ time.sleep(86400)
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas</summary>
+<summary>✅ Bom: constantes nomeadas</summary>
 
 ```python
 from typing import Final
@@ -151,7 +151,7 @@ Use a sintaxe `X | Y` no lugar de `Optional[X]` e `Union[X, Y]`. Com as anotaç�
 Python 3.14 (PEP 649), forward references não precisam mais de aspas.
 
 <details>
-<summary>❌ Ruim — sintaxe legada, verbose</summary>
+<summary>❌ Ruim: sintaxe legada, verbose</summary>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -169,7 +169,7 @@ def load_config() -> Dict[str, str]:
 </details>
 
 <details>
-<summary>✅ Bom — sintaxe moderna, sem imports extras</summary>
+<summary>✅ Bom: sintaxe moderna, sem imports extras</summary>
 
 ```python
 def find_user(user_id: int) -> User | None:
@@ -186,12 +186,12 @@ def load_config() -> dict[str, str]:
 
 ## t-strings vs f-strings
 
-`f-strings` interpolam diretamente — conveniente, mas inseguro em contextos onde o valor pode
+`f-strings` interpolam diretamente: conveniente, mas inseguro em contextos onde o valor pode
 conter conteúdo malicioso (SQL, HTML, shell). `t-strings` (Python 3.14, PEP 750) retornam um
 objeto `Template` que pode ser sanitizado antes de produzir a string final.
 
 <details>
-<summary>❌ Ruim — f-string em contexto sensível a injeção</summary>
+<summary>❌ Ruim: f-string em contexto sensível a injeção</summary>
 
 ```python
 def build_query(user_input: str) -> str:
@@ -203,7 +203,7 @@ def build_query(user_input: str) -> str:
 </details>
 
 <details>
-<summary>✅ Bom — t-string para contextos que exigem sanitização</summary>
+<summary>✅ Bom: t-string para contextos que exigem sanitização</summary>
 
 ```python
 from string.templatelib import Template
@@ -227,13 +227,13 @@ def build_safe_query(user_input: str) -> Template:
 > Use `t-strings` quando o resultado for passado para um contexto que sanitiza a entrada
 > (SQL builders, template engines, comandos shell).
 
-## pathlib — operações de arquivo
+## pathlib: operações de arquivo
 
-`pathlib.Path` é o idioma moderno para caminhos — stdlib, sem instalação. Python 3.14 adiciona
+`pathlib.Path` é o idioma moderno para caminhos: stdlib, sem instalação. Python 3.14 adiciona
 `.copy()` e `.move()` nativos; substitua `shutil` onde possível.
 
 <details>
-<summary>❌ Ruim — os.path e shutil fragmentados</summary>
+<summary>❌ Ruim: os.path e shutil fragmentados</summary>
 
 ```python
 import os
@@ -247,7 +247,7 @@ if os.path.exists(config_path):
 </details>
 
 <details>
-<summary>✅ Bom — pathlib.Path fluente e legível</summary>
+<summary>✅ Bom: pathlib.Path fluente e legível</summary>
 
 ```python
 from pathlib import Path

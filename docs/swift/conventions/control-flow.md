@@ -24,7 +24,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `r
 o compilador já descartou o branch anterior.
 
 <details>
-<summary>❌ Ruim — else desnecessário após return</summary>
+<summary>❌ Ruim: else desnecessário após return</summary>
 
 ```swift
 func getDiscount(for customerType: CustomerType) -> Double {
@@ -41,7 +41,7 @@ func getDiscount(for customerType: CustomerType) -> Double {
 </details>
 
 <details>
-<summary>✅ Bom — early return elimina o else</summary>
+<summary>✅ Bom: early return elimina o else</summary>
 
 ```swift
 func getDiscount(for customerType: CustomerType) -> Double {
@@ -54,13 +54,13 @@ func getDiscount(for customerType: CustomerType) -> Double {
 
 </details>
 
-## Ternário — atribuição de 2 valores
+## Ternário: atribuição de 2 valores
 
 Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou mais alternativas
 → `switch`. Nunca aninhar ternários.
 
 <details>
-<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```swift
 var label: String
@@ -74,7 +74,7 @@ if order.isPaid {
 </details>
 
 <details>
-<summary>✅ Bom — ternário na atribuição</summary>
+<summary>✅ Bom: ternário na atribuição</summary>
 
 ```swift
 let label = order.isPaid ? "Paid" : "Pending"
@@ -83,7 +83,7 @@ let label = order.isPaid ? "Paid" : "Pending"
 </details>
 
 <details>
-<summary>❌ Ruim — ternário aninhado para 3+ alternativas</summary>
+<summary>❌ Ruim: ternário aninhado para 3+ alternativas</summary>
 
 ```swift
 let priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal"
@@ -92,7 +92,7 @@ let priority = isUrgent ? isCritical ? "Critical" : "High" : "Normal"
 </details>
 
 <details>
-<summary>✅ Bom — switch expression para 3+ alternativas</summary>
+<summary>✅ Bom: switch expression para 3+ alternativas</summary>
 
 ```swift
 let priority = switch (isUrgent, isCritical) {
@@ -107,7 +107,7 @@ default: "Normal"
 ## `guard let` para unwrap
 
 <details>
-<summary>❌ Ruim — if let aninhado aumenta indentação</summary>
+<summary>❌ Ruim: if let aninhado aumenta indentação</summary>
 
 ```swift
 func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
@@ -131,7 +131,7 @@ func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
 </details>
 
 <details>
-<summary>✅ Bom — guard flatten o fluxo feliz</summary>
+<summary>✅ Bom: guard flatten o fluxo feliz</summary>
 
 ```swift
 func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
@@ -150,7 +150,7 @@ func processOrder(userId: Int64?, items: [Item]?) -> Result<Order, OrderError> {
 ## `guard` com múltiplos bindings
 
 <details>
-<summary>❌ Ruim — guard aninhado para múltiplos optionals</summary>
+<summary>❌ Ruim: guard aninhado para múltiplos optionals</summary>
 
 ```swift
 guard let name = user.name else { return }
@@ -161,7 +161,7 @@ guard let phone = user.phone else { return }
 </details>
 
 <details>
-<summary>✅ Bom — guard com vírgula une condições no mesmo bloco</summary>
+<summary>✅ Bom: guard com vírgula une condições no mesmo bloco</summary>
 
 ```swift
 guard let name = user.name,
@@ -176,11 +176,11 @@ guard let name = user.name,
 ## Dictionary como lookup
 
 `Dictionary` mapeia chave → valor sem if/else chain. Usar quando o mapeamento não é um enum
-(chaves dinâmicas, strings, inteiros). Para enums, preferir `switch` — garante exaustividade
+(chaves dinâmicas, strings, inteiros). Para enums, preferir `switch`, que garante exaustividade
 em tempo de compilação.
 
 <details>
-<summary>❌ Ruim — if chain para mapeamento de chave string</summary>
+<summary>❌ Ruim: if chain para mapeamento de chave string</summary>
 
 ```swift
 func httpMessage(for code: Int) -> String {
@@ -195,7 +195,7 @@ func httpMessage(for code: Int) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — Dictionary + ?? para o fallback</summary>
+<summary>✅ Bom: Dictionary + ?? para o fallback</summary>
 
 ```swift
 func httpMessage(for code: Int) -> String {
@@ -216,7 +216,7 @@ func httpMessage(for code: Int) -> String {
 ## `switch` exaustivo com enums
 
 <details>
-<summary>❌ Ruim — if/else chain sem exaustividade</summary>
+<summary>❌ Ruim: if/else chain sem exaustividade</summary>
 
 ```swift
 func describeStatus(_ status: OrderStatus) -> String {
@@ -233,7 +233,7 @@ func describeStatus(_ status: OrderStatus) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — switch garante exaustividade em tempo de compilação</summary>
+<summary>✅ Bom: switch garante exaustividade em tempo de compilação</summary>
 
 ```swift
 func describeStatus(_ status: OrderStatus) -> String {
@@ -251,7 +251,7 @@ func describeStatus(_ status: OrderStatus) -> String {
 ## Pattern matching com associated values
 
 <details>
-<summary>❌ Ruim — extração manual via propriedade</summary>
+<summary>❌ Ruim: extração manual via propriedade</summary>
 
 ```swift
 func handleResult(_ result: OrderResult) -> String {
@@ -266,7 +266,7 @@ func handleResult(_ result: OrderResult) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — switch com pattern binding nos associated values</summary>
+<summary>✅ Bom: switch com pattern binding nos associated values</summary>
 
 ```swift
 func handleResult(_ result: OrderResult) -> String {
@@ -283,10 +283,10 @@ func handleResult(_ result: OrderResult) -> String {
 ## Circuit break
 
 Antes de escrever um loop, verifique se `first(where:)`, `contains(where:)` ou `allSatisfy` já
-resolve. Essas funções param no primeiro match — sem percorrer o resto.
+resolve. Essas funções param no primeiro match, sem percorrer o resto.
 
 <details>
-<summary>❌ Ruim — iteração manual com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim: iteração manual com flag percorre tudo mesmo após encontrar</summary>
 
 ```swift
 func findFirstExpiredProduct(_ products: [Product]) -> Product? {
@@ -305,7 +305,7 @@ func findFirstExpiredProduct(_ products: [Product]) -> Product? {
 </details>
 
 <details>
-<summary>✅ Bom — first(where:) sai no primeiro match</summary>
+<summary>✅ Bom: first(where:) sai no primeiro match</summary>
 
 ```swift
 // para no primeiro match
@@ -323,7 +323,7 @@ let allActive = products.allSatisfy(\.isActive)
 ## `for...where` como filtro inline
 
 <details>
-<summary>❌ Ruim — guard/continue dentro do loop</summary>
+<summary>❌ Ruim: guard/continue dentro do loop</summary>
 
 ```swift
 for order in orders {
@@ -335,7 +335,7 @@ for order in orders {
 </details>
 
 <details>
-<summary>✅ Bom — where filtra sem corpo extra</summary>
+<summary>✅ Bom: where filtra sem corpo extra</summary>
 
 ```swift
 for order in orders where order.status == .paid {
@@ -351,7 +351,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 é a escolha natural.
 
 <details>
-<summary>❌ Ruim — for com índice quando o critério é condição de estado</summary>
+<summary>❌ Ruim: for com índice quando o critério é condição de estado</summary>
 
 ```swift
 for attempt in 0..<maxAttempts {
@@ -363,7 +363,7 @@ for attempt in 0..<maxAttempts {
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```swift
 var attempt = 0
@@ -383,10 +383,10 @@ while attempt < maxAttempts {
 Use `repeat-while` quando a primeira iteração deve sempre executar, independente da condição.
 
 <details>
-<summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
 
 ```swift
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
+// verifica antes de executar: se a fila já estiver vazia, nunca executa
 while !taskQueue.isEmpty {
     let task = taskQueue.dequeue()
     executeTask(task)
@@ -396,10 +396,10 @@ while !taskQueue.isEmpty {
 </details>
 
 <details>
-<summary>✅ Bom — repeat-while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: repeat-while quando a primeira execução é garantida</summary>
 
 ```swift
-// drena a fila — processa pelo menos um item antes de verificar
+// drena a fila: processa pelo menos um item antes de verificar
 repeat {
     let task = taskQueue.dequeue()
     executeTask(task)
@@ -411,7 +411,7 @@ repeat {
 ## `defer` para cleanup garantido
 
 <details>
-<summary>❌ Ruim — cleanup duplicado em cada caminho de saída</summary>
+<summary>❌ Ruim: cleanup duplicado em cada caminho de saída</summary>
 
 ```swift
 func processFile(at url: URL) throws {
@@ -430,7 +430,7 @@ func processFile(at url: URL) throws {
 </details>
 
 <details>
-<summary>✅ Bom — defer garante cleanup em qualquer caminho</summary>
+<summary>✅ Bom: defer garante cleanup em qualquer caminho</summary>
 
 ```swift
 func processFile(at url: URL) throws {

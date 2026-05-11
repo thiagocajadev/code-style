@@ -20,7 +20,7 @@ quando o fluxo exige reatribuição.
 ## `var` onde `final` resolve
 
 <details>
-<summary>❌ Ruim — var desnecessário</summary>
+<summary>❌ Ruim: var desnecessário</summary>
 
 ```dart
 var total = 0.0;
@@ -33,7 +33,7 @@ isActive = user.status == 'active';
 </details>
 
 <details>
-<summary>✅ Bom — final com inicialização direta</summary>
+<summary>✅ Bom: final com inicialização direta</summary>
 
 ```dart
 final total = items.fold(0.0, (sum, item) => sum + item.price);
@@ -46,7 +46,7 @@ final isActive = user.status == 'active';
 ## `const` para constantes de compilação
 
 <details>
-<summary>❌ Ruim — número mágico inline</summary>
+<summary>❌ Ruim: número mágico inline</summary>
 
 ```dart
 bool shouldRetry(int attempt) {
@@ -57,7 +57,7 @@ bool shouldRetry(int attempt) {
 </details>
 
 <details>
-<summary>✅ Bom — constante nomeada com intenção</summary>
+<summary>✅ Bom: constante nomeada com intenção</summary>
 
 ```dart
 const maxRetries = 3;
@@ -72,7 +72,7 @@ bool shouldRetry(int attempt) {
 ## `late` para inicialização postergada
 
 <details>
-<summary>❌ Ruim — nullable onde o valor sempre existirá</summary>
+<summary>❌ Ruim: nullable onde o valor sempre existirá</summary>
 
 ```dart
 class OrderService {
@@ -87,7 +87,7 @@ class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — late final declara intenção sem nullable</summary>
+<summary>✅ Bom: late final declara intenção sem nullable</summary>
 
 ```dart
 class OrderService {
@@ -104,7 +104,7 @@ class OrderService {
 ## Valores mágicos
 
 <details>
-<summary>❌ Ruim — literais inline sem contexto</summary>
+<summary>❌ Ruim: literais inline sem contexto</summary>
 
 ```dart
 if (user.role == 'admin') { ... }
@@ -117,7 +117,7 @@ final discount = price * 0.15;
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas com intenção</summary>
+<summary>✅ Bom: constantes nomeadas com intenção</summary>
 
 ```dart
 const adminRole = 'admin';
@@ -139,7 +139,7 @@ Prefira inferência quando o tipo é óbvio pela atribuição. Anote explicitame
 função e em declarações públicas de API.
 
 <details>
-<summary>❌ Ruim — anotação redundante em variável local</summary>
+<summary>❌ Ruim: anotação redundante em variável local</summary>
 
 ```dart
 final List<String> names = ['Alice', 'Bob'];
@@ -150,7 +150,7 @@ final int count = items.length;
 </details>
 
 <details>
-<summary>✅ Bom — inferência onde é óbvio; anotação em APIs</summary>
+<summary>✅ Bom: inferência onde é óbvio; anotação em APIs</summary>
 
 ```dart
 final names = ['Alice', 'Bob'];       // List<String> inferido

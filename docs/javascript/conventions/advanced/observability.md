@@ -23,17 +23,17 @@
 objetos estruturados: cada campo vira uma propriedade pesquisável.
 
 <details>
-<summary>❌ Ruim — string concatenada, ilegível para ferramentas</summary>
+<summary>❌ Ruim: string concatenada, ilegível para ferramentas</summary>
 
 ```js
-logger.info(`Order ${order.id} processed by user ${user.id} — total: $${order.total}`);
+logger.info(`Order ${order.id} processed by user ${user.id}, total: $${order.total}`);
 logger.error(`Payment failed: ${error.message} for order ${order.id}`);
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — objeto estruturado com campos semânticos</summary>
+<summary>✅ Bom: objeto estruturado com campos semânticos</summary>
 
 ```js
 const orderContext = { orderId: order.id, userId: user.id, total: order.total };
@@ -48,7 +48,7 @@ logger.error(paymentErrorContext, "payment failed");
 ## Níveis de log
 
 <details>
-<summary>❌ Ruim — console.log para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim: console.log para tudo, sem distinção de severidade</summary>
 
 ```js
 console.log("Checkout started");
@@ -60,7 +60,7 @@ console.log(`User ${userId} not found`);
 </details>
 
 <details>
-<summary>✅ Bom — nível correto por situação</summary>
+<summary>✅ Bom: nível correto por situação</summary>
 
 ```js
 const checkoutContext = { cartId };
@@ -78,7 +78,7 @@ logger.error(userNotFoundContext, "user not found during checkout");
 ## O que nunca logar
 
 <details>
-<summary>❌ Ruim — PII e credenciais em log</summary>
+<summary>❌ Ruim: PII e credenciais em log</summary>
 
 ```js
 logger.info({ email: user.email, password: user.password }, "login attempt");
@@ -90,7 +90,7 @@ logger.info({ token }, "user authenticated");
 </details>
 
 <details>
-<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom: IDs e referências, nunca dados sensíveis</summary>
 
 ```js
 const loginContext = { userId: user.id };
@@ -111,7 +111,7 @@ Sem um identificador comum, logs de uma mesma requisição são ilhas: impossív
 `AsyncLocalStorage` propaga o `correlationId` para todos os logs sem passar por parâmetro.
 
 <details>
-<summary>❌ Ruim — logs sem contexto de requisição</summary>
+<summary>❌ Ruim: logs sem contexto de requisição</summary>
 
 ```js
 async function processOrder(orderId) {
@@ -123,13 +123,13 @@ async function processOrder(orderId) {
 
   return invoice;
 }
-// {"msg":"processing order"} — impossível saber qual request originou
+// {"msg":"processing order"}: impossível saber qual request originou
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — correlationId propagado via AsyncLocalStorage</summary>
+<summary>✅ Bom: correlationId propagado via AsyncLocalStorage</summary>
 
 ```js
 // middleware/correlation.js
@@ -151,7 +151,7 @@ export const logger = pino({
   },
 });
 
-// handler — correlationId incluído automaticamente em todos os logs
+// handler: correlationId incluído automaticamente em todos os logs
 async function processOrder(orderId) {
   const startContext = { orderId };
   logger.info(startContext, "processing order");

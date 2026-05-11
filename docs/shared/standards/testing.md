@@ -132,14 +132,14 @@ independentes em uma função. A complexidade mínima é 1 (linha reta); cada `i
 
 | Faixa | Avaliação                                             |
 | ----- | ----------------------------------------------------- |
-| 1–10  | Simples — fácil de testar e manter                    |
-| 11–20 | Moderada — requer atenção                             |
-| 21–50 | Alta — difícil de testar; candidato a refatoração     |
-| > 50  | Intratável — cobertura completa é inviável na prática |
+| 1–10  | Simples; fácil de testar e manter                    |
+| 11–20 | Moderada; requer atenção                             |
+| 21–50 | Alta; difícil de testar; candidato a refatoração     |
+| > 50  | Intratável; cobertura completa é inviável na prática |
 
 A métrica tem uma consequência direta nos testes: uma função com complexidade N
 exige pelo menos N casos de teste para cobertura de branch (cobertura de
-ramificações). Funções com complexidade alta concentram risco — uma mudança
+ramificações). Funções com complexidade alta concentram risco: uma mudança
 pequena pode quebrar múltiplos caminhos.
 
 Quando a complexidade supera 10, as ações são as mesmas que para funções longas:

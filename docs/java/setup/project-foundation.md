@@ -42,7 +42,7 @@ Nunca injete com `@Autowired` em campo. Construtor torna as dependências explí
 testável sem o container Spring.
 
 <details>
-<summary>❌ Ruim — @Autowired em campo: dependências ocultas, dificulta teste</summary>
+<summary>❌ Ruim: @Autowired em campo: dependências ocultas, dificulta teste</summary>
 
 ```java
 @Service
@@ -59,7 +59,7 @@ public class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — injeção via construtor: dependências explícitas</summary>
+<summary>✅ Bom: injeção via construtor: dependências explícitas</summary>
 
 ```java
 @Service
@@ -95,7 +95,7 @@ public class OrderService {
 diretamente. Use `@ConfigurationProperties` para agrupar propriedades por domínio.
 
 <details>
-<summary>❌ Ruim — System.getenv() espalhado em todo lugar</summary>
+<summary>❌ Ruim: System.getenv() espalhado em todo lugar</summary>
 
 ```java
 @Service
@@ -111,7 +111,7 @@ public class PaymentService {
 </details>
 
 <details>
-<summary>✅ Bom — @ConfigurationProperties agrupa e valida a configuração</summary>
+<summary>✅ Bom: @ConfigurationProperties agrupa e valida a configuração</summary>
 
 ```java
 // config/PaymentProperties.java
@@ -144,7 +144,7 @@ spring:
 Organize por domínio (feature), não por camada técnica. O código de um domínio fica co-localizado.
 
 <details>
-<summary>❌ Ruim — pacotes por camada técnica: acopla tudo</summary>
+<summary>❌ Ruim: pacotes por camada técnica: acopla tudo</summary>
 
 ```
 src/main/java/com/example/
@@ -162,7 +162,7 @@ src/main/java/com/example/
 </details>
 
 <details>
-<summary>✅ Bom — pacotes por domínio: cada domínio é dono do seu código</summary>
+<summary>✅ Bom: pacotes por domínio: cada domínio é dono do seu código</summary>
 
 ```
 src/main/java/com/example/
@@ -200,7 +200,7 @@ public class Application {
 }
 ```
 
-## Virtual threads — Spring Boot 4
+## Virtual threads: Spring Boot 4
 
 Com `spring.threads.virtual.enabled=true`, o Tomcat usa virtual threads por padrão. Código
 bloqueante (JDBC, HTTP externo) escala como código reativo sem callbacks.

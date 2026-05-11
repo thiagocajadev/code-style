@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.9] - 2026-05-11
+
+### Changed
+
+- `.ai/skills/writing-soul.md` — rubrica reescrita: rótulos AI-poéticos removidos (Mouth vs Soul, Visual serenity, Professional peerage, Stop-Slop, Personality); adicionada seção `## Who reads what we write` nomeando os dois leitores (recém-chegado e retornante); travessões eliminados do próprio corpo da rubrica; advérbios PT adicionados à lista banida (realmente, simplesmente, basicamente, literalmente, fundamentalmente, profundamente, verdadeiramente) e aberturas PT ("Vamos explorar...", "Antes de mais nada,"); frases vazias ("Make complexity accessible") substituídas por instrução concreta
+- `docs/**` — pass de revisão de copy em 344 arquivos `.md` nas 18 pastas: **4595 → 9 travessões** (os 9 remanescentes são literais em exemplos `<title>X — Y</title>` e `<meta content="X — Y">` em `docs/html/conventions/advanced/seo.md` e `visual-density.md`, conteúdo didático intencional). Substituições contextuais: dois-pontos para aposto/elaboração, vírgula para conexão tight, parênteses para aside, split em duas frases para ideias distintas. Padrão `<summary>❌ Ruim — X</summary>` virou `<summary>❌ Ruim: X</summary>` em todos os blocos `<details>`. Clichés "contar a história por si só" e "micro-história" substituídos por frase concreta ("quando o nome carrega a intenção, o comentário deixa de fazer falta"). Audit `npm run audit:docs` clean: 2327 blocos Good em 373 arquivos, 0 violações
+
 ## [1.28.8] - 2026-05-11
 
 ### Changed

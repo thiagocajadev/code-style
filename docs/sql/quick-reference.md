@@ -6,8 +6,8 @@
 
 | Objeto | Convenção | Padrão | Exemplo |
 | --- | --- | --- | --- |
-| Tabelas | PascalCase plural | — | `FootballTeams`, `Players`, `Orders` |
-| Colunas | PascalCase singular | — | `SquadNumber`, `IsActive`, `CreatedAt` |
+| Tabelas | PascalCase plural | sem prefixo | `FootballTeams`, `Players`, `Orders` |
+| Colunas | PascalCase singular | sem prefixo | `SquadNumber`, `IsActive`, `CreatedAt` |
 | Stored Procedure | UPPER_SNAKE | `SP_VERBO_TABELA` | `SP_GET_ORDERS_BY_ID` |
 | Function | UPPER_SNAKE | `FN_VERBO_CONCEITO` | `FN_CALCULATE_ORDER_TOTAL` |
 | Index | UPPER_SNAKE | `IX_TABELA_CAMPO` | `IX_PLAYERS_TEAM_ID` |

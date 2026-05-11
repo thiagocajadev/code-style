@@ -1,7 +1,6 @@
 # Variables
 
-Dúvida? Use `final`. Só omita quando precisar reatribuir. **Immutability** (imutabilidade) reduz
-bugs e torna o fluxo previsível.
+Dúvida? Use `final`. Só omita quando precisar reatribuir. **Immutability** (imutabilidade) reduz bugs e torna o fluxo previsível.
 
 ## Conceitos fundamentais
 
@@ -17,7 +16,7 @@ bugs e torna o fluxo previsível.
 ## Mutação desnecessária
 
 <details>
-<summary>❌ Ruim — variável reatribuída sem necessidade</summary>
+<summary>❌ Ruim: variável reatribuída sem necessidade</summary>
 
 ```java
 String userName = "Alice"; // nunca reatribuído
@@ -27,7 +26,7 @@ int maxRetries = 3;        // nunca reatribuído
 </details>
 
 <details>
-<summary>✅ Bom — final por padrão, mutável só quando necessário</summary>
+<summary>✅ Bom: final por padrão, mutável só quando necessário</summary>
 
 ```java
 final var userName = "Alice";
@@ -47,7 +46,7 @@ Parâmetros são passados por referência para objetos. Alterar o estado de um p
 objeto do chamador: efeito colateral invisível e difícil de rastrear.
 
 <details>
-<summary>❌ Ruim — mutação do parâmetro recebido</summary>
+<summary>❌ Ruim: mutação do parâmetro recebido</summary>
 
 ```java
 private void applyDiscount(Order order) {
@@ -59,7 +58,7 @@ private void applyDiscount(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
 
 ```java
 private Order applyDiscount(Order order) {
@@ -78,7 +77,7 @@ private Order applyDiscount(Order order) {
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Ruim — o que significa 18? e 86400000?</summary>
+<summary>❌ Ruim: o que significa 18? e 86400000?</summary>
 
 ```java
 if (user.getAge() >= 18) { /* ... */ }
@@ -90,7 +89,7 @@ scheduler.schedule(this::syncData, 86400000, TimeUnit.MILLISECONDS);
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas</summary>
+<summary>✅ Bom: constantes nomeadas</summary>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -105,13 +104,13 @@ scheduler.schedule(this::syncData, ONE_DAY_MS, TimeUnit.MILLISECONDS);
 
 </details>
 
-## Records — imutabilidade estrutural
+## Records: imutabilidade estrutural
 
 Para objetos de dados que não mudam após a criação, use `record`. O compilador gera construtor,
 getters, `equals`, `hashCode` e `toString` automaticamente.
 
 <details>
-<summary>❌ Ruim — classe mutável para transportar dados</summary>
+<summary>❌ Ruim: classe mutável para transportar dados</summary>
 
 ```java
 public class InvoiceData {
@@ -127,7 +126,7 @@ public class InvoiceData {
 </details>
 
 <details>
-<summary>✅ Bom — record elimina o boilerplate e garante imutabilidade</summary>
+<summary>✅ Bom: record elimina o boilerplate e garante imutabilidade</summary>
 
 ```java
 public record InvoiceData(
@@ -143,13 +142,13 @@ final var invoice = new InvoiceData("ord-1", "cust-99", new BigDecimal("149.90")
 
 </details>
 
-## var — inferência de tipo
+## var: inferência de tipo
 
 `var` reduz verbosidade quando o tipo é óbvio pelo lado direito da atribuição. Não use quando o
 tipo inferido não é imediatamente claro.
 
 <details>
-<summary>❌ Ruim — var obscurece o tipo</summary>
+<summary>❌ Ruim: var obscurece o tipo</summary>
 
 ```java
 final var result = repository.fetch(); // qual é o tipo?
@@ -159,10 +158,10 @@ final var x = buildSomething();        // sem contexto
 </details>
 
 <details>
-<summary>✅ Bom — var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
+<summary>✅ Bom: var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
 
 ```java
-final var orders = orderRepository.findAll();    // List<Order> — óbvio pelo nome
+final var orders = orderRepository.findAll();    // List<Order>: óbvio pelo nome
 final var user = new User("Alice", "alice@example.com");
 
 final Optional<User> found = userRepository.findById(id); // tipo explícito agrega contexto
@@ -177,7 +176,7 @@ wrappers (tipos de referência: `Integer`, `Long`, `Boolean`) apenas quando nuli
 coleções genéricas for necessário.
 
 <details>
-<summary>❌ Ruim — wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
+<summary>❌ Ruim: wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
 
 ```java
 Integer count = 0;           // autoboxing desnecessário
@@ -188,7 +187,7 @@ Long totalMs = 86_400_000L;  // valor fixo, nunca null
 </details>
 
 <details>
-<summary>✅ Bom — primitivo por padrão, wrapper só quando necessário</summary>
+<summary>✅ Bom: primitivo por padrão, wrapper só quando necessário</summary>
 
 ```java
 int count = 0;

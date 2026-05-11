@@ -5,7 +5,7 @@
 Convenções C#/.NET aplicando os mesmos princípios do guia. Os exemplos usam C# 14 e .NET 10 como
 referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, modificadores, tipos, LINQ, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, modificadores, tipos, LINQ, controle de fluxo
 
 ## Setup
 

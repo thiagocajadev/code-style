@@ -22,7 +22,7 @@ operações. Lotes menores liberam o lock entre cada commit.
 ## Batch INSERT multi-row
 
 <details>
-<summary>❌ Ruim — um INSERT por linha, um round trip por registro</summary>
+<summary>❌ Ruim: um INSERT por linha, um round trip por registro</summary>
 
 ```sql
 INSERT INTO Players (Id, Name, Position, TeamId) VALUES (1, 'Alice', 'GK', @TeamId);
@@ -33,7 +33,7 @@ INSERT INTO Players (Id, Name, Position, TeamId) VALUES (3, 'Carol', 'ST', @Team
 </details>
 
 <details>
-<summary>✅ Bom — um INSERT com múltiplos VALUES</summary>
+<summary>✅ Bom: um INSERT com múltiplos VALUES</summary>
 
 ```sql
 INSERT INTO Players
@@ -57,7 +57,7 @@ Quando os dados vêm de outra tabela, `INSERT ... SELECT` é preferível: uma op
 construção de lista de VALUES no código.
 
 <details>
-<summary>✅ Bom — INSERT ... SELECT de tabela de origem</summary>
+<summary>✅ Bom: INSERT ... SELECT de tabela de origem</summary>
 
 ```sql
 INSERT INTO Players
@@ -85,7 +85,7 @@ WHERE
 ## DELETE em lotes
 
 <details>
-<summary>❌ Ruim — DELETE único em tabela grande: lock de longa duração</summary>
+<summary>❌ Ruim: DELETE único em tabela grande: lock de longa duração</summary>
 
 ```sql
 -- bloqueia Players pela duração inteira da operação
@@ -99,7 +99,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
+<summary>✅ Bom: DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -122,7 +122,7 @@ END;
 ## UPDATE em lotes
 
 <details>
-<summary>❌ Ruim — UPDATE único em tabela grande</summary>
+<summary>❌ Ruim: UPDATE único em tabela grande</summary>
 
 ```sql
 -- deactivate players from dissolved teams: pode modificar milhões de linhas
@@ -143,7 +143,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
+<summary>✅ Bom: UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -173,7 +173,7 @@ END;
 ## Staging table
 
 <details>
-<summary>❌ Ruim — inserir dados externos diretamente na tabela de produção sem validação</summary>
+<summary>❌ Ruim: inserir dados externos diretamente na tabela de produção sem validação</summary>
 
 ```sql
 -- dados brutos do parceiro entram direto: posições inválidas ou times inexistentes quebram no FK
@@ -196,7 +196,7 @@ FROM
 </details>
 
 <details>
-<summary>✅ Bom — staging → validar → inserir apenas registros válidos</summary>
+<summary>✅ Bom: staging → validar → inserir apenas registros válidos</summary>
 
 ```sql
 -- Etapa 1: receber dados brutos na staging

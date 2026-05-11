@@ -1,4 +1,4 @@
-# Telegram — Telegraf
+# Telegram: Telegraf
 
 > Escopo: JavaScript/Node.js. Guia baseado em **Telegraf v4.16** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
@@ -43,7 +43,7 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 ## Command Router
 
 <details>
-<summary>❌ Ruim — ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
+<summary>❌ Ruim: ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
 
 ```js
 bot.command('order', async (ctx) => {
@@ -57,7 +57,7 @@ bot.command('order', async (ctx) => {
 </details>
 
 <details>
-<summary>✅ Bom — context sem abreviação; handlers importados; router só delega</summary>
+<summary>✅ Bom: context sem abreviação; handlers importados; router só delega</summary>
 
 ```js
 import { helpCommand } from './commands/help.js';
@@ -76,7 +76,7 @@ bot.command('status', statusCommand);
 Use o `message` filter de `telegraf/filters` para reagir a tipos específicos de conteúdo sem verificações manuais.
 
 <details>
-<summary>❌ Ruim — ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
+<summary>❌ Ruim: ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
 
 ```js
 bot.on('message', (ctx) => {
@@ -95,7 +95,7 @@ bot.on('message', (ctx) => {
 </details>
 
 <details>
-<summary>✅ Bom — message filter declarativo; compute extraído; format separado do argumento</summary>
+<summary>✅ Bom: message filter declarativo; compute extraído; format separado do argumento</summary>
 
 ```js
 import { message } from 'telegraf/filters';
@@ -114,20 +114,20 @@ bot.on(message('text'), (context) => {
 ## Implementando um Command
 
 <details>
-<summary>❌ Ruim — ctx abreviado; property access direto no argumento; format inline na chamada</summary>
+<summary>❌ Ruim: ctx abreviado; property access direto no argumento; format inline na chamada</summary>
 
 ```js
 export async function orderCommand(ctx) {
   const orderId = ctx.message.text.split(' ')[1];
   const order = await db.findOrder(orderId);
-  await ctx.reply(`Pedido #${order.id} — Status: ${order.status} — Cliente: ${order.customerName}`);
+  await ctx.reply(`Pedido #${order.id}, Status: ${order.status}, Cliente: ${order.customerName}`);
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — compute extraído antes do argumento; guard clause; format em função separada</summary>
+<summary>✅ Bom: compute extraído antes do argumento; guard clause; format em função separada</summary>
 
 ```js
 export async function orderCommand(context) {
@@ -165,10 +165,10 @@ function buildOrderSummary(order) {
 
 ## Inline Keyboard e Callbacks
 
-Botões inline enviam um `callback_query` silencioso ao bot. Sempre chame `answerCbQuery` ao final — sem isso o Telegram exibe o indicador de carregamento no botão indefinidamente.
+Botões inline enviam um `callback_query` silencioso ao bot. Sempre chame `answerCbQuery` ao final. Sem isso, o Telegram exibe o indicador de carregamento no botão indefinidamente.
 
 <details>
-<summary>❌ Ruim — ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
+<summary>❌ Ruim: ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
 
 ```js
 export async function orderCommand(ctx) {
@@ -189,7 +189,7 @@ bot.action(/^cancel_(.+)$/, async (ctx) => {
 </details>
 
 <details>
-<summary>✅ Bom — compute extraído; format nomeado antes do reply; answerCbQuery antes do editMessageText</summary>
+<summary>✅ Bom: compute extraído; format nomeado antes do reply; answerCbQuery antes do editMessageText</summary>
 
 ```js
 import { Markup } from 'telegraf';
@@ -231,7 +231,7 @@ bot.action(/^cancel_(.+)$/, async (context) => {
 Use `bot.createWebhook()` com `secretToken` para validar que os updates vêm do Telegram.
 
 <details>
-<summary>❌ Ruim — webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
+<summary>❌ Ruim: webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
 
 ```js
 import express from 'express';
@@ -247,7 +247,7 @@ app.listen(3000);
 </details>
 
 <details>
-<summary>✅ Bom — bot.createWebhook() com secretToken; await extraído do argumento; shutdown limpo</summary>
+<summary>✅ Bom: bot.createWebhook() com secretToken; await extraído do argumento; shutdown limpo</summary>
 
 ```js
 import { createServer } from 'http';
@@ -277,5 +277,5 @@ process.once('SIGTERM', () => {
 
 ## Veja também
 
-- [shared/platform/bots-advanced.md — Telegram](../../../shared/platform/bots-advanced.md#telegram) — BotFather, Inline Keyboard, tipos de chat (conceitual)
-- [shared/platform/bots.md](../../../shared/platform/bots.md) — webhook vs polling, session state, rate limit
+- [shared/platform/bots-advanced.md (Telegram)](../../../shared/platform/bots-advanced.md#telegram): BotFather, Inline Keyboard, tipos de chat (conceitual)
+- [shared/platform/bots.md](../../../shared/platform/bots.md): webhook vs polling, session state, rate limit

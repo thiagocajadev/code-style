@@ -1,6 +1,6 @@
-# Swift — Quick Reference
+# Swift: Quick Reference
 
-> Escopo: Swift 6.1, Swift 6 language mode. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.
+> Escopo: Swift 6.1, Swift 6 language mode. Cheat-sheet tabular: decisões rápidas sem contexto narrativo.
 
 ## Nomenclatura
 
@@ -57,7 +57,7 @@
 | `?` em tipo | declara opcional: `String?` pode ser `nil` |
 | `??` | coalescência: valor padrão quando `nil` |
 | `?.` | safe member access: retorna `nil` se receptor for `nil` |
-| `!` | forced unwrap — proibido em produção |
+| `!` | forced unwrap; proibido em produção |
 | `guard let` | unwrap + retorno antecipado na falha |
 | `if let` | bloco executado somente quando não-nil |
 

@@ -4,13 +4,13 @@
 
 Performance em Dart começa por usar `const` constructors: objetos const são reusados pelo
 compilador (canonicalizados). Evitar `dynamic` elimina boxing e checagens de runtime. Streams
-e Futures têm custo de microtask — lazy evaluation adia trabalho desnecessário.
+e Futures têm custo de microtask; lazy evaluation adia trabalho desnecessário.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| `const` constructor | objeto criado em tempo de compilação; canonicalizado — a mesma instância é reusada |
+| `const` constructor | objeto criado em tempo de compilação; canonicalizado; a mesma instância é reusada |
 | `Uint8List` | buffer de bytes de baixo nível; muito mais eficiente que `List<int>` para I/O |
 | **lazy evaluation** (avaliação adiada) | iterable lazy com `where`/`map` sem materializar lista intermediária |
 | `dart:typed_data` | coleções tipadas de primitivos (int, double) sem boxing |
@@ -19,7 +19,7 @@ e Futures têm custo de microtask — lazy evaluation adia trabalho desnecessár
 ## `dynamic` e `Object`
 
 <details>
-<summary>❌ Ruim — dynamic desabilita verificação de tipo</summary>
+<summary>❌ Ruim: dynamic desabilita verificação de tipo</summary>
 
 ```dart
 List<dynamic> processItems(List<dynamic> items) {
@@ -30,7 +30,7 @@ List<dynamic> processItems(List<dynamic> items) {
 </details>
 
 <details>
-<summary>✅ Bom — genérico tipado; erros em compile-time</summary>
+<summary>✅ Bom: genérico tipado; erros em compile-time</summary>
 
 ```dart
 List<String> extractNames(List<Map<String, dynamic>> items) {
@@ -43,7 +43,7 @@ List<String> extractNames(List<Map<String, dynamic>> items) {
 ## `const` constructors para widgets e objetos imutáveis
 
 <details>
-<summary>❌ Ruim — objeto novo criado a cada chamada</summary>
+<summary>❌ Ruim: objeto novo criado a cada chamada</summary>
 
 ```dart
 final padding = EdgeInsets.all(16);     // nova instância sempre
@@ -53,7 +53,7 @@ final color = Colors.blue;             // nova instância sempre
 </details>
 
 <details>
-<summary>✅ Bom — const canonicaliza e reusa a mesma instância</summary>
+<summary>✅ Bom: const canonicaliza e reusa a mesma instância</summary>
 
 ```dart
 const padding = EdgeInsets.all(16);
@@ -65,7 +65,7 @@ const color = Colors.blue;
 ## Lazy evaluation em coleções grandes
 
 <details>
-<summary>❌ Ruim — cada operação cria lista intermediária</summary>
+<summary>❌ Ruim: cada operação cria lista intermediária</summary>
 
 ```dart
 List<String> findTopSpenders(List<Customer> customers, int limit) {
@@ -80,7 +80,7 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 </details>
 
 <details>
-<summary>✅ Bom — lazy até o toList() final</summary>
+<summary>✅ Bom: lazy até o toList() final</summary>
 
 ```dart
 List<String> findTopSpenders(List<Customer> customers, int limit) {
@@ -99,7 +99,7 @@ List<String> findTopSpenders(List<Customer> customers, int limit) {
 ## `Uint8List` para I/O de bytes
 
 <details>
-<summary>❌ Ruim — List<int> com boxing para cada byte</summary>
+<summary>❌ Ruim: List<int> com boxing para cada byte</summary>
 
 ```dart
 Future<List<int>> readFile(String path) async {
@@ -110,7 +110,7 @@ Future<List<int>> readFile(String path) async {
 </details>
 
 <details>
-<summary>✅ Bom — Uint8List é buffer nativo sem boxing</summary>
+<summary>✅ Bom: Uint8List é buffer nativo sem boxing</summary>
 
 ```dart
 Future<Uint8List> readFile(String path) async {

@@ -25,7 +25,7 @@ Um projeto Python bem fundado começa com `pyproject.toml` concentrando deps, li
 my-app/
 ├── pyproject.toml          ← deps, ruff, mypy, pytest
 ├── .editorconfig           ← indentação, charset, trailing whitespace
-├── .env.example            ← template — nunca commite .env
+├── .env.example            ← template; nunca commite .env
 ├── scripts/
 │   └── seed.py
 ├── main.py                 ← entry point
@@ -51,7 +51,7 @@ my-app/
 Antes de iniciar, configure o editor:
 
 - [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
-- `ruff`: linting e formatação em um único binário — mais rápido que flake8 + black + isort
+- `ruff`: linting e formatação em um único binário, mais rápido que flake8 + black + isort
 
 ```bash
 python -m venv .venv
@@ -63,13 +63,13 @@ pip install ruff
 > [!NOTE] `uv` é uma alternativa moderna que substitui `pip` e `venv` em um único binário:
 > instalação de pacotes e gerenciamento de ambientes virtuais ordens de magnitude mais rápido.
 
-## pyproject.toml — configuração central
+## pyproject.toml: configuração central
 
 `pyproject.toml` é o único arquivo de configuração do projeto. Substitui `setup.py`, `setup.cfg`,
 `requirements.txt`, `.flake8` e `mypy.ini` em um único lugar.
 
 <details>
-<summary>❌ Ruim — configuração fragmentada em múltiplos arquivos</summary>
+<summary>❌ Ruim: configuração fragmentada em múltiplos arquivos</summary>
 
 ```
 setup.py
@@ -83,7 +83,7 @@ mypy.ini
 </details>
 
 <details>
-<summary>✅ Bom — pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
+<summary>✅ Bom: pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
 
 ```toml
 [project]
@@ -123,14 +123,14 @@ asyncio_mode = "auto"
 
 ## Configuração centralizada
 
-`pyproject.toml` configura ferramentas de build (ruff, mypy, pytest) — estático, versionado.
-`app/config.py` lê variáveis de ambiente do `.env` em tempo de execução — nunca versionado.
+`pyproject.toml` configura ferramentas de build (ruff, mypy, pytest): estático, versionado.
+`app/config.py` lê variáveis de ambiente do `.env` em tempo de execução; nunca versionado.
 
 `config.py` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo acessa
 `os.environ` diretamente. Use `pydantic-settings` para validação e tipagem automáticas.
 
 <details>
-<summary>❌ Ruim — os.environ espalhado em todo lugar</summary>
+<summary>❌ Ruim: os.environ espalhado em todo lugar</summary>
 
 ```python
 # database/client.py
@@ -145,7 +145,7 @@ secret = os.environ["JWT_SECRET"]  # leitura direta
 </details>
 
 <details>
-<summary>✅ Bom — Settings como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: Settings como único ponto de entrada de env vars</summary>
 
 ```python
 # app/config.py
@@ -177,7 +177,7 @@ class OrderService:
 O arquivo serve como índice do projeto.
 
 <details>
-<summary>❌ Ruim — main.py como dumping ground de configuração</summary>
+<summary>❌ Ruim: main.py como dumping ground de configuração</summary>
 
 ```python
 from fastapi import FastAPI, Depends
@@ -207,7 +207,7 @@ async def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom — main.py como índice, configuração delegada</summary>
+<summary>✅ Bom: main.py como índice, configuração delegada</summary>
 
 ```python
 from app.config import settings
@@ -221,10 +221,10 @@ app = create_app(settings)
 ## Módulos por domínio
 
 Cada domínio registra suas próprias rotas e dependências. O factory não conhece os internos
-de cada módulo — apenas monta o app.
+de cada módulo: apenas monta o app.
 
 <details>
-<summary>❌ Ruim — factory conhece os internos de cada domínio</summary>
+<summary>❌ Ruim: factory conhece os internos de cada domínio</summary>
 
 ```python
 # app/factory.py
@@ -251,7 +251,7 @@ def create_app(settings) -> FastAPI:
 </details>
 
 <details>
-<summary>✅ Bom — cada domínio encapsula o próprio registro</summary>
+<summary>✅ Bom: cada domínio encapsula o próprio registro</summary>
 
 ```python
 # app/factory.py

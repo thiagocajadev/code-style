@@ -16,10 +16,10 @@ guiam o desenho.
 | **method extraction** (extração de método) | extrair bloco coeso para método nomeado, reduzindo o tamanho do original |
 | **builder** (construtor fluente) | padrão para construir objetos com muitos parâmetros sem listas longas |
 
-## God method — múltiplas responsabilidades
+## God method: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
 
 ```java
 public Order realizaVenda(String id) {
@@ -51,7 +51,7 @@ public Order realizaVenda(String id) {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom: orquestrador no topo, responsabilidades separadas</summary>
 
 ```java
 public Order processOrder(String orderId) {
@@ -85,10 +85,10 @@ private Order issueInvoice(Order order) {
 
 </details>
 
-## SLA — orquestrador ou implementação, nunca os dois
+## SLA: orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Ruim — mesmo método orquestra e implementa</summary>
+<summary>❌ Ruim: mesmo método orquestra e implementa</summary>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -106,7 +106,7 @@ public String buildOrderSummary(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -135,7 +135,7 @@ private String buildLineItems(Order order) {
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Ruim — cálculo e formatação misturados</summary>
+<summary>❌ Ruim: cálculo e formatação misturados</summary>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -152,7 +152,7 @@ public String getOrderSummary(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom — cálculo separado da formatação</summary>
+<summary>✅ Bom: cálculo separado da formatação</summary>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -186,7 +186,7 @@ private String formatSummary(String orderId, OrderTotals totals) {
 O retorno fica no topo do método, com os detalhes encapsulados em auxiliares abaixo.
 
 <details>
-<summary>❌ Ruim — variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim: variável auxiliar desnecessária, else após throw</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -207,7 +207,7 @@ public Product findProductById(String id) {
 </details>
 
 <details>
-<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom: intenção clara no topo, detalhe abaixo</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -230,7 +230,7 @@ private Product fetchProduct(String id) {
 O caller expressa o quê, não o como. Toda construção de contexto fica dentro do método.
 
 <details>
-<summary>❌ Ruim — caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim: caller monta lógica inline antes de chamar</summary>
 
 ```java
 submitOrder(
@@ -245,7 +245,7 @@ submitOrder(
 </details>
 
 <details>
-<summary>✅ Bom — entrada de uma linha, detalhes dentro</summary>
+<summary>✅ Bom: entrada de uma linha, detalhes dentro</summary>
 
 ```java
 submitOrder(orderId);
@@ -267,7 +267,7 @@ O retorno nomeia o resultado, não o computa. A variável é expressiva e simét
 do método.
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```java
 public String buildGreeting(User user) {
@@ -284,7 +284,7 @@ public List<User> getActiveUsers(List<User> users) {
 </details>
 
 <details>
-<summary>✅ Bom — variável expressiva antes do return</summary>
+<summary>✅ Bom: variável expressiva antes do return</summary>
 
 ```java
 public String buildGreeting(User user) {
@@ -311,7 +311,7 @@ Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma
 Nunca duas.
 
 <details>
-<summary>❌ Ruim — parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim: parede de código sem respiro entre grupos</summary>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -328,7 +328,7 @@ public Invoice processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom — parágrafos de intenção</summary>
+<summary>✅ Bom: parágrafos de intenção</summary>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -347,12 +347,12 @@ public Invoice processOrder(String orderId) {
 
 </details>
 
-## Estilo vertical — parâmetros
+## Estilo vertical: parâmetros
 
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um record.
 
 <details>
-<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim: 4+ parâmetros inline, intenção obscura na chamada</summary>
 
 ```java
 private Invoice createInvoice(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) { /* ... */ }
@@ -363,7 +363,7 @@ createInvoice("ord-1", "cust-99", new BigDecimal("149.90"), LocalDate.of(2026, 5
 </details>
 
 <details>
-<summary>✅ Bom — record quando 4+ parâmetros</summary>
+<summary>✅ Bom: record quando 4+ parâmetros</summary>
 
 ```java
 record InvoiceRequest(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) {}

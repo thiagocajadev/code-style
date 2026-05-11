@@ -31,7 +31,7 @@ Palavras comuns no português colidem com tipos e funções **SQL** (Structured 
 type), `Status` (usado em comandos).
 
 <details>
-<summary>❌ Ruim — delimitadores para escapar palavras reservadas</summary>
+<summary>❌ Ruim: delimitadores para escapar palavras reservadas</summary>
 
 ```sql
 SELECT [Data], [Time] FROM [TimesDeFutebol];
@@ -40,7 +40,7 @@ SELECT [Data], [Time] FROM [TimesDeFutebol];
 </details>
 
 <details>
-<summary>✅ Bom — inglês elimina a ambiguidade</summary>
+<summary>✅ Bom: inglês elimina a ambiguidade</summary>
 
 ```sql
 SELECT MatchDate, TeamName FROM FootballTeams;
@@ -51,7 +51,7 @@ SELECT MatchDate, TeamName FROM FootballTeams;
 ## Tabelas no plural, colunas no singular
 
 <details>
-<summary>❌ Ruim — singular em tabelas, português, sem padrão</summary>
+<summary>❌ Ruim: singular em tabelas, português, sem padrão</summary>
 
 ```sql
 CREATE TABLE Time
@@ -65,7 +65,7 @@ CREATE TABLE Time
 </details>
 
 <details>
-<summary>✅ Bom — plural na tabela, singular nas colunas, inglês</summary>
+<summary>✅ Bom: plural na tabela, singular nas colunas, inglês</summary>
 
 ```sql
 CREATE TABLE FootballTeams
@@ -86,7 +86,7 @@ CREATE TABLE FootballTeams
 ## Prefixo da tabela no nome da coluna
 
 <details>
-<summary>❌ Ruim — nome da tabela repetido em cada coluna</summary>
+<summary>❌ Ruim: nome da tabela repetido em cada coluna</summary>
 
 ```sql
 SELECT
@@ -100,7 +100,7 @@ FROM
 </details>
 
 <details>
-<summary>✅ Bom — nome da tabela qualifica a coluna diretamente</summary>
+<summary>✅ Bom: nome da tabela qualifica a coluna diretamente</summary>
 
 ```sql
 SELECT
@@ -118,7 +118,7 @@ FROM
 Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma letra (`u`, `t`, `c`).
 
 <details>
-<summary>❌ Ruim — colunas sem qualificação, alias de letra</summary>
+<summary>❌ Ruim: colunas sem qualificação, alias de letra</summary>
 
 ```sql
 SELECT
@@ -134,7 +134,7 @@ JOIN
 </details>
 
 <details>
-<summary>✅ Bom — nome completo da tabela em todas as referências</summary>
+<summary>✅ Bom: nome completo da tabela em todas as referências</summary>
 
 ```sql
 SELECT
@@ -171,7 +171,7 @@ Toda constraint deve ser declarada com `CONSTRAINT` e um nome explícito. Constr
 tornam erros difíceis de identificar e impossibilitam `ALTER TABLE ... DROP CONSTRAINT`.
 
 <details>
-<summary>❌ Ruim — constraints inline sem nome</summary>
+<summary>❌ Ruim: constraints inline sem nome</summary>
 
 ```sql
 CREATE TABLE Players
@@ -185,7 +185,7 @@ CREATE TABLE Players
 </details>
 
 <details>
-<summary>✅ Bom — constraints nomeadas, removíveis e identificáveis</summary>
+<summary>✅ Bom: constraints nomeadas, removíveis e identificáveis</summary>
 
 ```sql
 CREATE TABLE Players

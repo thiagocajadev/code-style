@@ -17,13 +17,13 @@ de fila) em vez de async dentro de um único processo.
 | **worker** (trabalhador) | Processo separado que consome fila de mensagens; padrão mais comum para concorrência em PHP |
 | `suspend` | Método de Fiber que pausa a execução e devolve controle ao chamador externo |
 
-## Abordagem recomendada — workers de fila
+## Abordagem recomendada: workers de fila
 
 Para a maioria dos casos em PHP, concorrência é obtida com múltiplos processos workers
 consumindo uma fila (RabbitMQ, SQS, Redis Streams), não com async dentro de um processo.
 
 <details>
-<summary>✅ Bom — worker simples de fila para tarefas concorrentes</summary>
+<summary>✅ Bom: worker simples de fila para tarefas concorrentes</summary>
 
 ```php
 // Worker que processa mensagens de uma fila
@@ -70,13 +70,13 @@ final class OrderWorker
 
 </details>
 
-## Fibers — corrotinas nativas
+## Fibers: corrotinas nativas
 
 Use Fibers quando precisar de cooperação explícita dentro de um processo (pipelines de
 transformação, simulações de concorrência em testes).
 
 <details>
-<summary>✅ Bom — Fiber básico com suspend/resume</summary>
+<summary>✅ Bom: Fiber básico com suspend/resume</summary>
 
 ```php
 $fiber = new \Fiber(function (): void {
@@ -98,12 +98,12 @@ $fiber->resume();                    // termina
 
 </details>
 
-## Revolt — event loop com Fibers
+## Revolt: event loop com Fibers
 
 Use Revolt para I/O assíncrono nativo dentro de um único processo PHP com Fibers.
 
 <details>
-<summary>✅ Bom — múltiplas chamadas HTTP paralelas com Revolt</summary>
+<summary>✅ Bom: múltiplas chamadas HTTP paralelas com Revolt</summary>
 
 ```php
 use Revolt\EventLoop;
@@ -137,7 +137,7 @@ Para projetos síncronos, configure timeouts em todas as chamadas externas.
 Use `curl` com `CURLOPT_TIMEOUT` ou `stream_context_create` com timeout explícito.
 
 <details>
-<summary>❌ Ruim — chamada HTTP sem timeout</summary>
+<summary>❌ Ruim: chamada HTTP sem timeout</summary>
 
 ```php
 $response = file_get_contents('https://payment-api/charge');
@@ -147,7 +147,7 @@ $response = file_get_contents('https://payment-api/charge');
 </details>
 
 <details>
-<summary>✅ Bom — curl com timeout explícito</summary>
+<summary>✅ Bom: curl com timeout explícito</summary>
 
 ```php
 final class HttpClient

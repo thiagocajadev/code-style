@@ -15,7 +15,7 @@ Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use
 | **hoisting** (içamento) | Antecipação da declaração para o topo do escopo na fase de parsing |
 | **TDZ** (Temporal Dead Zone, Zona Morta Temporal) | Trecho entre o início do bloco e a declaração `let`/`const` onde acessar a variável lança erro |
 
-## var — escopo de função, não de bloco
+## var: escopo de função, não de bloco
 
 <details>
 <summary>❌ Ruim</summary>
@@ -25,7 +25,7 @@ if (true) {
   var leaked = 50; // vaza para fora do bloco
 }
 
-console.log(leaked); // 50 — comportamento inesperado
+console.log(leaked); // 50: comportamento inesperado
 
 var count = 10;
 var count = 20; // redeclaração silenciosa
@@ -41,7 +41,7 @@ if (true) {
   const contained = 50;
 }
 
-console.log(contained); // ReferenceError — escopo correto
+console.log(contained); // ReferenceError: escopo correto
 ```
 
 </details>
@@ -49,7 +49,7 @@ console.log(contained); // ReferenceError — escopo correto
 ## let desnecessário
 
 <details>
-<summary>❌ Ruim — let onde const seria suficiente</summary>
+<summary>❌ Ruim: let onde const seria suficiente</summary>
 
 ```js
 let MAX_RETRIES = 3; // nunca reatribuído
@@ -59,7 +59,7 @@ let userName = "Alice"; // nunca reatribuído
 </details>
 
 <details>
-<summary>✅ Bom — const por padrão, let só quando necessário</summary>
+<summary>✅ Bom: const por padrão, let só quando necessário</summary>
 
 ```js
 const MAX_RETRIES = 3;
@@ -80,7 +80,7 @@ colateral invisível e difícil de rastrear. Prefira retornar um novo objeto com
 desejadas.
 
 <details>
-<summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
+<summary>❌ Ruim: mutação acoplada e difícil de rastrear</summary>
 
 ```js
 function applyDiscount(order) {
@@ -92,7 +92,7 @@ function applyDiscount(order) {
 </details>
 
 <details>
-<summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
 
 ```js
 function applyDiscount(order) {
@@ -113,7 +113,7 @@ function applyDiscount(order) {
 Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
 
 <details>
-<summary>❌ Ruim — o que significa 18? e 86400000?</summary>
+<summary>❌ Ruim: o que significa 18? e 86400000?</summary>
 
 ```js
 if (user.age >= 18) {
@@ -128,7 +128,7 @@ setTimeout(syncData, 86400000);
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas</summary>
+<summary>✅ Bom: constantes nomeadas</summary>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;

@@ -23,23 +23,23 @@ WinForms em .NET Framework 4.8 tem particularidades que não existem em projetos
 
 ### Entry point: Sub Main
 
-Por padrão o Visual Studio configura o formulário de inicialização diretamente nas propriedades do projeto — sem `Sub Main` explícito. Isso elimina qualquer chance de inicializar serviços, tratar exceções globais ou passar dependências antes da janela abrir. Prefira `Sub Main` explícito.
+Por padrão o Visual Studio configura o formulário de inicialização diretamente nas propriedades do projeto, sem `Sub Main` explícito. Isso elimina qualquer chance de inicializar serviços, tratar exceções globais ou passar dependências antes da janela abrir. Prefira `Sub Main` explícito.
 
 Para ativar: **Project Properties → Application → Startup object → Sub Main**.
 
 <details>
-<summary>❌ Ruim — formulário de inicialização direto, sem ponto de controle</summary>
+<summary>❌ Ruim: formulário de inicialização direto, sem ponto de controle</summary>
 
 ```vbnet
 ' Startup object: MainForm  (configurado nas propriedades do projeto)
-' Não há Sub Main — a aplicação abre o formulário diretamente
+' Não há Sub Main: a aplicação abre o formulário diretamente
 ' Sem tratamento de exceção global, sem inicialização de serviços
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Sub Main como ponto de controle único</summary>
+<summary>✅ Bom: Sub Main como ponto de controle único</summary>
 
 ```vbnet
 ' ApplicationEntry.vb
@@ -70,10 +70,10 @@ End Module
 
 WinForms expõe dois eventos para capturar exceções não tratadas: `Application.ThreadException` para exceções na UI thread, e `AppDomain.CurrentDomain.UnhandledException` para exceções em outras threads. Sem eles, o Windows exibe uma caixa de erro genérica e encerra o processo.
 
-Registre ambos antes de `Application.Run` — exceções antes desse ponto não são capturadas por nenhum dos dois.
+Registre ambos antes de `Application.Run`. Exceções antes desse ponto não são capturadas por nenhum dos dois.
 
 <details>
-<summary>❌ Ruim — aplicação encerra com diálogo do Windows sem log</summary>
+<summary>❌ Ruim: aplicação encerra com diálogo do Windows sem log</summary>
 
 ```vbnet
 Module ApplicationEntry
@@ -89,7 +89,7 @@ End Module
 </details>
 
 <details>
-<summary>✅ Bom — exceções capturadas, logadas e apresentadas ao usuário</summary>
+<summary>✅ Bom: exceções capturadas, logadas e apresentadas ao usuário</summary>
 
 ```vbnet
 Module ApplicationEntry
@@ -118,7 +118,7 @@ Module ApplicationEntry
 
     Private Sub OnUnhandledException(sender As Object, e As UnhandledExceptionEventArgs)
         Dim ex = TryCast(e.ExceptionObject, Exception)
-        Logger.LogError(ex, "Unhandled exception — application terminating")
+        Logger.LogError(ex, "Unhandled exception: application terminating")
         ' não há como recuperar aqui: apenas logar antes de encerrar
     End Sub
 End Module
@@ -130,7 +130,7 @@ End Module
 
 `My.Settings` é exclusivo do VB.NET e representa o `app.config` em duas camadas: configurações de aplicação (somente leitura em runtime) e configurações de usuário (leitura e escrita, persistidas por perfil de Windows).
 
-Use configurações de usuário para preferências de UI — janela maximizada, tema, último diretório aberto. Nunca armazene credenciais ou dados de negócio em `My.Settings`.
+Use configurações de usuário para preferências de UI: janela maximizada, tema, último diretório aberto. Nunca armazene credenciais ou dados de negócio em `My.Settings`.
 
 | Escopo | Modificável em runtime | Persistido onde |
 | --- | --- | --- |
@@ -138,7 +138,7 @@ Use configurações de usuário para preferências de UI — janela maximizada, 
 | `User` | Sim, com `My.Settings.Save()` | `%AppData%\...\user.config` |
 
 <details>
-<summary>❌ Ruim — preferências de UI hardcoded ou em variáveis locais</summary>
+<summary>❌ Ruim: preferências de UI hardcoded ou em variáveis locais</summary>
 
 ```vbnet
 Public Class MainForm
@@ -154,7 +154,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — My.Settings persiste preferências entre sessões</summary>
+<summary>✅ Bom: My.Settings persiste preferências entre sessões</summary>
 
 ```vbnet
 ' Em Settings.settings (Designer):
@@ -194,10 +194,10 @@ End Class
 
 ### Injeção de dependência em Forms
 
-WinForms não tem container de DI nativo. O padrão mais pragmático é **manual constructor injection**: serviços são criados em `Sub Main` e passados para o formulário raiz. Formulários filhos recebem apenas o que precisam — nunca o container inteiro.
+WinForms não tem container de DI nativo. O padrão mais pragmático é **manual constructor injection**: serviços são criados em `Sub Main` e passados para o formulário raiz. Formulários filhos recebem apenas o que precisam, nunca o container inteiro.
 
 <details>
-<summary>❌ Ruim — Form instancia serviços diretamente ou acessa estado global</summary>
+<summary>❌ Ruim: Form instancia serviços diretamente ou acessa estado global</summary>
 
 ```vbnet
 Public Class PurchaseForm
@@ -217,7 +217,7 @@ End Module
 </details>
 
 <details>
-<summary>✅ Bom — serviços injetados via construtor, formulário não conhece a implementação</summary>
+<summary>✅ Bom: serviços injetados via construtor, formulário não conhece a implementação</summary>
 
 ```vbnet
 ' Sub Main constrói o grafo de dependências
@@ -236,7 +236,7 @@ Module ApplicationEntry
     End Sub
 End Module
 
-' MainForm recebe o serviço — não sabe nem quer saber de SqlConnection
+' MainForm recebe o serviço: não sabe nem quer saber de SqlConnection
 Public Class MainForm
     Private ReadOnly _purchaseService As IPurchaseService
 
@@ -246,7 +246,7 @@ Public Class MainForm
     End Sub
 
     Private Sub BtnOpenPurchases_Click(sender As Object, e As EventArgs) Handles BtnOpenPurchases.Click
-        ' passa apenas o serviço relevante — não o grafo inteiro
+        ' passa apenas o serviço relevante: não o grafo inteiro
         Dim form = New PurchaseForm(_purchaseService)
         form.ShowDialog()
     End Sub
@@ -257,10 +257,10 @@ End Class
 
 ### My.Application: ciclo de vida e single-instance
 
-`My.Application` expõe eventos de ciclo de vida (`Startup`, `Shutdown`) e permite configurar a aplicação como single-instance — útil para ferramentas de desktop que não devem abrir duas vezes. Ative em **Project Properties → Application → Make single instance application**.
+`My.Application` expõe eventos de ciclo de vida (`Startup`, `Shutdown`) e permite configurar a aplicação como single-instance, útil para ferramentas de desktop que não devem abrir duas vezes. Ative em **Project Properties → Application → Make single instance application**.
 
 <details>
-<summary>✅ Bom — inicialização e limpeza no ciclo de vida da aplicação</summary>
+<summary>✅ Bom: inicialização e limpeza no ciclo de vida da aplicação</summary>
 
 ```vbnet
 ' ApplicationEvents.vb  (gerado pelo Designer ao ativar eventos de aplicação)
@@ -280,7 +280,7 @@ Namespace My
             sender As Object,
             e As EventArgs) Handles Me.Shutdown
 
-            ' limpeza garantida ao encerrar — inclusive por Alt+F4
+            ' limpeza garantida ao encerrar: inclusive por Alt+F4
             Logger.Flush()
         End Sub
 
@@ -333,10 +333,10 @@ ASP.NET MVC 5 e Web API 2 em .NET Framework 4.8 seguem um modelo de bootstrap ba
 
 ## Configuração: Web.config e App.config
 
-Connection strings e parâmetros de ambiente pertencem ao arquivo de configuração, nunca ao código. `ConfigurationManager` é o ponto de acesso central — nunca passe strings diretamente para `New SqlConnection(...)`.
+Connection strings e parâmetros de ambiente pertencem ao arquivo de configuração, nunca ao código. `ConfigurationManager` é o ponto de acesso central. Nunca passe strings diretamente para `New SqlConnection(...)`.
 
 <details>
-<summary>❌ Ruim — connection string hardcoded no código</summary>
+<summary>❌ Ruim: connection string hardcoded no código</summary>
 
 ```vbnet
 Public Class PurchaseRepository
@@ -351,7 +351,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — connection string no Web.config, lida via ConfigurationManager</summary>
+<summary>✅ Bom: connection string no Web.config, lida via ConfigurationManager</summary>
 
 ```xml
 <!-- Web.config -->
@@ -377,10 +377,10 @@ End Module
 
 ## Entry point: Global.asax.vb
 
-`Global.asax.vb` é o equivalente ao `Program.cs` em projetos web .NET Framework. Deve declarar intenção — registrar rotas, filtros e container de DI — sem implementar nada diretamente.
+`Global.asax.vb` é o equivalente ao `Program.cs` em projetos web .NET Framework. Deve declarar intenção (registrar rotas, filtros e container de DI) sem implementar nada diretamente.
 
 <details>
-<summary>❌ Ruim — Global.asax.vb com lógica de negócio e configuração misturadas</summary>
+<summary>❌ Ruim: Global.asax.vb com lógica de negócio e configuração misturadas</summary>
 
 ```vbnet
 Public Class MvcApplication
@@ -410,7 +410,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — entry point como índice, configuração delegada</summary>
+<summary>✅ Bom: entry point como índice, configuração delegada</summary>
 
 ```vbnet
 ' Global.asax.vb
@@ -462,7 +462,7 @@ End Module
 Para aplicações console ou Windows Services, o entry point é um `Module` com um `Sub Main`. Mesma regra: declara intenção, delega implementação.
 
 <details>
-<summary>✅ Bom — Module Main como índice</summary>
+<summary>✅ Bom: Module Main como índice</summary>
 
 ```vbnet
 ' Program.vb
@@ -491,10 +491,10 @@ End Module
 
 ## Injeção de dependência
 
-VB.NET não tem primary constructors (C# 12+). O padrão é construtor explícito com campos `ReadOnly`. Cada serviço declara suas dependências via construtor — nunca instancia ou localiza dependências internamente.
+VB.NET não tem primary constructors (C# 12+). O padrão é construtor explícito com campos `ReadOnly`. Cada serviço declara suas dependências via construtor, nunca instancia ou localiza dependências internamente.
 
 <details>
-<summary>❌ Ruim — dependências instanciadas internamente</summary>
+<summary>❌ Ruim: dependências instanciadas internamente</summary>
 
 ```vbnet
 Public Class PurchaseService
@@ -511,12 +511,12 @@ End Class
 </details>
 
 <details>
-<summary>❌ Ruim — Service Locator: dependências buscadas no container</summary>
+<summary>❌ Ruim: Service Locator: dependências buscadas no container</summary>
 
 ```vbnet
 Public Class PurchaseService
     Public Function ProcessAsync(request As PurchaseRequest) As Task(Of Invoice)
-        ' acoplamento ao container dentro da classe — difícil de testar
+        ' acoplamento ao container dentro da classe: difícil de testar
         Dim repo = ServiceLocator.Current.GetInstance(Of IPurchaseRepository)()
 
         ' ...
@@ -527,7 +527,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — constructor injection, dependências declaradas na assinatura</summary>
+<summary>✅ Bom: constructor injection, dependências declaradas na assinatura</summary>
 
 ```vbnet
 Public Class PurchaseService
@@ -552,7 +552,7 @@ End Class
 Cada domínio registra suas próprias dependências em um extension method de `IUnityContainer`. `ContainerConfig` agrega, sem conhecer os detalhes de nenhum domínio.
 
 <details>
-<summary>✅ Bom — domínio de Purchases dono da sua configuração</summary>
+<summary>✅ Bom: domínio de Purchases dono da sua configuração</summary>
 
 ```vbnet
 ' Features/Purchases/PurchasesRegistration.vb
@@ -597,10 +597,10 @@ End Sub
 
 ## Leitura de configuração tipada
 
-Evite ler chaves de configuração com strings espalhadas pelo código. Centralize em uma classe ou módulo de configuração — qualquer mudança de chave tem um único ponto de atualização.
+Evite ler chaves de configuração com strings espalhadas pelo código. Centralize em uma classe ou módulo de configuração: qualquer mudança de chave tem um único ponto de atualização.
 
 <details>
-<summary>❌ Ruim — chaves de configuração espalhadas no código</summary>
+<summary>❌ Ruim: chaves de configuração espalhadas no código</summary>
 
 ```vbnet
 Public Class EmailNotifier
@@ -616,7 +616,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — configuração centralizada, lida uma vez</summary>
+<summary>✅ Bom: configuração centralizada, lida uma vez</summary>
 
 ```xml
 <!-- Web.config -->

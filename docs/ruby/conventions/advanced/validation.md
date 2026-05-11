@@ -20,7 +20,7 @@ eventos externos. Dentro do domínio, confie nos tipos. Ruby oferece **ActiveMod
 Use para modelos de domínio ou objetos de formulário sem ActiveRecord.
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no método</summary>
+<summary>❌ Ruim: validação manual espalhada no método</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -37,7 +37,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — validação declarativa com ActiveModel</summary>
+<summary>✅ Bom: validação declarativa com ActiveModel</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -69,7 +69,7 @@ end
 
 </details>
 
-## dry-validation — contratos declarativos
+## dry-validation: contratos declarativos
 
 Use para APIs onde o schema de entrada é complexo ou vem de fontes externas.
 
@@ -110,7 +110,7 @@ Em controllers Rails, use `permit` para declarar explicitamente quais parâmetro
 aceitos. Nunca passe `params` diretamente para o modelo.
 
 <details>
-<summary>❌ Ruim — mass assignment sem whitelist</summary>
+<summary>❌ Ruim: mass assignment sem whitelist</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -123,7 +123,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — strong parameters com whitelist explícita</summary>
+<summary>✅ Bom: strong parameters com whitelist explícita</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -146,10 +146,10 @@ end
 ## Validação de tipo na fronteira
 
 Use `Integer()` e `Float()` (com maiúscula) para converter e validar em uma etapa.
-Eles lançam `ArgumentError` para entradas inválidas — ao contrário de `.to_i` que retorna `0`.
+Eles lançam `ArgumentError` para entradas inválidas, ao contrário de `.to_i` que retorna `0`.
 
 <details>
-<summary>❌ Ruim — to_i silencia entrada inválida</summary>
+<summary>❌ Ruim: to_i silencia entrada inválida</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -163,7 +163,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — Integer() lança ArgumentError em entrada inválida</summary>
+<summary>✅ Bom: Integer() lança ArgumentError em entrada inválida</summary>
 
 ```ruby
 # frozen_string_literal: true

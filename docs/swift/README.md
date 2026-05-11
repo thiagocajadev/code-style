@@ -5,7 +5,7 @@
 Convenções Swift aplicando os mesmos princípios do guia. Os exemplos usam Swift 6.1 como
 referência; o modo de linguagem Swift 6 (strict concurrency checking) é o padrão assumido.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

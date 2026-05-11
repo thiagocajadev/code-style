@@ -20,7 +20,7 @@ Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem 
 inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 
 <details>
-<summary>❌ Ruim — indentação inconsistente, bloco colado ao pai</summary>
+<summary>❌ Ruim: indentação inconsistente, bloco colado ao pai</summary>
 
 ```html
 <ul>
@@ -34,7 +34,7 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 </details>
 
 <details>
-<summary>✅ Bom — 2 espaços, hierarquia visível</summary>
+<summary>✅ Bom: 2 espaços, hierarquia visível</summary>
 
 ```html
 <ul>
@@ -56,7 +56,7 @@ id → class → name → type → src | href → value → placeholder → for
 ```
 
 <details>
-<summary>❌ Ruim — atributos em ordem aleatória</summary>
+<summary>❌ Ruim: atributos em ordem aleatória</summary>
 
 ```html
 <input required placeholder="Enter email" type="email" name="email" id="user-email" class="input" />
@@ -66,7 +66,7 @@ id → class → name → type → src | href → value → placeholder → for
 </details>
 
 <details>
-<summary>✅ Bom — ordem consistente, fácil de escanear</summary>
+<summary>✅ Bom: ordem consistente, fácil de escanear</summary>
 
 ```html
 <input id="user-email" class="input" name="email" type="email" placeholder="Enter email" required />
@@ -81,7 +81,7 @@ Quando um elemento tem muitos atributos, um por linha. O fechamento `>` ou `/>` 
 linha do atributo ou em linha própria; o padrão do projeto define qual, mas deve ser consistente.
 
 <details>
-<summary>❌ Ruim — atributos numa linha longa, difícil de ler</summary>
+<summary>❌ Ruim: atributos numa linha longa, difícil de ler</summary>
 
 ```html
 <input id="search-input" class="input input--search" name="q" type="search" placeholder="Search products..." autocomplete="off" aria-label="Search products" required />
@@ -90,7 +90,7 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 </details>
 
 <details>
-<summary>✅ Bom — um atributo por linha, fechamento alinhado</summary>
+<summary>✅ Bom: um atributo por linha, fechamento alinhado</summary>
 
 ```html
 <input
@@ -113,7 +113,7 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 `readonly`) não precisam de valor; a presença já é `true`.
 
 <details>
-<summary>❌ Ruim — aspas simples, valor redundante em boolean</summary>
+<summary>❌ Ruim: aspas simples, valor redundante em boolean</summary>
 
 ```html
 <input type='text' required='required' disabled='disabled' />
@@ -123,7 +123,7 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 </details>
 
 <details>
-<summary>✅ Bom — aspas duplas, booleanos sem valor</summary>
+<summary>✅ Bom: aspas duplas, booleanos sem valor</summary>
 
 ```html
 <input type="text" required disabled />

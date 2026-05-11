@@ -31,15 +31,15 @@ Imports NUnit.Framework
 
 > [!NOTE]
 > A ordem do assert varia por framework:
-> - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))` — actual primeiro
-> - **MSTest**: `Assert.AreEqual(expected, actual)` — expected primeiro
+> - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))`: actual primeiro
+> - **MSTest**: `Assert.AreEqual(expected, actual)`: expected primeiro
 
 ## Fases misturadas: AAA
 
 Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto, execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim: tudo inline, fases invisíveis</summary>
 
 ```vbnet
 <Test>
@@ -51,7 +51,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — arrange, act e assert separados</summary>
+<summary>✅ Bom: arrange, act e assert separados</summary>
 
 ```vbnet
 <Test>
@@ -72,7 +72,7 @@ End Sub
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
-<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
 
 ```vbnet
 <Test>
@@ -90,7 +90,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom: expected e actual declarados, assert semântico</summary>
 
 ```vbnet
 <Test>
@@ -119,7 +119,7 @@ End Sub
 O nome do teste descreve o cenário e o resultado esperado, não o nome do método nem uma afirmação vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
 
 <details>
-<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim: prefixo vazio, nome que repete a implementação</summary>
 
 ```vbnet
 <Test>
@@ -135,7 +135,7 @@ Public Sub ApplyDiscount() : End Sub
 </details>
 
 <details>
-<summary>✅ Bom — cenário + resultado esperado no título</summary>
+<summary>✅ Bom: cenário + resultado esperado no título</summary>
 
 ```vbnet
 <Test>
@@ -155,7 +155,7 @@ Public Sub ThrowsValidationExceptionWhenDiscountIsNegative() : End Sub
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Ruim — campo compartilhado entre testes, ordem importa</summary>
+<summary>❌ Ruim: campo compartilhado entre testes, ordem importa</summary>
 
 ```vbnet
 <TestFixture>
@@ -182,7 +182,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom: cada teste isolado, sem dependência de execução</summary>
 
 ```vbnet
 <TestFixture>
@@ -216,7 +216,7 @@ End Class
 Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado. `Assert.Throws(Of T)` verifica o tipo, não apenas a presença.
 
 <details>
-<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim: try/catch manual, tipo não verificado</summary>
 
 ```vbnet
 <Test>
@@ -232,7 +232,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — Assert.Throws(Of T) com tipo explícito</summary>
+<summary>✅ Bom: Assert.Throws(Of T) com tipo explícito</summary>
 
 ```vbnet
 <Test>
@@ -250,12 +250,12 @@ End Sub
 NUnit 3 suporta testes assíncronos com `Async Function` retornando `Task`.
 
 <details>
-<summary>❌ Ruim — .Result bloqueia thread e esconde falhas async</summary>
+<summary>❌ Ruim: .Result bloqueia thread e esconde falhas async</summary>
 
 ```vbnet
 <Test>
 Public Sub FindsOrderAsync()
-    Dim order = _repository.FindByIdAsync(KnownOrderId).Result  ' bloqueia — pode causar deadlock
+    Dim order = _repository.FindByIdAsync(KnownOrderId).Result  ' bloqueia: pode causar deadlock
     Assert.That(order, Is.Not.Null)
 End Sub
 ```
@@ -263,7 +263,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — Async Function com Await, NUnit aguarda corretamente</summary>
+<summary>✅ Bom: Async Function com Await, NUnit aguarda corretamente</summary>
 
 ```vbnet
 <Test>

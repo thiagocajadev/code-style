@@ -17,7 +17,7 @@ Entity Framework Core é o **ORM** (Object-Relational Mapper, Mapeador Objeto-Re
 Por padrão, o EF rastreia todas as entidades retornadas: qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.
 
 <details>
-<summary>❌ Ruim — rastreamento habilitado em query somente leitura</summary>
+<summary>❌ Ruim: rastreamento habilitado em query somente leitura</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid customerId, CancellationToken ct)
@@ -37,7 +37,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 </details>
 
 <details>
-<summary>✅ Bom — AsNoTracking para leitura sem rastreamento</summary>
+<summary>✅ Bom: AsNoTracking para leitura sem rastreamento</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid customerId, CancellationToken ct)
@@ -59,7 +59,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 Nunca exponha entidades EF diretamente: elas carregam estado de rastreamento, navegações não inicializadas e detalhes de persistência. Projete sempre para DTOs via `.Select()` diretamente na query, não após materializar.
 
 <details>
-<summary>❌ Ruim — entidade exposta, materialização antes da projeção</summary>
+<summary>❌ Ruim: entidade exposta, materialização antes da projeção</summary>
 
 ```csharp
 public async Task<List<Order>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -75,7 +75,7 @@ public async Task<List<Order>> FindOrdersAsync(Guid customerId, CancellationToke
 </details>
 
 <details>
-<summary>✅ Bom — projeção para DTO dentro da query, sem materializar entidade</summary>
+<summary>✅ Bom: projeção para DTO dentro da query, sem materializar entidade</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -102,7 +102,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 Acesso a propriedades de navegação sem `Include` dispara uma query por registro: o problema N+1. Use `Include` para grafos conhecidos; projete com `.Select()` quando precisar de campos específicos de entidades relacionadas.
 
 <details>
-<summary>❌ Ruim — N+1: uma query por order para acessar Items</summary>
+<summary>❌ Ruim: N+1: uma query por order para acessar Items</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid customerId, CancellationToken ct)
@@ -126,7 +126,7 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 </details>
 
 <details>
-<summary>✅ Bom — projeção com Select, EF resolve o JOIN em uma query</summary>
+<summary>✅ Bom: projeção com Select, EF resolve o JOIN em uma query</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid customerId, CancellationToken ct)
@@ -147,7 +147,7 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 </details>
 
 <details>
-<summary>✅ Bom — Include para grafo completo necessário</summary>
+<summary>✅ Bom: Include para grafo completo necessário</summary>
 
 ```csharp
 public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToken ct)
@@ -168,14 +168,14 @@ public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToke
 `Include` de múltiplas coleções gera um produto cartesiano: linhas duplicadas na query SQL. `AsSplitQuery()` divide em queries separadas e elimina a explosão de dados.
 
 <details>
-<summary>❌ Ruim — múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
+<summary>❌ Ruim: múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
 
 ```csharp
 public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
     var order = await _context.Orders
         .Include(order => order.Items)    // coleção 1
-        .Include(order => order.Payments) // coleção 2 — produto cartesiano Items × Payments
+        .Include(order => order.Payments) // coleção 2: produto cartesiano Items × Payments
         .FirstOrDefaultAsync(order => order.Id == orderId, ct);
 
     return order;
@@ -185,7 +185,7 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom — AsSplitQuery divide em queries separadas</summary>
+<summary>✅ Bom: AsSplitQuery divide em queries separadas</summary>
 
 ```csharp
 public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -207,7 +207,7 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 Toda query que usa paginação ou que o chamador espera em ordem determinística precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem: o resultado varia entre execuções.
 
 <details>
-<summary>❌ Ruim — paginação sem ordenação, resultado não determinístico</summary>
+<summary>❌ Ruim: paginação sem ordenação, resultado não determinístico</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
@@ -215,7 +215,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 {
     var summaries = await _context.Orders
         .AsNoTracking()
-        .Where(order => order.CustomerId == customerId) // sem OrderBy — ordem não garantida
+        .Where(order => order.CustomerId == customerId) // sem OrderBy: ordem não garantida
         .Skip((page - 1) * pageSize)
         .Take(pageSize)
         .Select(order => new OrderSummary(order.Id, order.Total, order.CreatedAt))
@@ -228,7 +228,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 </details>
 
 <details>
-<summary>✅ Bom — OrderBy antes de Skip/Take, ordem estável e determinística</summary>
+<summary>✅ Bom: OrderBy antes de Skip/Take, ordem estável e determinística</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
@@ -250,7 +250,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 </details>
 
 <details>
-<summary>✅ Bom — ThenBy para desempate estável</summary>
+<summary>✅ Bom: ThenBy para desempate estável</summary>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -259,7 +259,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
         .AsNoTracking()
         .Where(order => order.CustomerId == customerId)
         .OrderByDescending(order => order.CreatedAt)
-        .ThenBy(order => order.Id)              // desempate pelo Id — resultado estável
+        .ThenBy(order => order.Id)              // desempate pelo Id: resultado estável
         .Select(order => new OrderSummary(order.Id, order.Total, order.CreatedAt))
         .ToListAsync(ct);
 
@@ -274,7 +274,7 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os dados: o chamador precisa saber o total de registros para renderizar a navegação.
 
 <details>
-<summary>❌ Ruim — duas queries independentes, sem compartilhar o filtro base</summary>
+<summary>❌ Ruim: duas queries independentes, sem compartilhar o filtro base</summary>
 
 ```csharp
 public async Task<List<OrderSummary>> FindOrdersAsync(Guid customerId, int page, int pageSize, CancellationToken ct)
@@ -293,7 +293,7 @@ public async Task<List<OrderSummary>> FindOrdersAsync(Guid customerId, int page,
 </details>
 
 <details>
-<summary>✅ Bom — query base compartilhada, metadados e dados na mesma chamada</summary>
+<summary>✅ Bom: query base compartilhada, metadados e dados na mesma chamada</summary>
 
 ```csharp
 public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
@@ -325,7 +325,7 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
 EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era necessário combinar `GroupJoin` + `SelectMany` + `DefaultIfEmpty()`: intenção enterrada em ruído. O novo operador declara o que faz.
 
 <details>
-<summary>❌ Ruim — intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
+<summary>❌ Ruim: intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
 
 ```csharp
 var result = await _context.Orders
@@ -350,7 +350,7 @@ var result = await _context.Orders
 </details>
 
 <details>
-<summary>✅ Bom — LeftJoin (EF Core 10), intenção clara</summary>
+<summary>✅ Bom: LeftJoin (EF Core 10), intenção clara</summary>
 
 ```csharp
 var result = await _context.Orders
@@ -380,7 +380,7 @@ Migrations descrevem intenção: cada uma resolve uma mudança atômica no schem
 O nome segue a convenção Rails: verbo + substantivo, descrevendo a mudança concreta. Nomes genéricos como `Update`, `Fix` ou `Initial` não comunicam nada.
 
 <details>
-<summary>❌ Ruim — nomes vagos que não descrevem a mudança</summary>
+<summary>❌ Ruim: nomes vagos que não descrevem a mudança</summary>
 
 ```bash
 dotnet ef migrations add Initial
@@ -392,7 +392,7 @@ dotnet ef migrations add SchemaChanges
 </details>
 
 <details>
-<summary>✅ Bom — verbo + substantivo, mudança óbvia pelo nome</summary>
+<summary>✅ Bom: verbo + substantivo, mudança óbvia pelo nome</summary>
 
 ```bash
 dotnet ef migrations add CreateOrdersTable
@@ -409,7 +409,7 @@ dotnet ef migrations add DropLegacyStatusColumn
 Migrations são append-only: `Down()` não é implementado. Reverter um schema é uma nova migration, não um rollback. Implementar `Down()` cria uma falsa sensação de segurança: em produção, rollback de schema raramente funciona sem perda de dados.
 
 <details>
-<summary>❌ Ruim — Down() implementado, ilusão de reversibilidade</summary>
+<summary>❌ Ruim: Down() implementado, ilusão de reversibilidade</summary>
 
 ```csharp
 public partial class CreateOrdersTable : Migration
@@ -436,7 +436,7 @@ public partial class CreateOrdersTable : Migration
 </details>
 
 <details>
-<summary>✅ Bom — Down() sinaliza explicitamente que não é suportado</summary>
+<summary>✅ Bom: Down() sinaliza explicitamente que não é suportado</summary>
 
 ```csharp
 public partial class CreateOrdersTable : Migration
@@ -454,7 +454,7 @@ public partial class CreateOrdersTable : Migration
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
-        => throw new NotSupportedException("Forward-only — crie uma nova migration para reverter.");
+        => throw new NotSupportedException("Forward-only: crie uma nova migration para reverter.");
 }
 ```
 
@@ -465,23 +465,23 @@ public partial class CreateOrdersTable : Migration
 Cada migration resolve uma coisa. Agrupar mudanças não relacionadas dificulta o rastreamento, mistura contextos no histórico e impede rollback cirúrgico via nova migration.
 
 <details>
-<summary>❌ Ruim — múltiplas mudanças sem relação na mesma migration</summary>
+<summary>❌ Ruim: múltiplas mudanças sem relação na mesma migration</summary>
 
 ```csharp
 public partial class UpdateSchema : Migration // nome vago, mudanças misturadas
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.AddColumn<string>(         // mudança 1 — Customers
+        migrationBuilder.AddColumn<string>(         // mudança 1: Customers
             name: "Email",
             table: "Customers",
             nullable: false,
             defaultValue: "");
 
-        migrationBuilder.CreateTable("Invoices",    // mudança 2 — nova tabela
+        migrationBuilder.CreateTable("Invoices",    // mudança 2: nova tabela
             columns: table => new { ... });
 
-        migrationBuilder.DropColumn(                // mudança 3 — Orders
+        migrationBuilder.DropColumn(                // mudança 3: Orders
             name: "LegacyCode",
             table: "Orders");
     }
@@ -491,7 +491,7 @@ public partial class UpdateSchema : Migration // nome vago, mudanças misturadas
 </details>
 
 <details>
-<summary>✅ Bom — uma migration por mudança, histórico legível</summary>
+<summary>✅ Bom: uma migration por mudança, histórico legível</summary>
 
 ```bash
 # três migrations atômicas, cada uma com contexto próprio
@@ -513,7 +513,7 @@ public partial class AddEmailToCustomers : Migration
     }
 
     protected override void Down(MigrationBuilder migrationBuilder)
-        => throw new NotSupportedException("Forward-only — crie uma nova migration para reverter.");
+        => throw new NotSupportedException("Forward-only: crie uma nova migration para reverter.");
 }
 ```
 
@@ -524,7 +524,7 @@ public partial class AddEmailToCustomers : Migration
 `RightJoin` preserva todos os registros do lado direito, mesmo sem correspondência no esquerdo. Use quando a tabela da direita é a fonte principal e a esquerda é opcional.
 
 <details>
-<summary>✅ Bom — RightJoin (EF Core 10), products sem reviews incluídos</summary>
+<summary>✅ Bom: RightJoin (EF Core 10), products sem reviews incluídos</summary>
 
 ```csharp
 var result = await _context.Reviews

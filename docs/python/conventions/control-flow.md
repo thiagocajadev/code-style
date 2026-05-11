@@ -11,7 +11,7 @@ busca) eliminam cadeias longas de `if/elif`.
 | --- | --- |
 | **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
 | **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
-| **ternary** (operador ternário) | `a if cond else b` — expressão condicional curta para valores simples |
+| **ternary** (operador ternário) | `a if cond else b`: expressão condicional curta para valores simples |
 | **match statement** (correspondência estrutural) | `match` (Python 3.10+) com pattern matching para mapear estrutura de dados |
 | **lookup table** (tabela de busca) | `dict` `{ chave: valor }` que substitui cadeias de `if/elif` ou `match` simples |
 | **truthy / falsy** (avalia como verdadeiro / como falso) | valores que coercionam para `True` ou `False` (`0`, `""`, `None`, `[]` são falsy) |
@@ -22,7 +22,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `r
 o fluxo já saiu.
 
 <details>
-<summary>❌ Ruim — else desnecessário após return</summary>
+<summary>❌ Ruim: else desnecessário após return</summary>
 
 ```python
 def get_discount(user) -> float:
@@ -35,7 +35,7 @@ def get_discount(user) -> float:
 </details>
 
 <details>
-<summary>✅ Bom — early return elimina o else</summary>
+<summary>✅ Bom: early return elimina o else</summary>
 
 ```python
 def get_discount(user) -> float:
@@ -53,7 +53,7 @@ Para atribuição de dois valores possíveis em uma linha. Três ou mais alterna
 lookup ou `match/case`. Nunca aninhar expressões condicionais.
 
 <details>
-<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```python
 if order.is_paid:
@@ -65,7 +65,7 @@ else:
 </details>
 
 <details>
-<summary>✅ Bom — expressão condicional na atribuição</summary>
+<summary>✅ Bom: expressão condicional na atribuição</summary>
 
 ```python
 label = "Paid" if order.is_paid else "Pending"
@@ -74,7 +74,7 @@ label = "Paid" if order.is_paid else "Pending"
 </details>
 
 <details>
-<summary>❌ Ruim — expressão condicional aninhada para 3+ alternativas</summary>
+<summary>❌ Ruim: expressão condicional aninhada para 3+ alternativas</summary>
 
 ```python
 priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else "Normal"
@@ -83,7 +83,7 @@ priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else
 </details>
 
 <details>
-<summary>✅ Bom — dicionário de lookup para 3+ alternativas</summary>
+<summary>✅ Bom: dicionário de lookup para 3+ alternativas</summary>
 
 ```python
 PRIORITY_MAP = {
@@ -103,7 +103,7 @@ vira uma pirâmide: o _arrow antipattern_. Guard clauses invertem: valide as sa�
 o fluxo principal limpo.
 
 <details>
-<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
 
 ```python
 def process_order(order):
@@ -117,7 +117,7 @@ def process_order(order):
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, fluxo principal ao fundo</summary>
+<summary>✅ Bom: guard clauses, fluxo principal ao fundo</summary>
 
 ```python
 def process_order(order):
@@ -139,13 +139,13 @@ def process_order(order):
 
 </details>
 
-## match/case — mapeamento de valor
+## match/case: mapeamento de valor
 
 Quando múltiplos `if/elif` retornam um valor para cada chave, substitua por um dicionário de
 lookup ou um `match` com guard:
 
 <details>
-<summary>❌ Ruim — if/elif repetitivo mapeando chave → valor</summary>
+<summary>❌ Ruim: if/elif repetitivo mapeando chave → valor</summary>
 
 ```python
 def get_status_label(status: str) -> str:
@@ -164,7 +164,7 @@ def get_status_label(status: str) -> str:
 </details>
 
 <details>
-<summary>✅ Bom — lookup dict: legível e extensível</summary>
+<summary>✅ Bom: lookup dict: legível e extensível</summary>
 
 ```python
 STATUS_LABELS: dict[str, str] = {
@@ -181,13 +181,13 @@ def get_status_label(status: str) -> str:
 
 </details>
 
-## match/case — despacho de comportamento
+## match/case: despacho de comportamento
 
 `match/case` (Python 3.10+) substitui `if/elif` encadeado quando o fluxo despacha comportamento
-por valor. Cada `case` termina de forma explícita — não há fall-through acidental como em C.
+por valor. Cada `case` termina de forma explícita: não há fall-through acidental como em C.
 
 <details>
-<summary>❌ Ruim — if/elif encadeado para despacho de ações</summary>
+<summary>❌ Ruim: if/elif encadeado para despacho de ações</summary>
 
 ```python
 def process_payment_event(event):
@@ -205,7 +205,7 @@ def process_payment_event(event):
 </details>
 
 <details>
-<summary>✅ Bom — match/case para despacho de comportamento</summary>
+<summary>✅ Bom: match/case para despacho de comportamento</summary>
 
 ```python
 def process_payment_event(event):
@@ -225,13 +225,13 @@ def process_payment_event(event):
 
 </details>
 
-## match/case — pattern matching estrutural
+## match/case: pattern matching estrutural
 
 `match/case` vai além de valores literais: desestrutura objetos, sequências e dataclasses, reduzindo
 o código de validação de tipo e forma.
 
 <details>
-<summary>❌ Ruim — isinstance + acesso de atributo manual</summary>
+<summary>❌ Ruim: isinstance + acesso de atributo manual</summary>
 
 ```python
 def build_notification_message(event):
@@ -246,7 +246,7 @@ def build_notification_message(event):
 </details>
 
 <details>
-<summary>✅ Bom — match/case desestrutura e nomeia</summary>
+<summary>✅ Bom: match/case desestrutura e nomeia</summary>
 
 ```python
 def build_notification_message(event: dict) -> str:
@@ -268,10 +268,10 @@ def build_notification_message(event: dict) -> str:
 ## Saída antecipada em laços
 
 Antes de escrever um loop, verifique se `next()`, `any()` ou `all()` já resolve. Essas funções
-param no primeiro match — sem percorrer o resto.
+param no primeiro match, sem percorrer o resto.
 
 <details>
-<summary>❌ Ruim — loop com flag força percorrer tudo</summary>
+<summary>❌ Ruim: loop com flag força percorrer tudo</summary>
 
 ```python
 def find_first_expired_product(products: list):
@@ -287,7 +287,7 @@ def find_first_expired_product(products: list):
 </details>
 
 <details>
-<summary>✅ Bom — next() sai no primeiro match</summary>
+<summary>✅ Bom: next() sai no primeiro match</summary>
 
 ```python
 def find_first_expired_product(products: list):
@@ -302,7 +302,7 @@ def find_first_expired_product(products: list):
 </details>
 
 <details>
-<summary>✅ Bom — any() e all() com circuit break nativo</summary>
+<summary>✅ Bom: any() e all() com circuit break nativo</summary>
 
 ```python
 has_expired_product = any(product.is_expired for product in products)
@@ -318,7 +318,7 @@ Para transformação pura de coleção, list/dict/set comprehensions são declar
 efeitos colaterais por item, use `for`.
 
 <details>
-<summary>❌ Ruim — loop imperativo para transformação pura</summary>
+<summary>❌ Ruim: loop imperativo para transformação pura</summary>
 
 ```python
 def get_active_user_emails(users: list) -> list[str]:
@@ -333,7 +333,7 @@ def get_active_user_emails(users: list) -> list[str]:
 </details>
 
 <details>
-<summary>✅ Bom — list comprehension para transformação pura</summary>
+<summary>✅ Bom: list comprehension para transformação pura</summary>
 
 ```python
 def get_active_user_emails(users: list) -> list[str]:
@@ -344,7 +344,7 @@ def get_active_user_emails(users: list) -> list[str]:
 </details>
 
 <details>
-<summary>❌ Ruim — comprehension para efeitos colaterais</summary>
+<summary>❌ Ruim: comprehension para efeitos colaterais</summary>
 
 ```python
 [notify_customer(order) for order in pending_orders]
@@ -353,7 +353,7 @@ def get_active_user_emails(users: list) -> list[str]:
 </details>
 
 <details>
-<summary>✅ Bom — for loop quando há efeito colateral</summary>
+<summary>✅ Bom: for loop quando há efeito colateral</summary>
 
 ```python
 for order in pending_orders:
@@ -365,11 +365,11 @@ for order in pending_orders:
 ## while
 
 Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `while`
-é a escolha natural. Python não tem `do-while` — use `while True` com `break` quando a primeira
+é a escolha natural. Python não tem `do-while`: use `while True` com `break` quando a primeira
 execução é garantida.
 
 <details>
-<summary>❌ Ruim — for simulando condição de parada por estado</summary>
+<summary>❌ Ruim: for simulando condição de parada por estado</summary>
 
 ```python
 for attempt in range(max_attempts):
@@ -381,7 +381,7 @@ for attempt in range(max_attempts):
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```python
 attempt = 0
@@ -397,7 +397,7 @@ while attempt < max_attempts:
 </details>
 
 <details>
-<summary>✅ Bom — while True com break quando a primeira execução é garantida</summary>
+<summary>✅ Bom: while True com break quando a primeira execução é garantida</summary>
 
 ```python
 # drena a fila: processa pelo menos um item antes de verificar

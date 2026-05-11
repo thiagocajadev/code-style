@@ -2,9 +2,9 @@
 
 [![VB.NET](https://img.shields.io/badge/VB.NET-16-512BD4?logo=dotnet&logoColor=white)](https://learn.microsoft.com/en-us/dotnet/visual-basic/)
 
-Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 16 e .NET Framework 4.8 — a última versão major do .NET Framework — como referência para trabalho com bases de código legadas.
+Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 16 e .NET Framework 4.8 (a última versão major do .NET Framework) como referência para trabalho com bases de código legadas.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, modificadores, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, modificadores, tipos, controle de fluxo
 
 > [!IMPORTANT]
 > Antes de qualquer convenção, três switches de compilador precisam estar ativos em todo projeto:
@@ -55,7 +55,7 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 
 ## Princípios
 
-**Forma** — estrutura e narrativa do método
+**Forma**: estrutura e narrativa do método
 
 | Princípio | Descrição |
 | --- | --- |
@@ -63,9 +63,9 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo) | Chamada visível antes dos detalhes: top-down |
 | [SLA](conventions/methods.md#sla-orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno) | Saída de uma linha: o `Return` nomeia o resultado, não o computa |
-| [Sub vs Function](conventions/methods.md#sub-vs-function) | Se produz resultado, use `Function` — `ByRef` para output é design smell |
+| [Sub vs Function](conventions/methods.md#sub-vs-function) | Se produz resultado, use `Function`; `ByRef` para output é design smell |
 
-**Legibilidade** — fluxo, densidade visual e nomes
+**Legibilidade**: fluxo, densidade visual e nomes
 
 | Princípio | Descrição |
 | --- | --- |
@@ -75,14 +75,14 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | [Sem notação húngara](conventions/naming.md#notação-húngara) | Nome pelo domínio, não pelo tipo |
 | [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos) | `Const` nomeado em vez de literais inline |
 
-**Controle de qualidade** — estado, erros e async
+**Controle de qualidade**: estado, erros e async
 
 | Princípio | Descrição |
 | --- | --- |
-| [Option Strict On](conventions/variables.md#option-strict-e-option-explicit) | Proíbe conversões implícitas e late binding — ativar é obrigatório |
-| [Is / IsNot Nothing](conventions/variables.md#nothing-is-e-isnot) | Padrão .NET para verificar nulo — sem `IsNothing()` |
-| [AndAlso / OrElse](conventions/variables.md#andalso-e-orelse) | Curto-circuito seguro — `And`/`Or` avaliam ambos os lados |
+| [Option Strict On](conventions/variables.md#option-strict-e-option-explicit) | Proíbe conversões implícitas e late binding; ativar é obrigatório |
+| [Is / IsNot Nothing](conventions/variables.md#nothing-is-e-isnot) | Padrão .NET para verificar nulo, sem `IsNothing()` |
+| [AndAlso / OrElse](conventions/variables.md#andalso-e-orelse) | Curto-circuito seguro; `And`/`Or` avaliam ambos os lados |
 | [Try/Catch estruturado](conventions/advanced/error-handling.md#trycatch-vs-on-error-goto) | Sem `On Error GoTo`, sem `GoTo` |
 | [Async Function](conventions/advanced/async.md#async-function-vs-async-sub) | `Async Sub` apenas para event handlers |
-| [Await sem bloqueio](conventions/advanced/async.md#await-nunca-result-ou-wait) | Nunca `.Result` ou `.Wait()` — deadlock em contextos com SynchronizationContext |
+| [Await sem bloqueio](conventions/advanced/async.md#await-nunca-result-ou-wait) | Nunca `.Result` ou `.Wait()`; deadlock em contextos com SynchronizationContext |
 | [LINQ puro](conventions/advanced/linq.md#linq-puro-sem-side-effects) | Sem efeitos colaterais em transformações |

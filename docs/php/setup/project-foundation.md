@@ -31,7 +31,7 @@ my-app/
 ├── composer.lock           ← versões travadas
 ├── phpstan.neon            ← configuração do PHPStan (nível 9)
 ├── .editorconfig           ← indentação, charset, trailing whitespace
-├── .env.example            ← template — nunca commite .env
+├── .env.example            ← template; nunca commite .env
 ├── public/
 │   └── index.php           ← entry point: bootstrap + dispatch
 ├── src/
@@ -52,13 +52,13 @@ my-app/
             └── OrderServiceTest.php
 ```
 
-## composer.json — configuração central
+## composer.json: configuração central
 
 `composer.json` declara dependências, autoload e scripts. Rode `composer install` para
 instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
-<summary>✅ Bom — composer.json com PSR-4, PHPStan e scripts</summary>
+<summary>✅ Bom: composer.json com PSR-4, PHPStan e scripts</summary>
 
 ```json
 {
@@ -101,7 +101,7 @@ instalar e `composer dump-autoload` após adicionar classes.
 `getenv()` ou `$_ENV` diretamente. Falhe na inicialização se variáveis obrigatórias estiverem ausentes.
 
 <details>
-<summary>❌ Ruim — getenv() espalhado em todo lugar</summary>
+<summary>❌ Ruim: getenv() espalhado em todo lugar</summary>
 
 ```php
 // src/Domain/Order/OrderRepository.php
@@ -120,7 +120,7 @@ $jwtSecret = $_ENV['JWT_SECRET']; // leitura direta
 </details>
 
 <details>
-<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: Config como único ponto de entrada de env vars</summary>
 
 ```php
 // src/Config.php
@@ -170,7 +170,7 @@ final class OrderRepository implements OrderRepositoryInterface
 registra rotas; handlers ficam no domínio.
 
 <details>
-<summary>✅ Bom — index.php como índice, lógica delegada</summary>
+<summary>✅ Bom: index.php como índice, lógica delegada</summary>
 
 ```php
 <?php
@@ -220,7 +220,7 @@ Sempre declare `strict_types=1` em todos os arquivos PHP. Isso habilita verifica
 estrita de tipos em chamadas de função e previne coerções silenciosas.
 
 <details>
-<summary>❌ Ruim — sem strict_types, coerção silenciosa</summary>
+<summary>❌ Ruim: sem strict_types, coerção silenciosa</summary>
 
 ```php
 <?php
@@ -236,7 +236,7 @@ calculateTotal("5", "3"); // "5" é convertido para 5 silenciosamente
 </details>
 
 <details>
-<summary>✅ Bom — strict_types em todos os arquivos</summary>
+<summary>✅ Bom: strict_types em todos os arquivos</summary>
 
 ```php
 <?php

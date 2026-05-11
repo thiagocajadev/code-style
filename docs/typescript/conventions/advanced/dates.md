@@ -12,7 +12,7 @@ Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona
 | --- | --- |
 | **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
 | **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ss.sssZ` para datas em texto |
-| **branded type** (tipo marcado) | `string & { __brand: "IsoTimestamp" }` — distingue valores semânticos em nível de tipo |
+| **branded type** (tipo marcado) | `string & { __brand: "IsoTimestamp" }`: distingue valores semânticos em nível de tipo |
 | **timestamp** (carimbo de tempo) | Instante no tempo em UTC, normalmente como string ISO ou epoch ms |
 | **epoch** (época) | Milissegundos desde 1970-01-01T00:00:00Z; representação numérica do instante |
 | **timezone** (fuso horário) | Deslocamento regional aplicado na exibição; nunca no armazenamento |
@@ -26,13 +26,13 @@ um timestamp UTC válido de uma string genérica: a fronteira é explícita, o r
 protegido.
 
 <details>
-<summary>❌ Ruim — string genérica aceita qualquer valor em qualquer posição</summary>
+<summary>❌ Ruim: string genérica aceita qualquer valor em qualquer posição</summary>
 
 ```ts
 interface Order {
   id: string;
   customerId: string;
-  createdAt: string;  // string — nada impede passar uma data formatada aqui
+  createdAt: string;  // string: nada impede passar uma data formatada aqui
 }
 
 function formatOrderDate(isoString: string): string {
@@ -42,14 +42,14 @@ function formatOrderDate(isoString: string): string {
 const order: Order = {
   id: "ord-1",
   customerId: "cust-99",
-  createdAt: formatOrderDate(new Date().toISOString()), // passa — mas é data formatada, não ISO
+  createdAt: formatOrderDate(new Date().toISOString()), // passa: mas é data formatada, não ISO
 };
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — branded type distingue timestamp de string genérica</summary>
+<summary>✅ Bom: branded type distingue timestamp de string genérica</summary>
 
 ```ts
 type IsoTimestamp = string & { readonly __brand: "IsoTimestamp" };
@@ -80,7 +80,7 @@ const order: Order = {
   id: "ord-1",
   customerId: "cust-99",
   createdAt: toIsoTimestamp(new Date()), // ✅
-  // createdAt: "19/04/2026",            // erro de compilação — string não é IsoTimestamp
+  // createdAt: "19/04/2026",            // erro de compilação: string não é IsoTimestamp
 };
 ```
 
@@ -92,7 +92,7 @@ A [**Temporal** (padrão moderno de datas) **API** (Application Programming Inte
 disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambientes ES2026.
 
 <details>
-<summary>✅ Bom — Temporal com tipos explícitos</summary>
+<summary>✅ Bom: Temporal com tipos explícitos</summary>
 
 ```ts
 function createScheduledEvent(
@@ -127,7 +127,7 @@ Funções que convertem ou formatam datas devem ter retorno explícito. O caller
 sem inspecionar a implementação.
 
 <details>
-<summary>❌ Ruim — retorno inferido, contrato invisível</summary>
+<summary>❌ Ruim: retorno inferido, contrato invisível</summary>
 
 ```ts
 function parseOrderDate(raw: unknown) {
@@ -139,7 +139,7 @@ function parseOrderDate(raw: unknown) {
 </details>
 
 <details>
-<summary>✅ Bom — input validado, retorno explícito</summary>
+<summary>✅ Bom: input validado, retorno explícito</summary>
 
 ```ts
 function parseIsoDate(isoString: IsoTimestamp): Date {

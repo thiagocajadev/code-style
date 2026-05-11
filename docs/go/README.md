@@ -5,7 +5,7 @@
 Convenções Go aplicando os mesmos princípios do guia. Os exemplos usam Go 1.26 como referência;
 diferenças relevantes com versões anteriores são destacadas onde necessário.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 
@@ -51,7 +51,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [PascalCase exportado](conventions/naming.md#convenções-de-case)                            | Exported: `PascalCase`; unexported: `camelCase`; sem underscores     |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                  | Variáveis e funções que dispensam explicação                         |
 | [Orquestrador no topo](conventions/methods.md#god-function--múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                            | Uma responsabilidade, um nível de abstração                          |
+| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>

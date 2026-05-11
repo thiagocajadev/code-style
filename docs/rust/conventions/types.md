@@ -18,12 +18,12 @@ enums e traits eliminam classes de bugs em tempo de compilação, sem custo em r
 | **newtype** (tipo wrapper de um único campo) | Distingue tipos com o mesmo dado bruto |
 | **generics** (genéricos) | Parâmetros de tipo `<T>` para reutilizar código sem perda de tipo |
 
-## Struct — campos nomeados
+## Struct: campos nomeados
 
 Derive traits comuns com `#[derive]`. Não derive o que não vai usar.
 
 <details>
-<summary>❌ Ruim — struct anêmica sem semântica</summary>
+<summary>❌ Ruim: struct anêmica sem semântica</summary>
 
 ```rust
 struct Data {
@@ -36,7 +36,7 @@ struct Data {
 </details>
 
 <details>
-<summary>✅ Bom — campos nomeados por domínio + derives úteis</summary>
+<summary>✅ Bom: campos nomeados por domínio + derives úteis</summary>
 
 ```rust
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -57,11 +57,11 @@ Enums Rust são **tipos de soma** (Algebraic Data Types): cada variante pode car
 dados diferentes. Use para modelar estados e resultados distintos.
 
 <details>
-<summary>❌ Ruim — status como string magic</summary>
+<summary>❌ Ruim: status como string magic</summary>
 
 ```rust
 struct Order {
-    pub status: String, // "active", "paid", "cancelled" — sem garantia do compilador
+    pub status: String, // "active", "paid", "cancelled": sem garantia do compilador
 }
 
 fn is_paid(order: &Order) -> bool {
@@ -72,7 +72,7 @@ fn is_paid(order: &Order) -> bool {
 </details>
 
 <details>
-<summary>✅ Bom — enum exaustivo com dados por variante</summary>
+<summary>✅ Bom: enum exaustivo com dados por variante</summary>
 
 ```rust
 #[derive(Debug, Clone, PartialEq)]
@@ -90,13 +90,13 @@ fn is_paid(order: &Order) -> bool {
 
 </details>
 
-## Trait — comportamento sem herança
+## Trait: comportamento sem herança
 
 Traits definem contratos. Tipos implementam traits independentemente.
 Prefira `impl Trait` em parâmetros para funções simples; `Box<dyn Trait>` para despacho dinâmico.
 
 <details>
-<summary>❌ Ruim — lógica acoplada a um tipo concreto</summary>
+<summary>❌ Ruim: lógica acoplada a um tipo concreto</summary>
 
 ```rust
 struct EmailNotifier;
@@ -109,7 +109,7 @@ fn notify_order_paid_sms(notifier: &SmsNotifier, order: &Order) {}
 </details>
 
 <details>
-<summary>✅ Bom — trait como contrato, impl por tipo</summary>
+<summary>✅ Bom: trait como contrato, impl por tipo</summary>
 
 ```rust
 pub trait Notifier {
@@ -145,7 +145,7 @@ async fn notify_order_paid(notifier: &impl Notifier, order: &Order) -> anyhow::R
 `Option<T>` força o tratamento explícito da ausência. Nunca use `unwrap()` em código de produção.
 
 <details>
-<summary>❌ Ruim — unwrap que pânica em Option None</summary>
+<summary>❌ Ruim: unwrap que pânica em Option None</summary>
 
 ```rust
 fn get_discount_label(order: &Order) -> String {
@@ -157,7 +157,7 @@ fn get_discount_label(order: &Order) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — Option tratado com map ou let-else</summary>
+<summary>✅ Bom: Option tratado com map ou let-else</summary>
 
 ```rust
 fn get_discount_label(order: &Order) -> Option<String> {
@@ -168,13 +168,13 @@ fn get_discount_label(order: &Order) -> Option<String> {
 
 </details>
 
-## Newtype — distinção por tipo
+## Newtype: distinção por tipo
 
 Use newtype para distinguir valores com o mesmo tipo primitivo mas significados diferentes.
 O compilador rejeita trocas acidentais.
 
 <details>
-<summary>❌ Ruim — IDs intercambiáveis pelo compilador</summary>
+<summary>❌ Ruim: IDs intercambiáveis pelo compilador</summary>
 
 ```rust
 fn transfer(from_account: u64, to_account: u64, amount: f64) {}
@@ -186,7 +186,7 @@ transfer(to_id, from_id, 100.0);
 </details>
 
 <details>
-<summary>✅ Bom — newtype impede inversão silenciosa</summary>
+<summary>✅ Bom: newtype impede inversão silenciosa</summary>
 
 ```rust
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -202,12 +202,12 @@ fn transfer(from: AccountId, to: AccountId, amount: Amount) {}
 
 </details>
 
-## Generics — reutilização com tipo preservado
+## Generics: reutilização com tipo preservado
 
 Generics evitam duplicação sem perder informação de tipo.
 
 <details>
-<summary>❌ Ruim — lógica duplicada por tipo</summary>
+<summary>❌ Ruim: lógica duplicada por tipo</summary>
 
 ```rust
 fn find_first_active_order(orders: &[Order]) -> Option<&Order> {
@@ -222,7 +222,7 @@ fn find_first_active_product(products: &[Product]) -> Option<&Product> {
 </details>
 
 <details>
-<summary>✅ Bom — trait bound genérico</summary>
+<summary>✅ Bom: trait bound genérico</summary>
 
 ```rust
 pub trait HasActiveStatus {

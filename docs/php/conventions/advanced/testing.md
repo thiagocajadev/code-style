@@ -12,15 +12,15 @@ PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 | Conceito | O que é |
 | -------- | ------- |
 | **data provider** (provedor de dados) | Método que retorna múltiplos conjuntos de argumentos para um teste; reduz duplicação |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação de testes: preparar, executar, verificar — fases visualmente separadas |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação de testes: preparar, executar, verificar; fases visualmente separadas |
 | `createMock` | PHPUnit gera um mock (objeto simulado) de uma interface sem implementação real |
 | `createStub` | PHPUnit gera um stub (esboço) sem verificações de chamada |
 | `#[DataProvider]` | Atributo PHP 8.x que liga um método de teste ao seu data provider |
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 <details>
-<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim: fases misturadas, sem separação visual</summary>
 
 ```php
 public function testApplyDiscount(): void
@@ -37,7 +37,7 @@ public function testApplyDiscount(): void
 </details>
 
 <details>
-<summary>✅ Bom — data provider + AAA com fases separadas</summary>
+<summary>✅ Bom: data provider + AAA com fases separadas</summary>
 
 ```php
 #[DataProvider('discountCases')]
@@ -71,7 +71,7 @@ Crie mocks das interfaces que o service consome. Nunca instancie repositórios r
 em testes unitários.
 
 <details>
-<summary>✅ Bom — mock de repositório + service isolado</summary>
+<summary>✅ Bom: mock de repositório + service isolado</summary>
 
 ```php
 final class OrderServiceTest extends TestCase
@@ -125,7 +125,7 @@ final class OrderServiceTest extends TestCase
 Use `expectException` antes da ação para verificar que a exceção certa é lançada.
 
 <details>
-<summary>✅ Bom — teste de exceção com tipo e mensagem</summary>
+<summary>✅ Bom: teste de exceção com tipo e mensagem</summary>
 
 ```php
 public function testCreateOrderThrowsOnMissingCustomer(): void
@@ -150,7 +150,7 @@ Organize testes espelhando a estrutura de `src/`. Um arquivo de teste por classe
 Nomeie os métodos com `test` + comportamento esperado + contexto.
 
 <details>
-<summary>✅ Bom — nomenclatura e estrutura</summary>
+<summary>✅ Bom: nomenclatura e estrutura</summary>
 
 ```php
 final class OrderServiceTest extends TestCase
@@ -176,7 +176,7 @@ Use `setUp` para instanciar dependências antes de cada teste. Use `tearDown`
 para liberar recursos externos (arquivos, conexões de teste).
 
 <details>
-<summary>✅ Bom — setUp cria um estado limpo por teste</summary>
+<summary>✅ Bom: setUp cria um estado limpo por teste</summary>
 
 ```php
 final class UserRepositoryTest extends TestCase
@@ -199,7 +199,7 @@ final class UserRepositoryTest extends TestCase
 
     public function testFindByEmailReturnsNullWhenNotFound(): void
     {
-        // Arrange — tabela vazia do setUp
+        // Arrange: tabela vazia do setUp
 
         // Act
         $result = $this->repository->findByEmail('notexists@example.com');

@@ -72,7 +72,7 @@ Em staging e produção, `dotenv` não entra no bundle. As variáveis são injet
 `process.env` é o limite entre o ambiente externo e o código. Ler diretamente no meio da lógica espalha dependência global e dificulta teste. O padrão é um `config.js` que lê uma vez, valida e exporta um objeto consumido por injeção.
 
 <details>
-<summary>❌ Ruim — process.env espalhado pela aplicação</summary>
+<summary>❌ Ruim: process.env espalhado pela aplicação</summary>
 
 ```js
 // orders.service.js
@@ -86,7 +86,7 @@ export function createOrderService() {
 </details>
 
 <details>
-<summary>✅ Bom — leitura em um lugar, módulos recebem por parâmetro</summary>
+<summary>✅ Bom: leitura em um lugar, módulos recebem por parâmetro</summary>
 
 ```js
 // config.js
@@ -117,7 +117,7 @@ export function registerOrders(app, config) {
 `jwt.decode()` extrai o **payload** (corpo da mensagem) sem verificar assinatura. Qualquer token fabricado ou vencido passa. Em produção, use sempre `jwt.verify()`.
 
 <details>
-<summary>❌ Ruim — decode aceita token forjado</summary>
+<summary>❌ Ruim: decode aceita token forjado</summary>
 
 ```js
 export function authenticate(request, response, next) {
@@ -133,7 +133,7 @@ export function authenticate(request, response, next) {
 </details>
 
 <details>
-<summary>✅ Bom — verify valida assinatura e expiração</summary>
+<summary>✅ Bom: verify valida assinatura e expiração</summary>
 
 ```js
 export function authenticate(request, response, next) {

@@ -20,7 +20,7 @@ Toda `<img>` tem `alt`. Imagens de conteúdo: texto descritivo. Imagens decorati
 Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do arquivo.
 
 <details>
-<summary>❌ Ruim — sem alt, alt genérico, alt repete o contexto</summary>
+<summary>❌ Ruim: sem alt, alt genérico, alt repete o contexto</summary>
 
 ```html
 <img src="/img/avatar.jpg" />
@@ -34,7 +34,7 @@ Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do ar
 </details>
 
 <details>
-<summary>✅ Bom — alt descritivo, decorativo com alt vazio</summary>
+<summary>✅ Bom: alt descritivo, decorativo com alt vazio</summary>
 
 ```html
 <img src="/img/avatar.jpg" alt="Profile photo of Ana Souza" />
@@ -53,7 +53,7 @@ Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do ar
 quebra o comportamento esperado com teclado e leitores de tela.
 
 <details>
-<summary>❌ Ruim — div/span clicável, link que age como botão</summary>
+<summary>❌ Ruim: div/span clicável, link que age como botão</summary>
 
 ```html
 <div class="btn" onclick="openModal()">Open</div>
@@ -65,7 +65,7 @@ quebra o comportamento esperado com teclado e leitores de tela.
 </details>
 
 <details>
-<summary>✅ Bom — button para ação, a para navegação</summary>
+<summary>✅ Bom: button para ação, a para navegação</summary>
 
 ```html
 <button type="button" onclick="openModal()">Open</button>
@@ -84,7 +84,7 @@ O fluxo de foco segue a ordem do DOM. `tabindex="0"` adiciona um elemento não-f
 natural, portanto deve ser evitado.
 
 <details>
-<summary>❌ Ruim — tabindex positivo bagunça a ordem, div interativo sem foco</summary>
+<summary>❌ Ruim: tabindex positivo bagunça a ordem, div interativo sem foco</summary>
 
 ```html
 <input tabindex="3" name="email" />
@@ -95,7 +95,7 @@ natural, portanto deve ser evitado.
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural do DOM, elemento customizado com tabindex="0" e role</summary>
+<summary>✅ Bom: ordem natural do DOM, elemento customizado com tabindex="0" e role</summary>
 
 ```html
 <input name="name" />
@@ -118,7 +118,7 @@ ARIA não substitui HTML semântico; complementa quando não há elemento nativo
 um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 
 <details>
-<summary>❌ Ruim — ARIA desnecessário em elemento semântico</summary>
+<summary>❌ Ruim: ARIA desnecessário em elemento semântico</summary>
 
 ```html
 <button role="button" aria-pressed="false">Submit</button>
@@ -129,7 +129,7 @@ um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 </details>
 
 <details>
-<summary>✅ Bom — ARIA só onde não existe elemento nativo</summary>
+<summary>✅ Bom: ARIA só onde não existe elemento nativo</summary>
 
 ```html
 <button type="button">Submit</button>
@@ -154,7 +154,7 @@ um elemento nativo, use-o. ARIA errado é pior que ARIA ausente.
 quando não há elemento visual. Prefira `aria-labelledby`; o texto fica sincronizado com a UI.
 
 <details>
-<summary>❌ Ruim — aria-label duplica texto já visível</summary>
+<summary>❌ Ruim: aria-label duplica texto já visível</summary>
 
 ```html
 <section aria-label="Featured Products">
@@ -168,7 +168,7 @@ quando não há elemento visual. Prefira `aria-labelledby`; o texto fica sincron
 </details>
 
 <details>
-<summary>✅ Bom — aria-labelledby aponta pro heading; aria-label só quando não há texto visível</summary>
+<summary>✅ Bom: aria-labelledby aponta pro heading; aria-label só quando não há texto visível</summary>
 
 ```html
 <section aria-labelledby="featured-heading">

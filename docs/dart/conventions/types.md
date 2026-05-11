@@ -21,11 +21,11 @@ Records (Dart 3+) criam tipos de produto imutáveis sem boilerplate.
 ## Sealed class para estados e resultados
 
 <details>
-<summary>❌ Ruim — String como discriminante de estado</summary>
+<summary>❌ Ruim: String como discriminante de estado</summary>
 
 ```dart
 class OrderResult {
-  final String status;   // 'success', 'error', 'pending' — sem garantia de exaustividade
+  final String status;   // 'success', 'error', 'pending': sem garantia de exaustividade
   final Order? order;
   final String? errorMessage;
 
@@ -36,7 +36,7 @@ class OrderResult {
 </details>
 
 <details>
-<summary>✅ Bom — sealed class com switch exaustivo</summary>
+<summary>✅ Bom: sealed class com switch exaustivo</summary>
 
 ```dart
 sealed class OrderResult {}
@@ -53,7 +53,7 @@ class OrderFailure extends OrderResult {
 
 class OrderPending extends OrderResult {}
 
-// switch exaustivo — novo subtipo é erro de compilação sem o case
+// switch exaustivo: novo subtipo é erro de compilação sem o case
 String describeResult(OrderResult result) {
   return switch (result) {
     OrderSuccess(:final order) => 'Order ${order.id} confirmed',
@@ -68,7 +68,7 @@ String describeResult(OrderResult result) {
 ## Records para tipos de produto simples
 
 <details>
-<summary>❌ Ruim — classe com boilerplate para par de valores</summary>
+<summary>❌ Ruim: classe com boilerplate para par de valores</summary>
 
 ```dart
 class Coordinate {
@@ -81,7 +81,7 @@ class Coordinate {
 </details>
 
 <details>
-<summary>✅ Bom — record: imutável, destructuring, equals automático</summary>
+<summary>✅ Bom: record: imutável, destructuring, equals automático</summary>
 
 ```dart
 typedef Coordinate = ({double latitude, double longitude});
@@ -96,7 +96,7 @@ final (latitude: lat, longitude: lng) = location;   // destructuring
 ## Mixin para comportamento reutilizável
 
 <details>
-<summary>❌ Ruim — herança para compartilhar comportamento</summary>
+<summary>❌ Ruim: herança para compartilhar comportamento</summary>
 
 ```dart
 abstract class BaseRepository {
@@ -110,7 +110,7 @@ class UserRepository extends BaseRepository { ... }
 </details>
 
 <details>
-<summary>✅ Bom — mixin compartilha comportamento sem acoplamento de hierarquia</summary>
+<summary>✅ Bom: mixin compartilha comportamento sem acoplamento de hierarquia</summary>
 
 ```dart
 mixin Loggable {
@@ -128,7 +128,7 @@ class UserRepository with Loggable { ... }
 ## Extension para comportamento adicional
 
 <details>
-<summary>❌ Ruim — método utilitário em classe separada</summary>
+<summary>❌ Ruim: método utilitário em classe separada</summary>
 
 ```dart
 class OrderUtils {
@@ -141,7 +141,7 @@ class OrderUtils {
 </details>
 
 <details>
-<summary>✅ Bom — extension no tipo correto</summary>
+<summary>✅ Bom: extension no tipo correto</summary>
 
 ```dart
 extension OrderFiltering on Order {
@@ -159,7 +159,7 @@ final recentPaid = orders.where((o) => o.isPaidAndRecent(cutoff)).toList();
 ## Enum com métodos
 
 <details>
-<summary>❌ Ruim — switch de string para mapeamento de enum</summary>
+<summary>❌ Ruim: switch de string para mapeamento de enum</summary>
 
 ```dart
 String getStatusLabel(String status) {
@@ -172,7 +172,7 @@ String getStatusLabel(String status) {
 </details>
 
 <details>
-<summary>✅ Bom — enum com getter carrega o comportamento</summary>
+<summary>✅ Bom: enum com getter carrega o comportamento</summary>
 
 ```dart
 enum OrderStatus {

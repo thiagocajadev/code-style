@@ -2,7 +2,7 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Log é a primeira linha de diagnóstico. Um log útil diz quem, o quê e por quê — sem expor dados
+Log é a primeira linha de diagnóstico. Um log útil diz quem, o quê e por quê, sem expor dados
 sensíveis e sem poluir com ruído.
 
 ## Conceitos fundamentais
@@ -23,7 +23,7 @@ sensíveis e sem poluir com ruído.
 `logging` padrão ou uma biblioteca estruturada como `structlog`.
 
 <details>
-<summary>❌ Ruim — print() sem nível, sem contexto</summary>
+<summary>❌ Ruim: print() sem nível, sem contexto</summary>
 
 ```python
 def process_order(order_id: int):
@@ -34,7 +34,7 @@ def process_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — logging com nível e contexto</summary>
+<summary>✅ Bom: logging com nível e contexto</summary>
 
 ```python
 import logging
@@ -65,7 +65,7 @@ Cada nível tem um significado fixo. Usar o nível errado polui o output e dific
 | `CRITICAL` | Falha que compromete o sistema inteiro: indisponibilidade de banco |
 
 <details>
-<summary>❌ Ruim — nível errado para o contexto</summary>
+<summary>❌ Ruim: nível errado para o contexto</summary>
 
 ```python
 logger.info("Database connection failed")    # deveria ser ERROR
@@ -76,7 +76,7 @@ logger.debug("Payment processed successfully")  # deveria ser INFO
 </details>
 
 <details>
-<summary>✅ Bom — nível correto para cada evento</summary>
+<summary>✅ Bom: nível correto para cada evento</summary>
 
 ```python
 logger.info("user logged in", extra={"user_id": user.user_id})
@@ -90,10 +90,10 @@ logger.error("database connection failed", extra={"host": db_host}, exc_info=Tru
 ## PII em logs
 
 Dados pessoais (nome, e-mail, CPF, número de cartão) não entram em logs. Logar apenas
-identificadores opacos — IDs que não revelam a pessoa.
+identificadores opacos: IDs que não revelam a pessoa.
 
 <details>
-<summary>❌ Ruim — dados pessoais expostos no log</summary>
+<summary>❌ Ruim: dados pessoais expostos no log</summary>
 
 ```python
 logger.info(f"processing payment for {user.name} ({user.email}), card {card.number}")
@@ -102,7 +102,7 @@ logger.info(f"processing payment for {user.name} ({user.email}), card {card.numb
 </details>
 
 <details>
-<summary>✅ Bom — apenas identificadores opacos</summary>
+<summary>✅ Bom: apenas identificadores opacos</summary>
 
 ```python
 logger.info(
@@ -119,7 +119,7 @@ Em sistemas distribuídos, rastrear uma requisição entre serviços exige um id
 Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output, Entrada/Saída).
 
 <details>
-<summary>❌ Ruim — logs sem contexto de rastreamento</summary>
+<summary>❌ Ruim: logs sem contexto de rastreamento</summary>
 
 ```python
 async def handle_order(order_id: int):
@@ -135,7 +135,7 @@ async def handle_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — correlation_id propagado em todos os logs da operação</summary>
+<summary>✅ Bom: correlation_id propagado em todos os logs da operação</summary>
 
 ```python
 import uuid
@@ -161,7 +161,7 @@ Ao capturar uma exceção, use `exc_info=True` ou `logger.exception()` para incl
 Sem ele, o log não diz onde o erro ocorreu.
 
 <details>
-<summary>❌ Ruim — exceção capturada sem traceback</summary>
+<summary>❌ Ruim: exceção capturada sem traceback</summary>
 
 ```python
 async def process_payment(payment_id: int):
@@ -176,7 +176,7 @@ async def process_payment(payment_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — exc_info preserva o traceback completo</summary>
+<summary>✅ Bom: exc_info preserva o traceback completo</summary>
 
 ```python
 async def process_payment(payment_id: int):

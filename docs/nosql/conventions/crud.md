@@ -1,4 +1,4 @@
-# CRUD — NoSQL
+# CRUD: NoSQL
 
 > Escopo: NoSQL. Padrões de operações de leitura e escrita para bancos não-relacionais.
 
@@ -19,7 +19,7 @@ As convenções abaixo usam MongoDB como referência primária. Princípios de p
 ## Insert
 
 <details>
-<summary>❌ Ruim — inserção fora do repository, sem campo de auditoria, dado inline no driver</summary>
+<summary>❌ Ruim: inserção fora do repository, sem campo de auditoria, dado inline no driver</summary>
 
 ```js
 // lógica de negócio acoplada ao driver
@@ -27,7 +27,7 @@ async function createTeam(name, city, year) {
   const result = await db.collection('teams').insertOne({
     name,
     city,
-    year,        // nome inconsistente — deveria ser foundedYear
+    year,        // nome inconsistente: deveria ser foundedYear
     active: true, // boolean sem prefixo
   });
 
@@ -38,7 +38,7 @@ async function createTeam(name, city, year) {
 </details>
 
 <details>
-<summary>✅ Bom — repository encapsula o driver; campos de auditoria; nomes de domínio</summary>
+<summary>✅ Bom: repository encapsula o driver; campos de auditoria; nomes de domínio</summary>
 
 ```js
 class TeamRepository {
@@ -63,7 +63,7 @@ class TeamRepository {
 ## Find
 
 <details>
-<summary>❌ Ruim — sem projeção, filtro no cliente, nome genérico</summary>
+<summary>❌ Ruim: sem projeção, filtro no cliente, nome genérico</summary>
 
 ```js
 // carrega o documento inteiro para usar dois campos
@@ -75,7 +75,7 @@ async function getTeam(id) {
   return { name, city };
 }
 
-// filtro no cliente — varre a coleção inteira
+// filtro no cliente: varre a coleção inteira
 async function getActiveTeams() {
   const allTeams = await db.collection('teams').find({}).toArray();
   const active = allTeams.filter(t => t.isActive === true);
@@ -87,7 +87,7 @@ async function getActiveTeams() {
 </details>
 
 <details>
-<summary>✅ Bom — projeção limita campos; filtro no banco; repository</summary>
+<summary>✅ Bom: projeção limita campos; filtro no banco; repository</summary>
 
 ```js
 class TeamRepository {
@@ -119,10 +119,10 @@ class TeamRepository {
 ## Update
 
 <details>
-<summary>❌ Ruim — replace completo em vez de patch; sem campo de auditoria; expõe driver</summary>
+<summary>❌ Ruim: replace completo em vez de patch; sem campo de auditoria; expõe driver</summary>
 
 ```js
-// substitui o documento inteiro — apaga campos não enviados
+// substitui o documento inteiro: apaga campos não enviados
 async function updateTeam(id, data) {
   await db.collection('teams').replaceOne({ _id: id }, data);
 }
@@ -139,7 +139,7 @@ async function setManager(id, manager) {
 </details>
 
 <details>
-<summary>✅ Bom — patch com $set; updatedAt de auditoria; repository</summary>
+<summary>✅ Bom: patch com $set; updatedAt de auditoria; repository</summary>
 
 ```js
 class TeamRepository {
@@ -180,7 +180,7 @@ class TeamRepository {
 ## Delete
 
 <details>
-<summary>❌ Ruim — hard delete sem auditoria; condição fraca; expõe driver</summary>
+<summary>❌ Ruim: hard delete sem auditoria; condição fraca; expõe driver</summary>
 
 ```js
 // apaga fisicamente sem registro de quem ou quando
@@ -188,7 +188,7 @@ async function deleteTeam(id) {
   await db.collection('teams').deleteOne({ _id: id });
 }
 
-// deleteMany com filtro fraco — risco de apagar mais do que pretendido
+// deleteMany com filtro fraco: risco de apagar mais do que pretendido
 async function cleanup() {
   await db.collection('teams').deleteMany({ active: false });
 }
@@ -197,7 +197,7 @@ async function cleanup() {
 </details>
 
 <details>
-<summary>✅ Bom — soft delete com campo de auditoria; hard delete explícito e restrito</summary>
+<summary>✅ Bom: soft delete com campo de auditoria; hard delete explícito e restrito</summary>
 
 ```js
 class TeamRepository {
@@ -235,7 +235,7 @@ class TeamRepository {
 ## Upsert
 
 <details>
-<summary>❌ Ruim — find + insert manual, não atômico, condição de corrida</summary>
+<summary>❌ Ruim: find + insert manual, não atômico, condição de corrida</summary>
 
 ```js
 // find-then-insert: janela de condição de corrida entre as duas operações
@@ -253,7 +253,7 @@ async function saveStandings(teamId, points) {
 </details>
 
 <details>
-<summary>✅ Bom — **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
+<summary>✅ Bom: **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
 
 ```js
 class StandingsRepository {

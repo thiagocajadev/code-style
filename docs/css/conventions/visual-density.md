@@ -1,6 +1,6 @@
 # Visual density: CSS
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar **declaration** (declaração) por responsabilidade e separar **ruleset** (bloco de regras) distintos com **blank line** (linha em branco). CSS é declarativo — não há control flow, retorno ou guarda. Sobram as regras de separação entre unidades e de proibição de alinhamento artificial.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a CSS: agrupar **declaration** (declaração) por responsabilidade e separar **ruleset** (bloco de regras) distintos com **blank line** (linha em branco). CSS é declarativo, não há control flow, retorno ou guarda. Sobram as regras de separação entre unidades e de proibição de alinhamento artificial.
 
 ## Conceitos fundamentais
 
@@ -11,7 +11,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 | **blank line** (linha em branco) | Separador entre unidades coesas; uma só, nunca duas seguidas |
 | **declaration group** (grupo de declarações) | Conjunto de propriedades da mesma responsabilidade (posição, box, tipografia, visual) |
 | **multi-line block** (bloco multi-linha) | `@media`, `@keyframes` ou regra aninhada com várias linhas; pede linha em branco depois quando seguido de outra regra |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `:` ou valores verticalmente; antipadrão — frágil a renomeações, gera diff ruidoso |
+| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `:` ou valores verticalmente; antipadrão frágil a renomeações que gera diff ruidoso |
 | **scannability** (legibilidade vertical) | Capacidade de localizar uma regra ou propriedade sem ler o arquivo todo |
 
 ## Referência rápida
@@ -26,14 +26,14 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 ## A regra central
 
-**Cada ruleset é uma unidade.** Uma linha em branco separa rulesets consecutivos e revela a estrutura no scan vertical. Dentro do ruleset, propriedades relacionadas ficam juntas; grupos distintos (posição, box, tipografia, visual) podem ser separados por blank quando o bloco é longo o suficiente para se beneficiar.
+**Cada ruleset é uma unidade.** Uma linha em branco separa rulesets consecutivos e revela a estrutura no scan vertical. Dentro do ruleset, propriedades relacionadas ficam juntas. Grupos distintos (posição, box, tipografia, visual) podem ser separados por blank quando o bloco é longo o suficiente para se beneficiar.
 
 ## Entre regras: blank line entre rulesets
 
 Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores distintos separa responsabilidades e torna o arquivo escaneável.
 
 <details>
-<summary>❌ Ruim — regras coladas, sem respiro entre blocos</summary>
+<summary>❌ Ruim: regras coladas, sem respiro entre blocos</summary>
 
 ```css
 .card {
@@ -53,7 +53,7 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 </details>
 
 <details>
-<summary>✅ Bom — uma linha em branco entre cada regra</summary>
+<summary>✅ Bom: uma linha em branco entre cada regra</summary>
 
 ```css
 .card {
@@ -76,12 +76,12 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 ## Grupos de propriedades dentro do ruleset
 
-Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: posicionamento, layout/box, tipografia, visual. Uma linha em branco separa cada grupo e torna o bloco legível de cima pra baixo. Para rulesets curtos (3-4 propriedades), o agrupamento é dispensável — o blank fica ruído.
+Dentro de uma regra longa, propriedades são agrupadas por responsabilidade: posicionamento, layout/box, tipografia, visual. Uma linha em branco separa cada grupo e torna o bloco legível de cima pra baixo. Para rulesets curtos (3-4 propriedades), o agrupamento é dispensável: o blank fica ruído.
 
 A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedades).
 
 <details>
-<summary>❌ Ruim — propriedades longas sem separação entre grupos</summary>
+<summary>❌ Ruim: propriedades longas sem separação entre grupos</summary>
 
 ```css
 .modal {
@@ -104,7 +104,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 </details>
 
 <details>
-<summary>✅ Bom — grupos separados, cada responsabilidade legível</summary>
+<summary>✅ Bom: grupos separados, cada responsabilidade legível</summary>
 
 ```css
 .modal {
@@ -131,10 +131,10 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 ## Blocos multi-linha pedem respiro depois
 
-`@media`, `@keyframes` e regras aninhadas (CSS nesting ou SCSS) ocupam várias linhas físicas — peso visual próprio. Quando seguidos de outra regra, exigem linha em branco depois para isolar o bloco grande.
+`@media`, `@keyframes` e regras aninhadas (CSS nesting ou SCSS) ocupam várias linhas físicas e têm peso visual próprio. Quando seguidos de outra regra, exigem linha em branco depois para isolar o bloco grande.
 
 <details>
-<summary>❌ Ruim — @media colados, sem separação visual</summary>
+<summary>❌ Ruim: @media colados, sem separação visual</summary>
 
 ```css
 .hero {
@@ -158,7 +158,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 </details>
 
 <details>
-<summary>✅ Bom — uma linha em branco entre cada bloco</summary>
+<summary>✅ Bom: uma linha em branco entre cada bloco</summary>
 
 ```css
 .hero {
@@ -188,7 +188,7 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linha em branco antes de cada bloco filho mantém a hierarquia clara.
 
 <details>
-<summary>❌ Ruim — tudo colado, hierarquia difícil de ler</summary>
+<summary>❌ Ruim: tudo colado, hierarquia difícil de ler</summary>
 
 ```css
 .nav {
@@ -211,7 +211,7 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 </details>
 
 <details>
-<summary>✅ Bom — cada bloco aninhado separado, hierarquia visível</summary>
+<summary>✅ Bom: cada bloco aninhado separado, hierarquia visível</summary>
 
 ```css
 .nav {
@@ -241,7 +241,7 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 Não alinhe verticalmente `:`, valores ou comentários com múltiplos espaços. Use sempre **um espaço único** após `:`. Alinhamento artificial quebra com qualquer renomeação de token, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar valores e comentários</summary>
+<summary>❌ Ruim: espaços extras para alinhar valores e comentários</summary>
 
 <!-- prettier-ignore -->
 ```css
@@ -264,7 +264,7 @@ Não alinhe verticalmente `:`, valores ou comentários com múltiplos espaços. 
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem espaçamento extra</summary>
+<summary>✅ Bom: espaço único, sem espaçamento extra</summary>
 
 ```css
 :root {
@@ -287,7 +287,7 @@ Não alinhe verticalmente `:`, valores ou comentários com múltiplos espaços. 
 
 ## Nunca duplo respiro
 
-Exatamente uma linha em branco entre rulesets. Duas linhas em branco seguidas é ruído — fragmenta a leitura sem marcar fase. Se um grupo de rulesets precisa de mais separação, use comentário de seção em vez de double blank.
+Exatamente uma linha em branco entre rulesets. Duas linhas em branco seguidas é ruído: fragmenta a leitura sem marcar fase. Se um grupo de rulesets precisa de mais separação, use comentário de seção em vez de double blank.
 
 ```css
 /* --- Card --- */

@@ -11,16 +11,16 @@ O compilador impede uso não-seguro de valores nullable. O operador `!` (null as
 | Conceito | O que é |
 | --- | --- |
 | `T?` | tipo anulável; pode conter `null` |
-| `?.` | safe member access — retorna `null` se receptor for `null` |
-| `??` | **null-coalescing** — valor padrão quando `null` |
-| `!` | null assertion — lança `Null check operator used on a null value`; evitar |
+| `?.` | safe member access; retorna `null` se receptor for `null` |
+| `??` | **null-coalescing**; valor padrão quando `null` |
+| `!` | null assertion; lança `Null check operator used on a null value`; evitar |
 | `late` | variável não-nullable com inicialização postergada |
 | `required` | named parameter obrigatório; não pode ser omitido na chamada |
 
 ## `!` em produção
 
 <details>
-<summary>❌ Ruim — ! como atalho perigoso</summary>
+<summary>❌ Ruim: ! como atalho perigoso</summary>
 
 ```dart
 Future<String> getCustomerEmail(int userId) async {
@@ -32,7 +32,7 @@ Future<String> getCustomerEmail(int userId) async {
 </details>
 
 <details>
-<summary>✅ Bom — null-check explícito com throw expressivo</summary>
+<summary>✅ Bom: null-check explícito com throw expressivo</summary>
 
 ```dart
 Future<String> getCustomerEmail(int userId) async {
@@ -48,7 +48,7 @@ Future<String> getCustomerEmail(int userId) async {
 ## Cadeia de safe calls
 
 <details>
-<summary>❌ Ruim — null-checks aninhados</summary>
+<summary>❌ Ruim: null-checks aninhados</summary>
 
 ```dart
 String getCity(Order? order) {
@@ -66,7 +66,7 @@ String getCity(Order? order) {
 </details>
 
 <details>
-<summary>✅ Bom — safe call chain com ?? no final</summary>
+<summary>✅ Bom: safe call chain com ?? no final</summary>
 
 ```dart
 String getCity(Order? order) {
@@ -79,7 +79,7 @@ String getCity(Order? order) {
 ## `late` para inicialização postergada garantida
 
 <details>
-<summary>❌ Ruim — nullable onde o valor sempre existirá</summary>
+<summary>❌ Ruim: nullable onde o valor sempre existirá</summary>
 
 ```dart
 class UserBloc {
@@ -96,7 +96,7 @@ class UserBloc {
 </details>
 
 <details>
-<summary>✅ Bom — late final declara intenção sem nullable</summary>
+<summary>✅ Bom: late final declara intenção sem nullable</summary>
 
 ```dart
 class UserBloc {
@@ -115,7 +115,7 @@ class UserBloc {
 ## `required` em named parameters
 
 <details>
-<summary>❌ Ruim — parâmetro obrigatório nullable com verificação manual</summary>
+<summary>❌ Ruim: parâmetro obrigatório nullable com verificação manual</summary>
 
 ```dart
 class Order {
@@ -132,7 +132,7 @@ final order = Order(userId: 42, items: [item]);
 </details>
 
 <details>
-<summary>✅ Bom — required para parâmetros obrigatórios</summary>
+<summary>✅ Bom: required para parâmetros obrigatórios</summary>
 
 ```dart
 class Order {
@@ -147,10 +147,10 @@ final order = Order(userId: 42, items: [item]);
 
 </details>
 
-## Coleções — preferir vazio a nullable
+## Coleções: preferir vazio a nullable
 
 <details>
-<summary>❌ Ruim — null para representar lista vazia</summary>
+<summary>❌ Ruim: null para representar lista vazia</summary>
 
 ```dart
 Future<List<Order>?> findOrdersByUser(int userId) async {
@@ -162,7 +162,7 @@ Future<List<Order>?> findOrdersByUser(int userId) async {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
+<summary>✅ Bom: lista vazia; null nunca representa ausência de itens</summary>
 
 ```dart
 Future<List<Order>> findOrdersByUser(int userId) async {

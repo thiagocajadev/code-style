@@ -25,7 +25,7 @@ Use `dotenvy` para carregar `.env` localmente. Nunca commite `.env`. Centralize
 toda leitura de env vars em `src/config.rs`.
 
 <details>
-<summary>❌ Ruim — secret hardcoded</summary>
+<summary>❌ Ruim: secret hardcoded</summary>
 
 ```rust
 const JWT_SECRET: &str = "minha-chave-super-secreta"; // exposto no git
@@ -43,7 +43,7 @@ fn sign_token(user_id: u64) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — secret via variável de ambiente</summary>
+<summary>✅ Bom: secret via variável de ambiente</summary>
 
 ```rust
 // .env.example
@@ -85,7 +85,7 @@ Valide toda entrada externa no handler antes de passar para o service.
 Use tipos como contratos: se o compilador aceita o tipo, os invariantes estão garantidos.
 
 <details>
-<summary>❌ Ruim — dado cru repassado sem validação</summary>
+<summary>❌ Ruim: dado cru repassado sem validação</summary>
 
 ```rust
 async fn create_order(
@@ -101,7 +101,7 @@ async fn create_order(
 </details>
 
 <details>
-<summary>✅ Bom — tipo validado na fronteira do handler</summary>
+<summary>✅ Bom: tipo validado na fronteira do handler</summary>
 
 ```rust
 use serde::Deserialize;
@@ -134,7 +134,7 @@ async fn create_order(
 e revisão obrigatória em code review.
 
 <details>
-<summary>❌ Ruim — unsafe sem justificativa</summary>
+<summary>❌ Ruim: unsafe sem justificativa</summary>
 
 ```rust
 fn read_config_ptr(ptr: *const u8, len: usize) -> &'static str {
@@ -145,10 +145,10 @@ fn read_config_ptr(ptr: *const u8, len: usize) -> &'static str {
 </details>
 
 <details>
-<summary>✅ Bom — unsafe justificado ou eliminado com safe alternative</summary>
+<summary>✅ Bom: unsafe justificado ou eliminado com safe alternative</summary>
 
 ```rust
-// Versão safe — prefira sempre que possível
+// Versão safe: prefira sempre que possível
 fn read_config(raw: &[u8]) -> anyhow::Result<&str> {
     let text = std::str::from_utf8(raw)
         .context("config bytes are not valid UTF-8")?;

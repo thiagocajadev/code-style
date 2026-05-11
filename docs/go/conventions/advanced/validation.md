@@ -11,7 +11,7 @@ Valide cedo; nunca confie em input não validado dentro do service.
 | Conceito | O que é |
 | -------- | ------- |
 | **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema (handler, worker, consumer) |
-| **struct tag** (etiqueta de struct) | metadado em campo: `validate:"required,email"` — lido por reflection |
+| **struct tag** (etiqueta de struct) | metadado em campo: `validate:"required,email"`, lido por reflection |
 | **parse, don't validate** (decodifique, não valide) | converter input bruto em tipo de domínio uma única vez na fronteira |
 | **sentinel error** (erro sentinela) | erro exportado (`var ErrXxx = errors.New(...)`) comparado com `errors.Is` |
 | **domain invariant** (invariante de domínio) | regra que deve ser verdadeira em qualquer estado válido do objeto |
@@ -20,7 +20,7 @@ Valide cedo; nunca confie em input não validado dentro do service.
 ## Validação com struct tags
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no service</summary>
+<summary>❌ Ruim: validação manual espalhada no service</summary>
 
 ```go
 func (s *OrderService) CreateOrder(ctx context.Context, input CreateOrderInput) (*Order, error) {
@@ -41,7 +41,7 @@ func (s *OrderService) CreateOrder(ctx context.Context, input CreateOrderInput) 
 </details>
 
 <details>
-<summary>✅ Bom — struct tags + validação no handler antes de chamar o service</summary>
+<summary>✅ Bom: struct tags + validação no handler antes de chamar o service</summary>
 
 ```go
 type CreateOrderInput struct {
@@ -85,7 +85,7 @@ func (h *OrderHandler) CreateOrder(w http.ResponseWriter, r *http.Request) {
 Converta `validator.ValidationErrors` em resposta estruturada com o campo e a regra violada.
 
 <details>
-<summary>✅ Bom — resposta estruturada de validação</summary>
+<summary>✅ Bom: resposta estruturada de validação</summary>
 
 ```go
 type FieldError struct {
@@ -141,7 +141,7 @@ func buildValidationMessage(ve validator.FieldError) string {
 Registre validações de domínio como tags customizadas quando a lógica se repete.
 
 <details>
-<summary>✅ Bom — tag customizada para validação de moeda</summary>
+<summary>✅ Bom: tag customizada para validação de moeda</summary>
 
 ```go
 var supportedCurrencies = map[string]bool{
@@ -170,7 +170,7 @@ type PaymentInput struct {
 Valide parâmetros de URL e query string antes de usar. Nunca assuma que são válidos.
 
 <details>
-<summary>✅ Bom — validação explícita de path param e query string</summary>
+<summary>✅ Bom: validação explícita de path param e query string</summary>
 
 ```go
 func (h *OrderHandler) ListOrders(w http.ResponseWriter, r *http.Request) {

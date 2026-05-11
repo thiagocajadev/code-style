@@ -14,7 +14,7 @@ As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript
 | **`enum`** (enumeração com runtime) | Constrói objeto bidirecional em runtime; tipo + valor; mais peso que `as const` |
 | **`as const`** (afirmação literal) | Congela como literal; não gera nada em runtime; substituto idiomático de `enum` |
 | **type complexity** (complexidade de tipo) | Custo do compilador resolver tipos profundos, recursivos ou condicionais |
-| **conditional type** (tipo condicional) | `T extends U ? A : B` — poderoso mas custoso quando aninhado |
+| **conditional type** (tipo condicional) | `T extends U ? A : B`; poderoso mas custoso quando aninhado |
 | **declaration merging** (fusão de declarações) | Múltiplas `interface` com mesmo nome se combinam; pode inflar tipos |
 | **bundle size** (tamanho do bundle) | Peso final do JS entregue; `enum` adiciona, `as const` não |
 | **profiling** (perfilamento) | Medição empírica de onde tempo e memória são gastos; meça antes de otimizar |
@@ -25,7 +25,7 @@ As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript
 valores que são apenas constantes de domínio, `as const` não gera nada em runtime.
 
 <details>
-<summary>❌ Ruim — enum gera objeto runtime desnecessário</summary>
+<summary>❌ Ruim: enum gera objeto runtime desnecessário</summary>
 
 ```ts
 enum OrderStatus {
@@ -50,7 +50,7 @@ function getLabel(status: OrderStatus): string {
 </details>
 
 <details>
-<summary>✅ Bom — const object + union type: sem overhead runtime</summary>
+<summary>✅ Bom: const object + union type: sem overhead runtime</summary>
 
 ```ts
 const ORDER_STATUS = {
@@ -81,21 +81,21 @@ function getLabel(status: OrderStatus): string {
 type guard valida o valor explicitamente: custo mínimo, contrato real.
 
 <details>
-<summary>❌ Ruim — as T aceita sem verificar</summary>
+<summary>❌ Ruim: as T aceita sem verificar</summary>
 
 ```ts
 async function fetchOrder(id: string): Promise<Order> {
   const response = await fetch(`/api/orders/${id}`);
   const data = await response.json();
 
-  return data as Order; // nenhuma verificação — campo ausente passa silenciosamente
+  return data as Order; // nenhuma verificação: campo ausente passa silenciosamente
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — type guard valida o contrato na fronteira</summary>
+<summary>✅ Bom: type guard valida o contrato na fronteira</summary>
 
 ```ts
 function isOrder(value: unknown): value is Order {
@@ -125,7 +125,7 @@ Tipos recursivos ilimitados causam lentidão no compilador proporcional à profu
 Defina a profundidade máxima explicitamente.
 
 <details>
-<summary>❌ Ruim — recursão ilimitada, compilador infere profundidade arbitrária</summary>
+<summary>❌ Ruim: recursão ilimitada, compilador infere profundidade arbitrária</summary>
 
 ```ts
 type DeepPartial<T> = {
@@ -138,7 +138,7 @@ type Config = DeepPartial<ApplicationConfig>; // pode atingir dezenas de níveis
 </details>
 
 <details>
-<summary>✅ Bom — profundidade máxima explícita</summary>
+<summary>✅ Bom: profundidade máxima explícita</summary>
 
 ```ts
 type DeepPartial<T, Depth extends number = 3> = Depth extends 0
@@ -158,7 +158,7 @@ type DeepPartial<T, Depth extends number = 3> = Depth extends 0
 literais para uso em narrowing, enquanto garante que todas as chaves estão presentes.
 
 <details>
-<summary>❌ Ruim — Record<> alarga os tipos, perde literais</summary>
+<summary>❌ Ruim: Record<> alarga os tipos, perde literais</summary>
 
 ```ts
 const DISCOUNT_RATES: Record<string, number> = {
@@ -174,7 +174,7 @@ const DISCOUNT_RATES: Record<string, number> = {
 </details>
 
 <details>
-<summary>✅ Bom — satisfies valida sem alargar</summary>
+<summary>✅ Bom: satisfies valida sem alargar</summary>
 
 ```ts
 type CustomerTier = "premium" | "standard" | "trial";

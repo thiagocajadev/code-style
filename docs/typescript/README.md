@@ -9,7 +9,7 @@ força.
 Este guia cobre o que é específico do TypeScript: quando anotar tipos, como nomear contratos,
 como modelar variações e como extrair o máximo do sistema de tipos sem adicionar ruído.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, type vs interface, utility types, narrowing
+→ [Quick Reference](quick-reference.md): nomenclatura, type vs interface, utility types, narrowing
 
 ## Setup
 

@@ -1,4 +1,4 @@
-# Naming — NoSQL
+# Naming: NoSQL
 
 > Escopo: NoSQL. Convenções de nomenclatura para coleções, campos, chaves e índices.
 
@@ -56,7 +56,7 @@ Regras:
 - ID sempre no final
 - Qualificar pelo domínio para evitar colisão entre serviços
 
-## Keys (DynamoDB — single-table design)
+## Keys (DynamoDB, single-table design)
 
 Partition key e sort key com prefixo de entidade:
 
@@ -84,7 +84,7 @@ Regras:
 ---
 
 <details>
-<summary>❌ Ruim — nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
+<summary>❌ Ruim: nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
 
 ```js
 // MongoDB: coleção no singular, campos abreviados, boolean sem prefixo, nome técnico em vez de domínio
@@ -105,7 +105,7 @@ await redis.set('s42', JSON.stringify(stats));  // opaco
 </details>
 
 <details>
-<summary>✅ Bom — nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
+<summary>✅ Bom: nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
 
 ```js
 // MongoDB: plural, camelCase, boolean com prefixo, nome de domínio

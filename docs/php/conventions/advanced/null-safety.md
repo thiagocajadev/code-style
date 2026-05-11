@@ -11,20 +11,20 @@ para tornar a presença de null explícita na assinatura.
 
 | Conceito | O que é |
 | --- | --- |
-| **nullable type** (tipo que admite null) | `?Type` na assinatura — sinaliza que `null` é retorno ou parâmetro válido |
+| **nullable type** (tipo que admite null) | `?Type` na assinatura: sinaliza que `null` é retorno ou parâmetro válido |
 | **nullsafe operator** (operador seguro contra null) | `?->` curto-circuita o encadeamento quando o alvo é `null`, sem lançar erro |
 | **null coalescing** (coalescência de nulos) | `??` retorna o operando à direita quando o da esquerda é `null`; `??=` atribui se for `null` |
 | **strict types** (tipos estritos) | `declare(strict_types=1)` no topo do arquivo; força conferência de tipos sem coerção implícita |
 | **type juggling** (coerção implícita de tipos) | Conversão silenciosa: `'0' == false` é `true`; evitar com `===` e tipos estritos |
 | **boundary** (limite) | Camada onde dado externo entra: validar e converter ali, não no domínio |
 
-## Tipos nullable — explicitar null
+## Tipos nullable: explicitar null
 
 Declare `?Type` quando null é um retorno válido com semântica específica ("não encontrado",
 "não preenchido"). Não use `?Type` para esconder que a função pode falhar.
 
 <details>
-<summary>❌ Ruim — null implícito sem tipo declarado</summary>
+<summary>❌ Ruim: null implícito sem tipo declarado</summary>
 
 ```php
 class UserRepository
@@ -33,7 +33,7 @@ class UserRepository
     {
         $row = $this->db->query("SELECT * FROM users WHERE email = '$email'")->fetch();
         if (!$row) {
-            return false; // não é null, é false — inconsistente
+            return false; // não é null, é false: inconsistente
         }
         return new User($row);
     }
@@ -43,7 +43,7 @@ class UserRepository
 </details>
 
 <details>
-<summary>✅ Bom — nullable type explicita ausência</summary>
+<summary>✅ Bom: nullable type explicita ausência</summary>
 
 ```php
 final class UserRepository
@@ -76,7 +76,7 @@ final class UserRepository
 Encadeie acessos opcionais com `?->` para evitar verificações de null intermediárias.
 
 <details>
-<summary>❌ Ruim — verificações manuais encadeadas</summary>
+<summary>❌ Ruim: verificações manuais encadeadas</summary>
 
 ```php
 $city = null;
@@ -95,7 +95,7 @@ if ($order !== null) {
 </details>
 
 <details>
-<summary>✅ Bom — nullsafe operator</summary>
+<summary>✅ Bom: nullsafe operator</summary>
 
 ```php
 $city = $order?->customer?->address?->city;
@@ -109,7 +109,7 @@ Use `??` para fornecer um valor padrão quando a expressão da esquerda é null 
 variável não definida).
 
 <details>
-<summary>✅ Bom — ?? para valores com default</summary>
+<summary>✅ Bom: ?? para valores com default</summary>
 
 ```php
 $page = (int) ($_GET['page'] ?? 1);
@@ -127,7 +127,7 @@ Null para "operação falhou" esconde o motivo da falha. Use exceções para fal
 e null apenas para "ausência esperada de um valor".
 
 <details>
-<summary>❌ Ruim — null para indicar falha sem contexto</summary>
+<summary>❌ Ruim: null para indicar falha sem contexto</summary>
 
 ```php
 public function processOrder(int $orderID): ?Order
@@ -148,7 +148,7 @@ public function processOrder(int $orderID): ?Order
 </details>
 
 <details>
-<summary>✅ Bom — exceções para falhas; null apenas para ausência legítima</summary>
+<summary>✅ Bom: exceções para falhas; null apenas para ausência legítima</summary>
 
 ```php
 public function processOrder(int $orderID): Order
@@ -189,7 +189,7 @@ Propriedades tipadas sem valor padrão devem ser inicializadas antes do primeiro
 PHP lança `Error` se você tentar ler uma propriedade não inicializada.
 
 <details>
-<summary>✅ Bom — propriedades inicializadas no construtor</summary>
+<summary>✅ Bom: propriedades inicializadas no construtor</summary>
 
 ```php
 final class Order

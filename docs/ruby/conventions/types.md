@@ -11,7 +11,7 @@ forma de objetos.
 
 | Conceito                    | O que é                                                                         |
 | --------------------------- | ------------------------------------------------------------------------------- |
-| **Duck typing** (tipagem por comportamento) | Um objeto responde a uma mensagem se implementa o método — não exige herança     |
+| **Duck typing** (tipagem por comportamento) | Um objeto responde a uma mensagem se implementa o método; não exige herança      |
 | **Mixin** (módulo de comportamento) | Módulo incluído em uma classe para adicionar comportamento sem herança           |
 | `Data.define`               | Cria classe imutável com campos nomeados (Ruby 3.2+)                             |
 | **nil** (ausência de valor) | Único objeto da classe `NilClass`; diferente de `false`     |
@@ -24,7 +24,7 @@ Use `initialize` com keyword arguments para deixar a construção auto-documenta
 Prefira `attr_reader` sobre exposição de variáveis de instância diretamente.
 
 <details>
-<summary>❌ Ruim — positional args, atributo exposto como accessor</summary>
+<summary>❌ Ruim: positional args, atributo exposto como accessor</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -43,7 +43,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — keyword args, reader apenas para campos imutáveis</summary>
+<summary>✅ Bom: keyword args, reader apenas para campos imutáveis</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -64,13 +64,13 @@ end
 
 </details>
 
-## Data.define — value objects
+## Data.define: value objects
 
 Use `Data.define` para estruturas imutáveis que representam conceitos de domínio sem
 comportamento. Mais leve que uma classe completa.
 
 <details>
-<summary>❌ Ruim — Struct mutável para dados que não deveriam mudar</summary>
+<summary>❌ Ruim: Struct mutável para dados que não deveriam mudar</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -84,7 +84,7 @@ address.city = "Rio de Janeiro"
 </details>
 
 <details>
-<summary>✅ Bom — Data.define cria value object imutável</summary>
+<summary>✅ Bom: Data.define cria value object imutável</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -104,7 +104,7 @@ Use módulos para compartilhar comportamento entre classes sem herança. `includ
 comportamento de instância; `extend` para comportamento de classe.
 
 <details>
-<summary>❌ Ruim — herança apenas para reutilizar comportamento</summary>
+<summary>❌ Ruim: herança apenas para reutilizar comportamento</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -121,7 +121,7 @@ class Product < Auditable; end
 </details>
 
 <details>
-<summary>✅ Bom — mixin para comportamento transversal</summary>
+<summary>✅ Bom: mixin para comportamento transversal</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -152,7 +152,7 @@ Verifique `nil` antes de encadear chamadas. Use `&.` (safe navigation operator, 
 de navegação segura) para cadeia que pode retornar `nil`.
 
 <details>
-<summary>❌ Ruim — NoMethodError em potencial</summary>
+<summary>❌ Ruim: NoMethodError em potencial</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -165,7 +165,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — safe navigation + guard clause</summary>
+<summary>✅ Bom: safe navigation + guard clause</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -186,7 +186,7 @@ Prefira verificar comportamento (`respond_to?`) no lugar de tipo (`is_a?`), exce
 fronteiras de domínio onde o tipo é parte do contrato.
 
 <details>
-<summary>❌ Ruim — verificação de tipo rígida bloqueia polimorfismo</summary>
+<summary>❌ Ruim: verificação de tipo rígida bloqueia polimorfismo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -201,7 +201,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — verificação de comportamento</summary>
+<summary>✅ Bom: verificação de comportamento</summary>
 
 ```ruby
 # frozen_string_literal: true

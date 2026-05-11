@@ -4,11 +4,11 @@
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 
 Java é uma linguagem de tipagem estática, orientada a objetos, com foco em legibilidade e
-segurança. Os princípios deste guia — nomes expressivos, guard clauses (cláusulas de guarda), métodos
-pequenos, fluxo linear — aplicam-se diretamente ao ecossistema Java moderno (records,
-pattern matching (casamento de padrões), virtual threads (threads virtuais)).
+segurança. Os princípios deste guia (nomes expressivos, guard clauses, métodos
+pequenos, fluxo linear) aplicam-se diretamente ao ecossistema Java moderno: records,
+pattern matching (casamento de padrões) e virtual threads (threads virtuais).
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

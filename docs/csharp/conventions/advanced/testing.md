@@ -34,9 +34,9 @@ using Xunit;
 
 > [!NOTE]
 > A ordem do assert varia por framework: cada script de teste indica a convenção no topo.
-> - **xUnit**: `Assert.Equal(expected, actual)` — expected primeiro
-> - **MSTest**: `Assert.AreEqual(expected, actual)` — expected primeiro
-> - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))` — actual primeiro
+> - **xUnit**: `Assert.Equal(expected, actual)`: expected primeiro
+> - **MSTest**: `Assert.AreEqual(expected, actual)`: expected primeiro
+> - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))`: actual primeiro
 
 ## Fases misturadas: AAA
 
@@ -44,7 +44,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim: tudo inline, fases invisíveis</summary>
 
 ```csharp
 [Fact]
@@ -57,7 +57,7 @@ public void AppliesDiscount()
 </details>
 
 <details>
-<summary>✅ Bom — arrange, act e assert separados</summary>
+<summary>✅ Bom: arrange, act e assert separados</summary>
 
 ```csharp
 [Fact]
@@ -78,7 +78,7 @@ public void AppliesTenPercentDiscountToOrderPrice()
 `expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
 
 <details>
-<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
 
 ```csharp
 [Fact]
@@ -98,7 +98,7 @@ public void ReturnsActiveUsersOnly()
 </details>
 
 <details>
-<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom: expected e actual declarados, assert semântico</summary>
 
 ```csharp
 [Fact]
@@ -129,7 +129,7 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome do méto
 vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
 
 <details>
-<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim: prefixo vazio, nome que repete a implementação</summary>
 
 ```csharp
 [Fact]
@@ -145,7 +145,7 @@ public void ApplyDiscount() { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — cenário + resultado esperado no título</summary>
+<summary>✅ Bom: cenário + resultado esperado no título</summary>
 
 ```csharp
 [Fact]
@@ -165,7 +165,7 @@ public void ThrowsValidationExceptionWhenDiscountIsNegative() { /* ... */ }
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Ruim — campo estático mutável compartilhado entre testes</summary>
+<summary>❌ Ruim: campo estático mutável compartilhado entre testes</summary>
 
 ```csharp
 public class OrderTests
@@ -195,7 +195,7 @@ public class OrderTests
 </details>
 
 <details>
-<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom: cada teste isolado, sem dependência de execução</summary>
 
 ```csharp
 public class OrderTests
@@ -231,7 +231,7 @@ Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado.
 verifica o tipo, não apenas a presença.
 
 <details>
-<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim: try/catch manual, tipo não verificado</summary>
 
 ```csharp
 [Fact]
@@ -251,7 +251,7 @@ public async Task ThrowsOnMissingOrder()
 </details>
 
 <details>
-<summary>✅ Bom — Assert.ThrowsAsync com tipo explícito</summary>
+<summary>✅ Bom: Assert.ThrowsAsync com tipo explícito</summary>
 
 ```csharp
 [Fact]

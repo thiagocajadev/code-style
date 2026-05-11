@@ -15,10 +15,10 @@ framework padrão. `mocktail` cria mocks sem geração de código (ao contrário
 | `setUp` / `tearDown` | executam antes e depois de cada teste no grupo |
 | `isA<T>()` | matcher de tipo para verificação semântica |
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 <details>
-<summary>❌ Ruim — setup, ação e assert misturados</summary>
+<summary>❌ Ruim: setup, ação e assert misturados</summary>
 
 ```dart
 test('findOrder', () async {
@@ -32,7 +32,7 @@ test('findOrder', () async {
 </details>
 
 <details>
-<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom: AAA explícito com nomes expressivos</summary>
 
 ```dart
 test('find returns paid order when order exists', () async {
@@ -55,7 +55,7 @@ test('find returns paid order when order exists', () async {
 ## Grupos e nomes de teste
 
 <details>
-<summary>❌ Ruim — nomes genéricos sem contexto</summary>
+<summary>❌ Ruim: nomes genéricos sem contexto</summary>
 
 ```dart
 test('validate', () { ... });
@@ -66,7 +66,7 @@ test('order', () { ... });
 </details>
 
 <details>
-<summary>✅ Bom — group + nome descreve comportamento</summary>
+<summary>✅ Bom: group + nome descreve comportamento</summary>
 
 ```dart
 group('OrderService', () {
@@ -83,7 +83,7 @@ group('OrderService', () {
 ## Mock com mocktail
 
 <details>
-<summary>❌ Ruim — implementação fake inline dificulta leitura</summary>
+<summary>❌ Ruim: implementação fake inline dificulta leitura</summary>
 
 ```dart
 class FakeOrderRepository implements OrderRepository {
@@ -97,7 +97,7 @@ class FakeOrderRepository implements OrderRepository {
 </details>
 
 <details>
-<summary>✅ Bom — Mock com mocktail, comportamento declarado no teste</summary>
+<summary>✅ Bom: Mock com mocktail, comportamento declarado no teste</summary>
 
 ```dart
 class MockOrderRepository extends Mock implements OrderRepository {}
@@ -124,13 +124,13 @@ test('find returns order when found', () async {
 ## Testes de stream
 
 <details>
-<summary>❌ Ruim — listen manual sem controle de tempo</summary>
+<summary>❌ Ruim: listen manual sem controle de tempo</summary>
 
 ```dart
 test('emits orders', () {
   final events = <List<Order>>[];
   orderStream.listen(events.add);
-  // sem await — expect pode rodar antes dos eventos
+  // sem await: expect pode rodar antes dos eventos
   expect(events, isNotEmpty);
 });
 ```
@@ -138,7 +138,7 @@ test('emits orders', () {
 </details>
 
 <details>
-<summary>✅ Bom — expectLater com emitsInOrder</summary>
+<summary>✅ Bom: expectLater com emitsInOrder</summary>
 
 ```dart
 test('countDown emits from 3 to 1', () async {
@@ -153,7 +153,7 @@ test('countDown emits from 3 to 1', () async {
 ## setUp para estado compartilhado
 
 <details>
-<summary>❌ Ruim — repositório e serviço recriados em cada teste</summary>
+<summary>❌ Ruim: repositório e serviço recriados em cada teste</summary>
 
 ```dart
 test('find succeeds', () async {
@@ -173,7 +173,7 @@ test('find fails on null', () async {
 </details>
 
 <details>
-<summary>✅ Bom — setUp inicializa uma vez por grupo</summary>
+<summary>✅ Bom: setUp inicializa uma vez por grupo</summary>
 
 ```dart
 group('OrderService.find', () {

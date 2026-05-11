@@ -21,7 +21,7 @@ Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação q
 Todo **I/O** (Input/Output, Entrada/Saída) é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
 
 <details>
-<summary>❌ Ruim — I/O síncrono bloqueia a thread</summary>
+<summary>❌ Ruim: I/O síncrono bloqueia a thread</summary>
 
 ```csharp
 public Order FindOrder(Guid orderId)
@@ -40,7 +40,7 @@ public void SaveOrder(Order order)
 </details>
 
 <details>
-<summary>✅ Bom — async/await do início ao fim</summary>
+<summary>✅ Bom: async/await do início ao fim</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -62,7 +62,7 @@ public async Task SaveOrderAsync(Order order, CancellationToken ct)
 Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em operações sem dependência entre si desperdiça tempo: o tempo total vira a soma, não o máximo.
 
 <details>
-<summary>❌ Ruim — await sequencial em chamadas independentes</summary>
+<summary>❌ Ruim: await sequencial em chamadas independentes</summary>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -81,7 +81,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 </details>
 
 <details>
-<summary>✅ Bom — Task.WhenAll para chamadas independentes em paralelo</summary>
+<summary>✅ Bom: Task.WhenAll para chamadas independentes em paralelo</summary>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -109,7 +109,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) canceladas ou timeouts não interrompem o trabalho em andamento.
 
 <details>
-<summary>❌ Ruim — CancellationToken ignorado ou ausente</summary>
+<summary>❌ Ruim: CancellationToken ignorado ou ausente</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId)
@@ -131,7 +131,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 </details>
 
 <details>
-<summary>✅ Bom — CancellationToken propagado em toda a cadeia</summary>
+<summary>✅ Bom: CancellationToken propagado em toda a cadeia</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -158,7 +158,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 `.Result`, `.Wait()` e `GetAwaiter().GetResult()` bloqueiam a thread chamante. Em aplicações ASP.NET Core, isso pode causar deadlock quando o `SynchronizationContext` está presente. Não existe caminho seguro: a única solução é async de ponta a ponta.
 
 <details>
-<summary>❌ Ruim — bloqueio síncrono em contexto async</summary>
+<summary>❌ Ruim: bloqueio síncrono em contexto async</summary>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase
@@ -175,7 +175,7 @@ public class OrderController(OrderService service) : ControllerBase
 </details>
 
 <details>
-<summary>✅ Bom — endpoint async de ponta a ponta</summary>
+<summary>✅ Bom: endpoint async de ponta a ponta</summary>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase

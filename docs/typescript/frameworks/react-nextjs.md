@@ -116,7 +116,7 @@ estado, efeitos ou eventos de browser.
 estado de loading, sem waterfall.
 
 <details>
-<summary>❌ Ruim — RCC desnecessário para conteúdo sem interatividade</summary>
+<summary>❌ Ruim: RCC desnecessário para conteúdo sem interatividade</summary>
 
 ```tsx
 "use client";
@@ -141,7 +141,7 @@ export function ProductDetail({ id }: { id: string }) {
 </details>
 
 <details>
-<summary>✅ Bom — RSC acessa dados diretamente, sem loading state</summary>
+<summary>✅ Bom: RSC acessa dados diretamente, sem loading state</summary>
 
 ```tsx
 import { productRepository } from "@/lib/repositories/product";
@@ -165,7 +165,7 @@ O `page.tsx` é o orquestrador da rota: delega renderização a componentes e da
 Sem lógica de negócio inline.
 
 <details>
-<summary>❌ Ruim — lógica de dados e negócio misturada no page.tsx</summary>
+<summary>❌ Ruim: lógica de dados e negócio misturada no page.tsx</summary>
 
 ```tsx
 export default async function OrderPage({ params }: { params: { id: string } }) {
@@ -180,7 +180,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 
   return (
     <div>
-      {order.customer.name} — R$ {total}
+      {order.customer.name}: R$ {total}
     </div>
   );
 }
@@ -189,7 +189,7 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 </details>
 
 <details>
-<summary>✅ Bom — page.tsx como orquestrador</summary>
+<summary>✅ Bom: page.tsx como orquestrador</summary>
 
 ```tsx
 // app/orders/[id]/page.tsx
@@ -218,7 +218,7 @@ Props de componentes seguem a mesma regra das funções TypeScript: objetos com 
 usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
 
 <details>
-<summary>❌ Ruim — tipo inline na assinatura do componente</summary>
+<summary>❌ Ruim: tipo inline na assinatura do componente</summary>
 
 ```tsx
 export function OrderCard({
@@ -234,7 +234,7 @@ export function OrderCard({
 }) {
   return (
     <div>
-      {customerName} — {total}
+      {customerName}: {total}
     </div>
   );
 }
@@ -243,7 +243,7 @@ export function OrderCard({
 </details>
 
 <details>
-<summary>✅ Bom — interface separada com sufixo Props</summary>
+<summary>✅ Bom: interface separada com sufixo Props</summary>
 
 ```tsx
 interface OrderCardProps {
@@ -256,7 +256,7 @@ interface OrderCardProps {
 export function OrderCard({ id, status, total, customerName }: OrderCardProps) {
   return (
     <div>
-      {customerName} — {total}
+      {customerName}: {total}
     </div>
   );
 }
@@ -273,7 +273,7 @@ aplica diretamente: o hook encapsula estado de UI (`data`, `error`, `isLoading`)
 O retorno do hook é tipado com interface quando tem três ou mais valores.
 
 <details>
-<summary>❌ Ruim — fetch dentro do componente, pipeline colapsado</summary>
+<summary>❌ Ruim: fetch dentro do componente, pipeline colapsado</summary>
 
 ```tsx
 "use client";
@@ -300,7 +300,7 @@ export function OrderList() {
 </details>
 
 <details>
-<summary>✅ Bom — hook encapsula estado; service encapsula chamada de rede</summary>
+<summary>✅ Bom: hook encapsula estado; service encapsula chamada de rede</summary>
 
 ```ts
 // lib/services/order.ts
@@ -371,7 +371,7 @@ conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow
 componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
 
 <details>
-<summary>❌ Ruim — guard no componente, expõe conteúdo por um frame</summary>
+<summary>❌ Ruim: guard no componente, expõe conteúdo por um frame</summary>
 
 ```tsx
 "use client";
@@ -390,7 +390,7 @@ export default function DashboardPage() {
 </details>
 
 <details>
-<summary>✅ Bom — guard no Proxy, antes de qualquer render</summary>
+<summary>✅ Bom: guard no Proxy, antes de qualquer render</summary>
 
 ```ts
 // proxy.ts
@@ -427,7 +427,7 @@ implementa o pipeline de escrita: valida → regras de negócio → persiste →
 O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
 
 <details>
-<summary>❌ Ruim — validação manual sem schema, erros sem estrutura</summary>
+<summary>❌ Ruim: validação manual sem schema, erros sem estrutura</summary>
 
 ```tsx
 // app/actions/order.ts
@@ -448,7 +448,7 @@ export async function createOrder(formData: FormData) {
 </details>
 
 <details>
-<summary>✅ Bom — schema compartilhado, Server Action tipada com Result estruturado</summary>
+<summary>✅ Bom: schema compartilhado, Server Action tipada com Result estruturado</summary>
 
 ```ts
 // lib/schemas/order.ts
@@ -543,7 +543,7 @@ segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operatio
 regras de negócio → persiste → retorna Response.
 
 <details>
-<summary>❌ Ruim — lógica de negócio inline, sem schema, status code hardcoded</summary>
+<summary>❌ Ruim: lógica de negócio inline, sem schema, status code hardcoded</summary>
 
 ```ts
 // app/api/orders/route.ts
@@ -563,7 +563,7 @@ export async function POST(request: NextRequest) {
 </details>
 
 <details>
-<summary>✅ Bom — schema Zod, repository, resposta estruturada</summary>
+<summary>✅ Bom: schema Zod, repository, resposta estruturada</summary>
 
 ```ts
 // app/api/orders/route.ts
@@ -613,7 +613,7 @@ POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa ide
 ```
 
 <details>
-<summary>❌ Ruim — valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<summary>❌ Ruim: valida sobre JSON parseado, comparação direta, processa no handler</summary>
 
 ```ts
 // app/api/webhooks/[provider]/route.ts
@@ -638,7 +638,7 @@ export async function POST(request: NextRequest) {
 </details>
 
 <details>
-<summary>✅ Bom — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
+<summary>✅ Bom: raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
 
 ```ts
 // app/api/webhooks/[provider]/route.ts
@@ -699,7 +699,7 @@ requisição por padrão; cache é declarado explicitamente por função ou comp
 usuário vê as próprias mudanças na hora.
 
 <details>
-<summary>✅ Bom — função cacheada com perfil e tag</summary>
+<summary>✅ Bom: função cacheada com perfil e tag</summary>
 
 ```ts
 // lib/queries/orders.ts
@@ -720,7 +720,7 @@ export async function getCachedOrders(): Promise<Order[]> {
 </details>
 
 <details>
-<summary>✅ Bom — Server Action invalida o cache após escrita</summary>
+<summary>✅ Bom: Server Action invalida o cache após escrita</summary>
 
 ```ts
 // app/actions/order.ts

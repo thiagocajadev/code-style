@@ -1,6 +1,6 @@
 # ADO.NET
 
-**ADO.NET** (ActiveX Data Objects para .NET) é a camada de acesso a dados nativa do .NET Framework — presente em todo legado. Não tem mapeamento automático: o código lê coluna a coluna do **SqlDataReader** ou carrega em **DataTable** via **SqlDataAdapter**. Em troca, oferece controle total sobre a query, o resultado e a transação.
+**ADO.NET** (ActiveX Data Objects para .NET) é a camada de acesso a dados nativa do .NET Framework, presente em todo legado. Não tem mapeamento automático: o código lê coluna a coluna do **SqlDataReader** ou carrega em **DataTable** via **SqlDataAdapter**. Em troca, oferece controle total sobre a query, o resultado e a transação.
 
 ## Conceitos fundamentais
 
@@ -18,10 +18,10 @@
 
 ## SqlConnection e SqlCommand
 
-O par fundamental. `SqlConnection` abre o canal com o banco; `SqlCommand` executa a instrução. Ambos implementam `IDisposable` — sempre dentro de `Using`.
+O par fundamental. `SqlConnection` abre o canal com o banco; `SqlCommand` executa a instrução. Ambos implementam `IDisposable`: sempre dentro de `Using`.
 
 <details>
-<summary>✅ Bom — query com SqlDataReader, Using garante descarte</summary>
+<summary>✅ Bom: query com SqlDataReader, Using garante descarte</summary>
 
 ```vbnet
 Public Async Function FindByIdAsync(id As Guid) As Task(Of Customer)
@@ -52,10 +52,10 @@ End Function
 
 ## Parâmetros: nunca concatenação
 
-A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução — o banco nunca o interpreta como código.
+A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução; o banco nunca o interpreta como código.
 
 <details>
-<summary>❌ Ruim — concatenação de strings abre porta para SQL injection</summary>
+<summary>❌ Ruim: concatenação de strings abre porta para SQL injection</summary>
 
 ```vbnet
 ' entrada: name = "'; DROP TABLE Customers; --"
@@ -69,7 +69,7 @@ command.CommandText = $"SELECT Id FROM Customers WHERE Name = '{name}'"
 </details>
 
 <details>
-<summary>✅ Bom — parâmetro nomeado, valor isolado do SQL</summary>
+<summary>✅ Bom: parâmetro nomeado, valor isolado do SQL</summary>
 
 ```vbnet
 command.CommandText = "SELECT Id FROM Customers WHERE Name = @Name"
@@ -80,10 +80,10 @@ command.Parameters.Add("@Name", SqlDbType.NVarChar, 200).Value = name
 
 ## Adicionando parâmetros
 
-Prefira `Add` com tipo explícito a `AddWithValue`. `AddWithValue` infere o tipo do valor .NET, o que pode causar conversões inesperadas — especialmente com `String` sendo mapeada para `NVarChar` de tamanho arbitrário, afetando o plano de execução.
+Prefira `Add` com tipo explícito a `AddWithValue`. `AddWithValue` infere o tipo do valor .NET, o que pode causar conversões inesperadas, especialmente com `String` sendo mapeada para `NVarChar` de tamanho arbitrário, afetando o plano de execução.
 
 <details>
-<summary>❌ Ruim — AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
+<summary>❌ Ruim: AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
 
 ```vbnet
 command.Parameters.AddWithValue("@CustomerId", customerId)  ' tipo inferido
@@ -94,7 +94,7 @@ command.Parameters.AddWithValue("@CreatedAt", date)         ' DateTime vs DateTi
 </details>
 
 <details>
-<summary>✅ Bom — Add com tipo explícito, sem surpresas de conversão</summary>
+<summary>✅ Bom: Add com tipo explícito, sem surpresas de conversão</summary>
 
 ```vbnet
 command.Parameters.Add("@CustomerId", SqlDbType.UniqueIdentifier).Value = customerId
@@ -106,10 +106,10 @@ command.Parameters.Add("@CreatedAt", SqlDbType.DateTime2).Value = createdAt
 
 ## ExecuteNonQuery: INSERT, UPDATE, DELETE
 
-Para operações que não retornam linhas. Retorna o número de linhas afetadas — útil para detectar se o registro existia.
+Para operações que não retornam linhas. Retorna o número de linhas afetadas, útil para detectar se o registro existia.
 
 <details>
-<summary>✅ Bom — INSERT com ExecuteNonQueryAsync</summary>
+<summary>✅ Bom: INSERT com ExecuteNonQueryAsync</summary>
 
 ```vbnet
 Public Async Function CreateAsync(purchase As Purchase) As Task
@@ -135,7 +135,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — UPDATE verificando se o registro foi encontrado</summary>
+<summary>✅ Bom: UPDATE verificando se o registro foi encontrado</summary>
 
 ```vbnet
 Public Async Function UpdateStatusAsync(purchaseId As Guid, status As String) As Task(Of Boolean)
@@ -161,10 +161,10 @@ End Function
 
 ## Stored procedures
 
-`CommandType.StoredProcedure` instrui o driver a chamar a procedure pelo nome em vez de executar SQL literal. Os parâmetros são os mesmos — o driver cuida da sintaxe `EXEC`.
+`CommandType.StoredProcedure` instrui o driver a chamar a procedure pelo nome em vez de executar SQL literal. Os parâmetros são os mesmos; o driver cuida da sintaxe `EXEC`.
 
 <details>
-<summary>✅ Bom — procedure de leitura</summary>
+<summary>✅ Bom: procedure de leitura</summary>
 
 ```vbnet
 Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOnlyList(Of PurchaseSummary))
@@ -203,7 +203,7 @@ End Function
 Procedures que retornam um valor via `OUTPUT` exigem um `SqlParameter` com `Direction = ParameterDirection.Output`. O valor fica disponível após `ExecuteNonQueryAsync`.
 
 <details>
-<summary>✅ Bom — procedure com OUTPUT param para Id gerado no banco</summary>
+<summary>✅ Bom: procedure com OUTPUT param para Id gerado no banco</summary>
 
 ```vbnet
 Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(Of Guid)
@@ -236,7 +236,7 @@ End Function
 `DataTable` é o padrão de fato em WebForms e WinForms legados: carrega um result set inteiro em memória, serve como `DataSource` direto de grids e relatórios. `SqlDataAdapter` preenche o `DataTable` sem precisar de `Open()` explícito.
 
 <details>
-<summary>✅ Bom — SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
+<summary>✅ Bom: SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
 
 ```vbnet
 Public Function GetPurchaseTable(customerId As Guid) As DataTable
@@ -266,7 +266,7 @@ GridView1.DataBind()
 </details>
 
 <details>
-<summary>✅ Bom — DataTable via stored procedure</summary>
+<summary>✅ Bom: DataTable via stored procedure</summary>
 
 ```vbnet
 Public Function GetPurchaseReport(startDate As Date, endDate As Date) As DataTable
@@ -292,12 +292,12 @@ End Function
 `SqlTransaction` garante atomicidade: ou tudo persiste, ou nada persiste. Sempre associe cada `SqlCommand` à transação via `.Transaction`. Em caso de exceção, `Rollback` desfaz tudo.
 
 <details>
-<summary>❌ Ruim — sem transação, operações parcialmente persistidas em caso de erro</summary>
+<summary>❌ Ruim: sem transação, operações parcialmente persistidas em caso de erro</summary>
 
 ```vbnet
 Public Async Function CheckoutAsync(cart As Cart) As Task
     Await CreatePurchaseAsync(cart)    ' persiste
-    Await DeductStockAsync(cart)       ' falha — estoque não deduzido, mas purchase criada
+    Await DeductStockAsync(cart)       ' falha: estoque não deduzido, mas purchase criada
     Await SendConfirmationAsync(cart)
 End Function
 ```
@@ -305,7 +305,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — transação garante consistência entre as operações</summary>
+<summary>✅ Bom: transação garante consistência entre as operações</summary>
 
 ```vbnet
 Public Async Function CheckoutAsync(cart As Cart) As Task
@@ -371,17 +371,17 @@ End Function
 `SqlDataReader` retorna `DBNull.Value` para colunas `NULL`. Verificar com `IsDBNull` antes de ler evita `InvalidCastException`.
 
 <details>
-<summary>❌ Ruim — leitura direta sem verificar DBNull</summary>
+<summary>❌ Ruim: leitura direta sem verificar DBNull</summary>
 
 ```vbnet
-' coluna DeletedAt é NULL — GetDateTime lança InvalidCastException
+' coluna DeletedAt é NULL: GetDateTime lança InvalidCastException
 Dim deletedAt = reader.GetDateTime(reader.GetOrdinal("DeletedAt"))
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — IsDBNull antes de ler coluna anulável</summary>
+<summary>✅ Bom: IsDBNull antes de ler coluna anulável</summary>
 
 ```vbnet
 Dim deletedAtOrdinal = reader.GetOrdinal("DeletedAt")
@@ -398,7 +398,7 @@ Dim deletedAt As DateTime? = If(
 Para queries que retornam um único valor (COUNT, MAX, SUM, ou uma coluna de uma linha).
 
 <details>
-<summary>✅ Bom — contagem e verificação de existência com ExecuteScalar</summary>
+<summary>✅ Bom: contagem e verificação de existência com ExecuteScalar</summary>
 
 ```vbnet
 Public Async Function CountByCustomerAsync(customerId As Guid) As Task(Of Integer)

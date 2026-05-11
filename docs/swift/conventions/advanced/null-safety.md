@@ -11,16 +11,16 @@ unwrap) é o único ponto de falha explícita e deve ser evitado em produção.
 | Conceito | O que é |
 | --- | --- |
 | `Optional<T>` / `T?` | tipo que pode ser `nil` ou conter um valor de tipo `T` |
-| `guard let` | unwrap com saída antecipada se `nil` — flattens indentação |
+| `guard let` | unwrap com saída antecipada se `nil`; achata indentação |
 | `if let` | unwrap condicional; executa bloco somente quando não-nil |
-| `??` | **nil-coalescing operator** — valor padrão quando optional é `nil` |
-| `?.` | optional chaining — acesso seguro em cadeia; retorna `nil` se qualquer link for `nil` |
-| `!` | forced unwrap — lança runtime error se `nil`; proibido em produção |
+| `??` | **nil-coalescing operator** (operador de coalescência): valor padrão quando optional é `nil` |
+| `?.` | optional chaining: acesso seguro em cadeia; retorna `nil` se qualquer link for `nil` |
+| `!` | forced unwrap: lança runtime error se `nil`; proibido em produção |
 
 ## Forced unwrap em produção
 
 <details>
-<summary>❌ Ruim — ! como atalho perigoso</summary>
+<summary>❌ Ruim: ! como atalho perigoso</summary>
 
 ```swift
 func getCustomerEmail(userId: UUID) -> String {
@@ -32,7 +32,7 @@ func getCustomerEmail(userId: UUID) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — guard com saída antecipada e erro expressivo</summary>
+<summary>✅ Bom: guard com saída antecipada e erro expressivo</summary>
 
 ```swift
 func getCustomerEmail(userId: UUID) throws -> String {
@@ -49,7 +49,7 @@ func getCustomerEmail(userId: UUID) throws -> String {
 ## Optional chaining em cadeia
 
 <details>
-<summary>❌ Ruim — verificações manuais aninhadas</summary>
+<summary>❌ Ruim: verificações manuais aninhadas</summary>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -67,7 +67,7 @@ func getCity(order: Order?) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — optional chaining com nil-coalescing no final</summary>
+<summary>✅ Bom: optional chaining com nil-coalescing no final</summary>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -80,7 +80,7 @@ func getCity(order: Order?) -> String {
 ## Unwrap múltiplo com guard
 
 <details>
-<summary>❌ Ruim — guard separado para cada optional</summary>
+<summary>❌ Ruim: guard separado para cada optional</summary>
 
 ```swift
 guard let name = user.name else { return }
@@ -91,7 +91,7 @@ guard let phone = user.phone else { return }
 </details>
 
 <details>
-<summary>✅ Bom — guard com vírgula une condições</summary>
+<summary>✅ Bom: guard com vírgula une condições</summary>
 
 ```swift
 guard let name = user.name,
@@ -106,7 +106,7 @@ guard let name = user.name,
 ## `if let` para bloco condicional
 
 <details>
-<summary>❌ Ruim — if com nil-check explícito</summary>
+<summary>❌ Ruim: if com nil-check explícito</summary>
 
 ```swift
 if order.promotion != nil {
@@ -118,7 +118,7 @@ if order.promotion != nil {
 </details>
 
 <details>
-<summary>✅ Bom — if let faz unwrap e bind em um passo</summary>
+<summary>✅ Bom: if let faz unwrap e bind em um passo</summary>
 
 ```swift
 if let promo = order.promotion {
@@ -131,7 +131,7 @@ if let promo = order.promotion {
 ## Nil-coalescing para valor padrão
 
 <details>
-<summary>❌ Ruim — if/else para optional com default</summary>
+<summary>❌ Ruim: if/else para optional com default</summary>
 
 ```swift
 let displayName: String
@@ -145,7 +145,7 @@ if let name = user.name {
 </details>
 
 <details>
-<summary>✅ Bom — ?? em uma linha</summary>
+<summary>✅ Bom: ?? em uma linha</summary>
 
 ```swift
 let displayName = user.name ?? "Anonymous"
@@ -153,10 +153,10 @@ let displayName = user.name ?? "Anonymous"
 
 </details>
 
-## Coleções — preferir vazio a optional
+## Coleções: preferir vazio a optional
 
 <details>
-<summary>❌ Ruim — nil para representar lista vazia</summary>
+<summary>❌ Ruim: nil para representar lista vazia</summary>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order]? {
@@ -168,7 +168,7 @@ func findOrdersByUser(userId: UUID) -> [Order]? {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia; nil nunca representa ausência de itens</summary>
+<summary>✅ Bom: lista vazia; nil nunca representa ausência de itens</summary>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order] {

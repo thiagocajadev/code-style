@@ -71,7 +71,7 @@ linter:
 ```
 
 <details>
-<summary>❌ Ruim — análise estática ignorada</summary>
+<summary>❌ Ruim: análise estática ignorada</summary>
 
 ```dart
 dynamic processData(data) {   // sem tipo de retorno, parâmetro dynamic
@@ -82,7 +82,7 @@ dynamic processData(data) {   // sem tipo de retorno, parâmetro dynamic
 </details>
 
 <details>
-<summary>✅ Bom — tipos explícitos, sem print</summary>
+<summary>✅ Bom: tipos explícitos, sem print</summary>
 
 ```dart
 void processOrder(Order order) {

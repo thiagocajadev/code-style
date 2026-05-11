@@ -168,7 +168,7 @@ Dimensões normalizadas: `DimTeam` referencia `DimLeague`, que referencia `DimCo
 
 ---
 
-## SCD — Slowly Changing Dimensions
+## SCD: Slowly Changing Dimensions
 
 Atributos de dimensão mudam ao longo do tempo. O tipo de SCD define como registrar esse histórico.
 
@@ -253,6 +253,6 @@ CREATE TABLE AggGoalsByPlayerByDay
 
 ## Referências relacionadas
 
-- [Database](./database.md) — tuning de queries, operações em lote, plano de execução
-- [Integrations](./integrations.md) — fontes externas: APIs, arquivos, protocolos
-- [Messaging](./messaging.md) — filas e eventos como fonte de dados para pipelines CDC
+- [Database](./database.md): tuning de queries, operações em lote, plano de execução
+- [Integrations](./integrations.md): fontes externas: APIs, arquivos, protocolos
+- [Messaging](./messaging.md): filas e eventos como fonte de dados para pipelines CDC

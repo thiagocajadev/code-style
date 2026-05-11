@@ -44,7 +44,7 @@ imutável após a construção. Juntos, eliminam a necessidade de checar null em
 sempre devem ter valor.
 
 <details>
-<summary>❌ Ruim — propriedades com setter público sem garantia de valor</summary>
+<summary>❌ Ruim: propriedades com setter público sem garantia de valor</summary>
 
 ```csharp
 public class Order
@@ -54,14 +54,14 @@ public class Order
     public List<LineItem>? Items { get; set; } // null como estado inicial
 }
 
-var order = new Order(); // compila — Id e CustomerId são null
+var order = new Order(); // compila: Id e CustomerId são null
 order.Items?.ForEach(ProcessItem); // defesa em cascata
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — required + init + coleção inicializada</summary>
+<summary>✅ Bom: required + init + coleção inicializada</summary>
 
 ```csharp
 public class Order
@@ -70,11 +70,11 @@ public class Order
     public required string CustomerId { get; init; }
     public List<LineItem> Items { get; init; } = [];
 
-    // var order = new Order(); // erro de compilação — Id e CustomerId obrigatórios
+    // var order = new Order(); // erro de compilação: Id e CustomerId obrigatórios
 }
 
 var order = new Order { Id = "ord-1", CustomerId = "cust-99" };
-order.Items.ForEach(ProcessItem); // sem checagem — Items é sempre List<LineItem>
+order.Items.ForEach(ProcessItem); // sem checagem: Items é sempre List<LineItem>
 ```
 
 </details>
@@ -85,7 +85,7 @@ Propriedades e retornos de coleção sempre têm valor: `[]` quando vazias, nunc
 `Array.Empty<T>()` não aloca, sendo preferido para retornos de método.
 
 <details>
-<summary>❌ Ruim — null em coleção força defesa em cada caller</summary>
+<summary>❌ Ruim: null em coleção força defesa em cada caller</summary>
 
 ```csharp
 public async Task<IEnumerable<Order>?> FindOrdersByUserAsync(string userId)
@@ -105,17 +105,17 @@ if (orders is not null)
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia como estado neutro, sem null</summary>
+<summary>✅ Bom: lista vazia como estado neutro, sem null</summary>
 
 ```csharp
-// quando o repositório já retorna [] — EF e Dapper nunca retornam null
+// quando o repositório já retorna []: EF e Dapper nunca retornam null
 public async Task<IReadOnlyList<Order>> FindOrdersByUserAsync(string userId)
 {
     var orders = await _repo.FindByUserAsync(userId);
     return orders.ToList();
 }
 
-// quando o retorno vazio é explícito — Array.Empty<T>() não aloca
+// quando o retorno vazio é explícito: Array.Empty<T>() não aloca
 public IReadOnlyList<Order> FindOrdersByStatus(string status)
 {
     if (!_validStatuses.Contains(status))
@@ -125,7 +125,7 @@ public IReadOnlyList<Order> FindOrdersByStatus(string status)
     return orders;
 }
 
-// caller usa diretamente — sem checagem de null
+// caller usa diretamente: sem checagem de null
 var orders = await _service.FindOrdersByUserAsync(userId);
 foreach (var order in orders) ProcessOrder(order);
 ```
@@ -138,7 +138,7 @@ foreach (var order in orders) ProcessOrder(order);
 Usado nas fronteiras do sistema: construtores, métodos públicos, endpoints.
 
 <details>
-<summary>❌ Ruim — verificação manual verbosa ou ausente</summary>
+<summary>❌ Ruim: verificação manual verbosa ou ausente</summary>
 
 ```csharp
 public class OrderService
@@ -153,7 +153,7 @@ public class OrderService
 
     public async Task<Order> FindAsync(string orderId, CancellationToken ct)
     {
-        // orderId não verificado — NullReferenceException em runtime se null
+        // orderId não verificado: NullReferenceException em runtime se null
         return await _repo.FindByIdAsync(orderId, ct);
     }
 }
@@ -162,7 +162,7 @@ public class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — ThrowIfNull no construtor e nas fronteiras públicas</summary>
+<summary>✅ Bom: ThrowIfNull no construtor e nas fronteiras públicas</summary>
 
 ```csharp
 public class OrderService(IOrderRepository repo)
@@ -187,7 +187,7 @@ public class OrderService(IOrderRepository repo)
 Quando a ausência é um erro de negócio, guard clause é mais expressivo.
 
 <details>
-<summary>❌ Ruim — encadeamento que esconde condição de negócio</summary>
+<summary>❌ Ruim: encadeamento que esconde condição de negócio</summary>
 
 ```csharp
 public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken ct)
@@ -200,7 +200,7 @@ public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken 
 </details>
 
 <details>
-<summary>✅ Bom — guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<summary>✅ Bom: guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
 
 ```csharp
 // ausência é erro → guard clause
@@ -229,7 +229,7 @@ C# 14 permite usar `?.` no lado esquerdo de uma atribuição. A operação só e
 não for null, sem `if` explícito, sem guard clause desnecessário.
 
 <details>
-<summary>❌ Ruim — if apenas para proteger a atribuição</summary>
+<summary>❌ Ruim: if apenas para proteger a atribuição</summary>
 
 ```csharp
 if (order is not null)
@@ -242,7 +242,7 @@ if (session?.User is not null)
 </details>
 
 <details>
-<summary>✅ Bom — null-conditional assignment elimina o if</summary>
+<summary>✅ Bom: null-conditional assignment elimina o if</summary>
 
 ```csharp
 order?.Status = OrderStatus.Shipped;
@@ -261,7 +261,7 @@ session?.User?.LastSeenAt = DateTimeOffset.UtcNow;
 sem repetir o nome da variável.
 
 <details>
-<summary>❌ Ruim — verificação manual de null antes da atribuição</summary>
+<summary>❌ Ruim: verificação manual de null antes da atribuição</summary>
 
 ```csharp
 public class ReportConfig
@@ -273,7 +273,7 @@ public class ReportConfig
     public ReportConfig WithDefaults()
     {
         if (CacheTimeout == null)
-            CacheTimeout = TimeSpan.FromMinutes(10); // verboso — repete o nome do campo
+            CacheTimeout = TimeSpan.FromMinutes(10); // verboso: repete o nome do campo
 
         return this;
     }
@@ -283,7 +283,7 @@ public class ReportConfig
 </details>
 
 <details>
-<summary>✅ Bom — ??= para defaults e lazy init</summary>
+<summary>✅ Bom: ??= para defaults e lazy init</summary>
 
 ```csharp
 public class ReportConfig
@@ -309,7 +309,7 @@ O operador `!` suprime o aviso de null do compilador. Aceitável apenas quando v
 externa que o compilador não consegue inferir. Documentar o motivo.
 
 <details>
-<summary>❌ Ruim — ! para silenciar o compilador sem garantia</summary>
+<summary>❌ Ruim: ! para silenciar o compilador sem garantia</summary>
 
 ```csharp
 var user = _cache.Get(userId)!; // e se não estiver no cache?
@@ -319,13 +319,13 @@ var config = _options.Value!;   // e se Value for null?
 </details>
 
 <details>
-<summary>✅ Bom — guard clause no lugar de !</summary>
+<summary>✅ Bom: guard clause no lugar de !</summary>
 
 ```csharp
 if (!_cache.TryGetValue(userId, out var user))
     throw new NotFoundError("User not in cache.");
 
-// user é não-nulo aqui — compilador sabe pelo TryGetValue
+// user é não-nulo aqui: compilador sabe pelo TryGetValue
 ```
 
 </details>
@@ -337,7 +337,7 @@ Para métodos que já fazem a verificação internamente, atributos do namespace
 repetir a checagem.
 
 <details>
-<summary>❌ Ruim — parâmetro nullable sem atributo, compilador não propaga garantia</summary>
+<summary>❌ Ruim: parâmetro nullable sem atributo, compilador não propaga garantia</summary>
 
 ```csharp
 public static class Guard
@@ -354,7 +354,7 @@ public static class Guard
     }
 }
 
-// uso — compilador ainda emite aviso de possível null
+// uso: compilador ainda emite aviso de possível null
 Guard.NotNull(order);
 ProcessOrder(order); // CS8604: possível argumento null
 
@@ -367,7 +367,7 @@ if (Guard.IsValid(email))
 </details>
 
 <details>
-<summary>✅ Bom — atributos que propagam a garantia de non-null</summary>
+<summary>✅ Bom: atributos que propagam a garantia de non-null</summary>
 
 ```csharp
 using System.Diagnostics.CodeAnalysis;

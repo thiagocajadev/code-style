@@ -19,12 +19,12 @@ O sistema de tipos do C# oferece várias formas de descrever contratos: **interf
 
 ## Interface vs abstract class
 
-`interface` descreve **capacidade** — o que o tipo consegue fazer. Suporta múltipla implementação, não carrega estado. `abstract class` descreve **identidade parcial** — uma base comum com estado e comportamento compartilhados, completada pelas filhas.
+`interface` descreve **capacidade**: o que o tipo consegue fazer. Suporta múltipla implementação, não carrega estado. `abstract class` descreve **identidade parcial**: uma base comum com estado e comportamento compartilhados, completada pelas filhas.
 
 A regra prática: se duas implementações vão compartilhar código, `abstract class`. Se só compartilham contrato, `interface`.
 
 <details>
-<summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
+<summary>❌ Ruim: interface usada para compartilhar código entre implementações</summary>
 
 ```csharp
 public interface OrderProcessor
@@ -45,7 +45,7 @@ public interface OrderProcessor
 </details>
 
 <details>
-<summary>✅ Bom — abstract class quando há estado ou template method</summary>
+<summary>✅ Bom: abstract class quando há estado ou template method</summary>
 
 ```csharp
 public abstract class OrderProcessor(ILogger logger)
@@ -79,7 +79,7 @@ public sealed class StandardOrderProcessor(ILogger logger) : OrderProcessor(logg
 </details>
 
 <details>
-<summary>✅ Bom — interface quando só o contrato importa</summary>
+<summary>✅ Bom: interface quando só o contrato importa</summary>
 
 ```csharp
 public interface IOrderRepository
@@ -96,10 +96,10 @@ public sealed class InMemoryOrderRepository : IOrderRepository { /* testes */ }
 
 ## Sealed por padrão
 
-`sealed` impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `sealed`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade — e contrato implícito é contrato errado.
+`sealed` impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `sealed`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade, e contrato implícito é contrato errado.
 
 <details>
-<summary>❌ Ruim — classe concreta sem sealed, extensibilidade acidental</summary>
+<summary>❌ Ruim: classe concreta sem sealed, extensibilidade acidental</summary>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository)
@@ -117,7 +117,7 @@ public class CustomOrderService : OrderService
 </details>
 
 <details>
-<summary>✅ Bom — sealed por padrão, extensibilidade exige decisão</summary>
+<summary>✅ Bom: sealed por padrão, extensibilidade exige decisão</summary>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -135,7 +135,7 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 `record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de **API** (Application Programming Interface, Interface de Programação de Aplicações), resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem boilerplate. `class` fica para tipos com identidade, estado mutável ou comportamento rico.
 
 <details>
-<summary>❌ Ruim — class mutable para dados immutable</summary>
+<summary>❌ Ruim: class mutable para dados immutable</summary>
 
 ```csharp
 public class OrderResponse
@@ -144,14 +144,14 @@ public class OrderResponse
     public string ProductId { get; set; }
     public decimal Total { get; set; }
 
-    // igualdade por referência — duas OrderResponse com os mesmos valores comparam desiguais
+    // igualdade por referência: duas OrderResponse com os mesmos valores comparam desiguais
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — record para dados, igualdade estrutural sem boilerplate</summary>
+<summary>✅ Bom: record para dados, igualdade estrutural sem boilerplate</summary>
 
 ```csharp
 public record OrderResponse
@@ -173,7 +173,7 @@ var updated = orderResponse with { Total = newTotal };
 Habilitar `<Nullable>enable</Nullable>` no `.csproj` torna a ausência de valor parte do contrato. `string` nunca é nulo; `string?` pode ser. O compilador obriga o tratamento antes de usar.
 
 <details>
-<summary>❌ Ruim — nullable desligado, null silencioso no contrato</summary>
+<summary>❌ Ruim: nullable desligado, null silencioso no contrato</summary>
 
 ```csharp
 public class OrderService
@@ -190,7 +190,7 @@ public class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — nullable habilitado, contrato explícito</summary>
+<summary>✅ Bom: nullable habilitado, contrato explícito</summary>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -212,14 +212,14 @@ var total = order.Total; // narrowed para Order não-nulo
 
 </details>
 
-O operador `!` (null-forgiving) suprime o aviso do compilador. Usar apenas quando o contrato externo do tipo já garante não-nulo e o compilador não consegue inferir — nunca para calar alerta genuíno. Detalhes em [null-safety.md](./advanced/null-safety.md).
+O operador `!` (null-forgiving) suprime o aviso do compilador. Usar apenas quando o contrato externo do tipo já garante não-nulo e o compilador não consegue inferir, nunca para calar alerta genuíno. Detalhes em [null-safety.md](./advanced/null-safety.md).
 
 ## Pattern matching
 
 Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e property patterns. Reduz boilerplate e faz narrowing automático. O compilador garante exaustividade quando o input é uma hierarquia fechada.
 
 <details>
-<summary>❌ Ruim — cadeia de if com cast explícito</summary>
+<summary>❌ Ruim: cadeia de if com cast explícito</summary>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -243,7 +243,7 @@ public string DescribePayment(IPayment payment)
 </details>
 
 <details>
-<summary>✅ Bom — is-expression com narrowing e descrição nomeada por variante</summary>
+<summary>✅ Bom: is-expression com narrowing e descrição nomeada por variante</summary>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -270,7 +270,7 @@ public string DescribePayment(IPayment payment)
 Quando o domínio tem variantes fechadas, o pattern matching troca o discriminador implícito por estrutura:
 
 <details>
-<summary>✅ Bom — discriminated result via pattern matching</summary>
+<summary>✅ Bom: discriminated result via pattern matching</summary>
 
 ```csharp
 public abstract record PaymentResult
@@ -304,10 +304,10 @@ public IActionResult HandlePayment(PaymentResult result)
 
 ## Generics com constraints
 
-Generic sem constraint descreve qualquer tipo — é abstração sem propósito. Constraints (`where T : IEntity`, `where T : struct`, `where T : new()`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
+Generic sem constraint descreve qualquer tipo: é abstração sem propósito. Constraints (`where T : IEntity`, `where T : struct`, `where T : new()`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
 
 <details>
-<summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
+<summary>❌ Ruim: genérico sem constraint, reflection para descobrir capability</summary>
 
 ```csharp
 public T? Find<T>(Guid id) where T : class
@@ -325,7 +325,7 @@ public T? Find<T>(Guid id) where T : class
 </details>
 
 <details>
-<summary>✅ Bom — constraint declara capability, compilador valida</summary>
+<summary>✅ Bom: constraint declara capability, compilador valida</summary>
 
 ```csharp
 public interface IEntity
@@ -344,12 +344,12 @@ public T? Find<T>(Guid id) where T : class, IEntity
 
 ## Evitar `dynamic`
 
-`dynamic` desliga a checagem de tipos — volta o C# ao mundo do JavaScript dos anos 2000. Erros que seriam de compilação viram `RuntimeBinderException` em produção.
+`dynamic` desliga a checagem de tipos: volta o C# ao mundo do JavaScript dos anos 2000. Erros que seriam de compilação viram `RuntimeBinderException` em produção.
 
 Existem dois casos legítimos: interop com COM/Office e desserialização de shapes genuinamente dinâmicos (e mesmo assim, preferir `JsonElement` / `JsonNode`).
 
 <details>
-<summary>❌ Ruim — dynamic para conveniência</summary>
+<summary>❌ Ruim: dynamic para conveniência</summary>
 
 ```csharp
 public void ProcessConfig(dynamic config)
@@ -362,7 +362,7 @@ public void ProcessConfig(dynamic config)
 </details>
 
 <details>
-<summary>✅ Bom — tipo concreto ou JsonElement</summary>
+<summary>✅ Bom: tipo concreto ou JsonElement</summary>
 
 ```csharp
 public sealed record ApiConfig

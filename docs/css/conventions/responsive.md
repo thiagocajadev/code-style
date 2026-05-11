@@ -17,7 +17,7 @@
 ## Mobile-first
 
 <details>
-<summary>❌ Ruim — desktop-first: base para tela grande, override para tela pequena</summary>
+<summary>❌ Ruim: desktop-first, base para tela grande, override para tela pequena</summary>
 
 ```css
 .layout {
@@ -37,7 +37,7 @@
 </details>
 
 <details>
-<summary>✅ Bom — mobile-first: base simples, expansão progressiva</summary>
+<summary>✅ Bom: mobile-first, base simples, expansão progressiva</summary>
 
 ```css
 .layout {
@@ -62,13 +62,13 @@ Valores de breakpoint espalhados em vários arquivos criam inconsistência. Muda
 grep no projeto inteiro.
 
 <details>
-<summary>❌ Ruim — pixel values mágicos e inconsistentes entre arquivos</summary>
+<summary>❌ Ruim: pixel values mágicos e inconsistentes entre arquivos</summary>
 
 ```css
 /* layout.css */
 @media (min-width: 768px) { }
 
-/* nav.css — valor diferente para o mesmo breakpoint */
+/* nav.css: valor diferente para o mesmo breakpoint */
 @media (min-width: 760px) { }
 
 @media (min-width: 1024px) { }
@@ -77,10 +77,10 @@ grep no projeto inteiro.
 </details>
 
 <details>
-<summary>✅ Bom — breakpoints centralizados como fonte única de verdade</summary>
+<summary>✅ Bom: breakpoints centralizados como fonte única de verdade</summary>
 
 ```css
-/* tokens/breakpoints.css — definição única */
+/* tokens/breakpoints.css: definição única */
 :root {
   --bp-md: 768px;
   --bp-lg: 1024px;
@@ -89,7 +89,7 @@ grep no projeto inteiro.
 ```
 
 ```css
-/* layout.css — valor consistente, comentário documenta o token */
+/* layout.css: valor consistente, comentário documenta o token */
 @media (min-width: 768px) /* --bp-md */ { }
 ```
 

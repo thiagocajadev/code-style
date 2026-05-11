@@ -23,7 +23,7 @@ executa após o parse, na ordem do documento: ficam no `<head>`, sem necessidade
 fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia de ordem.
 
 <details>
-<summary>❌ Ruim — script no head sem defer, bloqueia o parse</summary>
+<summary>❌ Ruim: script no head sem defer, bloqueia o parse</summary>
 
 ```html
 <head>
@@ -35,7 +35,7 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 </details>
 
 <details>
-<summary>✅ Bom — defer para scripts dependentes de DOM; async para scripts independentes</summary>
+<summary>✅ Bom: defer para scripts dependentes de DOM; async para scripts independentes</summary>
 
 ```html
 <head>
@@ -62,7 +62,7 @@ Imagens e iframes abaixo da dobra (`loading="lazy"`) só são carregados quando 
 aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 <details>
-<summary>❌ Ruim — todas as imagens carregam imediatamente</summary>
+<summary>❌ Ruim: todas as imagens carregam imediatamente</summary>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" />
@@ -74,7 +74,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 </details>
 
 <details>
-<summary>✅ Bom — hero sem lazy (above the fold), demais com lazy</summary>
+<summary>✅ Bom: hero sem lazy (above the fold), demais com lazy</summary>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" fetchpriority="high" />
@@ -84,7 +84,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 <img src="/img/product-3.jpg" alt="Product 3" loading="lazy" />
 ```
 
-O hero tem papel distinto (above the fold, prioridade alta) — fase isolada. Os três produtos com `loading="lazy"` formam trio homogêneo e ficam tight.
+O hero tem papel distinto (above the fold, prioridade alta): fase isolada. Os três produtos com `loading="lazy"` formam trio homogêneo e ficam tight.
 
 </details>
 
@@ -94,7 +94,7 @@ O hero tem papel distinto (above the fold, prioridade alta) — fase isolada. Os
 ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas antecipadamente.
 
 <details>
-<summary>❌ Ruim — fonte crítica descoberta tarde, origem externa sem preconnect</summary>
+<summary>❌ Ruim: fonte crítica descoberta tarde, origem externa sem preconnect</summary>
 
 ```html
 <head>
@@ -106,7 +106,7 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 </details>
 
 <details>
-<summary>✅ Bom — preconnect abre conexão, preload antecipa recursos críticos</summary>
+<summary>✅ Bom: preconnect abre conexão, preload antecipa recursos críticos</summary>
 
 ```html
 <head>
@@ -133,7 +133,7 @@ Declarar `width` e `height` em imagens previne layout shift (CLS). O browser res
 antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 <details>
-<summary>❌ Ruim — sem dimensões, layout shift ao carregar</summary>
+<summary>❌ Ruim: sem dimensões, layout shift ao carregar</summary>
 
 ```html
 <img src="/img/product.jpg" alt="Product photo" loading="lazy" />
@@ -142,7 +142,7 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 </details>
 
 <details>
-<summary>✅ Bom — dimensões declaradas, CSS mantém proporção</summary>
+<summary>✅ Bom: dimensões declaradas, CSS mantém proporção</summary>
 
 ```html
 <img

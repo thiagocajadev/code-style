@@ -3,7 +3,7 @@
 > Escopo: Ruby 4.0. Padrões agnósticos de I/O assíncrono em [shared/platform/backend-flow.md](../../../../shared/platform/backend-flow.md).
 
 Ruby não tem `async/await` nativo como JavaScript ou Python. Concorrência é modelada com
-**Threads** (fios de execução), **Fibers** (fibras — corrotinas cooperativas) e
+**Threads** (fios de execução), **Fibers** (fibras, corrotinas cooperativas) e
 **Ractors** (atores paralelos com memória isolada, Ruby 3.x+). I/O longo fora do
 request cycle vai para **background jobs** (Solid Queue ou Sidekiq).
 
@@ -24,7 +24,7 @@ I/O longo (emails, webhooks, relatórios, chamadas externas) sai do request cycl
 um job. Rails 8 usa **Solid Queue** como padrão; **Sidekiq** é preferido para alto volume.
 
 <details>
-<summary>❌ Ruim — I/O pesado dentro do request</summary>
+<summary>❌ Ruim: I/O pesado dentro do request</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -44,7 +44,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — I/O longo delegado para jobs</summary>
+<summary>✅ Bom: I/O longo delegado para jobs</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -64,13 +64,13 @@ end
 
 </details>
 
-## Active Job — estrutura de job
+## Active Job: estrutura de job
 
 Jobs herdam de `ApplicationJob` (que herda de `ActiveJob::Base`). Parâmetros são
-serializados — passe apenas IDs, não objetos ActiveRecord.
+serializados; passe apenas IDs, não objetos ActiveRecord.
 
 <details>
-<summary>❌ Ruim — objeto ActiveRecord como argumento</summary>
+<summary>❌ Ruim: objeto ActiveRecord como argumento</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -87,7 +87,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — ID como argumento, objeto carregado dentro do job</summary>
+<summary>✅ Bom: ID como argumento, objeto carregado dentro do job</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -109,7 +109,7 @@ end
 
 </details>
 
-## Fibers — I/O cooperativo
+## Fibers: I/O cooperativo
 
 Fibers permitem suspender e retomar execução manualmente. Com a gem `async`, use para
 I/O concorrente sem threads.
@@ -131,7 +131,7 @@ def fetch_reports(report_ids)
 end
 ```
 
-## Ractors — paralelismo de CPU
+## Ractors: paralelismo de CPU
 
 Ractors (Ruby 3.x+) executam em paralelo real. Compartilham apenas objetos imutáveis
 (frozen). Use para workloads CPU-intensive.
@@ -149,5 +149,5 @@ def parallel_compute(chunks)
 end
 ```
 
-Ractors ainda são experimentais em workloads com gems que acessam estado global — verifique
+Ractors ainda são experimentais em workloads com gems que acessam estado global; verifique
 compatibilidade antes de usar em produção.

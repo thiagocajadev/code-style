@@ -20,7 +20,7 @@ IDs são únicos por página, usados para anchors, labels de formulário e targe
 use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS).
 
 <details>
-<summary>❌ Ruim — ID duplicável, classe descreve aparência</summary>
+<summary>❌ Ruim: ID duplicável, classe descreve aparência</summary>
 
 ```html
 <div id="box" class="blue-card big-text">
@@ -34,7 +34,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 </details>
 
 <details>
-<summary>✅ Bom — ID único e semântico, classe descreve papel</summary>
+<summary>✅ Bom: ID único e semântico, classe descreve papel</summary>
 
 ```html
 <div id="checkout-summary" class="order-summary">
@@ -54,7 +54,7 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 reutilize classes CSS como gatilhos de comportamento: isso acopla estilo e lógica.
 
 <details>
-<summary>❌ Ruim — classe CSS usada como gatilho JS, sem data-*</summary>
+<summary>❌ Ruim: classe CSS usada como gatilho JS, sem data-*</summary>
 
 ```html
 <button class="btn btn-primary open-modal">Open</button>
@@ -69,7 +69,7 @@ document.querySelectorAll('.open-modal').forEach((btn) => { ... });
 </details>
 
 <details>
-<summary>✅ Bom — data-* para comportamento, classe só para estilo</summary>
+<summary>✅ Bom: data-* para comportamento, classe só para estilo</summary>
 
 ```html
 <button class="button button--primary" data-modal-target="product-details">Open</button>
@@ -89,7 +89,7 @@ document.querySelectorAll('[data-modal-target]').forEach((btn) => { ... });
 repetir o elemento pai).
 
 <details>
-<summary>❌ Ruim — prefixo redundante, nome opaco</summary>
+<summary>❌ Ruim: prefixo redundante, nome opaco</summary>
 
 ```html
 <tr data-row-data-id="42" data-row-data-status="active" data-x="1">
@@ -98,7 +98,7 @@ repetir o elemento pai).
 </details>
 
 <details>
-<summary>✅ Bom — nome direto, kebab-case, sem redundância</summary>
+<summary>✅ Bom: nome direto, kebab-case, sem redundância</summary>
 
 ```html
 <tr data-user-id="42" data-status="active" data-page="1">

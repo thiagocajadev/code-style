@@ -41,7 +41,7 @@ npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslin
 em runtime.
 
 <details>
-<summary>❌ Ruim — tsconfig sem strict, com padrões obsoletos do TS5</summary>
+<summary>❌ Ruim: tsconfig sem strict, com padrões obsoletos do TS5</summary>
 
 ```json
 {
@@ -59,14 +59,14 @@ em runtime.
 }
 ```
 
-`target: ES6` e `module: commonjs` são depreciados no TS6. `baseUrl` foi removido — caminhos em
+`target: ES6` e `module: commonjs` são depreciados no TS6. `baseUrl` foi removido: caminhos em
 `paths` já devem ser relativos à raiz do projeto (`"./src/*"`). Flags de strict manual (`noImplicitAny`,
 `strictNullChecks`) são substituídas por `strict: true`.
 
 </details>
 
 <details>
-<summary>✅ Bom — tsconfig base com strict e paths</summary>
+<summary>✅ Bom: tsconfig base com strict e paths</summary>
 
 ```json
 {
@@ -100,8 +100,8 @@ em runtime.
 
 </details>
 
-> [!NOTE] **TypeScript 6 — novos defaults.** `strict`, `module: esnext` e `target: es2025` passaram
-> a ser padrão. O campo `types` agora é `[]` por padrão — declare explicitamente os pacotes `@types`
+> [!NOTE] **TypeScript 6, novos defaults.** `strict`, `module: esnext` e `target: es2025` passaram
+> a ser padrão. O campo `types` agora é `[]` por padrão: declare explicitamente os pacotes `@types`
 > que o projeto usa (ex.: `["node"]`, `["node", "jest"]`). `baseUrl` foi depreciado: use `paths`
 > com caminhos relativos completos a partir da raiz (`"./src/*"`).
 
@@ -111,7 +111,7 @@ Path aliases tornam as importações independentes de onde o arquivo está na hi
 contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no bundler ou loader.
 
 <details>
-<summary>❌ Ruim — importações relativas profundas</summary>
+<summary>❌ Ruim: importações relativas profundas</summary>
 
 ```ts
 import { UserRepository } from "../../../infra/database/user.repository";
@@ -122,7 +122,7 @@ import { config } from "../../../config";
 </details>
 
 <details>
-<summary>✅ Bom — alias limpo e independente de profundidade</summary>
+<summary>✅ Bom: alias limpo e independente de profundidade</summary>
 
 ```ts
 import { UserRepository } from "@/infra/database/user.repository";
@@ -142,7 +142,7 @@ import { config } from "@/config";
 ```
 
 ```ts
-// package.json — para tsx e Node nativo
+// package.json: para tsx e Node nativo
 {
   "imports": {
     "#*": "./src/*"
@@ -158,7 +158,7 @@ import { config } from "@/config";
 O arquivo serve como índice do projeto.
 
 <details>
-<summary>✅ Bom — server.ts como índice, configuração delegada</summary>
+<summary>✅ Bom: server.ts como índice, configuração delegada</summary>
 
 ```ts
 // server.ts
@@ -177,7 +177,7 @@ app.listen(config.port);
 acessa `process.env` diretamente e que os campos obrigatórios são verificados na inicialização.
 
 <details>
-<summary>❌ Ruim — process.env espalhado e sem validação</summary>
+<summary>❌ Ruim: process.env espalhado e sem validação</summary>
 
 ```ts
 // auth.middleware.ts
@@ -190,7 +190,7 @@ const url = process.env.DATABASE_URL!; // non-null assertion sem garantia
 </details>
 
 <details>
-<summary>✅ Bom — config.ts como único ponto, com validação na inicialização</summary>
+<summary>✅ Bom: config.ts como único ponto, com validação na inicialização</summary>
 
 ```ts
 // config.ts

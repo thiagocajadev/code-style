@@ -5,7 +5,7 @@
 Convenções Python aplicando os mesmos princípios do guia. Os exemplos usam Python 3.14 como
 referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, type hints, strings, destructuring
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, type hints, strings, destructuring
 
 ## Setup
 
@@ -64,8 +64,8 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [snake_case nativo](conventions/naming.md#convenções-de-case)                                | Identificadores em snake_case; classes em PascalCase                 |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                   | Variáveis e funções que dispensam explicação                         |
 | [Código como documentação](conventions/naming.md#código-como-documentação)                   | Nomes substituem comentários; comentários mentem                     |
-| [Orquestrador no topo](conventions/functions.md#god-function--múltiplas-responsabilidades)   | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/functions.md#sla--orquestrador-ou-implementação)                           | Uma responsabilidade, um nível de abstração                          |
+| [Orquestrador no topo](conventions/functions.md#god-function-múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
+| [SLA](conventions/functions.md#sla-orquestrador-ou-implementação-nunca-os-dois)              | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                      | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>

@@ -2,7 +2,7 @@
 
 > Escopo: Swift 6.1.
 
-Validação acontece na fronteira — entrada do usuário, payload de API, parâmetros de use case.
+Validação acontece na fronteira: entrada do usuário, payload de API, parâmetros de use case.
 Dentro do domínio, `precondition` e `assert` garantem invariantes. Nunca validar no meio da
 lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 
@@ -11,7 +11,7 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 | Conceito | O que é |
 | --- | --- |
 | `precondition` | falha rápida em qualquer build se a condição for falsa |
-| `assert` | falha em debug apenas — removido em release; para invariantes de desenvolvimento |
+| `assert` | falha em debug apenas; removido em release; para invariantes de desenvolvimento |
 | **validation boundary** (limite de validação) | Ponto onde dados externos entram no sistema |
 | **domain invariant** (invariante de domínio) | Regra que deve ser verdadeira em qualquer estado válido do objeto |
 | `init` com `throws` | construtor que valida e lança erro antes de criar o objeto |
@@ -19,7 +19,7 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 ## Validação no meio da lógica
 
 <details>
-<summary>❌ Ruim — guard espalhado pela função de negócio</summary>
+<summary>❌ Ruim: guard espalhado pela função de negócio</summary>
 
 ```swift
 func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order {
@@ -40,7 +40,7 @@ func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order
 </details>
 
 <details>
-<summary>✅ Bom — init valida; função recebe objeto já válido</summary>
+<summary>✅ Bom: init valida; função recebe objeto já válido</summary>
 
 ```swift
 struct OrderRequest {
@@ -72,7 +72,7 @@ func processOrder(_ request: OrderRequest) async throws -> Order {
 ## Acumulação de erros de formulário
 
 <details>
-<summary>❌ Ruim — para no primeiro erro</summary>
+<summary>❌ Ruim: para no primeiro erro</summary>
 
 ```swift
 func validateProfile(_ profile: UserProfile) throws {
@@ -85,7 +85,7 @@ func validateProfile(_ profile: UserProfile) throws {
 </details>
 
 <details>
-<summary>✅ Bom — acumula todos os erros</summary>
+<summary>✅ Bom: acumula todos os erros</summary>
 
 ```swift
 enum ProfileValidationError: Error {
@@ -114,7 +114,7 @@ func validateProfile(_ profile: UserProfile) throws {
 ## `precondition` para invariantes de domínio
 
 <details>
-<summary>❌ Ruim — guard/return silencia um invariante</summary>
+<summary>❌ Ruim: guard/return silencia um invariante</summary>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {
@@ -126,7 +126,7 @@ func applyDiscount(_ amount: Double, rate: Double) -> Double {
 </details>
 
 <details>
-<summary>✅ Bom — precondition falha com mensagem clara</summary>
+<summary>✅ Bom: precondition falha com mensagem clara</summary>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {

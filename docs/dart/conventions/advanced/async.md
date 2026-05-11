@@ -17,12 +17,12 @@ operações. `unawaited` marca fire-and-forget intencional.
 | `Future.wait` | aguarda múltiplos Futures em paralelo; falha se qualquer um falhar |
 | `unawaited` | fire-and-forget explícito; suprime lint `unawaited_futures` |
 | `Completer<T>` | cria Future manualmente para integração com APIs de callback |
-| `FutureOr<T>` | aceita valor síncrono ou Future — usado em APIs que podem ser ambas |
+| `FutureOr<T>` | aceita valor síncrono ou Future; usado em APIs que podem ser ambas |
 
 ## `await` sequencial quando paralelismo é possível
 
 <details>
-<summary>❌ Ruim — awaits em série sem necessidade de ordem</summary>
+<summary>❌ Ruim: awaits em série sem necessidade de ordem</summary>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -36,7 +36,7 @@ Future<Dashboard> loadDashboard(int userId) async {
 </details>
 
 <details>
-<summary>✅ Bom — Future.wait executa em paralelo</summary>
+<summary>✅ Bom: Future.wait executa em paralelo</summary>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -59,7 +59,7 @@ Future<Dashboard> loadDashboard(int userId) async {
 ## `unawaited` para fire-and-forget intencional
 
 <details>
-<summary>❌ Ruim — await esquecido ou Future ignorado sem intenção clara</summary>
+<summary>❌ Ruim: await esquecido ou Future ignorado sem intenção clara</summary>
 
 ```dart
 void confirmOrder(Order order) async {
@@ -71,7 +71,7 @@ void confirmOrder(Order order) async {
 </details>
 
 <details>
-<summary>✅ Bom — unawaited declara a intenção de não esperar</summary>
+<summary>✅ Bom: unawaited declara a intenção de não esperar</summary>
 
 ```dart
 import 'dart:async' show unawaited;
@@ -87,7 +87,7 @@ void confirmOrder(Order order) async {
 ## `Completer` para integração com callbacks
 
 <details>
-<summary>❌ Ruim — callback exposto ao chamador sem Future</summary>
+<summary>❌ Ruim: callback exposto ao chamador sem Future</summary>
 
 ```dart
 void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onError) {
@@ -98,7 +98,7 @@ void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onEr
 </details>
 
 <details>
-<summary>✅ Bom — Completer wraps callback em Future</summary>
+<summary>✅ Bom: Completer wraps callback em Future</summary>
 
 ```dart
 Future<User> fetchUser(int id) {
@@ -119,7 +119,7 @@ Future<User> fetchUser(int id) {
 ## Timeout em operações externas
 
 <details>
-<summary>❌ Ruim — sem limite de tempo em chamada externa</summary>
+<summary>❌ Ruim: sem limite de tempo em chamada externa</summary>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -131,7 +131,7 @@ Future<double> fetchExchangeRate(String currency) async {
 </details>
 
 <details>
-<summary>✅ Bom — timeout cancela se exceder o prazo</summary>
+<summary>✅ Bom: timeout cancela se exceder o prazo</summary>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -148,7 +148,7 @@ Future<double> fetchExchangeRate(String currency) async {
 ## Tratamento de erro em async
 
 <details>
-<summary>❌ Ruim — catchError com tipo Any</summary>
+<summary>❌ Ruim: catchError com tipo Any</summary>
 
 ```dart
 Future<Order> findOrder(int id) {
@@ -161,7 +161,7 @@ Future<Order> findOrder(int id) {
 </details>
 
 <details>
-<summary>✅ Bom — try/catch com tipo explícito</summary>
+<summary>✅ Bom: try/catch com tipo explícito</summary>
 
 ```dart
 Future<Order?> findOrder(int id) async {

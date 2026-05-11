@@ -22,7 +22,7 @@ na presença de `Err` ou `None` e não tem lugar em código de produção.
 Nunca use `unwrap()` ou `expect()` em código de produção. Use `?` ou trate o `Result`.
 
 <details>
-<summary>❌ Ruim — unwrap que pânica em produção</summary>
+<summary>❌ Ruim: unwrap que pânica em produção</summary>
 
 ```rust
 fn load_config() -> Config {
@@ -34,7 +34,7 @@ fn load_config() -> Config {
 </details>
 
 <details>
-<summary>✅ Bom — ? propaga o erro ao chamador</summary>
+<summary>✅ Bom: ? propaga o erro ao chamador</summary>
 
 ```rust
 fn load_config() -> anyhow::Result<Config> {
@@ -56,7 +56,7 @@ fn load_config() -> anyhow::Result<Config> {
 propagar contexto legível até o ponto de log ou resposta HTTP.
 
 <details>
-<summary>❌ Ruim — Box<dyn Error> sem contexto</summary>
+<summary>❌ Ruim: Box<dyn Error> sem contexto</summary>
 
 ```rust
 fn find_order(order_id: u64) -> Result<Order, Box<dyn std::error::Error>> {
@@ -68,7 +68,7 @@ fn find_order(order_id: u64) -> Result<Order, Box<dyn std::error::Error>> {
 </details>
 
 <details>
-<summary>✅ Bom — anyhow com contexto progressivo</summary>
+<summary>✅ Bom: anyhow com contexto progressivo</summary>
 
 ```rust
 use anyhow::{Context, Result};
@@ -92,7 +92,7 @@ Use `thiserror` em bibliotecas e módulos com múltiplos tipos de falha distinto
 Permite que o chamador faça match no tipo de erro.
 
 <details>
-<summary>❌ Ruim — String como tipo de erro</summary>
+<summary>❌ Ruim: String como tipo de erro</summary>
 
 ```rust
 fn charge_customer(amount: f64) -> Result<Receipt, String> {
@@ -107,7 +107,7 @@ fn charge_customer(amount: f64) -> Result<Receipt, String> {
 </details>
 
 <details>
-<summary>✅ Bom — enum de erro tipado com thiserror</summary>
+<summary>✅ Bom: enum de erro tipado com thiserror</summary>
 
 ```rust
 use thiserror::Error;
@@ -144,7 +144,7 @@ async fn charge_customer(amount: f64) -> Result<Receipt, PaymentError> {
 Nunca ignore um erro com `let _ = ...`. Propague ou registre no log.
 
 <details>
-<summary>❌ Ruim — erro descartado silenciosamente</summary>
+<summary>❌ Ruim: erro descartado silenciosamente</summary>
 
 ```rust
 let _ = send_notification(user_id, message).await;    // falha ignorada
@@ -154,7 +154,7 @@ let _ = update_order_status(order_id, status).await;  // falha ignorada
 </details>
 
 <details>
-<summary>✅ Bom — erro registrado ou propagado</summary>
+<summary>✅ Bom: erro registrado ou propagado</summary>
 
 ```rust
 if let Err(error) = send_notification(user_id, message).await {
@@ -167,13 +167,13 @@ update_order_status(order_id, status).await
 
 </details>
 
-## Fronteira HTTP — Result para resposta
+## Fronteira HTTP: Result para resposta
 
 Converta `Result` em resposta HTTP na fronteira do handler. Nunca deixe `anyhow::Error`
 vazar para o cliente.
 
 <details>
-<summary>❌ Ruim — erro interno exposto na resposta</summary>
+<summary>❌ Ruim: erro interno exposto na resposta</summary>
 
 ```rust
 async fn get_order(path: axum::extract::Path<u64>) -> String {
@@ -185,7 +185,7 @@ async fn get_order(path: axum::extract::Path<u64>) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — Result mapeado para status HTTP na fronteira</summary>
+<summary>✅ Bom: Result mapeado para status HTTP na fronteira</summary>
 
 ```rust
 async fn get_order(

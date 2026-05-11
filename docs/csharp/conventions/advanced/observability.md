@@ -26,17 +26,17 @@ templates preservam cada argumento como propriedade estruturada no sink (Serilog
 Insights, etc.).
 
 <details>
-<summary>❌ Ruim — interpolação destrói campos, perde stack trace</summary>
+<summary>❌ Ruim: interpolação destrói campos, perde stack trace</summary>
 
 ```csharp
-_logger.LogInformation($"Order {order.Id} processed by {user.Id} — total: {order.Total}");
+_logger.LogInformation($"Order {order.Id} processed by {user.Id}: total: {order.Total}");
 _logger.LogError($"Payment failed: {ex.Message} for order {order.Id}");
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — message templates: cada argumento vira campo estruturado</summary>
+<summary>✅ Bom: message templates: cada argumento vira campo estruturado</summary>
 
 ```csharp
 _logger.LogInformation(
@@ -51,7 +51,7 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 ## Níveis de log
 
 <details>
-<summary>❌ Ruim — LogInformation para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim: LogInformation para tudo, sem distinção de severidade</summary>
 
 ```csharp
 _logger.LogInformation("Checkout started");
@@ -62,7 +62,7 @@ _logger.LogInformation("User {UserId} not found", userId);
 </details>
 
 <details>
-<summary>✅ Bom — nível correto por situação</summary>
+<summary>✅ Bom: nível correto por situação</summary>
 
 ```csharp
 _logger.LogDebug("Checkout handler invoked for {CartId}", cartId);
@@ -77,7 +77,7 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 ## O que nunca logar
 
 <details>
-<summary>❌ Ruim — PII e credenciais em log</summary>
+<summary>❌ Ruim: PII e credenciais em log</summary>
 
 ```csharp
 _logger.LogInformation("Login: {Email} {Password}", user.Email, user.Password);
@@ -88,7 +88,7 @@ _logger.LogInformation("Token issued: {Token}", token);
 </details>
 
 <details>
-<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom: IDs e referências, nunca dados sensíveis</summary>
 
 ```csharp
 _logger.LogInformation("User {UserId} authenticated", user.Id);
@@ -107,7 +107,7 @@ Um **middleware** (componente de pipeline) injeta o `correlationId` no `LogConte
 requisição automaticamente.
 
 <details>
-<summary>❌ Ruim — logs sem contexto de requisição</summary>
+<summary>❌ Ruim: logs sem contexto de requisição</summary>
 
 ```csharp
 public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, CancellationToken ct)
@@ -118,16 +118,16 @@ public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, Cancell
 
     return invoice;
 }
-// {"msg":"Processing checkout"} — impossível saber qual request originou
+// {"msg":"Processing checkout"}: impossível saber qual request originou
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — correlationId enriquecido via LogContext para toda a request</summary>
+<summary>✅ Bom: correlationId enriquecido via LogContext para toda a request</summary>
 
 ```csharp
-// Program.cs — middleware que enriquece o contexto de log
+// Program.cs: middleware que enriquece o contexto de log
 app.Use(async (httpContext, next) =>
 {
     var correlationId = httpContext.Request.Headers["X-Correlation-Id"].FirstOrDefault()
@@ -139,7 +139,7 @@ app.Use(async (httpContext, next) =>
         await next();
 });
 
-// handler — CorrelationId incluído automaticamente em todos os logs da request
+// handler: CorrelationId incluído automaticamente em todos os logs da request
 public async Task<Invoice> ProcessCheckoutAsync(CheckoutRequest request, CancellationToken ct)
 {
     _logger.LogInformation("Checkout started for {CartId}", request.CartId);

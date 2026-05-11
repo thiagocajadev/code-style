@@ -21,7 +21,7 @@ a identidade importa ou o ciclo de vida é gerenciado externamente.
 ## Struct vs Class
 
 <details>
-<summary>❌ Ruim — classe onde struct é suficiente</summary>
+<summary>❌ Ruim: classe onde struct é suficiente</summary>
 
 ```swift
 class Point {
@@ -36,13 +36,13 @@ class Point {
 
 let a = Point(x: 1, y: 2)
 let b = a
-b.x = 99   // muta 'a' também — referência compartilhada
+b.x = 99   // muta 'a' também: referência compartilhada
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — struct: cópia independente, sem surpresas</summary>
+<summary>✅ Bom: struct: cópia independente, sem surpresas</summary>
 
 ```swift
 struct Point {
@@ -52,7 +52,7 @@ struct Point {
 
 let a = Point(x: 1, y: 2)
 var b = a
-b.x = 99   // 'a' não muda — cópia independente
+b.x = 99   // 'a' não muda: cópia independente
 ```
 
 </details>
@@ -60,7 +60,7 @@ b.x = 99   // 'a' não muda — cópia independente
 ## Enum com associated values para estados
 
 <details>
-<summary>❌ Ruim — Bool + optional para modelar estado</summary>
+<summary>❌ Ruim: Bool + optional para modelar estado</summary>
 
 ```swift
 struct LoadingState {
@@ -73,7 +73,7 @@ struct LoadingState {
 </details>
 
 <details>
-<summary>✅ Bom — enum exaustivo com associated values</summary>
+<summary>✅ Bom: enum exaustivo com associated values</summary>
 
 ```swift
 enum OrdersState {
@@ -82,7 +82,7 @@ enum OrdersState {
     case failed(String)
 }
 
-// switch exaustivo — novo case é erro de compilação
+// switch exaustivo: novo case é erro de compilação
 switch state {
 case .loading: showSpinner()
 case .loaded(let orders): renderList(orders)
@@ -95,7 +95,7 @@ case .failed(let message): showError(message)
 ## Protocol para abstração
 
 <details>
-<summary>❌ Ruim — herança de classe para compartilhar comportamento</summary>
+<summary>❌ Ruim: herança de classe para compartilhar comportamento</summary>
 
 ```swift
 class BaseRepository {
@@ -110,7 +110,7 @@ class UserRepository: BaseRepository { ... }
 </details>
 
 <details>
-<summary>✅ Bom — protocol define contrato; struct implementa sem herança</summary>
+<summary>✅ Bom: protocol define contrato; struct implementa sem herança</summary>
 
 ```swift
 protocol OrderRepository {
@@ -131,7 +131,7 @@ struct SQLOrderRepository: OrderRepository {
 ## Actor para estado compartilhado
 
 <details>
-<summary>❌ Ruim — classe com estado mutável acessado de múltiplas tasks</summary>
+<summary>❌ Ruim: classe com estado mutável acessado de múltiplas tasks</summary>
 
 ```swift
 class Cache {
@@ -150,7 +150,7 @@ class Cache {
 </details>
 
 <details>
-<summary>✅ Bom — actor serializa acessos automaticamente</summary>
+<summary>✅ Bom: actor serializa acessos automaticamente</summary>
 
 ```swift
 actor Cache {
@@ -173,7 +173,7 @@ actor Cache {
 ## Sendable para transferência entre tasks
 
 <details>
-<summary>❌ Ruim — tipo não-Sendable passado entre tasks (warning no Swift 6)</summary>
+<summary>❌ Ruim: tipo não-Sendable passado entre tasks (warning no Swift 6)</summary>
 
 ```swift
 class OrderRequest {
@@ -189,7 +189,7 @@ Task {
 </details>
 
 <details>
-<summary>✅ Bom — struct imutável é automaticamente Sendable</summary>
+<summary>✅ Bom: struct imutável é automaticamente Sendable</summary>
 
 ```swift
 struct OrderRequest: Sendable {

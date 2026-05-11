@@ -15,25 +15,25 @@ contexto de diagnóstico mapeado) propaga identificadores de correlação automa
 | **SLF4J** (Simple Logging Facade for Java) | abstração de logging; a implementação (Logback, Log4j2) é trocável |
 | **MDC** (Mapped Diagnostic Context) | mapa de contexto na thread atual; propagado para todos os logs do request |
 | **structured logging** (logging estruturado) | log em JSON com campos fixos; indexável por ferramentas de observabilidade |
-| `TRACE` / `DEBUG` / `INFO` / `WARN` / `ERROR` | níveis de severidade — cada um com critério de uso |
+| `TRACE` / `DEBUG` / `INFO` / `WARN` / `ERROR` | níveis de severidade; cada um com critério de uso |
 
 ## Log sem contexto
 
 <details>
-<summary>❌ Ruim — string concatenada sem campos estruturados</summary>
+<summary>❌ Ruim: string concatenada sem campos estruturados</summary>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
     logger.info("Processing order $orderId for user $userId")
     // ...
-    logger.info("Order done")   // sem id — impossível correlacionar
+    logger.info("Order done")   // sem id: impossível correlacionar
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — campos nomeados com contexto completo</summary>
+<summary>✅ Bom: campos nomeados com contexto completo</summary>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
@@ -48,7 +48,7 @@ fun processOrder(orderId: Long, userId: Long) {
 ## MDC para correlação de request
 
 <details>
-<summary>❌ Ruim — correlationId passado manualmente em cada chamada</summary>
+<summary>❌ Ruim: correlationId passado manualmente em cada chamada</summary>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -61,7 +61,7 @@ fun handleRequest(requestId: String, userId: Long) {
 </details>
 
 <details>
-<summary>✅ Bom — MDC propagado automaticamente em todos os logs do request</summary>
+<summary>✅ Bom: MDC propagado automaticamente em todos os logs do request</summary>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -84,14 +84,14 @@ fun handleRequest(requestId: String, userId: Long) {
 
 | Nível | Quando usar |
 | --- | --- |
-| `TRACE` | rastreamento de execução linha a linha — apenas em desenvolvimento local |
-| `DEBUG` | estado interno útil para diagnóstico — desabilitado em produção |
+| `TRACE` | rastreamento de execução linha a linha; apenas em desenvolvimento local |
+| `DEBUG` | estado interno útil para diagnóstico; desabilitado em produção |
 | `INFO` | eventos de negócio relevantes: pedido criado, pagamento confirmado |
 | `WARN` | situação inesperada que não impede o fluxo: retry, fallback, degradação |
 | `ERROR` | falha que impede o fluxo e requer atenção: exceção não tratada, I/O irrecuperável |
 
 <details>
-<summary>❌ Ruim — ERROR para situação esperada; INFO para exceção</summary>
+<summary>❌ Ruim: ERROR para situação esperada; INFO para exceção</summary>
 
 ```kotlin
 fun findOrder(id: Long): Order? {
@@ -114,7 +114,7 @@ fun chargeCard(cardId: Long) {
 </details>
 
 <details>
-<summary>✅ Bom — nível proporcional à severidade</summary>
+<summary>✅ Bom: nível proporcional à severidade</summary>
 
 ```kotlin
 fun findOrder(id: Long): Order? {

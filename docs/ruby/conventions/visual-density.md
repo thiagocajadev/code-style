@@ -3,7 +3,7 @@
 **Visual density** (densidade visual) é a quantidade de informação por bloco
 visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
 quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco — cada grupo conta uma
+semântica e separar grupos com linha em branco. Cada grupo conta uma
 micro-história.
 
 Os mesmos princípios de
@@ -18,14 +18,14 @@ Ruby idiomático (retorno implícito, postfix `if`/`unless`, blocks).
 | **semantic group** (grupo semântico)             | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (validar, calcular, persistir)                                           |
 | **blank line** (linha em branco)                 | Separador entre grupos semânticos; substitui comentário de seção                                                                       |
 | **tight pair** (par tight)                       | Duas linhas com relação direta (declaração + uso, atribuição + retorno) sem blank entre elas; o respiro vem antes ou depois do par     |
-| **atomic trio** (trio atômico)                   | Três atribuições simples consecutivas e homogêneas; mantidas juntas sem blank — preferir ao 2+1 que cria órfão                         |
+| **atomic trio** (trio atômico)                   | Três atribuições simples consecutivas e homogêneas; mantidas juntas sem blank, preferir ao 2+1 que cria órfão                          |
 | **semantic pair** (par semântico encadeado)      | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta                 |
 | **single-line orphan** (órfão de 1)              | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2                               |
 | **explaining return** (retorno explicativo)      | Caso particular de `tight pair`: `x = …` single-line + `x` (última expressão, retorno implícito) sem blank entre eles                  |
 | **multi-line block** (bloco multi-linha)         | Hash literal, array literal, `do |x| … end` ou statement quebrado em várias linhas; pede blank depois para isolar o bloco              |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta — blank antes da montagem                           |
+| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta, com blank antes da montagem                        |
 | **boundary** (limite)                            | Linha que separa camadas (controller ↔ service, service ↔ repository); merece linha em branco antes                                    |
-| **column alignment** (alinhamento de coluna)     | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão — frágil a rename, gera diff ruidoso                                  |
+| **column alignment** (alinhamento de coluna)     | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão, frágil a rename e diff ruidoso                                       |
 
 ## A regra central
 
@@ -33,7 +33,7 @@ Ruby idiomático (retorno implícito, postfix `if`/`unless`, blocks).
 três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Ruim — denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: denso demais, todos os passos colados</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -53,7 +53,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -80,14 +80,14 @@ end
 Uma atribuição nomeada acima do retorno implícito explica o valor retornado.
 Sempre que a linha imediatamente acima for essa atribuição (single-line) e a
 última expressão for exatamente essa variável, as duas formam par de 2 linhas
-sem blank — não importa quantos passos haja acima. A linha em branco separa o
+sem blank, não importa quantos passos haja acima. A linha em branco separa o
 par do que vem antes, não fragmenta o par.
 
 Em Ruby o idiomático é a última expressão sem `return`. O par é
 `variable = ...` + `variable`.
 
 <details>
-<summary>❌ Ruim — blank fragmenta o par</summary>
+<summary>❌ Ruim: blank fragmenta o par</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -102,7 +102,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — par tight</summary>
+<summary>✅ Bom: par tight</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -119,7 +119,7 @@ end
 
 A regra é simples: a última expressão é **tight** com a linha imediatamente
 acima **somente quando essa linha é a atribuição que nomeia o valor retornado**
-(Explaining Return) — e essa atribuição está em uma única linha.
+(Explaining Return), e essa atribuição está em uma única linha.
 
 Em todos os outros casos, vai blank antes da última expressão:
 
@@ -129,7 +129,7 @@ Em todos os outros casos, vai blank antes da última expressão:
 - valor retornado foi criado **vários passos antes**, sem par direto.
 
 <details>
-<summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -150,12 +150,12 @@ end
 
 `formatter` multi-linha exige blank depois de si, mas o blank foi posto antes
 da última expressão. `formatted_date` (atribuição) e `formatted_date` (retorno
-implícito) formam Explaining Return tight — não devem ser separados.
+implícito) formam Explaining Return tight, e não devem ser separados.
 
 </details>
 
 <details>
-<summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -180,7 +180,7 @@ O blank fica **depois** do `formatter` multi-linha. O par
 </details>
 
 <details>
-<summary>✅ Bom — return com blank quando construído a partir de hash multi-linha</summary>
+<summary>✅ Bom: return com blank quando construído a partir de hash multi-linha</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -215,18 +215,18 @@ end
 ## Declaração + guarda = 1 grupo
 
 Uma variável seguida do seu `if`/`unless` de guarda formam par semântico
-**quando o guarda cabe em uma única linha** — `return if x.nil?`,
+**quando o guarda cabe em uma única linha**: `return if x.nil?`,
 `raise "..." if x.nil?`. Nesse caso a linha em branco vem **depois** do par,
 nunca entre eles.
 
 Quando o guarda é escrito em **bloco multi-linha** (`if x.nil?\n  ...\nend`,
 qualquer quantidade de linhas físicas, mesmo com uma única instrução dentro), o
-`if` vira fase própria — o bloco já ocupa peso visual próprio. Aplica-se a
-regra de **multi-linha pede respiro**: linha em branco **antes** do bloco. O
-critério é visual, não semântico.
+`if` vira fase própria. O bloco já ocupa peso visual próprio. Aplica-se a regra
+de **multi-linha pede respiro**: linha em branco **antes** do bloco. O critério
+é visual, não semântico.
 
 <details>
-<summary>❌ Ruim — variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: variável solta do seu guarda inline</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -243,7 +243,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -260,7 +260,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -281,7 +281,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -298,8 +298,8 @@ def retry_request(attempt, request_fn)
 end
 ```
 
-O bloco ocupa três linhas físicas — peso visual próprio. Inline ficaria tight,
-mas em bloco, blank antes.
+O bloco ocupa três linhas físicas, com peso visual próprio. Inline ficaria
+tight, mas em bloco, blank antes.
 
 </details>
 
@@ -310,7 +310,7 @@ Três atribuições simples consecutivas formam grupo coeso. Partir em 2+1 deixa
 a partir de quatro.
 
 <details>
-<summary>❌ Ruim — órfão entre blanks</summary>
+<summary>❌ Ruim: órfão entre blanks</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -324,7 +324,7 @@ ONE_DAY_SECONDS = 86_400
 </details>
 
 <details>
-<summary>✅ Bom — trio tight</summary>
+<summary>✅ Bom: trio tight</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -337,7 +337,7 @@ ONE_DAY_SECONDS = 86_400
 </details>
 
 <details>
-<summary>✅ Bom — 4 atomics viram 2+2</summary>
+<summary>✅ Bom: 4 atomics viram 2+2</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -358,7 +358,7 @@ duas formam par. A quebra natural fica antes do par, não entre ele e sua
 dependência direta.
 
 <details>
-<summary>❌ Ruim — dependência direta partida</summary>
+<summary>❌ Ruim: dependência direta partida</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -377,7 +377,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — par semântico tight</summary>
+<summary>✅ Bom: par semântico tight</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -398,7 +398,7 @@ end
 
 Quando há **dois ou mais fragmentos** preparados e uma linha final que
 **consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta — blank antes dela. É o caso clássico "preparar partes →
+como fase distinta, com blank antes dela. É o caso clássico "preparar partes →
 montar resultado", diferente do par semântico encadeado (onde a última depende
 **diretamente** da penúltima e por isso fica tight).
 
@@ -410,7 +410,7 @@ Heurística rápida:
   diferentes? → fragmentos → montagem, blank antes.
 
 <details>
-<summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -424,13 +424,13 @@ end
 ```
 
 `delivery_message` consome `full_name` *e* `address` *e* `order.id` *e*
-`order.delivery_days`. Não é par direto com `address` — é a fase de montagem.
+`order.delivery_days`. Não é par direto com `address`: é a fase de montagem.
 Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -450,7 +450,7 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 </details>
 
 <details>
-<summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: contraste, par semântico encadeado (última depende só da penúltima)</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -474,7 +474,7 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
 são todas atômicas homogêneas.
 
 <details>
-<summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -489,7 +489,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -510,7 +510,7 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 deixar cada fase visível.
 
 <details>
-<summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -527,7 +527,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — fases explícitas</summary>
+<summary>✅ Bom: fases explícitas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -551,7 +551,7 @@ O `expect` é fase distinta. A linha em branco antes dele separa o que está
 sendo verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: expect colado ao setup, fases invisíveis</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -567,7 +567,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — expect separado, assertion como fase própria</summary>
+<summary>✅ Bom: expect separado, assertion como fase própria</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -591,7 +591,7 @@ branco **depois** dele para isolar o bloco grande do próximo passo. Sem
 respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
-<summary>❌ Ruim — hash multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: hash multi-linha colado ao próximo statement</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -611,7 +611,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — blank depois do hash isola o bloco</summary>
+<summary>✅ Bom: blank depois do hash isola o bloco</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -632,7 +632,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — block multi-linha pede blank depois</summary>
+<summary>✅ Bom: block multi-linha pede blank depois</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -656,10 +656,10 @@ não distingue onde um bloco termina e o outro começa. Sempre insira blank
 entre eles.
 
 **Exceção:** guardas de uma linha (early returns curtos com postfix `if`/`unless`)
-formam trio homogêneo e ficam tight — a regra do trio atômico se aplica.
+formam trio homogêneo e ficam tight, pela regra do trio atômico.
 
 <details>
-<summary>❌ Ruim — dois blocos multi-linha colados</summary>
+<summary>❌ Ruim: dois blocos multi-linha colados</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -679,7 +679,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — blank entre os blocos</summary>
+<summary>✅ Bom: blank entre os blocos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -700,7 +700,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -723,7 +723,7 @@ Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempr
 diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -737,7 +737,7 @@ last_login_at  = Time.now.utc
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem padding</summary>
+<summary>✅ Bom: espaço único, sem padding</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -756,7 +756,7 @@ Uma string longa colada em um retorno esconde as partes que a compõem. Extraia
 fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: string imensa inline, sem semântica nas partes</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -769,7 +769,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -791,7 +791,7 @@ Separe métodos públicos entre si com uma linha em branco. Separe a seção
 `private` com uma linha em branco acima e abaixo.
 
 <details>
-<summary>❌ Ruim — métodos colados, private sem separação</summary>
+<summary>❌ Ruim: métodos colados, private sem separação</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -817,7 +817,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — métodos separados, private com espaçamento correto</summary>
+<summary>✅ Bom: métodos separados, private com espaçamento correto</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -852,7 +852,7 @@ Agrupe `attr_reader`, `attr_writer`, `attr_accessor` em blocos por acesso,
 separados do `initialize` por uma linha em branco.
 
 <details>
-<summary>❌ Ruim — atributos misturados sem padrão</summary>
+<summary>❌ Ruim: atributos misturados sem padrão</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -870,7 +870,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — atributos agrupados acima do initialize</summary>
+<summary>✅ Bom: atributos agrupados acima do initialize</summary>
 
 ```ruby
 # frozen_string_literal: true

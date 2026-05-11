@@ -2,14 +2,14 @@
 
 > Escopo: Kotlin 2.2.
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só.
+Nomes bons tornam comentários desnecessários. Quando o nome carrega a intenção, a leitura flui sem precisar abrir o corpo da função.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **camelCase** (camelo minúsculo) | funções, métodos, variáveis e parâmetros — primeira letra minúscula |
-| **PascalCase** (camelo maiúsculo) | classes, interfaces, enums, objects e type aliases — primeira letra maiúscula |
+| **camelCase** (camelo minúsculo) | funções, métodos, variáveis e parâmetros; primeira letra minúscula |
+| **PascalCase** (camelo maiúsculo) | classes, interfaces, enums, objects e type aliases; primeira letra maiúscula |
 | **SCREAMING_SNAKE_CASE** (maiúsculas com sublinhado) | `const val` em top-level ou `companion object` |
 | **file naming** (nome de arquivo) | nome do arquivo reflete a classe principal em PascalCase (`OrderService.kt`) |
 | **package naming** (nome de pacote) | minúsculas, sem underscore, hierárquico por domínio (`com.acme.order`) |
@@ -50,7 +50,7 @@ fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Kotlin</summary>
+<summary>❌ Ruim: identificadores em português ficam desajeitados no idioma Kotlin</summary>
 
 ```kotlin
 val nomeDoUsuario = "Alice"
@@ -63,7 +63,7 @@ fun buscaEnderecoDoCliente(id: Long): Address? { ... }
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```kotlin
 val userName = "Alice"
@@ -86,7 +86,7 @@ fun findCustomerAddress(customerId: Long): Address? { ... }
 | Pacotes | `lowercase` sem underscores | `com.acme.order` |
 
 <details>
-<summary>❌ Ruim — case errado para o contexto</summary>
+<summary>❌ Ruim: case errado para o contexto</summary>
 
 ```kotlin
 val MAX_retries = 3              // mistura de case
@@ -99,7 +99,7 @@ val UserName = "Alice"           // var com PascalCase
 </details>
 
 <details>
-<summary>✅ Bom — convenções Kotlin respeitadas</summary>
+<summary>✅ Bom: convenções Kotlin respeitadas</summary>
 
 ```kotlin
 const val MAX_RETRIES = 3
@@ -118,7 +118,7 @@ val userName = "Alice"
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Ruim — ordem invertida</summary>
+<summary>❌ Ruim: ordem invertida</summary>
 
 ```kotlin
 fun getUserProfile(userId: Long): UserProfile { ... }   // correto, mas mostrando o anti-padrão abaixo:
@@ -131,7 +131,7 @@ fun totalCalculateInvoice(invoiceId: Long): Double { ... }
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural</summary>
+<summary>✅ Bom: ordem natural</summary>
 
 ```kotlin
 fun getUserProfile(userId: Long): UserProfile { ... }
@@ -144,7 +144,7 @@ fun calculateInvoiceTotal(invoiceId: Long): Double { ... }
 ## Verbos genéricos
 
 <details>
-<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim: handle, process, manage não dizem nada</summary>
 
 ```kotlin
 fun handle(data: Any) { }
@@ -156,7 +156,7 @@ fun doStuff(x: Any) { }
 </details>
 
 <details>
-<summary>✅ Bom — verbo de intenção</summary>
+<summary>✅ Bom: verbo de intenção</summary>
 
 ```kotlin
 fun validatePayment(payment: Payment): Result<Unit> { ... }
@@ -170,7 +170,7 @@ fun applySeasonalDiscount(order: Order): Order { ... }
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```kotlin
 val loading = true
@@ -181,7 +181,7 @@ val valid = email.contains("@")
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```kotlin
 val isActive = user.status == "active"
@@ -198,7 +198,7 @@ val shouldRetry = attempt < MAX_RETRIES
 O nome reflete a intenção de negócio, não o detalhe técnico de onde a operação acontece.
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
 
 ```kotlin
 fun callStripe(amount: Double): Result<Unit> { ... }
@@ -210,7 +210,7 @@ fun saveToS3(file: ByteArray) { ... }
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```kotlin
 fun chargeCustomer(amount: Double): Result<Unit> { ... }

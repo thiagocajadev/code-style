@@ -43,25 +43,25 @@ ou impede recursos interativos.
 | Interactive Auto        | `@rendermode InteractiveAuto`         | Carga inicial rápida com fallback para WASM em cache |
 
 <details>
-<summary>❌ Ruim — rendermode global no App.razor força SignalR em páginas estáticas</summary>
+<summary>❌ Ruim: rendermode global no App.razor força SignalR em páginas estáticas</summary>
 
 ```razor
-@* App.razor — força Interactive Server em TUDO, incluindo páginas sem interatividade *@
+@* App.razor: força Interactive Server em TUDO, incluindo páginas sem interatividade *@
 <Routes @rendermode="InteractiveServer" />
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Static SSR como padrão; rendermode declarado por componente</summary>
+<summary>✅ Bom: Static SSR como padrão; rendermode declarado por componente</summary>
 
 ```razor
-@* App.razor — sem rendermode global; cada página declara o próprio *@
+@* App.razor: sem rendermode global; cada página declara o próprio *@
 <Routes />
 ```
 
 ```razor
-@* Pages/OrderDashboard.razor — interativo porque precisa de estado em tempo real *@
+@* Pages/OrderDashboard.razor: interativo porque precisa de estado em tempo real *@
 @rendermode InteractiveServer
 @page "/orders"
 
@@ -87,7 +87,7 @@ a lógica fica no bloco `@code`. Cálculos e transformações nunca ficam inline
 properties no `@code` mantêm o template legível.
 
 <details>
-<summary>❌ Ruim — cálculo e ternário inline na marcação</summary>
+<summary>❌ Ruim: cálculo e ternário inline na marcação</summary>
 
 ```razor
 @* ProductCard.razor *@
@@ -105,7 +105,7 @@ properties no `@code` mantêm o template legível.
 </details>
 
 <details>
-<summary>✅ Bom — computed properties no @code, marcação sem lógica</summary>
+<summary>✅ Bom: computed properties no @code, marcação sem lógica</summary>
 
 ```razor
 @* ProductCard.razor *@
@@ -134,7 +134,7 @@ properties no `@code` mantêm o template legível.
 notifique o pai sobre eventos sem acoplar os dois componentes.
 
 <details>
-<summary>❌ Ruim — filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
+<summary>❌ Ruim: filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
 
 ```razor
 @* QuantitySelector.razor *@
@@ -153,7 +153,7 @@ notifique o pai sobre eventos sem acoplar os dois componentes.
 </details>
 
 <details>
-<summary>✅ Bom — EventCallback notifica o pai; filho permanece sem efeitos colaterais</summary>
+<summary>✅ Bom: EventCallback notifica o pai; filho permanece sem efeitos colaterais</summary>
 
 ```razor
 @* QuantitySelector.razor *@
@@ -191,7 +191,7 @@ na prerenderização e outra após a hidratação. O atributo `[PersistentState]
 o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 
 <details>
-<summary>❌ Ruim — chamada duplicada ao repositório: prerenderização e hidratação</summary>
+<summary>❌ Ruim: chamada duplicada ao repositório: prerenderização e hidratação</summary>
 
 ```razor
 @* OrderList.razor *@
@@ -210,7 +210,7 @@ o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 </details>
 
 <details>
-<summary>✅ Bom — [PersistentState] serializa o estado e evita chamada duplicada</summary>
+<summary>✅ Bom: [PersistentState] serializa o estado e evita chamada duplicada</summary>
 
 ```razor
 @* OrderList.razor *@
@@ -239,7 +239,7 @@ anotações do model (`[Required]`, `[Range]`) ao `EditContext`. `ValidationMess
 por campo; `ValidationSummary` exibe todos os erros consolidados.
 
 <details>
-<summary>❌ Ruim — formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
+<summary>❌ Ruim: formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
 
 ```razor
 <form @onsubmit="SubmitAsync">
@@ -264,7 +264,7 @@ por campo; `ValidationSummary` exibe todos os erros consolidados.
 </details>
 
 <details>
-<summary>✅ Bom — EditForm com DataAnnotationsValidator; submissão bloqueada enquanto inválida</summary>
+<summary>✅ Bom: EditForm com DataAnnotationsValidator; submissão bloqueada enquanto inválida</summary>
 
 ```razor
 <EditForm Model="orderInput" OnValidSubmit="SubmitAsync">
@@ -322,7 +322,7 @@ devem ter o tipo correto declarado na constraint da rota. `NavigationManager` na
 programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 <details>
-<summary>❌ Ruim — NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
+<summary>❌ Ruim: NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
 
 ```razor
 @page "/orders/{id}"
@@ -338,7 +338,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 </details>
 
 <details>
-<summary>✅ Bom — rota tipada, navegação em método separado</summary>
+<summary>✅ Bom: rota tipada, navegação em método separado</summary>
 
 ```razor
 @page "/orders/{orderId:guid}"
@@ -368,7 +368,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 `OnAfterRenderAsync` com o guard `firstRender` para não repetir a chamada a cada re-render.
 
 <details>
-<summary>❌ Ruim — interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>
+<summary>❌ Ruim: interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>
 
 ```razor
 @inject IJSRuntime jsRuntime
@@ -384,7 +384,7 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 </details>
 
 <details>
-<summary>✅ Bom — interop em OnAfterRenderAsync com guard firstRender</summary>
+<summary>✅ Bom: interop em OnAfterRenderAsync com guard firstRender</summary>
 
 ```razor
 @inject IJSRuntime jsRuntime

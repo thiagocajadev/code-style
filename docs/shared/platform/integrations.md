@@ -2,13 +2,13 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Configuração de ferramentas, **API** (Application Programming Interface, Interface de Programação de Aplicações) de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns — dos modernos aos legados.
+Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Configuração de ferramentas, **API** (Application Programming Interface, Interface de Programação de Aplicações) de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns, dos modernos aos legados.
 
 ## Conceitos fundamentais
 
 | Conceito                                                                                    | O que é                                                                                                                 |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **GraphQL** (Graph Query Language, linguagem de consulta em grafo)                          | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer — não é banco de dados                   |
+| **GraphQL** (Graph Query Language, linguagem de consulta em grafo)                          | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer. Não é banco de dados                    |
 | **TOML** (Tom's Obvious, Minimal Language)                                                  | Formato de configuração legível com semântica clara e tipos nativos; comum em Rust, Python e Go                         |
 | **YAML** (YAML Ain't Markup Language, YAML Não é uma Linguagem de Marcação)                 | Formato hierárquico baseado em indentação; dominante em CI/CD, Kubernetes e automação                                   |
 | **SOAP** (Simple Object Access Protocol, Protocolo Simples de Acesso a Objetos)             | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros                   |
@@ -43,10 +43,10 @@ Pedido
 ```
 
 **GraphQL** tira o nome daí. Em vez de expor recursos isolados como `/orders` e
-`/customers`, expõe o grafo inteiro — e o cliente define o caminho que quer
+`/customers`, expõe o grafo inteiro, e o cliente define o caminho que quer
 percorrer em uma única consulta.
 
-**GraphQL** é uma linguagem de consulta para APIs — não um banco de dados. O
+**GraphQL** é uma linguagem de consulta para APIs, não um banco de dados. O
 cliente define exatamente quais campos quer; o servidor responde apenas com
 esses campos, eliminando **over-fetching** (busca excessiva) e
 **under-fetching** (busca insuficiente).
@@ -81,7 +81,7 @@ query {
 ### Consulta com variável
 
 O risco mais comum em queries maiores é o over-fetching combinado com filtragem
-no cliente — buscar tudo e encontrar um. Variáveis no servidor resolvem os dois
+no cliente: buscar tudo e encontrar um. Variáveis no servidor resolvem os dois
 problemas ao mesmo tempo.
 
 Os exemplos abaixo usam a [Countries API](https://countries.trevorblades.com/),
@@ -93,7 +93,7 @@ uma API GraphQL pública.
 representa uma relação entre eles.</sub>
 
 <details>
-<summary>❌ Ruim — busca todos os países, filtra no cliente, query inline</summary>
+<summary>❌ Ruim: busca todos os países, filtra no cliente, query inline</summary>
 
 ```js
 const response = await fetch("https://countries.trevorblades.com/", {
@@ -111,7 +111,7 @@ const country = json.data.countries.find((c) => c.code === "BR");
 </details>
 
 <details>
-<summary>✅ Bom — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
+<summary>✅ Bom: variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
 
 ```js
 const GET_COUNTRY = `
@@ -160,7 +160,7 @@ async function fetchCountry(code) {
 ## TOML
 
 **TOML** é preferível a **YAML** quando a configuração tem tipagem explícita ou
-estruturas planas. Erros de indentação não quebram o arquivo — a sintaxe usa `=`
+estruturas planas. Erros de indentação não quebram o arquivo: a sintaxe usa `=`
 e `[seção]`, não espaços como delimitadores.
 
 ```toml
@@ -201,7 +201,7 @@ services:
 **Armadilhas comuns:**
 
 - Valores `yes`, `no`, `on`, `off`, `true`, `false` são interpretados como
-  boolean sem aspas — usar aspas se o valor for string
+  boolean sem aspas; usar aspas se o valor for string
 - Chaves duplicadas no mesmo nível são aceitas pelo parser; a última sobrescreve
   sem erro
 - Tabs não são aceitos como indentação; usar sempre espaços
@@ -215,7 +215,7 @@ integração fiscal, bancária, industrial e de hardware periférico.
 
 ### XML e WebServices SOAP
 
-WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros (**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A comunicação ocorre via **SOAP Envelope** (envelope SOAP) — um **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura fixa — e o contrato do serviço é descrito em um arquivo **WSDL**.
+WebServices **SOAP** são o padrão de integração em sistemas fiscais brasileiros (**NF-e**, **CT-e**, **NFS-e**) e em sistemas legados corporativos. A comunicação ocorre via **SOAP Envelope** (envelope SOAP), um **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) com estrutura fixa. O contrato do serviço é descrito em um arquivo **WSDL**.
 
 O erro mais comum é navegar o XML sem levar em conta os namespaces. Um documento
 NF-e tem namespace `http://www.portalfiscal.inf.br/nfe`; ignorá-lo faz toda
@@ -223,7 +223,7 @@ navegação retornar nulo silenciosamente. Em Node.js, a biblioteca
 `@xmldom/xmldom` fornece `DOMParser` com suporte a namespaces.
 
 <details>
-<summary>❌ Ruim: getElementsByTagName ignora namespace — retorna null sem erro</summary>
+<summary>❌ Ruim: getElementsByTagName ignora namespace, retorna null sem erro</summary>
 
 ```js
 import { DOMParser } from "@xmldom/xmldom";
@@ -277,12 +277,12 @@ function extractInvoiceNumber(xml) {
 
 ---
 
-### Arquivos de Texto — TXT, CSV, Fixed-width
+### Arquivos de Texto: TXT, CSV, Fixed-width
 
 Integrações bancárias (**CNAB**), obrigações fiscais (**SPED**), exportações de
 ERP e transferências entre sistemas legados frequentemente usam arquivos texto
 com layout fixo ou delimitado. O maior risco é espalhar posições e índices
-mágicos pelo código — quando o layout muda, a quebra é silenciosa.
+mágicos pelo código. Quando o layout muda, a quebra é silenciosa.
 
 #### CSV e pipe-delimited
 
@@ -290,7 +290,7 @@ Arquivos **SPED** usam pipe como separador. Cada linha começa com o tipo de
 registro (`|0000|`, `|C100|`).
 
 <details>
-<summary>❌ Ruim: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
+<summary>❌ Ruim: índices mágicos espalhados, quebra silenciosamente se o layout mudar</summary>
 
 ```js
 const fields = line.replace(/^\||\|$/g, "").split("|");
@@ -322,14 +322,14 @@ function parseRecord0000(line) {
 
 </details>
 
-#### Fixed-width — CNAB
+#### Fixed-width: CNAB
 
 Arquivos **CNAB** (240 ou 400 caracteres por linha) definem cada campo por
 posição e comprimento. Números sem nome espalhados pelo código tornam qualquer
 manutenção de layout um risco.
 
 <details>
-<summary>❌ Ruim: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
+<summary>❌ Ruim: posições hardcoded inline, impossível auditar contra o manual do banco</summary>
 
 ```js
 const bankCode = line.slice(0, 3);
@@ -341,7 +341,7 @@ const companyRegistrationNumber = line.slice(18, 32); // CNPJ
 </details>
 
 <details>
-<summary>✅ Bom: layout como objeto, helper nomeado — posição e comprimento declarados juntos</summary>
+<summary>✅ Bom: layout como objeto, helper nomeado, posição e comprimento declarados juntos</summary>
 
 ```js
 const CNAB240_HEADER = {
@@ -371,21 +371,21 @@ const companyRegistrationNumber = extractField(
 
 **Boas práticas para arquivos texto:**
 
-- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO** (International Organization for Standardization, Organização Internacional de Normalização)-8859-1 (Latin-1) — em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
+- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO** (International Organization for Standardization, Organização Internacional de Normalização)-8859-1 (Latin-1). Em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
 - Verificar total de linhas e somatório de valores contra os registros de
   trailer antes de importar
-- Nunca processar arquivo parcialmente — ler tudo, validar estrutura, só então
+- Nunca processar arquivo parcialmente; ler tudo, validar estrutura, só então
   persistir
 - Guardar o arquivo original para reprocessamento; falhas de layout são comuns
   em integrações bancárias e fiscais
 
 ---
 
-### Impressoras Térmicas — ZPL
+### Impressoras Térmicas: ZPL
 
 Impressoras Zebra usam **ZPL** como protocolo nativo. Cada etiqueta é um
 programa ZPL enviado como texto puro via porta serial, TCP/IP (porta 9100) ou
-USB. Para envio TCP, basta abrir um socket para `ip:9100` e escrever a string —
+USB. Para envio TCP, basta abrir um socket para `ip:9100` e escrever a string;
 nenhum driver especial necessário.
 
 Estrutura mínima de uma etiqueta ZPL:
@@ -399,7 +399,7 @@ Estrutura mínima de uma etiqueta ZPL:
 ```
 
 <details>
-<summary>❌ Ruim: ZPL montado por concatenação — posições e campos difíceis de manter</summary>
+<summary>❌ Ruim: ZPL montado por concatenação, posições e campos difíceis de manter</summary>
 
 ```js
 const zpl =
@@ -450,7 +450,7 @@ port.write(label);
 | -------------- | ------------------------------------------------ |
 | `^XA` / `^XZ`  | Início e fim do label                            |
 | `^FO x,y`      | Posição de origem do próximo campo               |
-| `^A0N,h,w`     | Fonte escalável — altura e largura em pontos     |
+| `^A0N,h,w`     | Fonte escalável: altura e largura em pontos      |
 | `^FD…^FS`      | Conteúdo do campo (Field Data / Field Separator) |
 | `^BCN,h,Y,N,N` | Código de barras Code 128                        |
 | `^BQN,2,10`    | QR Code                                          |
@@ -458,15 +458,15 @@ port.write(label);
 
 ---
 
-### Porta Serial — RS-232
+### Porta Serial: RS-232
 
 Balanças, catracas, leitores de código de barras antigos e equipamentos
 industriais frequentemente se comunicam via porta serial **RS-232**. Em Node.js,
-o pacote `serialport` expõe a leitura via stream de eventos — sem timeout
+o pacote `serialport` expõe a leitura via stream de eventos. Sem timeout
 configurado, o processo aguarda indefinidamente se o equipamento não responder.
 
 <details>
-<summary>❌ Ruim: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
+<summary>❌ Ruim: sem timeout, aguarda indefinidamente, sem tratamento de erro</summary>
 
 ```js
 import { SerialPort } from "serialport";
@@ -535,8 +535,8 @@ function readWeight(path = "COM3") {
 
 **Boas práticas:**
 
-- Fechar a porta (`port.close()`) em todos os caminhos de saída — resolve,
-  reject e erro; porta não fechada bloqueia reconexão
+- Fechar a porta (`port.close()`) em todos os caminhos de saída (resolve,
+  reject e erro); porta não fechada bloqueia reconexão
 - Tratar leitura parcial: alguns equipamentos enviam a leitura em múltiplos
   pacotes; acumular em buffer até encontrar o delimitador esperado (normalmente
   `\r\n`)
@@ -556,7 +556,7 @@ APIs de modelos de linguagem seguem REST/JSON, mas têm características própri
 A **API key** (chave da API) nunca entra no código. Ela é resolvida via variável de ambiente na inicialização da aplicação.
 
 <details>
-<summary>❌ Ruim — API key hardcoded no código</summary>
+<summary>❌ Ruim: API key hardcoded no código</summary>
 
 ```js
 const client = new Anthropic({ apiKey: "sk-ant-..." });
@@ -565,7 +565,7 @@ const client = new Anthropic({ apiKey: "sk-ant-..." });
 </details>
 
 <details>
-<summary>✅ Bom — API key resolvida via variável de ambiente</summary>
+<summary>✅ Bom: API key resolvida via variável de ambiente</summary>
 
 ```js
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -578,11 +578,11 @@ Ver [security.md](security.md) para gestão de segredos.
 ### Streaming
 
 LLMs geram tokens incrementalmente. Sem streaming, o cliente espera o response
-completo antes de renderizar — latência percebida alta para respostas longas.
+completo antes de renderizar, e a latência percebida fica alta para respostas longas.
 Com streaming, o primeiro token chega em milissegundos.
 
 <details>
-<summary>❌ Ruim — aguarda resposta completa antes de renderizar</summary>
+<summary>❌ Ruim: aguarda resposta completa antes de renderizar</summary>
 
 ```js
 const message = await client.messages.create({
@@ -597,7 +597,7 @@ console.log(message.content[0].text);
 </details>
 
 <details>
-<summary>✅ Bom — streaming token-a-token via chunks</summary>
+<summary>✅ Bom: streaming token-a-token via chunks</summary>
 
 ```js
 const stream = client.messages.stream({
@@ -623,7 +623,7 @@ impõem rate limits por minuto (RPM) e por token (TPM). Erros
 **exponential backoff** (recuo exponencial).
 
 <details>
-<summary>❌ Ruim — sem retry, qualquer 429 vira erro irrecuperável</summary>
+<summary>❌ Ruim: sem retry, qualquer 429 vira erro irrecuperável</summary>
 
 ```js
 const response = await fetch(apiUrl, options);
@@ -636,7 +636,7 @@ if (!response.ok) {
 </details>
 
 <details>
-<summary>✅ Bom — exponential backoff em 429 Too Many Requests</summary>
+<summary>✅ Bom: exponential backoff em 429 Too Many Requests</summary>
 
 ```js
 async function callWithRetry(requestFn, maxAttempts = 3) {

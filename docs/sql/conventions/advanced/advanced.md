@@ -11,7 +11,7 @@ Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressi
 | **CTE** (Common Table Expression, expressão de tabela comum) | Resultado nomeado via `WITH ... AS (...)`; cada CTE é um passo legível |
 | **subquery** (subconsulta) | Query aninhada dentro de outra; sem nome próprio, dificulta leitura quando aninhada |
 | **window function** (função de janela) | `OVER (PARTITION BY ... ORDER BY ...)`; calcula sobre uma faixa sem agrupar |
-| **recursive CTE** (CTE recursiva) | `WITH RECURSIVE` — referencia a si mesma; usada para hierarquias e grafos |
+| **recursive CTE** (CTE recursiva) | `WITH RECURSIVE`, que referencia a si mesma; usada para hierarquias e grafos |
 | **derived table** (tabela derivada) | Subquery na cláusula `FROM` com alias; alternativa local à CTE |
 | **lateral join** (junção lateral) | `LATERAL` permite que a subquery referencie colunas da tabela à esquerda |
 | **set operation** (operação de conjunto) | `UNION`, `INTERSECT`, `EXCEPT`; combinam resultados de queries com schema compatível |
@@ -19,7 +19,7 @@ Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressi
 ## Subquery aninhada
 
 <details>
-<summary>❌ Ruim — subquery no WHERE sem nome</summary>
+<summary>❌ Ruim: subquery no WHERE sem nome</summary>
 
 ```sql
 SELECT
@@ -41,7 +41,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — CTE nomeada no topo</summary>
+<summary>✅ Bom: CTE nomeada no topo</summary>
 
 ```sql
 WITH ActivePlayerTeamsCTE AS
@@ -68,7 +68,7 @@ JOIN
 ## CTEs encadeadas
 
 <details>
-<summary>❌ Ruim — JOIN de subqueries, difícil de acompanhar</summary>
+<summary>❌ Ruim: JOIN de subqueries, difícil de acompanhar</summary>
 
 ```sql
 SELECT t.Name, t.ChampionshipsWon, p.PlayerName
@@ -82,7 +82,7 @@ JOIN
 </details>
 
 <details>
-<summary>✅ Bom — duas CTEs separadas, JOIN no SELECT final</summary>
+<summary>✅ Bom: duas CTEs separadas, JOIN no SELECT final</summary>
 
 ```sql
 WITH TeamCTE AS
@@ -124,7 +124,7 @@ JOIN
 ## Procedure: SQL Server
 
 <details>
-<summary>❌ Ruim — prefixo genérico, nome vago, sem formatação vertical</summary>
+<summary>❌ Ruim: prefixo genérico, nome vago, sem formatação vertical</summary>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -136,7 +136,7 @@ END
 </details>
 
 <details>
-<summary>✅ Bom — nome descritivo, parâmetro tipado, formatação vertical</summary>
+<summary>✅ Bom: nome descritivo, parâmetro tipado, formatação vertical</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -162,7 +162,7 @@ END;
 ## Function: PostgreSQL
 
 <details>
-<summary>❌ Ruim — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
+<summary>❌ Ruim: RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
 
 ```sql
 CREATE FUNCTION get_team(id INT) RETURNS VOID AS $$
@@ -175,7 +175,7 @@ $$ LANGUAGE plpgsql;
 </details>
 
 <details>
-<summary>✅ Bom — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
+<summary>✅ Bom: RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById

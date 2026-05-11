@@ -1,6 +1,6 @@
-// node:test + node:assert/strict — built-in desde Node 18, sem dependências
+// node:test + node:assert/strict: built-in desde Node 18, sem dependências
 // Executar: node --test testing.node.js
-// Convenção: assert.strictEqual(actual, expected) — actual primeiro
+// Convenção: assert.strictEqual(actual, expected); actual primeiro
 
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";

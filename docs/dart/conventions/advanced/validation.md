@@ -2,7 +2,7 @@
 
 > Escopo: Dart 3.7.
 
-Validação acontece na fronteira — entrada do usuário, payload de API, parâmetros de use case.
+Validação acontece na fronteira: entrada do usuário, payload de API, parâmetros de use case.
 Dentro do domínio, `assert` garante invariantes em desenvolvimento. `ArgumentError.checkNotNull`
 e verificações explícitas com `throw` atuam em produção.
 
@@ -10,7 +10,7 @@ e verificações explícitas com `throw` atuam em produção.
 
 | Conceito | O que é |
 | --- | --- |
-| `assert` | verificação de invariante removida em produção — só em debug/test |
+| `assert` | verificação de invariante removida em produção; só em debug/test |
 | `ArgumentError` | erro de argumento inválido; subclasse de `Error` (bug de chamada) |
 | `StateError` | estado inválido do objeto; invariante quebrada |
 | **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema |
@@ -19,7 +19,7 @@ e verificações explícitas com `throw` atuam em produção.
 ## Validação espalhada pela lógica
 
 <details>
-<summary>❌ Ruim — guards espalhados ao longo da função de negócio</summary>
+<summary>❌ Ruim: guards espalhados ao longo da função de negócio</summary>
 
 ```dart
 Future<Order> processOrder({
@@ -44,7 +44,7 @@ Future<Order> processOrder({
 </details>
 
 <details>
-<summary>✅ Bom — validação em init, lógica limpa na função</summary>
+<summary>✅ Bom: validação em init, lógica limpa na função</summary>
 
 ```dart
 class ProcessOrderRequest {
@@ -78,7 +78,7 @@ Future<Order> processOrder(ProcessOrderRequest request) async {
 ## Acumulação de erros de formulário
 
 <details>
-<summary>❌ Ruim — para no primeiro erro (usuário corrige um por vez)</summary>
+<summary>❌ Ruim: para no primeiro erro (usuário corrige um por vez)</summary>
 
 ```dart
 String? validateProfile(UserProfile profile) {
@@ -92,7 +92,7 @@ String? validateProfile(UserProfile profile) {
 </details>
 
 <details>
-<summary>✅ Bom — acumula todos os erros</summary>
+<summary>✅ Bom: acumula todos os erros</summary>
 
 ```dart
 sealed class ProfileError {}
@@ -122,7 +122,7 @@ if (errors.isNotEmpty) {
 ## `assert` para invariantes de desenvolvimento
 
 <details>
-<summary>❌ Ruim — throw em código que nunca chegará em produção</summary>
+<summary>❌ Ruim: throw em código que nunca chegará em produção</summary>
 
 ```dart
 double applyDiscount(double price, double rate) {
@@ -134,7 +134,7 @@ double applyDiscount(double price, double rate) {
 </details>
 
 <details>
-<summary>✅ Bom — assert em invariantes; validação real no construtor da request</summary>
+<summary>✅ Bom: assert em invariantes; validação real no construtor da request</summary>
 
 ```dart
 double applyDiscount(double price, double rate) {

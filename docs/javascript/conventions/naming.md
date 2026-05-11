@@ -7,10 +7,9 @@ intenção.
 Um nome genérico (`data`, `result`, `tmp`) força o programador a abrir o corpo
 da função pra entender o que está acontecendo. Em funções e módulos, o nome
 ainda compõe a **API** (Application Programming Interface, Interface de
-Programação) que outro código vai consumir — errar ali custa mais caro.
+Programação) que outro código vai consumir. Errar ali custa mais caro.
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história
-por si só.
+Quando o nome carrega a intenção, o comentário deixa de fazer falta.
 
 ## Conceitos fundamentais
 
@@ -21,7 +20,7 @@ por si só.
 | **PascalCase** (estilo Pascal)                   | Convenção JS para classes e construtores: todas as palavras capitalizadas (`UserService`)             |
 | **UPPER_SNAKE_CASE** (maiúsculas com sublinhado) | Convenção JS para constantes globais e enums (`MAX_RETRIES`)                                          |
 | **magic number** (número mágico)                 | Literal numérico sem nome no meio do código; perde contexto e dificulta troca                         |
-| **boolean prefix** (prefixo booleano)            | `is`, `has`, `can`, `should` — torna o nome legível como pergunta (`isActive`, `hasPermission`)       |
+| **boolean prefix** (prefixo booleano)            | `is`, `has`, `can`, `should`: torna o nome legível como pergunta (`isActive`, `hasPermission`)        |
 | **domain term** (termo de domínio)               | Palavra que pertence ao negócio (`invoice`, `subscriber`), não ao tipo técnico (`object`, `entity`)   |
 
 ## Identificadores sem significado
@@ -59,7 +58,7 @@ function applyDiscount(order, calculateDiscount) {
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — camelCase com português fica desajeitado</summary>
+<summary>❌ Ruim: camelCase com português fica desajeitado</summary>
 
 ```js
 const nomeDoUsuario = "Alice";
@@ -76,7 +75,7 @@ function buscaEnderecoDoCliente(id) {
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```js
 const userName = "Alice";
@@ -95,7 +94,7 @@ function getCustomerAddress(id) {
 ## Mistura de idiomas
 
 <details>
-<summary>❌ Ruim — português e inglês no mesmo arquivo</summary>
+<summary>❌ Ruim: português e inglês no mesmo arquivo</summary>
 
 ```js
 function notify(pedido) {
@@ -108,7 +107,7 @@ const resultado = processOrder(pedido);
 </details>
 
 <details>
-<summary>✅ Bom — consistência de idioma</summary>
+<summary>✅ Bom: consistência de idioma</summary>
 
 ```js
 function notifyDefault(order) {
@@ -125,7 +124,7 @@ const result = processOrder(order);
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Ruim — ordem invertida</summary>
+<summary>❌ Ruim: ordem invertida</summary>
 
 ```js
 getProfileUser(); // "get profile, that's a user"
@@ -137,7 +136,7 @@ calculateTotalInvoice(); // "invoice total" é a expressão natural
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural</summary>
+<summary>✅ Bom: ordem natural</summary>
 
 ```js
 getUserProfile();
@@ -151,7 +150,7 @@ calculateInvoiceTotal();
 ## Verbos genéricos
 
 <details>
-<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim: handle, process, manage, do não dizem nada</summary>
 
 ```js
 function handle(data) {
@@ -172,7 +171,7 @@ function doStuff(x) {
 </details>
 
 <details>
-<summary>✅ Bom — verbo de intenção</summary>
+<summary>✅ Bom: verbo de intenção</summary>
 
 ```js
 function validatePayment(payment) {
@@ -209,7 +208,7 @@ O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde
 operação acontece.
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
 
 ```js
 function callStripe(amount) {
@@ -234,7 +233,7 @@ function queryElastic(term) {
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```js
 function chargeCustomer(amount) {
@@ -264,7 +263,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 nome expressivo substitui qualquer comentário.
 
 <details>
-<summary>❌ Ruim — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim: comentário repete o que o código já diz</summary>
 
 ```js
 // verifica se o usuário pode excluir registros
@@ -279,7 +278,7 @@ attempts++;
 </details>
 
 <details>
-<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom: nome expressivo torna o comentário desnecessário</summary>
 
 ```js
 const canDeleteRecord =
@@ -296,7 +295,7 @@ attempts++;
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```js
 const loading = true;
@@ -309,7 +308,7 @@ const valid = email.includes("@");
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```js
 const isActive = user.status === "active";

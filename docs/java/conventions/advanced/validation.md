@@ -1,6 +1,6 @@
 # Validation
 
-> Escopo: Java 25 LTS — Jakarta Bean Validation 3.1 + Hibernate Validator 9.
+> Escopo: Java 25 LTS, Jakarta Bean Validation 3.1, Hibernate Validator 9.
 
 Valide na **fronteira** do sistema: input externo (HTTP, mensageria, CLI). Dentro da aplicação,
 confie nos contratos já validados.
@@ -19,7 +19,7 @@ confie nos contratos já validados.
 ## Validação inline no service
 
 <details>
-<summary>❌ Ruim — validação espalhada em múltiplos serviços</summary>
+<summary>❌ Ruim: validação espalhada em múltiplos serviços</summary>
 
 ```java
 public User createUser(String name, String email) {
@@ -34,7 +34,7 @@ public User createUser(String name, String email) {
 </details>
 
 <details>
-<summary>✅ Bom — anotações de Bean Validation no record de input</summary>
+<summary>✅ Bom: anotações de Bean Validation no record de input</summary>
 
 ```java
 public record UserInput(
@@ -77,7 +77,7 @@ public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserInput inp
 Quando precisar validar fora de um controller Spring, injete o `Validator` programaticamente.
 
 <details>
-<summary>✅ Bom — validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
+<summary>✅ Bom: validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
 
 ```java
 @Component
@@ -112,7 +112,7 @@ public class OrderMessageConsumer {
 Quando as anotações padrão não cobrem uma regra de negócio, crie um validator customizado.
 
 <details>
-<summary>✅ Bom — validator customizado para CPF</summary>
+<summary>✅ Bom: validator customizado para CPF</summary>
 
 ```java
 // annotation
@@ -144,10 +144,10 @@ public record CustomerInput(
 
 </details>
 
-## @ControllerAdvice — tratamento centralizado de erros de validação
+## @ControllerAdvice: tratamento centralizado de erros de validação
 
 <details>
-<summary>✅ Bom — mapeia MethodArgumentNotValidException para resposta padronizada</summary>
+<summary>✅ Bom: mapeia MethodArgumentNotValidException para resposta padronizada</summary>
 
 ```java
 @RestControllerAdvice

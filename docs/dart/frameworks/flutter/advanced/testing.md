@@ -20,20 +20,20 @@ widget são o ponto de equilíbrio entre velocidade e cobertura.
 ## Bombeando o widget
 
 <details>
-<summary>❌ Ruim — sem pump o widget não é construído</summary>
+<summary>❌ Ruim: sem pump o widget não é construído</summary>
 
 ```dart
 testWidgets('shows order list', (tester) async {
   await tester.pumpWidget(const OrderListScreen());
 
-  expect(find.byType(OrderListItem), findsWidgets);   // zero items — widget não renderizou
+  expect(find.byType(OrderListItem), findsWidgets);   // zero items: widget não renderizou
 });
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — pumpAndSettle aguarda renders e animações</summary>
+<summary>✅ Bom: pumpAndSettle aguarda renders e animações</summary>
 
 ```dart
 testWidgets('shows order list when orders are loaded', (tester) async {
@@ -59,7 +59,7 @@ testWidgets('shows order list when orders are loaded', (tester) async {
 ## Interação com widgets
 
 <details>
-<summary>✅ Bom — tap, type e verificação de estado</summary>
+<summary>✅ Bom: tap, type e verificação de estado</summary>
 
 ```dart
 testWidgets('submits form and shows confirmation', (tester) async {
@@ -86,7 +86,7 @@ testWidgets('submits form and shows confirmation', (tester) async {
 ## Golden test para snapshot visual
 
 <details>
-<summary>✅ Bom — golden registra e verifica aparência visual</summary>
+<summary>✅ Bom: golden registra e verifica aparência visual</summary>
 
 ```dart
 testWidgets('OrderListItem matches golden', (tester) async {

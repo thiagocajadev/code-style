@@ -3,8 +3,8 @@
 > Escopo: Ruby 4.0.
 
 Ruby trata tudo como objeto. Variáveis locais, de instância e constantes têm escopos
-distintos sinalizados pela sintaxe. Por padrão, strings são mutáveis — `# frozen_string_literal: true`
-inverte esse default em todo o arquivo.
+distintos sinalizados pela sintaxe. Por padrão, strings são mutáveis; a diretiva
+`# frozen_string_literal: true` inverte esse default em todo o arquivo.
 
 ## Conceitos fundamentais
 
@@ -13,7 +13,7 @@ inverte esse default em todo o arquivo.
 | `frozen_string_literal`        | Diretiva que congela todas as strings literais do arquivo, reduzindo alocação |
 | **Symbol** (símbolo)           | String leve e imutável usada como chave ou identificador (`:status`)        |
 | **freeze** (congelar objeto) | Método que torna qualquer objeto imutável em tempo de execução               |
-| `@variável`                    | Variável de instância — pertence ao objeto, visível dentro da classe        |
+| `@variável`                    | Variável de instância: pertence ao objeto, visível dentro da classe         |
 | `CONSTANTE`                    | Valor fixo em nível de módulo ou classe; `SCREAMING_SNAKE_CASE`             |
 
 ## frozen_string_literal
@@ -21,7 +21,7 @@ inverte esse default em todo o arquivo.
 Adicione `# frozen_string_literal: true` no topo de cada arquivo Ruby.
 
 <details>
-<summary>❌ Ruim — string mutable alocada em loop</summary>
+<summary>❌ Ruim: string mutable alocada em loop</summary>
 
 ```ruby
 def build_labels(orders)
@@ -34,7 +34,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — frozen_string_literal + interpolação</summary>
+<summary>✅ Bom: frozen_string_literal + interpolação</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -51,7 +51,7 @@ end
 Prefira valores fixos. Mutação explícita deve ser justificada pelo fluxo.
 
 <details>
-<summary>❌ Ruim — variável reatribuída sem necessidade</summary>
+<summary>❌ Ruim: variável reatribuída sem necessidade</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -66,7 +66,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — sem mutação; resultado derivado diretamente</summary>
+<summary>✅ Bom: sem mutação; resultado derivado diretamente</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -84,7 +84,7 @@ Substitua literais inline por constantes nomeadas. Constantes em nível de módu
 encapsuladas; não use constantes globais soltas.
 
 <details>
-<summary>❌ Ruim — valores mágicos espalhados</summary>
+<summary>❌ Ruim: valores mágicos espalhados</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -101,7 +101,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas e encapsuladas</summary>
+<summary>✅ Bom: constantes nomeadas e encapsuladas</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -128,7 +128,7 @@ Use símbolos (`:symbol`) para chaves de hash, identificadores de estado e opç�
 Use strings para texto visível ao usuário ou dados externos.
 
 <details>
-<summary>❌ Ruim — string como chave de hash interno</summary>
+<summary>❌ Ruim: string como chave de hash interno</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -141,7 +141,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — símbolo para chave e estado interno</summary>
+<summary>✅ Bom: símbolo para chave e estado interno</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -161,7 +161,7 @@ Encapsule o acesso via `attr_reader` / `attr_accessor`. Não exponha `@variávei
 fora da classe.
 
 <details>
-<summary>❌ Ruim — acesso direto a @variável de fora</summary>
+<summary>❌ Ruim: acesso direto a @variável de fora</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -180,7 +180,7 @@ puts order.instance_variable_get(:@total)
 </details>
 
 <details>
-<summary>✅ Bom — interface explícita com attr_reader</summary>
+<summary>✅ Bom: interface explícita com attr_reader</summary>
 
 ```ruby
 # frozen_string_literal: true

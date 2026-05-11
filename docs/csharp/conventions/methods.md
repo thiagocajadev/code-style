@@ -19,7 +19,7 @@ Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de
 O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
-<summary>❌ Ruim — implementação misturada com orquestração</summary>
+<summary>❌ Ruim: implementação misturada com orquestração</summary>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -46,7 +46,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador declara o fluxo, helpers implementam cada passo</summary>
+<summary>✅ Bom: orquestrador declara o fluxo, helpers implementam cada passo</summary>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -82,7 +82,7 @@ private static Invoice BuildInvoice(Order order) { ... }
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
 <details>
-<summary>❌ Ruim — orquestração e implementação no mesmo método</summary>
+<summary>❌ Ruim: orquestração e implementação no mesmo método</summary>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -104,7 +104,7 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador chama helpers, cada um com uma responsabilidade</summary>
+<summary>✅ Bom: orquestrador chama helpers, cada um com uma responsabilidade</summary>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -141,7 +141,7 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 O `return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
 
 <details>
-<summary>❌ Ruim — lógica e construção inline no return</summary>
+<summary>❌ Ruim: lógica e construção inline no return</summary>
 
 ```csharp
 public OrderSummary BuildSummary(Order order) =>
@@ -155,7 +155,7 @@ public OrderSummary BuildSummary(Order order) =>
 </details>
 
 <details>
-<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim: bare return: pass-through sem nome, o retorno não diz o que é</summary>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -168,7 +168,7 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 </details>
 
 <details>
-<summary>❌ Ruim — string imensa montada inline: ilegível e sem semântica</summary>
+<summary>❌ Ruim: string imensa montada inline: ilegível e sem semântica</summary>
 
 ```csharp
 public string BuildShippingLabel(Order order) =>
@@ -178,7 +178,7 @@ public string BuildShippingLabel(Order order) =>
 </details>
 
 <details>
-<summary>✅ Bom — variável expressiva antes do return</summary>
+<summary>✅ Bom: variável expressiva antes do return</summary>
 
 ```csharp
 public OrderSummary BuildSummary(Order order)
@@ -194,7 +194,7 @@ public OrderSummary BuildSummary(Order order)
 </details>
 
 <details>
-<summary>✅ Bom — nome simétrico com o método deixa claro o que sai</summary>
+<summary>✅ Bom: nome simétrico com o método deixa claro o que sai</summary>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -213,7 +213,7 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 </details>
 
 <details>
-<summary>✅ Bom — partes nomeadas antes de montar o resultado</summary>
+<summary>✅ Bom: partes nomeadas antes de montar o resultado</summary>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -234,7 +234,7 @@ public string BuildShippingLabel(Order order)
 C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
 
 <details>
-<summary>❌ Ruim — boilerplate de construtor tradicional</summary>
+<summary>❌ Ruim: boilerplate de construtor tradicional</summary>
 
 ```csharp
 public class OrderService
@@ -263,7 +263,7 @@ public class OrderService
 </details>
 
 <details>
-<summary>✅ Bom — primary constructor, DI sem cerimônia</summary>
+<summary>✅ Bom: primary constructor, DI sem cerimônia</summary>
 
 ```csharp
 public class OrderService(IOrderRepository repository, INotifier notifier)
@@ -287,7 +287,7 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
-<summary>❌ Ruim — sem separação entre passos ou separação excessiva</summary>
+<summary>❌ Ruim: sem separação entre passos ou separação excessiva</summary>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -301,7 +301,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
     var order = await SaveOrderAsync(request, product, ct);
 
 
-    await NotifyOrderCreatedAsync(order, ct); // duas linhas em branco — ruído
+    await NotifyOrderCreatedAsync(order, ct); // duas linhas em branco: ruído
     var invoice = BuildInvoice(order);
 
     return Result<Invoice>.Success(invoice);
@@ -311,7 +311,7 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 </details>
 
 <details>
-<summary>✅ Bom — um grupo por passo, separados por uma linha em branco</summary>
+<summary>✅ Bom: um grupo por passo, separados por uma linha em branco</summary>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)

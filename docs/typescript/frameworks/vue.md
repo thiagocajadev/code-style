@@ -116,7 +116,7 @@ shared/
 Componentes em **SFC** com `<script setup lang="ts">` são o padrão. Sem `setup()` explícito, sem `return` manual, sem `defineComponent`. Props seguem a regra de tipagem do TypeScript: três ou mais campos usam interface separada com sufixo `Props`.
 
 <details>
-<summary>❌ Ruim — Options API com props inline e tipagem fraca</summary>
+<summary>❌ Ruim: Options API com props inline e tipagem fraca</summary>
 
 ```vue
 <script lang="ts">
@@ -133,14 +133,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <div>{{ customerName }} — {{ total }}</div>
+  <div>{{ customerName }}: {{ total }}</div>
 </template>
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — `<script setup>` com interface separada e sufixo Props</summary>
+<summary>✅ Bom: `<script setup>` com interface separada e sufixo Props</summary>
 
 ```vue
 <script setup lang="ts">
@@ -171,7 +171,7 @@ const { customerName, total } = defineProps<OrderCardProps>();
 A regra: prefira `ref` por consistência (sempre `.value` no script, sempre automático no template). `reactive` é útil para grupos coesos de campos que se movem juntos.
 
 <details>
-<summary>❌ Ruim — estado solto, total recalculado em watcher manual</summary>
+<summary>❌ Ruim: estado solto, total recalculado em watcher manual</summary>
 
 ```vue
 <script setup lang="ts">
@@ -193,7 +193,7 @@ function addItem(item: CartItem): void {
 </details>
 
 <details>
-<summary>✅ Bom — `computed` deriva o total; mutação via cópia imutável</summary>
+<summary>✅ Bom: `computed` deriva o total; mutação via cópia imutável</summary>
 
 ```vue
 <script setup lang="ts">
@@ -229,7 +229,7 @@ function clearCart(): void {
 Vue 3.5 trouxe destructuring reativo de props. A versão antiga quebrava reatividade no destructure; a nova mantém. Use direto, sem `toRefs`.
 
 <details>
-<summary>❌ Ruim — `toRefs` desnecessário; verbosidade de antes da 3.5</summary>
+<summary>❌ Ruim: `toRefs` desnecessário; verbosidade de antes da 3.5</summary>
 
 ```vue
 <script setup lang="ts">
@@ -250,7 +250,7 @@ const formatted = computed(() => `${currency.value} ${price.value.toFixed(2)}`);
 </details>
 
 <details>
-<summary>✅ Bom — destructure direto com defaults; reatividade preservada</summary>
+<summary>✅ Bom: destructure direto com defaults; reatividade preservada</summary>
 
 ```vue
 <script setup lang="ts">
@@ -279,7 +279,7 @@ O pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) s
 Fluxo: `Smart → defineProps → Dumb → defineEmits → Smart`
 
 <details>
-<summary>❌ Ruim — componente de lista com lógica de negócio inline</summary>
+<summary>❌ Ruim: componente de lista com lógica de negócio inline</summary>
 
 ```vue
 <script setup lang="ts">
@@ -305,7 +305,7 @@ async function cancelOrder(id: string): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom — Smart orquestra com composable; Dumb apresenta</summary>
+<summary>✅ Bom: Smart orquestra com composable; Dumb apresenta</summary>
 
 ```vue
 <!-- Smart Component: pages/orders/index.vue -->
@@ -346,7 +346,7 @@ function handleCancel(orderId: string): void {
 <template>
   <ul>
     <li v-for="order in orders" :key="order.id">
-      {{ order.id }} — {{ order.total }}
+      {{ order.id }}: {{ order.total }}
       <button type="button" @click="handleCancel(order.id)">Cancelar</button>
     </li>
   </ul>
@@ -360,7 +360,7 @@ function handleCancel(orderId: string): void {
 Antes do Vue 3.4, `v-model` em filho exigia prop `modelValue` + evento `update:modelValue` manuais. `defineModel` substitui esse boilerplate.
 
 <details>
-<summary>❌ Ruim — prop e evento manuais para `v-model`</summary>
+<summary>❌ Ruim: prop e evento manuais para `v-model`</summary>
 
 ```vue
 <script setup lang="ts">
@@ -387,7 +387,7 @@ function onInput(event: Event): void {
 </details>
 
 <details>
-<summary>✅ Bom — `defineModel` cria prop e evento juntos</summary>
+<summary>✅ Bom: `defineModel` cria prop e evento juntos</summary>
 
 ```vue
 <script setup lang="ts">
@@ -406,7 +406,7 @@ const searchTerm = defineModel<string>({ required: true });
 Composables encapsulam estado de **UI** (`data`, `error`, `isLoading`) e delegam ao **Service**. O **Service** chama o `apiClient` (único ponto de rede) e entrega um tipo de view ao composable. Nome começa com `use`, retorno tipado por interface quando tem três ou mais valores.
 
 <details>
-<summary>❌ Ruim — fetch direto no componente, pipeline colapsado</summary>
+<summary>❌ Ruim: fetch direto no componente, pipeline colapsado</summary>
 
 ```vue
 <script setup lang="ts">
@@ -424,7 +424,7 @@ onMounted(async () => {
 </details>
 
 <details>
-<summary>✅ Bom — composable encapsula estado; service encapsula chamada de rede</summary>
+<summary>✅ Bom: composable encapsula estado; service encapsula chamada de rede</summary>
 
 ```ts
 // features/orders/services/order.ts
@@ -503,7 +503,7 @@ Pinia é a store oficial do Vue 3. A **setup syntax** mantém o mesmo idioma do 
 Use Pinia para estado compartilhado entre rotas (sessão, carrinho, preferências). Estado de uma única página fica em composable, não em store.
 
 <details>
-<summary>❌ Ruim — Options API da store, tipos perdidos em getters</summary>
+<summary>❌ Ruim: Options API da store, tipos perdidos em getters</summary>
 
 ```ts
 // stores/cart.ts
@@ -527,7 +527,7 @@ export const useCartStore = defineStore("cart", {
 </details>
 
 <details>
-<summary>✅ Bom — setup syntax, tipos inferidos, mutação imutável</summary>
+<summary>✅ Bom: setup syntax, tipos inferidos, mutação imutável</summary>
 
 ```ts
 // stores/cart.ts
@@ -581,7 +581,7 @@ Guards de autenticação e autorização ficam em `middleware/`: executam antes 
 `defineNuxtRouteMiddleware` aceita escopo global (em `middleware/global.global.ts`) ou por página via `definePageMeta({ middleware: 'auth' })`.
 
 <details>
-<summary>❌ Ruim — guard no componente, expõe conteúdo por um frame</summary>
+<summary>❌ Ruim: guard no componente, expõe conteúdo por um frame</summary>
 
 ```vue
 <script setup lang="ts">
@@ -605,7 +605,7 @@ watchEffect(() => {
 </details>
 
 <details>
-<summary>✅ Bom — `defineNuxtRouteMiddleware` antes de qualquer render</summary>
+<summary>✅ Bom: `defineNuxtRouteMiddleware` antes de qualquer render</summary>
 
 ```ts
 // middleware/auth.ts
@@ -657,7 +657,7 @@ O fluxo de formulários de [frontend-flow.md](../../shared/architecture/frontend
 O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
 
 <details>
-<summary>❌ Ruim — validação manual sem schema, erros sem estrutura</summary>
+<summary>❌ Ruim: validação manual sem schema, erros sem estrutura</summary>
 
 ```vue
 <script setup lang="ts">
@@ -684,7 +684,7 @@ async function submit(): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom — schema compartilhado, useFetch tipado, erros por campo</summary>
+<summary>✅ Bom: schema compartilhado, useFetch tipado, erros por campo</summary>
 
 ```ts
 // shared/schemas/order.ts
@@ -793,7 +793,7 @@ Server routes ficam em `server/api/[recurso].[método].ts`. O nome do arquivo de
 `readValidatedBody` integra Zod direto no handler, sem pipeline manual de parse + validate.
 
 <details>
-<summary>❌ Ruim — lógica de negócio inline, sem schema, status hardcoded</summary>
+<summary>❌ Ruim: lógica de negócio inline, sem schema, status hardcoded</summary>
 
 ```ts
 // server/api/orders/index.post.ts
@@ -812,7 +812,7 @@ export default defineEventHandler(async (event) => {
 </details>
 
 <details>
-<summary>✅ Bom — schema Zod, repository, resposta estruturada</summary>
+<summary>✅ Bom: schema Zod, repository, resposta estruturada</summary>
 
 ```ts
 // server/api/orders/index.post.ts
@@ -861,7 +861,7 @@ POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa ide
 ```
 
 <details>
-<summary>❌ Ruim — valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<summary>❌ Ruim: valida sobre JSON parseado, comparação direta, processa no handler</summary>
 
 ```ts
 // server/api/webhooks/[provider].post.ts
@@ -887,7 +887,7 @@ export default defineEventHandler(async (event) => {
 </details>
 
 <details>
-<summary>✅ Bom — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
+<summary>✅ Bom: raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
 
 ```ts
 // server/api/webhooks/[provider].post.ts
@@ -941,7 +941,7 @@ Nuxt 4 traz a Nitro caching layer com `defineCachedEventHandler` (servidor) e ca
 `maxAge` define o **TTL** (Time-To-Live, Tempo de Vida). `swr` (stale-while-revalidate) serve cache enquanto revalida em background. Tags permitem invalidação seletiva via `useStorage('cache').removeItem()` ou helpers do Nitro.
 
 <details>
-<summary>✅ Bom — handler cacheado com TTL, SWR e tag</summary>
+<summary>✅ Bom: handler cacheado com TTL, SWR e tag</summary>
 
 ```ts
 // server/api/orders/index.get.ts
@@ -964,7 +964,7 @@ export default defineCachedEventHandler(
 </details>
 
 <details>
-<summary>✅ Bom — useFetch com transform e key estável para deduplicação</summary>
+<summary>✅ Bom: useFetch com transform e key estável para deduplicação</summary>
 
 ```vue
 <!-- pages/orders/index.vue -->
@@ -986,7 +986,7 @@ const { data: orders, error, refresh } = await useFetch<Order[]>("/api/orders", 
 </details>
 
 <details>
-<summary>✅ Bom — Server Route invalida cache após escrita</summary>
+<summary>✅ Bom: Server Route invalida cache após escrita</summary>
 
 ```ts
 // server/api/orders/index.post.ts

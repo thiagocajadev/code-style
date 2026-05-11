@@ -13,17 +13,17 @@ O operador nullsafe `?->` elimina verificações de null encadeadas.
 | **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
 | **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
 | **strict comparison** (comparação estrita) | `===` e `!==` comparam valor e tipo; `==` faz coerção e introduz bugs sutis |
-| **match expression** (expressão de mapeamento) | `match($v) { ... }` — comparação estrita por valor com retorno explícito; PHP 8.0+ |
+| **match expression** (expressão de mapeamento) | `match($v) { ... }`: comparação estrita por valor com retorno explícito; PHP 8.0+ |
 | **nullsafe operator** (operador seguro contra null) | `?->` curto-circuita encadeamentos quando o alvo é `null` |
 | **null coalescing** (coalescência de nulos) | `??` retorna o operando à direita quando o da esquerda é `null` |
-| **truthy / falsy** (avalia como verdadeiro / como falso) | Em PHP, `0`, `'0'`, `''`, `null` e `[]` são falsy — preferir comparação explícita |
+| **truthy / falsy** (avalia como verdadeiro / como falso) | Em PHP, `0`, `'0'`, `''`, `null` e `[]` são falsy; preferir comparação explícita |
 
 ## if e else
 
 Após um `return` ou `throw`, o `else` é desnecessário e cria aninhamento sem valor.
 
 <details>
-<summary>❌ Ruim — else após return</summary>
+<summary>❌ Ruim: else após return</summary>
 
 ```php
 function findActiveOrder(int $orderID): ?Order
@@ -44,7 +44,7 @@ function findActiveOrder(int $orderID): ?Order
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, sem else após return</summary>
+<summary>✅ Bom: guard clauses, sem else após return</summary>
 
 ```php
 function findActiveOrder(int $orderID): Order
@@ -70,7 +70,7 @@ function findActiveOrder(int $orderID): Order
 Use `===` e `!==` sempre. PHP tem coerção de tipo agressiva com `==` que leva a bugs sutis.
 
 <details>
-<summary>❌ Ruim — comparação fraca com ==</summary>
+<summary>❌ Ruim: comparação fraca com ==</summary>
 
 ```php
 if ($userID == "0") {}    // true se $userID for 0 ou false ou ""
@@ -81,7 +81,7 @@ if ($result == false) {}  // true para 0, "", "0", null, []
 </details>
 
 <details>
-<summary>✅ Bom — comparação estrita com ===</summary>
+<summary>✅ Bom: comparação estrita com ===</summary>
 
 ```php
 if ($userID === 0) {}
@@ -97,7 +97,7 @@ Para atribuição de dois valores possíveis. Três ou mais alternativas → `ma
 ternários.
 
 <details>
-<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```php
 $label = '';
@@ -111,7 +111,7 @@ if ($order->isPaid) {
 </details>
 
 <details>
-<summary>✅ Bom — ternário na atribuição</summary>
+<summary>✅ Bom: ternário na atribuição</summary>
 
 ```php
 $label = $order->isPaid ? 'Paid' : 'Pending';
@@ -120,7 +120,7 @@ $label = $order->isPaid ? 'Paid' : 'Pending';
 </details>
 
 <details>
-<summary>❌ Ruim — ternário aninhado para 3+ alternativas</summary>
+<summary>❌ Ruim: ternário aninhado para 3+ alternativas</summary>
 
 ```php
 $priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
@@ -129,7 +129,7 @@ $priority = $isUrgent ? ($isCritical ? 'Critical' : 'High') : 'Normal';
 </details>
 
 <details>
-<summary>✅ Bom — match para 3+ alternativas</summary>
+<summary>✅ Bom: match para 3+ alternativas</summary>
 
 ```php
 $priority = match (true) {
@@ -146,7 +146,7 @@ $priority = match (true) {
 Máximo 2 níveis de indentação. Guard clauses substituem a pirâmide de condicionais.
 
 <details>
-<summary>❌ Ruim — pyramid of doom</summary>
+<summary>❌ Ruim: pyramid of doom</summary>
 
 ```php
 function processPayment(Order $order): void
@@ -174,7 +174,7 @@ function processPayment(Order $order): void
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, fluxo linear</summary>
+<summary>✅ Bom: guard clauses, fluxo linear</summary>
 
 ```php
 function processPayment(Order $order): void
@@ -198,13 +198,13 @@ function processPayment(Order $order): void
 
 </details>
 
-## match — mapeamento de valores
+## match: mapeamento de valores
 
 `match` usa comparação estrita, não faz fallthrough automático e lança `UnhandledMatchError`
 para valores não cobertos. Substitui `switch` para mapeamento de valores.
 
 <details>
-<summary>❌ Ruim — switch para mapeamento de valores</summary>
+<summary>❌ Ruim: switch para mapeamento de valores</summary>
 
 ```php
 switch ($status) {
@@ -225,7 +225,7 @@ switch ($status) {
 </details>
 
 <details>
-<summary>✅ Bom — match: conciso, estrito, sem fallthrough</summary>
+<summary>✅ Bom: match: conciso, estrito, sem fallthrough</summary>
 
 ```php
 $label = match($order->status) {
@@ -244,7 +244,7 @@ $label = match($order->status) {
 Use `?->` para encadear acessos opcionais sem verificações de null intermediárias.
 
 <details>
-<summary>❌ Ruim — verificações de null encadeadas</summary>
+<summary>❌ Ruim: verificações de null encadeadas</summary>
 
 ```php
 $city = null;
@@ -261,7 +261,7 @@ if ($user !== null) {
 </details>
 
 <details>
-<summary>✅ Bom — nullsafe operator elimina o aninhamento</summary>
+<summary>✅ Bom: nullsafe operator elimina o aninhamento</summary>
 
 ```php
 $city = $user?->address?->city;
@@ -274,7 +274,7 @@ $city = $user?->address?->city;
 Use `??` para fornecer um valor padrão quando a expressão da esquerda é null.
 
 <details>
-<summary>✅ Bom — ?? para valores opcionais com default</summary>
+<summary>✅ Bom: ?? para valores opcionais com default</summary>
 
 ```php
 $page = (int) ($_GET['page'] ?? 1);
@@ -288,11 +288,11 @@ $customerName = $order->customer?->name ?? 'Guest';
 ## Circuit break
 
 Antes de escrever um loop, verifique se `array_find` ou `array_any` (PHP 8.4) já resolve. Essas
-funções param no primeiro match — sem percorrer o resto. Para lógica de saída explícita, `foreach`
+funções param no primeiro match, sem percorrer o resto. Para lógica de saída explícita, `foreach`
 com `return` antecipado é direto.
 
 <details>
-<summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim: loop com flag percorre tudo mesmo após encontrar</summary>
 
 ```php
 function findFirstExpiredProduct(array $products): ?Product
@@ -312,7 +312,7 @@ function findFirstExpiredProduct(array $products): ?Product
 </details>
 
 <details>
-<summary>✅ Bom — foreach com return antecipado sai no primeiro match</summary>
+<summary>✅ Bom: foreach com return antecipado sai no primeiro match</summary>
 
 ```php
 function findFirstExpiredProduct(array $products): ?Product
@@ -328,10 +328,10 @@ function findFirstExpiredProduct(array $products): ?Product
 </details>
 
 <details>
-<summary>✅ Bom — array_find / array_any com circuit break nativo (PHP 8.4)</summary>
+<summary>✅ Bom: array_find / array_any com circuit break nativo (PHP 8.4)</summary>
 
 ```php
-// para no primeiro match — retorna o elemento ou null
+// para no primeiro match: retorna o elemento ou null
 $expiredProduct = array_find($products, fn(Product $p) => $p->isExpired());
 
 // para no primeiro true
@@ -349,7 +349,7 @@ Use `foreach` para iterar sobre arrays e coleções. Prefira funções de array 
 `array_filter`, `array_reduce`) para transformações declarativas.
 
 <details>
-<summary>✅ Bom — foreach para iteração; array_map para transformação</summary>
+<summary>✅ Bom: foreach para iteração; array_map para transformação</summary>
 
 ```php
 // Iteração com efeito colateral: foreach

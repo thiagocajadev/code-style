@@ -10,7 +10,7 @@ Redis é um banco de dados em memória com persistência opcional. Funciona como
 
 | Conceito | O que é |
 | --- | --- |
-| **String** (cadeia de caracteres) | Tipo base: qualquer valor até 512 MB — texto, JSON serializado, número |
+| **String** (cadeia de caracteres) | Tipo base: qualquer valor até 512 MB (texto, JSON serializado, número) |
 | **Hash** (mapa de campo-valor) | Mapa de campos e valores; ideal para objetos com campos nomeados |
 | **List** (lista) | Lista duplamente encadeada; suporta push/pop nas duas extremidades |
 | **Set** (conjunto) | Coleção não ordenada de strings únicas |
@@ -40,18 +40,18 @@ await client.connect();
 ```
 
 <details>
-<summary>❌ Ruim — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
+<summary>❌ Ruim: sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
 
 ```js
 const client = createClient({ url: 'redis://localhost:6379' });
 await client.connect();
-// sem handler de error — falha silenciosa em produção
+// sem handler de error: falha silenciosa em produção
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — URL por variável de ambiente; handler de erro; connect aguardado</summary>
+<summary>✅ Bom: URL por variável de ambiente; handler de erro; connect aguardado</summary>
 
 ```js
 import { createClient } from 'redis';
@@ -85,23 +85,23 @@ O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScr
 | `MGET key1 key2` | Ler múltiplos valores |
 
 <details>
-<summary>❌ Ruim — SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
+<summary>❌ Ruim: SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
 
 ```js
-// cache sem TTL — acumula indefinidamente
+// cache sem TTL: acumula indefinidamente
 await client.set('team:profile:42', JSON.stringify(team));
 
-// KEYS * varre todo o keyspace — bloqueia o servidor em produção
+// KEYS * varre todo o keyspace: bloqueia o servidor em produção
 const allKeys = await client.keys('team:*');
 
-// JSON.parse sem verificação — erro se GET retorna null
+// JSON.parse sem verificação: erro se GET retorna null
 const cached = JSON.parse(await client.get('team:profile:42'));
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
+<summary>✅ Bom: SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
 
 ```js
 const CACHE_TTL_SECONDS = 300; // 5 minutos
@@ -142,7 +142,7 @@ cache miss → busca no banco → salva no cache → retorna valor
 ```
 
 <details>
-<summary>✅ Bom — cache-aside com TTL; sem duplicação de lógica de busca</summary>
+<summary>✅ Bom: cache-aside com TTL; sem duplicação de lógica de busca</summary>
 
 ```js
 class TeamRepository {
@@ -197,7 +197,7 @@ const wins = await client.hGet(`team:stats:${teamId}`, 'wins');
 // ler todos os campos
 const stats = await client.hGetAll(`team:stats:${teamId}`);
 // retorna: { wins: '10', draws: '3', losses: '2', goalsFor: '28' }
-// atenção: todos os valores são strings — converter conforme necessário
+// atenção: todos os valores são strings; converter conforme necessário
 ```
 
 ---
@@ -217,7 +217,7 @@ Ideal para rankings, leaderboards e filas com prioridade.
 | `ZREM key member` | Remover membro |
 
 <details>
-<summary>✅ Bom — leaderboard de gols com Sorted Set</summary>
+<summary>✅ Bom: leaderboard de gols com Sorted Set</summary>
 
 ```js
 const LEADERBOARD_KEY = 'season:2026:top-scorers';
@@ -296,7 +296,7 @@ Pub/Sub no Redis é stateless: o assinante recebe apenas mensagens publicadas ap
 ```js
 import { createClient } from 'redis';
 
-// clientes separados — subscribe bloqueia o cliente para outros comandos
+// clientes separados: subscribe bloqueia o cliente para outros comandos
 const publisher = createClient({ url: process.env.REDIS_URL });
 const subscriber = publisher.duplicate();
 

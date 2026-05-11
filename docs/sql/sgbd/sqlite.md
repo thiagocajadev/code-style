@@ -15,7 +15,7 @@ SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language,
 
 | Conceito | O que é |
 | --- | --- |
-| **Type affinity** (afinidade de tipo) | Sistema de tipos do SQLite: colunas têm "afinidade", não tipo rígido — qualquer valor pode ser armazenado em qualquer coluna |
+| **Type affinity** (afinidade de tipo) | Sistema de tipos do SQLite: colunas têm "afinidade", não tipo rígido; qualquer valor pode ser armazenado em qualquer coluna |
 | **WAL** (Write-Ahead Logging, Registro Antecipado de Escrita) | Modo de journaling que permite leituras concorrentes durante uma escrita; ativar em produção |
 | **rowid** (identificador de linha) | ID inteiro implícito em toda tabela SQLite; PRIMARY KEY INTEGER é um alias de rowid |
 | **FTS5** (Full-Text Search 5, Busca de Texto Integral 5) | Extensão embutida para indexação e busca textual eficiente |
@@ -32,10 +32,10 @@ número. O tipo declarado define a **afinidade** usada para conversões implíci
 | `TEXT` | Contém "CHAR", "CLOB" ou "TEXT" | `VARCHAR(n)`, `TEXT`, `NVARCHAR` |
 | `REAL` | Contém "REAL", "FLOA" ou "DOUB" | `REAL`, `FLOAT`, `DOUBLE` |
 | `NUMERIC` | Contém "NUM" ou "DEC"; ou "DATE"/"DATETIME" | `NUMERIC`, `DECIMAL`, `DATE` |
-| `BLOB` | Sem correspondência — armazena como recebido | `BLOB`, ou coluna sem tipo |
+| `BLOB` | Sem correspondência: armazena como recebido | `BLOB`, ou coluna sem tipo |
 
 <details>
-<summary>❌ Ruim — tipo não declarado, comportamento imprevisível</summary>
+<summary>❌ Ruim: tipo não declarado, comportamento imprevisível</summary>
 
 ```sql
 CREATE TABLE Orders (
@@ -47,7 +47,7 @@ CREATE TABLE Orders (
 </details>
 
 <details>
-<summary>✅ Bom — tipo declarado com afinidade explícita</summary>
+<summary>✅ Bom: tipo declarado com afinidade explícita</summary>
 
 ```sql
 CREATE TABLE Orders
@@ -71,7 +71,7 @@ CREATE TABLE Orders
 Foreign keys estão **desativadas por padrão** no SQLite. Precisam ser ativadas por conexão.
 
 <details>
-<summary>❌ Ruim — FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
+<summary>❌ Ruim: FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
 
 ```sql
 -- sem PRAGMA foreign_keys = ON, esta inserção passa silenciosamente
@@ -81,7 +81,7 @@ INSERT INTO Orders (Id, CustomerId) VALUES (1, 999); -- CustomerId 999 não exis
 </details>
 
 <details>
-<summary>✅ Bom — ativar FK no início de cada conexão</summary>
+<summary>✅ Bom: ativar FK no início de cada conexão</summary>
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -108,7 +108,7 @@ VALUES
 eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifier, Identificador Universalmente Único) como `TEXT`.
 
 <details>
-<summary>✅ Bom — BIGINT sequencial via rowid alias</summary>
+<summary>✅ Bom: BIGINT sequencial via rowid alias</summary>
 
 ```sql
 CREATE TABLE Customers
@@ -125,7 +125,7 @@ CREATE TABLE Customers
 </details>
 
 <details>
-<summary>✅ Bom — UUID como TEXT quando unicidade global é requisito</summary>
+<summary>✅ Bom: UUID como TEXT quando unicidade global é requisito</summary>
 
 ```sql
 CREATE TABLE Events
@@ -172,7 +172,7 @@ primeiro acesso). Para operações de escrita, use `IMMEDIATE` para adquirir o l
 | `EXCLUSIVE` | Lock exclusivo total | Operações críticas sem leitores concorrentes |
 
 <details>
-<summary>✅ Bom — transação IMMEDIATE para operação de escrita</summary>
+<summary>✅ Bom: transação IMMEDIATE para operação de escrita</summary>
 
 ```sql
 BEGIN IMMEDIATE;
@@ -217,7 +217,7 @@ SQLite 3.53 adicionou `json_array_insert()` para inserir elemento em posição e
 array JSON.
 
 <details>
-<summary>✅ Bom — armazenar e consultar JSON em coluna TEXT</summary>
+<summary>✅ Bom: armazenar e consultar JSON em coluna TEXT</summary>
 
 ```sql
 -- armazenar
@@ -253,7 +253,7 @@ WHERE
 Crie uma tabela virtual com `USING fts5`.
 
 <details>
-<summary>✅ Bom — tabela FTS5 para busca textual em produtos</summary>
+<summary>✅ Bom: tabela FTS5 para busca textual em produtos</summary>
 
 ```sql
 -- tabela virtual FTS5
@@ -293,10 +293,10 @@ SQLite tem suporte limitado a `ALTER TABLE`. Operações não suportadas exigem 
 | `RENAME COLUMN` | Suportado (3.25+) |
 | `DROP COLUMN` | Suportado (3.35+) |
 | `ADD CONSTRAINT` / `DROP CONSTRAINT` | Suportado (3.53+) |
-| `MODIFY COLUMN` (alterar tipo) | Não suportado — recriar a tabela |
+| `MODIFY COLUMN` (alterar tipo) | Não suportado: recriar a tabela |
 
 <details>
-<summary>✅ Bom — adicionar constraint NOT NULL (SQLite 3.53+)</summary>
+<summary>✅ Bom: adicionar constraint NOT NULL (SQLite 3.53+)</summary>
 
 ```sql
 -- antes do SQLite 3.53: era necessário recriar a tabela
@@ -308,7 +308,7 @@ ALTER TABLE Orders
 </details>
 
 <details>
-<summary>✅ Bom — recriar tabela para alterar tipo de coluna</summary>
+<summary>✅ Bom: recriar tabela para alterar tipo de coluna</summary>
 
 ```sql
 -- passo 1: criar nova tabela com o schema correto
@@ -368,9 +368,9 @@ PRAGMA mmap_size = 268435456; -- 256 MB de mmap
 
 ## Recursos relacionados
 
-- [Formatting](../conventions/formatting.md) — estilo vertical, JOIN, condições
-- [Naming](../conventions/naming.md) — PascalCase, prefixos, constraints
-- [Null Safety](../conventions/advanced/null-safety.md) — NULL, COALESCE, IS NULL
-- [Migrations](../conventions/advanced/migrations.md) — forward only, uma responsabilidade
-- [SQL Server](./sql-server.md) — idiomas específicos do SQL Server
-- [PostgreSQL](./postgres.md) — idiomas específicos do PostgreSQL
+- [Formatting](../conventions/formatting.md): estilo vertical, JOIN, condições
+- [Naming](../conventions/naming.md): PascalCase, prefixos, constraints
+- [Null Safety](../conventions/advanced/null-safety.md): NULL, COALESCE, IS NULL
+- [Migrations](../conventions/advanced/migrations.md): forward only, uma responsabilidade
+- [SQL Server](./sql-server.md): idiomas específicos do SQL Server
+- [PostgreSQL](./postgres.md): idiomas específicos do PostgreSQL

@@ -1,4 +1,4 @@
-# Aggregation — NoSQL
+# Aggregation: NoSQL
 
 > Escopo: NoSQL. Padrões de pipeline de agregação para MongoDB. Princípios aplicam-se a Elasticsearch aggregations e DynamoDB expressions.
 
@@ -12,7 +12,7 @@
 | **$match** (estágio de filtragem) | Filtra documentos; equivale ao `WHERE`; usar no início para reduzir volume antes dos estágios seguintes |
 | **$group** (estágio de agrupamento) | Agrupa documentos por campo e aplica acumuladores (`$sum`, `$avg`, `$count`) |
 | **$lookup** (estágio de junção) | Junta documentos de outra coleção; equivale ao `LEFT JOIN` |
-| **$unwind** (estágio de desempacotamento) | Deconstrói um campo array em múltiplos documentos — um documento por elemento |
+| **$unwind** (estágio de desempacotamento) | Deconstrói um campo array em múltiplos documentos, um por elemento |
 | **$project** (estágio de projeção) | Seleciona e renomeia campos; equivale ao `SELECT`; eliminar campos desnecessários no final |
 | **$sort** (estágio de ordenação) | Ordena documentos pelo campo especificado |
 | **$limit** (estágio de limite) | Limita o número de documentos no resultado |
@@ -30,17 +30,17 @@ $match → $lookup → $unwind → $group → $sort → $limit → $project
 
 Regras:
 
-- `$match` primeiro — reduz o volume antes de qualquer join ou agrupamento
-- `$project` último — eliminar campos que não são necessários no resultado final
+- `$match` primeiro: reduz o volume antes de qualquer join ou agrupamento
+- `$project` último: eliminar campos que não são necessários no resultado final
 - `$limit` antes de `$sort` quando o resultado final é pequeno (top N)
-- `$lookup` após `$match` — nunca fazer lookup sobre a coleção inteira
+- `$lookup` após `$match`: nunca fazer lookup sobre a coleção inteira
 
 ---
 
 ## $match
 
 <details>
-<summary>❌ Ruim — $match após $lookup: join sobre toda a coleção antes de filtrar</summary>
+<summary>❌ Ruim: $match após $lookup, join sobre toda a coleção antes de filtrar</summary>
 
 ```js
 const pipeline = [
@@ -52,14 +52,14 @@ const pipeline = [
       as: 'players',
     },
   },
-  { $match: { 'players.isActive': true } }, // filtro após join — custo alto
+  { $match: { 'players.isActive': true } }, // filtro após join: custo alto
 ];
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — $match primeiro; lookup apenas sobre o subconjunto filtrado</summary>
+<summary>✅ Bom: $match primeiro; lookup apenas sobre o subconjunto filtrado</summary>
 
 ```js
 async function fetchActiveTeamsWithPlayers() {
@@ -96,7 +96,7 @@ async function fetchActiveTeamsWithPlayers() {
 ## $group
 
 <details>
-<summary>❌ Ruim — agrupamento sem $match primeiro; acumulador sem nome de domínio</summary>
+<summary>❌ Ruim: agrupamento sem $match primeiro; acumulador sem nome de domínio</summary>
 
 ```js
 // agrupa toda a coleção sem filtro prévio
@@ -114,7 +114,7 @@ const pipeline = [
 </details>
 
 <details>
-<summary>✅ Bom — $match antes do $group; nomes de domínio nos acumuladores</summary>
+<summary>✅ Bom: $match antes do $group; nomes de domínio nos acumuladores</summary>
 
 ```js
 async function computeTopScorersBySeason(season) {
@@ -146,7 +146,7 @@ async function computeTopScorersBySeason(season) {
 ## $lookup
 
 <details>
-<summary>❌ Ruim — $lookup sem projeção final; trafega todos os campos dos documentos joined</summary>
+<summary>❌ Ruim: $lookup sem projeção final; trafega todos os campos dos documentos joined</summary>
 
 ```js
 // retorna o documento inteiro de cada player junto ao team
@@ -166,7 +166,7 @@ const pipeline = [
 </details>
 
 <details>
-<summary>✅ Bom — $lookup com pipeline interno para projetar apenas os campos necessários</summary>
+<summary>✅ Bom: $lookup com pipeline interno para projetar apenas os campos necessários</summary>
 
 ```js
 async function fetchTeamRoster(teamId) {
@@ -210,7 +210,7 @@ async function fetchTeamRoster(teamId) {
 `$unwind` gera um documento por elemento do array. Documentos sem o campo são descartados por padrão.
 
 <details>
-<summary>❌ Ruim — $unwind sem preserveNullAndEmptyArrays; times sem jogadores são excluídos silenciosamente</summary>
+<summary>❌ Ruim: $unwind sem preserveNullAndEmptyArrays; times sem jogadores são excluídos silenciosamente</summary>
 
 ```js
 const pipeline = [
@@ -229,7 +229,7 @@ const pipeline = [
 </details>
 
 <details>
-<summary>✅ Bom — preserveNullAndEmptyArrays mantém times sem jogadores no resultado</summary>
+<summary>✅ Bom: preserveNullAndEmptyArrays mantém times sem jogadores no resultado</summary>
 
 ```js
 async function fetchTeamsWithOptionalPlayers() {

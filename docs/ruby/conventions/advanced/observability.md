@@ -18,7 +18,7 @@ correlação por tag e integração com Rails.
 ## Log estruturado com semantic_logger
 
 <details>
-<summary>❌ Ruim — log de texto livre sem estrutura</summary>
+<summary>❌ Ruim: log de texto livre sem estrutura</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -36,7 +36,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — log estruturado com campos semânticos</summary>
+<summary>✅ Bom: log estruturado com campos semânticos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -68,8 +68,8 @@ end
 | `debug`  | Detalhes internos; desabilitado em produção                              |
 | `info`   | Eventos de negócio importantes (order criada, pagamento confirmado)      |
 | `warn`   | Situação anormal mas recuperável (retry, fallback ativado)               |
-| `error`  | Falha operacional — requer atenção (exceção capturada, job falhou)       |
-| `fatal`  | Falha irrecuperável — processo deve ser encerrado                        |
+| `error`  | Falha operacional que requer atenção (exceção capturada, job falhou)     |
+| `fatal`  | Falha irrecuperável; processo deve ser encerrado                         |
 
 ## Contexto com tagged logging
 
@@ -124,7 +124,7 @@ logger.info("application started")
 email, CPF e senha nunca entram em logs.
 
 <details>
-<summary>❌ Ruim — dados pessoais no log</summary>
+<summary>❌ Ruim: dados pessoais no log</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -135,7 +135,7 @@ logger.info("user login", email: user.email, password: params[:password])
 </details>
 
 <details>
-<summary>✅ Bom — apenas identificadores opacos</summary>
+<summary>✅ Bom: apenas identificadores opacos</summary>
 
 ```ruby
 # frozen_string_literal: true

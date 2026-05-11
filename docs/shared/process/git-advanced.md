@@ -1,7 +1,7 @@
 # Git (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto. Pré-requisito:
-> [git.md](git.md) — nomenclatura de branches, commits convencionais e PRs.
+> [git.md](git.md): nomenclatura de branches, commits convencionais e PRs.
 
 Rotina prática, limpeza de histórico e recuperação de erros comuns.
 
@@ -27,10 +27,10 @@ pull main → nova branch → commits atômicos → fetch origin/main → merge 
 
 | Passo | O que faz |
 | ----------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `pull main` | Atualiza a main local antes de criar a branch — garante que você parte do estado mais recente |
+| `pull main` | Atualiza a main local antes de criar a branch; garante que você parte do estado mais recente |
 | `nova branch` | Isola o trabalho em uma branch com um único propósito: uma feature, uma correção ou uma refatoração |
 | `commits atômicos` | Registra cada mudança lógica separadamente durante o desenvolvimento |
-| `fetch origin/main` | Baixa as atualizações do remoto sem aplicar nada ainda — permite inspecionar antes de agir |
+| `fetch origin/main` | Baixa as atualizações do remoto sem aplicar nada ainda; permite inspecionar antes de agir |
 | `merge origin/main` | Incorpora as mudanças da main na branch sem reescrever histórico; conflitos ficam explícitos aqui |
 | `PR` | Envia a branch para review; checks de CI/CD validam antes do merge |
 | `squash and merge` | Compacta todos os commits da branch em um único commit limpo na main |
@@ -78,7 +78,7 @@ git push origin feat/user-email-verification
 # 6. após o merge: aguardar estabilização em produção antes de deletar
 git log origin/main --oneline -3
 
-# só então deletar — -d rejeita se a branch não foi mergeada
+# só então deletar: -d rejeita se a branch não foi mergeada
 git branch -d feat/user-email-verification
 git push origin --delete feat/user-email-verification
 ```
@@ -135,7 +135,7 @@ WIP → fix typo → esqueci de salvar → arrumei → squash → feat(auth): ad
 ```
 
 <details>
-<summary>❌ Ruim — histórico fragmentado no merge</summary>
+<summary>❌ Ruim: histórico fragmentado no merge</summary>
 
 ```
 WIP
@@ -150,10 +150,10 @@ feat: email
 </details>
 
 <details>
-<summary>✅ Bom — GitHub (padrão)</summary>
+<summary>✅ Bom: GitHub (padrão)</summary>
 
 No PR aberto, clique no dropdown ao lado de "Merge pull request" e selecione **Squash and merge**. O
-GitHub abre um editor para ajustar a mensagem antes de confirmar — edite antes de clicar em "Confirm
+GitHub abre um editor para ajustar a mensagem antes de confirmar; edite antes de clicar em "Confirm
 squash and merge".
 
 ```
@@ -267,7 +267,7 @@ squash no merge do PR limpa tudo depois.
 `main avança → merge main na branch → conflito resolvido → PR → squash`
 
 <details>
-<summary>❌ Ruim — rebase de rotina</summary>
+<summary>❌ Ruim: rebase de rotina</summary>
 
 ```bash
 # rebase força --force-push depois e reescreve histórico já publicado
@@ -278,7 +278,7 @@ git push --force origin feat/user-email-verification
 </details>
 
 <details>
-<summary>✅ Bom — forward-only</summary>
+<summary>✅ Bom: forward-only</summary>
 
 ```bash
 # incorporar main na branch com um merge commit
@@ -327,7 +327,7 @@ Use rebase apenas em branches **locais** (não publicadas) ou em situações pon
 Nunca em branches compartilhadas.
 
 <details>
-<summary>✅ Bom — limpar commits antes do primeiro push</summary>
+<summary>✅ Bom: limpar commits antes do primeiro push</summary>
 
 ```bash
 # compactar os 4 últimos commits locais em um antes de publicar
@@ -343,7 +343,7 @@ git rebase -i HEAD~4
 </details>
 
 <details>
-<summary>✅ Bom — remover commit com dado sensível (branch local)</summary>
+<summary>✅ Bom: remover commit com dado sensível (branch local)</summary>
 
 ```bash
 # remover um commit específico do histórico antes de publicar
@@ -359,7 +359,7 @@ git rebase -i HEAD~3
 ### Corrigindo um problema em produção
 
 Quando um bug é identificado em produção, o primeiro caminho é criar uma branch de fix a partir da
-main e entregar a correção via PR. É mais seguro que reverter — mantém o histórico avançando e não
+main e entregar a correção via PR. É mais seguro que reverter: mantém o histórico avançando e não
 desfaz mudanças de outros devs que chegaram junto.
 
 `bug identificado → fix/ branch da main → correção → PR → squash and merge → deploy`
@@ -389,11 +389,11 @@ git log origin/main --oneline -3
 </details>
 
 Se o tempo for crítico e não houver janela para review e deploy de um novo PR, o caminho é
-reverter — veja a próxima seção.
+reverter; veja a próxima seção.
 
 ### Revertendo um deploy com problema
 
-`git revert` não apaga o commit — cria um novo commit que desfaz o efeito. O commit original
+`git revert` não apaga o commit: cria um novo commit que desfaz o efeito. O commit original
 permanece no histórico e pode ser inspecionado pelo hash mesmo após a branch ser deletada.
 
 ```
@@ -402,8 +402,8 @@ main: estado estável → feat(auth): add email verification → revert: feat(au
 
 | Ponto | O que representa |
 | ------------------------------------ | ---------------------------------------------------------------------------- |
-| `estado estável` | Main antes do seu deploy — produção funcionando |
-| `feat(auth): add email verification` | Seu squash commit mergeado — introduziu o bug |
+| `estado estável` | Main antes do seu deploy; produção funcionando |
+| `feat(auth): add email verification` | Seu squash commit mergeado; introduziu o bug |
 | `revert: feat(auth)` | Novo commit criado pelo `git revert` que desfaz o efeito do anterior |
 | `produção restaurada` | Main volta ao comportamento do estado estável; seu commit original permanece no histórico |
 
@@ -438,7 +438,7 @@ git merge origin/main
 
 </details>
 
-Se o GitHub ainda mostrar o botão "Restore branch", vale restaurar antes de recriar manualmente — o
+Se o GitHub ainda mostrar o botão "Restore branch", vale restaurar antes de recriar manualmente; o
 histórico completo fica disponível por um período após a deleção.
 
 ---

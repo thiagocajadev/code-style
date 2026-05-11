@@ -91,7 +91,7 @@ function_body_length:
 Executar: `swiftlint --strict` em CI.
 
 <details>
-<summary>❌ Ruim — force unwrap detectado pelo SwiftLint</summary>
+<summary>❌ Ruim: force unwrap detectado pelo SwiftLint</summary>
 
 ```swift
 let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
@@ -100,7 +100,7 @@ let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
 </details>
 
 <details>
-<summary>✅ Bom — guard let com saída antecipada expressiva</summary>
+<summary>✅ Bom: guard let com saída antecipada expressiva</summary>
 
 ```swift
 guard let user = userRepository.find(id: userId) else {

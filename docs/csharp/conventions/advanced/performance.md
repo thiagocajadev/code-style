@@ -3,7 +3,7 @@
 > Escopo: C#. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
 Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar — **Span\<T\>** elimina alocações em fatiamento de string; **GC** pressiona a aplicação quando alocações crescem em laço.
+contexto, prefira legibilidade. Meça antes de otimizar. **Span\<T\>** elimina alocações em fatiamento de string; **GC** pressiona a aplicação quando alocações crescem em laço.
 
 ## Conceitos fundamentais
 
@@ -25,7 +25,7 @@ hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem
 mesma posição de memória, janela diferente.
 
 <details>
-<summary>❌ Ruim — Split aloca array e strings intermediárias</summary>
+<summary>❌ Ruim: Split aloca array e strings intermediárias</summary>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -40,7 +40,7 @@ public string ExtractProductCode(string sku)
 </details>
 
 <details>
-<summary>✅ Bom — Span fatia sem alocar</summary>
+<summary>✅ Bom: Span fatia sem alocar</summary>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -59,7 +59,7 @@ public string ExtractProductCode(string sku)
 `Span<T>` também funciona sobre arrays. Quando o método recebe `T[]` e itera em alta frequência, `ReadOnlySpan<T>` elimina a indireção do enumerador.
 
 <details>
-<summary>❌ Ruim — foreach sobre array em hot path</summary>
+<summary>❌ Ruim: foreach sobre array em hot path</summary>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -77,7 +77,7 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 </details>
 
 <details>
-<summary>✅ Bom — ReadOnlySpan elimina a indireção do enumerador</summary>
+<summary>✅ Bom: ReadOnlySpan elimina a indireção do enumerador</summary>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -103,7 +103,7 @@ string é imutável em .NET. Para construir strings dinamicamente, `StringBuilde
 interno e aloca uma vez no final.
 
 <details>
-<summary>❌ Ruim — nova string alocada por iteração</summary>
+<summary>❌ Ruim: nova string alocada por iteração</summary>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -121,7 +121,7 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 </details>
 
 <details>
-<summary>✅ Bom — StringBuilder reutiliza o buffer</summary>
+<summary>✅ Bom: StringBuilder reutiliza o buffer</summary>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -146,7 +146,7 @@ sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos: res
 já computado. Indicado para métodos de alta frequência: repositórios, caches, validators.
 
 <details>
-<summary>❌ Ruim — <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
+<summary>❌ Ruim: <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
 
 ```csharp
 public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -162,7 +162,7 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom — <b>ValueTask</b> sem alocação no caminho síncrono</summary>
+<summary>✅ Bom: <b>ValueTask</b> sem alocação no caminho síncrono</summary>
 
 ```csharp
 public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -187,12 +187,12 @@ progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sem
 da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
-<summary>❌ Ruim — Guid.NewGuid() é v4: random, fragmenta índice</summary>
+<summary>❌ Ruim: Guid.NewGuid() é v4: random, fragmenta índice</summary>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
 {
-    var orderId = Guid.NewGuid(); // v4 — random, page splits no banco
+    var orderId = Guid.NewGuid(); // v4: random, page splits no banco
     var order = new Order(orderId, request.CustomerId, request.Total);
 
     return order;
@@ -202,12 +202,12 @@ public Order CreateOrder(CreateOrderRequest request)
 </details>
 
 <details>
-<summary>✅ Bom — Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
+<summary>✅ Bom: Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
 {
-    var orderId = Guid.CreateVersion7(); // .NET 9+ — time-ordered, sequencial no índice
+    var orderId = Guid.CreateVersion7(); // .NET 9+: time-ordered, sequencial no índice
     var order = new Order(orderId, request.CustomerId, request.Total);
     return order;
 }

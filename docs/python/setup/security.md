@@ -22,10 +22,10 @@ guia transversal; aqui ficam apenas as escolhas idiomáticas do ecossistema.
 ## Secrets em variáveis de ambiente
 
 Nunca hardcode credenciais. Use `.env` para desenvolvimento local e variáveis de ambiente reais
-para produção — nunca commite o arquivo `.env`.
+para produção. Nunca commite o arquivo `.env`.
 
 <details>
-<summary>❌ Ruim — credencial no código-fonte</summary>
+<summary>❌ Ruim: credencial no código-fonte</summary>
 
 ```python
 DATABASE_URL = "postgresql://admin:s3cr3t@localhost/app"
@@ -35,7 +35,7 @@ JWT_SECRET = "my-super-secret-key"
 </details>
 
 <details>
-<summary>✅ Bom — pydantic-settings lê e valida variáveis de ambiente</summary>
+<summary>✅ Bom: pydantic-settings lê e valida variáveis de ambiente</summary>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -53,7 +53,7 @@ settings = Settings()
 ```
 
 ```bash
-# .env — nunca commite
+# .env: nunca commite
 DATABASE_URL=postgresql://admin:s3cr3t@localhost/app
 JWT_SECRET=my-super-secret-key
 API_KEY=sk-live-...
@@ -70,22 +70,22 @@ API_KEY=sk-live-...
 ## python-dotenv para projetos sem pydantic-settings
 
 Em scripts ou projetos simples que não usam Pydantic, `python-dotenv` carrega o `.env` na
-inicialização. Leia as variáveis via `os.environ` — nunca `os.getenv` sem default em código
+inicialização. Leia as variáveis via `os.environ`, nunca `os.getenv` sem default em código
 de produção: falha rápido se a variável não existir.
 
 <details>
-<summary>❌ Ruim — os.getenv sem validação de presença</summary>
+<summary>❌ Ruim: os.getenv sem validação de presença</summary>
 
 ```python
 import os
 
-db_url = os.getenv("DATABASE_URL")  # None se ausente — bug silencioso
+db_url = os.getenv("DATABASE_URL")  # None se ausente: bug silencioso
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — dotenv + os.environ falha se a variável não existir</summary>
+<summary>✅ Bom: dotenv + os.environ falha se a variável não existir</summary>
 
 ```python
 import os
@@ -93,7 +93,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-db_url = os.environ["DATABASE_URL"]  # KeyError se ausente — falha explícita
+db_url = os.environ["DATABASE_URL"]  # KeyError se ausente: falha explícita
 ```
 
 </details>
@@ -131,7 +131,7 @@ Falhe na inicialização, não em tempo de requisição. Se uma variável obriga
 a aplicação não deve subir.
 
 <details>
-<summary>❌ Ruim — variável obrigatória com default silencioso</summary>
+<summary>❌ Ruim: variável obrigatória com default silencioso</summary>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -144,7 +144,7 @@ class Settings(BaseSettings):
 </details>
 
 <details>
-<summary>✅ Bom — sem default para secrets; Pydantic falha na inicialização</summary>
+<summary>✅ Bom: sem default para secrets; Pydantic falha na inicialização</summary>
 
 ```python
 from pydantic import field_validator

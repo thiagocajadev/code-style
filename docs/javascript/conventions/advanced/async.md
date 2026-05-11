@@ -16,7 +16,7 @@ Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assínc
 ## Callback hell
 
 <details>
-<summary>❌ Ruim — aninhamento cresce sem controle</summary>
+<summary>❌ Ruim: aninhamento cresce sem controle</summary>
 
 ```js
 function fetchUserData(id, callback) {
@@ -33,7 +33,7 @@ function fetchUserData(id, callback) {
 </details>
 
 <details>
-<summary>✅ Bom — async/await, linear e legível</summary>
+<summary>✅ Bom: async/await, linear e legível</summary>
 
 ```js
 async function fetchUserData(id) {
@@ -53,7 +53,7 @@ async function fetchUserData(id) {
 ## .then() encadeado
 
 <details>
-<summary>❌ Ruim — verboso, difícil de depurar</summary>
+<summary>❌ Ruim: verboso, difícil de depurar</summary>
 
 ```js
 function fetchUserData(id) {
@@ -68,7 +68,7 @@ function fetchUserData(id) {
 </details>
 
 <details>
-<summary>✅ Bom — mesmo resultado, sem o ruído</summary>
+<summary>✅ Bom: mesmo resultado, sem o ruído</summary>
 
 ```js
 async function fetchUserData(id) {
@@ -88,7 +88,7 @@ async function fetchUserData(id) {
 ## Bloqueio síncrono
 
 <details>
-<summary>❌ Ruim — loop síncrono trava o thread principal</summary>
+<summary>❌ Ruim: loop síncrono trava o thread principal</summary>
 
 ```js
 function wait(ms) {
@@ -102,7 +102,7 @@ wait(3000); // aplicação trava por 3 segundos
 </details>
 
 <details>
-<summary>✅ Bom — Promise libera o thread enquanto aguarda</summary>
+<summary>✅ Bom: Promise libera o thread enquanto aguarda</summary>
 
 ```js
 function wait(ms) {
@@ -123,7 +123,7 @@ async function run() {
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
 <details>
-<summary>❌ Ruim — await sequencial quando não há dependência</summary>
+<summary>❌ Ruim: await sequencial quando não há dependência</summary>
 
 ```js
 async function fetchDashboard(userId) {
@@ -141,7 +141,7 @@ async function fetchDashboard(userId) {
 </details>
 
 <details>
-<summary>✅ Bom — Promise.all dispara tudo ao mesmo tempo</summary>
+<summary>✅ Bom: Promise.all dispara tudo ao mesmo tempo</summary>
 
 ```js
 async function fetchDashboard(userId) {
@@ -168,7 +168,7 @@ async function fetchDashboard(userId) {
 Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção: sem `fetch` solto espalhado pelo código.
 
 <details>
-<summary>❌ Ruim — fetch direto, configuração duplicada em todo lugar</summary>
+<summary>❌ Ruim: fetch direto, configuração duplicada em todo lugar</summary>
 
 ```js
 // user.service.js
@@ -195,7 +195,7 @@ async function fetchOrders(userId) {
 </details>
 
 <details>
-<summary>✅ Bom — cliente único, injetado onde precisar</summary>
+<summary>✅ Bom: cliente único, injetado onde precisar</summary>
 
 ```js
 // api.client.js
@@ -236,10 +236,10 @@ async function fetchOrders(apiClient, userId) {
 ## Quando criar uma função async
 
 <details>
-<summary>❌ Ruim — I/O síncrono bloqueia o event loop</summary>
+<summary>❌ Ruim: I/O síncrono bloqueia o event loop</summary>
 
 ```js
-// banco de dados síncrono — não existe, mas ilustra o padrão errado
+// banco de dados síncrono: não existe, mas ilustra o padrão errado
 function findUser(id) {
   const user = database.querySync("SELECT * FROM users WHERE id = $1", [id]);
   return user;
@@ -255,7 +255,7 @@ function readConfig() {
 </details>
 
 <details>
-<summary>✅ Bom — toda operação de I/O é async</summary>
+<summary>✅ Bom: toda operação de I/O é async</summary>
 
 ```js
 // banco de dados

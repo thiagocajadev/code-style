@@ -20,7 +20,7 @@
 Uma lista longa de utilities não é componente: é o estado antes de extrair um.
 
 <details>
-<summary>❌ Ruim — lista inlegível, sem nome, não reutilizável</summary>
+<summary>❌ Ruim: lista inlegível, sem nome, não reutilizável</summary>
 
 ```html
 <button class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-blue-600 rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
@@ -31,7 +31,7 @@ Uma lista longa de utilities não é componente: é o estado antes de extrair um
 </details>
 
 <details>
-<summary>✅ Bom — utilities extraídas para componente com @layer</summary>
+<summary>✅ Bom: utilities extraídas para componente com @layer</summary>
 
 ```css
 /* components/button.css */
@@ -60,7 +60,7 @@ Valores arbitrários (`text-[14px]`, `bg-[#3b82f6]`) espalham magic numbers pelo
 tokens no config gera classes semânticas e mantém o design system consistente.
 
 <details>
-<summary>❌ Ruim — valores arbitrários, magic numbers espalhados</summary>
+<summary>❌ Ruim: valores arbitrários, magic numbers espalhados</summary>
 
 ```html
 <div class="text-[13px] bg-[#1e293b] rounded-[6px] p-[18px]">...</div>
@@ -69,7 +69,7 @@ tokens no config gera classes semânticas e mantém o design system consistente.
 </details>
 
 <details>
-<summary>✅ Bom — tokens no tailwind.config, classes semânticas no HTML</summary>
+<summary>✅ Bom: tokens no tailwind.config, classes semânticas no HTML</summary>
 
 ```js
 // tailwind.config.js

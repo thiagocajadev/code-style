@@ -11,16 +11,16 @@ compilador impede `NullPointerException` em tempo de compilação. O operador `!
 | Conceito | O que é |
 | --- | --- |
 | `T?` | tipo anulável; pode conter `null` |
-| `?.` | safe call — acesso ou invocação segura; retorna `null` se receptor for `null` |
-| `?:` | **Elvis operator** — valor padrão ou saída antecipada quando `null` |
-| `!!` | assert não-null; lança `NullPointerException` se `null` — proibido em produção |
+| `?.` | safe call; acesso ou invocação segura, retorna `null` se receptor for `null` |
+| `?:` | **Elvis operator**: valor padrão ou saída antecipada quando `null` |
+| `!!` | assert não-null; lança `NullPointerException` se `null`; proibido em produção |
 | **smart cast** (cast inteligente) | após verificação de null em `if`, o compilador trata como não-nulo |
 | `requireNotNull` | falha rápida com mensagem na fronteira de entrada |
 
 ## `!!` em produção
 
 <details>
-<summary>❌ Ruim — !! como atalho perigoso</summary>
+<summary>❌ Ruim: !! como atalho perigoso</summary>
 
 ```kotlin
 fun getCustomerEmail(userId: Long): String {
@@ -32,7 +32,7 @@ fun getCustomerEmail(userId: Long): String {
 </details>
 
 <details>
-<summary>✅ Bom — elvis com saída antecipada e erro expressivo</summary>
+<summary>✅ Bom: elvis com saída antecipada e erro expressivo</summary>
 
 ```kotlin
 fun getCustomerEmail(userId: Long): String {
@@ -48,7 +48,7 @@ fun getCustomerEmail(userId: Long): String {
 ## Cadeia de safe calls
 
 <details>
-<summary>❌ Ruim — verificações manuais aninhadas</summary>
+<summary>❌ Ruim: verificações manuais aninhadas</summary>
 
 ```kotlin
 fun getCity(order: Order?): String {
@@ -66,7 +66,7 @@ fun getCity(order: Order?): String {
 </details>
 
 <details>
-<summary>✅ Bom — safe call chain com elvis no final</summary>
+<summary>✅ Bom: safe call chain com elvis no final</summary>
 
 ```kotlin
 fun getCity(order: Order?): String {
@@ -80,7 +80,7 @@ fun getCity(order: Order?): String {
 ## `?.let` para bloco condicional
 
 <details>
-<summary>❌ Ruim — if de null-check antes de bloco</summary>
+<summary>❌ Ruim: if de null-check antes de bloco</summary>
 
 ```kotlin
 val promo = order.activePromotion
@@ -93,7 +93,7 @@ if (promo != null) {
 </details>
 
 <details>
-<summary>✅ Bom — let executa somente quando não-null</summary>
+<summary>✅ Bom: let executa somente quando não-null</summary>
 
 ```kotlin
 order.activePromotion?.let { promo ->
@@ -107,7 +107,7 @@ order.activePromotion?.let { promo ->
 ## Validação na fronteira com requireNotNull
 
 <details>
-<summary>❌ Ruim — null chega até a lógica de negócio</summary>
+<summary>❌ Ruim: null chega até a lógica de negócio</summary>
 
 ```kotlin
 fun createOrder(userId: Long?, items: List<Item>?): Order {
@@ -120,7 +120,7 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 </details>
 
 <details>
-<summary>✅ Bom — falha rápida na fronteira com mensagem expressiva</summary>
+<summary>✅ Bom: falha rápida na fronteira com mensagem expressiva</summary>
 
 ```kotlin
 fun createOrder(userId: Long?, items: List<Item>?): Order {
@@ -139,7 +139,7 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 ## Elvis como guard clause de retorno
 
 <details>
-<summary>❌ Ruim — if/else para null-check com retorno</summary>
+<summary>❌ Ruim: if/else para null-check com retorno</summary>
 
 ```kotlin
 fun findProductPrice(productId: Long): Double {
@@ -154,7 +154,7 @@ fun findProductPrice(productId: Long): Double {
 </details>
 
 <details>
-<summary>✅ Bom — elvis guard em uma linha</summary>
+<summary>✅ Bom: elvis guard em uma linha</summary>
 
 ```kotlin
 fun findProductPrice(productId: Long): Double {
@@ -167,10 +167,10 @@ fun findProductPrice(productId: Long): Double {
 
 </details>
 
-## Coleções e null — preferir empty collection
+## Coleções e null: preferir empty collection
 
 <details>
-<summary>❌ Ruim — null para representar lista vazia</summary>
+<summary>❌ Ruim: null para representar lista vazia</summary>
 
 ```kotlin
 fun findOrdersByUser(userId: Long): List<Order>? {
@@ -182,7 +182,7 @@ fun findOrdersByUser(userId: Long): List<Order>? {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
+<summary>✅ Bom: lista vazia; null nunca representa ausência de itens</summary>
 
 ```kotlin
 fun findOrdersByUser(userId: Long): List<Order> {

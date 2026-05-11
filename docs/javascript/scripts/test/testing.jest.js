@@ -1,6 +1,6 @@
-// Jest — framework mais popular, amplamente adotado no ecossistema Node/React
+// Jest: framework mais popular, amplamente adotado no ecossistema Node/React
 // Executar: jest testing.jest.js
-// Convenção: expect(actual).toBe(expected) — actual em expect(), expected em toBe()
+// Convenção: expect(actual).toBe(expected); actual em expect(), expected em toBe()
 
 function applyDiscount(order) {
   if (order.discountPct <= 0) {

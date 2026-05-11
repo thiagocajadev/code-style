@@ -31,7 +31,7 @@ Ação do usuário → URL atualiza → rota correspondida (tipada) → guard ex
 O guard (proteção de rota) verifica autorização durante a resolução da rota, antes de qualquer componente renderizar. Colocar essa verificação dentro do componente é um anti-pattern: o componente monta antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
 
 <details>
-<summary>❌ Ruim — guard no componente renderiza antes de redirecionar</summary>
+<summary>❌ Ruim: guard no componente renderiza antes de redirecionar</summary>
 
 ```js
 function OrdersPage() {
@@ -46,7 +46,7 @@ function OrdersPage() {
 </details>
 
 <details>
-<summary>✅ Bom — guard na resolução da rota, antes de qualquer componente montar</summary>
+<summary>✅ Bom: guard na resolução da rota, antes de qualquer componente montar</summary>
 
 ```js
 {
@@ -75,7 +75,7 @@ Rotas com restrição por papel (role) são aninhadas sob um guard compartilhado
 O loader (carregador de dados) busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos. Sem estado de loading interno, sem `useEffect` de busca disparado após o mount (montagem).
 
 <details>
-<summary>❌ Ruim — busca dentro do componente, após montar</summary>
+<summary>❌ Ruim: busca dentro do componente, após montar</summary>
 
 ```js
 function OrderDetailPage({ orderId }) {
@@ -92,7 +92,7 @@ function OrderDetailPage({ orderId }) {
 </details>
 
 <details>
-<summary>✅ Bom — loader na rota, componente recebe dados prontos</summary>
+<summary>✅ Bom: loader na rota, componente recebe dados prontos</summary>
 
 ```js
 async function loadOrderDetail(loaderArgs) {
@@ -140,7 +140,7 @@ Usuário submete → schema.parse (cliente) → inválido: erros de campo | vál
 O schema (esquema de validação) é a fonte da verdade para formato e regras de campo. Definido uma vez, usado tanto no cliente quanto no servidor.
 
 <details>
-<summary>✅ Bom — schema único como contrato entre cliente e servidor</summary>
+<summary>✅ Bom: schema único como contrato entre cliente e servidor</summary>
 
 ```js
 import { z } from 'zod';
@@ -159,7 +159,7 @@ Validação no cliente é **UX** (User Experience, experiência do usuário): re
 O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) isolado:
 
 <details>
-<summary>✅ Bom — retorno estruturado de erros do servidor</summary>
+<summary>✅ Bom: retorno estruturado de erros do servidor</summary>
 
 ```js
 async function submitOrder(orderInput) {
@@ -213,5 +213,5 @@ O update otimista substitui o spinner de loading (carregamento), não o tratamen
 - C#: [csharp/setup/vertical-slice.md](../../csharp/setup/vertical-slice.md)
 
 **Veja também**
-- [operation-flow.md](operation-flow.md) — pipeline de busca de dados: Component → Hook → Service → apiClient
-- [component-architecture.md](component-architecture.md) — container vs presentacional; rotas impõem essa separação naturalmente
+- [operation-flow.md](operation-flow.md): pipeline de busca de dados: Component → Hook → Service → apiClient
+- [component-architecture.md](component-architecture.md): container vs presentacional; rotas impõem essa separação naturalmente

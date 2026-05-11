@@ -9,7 +9,7 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured 
 | **clause-per-line** (uma cláusula por linha) | `SELECT`, `FROM`, `WHERE`, `JOIN` em linhas separadas; cada cláusula é um marco visual |
 | **indentation** (indentação) | 2 espaços para colunas, expressões e subqueries; mantém alinhamento sem ambiguidade |
 | **vertical layout** (layout vertical) | Query cresce para baixo, não para a direita; elimina scroll horizontal |
-| **comma style** (estilo de vírgula) | Vírgula no final da linha — padrão; vírgula no início preserva diffs limpos |
+| **comma style** (estilo de vírgula) | Vírgula no final da linha (padrão); vírgula no início preserva diffs limpos |
 | **keyword case** (caixa de palavra-chave) | `UPPERCASE` para palavras reservadas (`SELECT`, `WHERE`); identificadores em PascalCase ou snake_case |
 | **trailing whitespace** (espaço em branco final) | Remover sempre; ruído invisível em diffs |
 | **line length** (comprimento de linha) | Limite de 120 colunas; sqlfluff aplica automaticamente |
@@ -47,7 +47,7 @@ WHERE
 Expressão inline é aceita somente quando há ≤3 campos E ≤1 condição. Qualquer coisa além disso vai para o estilo vertical.
 
 <details>
-<summary>❌ Ruim — inline com 4+ campos ou 2+ condições</summary>
+<summary>❌ Ruim: inline com 4+ campos ou 2+ condições</summary>
 
 ```sql
 SELECT Users.Id, Users.Name, Users.Email, Users.Phone FROM Users WHERE Users.IsActive = 1 AND Users.CreatedAt > '2024-01-01';
@@ -56,7 +56,7 @@ SELECT Users.Id, Users.Name, Users.Email, Users.Phone FROM Users WHERE Users.IsA
 </details>
 
 <details>
-<summary>✅ Bom — inline só para operações triviais (≤3 campos, ≤1 condição)</summary>
+<summary>✅ Bom: inline só para operações triviais (≤3 campos, ≤1 condição)</summary>
 
 ```sql
 SELECT Users.Id, Users.Name FROM Users WHERE Users.IsActive = 1;
@@ -69,7 +69,7 @@ DELETE FROM Logs WHERE Logs.Id = 123;
 ## Colunas sem recuo
 
 <details>
-<summary>❌ Ruim — alinhadas com SELECT, sem indentação</summary>
+<summary>❌ Ruim: alinhadas com SELECT, sem indentação</summary>
 
 ```sql
 SELECT 
@@ -84,7 +84,7 @@ AND IsActive = 1
 </details>
 
 <details>
-<summary>✅ Bom — 2 espaços sob cada cláusula</summary>
+<summary>✅ Bom: 2 espaços sob cada cláusula</summary>
 
 ```sql
 SELECT
@@ -103,7 +103,7 @@ WHERE
 ## JOIN com ON simples
 
 <details>
-<summary>❌ Ruim — linha longa misturando JOIN e ON</summary>
+<summary>❌ Ruim: linha longa misturando JOIN e ON</summary>
 
 ```sql
 SELECT Users.Name, Statuses.Description
@@ -114,7 +114,7 @@ WHERE Users.Id = 1;
 </details>
 
 <details>
-<summary>✅ Bom — ON na mesma linha do JOIN quando há uma única condição</summary>
+<summary>✅ Bom: ON na mesma linha do JOIN quando há uma única condição</summary>
 
 ```sql
 SELECT
@@ -133,7 +133,7 @@ WHERE
 ## JOIN com ON complexo
 
 <details>
-<summary>❌ Ruim — múltiplas condições em linha única</summary>
+<summary>❌ Ruim: múltiplas condições em linha única</summary>
 
 ```sql
 SELECT
@@ -150,7 +150,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — uma condição por linha, alinhadas após ON</summary>
+<summary>✅ Bom: uma condição por linha, alinhadas após ON</summary>
 
 ```sql
 SELECT
@@ -174,7 +174,7 @@ WHERE
 Uma condição por linha. AND e OR ao final da linha, nunca no início.
 
 <details>
-<summary>❌ Ruim — AND no início da linha</summary>
+<summary>❌ Ruim: AND no início da linha</summary>
 
 ```sql
 SELECT
@@ -193,7 +193,7 @@ ORDER BY
 </details>
 
 <details>
-<summary>✅ Bom — AND ao final da linha, fluxo de cima pra baixo</summary>
+<summary>✅ Bom: AND ao final da linha, fluxo de cima pra baixo</summary>
 
 ```sql
 SELECT

@@ -10,18 +10,18 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 | **phase** (fase da função) | Etapa lógica (validar, buscar, transformar, persistir, responder) com até 2 linhas antes do respiro |
 | **atomic line** (linha atômica) | Instrução curta e independente; até 3 atômicas homogêneas podem ficar juntas |
 | **explaining return** (retorno explicativo) | `x := ...` single-line + `return x` sem blank entre eles |
-| **declaration + guard** (declaração e guarda) | Variável seguida do `if err != nil` que a valida; em Go o guarda é quase sempre um bloco `{ }` — fase com blank antes |
+| **declaration + guard** (declaração e guarda) | Variável seguida do `if err != nil` que a valida; em Go o guarda é quase sempre um bloco `{ }`, fase com blank antes |
 | **multi-line block** (bloco multi-linha) | Struct literal, slice/map literal ou call com args quebrados em várias linhas; pede blank depois |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; fase distinta — blank antes |
+| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; fase distinta, blank antes |
 | **orphan line** (linha órfã) | Uma linha solta de um grupo de 4+ atômicas; quebrar em 2+2 evita |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:=` verticalmente; antipadrão — frágil a rename, gera diff ruidoso |
+| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:=` verticalmente; antipadrão, frágil a rename e gera diff ruidoso |
 
 ## A regra central
 
 **Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Ruim — bloco sem separação entre grupos lógicos</summary>
+<summary>❌ Ruim: bloco sem separação entre grupos lógicos</summary>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -45,7 +45,7 @@ func processOrder(ctx context.Context, orderID int64) (*Order, error) {
 </details>
 
 <details>
-<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -74,10 +74,10 @@ func processOrder(ctx context.Context, orderID int64) (*Order, error) {
 
 ## Explaining Return: par tight
 
-Uma variável nomeada acima do `return` explica o valor retornado. Sempre que a linha imediatamente acima for essa declaração single-line (`x := ...`) e o `return` retornar exatamente essa variável, os dois formam par de 2 linhas sem blank — não importa quantos passos haja acima. A linha em branco separa o par do que vem antes, não fragmenta o par.
+Uma variável nomeada acima do `return` explica o valor retornado. Sempre que a linha imediatamente acima for essa declaração single-line (`x := ...`) e o `return` retornar exatamente essa variável, os dois formam par de 2 linhas sem blank, não importa quantos passos haja acima. A linha em branco separa o par do que vem antes, não fragmenta o par.
 
 <details>
-<summary>❌ Ruim — blank fragmenta o par</summary>
+<summary>❌ Ruim: blank fragmenta o par</summary>
 
 ```go
 func mapErrorToStatus(err error) int {
@@ -90,7 +90,7 @@ func mapErrorToStatus(err error) int {
 </details>
 
 <details>
-<summary>✅ Bom — par tight</summary>
+<summary>✅ Bom: par tight</summary>
 
 ```go
 func mapErrorToStatus(err error) int {
@@ -110,10 +110,10 @@ Em todos os outros casos, vai blank antes do `return`:
 - linha acima é **multi-linha** (struct literal, slice/map literal, call com args quebrados);
 - linha acima é **side effect** (chamada sem retorno, atribuição em campo) que não nomeia o valor;
 - valor retornado foi criado **vários passos antes**, sem par direto;
-- `return` retorna **chamada de função** ou expressão sem variável nomeada — fase própria.
+- `return` retorna **chamada de função** ou expressão sem variável nomeada: fase própria.
 
 <details>
-<summary>❌ Ruim — return fragmentado quando a linha acima é declaração single-line</summary>
+<summary>❌ Ruim: return fragmentado quando a linha acima é declaração single-line</summary>
 
 ```go
 func calculateTotal(items []Item) float64 {
@@ -126,12 +126,12 @@ func calculateTotal(items []Item) float64 {
 }
 ```
 
-`total` é declaração single-line que nomeia o valor retornado. O blank fragmenta o par Explaining Return — deveria ficar tight.
+`total` é declaração single-line que nomeia o valor retornado. O blank fragmenta o par Explaining Return; deveria ficar tight.
 
 </details>
 
 <details>
-<summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
 
 ```go
 func buildOrderResponse(order Order, requestID string) OrderResponse {
@@ -151,7 +151,7 @@ O bloco multi-linha `data` exige blank depois de si. O par `response` + `return 
 </details>
 
 <details>
-<summary>✅ Bom — return com blank quando retorna chamada (sem variável nomeada)</summary>
+<summary>✅ Bom: return com blank quando retorna chamada (sem variável nomeada)</summary>
 
 ```go
 func findPendingOrders(userID int64) ([]Order, error) {
@@ -165,12 +165,12 @@ Função de uma expressão: o `return` é o único conteúdo, ficou compacto nat
 
 ## Declaração + guarda em bloco
 
-O padrão idiomático de Go é `result, err := fn()` seguido de `if err != nil { ... }` em bloco multi-linha. O `if` em bloco ocupa peso visual próprio — aplica-se a regra de **multi-linha pede respiro**: a declaração e o `if` formam par tight, com blank **depois** do bloco, não entre eles. O critério é visual, não semântico.
+O padrão idiomático de Go é `result, err := fn()` seguido de `if err != nil { ... }` em bloco multi-linha. O `if` em bloco ocupa peso visual próprio: aplica-se a regra de **multi-linha pede respiro**. A declaração e o `if` formam par tight, com blank **depois** do bloco, não entre eles. O critério é visual, não semântico.
 
-Quando o guarda cabe em **uma única linha** (raro em Go, mas válido — `if err != nil { return err }` numa linha), o par com a declaração também é tight, e o blank vem depois.
+Quando o guarda cabe em **uma única linha** (raro em Go, mas válido, como `if err != nil { return err }` numa linha), o par com a declaração também é tight, e o blank vem depois.
 
 <details>
-<summary>❌ Ruim — declaração solta do seu guarda em bloco</summary>
+<summary>❌ Ruim: declaração solta do seu guarda em bloco</summary>
 
 ```go
 order, err := repository.FindByID(ctx, orderID)
@@ -184,7 +184,7 @@ invoice := buildInvoice(order)
 </details>
 
 <details>
-<summary>✅ Bom — declaração + guarda em bloco como par, blank depois</summary>
+<summary>✅ Bom: declaração + guarda em bloco como par, blank depois</summary>
 
 ```go
 order, err := repository.FindByID(ctx, orderID)
@@ -201,10 +201,10 @@ invoice := buildInvoice(order)
 
 Dois `if` consecutivos com **bloco** colados formam muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre insira blank entre eles.
 
-**Exceção:** guardas de uma linha (`if cond { return }`) formam trio homogêneo e ficam tight — a regra do trio atômico se aplica.
+**Exceção:** guardas de uma linha (`if cond { return }`) formam trio homogêneo e ficam tight; a regra do trio atômico se aplica.
 
 <details>
-<summary>❌ Ruim — dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos {} colados</summary>
 
 ```go
 func processOrder(order Order) {
@@ -222,7 +222,7 @@ func processOrder(order Order) {
 </details>
 
 <details>
-<summary>✅ Bom — blank entre os blocos</summary>
+<summary>✅ Bom: blank entre os blocos</summary>
 
 ```go
 func processOrder(order Order) {
@@ -245,7 +245,7 @@ func processOrder(order Order) {
 Três declarações simples consecutivas (`const`, `:=` com literal) formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Ruim — órfão entre blanks</summary>
+<summary>❌ Ruim: órfão entre blanks</summary>
 
 ```go
 const (
@@ -259,7 +259,7 @@ const (
 </details>
 
 <details>
-<summary>✅ Bom — trio tight</summary>
+<summary>✅ Bom: trio tight</summary>
 
 ```go
 const (
@@ -269,12 +269,12 @@ const (
 )
 ```
 
-Atenção: `const` em bloco aqui ganha alinhamento natural do `gofmt`. Em declarações `:=` dentro de função, **um espaço único** ao redor de `:=` — sem padding.
+Atenção: `const` em bloco aqui ganha alinhamento natural do `gofmt`. Em declarações `:=` dentro de função, use **um espaço único** ao redor de `:=`, sem padding.
 
 </details>
 
 <details>
-<summary>✅ Bom — 4 atomics viram 2+2</summary>
+<summary>✅ Bom: 4 atomics viram 2+2</summary>
 
 ```go
 const (
@@ -293,7 +293,7 @@ const (
 Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam par. A quebra natural fica antes do par, não entre ele e sua dependência direta.
 
 <details>
-<summary>❌ Ruim — dependência direta partida</summary>
+<summary>❌ Ruim: dependência direta partida</summary>
 
 ```go
 func buildShippingLabel(order Order) string {
@@ -310,7 +310,7 @@ func buildShippingLabel(order Order) string {
 </details>
 
 <details>
-<summary>✅ Bom — par semântico tight</summary>
+<summary>✅ Bom: par semântico tight</summary>
 
 ```go
 func buildShippingLabel(order Order) string {
@@ -329,7 +329,7 @@ func buildShippingLabel(order Order) string {
 
 ## Fragmentos → montagem: blank antes do consumidor
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que **consome múltiplos fragmentos** (não depende só do último), trate a montagem como fase distinta — blank antes dela. Diferente do par semântico encadeado (onde a última depende **diretamente** da penúltima e por isso fica tight).
+Quando há **dois ou mais fragmentos** preparados e uma linha final que **consome múltiplos fragmentos** (não depende só do último), trate a montagem como fase distinta: blank antes dela. Diferente do par semântico encadeado (onde a última depende **diretamente** da penúltima e por isso fica tight).
 
 Heurística:
 
@@ -337,7 +337,7 @@ Heurística:
 - A última linha **costura múltiplos fragmentos** declarados em linhas diferentes? → fragmentos → montagem, blank antes.
 
 <details>
-<summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
 
 ```go
 func buildDeliveryMessage(user User, order Order) string {
@@ -348,12 +348,12 @@ func buildDeliveryMessage(user User, order Order) string {
 }
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.ID` *e* `order.DeliveryDays`. Não é par direto com `address` — é a fase de montagem.
+`deliveryMessage` consome `fullName`, `address`, `order.ID` e `order.DeliveryDays`. Não é par direto com `address`: é a fase de montagem.
 
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
 
 ```go
 func buildDeliveryMessage(user User, order Order) string {
@@ -374,7 +374,7 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar" (Explain
 Quando um struct literal, slice/map literal ou call quebra em várias linhas, o bloco já ocupa espaço visual próprio. Cole uma linha em branco **depois** dele para isolar o bloco grande do próximo passo.
 
 <details>
-<summary>❌ Ruim — struct literal multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: struct literal multi-linha colado ao próximo statement</summary>
 
 ```go
 func createSession(user User) (string, error) {
@@ -396,7 +396,7 @@ func createSession(user User) (string, error) {
 </details>
 
 <details>
-<summary>✅ Bom — blank depois do struct literal isola o bloco</summary>
+<summary>✅ Bom: blank depois do struct literal isola o bloco</summary>
 
 ```go
 func createSession(user User) (string, error) {
@@ -420,10 +420,10 @@ func createSession(user User) (string, error) {
 
 ## Sem column alignment
 
-Não alinhe verticalmente `:=` ou `=` com múltiplos espaços. Use sempre **um espaço único**. `gofmt` faz padding apenas dentro de struct literais e blocos `const`/`var` — não é column alignment manual, é deterministico.
+Não alinhe verticalmente `:=` ou `=` com múltiplos espaços. Use sempre **um espaço único**. `gofmt` faz padding apenas dentro de struct literais e blocos `const`/`var`; não é column alignment manual, é determinístico.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar `:=`</summary>
+<summary>❌ Ruim: espaços extras para alinhar `:=`</summary>
 
 ```go
 userName     := "alice"
@@ -435,7 +435,7 @@ lastLoginAt  := time.Now().UTC()
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem padding</summary>
+<summary>✅ Bom: espaço único, sem padding</summary>
 
 ```go
 userName := "alice"
@@ -451,7 +451,7 @@ lastLoginAt := time.Now().UTC()
 Agrupe importações em blocos: stdlib, externos, internos. `goimports` faz isso automaticamente.
 
 <details>
-<summary>✅ Bom — importações em 3 grupos separados por linha em branco</summary>
+<summary>✅ Bom: importações em 3 grupos separados por linha em branco</summary>
 
 ```go
 import (
@@ -474,7 +474,7 @@ import (
 Campos de um struct ficam agrupados por responsabilidade. Separação por linha em branco entre grupos lógicos (identificação, configuração, dependências).
 
 <details>
-<summary>❌ Ruim — campos sem separação lógica</summary>
+<summary>❌ Ruim: campos sem separação lógica</summary>
 
 ```go
 type OrderService struct {
@@ -491,7 +491,7 @@ type OrderService struct {
 </details>
 
 <details>
-<summary>✅ Bom — campos agrupados por responsabilidade</summary>
+<summary>✅ Bom: campos agrupados por responsabilidade</summary>
 
 ```go
 type OrderService struct {
@@ -514,7 +514,7 @@ type OrderService struct {
 Em testes, o `assert`/`require` é fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Ruim — assert colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: assert colado ao setup, fases invisíveis</summary>
 
 ```go
 func TestAppliesTenPercentDiscount(t *testing.T) {
@@ -528,7 +528,7 @@ func TestAppliesTenPercentDiscount(t *testing.T) {
 </details>
 
 <details>
-<summary>✅ Bom — assert separado, assertion como fase própria</summary>
+<summary>✅ Bom: assert separado, assertion como fase própria</summary>
 
 ```go
 func TestAppliesTenPercentDiscount(t *testing.T) {
@@ -547,7 +547,7 @@ func TestAppliesTenPercentDiscount(t *testing.T) {
 Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Ruim — interpolação densa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: interpolação densa inline, sem semântica nas partes</summary>
 
 ```go
 func buildShippingMessage(order Order) string {
@@ -562,7 +562,7 @@ func buildShippingMessage(order Order) string {
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
 
 ```go
 func buildShippingMessage(order Order) string {

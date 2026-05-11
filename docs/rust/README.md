@@ -5,7 +5,7 @@
 Convenções Rust aplicando os mesmos princípios do guia. Os exemplos usam Rust 1.95 (2024 Edition)
 como referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

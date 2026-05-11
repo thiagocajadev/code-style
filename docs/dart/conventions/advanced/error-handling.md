@@ -2,7 +2,7 @@
 
 > Escopo: Dart 3.7.
 
-Erros esperados são valores — um sealed class `Result` ou sealed class de erros retorna a
+Erros esperados são valores. Um sealed class `Result` ou sealed class de erros retorna a
 falha ao chamador sem lançar exceção. `Exception` cobre erros recuperáveis. `Error` cobre
 bugs de programação (não capturar em produção).
 
@@ -10,17 +10,17 @@ bugs de programação (não capturar em produção).
 
 | Conceito | O que é |
 | --- | --- |
-| `Exception` | erro recuperável — definir subclasse para cada tipo de domínio |
-| `Error` | bug de programação (ex: `RangeError`, `StateError`) — não capturar em produção |
+| `Exception` | erro recuperável; definir subclasse para cada tipo de domínio |
+| `Error` | bug de programação (ex: `RangeError`, `StateError`); não capturar em produção |
 | `throw` | lança Exception ou Error |
 | `try/catch/finally` | captura exceção; `finally` sempre executa |
-| `on ExceptionType` | captura tipo específico — mais preciso que `catch (e)` genérico |
+| `on ExceptionType` | captura tipo específico; mais preciso que `catch (e)` genérico |
 | **Result pattern** (padrão Resultado) | sealed class com `Success` e `Failure` como alternativa ao throw |
 
 ## Exception genérica
 
 <details>
-<summary>❌ Ruim — throw de string ou Exception genérica</summary>
+<summary>❌ Ruim: throw de string ou Exception genérica</summary>
 
 ```dart
 Future<Order> findOrder(int id) async {
@@ -35,7 +35,7 @@ Future<Order> findOrder(int id) async {
 </details>
 
 <details>
-<summary>✅ Bom — Exception subclassificada por tipo de erro</summary>
+<summary>✅ Bom: Exception subclassificada por tipo de erro</summary>
 
 ```dart
 class OrderNotFoundException implements Exception {
@@ -59,14 +59,14 @@ Future<Order> findOrder(int id) async {
 ## Erro silencioso
 
 <details>
-<summary>❌ Ruim — catch engole sem log</summary>
+<summary>❌ Ruim: catch engole sem log</summary>
 
 ```dart
 Future<void> sendNotification(int userId) async {
   try {
     await _notificationService.send(userId);
   } catch (e) {
-    // silêncio — falha invisível
+    // silêncio: falha invisível
   }
 }
 ```
@@ -74,7 +74,7 @@ Future<void> sendNotification(int userId) async {
 </details>
 
 <details>
-<summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
+<summary>✅ Bom: log estruturado + decisão explícita de continuar</summary>
 
 ```dart
 Future<void> sendNotification(int userId) async {
@@ -95,14 +95,14 @@ Future<void> sendNotification(int userId) async {
 ## Captura por tipo específico
 
 <details>
-<summary>❌ Ruim — catch genérico captura até Errors de programação</summary>
+<summary>❌ Ruim: catch genérico captura até Errors de programação</summary>
 
 ```dart
 Future<Order?> processOrder(int orderId) async {
   try {
     return await _orderService.process(orderId);
   } catch (e) {
-    return null;   // captura RangeError, StateError, etc. — bugs mascarados
+    return null;   // captura RangeError, StateError, etc.: bugs mascarados
   }
 }
 ```
@@ -110,7 +110,7 @@ Future<Order?> processOrder(int orderId) async {
 </details>
 
 <details>
-<summary>✅ Bom — on com tipo específico; re-throw o resto</summary>
+<summary>✅ Bom: on com tipo específico; re-throw o resto</summary>
 
 ```dart
 Future<Order?> processOrder(int orderId) async {
@@ -128,7 +128,7 @@ Future<Order?> processOrder(int orderId) async {
 ## Result pattern com sealed class
 
 <details>
-<summary>❌ Ruim — Exception para controle de fluxo no chamador</summary>
+<summary>❌ Ruim: Exception para controle de fluxo no chamador</summary>
 
 ```dart
 Future<void> submitOrder(OrderRequest request) async {
@@ -146,7 +146,7 @@ Future<void> submitOrder(OrderRequest request) async {
 </details>
 
 <details>
-<summary>✅ Bom — Result como valor; switch exaustivo no chamador</summary>
+<summary>✅ Bom: Result como valor; switch exaustivo no chamador</summary>
 
 ```dart
 sealed class SubmitOrderResult {}

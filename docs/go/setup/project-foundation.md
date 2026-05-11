@@ -4,8 +4,8 @@
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos Go. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
-> evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point enxuto,
-> pacotes por domínio, configuração centralizada.
+> evoluem, alguns podem ficar desatualizados. O princípio importa: entry point enxuto, pacotes
+> por domínio, configuração centralizada.
 
 Um projeto Go bem fundado começa com `go.mod` declarando o módulo e a versão mínima do toolchain.
 O entry point em `cmd/` inicializa configuração e delega para `internal/`. Pacotes ficam organizados
@@ -28,7 +28,7 @@ my-app/
 ├── go.mod                  ← módulo + versão mínima do toolchain
 ├── go.sum                  ← hashes verificados das dependências
 ├── .editorconfig           ← indentação, charset, trailing whitespace
-├── .env.example            ← template — nunca commite .env
+├── .env.example            ← template; nunca commite .env
 ├── cmd/
 │   └── api/
 │       └── main.go         ← entry point: carrega config, sobe servidor
@@ -47,13 +47,13 @@ my-app/
     └── seed.go
 ```
 
-## go.mod — configuração central
+## go.mod: configuração central
 
 `go.mod` declara o módulo, a versão mínima do Go e as dependências diretas.
 `go.sum` é gerado automaticamente e não deve ser editado manualmente.
 
 <details>
-<summary>❌ Ruim — sem versão de toolchain, dependências soltas</summary>
+<summary>❌ Ruim: sem versão de toolchain, dependências soltas</summary>
 
 ```go
 module my-app
@@ -68,7 +68,7 @@ require (
 </details>
 
 <details>
-<summary>✅ Bom — módulo com toolchain fixo e dependências versionadas</summary>
+<summary>✅ Bom: módulo com toolchain fixo e dependências versionadas</summary>
 
 ```go
 module github.com/company/my-app
@@ -97,7 +97,7 @@ Nenhum pacote acessa `os.Getenv` diretamente. Use `os.LookupEnv` para distinguir
 ausência de valor vazio.
 
 <details>
-<summary>❌ Ruim — os.Getenv espalhado em todo lugar</summary>
+<summary>❌ Ruim: os.Getenv espalhado em todo lugar</summary>
 
 ```go
 // internal/order/repository.go
@@ -117,7 +117,7 @@ secret := os.Getenv("JWT_SECRET") // leitura direta
 </details>
 
 <details>
-<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: Config como único ponto de entrada de env vars</summary>
 
 ```go
 // internal/config/config.go
@@ -181,7 +181,7 @@ func NewRepository(db *sqlx.DB) *Repository {
 `cmd/api/main.go` declara intenção, não implementa. Toda inicialização é delegada para `internal/`.
 
 <details>
-<summary>❌ Ruim — main.go como dumping ground</summary>
+<summary>❌ Ruim: main.go como dumping ground</summary>
 
 ```go
 package main
@@ -208,7 +208,7 @@ func main() {
 </details>
 
 <details>
-<summary>✅ Bom — main.go como índice, lógica delegada</summary>
+<summary>✅ Bom: main.go como índice, lógica delegada</summary>
 
 ```go
 // cmd/api/main.go
@@ -276,7 +276,7 @@ func (s *Server) Start() error {
 Cada domínio encapsula handler, service e repository. O server não conhece os internos de cada domínio.
 
 <details>
-<summary>❌ Ruim — estrutura por camada técnica</summary>
+<summary>❌ Ruim: estrutura por camada técnica</summary>
 
 ```
 internal/
@@ -294,7 +294,7 @@ internal/
 </details>
 
 <details>
-<summary>✅ Bom — estrutura por domínio (feature-based)</summary>
+<summary>✅ Bom: estrutura por domínio (feature-based)</summary>
 
 ```
 internal/

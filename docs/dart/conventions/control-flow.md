@@ -12,7 +12,7 @@ de indentação.
 | --- | --- |
 | **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
 | **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
-| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta para 2 alternativas |
+| **ternary** (ternário) | `cond ? a : b`; expressão condicional curta para 2 alternativas |
 | **switch expression** (expressão switch) | `switch` como expressão (Dart 3+) com pattern matching e exaustividade |
 | **pattern matching** (correspondência por padrão) | desestruturar e casar valores em `switch` ou `if-case` |
 | **null-coalescing** (coalescência de ausente) | `??` retorna o primeiro valor não-nulo; `?.` faz acesso seguro |
@@ -24,7 +24,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `r
 o compilador já descartou o branch anterior.
 
 <details>
-<summary>❌ Ruim — else desnecessário após return</summary>
+<summary>❌ Ruim: else desnecessário após return</summary>
 
 ```dart
 double getDiscount(CustomerType type) {
@@ -41,7 +41,7 @@ double getDiscount(CustomerType type) {
 </details>
 
 <details>
-<summary>✅ Bom — early return elimina o else</summary>
+<summary>✅ Bom: early return elimina o else</summary>
 
 ```dart
 double getDiscount(CustomerType type) {
@@ -54,13 +54,13 @@ double getDiscount(CustomerType type) {
 
 </details>
 
-## Ternário — atribuição de 2 valores
+## Ternário: atribuição de 2 valores
 
 Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou mais alternativas
 → `switch` expression. Nunca aninhar ternários.
 
 <details>
-<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```dart
 String label;
@@ -74,7 +74,7 @@ if (order.isPaid) {
 </details>
 
 <details>
-<summary>✅ Bom — ternário na atribuição</summary>
+<summary>✅ Bom: ternário na atribuição</summary>
 
 ```dart
 final label = order.isPaid ? 'Paid' : 'Pending';
@@ -83,7 +83,7 @@ final label = order.isPaid ? 'Paid' : 'Pending';
 </details>
 
 <details>
-<summary>❌ Ruim — ternário aninhado para 3+ alternativas</summary>
+<summary>❌ Ruim: ternário aninhado para 3+ alternativas</summary>
 
 ```dart
 final priority = isUrgent ? isCritical ? 'Critical' : 'High' : 'Normal';
@@ -92,7 +92,7 @@ final priority = isUrgent ? isCritical ? 'Critical' : 'High' : 'Normal';
 </details>
 
 <details>
-<summary>✅ Bom — switch expression para 3+ alternativas</summary>
+<summary>✅ Bom: switch expression para 3+ alternativas</summary>
 
 ```dart
 final priority = switch ((isUrgent, isCritical)) {
@@ -104,10 +104,10 @@ final priority = switch ((isUrgent, isCritical)) {
 
 </details>
 
-## Guard clauses — retorno antecipado
+## Guard clauses: retorno antecipado
 
 <details>
-<summary>❌ Ruim — lógica principal aninhada</summary>
+<summary>❌ Ruim: lógica principal aninhada</summary>
 
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
@@ -131,7 +131,7 @@ Future<Result<Invoice>> processOrder(Order? order) async {
 </details>
 
 <details>
-<summary>✅ Bom — guards eliminam aninhamento</summary>
+<summary>✅ Bom: guards eliminam aninhamento</summary>
 
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
@@ -150,7 +150,7 @@ Future<Result<Invoice>> processOrder(Order? order) async {
 ## Null-coalescing e safe call
 
 <details>
-<summary>❌ Ruim — if/else manual para null</summary>
+<summary>❌ Ruim: if/else manual para null</summary>
 
 ```dart
 String getCity(Order? order) {
@@ -164,7 +164,7 @@ String getCity(Order? order) {
 </details>
 
 <details>
-<summary>✅ Bom — optional chaining com ?? no final</summary>
+<summary>✅ Bom: optional chaining com ?? no final</summary>
 
 ```dart
 String getCity(Order? order) {
@@ -178,10 +178,10 @@ String getCity(Order? order) {
 
 `Map` mapeia chave → valor sem if/else chain. Usar quando o mapeamento não é um enum selado
 (chaves dinâmicas, strings, inteiros). Para enums com todos os cases cobertos, preferir
-`switch` expression — garante exaustividade em tempo de compilação.
+`switch` expression, que garante exaustividade em tempo de compilação.
 
 <details>
-<summary>❌ Ruim — if chain para mapeamento de chave string</summary>
+<summary>❌ Ruim: if chain para mapeamento de chave string</summary>
 
 ```dart
 String httpMessage(int code) {
@@ -196,7 +196,7 @@ String httpMessage(int code) {
 </details>
 
 <details>
-<summary>✅ Bom — Map + ?? para o fallback</summary>
+<summary>✅ Bom: Map + ?? para o fallback</summary>
 
 ```dart
 String httpMessage(int code) {
@@ -217,7 +217,7 @@ String httpMessage(int code) {
 ## `switch` como expressão (Dart 3)
 
 <details>
-<summary>❌ Ruim — if/else chain para mapeamento de valor</summary>
+<summary>❌ Ruim: if/else chain para mapeamento de valor</summary>
 
 ```dart
 String describeStatus(OrderStatus status) {
@@ -236,7 +236,7 @@ String describeStatus(OrderStatus status) {
 </details>
 
 <details>
-<summary>✅ Bom — switch expression exaustivo</summary>
+<summary>✅ Bom: switch expression exaustivo</summary>
 
 ```dart
 String describeStatus(OrderStatus status) {
@@ -254,7 +254,7 @@ String describeStatus(OrderStatus status) {
 ## `if-case` para pattern matching inline
 
 <details>
-<summary>❌ Ruim — verificação de tipo manual</summary>
+<summary>❌ Ruim: verificação de tipo manual</summary>
 
 ```dart
 void handleResult(OrderResult result) {
@@ -268,7 +268,7 @@ void handleResult(OrderResult result) {
 </details>
 
 <details>
-<summary>✅ Bom — if-case faz bind diretamente</summary>
+<summary>✅ Bom: if-case faz bind diretamente</summary>
 
 ```dart
 void handleResult(OrderResult result) {
@@ -283,10 +283,10 @@ void handleResult(OrderResult result) {
 ## Circuit break
 
 Antes de escrever um loop, verifique se `any` ou `every` já resolve. Para encontrar o primeiro
-elemento, use `for-in` com `return` antecipado — é mais claro do que um loop com flag.
+elemento, use `for-in` com `return` antecipado; fica mais claro do que um loop com flag.
 
 <details>
-<summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim: loop com flag percorre tudo mesmo após encontrar</summary>
 
 ```dart
 Product? findFirstExpiredProduct(List<Product> products) {
@@ -305,7 +305,7 @@ Product? findFirstExpiredProduct(List<Product> products) {
 </details>
 
 <details>
-<summary>✅ Bom — for-in com return antecipado sai no primeiro match</summary>
+<summary>✅ Bom: for-in com return antecipado sai no primeiro match</summary>
 
 ```dart
 Product? findFirstExpiredProduct(List<Product> products) {
@@ -320,7 +320,7 @@ Product? findFirstExpiredProduct(List<Product> products) {
 </details>
 
 <details>
-<summary>✅ Bom — any / every com circuit break nativo</summary>
+<summary>✅ Bom: any / every com circuit break nativo</summary>
 
 ```dart
 // para no primeiro true
@@ -335,7 +335,7 @@ final allActive = products.every((p) => p.isActive);
 ## `for...in` idiomático
 
 <details>
-<summary>❌ Ruim — índice manual quando não necessário</summary>
+<summary>❌ Ruim: índice manual quando não necessário</summary>
 
 ```dart
 for (var i = 0; i < items.length; i++) {
@@ -346,7 +346,7 @@ for (var i = 0; i < items.length; i++) {
 </details>
 
 <details>
-<summary>✅ Bom — for-in ou operações de coleção</summary>
+<summary>✅ Bom: for-in ou operações de coleção</summary>
 
 ```dart
 for (final item in items) {
@@ -370,7 +370,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 é a escolha natural.
 
 <details>
-<summary>❌ Ruim — for com índice quando o critério é condição de estado</summary>
+<summary>❌ Ruim: for com índice quando o critério é condição de estado</summary>
 
 ```dart
 for (var i = 0; i < maxAttempts; i++) {
@@ -382,7 +382,7 @@ for (var i = 0; i < maxAttempts; i++) {
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```dart
 var attempt = 0;
@@ -402,10 +402,10 @@ while (attempt < maxAttempts) {
 Use `do-while` quando a primeira iteração deve sempre executar, independente da condição.
 
 <details>
-<summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
 
 ```dart
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
+// verifica antes de executar: se a fila já estiver vazia, nunca executa
 while (taskQueue.isNotEmpty) {
   final task = taskQueue.removeFirst();
   executeTask(task);
@@ -415,10 +415,10 @@ while (taskQueue.isNotEmpty) {
 </details>
 
 <details>
-<summary>✅ Bom — do-while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: do-while quando a primeira execução é garantida</summary>
 
 ```dart
-// drena a fila — processa pelo menos um item antes de verificar
+// drena a fila: processa pelo menos um item antes de verificar
 do {
   final task = taskQueue.removeFirst();
   executeTask(task);

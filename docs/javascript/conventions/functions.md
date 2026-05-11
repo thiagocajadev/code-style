@@ -9,18 +9,18 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 | Conceito | O que é |
 | --- | --- |
 | **single responsibility** (responsabilidade única) | Função tem uma razão para mudar; um motivo para existir |
-| **arrow function** (função flecha) | `() => {}` — sintaxe curta sem `this` próprio; ideal para callbacks |
-| **named function** (função nomeada) | `function name() {}` — aparece com nome no stack trace; ideal para topo de módulo |
+| **arrow function** (função flecha) | `() => {}`: sintaxe curta sem `this` próprio; ideal para callbacks |
+| **named function** (função nomeada) | `function name() {}`: aparece com nome no stack trace; ideal para topo de módulo |
 | **parameter** (parâmetro) | Nome declarado na assinatura; recebe o argumento na chamada |
 | **default parameter** (parâmetro padrão) | Valor usado quando o argumento é `undefined` (`function f(x = 0)`) |
-| **rest parameter** (parâmetro variádico) | `...args` — coleta argumentos restantes em array |
+| **rest parameter** (parâmetro variádico) | `...args`: coleta argumentos restantes em array |
 | **pure function** (função pura) | Mesma entrada → mesma saída; sem efeito colateral observável |
 | **side effect** (efeito colateral) | Leitura ou escrita fora dos argumentos: I/O, mutação externa, log |
 
-## God function — múltiplas responsabilidades
+## God function: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
 
 ```js
 realizaVenda(123);
@@ -72,7 +72,7 @@ function realizaVenda(x) {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom: orquestrador no topo, responsabilidades separadas</summary>
 
 ```js
 await processOrder(123);
@@ -101,10 +101,10 @@ async function processOrder(orderId) {
 
 </details>
 
-## SLA — orquestrador ou implementação, nunca os dois
+## SLA: orquestrador ou implementação, nunca os dois
 
 <details>
-<summary>❌ Ruim — mesma função orquestra e implementa</summary>
+<summary>❌ Ruim: mesma função orquestra e implementa</summary>
 
 ```js
 function buildOrderSummary(order) {
@@ -122,7 +122,7 @@ function buildOrderSummary(order) {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
 
 ```js
 function buildOrderSummary(order) {
@@ -150,7 +150,7 @@ function buildOrderSummary(order) {
 ## Separar cálculo de formatação
 
 <details>
-<summary>❌ Ruim — cálculo e formatação misturados</summary>
+<summary>❌ Ruim: cálculo e formatação misturados</summary>
 
 ```js
 function getOrderSummary(order) {
@@ -166,7 +166,7 @@ function getOrderSummary(order) {
 </details>
 
 <details>
-<summary>✅ Bom — cálculo separado da formatação</summary>
+<summary>✅ Bom: cálculo separado da formatação</summary>
 
 ```js
 function getOrderSummary(order) {
@@ -197,7 +197,7 @@ function getOrderSummary(order) {
 O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
 
 <details>
-<summary>❌ Ruim — variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim: variável auxiliar desnecessária, else após throw</summary>
 
 ```js
 async function findProductById(id) {
@@ -218,7 +218,7 @@ async function findProductById(id) {
 </details>
 
 <details>
-<summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom: intenção clara no topo, detalhe abaixo</summary>
 
 ```js
 async function findProductById(id) {
@@ -241,7 +241,7 @@ async function findProductById(id) {
 O caller expressa o quê, não o como. Toda construção de contexto fica dentro da função.
 
 <details>
-<summary>❌ Ruim — caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim: caller monta lógica inline antes de chamar</summary>
 
 ```js
 await submitOrder({
@@ -254,7 +254,7 @@ await submitOrder({
 </details>
 
 <details>
-<summary>✅ Bom — entrada de uma linha, detalhes dentro</summary>
+<summary>✅ Bom: entrada de uma linha, detalhes dentro</summary>
 
 ```js
 await submitOrder(orderId);
@@ -275,7 +275,7 @@ async function submitOrder(orderId) {
 O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção da função.
 
 <details>
-<summary>❌ Ruim — lógica ou objeto anônimo direto no return</summary>
+<summary>❌ Ruim: lógica ou objeto anônimo direto no return</summary>
 
 ```js
 function buildGreeting(user) {
@@ -290,7 +290,7 @@ function getActiveUsers(users) {
 </details>
 
 <details>
-<summary>✅ Bom — variável expressiva antes do return</summary>
+<summary>✅ Bom: variável expressiva antes do return</summary>
 
 ```js
 function buildGreeting(user) {
@@ -307,7 +307,7 @@ function getActiveUsers(users) {
 </details>
 
 <details>
-<summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim: bare return: pass-through sem nome, o retorno não diz o que é</summary>
 
 ```js
 function findPendingOrders(userId) {
@@ -322,7 +322,7 @@ async function processCheckout(cartId) {
 </details>
 
 <details>
-<summary>✅ Bom — nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom: nome simétrico com a função deixa claro o que sai</summary>
 
 ```js
 function findPendingOrders(userId) {
@@ -339,7 +339,7 @@ async function processCheckout(cartId) {
 </details>
 
 <details>
-<summary>❌ Ruim — string imensa montada inline: ilegível e sem semântica</summary>
+<summary>❌ Ruim: string imensa montada inline: ilegível e sem semântica</summary>
 
 ```js
 function buildShippingLabel(order) {
@@ -350,7 +350,7 @@ function buildShippingLabel(order) {
 </details>
 
 <details>
-<summary>✅ Bom — partes nomeadas antes de montar o resultado</summary>
+<summary>✅ Bom: partes nomeadas antes de montar o resultado</summary>
 
 ```js
 function buildShippingLabel(order) {
@@ -370,7 +370,7 @@ function buildShippingLabel(order) {
 Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco. Nunca duas.
 
 <details>
-<summary>❌ Ruim — parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim: parede de código sem respiro entre grupos</summary>
 
 ```js
 async function processOrder(orderId) {
@@ -388,7 +388,7 @@ async function processOrder(orderId) {
 </details>
 
 <details>
-<summary>✅ Bom — parágrafos de intenção</summary>
+<summary>✅ Bom: parágrafos de intenção</summary>
 
 ```js
 async function processOrder(orderId) {
@@ -407,12 +407,12 @@ async function processOrder(orderId) {
 
 </details>
 
-## Baixa densidade visual — agrupamento
+## Baixa densidade visual: agrupamento
 
 Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
-<summary>❌ Ruim — espaço dentro dos grupos, sem separação entre grupos</summary>
+<summary>❌ Ruim: espaço dentro dos grupos, sem separação entre grupos</summary>
 
 ```js
 async function registerUser(input) {
@@ -436,7 +436,7 @@ async function registerUser(input) {
 </details>
 
 <details>
-<summary>✅ Bom — 0 linhas dentro do grupo, 1 entre grupos</summary>
+<summary>✅ Bom: 0 linhas dentro do grupo, 1 entre grupos</summary>
 
 ```js
 async function registerUser(input) {
@@ -462,7 +462,7 @@ async function registerUser(input) {
 Template literal gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
-<summary>❌ Ruim — todos os detalhes interpolados inline</summary>
+<summary>❌ Ruim: todos os detalhes interpolados inline</summary>
 
 ```js
 function buildConfirmationEmail(user, order) {
@@ -474,7 +474,7 @@ function buildConfirmationEmail(user, order) {
 </details>
 
 <details>
-<summary>✅ Bom — compostos extraídos, string final legível</summary>
+<summary>✅ Bom: compostos extraídos, string final legível</summary>
 
 ```js
 function buildConfirmationEmail(user, order) {
@@ -492,12 +492,12 @@ function buildConfirmationEmail(user, order) {
 
 </details>
 
-## Estilo vertical — parâmetros
+## Estilo vertical: parâmetros
 
 Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto.
 
 <details>
-<summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim: 4+ parâmetros inline, intenção obscura na chamada</summary>
 
 ```js
 function createInvoice(orderId, customerId, amount, dueDate, currency) { /* ... */ }
@@ -508,7 +508,7 @@ createInvoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL");
 </details>
 
 <details>
-<summary>✅ Bom — objeto quando 4+ parâmetros</summary>
+<summary>✅ Bom: objeto quando 4+ parâmetros</summary>
 
 ```js
 function createInvoice(invoiceData) {
@@ -528,19 +528,19 @@ createInvoice({
 
 </details>
 
-## Arrow function — preservar `this` em callbacks
+## Arrow function: preservar `this` em callbacks
 
 Em JavaScript, o `this` é decidido por **quem chama** a função, não por quem a escreve. É daí que vêm os bugs sutis: você escreve um método, passa `function () {}` como **callback** (função de retorno), e dentro dele o `this` deixa de ser o objeto que você esperava.
 
 Duas formas de declarar uma função, dois comportamentos diferentes:
 
-- `function () {}` tem `this` próprio. Em callbacks de `setInterval`, `forEach` ou `addEventListener`, o `this` esperado se perde — vira `undefined` em **strict mode** (modo estrito) ou o objeto global.
-- `() => {}` **não tem `this` próprio**. A **arrow function** (função flecha) herda o `this` **lexical** (léxico) — o `this` do escopo onde ela foi escrita. Por isso preserva a referência da instância dentro do método.
+- `function () {}` tem `this` próprio. Em callbacks de `setInterval`, `forEach` ou `addEventListener`, o `this` esperado se perde: vira `undefined` em **strict mode** (modo estrito) ou o objeto global.
+- `() => {}` **não tem `this` próprio**. A **arrow function** (função flecha) herda o `this` **lexical** (léxico), ou seja, o `this` do escopo onde ela foi escrita. Por isso preserva a referência da instância dentro do método.
 
-Regra prática: em callbacks dentro de métodos, use arrow. Em métodos de objeto e classe, use **method shorthand** (método curto, `obj.foo() {}`) — o `this` é resolvido no **call site** (ponto de chamada): `obj.foo()` → `this === obj`.
+Regra prática: em callbacks dentro de métodos, use arrow. Em métodos de objeto e classe, use **method shorthand** (método curto, `obj.foo() {}`). O `this` é resolvido no **call site** (ponto de chamada): `obj.foo()` → `this === obj`.
 
 <details>
-<summary>❌ Ruim — callback `function` dentro do método quebra o `this` da instância</summary>
+<summary>❌ Ruim: callback `function` dentro do método quebra o `this` da instância</summary>
 
 ```js
 class Cart {
@@ -564,7 +564,7 @@ cart.addAll([10, 20, 30]); // TypeError: Cannot read properties of undefined (re
 </details>
 
 <details>
-<summary>✅ Bom — arrow function captura o `this` léxico do método</summary>
+<summary>✅ Bom: arrow function captura o `this` léxico do método</summary>
 
 ```js
 class Cart {
@@ -588,7 +588,7 @@ cart.addAll([10, 20, 30]);
 </details>
 
 <details>
-<summary>❌ Ruim — `setInterval` com `function` perde acesso aos campos da instância</summary>
+<summary>❌ Ruim: `setInterval` com `function` perde acesso aos campos da instância</summary>
 
 ```js
 class BuildTimer {
@@ -611,7 +611,7 @@ new BuildTimer("build").start();
 </details>
 
 <details>
-<summary>✅ Bom — arrow herda `this`; `label` e `elapsed` continuam acessíveis</summary>
+<summary>✅ Bom: arrow herda `this`; `label` e `elapsed` continuam acessíveis</summary>
 
 ```js
 class BuildTimer {
@@ -634,7 +634,7 @@ new BuildTimer("build").start();
 </details>
 
 <details>
-<summary>❌ Ruim — arrow como método de objeto: o `this` léxico não é o objeto</summary>
+<summary>❌ Ruim: arrow como método de objeto: o `this` léxico não é o objeto</summary>
 
 ```js
 const counter = {
@@ -651,7 +651,7 @@ console.log(counter.count); // 0
 </details>
 
 <details>
-<summary>✅ Bom — method shorthand mantém `this` ligado ao objeto na chamada</summary>
+<summary>✅ Bom: method shorthand mantém `this` ligado ao objeto na chamada</summary>
 
 ```js
 const counter = {
@@ -670,7 +670,7 @@ console.log(counter.count); // 1
 ## Código morto
 
 <details>
-<summary>❌ Ruim — condição impossível, função nunca chamada</summary>
+<summary>❌ Ruim: condição impossível, função nunca chamada</summary>
 
 ```js
 function getStatus(value) {
@@ -690,7 +690,7 @@ function legacyTransform(items) {
 </details>
 
 <details>
-<summary>✅ Bom — remove o que não é usado</summary>
+<summary>✅ Bom: remove o que não é usado</summary>
 
 ```js
 function getStatus(value) {

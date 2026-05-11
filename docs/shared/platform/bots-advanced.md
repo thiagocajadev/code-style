@@ -1,7 +1,7 @@
 # Bots de Mensageria (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
-> Pré-requisito: [bots.md](bots.md) — conceitos fundamentais (webhook, polling, command routing, session, rate limit).
+> Pré-requisito: [bots.md](bots.md): conceitos fundamentais (webhook, polling, command routing, session, rate limit).
 
 Este guia cobre as particularidades de cada plataforma: como autenticar, quais primitivas de **UI** (User Interface, interface do usuário) cada uma oferece e onde estão os limites de cada **gateway** (ponto de entrada da plataforma).
 
@@ -130,7 +130,7 @@ O WhatsApp tem dois caminhos radicalmente diferentes para automação:
 
 Para qualquer uso com usuários reais ou dados sensíveis, use a **Business API** oficial.
 
-### Business API — fluxo de mensagens
+### Business API: fluxo de mensagens
 
 O primeiro contato com um usuário sempre exige uma **Template Message** aprovada pela Meta. Após o usuário responder, abre-se uma janela de 24 horas para troca livre de mensagens.
 
@@ -218,8 +218,8 @@ Declare apenas os scopes necessários em OAuth & Permissions. Scopes desnecessá
 
 ## Veja também
 
-- [bots.md](bots.md) — conceitos fundamentais: webhook, polling, command routing, rate limit, lifecycle
-- [javascript/frameworks/bot/discord.md](../../javascript/frameworks/bot/discord.md) — implementação discord.js
-- [javascript/frameworks/bot/telegram.md](../../javascript/frameworks/bot/telegram.md) — implementação Telegraf
-- [javascript/frameworks/bot/whatsapp.md](../../javascript/frameworks/bot/whatsapp.md) — implementação Baileys e Meta Cloud API
-- [javascript/frameworks/bot/slack.md](../../javascript/frameworks/bot/slack.md) — implementação Bolt for JavaScript
+- [bots.md](bots.md): conceitos fundamentais: webhook, polling, command routing, rate limit, lifecycle
+- [javascript/frameworks/bot/discord.md](../../javascript/frameworks/bot/discord.md): implementação discord.js
+- [javascript/frameworks/bot/telegram.md](../../javascript/frameworks/bot/telegram.md): implementação Telegraf
+- [javascript/frameworks/bot/whatsapp.md](../../javascript/frameworks/bot/whatsapp.md): implementação Baileys e Meta Cloud API
+- [javascript/frameworks/bot/slack.md](../../javascript/frameworks/bot/slack.md): implementação Bolt for JavaScript

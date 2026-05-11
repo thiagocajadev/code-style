@@ -22,7 +22,7 @@ Interfaces em Go são pequenas e compostas. Defina-as no pacote consumidor, não
 pacote que implementa. Isso inverte a dependência e facilita testes.
 
 <details>
-<summary>❌ Ruim — interface grande definida no pacote de implementação</summary>
+<summary>❌ Ruim: interface grande definida no pacote de implementação</summary>
 
 ```go
 // package order
@@ -39,10 +39,10 @@ type OrderRepository interface {
 </details>
 
 <details>
-<summary>✅ Bom — interface mínima no pacote consumidor</summary>
+<summary>✅ Bom: interface mínima no pacote consumidor</summary>
 
 ```go
-// package order (service.go) — define apenas o que usa
+// package order (service.go): define apenas o que usa
 type orderRepository interface {
     FindByID(ctx context.Context, id int64) (*Order, error)
     Save(ctx context.Context, order Order) (*Order, error)
@@ -61,7 +61,7 @@ Use structs para modelar entidades de domínio. Prefira campos exportados para s
 de transferência de dados; campos unexported para structs com invariantes a proteger.
 
 <details>
-<summary>✅ Bom — struct com construtor que valida invariantes</summary>
+<summary>✅ Bom: struct com construtor que valida invariantes</summary>
 
 ```go
 type Money struct {
@@ -94,7 +94,7 @@ Crie tipos nomeados para primitivos com semântica específica. O compilador imp
 confusão entre tipos com a mesma representação subjacente.
 
 <details>
-<summary>❌ Ruim — ID como int64 genérico, fácil de confundir</summary>
+<summary>❌ Ruim: ID como int64 genérico, fácil de confundir</summary>
 
 ```go
 func transferFunds(fromAccount int64, toAccount int64, amount float64) error {
@@ -105,7 +105,7 @@ func transferFunds(fromAccount int64, toAccount int64, amount float64) error {
 </details>
 
 <details>
-<summary>✅ Bom — tipos nomeados: o compilador impede troca acidental</summary>
+<summary>✅ Bom: tipos nomeados: o compilador impede troca acidental</summary>
 
 ```go
 type AccountID int64
@@ -124,7 +124,7 @@ Use embedding para reutilizar comportamento sem herança. O tipo embedded expõe
 seus métodos diretamente no tipo externo.
 
 <details>
-<summary>❌ Ruim — delegação manual método a método</summary>
+<summary>❌ Ruim: delegação manual método a método</summary>
 
 ```go
 type AuditableOrder struct {
@@ -143,7 +143,7 @@ func (a *AuditableOrder) IsCancelable() bool {
 </details>
 
 <details>
-<summary>✅ Bom — embedding promove métodos automaticamente</summary>
+<summary>✅ Bom: embedding promove métodos automaticamente</summary>
 
 ```go
 type AuditableOrder struct {
@@ -163,7 +163,7 @@ Use generics quando a lógica é idêntica para múltiplos tipos. Evite generics
 quando uma interface resolve o problema com mais clareza.
 
 <details>
-<summary>❌ Ruim — duplicação de lógica para diferentes tipos</summary>
+<summary>❌ Ruim: duplicação de lógica para diferentes tipos</summary>
 
 ```go
 func containsInt(slice []int, value int) bool {
@@ -188,7 +188,7 @@ func containsString(slice []string, value string) bool {
 </details>
 
 <details>
-<summary>✅ Bom — função genérica com type constraint</summary>
+<summary>✅ Bom: função genérica com type constraint</summary>
 
 ```go
 func Contains[T comparable](slice []T, value T) bool {
@@ -210,7 +210,7 @@ Prefira type switch quando há múltiplos tipos possíveis. Use a forma de dois 
 `val, ok := x.(T)` para evitar panic.
 
 <details>
-<summary>❌ Ruim — type assertion sem verificação, pode causar panic</summary>
+<summary>❌ Ruim: type assertion sem verificação, pode causar panic</summary>
 
 ```go
 func processEvent(event interface{}) {
@@ -222,7 +222,7 @@ func processEvent(event interface{}) {
 </details>
 
 <details>
-<summary>✅ Bom — type assertion com verificação de ok</summary>
+<summary>✅ Bom: type assertion com verificação de ok</summary>
 
 ```go
 func processEvent(event interface{}) error {
@@ -244,7 +244,7 @@ Use a declaração `var _ Interface = (*Type)(nil)` para verificar que um tipo
 implementa uma interface sem instanciar.
 
 <details>
-<summary>✅ Bom — verificação de implementação em tempo de compilação</summary>
+<summary>✅ Bom: verificação de implementação em tempo de compilação</summary>
 
 ```go
 // compilará com erro se postgresOrderRepo não implementar OrderRepository

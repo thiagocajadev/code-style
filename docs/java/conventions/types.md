@@ -17,13 +17,13 @@ genéricos) para contratos reutilizáveis.
 | **pattern matching** (correspondência de padrão) | desconstrói records e tipos no `switch` ou `instanceof` |
 | **boilerplate** (código burocrático) | código repetitivo sem valor de domínio; records e Lombok eliminam |
 
-## Records — dados sem boilerplate (código burocrático)
+## Records: dados sem boilerplate (código burocrático)
 
 `record` é o tipo certo para objetos de dados imutáveis. Compacto, seguro e sem
 getter/setter manual.
 
 <details>
-<summary>❌ Ruim — classe de dados verbosa</summary>
+<summary>❌ Ruim: classe de dados verbosa</summary>
 
 ```java
 public class UserProfile {
@@ -48,7 +48,7 @@ public class UserProfile {
 </details>
 
 <details>
-<summary>✅ Bom — record elimina o boilerplate</summary>
+<summary>✅ Bom: record elimina o boilerplate</summary>
 
 ```java
 public record UserProfile(String id, String name, String email) {}
@@ -63,7 +63,7 @@ profile.name(); // getter gerado
 ## Records com validação no construtor compacto
 
 <details>
-<summary>✅ Bom — construtor compacto valida invariantes</summary>
+<summary>✅ Bom: construtor compacto valida invariantes</summary>
 
 ```java
 public record Money(BigDecimal amount, String currency) {
@@ -81,13 +81,13 @@ public record Money(BigDecimal amount, String currency) {
 
 </details>
 
-## Sealed classes — hierarquias fechadas
+## Sealed classes: hierarquias fechadas
 
 `sealed` restringe quais classes podem implementar uma interface ou estender uma
 classe. O compilador garante que todos os casos são cobertos no switch.
 
 <details>
-<summary>❌ Ruim — hierarquia aberta, switch incompleto passa em silêncio</summary>
+<summary>❌ Ruim: hierarquia aberta, switch incompleto passa em silêncio</summary>
 
 ```java
 public abstract class PaymentResult {}
@@ -105,7 +105,7 @@ String message = switch (result) {
 </details>
 
 <details>
-<summary>✅ Bom — sealed garante cobertura total em tempo de compilação</summary>
+<summary>✅ Bom: sealed garante cobertura total em tempo de compilação</summary>
 
 ```java
 public sealed interface PaymentResult
@@ -115,7 +115,7 @@ public record PaymentSuccess(BigDecimal amount) implements PaymentResult {}
 public record PaymentFailure(String reason) implements PaymentResult {}
 public record PaymentPending(String transactionId) implements PaymentResult {}
 
-// compilador exige todos os cases — sem default necessário
+// compilador exige todos os cases, sem default necessário
 String message = switch (result) {
     case PaymentSuccess s -> "Paid: " + s.amount();
     case PaymentFailure f -> "Failed: " + f.reason();
@@ -130,7 +130,7 @@ String message = switch (result) {
 Enums não são só constantes. Podem carregar dados e implementar métodos.
 
 <details>
-<summary>❌ Ruim — lógica espalhada fora do enum</summary>
+<summary>❌ Ruim: lógica espalhada fora do enum</summary>
 
 ```java
 public enum OrderStatus { PENDING, APPROVED, REJECTED, CANCELLED }
@@ -144,7 +144,7 @@ else if (status == OrderStatus.APPROVED) label = "Approved";
 </details>
 
 <details>
-<summary>✅ Bom — enum centraliza os dados e o comportamento</summary>
+<summary>✅ Bom: enum centraliza os dados e o comportamento</summary>
 
 ```java
 public enum OrderStatus {
@@ -166,12 +166,12 @@ final var label = order.getStatus().label();
 
 </details>
 
-## Generics — contratos reutilizáveis
+## Generics: contratos reutilizáveis
 
 Generics eliminam casts e tornam os contratos explícitos.
 
 <details>
-<summary>❌ Ruim — raw type (tipo sem parâmetro genérico) perde a segurança do compilador</summary>
+<summary>❌ Ruim: raw type (tipo sem parâmetro genérico) perde a segurança do compilador</summary>
 
 ```java
 public List fetchAll() { // raw type
@@ -185,7 +185,7 @@ Order order = (Order) orders.get(0); // cast manual
 </details>
 
 <details>
-<summary>✅ Bom — tipo parametrizado torna o contrato explícito</summary>
+<summary>✅ Bom: tipo parametrizado torna o contrato explícito</summary>
 
 ```java
 public List<Order> fetchAll() {
@@ -205,7 +205,7 @@ Use bounded wildcards para aceitar coleções de subtipos sem perder a
 legibilidade do contrato.
 
 <details>
-<summary>✅ Bom — covariance (covariância: aceitar tipos mais específicos) com `? extends`</summary>
+<summary>✅ Bom: covariance (covariância: aceitar tipos mais específicos) com `? extends`</summary>
 
 ```java
 // aceita List<Order>, List<PriorityOrder>, List<SampleOrder>

@@ -1,6 +1,6 @@
 # Observability
 
-> Escopo: Java 25 LTS — SLF4J + Logback + Micrometer.
+> Escopo: Java 25 LTS com SLF4J + Logback + Micrometer.
 
 Observabilidade cobre três pilares: **logs** (eventos), **métricas** e **traces** (rastreamentos).
 O stack padrão Spring Boot 4 já inclui SLF4J (Simple Logging Facade for Java, Fachada de Log
@@ -17,13 +17,13 @@ para Java) como abstração, Logback como implementação e Micrometer para mét
 | **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
 | **correlationId** (identificador de correlação) | identificador único de uma requisição; propagado via MDC |
 
-## SLF4J — abstração de log
+## SLF4J: abstração de log
 
 Nunca use a implementação diretamente (`java.util.logging`, `Log4j`). Use sempre a fachada SLF4J:
 troca a implementação sem alterar o código.
 
 <details>
-<summary>❌ Ruim — log direto para stdout, sem estrutura</summary>
+<summary>❌ Ruim: log direto para stdout, sem estrutura</summary>
 
 ```java
 public class OrderService {
@@ -39,7 +39,7 @@ public class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — SLF4J com placeholders, sem concatenação</summary>
+<summary>✅ Bom: SLF4J com placeholders, sem concatenação</summary>
 
 ```java
 @Slf4j // Lombok gera: private static final Logger log = LoggerFactory.getLogger(OrderService.class);
@@ -71,7 +71,7 @@ public class OrderService {
 | `TRACE` | Rastreamento granular de execução; nunca em prod                       |
 
 <details>
-<summary>❌ Ruim — nível errado obscurece o problema</summary>
+<summary>❌ Ruim: nível errado obscurece o problema</summary>
 
 ```java
 log.info("Database connection failed"); // deveria ser ERROR
@@ -81,7 +81,7 @@ log.error("User logged in: {}", user.getId()); // deveria ser INFO ou DEBUG
 </details>
 
 <details>
-<summary>✅ Bom — nível adequado ao evento</summary>
+<summary>✅ Bom: nível adequado ao evento</summary>
 
 ```java
 log.info("Order created: orderId={} customerId={}", order.getId(), order.getCustomer().getId());
@@ -91,13 +91,13 @@ log.error("Payment failed: orderId={} reason={}", orderId, ex.getMessage(), ex);
 
 </details>
 
-## MDC — Mapped Diagnostic Context (Contexto de Diagnóstico Mapeado)
+## MDC: Mapped Diagnostic Context (Contexto de Diagnóstico Mapeado)
 
 MDC adiciona contexto ao log de uma thread inteira sem alterar cada chamada de log individualmente.
 Use para propagar `correlationId` e `userId` entre todas as mensagens de uma requisição.
 
 <details>
-<summary>❌ Ruim — correlationId repetido em cada log</summary>
+<summary>❌ Ruim: correlationId repetido em cada log</summary>
 
 ```java
 log.info("Processing order: orderId={} correlationId={}", orderId, correlationId);
@@ -108,7 +108,7 @@ log.info("Invoice saved: invoiceId={} correlationId={}", invoiceId, correlationI
 </details>
 
 <details>
-<summary>✅ Bom — MDC popula o contexto uma vez; Logback inclui em todos os logs</summary>
+<summary>✅ Bom: MDC popula o contexto uma vez; Logback inclui em todos os logs</summary>
 
 ```java
 // filter/CorrelationFilter.java
@@ -136,13 +136,13 @@ public class CorrelationFilter implements Filter {
 
 </details>
 
-## PII — dados pessoais nos logs
+## PII: dados pessoais nos logs
 
 Nunca logue PII (Personally Identifiable Information, Informações de Identificação Pessoal):
 senhas, tokens, CPF, cartão de crédito, endereços completos.
 
 <details>
-<summary>❌ Ruim — PII nos logs</summary>
+<summary>❌ Ruim: PII nos logs</summary>
 
 ```java
 log.info("User login: email={} password={}", user.getEmail(), user.getPassword());
@@ -152,7 +152,7 @@ log.debug("Payment: card={} cvv={}", card.getNumber(), card.getCvv());
 </details>
 
 <details>
-<summary>✅ Bom — apenas identificadores não sensíveis</summary>
+<summary>✅ Bom: apenas identificadores não sensíveis</summary>
 
 ```java
 log.info("User login: userId={}", user.getId());
@@ -161,13 +161,13 @@ log.debug("Payment initiated: orderId={} method={}", orderId, payment.getMethod(
 
 </details>
 
-## Micrometer — métricas
+## Micrometer: métricas
 
 Micrometer é a fachada de métricas do Spring Boot 4. Exponha contadores e timers para monitorar
 operações críticas.
 
 <details>
-<summary>✅ Bom — contador e timer para operação de negócio</summary>
+<summary>✅ Bom: contador e timer para operação de negócio</summary>
 
 ```java
 @Service

@@ -16,10 +16,10 @@ via `runTest`.
 | `runTest` | executor de coroutines em testes; controla tempo virtual com `advanceTimeBy` |
 | **table-driven test** (teste guiado por tabela) | parametrização de cenários via `@ParameterizedTest` ou `forAll` do Kotest |
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 <details>
-<summary>❌ Ruim — setup, ação e assert misturados</summary>
+<summary>❌ Ruim: setup, ação e assert misturados</summary>
 
 ```kotlin
 @Test
@@ -34,7 +34,7 @@ fun testOrder() {
 </details>
 
 <details>
-<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom: AAA explícito com nomes expressivos</summary>
 
 ```kotlin
 @Test
@@ -62,7 +62,7 @@ fun `findOrder returns paid order when found`() {
 ## Nomes de teste expressivos
 
 <details>
-<summary>❌ Ruim — nomes genéricos sem contexto</summary>
+<summary>❌ Ruim: nomes genéricos sem contexto</summary>
 
 ```kotlin
 @Test
@@ -78,7 +78,7 @@ fun orderTest() { ... }
 </details>
 
 <details>
-<summary>✅ Bom — backtick notation descreve comportamento</summary>
+<summary>✅ Bom: backtick notation descreve comportamento</summary>
 
 ```kotlin
 @Test
@@ -96,7 +96,7 @@ fun `applyDiscount throws when rate is outside 0-1 range`() { ... }
 ## Testes de coroutines com runTest
 
 <details>
-<summary>❌ Ruim — runBlocking não controla tempo virtual</summary>
+<summary>❌ Ruim: runBlocking não controla tempo virtual</summary>
 
 ```kotlin
 @Test
@@ -109,7 +109,7 @@ fun testRetryWithDelay() = runBlocking {
 </details>
 
 <details>
-<summary>✅ Bom — runTest com advanceTimeBy</summary>
+<summary>✅ Bom: runTest com advanceTimeBy</summary>
 
 ```kotlin
 @Test
@@ -130,7 +130,7 @@ fun `retryWithDelay retries after 1 second`() = runTest {
 ## Mocking com mockk
 
 <details>
-<summary>❌ Ruim — stub genérico sem verificação de comportamento</summary>
+<summary>❌ Ruim: stub genérico sem verificação de comportamento</summary>
 
 ```kotlin
 @Test
@@ -140,14 +140,14 @@ fun testSendNotification() {
 
     handler.confirmOrder(order)
 
-    // sem verificação — o teste não garante nada
+    // sem verificação: o teste não garante nada
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — verify com exatamente o que deve ser chamado</summary>
+<summary>✅ Bom: verify com exatamente o que deve ser chamado</summary>
 
 ```kotlin
 @Test
@@ -174,7 +174,7 @@ fun `confirmOrder sends confirmation email to customer`() {
 ## Testes parametrizados
 
 <details>
-<summary>❌ Ruim — testes duplicados com dados diferentes</summary>
+<summary>❌ Ruim: testes duplicados com dados diferentes</summary>
 
 ```kotlin
 @Test
@@ -199,7 +199,7 @@ fun `rate -0_1 is invalid`() {
 </details>
 
 <details>
-<summary>✅ Bom — tabela de dados cobre todos os cenários</summary>
+<summary>✅ Bom: tabela de dados cobre todos os cenários</summary>
 
 ```kotlin
 @ParameterizedTest

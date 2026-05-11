@@ -22,7 +22,7 @@ Sempre use `DateTime<Utc>` em structs de domínio, persistência e APIs.
 Nunca armazene `NaiveDateTime` sem documentar explicitamente que o timezone é implícito.
 
 <details>
-<summary>❌ Ruim — NaiveDateTime sem timezone</summary>
+<summary>❌ Ruim: NaiveDateTime sem timezone</summary>
 
 ```rust
 use chrono::NaiveDateTime;
@@ -42,7 +42,7 @@ fn order_is_expired(order: &Order) -> bool {
 </details>
 
 <details>
-<summary>✅ Bom — DateTime<Utc> explícito</summary>
+<summary>✅ Bom: DateTime<Utc> explícito</summary>
 
 ```rust
 use chrono::{DateTime, Utc};
@@ -65,7 +65,7 @@ fn order_is_expired(order: &Order) -> bool {
 Parse datas de entrada com formato explícito. Nunca confie em inferência de formato.
 
 <details>
-<summary>❌ Ruim — parse sem formato definido</summary>
+<summary>❌ Ruim: parse sem formato definido</summary>
 
 ```rust
 fn parse_due_date(raw: &str) -> chrono::NaiveDate {
@@ -76,7 +76,7 @@ fn parse_due_date(raw: &str) -> chrono::NaiveDate {
 </details>
 
 <details>
-<summary>✅ Bom — parse com Result e formato documentado</summary>
+<summary>✅ Bom: parse com Result e formato documentado</summary>
 
 ```rust
 use chrono::NaiveDate;
@@ -95,20 +95,20 @@ fn parse_due_date(raw: &str) -> anyhow::Result<NaiveDate> {
 `chrono` integra com Serde via feature `serde`. Use o formato RFC 3339 para APIs.
 
 <details>
-<summary>❌ Ruim — timestamp como inteiro sem contexto</summary>
+<summary>❌ Ruim: timestamp como inteiro sem contexto</summary>
 
 ```rust
 #[derive(serde::Serialize)]
 struct OrderResponse {
     pub id: u64,
-    pub created_at: i64, // Unix timestamp — ambíguo: segundos? milissegundos?
+    pub created_at: i64, // Unix timestamp ambíguo: segundos ou milissegundos?
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — DateTime<Utc> serializado como RFC 3339</summary>
+<summary>✅ Bom: DateTime<Utc> serializado como RFC 3339</summary>
 
 ```rust
 use chrono::{DateTime, Utc};
@@ -130,20 +130,20 @@ struct OrderResponse {
 Use `chrono::Duration` para operações de data. Evite aritmética manual com segundos.
 
 <details>
-<summary>❌ Ruim — aritmética manual com segundos</summary>
+<summary>❌ Ruim: aritmética manual com segundos</summary>
 
 ```rust
 fn is_session_valid(created_at: DateTime<Utc>) -> bool {
     let now = Utc::now().timestamp();
     let elapsed = now - created_at.timestamp();
-    elapsed < 3600 // 3600 — quantas horas? não é óbvio
+    elapsed < 3600 // 3600: quantas horas? não é óbvio
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Duration com intenção legível</summary>
+<summary>✅ Bom: Duration com intenção legível</summary>
 
 ```rust
 const SESSION_DURATION: chrono::Duration = chrono::Duration::hours(1);

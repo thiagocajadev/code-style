@@ -15,10 +15,10 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 | **extension function** (função de extensão) | função adicionada a um tipo existente sem herança; sintaxe `fun Type.name()` |
 | **top-level function** (função de topo) | função declarada fora de qualquer classe; favorita ao utilitário estático |
 
-## God function — múltiplas responsabilidades
+## God function: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim: busca, valida, calcula e persiste em uma função só</summary>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -52,7 +52,7 @@ fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom: orquestrador limpo, detalhes em funções dedicadas</summary>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -79,10 +79,10 @@ private fun notifyConfirmation(email: String) { ... }
 
 </details>
 
-## SLA — orquestrador ou implementação
+## SLA: orquestrador ou implementação
 
 <details>
-<summary>❌ Ruim — função mistura nível de abstração</summary>
+<summary>❌ Ruim: função mistura nível de abstração</summary>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -100,7 +100,7 @@ fun generateReport(orders: List<Order>): Report {
 </details>
 
 <details>
-<summary>✅ Bom — cada função em um único nível</summary>
+<summary>✅ Bom: cada função em um único nível</summary>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -122,7 +122,7 @@ private fun calculateRevenue(orders: List<Order>): Double =
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -135,7 +135,7 @@ fun findActiveCustomers(customers: List<Customer>): List<Customer> {
 </details>
 
 <details>
-<summary>✅ Bom — explaining return com val nomeada</summary>
+<summary>✅ Bom: explaining return com val nomeada</summary>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -156,7 +156,7 @@ Extension functions adicionam comportamento a tipos existentes sem herança. Fic
 domínio que as usa, não em um arquivo de utilitários genérico.
 
 <details>
-<summary>❌ Ruim — utilitário genérico sem contexto</summary>
+<summary>❌ Ruim: utilitário genérico sem contexto</summary>
 
 ```kotlin
 // StringUtils.kt
@@ -171,7 +171,7 @@ val label = formatCurrency(order.total)
 </details>
 
 <details>
-<summary>✅ Bom — extension function no tipo correto</summary>
+<summary>✅ Bom: extension function no tipo correto</summary>
 
 ```kotlin
 // Order.kt
@@ -185,10 +185,10 @@ val label = order.total.toCurrencyLabel()
 
 </details>
 
-## Parâmetros — objeto para 4+
+## Parâmetros: objeto para 4+
 
 <details>
-<summary>❌ Ruim — assinatura com muitos parâmetros posicionais</summary>
+<summary>❌ Ruim: assinatura com muitos parâmetros posicionais</summary>
 
 ```kotlin
 fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, notes: String): Order { ... }
@@ -197,7 +197,7 @@ fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, 
 </details>
 
 <details>
-<summary>✅ Bom — data class agrupa parâmetros com semântica</summary>
+<summary>✅ Bom: data class agrupa parâmetros com semântica</summary>
 
 ```kotlin
 data class CreateOrderRequest(

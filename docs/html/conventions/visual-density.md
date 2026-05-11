@@ -1,6 +1,6 @@
 # Visual density: HTML
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco). HTML é marcação, não fluxo de controle — as regras de retorno explicativo e declaração + guarda não se aplicam; o foco aqui é agrupamento semântico de elementos, respiro após blocos multi-linha e ausência de alinhamento de coluna.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco). HTML é marcação, não fluxo de controle, então as regras de retorno explicativo e declaração + guarda não se aplicam. O foco aqui é agrupamento semântico de elementos, respiro após blocos multi-linha e ausência de alinhamento de coluna.
 
 ## Conceitos fundamentais
 
@@ -9,7 +9,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 | **blank line** (linha em branco) | Separador entre seções top-level; uma só, nunca duas seguidas |
 | **indentation** (indentação) | 2 espaços por nível; representa a hierarquia DOM no arquivo |
 | **sibling block** (bloco irmão) | Elementos no mesmo nível; uma linha em branco entre eles separa fases da página |
-| **landmark phase** (fase do landmark) | `<header>`, `<main>`, `<footer>` e seções top-level — cada fase ganha respiro |
+| **landmark phase** (fase do landmark) | `<header>`, `<main>`, `<footer>` e seções top-level; cada fase ganha respiro |
 | **multi-line tag** (tag multi-linha) | Elemento com muitos atributos quebrado em várias linhas; pede blank depois |
 | **tight siblings** (irmãos colados) | `<li>` ou `<tr>` curtos consecutivos; podem ficar juntos sem respiro |
 | **orphan element** (elemento órfão) | Único elemento isolado entre blanks; resolve juntando aos vizinhos ou quebrando 4 em 2+2 |
@@ -34,10 +34,10 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 ## Fases top-level: respiro entre landmarks
 
-`<header>`, `<main>`, `<footer>` e seções irmãs dentro de `<main>` são fases distintas da página. Uma linha em branco entre elas torna o arquivo escaneável e revela a estrutura sem precisar ler o conteúdo. Já filhos diretos de um mesmo bloco coeso (o link da marca dentro do header, o link de navegação dentro do nav) não levam blank — eles formam a fase.
+`<header>`, `<main>`, `<footer>` e seções irmãs dentro de `<main>` são fases distintas da página. Uma linha em branco entre elas torna o arquivo escaneável e revela a estrutura sem precisar ler o conteúdo. Já filhos diretos de um mesmo bloco coeso (o link da marca dentro do header, o link de navegação dentro do nav) não levam blank: eles formam a fase.
 
 <details>
-<summary>❌ Ruim — landmarks colados, sem respiro entre fases</summary>
+<summary>❌ Ruim: landmarks colados, sem respiro entre fases</summary>
 
 ```html
 <header>
@@ -62,7 +62,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 </details>
 
 <details>
-<summary>✅ Bom — uma linha em branco entre landmarks e seções irmãs</summary>
+<summary>✅ Bom: uma linha em branco entre landmarks e seções irmãs</summary>
 
 ```html
 <header>
@@ -88,7 +88,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 <footer>© 2026</footer>
 ```
 
-Dentro de cada landmark, os filhos diretos (`<h1>` + `<p>` da seção hero) ficam colados — fazem parte da mesma fase. Entre seções irmãs, blank.
+Dentro de cada landmark, os filhos diretos (`<h1>` + `<p>` da seção hero) ficam colados: fazem parte da mesma fase. Entre seções irmãs, blank.
 
 </details>
 
@@ -99,7 +99,7 @@ Quando uma tag quebra em várias linhas por ter muitos atributos (`id`, `name`, 
 A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<label>` + `<input>` multi-linha de um mesmo campo de formulário): o blank vai **depois do par**, não entre eles.
 
 <details>
-<summary>❌ Ruim — campos multi-linha colados, fases indistintas</summary>
+<summary>❌ Ruim: campos multi-linha colados, fases indistintas</summary>
 
 ```html
 <form>
@@ -126,7 +126,7 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 </details>
 
 <details>
-<summary>✅ Bom — blank depois de cada par label+input multi-linha</summary>
+<summary>✅ Bom: blank depois de cada par label+input multi-linha</summary>
 
 ```html
 <form>
@@ -152,16 +152,16 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 </form>
 ```
 
-Cada par label+input é uma unidade — sem blank entre eles. O respiro separa campos distintos e isola o botão final.
+Cada par label+input é uma unidade: sem blank entre eles. O respiro separa campos distintos e isola o botão final.
 
 </details>
 
 ## Listas e tabelas: tight quando curto, respiro quando expandido
 
-`<li>` ou `<tr>` de uma única linha são "irmãos colados": ficam consecutivos sem respiro — o olho percorre a lista naturalmente. Quando um item quebra em múltiplas linhas (com atributos, filhos aninhados ou conteúdo complexo), o item ganha peso visual de bloco e pede blank entre cada um.
+`<li>` ou `<tr>` de uma única linha são "irmãos colados": ficam consecutivos sem respiro, e o olho percorre a lista naturalmente. Quando um item quebra em múltiplas linhas (com atributos, filhos aninhados ou conteúdo complexo), o item ganha peso visual de bloco e pede blank entre cada um.
 
 <details>
-<summary>❌ Ruim — itens curtos com blanks inúteis</summary>
+<summary>❌ Ruim: itens curtos com blanks inúteis</summary>
 
 ```html
 <ul>
@@ -176,7 +176,7 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 </details>
 
 <details>
-<summary>✅ Bom — itens de uma linha ficam tight</summary>
+<summary>✅ Bom: itens de uma linha ficam tight</summary>
 
 ```html
 <ul>
@@ -189,7 +189,7 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 </details>
 
 <details>
-<summary>✅ Bom — itens expandidos pedem respiro entre eles</summary>
+<summary>✅ Bom: itens expandidos pedem respiro entre eles</summary>
 
 ```html
 <ul class="product-grid">
@@ -211,16 +211,16 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 </ul>
 ```
 
-Cada `<li>` virou bloco multi-linha — peso visual próprio. Blank entre eles separa as unidades.
+Cada `<li>` virou bloco multi-linha: peso visual próprio. Blank entre eles separa as unidades.
 
 </details>
 
 ## Órfão de 1 linha: 4+ elementos quebram em 2+2
 
-Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar juntos. A partir de quatro, sempre quebrar em 2+2 para evitar muralha. Nunca isole um único elemento entre blanks — a linha solta parece um passo separado, mas é só mais um item.
+Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar juntos. A partir de quatro, sempre quebrar em 2+2 para evitar muralha. Nunca isole um único elemento entre blanks: a linha solta parece um passo separado, mas é só mais um item.
 
 <details>
-<summary>❌ Ruim — quatro meta tags como muralha sem respiro</summary>
+<summary>❌ Ruim: quatro meta tags como muralha sem respiro</summary>
 
 ```html
 <head>
@@ -234,7 +234,7 @@ Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar jun
 </details>
 
 <details>
-<summary>✅ Bom — quatro meta tags quebradas em 2+2</summary>
+<summary>✅ Bom: quatro meta tags quebradas em 2+2</summary>
 
 ```html
 <head>
@@ -255,7 +255,7 @@ Primeiro par: encoding e viewport (configuração do documento). Segundo par: de
 Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço entre atributos, sempre. Alinhamento artificial quebra com qualquer renomeação, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar atributos verticalmente</summary>
+<summary>❌ Ruim: espaços extras para alinhar atributos verticalmente</summary>
 
 ```html
 <input id="first-name"  type="text"     name="first_name"  required />
@@ -266,7 +266,7 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 </details>
 
 <details>
-<summary>✅ Bom — um único espaço entre atributos</summary>
+<summary>✅ Bom: um único espaço entre atributos</summary>
 
 ```html
 <input id="first-name" type="text" name="first_name" required />
@@ -281,7 +281,7 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 Comentários delimitam seções longas, úteis em templates com muitas partes. O comentário de fechamento identifica o bloco, não o elemento.
 
 <details>
-<summary>❌ Ruim — comentário sobre o que o código faz, não onde termina</summary>
+<summary>❌ Ruim: comentário sobre o que o código faz, não onde termina</summary>
 
 ```html
 <!-- This is the navigation menu with links -->
@@ -292,7 +292,7 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 </details>
 
 <details>
-<summary>✅ Bom — comentário de fechamento identifica a seção</summary>
+<summary>✅ Bom: comentário de fechamento identifica a seção</summary>
 
 ```html
 <!-- Navigation -->

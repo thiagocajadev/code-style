@@ -1,6 +1,6 @@
 # Formatting
 
-A ordem de **declaration** (declaração) não é arbitrária. Agrupar por responsabilidade (**positioning**, **box model**, **typography**, visual) torna um **ruleset** (bloco de regras) legível de cima pra baixo: de "onde está e qual o tamanho" pra "como parece".
+A ordem de **declaration** (declaração) não é arbitrária. Agrupar por responsabilidade (**positioning**, **box model**, **typography**, visual) torna um **ruleset** (bloco de regras) legível de cima pra baixo: de "onde está e qual o tamanho" para "como parece".
 
 ## Conceitos fundamentais
 
@@ -17,7 +17,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 ## Ordem de propriedades
 
 <details>
-<summary>❌ Ruim — ordem aleatória, difícil de escanear</summary>
+<summary>❌ Ruim: ordem aleatória, difícil de escanear</summary>
 
 ```css
 .card {
@@ -39,7 +39,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 </details>
 
 <details>
-<summary>✅ Bom — agrupado por responsabilidade, legível de cima pra baixo</summary>
+<summary>✅ Bom: agrupado por responsabilidade, legível de cima pra baixo</summary>
 
 ```css
 .card {
@@ -70,7 +70,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 ## Uma propriedade por linha
 
 <details>
-<summary>❌ Ruim — múltiplas propriedades em uma linha, diff ilegível</summary>
+<summary>❌ Ruim: múltiplas propriedades em uma linha, diff ilegível</summary>
 
 <!-- prettier-ignore -->
 ```css
@@ -80,7 +80,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 </details>
 
 <details>
-<summary>✅ Bom — uma propriedade por linha, diff limpo</summary>
+<summary>✅ Bom: uma propriedade por linha, diff limpo</summary>
 
 ```css
 .button {

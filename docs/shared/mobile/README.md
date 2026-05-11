@@ -26,13 +26,13 @@ arquitetura e plataforma sem contexto de onde aplicar.
 
 | Critério | Nativo (Kotlin / Swift) | Cross-platform (Flutter / React Native) |
 |---|---|---|
-| Performance | Máxima — acesso direto à GPU e APIs do SO | Muito boa — overhead de bridge ou compilação ahead-of-time |
+| Performance | Máxima; acesso direto à GPU e APIs do SO | Muito boa; overhead de bridge ou compilação ahead-of-time |
 | Acesso a APIs do SO | Total e imediato | Dependente de plugins; APIs novas chegam com atraso |
 | Codebase | Um por plataforma | Único compartilhado |
 | Time | Duas especialidades distintas | Uma especialidade com nuances por plataforma |
-| UX nativa | Automática | Exige atenção — componentes podem não seguir padrões do SO |
+| UX nativa | Automática | Exige atenção; componentes podem não seguir padrões do SO |
 
-A decisão não é técnica — é de time, produto e roadmap. Nativo vale quando o app usa recursos
+A decisão não é técnica: é de time, produto e roadmap. Nativo vale quando o app usa recursos
 avançados do SO (câmera, ARKit, Wear OS) ou quando fidelidade de UX é diferencial competitivo.
 Cross-platform vale quando velocidade de entrega e manutenção unificada superam as vantagens nativas.
 

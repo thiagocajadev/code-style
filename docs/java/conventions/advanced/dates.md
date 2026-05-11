@@ -1,6 +1,6 @@
 # Dates
 
-> Escopo: Java 25 LTS — `java.time` API.
+> Escopo: Java 25 LTS, API `java.time`.
 
 Use **sempre** a API `java.time` (Java 8+). `java.util.Date` e `java.util.Calendar` são
 legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código novo.
@@ -21,17 +21,17 @@ legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código nov
 
 | Tipo            | Quando usar                                                |
 | --------------- | ---------------------------------------------------------- |
-| `Instant`       | Timestamp (carimbo de tempo) em UTC — persistência, logs  |
+| `Instant`       | Timestamp (carimbo de tempo) em UTC, persistência, logs   |
 | `LocalDate`     | Data sem hora e sem fuso (aniversários, datas de negócio) |
-| `LocalDateTime` | Data + hora sem fuso — apenas para uso local/temporário   |
-| `ZonedDateTime` | Data + hora + fuso — exibição localizada ao usuário        |
-| `Duration`      | Duração absoluta em segundos/nanosegundos                  |
-| `Period`        | Duração em dias/meses/anos (calendário)                    |
+| `LocalDateTime` | Data + hora sem fuso, apenas para uso local ou temporário |
+| `ZonedDateTime` | Data + hora + fuso, exibição localizada ao usuário        |
+| `Duration`      | Duração absoluta em segundos ou nanosegundos              |
+| `Period`        | Duração em dias, meses ou anos (calendário)               |
 
-## java.util.Date — legado
+## java.util.Date: legado
 
 <details>
-<summary>❌ Ruim — java.util.Date é mutável e sem fuso</summary>
+<summary>❌ Ruim: java.util.Date é mutável e sem fuso</summary>
 
 ```java
 import java.util.Date;
@@ -49,7 +49,7 @@ public class Order {
 </details>
 
 <details>
-<summary>✅ Bom — Instant para timestamps, LocalDate para datas de negócio</summary>
+<summary>✅ Bom: Instant para timestamps, LocalDate para datas de negócio</summary>
 
 ```java
 public class Order {
@@ -65,17 +65,17 @@ public class Order {
 Persistência usa `Instant` (UTC). Conversão para fuso local só na camada de apresentação.
 
 <details>
-<summary>❌ Ruim — armazena com fuso local; converte ao persistir</summary>
+<summary>❌ Ruim: armazena com fuso local; converte ao persistir</summary>
 
 ```java
-final var now = LocalDateTime.now(); // sem fuso — qual timezone?
+final var now = LocalDateTime.now(); // sem fuso: qual timezone?
 order.setCreatedAt(now);
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Instant.now() é sempre UTC</summary>
+<summary>✅ Bom: Instant.now() é sempre UTC</summary>
 
 ```java
 final var now = Instant.now();
@@ -91,7 +91,7 @@ final var localDateTime = now.atZone(userZone).toLocalDateTime();
 ## Parsing e formatting com DateTimeFormatter
 
 <details>
-<summary>❌ Ruim — SimpleDateFormat é thread-unsafe</summary>
+<summary>❌ Ruim: SimpleDateFormat é thread-unsafe</summary>
 
 ```java
 final var sdf = new SimpleDateFormat("dd/MM/yyyy"); // thread-unsafe
@@ -101,7 +101,7 @@ final var date = sdf.parse("27/04/2026");
 </details>
 
 <details>
-<summary>✅ Bom — DateTimeFormatter é imutável e thread-safe (seguro para uso concorrente)</summary>
+<summary>✅ Bom: DateTimeFormatter é imutável e thread-safe (seguro para uso concorrente)</summary>
 
 ```java
 private static final DateTimeFormatter BR_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -125,7 +125,7 @@ Ao trafegar datas em APIs, use sempre ISO 8601: `2026-04-27T14:30:00Z`. Jackson 
 serializa `Instant` e `LocalDate` nesse formato por padrão quando configurado corretamente.
 
 <details>
-<summary>✅ Bom — configuração Jackson para java.time</summary>
+<summary>✅ Bom: configuração Jackson para java.time</summary>
 
 ```yaml
 # application.yml
@@ -145,7 +145,7 @@ public record OrderResponse(String id, Instant createdAt, LocalDate dueDate) {}
 ## Cálculo de duração e período
 
 <details>
-<summary>✅ Bom — Duration para diferença em tempo, Period para diferença em calendário</summary>
+<summary>✅ Bom: Duration para diferença em tempo, Period para diferença em calendário</summary>
 
 ```java
 // duração absoluta

@@ -1,6 +1,6 @@
 # Security
 
-> Escopo: Java 25 LTS — Spring Security 7 + Spring Boot 4.
+> Escopo: Java 25 LTS com Spring Security 7 + Spring Boot 4.
 
 Segurança começa no limite do sistema: nunca confie em **input** (entrada), nunca persista
 **secrets** (segredos) no código, e sempre valide **JWT** (JSON Web Token) na fronteira HTTP.
@@ -22,7 +22,7 @@ Segurança começa no limite do sistema: nunca confie em **input** (entrada), nu
 Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-fonte.
 
 <details>
-<summary>❌ Ruim — segredo hardcoded no código</summary>
+<summary>❌ Ruim: segredo hardcoded no código</summary>
 
 ```java
 private static final String JWT_SECRET = "minha-chave-super-secreta"; // no repositório
@@ -40,7 +40,7 @@ public DataSource dataSource() {
 </details>
 
 <details>
-<summary>✅ Bom — variáveis de ambiente via @ConfigurationProperties</summary>
+<summary>✅ Bom: variáveis de ambiente via @ConfigurationProperties</summary>
 
 ```yaml
 # application.yml
@@ -67,10 +67,10 @@ public record SecurityProperties(
 
 </details>
 
-## Spring Security — configuração mínima
+## Spring Security: configuração mínima
 
 <details>
-<summary>✅ Bom — SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
+<summary>✅ Bom: SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
 
 ```java
 @Configuration
@@ -101,12 +101,12 @@ public class SecurityConfig {
 
 </details>
 
-## Senhas — BCrypt sempre
+## Senhas: BCrypt sempre
 
 Nunca armazene senhas em texto puro. Nunca use MD5 ou SHA-1.
 
 <details>
-<summary>❌ Ruim — senha em texto puro ou hash fraco</summary>
+<summary>❌ Ruim: senha em texto puro ou hash fraco</summary>
 
 ```java
 user.setPassword(input.password());                        // texto puro
@@ -116,7 +116,7 @@ user.setPassword(DigestUtils.md5Hex(input.password()));    // MD5 é reversível
 </details>
 
 <details>
-<summary>✅ Bom — BCrypt com custo configurável</summary>
+<summary>✅ Bom: BCrypt com custo configurável</summary>
 
 ```java
 @Service
@@ -138,12 +138,12 @@ public class UserService {
 
 </details>
 
-## JWT (JSON Web Token, Token Web em JSON) — validação rigorosa
+## JWT (JSON Web Token, Token Web em JSON): validação rigorosa
 
 Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens malformados.
 
 <details>
-<summary>✅ Bom — filtro JWT com validação completa</summary>
+<summary>✅ Bom: filtro JWT com validação completa</summary>
 
 ```java
 @Component
@@ -183,12 +183,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 </details>
 
-## @PreAuthorize — autorização por método
+## @PreAuthorize: autorização por método
 
 Use `@PreAuthorize` para autorização granular por role (papel) ou permissão específica.
 
 <details>
-<summary>✅ Bom — autorização declarativa no método</summary>
+<summary>✅ Bom: autorização declarativa no método</summary>
 
 ```java
 @RestController
@@ -216,12 +216,12 @@ public class AdminController {
 
 </details>
 
-## CORS (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens) — configuração explícita
+## CORS (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens): configuração explícita
 
 Nunca deixe CORS permissivo em produção. Configure origens, métodos e headers permitidos.
 
 <details>
-<summary>❌ Ruim — CORS aberto para tudo</summary>
+<summary>❌ Ruim: CORS aberto para tudo</summary>
 
 ```java
 corsConfig.addAllowedOrigin("*"); // permite qualquer origem
@@ -231,7 +231,7 @@ corsConfig.addAllowedMethod("*"); // permite qualquer método
 </details>
 
 <details>
-<summary>✅ Bom — CORS restrito por ambiente</summary>
+<summary>✅ Bom: CORS restrito por ambiente</summary>
 
 ```java
 @Bean

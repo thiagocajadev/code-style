@@ -47,7 +47,7 @@ func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Swift</summary>
+<summary>❌ Ruim: identificadores em português ficam desajeitados no idioma Swift</summary>
 
 ```swift
 let nomeDoUsuario = "Alice"
@@ -60,7 +60,7 @@ func buscaEnderecoDoCliente(id: Int64) -> Address? { ... }
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```swift
 let userName = "Alice"
@@ -82,7 +82,7 @@ func findCustomerAddress(customerId: Int64) -> Address? { ... }
 | Módulos e pacotes | `UpperCamelCase` | `OrderDomain`, `NetworkLayer` |
 
 <details>
-<summary>❌ Ruim — case errado</summary>
+<summary>❌ Ruim: case errado</summary>
 
 ```swift
 struct order_service { }         // struct com snake_case
@@ -93,7 +93,7 @@ let MaxRetries = 3               // constante com UpperCamelCase
 </details>
 
 <details>
-<summary>✅ Bom — convenções Swift respeitadas</summary>
+<summary>✅ Bom: convenções Swift respeitadas</summary>
 
 ```swift
 struct OrderService { }
@@ -111,7 +111,7 @@ Labels tornam a chamada legível como prosa. O primeiro label é frequentemente 
 nome da função já o implica.
 
 <details>
-<summary>❌ Ruim — labels que repetem o tipo ou são desnecessários</summary>
+<summary>❌ Ruim: labels que repetem o tipo ou são desnecessários</summary>
 
 ```swift
 func send(message message: String, toUser user: User) { }
@@ -121,7 +121,7 @@ func send(message message: String, toUser user: User) { }
 </details>
 
 <details>
-<summary>✅ Bom — chamada lê como prosa</summary>
+<summary>✅ Bom: chamada lê como prosa</summary>
 
 ```swift
 func send(_ message: String, to user: User) { }
@@ -136,7 +136,7 @@ func move(from source: Index, to destination: Index) { }
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```swift
 let loading = true
@@ -147,7 +147,7 @@ let valid = email.contains("@")
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```swift
 let isActive = user.status == .active
@@ -159,7 +159,7 @@ let shouldRetry = attempt < maxRetries
 
 </details>
 
-## Protocolos — sufixo descritivo
+## Protocolos: sufixo descritivo
 
 | Padrão | Quando usar |
 | --- | --- |
@@ -168,7 +168,7 @@ let shouldRetry = attempt < maxRetries
 | substantivo | papel: `Collection`, `Sequence`, `UserRepository` |
 
 <details>
-<summary>❌ Ruim — sufixo genérico ou ambíguo</summary>
+<summary>❌ Ruim: sufixo genérico ou ambíguo</summary>
 
 ```swift
 protocol UserProtocol { }
@@ -178,7 +178,7 @@ protocol IRepository { }     // prefixo I ao estilo C#, não idiomático em Swif
 </details>
 
 <details>
-<summary>✅ Bom — nome que descreve o papel</summary>
+<summary>✅ Bom: nome que descreve o papel</summary>
 
 ```swift
 protocol UserRepository { }
@@ -191,7 +191,7 @@ protocol Cacheable { }
 ## Domain-first naming
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura</summary>
+<summary>❌ Ruim: nome revela infraestrutura</summary>
 
 ```swift
 func callStripe(amount: Decimal) async throws { }
@@ -201,7 +201,7 @@ func getUserFromCoreData(id: UUID) -> User? { }
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```swift
 func chargeCustomer(amount: Decimal) async throws { }

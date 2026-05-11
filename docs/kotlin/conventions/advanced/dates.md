@@ -11,16 +11,16 @@ transferência usa ISO 8601; a formatação para o usuário aplica o fuso e o lo
 | Conceito | O que é |
 | --- | --- |
 | `Instant` | ponto absoluto no tempo em UTC; sem informação de fuso |
-| `LocalDate` | data sem hora nem fuso — ex: data de nascimento, data de vencimento |
-| `LocalDateTime` | data + hora sem fuso — usar com cuidado; prefira `ZonedDateTime` |
+| `LocalDate` | data sem hora nem fuso (ex: data de nascimento, data de vencimento) |
+| `LocalDateTime` | data + hora sem fuso; usar com cuidado, prefira `ZonedDateTime` |
 | `ZonedDateTime` | data + hora + fuso horário; correto para exibição ao usuário |
-| `ZoneId` | identificador de fuso — sempre por nome (ex: `America/Sao_Paulo`), nunca offset fixo |
+| `ZoneId` | identificador de fuso; sempre por nome (ex: `America/Sao_Paulo`), nunca offset fixo |
 | **ISO 8601** (padrão internacional de data e hora) | formato textual: `2026-04-26T14:30:00Z` (UTC) ou `2026-04-26` (data) |
 
 ## Date e Calendar legados
 
 <details>
-<summary>❌ Ruim — java.util.Date e Calendar têm comportamento imprevisível</summary>
+<summary>❌ Ruim: java.util.Date e Calendar têm comportamento imprevisível</summary>
 
 ```kotlin
 val now = Date()
@@ -33,7 +33,7 @@ val nextWeek = cal.time
 </details>
 
 <details>
-<summary>✅ Bom — java.time é imutável e explícito</summary>
+<summary>✅ Bom: java.time é imutável e explícito</summary>
 
 ```kotlin
 val now = Instant.now()
@@ -45,7 +45,7 @@ val nextWeek = now.plus(7, ChronoUnit.DAYS)
 ## Fuso horário hardcoded
 
 <details>
-<summary>❌ Ruim — offset fixo quebra no horário de verão</summary>
+<summary>❌ Ruim: offset fixo quebra no horário de verão</summary>
 
 ```kotlin
 val saoPaulo = ZoneId.of("GMT-3")   // errado: ignora horário de verão
@@ -56,7 +56,7 @@ val now = ZonedDateTime.now(saoPaulo)
 </details>
 
 <details>
-<summary>✅ Bom — nome IANA do fuso inclui regras de horário de verão</summary>
+<summary>✅ Bom: nome IANA do fuso inclui regras de horário de verão</summary>
 
 ```kotlin
 val saoPaulo = ZoneId.of("America/Sao_Paulo")
@@ -69,7 +69,7 @@ val now = ZonedDateTime.now(saoPaulo)
 ## String como data
 
 <details>
-<summary>❌ Ruim — string interpretada como data sem parse explícito</summary>
+<summary>❌ Ruim: string interpretada como data sem parse explícito</summary>
 
 ```kotlin
 val dueDate = "2026-04-30"   // String, não LocalDate
@@ -79,7 +79,7 @@ val isOverdue = dueDate < today.toString()   // comparação lexicográfica, nã
 </details>
 
 <details>
-<summary>✅ Bom — LocalDate com comparação tipada</summary>
+<summary>✅ Bom: LocalDate com comparação tipada</summary>
 
 ```kotlin
 val dueDate = LocalDate.parse("2026-04-30")
@@ -91,7 +91,7 @@ val isOverdue = dueDate.isBefore(LocalDate.now())
 ## Serialização ISO 8601
 
 <details>
-<summary>❌ Ruim — formato de data local varia por máquina</summary>
+<summary>❌ Ruim: formato de data local varia por máquina</summary>
 
 ```kotlin
 data class OrderResponse(
@@ -103,7 +103,7 @@ data class OrderResponse(
 </details>
 
 <details>
-<summary>✅ Bom — ISO 8601 é portável e indexável</summary>
+<summary>✅ Bom: ISO 8601 é portável e indexável</summary>
 
 ```kotlin
 data class OrderResponse(

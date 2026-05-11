@@ -19,7 +19,7 @@ para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via 
 ## Variáveis de ambiente
 
 <details>
-<summary>❌ Ruim — secret hardcoded no código</summary>
+<summary>❌ Ruim: secret hardcoded no código</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -37,7 +37,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — lido do ambiente na inicialização</summary>
+<summary>✅ Bom: lido do ambiente na inicialização</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -70,14 +70,14 @@ gem "dotenv", groups: %i[development test]
 ```
 
 ```bash
-# .env.example — commitado
+# .env.example: commitado
 STRIPE_API_KEY=
 DATABASE_URL=
 REDIS_URL=
 ```
 
 ```bash
-# .env — nunca commitado (.gitignore)
+# .env: nunca commitado (.gitignore)
 STRIPE_API_KEY=sk_test_...
 DATABASE_URL=postgres://localhost/myapp_dev
 ```
@@ -120,7 +120,7 @@ end
 ## Validação na fronteira
 
 <details>
-<summary>❌ Ruim — parâmetro de usuário usado diretamente</summary>
+<summary>❌ Ruim: parâmetro de usuário usado diretamente</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +133,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — tipagem e sanitização antes de usar</summary>
+<summary>✅ Bom: tipagem e sanitização antes de usar</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -147,5 +147,5 @@ end
 
 </details>
 
-Use `Integer()` e `Float()` (maiúsculos) no lugar de `.to_i` e `.to_f` — eles lançam `ArgumentError`
+Use `Integer()` e `Float()` (maiúsculos) no lugar de `.to_i` e `.to_f`. Eles lançam `ArgumentError`
 quando o valor é inválido; `.to_i` retorna `0` silenciosamente.

@@ -25,7 +25,7 @@ VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (container DI
 Service locator é o antipadrão clássico de DI: buscar dependências diretamente do container dentro da classe. Torna dependências implícitas, dificulta testes e cria acoplamento ao container.
 
 <details>
-<summary>❌ Ruim — dependência implícita, acoplado ao container</summary>
+<summary>❌ Ruim: dependência implícita, acoplado ao container</summary>
 
 ```vbnet
 Public Class OrderService
@@ -47,7 +47,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — dependências explícitas no construtor</summary>
+<summary>✅ Bom: dependências explícitas no construtor</summary>
 
 ```vbnet
 Public Class OrderService
@@ -73,7 +73,7 @@ End Class
 Property injection (setter injection) cria objetos em estado inválido: a dependência pode estar `Nothing` até alguém injetar. Constructor injection garante que o objeto nasce completo.
 
 <details>
-<summary>❌ Ruim — property injection, dependência opcional implícita</summary>
+<summary>❌ Ruim: property injection, dependência opcional implícita</summary>
 
 ```vbnet
 Public Class OrderService
@@ -82,7 +82,7 @@ Public Class OrderService
     Public Property Notifier As INotifier
 
     Public Async Function ProcessOrderAsync(request As OrderRequest) As Task(Of Result(Of Invoice))
-        ' Repository pode estar Nothing aqui — NullReferenceException em produção
+        ' Repository pode estar Nothing aqui: NullReferenceException em produção
         Dim order = Await Repository.FindByIdAsync(request.OrderId)
         ' ...
     End Function
@@ -92,7 +92,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — constructor injection, objeto nasce válido</summary>
+<summary>✅ Bom: constructor injection, objeto nasce válido</summary>
 
 ```vbnet
 Public Class OrderService
@@ -125,7 +125,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 **Captive dependency**: um `ContainerControlledLifetimeManager` (singleton) que recebe um `HierarchicalLifetimeManager` (scoped) captura a instância na primeira resolução. O scoped passa a viver para sempre: comportamento incorreto e difícil de rastrear.
 
 <details>
-<summary>❌ Ruim — singleton captura scoped</summary>
+<summary>❌ Ruim: singleton captura scoped</summary>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New ContainerControlledLifetimeManager())
@@ -144,7 +144,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — lifetimes compatíveis</summary>
+<summary>✅ Bom: lifetimes compatíveis</summary>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New HierarchicalLifetimeManager())
@@ -158,7 +158,7 @@ container.RegisterType(Of IOrderRepository, SqlOrderRepository)(New Hierarchical
 Depender de interfaces, não de implementações concretas. Permite substituição em testes sem alterar o código de produção.
 
 <details>
-<summary>❌ Ruim — dependência concreta, impossível substituir em testes</summary>
+<summary>❌ Ruim: dependência concreta, impossível substituir em testes</summary>
 
 ```vbnet
 Public Class OrderService
@@ -174,7 +174,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — dependência por interface, substituível</summary>
+<summary>✅ Bom: dependência por interface, substituível</summary>
 
 ```vbnet
 Public Class OrderService
@@ -200,7 +200,7 @@ container.RegisterType(Of IOrderRepository, FakeOrderRepository)(New TransientLi
 Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. Unity permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora.
 
 <details>
-<summary>❌ Ruim — registro manual, cresce junto com os handlers</summary>
+<summary>❌ Ruim: registro manual, cresce junto com os handlers</summary>
 
 ```vbnet
 Public Module OrdersRegistration
@@ -221,10 +221,10 @@ End Module
 </details>
 
 <details>
-<summary>✅ Bom — registro por convenção via reflection</summary>
+<summary>✅ Bom: registro por convenção via reflection</summary>
 
 ```vbnet
-' interface marcadora — sem métodos, só para identificar handlers no assembly
+' interface marcadora: sem métodos, só para identificar handlers no assembly
 Public Interface IHandler
 End Interface
 

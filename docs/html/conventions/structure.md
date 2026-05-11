@@ -20,7 +20,7 @@
 uso, ele substitui o genérico.
 
 <details>
-<summary>❌ Ruim — div soup, estrutura sem significado</summary>
+<summary>❌ Ruim: div soup, estrutura sem significado</summary>
 
 ```html
 <div class="header">
@@ -43,7 +43,7 @@ uso, ele substitui o genérico.
 </details>
 
 <details>
-<summary>✅ Bom — elementos semânticos, estrutura legível</summary>
+<summary>✅ Bom: elementos semânticos, estrutura legível</summary>
 
 ```html
 <header>
@@ -76,7 +76,7 @@ a estrutura e prejudica leitores de tela. Use CSS para ajustar tamanho; nunca es
 tamanho padrão.
 
 <details>
-<summary>❌ Ruim — nível pulado, h3 sem h2 pai</summary>
+<summary>❌ Ruim: nível pulado, h3 sem h2 pai</summary>
 
 ```html
 <h1>Blog</h1>
@@ -87,7 +87,7 @@ tamanho padrão.
 </details>
 
 <details>
-<summary>✅ Bom — hierarquia contínua, sem saltos</summary>
+<summary>✅ Bom: hierarquia contínua, sem saltos</summary>
 
 ```html
 <h1>Blog</h1>
@@ -107,7 +107,7 @@ cada `<section>` pode ter seu próprio `<h2>`.
 garante codificação. Ambos são obrigatórios e devem aparecer antes de qualquer outro metadado.
 
 <details>
-<summary>❌ Ruim — sem lang, charset fora de posição</summary>
+<summary>❌ Ruim: sem lang, charset fora de posição</summary>
 
 ```html
 <!DOCTYPE html>
@@ -122,7 +122,7 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 </details>
 
 <details>
-<summary>✅ Bom — lang e charset corretos, na ordem certa</summary>
+<summary>✅ Bom: lang e charset corretos, na ordem certa</summary>
 
 ```html
 <!DOCTYPE html>
@@ -144,7 +144,7 @@ agrupamento sem significado semântico (layout, JS hooks). Não substitua `<div>
 para parecer mais semântico.
 
 <details>
-<summary>❌ Ruim — section sem heading, usado como div</summary>
+<summary>❌ Ruim: section sem heading, usado como div</summary>
 
 ```html
 <section class="wrapper">
@@ -158,7 +158,7 @@ para parecer mais semântico.
 </details>
 
 <details>
-<summary>✅ Bom — section com heading, div para layout</summary>
+<summary>✅ Bom: section com heading, div para layout</summary>
 
 ```html
 <section aria-labelledby="featured-heading">

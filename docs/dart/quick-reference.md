@@ -1,6 +1,6 @@
-# Dart — Quick Reference
+# Dart: Quick Reference
 
-> Escopo: Dart 3.7. Cheat-sheet tabular — decisões rápidas sem contexto narrativo.
+> Escopo: Dart 3.7. Cheat-sheet tabular para decisões rápidas, sem contexto narrativo.
 
 ## Nomenclatura
 
@@ -37,7 +37,7 @@
 | --- | --- |
 | `if (...) return` | sair cedo na falha antes de qualquer lógica |
 | `switch` como expressão | substituir chains de `if/else if`; Dart 3+ |
-| `?.` | acesso seguro em optional — retorna `null` |
+| `?.` | acesso seguro em optional; retorna `null` |
 | `??` | coalescência: valor padrão quando `null` |
 | `if-case` | pattern matching inline sem `switch` completo |
 
@@ -60,7 +60,7 @@
 | `T?` | tipo anulável |
 | `?.` | safe member access |
 | `??` | valor padrão quando `null` |
-| `!` | assert não-null — lança `Null check operator used on a null value`; evitar |
+| `!` | assert não-null; lança `Null check operator used on a null value`; evitar |
 | `late` | variável não-nullable com inicialização postergada |
 | `required` | named parameter obrigatório |
 

@@ -6,7 +6,7 @@ Flutter é o framework de UI da Google construído sobre Dart. Cria aplicações
 para Android, iOS, Web e Desktop a partir de um único código-fonte. Os exemplos usam Flutter 3.29
 (Dart 3.7) como referência.
 
-→ [Quick Reference](quick-reference.md) — widgets, estado, navegação
+→ [Quick Reference](quick-reference.md): widgets, estado, navegação
 
 Idioma Dart: [../../README.md](../../README.md)
 

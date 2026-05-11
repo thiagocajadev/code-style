@@ -15,12 +15,12 @@ Exceções irrecuperáveis usam `preconditionFailure` ou `fatalError`.
 | `do-catch` | captura erros lançados; `catch` com pattern matching por tipo |
 | `LocalizedError` | protocolo que adiciona mensagem legível ao erro |
 | `try?` | converte throws em opcional: sucesso = valor, erro = `nil` |
-| `try!` | força sucesso — lança fatalError se falhar; proibido em produção |
+| `try!` | força sucesso; lança fatalError se falhar; proibido em produção |
 
 ## Enum de erros de domínio
 
 <details>
-<summary>❌ Ruim — String como erro (sem exaustividade)</summary>
+<summary>❌ Ruim: String como erro (sem exaustividade)</summary>
 
 ```swift
 func findOrder(id: UUID) throws -> Order {
@@ -34,7 +34,7 @@ func findOrder(id: UUID) throws -> Order {
 </details>
 
 <details>
-<summary>✅ Bom — enum tipado com LocalizedError</summary>
+<summary>✅ Bom: enum tipado com LocalizedError</summary>
 
 ```swift
 enum OrderError: LocalizedError {
@@ -66,7 +66,7 @@ func findOrder(id: UUID) throws -> Order {
 ## `try?` quando a ausência é válida
 
 <details>
-<summary>❌ Ruim — do-catch para silenciar erro sem contexto</summary>
+<summary>❌ Ruim: do-catch para silenciar erro sem contexto</summary>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -81,7 +81,7 @@ func loadCachedUser(id: UUID) -> User? {
 </details>
 
 <details>
-<summary>✅ Bom — try? quando nil é a semântica correta</summary>
+<summary>✅ Bom: try? quando nil é a semântica correta</summary>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -95,7 +95,7 @@ func loadCachedUser(id: UUID) -> User? {
 ## Propagação vs tratamento
 
 <details>
-<summary>❌ Ruim — catch no lugar errado, propagação perdida</summary>
+<summary>❌ Ruim: catch no lugar errado, propagação perdida</summary>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -113,7 +113,7 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
 </details>
 
 <details>
-<summary>✅ Bom — tratar somente o que pode tratar; propagar o resto</summary>
+<summary>✅ Bom: tratar somente o que pode tratar; propagar o resto</summary>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -123,7 +123,7 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
     return order
 }
 
-// tratamento na borda — controller ou ViewModel
+// tratamento na borda: controller ou ViewModel
 func handleSubmit() async {
     do {
         let order = try await orderService.submitOrder(request)
@@ -143,18 +143,18 @@ func handleSubmit() async {
 ## `Result` para APIs sem throws
 
 <details>
-<summary>❌ Ruim — closure com dois parâmetros opcionais ambíguos</summary>
+<summary>❌ Ruim: closure com dois parâmetros opcionais ambíguos</summary>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
-    // (nil, nil), (order, nil), (nil, error), (order, error) — 4 estados, só 2 válidos
+    // (nil, nil), (order, nil), (nil, error), (order, error): 4 estados, só 2 válidos
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Result torna os estados explícitos</summary>
+<summary>✅ Bom: Result torna os estados explícitos</summary>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
@@ -172,7 +172,7 @@ func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
 ## `preconditionFailure` para invariantes
 
 <details>
-<summary>❌ Ruim — fatalError com mensagem genérica</summary>
+<summary>❌ Ruim: fatalError com mensagem genérica</summary>
 
 ```swift
 guard let config = Configuration.shared else {
@@ -183,7 +183,7 @@ guard let config = Configuration.shared else {
 </details>
 
 <details>
-<summary>✅ Bom — preconditionFailure com contexto do invariante</summary>
+<summary>✅ Bom: preconditionFailure com contexto do invariante</summary>
 
 ```swift
 guard let config = Configuration.shared else {

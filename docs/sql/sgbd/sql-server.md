@@ -36,7 +36,7 @@ Prefira tipos de precisão explícita. Evite aliases legados (`INT` é preferív
 | Vetor | `VECTOR(n)` | SQL Server 2025; embeddings de IA |
 
 <details>
-<summary>❌ Ruim — tipos imprecisos e legados</summary>
+<summary>❌ Ruim: tipos imprecisos e legados</summary>
 
 ```sql
 CREATE TABLE Products
@@ -51,7 +51,7 @@ CREATE TABLE Products
 </details>
 
 <details>
-<summary>✅ Bom — tipos explícitos e precisos</summary>
+<summary>✅ Bom: tipos explícitos e precisos</summary>
 
 ```sql
 CREATE TABLE Products
@@ -72,7 +72,7 @@ CREATE TABLE Products
 ## Identidade e UUID
 
 Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ver
-[performance.md — Tipo de ID](../conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
+[performance.md: Tipo de ID](../conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 
 | Tipo | Quando usar |
 | --- | --- |
@@ -81,11 +81,11 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 | `NEWSEQUENTIALID()` | UUID sequencial gerado pelo banco; só como `DEFAULT`, não portável |
 
 <details>
-<summary>✅ Bom — **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
+<summary>✅ Bom: **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
--- Guid.CreateVersion7() — .NET 9+
+-- Guid.CreateVersion7(): .NET 9+
 CREATE TABLE Orders
 (
   Id UNIQUEIDENTIFIER NOT NULL,
@@ -119,7 +119,7 @@ Padrão: `SP_VERBO_TABELA` ou `SP_VERBO_TABELA_BY_CAMPO` em `UPPER_SNAKE_CASE`.
 | `DELETE` | Exclusão (preferencialmente soft) |
 
 <details>
-<summary>❌ Ruim — nome genérico, sem parâmetros tipados, sem formatação vertical</summary>
+<summary>❌ Ruim: nome genérico, sem parâmetros tipados, sem formatação vertical</summary>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -131,7 +131,7 @@ END
 </details>
 
 <details>
-<summary>✅ Bom — nome descritivo, parâmetro tipado, linha em branco entre AS e BEGIN</summary>
+<summary>✅ Bom: nome descritivo, parâmetro tipado, linha em branco entre AS e BEGIN</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_GET_FOOTBALL_TEAM_BY_ID
@@ -159,7 +159,7 @@ END;
 ## Tratamento de erros: TRY / CATCH
 
 <details>
-<summary>❌ Ruim — sem tratamento de erro, falha silenciosa</summary>
+<summary>❌ Ruim: sem tratamento de erro, falha silenciosa</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_ADD_ORDER
@@ -178,7 +178,7 @@ END;
 </details>
 
 <details>
-<summary>✅ Bom — TRY/CATCH com ROLLBACK e THROW</summary>
+<summary>✅ Bom: TRY/CATCH com ROLLBACK e THROW</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_ADD_ORDER
@@ -221,7 +221,7 @@ END;
 Toda operação que modifica múltiplas tabelas deve estar em uma transação explícita.
 
 <details>
-<summary>❌ Ruim — múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
+<summary>❌ Ruim: múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
 
 ```sql
 INSERT INTO Orders (Id, CustomerId, TotalAmount) VALUES (@Id, @CustomerId, @TotalAmount);
@@ -231,7 +231,7 @@ INSERT INTO OrderItems (OrderId, ProductId, Quantity) VALUES (@Id, @ProductId, @
 </details>
 
 <details>
-<summary>✅ Bom — transação explícita garante atomicidade</summary>
+<summary>✅ Bom: transação explícita garante atomicidade</summary>
 
 ```sql
 BEGIN TRY
@@ -300,7 +300,7 @@ SQL Server 2025 introduz funções `REGEXP_LIKE`, `REGEXP_REPLACE`, `REGEXP_SUBS
 `REGEXP_COUNT` diretamente em T-SQL.
 
 <details>
-<summary>✅ Bom — validação de e-mail sem CLR ou função auxiliar</summary>
+<summary>✅ Bom: validação de e-mail sem CLR ou função auxiliar</summary>
 
 ```sql
 SELECT
@@ -320,7 +320,7 @@ WHERE
 para deduplicação e busca tolerante a erros.
 
 <details>
-<summary>✅ Bom — encontrar nomes similares com tolerância a typos</summary>
+<summary>✅ Bom: encontrar nomes similares com tolerância a typos</summary>
 
 ```sql
 SELECT
@@ -343,7 +343,7 @@ O tipo `JSON` nativo armazena até 2 GB por linha com indexação direta, sem ne
 `NVARCHAR(MAX)` com funções JSON.
 
 <details>
-<summary>✅ Bom — coluna JSON nativa com índice</summary>
+<summary>✅ Bom: coluna JSON nativa com índice</summary>
 
 ```sql
 CREATE TABLE Events
@@ -368,7 +368,7 @@ O tipo `VECTOR(n)` e `VECTOR_DISTANCE` permitem busca semântica por similaridad
 em T-SQL, usando **DiskANN** para indexação eficiente.
 
 <details>
-<summary>✅ Bom — busca por similaridade vetorial</summary>
+<summary>✅ Bom: busca por similaridade vetorial</summary>
 
 ```sql
 CREATE TABLE Documents
@@ -393,13 +393,13 @@ ORDER BY
 
 </details>
 
-### OPPO — Optional Parameter Plan Optimization
+### OPPO: Optional Parameter Plan Optimization
 
 **OPPO** gera planos distintos para cada valor de parâmetro em procedures com parâmetros opcionais,
 eliminando parameter sniffing sem `OPTION (RECOMPILE)`.
 
 <details>
-<summary>✅ Bom — ativar OPPO na procedure</summary>
+<summary>✅ Bom: ativar OPPO na procedure</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_LIST_ORDERS_BY_FILTER
@@ -438,7 +438,7 @@ END;
 linha a linha para volumes acima de milhares de registros.
 
 <details>
-<summary>✅ Bom — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
+<summary>✅ Bom: importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
 
 ```sql
 BULK INSERT Players
@@ -461,7 +461,7 @@ WITH
 mais etapas e um ou mais schedules.
 
 <details>
-<summary>✅ Bom — criar job com etapa T-SQL e agendamento diário</summary>
+<summary>✅ Bom: criar job com etapa T-SQL e agendamento diário</summary>
 
 ```sql
 -- criar o job
@@ -580,9 +580,9 @@ GROUP BY
 
 ## Recursos relacionados
 
-- [Formatting](../conventions/formatting.md) — estilo vertical, JOIN, condições
-- [Naming](../conventions/naming.md) — PascalCase, prefixos, constraints
-- [Procedures](../conventions/advanced/procedures.md) — temp tables, etapas nomeadas
-- [Performance](../conventions/advanced/performance.md) — índices, paginação, UUID vs BIGINT
-- [Null Safety](../conventions/advanced/null-safety.md) — NULL, COALESCE, IS NULL
-- [PostgreSQL](./postgres.md) — idiomas específicos do PostgreSQL
+- [Formatting](../conventions/formatting.md): estilo vertical, JOIN, condições
+- [Naming](../conventions/naming.md): PascalCase, prefixos, constraints
+- [Procedures](../conventions/advanced/procedures.md): temp tables, etapas nomeadas
+- [Performance](../conventions/advanced/performance.md): índices, paginação, UUID vs BIGINT
+- [Null Safety](../conventions/advanced/null-safety.md): NULL, COALESCE, IS NULL
+- [PostgreSQL](./postgres.md): idiomas específicos do PostgreSQL

@@ -1,6 +1,6 @@
 # Narrowing
 
-**Narrowing** (estreitamento) é o processo de mover de um tipo amplo para um tipo específico dentro de um bloco. O TypeScript rastreia cada verificação via **type guard** (guarda de tipo) e refina o tipo automaticamente — sem `as`, sem **type assertion** (afirmação de tipo).
+**Narrowing** (estreitamento) é o processo de mover de um tipo amplo para um tipo específico dentro de um bloco. O TypeScript rastreia cada verificação via **type guard** (guarda de tipo) e refina o tipo automaticamente, sem `as` e sem **type assertion** (afirmação de tipo).
 
 ## Conceitos fundamentais
 
@@ -9,7 +9,7 @@
 | **narrowing** (estreitamento) | Refinamento de um tipo amplo para um específico dentro de um bloco |
 | **type guard** (guarda de tipo) | Expressão que estreita o tipo (`typeof`, `instanceof`, `in`, predicate) |
 | **type predicate** (predicado de tipo) | Função `(x): x is T` que diz ao compilador o tipo após retornar `true` |
-| **type assertion** (afirmação de tipo) | `as T` — força o tipo sem checagem; último recurso, evitar |
+| **type assertion** (afirmação de tipo) | `as T`: força o tipo sem checagem; último recurso, evitar |
 | **discriminated union** (união discriminada) | Union cujo membro é identificado por campo literal (`kind`, `type`) |
 | **in operator** (operador `in`) | Verifica presença de propriedade; estreita union por shape |
 | **instanceof** (verificação de instância) | Estreita pelo construtor; usado com classes e erros customizados |
@@ -21,7 +21,7 @@ Para primitivos, `typeof` é a ferramenta correta. TypeScript entende os guards 
 o narrowing.
 
 <details>
-<summary>❌ Ruim — type assertion no lugar de narrowing</summary>
+<summary>❌ Ruim: type assertion no lugar de narrowing</summary>
 
 ```ts
 function formatId(id: string | number): string {
@@ -33,7 +33,7 @@ function formatId(id: string | number): string {
 </details>
 
 <details>
-<summary>✅ Bom — typeof para primitivos</summary>
+<summary>✅ Bom: typeof para primitivos</summary>
 
 ```ts
 function formatId(id: string | number): string {
@@ -53,7 +53,7 @@ function formatId(id: string | number): string {
 Para instâncias de classes, incluindo as de erro, `instanceof` é o operador correto.
 
 <details>
-<summary>❌ Ruim — type assertion no lugar de instanceof</summary>
+<summary>❌ Ruim: type assertion no lugar de instanceof</summary>
 
 ```ts
 async function findUser(id: string): Promise<User> {
@@ -70,7 +70,7 @@ async function findUser(id: string): Promise<User> {
 </details>
 
 <details>
-<summary>✅ Bom — instanceof para classes e erros tipados</summary>
+<summary>✅ Bom: instanceof para classes e erros tipados</summary>
 
 ```ts
 async function findUser(id: string): Promise<User> {
@@ -92,7 +92,7 @@ Quando a verificação é mais complexa que `typeof` ou `instanceof`, extraia em
 O nome expressa a intenção de negócio. O compilador entende o `is` como estreitamento de tipo.
 
 <details>
-<summary>❌ Ruim — verificação inline repetida, sem nome, sem reutilização</summary>
+<summary>❌ Ruim: verificação inline repetida, sem nome, sem reutilização</summary>
 
 ```ts
 function processPayment(event: unknown) {
@@ -103,7 +103,7 @@ function processPayment(event: unknown) {
     "amount" in event &&
     typeof (event as any).amount === "number"
   ) {
-    // tipo ainda é object — TypeScript não sabe que é PaymentEvent
+    // tipo ainda é object: TypeScript não sabe que é PaymentEvent
   }
 }
 ```
@@ -111,7 +111,7 @@ function processPayment(event: unknown) {
 </details>
 
 <details>
-<summary>✅ Bom — função predicado nomeada, reutilizável e tipada</summary>
+<summary>✅ Bom: função predicado nomeada, reutilizável e tipada</summary>
 
 ```ts
 function isPaymentEvent(value: unknown): value is PaymentEvent {
@@ -127,7 +127,7 @@ function isPaymentEvent(value: unknown): value is PaymentEvent {
 function processPayment(event: unknown) {
   if (!isPaymentEvent(event)) throw new ValidationError({ message: "Invalid payment event." });
 
-  const amount = event.amount; // number — compilador sabe
+  const amount = event.amount; // number: compilador sabe
 }
 ```
 
@@ -139,7 +139,7 @@ Quando um union type tem um campo literal discriminante, o TypeScript aplica nar
 automaticamente dentro de cada branch, sem type guard manual.
 
 <details>
-<summary>❌ Ruim — acessa campo de variant específica sem narrowing</summary>
+<summary>❌ Ruim: acessa campo de variant específica sem narrowing</summary>
 
 ```ts
 type NotificationEvent =
@@ -148,7 +148,7 @@ type NotificationEvent =
   | { type: "push"; deviceToken: string; title: string; body: string };
 
 function sendNotification(event: NotificationEvent) {
-  // acessa recipient sem verificar se type é "email" — erro de compilação
+  // acessa recipient sem verificar se type é "email": erro de compilação
   sendEmail(event.recipient, event.subject); // Property 'recipient' does not exist on type 'NotificationEvent'
 }
 ```
@@ -156,7 +156,7 @@ function sendNotification(event: NotificationEvent) {
 </details>
 
 <details>
-<summary>✅ Bom — narrowing automático via campo discriminante</summary>
+<summary>✅ Bom: narrowing automático via campo discriminante</summary>
 
 ```ts
 type NotificationEvent =
@@ -190,7 +190,7 @@ garante em compile time que nenhum variant foi esquecido. Se um novo variant for
 tipo, o compilador aponta o erro antes do runtime.
 
 <details>
-<summary>❌ Ruim — switch sem cobertura total, novo caso passa silenciosamente</summary>
+<summary>❌ Ruim: switch sem cobertura total, novo caso passa silenciosamente</summary>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -200,7 +200,7 @@ function getStatusLabel(status: OrderStatus): string {
     case "pending": return "Pending review";
     case "approved": return "Approved";
     case "shipped": return "Shipped";
-    // "cancelled" esquecido — retorna undefined em runtime
+    // "cancelled" esquecido: retorna undefined em runtime
   }
 }
 ```
@@ -208,7 +208,7 @@ function getStatusLabel(status: OrderStatus): string {
 </details>
 
 <details>
-<summary>✅ Bom — never no default garante cobertura total</summary>
+<summary>✅ Bom: never no default garante cobertura total</summary>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -235,7 +235,7 @@ function getStatusLabel(status: OrderStatus): string {
 clause é mais legível quando a ausência do valor é uma condição de negócio que precisa de nome.
 
 <details>
-<summary>❌ Ruim — nullish chaining esconde a condição de negócio</summary>
+<summary>❌ Ruim: nullish chaining esconde a condição de negócio</summary>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
@@ -247,7 +247,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 </details>
 
 <details>
-<summary>✅ Bom — guard clause explicita a condição</summary>
+<summary>✅ Bom: guard clause explicita a condição</summary>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {

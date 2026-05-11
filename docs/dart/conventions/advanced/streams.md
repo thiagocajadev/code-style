@@ -21,7 +21,7 @@ de UI em Flutter e de I/O em Dart puro.
 ## Single-subscription vs broadcast
 
 <details>
-<summary>❌ Ruim — múltiplos listeners em single-subscription stream</summary>
+<summary>❌ Ruim: múltiplos listeners em single-subscription stream</summary>
 
 ```dart
 final stream = File('data.json').openRead();
@@ -33,7 +33,7 @@ stream.listen((chunk) => logChunk(chunk));   // StateError: Stream has already b
 </details>
 
 <details>
-<summary>✅ Bom — broadcast para múltiplos listeners</summary>
+<summary>✅ Bom: broadcast para múltiplos listeners</summary>
 
 ```dart
 final controller = StreamController<List<int>>.broadcast();
@@ -50,7 +50,7 @@ controller.add(data);
 ## `async*` para gerador de stream
 
 <details>
-<summary>❌ Ruim — StreamController manual para sequência simples</summary>
+<summary>❌ Ruim: StreamController manual para sequência simples</summary>
 
 ```dart
 Stream<int> countDown(int from) {
@@ -70,7 +70,7 @@ Stream<int> countDown(int from) {
 </details>
 
 <details>
-<summary>✅ Bom — async* é mais legível e gerencia ciclo de vida automaticamente</summary>
+<summary>✅ Bom: async* é mais legível e gerencia ciclo de vida automaticamente</summary>
 
 ```dart
 Stream<int> countDown(int from) async* {
@@ -86,7 +86,7 @@ Stream<int> countDown(int from) async* {
 ## Cancelamento de subscription
 
 <details>
-<summary>❌ Ruim — subscription sem cancelamento — memory leak</summary>
+<summary>❌ Ruim: subscription sem cancelamento (memory leak)</summary>
 
 ```dart
 class OrderWidget extends StatefulWidget { ... }
@@ -104,7 +104,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 </details>
 
 <details>
-<summary>✅ Bom — subscription cancelada no dispose</summary>
+<summary>✅ Bom: subscription cancelada no dispose</summary>
 
 ```dart
 class _OrderWidgetState extends State<OrderWidget> {
@@ -154,7 +154,7 @@ final debouncedStream = searchStream.debounceTime(
 ## StreamController com fechamento correto
 
 <details>
-<summary>❌ Ruim — controller nunca fechado</summary>
+<summary>❌ Ruim: controller nunca fechado</summary>
 
 ```dart
 class EventBus {
@@ -162,14 +162,14 @@ class EventBus {
   Stream<AppEvent> get events => _controller.stream;
 
   void emit(AppEvent event) => _controller.add(event);
-  // sem dispose — stream nunca fecha
+  // sem dispose: stream nunca fecha
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — dispose fecha o controller</summary>
+<summary>✅ Bom: dispose fecha o controller</summary>
 
 ```dart
 class EventBus {

@@ -38,11 +38,11 @@ Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 | ------------------------------ | ---------------------------------------------------------------- |
 | `handle`, `do`, `run`, `process` | verbo que descreve a ação: `save`, `validate`, `send`          |
 | `data`, `info`, `result`       | nome do conceito: `user`, `invoice`, `summary`                   |
-| `IUserService` (prefixo `I`)   | `UserService` — interfaces não precisam de prefixo               |
+| `IUserService` (prefixo `I`)   | `UserService`; interfaces não precisam de prefixo                |
 | `tmp`, `val`, `obj`, `item`    | nome completo e expressivo                                       |
 | `Manager`, `Helper`, `Utils`   | nome do domínio: `OrderService`, `InvoiceBuilder`, `DateParser`  |
 
-## Records — imutabilidade por padrão
+## Records: imutabilidade por padrão
 
 ```java
 record InvoiceData(String orderId, String customerId, BigDecimal amount, String currency) {}
@@ -50,7 +50,7 @@ record InvoiceData(String orderId, String customerId, BigDecimal amount, String 
 InvoiceData invoice = new InvoiceData("ord-1", "cust-99", new BigDecimal("149.90"), "BRL");
 ```
 
-## Pattern matching — switch expressivo
+## Pattern matching: switch expressivo
 
 ```java
 String label = switch (status) {

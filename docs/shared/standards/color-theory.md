@@ -105,7 +105,7 @@ Não tente preencher todos os espaços. Interface sem respiro tem o mesmo proble
 
 **WCAG** define critérios mensuráveis de acessibilidade em três níveis: **A** (mínimo), **AA** (padrão da indústria) e **AAA** (Triple-A, excelência). A maioria dos produtos digitais busca AA. AAA é exigido em contextos críticos como saúde e serviços governamentais.
 
-### Critério 1.4.3 — Contraste mínimo de texto
+### Critério 1.4.3: Contraste mínimo de texto
 
 | Nível | Texto normal | Texto grande (≥18pt regular ou ≥14pt bold) |
 |---|---|---|

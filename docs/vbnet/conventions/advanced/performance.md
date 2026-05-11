@@ -3,7 +3,7 @@
 > Escopo: VB.NET. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
 Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar — **StringBuilder** evita realocações; **GC** pressiona a aplicação quando alocações crescem em laço.
+contexto, prefira legibilidade. Meça antes de otimizar. **StringBuilder** evita realocações; **GC** pressiona a aplicação quando alocações crescem em laço.
 
 ## Conceitos fundamentais
 
@@ -24,7 +24,7 @@ Concatenação com `&` dentro de um laço aloca uma nova String a cada iteraçã
 imutáveis em .NET. `StringBuilder` reutiliza um buffer interno e aloca uma vez no final.
 
 <details>
-<summary>❌ Ruim — nova string alocada por iteração</summary>
+<summary>❌ Ruim: nova string alocada por iteração</summary>
 
 ```vbnet
 Public Function BuildOrderSummary(items As IEnumerable(Of OrderItem)) As String
@@ -40,7 +40,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — StringBuilder reutiliza o buffer</summary>
+<summary>✅ Bom: StringBuilder reutiliza o buffer</summary>
 
 ```vbnet
 Public Function BuildOrderSummary(items As IEnumerable(Of OrderItem)) As String
@@ -62,7 +62,7 @@ End Function
 índice acessa o array diretamente, sem overhead de enumerador.
 
 <details>
-<summary>❌ Ruim — For Each cria enumerador por iteração em hot path</summary>
+<summary>❌ Ruim: For Each cria enumerador por iteração em hot path</summary>
 
 ```vbnet
 Public Function CalculateTotalRevenue(orders As Order()) As Decimal
@@ -78,7 +78,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — For com índice em array: sem enumerador</summary>
+<summary>✅ Bom: For com índice em array: sem enumerador</summary>
 
 ```vbnet
 Public Function CalculateTotalRevenue(orders As Order()) As Decimal
@@ -99,7 +99,7 @@ Passar um tipo de valor (`Integer`, `Decimal`, `Boolean`) para um parâmetro `Ob
 boxing: alocação de um wrapper no heap. Em hot paths, prefira genéricos ou tipos concretos.
 
 <details>
-<summary>❌ Ruim — ArrayList usa Object, boxing por item</summary>
+<summary>❌ Ruim: ArrayList usa Object, boxing por item</summary>
 
 ```vbnet
 Public Function SumAmounts(amounts As ArrayList) As Decimal
@@ -115,7 +115,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — List(Of Decimal) sem boxing</summary>
+<summary>✅ Bom: List(Of Decimal) sem boxing</summary>
 
 ```vbnet
 Public Function SumAmounts(amounts As List(Of Decimal)) As Decimal
@@ -137,7 +137,7 @@ resolve em O(1) via hash. Para listas fixas verificadas com frequência, defina 
 vez no módulo e reutilize.
 
 <details>
-<summary>❌ Ruim — List.Contains percorre tudo a cada chamada</summary>
+<summary>❌ Ruim: List.Contains percorre tudo a cada chamada</summary>
 
 ```vbnet
 Private ReadOnly _premiumCategories As New List(Of String) From {
@@ -154,7 +154,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — HashSet.Contains resolve em O(1)</summary>
+<summary>✅ Bom: HashSet.Contains resolve em O(1)</summary>
 
 ```vbnet
 Private ReadOnly _premiumCategories As New HashSet(Of String) From {
@@ -177,7 +177,7 @@ sincronamente. Para métodos com caminho síncrono frequente (cache hit, valida�
 retornar o valor diretamente quando possível.
 
 <details>
-<summary>❌ Ruim — Task desnecessário quando resultado está em cache</summary>
+<summary>❌ Ruim: Task desnecessário quando resultado está em cache</summary>
 
 ```vbnet
 Public Async Function FindProductAsync(id As Guid) As Task(Of Product)
@@ -195,7 +195,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — retorno síncrono direto quando possível</summary>
+<summary>✅ Bom: retorno síncrono direto quando possível</summary>
 
 ```vbnet
 Public Function FindProduct(id As Guid) As Product

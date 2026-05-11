@@ -1,6 +1,6 @@
-// Vitest — alternativa moderna ao Jest, ESM-nativo e mais rápido
+// Vitest: alternativa moderna ao Jest, ESM-nativo e mais rápido
 // Executar: vitest run testing.vitest.js
-// Convenção: expect(actual).toBe(expected) — actual em expect(), expected em toBe()
+// Convenção: expect(actual).toBe(expected); actual em expect(), expected em toBe()
 
 import { test, describe, expect } from "vitest";
 

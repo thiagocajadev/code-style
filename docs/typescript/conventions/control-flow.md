@@ -19,10 +19,10 @@ Os padrões de controle de fluxo do JavaScript se aplicam sem mudança. O TypeSc
 ## Narrowing como guard clause
 
 Guard clauses em TypeScript estreitam o tipo além de controlar o fluxo. Após o guard, o
-compilador sabe que a variável é não-nula — sem assertions.
+compilador sabe que a variável é não-nula, sem assertions.
 
 <details>
-<summary>❌ Ruim — tipo nullable navega pelo código inteiro com ?.</summary>
+<summary>❌ Ruim: tipo nullable navega pelo código inteiro com ?.</summary>
 
 ```ts
 async function processOrder(orderId: string): Promise<void> {
@@ -36,13 +36,13 @@ async function processOrder(orderId: string): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom — guard estreita o tipo, resto do código é não-nulo</summary>
+<summary>✅ Bom: guard estreita o tipo, resto do código é não-nulo</summary>
 
 ```ts
 async function processOrder(orderId: string): Promise<void> {
   const order = await findOrder(orderId); // Order | null
   if (!order) return;
-  // order: Order — compilador garante não-nulo daqui para baixo
+  // order: Order. Compilador garante não-nulo daqui para baixo
 
   await sendReceipt(order.customerId);
   await updateStatus(order.id, "done");
@@ -57,7 +57,7 @@ async function processOrder(orderId: string): Promise<void> {
 sabe o shape completo de cada variante sem type assertions.
 
 <details>
-<summary>❌ Ruim — if/else com type assertions manuais</summary>
+<summary>❌ Ruim: if/else com type assertions manuais</summary>
 
 ```ts
 type PaymentEvent =
@@ -79,7 +79,7 @@ function handlePaymentEvent(event: PaymentEvent): void {
 </details>
 
 <details>
-<summary>✅ Bom — switch com narrowing automático por discriminante</summary>
+<summary>✅ Bom: switch com narrowing automático por discriminante</summary>
 
 ```ts
 function handlePaymentEvent(event: PaymentEvent): void {
@@ -107,7 +107,7 @@ function handlePaymentEvent(event: PaymentEvent): void {
 um novo variant é adicionado ao tipo, o compilador aponta o switch que precisa ser atualizado.
 
 <details>
-<summary>❌ Ruim — novo variant ignorado silenciosamente</summary>
+<summary>❌ Ruim: novo variant ignorado silenciosamente</summary>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -117,7 +117,7 @@ function getStatusLabel(status: OrderStatus): string {
     case "pending":   return "Aguardando";
     case "approved":  return "Aprovado";
     case "shipped":   return "Enviado";
-    // "cancelled" adicionado ao tipo mas esquecido aqui — retorna undefined
+    // "cancelled" adicionado ao tipo mas esquecido aqui: retorna undefined
     default:          return "Unknown";
   }
 }
@@ -126,7 +126,7 @@ function getStatusLabel(status: OrderStatus): string {
 </details>
 
 <details>
-<summary>✅ Bom — never no default, compilador avisa se faltar um caso</summary>
+<summary>✅ Bom: never no default, compilador avisa se faltar um caso</summary>
 
 ```ts
 function assertNever(value: never): never {
@@ -153,7 +153,7 @@ Quando o mesmo narrowing é necessário em múltiplos lugares, extraia para uma 
 O compilador propaga o contrato para todos os callers.
 
 <details>
-<summary>❌ Ruim — verificação inline repetida, narrowing não reutilizável</summary>
+<summary>❌ Ruim: verificação inline repetida, narrowing não reutilizável</summary>
 
 ```ts
 function processApiResponse(data: unknown): void {
@@ -163,7 +163,7 @@ function processApiResponse(data: unknown): void {
     "id" in data &&
     "customerId" in data
   ) {
-    // data: object — ainda não é Order para o compilador
+    // data: object. Ainda não é Order para o compilador
     sendConfirmation((data as Order).customerId);
   }
 }
@@ -172,7 +172,7 @@ function processApiResponse(data: unknown): void {
 </details>
 
 <details>
-<summary>✅ Bom — type predicate nomeia e reutiliza o narrowing</summary>
+<summary>✅ Bom: type predicate nomeia e reutiliza o narrowing</summary>
 
 ```ts
 function isOrder(value: unknown): value is Order {
@@ -188,7 +188,7 @@ function isOrder(value: unknown): value is Order {
 function processApiResponse(data: unknown): void {
   if (!isOrder(data)) throw new Error("Invalid order payload");
 
-  sendConfirmation(data.customerId); // data: Order — compilador sabe
+  sendConfirmation(data.customerId); // data: Order. Compilador sabe
 }
 ```
 

@@ -6,7 +6,7 @@ JavaScript é a linguagem usada para ilustrar os fundamentos deste guia. A maior
 aqui (nomes expressivos, guard clauses, funções pequenas, fluxo linear) são transportáveis para
 qualquer linguagem.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 
@@ -44,10 +44,10 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 
 | Tópico                                                  | Conceitos                                                          |
 | ------------------------------------------------------- | ------------------------------------------------------------------ |
-| [Bot — Discord](frameworks/bot/discord.md)              | discord.js: Client, Gateway Intents, Slash Commands, Embeds        |
-| [Bot — Telegram](frameworks/bot/telegram.md)            | Telegraf: commands, Inline Keyboard, middleware, webhook           |
-| [Bot — WhatsApp](frameworks/bot/whatsapp.md)            | Baileys e Meta Cloud API: webhook, Template Messages, command router |
-| [Bot — Slack](frameworks/bot/slack.md)                  | Bolt for JS: slash commands, Events API, Block Kit, Socket Mode      |
+| [Bot Discord](frameworks/bot/discord.md)                | discord.js: Client, Gateway Intents, Slash Commands, Embeds        |
+| [Bot Telegram](frameworks/bot/telegram.md)              | Telegraf: commands, Inline Keyboard, middleware, webhook           |
+| [Bot WhatsApp](frameworks/bot/whatsapp.md)              | Baileys e Meta Cloud API: webhook, Template Messages, command router |
+| [Bot Slack](frameworks/bot/slack.md)                    | Bolt for JS: slash commands, Events API, Block Kit, Socket Mode      |
 
 ## Princípios
 
@@ -56,10 +56,10 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | Princípio                                                                                                        | Descrição                                                            |
 | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Escrita em inglês](conventions/naming.md#nomes-em-português)                                                    | Código universal, nomes curtos e sem ambiguidade                     |
-| [Código narrativo](conventions/functions.md#god-function--múltiplas-responsabilidades)                           | O código conta a história, sem precisar de comentários               |
+| [Código narrativo](conventions/functions.md#god-function-múltiplas-responsabilidades)                           | O código conta a história, sem precisar de comentários               |
 | [Ponto de entrada limpo](conventions/functions.md#ponto-de-entrada-limpo)                                        | Caller de uma linha: o quê, não o como                               |
-| [Estilo vertical](conventions/functions.md#estilo-vertical--parâmetros)                                          | Até 3 parâmetros por linha; 4+ usa objeto                            |
-| [Orquestrador no topo](conventions/functions.md#god-function--múltiplas-responsabilidades)                       | Chamada visível antes dos detalhes (top-down)                        |
+| [Estilo vertical](conventions/functions.md#estilo-vertical-parâmetros)                                          | Até 3 parâmetros por linha; 4+ usa objeto                            |
+| [Orquestrador no topo](conventions/functions.md#god-function-múltiplas-responsabilidades)                       | Chamada visível antes dos detalhes (top-down)                        |
 | [Detalhes abaixo](conventions/functions.md#direct-return)                                                        | Helpers ficam abaixo do orquestrador (step-down rule)                |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                                          | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
@@ -82,7 +82,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 
 | Princípio                                                                                                        | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Funções pequenas](conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)                    | Uma responsabilidade, um nível de abstração                  |
+| [Funções pequenas](conventions/functions.md#sla-orquestrador-ou-implementação-nunca-os-dois)                    | Uma responsabilidade, um nível de abstração                  |
 | [Cálculo vs formatação](conventions/functions.md#separar-cálculo-de-formatação)                                  | Computar dados e formatar saída em funções separadas         |
 | [Valor fixo por padrão](conventions/variables.md#let-desnecessário)                                              | `const` primeiro, `let` só quando necessário                 |
 | [CQS](conventions/variables.md#mutação-direta-de-objetos)                                                        | Separar comando de consulta, sem efeitos colaterais ocultos  |
@@ -92,4 +92,4 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Contratos consistentes](conventions/advanced/error-handling.md#baseerror--abstração-centralizada)               | Respostas padronizadas, sempre o mesmo formato               |
 | [Tratamento centralizado de erros](conventions/advanced/error-handling.md#baseerror--abstração-centralizada)     | Classes de erro tipadas, try/catch nos limites do sistema    |
 | [I/O assíncrono](conventions/advanced/async.md#callback-hell)                                                    | `async/await`, sem bloqueio                                  |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa)                                     | AAA: fases explícitas; assert limpo: sem expressões inline   |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                                     | AAA: fases explícitas; assert limpo: sem expressões inline   |

@@ -79,7 +79,7 @@ Conjunto de práticas de engenharia voltadas a feedback rápido e qualidade cont
 | **Releases pequenos** | Entregar incrementos pequenos e frequentes em vez de grandes lotes |
 | **Posse coletiva do código** | Qualquer engenheiro pode melhorar qualquer parte do sistema |
 
-XP é a base conceitual de práticas que hoje chamamos de DevOps e **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas — **CI**, Integração Contínua; **CD**, Entrega Contínua).
+XP é a base conceitual de práticas que hoje chamamos de DevOps e **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas: **CI** é Integração Contínua; **CD** é Entrega Contínua).
 
 **Quando usar**: times pequenos com entregas frequentes e domínio em evolução.
 

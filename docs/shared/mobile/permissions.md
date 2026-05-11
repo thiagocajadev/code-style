@@ -7,7 +7,7 @@ mobile protege recursos sensíveis do dispositivo. Diferente de aplicações web
 permissão em contexto, em mobile o modelo é mais restritivo: o usuário pode negar permanentemente,
 e o SO lembra dessa decisão entre sessões.
 
-Uma estratégia de permissões bem projetada não é sobre obter acesso — é sobre merecer confiança.
+Uma estratégia de permissões bem projetada não é sobre obter acesso: é sobre merecer confiança.
 
 ## Conceitos fundamentais
 
@@ -30,7 +30,7 @@ Contexto claro → Rationale (se necessário) → Diálogo do SO → Resposta tr
 ```
 
 **Contexto claro** significa que o usuário entende por que está sendo pedido antes de ver o diálogo.
-Solicitar câmera ao abrir o app sem contexto algum é o erro mais comum — e o mais eficiente em
+Solicitar câmera ao abrir o app sem contexto algum é o erro mais comum, e o mais eficiente em
 destruir confiança.
 
 **Rationale** é necessário quando o SO indica que o usuário já negou anteriormente. É uma chance de
@@ -48,9 +48,9 @@ A regra é: solicitar no momento em que o recurso é necessário, nunca antes.
 | Prática | Resultado |
 |---|---|
 | Pedir câmera ao abrir o app | Usuário nega porque não entende o motivo |
-| Pedir câmera ao tocar em "Tirar foto" | Usuário entende e aprova — o contexto está claro |
-| Pedir localização ao abrir o mapa | Contexto óbvio — alta taxa de aprovação |
-| Pedir localização na tela de cadastro | Usuário desconfia — baixa taxa de aprovação |
+| Pedir câmera ao tocar em "Tirar foto" | Usuário entende e aprova; o contexto está claro |
+| Pedir localização ao abrir o mapa | Contexto óbvio; alta taxa de aprovação |
+| Pedir localização na tela de cadastro | Usuário desconfia; baixa taxa de aprovação |
 
 Permissões agrupadas no splash screen são o antipadrão clássico. O usuário não tem contexto para
 avaliar nenhum dos pedidos e tende a negar tudo.
@@ -58,7 +58,7 @@ avaliar nenhum dos pedidos e tende a negar tudo.
 ## Permanently denied
 
 Quando o usuário nega permanentemente, o diálogo do SO não pode mais ser exibido. Exibir o diálogo
-nesse estado não tem efeito — o sistema o ignora.
+nesse estado não tem efeito: o sistema o ignora.
 
 O único caminho restante é direcionar o usuário para as configurações do dispositivo:
 
@@ -84,7 +84,7 @@ desativada de forma clara, não silenciosa.
 | Notificações | App funciona normalmente; sem lembretes baseados em push |
 
 A pergunta a responder para cada permissão: **o que o usuário ainda consegue fazer sem ela?** Se a
-resposta for "nada", a permissão é essencial e o fluxo deve deixar isso claro antes de pedir — não
+resposta for "nada", a permissão é essencial e o fluxo deve deixar isso claro antes de pedir, não
 depois de negar.
 
 ## Permissões e trust

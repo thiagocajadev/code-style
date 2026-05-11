@@ -89,7 +89,7 @@ End Module
 Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na controller ou action garante cobertura uniforme antes de qualquer código executar.
 
 <details>
-<summary>❌ Ruim — verificação manual de role no corpo</summary>
+<summary>❌ Ruim: verificação manual de role no corpo</summary>
 
 ```vbnet
 Public Class OrdersController
@@ -109,7 +109,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — atributo declarativo, action sem lógica de autorização</summary>
+<summary>✅ Bom: atributo declarativo, action sem lógica de autorização</summary>
 
 ```vbnet
 Public Class OrdersController

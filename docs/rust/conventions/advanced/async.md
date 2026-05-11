@@ -25,7 +25,7 @@ Funções `async fn` retornam um `Future` que só executa quando aguardado com `
 Use `#[tokio::test]` nos testes assíncronos.
 
 <details>
-<summary>❌ Ruim — runtime bloqueante misturado com async</summary>
+<summary>❌ Ruim: runtime bloqueante misturado com async</summary>
 
 ```rust
 fn main() {
@@ -39,7 +39,7 @@ fn main() {
 </details>
 
 <details>
-<summary>✅ Bom — #[tokio::main] no entry point</summary>
+<summary>✅ Bom: #[tokio::main] no entry point</summary>
 
 ```rust
 #[tokio::main]
@@ -61,7 +61,7 @@ async fn main() -> anyhow::Result<()> {
 Para operações independentes, execute em paralelo com `tokio::join!` em vez de `.await` sequencial.
 
 <details>
-<summary>❌ Ruim — .await sequencial quando as operações são independentes</summary>
+<summary>❌ Ruim: .await sequencial quando as operações são independentes</summary>
 
 ```rust
 async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
@@ -76,7 +76,7 @@ async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
 </details>
 
 <details>
-<summary>✅ Bom — tokio::join! executa em paralelo</summary>
+<summary>✅ Bom: tokio::join! executa em paralelo</summary>
 
 ```rust
 async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
@@ -94,13 +94,13 @@ async fn load_dashboard(user_id: u64) -> anyhow::Result<Dashboard> {
 
 </details>
 
-## tokio::spawn — tasks independentes
+## tokio::spawn: tasks independentes
 
 Use `spawn` para tasks que devem rodar em segundo plano, independentes do fluxo atual.
 Sempre faça `await` no `JoinHandle` ou capture erros.
 
 <details>
-<summary>❌ Ruim — spawn sem controle de ciclo de vida</summary>
+<summary>❌ Ruim: spawn sem controle de ciclo de vida</summary>
 
 ```rust
 async fn process_order(order: Order) {
@@ -114,7 +114,7 @@ async fn process_order(order: Order) {
 </details>
 
 <details>
-<summary>✅ Bom — JoinHandle capturado e erro registrado</summary>
+<summary>✅ Bom: JoinHandle capturado e erro registrado</summary>
 
 ```rust
 async fn process_order(order: Order) -> anyhow::Result<()> {
@@ -140,7 +140,7 @@ Use `tokio::signal` para capturar `SIGTERM`/`Ctrl-C` e encerrar o servidor sem c
 requisições em andamento.
 
 <details>
-<summary>❌ Ruim — processo encerrado abruptamente</summary>
+<summary>❌ Ruim: processo encerrado abruptamente</summary>
 
 ```rust
 #[tokio::main]
@@ -153,7 +153,7 @@ async fn main() -> anyhow::Result<()> {
 </details>
 
 <details>
-<summary>✅ Bom — shutdown signal aguardado antes de encerrar</summary>
+<summary>✅ Bom: shutdown signal aguardado antes de encerrar</summary>
 
 ```rust
 #[tokio::main]
@@ -196,7 +196,7 @@ Nunca execute operações bloqueantes diretamente em tasks async. Use `spawn_blo
 código CPU-intensivo ou I/O síncrono.
 
 <details>
-<summary>❌ Ruim — bloqueio na thread do runtime</summary>
+<summary>❌ Ruim: bloqueio na thread do runtime</summary>
 
 ```rust
 async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {
@@ -208,7 +208,7 @@ async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {
 </details>
 
 <details>
-<summary>✅ Bom — CPU-bound em thread dedicada via spawn_blocking</summary>
+<summary>✅ Bom: CPU-bound em thread dedicada via spawn_blocking</summary>
 
 ```rust
 async fn generate_report(order_id: u64) -> anyhow::Result<Vec<u8>> {

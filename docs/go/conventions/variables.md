@@ -20,7 +20,7 @@ zero value explícito ou declaração de pacote, `const` para valores que não m
 Go nunca deixa variáveis sem valor. Declare com `var` quando o zero value já é o estado correto.
 
 <details>
-<summary>❌ Ruim — inicialização redundante com zero value</summary>
+<summary>❌ Ruim: inicialização redundante com zero value</summary>
 
 ```go
 var count int = 0
@@ -32,7 +32,7 @@ var items []string = nil
 </details>
 
 <details>
-<summary>✅ Bom — zero value é o estado inicial, var declara a intenção</summary>
+<summary>✅ Bom: zero value é o estado inicial, var declara a intenção</summary>
 
 ```go
 var count int
@@ -49,7 +49,7 @@ Use `:=` quando há um valor imediato. Use `var` para zero value explícito ou p
 legível em declarações longas.
 
 <details>
-<summary>❌ Ruim — var onde := seria mais natural</summary>
+<summary>❌ Ruim: var onde := seria mais natural</summary>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -63,7 +63,7 @@ func findUser(userID int64) (*User, error) {
 </details>
 
 <details>
-<summary>✅ Bom — := para inicialização com valor imediato</summary>
+<summary>✅ Bom: := para inicialização com valor imediato</summary>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -84,7 +84,7 @@ Substitua literais inline por constantes nomeadas. Qualquer número ou string cu
 é óbvio pelo contexto imediato é um valor mágico.
 
 <details>
-<summary>❌ Ruim — literais sem nome</summary>
+<summary>❌ Ruim: literais sem nome</summary>
 
 ```go
 if attempts > 3 {
@@ -101,7 +101,7 @@ time.Sleep(5 * time.Second)
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas revelam intenção</summary>
+<summary>✅ Bom: constantes nomeadas revelam intenção</summary>
 
 ```go
 const (
@@ -129,7 +129,7 @@ Use `iota` para sequências de constantes relacionadas. Exporte o tipo para que 
 verifique usos indevidos.
 
 <details>
-<summary>❌ Ruim — strings mágicas para status</summary>
+<summary>❌ Ruim: strings mágicas para status</summary>
 
 ```go
 func updateOrderStatus(order *Order, status string) {
@@ -142,7 +142,7 @@ func updateOrderStatus(order *Order, status string) {
 </details>
 
 <details>
-<summary>✅ Bom — tipo enumerado com iota</summary>
+<summary>✅ Bom: tipo enumerado com iota</summary>
 
 ```go
 type OrderStatus int
@@ -173,7 +173,7 @@ Go não tem `const` para structs. Use ponteiros somente quando mutação for nec
 Prefira receber e retornar valores (não ponteiros) em structs pequenas.
 
 <details>
-<summary>❌ Ruim — mutação desnecessária via ponteiro</summary>
+<summary>❌ Ruim: mutação desnecessária via ponteiro</summary>
 
 ```go
 func applyTax(price *float64, rate float64) {
@@ -187,7 +187,7 @@ applyTax(&total, 0.1)
 </details>
 
 <details>
-<summary>✅ Bom — retornar novo valor sem efeito colateral</summary>
+<summary>✅ Bom: retornar novo valor sem efeito colateral</summary>
 
 ```go
 func applyTax(price float64, rate float64) float64 {
@@ -205,7 +205,7 @@ taxedTotal := applyTax(100.0, 0.1)
 Use `_` para descartar retornos que não serão usados. Nunca ignore erros com `_`.
 
 <details>
-<summary>❌ Ruim — erro ignorado silenciosamente</summary>
+<summary>❌ Ruim: erro ignorado silenciosamente</summary>
 
 ```go
 result, _ := saveOrder(order)  // erro descartado
@@ -215,7 +215,7 @@ file, _ := os.Open("data.csv") // falha silenciosa
 </details>
 
 <details>
-<summary>✅ Bom — erros tratados; _ apenas para valores realmente descartáveis</summary>
+<summary>✅ Bom: erros tratados; _ apenas para valores descartáveis</summary>
 
 ```go
 result, err := saveOrder(order)

@@ -20,7 +20,7 @@ resultados intermediários, tornando cada passo testável e legível.
 ## Query monolítica vs etapas com temp tables
 
 <details>
-<summary>❌ Ruim — query única com subqueries aninhadas, difícil de debugar</summary>
+<summary>❌ Ruim: query única com subqueries aninhadas, difícil de debugar</summary>
 
 ```sql
 SELECT
@@ -52,7 +52,7 @@ ORDER BY
 </details>
 
 <details>
-<summary>✅ Bom — procedure com temp tables, uma etapa por responsabilidade</summary>
+<summary>✅ Bom: procedure com temp tables, uma etapa por responsabilidade</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
@@ -109,7 +109,7 @@ END;
 ## Procedure com parâmetros e temp tables
 
 <details>
-<summary>❌ Ruim — JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
+<summary>❌ Ruim: JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
@@ -143,7 +143,7 @@ END;
 </details>
 
 <details>
-<summary>✅ Bom — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
+<summary>✅ Bom: parâmetros nomeados, contexto materializado antes do JOIN final</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
@@ -170,7 +170,7 @@ BEGIN
     Players.Position = @Position AND
     Players.IsActive = 1; -- active
 
-  -- Etapa 2: contexto do time (sempre 1 linha — CROSS JOIN intencional)
+  -- Etapa 2: contexto do time (sempre 1 linha: CROSS JOIN intencional)
   SELECT
     FootballTeams.Name AS TeamName,
     FootballTeams.Stadium AS TeamStadium

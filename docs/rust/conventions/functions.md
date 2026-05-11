@@ -17,12 +17,12 @@ saída antecipada. O operador `?` propaga erros sem ruído. Closures são primei
 | **return expression** (expressão de retorno) | Última linha sem `;`; `return` explícito só em early return |
 | **`impl Trait`** (tipo de retorno opaco) | Indica "alguma coisa que implementa este trait" sem expor o tipo concreto |
 
-## SLA — uma responsabilidade, um nível
+## SLA: uma responsabilidade, um nível
 
 Cada função executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
 
 <details>
-<summary>❌ Ruim — função que faz tudo</summary>
+<summary>❌ Ruim: função que faz tudo</summary>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -55,7 +55,7 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador + funções de detalhe</summary>
+<summary>✅ Bom: orquestrador + funções de detalhe</summary>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -85,12 +85,12 @@ fn calculate_total(cart: &Cart, user_id: u64) -> f64 {
 
 </details>
 
-## Stepdown — orquestrador acima dos detalhes
+## Stepdown: orquestrador acima dos detalhes
 
 Leia o código de cima para baixo: funções de alto nível primeiro, detalhes depois.
 
 <details>
-<summary>❌ Ruim — detalhes antes do orquestrador</summary>
+<summary>❌ Ruim: detalhes antes do orquestrador</summary>
 
 ```rust
 fn compute_discount_rate(user_id: u64) -> f64 {
@@ -110,7 +110,7 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador declarado primeiro</summary>
+<summary>✅ Bom: orquestrador declarado primeiro</summary>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -142,7 +142,7 @@ Extraia o resultado antes de retornar. O `return` (ou a última expressão) nome
 não o computa.
 
 <details>
-<summary>❌ Ruim — lógica inline no retorno</summary>
+<summary>❌ Ruim: lógica inline no retorno</summary>
 
 ```rust
 fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
@@ -153,7 +153,7 @@ fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
 </details>
 
 <details>
-<summary>✅ Bom — resultado extraído antes do retorno</summary>
+<summary>✅ Bom: resultado extraído antes do retorno</summary>
 
 ```rust
 fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
@@ -173,7 +173,7 @@ fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
 Quando o retorno não é óbvio, nomeie o resultado para comunicar intenção.
 
 <details>
-<summary>❌ Ruim — retorno anônimo obscuro</summary>
+<summary>❌ Ruim: retorno anônimo obscuro</summary>
 
 ```rust
 fn build_invoice(order: &Order) -> Invoice {
@@ -189,7 +189,7 @@ fn build_invoice(order: &Order) -> Invoice {
 </details>
 
 <details>
-<summary>✅ Bom — resultado nomeado antes do retorno</summary>
+<summary>✅ Bom: resultado nomeado antes do retorno</summary>
 
 ```rust
 fn build_invoice(order: &Order) -> Invoice {
@@ -212,7 +212,7 @@ Closures capturam o ambiente. Prefira closures curtas inline; extraia para funç
 quando a lógica crescer além de uma expressão.
 
 <details>
-<summary>❌ Ruim — closure longa e sem nome</summary>
+<summary>❌ Ruim: closure longa e sem nome</summary>
 
 ```rust
 let processed: Vec<_> = orders.iter().map(|o| {
@@ -225,7 +225,7 @@ let processed: Vec<_> = orders.iter().map(|o| {
 </details>
 
 <details>
-<summary>✅ Bom — lógica nomeada, closure como delegate</summary>
+<summary>✅ Bom: lógica nomeada, closure como delegate</summary>
 
 ```rust
 fn apply_pricing(order: &Order) -> ProcessedOrder {

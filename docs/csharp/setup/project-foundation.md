@@ -34,7 +34,7 @@ dotnet format
 `Program.cs` declara intenção, não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
-<summary>❌ Ruim — Program.cs como dumping ground de configuração</summary>
+<summary>❌ Ruim: Program.cs como dumping ground de configuração</summary>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -82,7 +82,7 @@ app.Run();
 </details>
 
 <details>
-<summary>✅ Bom — Program.cs como índice, configuração delegada</summary>
+<summary>✅ Bom: Program.cs como índice, configuração delegada</summary>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -100,10 +100,10 @@ app.Run();
 Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
 
 <details>
-<summary>❌ Ruim — dependências de domínio registradas diretamente no Program.cs</summary>
+<summary>❌ Ruim: dependências de domínio registradas diretamente no Program.cs</summary>
 
 ```csharp
-// Program.cs — cresce sem controle conforme o projeto evolui
+// Program.cs: cresce sem controle conforme o projeto evolui
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IOrderRepository, SqlOrderRepository>();
@@ -112,13 +112,13 @@ builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<IUserRepository, SqlUserRepository>();
 builder.Services.AddScoped<UserService>();
 
-// cada novo domínio adiciona mais linhas aqui — sem coesão, sem dono
+// cada novo domínio adiciona mais linhas aqui: sem coesão, sem dono
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ponto de entrada agrega os módulos</summary>
+<summary>✅ Bom: ponto de entrada agrega os módulos</summary>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -163,7 +163,7 @@ public static class AppPipelineExtensions
 </details>
 
 <details>
-<summary>✅ Bom — domínio de Orders dono da sua configuração</summary>
+<summary>✅ Bom: domínio de Orders dono da sua configuração</summary>
 
 ```csharp
 // Features/Orders/OrdersExtensions.cs
@@ -198,7 +198,7 @@ public static class OrdersExtensions
 Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension method acessa `builder.Configuration` com strings soltas espalhadas pelo código.
 
 <details>
-<summary>❌ Ruim — configuração lida com chaves espalhadas</summary>
+<summary>❌ Ruim: configuração lida com chaves espalhadas</summary>
 
 ```csharp
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -212,7 +212,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 </details>
 
 <details>
-<summary>✅ Bom — Options pattern, seção tipada por domínio</summary>
+<summary>✅ Bom: Options pattern, seção tipada por domínio</summary>
 
 ```csharp
 // Auth/AuthOptions.cs
@@ -250,10 +250,10 @@ public static class AuthExtensions
 Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline: sempre via `IConfiguration`.
 
 <details>
-<summary>❌ Ruim — DbContext configurado inline no Program.cs com string hardcoded</summary>
+<summary>❌ Ruim: DbContext configurado inline no Program.cs com string hardcoded</summary>
 
 ```csharp
-// Program.cs — acoplado ao SQL Server, connection string exposta
+// Program.cs: acoplado ao SQL Server, connection string exposta
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer("Server=prod-db;Database=App;User=sa;Password=Abc123!"));
 ```
@@ -261,7 +261,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 </details>
 
 <details>
-<summary>✅ Bom — DbContext registrado no módulo de infraestrutura</summary>
+<summary>✅ Bom: DbContext registrado no módulo de infraestrutura</summary>
 
 ```csharp
 // Infrastructure/DatabaseExtensions.cs
@@ -286,7 +286,7 @@ public static class DatabaseExtensions
 .NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como **UI** (User Interface, Interface do Usuário).
 
 <details>
-<summary>❌ Ruim — Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
+<summary>❌ Ruim: Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
 
 ```csharp
 builder.Services.AddEndpointsApiExplorer();
@@ -303,7 +303,7 @@ app.UseSwaggerUI();
 </details>
 
 <details>
-<summary>✅ Bom — OpenAPI nativo, Scalar como UI, apenas em Development</summary>
+<summary>✅ Bom: OpenAPI nativo, Scalar como UI, apenas em Development</summary>
 
 ```csharp
 // Infrastructure/ApiDocsExtensions.cs
@@ -350,7 +350,7 @@ public static class ApiDocsExtensions
 </details>
 
 <details>
-<summary>✅ Bom — aggregator inclui ApiDocs</summary>
+<summary>✅ Bom: aggregator inclui ApiDocs</summary>
 
 ```csharp
 // AppServiceExtensions.cs
@@ -383,10 +383,10 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 Rate limiting é **middleware** (componente de pipeline): entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
 
 <details>
-<summary>❌ Ruim — rate limiting inline no Program.cs, sem options tipadas</summary>
+<summary>❌ Ruim: rate limiting inline no Program.cs, sem options tipadas</summary>
 
 ```csharp
-// Program.cs — configuração acoplada, sem separação de responsabilidade
+// Program.cs: configuração acoplada, sem separação de responsabilidade
 builder.Services.AddRateLimiter(limiter =>
 {
     limiter.AddFixedWindowLimiter("default", window =>
@@ -402,7 +402,7 @@ builder.Services.AddRateLimiter(limiter =>
 </details>
 
 <details>
-<summary>✅ Bom — rate limiting configurado via extension method</summary>
+<summary>✅ Bom: rate limiting configurado via extension method</summary>
 
 ```csharp
 // Infrastructure/RateLimitingExtensions.cs
@@ -450,7 +450,7 @@ builder.AddUsers();
 </details>
 
 <details>
-<summary>✅ Bom — aplicando política por endpoint</summary>
+<summary>✅ Bom: aplicando política por endpoint</summary>
 
 ```csharp
 group.MapPost("/", OrderEndpoints.Create)
@@ -473,7 +473,7 @@ MapAppEndpoints       → roteia para os handlers
 ```
 
 <details>
-<summary>❌ Ruim — UseAuthorization antes de UseAuthentication</summary>
+<summary>❌ Ruim: UseAuthorization antes de UseAuthentication</summary>
 
 ```csharp
 app.UseAuthorization();   // identidade ainda não foi resolvida
@@ -485,7 +485,7 @@ app.MapAppEndpoints();
 </details>
 
 <details>
-<summary>✅ Bom — ordem correta do pipeline</summary>
+<summary>✅ Bom: ordem correta do pipeline</summary>
 
 ```csharp
 app.UseHttpsRedirection();

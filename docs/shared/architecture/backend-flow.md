@@ -135,7 +135,7 @@ cálculo. O webhook handler precisa receber o stream bruto diretamente.
 A comparação usa `timingSafeEqual` para evitar timing attack (ataque de temporização):
 
 <details>
-<summary>❌ Ruim — valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
+<summary>❌ Ruim: valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
 
 ```js
 async function handleWebhook(request) {
@@ -157,7 +157,7 @@ async function handleWebhook(request) {
 </details>
 
 <details>
-<summary>✅ Bom — valida sobre raw body, comparação timing-safe</summary>
+<summary>✅ Bom: valida sobre raw body, comparação timing-safe</summary>
 
 ```js
 async function handleWebhook(request) {
@@ -199,7 +199,7 @@ O processador roteia o evento pelo tipo usando um registry (registro de handlers
 crescente:
 
 <details>
-<summary>✅ Bom — registry de handlers por tipo de evento</summary>
+<summary>✅ Bom: registry de handlers por tipo de evento</summary>
 
 ```js
 const eventHandlers = {
@@ -263,7 +263,7 @@ transacional com overhead (custo extra) de 10–30% de throughput. Na prática, 
 consumer idempotente** entrega a mesma garantia com menos complexidade.
 
 <details>
-<summary>✅ Bom — consumer verifica idempotência antes de processar</summary>
+<summary>✅ Bom: consumer verifica idempotência antes de processar</summary>
 
 ```js
 async function consumeEvent(event) {
@@ -334,6 +334,6 @@ O relay lê o outbox e publica com retry.
 
 **Veja também**
 
-- [operation-flow.md](operation-flow.md) — ciclo síncrono request/response
-- [messaging.md](../platform/messaging.md) — brokers, filas e pub/sub: tecnologias e trade-offs
-- [feature-flags.md](../platform/feature-flags.md) — rollout gradual de workers e consumers
+- [operation-flow.md](operation-flow.md): ciclo síncrono request/response
+- [messaging.md](../platform/messaging.md): brokers, filas e pub/sub: tecnologias e trade-offs
+- [feature-flags.md](../platform/feature-flags.md): rollout gradual de workers e consumers

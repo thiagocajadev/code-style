@@ -247,8 +247,8 @@ Três regras mantêm o grafo saudável entre features:
 - **Public API explícita.** Cada módulo tem um `index` ou barrel file (arquivo índice) como único ponto de exportação. Consumidores importam desse contrato, não de arquivos internos. Mudanças internas ficam contidas.
 
 Quando a ferramenta suporta, as regras viram **configuração verificável** (ESLint boundaries, Nx
-tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration, Integração Contínua) — pipeline que automatiza lint,
-testes e build a cada commit — não degradam; as confiadas na disciplina humana erodem em dois
+tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration, Integração Contínua, pipeline que automatiza lint,
+testes e build a cada commit) não degradam; as confiadas na disciplina humana erodem em dois
 sprints.
 
 ### Sinais de fronteira errada
@@ -279,4 +279,4 @@ sprints.
 | Public API do módulo             | Exportar via barrel; esconder internals (implementação interna)         |
 
 **Veja também**
-- [frontend-flow.md](frontend-flow.md) — routing e forms: rotas impõem a separação container/presentacional naturalmente
+- [frontend-flow.md](frontend-flow.md): routing e forms: rotas impõem a separação container/presentacional naturalmente

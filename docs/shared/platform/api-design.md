@@ -57,7 +57,7 @@ O sinal de que o boundary foi respeitado é simples: se você renomeasse `HttpCo
 em todo o código e o handler continuasse funcionando, o boundary está no lugar.
 
 <details>
-<summary>❌ Ruim — controller com acesso a banco e regra de negócio</summary>
+<summary>❌ Ruim: controller com acesso a banco e regra de negócio</summary>
 
 ```js
 app.post('/api/orders', async (httpRequest, httpResponse) => {
@@ -85,7 +85,7 @@ storage exige mexer no controller. Testar a regra de preço exige subir um servi
 </details>
 
 <details>
-<summary>✅ Bom — controller fino, handler orquestra, service e repository isolados</summary>
+<summary>✅ Bom: controller fino, handler orquestra, service e repository isolados</summary>
 
 ```js
 // features/orders/ordersController.js
@@ -147,7 +147,7 @@ Dois sinais de um contrato de request saudável: campos com nome de domínio (`p
 `product_id_str`) e validação centralizada antes do handler receber o objeto.
 
 <details>
-<summary>❌ Ruim — objeto mutável montado ad-hoc, sem validação explícita</summary>
+<summary>❌ Ruim: objeto mutável montado ad-hoc, sem validação explícita</summary>
 
 ```js
 app.post('/api/orders', async (httpRequest, httpResponse) => {
@@ -167,7 +167,7 @@ depois, em runtime, com stack trace confuso.
 </details>
 
 <details>
-<summary>✅ Bom — schema de validação no boundary, DTO tipado para o handler</summary>
+<summary>✅ Bom: schema de validação no boundary, DTO tipado para o handler</summary>
 
 ```js
 // features/orders/orderRequest.js
@@ -217,7 +217,7 @@ invariantes, comportamentos e campos que não devem vazar (hash de senha, flags 
 controle interno).
 
 <details>
-<summary>❌ Ruim — entidade de domínio retornada direto</summary>
+<summary>❌ Ruim: entidade de domínio retornada direto</summary>
 
 ```js
 async function handle(id) {
@@ -234,7 +234,7 @@ ninguém revisar.
 </details>
 
 <details>
-<summary>✅ Bom — DTO de resposta explícito, montado a partir do domínio</summary>
+<summary>✅ Bom: DTO de resposta explícito, montado a partir do domínio</summary>
 
 ```js
 async function handle(id) {
@@ -284,7 +284,7 @@ na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). 
 | `error.details` | Lista de issues de validação | Apenas em `400 Bad Request` |
 
 <details>
-<summary>❌ Ruim — shapes inconsistentes entre sucesso e erro</summary>
+<summary>❌ Ruim: shapes inconsistentes entre sucesso e erro</summary>
 
 ```js
 // 200: { "id": "01HV...", "productId": "...", "quantity": 3 }
@@ -297,7 +297,7 @@ O cliente precisa de três parsers diferentes para três tipos de resposta do me
 </details>
 
 <details>
-<summary>✅ Bom — envelope consistente em sucesso e erro</summary>
+<summary>✅ Bom: envelope consistente em sucesso e erro</summary>
 
 ```js
 // shared/envelope.js
@@ -393,7 +393,7 @@ Essa tradução acontece em um único lugar, perto da porta, para que a regra de
 visível e não espalhada pelo handler.
 
 <details>
-<summary>❌ Ruim — handler constrói resposta HTTP, mistura domínio e transporte</summary>
+<summary>❌ Ruim: handler constrói resposta HTTP, mistura domínio e transporte</summary>
 
 ```js
 async function handle(id, res) {
@@ -411,7 +411,7 @@ async function handle(id, res) {
 </details>
 
 <details>
-<summary>✅ Bom — handler retorna Result, controller traduz no boundary</summary>
+<summary>✅ Bom: handler retorna Result, controller traduz no boundary</summary>
 
 ```js
 // features/orders/findOrderByIdHandler.js
@@ -481,10 +481,10 @@ lugar, versionada e auditável.
 
 ## Cross-links
 
-- [Backend Flow](../architecture/backend-flow.md) — jobs, webhooks, event-driven além do pipeline síncrono
-- [Observability](../standards/observability.md) — correlationId, logs estruturados, níveis
-- [Security](./security.md) — autenticação, autorização e blindagem de cookies no boundary
-- [Integrations](./integrations.md) — contratos com sistemas externos (GraphQL, XML/SOAP, HMAC)
-- [Messaging](./messaging.md) — filas, DLQ e entrega quando a API dispara trabalho assíncrono
-- [C# API Design](../../csharp/conventions/advanced/api-design.md) — Minimal API, TypedResults, `[AsParameters]`
-- [VB.NET API Design](../../vbnet/conventions/advanced/api-design.md) — Web API 2, roteamento por atributo, async sem deadlock
+- [Backend Flow](../architecture/backend-flow.md): jobs, webhooks, event-driven além do pipeline síncrono
+- [Observability](../standards/observability.md): correlationId, logs estruturados, níveis
+- [Security](./security.md): autenticação, autorização e blindagem de cookies no boundary
+- [Integrations](./integrations.md): contratos com sistemas externos (GraphQL, XML/SOAP, HMAC)
+- [Messaging](./messaging.md): filas, DLQ e entrega quando a API dispara trabalho assíncrono
+- [C# API Design](../../csharp/conventions/advanced/api-design.md): Minimal API, TypedResults, `[AsParameters]`
+- [VB.NET API Design](../../vbnet/conventions/advanced/api-design.md): Web API 2, roteamento por atributo, async sem deadlock

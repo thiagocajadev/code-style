@@ -25,7 +25,7 @@ Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segu
 Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados sujos entram em validação suja: um email com espaço passa no validator mas falha na busca no banco.
 
 <details>
-<summary>❌ Ruim — dados brutos chegam direto na validação</summary>
+<summary>❌ Ruim: dados brutos chegam direto na validação</summary>
 
 ```vbnet
 Public Function CreateUser(request As CreateUserRequest) As OperationResult(Of User)
@@ -41,7 +41,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — sanitize antes de validar</summary>
+<summary>✅ Bom: sanitize antes de validar</summary>
 
 ```vbnet
 Private Function Sanitize(request As CreateUserRequest) As CreateUserRequest
@@ -71,10 +71,10 @@ End Function
 
 ## Schema validation com DataAnnotations
 
-DataAnnotations validam shape, tipos e constraints — não regras de negócio. Centralizam o contrato técnico e eliminam validação manual espalhada nos handlers. Web API 2 e MVC 5 verificam `ModelState.IsValid` automaticamente quando `[ValidateModel]` está aplicado.
+DataAnnotations validam shape, tipos e constraints, não regras de negócio. Centralizam o contrato técnico e eliminam validação manual espalhada nos handlers. Web API 2 e MVC 5 verificam `ModelState.IsValid` automaticamente quando `[ValidateModel]` está aplicado.
 
 <details>
-<summary>❌ Ruim — validação manual espalhada no handler</summary>
+<summary>❌ Ruim: validação manual espalhada no handler</summary>
 
 ```vbnet
 Public Function CreateOrder(request As CreateOrderRequest) As IHttpActionResult
@@ -97,7 +97,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — DataAnnotations centralizam o contrato, handler recebe dado válido</summary>
+<summary>✅ Bom: DataAnnotations centralizam o contrato, handler recebe dado válido</summary>
 
 ```vbnet
 ' Features/Orders/CreateOrderRequest.vb
@@ -142,14 +142,14 @@ End Class
 O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio: dependem de I/O (banco, serviços externos) e não pertencem ao validator.
 
 <details>
-<summary>❌ Ruim — I/O e regra de domínio misturados na validação de esquema</summary>
+<summary>❌ Ruim: I/O e regra de domínio misturados na validação de esquema</summary>
 
 ```vbnet
 Public Class CreateOrderRequest
     <Required>
     Public Property ProductId As String
 
-    ' regra de domínio escondida num custom attribute — difícil de testar
+    ' regra de domínio escondida num custom attribute: difícil de testar
     <ProductMustBeAvailable>
     Public Property Quantity As Integer
 End Class
@@ -158,7 +158,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — schema validation separa do domínio; regras de negócio no service</summary>
+<summary>✅ Bom: schema validation separa do domínio; regras de negócio no service</summary>
 
 ```vbnet
 ' validator valida shape apenas
@@ -194,10 +194,10 @@ End Function
 
 ## Output filtering
 
-Retornar a entidade direta vaza campos internos: `PasswordHash`, `IsDeleted`, flags de auditoria. Use uma classe de resposta como projeção explícita — nunca a entidade do banco.
+Retornar a entidade direta vaza campos internos: `PasswordHash`, `IsDeleted`, flags de auditoria. Use uma classe de resposta como projeção explícita, nunca a entidade do banco.
 
 <details>
-<summary>❌ Ruim — entidade direta vaza campos internos</summary>
+<summary>❌ Ruim: entidade direta vaza campos internos</summary>
 
 ```vbnet
 Public Function GetUser(id As Guid) As User
@@ -209,7 +209,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — DTO de resposta como projeção explícita do que sai</summary>
+<summary>✅ Bom: DTO de resposta como projeção explícita do que sai</summary>
 
 ```vbnet
 ' Features/Users/UserResponse.vb
@@ -246,7 +246,7 @@ End Function
 Para evitar repetir `If Not ModelState.IsValid` em cada action, registre um `ActionFilterAttribute` global que retorna `400` automaticamente.
 
 <details>
-<summary>✅ Bom — filtro global elimina boilerplate de ModelState em cada action</summary>
+<summary>✅ Bom: filtro global elimina boilerplate de ModelState em cada action</summary>
 
 ```vbnet
 ' Infrastructure/Filters/ValidateModelAttribute.vb

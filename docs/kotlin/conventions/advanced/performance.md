@@ -10,16 +10,16 @@ evitam cópias intermediárias.
 
 | Conceito | O que é |
 | --- | --- |
-| **inline function** (função em linha) | compilador substitui a chamada pelo corpo da função — sem alocação de lambda |
+| **inline function** (função em linha) | compilador substitui a chamada pelo corpo da função, sem alocação de lambda |
 | `Sequence` | stream lazy; operações só executam ao materializar com `toList`/`first`/etc. |
-| `buildList` / `buildMap` | constroem coleções mutáveis internamente e retornam imutáveis — sem cópia final |
+| `buildList` / `buildMap` | constroem coleções mutáveis internamente e retornam imutáveis, sem cópia final |
 | `lazy` | inicializa propriedade na primeira leitura e armazena em cache |
 | **escape analysis** (análise de escape) | JVM detecta objetos que não saem do escopo e os aloca na stack |
 
 ## Operações encadeadas em listas grandes
 
 <details>
-<summary>❌ Ruim — cada operação cria uma lista intermediária</summary>
+<summary>❌ Ruim: cada operação cria uma lista intermediária</summary>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -34,7 +34,7 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 </details>
 
 <details>
-<summary>✅ Bom — Sequence processa elemento a elemento sem cópias intermediárias</summary>
+<summary>✅ Bom: Sequence processa elemento a elemento sem cópias intermediárias</summary>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -54,7 +54,7 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 ## Lambda com alocação desnecessária
 
 <details>
-<summary>❌ Ruim — lambda captura contexto, aloca objeto a cada chamada</summary>
+<summary>❌ Ruim: lambda captura contexto, aloca objeto a cada chamada</summary>
 
 ```kotlin
 fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -68,7 +68,7 @@ fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 </details>
 
 <details>
-<summary>✅ Bom — inline elimina alocação do lambda</summary>
+<summary>✅ Bom: inline elimina alocação do lambda</summary>
 
 ```kotlin
 inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -84,7 +84,7 @@ inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 ## buildList para construção com lógica
 
 <details>
-<summary>❌ Ruim — mutableListOf + toList gera cópia extra</summary>
+<summary>❌ Ruim: mutableListOf + toList gera cópia extra</summary>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -101,7 +101,7 @@ fun buildMenuItems(user: User): List<MenuItem> {
 </details>
 
 <details>
-<summary>✅ Bom — buildList sem cópia final</summary>
+<summary>✅ Bom: buildList sem cópia final</summary>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -120,7 +120,7 @@ fun buildMenuItems(user: User): List<MenuItem> {
 ## Inicialização custosa com lazy
 
 <details>
-<summary>❌ Ruim — objeto pesado inicializado mesmo quando não usado</summary>
+<summary>❌ Ruim: objeto pesado inicializado mesmo quando não usado</summary>
 
 ```kotlin
 class ReportService {
@@ -131,7 +131,7 @@ class ReportService {
 </details>
 
 <details>
-<summary>✅ Bom — lazy adia até o primeiro acesso</summary>
+<summary>✅ Bom: lazy adia até o primeiro acesso</summary>
 
 ```kotlin
 class ReportService {
@@ -167,4 +167,4 @@ open class FilterBenchmark {
 }
 ```
 
-Execute: `./gradlew benchmark` — compare médias antes de otimizar.
+Execute: `./gradlew benchmark`. Compare médias antes de otimizar.

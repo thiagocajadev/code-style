@@ -17,7 +17,7 @@ Variáveis em VB.NET começam antes da primeira linha de código: **Option Stric
 
 ## Option Strict e Option Explicit
 
-Dois switches de compilador precisam estar ativos em todo arquivo VB.NET. São desativados por padrão — ativar é o primeiro gesto de qualidade em qualquer projeto.
+Dois switches de compilador precisam estar ativos em todo arquivo VB.NET. São desativados por padrão; ativar é o primeiro gesto de qualidade em qualquer projeto.
 
 ```vbnet
 Option Strict On
@@ -38,7 +38,7 @@ Configure como padrão de projeto no `.vbproj` para não precisar repetir em cad
 ```
 
 <details>
-<summary>❌ Ruim — sem Option Strict, conversões silenciosas e late binding</summary>
+<summary>❌ Ruim: sem Option Strict, conversões silenciosas e late binding</summary>
 
 ```vbnet
 ' Option Strict Off (default)
@@ -51,7 +51,7 @@ Dim value As Integer = 3.7   ' truncamento silencioso
 </details>
 
 <details>
-<summary>✅ Bom — Option Strict On, compilador captura os erros</summary>
+<summary>✅ Bom: Option Strict On, compilador captura os erros</summary>
 
 ```vbnet
 Option Strict On
@@ -69,7 +69,7 @@ Dim value As Integer = CInt(3.7)  ' conversão explícita e intencional
 Com `Option Infer On`, o compilador infere o tipo quando o lado direito é inequívoco. Use inferência quando o tipo é óbvio pela expressão; declare explicitamente quando o tipo não é imediato.
 
 <details>
-<summary>❌ Ruim — tipo redundante quando a construção já o declara</summary>
+<summary>❌ Ruim: tipo redundante quando a construção já o declara</summary>
 
 ```vbnet
 Dim customer As Customer = New Customer()
@@ -81,7 +81,7 @@ Dim name As String = customer.Name
 </details>
 
 <details>
-<summary>✅ Bom — inferência onde o tipo é óbvio, explícito onde não é</summary>
+<summary>✅ Bom: inferência onde o tipo é óbvio, explícito onde não é</summary>
 
 ```vbnet
 Dim customer = New Customer()
@@ -105,7 +105,7 @@ Dim discount As Decimal = ApplyPromotion(purchase, promoCode)
 | `Dim` | Mutável, precisa mudar | `Dim attempt As Integer = 0` |
 
 <details>
-<summary>❌ Ruim — constante como variável mutável</summary>
+<summary>❌ Ruim: constante como variável mutável</summary>
 
 ```vbnet
 Dim maxRetries = 3
@@ -118,7 +118,7 @@ Dim apiVersion = "v2"
 </details>
 
 <details>
-<summary>✅ Bom — semântica declarada no modificador</summary>
+<summary>✅ Bom: semântica declarada no modificador</summary>
 
 ```vbnet
 Private Const MaxRetries As Integer = 3
@@ -130,10 +130,10 @@ Private ReadOnly _defaultTimeout As TimeSpan = TimeSpan.FromSeconds(30)
 
 ## Nothing: Is e IsNot
 
-Para verificar `Nothing`, use os operadores `Is` e `IsNot`. `IsNothing()` é uma função legacy do módulo `Microsoft.VisualBasic` — verbosa e inconsistente com o resto do .NET. Comparar com `= Nothing` é um erro semântico: `=` testa igualdade de valor, não referência nula.
+Para verificar `Nothing`, use os operadores `Is` e `IsNot`. `IsNothing()` é uma função legacy do módulo `Microsoft.VisualBasic`, verbosa e inconsistente com o resto do .NET. Comparar com `= Nothing` é um erro semântico: `=` testa igualdade de valor, não referência nula.
 
 <details>
-<summary>❌ Ruim — verificações de nulo inconsistentes</summary>
+<summary>❌ Ruim: verificações de nulo inconsistentes</summary>
 
 ```vbnet
 If IsNothing(user) Then Return
@@ -145,7 +145,7 @@ If purchase <> Nothing Then SaveAsync() ' erro silencioso para value types
 </details>
 
 <details>
-<summary>✅ Bom — Is e IsNot, consistentes com o padrão .NET</summary>
+<summary>✅ Bom: Is e IsNot, consistentes com o padrão .NET</summary>
 
 ```vbnet
 If user Is Nothing Then Return
@@ -159,7 +159,7 @@ If purchase IsNot Nothing Then ProcessPurchase(purchase)
 `And` e `Or` avaliam **ambos** os operandos sempre. `AndAlso` e `OrElse` fazem curto-circuito: param assim que o resultado é determinado. Usar `And`/`Or` em condições com objetos que podem ser `Nothing` causa `NullReferenceException`.
 
 <details>
-<summary>❌ Ruim — And/Or avaliam os dois lados, NullReferenceException em runtime</summary>
+<summary>❌ Ruim: And/Or avaliam os dois lados, NullReferenceException em runtime</summary>
 
 ```vbnet
 If user <> Nothing And user.IsActive Then
@@ -174,7 +174,7 @@ End If
 </details>
 
 <details>
-<summary>✅ Bom — AndAlso/OrElse com curto-circuito seguro</summary>
+<summary>✅ Bom: AndAlso/OrElse com curto-circuito seguro</summary>
 
 ```vbnet
 If user IsNot Nothing AndAlso user.IsActive Then
@@ -193,7 +193,7 @@ End If
 Números e strings literais inline são código sem contexto. O leitor precisa deduzir o significado. Uma constante nomeada declara a intenção e centraliza a mudança.
 
 <details>
-<summary>❌ Ruim — literais sem contexto</summary>
+<summary>❌ Ruim: literais sem contexto</summary>
 
 ```vbnet
 If purchase.Items.Count > 50 Then
@@ -210,7 +210,7 @@ Dim tax = subtotal * 0.15D
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas declaram a intenção</summary>
+<summary>✅ Bom: constantes nomeadas declaram a intenção</summary>
 
 ```vbnet
 Private Const MaxItemsPerPurchase As Integer = 50

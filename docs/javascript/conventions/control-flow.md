@@ -8,7 +8,7 @@ Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quant
 | --- | --- |
 | **guard clause** (cláusula de proteção) | `if` no topo da função que retorna cedo em caso inválido; reduz aninhamento |
 | **early return** (retorno antecipado) | Sair da função assim que o resultado for conhecido, sem `else` desnecessário |
-| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta; legível só quando as três partes são curtas |
+| **ternary** (ternário) | `cond ? a : b`: expressão condicional curta; legível só quando as três partes são curtas |
 | **switch** (selecionar caso) | Comando de despacho por valor; bom para enums e mapeamento explícito |
 | **lookup table** (tabela de busca) | Objeto `{ chave: valor }` que substitui cadeias de `if/else` ou `switch` simples |
 | **short-circuit** (curto-circuito) | `&&` retorna o primeiro falsy; `||` retorna o primeiro truthy; `??` retorna o primeiro não-nulo |
@@ -20,7 +20,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um
 `return` é ruído: o fluxo já saiu.
 
 <details>
-<summary>❌ Ruim — else desnecessário após return</summary>
+<summary>❌ Ruim: else desnecessário após return</summary>
 
 ```js
 function getDiscount(user) {
@@ -35,7 +35,7 @@ function getDiscount(user) {
 </details>
 
 <details>
-<summary>✅ Bom — early return elimina o else</summary>
+<summary>✅ Bom: early return elimina o else</summary>
 
 ```js
 function getDiscount(user) {
@@ -55,7 +55,7 @@ Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal
 limpo.
 
 <details>
-<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
 
 ```js
 function processOrder(order) {
@@ -74,7 +74,7 @@ function processOrder(order) {
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, fluxo principal ao fundo</summary>
+<summary>✅ Bom: guard clauses, fluxo principal ao fundo</summary>
 
 ```js
 function processOrder(order) {
@@ -97,7 +97,7 @@ Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente e torna
 a comparação imprevisível.
 
 <details>
-<summary>❌ Ruim — coerção silenciosa</summary>
+<summary>❌ Ruim: coerção silenciosa</summary>
 
 ```js
 if (value != null) {
@@ -114,7 +114,7 @@ if (count == "3") {
 </details>
 
 <details>
-<summary>✅ Bom — comparação explícita</summary>
+<summary>✅ Bom: comparação explícita</summary>
 
 ```js
 if (value !== null && value !== undefined) {
@@ -138,7 +138,7 @@ Para atribuição de dois valores possíveis, não para lógica de fluxo. Encade
 vira puzzle (quebra cabeça).
 
 <details>
-<summary>❌ Ruim — lógica inline ilegível</summary>
+<summary>❌ Ruim: lógica inline ilegível</summary>
 
 ```js
 const label =
@@ -156,7 +156,7 @@ const label =
 </details>
 
 <details>
-<summary>✅ Bom — variáveis nomeadas extraem a intenção</summary>
+<summary>✅ Bom: variáveis nomeadas extraem a intenção</summary>
 
 ```js
 const isA = score >= 90;
@@ -182,7 +182,7 @@ de condições vira um catálogo. Substitua por um objeto: a chave é a condiç�
 valor é o resultado.
 
 <details>
-<summary>❌ Ruim — switch repetitivo mapeando chave → valor</summary>
+<summary>❌ Ruim: switch repetitivo mapeando chave → valor</summary>
 
 ```js
 function getStatusLabel(status) {
@@ -204,7 +204,7 @@ function getStatusLabel(status) {
 </details>
 
 <details>
-<summary>✅ Bom — lookup table: legível e extensível</summary>
+<summary>✅ Bom: lookup table: legível e extensível</summary>
 
 ```js
 const STATUS_LABELS = {
@@ -230,7 +230,7 @@ intenção mais clara que um `if/else` encadeado. Cada `case` termina com `break
 ou `return` explícito: fall-through acidental é bug silencioso.
 
 <details>
-<summary>❌ Ruim — if/else encadeado para despacho de ações</summary>
+<summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
 
 ```js
 // prettier-ignore
@@ -253,7 +253,7 @@ function processPaymentEvent(event) {
 </details>
 
 <details>
-<summary>✅ Bom — switch para despacho de comportamento</summary>
+<summary>✅ Bom: switch para despacho de comportamento</summary>
 
 ```js
 function processPaymentEvent(event) {
@@ -286,13 +286,13 @@ estrutura certa quando a chave não é string, quando os dados são dinâmicos, 
 quando você precisa de `has`, `delete` e `size` nativos.
 
 <details>
-<summary>❌ Ruim — plain object perde o tipo da chave</summary>
+<summary>❌ Ruim: plain object perde o tipo da chave</summary>
 
 ```js
 const userCache = {};
 
 userCache[user.id] = user; // id number vira string
-console.log(userCache[123] === userCache["123"]); // true — coerção silenciosa
+console.log(userCache[123] === userCache["123"]); // true: coerção silenciosa
 
 const count = Object.keys(userCache).length; // verbose
 ```
@@ -300,7 +300,7 @@ const count = Object.keys(userCache).length; // verbose
 </details>
 
 <details>
-<summary>✅ Bom — Map preserva tipo e tem **API** (Application Programming Interface, Interface de Programação de Aplicações) nativa</summary>
+<summary>✅ Bom: Map preserva tipo e tem **API** (Application Programming Interface, Interface de Programação de Aplicações) nativa</summary>
 
 ```js
 const userCache = new Map();
@@ -324,11 +324,11 @@ resolvem **iteração**: quantas vezes percorrer._
 ## Circuit break
 
 Antes de escrever um loop, verifique se `find`, `some` ou `every` já resolve.
-Esses métodos param no primeiro match — sem percorrer o resto. Para busca com
+Esses métodos param no primeiro match, sem percorrer o resto. Para busca com
 lógica de saída explícita, `for...of` com `return` é direto.
 
 <details>
-<summary>❌ Ruim — forEach com flag força percorrer tudo</summary>
+<summary>❌ Ruim: forEach com flag força percorrer tudo</summary>
 
 ```js
 function findFirstExpiredProduct(products) {
@@ -347,7 +347,7 @@ function findFirstExpiredProduct(products) {
 </details>
 
 <details>
-<summary>✅ Bom — for...of sai no primeiro match</summary>
+<summary>✅ Bom: for...of sai no primeiro match</summary>
 
 ```js
 function findFirstExpiredProduct(products) {
@@ -362,7 +362,7 @@ function findFirstExpiredProduct(products) {
 </details>
 
 <details>
-<summary>❌ Ruim — forEach percorre tudo mesmo quando o método declarativo existe</summary>
+<summary>❌ Ruim: forEach percorre tudo mesmo quando o método declarativo existe</summary>
 
 ```js
 function hasExpiredProduct(products) {
@@ -379,7 +379,7 @@ function hasExpiredProduct(products) {
 </details>
 
 <details>
-<summary>✅ Bom — métodos declarativos com circuit break nativo</summary>
+<summary>✅ Bom: métodos declarativos com circuit break nativo</summary>
 
 ```js
 // para no primeiro match
@@ -400,7 +400,7 @@ Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarati
 e suficiente: sem índice, sem variável de controle.
 
 <details>
-<summary>❌ Ruim — for com índice quando o índice nunca é usado</summary>
+<summary>❌ Ruim: for com índice quando o índice nunca é usado</summary>
 
 ```js
 for (let i = 0; i < orders.length; i++) {
@@ -411,7 +411,7 @@ for (let i = 0; i < orders.length; i++) {
 </details>
 
 <details>
-<summary>✅ Bom — forEach para efeitos colaterais por item</summary>
+<summary>✅ Bom: forEach para efeitos colaterais por item</summary>
 
 ```js
 orders.forEach((order) => {
@@ -421,7 +421,7 @@ orders.forEach((order) => {
 
 </details>
 
-> `forEach` não suporta `break` nem `continue` — quando precisar de saída
+> `forEach` não suporta `break` nem `continue`. Quando precisar de saída
 > antecipada, use `for...of`.
 
 ## for...of
@@ -431,7 +431,7 @@ Quando o laço precisa de saída antecipada ou iteração com valores diretos,
 `continue`, compatível com qualquer iterável.
 
 <details>
-<summary>❌ Ruim — for...in em array percorre o protótipo</summary>
+<summary>❌ Ruim: for...in em array percorre o protótipo</summary>
 
 ```js
 const prices = [10, 20, 30];
@@ -444,7 +444,7 @@ for (const index in prices) {
 </details>
 
 <details>
-<summary>✅ Bom — for...of para valores diretos</summary>
+<summary>✅ Bom: for...of para valores diretos</summary>
 
 ```js
 const prices = [10, 20, 30];
@@ -457,7 +457,7 @@ for (const price of prices) {
 </details>
 
 <details>
-<summary>❌ Ruim — iteração de objeto com for...of sem Object.entries</summary>
+<summary>❌ Ruim: iteração de objeto com for...of sem Object.entries</summary>
 
 ```js
 const config = { host: "localhost", port: 5432, database: "app" };
@@ -470,7 +470,7 @@ for (const key of config) {
 </details>
 
 <details>
-<summary>✅ Bom — Object.entries() para objetos</summary>
+<summary>✅ Bom: Object.entries() para objetos</summary>
 
 ```js
 const config = { host: "localhost", port: 5432, database: "app" };
@@ -489,7 +489,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 primeira iteração deve sempre executar, independente da condição.
 
 <details>
-<summary>❌ Ruim — for simulando condição de parada por estado</summary>
+<summary>❌ Ruim: for simulando condição de parada por estado</summary>
 
 ```js
 for (let attempt = 0; attempt < maxAttempts; attempt++) {
@@ -501,7 +501,7 @@ for (let attempt = 0; attempt < maxAttempts; attempt++) {
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```js
 let attempt = 0;
@@ -517,10 +517,10 @@ while (attempt < maxAttempts) {
 </details>
 
 <details>
-<summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
 
 ```js
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
+// verifica antes de executar: se a fila já estiver vazia, nunca executa
 while (taskQueue.size > 0) {
   const task = taskQueue.dequeue();
   executeTask(task);
@@ -530,7 +530,7 @@ while (taskQueue.size > 0) {
 </details>
 
 <details>
-<summary>✅ Bom — do...while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: do...while quando a primeira execução é garantida</summary>
 
 ```js
 // drena a fila: processa pelo menos um item antes de verificar

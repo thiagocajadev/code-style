@@ -170,7 +170,7 @@ implementação venceu, é apagar a escolha e manter a implementação.
 ## Dívida: toda flag tem prazo de validade
 
 Flag que nunca é removida vira débito permanente: condicional no código, configuração no sistema,
-cognição para quem lê. O custo cresce em juros compostos — quantas flags inativas estão rodando
+cognição para quem lê. O custo cresce em juros compostos: quantas flags inativas estão rodando
 hoje? Quais são seguras de remover?
 
 Três práticas contêm a dívida:

@@ -18,7 +18,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 ## Semântico vs presentacional
 
 <details>
-<summary>❌ Ruim — nome descreve aparência, quebra ao mudar o design</summary>
+<summary>❌ Ruim: nome descreve aparência, quebra ao mudar o design</summary>
 
 ```css
 .blue-header {
@@ -40,7 +40,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 </details>
 
 <details>
-<summary>✅ Bom — nome descreve papel, sobrevive a mudanças de design</summary>
+<summary>✅ Bom: nome descreve papel, sobrevive a mudanças de design</summary>
 
 ```css
 .heading--primary {
@@ -66,7 +66,7 @@ BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explíci
 relacionamento entre partes da **UI** (User Interface, Interface do Usuário) sem depender de aninhamento no CSS.
 
 <details>
-<summary>❌ Ruim — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
+<summary>❌ Ruim: hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
 
 ```html
 <div class="card featured">
@@ -91,7 +91,7 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 </details>
 
 <details>
-<summary>✅ Bom — BEM: bloco__elemento--modificador</summary>
+<summary>✅ Bom: BEM: bloco__elemento--modificador</summary>
 
 ```html
 <div class="card card--featured">
@@ -121,7 +121,7 @@ Especificidade alta torna o CSS frágil. Qualquer override exige `!important` ou
 específico.
 
 <details>
-<summary>❌ Ruim — IDs e seletores encadeados inflam a especificidade</summary>
+<summary>❌ Ruim: IDs e seletores encadeados inflam a especificidade</summary>
 
 ```css
 #app .container .card h2 {
@@ -135,7 +135,7 @@ específico.
 </details>
 
 <details>
-<summary>✅ Bom — classes simples, especificidade baixa e previsível</summary>
+<summary>✅ Bom: classes simples, especificidade baixa e previsível</summary>
 
 ```css
 .card__title {

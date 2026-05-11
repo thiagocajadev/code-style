@@ -31,7 +31,7 @@
 | --- | --- | --- |
 | `x Is Nothing` | `IsNothing(x)` / `x = Nothing` | Padrão .NET, testa referência |
 | `x IsNot Nothing` | `Not IsNothing(x)` / `x <> Nothing` | Idem |
-| `AndAlso` | `And` | Curto-circuito — não avalia o lado direito se desnecessário |
+| `AndAlso` | `And` | Curto-circuito; não avalia o lado direito se desnecessário |
 | `OrElse` | `Or` | Curto-circuito |
 | `If(cond, a, b)` | `IIf(cond, a, b)` | IIf avalia ambos os lados sempre |
 | `TryCast(x, T)` | `CType(x, T)` | TryCast retorna Nothing; CType lança |
@@ -64,7 +64,7 @@
 | Hungarian notation (`strName`) | Redundante com `Option Strict On` | Nome pelo domínio |
 | `Catch ex As Exception` vazio | Silencia falhas | Loga e relança, ou trata com intenção |
 | `And` / `Or` com objetos anuláveis | Avalia ambos os lados, `NullReferenceException` | `AndAlso` / `OrElse` |
-| `Module` com estado mutável | `Module` é estático — estado global | `Class` com injeção de dependência |
+| `Module` com estado mutável | `Module` é estático: estado global | `Class` com injeção de dependência |
 
 ## Options obrigatórios
 

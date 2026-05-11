@@ -30,7 +30,7 @@ my-app/
 ├── Cargo.lock              ← versões exatas (commitado em binários)
 ├── rust-toolchain.toml    ← versão fixa do compilador (channel = "stable")
 ├── .editorconfig           ← indentação, charset, trailing whitespace
-├── .env.example            ← template — nunca commite .env
+├── .env.example            ← template: nunca commite .env
 ├── src/
 │   ├── main.rs             ← entry point: carrega config, inicializa runtime
 │   ├── config.rs           ← leitura de variáveis de ambiente
@@ -49,12 +49,12 @@ my-app/
     └── order_integration.rs ← testes de integração (crate separado)
 ```
 
-## Cargo.toml — configuração central
+## Cargo.toml: configuração central
 
 `Cargo.toml` declara o crate, versão mínima e dependências. Versões fixas garantem builds reproduzíveis.
 
 <details>
-<summary>❌ Ruim — versões sem pin, sem toolchain</summary>
+<summary>❌ Ruim: versões sem pin, sem toolchain</summary>
 
 ```toml
 [package]
@@ -69,7 +69,7 @@ serde = "*"
 </details>
 
 <details>
-<summary>✅ Bom — dependências versionadas e features explícitas</summary>
+<summary>✅ Bom: dependências versionadas e features explícitas</summary>
 
 ```toml
 [package]
@@ -105,7 +105,7 @@ channel = "stable"
 `src/main.rs` declara intenção, não implementa. Toda lógica fica em módulos.
 
 <details>
-<summary>❌ Ruim — main.rs como dumping ground</summary>
+<summary>❌ Ruim: main.rs como dumping ground</summary>
 
 ```rust
 #[tokio::main]
@@ -128,7 +128,7 @@ async fn main() {
 </details>
 
 <details>
-<summary>✅ Bom — main.rs como índice, lógica delegada</summary>
+<summary>✅ Bom: main.rs como índice, lógica delegada</summary>
 
 ```rust
 mod config;
@@ -163,7 +163,7 @@ async fn main() -> anyhow::Result<()> {
 Nenhum módulo acessa `std::env::var` diretamente.
 
 <details>
-<summary>❌ Ruim — env var lida em qualquer lugar</summary>
+<summary>❌ Ruim: env var lida em qualquer lugar</summary>
 
 ```rust
 // src/order/repository.rs
@@ -179,7 +179,7 @@ let secret = std::env::var("JWT_SECRET").unwrap(); // espalhado
 </details>
 
 <details>
-<summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: Config como único ponto de entrada de env vars</summary>
 
 ```rust
 // src/config.rs
@@ -209,7 +209,7 @@ pub fn load() -> Result<Config> {
 ```
 
 ```rust
-// src/order/repository.rs — recebe Config por injeção
+// src/order/repository.rs: recebe Config por injeção
 pub struct OrderRepository {
     pool: sqlx::PgPool,
 }
@@ -228,7 +228,7 @@ impl OrderRepository {
 Cada domínio agrupa handler, service e repository. Evite estrutura por camada técnica.
 
 <details>
-<summary>❌ Ruim — estrutura por camada</summary>
+<summary>❌ Ruim: estrutura por camada</summary>
 
 ```
 src/
@@ -246,7 +246,7 @@ src/
 </details>
 
 <details>
-<summary>✅ Bom — estrutura por domínio</summary>
+<summary>✅ Bom: estrutura por domínio</summary>
 
 ```
 src/

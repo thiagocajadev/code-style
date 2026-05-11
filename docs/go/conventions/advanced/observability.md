@@ -16,7 +16,7 @@ Identifiable Information, Informação Pessoalmente Identificável). Propague `c
 | `slog` | Pacote de logging estruturado da stdlib desde Go 1.21; substitui `log` para produção |
 | **structured logging** (logging estruturado) | Log com pares chave-valor em vez de strings livres; facilita busca e alerta |
 | **correlation ID** (identificador de correlação) | identificador único de requisição propagado em todos os logs de uma mesma operação |
-| **log level** (nível de log) | Debug, Info, Warn, Error — filtre por nível em produção para reduzir ruído |
+| **log level** (nível de log) | Debug, Info, Warn, Error; filtre por nível em produção para reduzir ruído |
 
 ## Configuração do logger
 
@@ -24,7 +24,7 @@ Configure um único logger com `slog.NewJSONHandler` para produção. Injete via
 ou como dependência explícita.
 
 <details>
-<summary>✅ Bom — slog com JSON handler para produção</summary>
+<summary>✅ Bom: slog com JSON handler para produção</summary>
 
 ```go
 // cmd/api/main.go
@@ -43,10 +43,10 @@ func main() {
 
 ## Log com chave-valor
 
-Sempre use pares chave-valor nos logs. Evite interpolação de string — dificulta parsing.
+Sempre use pares chave-valor nos logs. Evite interpolação de string: dificulta parsing.
 
 <details>
-<summary>❌ Ruim — string interpolada, sem estrutura</summary>
+<summary>❌ Ruim: string interpolada, sem estrutura</summary>
 
 ```go
 log.Printf("processing order %d for customer %d with amount %.2f", order.ID, order.CustomerID, order.Amount)
@@ -56,7 +56,7 @@ log.Printf("error saving order: %v", err)
 </details>
 
 <details>
-<summary>✅ Bom — slog com chave-valor</summary>
+<summary>✅ Bom: slog com chave-valor</summary>
 
 ```go
 slog.Info("processing order",
@@ -83,7 +83,7 @@ slog.Error("save order failed",
 | Error  | Falha que requer atenção; sistema não conseguiu executar |
 
 <details>
-<summary>❌ Ruim — Error para log de fluxo normal</summary>
+<summary>❌ Ruim: Error para log de fluxo normal</summary>
 
 ```go
 order, err := findOrder(ctx, orderID)
@@ -96,7 +96,7 @@ if errors.Is(err, ErrNotFound) {
 </details>
 
 <details>
-<summary>✅ Bom — Info/Warn para fluxo esperado; Error para falha real</summary>
+<summary>✅ Bom: Info ou Warn para fluxo esperado; Error para falha real</summary>
 
 ```go
 order, err := findOrder(ctx, orderID)
@@ -118,7 +118,7 @@ if err != nil {
 Propague o correlation ID em todos os logs de uma requisição usando o context.
 
 <details>
-<summary>✅ Bom — correlation ID extraído do context e adicionado ao log</summary>
+<summary>✅ Bom: correlation ID extraído do context e adicionado ao log</summary>
 
 ```go
 type contextKey string
@@ -167,12 +167,12 @@ func (s *OrderService) ProcessOrder(ctx context.Context, order Order) error {
 
 </details>
 
-## PII — dados pessoais
+## PII: dados pessoais
 
 Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
-<summary>❌ Ruim — PII nos logs</summary>
+<summary>❌ Ruim: PII nos logs</summary>
 
 ```go
 slog.Info("user logged in",
@@ -185,7 +185,7 @@ slog.Info("user logged in",
 </details>
 
 <details>
-<summary>✅ Bom — apenas ID e evento, sem PII</summary>
+<summary>✅ Bom: apenas ID e evento, sem PII</summary>
 
 ```go
 slog.Info("user logged in",

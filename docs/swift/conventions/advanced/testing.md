@@ -4,7 +4,7 @@
 
 Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. Swift Testing (framework
 moderno introduzido no Swift 5.9/Xcode 16) é preferível para novos projetos. XCTest continua
-válido em projetos existentes. Mocking é feito via protocolos — sem frameworks externos.
+válido em projetos existentes. Mocking é feito via protocolos, sem frameworks externos.
 
 ## Conceitos fundamentais
 
@@ -16,10 +16,10 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 | **protocol mock** (mock via protocolo) | Stub criado via conformance de protocolo; sem dependência de framework |
 | `async throws` em testes | suporte nativo para funções assíncronas nos dois frameworks |
 
-## Fases misturadas — AAA
+## Fases misturadas e AAA
 
 <details>
-<summary>❌ Ruim — setup, ação e assert misturados</summary>
+<summary>❌ Ruim: setup, ação e assert misturados</summary>
 
 ```swift
 @Test func testOrder() async throws {
@@ -31,7 +31,7 @@ válido em projetos existentes. Mocking é feito via protocolos — sem framewor
 </details>
 
 <details>
-<summary>✅ Bom — AAA explícito com nomes expressivos</summary>
+<summary>✅ Bom: AAA explícito com nomes expressivos</summary>
 
 ```swift
 @Test("findOrder returns paid order when found")
@@ -54,7 +54,7 @@ func findOrderReturnsPaidOrderWhenFound() async throws {
 ## Mocking via protocolo
 
 <details>
-<summary>❌ Ruim — dependência concreta impede teste unitário</summary>
+<summary>❌ Ruim: dependência concreta impede teste unitário</summary>
 
 ```swift
 class OrderService {
@@ -67,7 +67,7 @@ class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — protocolo injetado; mock implementa protocolo</summary>
+<summary>✅ Bom: protocolo injetado; mock implementa protocolo</summary>
 
 ```swift
 protocol OrderRepository {
@@ -98,7 +98,7 @@ struct OrderService {
 ## Testes parametrizados com Swift Testing
 
 <details>
-<summary>❌ Ruim — testes duplicados com dados diferentes</summary>
+<summary>❌ Ruim: testes duplicados com dados diferentes</summary>
 
 ```swift
 @Test func rateZeroIsValid() { #expect(validateRate(0.0).isSuccess) }
@@ -109,7 +109,7 @@ struct OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — @Test com argumentos cobre todos os cenários</summary>
+<summary>✅ Bom: @Test com argumentos cobre todos os cenários</summary>
 
 ```swift
 @Test("validateRate", arguments: [
@@ -130,7 +130,7 @@ func validateRateSucceedsOnlyInRange(rate: Double, isValid: Bool) {
 ## Teste de função async throws
 
 <details>
-<summary>❌ Ruim — expectation manual para async (padrão XCTest antigo)</summary>
+<summary>❌ Ruim: expectation manual para async (padrão XCTest antigo)</summary>
 
 ```swift
 func testFindUser() {
@@ -146,7 +146,7 @@ func testFindUser() {
 </details>
 
 <details>
-<summary>✅ Bom — async throws nativo nos dois frameworks</summary>
+<summary>✅ Bom: async throws nativo nos dois frameworks</summary>
 
 ```swift
 // Swift Testing

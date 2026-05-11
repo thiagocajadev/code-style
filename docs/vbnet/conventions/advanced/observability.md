@@ -5,7 +5,7 @@
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
 Veja os princípios agnósticos em [shared/standards/observability.md](../../../../shared/standards/observability.md).
 
-Os exemplos usam **NLog** (biblioteca de logging para .NET) — amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
+Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
 
 ## Conceitos fundamentais
 
@@ -25,17 +25,17 @@ Os exemplos usam **NLog** (biblioteca de logging para .NET) — amplamente adota
 Concatenação de string em logs destrói a estrutura: o valor vira texto, não campo. Message templates do NLog preservam cada argumento como propriedade estruturada no sink (arquivo, banco, Seq, etc.).
 
 <details>
-<summary>❌ Ruim — concatenação destrói campos, perde stack trace</summary>
+<summary>❌ Ruim: concatenação destrói campos, perde stack trace</summary>
 
 ```vbnet
-_logger.Info("Order " & order.Id.ToString() & " processed by " & user.Id.ToString() & " — total: " & order.Total.ToString())
+_logger.Info("Order " & order.Id.ToString() & " processed by " & user.Id.ToString() & ": total: " & order.Total.ToString())
 _logger.Error("Payment failed: " & ex.Message & " for order " & order.Id.ToString())
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — message templates: cada argumento vira campo estruturado</summary>
+<summary>✅ Bom: message templates: cada argumento vira campo estruturado</summary>
 
 ```vbnet
 _logger.Info("Order {OrderId} processed by {UserId}, total {Total}",
@@ -49,7 +49,7 @@ _logger.Error(ex, "Payment failed for {OrderId}", order.Id)
 ## Níveis de log
 
 <details>
-<summary>❌ Ruim — Info para tudo, sem distinção de severidade</summary>
+<summary>❌ Ruim: Info para tudo, sem distinção de severidade</summary>
 
 ```vbnet
 _logger.Info("Checkout started")
@@ -60,7 +60,7 @@ _logger.Info("User {UserId} not found", userId)
 </details>
 
 <details>
-<summary>✅ Bom — nível correto por situação</summary>
+<summary>✅ Bom: nível correto por situação</summary>
 
 ```vbnet
 _logger.Debug("Checkout handler invoked for {CartId}", cartId)
@@ -84,7 +84,7 @@ _logger.Error("User {UserId} not found during checkout", userId)
 ## O que nunca logar
 
 <details>
-<summary>❌ Ruim — PII e credenciais em log</summary>
+<summary>❌ Ruim: PII e credenciais em log</summary>
 
 ```vbnet
 _logger.Info("Login: {Email} {Password}", user.Email, user.Password)
@@ -95,7 +95,7 @@ _logger.Info("Token issued: {Token}", token)
 </details>
 
 <details>
-<summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
+<summary>✅ Bom: IDs e referências, nunca dados sensíveis</summary>
 
 ```vbnet
 _logger.Info("User {UserId} authenticated", user.Id)
@@ -112,7 +112,7 @@ _logger.Info("Token issued for {UserId}", user.Id)
 Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear o fluxo se torna inviável. Um `ActionFilterAttribute` ou `HttpModule` injeta o `CorrelationId` no `MappedDiagnosticsContext` (MDC) do NLog, enriquecendo todos os logs da requisição automaticamente.
 
 <details>
-<summary>❌ Ruim — logs sem contexto de requisição</summary>
+<summary>❌ Ruim: logs sem contexto de requisição</summary>
 
 ```vbnet
 Public Async Function ProcessCheckoutAsync(request As CheckoutRequest) As Task(Of Invoice)
@@ -121,13 +121,13 @@ Public Async Function ProcessCheckoutAsync(request As CheckoutRequest) As Task(O
     _logger.Info("Checkout complete")
     Return invoice
 End Function
-' {"msg":"Processing checkout"} — impossível saber qual request originou
+' {"msg":"Processing checkout"}: impossível saber qual request originou
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — CorrelationId no MDC enriquece todos os logs da request</summary>
+<summary>✅ Bom: CorrelationId no MDC enriquece todos os logs da request</summary>
 
 ```vbnet
 ' Infrastructure/Filters/CorrelationIdFilter.vb
@@ -159,13 +159,13 @@ End Class
 ```
 
 ```xml
-<!-- NLog.config — inclui CorrelationId em todos os logs -->
+<!-- NLog.config: inclui CorrelationId em todos os logs -->
 <target name="file" xsi:type="File" fileName="logs/app.log"
         layout="${longdate} [${mdc:item=CorrelationId}] ${level:uppercase=true} ${logger} ${message} ${exception:format=tostring}" />
 ```
 
 ```vbnet
-' handler — CorrelationId incluído automaticamente em todos os logs da request
+' handler: CorrelationId incluído automaticamente em todos os logs da request
 Public Async Function ProcessCheckoutAsync(request As CheckoutRequest) As Task(Of Invoice)
     _logger.Info("Checkout started for {CartId}", request.CartId)
 
@@ -182,7 +182,7 @@ End Function
 ## Configuração do NLog
 
 <details>
-<summary>✅ Bom — NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
+<summary>✅ Bom: NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
 
 ```xml
 <!-- NLog.config -->
@@ -199,11 +199,11 @@ End Function
             fileName="logs/app-${shortdate}.log"
             archiveEvery="Day"
             maxArchiveFiles="30"
-            layout="${longdate} [${mdc:item=CorrelationId}] ${level:uppercase=true:padding=5} ${logger:shortName=true} — ${message} ${exception:format=tostring}" />
+            layout="${longdate} [${mdc:item=CorrelationId}] ${level:uppercase=true:padding=5} ${logger:shortName=true}: ${message} ${exception:format=tostring}" />
 
     <target name="console"
             xsi:type="Console"
-            layout="${time} ${level:uppercase=true:padding=5} ${logger:shortName=true} — ${message}" />
+            layout="${time} ${level:uppercase=true:padding=5} ${logger:shortName=true}: ${message}" />
   </targets>
 
   <rules>
@@ -214,7 +214,7 @@ End Function
 ```
 
 ```vbnet
-' Global.asax.vb — instancia o logger na raiz do domínio
+' Global.asax.vb: instancia o logger na raiz do domínio
 Public Class MvcApplication
     Inherits System.Web.HttpApplication
 

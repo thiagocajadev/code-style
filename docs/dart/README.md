@@ -5,7 +5,7 @@
 Convenções Dart aplicando os mesmos princípios do guia. Os exemplos usam Dart 3.7 como
 referência; null safety completo e records/patterns (Dart 3.0+) são assumidos como disponíveis.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

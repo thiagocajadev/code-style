@@ -1,4 +1,4 @@
-# Quick Reference — Go
+# Quick Reference: Go
 
 > Escopo: Go 1.26. Cheat-sheet de nomenclatura, tipos, controle de fluxo e padrões idiomáticos.
 
@@ -33,7 +33,7 @@
 | Validar            | `Validate`, `Check`, `Assert`, `Verify`    | `Handle`, `Test`   |
 | Notificar          | `Send`, `Dispatch`, `Notify`, `Emit`       | `Fire`, `Trigger`  |
 
-## Taboos — evitar sempre
+## Taboos: evitar sempre
 
 | Banido                        | Substituir por                          |
 | ----------------------------- | --------------------------------------- |
@@ -73,7 +73,7 @@
 | Tipo de erro customizado      | `type ValidationError struct { Field string }`         |
 | Verificar tipo                | `errors.As(err, &target)`                              |
 | Verificar sentinel            | `errors.Is(err, ErrNotFound)`                          |
-| Panic — apenas invariantes    | `panic("nil dependency injected")`                     |
+| Panic (apenas invariantes)    | `panic("nil dependency injected")`                     |
 
 ## Interfaces
 

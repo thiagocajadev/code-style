@@ -18,13 +18,13 @@ via `spring.threads.virtual.enabled=true`.
 | **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | record para input/output HTTP; não vaza entidade JPA |
 | **virtual threads** (threads leves gerenciadas pela JVM) | habilitadas no Spring Boot 4 por padrão; código bloqueante escala como reativo |
 
-## Controller — camada HTTP
+## Controller: camada HTTP
 
 O controller recebe a requisição, delega ao service e retorna a resposta. Nenhuma lógica de
 negócio fica aqui.
 
 <details>
-<summary>❌ Ruim — controller com lógica de negócio e acesso direto ao banco</summary>
+<summary>❌ Ruim: controller com lógica de negócio e acesso direto ao banco</summary>
 
 ```java
 @RestController
@@ -51,7 +51,7 @@ public class OrderController {
 </details>
 
 <details>
-<summary>✅ Bom — controller delega ao service; request e response são records tipados</summary>
+<summary>✅ Bom: controller delega ao service; request e response são records tipados</summary>
 
 ```java
 @Slf4j
@@ -84,13 +84,13 @@ public class OrderController {
 
 </details>
 
-## Request e Response — records tipados
+## Request e Response: records tipados
 
 Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos DTOs
 (Data Transfer Objects, Objetos de Transferência de Dados).
 
 <details>
-<summary>✅ Bom — records como contrato de API</summary>
+<summary>✅ Bom: records como contrato de API</summary>
 
 ```java
 // request
@@ -131,12 +131,12 @@ public record OrderResponse(
 
 </details>
 
-## Service — camada de negócio
+## Service: camada de negócio
 
 O service orquestra as regras de negócio. Não conhece HTTP nem detalhes de banco.
 
 <details>
-<summary>✅ Bom — service orquestra, não implementa detalhes de infra</summary>
+<summary>✅ Bom: service orquestra, não implementa detalhes de infra</summary>
 
 ```java
 @Slf4j
@@ -189,14 +189,12 @@ public class OrderService {
 
 </details>
 
-## Repository — Spring Data JPA
+## Repository: Spring Data JPA
 
-Spring Data JPA gera implementações de queries a partir de nomes de método. Para queries
-complexas, use JPQL (Java Persistence Query Language) com `@Query` — referencia a entidade Java
-pelo nome da classe — ou SQL nativo com `nativeQuery = true` — referencia a tabela real do banco.
+Spring Data JPA gera implementações de queries a partir de nomes de método. Para queries complexas, use JPQL (Java Persistence Query Language) com `@Query` (referencia a entidade Java pelo nome da classe) ou SQL nativo com `nativeQuery = true` (referencia a tabela real do banco).
 
 <details>
-<summary>✅ Bom — JPQL: referencia a entidade Java, alias expressivo</summary>
+<summary>✅ Bom: JPQL: referencia a entidade Java, alias expressivo</summary>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -231,7 +229,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 </details>
 
 <details>
-<summary>✅ Bom — SQL nativo: tabela real, padrão Tabela.coluna</summary>
+<summary>✅ Bom: SQL nativo: tabela real, padrão Tabela.coluna</summary>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -262,17 +260,15 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
 </details>
 
-## @Transactional — uso correto
+## @Transactional: uso correto
 
-`@Transactional` no service, não no repository (já gerenciado pelo Spring Data). Use
-`readOnly = true` por padrão; sobrescreva com `@Transactional` sem `readOnly` nos métodos
-de escrita.
+`@Transactional` no service, não no repository (já gerenciado pelo Spring Data). Use `readOnly = true` por padrão; sobrescreva com `@Transactional` sem `readOnly` nos métodos de escrita.
 
 <details>
-<summary>❌ Ruim — @Transactional no controller ou sem readOnly</summary>
+<summary>❌ Ruim: @Transactional no controller ou sem readOnly</summary>
 
 ```java
-@Transactional // no controller — camada errada
+@Transactional // no controller: camada errada
 @PostMapping
 public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) { /* ... */ }
 
@@ -284,7 +280,7 @@ public class OrderService { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
+<summary>✅ Bom: readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
 
 ```java
 @Service
@@ -300,12 +296,12 @@ public class OrderService {
 
 </details>
 
-## @ControllerAdvice — tratamento global de erros
+## @ControllerAdvice: tratamento global de erros
 
 Centralize o mapeamento de exceções para respostas HTTP em um `@RestControllerAdvice`.
 
 <details>
-<summary>✅ Bom — tratamento centralizado por tipo de exceção</summary>
+<summary>✅ Bom: tratamento centralizado por tipo de exceção</summary>
 
 ```java
 @Slf4j
@@ -343,7 +339,7 @@ record ErrorResponse(String message, String action) {}
 Use `Pageable` e `Page<T>` para endpoints que retornam listas potencialmente grandes.
 
 <details>
-<summary>✅ Bom — paginação via Pageable</summary>
+<summary>✅ Bom: paginação via Pageable</summary>
 
 ```java
 // controller
@@ -368,7 +364,7 @@ public Page<Order> findAll(Pageable pageable) {
 
 </details>
 
-## Actuator — health e métricas
+## Actuator: health e métricas
 
 Spring Actuator expõe endpoints de saúde e métricas para monitoramento.
 

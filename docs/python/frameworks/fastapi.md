@@ -61,7 +61,7 @@ Schemas de entrada e saída são Pydantic models separados. O schema de resposta
 campos internos (senhas, tokens, IDs de banco não destinados ao cliente).
 
 <details>
-<summary>❌ Ruim — dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
+<summary>❌ Ruim: dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
 
 ```python
 @router.post("/orders")
@@ -73,7 +73,7 @@ async def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom — schemas separados, response_model declarado</summary>
+<summary>✅ Bom: schemas separados, response_model declarado</summary>
 
 ```python
 # schemas/order.py
@@ -109,7 +109,7 @@ O handler é fino: recebe parâmetros, delega ao serviço e retorna. Sem lógica
 sem acesso direto ao banco.
 
 <details>
-<summary>❌ Ruim — lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
+<summary>❌ Ruim: lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
 
 ```python
 @router.get("/orders/{order_id}")
@@ -129,7 +129,7 @@ async def get_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — handler fino, delega ao serviço, response_model declarado</summary>
+<summary>✅ Bom: handler fino, delega ao serviço, response_model declarado</summary>
 
 ```python
 # routers/orders.py
@@ -160,7 +160,7 @@ async def find_by_id(self, order_id: int) -> Order:
 definidas uma vez e compartilhadas entre rotas.
 
 <details>
-<summary>❌ Ruim — auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
+<summary>❌ Ruim: auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
 
 ```python
 @router.get("/orders")
@@ -179,7 +179,7 @@ async def list_orders(token: str = Header()):
 </details>
 
 <details>
-<summary>✅ Bom — auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
+<summary>✅ Bom: auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
 
 ```python
 # dependencies/auth.py
@@ -216,7 +216,7 @@ Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O*
 `time.sleep`, biblioteca `requests`) congestionam todas as requisições em andamento.
 
 <details>
-<summary>❌ Ruim — I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
+<summary>❌ Ruim: I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
 
 ```python
 import time
@@ -233,7 +233,7 @@ async def get_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — I/O assíncrono com httpx, sem bloqueio do event loop</summary>
+<summary>✅ Bom: I/O assíncrono com httpx, sem bloqueio do event loop</summary>
 
 ```python
 # routers/orders.py

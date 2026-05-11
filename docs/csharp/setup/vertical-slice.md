@@ -64,7 +64,7 @@ ValidationFilter     → body nulo → 400
   ↓
 3. Business Rules    → Result<bool>   falha → 404 / 409       (com I/O)
   ↓
-4. Save              → void — CQS                             (com I/O)
+4. Save              → void (CQS)                            (com I/O)
   ↓
 5. Read              → Result<Order>  falha → 500             (com I/O)
   ↓
@@ -90,7 +90,7 @@ app.UseDefaults();
 app.Run();
 ```
 
-`AddDefaults` registra infraestrutura e chama `RegisterModules` — que descobre todos os `IModule` via reflexão e registra seus serviços de DI automaticamente.
+`AddDefaults` registra infraestrutura e chama `RegisterModules`, que descobre todos os `IModule` via reflexão e registra seus serviços de DI automaticamente.
 
 ```csharp
 // Infrastructure/Extensions/ServiceExtensions.cs
@@ -117,7 +117,7 @@ public static class ServiceExtensions
 }
 ```
 
-`UseDefaults` configura o pipeline e chama `MapModules` — que mapeia as rotas de todos os módulos.
+`UseDefaults` configura o pipeline e chama `MapModules`, que mapeia as rotas de todos os módulos.
 
 ```csharp
 // Infrastructure/Extensions/AppExtensions.cs
@@ -138,9 +138,9 @@ public static class AppExtensions
 
 ---
 
-## 2. Módulos — IModule e auto-discovery
+## 2. Módulos: IModule e auto-discovery
 
-Cada fatia implementa `IModule`. `ModuleExtensions` descobre todos os módulos via reflexão — tanto rotas quanto serviços de DI são registrados automaticamente. Nenhuma feature precisa ser adicionada manualmente ao aggregator.
+Cada fatia implementa `IModule`. `ModuleExtensions` descobre todos os módulos via reflexão; tanto rotas quanto serviços de DI são registrados automaticamente. Nenhuma feature precisa ser adicionada manualmente ao aggregator.
 
 ```csharp
 // Shared/IModule.cs
@@ -216,9 +216,9 @@ public sealed class OrdersModule : IModule
 
 ---
 
-## 3. Contratos — request, response e aliases
+## 3. Contratos: request, response e aliases
 
-`OrderContracts.cs` define os tipos que fluem pela fatia. `OrderAliases.cs` declara os tipos de retorno HTTP — uma linha por status possível, `global using` válido em todo o assembly.
+`OrderContracts.cs` define os tipos que fluem pela fatia. `OrderAliases.cs` declara os tipos de retorno HTTP: uma linha por status possível, `global using` válido em todo o assembly.
 
 ```csharp
 // Features/Orders/OrderContracts.cs
@@ -251,9 +251,9 @@ global using OrderGetResult = Microsoft.AspNetCore.Http.HttpResults.Results<
 
 ---
 
-## 4. Entrada da requisição — filter e context
+## 4. Entrada da requisição: filter e context
 
-Antes de chegar ao handler, a requisição passa pelo `ValidationFilter`. Se o body for nulo, retorna `400` imediatamente — o handler não é chamado.
+Antes de chegar ao handler, a requisição passa pelo `ValidationFilter`. Se o body for nulo, retorna `400` imediatamente; o handler não é chamado.
 
 ```csharp
 // Shared/Filters/ValidationFilter.cs
@@ -273,7 +273,7 @@ public sealed class ValidationFilter<TRequest> : IEndpointFilter
 }
 ```
 
-O handler recebe um único parâmetro via `[AsParameters]`. O framework resolve cada propriedade do record individualmente via DI — sem service locator, sem parâmetros avulsos.
+O handler recebe um único parâmetro via `[AsParameters]`. O framework resolve cada propriedade do record individualmente via DI, sem service locator e sem parâmetros avulsos.
 
 ```csharp
 // Features/Orders/OrderContexts.cs
@@ -294,7 +294,7 @@ public sealed record OrderGetContext(
 
 ---
 
-## 5. Pipeline — 6 steps invariantes
+## 5. Pipeline: 6 steps invariantes
 
 Todo handler segue esta sequência. Nenhuma etapa é opcional, nenhuma pode ser reordenada.
 
@@ -302,7 +302,7 @@ Todo handler segue esta sequência. Nenhuma etapa é opcional, nenhuma pode ser 
 1. Sanitize       → normaliza entrada            (puro, sem I/O, classe estática)
 2. Validate       → regras de input              (puro, sem I/O, classe estática)
 3. BusinessRules  → regras de domínio            (com I/O, interface injetada)
-4. Save           → persiste (void — CQS)        (comando, sem retorno de dados)
+4. Save           → persiste (void, CQS)         (comando, sem retorno de dados)
 5. Read           → busca o que foi salvo        (query, interface separada)
 6. FilterOutput   → formata a resposta           (puro, sem I/O, classe estática)
 ```
@@ -329,7 +329,7 @@ public static class OrderCreateSanitizer
 
 ### 5.2 Validate
 
-Valida regras de input — sem I/O. Retorna `Result<T>`: happy path usa o `implicit operator` (`return request`), falha usa `Fail` com código semântico.
+Valida regras de input, sem I/O. Retorna `Result<T>`: happy path usa o `implicit operator` (`return request`), falha usa `Fail` com código semântico.
 
 ```csharp
 // Features/Orders/OrderCreateValidator.cs
@@ -352,7 +352,7 @@ public static class OrderCreateValidator
 
 ### 5.3 Business Rules
 
-Valida regras de domínio — com I/O. Separado do validator porque depende de repositórios. Injetado via interface para testabilidade.
+Valida regras de domínio, com I/O. Separado do validator porque depende de repositórios. Injetado via interface para testabilidade.
 
 ```csharp
 // Features/Orders/IOrderBusinessRules.cs
@@ -393,7 +393,7 @@ public sealed class OrderBusinessRules(IOrderRepository repository) : IOrderBusi
 
 ### 5.4 Save
 
-Persiste o aggregate — retorna `void`. CQS obrigatório: um comando não produz dados. A leitura pós-save é responsabilidade do step seguinte.
+Persiste o aggregate e retorna `void`. CQS obrigatório: um comando não produz dados. A leitura pós-save é responsabilidade do step seguinte.
 
 ```csharp
 // Features/Orders/IOrderRepository.cs
@@ -408,7 +408,7 @@ public interface IOrderRepository
 
 ### 5.5 Read
 
-Busca o que foi salvo via interface de leitura separada. `IOrderReader` é distinto de `IOrderRepository` — command e query em contratos distintos.
+Busca o que foi salvo via interface de leitura separada. `IOrderReader` é distinto de `IOrderRepository`: command e query em contratos distintos.
 
 ```csharp
 // Features/Orders/IOrderReader.cs
@@ -422,7 +422,7 @@ public interface IOrderReader
 
 ### 5.6 Filter Output
 
-Projeta a entidade no DTO de resposta. Nunca retorna a entidade de domínio diretamente — campos internos ficam ocultos.
+Projeta a entidade no DTO de resposta. Nunca retorna a entidade de domínio diretamente; campos internos ficam ocultos.
 
 ```csharp
 // Features/Orders/OrderResponseFilterOutput.cs
@@ -444,12 +444,12 @@ public static class OrderResponseFilterOutput
 
 ---
 
-## 6. Orquestrador — handler
+## 6. Orquestrador: handler
 
 O handler orquestra os 6 steps em sequência. Retorna cedo na falha, nunca implementa lógica diretamente.
 
 <details>
-<summary>❌ Ruim — lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
+<summary>❌ Ruim: lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
 
 ```csharp
 // ❌ valida inline, CQS violado (SaveAsync retorna entidade), lógica no return
@@ -461,7 +461,7 @@ public static async Task<IResult> Handle(
     if (request.CustomerId == Guid.Empty)
         return TypedResults.BadRequest("Customer required.");
 
-    var saved = await repository.SaveAsync(request, cancellationToken); // retorna entidade — CQS violado
+    var saved = await repository.SaveAsync(request, cancellationToken); // retorna entidade: CQS violado
 
     return TypedResults.Created($"/orders/{saved.Id}", saved); // lógica no return
 }
@@ -470,7 +470,7 @@ public static async Task<IResult> Handle(
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador slim, 6 steps explícitos</summary>
+<summary>✅ Bom: orquestrador slim, 6 steps explícitos</summary>
 
 ```csharp
 // Features/Orders/Create.cs
@@ -540,7 +540,7 @@ public static class GetById
 
 ---
 
-## 7. Shared — Result e extensões
+## 7. Shared: Result e extensões
 
 `Result<T>` é o tipo de retorno de todo step do pipeline. Ver [error-handling.md](../advanced/error-handling.md) para o raciocínio completo.
 
@@ -578,7 +578,7 @@ public static class ResultExtensions
 
 ## Testes
 
-Os handlers estáticos são testáveis diretamente via context record — sem mocks de framework, sem `WebApplicationFactory` para testes unitários.
+Os handlers estáticos são testáveis diretamente via context record, sem mocks de framework e sem `WebApplicationFactory` para testes unitários.
 
 ```csharp
 [Fact]
@@ -605,21 +605,21 @@ Para convenções de teste completas, ver [testing.md](../advanced/testing.md).
 ## Anti-patterns
 
 <details>
-<summary>❌ Ruim — violações frequentes no padrão vertical slice</summary>
+<summary>❌ Ruim: violações frequentes no padrão vertical slice</summary>
 
 ```csharp
-// ❌ SaveAsync retornando entidade — CQS violado
+// ❌ SaveAsync retornando entidade: CQS violado
 var saved = await repository.SaveAsync(order, cancellationToken);
 
-// ❌ leitura no mesmo contrato do comando — mistura command e query
+// ❌ leitura no mesmo contrato do comando: mistura command e query
 public Task<Order> SaveAndReturnAsync(Order order, CancellationToken cancellationToken);
 
-// ❌ regra de negócio inline no handler — step 3 fora do lugar
+// ❌ regra de negócio inline no handler: step 3 fora do lugar
 var customerExists = await repository.CustomerExistsAsync(request.CustomerId, cancellationToken);
 if (!customerExists)
     return TypedResults.NotFound();
 
-// ❌ lógica no return — URL e DTO construídos inline
+// ❌ lógica no return: URL e DTO construídos inline
 return TypedResults.Created($"/orders/{order.Id}", OrderResponseFilterOutput.Apply(saved.Value!));
 ```
 

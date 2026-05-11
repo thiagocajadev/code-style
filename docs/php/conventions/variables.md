@@ -14,7 +14,7 @@ variáveis sem tipagem explícita onde o tipo é conhecível.
 | `readonly` | Propriedade ou parâmetro que não pode ser alterado após atribuição; garante imutabilidade |
 | **typed property** (propriedade tipada) | Propriedade de classe com tipo declarado explicitamente; disponível desde PHP 7.4 |
 | **property hook** (gancho de propriedade) | `get` e `set` inline na declaração da propriedade (PHP 8.4); substitui métodos `getX`/`setX` simples |
-| **asymmetric visibility** (PHP 8.4) | `public private(set)` — leitura pública, escrita restrita ao escopo privado |
+| **asymmetric visibility** (PHP 8.4) | `public private(set)`: leitura pública, escrita restrita ao escopo privado |
 | `const` | Constante de classe avaliada em tempo de compilação; sempre `UPPER_SNAKE` |
 
 ## Mutação direta
@@ -23,7 +23,7 @@ Prefira `readonly` para propriedades que representam identidade ou configuraçã
 Use ponteiros (`&`) apenas quando a semântica de referência for realmente necessária.
 
 <details>
-<summary>❌ Ruim — propriedade mutável sem motivo</summary>
+<summary>❌ Ruim: propriedade mutável sem motivo</summary>
 
 ```php
 class OrderID
@@ -43,7 +43,7 @@ $id->value = 99; // mutação acidental
 </details>
 
 <details>
-<summary>✅ Bom — readonly garante imutabilidade de value object</summary>
+<summary>✅ Bom: readonly garante imutabilidade de value object</summary>
 
 ```php
 class OrderID
@@ -57,7 +57,7 @@ class OrderID
 }
 
 $id = new OrderID(42);
-// $id->value = 99; — Fatal error: readonly property
+// $id->value = 99; // Fatal error: readonly property
 ```
 
 </details>
@@ -67,7 +67,7 @@ $id = new OrderID(42);
 Substitua literais inline por constantes de classe nomeadas.
 
 <details>
-<summary>❌ Ruim — literais sem nome</summary>
+<summary>❌ Ruim: literais sem nome</summary>
 
 ```php
 if ($attempts > 3) {
@@ -82,7 +82,7 @@ if ($order->status === 'pending') {
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas revelam intenção</summary>
+<summary>✅ Bom: constantes nomeadas revelam intenção</summary>
 
 ```php
 class OrderProcessor
@@ -118,7 +118,7 @@ Use property hooks para encapsular lógica simples de get/set sem criar métodos
 separados. Mantenha hooks simples; extraia para métodos se a lógica crescer.
 
 <details>
-<summary>❌ Ruim — getters/setters boilerplate para lógica simples</summary>
+<summary>❌ Ruim: getters/setters boilerplate para lógica simples</summary>
 
 ```php
 class User
@@ -140,7 +140,7 @@ class User
 </details>
 
 <details>
-<summary>✅ Bom — property hook com lógica inline</summary>
+<summary>✅ Bom: property hook com lógica inline</summary>
 
 ```php
 class User
@@ -164,7 +164,7 @@ Sempre declare o tipo de propriedades de classe. Use `?Type` para indicar que o 
 pode ser nulo. Evite `mixed` onde o tipo é conhecido.
 
 <details>
-<summary>❌ Ruim — propriedades sem tipo</summary>
+<summary>❌ Ruim: propriedades sem tipo</summary>
 
 ```php
 class Order
@@ -179,7 +179,7 @@ class Order
 </details>
 
 <details>
-<summary>✅ Bom — tipos explícitos em todas as propriedades</summary>
+<summary>✅ Bom: tipos explícitos em todas as propriedades</summary>
 
 ```php
 class Order
@@ -204,7 +204,7 @@ class Order
 Nunca use `global` ou `$GLOBALS`. Passe dependências via construtor ou parâmetro.
 
 <details>
-<summary>❌ Ruim — variável global</summary>
+<summary>❌ Ruim: variável global</summary>
 
 ```php
 $db = new PDO('...');
@@ -219,7 +219,7 @@ function findUser(int $userID): ?array
 </details>
 
 <details>
-<summary>✅ Bom — dependência injetada via construtor</summary>
+<summary>✅ Bom: dependência injetada via construtor</summary>
 
 ```php
 final class UserRepository

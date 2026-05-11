@@ -84,7 +84,7 @@ CREATE TABLE football.match_events (
 ## Insert (Prepared Statement)
 
 <details>
-<summary>❌ Ruim — query sem prepare; string interpolada; sem consistency level</summary>
+<summary>❌ Ruim: query sem prepare; string interpolada; sem consistency level</summary>
 
 ```js
 // query reconstruída e re-parseada em cada chamada
@@ -101,7 +101,7 @@ async function insertMatchEvent(event) {
 </details>
 
 <details>
-<summary>✅ Bom — prepared statement; parâmetros posicionais; consistency level explícito</summary>
+<summary>✅ Bom: prepared statement; parâmetros posicionais; consistency level explícito</summary>
 
 ```js
 const INSERT_MATCH_EVENT = `
@@ -135,10 +135,10 @@ class MatchEventRepository {
 ## Select
 
 <details>
-<summary>❌ Ruim — query sem partition key: full cluster scan</summary>
+<summary>❌ Ruim: query sem partition key, full cluster scan</summary>
 
 ```js
-// sem WHERE na partition key — varre todos os nós do cluster
+// sem WHERE na partition key: varre todos os nós do cluster
 const query = 'SELECT * FROM match_events WHERE event_type = ? ALLOW FILTERING';
 await client.execute(query, ['goal'], { prepare: true });
 ```
@@ -146,7 +146,7 @@ await client.execute(query, ['goal'], { prepare: true });
 </details>
 
 <details>
-<summary>✅ Bom — query com partition key; LIMIT obrigatório; projeção de campos</summary>
+<summary>✅ Bom: query com partition key; LIMIT obrigatório; projeção de campos</summary>
 
 ```js
 const FETCH_TEAM_EVENTS = `
@@ -212,11 +212,11 @@ class MatchEventRepository {
 Delete em Cassandra gera tombstones. Tombstones se acumulam até o GC grace period. Em alto volume de deleção, o custo de leitura aumenta.
 
 **Alternativas ao hard delete**:
-- **TTL** (Time To Live, Tempo de Vida) na inserção — Cassandra remove automaticamente após o intervalo
-- Soft delete com campo `is_deleted` — query exclui o registro por filtro
+- **TTL** (Time To Live, Tempo de Vida) na inserção: Cassandra remove automaticamente após o intervalo
+- Soft delete com campo `is_deleted`: query exclui o registro por filtro
 
 ```js
-// TTL na inserção — sessão expira em 24h
+// TTL na inserção: sessão expira em 24h
 const INSERT_SESSION = `
   INSERT INTO sessions (user_id, token, created_at)
   VALUES (?, ?, toTimestamp(now()))

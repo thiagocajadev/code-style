@@ -3,7 +3,7 @@
 > Escopo: Go 1.26.
 
 Go foi projetado para concorrência. Goroutines são leves (2 KB de stack inicial) e channels
-são o mecanismo de comunicação idiomático. A regra fundamental: _"Do not communicate by sharing
+são o mecanismo de comunicação idiomático. A regra: _"Do not communicate by sharing
 memory; instead, share memory by communicating."_ (Não comunique compartilhando memória;
 comunique para compartilhar memória.)
 
@@ -26,7 +26,7 @@ Toda goroutine precisa de um dono que espera seu término e propaga cancelamento
 Goroutines soltas vazam e podem corromper estado.
 
 <details>
-<summary>❌ Ruim — goroutine lançada sem espera ou cancelamento</summary>
+<summary>❌ Ruim: goroutine lançada sem espera ou cancelamento</summary>
 
 ```go
 func processOrders(orders []Order) {
@@ -40,7 +40,7 @@ func processOrders(orders []Order) {
 </details>
 
 <details>
-<summary>✅ Bom — WaitGroup garante que todas as goroutines terminam</summary>
+<summary>✅ Bom: WaitGroup garante que todas as goroutines terminam</summary>
 
 ```go
 func processOrders(ctx context.Context, orders []Order) error {
@@ -78,7 +78,7 @@ Use channels para transferir propriedade de dados entre goroutines. Prefira chan
 a mutexes quando o fluxo de dados é unidirecional.
 
 <details>
-<summary>❌ Ruim — slice compartilhado sem sincronização</summary>
+<summary>❌ Ruim: slice compartilhado sem sincronização</summary>
 
 ```go
 var results []Result
@@ -94,7 +94,7 @@ for _, item := range items {
 </details>
 
 <details>
-<summary>✅ Bom — channel transfere propriedade, sem data race</summary>
+<summary>✅ Bom: channel transfere propriedade, sem data race</summary>
 
 ```go
 func processAllItems(ctx context.Context, items []Item) ([]Result, error) {
@@ -135,7 +135,7 @@ func processAllItems(ctx context.Context, items []Item) ([]Result, error) {
 Use `select` para multiplexar channels com cancelamento e timeout.
 
 <details>
-<summary>✅ Bom — select com contexto e canal de resultado</summary>
+<summary>✅ Bom: select com contexto e canal de resultado</summary>
 
 ```go
 func fetchWithTimeout(ctx context.Context, orderID int64) (*Order, error) {
@@ -171,7 +171,7 @@ Quando múltiplas goroutines precisam ler e escrever no mesmo estado, use `sync.
 Leitura usa `RLock`; escrita usa `Lock`.
 
 <details>
-<summary>✅ Bom — cache thread-safe com RWMutex</summary>
+<summary>✅ Bom: cache thread-safe com RWMutex</summary>
 
 ```go
 type OrderCache struct {
@@ -197,13 +197,13 @@ func (c *OrderCache) Set(order *Order) {
 
 </details>
 
-## sync.Once — inicialização única
+## sync.Once: inicialização única
 
 Use `sync.Once` para inicialização que deve acontecer exatamente uma vez,
 independente de quantas goroutines a acionem.
 
 <details>
-<summary>✅ Bom — singleton thread-safe com sync.Once</summary>
+<summary>✅ Bom: singleton thread-safe com sync.Once</summary>
 
 ```go
 type ConnectionPool struct {
@@ -239,7 +239,7 @@ func (c *ConnectionPool) Pool(ctx context.Context, dsn string) (*pgx.Pool, error
 Use um pool de workers para limitar a concorrência em processamento de filas.
 
 <details>
-<summary>✅ Bom — worker pool com channel de trabalho</summary>
+<summary>✅ Bom: worker pool com channel de trabalho</summary>
 
 ```go
 const maxWorkers = 5

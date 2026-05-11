@@ -49,7 +49,7 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 ### 1. Instrução vaga vs. específica
 
 <details>
-<summary>❌ Ruim: instrução vaga — modelo escolhe escopo, formato e tamanho</summary>
+<summary>❌ Ruim: instrução vaga, modelo escolhe escopo, formato e tamanho</summary>
 
 ```
 Faça um resumo.
@@ -58,7 +58,7 @@ Faça um resumo.
 </details>
 
 <details>
-<summary>✅ Bom: instrução específica — cada restrição elimina uma classe de resposta errada</summary>
+<summary>✅ Bom: instrução específica, cada restrição elimina uma classe de resposta errada</summary>
 
 ```
 Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicações para engenheiros de software. Não inclua introdução ou conclusão.
@@ -71,7 +71,7 @@ Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicaçõ
 ### 2. Sem contexto vs. com contexto
 
 <details>
-<summary>❌ Ruim: sem contexto — modelo só pode especular</summary>
+<summary>❌ Ruim: sem contexto, modelo só pode especular</summary>
 
 ```
 Por que meu código não funciona?
@@ -80,7 +80,7 @@ Por que meu código não funciona?
 </details>
 
 <details>
-<summary>✅ Bom: com contexto — resposta direta e aplicável</summary>
+<summary>✅ Bom: com contexto, resposta direta e aplicável</summary>
 
 ```
 Este código TypeScript lança `TypeError: Cannot read properties of undefined` na linha 12 ao chamar `user.profile.name`. A função `loadUser` recebe `user` de uma API que pode retornar `null`. Como corrigir com null-safe access mantendo o tipo inferido?
@@ -93,7 +93,7 @@ Este código TypeScript lança `TypeError: Cannot read properties of undefined` 
 ### 3. Sem formato vs. formato especificado
 
 <details>
-<summary>❌ Ruim: sem formato — modelo decide estrutura e escopo</summary>
+<summary>❌ Ruim: sem formato, modelo decide estrutura e escopo</summary>
 
 ```
 Liste boas práticas de API REST.
@@ -102,7 +102,7 @@ Liste boas práticas de API REST.
 </details>
 
 <details>
-<summary>✅ Bom: formato definido — output previsível e parseável</summary>
+<summary>✅ Bom: formato definido, output previsível e parseável</summary>
 
 ```
 Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). Formato: tabela Markdown com colunas "Prática" e "Por quê". Máximo 1 frase por célula. Não inclua boas práticas de leitura.
@@ -115,7 +115,7 @@ Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). F
 ### 4. Sem papel vs. papel atribuído
 
 <details>
-<summary>❌ Ruim: sem papel — revisão genérica e subjetiva</summary>
+<summary>❌ Ruim: sem papel, revisão genérica e subjetiva</summary>
 
 ```
 Revise esse texto.
@@ -124,7 +124,7 @@ Revise esse texto.
 </details>
 
 <details>
-<summary>✅ Bom: papel definido — instruções operacionais e acionáveis</summary>
+<summary>✅ Bom: papel definido, instruções operacionais e acionáveis</summary>
 
 ```
 Você é um tech writer sênior com foco em documentação de APIs. Revise o texto abaixo para o guia público de referência: elimine adjetivos desnecessários, use voz ativa, mantenha termos técnicos em inglês, substitua jargão interno por linguagem acessível a desenvolvedores externos.
@@ -137,7 +137,7 @@ Você é um tech writer sênior com foco em documentação de APIs. Revise o tex
 ### 5. Sem raciocínio vs. chain-of-thought
 
 <details>
-<summary>❌ Ruim: sem instrução de raciocínio — modelo pode errar em cálculos diretos</summary>
+<summary>❌ Ruim: sem instrução de raciocínio, modelo pode errar em cálculos diretos</summary>
 
 ```
 Qual o resultado de 17 × 24 + 89 ÷ 7?
@@ -146,7 +146,7 @@ Qual o resultado de 17 × 24 + 89 ÷ 7?
 </details>
 
 <details>
-<summary>✅ Bom: chain-of-thought explícito — modelo externaliza raciocínio antes de concluir</summary>
+<summary>✅ Bom: chain-of-thought explícito, modelo externaliza raciocínio antes de concluir</summary>
 
 ```
 Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo antes de dar o resultado final.
@@ -159,7 +159,7 @@ Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo an
 ### 6. Prompt sem grounding vs. com grounding
 
 <details>
-<summary>❌ Ruim: sem grounding — modelo pode alucinar valores desatualizados</summary>
+<summary>❌ Ruim: sem grounding, modelo pode alucinar valores desatualizados</summary>
 
 ```
 Quais são os limites de rate limiting da API do GitHub?
@@ -168,7 +168,7 @@ Quais são os limites de rate limiting da API do GitHub?
 </details>
 
 <details>
-<summary>✅ Bom: com grounding — resposta ancorada em fatos fornecidos</summary>
+<summary>✅ Bom: com grounding, resposta ancorada em fatos fornecidos</summary>
 
 ```
 Com base na documentação abaixo, quais são os limites de rate limiting da API REST do GitHub para requisições autenticadas?

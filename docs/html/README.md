@@ -5,7 +5,7 @@
 Convenções HTML aplicando os mesmos princípios do guia: estrutura semântica, nomes que descrevem
 propósito e acessibilidade como padrão, não como adição.
 
-→ [Quick Reference](quick-reference.md) — elementos semânticos, atributos, checklist
+→ [Quick Reference](quick-reference.md): elementos semânticos, atributos, checklist
 
 ## Setup
 

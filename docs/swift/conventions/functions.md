@@ -16,10 +16,10 @@ por uma `let`.
 | **argument label** (rótulo de argumento) | Rótulo externo de parâmetro que torna a chamada legível como prosa |
 | `@discardableResult` | indica que o valor de retorno pode ser ignorado sem warning |
 
-## God function — múltiplas responsabilidades
+## God function: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim: busca, valida, calcula e persiste em uma função só</summary>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -48,7 +48,7 @@ func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom: orquestrador limpo, detalhes em funções dedicadas</summary>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -75,10 +75,10 @@ private func notifyConfirmation(to email: String) async { ... }
 
 </details>
 
-## SLA — orquestrador ou implementação
+## SLA: orquestrador ou implementação
 
 <details>
-<summary>❌ Ruim — função mistura nível de abstração</summary>
+<summary>❌ Ruim: função mistura nível de abstração</summary>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -96,7 +96,7 @@ func generateReport(orders: [Order]) -> Report {
 </details>
 
 <details>
-<summary>✅ Bom — cada função em um único nível</summary>
+<summary>✅ Bom: cada função em um único nível</summary>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -121,7 +121,7 @@ private func calculateRevenue(_ orders: [Order]) -> Double {
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -135,7 +135,7 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 </details>
 
 <details>
-<summary>✅ Bom — explaining return com let nomeada</summary>
+<summary>✅ Bom: explaining return com let nomeada</summary>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -154,7 +154,7 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 ## Labels de argumento
 
 <details>
-<summary>❌ Ruim — chamada ambígua sem labels</summary>
+<summary>❌ Ruim: chamada ambígua sem labels</summary>
 
 ```swift
 func move(_ source: Index, _ destination: Index) { }
@@ -165,7 +165,7 @@ move(2, 5)   // o que é 2 e o que é 5?
 </details>
 
 <details>
-<summary>✅ Bom — labels que leem como prosa</summary>
+<summary>✅ Bom: labels que leem como prosa</summary>
 
 ```swift
 func move(from source: Index, to destination: Index) { }
@@ -178,7 +178,7 @@ move(from: 2, to: 5)
 ## `@discardableResult` para comandos opcionais
 
 <details>
-<summary>❌ Ruim — warning desnecessário em função de efeito colateral</summary>
+<summary>❌ Ruim: warning desnecessário em função de efeito colateral</summary>
 
 ```swift
 func registerEvent(_ event: AnalyticsEvent) -> Bool {
@@ -191,7 +191,7 @@ registerEvent(.pageView("Home"))   // ⚠️ result of call is unused
 </details>
 
 <details>
-<summary>✅ Bom — @discardableResult quando o retorno é opcional para o chamador</summary>
+<summary>✅ Bom: @discardableResult quando o retorno é opcional para o chamador</summary>
 
 ```swift
 @discardableResult

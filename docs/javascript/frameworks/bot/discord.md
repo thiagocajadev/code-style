@@ -1,10 +1,10 @@
-# Discord — discord.js
+# Discord: discord.js
 
 > Escopo: JavaScript/Node.js. Guia baseado em **discord.js v14.19** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Discord (Gateway Intents, Slash Commands, Embeds): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-**discord.js** é a biblioteca Node.js para interagir com a API do Discord. Um **Client** (instância do bot) conecta ao **Gateway** via WebSocket, recebe eventos e responde por meio da API REST. Eventos e flags são enumerados via objetos tipados (`Events`, `GatewayIntentBits`) — nunca strings literais.
+**discord.js** é a biblioteca Node.js para interagir com a API do Discord. Um **Client** (instância do bot) conecta ao **Gateway** via WebSocket, recebe eventos e responde por meio da API REST. Eventos e flags são enumerados via objetos tipados (`Events`, `GatewayIntentBits`), nunca strings literais.
 
 ## Conceitos fundamentais
 
@@ -30,7 +30,7 @@ npm install discord.js
 Use o enum `Events` em todos os listeners. Strings literais como `'ready'` ou `'interactionCreate'` foram removidas no v14.
 
 <details>
-<summary>❌ Ruim — strings literais removidas no v14; sem type safety</summary>
+<summary>❌ Ruim: strings literais removidas no v14; sem type safety</summary>
 
 ```js
 client.on('ready', () => {
@@ -47,7 +47,7 @@ client.on('interactionCreate', async (interaction) => {
 </details>
 
 <details>
-<summary>✅ Bom — Events enum; Client com intents declaradas; login no final</summary>
+<summary>✅ Bom: Events enum; Client com intents declaradas; login no final</summary>
 
 ```js
 import { Client, Events, GatewayIntentBits } from 'discord.js';
@@ -69,14 +69,14 @@ client.login(process.env.DISCORD_TOKEN);
 
 </details>
 
-Declare apenas as intents que o bot realmente usa. `MessageContent` e `GuildMembers` são intents privilegiadas: precisam ser habilitadas no Discord Developer Portal para bots em mais de 100 servidores.
+Declare apenas as intents que o bot usa. `MessageContent` e `GuildMembers` são intents privilegiadas: precisam ser habilitadas no Discord Developer Portal para bots em mais de 100 servidores.
 
 ## Registro de Slash Commands
 
-O registro por servidor (`applicationGuildCommands`) é instantâneo — ideal para desenvolvimento. O registro global (`applicationCommands`) leva até 1 hora para propagar.
+O registro por servidor (`applicationGuildCommands`) é instantâneo, ideal para desenvolvimento. O registro global (`applicationCommands`) leva até 1 hora para propagar.
 
 <details>
-<summary>❌ Ruim — REST sem version; schema como objeto literal sem validação</summary>
+<summary>❌ Ruim: REST sem version; schema como objeto literal sem validação</summary>
 
 ```js
 import { REST, Routes } from 'discord.js';
@@ -91,7 +91,7 @@ await rest.put(Routes.applicationGuildCommands(appId, guildId), {
 </details>
 
 <details>
-<summary>✅ Bom — REST com version: '10'; schema validado via SlashCommandBuilder</summary>
+<summary>✅ Bom: REST com version: '10'; schema validado via SlashCommandBuilder</summary>
 
 ```js
 import { REST, Routes, SlashCommandBuilder } from 'discord.js';
@@ -130,7 +130,7 @@ registerCommands();
 Use `Events.InteractionCreate` e o type guard `isChatInputCommand()`. Centralize o roteamento em um **Strategy Map**.
 
 <details>
-<summary>❌ Ruim — string literal no evento; sem type guard; lógica de negócio no router; sem deferReply</summary>
+<summary>❌ Ruim: string literal no evento; sem type guard; lógica de negócio no router; sem deferReply</summary>
 
 ```js
 client.on('interactionCreate', async (interaction) => {
@@ -145,7 +145,7 @@ client.on('interactionCreate', async (interaction) => {
 </details>
 
 <details>
-<summary>✅ Bom — Events enum; isChatInputCommand() guard; Strategy Map; router só delega</summary>
+<summary>✅ Bom: Events enum; isChatInputCommand() guard; Strategy Map; router só delega</summary>
 
 ```js
 import { Events } from 'discord.js';
@@ -179,7 +179,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 A resposta a uma Interaction deve ocorrer em até 3 segundos. Para operações assíncronas, chame `deferReply` antes e finalize com `editReply`.
 
 <details>
-<summary>❌ Ruim — reply direto em operação assíncrona; embed como objeto solto (sintaxe v13 removida)</summary>
+<summary>❌ Ruim: reply direto em operação assíncrona; embed como objeto solto (sintaxe v13 removida)</summary>
 
 ```js
 export async function orderCommand(interaction) {
@@ -192,7 +192,7 @@ export async function orderCommand(interaction) {
 </details>
 
 <details>
-<summary>✅ Bom — deferReply antes do await; embeds como array; orquestrador + helpers abaixo</summary>
+<summary>✅ Bom: deferReply antes do await; embeds como array; orquestrador + helpers abaixo</summary>
 
 ```js
 import { EmbedBuilder } from 'discord.js';
@@ -230,7 +230,7 @@ function buildOrderEmbed(order) {
 ## Eventos além de slash commands
 
 <details>
-<summary>❌ Ruim — string literal no evento; acesso a canal nulo sem guard; sem guard para bot</summary>
+<summary>❌ Ruim: string literal no evento; acesso a canal nulo sem guard; sem guard para bot</summary>
 
 ```js
 client.on('guildMemberAdd', async (member) => {
@@ -245,7 +245,7 @@ client.on('messageReactionAdd', async (reaction, user) => {
 </details>
 
 <details>
-<summary>✅ Bom — Events enum; guard para canal nulo; guard para bot</summary>
+<summary>✅ Bom: Events enum; guard para canal nulo; guard para bot</summary>
 
 ```js
 client.on(Events.GuildMemberAdd, async (member) => {
@@ -270,5 +270,5 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
 ## Veja também
 
-- [shared/platform/bots-advanced.md — Discord](../../../shared/platform/bots-advanced.md#discord) — Gateway Intents, Slash Commands, Embeds (conceitual)
-- [shared/platform/bots.md](../../../shared/platform/bots.md) — webhook vs polling, command routing, rate limit
+- [shared/platform/bots-advanced.md (Discord)](../../../shared/platform/bots-advanced.md#discord): Gateway Intents, Slash Commands, Embeds (conceitual)
+- [shared/platform/bots.md](../../../shared/platform/bots.md): webhook vs polling, command routing, rate limit

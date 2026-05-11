@@ -17,7 +17,7 @@
 ## Tokens semânticos
 
 <details>
-<summary>❌ Ruim — valores mágicos espalhados e nomes não-semânticos</summary>
+<summary>❌ Ruim: valores mágicos espalhados e nomes não-semânticos</summary>
 
 ```css
 .button { background: #3b82f6; }
@@ -33,7 +33,7 @@
 </details>
 
 <details>
-<summary>✅ Bom — token semântico definido uma vez, referenciado em todo lugar</summary>
+<summary>✅ Bom: token semântico definido uma vez, referenciado em todo lugar</summary>
 
 ```css
 :root {
@@ -65,7 +65,7 @@ Custom properties se propagam em cascata. Quando um valor faz sentido apenas den
 componente, defini-lo no `:root` polui o namespace global.
 
 <details>
-<summary>❌ Ruim — variáveis de componente expostas globalmente</summary>
+<summary>❌ Ruim: variáveis de componente expostas globalmente</summary>
 
 ```css
 :root {
@@ -84,7 +84,7 @@ componente, defini-lo no `:root` polui o namespace global.
 </details>
 
 <details>
-<summary>✅ Bom — variáveis de componente escopadas ao bloco</summary>
+<summary>✅ Bom: variáveis de componente escopadas ao bloco</summary>
 
 ```css
 .card {

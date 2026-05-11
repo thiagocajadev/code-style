@@ -2,7 +2,7 @@
 
 > Escopo: Kotlin 2.2, Jakarta Validation 3.x / Spring Boot 3.x.
 
-Validação acontece na fronteira — entrada do usuário, payload de API, parâmetros de use case.
+Validação acontece na fronteira: entrada do usuário, payload de API, parâmetros de use case.
 Dentro do domínio, `require`/`check` garantem invariantes. Nunca validar no meio da lógica de
 negócio: dados chegam válidos ou o fluxo para antes de começar.
 
@@ -11,15 +11,15 @@ negócio: dados chegam válidos ou o fluxo para antes de começar.
 | Conceito | O que é |
 | --- | --- |
 | **Bean Validation** (validação por anotações JSR-380) | anotações em data classes (`@NotNull`, `@Size`, `@Email`) processadas pelo framework |
-| `require` | lança `IllegalArgumentException` — pré-condição de argumento |
-| `check` | lança `IllegalStateException` — invariante interna do objeto |
+| `require` | lança `IllegalArgumentException`; pré-condição de argumento |
+| `check` | lança `IllegalStateException`; invariante interna do objeto |
 | **validation boundary** (limite de validação) | ponto onde dados externos entram no sistema (controller, use case input) |
 | **domain invariant** (invariante de domínio) | regra que deve ser verdadeira em qualquer estado válido do objeto |
 
 ## Validação no meio da lógica de negócio
 
 <details>
-<summary>❌ Ruim — validação espalhada pela função</summary>
+<summary>❌ Ruim: validação espalhada pela função</summary>
 
 ```kotlin
 fun processOrder(userId: Long, items: List<Item>, discount: Double): Order {
@@ -44,7 +44,7 @@ fun processOrder(userId: Long, items: List<Item>, discount: Double): Order {
 </details>
 
 <details>
-<summary>✅ Bom — validação na entrada, lógica limpa depois</summary>
+<summary>✅ Bom: validação na entrada, lógica limpa depois</summary>
 
 ```kotlin
 data class ProcessOrderRequest(
@@ -72,7 +72,7 @@ fun processOrder(request: ProcessOrderRequest): Order {
 ## Bean Validation com Spring Boot
 
 <details>
-<summary>❌ Ruim — validação manual no controller</summary>
+<summary>❌ Ruim: validação manual no controller</summary>
 
 ```kotlin
 @PostMapping("/orders")
@@ -90,7 +90,7 @@ fun createOrder(@RequestBody request: CreateOrderRequest): ResponseEntity<Order>
 </details>
 
 <details>
-<summary>✅ Bom — @Valid delega ao Bean Validation; controller fica limpo</summary>
+<summary>✅ Bom: @Valid delega ao Bean Validation; controller fica limpo</summary>
 
 ```kotlin
 data class CreateOrderRequest(
@@ -111,7 +111,7 @@ fun createOrder(@Valid @RequestBody request: CreateOrderRequest): ResponseEntity
 ## Acumulação de erros
 
 <details>
-<summary>❌ Ruim — para no primeiro erro (usuário precisa corrigir um campo por vez)</summary>
+<summary>❌ Ruim: para no primeiro erro (usuário precisa corrigir um campo por vez)</summary>
 
 ```kotlin
 fun validateProfile(profile: UserProfile): Result<Unit> {
@@ -125,7 +125,7 @@ fun validateProfile(profile: UserProfile): Result<Unit> {
 </details>
 
 <details>
-<summary>✅ Bom — acumula todos os erros e retorna de uma vez</summary>
+<summary>✅ Bom: acumula todos os erros e retorna de uma vez</summary>
 
 ```kotlin
 sealed class ProfileValidationError {

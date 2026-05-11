@@ -61,7 +61,7 @@ Expõe o system prompt ao usuário, revelando lógica de negócio, chaves de com
 Nunca interpole entrada do usuário diretamente no system prompt. Mantenha as fronteiras de confiança claras na estrutura da requisição.
 
 <details>
-<summary>❌ Ruim: entrada do usuário interpola o system prompt — direct injection trivial</summary>
+<summary>❌ Ruim: entrada do usuário interpola o system prompt, direct injection trivial</summary>
 
 ```js
 const systemPrompt = `
@@ -95,7 +95,7 @@ const reply = await anthropic.messages.create({
 Inclua no system prompt uma instrução explícita sobre como tratar tentativas de redirecionamento. O modelo não é imune, mas a instrução reduz a superfície.
 
 <details>
-<summary>❌ Ruim: sem instrução de escopo — jailbreak e role-play redirecionam sem resistência</summary>
+<summary>❌ Ruim: sem instrução de escopo, jailbreak e role-play redirecionam sem resistência</summary>
 
 ```
 Você é um assistente de vendas. Responda perguntas sobre nossos produtos.
@@ -157,7 +157,7 @@ await deleteRecord(modelReply.recordId);
 Dados lidos de fontes externas (documentos, páginas web, e-mails) devem ser sanitizados e enquadrados como dados, não como instruções.
 
 <details>
-<summary>❌ Ruim: conteúdo externo vai direto ao modelo — indirect injection via página ou documento</summary>
+<summary>❌ Ruim: conteúdo externo vai direto ao modelo, indirect injection via página ou documento</summary>
 
 ```js
 const pageContent = await fetchPage(url);
@@ -232,7 +232,7 @@ const tools = [
 
 ## Veja também
 
-- [prompts.md](prompts.md) — engenharia de prompts e grounding com dados confiáveis
-- [agents.md](agents.md) — arquitetura de agentes e gerenciamento de ferramentas
-- [tools-mcp.md](tools-mcp.md) — Tool Use e MCP Protocol com escopo de permissões
-- [Integrations](../platform/integrations.md#apis-de-modelos-de-ia-llm-apis) — autenticação e retry para APIs de LLM
+- [prompts.md](prompts.md): engenharia de prompts e grounding com dados confiáveis
+- [agents.md](agents.md): arquitetura de agentes e gerenciamento de ferramentas
+- [tools-mcp.md](tools-mcp.md): Tool Use e MCP Protocol com escopo de permissões
+- [Integrations](../platform/integrations.md#apis-de-modelos-de-ia-llm-apis): autenticação e retry para APIs de LLM

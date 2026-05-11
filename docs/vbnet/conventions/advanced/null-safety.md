@@ -3,7 +3,7 @@
 > Escopo: VB.NET. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
 VB.NET representa ausência de valor com **Nothing**. Com **Option Strict On** e **Option Infer On**,
-o compilador bloqueia a maior parte dos acessos a `Nothing` em tempo de compilação — mas não
+o compilador bloqueia a maior parte dos acessos a `Nothing` em tempo de compilação, mas não
 todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica sozinho.
 
 > Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
@@ -24,10 +24,10 @@ todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica so
 ## Is Nothing vs IsNothing()
 
 `Is Nothing` é o operador nativo do .NET para checar referências nulas. `IsNothing()` é uma
-função de compatibilidade do VB6 — idêntica em resultado, mas idiomática do legado.
+função de compatibilidade do VB6: idêntica em resultado, mas idiomática do legado.
 
 <details>
-<summary>❌ Ruim — IsNothing() é legado do VB6</summary>
+<summary>❌ Ruim: IsNothing() é legado do VB6</summary>
 
 ```vbnet
 If IsNothing(order) Then Return
@@ -39,7 +39,7 @@ Dim name As String = If(IsNothing(user.Name), "Unknown", user.Name)
 </details>
 
 <details>
-<summary>✅ Bom — Is Nothing / IsNot Nothing como operadores nativos</summary>
+<summary>✅ Bom: Is Nothing / IsNot Nothing como operadores nativos</summary>
 
 ```vbnet
 If order Is Nothing Then Return
@@ -57,7 +57,7 @@ Tipos de valor (`Integer`, `Decimal`, `Date`, `Boolean`) não aceitam `Nothing` 
 acessar com segurança.
 
 <details>
-<summary>❌ Ruim — valor sentinela para representar ausência</summary>
+<summary>❌ Ruim: valor sentinela para representar ausência</summary>
 
 ```vbnet
 Public Class OrderItem
@@ -66,14 +66,14 @@ Public Class OrderItem
 End Class
 
 Public Function HasDiscount(item As OrderItem) As Boolean
-    Return item.Discount <> 0D  ' valor mágico — ambíguo
+    Return item.Discount <> 0D  ' valor mágico: ambíguo
 End Function
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Nullable(Of T) expressa ausência explicitamente</summary>
+<summary>✅ Bom: Nullable(Of T) expressa ausência explicitamente</summary>
 
 ```vbnet
 Public Class OrderItem
@@ -102,7 +102,7 @@ como `??` em C#: retorna o primeiro argumento se não for `Nothing`, caso contr�
 segundo.
 
 <details>
-<summary>❌ Ruim — If/Else verboso para default de null</summary>
+<summary>❌ Ruim: If/Else verboso para default de null</summary>
 
 ```vbnet
 Dim city As String
@@ -123,7 +123,7 @@ End If
 </details>
 
 <details>
-<summary>✅ Bom — If() de dois argumentos como null-coalescing</summary>
+<summary>✅ Bom: If() de dois argumentos como null-coalescing</summary>
 
 ```vbnet
 Dim city As String = If(user.Address?.City, "Unknown")
@@ -139,7 +139,7 @@ Métodos e propriedades que retornam coleções retornam lista vazia, nunca `Not
 não precisa verificar `Nothing` antes de iterar.
 
 <details>
-<summary>❌ Ruim — Nothing em coleção força defesa em cada caller</summary>
+<summary>❌ Ruim: Nothing em coleção força defesa em cada caller</summary>
 
 ```vbnet
 Public Function FindOrdersByUser(userId As Guid) As List(Of Order)
@@ -161,7 +161,7 @@ End If
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia como estado neutro, sem Nothing</summary>
+<summary>✅ Bom: lista vazia como estado neutro, sem Nothing</summary>
 
 ```vbnet
 Public Function FindOrdersByUser(userId As Guid) As List(Of Order)
@@ -171,7 +171,7 @@ Public Function FindOrdersByUser(userId As Guid) As List(Of Order)
     Return orders
 End Function
 
-' caller itera diretamente — sem verificação
+' caller itera diretamente: sem verificação
 Dim orders = _service.FindOrdersByUser(userId)
 For Each order In orders
     ProcessOrder(order)
@@ -186,7 +186,7 @@ Verificar argumentos de construtor garante que o objeto nunca é criado em estad
 **Fail-fast** (falhar cedo): melhor do que descobrir o `Nothing` mais tarde na cadeia.
 
 <details>
-<summary>❌ Ruim — construtor aceita Nothing silenciosamente</summary>
+<summary>❌ Ruim: construtor aceita Nothing silenciosamente</summary>
 
 ```vbnet
 Public Class OrderService
@@ -203,7 +203,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — guard clause no construtor</summary>
+<summary>✅ Bom: guard clause no construtor</summary>
 
 ```vbnet
 Public Class OrderService

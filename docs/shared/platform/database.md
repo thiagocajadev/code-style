@@ -107,7 +107,7 @@ Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho
 Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../../nosql/conventions/).
 
 <details>
-<summary>❌ Ruim: sem projeção — trafega o documento inteiro para usar um campo</summary>
+<summary>❌ Ruim: sem projeção: trafega o documento inteiro para usar um campo</summary>
 
 ```js
 const user = await database.collection('users').findOne({ email });
@@ -135,7 +135,7 @@ class UserRepository {
 </details>
 
 <details>
-<summary>❌ Ruim: filtro em memória — carrega a coleção inteira para filtrar no cliente</summary>
+<summary>❌ Ruim: filtro em memória: carrega a coleção inteira para filtrar no cliente</summary>
 
 ```js
 const allOrders = await database.collection('orders').find({}).toArray();
@@ -145,7 +145,7 @@ const pendingOrders = allOrders.filter(order => order.status === 'pending');
 </details>
 
 <details>
-<summary>✅ Bom: filtro na query — banco usa índice em status</summary>
+<summary>✅ Bom: filtro na query: banco usa índice em status</summary>
 
 ```js
 class OrderRepository {
@@ -163,7 +163,7 @@ class OrderRepository {
 </details>
 
 <details>
-<summary>❌ Ruim: N+1 em document store — uma query por item para buscar documento relacionado</summary>
+<summary>❌ Ruim: N+1 em document store: uma query por item para buscar documento relacionado</summary>
 
 ```js
 const orders = await database.collection('orders').find({ userId }).toArray();
@@ -195,7 +195,7 @@ class OrderRepository {
           as: 'product',
         },
       },
-      { $unwind: '$product' }, // drops orders with no matching product — use preserveNullAndEmptyArrays: true if product can be missing
+      { $unwind: '$product' }, // drops orders with no matching product: use preserveNullAndEmptyArrays: true if product can be missing
     ]).toArray();
 
     return enrichedOrders;
@@ -219,7 +219,7 @@ de longa duração em operações de manutenção.
 | **Chunked UPDATE/DELETE** | Atualizar ou remover grandes volumes sem bloquear a tabela por minutos |
 | **BULK INSERT / COPY** | Importar arquivos CSV ou binários diretamente no banco, sem round trips pela aplicação |
 | **Staging table** | Validar dados externos antes de inserir na tabela de produção |
-| **Scheduled job** | Executar operações periódicas — limpeza, agregação, archive — sem intervenção manual |
+| **Scheduled job** | Executar operações periódicas; limpeza, agregação, archive; sem intervenção manual |
 
 ### Chunk size
 
@@ -231,7 +231,7 @@ Não existe valor universal. O critério é o tempo de lock aceitável para o si
 
 Operações em lote que rodam em produção precisam de idempotência: se o job for interrompido, a
 próxima execução deve continuar de onde parou sem duplicar ou corromper dados. O padrão é usar a
-condição de filtro do próprio UPDATE/DELETE como cursor natural — o WHERE já exclui as linhas
+condição de filtro do próprio UPDATE/DELETE como cursor natural: o WHERE já exclui as linhas
 já processadas nas iterações anteriores.
 
 Padrões de query: [sql/conventions/advanced/batch.md](../../../sql/conventions/advanced/batch.md).

@@ -6,10 +6,10 @@ Convenções Ruby aplicando os mesmos princípios do guia. Os exemplos usam Ruby
 referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
 
 **Ruby** é a linguagem de programação. **Rails** (Ruby on Rails) é um framework (estrutura)
-web escrito em Ruby — mesma relação de Python com FastAPI, ou C# com ASP.NET. Você pode
+web escrito em Ruby, mesma relação de Python com FastAPI, ou C# com ASP.NET. Você pode
 usar Ruby sem Rails, mas Rails sempre roda sobre Ruby.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 

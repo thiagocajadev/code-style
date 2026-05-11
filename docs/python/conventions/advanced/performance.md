@@ -2,7 +2,7 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Python prioriza legibilidade. Otimize onde há medição — não por antecipação. As regras abaixo
+Python prioriza legibilidade. Otimize onde há medição, não por antecipação. As regras abaixo
 resolvem problemas reais e frequentes no ecossistema.
 
 ## Conceitos fundamentais
@@ -23,7 +23,7 @@ Quando o resultado é consumido uma vez (loop, `sum`, `any`, `next`), um generat
 uma lista intermediária em memória.
 
 <details>
-<summary>❌ Ruim — lista completa criada antes de consumir</summary>
+<summary>❌ Ruim: lista completa criada antes de consumir</summary>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -36,7 +36,7 @@ def sum_active_prices(products: list) -> float:
 </details>
 
 <details>
-<summary>✅ Bom — generator expression, sem lista intermediária</summary>
+<summary>✅ Bom: generator expression, sem lista intermediária</summary>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -52,7 +52,7 @@ Busca em `list` é O(n). Busca em `set` é O(1). Quando a ordem não importa e a
 "está contido?", `set` é a escolha correta.
 
 <details>
-<summary>❌ Ruim — in list: percorre tudo a cada verificação</summary>
+<summary>❌ Ruim: in list: percorre tudo a cada verificação</summary>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -64,7 +64,7 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 </details>
 
 <details>
-<summary>✅ Bom — in set: O(1) por verificação</summary>
+<summary>✅ Bom: in set: O(1) por verificação</summary>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -81,7 +81,7 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 use `"".join()`.
 
 <details>
-<summary>❌ Ruim — concatenação O(n²) em loop</summary>
+<summary>❌ Ruim: concatenação O(n²) em loop</summary>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -95,7 +95,7 @@ def build_csv_row(fields: list[str]) -> str:
 </details>
 
 <details>
-<summary>✅ Bom — join: uma única alocação</summary>
+<summary>✅ Bom: join: uma única alocação</summary>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -105,13 +105,13 @@ def build_csv_row(fields: list[str]) -> str:
 
 </details>
 
-## Leitura de arquivo grande — iteração vs leitura total
+## Leitura de arquivo grande: iteração vs leitura total
 
 `read()` carrega o arquivo inteiro em memória. Para arquivos grandes, iterar linha a linha
 mantém o uso de memória constante.
 
 <details>
-<summary>❌ Ruim — arquivo inteiro em memória</summary>
+<summary>❌ Ruim: arquivo inteiro em memória</summary>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -126,7 +126,7 @@ def count_error_lines(log_path: str) -> int:
 </details>
 
 <details>
-<summary>✅ Bom — iteração linha a linha, memória constante</summary>
+<summary>✅ Bom: iteração linha a linha, memória constante</summary>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -139,10 +139,10 @@ def count_error_lines(log_path: str) -> int:
 ## dict.get() vs acesso direto
 
 `dict["key"]` lança `KeyError` se a chave não existir. `dict.get("key", default)` retorna o
-default sem exceção — sem try/except desnecessário.
+default sem exceção, sem try/except desnecessário.
 
 <details>
-<summary>❌ Ruim — try/except para controle de fluxo normal</summary>
+<summary>❌ Ruim: try/except para controle de fluxo normal</summary>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -157,7 +157,7 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 </details>
 
 <details>
-<summary>✅ Bom — dict.get com default declarativo</summary>
+<summary>✅ Bom: dict.get com default declarativo</summary>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -173,7 +173,7 @@ Classes sem `__slots__` armazenam atributos em um `__dict__` por instância. Em 
 milhares de objetos, `__slots__` reduz o uso de memória consideravelmente.
 
 <details>
-<summary>❌ Ruim — __dict__ implícito em classe de dado intensivo</summary>
+<summary>❌ Ruim: __dict__ implícito em classe de dado intensivo</summary>
 
 ```python
 class OrderItem:
@@ -186,7 +186,7 @@ class OrderItem:
 </details>
 
 <details>
-<summary>✅ Bom — dataclass com slots=True</summary>
+<summary>✅ Bom: dataclass com slots=True</summary>
 
 ```python
 from dataclasses import dataclass

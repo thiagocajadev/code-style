@@ -3,7 +3,7 @@
 > Escopo: PHP 8.4.
 
 Nomes bons tornam comentários desnecessários. PHP segue **PSR-1** e **PSR-12** como padrões
-de nomenclatura. Dentro dessas convenções, o mesmo princípio vale: o código conta a história.
+de nomenclatura. Quando o nome carrega a intenção, o comentário deixa de fazer falta.
 
 ## Conceitos fundamentais
 
@@ -57,7 +57,7 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — nomes em português no código</summary>
+<summary>❌ Ruim: nomes em português no código</summary>
 
 ```php
 $nomeDoUsuario = 'Alice';
@@ -70,7 +70,7 @@ function buscaEnderecoDoCliente(int $id): Address { ... }
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```php
 $userName = 'Alice';
@@ -94,7 +94,7 @@ function findCustomerAddress(int $customerID): Address { ... }
 | Namespaces                     | `PascalCase`     | `App\Domain\Order`, `App\Infrastructure`     |
 
 <details>
-<summary>❌ Ruim — case errado para o contexto</summary>
+<summary>❌ Ruim: case errado para o contexto</summary>
 
 ```php
 class order_service {}          // classe com underscore
@@ -108,7 +108,7 @@ $order_id = 42;                 // variável com underscore
 </details>
 
 <details>
-<summary>✅ Bom — convenções PSR respeitadas</summary>
+<summary>✅ Bom: convenções PSR respeitadas</summary>
 
 ```php
 class OrderService {}
@@ -130,7 +130,7 @@ $orderID = 42;
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Ruim — ordem invertida</summary>
+<summary>❌ Ruim: ordem invertida</summary>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -143,7 +143,7 @@ function statusUpdateOrder(int $orderID): void {}
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural</summary>
+<summary>✅ Bom: ordem natural</summary>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -156,7 +156,7 @@ function calculateInvoiceTotal(Invoice $invoice): float {}
 ## Verbos genéricos
 
 <details>
-<summary>❌ Ruim — handle, process, manage não dizem nada</summary>
+<summary>❌ Ruim: handle, process, manage não dizem nada</summary>
 
 ```php
 function handle($data): mixed {}
@@ -168,7 +168,7 @@ function doStuff($x): mixed {}
 </details>
 
 <details>
-<summary>✅ Bom — verbo de intenção</summary>
+<summary>✅ Bom: verbo de intenção</summary>
 
 ```php
 function validatePayment(Payment $payment): void {}
@@ -182,7 +182,7 @@ function applySeasonalDiscount(Order $order): Order {}
 ## Domain-first naming
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
 
 ```php
 function callStripe(float $amount): ChargeResult {}
@@ -193,7 +193,7 @@ function postToSlack(string $message): void {}
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```php
 function chargeCustomer(float $amount): ChargeResult {}
@@ -206,7 +206,7 @@ function notifyTeam(string $message): void {}
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```php
 $loading = true;
@@ -217,7 +217,7 @@ $valid = str_contains($email, '@');
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```php
 $isActive = $user->status === 'active';

@@ -7,12 +7,12 @@ O sistema de tipos do TypeScript tem duas construções principais para descreve
 | Conceito | O que é |
 | --- | --- |
 | **interface** (contrato de objeto) | Forma de objeto extensível via `extends` e implementável via `implements` |
-| **type alias** (apelido de tipo) | `type X = ...` — apelido para union, intersection, mapped, primitivo ou shape |
+| **type alias** (apelido de tipo) | `type X = ...`: apelido para union, intersection, mapped, primitivo ou shape |
 | **structural typing** (tipagem estrutural) | Compatibilidade decidida pelo formato; tipos com mesmo shape são compatíveis |
-| **union** (união) | `A | B` — valor que pode ser de um ou outro tipo |
-| **intersection** (interseção) | `A & B` — valor que satisfaz ambos os tipos simultaneamente |
+| **union** (união) | `A | B`: valor que pode ser de um ou outro tipo |
+| **intersection** (interseção) | `A & B`: valor que satisfaz ambos os tipos simultaneamente |
 | **literal type** (tipo literal) | Valor exato como tipo (`"active"`, `42`); usado em discriminated unions |
-| **utility type** (tipo utilitário) | `Partial`, `Pick`, `Omit`, `Record` — derivam tipos de outros sem repetição |
+| **utility type** (tipo utilitário) | `Partial`, `Pick`, `Omit`, `Record`: derivam tipos de outros sem repetição |
 | **branded type** (tipo marcado) | Primitivo + tag de tipo para distinguir valores semânticos (`UserId`, `Email`) |
 
 ## type vs interface
@@ -22,23 +22,23 @@ A distinção prática: `interface` descreve o shape de um objeto e pode ser est
 ser reaberta.
 
 <details>
-<summary>❌ Ruim — type onde interface seria natural, interface onde type seria correto</summary>
+<summary>❌ Ruim: type onde interface seria natural, interface onde type seria correto</summary>
 
 ```ts
-// type para shape de objeto — funciona, mas não é a convenção
+// type para shape de objeto: funciona, mas não é a convenção
 type User = {
   id: string;
   name: string;
 };
 
-// interface para union type — não compila
+// interface para union type: não compila
 interface OrderStatus = "pending" | "approved"; // erro de sintaxe
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — interface para objetos e contratos</summary>
+<summary>✅ Bom: interface para objetos e contratos</summary>
 
 ```ts
 interface User {
@@ -60,7 +60,7 @@ interface UserService extends EventEmitter {
 </details>
 
 <details>
-<summary>✅ Bom — type para uniões, intersections e aliases</summary>
+<summary>✅ Bom: type para uniões, intersections e aliases</summary>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "cancelled" | "shipped";
@@ -81,19 +81,19 @@ Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo.
 é abstração sem propósito.
 
 <details>
-<summary>❌ Ruim — genérico que não muda o shape</summary>
+<summary>❌ Ruim: genérico que não muda o shape</summary>
 
 ```ts
 interface Response<T> {
   success: boolean;
-  message: string; // T nunca aparece — o genérico não serve para nada aqui
+  message: string; // T nunca aparece: o genérico não serve para nada aqui
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — genérico quando o shape depende do tipo</summary>
+<summary>✅ Bom: genérico quando o shape depende do tipo</summary>
 
 ```ts
 interface ApiResponse<TData> {
@@ -123,7 +123,7 @@ Utility types permitem derivar contratos a partir de tipos existentes. Evitam du
 os tipos sincronizados quando o tipo base muda.
 
 <details>
-<summary>❌ Ruim — duplicação manual do shape com diferenças</summary>
+<summary>❌ Ruim: duplicação manual do shape com diferenças</summary>
 
 ```ts
 interface User {
@@ -151,7 +151,7 @@ interface UpdateUserInput {  // duplica User com todos os campos opcionais
 </details>
 
 <details>
-<summary>✅ Bom — derivar a partir do tipo base</summary>
+<summary>✅ Bom: derivar a partir do tipo base</summary>
 
 ```ts
 interface User {
@@ -175,7 +175,7 @@ Quando um valor pode ser de formas diferentes dependendo do contexto, uma union 
 um campo literal discriminante permite narrowing automático, sem type assertion, sem cast.
 
 <details>
-<summary>❌ Ruim — campo opcional para cada variant, sem discriminante</summary>
+<summary>❌ Ruim: campo opcional para cada variant, sem discriminante</summary>
 
 ```ts
 interface PaymentResult {
@@ -187,7 +187,7 @@ interface PaymentResult {
 
 function handlePayment(result: PaymentResult) {
   if (result.success) {
-    console.log(result.transactionId); // string | undefined — TypeScript não garante
+    console.log(result.transactionId); // string | undefined: TypeScript não garante
   }
 }
 ```
@@ -195,7 +195,7 @@ function handlePayment(result: PaymentResult) {
 </details>
 
 <details>
-<summary>✅ Bom — campo discriminante com narrowing automático</summary>
+<summary>✅ Bom: campo discriminante com narrowing automático</summary>
 
 ```ts
 interface PaymentSuccess {
@@ -213,11 +213,11 @@ type PaymentResult = PaymentSuccess | PaymentFailure;
 
 function handlePayment(result: PaymentResult) {
   if (result.status === "success") {
-    console.log(result.transactionId); // string — TypeScript garante
+    console.log(result.transactionId); // string: TypeScript garante
     return;
   }
 
-  console.log(result.errorMessage); // string — narrowado para PaymentFailure
+  console.log(result.errorMessage); // string: narrowado para PaymentFailure
 }
 ```
 
@@ -229,7 +229,7 @@ Intersection combina dois tipos em um. Útil para compor shapes ortogonais sem c
 classes.
 
 <details>
-<summary>❌ Ruim — duplicação manual de campos de shapes existentes</summary>
+<summary>❌ Ruim: duplicação manual de campos de shapes existentes</summary>
 
 ```ts
 interface Auditable {
@@ -258,7 +258,7 @@ interface Order {
 </details>
 
 <details>
-<summary>✅ Bom — intersection para compor shapes independentes</summary>
+<summary>✅ Bom: intersection para compor shapes independentes</summary>
 
 ```ts
 interface Auditable {
@@ -282,18 +282,18 @@ type Order = BaseOrder & Auditable & SoftDeletable;
 compilador precisa de convencimento, geralmente é o shape que está errado.
 
 <details>
-<summary>❌ Ruim — as Type para forçar o compilador a aceitar</summary>
+<summary>❌ Ruim: as Type para forçar o compilador a aceitar</summary>
 
 ```ts
 const user = await fetchUser(id) as User; // e se retornar null?
 
-const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any — qualquer shape passa
+const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any: qualquer shape passa
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — narrowing real ou validação de esquema</summary>
+<summary>✅ Bom: narrowing real ou validação de esquema</summary>
 
 ```ts
 const raw = await fetchUser(id);

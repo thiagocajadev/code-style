@@ -45,7 +45,7 @@ módulos. O arquivo serve como índice do projeto: o leitor vê o que existe, n�
 como funciona.
 
 <details>
-<summary>❌ Ruim — server.js como dumping ground de configuração</summary>
+<summary>❌ Ruim: server.js como dumping ground de configuração</summary>
 
 ```js
 import express from "express";
@@ -93,7 +93,7 @@ app.listen(process.env.PORT || 3000);
 </details>
 
 <details>
-<summary>✅ Bom — server.js como índice, configuração delegada</summary>
+<summary>✅ Bom: server.js como índice, configuração delegada</summary>
 
 ```js
 import { config } from "./config.js";
@@ -112,7 +112,7 @@ SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam
 co-localizados com o domínio que representam.
 
 <details>
-<summary>❌ Ruim — app.js conhece SQL, validação e regras de negócio</summary>
+<summary>❌ Ruim: app.js conhece SQL, validação e regras de negócio</summary>
 
 ```js
 // app.js
@@ -147,10 +147,10 @@ app.post("/api/orders", async (req, res) => {
 </details>
 
 <details>
-<summary>❌ Ruim — rotas definidas fora do domínio, em arquivo centralizado</summary>
+<summary>❌ Ruim: rotas definidas fora do domínio, em arquivo centralizado</summary>
 
 ```js
-// routes.js — arquivo monolítico de rotas
+// routes.js: arquivo monolítico de rotas
 import {
   listOrders,
   getOrder,
@@ -166,14 +166,14 @@ export function registerRoutes(app, orderService, userService) {
 
   app.get("/api/users", listUsers(userService));
   app.get("/api/users/:id", getUser(userService));
-  // domínios diferentes no mesmo arquivo — cresce sem controle
+  // domínios diferentes no mesmo arquivo: cresce sem controle
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ponto de entrada agrega os módulos</summary>
+<summary>✅ Bom: ponto de entrada agrega os módulos</summary>
 
 ```js
 // app.js
@@ -196,7 +196,7 @@ export function createApp(config) {
 </details>
 
 <details>
-<summary>✅ Bom — domínio de Orders dono das suas rotas</summary>
+<summary>✅ Bom: domínio de Orders dono das suas rotas</summary>
 
 ```js
 // features/orders/orders.module.js
@@ -245,7 +245,7 @@ export function create(orderService) {
 acessa `process.env` diretamente: apenas importa a seção que precisa.
 
 <details>
-<summary>❌ Ruim — process.env espalhado em todo lugar</summary>
+<summary>❌ Ruim: process.env espalhado em todo lugar</summary>
 
 ```js
 // auth/auth.middleware.js
@@ -261,7 +261,7 @@ const port = process.env.PORT || 3000; // leitura direta
 </details>
 
 <details>
-<summary>✅ Bom — config.js como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: config.js como único ponto de entrada de env vars</summary>
 
 ```js
 // config.js
@@ -305,7 +305,7 @@ rotas              → handlers recebem o usuário já autenticado no contexto
 ```
 
 <details>
-<summary>❌ Ruim — authenticate depois das rotas</summary>
+<summary>❌ Ruim: authenticate depois das rotas</summary>
 
 ```js
 app.use(express.json());
@@ -320,7 +320,7 @@ app.use(authenticate(config.auth)); // tarde demais
 </details>
 
 <details>
-<summary>✅ Bom — ordem correta do pipeline</summary>
+<summary>✅ Bom: ordem correta do pipeline</summary>
 
 ```js
 // middleware.js

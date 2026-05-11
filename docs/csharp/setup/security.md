@@ -27,7 +27,7 @@ Esta página cobre apenas o que é específico do .NET: onde colocar o quê, qua
 | Secrets em staging/produção | Variáveis de ambiente do host | Connection strings reais, signing keys |
 | Secrets gerenciados | Azure Key Vault, AWS Secrets Manager, etc. | Rotação automática, auditoria |
 
-A ordem de resolução do .NET (`ConfigurationBuilder`) aplica cada camada por cima da anterior. Variável de ambiente sempre vence `appsettings.json` — nunca inverter.
+A ordem de resolução do .NET (`ConfigurationBuilder`) aplica cada camada por cima da anterior. Variável de ambiente sempre vence `appsettings.json`. Nunca inverter.
 
 ---
 
@@ -63,17 +63,17 @@ Auth__Authority="https://login.microsoftonline.com/tenant-id"
 Ler `builder.Configuration["Auth:Secret"]` espalha strings mágicas e não detecta null em compile time. Options pattern amarra a seção a um record fortemente tipado.
 
 <details>
-<summary>❌ Ruim — chaves soltas no código</summary>
+<summary>❌ Ruim: chaves soltas no código</summary>
 
 ```csharp
 var authority = builder.Configuration["Auth:Authority"];
-var secret    = builder.Configuration["Auth:Secret"]; // string? — null passa despercebido
+var secret    = builder.Configuration["Auth:Secret"]; // string?: null passa despercebido
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — record tipado resolvido uma vez no startup</summary>
+<summary>✅ Bom: record tipado resolvido uma vez no startup</summary>
 
 ```csharp
 public record AuthOptions(string Authority, string Audience, string Secret)
@@ -110,7 +110,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 `ReadJwtToken()` lê o **payload** (corpo da mensagem) sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
 
 <details>
-<summary>❌ Ruim — ReadJwtToken dentro do handler</summary>
+<summary>❌ Ruim: ReadJwtToken dentro do handler</summary>
 
 ```csharp
 app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, CancellationToken ct) =>
@@ -127,7 +127,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 </details>
 
 <details>
-<summary>✅ Bom — **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
+<summary>✅ Bom: **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
 
 ```csharp
 app.MapGet("/orders", async (IOrderRepository orderRepository, CancellationToken ct) =>

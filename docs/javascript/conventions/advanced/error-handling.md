@@ -20,7 +20,7 @@ Erros bem estruturados separam o que é **problema de negócio** (regra violada,
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
+<summary>❌ Ruim: null, undefined, false e objeto na mesma função</summary>
 
 ```js
 function processOrder(order) {
@@ -42,7 +42,7 @@ if (result !== null) { /* ... */ }  // e undefined?
 </details>
 
 <details>
-<summary>✅ Bom — contrato consistente, sempre o mesmo formato</summary>
+<summary>✅ Bom: contrato consistente, sempre o mesmo formato</summary>
 
 ```js
 function processOrder(order) {
@@ -62,7 +62,7 @@ function processOrder(order) {
 ## Erro como string
 
 <details>
-<summary>❌ Ruim — string solta, impossível tratar com instanceof</summary>
+<summary>❌ Ruim: string solta, impossível tratar com instanceof</summary>
 
 ```js
 async function findUser(id) {
@@ -79,7 +79,7 @@ async function findUser(id) {
 </details>
 
 <details>
-<summary>✅ Bom — erros tipados, identificáveis e tratáveis</summary>
+<summary>✅ Bom: erros tipados, identificáveis e tratáveis</summary>
 
 ```js
 async function findUser(id) {
@@ -95,10 +95,10 @@ async function findUser(id) {
 ## BaseError: abstração centralizada
 
 <details>
-<summary>❌ Ruim — throw com string solta, sem tipo, sem contrato</summary>
+<summary>❌ Ruim: throw com string solta, sem tipo, sem contrato</summary>
 
 ```js
-// errors.js — não existe, cada módulo lança o que quiser
+// errors.js: não existe, cada módulo lança o que quiser
 async function findUser(id) {
   const user = await db.query(id);
   if (!user) throw "User not found"; // sem tipo, não dá para instanceof
@@ -120,7 +120,7 @@ async function processOrder(orderId) {
 </details>
 
 <details>
-<summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
+<summary>✅ Bom: contrato único para todos os erros da aplicação</summary>
 
 ```js
 // errors.js
@@ -188,7 +188,7 @@ export class InternalServerError extends BaseError {
 ## try/catch que engole o erro
 
 <details>
-<summary>❌ Ruim — captura, loga e retorna null</summary>
+<summary>❌ Ruim: captura, loga e retorna null</summary>
 
 ```js
 async function findProductById(id) {
@@ -210,7 +210,7 @@ async function findProductById(id) {
 </details>
 
 <details>
-<summary>✅ Bom — propaga com contexto, trata no limite do sistema</summary>
+<summary>✅ Bom: propaga com contexto, trata no limite do sistema</summary>
 
 ```js
 async function findProductById(id) {
@@ -238,7 +238,7 @@ async function findProductById(id) {
 ## Exceção como controle de fluxo
 
 <details>
-<summary>❌ Ruim — try/catch controlando lógica de negócio normal</summary>
+<summary>❌ Ruim: try/catch controlando lógica de negócio normal</summary>
 
 ```js
 function getUser(id) {
@@ -253,7 +253,7 @@ function getUser(id) {
 </details>
 
 <details>
-<summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
+<summary>✅ Bom: verificação explícita, sem exceção para fluxo normal</summary>
 
 ```js
 function getUser(id) {

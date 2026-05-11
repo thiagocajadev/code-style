@@ -22,12 +22,12 @@ VB.NET oferece **Interface**, **MustInherit Class** (equivalente a abstract), **
 
 ## Interface vs MustInherit Class
 
-`Interface` descreve **capacidade** — o que o tipo consegue fazer. Suporta múltipla implementação via `Implements`, não carrega estado. `MustInherit Class` (equivalente ao `abstract class` do C#) descreve **identidade parcial** — uma base comum com estado e comportamento compartilhados, completada pelas filhas via `Inherits`.
+`Interface` descreve **capacidade**: o que o tipo consegue fazer. Suporta múltipla implementação via `Implements`, não carrega estado. `MustInherit Class` (equivalente ao `abstract class` do C#) descreve **identidade parcial**: uma base comum com estado e comportamento compartilhados, completada pelas filhas via `Inherits`.
 
 A regra prática: se duas implementações vão compartilhar código, `MustInherit Class`. Se só compartilham contrato, `Interface`.
 
 <details>
-<summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
+<summary>❌ Ruim: interface usada para compartilhar código entre implementações</summary>
 
 ```vbnet
 ' Interface não carrega estado nem implementação em VB.NET
@@ -51,7 +51,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — MustInherit Class quando há estado ou template method</summary>
+<summary>✅ Bom: MustInherit Class quando há estado ou template method</summary>
 
 ```vbnet
 Public MustInherit Class OrderProcessor
@@ -97,7 +97,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — interface quando só o contrato importa</summary>
+<summary>✅ Bom: interface quando só o contrato importa</summary>
 
 ```vbnet
 Public Interface IOrderRepository
@@ -120,10 +120,10 @@ End Class
 
 ## NotInheritable por padrão
 
-`NotInheritable` (equivalente ao `sealed` do C#) impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `NotInheritable`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade — e contrato implícito é contrato errado.
+`NotInheritable` (equivalente ao `sealed` do C#) impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `NotInheritable`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade, e contrato implícito é contrato errado.
 
 <details>
-<summary>❌ Ruim — classe concreta sem NotInheritable, extensibilidade acidental</summary>
+<summary>❌ Ruim: classe concreta sem NotInheritable, extensibilidade acidental</summary>
 
 ```vbnet
 Public Class OrderService
@@ -149,7 +149,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — NotInheritable por padrão, extensibilidade exige decisão</summary>
+<summary>✅ Bom: NotInheritable por padrão, extensibilidade exige decisão</summary>
 
 ```vbnet
 Public NotInheritable Class OrderService
@@ -172,10 +172,10 @@ End Class
 
 `Class` é reference type: passa por referência, nasce no heap, igualdade por referência. `Structure` é value type: passa por cópia, nasce na stack ou inline no objeto-pai, igualdade por valor se `Equals` for sobrescrito.
 
-A regra prática: **default é `Class`**. `Structure` só quando a semântica de valor é parte do domínio (coordenadas, dimensões, dinheiro quando não há identidade) e o tipo é pequeno — tipicamente abaixo de 16 bytes.
+A regra prática: **default é `Class`**. `Structure` só quando a semântica de valor é parte do domínio (coordenadas, dimensões, dinheiro quando não há identidade) e o tipo é pequeno, tipicamente abaixo de 16 bytes.
 
 <details>
-<summary>❌ Ruim — Structure grande, cópia custosa a cada passagem</summary>
+<summary>❌ Ruim: Structure grande, cópia custosa a cada passagem</summary>
 
 ```vbnet
 Public Structure Order ' 10+ campos, string longa, list
@@ -197,7 +197,7 @@ End Structure
 </details>
 
 <details>
-<summary>✅ Bom — Structure pequena com semântica de valor</summary>
+<summary>✅ Bom: Structure pequena com semântica de valor</summary>
 
 ```vbnet
 Public Structure Money
@@ -226,7 +226,7 @@ VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (featu
 - `Nullable(Of T)` (`T?` em C#) aplica-se apenas a value types (`Integer?`, `DateTime?`, `Guid?`).
 
 <details>
-<summary>❌ Ruim — Integer para valor opcional, sentinela mágica</summary>
+<summary>❌ Ruim: Integer para valor opcional, sentinela mágica</summary>
 
 ```vbnet
 Public Function FindDiscount(productId As String) As Integer
@@ -242,7 +242,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — Nullable(Of Integer), ausência explícita no tipo</summary>
+<summary>✅ Bom: Nullable(Of Integer), ausência explícita no tipo</summary>
 
 ```vbnet
 Public Function FindDiscount(productId As String) As Integer?
@@ -273,7 +273,7 @@ Pattern matching completo (`switch` expressions, property patterns do C# 8+) **n
 A ferramenta idiomática para checagem + narrowing é `TryCast`: tenta a conversão, devolve `Nothing` se falhar, sem exception.
 
 <details>
-<summary>❌ Ruim — DirectCast após TypeOf, dupla checagem</summary>
+<summary>❌ Ruim: DirectCast após TypeOf, dupla checagem</summary>
 
 ```vbnet
 Public Function DescribePayment(payment As IPayment) As String
@@ -294,7 +294,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — TryCast combina checagem e narrowing</summary>
+<summary>✅ Bom: TryCast combina checagem e narrowing</summary>
 
 ```vbnet
 Public Function DescribePayment(payment As IPayment) As String
@@ -320,7 +320,7 @@ End Function
 Para variantes fechadas de um domínio, a herança hierárquica substitui o pattern matching:
 
 <details>
-<summary>✅ Bom — hierarquia fechada com método polimórfico</summary>
+<summary>✅ Bom: hierarquia fechada com método polimórfico</summary>
 
 ```vbnet
 Public MustInherit Class PaymentResult
@@ -364,10 +364,10 @@ End Class
 
 ## Generics com constraints
 
-Generic sem constraint (`Of T`) descreve qualquer tipo — é abstração sem propósito. Constraints (`As Class`, `As Structure`, `As IEntity`, `As New`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
+Generic sem constraint (`Of T`) descreve qualquer tipo: abstração sem propósito. Constraints (`As Class`, `As Structure`, `As IEntity`, `As New`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
 
 <details>
-<summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
+<summary>❌ Ruim: genérico sem constraint, reflection para descobrir capability</summary>
 
 ```vbnet
 Public Function FindById(Of T As Class)(id As Guid) As T
@@ -385,7 +385,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — constraint declara capability, compilador valida</summary>
+<summary>✅ Bom: constraint declara capability, compilador valida</summary>
 
 ```vbnet
 Public Interface IEntity
@@ -402,10 +402,10 @@ End Function
 
 ## Evitar `Object` como contrato
 
-`Object` em VB.NET é o equivalente ao `dynamic` do C# quando `Option Strict Off` está ativo — e mesmo com `Option Strict On`, `Object` como parâmetro ou retorno desliga a garantia de tipo. Erros que seriam de compilação viram `InvalidCastException` em runtime.
+`Object` em VB.NET é o equivalente ao `dynamic` do C# quando `Option Strict Off` está ativo. Mesmo com `Option Strict On`, `Object` como parâmetro ou retorno desliga a garantia de tipo. Erros que seriam de compilação viram `InvalidCastException` em runtime.
 
 <details>
-<summary>❌ Ruim — Object para conveniência, tipo real perdido</summary>
+<summary>❌ Ruim: Object para conveniência, tipo real perdido</summary>
 
 ```vbnet
 Public Sub ProcessConfig(config As Object)
@@ -417,7 +417,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — tipo concreto, contrato explícito</summary>
+<summary>✅ Bom: tipo concreto, contrato explícito</summary>
 
 ```vbnet
 Public NotInheritable Class ApiConfig

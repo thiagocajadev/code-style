@@ -23,7 +23,7 @@ OPcache armazena o bytecode compilado em memória, eliminando o parse do PHP a c
 requisição. Certifique-se que está habilitado em produção.
 
 <details>
-<summary>✅ Bom — configuração mínima do OPcache em php.ini</summary>
+<summary>✅ Bom: configuração mínima do OPcache em php.ini</summary>
 
 ```ini
 ; php.ini
@@ -43,7 +43,7 @@ opcache.jit_buffer_size=128M
 Carregue dados em lote com uma única query, nunca uma query por item em loop.
 
 <details>
-<summary>❌ Ruim — N+1: uma query por ordem</summary>
+<summary>❌ Ruim: N+1: uma query por ordem</summary>
 
 ```php
 $orders = $this->orderRepository->findAll();
@@ -58,7 +58,7 @@ foreach ($orders as $order) {
 </details>
 
 <details>
-<summary>✅ Bom — carregamento em lote com uma query</summary>
+<summary>✅ Bom: carregamento em lote com uma query</summary>
 
 ```php
 $orders = $this->orderRepository->findAll();
@@ -81,7 +81,7 @@ foreach ($orders as $order) {
 Use `yield` para processar grandes volumes de dados sem carregar tudo na memória.
 
 <details>
-<summary>❌ Ruim — carrega todos os registros em memória</summary>
+<summary>❌ Ruim: carrega todos os registros em memória</summary>
 
 ```php
 public function findAllOrders(): array
@@ -98,7 +98,7 @@ foreach ($this->repository->findAllOrders() as $order) {
 </details>
 
 <details>
-<summary>✅ Bom — generator: processa um registro por vez</summary>
+<summary>✅ Bom: generator: processa um registro por vez</summary>
 
 ```php
 public function streamAllOrders(): \Generator
@@ -123,7 +123,7 @@ Use lazy objects para diferir a inicialização de objetos pesados até que seja
 realmente necessários.
 
 <details>
-<summary>✅ Bom — lazy initializer com Reflection (PHP 8.4)</summary>
+<summary>✅ Bom: lazy initializer com Reflection (PHP 8.4)</summary>
 
 ```php
 use ReflectionClass;
@@ -161,7 +161,7 @@ Evite concatenação em loop. Use `implode` para juntar arrays ou `sprintf`/here
 para strings complexas.
 
 <details>
-<summary>❌ Ruim — concatenação em loop, O(n²)</summary>
+<summary>❌ Ruim: concatenação em loop, O(n²)</summary>
 
 ```php
 $csv = '';
@@ -173,7 +173,7 @@ foreach ($orders as $order) {
 </details>
 
 <details>
-<summary>✅ Bom — array + implode: uma única alocação de string</summary>
+<summary>✅ Bom: array + implode: uma única alocação de string</summary>
 
 ```php
 $lines = array_map(
@@ -192,7 +192,7 @@ Use `array_map` para transformações puras. Use `foreach` para efeitos colatera
 (salvar, enviar, logar). Nunca misture transformação e efeito colateral.
 
 <details>
-<summary>✅ Bom — separação de transformação e efeito colateral</summary>
+<summary>✅ Bom: separação de transformação e efeito colateral</summary>
 
 ```php
 // Transformação pura: array_map

@@ -49,7 +49,7 @@ A context window define o limite de entrada por chamada. A saída máxima é um 
 | GPT-4.1 | 1.000.000 tokens | 32.768 tokens |
 | Gemini 2.5 Pro | 1.000.000 tokens | 65.536 tokens |
 | Gemini 2.5 Flash | 1.000.000 tokens | 65.536 tokens |
-| Llama 4 Scout | 10.000.000 tokens | — |
+| Llama 4 Scout | 10.000.000 tokens |; |
 
 Contexto longo é útil, mas não gratuito: mais tokens de entrada significa maior custo e, em alguns modelos, aumento de latência.
 

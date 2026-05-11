@@ -19,10 +19,10 @@ Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado d
 
 ## Try/Catch vs On Error GoTo
 
-`On Error GoTo` é o modelo de tratamento de erro do Basic clássico. Em VB.NET, `Try/Catch/Finally` é o padrão da plataforma .NET: tipado, estruturado e compatível com todo o ecossistema. Nunca misture os dois modelos no mesmo método — comportamento indefinido.
+`On Error GoTo` é o modelo de tratamento de erro do Basic clássico. Em VB.NET, `Try/Catch/Finally` é o padrão da plataforma .NET: tipado, estruturado e compatível com todo o ecossistema. Nunca misture os dois modelos no mesmo método: comportamento indefinido.
 
 <details>
-<summary>❌ Ruim — On Error GoTo, modelo VB clássico</summary>
+<summary>❌ Ruim: On Error GoTo, modelo VB clássico</summary>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -39,7 +39,7 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom — Try/Catch estruturado, tipado e propagável</summary>
+<summary>✅ Bom: Try/Catch estruturado, tipado e propagável</summary>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -56,10 +56,10 @@ End Sub
 
 ## Catch específico antes do genérico
 
-Catch mais específico captura primeiro. `Exception` genérico no topo silencia erros que deveriam propagar — cada tipo de falha tem semântica diferente e merece tratamento diferente.
+Catch mais específico captura primeiro. `Exception` genérico no topo silencia erros que deveriam propagar. Cada tipo de falha tem semântica diferente e merece tratamento diferente.
 
 <details>
-<summary>❌ Ruim — Exception genérico silencia falhas específicas</summary>
+<summary>❌ Ruim: Exception genérico silencia falhas específicas</summary>
 
 ```vbnet
 Try
@@ -75,7 +75,7 @@ End Try
 </details>
 
 <details>
-<summary>✅ Bom — tipos específicos, cada um com tratamento adequado</summary>
+<summary>✅ Bom: tipos específicos, cada um com tratamento adequado</summary>
 
 ```vbnet
 Try
@@ -100,7 +100,7 @@ End Try
 Um `Catch` sem tratamento é pior que não ter `Try`: silencia o erro, esconde o estado corrompido e dificulta diagnóstico. Se não sabe o que fazer com a exceção, relance com `Throw`.
 
 <details>
-<summary>❌ Ruim — Catch silencioso oculta falha</summary>
+<summary>❌ Ruim: Catch silencioso oculta falha</summary>
 
 ```vbnet
 Try
@@ -119,7 +119,7 @@ End Try
 </details>
 
 <details>
-<summary>✅ Bom — loga e relança, ou trata com intenção clara</summary>
+<summary>✅ Bom: loga e relança, ou trata com intenção clara</summary>
 
 ```vbnet
 Try
@@ -145,7 +145,7 @@ End Try
 A cláusula `When` filtra a exceção por condição sem capturá-la quando a condição é falsa. Útil para tratar apenas subconjuntos de uma exceção sem criar subclasses.
 
 <details>
-<summary>✅ Bom — Catch When filtra sem captura desnecessária</summary>
+<summary>✅ Bom: Catch When filtra sem captura desnecessária</summary>
 
 ```vbnet
 Try
@@ -167,10 +167,10 @@ End Try
 
 ## Using para recursos descartáveis
 
-Qualquer objeto que implementa `IDisposable` deve ser criado dentro de `Using`. Garante `Dispose()` mesmo em caso de exceção — equivalente a `try/finally` com `Dispose()`, sem o boilerplate.
+Qualquer objeto que implementa `IDisposable` deve ser criado dentro de `Using`. Garante `Dispose()` mesmo em caso de exceção, equivalente a `try/finally` com `Dispose()`, sem o boilerplate.
 
 <details>
-<summary>❌ Ruim — Dispose manual, não garante limpeza em exceção</summary>
+<summary>❌ Ruim: Dispose manual, não garante limpeza em exceção</summary>
 
 ```vbnet
 Dim connection = New SqlConnection(_connectionString)
@@ -188,7 +188,7 @@ connection.Dispose()
 </details>
 
 <details>
-<summary>✅ Bom — Using garante Dispose em qualquer caminho</summary>
+<summary>✅ Bom: Using garante Dispose em qualquer caminho</summary>
 
 ```vbnet
 Using connection = New SqlConnection(_connectionString)
@@ -212,7 +212,7 @@ End Using
 Quando o recurso não implementa `IDisposable` mas precisa de limpeza, use `Finally`. Executa independente de exceção ou `Return`.
 
 <details>
-<summary>✅ Bom — Finally garante limpeza em qualquer saída</summary>
+<summary>✅ Bom: Finally garante limpeza em qualquer saída</summary>
 
 ```vbnet
 Dim lockAcquired = False
@@ -229,10 +229,10 @@ End Try
 
 ## Exceções para falhas inesperadas
 
-Exceções sinalizam condições inesperadas — bugs, falhas de infraestrutura, violações de contrato. Para falhas de negócio previsíveis (validação, recurso não encontrado, conflito), retorne um resultado tipado em vez de lançar.
+Exceções sinalizam condições inesperadas: bugs, falhas de infraestrutura, violações de contrato. Para falhas de negócio previsíveis (validação, recurso não encontrado, conflito), retorne um resultado tipado em vez de lançar.
 
 <details>
-<summary>❌ Ruim — exceção como controle de fluxo de negócio</summary>
+<summary>❌ Ruim: exceção como controle de fluxo de negócio</summary>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As Purchase
@@ -255,7 +255,7 @@ End Try
 </details>
 
 <details>
-<summary>✅ Bom — resultado tipado para falhas previsíveis</summary>
+<summary>✅ Bom: resultado tipado para falhas previsíveis</summary>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As OperationResult(Of Purchase)

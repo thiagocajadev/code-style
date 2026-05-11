@@ -26,7 +26,7 @@ com HTMX, seguindo os princípios de [functions.md](../conventions/functions.md)
 
 HTMX intercepta eventos no browser e substitui a navegação padrão por requisições
 **AJAX** (Asynchronous JavaScript and XML, JavaScript e XML Assíncronos). O servidor responde
-com HTML puro; o HTMX insere o fragmento no **Document** (documento) **Model** (modelo) — o **DOM** (Document Object Model, Modelo de Objeto do Documento) — sem recarregar a página.
+com HTML puro; o HTMX insere o fragmento no **DOM** (Document Object Model, Modelo de Objeto do Documento) sem recarregar a página.
 
 **Fluxo:** `User Action → hx-* → HTTP Request → Python Handler → HTML Fragment → DOM Swap`
 
@@ -43,7 +43,7 @@ O handler Python retorna um fragmento HTML, não a página completa. Templates p
 arquivos separados (convenção: prefixo `_`).
 
 <details>
-<summary>❌ Ruim — handler retorna página completa; HTMX recebe <html> inteiro</summary>
+<summary>❌ Ruim: handler retorna página completa; HTMX recebe <html> inteiro</summary>
 
 ```python
 @router.get("/orders")
@@ -57,7 +57,7 @@ async def list_orders(request: Request):
 ```
 
 ```html
-<!-- orders/index.html — página completa enviada ao HTMX -->
+<!-- orders/index.html: página completa enviada ao HTMX -->
 <!DOCTYPE html>
 <html>
   <body>
@@ -73,7 +73,7 @@ async def list_orders(request: Request):
 </details>
 
 <details>
-<summary>✅ Bom — handler retorna fragmento; template parcial em arquivo separado</summary>
+<summary>✅ Bom: handler retorna fragmento; template parcial em arquivo separado</summary>
 
 ```html
 <!-- trigger na página principal -->
@@ -101,7 +101,7 @@ async def list_orders_partial(request: Request):
 ```
 
 ```html
-<!-- orders/_list.html — fragmento: sem <html>, <head> ou <body> -->
+<!-- orders/_list.html: fragmento sem <html>, <head> ou <body> -->
 <ul>
   {% for order in orders %}
     <li>Order #{{ order.order_id }}</li>
@@ -118,7 +118,7 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 `beforeend` adiciona ao final da lista sem apagar o que já existe.
 
 <details>
-<summary>❌ Ruim — sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
+<summary>❌ Ruim: sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
 
 ```html
 <button hx-get="/orders/partial">Carregar</button>
@@ -131,7 +131,7 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 </details>
 
 <details>
-<summary>✅ Bom — hx-target explícito, hx-swap intencional por caso de uso</summary>
+<summary>✅ Bom: hx-target explícito, hx-swap intencional por caso de uso</summary>
 
 ```html
 <!-- substituir conteúdo existente -->
@@ -164,7 +164,7 @@ inserido no `hx-target`; os elementos com `hx-swap-oob="true"` são inseridos no
 IDs, sem requisições adicionais.
 
 <details>
-<summary>❌ Ruim — duas requisições separadas para atualizar lista e contador</summary>
+<summary>❌ Ruim: duas requisições separadas para atualizar lista e contador</summary>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -180,7 +180,7 @@ IDs, sem requisições adicionais.
 </details>
 
 <details>
-<summary>✅ Bom — uma resposta atualiza lista e contador via out-of-band</summary>
+<summary>✅ Bom: uma resposta atualiza lista e contador via out-of-band</summary>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -206,8 +206,8 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 ```
 
 ```html
-<!-- orders/_created.html — item principal + contador out-of-band -->
-<li>Order #{{ order.order_id }} — R$ {{ order.total }}</li>
+<!-- orders/_created.html: item principal + contador out-of-band -->
+<li>Order #{{ order.order_id }} · R$ {{ order.total }}</li>
 
 <span id="order-count" hx-swap-oob="true">{{ total_orders }}</span>
 ```
@@ -220,7 +220,7 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 `htmx-request` ao elemento enquanto aguarda a resposta.
 
 <details>
-<summary>❌ Ruim — sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
+<summary>❌ Ruim: sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
 
 ```html
 <button hx-get="/orders/partial" hx-target="#order-list">
@@ -233,7 +233,7 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 </details>
 
 <details>
-<summary>✅ Bom — indicador visível durante a requisição via hx-indicator</summary>
+<summary>✅ Bom: indicador visível durante a requisição via hx-indicator</summary>
 
 ```html
 <button

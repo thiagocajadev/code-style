@@ -55,7 +55,7 @@ dependencies {
 ## ktlint
 
 <details>
-<summary>❌ Ruim — sem formatação padronizada</summary>
+<summary>❌ Ruim: sem formatação padronizada</summary>
 
 ```kotlin
 fun calculateTotal(items:List<Item>,discount:Double):Double{
@@ -66,7 +66,7 @@ return items.sumOf{it.price}*(1-discount)
 </details>
 
 <details>
-<summary>✅ Bom — ktlint aplicado</summary>
+<summary>✅ Bom: ktlint aplicado</summary>
 
 ```kotlin
 fun calculateTotal(

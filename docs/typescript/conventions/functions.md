@@ -12,7 +12,7 @@ Os princípios de funções do JavaScript: responsabilidade única, top-down, se
 | **overload** (sobrecarga) | Múltiplas assinaturas para a mesma implementação; usar com parcimônia |
 | **parameter type** (tipo de parâmetro) | Tipo do argumento na entrada; aceita union, intersection ou genérico |
 | **default parameter** (parâmetro padrão) | Valor usado quando o argumento é `undefined` (`function f(x = 0)`) |
-| **arrow function** (função flecha) | `() => {}` — sintaxe curta sem `this` próprio; ideal para callbacks |
+| **arrow function** (função flecha) | `() => {}`: sintaxe curta sem `this` próprio; ideal para callbacks |
 | **void return** (retorno vazio) | Função sem valor de retorno significativo; declara `: void` explicitamente |
 
 ## Return type
@@ -21,7 +21,7 @@ Funções exportadas sempre têm return type explícito. O compilador já infere
 leitor e para garantir que a assinatura pública não mude silenciosamente.
 
 <details>
-<summary>❌ Ruim — return type implícito em função exportada</summary>
+<summary>❌ Ruim: return type implícito em função exportada</summary>
 
 ```ts
 export async function findUserById(id: string) {
@@ -38,7 +38,7 @@ export function calculateInvoiceTotal(items: LineItem[]) {
 </details>
 
 <details>
-<summary>✅ Bom — return type explícito nas funções exportadas</summary>
+<summary>✅ Bom: return type explícito nas funções exportadas</summary>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -61,7 +61,7 @@ separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](..
 4+ campos usam objeto; o objeto usa interface.
 
 <details>
-<summary>❌ Ruim — tipo inline obscurece a assinatura</summary>
+<summary>❌ Ruim: tipo inline obscurece a assinatura</summary>
 
 ```ts
 function createInvoice(data: {
@@ -76,7 +76,7 @@ function createInvoice(data: {
 </details>
 
 <details>
-<summary>✅ Bom — interface separada, assinatura limpa</summary>
+<summary>✅ Bom: interface separada, assinatura limpa</summary>
 
 ```ts
 interface CreateInvoiceInput {
@@ -98,7 +98,7 @@ Interfaces de entrada e saída de uma operação usam os sufixos `Input` e `Outp
 Isso os distingue dos tipos de domínio puros como `User` e `Invoice`.
 
 <details>
-<summary>❌ Ruim — primitivos soltos sem interface, contrato sem nome</summary>
+<summary>❌ Ruim: primitivos soltos sem interface, contrato sem nome</summary>
 
 ```ts
 async function createUser(
@@ -118,7 +118,7 @@ async function createUser(
 </details>
 
 <details>
-<summary>✅ Bom — sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
+<summary>✅ Bom: sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
 
 ```ts
 interface CreateUserInput {
@@ -149,7 +149,7 @@ Overloads expressam explicitamente que a função retorna tipos diferentes depen
 Use apenas quando a variação é real e precisa ser capturada pelo compilador.
 
 <details>
-<summary>❌ Ruim — union type no retorno sem discriminação — o caller recebe `string | number` sem saber qual</summary>
+<summary>❌ Ruim: union type no retorno sem discriminação; o caller recebe `string | number` sem saber qual</summary>
 
 ```ts
 function parse(value: string | number): string | number {
@@ -157,13 +157,13 @@ function parse(value: string | number): string | number {
   return value.toString();
 }
 
-const result = parse("42"); // string | number — compilador não sabe que é number
+const result = parse("42"); // string | number: compilador não sabe que é number
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — overloads tornam o contrato preciso</summary>
+<summary>✅ Bom: overloads tornam o contrato preciso</summary>
 
 ```ts
 function parse(value: string): number;
@@ -173,8 +173,8 @@ function parse(value: string | number): string | number {
   return value.toString();
 }
 
-const asNumber = parse("42"); // number — compilador sabe
-const asString = parse(42); // string — compilador sabe
+const asNumber = parse("42"); // number, compilador sabe
+const asString = parse(42); // string, compilador sabe
 ```
 
 </details>
@@ -185,23 +185,23 @@ Genérico em função é justificado quando o tipo do retorno depende do tipo do
 relação, é só complexidade.
 
 <details>
-<summary>❌ Ruim — genérico sem propósito, poderia ser unknown ou o tipo concreto</summary>
+<summary>❌ Ruim: genérico sem propósito, poderia ser unknown ou o tipo concreto</summary>
 
 ```ts
 function logAndReturn<T>(value: T): T {
-  console.log(value); // o genérico não adiciona nada aqui — unknown seria suficiente
+  console.log(value); // o genérico não adiciona nada aqui: unknown seria suficiente
   return value;
 }
 
 function validateSchema<T>(schema: ZodSchema<T>, data: unknown): boolean {
-  return schema.safeParse(data).success; // T não aparece no retorno — desnecessário
+  return schema.safeParse(data).success; // T não aparece no retorno: desnecessário
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — genérico quando o tipo do retorno depende do argumento</summary>
+<summary>✅ Bom: genérico quando o tipo do retorno depende do argumento</summary>
 
 ```ts
 function firstOrThrow<TItem>(items: TItem[]): TItem {
@@ -212,7 +212,7 @@ function firstOrThrow<TItem>(items: TItem[]): TItem {
 }
 
 function parseSchema<TOutput>(schema: ZodSchema<TOutput>, data: unknown): TOutput {
-  const result = schema.parse(data); // retorna TOutput — o genérico é necessário
+  const result = schema.parse(data); // retorna TOutput: o genérico é necessário
   return result;
 }
 ```

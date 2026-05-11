@@ -6,7 +6,7 @@
 Testes documentam o comportamento esperado. Um teste que falha conta uma
 história: quem chamou, o que recebeu, o que esperava. Em JS, a base é
 `node:test` + `node:assert/strict` (built-in desde Node 18) e a estrutura é
-**AAA** (Arrange, Act, Assert) — três fases visíveis em todo teste, separadas
+**AAA** (Arrange, Act, Assert): três fases visíveis em todo teste, separadas
 por linha em branco.
 
 ## Conceitos fundamentais
@@ -54,7 +54,7 @@ Cada teste é dividido em três fases separadas por uma linha em branco:
 preparação do contexto, execução do comportamento e verificação do resultado.
 
 <details>
-<summary>❌ Ruim — tudo inline, fases invisíveis</summary>
+<summary>❌ Ruim: tudo inline, fases invisíveis</summary>
 
 ```js
 test("applies discount", () => {
@@ -65,7 +65,7 @@ test("applies discount", () => {
 </details>
 
 <details>
-<summary>✅ Bom — arrange, act e assert separados</summary>
+<summary>✅ Bom: arrange, act e assert separados</summary>
 
 ```js
 test("applies 10% discount to order price", () => {
@@ -88,7 +88,7 @@ nome, declare `expected` explicitamente para manter consistência e deixar o
 assert sem ambiguidade.
 
 <details>
-<summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
+<summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
 
 ```js
 test("formats full name", () => {
@@ -109,7 +109,7 @@ test("returns active users only", () => {
 </details>
 
 <details>
-<summary>✅ Bom — expected e actual declarados, assert semântico</summary>
+<summary>✅ Bom: expected e actual declarados, assert semântico</summary>
 
 ```js
 test("formats full name", () => {
@@ -143,7 +143,7 @@ nem uma afirmação vaga. Sem prefixos: `should` não agrega informação e
 `given/when/then` é mecânico e verboso.
 
 <details>
-<summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
+<summary>❌ Ruim: prefixo vazio, nome que repete a implementação</summary>
 
 ```js
 test("test 1", () => {
@@ -161,7 +161,7 @@ test("applyDiscount function", () => {
 </details>
 
 <details>
-<summary>✅ Bom — cenário + resultado esperado, sem prefixo</summary>
+<summary>✅ Bom: cenário + resultado esperado, sem prefixo</summary>
 
 ```js
 test("applies discount when order total exceeds minimum", () => {
@@ -184,7 +184,7 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para
 funcionar.
 
 <details>
-<summary>❌ Ruim — estado compartilhado que muda entre testes</summary>
+<summary>❌ Ruim: estado compartilhado que muda entre testes</summary>
 
 ```js
 let order;
@@ -207,7 +207,7 @@ test("applies discount to order", () => {
 </details>
 
 <details>
-<summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
+<summary>✅ Bom: cada teste isolado, sem dependência de execução</summary>
 
 ```js
 test("creates order with generated id", () => {
@@ -237,7 +237,7 @@ Testar que um erro foi lançado é diferente de testar qual erro foi lançado.
 `assert.rejects` verifica tipo e mensagem, não apenas presença.
 
 <details>
-<summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
+<summary>❌ Ruim: try/catch manual, tipo não verificado</summary>
 
 ```js
 test("throws on missing order", async () => {
@@ -252,7 +252,7 @@ test("throws on missing order", async () => {
 </details>
 
 <details>
-<summary>✅ Bom — assert.rejects com matcher de tipo</summary>
+<summary>✅ Bom: assert.rejects com matcher de tipo</summary>
 
 ```js
 test("throws NotFoundError when order does not exist", async () => {

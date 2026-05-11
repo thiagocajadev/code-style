@@ -11,17 +11,17 @@ Go tem um framework de testes na stdlib. O padrão idiomático é **table-driven
 | Conceito | O que é |
 | -------- | ------- |
 | **table-driven test** (teste por tabela) | Slice de structs onde cada elemento é um caso de teste; reduz duplicação e facilita adição de cenários |
-| **subtest** (subteste) | `t.Run("nome", func(t *testing.T){})` — cria testes nomeados dentro de um teste |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação: preparar, executar, verificar — fases visualmente separadas |
+| **subtest** (subteste) | `t.Run("nome", func(t *testing.T){})`; cria testes nomeados dentro de um teste |
+| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação: preparar, executar, verificar; fases visualmente separadas |
 | `testify` | Biblioteca `github.com/stretchr/testify` com `assert` e `require` para mensagens de erro claras |
 | `t.Helper()` | Marca a função auxiliar como helper; erros aparecem na linha do chamador, não na helper |
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 Cada teste deve ter fases explícitas: Arrange (preparar), Act (executar), Assert (verificar).
 
 <details>
-<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim: fases misturadas, sem separação visual</summary>
 
 ```go
 func TestApplyDiscount(t *testing.T) {
@@ -41,7 +41,7 @@ func TestApplyDiscount(t *testing.T) {
 </details>
 
 <details>
-<summary>✅ Bom — table-driven + AAA + testify</summary>
+<summary>✅ Bom: table-driven + AAA + testify</summary>
 
 ```go
 func TestApplyDiscount(t *testing.T) {
@@ -79,7 +79,7 @@ Use `require` quando o teste não tem sentido se falhar nesse ponto (guarda o ce
 Use `assert` para verificações adicionais onde a execução pode continuar.
 
 <details>
-<summary>✅ Bom — require para precondição, assert para verificações</summary>
+<summary>✅ Bom: require para precondição, assert para verificações</summary>
 
 ```go
 func TestCreateOrder(t *testing.T) {
@@ -108,11 +108,11 @@ Defina uma interface mínima no pacote sendo testado. Implemente um fake (estrut
 na suite de testes. Prefira fakes a mocks gerados automaticamente para lógica simples.
 
 <details>
-<summary>❌ Ruim — dependência concreta no teste, impossível isolar</summary>
+<summary>❌ Ruim: dependência concreta no teste, impossível isolar</summary>
 
 ```go
 func TestOrderService(t *testing.T) {
-    // conecta no banco real — lento, frágil, com efeitos colaterais
+    // conecta no banco real: lento, frágil, com efeitos colaterais
     repo := postgres.NewOrderRepository(realDB)
     service := NewOrderService(repo)
     // ...
@@ -122,16 +122,16 @@ func TestOrderService(t *testing.T) {
 </details>
 
 <details>
-<summary>✅ Bom — interface + fake em memória para testes unitários</summary>
+<summary>✅ Bom: interface + fake em memória para testes unitários</summary>
 
 ```go
-// em order/service.go — interface mínima
+// em order/service.go: interface mínima
 type orderRepository interface {
     FindByID(ctx context.Context, id int64) (*Order, error)
     Save(ctx context.Context, order Order) (*Order, error)
 }
 
-// em order/service_test.go — fake em memória
+// em order/service_test.go: fake em memória
 type fakeOrderRepository struct {
     orders map[int64]*Order
 }
@@ -180,7 +180,7 @@ Sempre teste o caminho de erro além do caminho feliz. Use `assert.ErrorIs` para
 sentinel errors e `assert.ErrorAs` para tipos customizados.
 
 <details>
-<summary>✅ Bom — happy path + error path + edge case</summary>
+<summary>✅ Bom: happy path + error path + edge case</summary>
 
 ```go
 func TestValidateOrder(t *testing.T) {
@@ -231,7 +231,7 @@ Extraia setup repetitivo em helpers. Marque-os com `t.Helper()` para que erros
 apareçam na linha do teste, não no helper.
 
 <details>
-<summary>✅ Bom — helper com t.Helper()</summary>
+<summary>✅ Bom: helper com t.Helper()</summary>
 
 ```go
 func buildTestOrder(t *testing.T, overrides ...func(*Order)) Order {

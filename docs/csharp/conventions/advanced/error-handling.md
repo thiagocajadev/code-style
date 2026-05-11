@@ -33,7 +33,7 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 ```
 
 <details>
-<summary>❌ Ruim — exceção como controle de fluxo de negócio</summary>
+<summary>❌ Ruim: exceção como controle de fluxo de negócio</summary>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -63,7 +63,7 @@ public async Task<IResult> GetOrder(Guid orderId)
 </details>
 
 <details>
-<summary>✅ Bom — falha de negócio como valor, contrato explícito</summary>
+<summary>✅ Bom: falha de negócio como valor, contrato explícito</summary>
 
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -97,7 +97,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) status no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
-<summary>❌ Ruim — strings mágicas sem contrato</summary>
+<summary>❌ Ruim: strings mágicas sem contrato</summary>
 
 ```csharp
 return Result<Order>.Fail("not found", "404");
@@ -108,7 +108,7 @@ return Result<Order>.Fail("unauthorized", "401");
 </details>
 
 <details>
-<summary>✅ Bom — códigos semânticos, mapeamento centralizado</summary>
+<summary>✅ Bom: códigos semânticos, mapeamento centralizado</summary>
 
 ```csharp
 return Result<Order>.Fail("Order not found.", "NOT_FOUND");
@@ -128,12 +128,12 @@ private static int MapStatusCode(string code) => code switch
 
 </details>
 
-## Implicit operator — happy path sem cerimônia
+## Implicit operator: happy path sem cerimônia
 
-O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automaticamente. O caminho feliz retorna o valor diretamente — sem `Success(...)` explícito em cada ponto de retorno.
+O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automaticamente. O caminho feliz retorna o valor diretamente, sem `Success(...)` explícito em cada ponto de retorno.
 
 <details>
-<summary>❌ Ruim — Success() explícito repetido em cada retorno bem-sucedido</summary>
+<summary>❌ Ruim: Success() explícito repetido em cada retorno bem-sucedido</summary>
 
 ```csharp
 public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
@@ -151,7 +151,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 </details>
 
 <details>
-<summary>✅ Bom — implicit operator, happy path retorna o valor diretamente</summary>
+<summary>✅ Bom: implicit operator, happy path retorna o valor diretamente</summary>
 
 ```csharp
 public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
@@ -173,7 +173,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output, Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
-<summary>❌ Ruim — validação tardia, trabalho desnecessário antes de falhar</summary>
+<summary>❌ Ruim: validação tardia, trabalho desnecessário antes de falhar</summary>
 
 ```csharp
 public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, CancellationToken ct)
@@ -183,7 +183,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
     var items = await _items.FindByOrderAsync(request.OrderId, ct);        // I/O desnecessário
 
-    if (string.IsNullOrWhiteSpace(request.Description)) // validação tardia — trabalho já feito
+    if (string.IsNullOrWhiteSpace(request.Description)) // validação tardia: trabalho já feito
         return Result<Invoice>.Fail("Description is required.", "INVALID_INPUT");
 
     var invoice = BuildInvoice(order, customer, items, request.Description);
@@ -195,7 +195,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 </details>
 
 <details>
-<summary>✅ Bom — validação antes do I/O, falha rápida</summary>
+<summary>✅ Bom: validação antes do I/O, falha rápida</summary>
 
 ```csharp
 public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, CancellationToken ct)
@@ -220,7 +220,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 `try/catch` tem custo: é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
 
 <details>
-<summary>❌ Ruim — try/catch como desvio de fluxo esperado</summary>
+<summary>❌ Ruim: try/catch como desvio de fluxo esperado</summary>
 
 ```csharp
 public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
@@ -240,7 +240,7 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom — retorno explícito para ausência, try/catch apenas na fronteira</summary>
+<summary>✅ Bom: retorno explícito para ausência, try/catch apenas na fronteira</summary>
 
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -262,7 +262,7 @@ Exceções não capturadas borbulham até o topo. Sem um handler global, o runti
 O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura: nada disso chega ao cliente.
 
 <details>
-<summary>❌ Ruim — sem handler global, detalhe interno vaza</summary>
+<summary>❌ Ruim: sem handler global, detalhe interno vaza</summary>
 
 ```csharp
 // sem UseExceptionHandler no pipeline
@@ -272,7 +272,7 @@ O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: inte
 </details>
 
 <details>
-<summary>✅ Bom — IExceptionHandler como barreira final</summary>
+<summary>✅ Bom: IExceptionHandler como barreira final</summary>
 
 ```csharp
 // Infrastructure/GlobalExceptionHandler.cs
@@ -310,7 +310,7 @@ public static class GlobalExceptionHandlerExtensions
 ```
 
 ```csharp
-// AppPipelineExtensions.cs — deve ser o primeiro middleware do pipeline
+// AppPipelineExtensions.cs: deve ser o primeiro middleware do pipeline
 app.UseExceptionHandler();
 app.UseStatusCodePages(); // padroniza respostas 4xx sem corpo
 

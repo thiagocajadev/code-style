@@ -45,7 +45,7 @@ Patterns de design são soluções consolidadas para problemas recorrentes: voca
 | [**AI-Driven**](#ai-driven-development-desenvolvimento-assistido-por-ia) | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
 | [**SDD**](#sdd-spec-driven-development-desenvolvimento-orientado-a-especificações) | Spec antes de código | Decisões de design sem custo de implementação |
 
-_Especializados — aplicabilidade mais restrita, sem seção dedicada:_
+_Especializados, com aplicabilidade mais restrita e sem seção dedicada:_
 
 | Pattern | Problema que resolve | Sinal de uso |
 |---|---|---|

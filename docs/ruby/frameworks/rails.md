@@ -4,8 +4,8 @@
 
 **Ruby on Rails** (ou simplesmente Rails) é um framework web **MVC**
 (Model-View-Controller) escrito em Ruby. Rails segue duas convenções centrais:
-**Convention over Configuration** (convenção sobre configuração — menos decisões
-explícitas) e **Don't Repeat Yourself** (não se repita — SSOT, fonte única de
+**Convention over Configuration** (convenção sobre configuração, menos decisões
+explícitas) e **Don't Repeat Yourself** (não se repita, SSOT, fonte única de
 verdade). Rails 8 eliminou a dependência de Redis para cache e jobs com **Solid
 Cache** e **Solid Queue**.
 
@@ -15,7 +15,7 @@ Cache** e **Solid Queue**.
 | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
 | **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Model (domínio + banco), View (templates), Controller (entrada + roteamento)                                |
 | **ActiveRecord** (ORM do Rails)                           | **ORM** (Object-Relational Mapper, mapeador objeto-relacional) embutido; cada classe mapeia uma tabela      |
-| **Strong Parameters** (parâmetros restritos)              | Whitelist (lista de permissões) de params no controller — previne **mass assignment** (atribuição em massa) |
+| **Strong Parameters** (parâmetros restritos)              | Whitelist (lista de permissões) de params no controller; previne **mass assignment** (atribuição em massa)  |
 | **Concerns** (módulos de responsabilidade)                | Módulos de comportamento compartilhado entre models ou controllers                                          |
 | **Migrations** (migrações de banco)                       | Arquivos versionados de alteração de **schema** (esquema) do banco de dados                                 |
 | **Solid Queue** (sistema de jobs do Rails)                | Backend de jobs baseado em banco (sem Redis); padrão Rails 8                                                |
@@ -27,7 +27,7 @@ Controllers são finos. Validam a entrada, delegam para serviços, traduzem para
 HTTP. Nenhuma lógica de negócio dentro do controller.
 
 <details>
-<summary>❌ Ruim — lógica de negócio no controller</summary>
+<summary>❌ Ruim: lógica de negócio no controller</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -52,7 +52,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — controller delega para serviço, traduz resultado para HTTP</summary>
+<summary>✅ Bom: controller delega para serviço, traduz resultado para HTTP</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -79,13 +79,13 @@ end
 
 </details>
 
-## Model — validações e associações
+## Model: validações e associações
 
 Models declaram validações e associações. Lógica de negócio complexa fica em
 service objects (objetos de serviço), não no model.
 
 <details>
-<summary>❌ Ruim — model com lógica de negócio e callbacks ocultos</summary>
+<summary>❌ Ruim: model com lógica de negócio e callbacks ocultos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -113,7 +113,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — model declara dados e validações; lógica fica no serviço</summary>
+<summary>✅ Bom: model declara dados e validações; lógica fica no serviço</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -142,7 +142,7 @@ Migrations são versionadas e irreversíveis em produção. Sempre implemente
 `change` (ou `up`/`down`) com operações reversíveis quando possível.
 
 <details>
-<summary>❌ Ruim — migration sem índice em foreign key</summary>
+<summary>❌ Ruim: migration sem índice em foreign key</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -162,7 +162,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — references com índice, tipos explícitos</summary>
+<summary>✅ Bom: references com índice, tipos explícitos</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -186,10 +186,10 @@ end
 ## Rotas RESTful
 
 Use recursos RESTful (`resources`, `resource`) sempre que possível. Rotas
-customizadas são exceção — declare `only:` para limitar os verbos gerados.
+customizadas são exceção; declare `only:` para limitar os verbos gerados.
 
 <details>
-<summary>❌ Ruim — rotas manuais onde resources resolveria</summary>
+<summary>❌ Ruim: rotas manuais onde resources resolveria</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -207,7 +207,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — resources + member action semântica</summary>
+<summary>✅ Bom: resources + member action semântica</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -232,7 +232,7 @@ não objetos.
 ```ruby
 # frozen_string_literal: true
 
-# Gemfile (Rails 8 — já incluído por padrão)
+# Gemfile (Rails 8: já incluído por padrão)
 # gem "solid_queue"
 
 # config/application.rb
@@ -268,7 +268,7 @@ bin/rails db:migrate
 ```
 
 Gera `User`, `Session`, `AuthenticationController`, `PasswordsController` e
-rotas — sem gems externas para o fluxo básico de sessão.
+rotas, sem gems externas para o fluxo básico de sessão.
 
 ## Concerns
 

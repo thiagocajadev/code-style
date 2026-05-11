@@ -34,7 +34,7 @@ os dados da view e o `OnPost` para processar o formulário.
 **Fluxo POST:** `POST /orders/create → Binding → OnPost → Validate → Service → Redirect`
 
 <details>
-<summary>❌ Ruim — lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
+<summary>❌ Ruim: lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
 
 ```csharp
 // Pages/Orders/Create.cshtml.cs
@@ -66,7 +66,7 @@ public class CreateModel(AppDbContext db) : PageModel
 </details>
 
 <details>
-<summary>✅ Bom — PageModel delega para Service; validação via DataAnnotations</summary>
+<summary>✅ Bom: PageModel delega para Service; validação via DataAnnotations</summary>
 
 ```csharp
 // Pages/Orders/Create.cshtml.cs
@@ -116,7 +116,7 @@ do `PageModel`; `asp-validation-for` exibe erros por campo; `asp-page` gera a **
 e injeta o token anti-falsificação automaticamente.
 
 <details>
-<summary>❌ Ruim — HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
+<summary>❌ Ruim: HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
 
 ```html
 <form method="post" action="/orders/create">
@@ -132,7 +132,7 @@ e injeta o token anti-falsificação automaticamente.
 </details>
 
 <details>
-<summary>✅ Bom — Tag Helpers vinculam ao model; anti-forgery e erros automáticos</summary>
+<summary>✅ Bom: Tag Helpers vinculam ao model; anti-forgery e erros automáticos</summary>
 
 ```html
 <form asp-page="./Create" method="post">
@@ -156,7 +156,7 @@ e injeta o token anti-falsificação automaticamente.
 
 </details>
 
-## MVC — Controller thin
+## MVC: Controller thin
 
 Controllers MVC são adaptadores: recebem a requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto), delegam para um **Service** ou
 **Handler** (manipulador), e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
@@ -165,7 +165,7 @@ controller. O acesso ao banco passa pelo **Repository**; o controller nunca inje
 **Fluxo:** `HTTP Request → Controller → Service → Result<T> → IActionResult → HTTP Response`
 
 <details>
-<summary>❌ Ruim — lógica de negócio no controller; DbContext injetado diretamente</summary>
+<summary>❌ Ruim: lógica de negócio no controller; DbContext injetado diretamente</summary>
 
 ```csharp
 [ApiController]
@@ -190,7 +190,7 @@ public class OrdersController(AppDbContext db) : ControllerBase
 </details>
 
 <details>
-<summary>✅ Bom — controller delega para Service; traduz Result em HTTP no boundary</summary>
+<summary>✅ Bom: controller delega para Service; traduz Result em HTTP no boundary</summary>
 
 ```csharp
 [ApiController]
@@ -231,7 +231,7 @@ A view só recebe o que precisa. Um **ViewModel** tipado evita expor entidades d
 diretamente na view e impede que campos sensíveis vazem para o HTML.
 
 <details>
-<summary>❌ Ruim — entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
+<summary>❌ Ruim: entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
 
 ```csharp
 // Controllers/OrdersController.cs
@@ -248,7 +248,7 @@ public async Task<IActionResult> DetailAsync(Guid id, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom — ViewModel tipado projetado para a view</summary>
+<summary>✅ Bom: ViewModel tipado projetado para a view</summary>
 
 ```csharp
 // Controllers/OrdersController.cs
@@ -285,10 +285,10 @@ corrente. **Partial Views** encapsulam fragmentos reutilizáveis, como tabelas e
 cada view focada em seu próprio conteúdo.
 
 <details>
-<summary>❌ Ruim — HTML estrutural duplicado em cada página</summary>
+<summary>❌ Ruim: HTML estrutural duplicado em cada página</summary>
 
 ```html
-@* Pages/Orders/Index.cshtml — sem layout *@
+@* Pages/Orders/Index.cshtml: sem layout *@
 <!DOCTYPE html>
 <html>
 <head><title>Pedidos</title></head>
@@ -305,13 +305,13 @@ cada view focada em seu próprio conteúdo.
 </details>
 
 <details>
-<summary>✅ Bom — _Layout.cshtml compartilhado; partial view para fragmentos</summary>
+<summary>✅ Bom: _Layout.cshtml compartilhado; partial view para fragmentos</summary>
 
 ```html
 @* Shared/_Layout.cshtml *@
 <!DOCTYPE html>
 <html>
-<head><title>@ViewData["Title"] — Pedidos</title></head>
+<head><title>@ViewData["Title"]: Pedidos</title></head>
 <body>
     <partial name="_NavigationBar" />
     <main class="container">

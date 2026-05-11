@@ -12,14 +12,14 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 | Conceito | O que é |
 | -------- | ------- |
 | **named argument** (argumento nomeado) | Passado pelo nome do parâmetro: `create(name: 'Alice', age: 30)`; disponível desde PHP 8.0 |
-| **arrow function** (função em flecha) | `fn($x) => expr` — closure de uma linha que captura escopo externo automaticamente |
+| **arrow function** (função em flecha) | `fn($x) => expr`: closure de uma linha que captura escopo externo automaticamente |
 | **SLA** (Single Level of Abstraction, nível único de abstração) | Cada função opera em um único nível: orquestra ou implementa, nunca os dois |
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
 
-## SLA — orquestrador ou implementação
+## SLA: orquestrador ou implementação
 
 <details>
-<summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
+<summary>❌ Ruim: god function: orquestra e implementa ao mesmo tempo</summary>
 
 ```php
 public function processOrder(array $data): void
@@ -49,7 +49,7 @@ public function processOrder(array $data): void
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
+<summary>✅ Bom: orquestrador delega para funções de um nível abaixo</summary>
 
 ```php
 public function processOrder(CreateOrderInput $input): Order
@@ -94,7 +94,7 @@ private function applyCustomerDiscount(CreateOrderInput $input): CreateOrderInpu
 Atribua a uma variável nomeada antes de retornar.
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```php
 public function buildSummary(array $orders): array
@@ -110,7 +110,7 @@ public function buildSummary(array $orders): array
 </details>
 
 <details>
-<summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
+<summary>✅ Bom: explaining return: resultado nomeado antes do return</summary>
 
 ```php
 public function buildSummary(array $orders): array
@@ -132,7 +132,7 @@ Use named arguments quando a posição dos parâmetros não é óbvia ou quando 
 parâmetros opcionais.
 
 <details>
-<summary>❌ Ruim — chamada com múltiplos literais sem contexto</summary>
+<summary>❌ Ruim: chamada com múltiplos literais sem contexto</summary>
 
 ```php
 $order = createOrder(42, 150.0, 'BRL', true, false, null);
@@ -142,7 +142,7 @@ $order = createOrder(42, 150.0, 'BRL', true, false, null);
 </details>
 
 <details>
-<summary>✅ Bom — named arguments tornam a chamada autodocumentada</summary>
+<summary>✅ Bom: named arguments tornam a chamada autodocumentada</summary>
 
 ```php
 $order = createOrder(
@@ -157,12 +157,12 @@ $order = createOrder(
 
 </details>
 
-## Parâmetros — máximo 3
+## Parâmetros: máximo 3
 
 Com 4 ou mais parâmetros, agrupe em um objeto de entrada.
 
 <details>
-<summary>❌ Ruim — muitos parâmetros na assinatura</summary>
+<summary>❌ Ruim: muitos parâmetros na assinatura</summary>
 
 ```php
 function createOrder(
@@ -178,7 +178,7 @@ function createOrder(
 </details>
 
 <details>
-<summary>✅ Bom — objeto de entrada agrupa parâmetros relacionados</summary>
+<summary>✅ Bom: objeto de entrada agrupa parâmetros relacionados</summary>
 
 ```php
 final readonly class CreateOrderInput
@@ -203,7 +203,7 @@ function createOrder(CreateOrderInput $input): Order {}
 Use arrow functions para transformações curtas em `array_map`, `array_filter`, `usort`.
 
 <details>
-<summary>❌ Ruim — closures tradicionais: verbosas e exigem `use` explícito</summary>
+<summary>❌ Ruim: closures tradicionais: verbosas e exigem `use` explícito</summary>
 
 ```php
 $multiplier = 1.1;
@@ -230,7 +230,7 @@ usort($orders, function (Order $a, Order $b) {
 </details>
 
 <details>
-<summary>✅ Bom — arrow functions para pipelines de transformação</summary>
+<summary>✅ Bom: arrow functions para pipelines de transformação</summary>
 
 ```php
 $activeOrderIDs = array_map(
@@ -255,7 +255,7 @@ O método público orquestrador aparece primeiro. Os métodos privados de suport
 abaixo, na ordem em que são chamados.
 
 <details>
-<summary>❌ Ruim — helpers antes do orquestrador: leitura de baixo para cima</summary>
+<summary>❌ Ruim: helpers antes do orquestrador: leitura de baixo para cima</summary>
 
 ```php
 final class InvoiceService
@@ -274,7 +274,7 @@ final class InvoiceService
         return $summary;
     }
 
-    // orquestrador está no final — leitor vê detalhes antes da intenção
+    // orquestrador está no final: leitor vê detalhes antes da intenção
     public function generateMonthlyReport(\DateTimeImmutable $month): Report
     {
         $invoices = $this->repository->findByMonth($month);
@@ -288,7 +288,7 @@ final class InvoiceService
 </details>
 
 <details>
-<summary>✅ Bom — leitura top-down natural</summary>
+<summary>✅ Bom: leitura top-down natural</summary>
 
 ```php
 final class InvoiceService

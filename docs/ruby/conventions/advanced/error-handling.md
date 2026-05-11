@@ -2,7 +2,7 @@
 
 > Escopo: Ruby 4.0.
 
-Ruby usa `raise`/`rescue` para controle de erros. Exceções são objetos — herde de
+Ruby usa `raise`/`rescue` para controle de erros. Exceções são objetos; herde de
 `StandardError` para criar tipos próprios. `rescue` fica nas fronteiras do sistema;
 dentro do domínio, propague com contexto.
 
@@ -13,7 +13,7 @@ dentro do domínio, propague com contexto.
 | `raise`            | Lança uma exceção (não use `throw`, que tem semântica diferente em Ruby)        |
 | `rescue`           | Captura exceção em um bloco `begin/rescue/end` ou no corpo do método            |
 | `ensure`           | Bloco executado sempre, com ou sem exceção (equivalente a `finally`)            |
-| `StandardError`    | Classe base para exceções de aplicação; `Exception` é a raiz — não capture ela |
+| `StandardError`    | Classe base para exceções de aplicação; `Exception` é a raiz, não capture ela  |
 | **Bang method** (método com `!`) | Lança exceção em vez de retornar `nil`/`false`                   |
 
 ## Tipos de exceção
@@ -22,7 +22,7 @@ Crie hierarquia de exceções por domínio. Herdar de `StandardError` permite qu
 genérico não engula erros do sistema (como `SignalException`).
 
 <details>
-<summary>❌ Ruim — strings ou RuntimeError sem tipo</summary>
+<summary>❌ Ruim: strings ou RuntimeError sem tipo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -36,7 +36,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — exceções tipadas e hierarquia de domínio</summary>
+<summary>✅ Bom: exceções tipadas e hierarquia de domínio</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -70,10 +70,10 @@ end
 ## rescue nas fronteiras
 
 Capture exceções nas fronteiras de entrada (controllers, workers, CLIs). Dentro do domínio,
-deixe propagar — não engula erros silenciosamente.
+deixe propagar; não engula erros silenciosamente.
 
 <details>
-<summary>❌ Ruim — rescue silencioso dentro do domínio</summary>
+<summary>❌ Ruim: rescue silencioso dentro do domínio</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -90,7 +90,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — rescue específico na fronteira com log e re-raise</summary>
+<summary>✅ Bom: rescue específico na fronteira com log e re-raise</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -110,10 +110,10 @@ end
 ## begin / rescue / ensure
 
 Use `begin/rescue/ensure/end` quando precisar de cleanup garantido (fechar conexão, liberar
-lock). No corpo de um método, omita `begin` — o método inteiro funciona como bloco.
+lock). No corpo de um método, omita `begin`: o método inteiro funciona como bloco.
 
 <details>
-<summary>❌ Ruim — begin desnecessário no corpo do método</summary>
+<summary>❌ Ruim: begin desnecessário no corpo do método</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +133,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — rescue direto no método, ensure para cleanup</summary>
+<summary>✅ Bom: rescue direto no método, ensure para cleanup</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -157,7 +157,7 @@ Use `retry` dentro do `rescue` para retentar operações transitórias. Sempre l
 tentativas para evitar loop infinito.
 
 <details>
-<summary>❌ Ruim — retry sem limite</summary>
+<summary>❌ Ruim: retry sem limite</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -173,7 +173,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — retry limitado com backoff</summary>
+<summary>✅ Bom: retry limitado com backoff</summary>
 
 ```ruby
 # frozen_string_literal: true

@@ -16,13 +16,13 @@ dado) é modelado com sealed classes ou `AsyncValue`.
 | **domain state** (estado de domínio) | estado de negócio: lista de pedidos, usuário autenticado |
 | **unidirectional data flow** (fluxo de dados unidirecional) | dados fluem em uma direção: evento → state → UI |
 | `AsyncValue<T>` | sealed type do Riverpod: `loading`, `data`, `error` |
-| `StateNotifier` | ViewModel no Riverpod — gerencia estado e expõe para os widgets |
+| `StateNotifier` | ViewModel no Riverpod; gerencia estado e expõe para os widgets |
 | `BlocBuilder` | widget que reconstrói quando o Bloc emite novo estado |
 
 ## Lógica na UI
 
 <details>
-<summary>❌ Ruim — I/O e lógica de negócio direto no build</summary>
+<summary>❌ Ruim: I/O e lógica de negócio direto no build</summary>
 
 ```dart
 class OrderListScreen extends StatefulWidget { ... }
@@ -55,7 +55,7 @@ class _OrderListScreenState extends State<OrderListScreen> {
 </details>
 
 <details>
-<summary>✅ Bom — AsyncNotifier (Riverpod) separa lógica da UI</summary>
+<summary>✅ Bom: AsyncNotifier (Riverpod) separa lógica da UI</summary>
 
 ```dart
 // notifier.dart
@@ -94,7 +94,7 @@ class OrderListScreen extends ConsumerWidget {
 ## Estado de UI modelado com sealed class
 
 <details>
-<summary>❌ Ruim — múltiplos booleanos para estado</summary>
+<summary>❌ Ruim: múltiplos booleanos para estado</summary>
 
 ```dart
 class OrdersState {
@@ -110,7 +110,7 @@ class OrdersState {
 </details>
 
 <details>
-<summary>✅ Bom — sealed class com exatamente 3 estados válidos</summary>
+<summary>✅ Bom: sealed class com exatamente 3 estados válidos</summary>
 
 ```dart
 sealed class OrdersState {}

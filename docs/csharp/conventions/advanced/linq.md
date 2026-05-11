@@ -21,7 +21,7 @@
 LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
-<summary>❌ Ruim — side effect dentro de query LINQ</summary>
+<summary>❌ Ruim: side effect dentro de query LINQ</summary>
 
 ```csharp
 var summaries = orders
@@ -38,7 +38,7 @@ var summaries = orders
 </details>
 
 <details>
-<summary>✅ Bom — LINQ transforma, foreach executa side effects</summary>
+<summary>✅ Bom: LINQ transforma, foreach executa side effects</summary>
 
 ```csharp
 var activeOrders = orders
@@ -60,7 +60,7 @@ foreach (var order in activeOrders)
 `Select` é para transformação 1-para-1: cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
 
 <details>
-<summary>❌ Ruim — Aggregate onde foreach é mais claro</summary>
+<summary>❌ Ruim: Aggregate onde foreach é mais claro</summary>
 
 ```csharp
 var totalRevenue = orders.Aggregate(
@@ -72,21 +72,21 @@ var totalRevenue = orders.Aggregate(
 </details>
 
 <details>
-<summary>❌ Ruim — foreach manual para construir lista, sem Select</summary>
+<summary>❌ Ruim: foreach manual para construir lista, sem Select</summary>
 
 ```csharp
 var summaries = new List<OrderSummary>();
 foreach (var order in orders)
 {
     var summary = new OrderSummary(order.Id, order.Total, order.CreatedAt);
-    summaries.Add(summary); // acumulação manual para transformação 1-para-1 — Select é mais direto
+    summaries.Add(summary); // acumulação manual para transformação 1-para-1: Select é mais direto
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — foreach com variável de acumulação explícita</summary>
+<summary>✅ Bom: foreach com variável de acumulação explícita</summary>
 
 ```csharp
 decimal totalRevenue = 0;
@@ -98,7 +98,7 @@ foreach (var item in order.Items)
 </details>
 
 <details>
-<summary>✅ Bom — Select para transformação 1-para-1</summary>
+<summary>✅ Bom: Select para transformação 1-para-1</summary>
 
 ```csharp
 var summaries = orders
@@ -113,7 +113,7 @@ var summaries = orders
 `IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
 
 <details>
-<summary>❌ Ruim — materialização prematura no meio do pipeline</summary>
+<summary>❌ Ruim: materialização prematura no meio do pipeline</summary>
 
 ```csharp
 public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -136,7 +136,7 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 </details>
 
 <details>
-<summary>✅ Bom — pipeline lazy, materialização única na fronteira</summary>
+<summary>✅ Bom: pipeline lazy, materialização única na fronteira</summary>
 
 ```csharp
 public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -158,7 +158,7 @@ public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, Dat
 Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas, cada uma com uma responsabilidade.
 
 <details>
-<summary>❌ Ruim — chain monolítica, difícil de rastrear</summary>
+<summary>❌ Ruim: chain monolítica, difícil de rastrear</summary>
 
 ```csharp
 var report = orders
@@ -173,7 +173,7 @@ var report = orders
 </details>
 
 <details>
-<summary>✅ Bom — etapas nomeadas, cada uma com responsabilidade clara</summary>
+<summary>✅ Bom: etapas nomeadas, cada uma com responsabilidade clara</summary>
 
 ```csharp
 var recentConfirmedOrders = orders
@@ -218,7 +218,7 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 > Para queries EF Core 10+, use o operador `LeftJoin` nativo. Veja [Entity Framework](../../setup/entity-framework.md#left-join).
 
 <details>
-<summary>❌ Ruim — Join exclui registros sem correspondência</summary>
+<summary>❌ Ruim: Join exclui registros sem correspondência</summary>
 
 ```csharp
 var result = orders
@@ -234,7 +234,7 @@ var result = orders
 </details>
 
 <details>
-<summary>✅ Bom — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
+<summary>✅ Bom: GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
 
 ```csharp
 var result = orders

@@ -13,13 +13,13 @@ para corpo de uma única expressão.
 | **SLA** (Single Level of Abstraction) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo       |
 | **Explaining Return** (retorno explicado) | atribuir o resultado a uma `final` nomeada antes de retornar           |
 | **named parameter** (parâmetro nomeado)   | parâmetro com rótulo na chamada; `{required T param}`                  |
-| **arrow function** (função flecha)        | `=>` para corpo de uma única expressão — sem `{ return }`              |
+| **arrow function** (função flecha)        | `=>` para corpo de uma única expressão, sem `{ return }`               |
 | **Stepdown Rule** (regra de descida)      | chamador visível antes do detalhe; helpers privados abaixo do chamador |
 
-## God function — múltiplas responsabilidades
+## God function: múltiplas responsabilidades
 
 <details>
-<summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
+<summary>❌ Ruim: busca, valida, calcula e persiste em uma função só</summary>
 
 ```dart
 Future<Order> submitOrder(int userId, List<Item> items) async {
@@ -47,7 +47,7 @@ Future<Order> submitOrder(int userId, List<Item> items) async {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
+<summary>✅ Bom: orquestrador limpo, detalhes em funções dedicadas</summary>
 
 ```dart
 Future<Order> submitOrder(int userId, List<Item> items) async {
@@ -79,7 +79,7 @@ Future<void> _notifyConfirmation(String email) async { ... }
 ## Sem lógica no retorno
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```dart
 List<Customer> findActiveCustomers(List<Customer> customers) {
@@ -93,7 +93,7 @@ List<Customer> findActiveCustomers(List<Customer> customers) {
 </details>
 
 <details>
-<summary>✅ Bom — explaining return com final nomeada</summary>
+<summary>✅ Bom: explaining return com final nomeada</summary>
 
 ```dart
 List<Customer> findActiveCustomers(List<Customer> customers) {
@@ -114,7 +114,7 @@ Named parameters tornam chamadas com múltiplos argumentos legíveis e resistent
 a erros de posição.
 
 <details>
-<summary>❌ Ruim — parâmetros posicionais ambíguos</summary>
+<summary>❌ Ruim: parâmetros posicionais ambíguos</summary>
 
 ```dart
 Order createOrder(int userId, int productId, int quantity, double discount) { ... }
@@ -125,7 +125,7 @@ createOrder(42, 100, 3, 0.15);   // qual é qual?
 </details>
 
 <details>
-<summary>✅ Bom — named parameters com required</summary>
+<summary>✅ Bom: named parameters com required</summary>
 
 ```dart
 Order createOrder({
@@ -140,10 +140,10 @@ createOrder(userId: 42, productId: 100, quantity: 3, discount: 0.15);
 
 </details>
 
-## Arrow functions — corpo de uma expressão
+## Arrow functions: corpo de uma expressão
 
 <details>
-<summary>❌ Ruim — bloco com return para corpo trivial</summary>
+<summary>❌ Ruim: bloco com return para corpo trivial</summary>
 
 ```dart
 bool isPaidOrder(Order order) {
@@ -160,7 +160,7 @@ List<String> getOrderIds(List<Order> orders) {
 </details>
 
 <details>
-<summary>✅ Bom — arrow para corpo de uma expressão</summary>
+<summary>✅ Bom: arrow para corpo de uma expressão</summary>
 
 ```dart
 bool isPaidOrder(Order order) => order.status == OrderStatus.paid;
@@ -174,7 +174,7 @@ List<String> getOrderIds(List<Order> orders) =>
 ## Extension para comportamento adicional
 
 <details>
-<summary>❌ Ruim — função de utilitário sem contexto</summary>
+<summary>❌ Ruim: função de utilitário sem contexto</summary>
 
 ```dart
 // string_utils.dart
@@ -187,7 +187,7 @@ final label = formatCurrency(order.total);
 </details>
 
 <details>
-<summary>✅ Bom — extension method no tipo correto</summary>
+<summary>✅ Bom: extension method no tipo correto</summary>
 
 ```dart
 extension DoubleFormatting on double {

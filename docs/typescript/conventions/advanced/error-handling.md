@@ -20,7 +20,7 @@ Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` 
 ## Múltiplos tipos de retorno
 
 <details>
-<summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
+<summary>❌ Ruim: null, undefined, false e objeto na mesma função</summary>
 
 ```ts
 function processOrder(order: Order | null): { success: boolean; order: Order } | null | false {
@@ -29,14 +29,14 @@ function processOrder(order: Order | null): { success: boolean; order: Order } |
   if (order.customer.defaulted) return null;
 
   return { success: true, order };
-  // quem chama recebe uma union inútil — precisa checar todos os casos manualmente
+  // quem chama recebe uma union inútil: precisa checar todos os casos manualmente
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — contrato consistente, lança exceções tipadas</summary>
+<summary>✅ Bom: contrato consistente, lança exceções tipadas</summary>
 
 ```ts
 function processOrder(order: Order | null): ProcessedOrder {
@@ -54,7 +54,7 @@ function processOrder(order: Order | null): ProcessedOrder {
 ## BaseError: hierarquia tipada
 
 <details>
-<summary>❌ Ruim — erros sem hierarquia, sem contrato, sem contexto</summary>
+<summary>❌ Ruim: erros sem hierarquia, sem contrato, sem contexto</summary>
 
 ```ts
 // erros lançados como string ou Error genérico sem tipo
@@ -65,7 +65,7 @@ async function findOrder(orderId: string): Promise<Order> {
   return order;
 }
 
-// classes de erro sem base comum — catch não consegue distinguir
+// classes de erro sem base comum: catch não consegue distinguir
 class NotFound extends Error {
   constructor(message: string) {
     super(message);
@@ -78,11 +78,11 @@ class BadInput extends Error {
   }
 }
 
-// caller não tem como checar statusCode ou action — acessa name como string
+// caller não tem como checar statusCode ou action: acessa name como string
 try {
   const order = await findOrder(id);
 } catch (error) {
-  if ((error as Error).message === "not found") { // frágil — string hardcoded
+  if ((error as Error).message === "not found") { // frágil: string hardcoded
     return Response.json({ error: (error as Error).message }, { status: 404 });
   }
 }
@@ -91,7 +91,7 @@ try {
 </details>
 
 <details>
-<summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
+<summary>✅ Bom: contrato único para todos os erros da aplicação</summary>
 
 ```ts
 // errors.ts
@@ -199,7 +199,7 @@ export class InternalServerError extends BaseError {
 O `catch` recebe `unknown` em TypeScript estrito. Antes de usar o erro, é preciso fazer narrowing.
 
 <details>
-<summary>❌ Ruim — acessa propriedades de error sem narrowing</summary>
+<summary>❌ Ruim: acessa propriedades de error sem narrowing</summary>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {
@@ -207,7 +207,7 @@ async function findProductById(id: string): Promise<Product> {
     const product = await db.products.findById(id);
     return product;
   } catch (error) {
-    console.log(error.message); // erro de compilação — error é unknown
+    console.log(error.message); // erro de compilação: error é unknown
     return null;
   }
 }
@@ -216,7 +216,7 @@ async function findProductById(id: string): Promise<Product> {
 </details>
 
 <details>
-<summary>✅ Bom — instanceof para narrowing, propaga com contexto</summary>
+<summary>✅ Bom: instanceof para narrowing, propaga com contexto</summary>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {

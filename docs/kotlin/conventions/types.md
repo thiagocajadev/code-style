@@ -4,7 +4,7 @@
 
 O sistema de tipos do Kotlin é expressivo por design. Data classes modelam dados. Sealed classes
 fecham hierarquias de estados. Value classes eliminam alocação de wrappers. O compilador verifica
-nulidade em tempo de compilação — sem NullPointerException em código idiomático.
+nulidade em tempo de compilação, sem NullPointerException em código idiomático.
 
 ## Conceitos fundamentais
 
@@ -15,12 +15,12 @@ nulidade em tempo de compilação — sem NullPointerException em código idiom�
 | `value class` (inline) | wrapper zero-overhead sobre um único valor primitivo |
 | `object` | singleton declarado como tipo; estado compartilhado imutável |
 | `companion object` | escopo associado à classe; substitui membros estáticos do Java |
-| **NRT** (Null Reference Types) | `String?` é anulável; `String` nunca é null — verificado em compilação |
+| **NRT** (Null Reference Types) | `String?` é anulável; `String` nunca é null; verificado em compilação |
 
 ## Data class para modelos de dados
 
 <details>
-<summary>❌ Ruim — classe manual com boilerplate</summary>
+<summary>❌ Ruim: classe manual com boilerplate</summary>
 
 ```kotlin
 class User(val id: Long, val name: String, val email: String) {
@@ -33,7 +33,7 @@ class User(val id: Long, val name: String, val email: String) {
 </details>
 
 <details>
-<summary>✅ Bom — data class elimina o boilerplate</summary>
+<summary>✅ Bom: data class elimina o boilerplate</summary>
 
 ```kotlin
 data class User(
@@ -51,11 +51,11 @@ val updated = user.copy(email = "new@email.com")
 ## Sealed class para estados e resultados
 
 <details>
-<summary>❌ Ruim — String como discriminante de estado</summary>
+<summary>❌ Ruim: String como discriminante de estado</summary>
 
 ```kotlin
 data class OrderResult(
-    val status: String,   // "success", "error", "pending" — sem garantia de exaustividade
+    val status: String,   // "success", "error", "pending"; sem garantia de exaustividade
     val order: Order?,
     val errorMessage: String?,
 )
@@ -64,7 +64,7 @@ data class OrderResult(
 </details>
 
 <details>
-<summary>✅ Bom — sealed class: o compilador verifica todas as branches</summary>
+<summary>✅ Bom: sealed class: o compilador verifica todas as branches</summary>
 
 ```kotlin
 sealed class OrderResult {
@@ -88,7 +88,7 @@ fun describeResult(result: OrderResult): String {
 ## Value class para wrappers tipados
 
 <details>
-<summary>❌ Ruim — primitivo sem semântica, fácil de confundir</summary>
+<summary>❌ Ruim: primitivo sem semântica, fácil de confundir</summary>
 
 ```kotlin
 fun chargeCustomer(userId: Long, amount: Double) { ... }
@@ -100,7 +100,7 @@ chargeCustomer(100.0, 42L)  // compilador não pega
 </details>
 
 <details>
-<summary>✅ Bom — value class dá semântica sem overhead</summary>
+<summary>✅ Bom: value class dá semântica sem overhead</summary>
 
 ```kotlin
 @JvmInline
@@ -119,7 +119,7 @@ chargeCustomer(UserId(42L), Amount(100.0))
 ## Interface sobre herança
 
 <details>
-<summary>❌ Ruim — herança para compartilhar comportamento</summary>
+<summary>❌ Ruim: herança para compartilhar comportamento</summary>
 
 ```kotlin
 abstract class BaseRepository {
@@ -134,7 +134,7 @@ class UserRepository : BaseRepository() { ... }
 </details>
 
 <details>
-<summary>✅ Bom — interface define contrato; comportamento via composição</summary>
+<summary>✅ Bom: interface define contrato; comportamento via composição</summary>
 
 ```kotlin
 interface OrderRepository {
@@ -156,7 +156,7 @@ class SqlOrderRepository(
 ## Generics com variância
 
 <details>
-<summary>❌ Ruim — tipo genérico invariante força cast desnecessário</summary>
+<summary>❌ Ruim: tipo genérico invariante força cast desnecessário</summary>
 
 ```kotlin
 fun printAll(items: List<Any>) {
@@ -171,7 +171,7 @@ fun printAll(items: List<Any>) {
 </details>
 
 <details>
-<summary>✅ Bom — out-projection para leitura; in-projection para escrita</summary>
+<summary>✅ Bom: out-projection para leitura; in-projection para escrita</summary>
 
 ```kotlin
 fun printAll(items: List<out Any>) {
@@ -189,7 +189,7 @@ printAll(listOf("Alice", "Bob"))
 ## Companion object para factory
 
 <details>
-<summary>❌ Ruim — construtor com lógica de criação</summary>
+<summary>❌ Ruim: construtor com lógica de criação</summary>
 
 ```kotlin
 class Token(val value: String, val expiresAt: Instant) {
@@ -200,7 +200,7 @@ class Token(val value: String, val expiresAt: Instant) {
 </details>
 
 <details>
-<summary>✅ Bom — companion object com factory method nomeado</summary>
+<summary>✅ Bom: companion object com factory method nomeado</summary>
 
 ```kotlin
 class Token private constructor(

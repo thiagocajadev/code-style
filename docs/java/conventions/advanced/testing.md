@@ -1,16 +1,16 @@
 # Testing
 
-> Escopo: Java 25 LTS — JUnit 6 + AssertJ + Mockito.
+> Escopo: Java 25 LTS com JUnit 6 + AssertJ + Mockito.
 
 Testes bem estruturados documentam o comportamento, isolam falhas e resistem ao refactor
-(refatoração). **AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar) é o esqueleto de
+(refatoração). **AAA** (Arrange, Act, Assert / Arranjar, Agir, Atestar) é o esqueleto de
 todo teste.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert — Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert; Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | **AssertJ** (biblioteca de afirmações fluentes para Java) | biblioteca de assertions (afirmações) fluentes para Java |
 | **Mockito** (biblioteca de dados fictícios para Java) | biblioteca de mocks (objetos simulados) para Java |
 | **mock** (objeto simulado) | substituto de uma dependência real que responde conforme programado |
@@ -19,10 +19,10 @@ todo teste.
 | `@Nested` | agrupa testes relacionados dentro de uma classe pai |
 | `@BeforeEach` | executa setup antes de cada método de teste |
 
-## Fases misturadas — AAA
+## Fases misturadas: AAA
 
 <details>
-<summary>❌ Ruim — fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim: fases misturadas, sem separação visual</summary>
 
 ```java
 @Test
@@ -38,7 +38,7 @@ void appliesDiscountToOrder() {
 </details>
 
 <details>
-<summary>✅ Bom — AAA explícito: fases separadas por blank line</summary>
+<summary>✅ Bom: AAA explícito: fases separadas por blank line</summary>
 
 ```java
 @Test
@@ -61,7 +61,7 @@ AssertJ (biblioteca de assertions fluentes) produz mensagens de falha legíveis 
 `assertTrue(a.equals(b))` genérico.
 
 <details>
-<summary>❌ Ruim — assert genérico, mensagem de falha obscura</summary>
+<summary>❌ Ruim: assert genérico, mensagem de falha obscura</summary>
 
 ```java
 @Test
@@ -75,7 +75,7 @@ void findsActiveUsers() {
 </details>
 
 <details>
-<summary>✅ Bom — AssertJ: assert expressivo, mensagem de falha clara</summary>
+<summary>✅ Bom: AssertJ: assert expressivo, mensagem de falha clara</summary>
 
 ```java
 @Test
@@ -95,7 +95,7 @@ O nome do teste documenta o comportamento: **dado um contexto, quando uma ação
 resultado**.
 
 <details>
-<summary>❌ Ruim — nome genérico não documenta o comportamento</summary>
+<summary>❌ Ruim: nome genérico não documenta o comportamento</summary>
 
 ```java
 @Test
@@ -108,7 +108,7 @@ void test1() { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — nome descreve o cenário e o resultado esperado</summary>
+<summary>✅ Bom: nome descreve o cenário e o resultado esperado</summary>
 
 ```java
 @Test
@@ -123,13 +123,13 @@ void returnsEmptyListWhenNoActiveUsersExist() { /* ... */ }
 
 </details>
 
-## Mockito — isolamento de dependências
+## Mockito: isolamento de dependências
 
 Mockito cria mocks (objetos simulados) que isolam a unidade testada das suas dependências
 reais. Use `@Mock` para dependências e `@InjectMocks` para a classe sob teste.
 
 <details>
-<summary>❌ Ruim — teste depende de implementação real do repositório</summary>
+<summary>❌ Ruim: teste depende de implementação real do repositório</summary>
 
 ```java
 @Test
@@ -145,7 +145,7 @@ void findsUserById() {
 </details>
 
 <details>
-<summary>✅ Bom — mock isola a dependência; teste foca no comportamento do serviço</summary>
+<summary>✅ Bom: mock isola a dependência; teste foca no comportamento do serviço</summary>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -181,12 +181,12 @@ class UserServiceTest {
 
 </details>
 
-## @Nested — agrupamento por contexto
+## @Nested: agrupamento por contexto
 
 `@Nested` agrupa testes por estado ou contexto, deixando a estrutura legível como documentação.
 
 <details>
-<summary>✅ Bom — @Nested organiza por cenário</summary>
+<summary>✅ Bom: @Nested organiza por cenário</summary>
 
 ```java
 class OrderServiceTest {
@@ -212,12 +212,12 @@ class OrderServiceTest {
 
 </details>
 
-## @BeforeEach — setup compartilhado
+## @BeforeEach: setup compartilhado
 
 Extraia setup repetido para `@BeforeEach`. Cada teste inicia com estado limpo.
 
 <details>
-<summary>✅ Bom — @BeforeEach inicializa o estado compartilhado</summary>
+<summary>✅ Bom: @BeforeEach inicializa o estado compartilhado</summary>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -254,7 +254,7 @@ class DiscountServiceTest {
 Cada teste verifica um comportamento. Verificar demais acopla o teste ao detalhe de implementação.
 
 <details>
-<summary>❌ Ruim — verifica estado interno que não é contrato público</summary>
+<summary>❌ Ruim: verifica estado interno que não é contrato público</summary>
 
 ```java
 @Test
@@ -270,7 +270,7 @@ void createsUser() {
 </details>
 
 <details>
-<summary>✅ Bom — verifica o contrato: o que o chamador observa</summary>
+<summary>✅ Bom: verifica o contrato: o que o chamador observa</summary>
 
 ```java
 @Test

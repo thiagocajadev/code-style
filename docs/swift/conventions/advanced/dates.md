@@ -14,14 +14,14 @@ e o fuso corretos.
 | `Date` | ponto absoluto no tempo em UTC; sem informação de calendário ou fuso |
 | `Calendar` | regras de calendário para aritmética de datas (dias, meses, anos) |
 | `DateComponents` | representação de partes de uma data: ano, mês, dia, hora, etc. |
-| `TimeZone` | fuso horário — sempre por identificador IANA (ex: `America/Sao_Paulo`) |
+| `TimeZone` | fuso horário; sempre por identificador IANA (ex: `America/Sao_Paulo`) |
 | `DateFormatter` | conversão entre `Date` e `String`; configurado com locale, fuso e formato |
 | `ISO8601DateFormatter` | formata datas no padrão ISO 8601 sem ambiguidade |
 
 ## String como data
 
 <details>
-<summary>❌ Ruim — string comparada lexicograficamente</summary>
+<summary>❌ Ruim: string comparada lexicograficamente</summary>
 
 ```swift
 let dueDate = "2026-04-30"   // String, não Date
@@ -31,7 +31,7 @@ let isOverdue = dueDate < today   // comparação de string, não temporal
 </details>
 
 <details>
-<summary>✅ Bom — Date com comparação tipada</summary>
+<summary>✅ Bom: Date com comparação tipada</summary>
 
 ```swift
 let formatter = ISO8601DateFormatter()
@@ -45,7 +45,7 @@ let isOverdue = dueDate < Date.now
 ## Fuso horário hardcoded
 
 <details>
-<summary>❌ Ruim — offset fixo ignora horário de verão</summary>
+<summary>❌ Ruim: offset fixo ignora horário de verão</summary>
 
 ```swift
 let saoPaulo = TimeZone(secondsFromGMT: -3 * 3600)!   // errado: -3h fixo ignora horário de verão
@@ -54,7 +54,7 @@ let saoPaulo = TimeZone(secondsFromGMT: -3 * 3600)!   // errado: -3h fixo ignora
 </details>
 
 <details>
-<summary>✅ Bom — identificador IANA inclui regras de horário de verão</summary>
+<summary>✅ Bom: identificador IANA inclui regras de horário de verão</summary>
 
 ```swift
 let saoPaulo = TimeZone(identifier: "America/Sao_Paulo")!
@@ -67,7 +67,7 @@ let saoPaulo = TimeZone(identifier: "America/Sao_Paulo")!
 `DateFormatter` é custoso de criar. Instanciar em cada chamada degrada performance.
 
 <details>
-<summary>❌ Ruim — novo DateFormatter em cada chamada</summary>
+<summary>❌ Ruim: novo DateFormatter em cada chamada</summary>
 
 ```swift
 func formatDate(_ date: Date) -> String {
@@ -81,7 +81,7 @@ func formatDate(_ date: Date) -> String {
 </details>
 
 <details>
-<summary>✅ Bom — DateFormatter como propriedade estática</summary>
+<summary>✅ Bom: DateFormatter como propriedade estática</summary>
 
 ```swift
 private static let displayFormatter: DateFormatter = {

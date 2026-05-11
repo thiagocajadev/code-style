@@ -1,4 +1,4 @@
-# Performance — NoSQL
+# Performance: NoSQL
 
 > Escopo: NoSQL. Padrões de performance para bancos não-relacionais: índices, projeção, N+1 e TTL.
 
@@ -23,7 +23,7 @@ Padrões de performance **SQL** (Structured Query Language, Linguagem de Consult
 Sempre limitar os campos retornados ao mínimo necessário para a operação.
 
 <details>
-<summary>❌ Ruim — documento inteiro trafegado para usar dois campos</summary>
+<summary>❌ Ruim: documento inteiro trafegado para usar dois campos</summary>
 
 ```js
 // carrega todos os campos do documento
@@ -39,7 +39,7 @@ async function fetchTeamSummary(teamId) {
 </details>
 
 <details>
-<summary>✅ Bom — projeção limita o tráfego ao mínimo</summary>
+<summary>✅ Bom: projeção limita o tráfego ao mínimo</summary>
 
 ```js
 async function fetchTeamSummary(teamId) {
@@ -66,23 +66,23 @@ async function fetchTeamSummary(teamId) {
 
 ### Quando não indexar
 
-- Campos booleanos (`isActive`) — baixa cardinalidade; o banco prefere collection scan
+- Campos booleanos (`isActive`): baixa cardinalidade; o banco prefere collection scan
 - Campos raramente filtrados
-- Coleções pequenas (< 1.000 documentos) — overhead de índice supera o ganho
+- Coleções pequenas (< 1.000 documentos): overhead de índice supera o ganho
 
 ### Criando índices (MongoDB)
 
 ```js
-// índice simples — acelera buscas por cidade
+// índice simples: acelera buscas por cidade
 await teamsCollection.createIndex({ city: 1 });
 
-// índice composto — serve queries que filtram por isActive e ordenam por foundedYear
+// índice composto: serve queries que filtram por isActive e ordenam por foundedYear
 await teamsCollection.createIndex({ isActive: 1, foundedYear: -1 });
 
 // índice único
 await playersCollection.createIndex({ licenseNumber: 1 }, { unique: true });
 
-// TTL index — remove sessões expiradas automaticamente
+// TTL index: remove sessões expiradas automaticamente
 await sessionsCollection.createIndex(
   { expiresAt: 1 },
   { expireAfterSeconds: 0 },
@@ -90,22 +90,22 @@ await sessionsCollection.createIndex(
 ```
 
 <details>
-<summary>❌ Ruim — campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
+<summary>❌ Ruim: campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
 
 ```js
-// LOWER() equivalente em JS — índice em name não é usado
+// LOWER() equivalente em JS: índice em name não é usado
 const teams = await teamsCollection.find({
   name: { $regex: /^são paulo/i }, // sem índice de texto
 }).toArray();
 
-// índice em boolean — alta write amplification, baixo ganho de leitura
+// índice em boolean: alta write amplification, baixo ganho de leitura
 await teamsCollection.createIndex({ isActive: 1 });
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
+<summary>✅ Bom: índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
 
 ```js
 // índice de texto serve $text queries com seletividade alta
@@ -141,10 +141,10 @@ N+1 não aparece no código; aparece no log. O sinal é um padrão de queries id
 ```
 
 <details>
-<summary>❌ Ruim — uma query por item para buscar documento relacionado</summary>
+<summary>❌ Ruim: uma query por item para buscar documento relacionado</summary>
 
 ```js
-// N queries para N times — cada iteração dispara uma roundtrip ao banco
+// N queries para N times: cada iteração dispara uma roundtrip ao banco
 async function fetchTeamsWithPlayers(teamIds) {
   const teams = await teamsCollection.find({ _id: { $in: teamIds } }).toArray();
 
@@ -165,7 +165,7 @@ async function fetchTeamsWithPlayers(teamIds) {
 </details>
 
 <details>
-<summary>✅ Bom — $lookup resolve em uma única passagem no banco</summary>
+<summary>✅ Bom: $lookup resolve em uma única passagem no banco</summary>
 
 ```js
 async function fetchTeamsWithPlayers(teamIds) {
@@ -203,10 +203,10 @@ async function fetchTeamsWithPlayers(teamIds) {
 TTL é responsabilidade do código na inserção, não de um job de limpeza externo.
 
 <details>
-<summary>❌ Ruim — sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
+<summary>❌ Ruim: sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
 
 ```js
-// session sem expiração — acumula indefinidamente
+// session sem expiração: acumula indefinidamente
 async function createSession(userId, token) {
   await sessionsCollection.insertOne({
     userId,
@@ -220,11 +220,11 @@ async function createSession(userId, token) {
 </details>
 
 <details>
-<summary>✅ Bom — TTL index + expiresAt definido no insert</summary>
+<summary>✅ Bom: TTL index + expiresAt definido no insert</summary>
 
 ```js
 // na inicialização: TTL index aponta para expiresAt
-// expireAfterSeconds: 0 — MongoDB remove quando expiresAt < now
+// expireAfterSeconds: 0: MongoDB remove quando expiresAt < now
 await sessionsCollection.createIndex(
   { expiresAt: 1 },
   { expireAfterSeconds: 0 },
@@ -259,8 +259,8 @@ class SessionRepository {
 Ao receber relatório de "banco **NoSQL** (Not Only SQL, Não Apenas SQL) lento":
 
 1. Verificar se o campo filtrado tem índice (`explain()` no MongoDB)
-2. Verificar projeção — o documento inteiro está sendo trafegado?
-3. Verificar N+1 no log — queries repetidas com IDs diferentes em sequência?
-4. Verificar tamanho dos documentos — documentos com arrays grandes embutidos crescem sem controle
-5. Verificar TTL index — sessões e caches expirados acumulam sem limpeza?
-6. Verificar partition key — hot spot em Cassandra ou DynamoDB?
+2. Verificar projeção: o documento inteiro está sendo trafegado?
+3. Verificar N+1 no log: queries repetidas com IDs diferentes em sequência?
+4. Verificar tamanho dos documentos: arrays embutidos crescem sem controle?
+5. Verificar TTL index: sessões e caches expirados acumulam sem limpeza?
+6. Verificar partition key: hot spot em Cassandra ou DynamoDB?

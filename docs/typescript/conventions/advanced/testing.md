@@ -6,7 +6,7 @@ Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adici
 
 > Base JavaScript: [javascript/conventions/advanced/testing.md](../../../../javascript/conventions/advanced/testing.md)
 
-Usa [Vitest](https://vitest.dev/) nos exemplos — mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
+Usa [Vitest](https://vitest.dev/) nos exemplos. Mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
 
 ## Conceitos fundamentais
 
@@ -27,13 +27,13 @@ Usa [Vitest](https://vitest.dev/) nos exemplos — mesma **API** (Application Pr
 tipo errado geram erro de compilação antes de rodar o teste.
 
 <details>
-<summary>❌ Ruim — fixture sem tipo, campo errado passa sem erro</summary>
+<summary>❌ Ruim: fixture sem tipo, campo errado passa sem erro</summary>
 
 ```ts
 test("applies discount to order", () => {
   const order = {
     id: "ord-1",
-    customrId: "cust-99", // typo — sem erro de compilação
+    customrId: "cust-99", // typo: sem erro de compilação
     total: 100,
   };
 
@@ -47,7 +47,7 @@ test("applies discount to order", () => {
 </details>
 
 <details>
-<summary>✅ Bom — satisfies valida o shape em compilação</summary>
+<summary>✅ Bom: satisfies valida o shape em compilação</summary>
 
 ```ts
 test("applies 10% discount to order total", () => {
@@ -72,13 +72,13 @@ Mocks implementam a interface explicitamente. O compilador verifica que todos os
 necessários estão presentes e com as assinaturas corretas.
 
 <details>
-<summary>❌ Ruim — mock como objeto genérico, sem contrato</summary>
+<summary>❌ Ruim: mock como objeto genérico, sem contrato</summary>
 
 ```ts
 test("saves order and sends notification", async () => {
   const mockRepo = {
     save: vi.fn().mockResolvedValue(undefined),
-    findById: vi.fn(), // não usado — mas sem contrato, ninguém sabe se está faltando algo
+    findById: vi.fn(), // não usado: mas sem contrato, ninguém sabe se está faltando algo
   };
 
   const service = new OrderService(mockRepo as any);
@@ -91,7 +91,7 @@ test("saves order and sends notification", async () => {
 </details>
 
 <details>
-<summary>✅ Bom — mock implementa a interface, compilador verifica o contrato</summary>
+<summary>✅ Bom: mock implementa a interface, compilador verifica o contrato</summary>
 
 ```ts
 test("saves order on creation", async () => {
@@ -117,7 +117,7 @@ test("saves order on creation", async () => {
 Útil para funções de utilidade de tipos e garantias de que generics preservam o tipo.
 
 <details>
-<summary>✅ Bom — expectTypeOf verifica o contrato em compilação e runtime</summary>
+<summary>✅ Bom: expectTypeOf verifica o contrato em compilação e runtime</summary>
 
 ```ts
 import { expectTypeOf } from "vitest";
@@ -144,7 +144,7 @@ test("applyDiscount preserves Order shape", () => {
 Testar que o tipo de erro correto foi lançado, não apenas que algum erro foi lançado.
 
 <details>
-<summary>❌ Ruim — qualquer erro passa</summary>
+<summary>❌ Ruim: qualquer erro passa</summary>
 
 ```ts
 test("throws on invalid order", async () => {
@@ -155,7 +155,7 @@ test("throws on invalid order", async () => {
 </details>
 
 <details>
-<summary>✅ Bom — tipo e mensagem verificados</summary>
+<summary>✅ Bom: tipo e mensagem verificados</summary>
 
 ```ts
 test("throws ValidationError when total is negative", async () => {

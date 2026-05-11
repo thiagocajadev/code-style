@@ -1,10 +1,10 @@
-# WhatsApp — Baileys e Meta Cloud API
+# WhatsApp: Baileys e Meta Cloud API
 
 > Escopo: JavaScript/Node.js. Guia baseado em **Baileys v7** e **Meta Cloud API v21.0** com **Node.js 22**.
 > Conceitos transversais de bots (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Diferença entre API oficial e cliente não-oficial, Template Messages, verificação de webhook: [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-O WhatsApp tem dois caminhos de automação com tradeoffs radicalmente diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O SDK Node.js oficial da Meta foi arquivado — use `fetch` nativo do Node.js 22.
+O WhatsApp tem dois caminhos de automação com tradeoffs muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O SDK Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
 
 ## Conceitos fundamentais
 
@@ -25,7 +25,7 @@ O WhatsApp tem dois caminhos de automação com tradeoffs radicalmente diferente
 # Baileys v7 (cliente não-oficial, ESM-only)
 npm install @whiskeysockets/baileys
 
-# Meta Cloud API — sem pacote; usa fetch nativo do Node.js 22
+# Meta Cloud API: sem pacote; usa fetch nativo do Node.js 22
 ```
 
 ---
@@ -37,7 +37,7 @@ npm install @whiskeysockets/baileys
 Baileys v7 é **ESM-only**: `require` é quebrado. `makeWASocket` é `default export`; os utilitários são named imports.
 
 <details>
-<summary>❌ Ruim — CommonJS quebrado no v7; makeWASocket como named import</summary>
+<summary>❌ Ruim: CommonJS quebrado no v7; makeWASocket como named import</summary>
 
 ```js
 const { makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys');
@@ -46,7 +46,7 @@ const { makeWASocket, useMultiFileAuthState } = require('@whiskeysockets/baileys
 </details>
 
 <details>
-<summary>✅ Bom — ESM; makeWASocket como default import; named imports separados</summary>
+<summary>✅ Bom: ESM; makeWASocket como default import; named imports separados</summary>
 
 ```js
 import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
@@ -57,7 +57,7 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeys
 ### Setup do Client
 
 <details>
-<summary>❌ Ruim — sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
+<summary>❌ Ruim: sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
 
 ```js
 import makeWASocket, { useMultiFileAuthState } from '@whiskeysockets/baileys';
@@ -70,7 +70,7 @@ socket.ev.on('creds.update', saveCreds);
 </details>
 
 <details>
-<summary>✅ Bom — reconnect automático; guard para logout; printQRInTerminal ativo</summary>
+<summary>✅ Bom: reconnect automático; guard para logout; printQRInTerminal ativo</summary>
 
 ```js
 import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeysockets/baileys';
@@ -111,7 +111,7 @@ startBot();
 ### Processando Mensagens
 
 <details>
-<summary>❌ Ruim — sem guard para fromMe; routing inline com texto; lógica misturada</summary>
+<summary>❌ Ruim: sem guard para fromMe; routing inline com texto; lógica misturada</summary>
 
 ```js
 socket.ev.on('messages.upsert', async ({ messages }) => {
@@ -126,7 +126,7 @@ socket.ev.on('messages.upsert', async ({ messages }) => {
 </details>
 
 <details>
-<summary>✅ Bom — guard fromMe; extração e routing separados; Strategy Map</summary>
+<summary>✅ Bom: guard fromMe; extração e routing separados; Strategy Map</summary>
 
 ```js
 function processIncomingMessage(socket, message) {
@@ -193,7 +193,7 @@ async function orderCommand(socket, chatId, messageText) {
 ### Verificação do Webhook
 
 <details>
-<summary>❌ Ruim — sem verificação de hub.mode; responde 200 sem checar token</summary>
+<summary>❌ Ruim: sem verificação de hub.mode; responde 200 sem checar token</summary>
 
 ```js
 app.get('/webhook', (req, res) => {
@@ -204,7 +204,7 @@ app.get('/webhook', (req, res) => {
 </details>
 
 <details>
-<summary>✅ Bom — verifica mode e token antes de responder com o challenge</summary>
+<summary>✅ Bom: verifica mode e token antes de responder com o challenge</summary>
 
 ```js
 app.get('/webhook', (request, response) => {
@@ -230,7 +230,7 @@ app.get('/webhook', (request, response) => {
 Responda `200 OK` imediatamente. A Meta cancela a entrega se o endpoint demorar para responder.
 
 <details>
-<summary>❌ Ruim — req/res abreviados; processamento síncrono; sem checar body.object</summary>
+<summary>❌ Ruim: req/res abreviados; processamento síncrono; sem checar body.object</summary>
 
 ```js
 app.post('/webhook', async (req, res) => {
@@ -243,7 +243,7 @@ app.post('/webhook', async (req, res) => {
 </details>
 
 <details>
-<summary>✅ Bom — request/response sem abreviação; 200 imediato; check de body.object; async após resposta</summary>
+<summary>✅ Bom: request/response sem abreviação; 200 imediato; check de body.object; async após resposta</summary>
 
 ```js
 import express from 'express';
@@ -282,7 +282,7 @@ async function processMessage(message) {
 ### Enviando Mensagens
 
 <details>
-<summary>❌ Ruim — endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
+<summary>❌ Ruim: endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
 
 ```js
 async function sendText(chatId, text) {
@@ -297,7 +297,7 @@ async function sendText(chatId, text) {
 </details>
 
 <details>
-<summary>✅ Bom — endpoint v21.0; env vars padrão Meta; recipient_type explícito; headers completos</summary>
+<summary>✅ Bom: endpoint v21.0; env vars padrão Meta; recipient_type explícito; headers completos</summary>
 
 ```js
 async function sendTextMessage(chatId, text) {
@@ -364,5 +364,5 @@ async function sendOrderTemplate(chatId, orderId, orderStatus) {
 
 ## Veja também
 
-- [shared/platform/bots-advanced.md — WhatsApp](../../../shared/platform/bots-advanced.md#whatsapp) — API oficial vs não-oficial, Template Messages, verificação de webhook (conceitual)
-- [shared/platform/bots.md](../../../shared/platform/bots.md) — webhook vs polling, session state, rate limit
+- [shared/platform/bots-advanced.md (WhatsApp)](../../../shared/platform/bots-advanced.md#whatsapp): API oficial vs não-oficial, Template Messages, verificação de webhook (conceitual)
+- [shared/platform/bots.md](../../../shared/platform/bots.md): webhook vs polling, session state, rate limit

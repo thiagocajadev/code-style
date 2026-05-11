@@ -17,10 +17,10 @@ Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno)
 
 ## Sub vs Function
 
-`Sub` não retorna valor — equivalente a `void`. `Function` retorna. A escolha é semântica: se a operação produz um resultado, use `Function`. `Sub` com parâmetro `ByRef` para comunicar resultado é um cheiro de design — na dúvida, prefira `Function`.
+`Sub` não retorna valor, equivale a `void`. `Function` retorna. A escolha é semântica: se a operação produz um resultado, use `Function`. `Sub` com parâmetro `ByRef` para comunicar resultado é um cheiro de design. Na dúvida, prefira `Function`.
 
 <details>
-<summary>❌ Ruim — Sub com ByRef para comunicar resultado</summary>
+<summary>❌ Ruim: Sub com ByRef para comunicar resultado</summary>
 
 ```vbnet
 Public Sub ProcessPayment(payment As Payment, ByRef success As Boolean, ByRef errorMessage As String)
@@ -45,7 +45,7 @@ If Not ok Then HandleError(msg)
 </details>
 
 <details>
-<summary>✅ Bom — Function retorna o resultado, caller lê diretamente</summary>
+<summary>✅ Bom: Function retorna o resultado, caller lê diretamente</summary>
 
 ```vbnet
 Public Function ProcessPayment(payment As Payment) As PaymentResult
@@ -72,7 +72,7 @@ If Not result.IsSuccess Then HandleError(result.ErrorMessage)
 O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
 
 <details>
-<summary>❌ Ruim — implementação misturada com orquestração</summary>
+<summary>❌ Ruim: implementação misturada com orquestração</summary>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -101,7 +101,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador declara o fluxo, helpers implementam cada passo</summary>
+<summary>✅ Bom: orquestrador declara o fluxo, helpers implementam cada passo</summary>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -150,7 +150,7 @@ End Function
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
 
 <details>
-<summary>❌ Ruim — orquestração e implementação no mesmo método</summary>
+<summary>❌ Ruim: orquestração e implementação no mesmo método</summary>
 
 ```vbnet
 Public Async Function BuildPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
@@ -170,7 +170,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador chama helpers, cada um com uma responsabilidade</summary>
+<summary>✅ Bom: orquestrador chama helpers, cada um com uma responsabilidade</summary>
 
 ```vbnet
 Public Async Function BuildPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
@@ -204,7 +204,7 @@ End Function
 O `Return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
 
 <details>
-<summary>❌ Ruim — construção inline no Return</summary>
+<summary>❌ Ruim: construção inline no Return</summary>
 
 ```vbnet
 Public Function BuildSummary(purchase As Purchase) As PurchaseSummary
@@ -219,7 +219,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — variável expressiva antes do Return</summary>
+<summary>✅ Bom: variável expressiva antes do Return</summary>
 
 ```vbnet
 Public Function BuildSummary(purchase As Purchase) As PurchaseSummary
@@ -238,7 +238,7 @@ End Function
 Valide as pré-condições no topo e saia cedo. O fluxo principal fica plano e sem aninhamento. Cada guarda remove um nível de indentação.
 
 <details>
-<summary>❌ Ruim — lógica principal enterrada em aninhamento</summary>
+<summary>❌ Ruim: lógica principal enterrada em aninhamento</summary>
 
 ```vbnet
 Public Function ApprovePurchase(purchase As Purchase, user As User) As String
@@ -266,7 +266,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — guards no topo, fluxo principal limpo</summary>
+<summary>✅ Bom: guards no topo, fluxo principal limpo</summary>
 
 ```vbnet
 Public Function ApprovePurchase(purchase As Purchase, user As User) As String
@@ -287,7 +287,7 @@ End Function
 Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
 
 <details>
-<summary>❌ Ruim — sem separação entre passos ou separação excessiva</summary>
+<summary>❌ Ruim: sem separação entre passos ou separação excessiva</summary>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)
@@ -297,7 +297,7 @@ Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(O
     Dim purchase = Await SavePurchaseAsync(request, product)
 
 
-    Await NotifyPurchaseCreatedAsync(purchase)  ' duas linhas em branco — ruído
+    Await NotifyPurchaseCreatedAsync(purchase)  ' duas linhas em branco: ruído
     Dim invoice = BuildInvoice(purchase)
     Return invoice
 End Function
@@ -306,7 +306,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — um grupo por passo, separados por uma linha em branco</summary>
+<summary>✅ Bom: um grupo por passo, separados por uma linha em branco</summary>
 
 ```vbnet
 Public Async Function ProcessPurchaseAsync(request As PurchaseRequest) As Task(Of Invoice)

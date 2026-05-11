@@ -14,7 +14,7 @@ Controle de fluxo em Ruby favorece legibilidade: guard clauses eliminam aninhame
 | **unless** (a menos que) | Inverte a condição de `if`; só legível com expressão simples e sem `else` |
 | **case/when** (selecionar caso) | Despacho por valor com `===`; bom para listas de literais ou ranges |
 | **case/in** (selecionar por forma) | Pattern matching que desestrutura hashes, arrays e objetos por forma |
-| **ternary** (ternário) | `cond ? a : b` — expressão condicional curta; legível só quando as três partes são curtas |
+| **ternary** (ternário) | `cond ? a : b`, expressão condicional curta; legível só quando as três partes são curtas |
 | **until** (até que) | Loop que executa enquanto a condição for falsa; inverso de `while` |
 
 ## Guard clauses
@@ -22,7 +22,7 @@ Controle de fluxo em Ruby favorece legibilidade: guard clauses eliminam aninhame
 Saia cedo na falha. Sem `else` após `return`.
 
 <details>
-<summary>❌ Ruim — aninhamento em cascata</summary>
+<summary>❌ Ruim: aninhamento em cascata</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -41,7 +41,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, fluxo plano</summary>
+<summary>✅ Bom: guard clauses, fluxo plano</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -59,11 +59,11 @@ end
 
 ## unless
 
-Use `unless` para negações simples de uma única condição. Nunca `unless ... else` — inverta a
+Use `unless` para negações simples de uma única condição. Nunca `unless ... else`: inverta a
 lógica com `if`.
 
 <details>
-<summary>❌ Ruim — unless com else (confuso) / unless com condição composta</summary>
+<summary>❌ Ruim: unless com else (confuso) ou unless com condição composta</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -78,7 +78,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — unless para 1 condição simples; if para o resto</summary>
+<summary>✅ Bom: unless para 1 condição simples; if para o resto</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -99,7 +99,7 @@ end
 Use ternário apenas para atribuição de 2 valores. Nunca encadeie ternários.
 
 <details>
-<summary>❌ Ruim — ternário aninhado</summary>
+<summary>❌ Ruim: ternário aninhado</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -110,7 +110,7 @@ label = admin? ? "Admin" : verified? ? "Verified" : "Guest"
 </details>
 
 <details>
-<summary>✅ Bom — ternário simples ou case/when para 3+</summary>
+<summary>✅ Bom: ternário simples ou case/when para 3+</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -132,7 +132,7 @@ label = case role
 Use para 3 ou mais ramos sobre um mesmo valor. Mais limpo que `if/elsif` em cascata.
 
 <details>
-<summary>❌ Ruim — if/elsif em cascata</summary>
+<summary>❌ Ruim: if/elsif em cascata</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -153,7 +153,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — case/when declarativo</summary>
+<summary>✅ Bom: case/when declarativo</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -178,7 +178,7 @@ end
 objetos com deconstruct.
 
 <details>
-<summary>❌ Ruim — acesso manual a campos sem garantia de forma</summary>
+<summary>❌ Ruim: acesso manual a campos sem garantia de forma</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -194,7 +194,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — pattern matching desestrutura e garante forma</summary>
+<summary>✅ Bom: pattern matching desestrutura e garante forma</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -218,7 +218,7 @@ end
 Prefira `map`, `filter`/`select`, `reject`, `reduce`/`sum` no lugar de loops imperativos.
 
 <details>
-<summary>❌ Ruim — loop imperativo com mutação</summary>
+<summary>❌ Ruim: loop imperativo com mutação</summary>
 
 ```ruby
 # frozen_string_literal: true
@@ -237,7 +237,7 @@ end
 </details>
 
 <details>
-<summary>✅ Bom — pipeline funcional sem mutação</summary>
+<summary>✅ Bom: pipeline funcional sem mutação</summary>
 
 ```ruby
 # frozen_string_literal: true

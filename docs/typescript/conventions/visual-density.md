@@ -3,7 +3,7 @@
 **Visual density** (densidade visual) é a quantidade de informação por bloco
 visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
 quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco — cada grupo conta uma
+semântica e separar grupos com linha em branco. Cada grupo conta uma
 micro-história.
 
 Os mesmos princípios de
@@ -22,16 +22,16 @@ linha que a declaração e acompanham o passo a que pertencem.
 | **semantic group** (grupo semântico)         | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir)            |
 | **blank line** (linha em branco)             | Separador entre grupos semânticos; substitui comentário de seção                                            |
 | **tight pair** (par tight)                   | Duas linhas com relação direta (declaração + uso, const + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico)               | Três declarações simples consecutivas e homogêneas (`const`/`let`); mantidas juntas sem blank — preferir ao 2+1 que cria órfão            |
+| **atomic trio** (trio atômico)               | Três declarações simples consecutivas e homogêneas (`const`/`let`); mantidas juntas sem blank; preferir ao 2+1 que cria órfão              |
 | **semantic pair** (par semântico encadeado)  | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta                    |
 | **single-line orphan** (órfão de 1)          | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2    |
 | **explaining return** (retorno explicativo)  | Caso particular de `tight pair`: `const X = …` single-line + `return X` sem blank entre eles                |
 | **multi-line block** (bloco multi-linha)     | Objeto literal, array literal ou statement quebrado em várias linhas; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta — blank antes da montagem |
+| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta, blank antes da montagem |
 | **type annotation** (anotação de tipo)       | Anotação inline (`: T`) na mesma linha da declaração; não conta como passo                                  |
 | **generic** (tipo paramétrico)               | Parâmetro de tipo (`<T>`) inline na assinatura; acompanha a função sem quebrar grupo                        |
 | **boundary** (limite)                        | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes            |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão — frágil a rename, gera diff ruidoso       |
+| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão, frágil a rename e gera diff ruidoso       |
 
 ## A regra central
 
@@ -40,7 +40,7 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 Anotações de tipo não contam como passo separado.
 
 <details>
-<summary>❌ Ruim — denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: denso demais: todos os passos colados</summary>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -58,7 +58,7 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 </details>
 
 <details>
-<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -82,12 +82,12 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 
 Uma `const` nomeada acima do `return` explica o valor retornado. Sempre que a
 linha imediatamente acima for essa `const` (single-line) e o `return` retornar
-essa variável, os dois formam par de 2 linhas sem blank — não importa quantos
+essa variável, os dois formam par de 2 linhas sem blank, não importa quantos
 passos haja acima. A linha em branco separa o par do que vem antes, não
 fragmenta o par.
 
 <details>
-<summary>❌ Ruim — blank fragmenta o par</summary>
+<summary>❌ Ruim: blank fragmenta o par</summary>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -100,7 +100,7 @@ function mapErrorToStatus(error: DomainError): number {
 </details>
 
 <details>
-<summary>✅ Bom — par tight</summary>
+<summary>✅ Bom: par tight</summary>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -115,7 +115,7 @@ function mapErrorToStatus(error: DomainError): number {
 
 A regra é simples: `return` é **tight** com a linha imediatamente acima
 **somente quando essa linha é a `const` que nomeia o valor retornado**
-(Explaining Return) — e essa `const` está em uma única linha.
+(Explaining Return), e essa `const` está em uma única linha.
 
 Em todos os outros casos, vai blank antes do `return`:
 
@@ -125,7 +125,7 @@ Em todos os outros casos, vai blank antes do `return`:
 - valor retornado foi criado **vários passos antes**, sem par direto.
 
 <details>
-<summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
 
 ```ts
 function formatOrderDate(isoString: string, locale: string = "pt-BR"): string {
@@ -144,12 +144,12 @@ function formatOrderDate(isoString: string, locale: string = "pt-BR"): string {
 
 `formatter` multi-linha exige blank depois de si, mas o blank foi posto antes do
 `return`. `formattedDate` e `return formattedDate` formam Explaining Return
-tight — não devem ser separados.
+tight, não devem ser separados.
 
 </details>
 
 <details>
-<summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
 
 ```ts
 function formatOrderDate(isoString: string, locale: string = "pt-BR"): string {
@@ -172,7 +172,7 @@ O blank fica **depois** do `formatter` multi-linha. O par `formattedDate` +
 </details>
 
 <details>
-<summary>✅ Bom — return com blank quando construído a partir de objeto multi-linha</summary>
+<summary>✅ Bom: return com blank quando construído a partir de objeto multi-linha</summary>
 
 ```ts
 function buildOrderResponse(order: Order, requestId: string): OrderResponse {
@@ -203,17 +203,17 @@ function findPendingOrders(userId: string): Promise<Order[]> {
 ## Declaração + guarda = 1 grupo
 
 Uma variável seguida do seu `if` de guarda formam par semântico **quando o
-guarda cabe em uma única linha** — `if (...) return;`, `if (...) throw ...;`.
+guarda cabe em uma única linha**: `if (...) return;`, `if (...) throw ...;`.
 Nesse caso a linha em branco vem **depois** do par, nunca entre eles.
 
 Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas
-físicas, mesmo com uma única instrução dentro), o `if` vira fase própria — o
+físicas, mesmo com uma única instrução dentro), o `if` vira fase própria: o
 bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede
 respiro**: linha em branco **antes** do bloco. O critério é visual, não
 semântico.
 
 <details>
-<summary>❌ Ruim — variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: variável solta do seu guarda inline</summary>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -225,7 +225,7 @@ const invoice = buildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -237,7 +237,7 @@ const invoice = buildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
 
 ```ts
 const handler = eventHandlers[eventType];
@@ -253,7 +253,7 @@ const eventPayload = event.data;
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
 
 ```ts
 const response = await requestFn();
@@ -265,7 +265,7 @@ if (response.status !== 429) {
 const delayMs = Math.pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa três linhas físicas — peso visual próprio. Inline ficaria
+O bloco ocupa três linhas físicas, peso visual próprio. Inline ficaria
 tight, mas em bloco, blank antes.
 
 </details>
@@ -277,7 +277,7 @@ Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três
 juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Ruim — órfão entre blanks</summary>
+<summary>❌ Ruim: órfão entre blanks</summary>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -289,7 +289,7 @@ const ONE_DAY_MS: number = 86_400_000;
 </details>
 
 <details>
-<summary>✅ Bom — trio tight</summary>
+<summary>✅ Bom: trio tight</summary>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -300,7 +300,7 @@ const ONE_DAY_MS: number = 86_400_000;
 </details>
 
 <details>
-<summary>✅ Bom — 4 atomics viram 2+2</summary>
+<summary>✅ Bom: 4 atomics viram 2+2</summary>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -319,7 +319,7 @@ duas formam par. A quebra natural fica antes do par, não entre ele e sua
 dependência direta.
 
 <details>
-<summary>❌ Ruim — dependência direta partida</summary>
+<summary>❌ Ruim: dependência direta partida</summary>
 
 ```ts
 function buildShippingLabel(order: Order): string {
@@ -336,7 +336,7 @@ function buildShippingLabel(order: Order): string {
 </details>
 
 <details>
-<summary>✅ Bom — par semântico tight</summary>
+<summary>✅ Bom: par semântico tight</summary>
 
 ```ts
 function buildShippingLabel(order: Order): string {
@@ -355,7 +355,7 @@ function buildShippingLabel(order: Order): string {
 
 Quando há **dois ou mais fragmentos** preparados e uma linha final que
 **consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta — blank antes dela. É o caso clássico "preparar partes →
+como fase distinta: blank antes dela. É o caso clássico "preparar partes →
 montar resultado", diferente do par semântico encadeado (onde a última depende
 **diretamente** da penúltima e por isso fica tight).
 
@@ -367,7 +367,7 @@ Heurística rápida:
   diferentes? → fragmentos → montagem, blank antes.
 
 <details>
-<summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -379,13 +379,13 @@ function buildDeliveryMessage(user: User, order: Order): string {
 ```
 
 `deliveryMessage` consome `fullName` *e* `address` *e* `order.id` *e*
-`order.deliveryDays`. Não é par direto com `address` — é a fase de montagem.
+`order.deliveryDays`. Não é par direto com `address`: é a fase de montagem.
 Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -403,7 +403,7 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 </details>
 
 <details>
-<summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: contraste: par semântico encadeado (última depende só da penúltima)</summary>
 
 ```ts
 function buildOrderSlug(order: Order): string {
@@ -425,7 +425,7 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
 são todas atômicas homogêneas.
 
 <details>
-<summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
 
 ```ts
 while (attempt < maxAttempts) {
@@ -438,7 +438,7 @@ while (attempt < maxAttempts) {
 </details>
 
 <details>
-<summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
 
 ```ts
 while (attempt < maxAttempts) {
@@ -457,7 +457,7 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 deixar cada fase visível.
 
 <details>
-<summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
 
 ```ts
 async function createUserHandler(req: Request, res: Response): Promise<void> {
@@ -472,7 +472,7 @@ async function createUserHandler(req: Request, res: Response): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom — fases explícitas</summary>
+<summary>✅ Bom: fases explícitas</summary>
 
 ```ts
 async function createUserHandler(request: Request, response: Response): Promise<void> {
@@ -494,7 +494,7 @@ O `expect` é fase distinta. A linha em branco antes dele separa o que está sen
 verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: expect colado ao setup, fases invisíveis</summary>
 
 ```ts
 it("applies percentage discount to order price", () => {
@@ -508,7 +508,7 @@ it("applies percentage discount to order price", () => {
 </details>
 
 <details>
-<summary>✅ Bom — expect separado, assertion como fase própria</summary>
+<summary>✅ Bom: expect separado, assertion como fase própria</summary>
 
 ```ts
 it("applies percentage discount to order price", () => {
@@ -530,7 +530,7 @@ para isolar o bloco grande do próximo passo. Sem respiro, o leitor não vê ond
 bloco termina e o próximo começa.
 
 <details>
-<summary>❌ Ruim — objeto multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: objeto multi-linha colado ao próximo statement</summary>
 
 ```ts
 async function createSession(user: User): Promise<string> {
@@ -548,7 +548,7 @@ async function createSession(user: User): Promise<string> {
 </details>
 
 <details>
-<summary>✅ Bom — blank depois do objeto isola o bloco</summary>
+<summary>✅ Bom: blank depois do objeto isola o bloco</summary>
 
 ```ts
 async function createSession(user: User): Promise<string> {
@@ -573,10 +573,10 @@ muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre
 insira blank entre eles.
 
 **Exceção:** guardas de uma linha (early returns curtos) formam trio homogêneo e
-ficam tight — a regra do trio atômico se aplica.
+ficam tight: a regra do trio atômico se aplica.
 
 <details>
-<summary>❌ Ruim — dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos {} colados</summary>
 
 ```ts
 function processOrder(order: Order): void {
@@ -594,7 +594,7 @@ function processOrder(order: Order): void {
 </details>
 
 <details>
-<summary>✅ Bom — blank entre os blocos</summary>
+<summary>✅ Bom: blank entre os blocos</summary>
 
 ```ts
 function processOrder(order: Order): void {
@@ -613,7 +613,7 @@ function processOrder(order: Order): void {
 </details>
 
 <details>
-<summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
 
 ```ts
 function validateInput(input: CreateUserInput): CreateUserInput {
@@ -634,7 +634,7 @@ Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempr
 diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
 
 ```ts
 const userName: string   = "alice";
@@ -646,7 +646,7 @@ const lastLoginAt: Date  = new Date();
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem padding</summary>
+<summary>✅ Bom: espaço único, sem padding</summary>
 
 ```ts
 const userName: string = "alice";
@@ -663,7 +663,7 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: string imensa inline, sem semântica nas partes</summary>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -674,7 +674,7 @@ function buildDeliveryMessage(user: User, order: Order): string {
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {

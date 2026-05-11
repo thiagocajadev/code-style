@@ -24,22 +24,22 @@
 timezones diferentes, o mesmo código produz valores incomparáveis.
 
 <details>
-<summary>❌ Ruim — hora local do servidor, Kind implícito</summary>
+<summary>❌ Ruim: hora local do servidor, Kind implícito</summary>
 
 ```csharp
 var createdAt = DateTime.Now;
-// Kind: Local — depende do timezone do servidor
+// Kind: Local (depende do timezone do servidor)
 // Comparações entre servidores em timezones diferentes produzem resultados errados
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — UTC explícito, comparável em qualquer ambiente</summary>
+<summary>✅ Bom: UTC explícito, comparável em qualquer ambiente</summary>
 
 ```csharp
 var createdAt = DateTimeOffset.UtcNow;
-// Offset: +00:00 — inequívoco, portável
+// Offset: +00:00 (inequívoco, portável)
 // Serializa como "2026-04-19T14:00:00+00:00"
 ```
 
@@ -51,28 +51,28 @@ var createdAt = DateTimeOffset.UtcNow;
 sem precisar de contexto externo para interpretar o instante.
 
 <details>
-<summary>❌ Ruim — DateTime sem Kind perde contexto de timezone</summary>
+<summary>❌ Ruim: DateTime sem Kind perde contexto de timezone</summary>
 
 ```csharp
 public record OrderResponse
 {
     public required Guid Id { get; init; }
     public required DateTime CreatedAt { get; init; }
-    // Kind: Unspecified — impossível saber se é UTC ou local sem convenção externa
+    // Kind: Unspecified: impossível saber se é UTC ou local sem convenção externa
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — DateTimeOffset carrega o offset, sem ambiguidade</summary>
+<summary>✅ Bom: DateTimeOffset carrega o offset, sem ambiguidade</summary>
 
 ```csharp
 public record OrderResponse
 {
     public required Guid Id { get; init; }
     public required DateTimeOffset CreatedAt { get; init; }
-    // "2026-04-19T14:00:00+00:00" — timezone embutida no valor
+    // "2026-04-19T14:00:00+00:00" (timezone embutida no valor)
 }
 ```
 
@@ -85,35 +85,35 @@ significado, que pode causar bugs de timezone ao ser serializado. `DateOnly` e `
 (.NET 6+) expressam a intenção com precisão.
 
 <details>
-<summary>❌ Ruim — DateTime para data pura, hora fantasma causa bugs</summary>
+<summary>❌ Ruim: DateTime para data pura, hora fantasma causa bugs</summary>
 
 ```csharp
 public record CustomerRequest
 {
     public required string Name { get; init; }
     public required DateTime BirthDate { get; init; }
-    // "1990-08-21T00:00:00" — hora zero sem sentido, sujeita a shift de timezone
+    // "1990-08-21T00:00:00": hora zero sem sentido, sujeita a shift de timezone
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — DateOnly para data, TimeOnly para hora — intenção clara</summary>
+<summary>✅ Bom: DateOnly para data, TimeOnly para hora, intenção clara</summary>
 
 ```csharp
 public record CustomerRequest
 {
     public required string Name { get; init; }
     public required DateOnly BirthDate { get; init; }
-    // "1990-08-21" — só data, sem componente de hora
+    // "1990-08-21" (só data, sem componente de hora)
 }
 
 public record ScheduleRequest
 {
     public required DateOnly Date { get; init; }
     public required TimeOnly StartTime { get; init; }
-    // "09:30:00" — só hora, sem data acoplada
+    // "09:30:00" (só hora, sem data acoplada)
 }
 ```
 
@@ -125,7 +125,7 @@ EF Core serializa `DateTime` conforme o `Kind`. Sem configuração explícita, v
 são salvos sem conversão; o que for lido do banco volta como `Unspecified` também.
 
 <details>
-<summary>❌ Ruim — DateTime sem Kind, round-trip ambíguo com o banco</summary>
+<summary>❌ Ruim: DateTime sem Kind, round-trip ambíguo com o banco</summary>
 
 ```csharp
 public class Order
@@ -138,14 +138,14 @@ public class Order
 </details>
 
 <details>
-<summary>✅ Bom — DateTimeOffset no modelo, EF preserva offset no banco</summary>
+<summary>✅ Bom: DateTimeOffset no modelo, EF preserva offset no banco</summary>
 
 ```csharp
 public class Order
 {
     public Guid Id { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
-    // SQL Server: datetimeoffset — PostgreSQL: timestamptz
+    // SQL Server: datetimeoffset, PostgreSQL: timestamptz
     // Offset preservado no round-trip, sem configuração extra
 }
 ```

@@ -17,7 +17,7 @@ INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão
 ## INSERT horizontal
 
 <details>
-<summary>❌ Ruim — colunas e valores em linha única</summary>
+<summary>❌ Ruim: colunas e valores em linha única</summary>
 
 ```sql
 INSERT INTO Users(Id, Name, Email) VALUES(1, 'Alice', 'alice@email.com');
@@ -26,7 +26,7 @@ INSERT INTO Users(Id, Name, Email) VALUES(1, 'Alice', 'alice@email.com');
 </details>
 
 <details>
-<summary>✅ Bom — colunas e valores em blocos verticais separados</summary>
+<summary>✅ Bom: colunas e valores em blocos verticais separados</summary>
 
 ```sql
 INSERT INTO Users
@@ -48,7 +48,7 @@ VALUES
 ## INSERT ... SELECT
 
 <details>
-<summary>❌ Ruim — SELECT inline, sem correspondência visual entre colunas</summary>
+<summary>❌ Ruim: SELECT inline, sem correspondência visual entre colunas</summary>
 
 ```sql
 INSERT INTO Users(Id, Name, Email) SELECT ExternalId, FullName, ContactEmail FROM ExternalUsers WHERE IsVerified = 1;
@@ -57,7 +57,7 @@ INSERT INTO Users(Id, Name, Email) SELECT ExternalId, FullName, ContactEmail FRO
 </details>
 
 <details>
-<summary>✅ Bom — colunas do INSERT alinhadas com colunas do SELECT</summary>
+<summary>✅ Bom: colunas do INSERT alinhadas com colunas do SELECT</summary>
 
 ```sql
 INSERT INTO Users
@@ -81,7 +81,7 @@ WHERE
 ## UPDATE usando outra tabela
 
 <details>
-<summary>❌ Ruim — subquery correlacionada no SET</summary>
+<summary>❌ Ruim: subquery correlacionada no SET</summary>
 
 ```sql
 UPDATE Users
@@ -96,7 +96,7 @@ WHERE Id IN (SELECT UserId FROM EmailUpdates);
 </details>
 
 <details>
-<summary>✅ Bom — UPDATE ... FROM ... WHERE</summary>
+<summary>✅ Bom: UPDATE ... FROM ... WHERE</summary>
 
 ```sql
 UPDATE
@@ -116,7 +116,7 @@ WHERE
 Dados deletados são irrecuperáveis. Soft delete com coluna `IsActive = 0` preserva histórico e permite auditoria.
 
 <details>
-<summary>❌ Ruim — remoção permanente sem rastro</summary>
+<summary>❌ Ruim: remoção permanente sem rastro</summary>
 
 ```sql
 DELETE FROM
@@ -128,7 +128,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — soft delete com timestamp de inativação</summary>
+<summary>✅ Bom: soft delete com timestamp de inativação</summary>
 
 ```sql
 UPDATE
@@ -145,7 +145,7 @@ WHERE
 ## UPDATE condicional em massa
 
 <details>
-<summary>❌ Ruim — um UPDATE por condição, duas passagens na tabela</summary>
+<summary>❌ Ruim: um UPDATE por condição, duas passagens na tabela</summary>
 
 ```sql
 UPDATE Orders SET StatusId = 2 WHERE IsActive = 1 AND CustomerId IN (SELECT Id FROM PremiumCustomers);
@@ -155,7 +155,7 @@ UPDATE Orders SET StatusId = 3 WHERE IsActive = 1 AND CustomerId NOT IN (SELECT 
 </details>
 
 <details>
-<summary>✅ Bom — CASE numa única passagem</summary>
+<summary>✅ Bom: CASE numa única passagem</summary>
 
 ```sql
 UPDATE
@@ -182,7 +182,7 @@ WHERE
 Filtrar na tabela principal antes dos JOINs reduz o volume processado. WHERE na tabela driving, não após o JOIN.
 
 <details>
-<summary>❌ Ruim — filtro aplicado depois do JOIN em tabela grande</summary>
+<summary>❌ Ruim: filtro aplicado depois do JOIN em tabela grande</summary>
 
 ```sql
 SELECT
@@ -201,7 +201,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — CTE filtra a tabela principal antes do JOIN</summary>
+<summary>✅ Bom: CTE filtra a tabela principal antes do JOIN</summary>
 
 ```sql
 WITH PendingOrdersCTE AS
@@ -234,7 +234,7 @@ JOIN
 Nunca assumir ordem natural. Declarar ORDER BY em todo SELECT que retorna lista.
 
 <details>
-<summary>❌ Ruim — sem ORDER BY, ordem indefinida</summary>
+<summary>❌ Ruim: sem ORDER BY, ordem indefinida</summary>
 
 ```sql
 SELECT
@@ -249,7 +249,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — ORDER BY explícito</summary>
+<summary>✅ Bom: ORDER BY explícito</summary>
 
 ```sql
 SELECT
@@ -270,7 +270,7 @@ ORDER BY
 Literais numéricos fixos perdem o significado fora do contexto. Comentário inline expõe a intenção sem criar abstração desnecessária.
 
 <details>
-<summary>❌ Ruim — números sem contexto</summary>
+<summary>❌ Ruim: números sem contexto</summary>
 
 ```sql
 SELECT
@@ -286,7 +286,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — comentário inline expõe a intenção</summary>
+<summary>✅ Bom: comentário inline expõe a intenção</summary>
 
 ```sql
 SELECT
@@ -306,7 +306,7 @@ WHERE
 Literais inline tornam a query frágil e difícil de reusar. Usar parâmetros nomeados.
 
 <details>
-<summary>❌ Ruim — literais inline, sem contexto</summary>
+<summary>❌ Ruim: literais inline, sem contexto</summary>
 
 ```sql
 SELECT
@@ -322,7 +322,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom — parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
+<summary>✅ Bom: parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
 
 ```sql
 -- SQL Server

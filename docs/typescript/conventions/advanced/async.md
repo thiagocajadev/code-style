@@ -21,19 +21,19 @@ Os padrões assíncronos do JavaScript: async/await, Promise.all, **API** (Appli
 Toda função `async` retorna uma `Promise`. O tipo do retorno deve declarar o que está dentro dela.
 
 <details>
-<summary>❌ Ruim — return type implícito em função async exportada</summary>
+<summary>❌ Ruim: return type implícito em função async exportada</summary>
 
 ```ts
 export async function findUserById(id: string) {
   const user = await db.users.findById(id);
-  return user; // Promise<User | null> — mas o contrato não está visível
+  return user; // Promise<User | null>, mas o contrato não está visível
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — Promise<T> explícito</summary>
+<summary>✅ Bom: Promise<T> explícito</summary>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -55,7 +55,7 @@ export async function createOrder(input: CreateOrderInput): Promise<Order> {
 infere cada posição corretamente.
 
 <details>
-<summary>❌ Ruim — await sequencial quando não há dependência</summary>
+<summary>❌ Ruim: await sequencial quando não há dependência</summary>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -72,7 +72,7 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
 </details>
 
 <details>
-<summary>✅ Bom — Promise.all com tipos preservados</summary>
+<summary>✅ Bom: Promise.all com tipos preservados</summary>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -99,7 +99,7 @@ Um cliente genérico com `get<T>` e `post<T>` transfere a responsabilidade de ti
 caller, que sabe o shape esperado, sem usar `any`.
 
 <details>
-<summary>❌ Ruim — fetch direto com any espalhado pelo código</summary>
+<summary>❌ Ruim: fetch direto com any espalhado pelo código</summary>
 
 ```ts
 // user.service.ts
@@ -107,7 +107,7 @@ async function fetchUser(id: string) {
   const response = await fetch(`https://api.example.com/users/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  const user: any = await response.json(); // any — sem contrato
+  const user: any = await response.json(); // any: sem contrato
 
   return user;
 }
@@ -116,7 +116,7 @@ async function fetchUser(id: string) {
 </details>
 
 <details>
-<summary>✅ Bom — cliente genérico, caller declara o tipo esperado</summary>
+<summary>✅ Bom: cliente genérico, caller declara o tipo esperado</summary>
 
 ```ts
 // api.client.ts
@@ -176,7 +176,7 @@ Métodos de array como `map` e `filter` não são `async-aware`: retornam `Promi
 resolvidos. Use `Promise.all` para aguardar.
 
 <details>
-<summary>❌ Ruim — map com async retorna Promise[], não os valores</summary>
+<summary>❌ Ruim: map com async retorna Promise[], não os valores</summary>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
@@ -184,7 +184,7 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
     const customer = await fetchCustomer(order.customerId);
     return { ...order, customer };
   });
-  // enriched é Promise<EnrichedOrder>[] — não EnrichedOrder[]
+  // enriched é Promise<EnrichedOrder>[], não EnrichedOrder[]
 
   return enriched; // erro de tipos
 }
@@ -193,7 +193,7 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
 </details>
 
 <details>
-<summary>✅ Bom — Promise.all resolve o array de promises</summary>
+<summary>✅ Bom: Promise.all resolve o array de promises</summary>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {

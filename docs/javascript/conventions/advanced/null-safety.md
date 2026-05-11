@@ -26,19 +26,19 @@ JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possi
 na maioria dos casos.
 
 <details>
-<summary>❌ Ruim — || descarta valores falsy válidos</summary>
+<summary>❌ Ruim: || descarta valores falsy válidos</summary>
 
 ```js
-const timeout = config.timeout || 5000; // 0 → 5000 — zero é tempo válido
-const retries = input.retries || 3;     // 0 → 3 — zero retries é intencional
+const timeout = config.timeout || 5000; // 0 → 5000: zero é tempo válido
+const retries = input.retries || 3;     // 0 → 3: zero retries é intencional
 
-const debug = options.debug || false;   // false → false — ok aqui, mas por acidente
+const debug = options.debug || false;   // false → false: ok aqui, mas por acidente
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ?? respeita 0, "" e false</summary>
+<summary>✅ Bom: ?? respeita 0, "" e false</summary>
 
 ```js
 const timeout = config.timeout ?? 5000;
@@ -55,26 +55,26 @@ const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbac
 A mesma distinção de `??` vs `||`, aplicada à atribuição lógica.
 
 <details>
-<summary>❌ Ruim — ||= sobrescreve zero, que é um valor válido</summary>
+<summary>❌ Ruim: ||= sobrescreve zero, que é um valor válido</summary>
 
 ```js
 let count = 0;
-count ||= 10; // count vira 10 — zero é falsy, então ||= dispara
+count ||= 10; // count vira 10: zero é falsy, então ||= dispara
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ??= respeita zero e false</summary>
+<summary>✅ Bom: ??= respeita zero e false</summary>
 
 ```js
 let count = 0;
-count ??= 10; // count permanece 0 — zero não é null
+count ??= 10; // count permanece 0: zero não é null
 
 const config = {};
 config.port ??= 3000;
 
-config.port ??= 8080; // não executa — port já é 3000
+config.port ??= 8080; // não executa: port já é 3000
 ```
 
 </details>
@@ -87,20 +87,20 @@ Tem lugar para campos **opcionais por design**. Quando o campo deveria sempre ex
 é um bug: use guard clause.
 
 <details>
-<summary>❌ Ruim — ?. esconde contrato fraco</summary>
+<summary>❌ Ruim: ?. esconde contrato fraco</summary>
 
 ```js
 async function getOrderTotal(orderId) {
   const order = await db.orders.findById(orderId);
   return order?.items?.reduce((sum, item) => sum + item.price, 0) ?? 0;
-  // se order não existe, retorna 0 silenciosamente — é isso que queremos?
+  // se order não existe, retorna 0 silenciosamente. É isso que queremos?
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — guard clause quando ausência é erro; ?. quando é esperada</summary>
+<summary>✅ Bom: guard clause quando ausência é erro; ?. quando é esperada</summary>
 
 ```js
 // ausência é erro → guard clause
@@ -127,7 +127,7 @@ Funções que retornam listas sempre retornam `[]`, nunca `null`. No limite com 
 normalize com `?? []`.
 
 <details>
-<summary>❌ Ruim — null em lista força defesa no caller</summary>
+<summary>❌ Ruim: null em lista força defesa no caller</summary>
 
 ```js
 async function findOrdersByUser(userId) {
@@ -139,12 +139,12 @@ async function findOrdersByUser(userId) {
 </details>
 
 <details>
-<summary>✅ Bom — lista vazia como estado neutro</summary>
+<summary>✅ Bom: lista vazia como estado neutro</summary>
 
 ```js
 async function findOrdersByUser(userId) {
   const orders = await orderRepository.findByUser(userId);
-  return orders; // ORM já retorna [] — nunca null
+  return orders; // ORM já retorna []: nunca null
 }
 
 // limite com API externa: normaliza na entrada
@@ -164,7 +164,7 @@ async function fetchUserOrders(userId) {
 uma transformação: mais expressivo que `.filter().map()` por percorrer o array uma única vez.
 
 <details>
-<summary>❌ Ruim — filter + map percorre o array duas vezes</summary>
+<summary>❌ Ruim: filter + map percorre o array duas vezes</summary>
 
 ```js
 const rawItems = ["1", null, "3", undefined, "5"];
@@ -177,7 +177,7 @@ const parsed = rawItems
 </details>
 
 <details>
-<summary>✅ Bom — flatMap filtra e transforma em uma passagem</summary>
+<summary>✅ Bom: flatMap filtra e transforma em uma passagem</summary>
 
 ```js
 const rawItems = ["1", null, "3", undefined, "5"];
@@ -197,7 +197,7 @@ const parsed = rawItems.flatMap((item) => {
 prototype pollution. Substitui o padrão antigo `obj.hasOwnProperty(key)`.
 
 <details>
-<summary>❌ Ruim — hasOwnProperty vulnerável a prototype pollution</summary>
+<summary>❌ Ruim: hasOwnProperty vulnerável a prototype pollution</summary>
 
 ```js
 const config = { timeout: 0 };
@@ -208,13 +208,13 @@ config.hasOwnProperty("timeout"); // funciona, mas pode ser sobrescrito via prot
 </details>
 
 <details>
-<summary>✅ Bom — Object.hasOwn seguro e direto</summary>
+<summary>✅ Bom: Object.hasOwn seguro e direto</summary>
 
 ```js
 const config = { timeout: 0, debug: false };
 
-Object.hasOwn(config, "timeout"); // true — existe, mesmo sendo 0
-Object.hasOwn(config, "retries"); // false — não existe
+Object.hasOwn(config, "timeout"); // true: existe, mesmo sendo 0
+Object.hasOwn(config, "retries"); // false: não existe
 
 function mergeConfig(defaults, overrides) {
   const result = { ...defaults };
@@ -237,7 +237,7 @@ function mergeConfig(defaults, overrides) {
 `Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.
 
 <details>
-<summary>❌ Ruim — **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
+<summary>❌ Ruim: **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
 
 ```js
 const order = {
@@ -249,15 +249,15 @@ const order = {
 
 const clone = JSON.parse(JSON.stringify(order));
 // notes: null       ✓
-// tags              ausente — undefined some
-// createdAt         "2026-..." — virou string
-// meta              {} — Map virou objeto vazio
+// tags              ausente: undefined some
+// createdAt         "2026-...": virou string
+// meta              {}: Map virou objeto vazio
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — structuredClone preserva todos os tipos</summary>
+<summary>✅ Bom: structuredClone preserva todos os tipos</summary>
 
 ```js
 const order = {

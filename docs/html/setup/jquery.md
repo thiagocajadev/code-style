@@ -32,7 +32,7 @@ equivalente. Prefira `DOMContentLoaded` nativo em código novo; use jQuery ready
 está em contexto jQuery.
 
 <details>
-<summary>❌ Ruim — inline no head, DOM ainda não existe</summary>
+<summary>❌ Ruim: inline no head, DOM ainda não existe</summary>
 
 ```html
 <head>
@@ -45,7 +45,7 @@ está em contexto jQuery.
 </details>
 
 <details>
-<summary>✅ Bom — aguarda DOM com $(fn) ou script defer</summary>
+<summary>✅ Bom: aguarda DOM com $(fn) ou script defer</summary>
 
 ```js
 $(function () {
@@ -61,7 +61,7 @@ Seletores por ID são os mais rápidos (mapeiam para `getElementById`). Seletore
 atributo percorrem o DOM. Reduzir o escopo com contexto ou cache melhora performance.
 
 <details>
-<summary>❌ Ruim — seletor global repetido, sem cache</summary>
+<summary>❌ Ruim: seletor global repetido, sem cache</summary>
 
 ```js
 $('.card .title').css('color', 'blue');
@@ -72,7 +72,7 @@ $('.card .title').addClass('active');
 </details>
 
 <details>
-<summary>✅ Bom — seleção cacheada, escopo limitado</summary>
+<summary>✅ Bom: seleção cacheada, escopo limitado</summary>
 
 ```js
 const $cards = $('#product-list');
@@ -92,7 +92,7 @@ um único handler no pai e usa `event.target` para filtrar. Funciona para elemen
 depois do bind.
 
 <details>
-<summary>❌ Ruim — handler em cada item, não funciona com itens adicionados dinamicamente</summary>
+<summary>❌ Ruim: handler em cada item, não funciona com itens adicionados dinamicamente</summary>
 
 ```js
 $('.product-card').on('click', function () {
@@ -103,7 +103,7 @@ $('.product-card').on('click', function () {
 </details>
 
 <details>
-<summary>✅ Bom — delegation no container estático, selector como filtro</summary>
+<summary>✅ Bom: delegation no container estático, selector como filtro</summary>
 
 ```js
 $('#product-list').on('click', '.product-card', function () {
@@ -119,7 +119,7 @@ jQuery retorna `this` na maioria dos métodos. O encadeamento agrupa operações
 repetir a seleção. Cada nível de chain é uma operação, não uma nova query.
 
 <details>
-<summary>❌ Ruim — seleção repetida para cada operação</summary>
+<summary>❌ Ruim: seleção repetida para cada operação</summary>
 
 ```js
 $('#notification').removeClass('hidden');
@@ -131,7 +131,7 @@ $('#notification').fadeIn(300);
 </details>
 
 <details>
-<summary>✅ Bom — chain, uma seleção, múltiplas operações</summary>
+<summary>✅ Bom: chain, uma seleção, múltiplas operações</summary>
 
 ```js
 $('#notification')
@@ -150,7 +150,7 @@ $('#notification')
 compatível com `.then()` / `.catch()`.
 
 <details>
-<summary>❌ Ruim — sem contentType, callback no sucesso, sem tratamento de erro</summary>
+<summary>❌ Ruim: sem contentType, callback no sucesso, sem tratamento de erro</summary>
 
 ```js
 $.post('/api/orders', orderData, function (createdOrder) {
@@ -161,7 +161,7 @@ $.post('/api/orders', orderData, function (createdOrder) {
 </details>
 
 <details>
-<summary>✅ Bom — JSON explícito, Promise com then/catch</summary>
+<summary>✅ Bom: JSON explícito, Promise com then/catch</summary>
 
 ```js
 $.ajax({

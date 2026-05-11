@@ -73,7 +73,7 @@ O State concentra todas as Vars e event handlers. Vars com prefixo `_` são de b
 ao browser.
 
 <details>
-<summary>❌ Ruim — Var sem tipo, boolean sem prefixo semântico, intenção de backend var sem prefixo</summary>
+<summary>❌ Ruim: Var sem tipo, boolean sem prefixo semântico, intenção de backend var sem prefixo</summary>
 
 ```python
 class AppState(rx.State):
@@ -85,7 +85,7 @@ class AppState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom — Vars tipadas, boolean com is_, backend var com prefixo _</summary>
+<summary>✅ Bom: Vars tipadas, boolean com is_, backend var com prefixo _</summary>
 
 ```python
 class OrderState(rx.State):
@@ -102,7 +102,7 @@ Métodos públicos do State são event handlers: o frontend pode dispará-los di
 torna o método privado (somente uso interno, não exposto ao browser).
 
 <details>
-<summary>❌ Ruim — verbo handle, validação misturada com persistência, helper sem prefixo</summary>
+<summary>❌ Ruim: verbo handle, validação misturada com persistência, helper sem prefixo</summary>
 
 ```python
 class OrderState(rx.State):
@@ -119,7 +119,7 @@ class OrderState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom — verbo expressivo, validação em helper privado, persistência delegada ao serviço</summary>
+<summary>✅ Bom: verbo expressivo, validação em helper privado, persistência delegada ao serviço</summary>
 
 ```python
 class OrderState(rx.State):
@@ -150,7 +150,7 @@ class OrderState(rx.State):
 Anotação de tipo obrigatória.
 
 <details>
-<summary>❌ Ruim — Var atualizada manualmente a cada escrita, sem tipo, sem decorator</summary>
+<summary>❌ Ruim: Var atualizada manualmente a cada escrita, sem tipo, sem decorator</summary>
 
 ```python
 class CartState(rx.State):
@@ -165,7 +165,7 @@ class CartState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom — computed var derivada automaticamente, sem sincronização manual</summary>
+<summary>✅ Bom: computed var derivada automaticamente, sem sincronização manual</summary>
 
 ```python
 class CartState(rx.State):
@@ -193,7 +193,7 @@ Componentes são funções Python que retornam elementos `rx.*`. Recebem props c
 referenciam Vars do State. Sem **I/O** (Input/Output, Entrada/Saída) nem lógica de negócio inline.
 
 <details>
-<summary>❌ Ruim — I/O direto no componente, lógica de negócio misturada com apresentação</summary>
+<summary>❌ Ruim: I/O direto no componente, lógica de negócio misturada com apresentação</summary>
 
 ```python
 def order_list():
@@ -206,7 +206,7 @@ def order_list():
 </details>
 
 <details>
-<summary>✅ Bom — componente referencia State, sem I/O, sem lógica de negócio</summary>
+<summary>✅ Bom: componente referencia State, sem I/O, sem lógica de negócio</summary>
 
 ```python
 def order_card(order: Order) -> rx.Component:

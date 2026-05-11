@@ -3,7 +3,7 @@
 **Visual density** (densidade visual) é a quantidade de informação por bloco
 visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
 quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco — cada grupo conta uma
+semântica e separar grupos com linha em branco. Cada grupo conta uma
 micro-história.
 
 Os mesmos princípios de
@@ -18,14 +18,14 @@ Kotlin 2.2.
 | **semantic group** (grupo semântico)         | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir)            |
 | **blank line** (linha em branco)             | Separador entre grupos semânticos; substitui comentário de seção                                            |
 | **tight pair** (par tight)                   | Duas linhas com relação direta (declaração + uso, `val` + `return`) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico)               | Três declarações simples consecutivas e homogêneas (`val`); mantidas juntas sem blank — preferir ao 2+1 que cria órfão                    |
+| **atomic trio** (trio atômico)               | Três declarações simples consecutivas e homogêneas (`val`); mantidas juntas sem blank; preferir ao 2+1 que cria órfão                    |
 | **semantic pair** (par semântico encadeado)  | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta                    |
 | **single-line orphan** (órfão de 1)          | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2    |
 | **explaining return** (retorno explicativo)  | Caso particular de `tight pair`: `val x = …` single-line + `return x` sem blank entre eles                  |
 | **multi-line block** (bloco multi-linha)     | Data class instance, `listOf` expandido, lambda multi-linha ou chain `?.let { ... }.also { ... }`; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta — blank antes da montagem |
+| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta, com blank antes da montagem |
 | **boundary** (limite)                        | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes            |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão — frágil a rename, gera diff ruidoso       |
+| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão: frágil a rename, gera diff ruidoso       |
 
 ## A regra central
 
@@ -33,7 +33,7 @@ Kotlin 2.2.
 três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Ruim — denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: denso demais: todos os passos colados</summary>
 
 ```kotlin
 fun registerUser(input: RegisterUserInput): User {
@@ -51,7 +51,7 @@ fun registerUser(input: RegisterUserInput): User {
 </details>
 
 <details>
-<summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
 
 ```kotlin
 fun registerUser(input: RegisterUserInput): User {
@@ -75,12 +75,12 @@ fun registerUser(input: RegisterUserInput): User {
 
 Uma `val` nomeada acima do `return` explica o valor retornado. Sempre que a
 linha imediatamente acima for essa `val` (single-line) e o `return` retornar
-exatamente essa variável, os dois formam par de 2 linhas sem blank — não importa
+exatamente essa variável, os dois formam par de 2 linhas sem blank, não importa
 quantos passos haja acima. A linha em branco separa o par do que vem antes, não
 fragmenta o par.
 
 <details>
-<summary>❌ Ruim — blank fragmenta o par</summary>
+<summary>❌ Ruim: blank fragmenta o par</summary>
 
 ```kotlin
 fun mapErrorToStatus(error: DomainError): Int {
@@ -93,7 +93,7 @@ fun mapErrorToStatus(error: DomainError): Int {
 </details>
 
 <details>
-<summary>✅ Bom — par tight</summary>
+<summary>✅ Bom: par tight</summary>
 
 ```kotlin
 fun mapErrorToStatus(error: DomainError): Int {
@@ -108,7 +108,7 @@ fun mapErrorToStatus(error: DomainError): Int {
 
 A regra é simples: `return` é **tight** com a linha imediatamente acima
 **somente quando essa linha é a `val` que nomeia o valor retornado**
-(Explaining Return) — e essa `val` está em uma única linha.
+(Explaining Return), e essa `val` está em uma única linha.
 
 Em todos os outros casos, vai blank antes do `return`:
 
@@ -118,7 +118,7 @@ Em todos os outros casos, vai blank antes do `return`:
 - valor retornado foi criado **vários passos antes**, sem par direto.
 
 <details>
-<summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
 
 ```kotlin
 fun formatOrderDate(instant: Instant, zone: ZoneId): String {
@@ -134,12 +134,12 @@ fun formatOrderDate(instant: Instant, zone: ZoneId): String {
 
 `formatter` multi-linha exige blank depois de si, mas o blank foi posto antes do
 `return`. `formattedDate` e `return formattedDate` formam Explaining Return
-tight — não devem ser separados.
+tight: não devem ser separados.
 
 </details>
 
 <details>
-<summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
 
 ```kotlin
 fun formatOrderDate(instant: Instant, zone: ZoneId): String {
@@ -159,7 +159,7 @@ O blank fica **depois** do `formatter` multi-linha. O par `formattedDate` +
 </details>
 
 <details>
-<summary>✅ Bom — return com blank quando construído a partir de data class multi-linha</summary>
+<summary>✅ Bom: return com blank quando construído a partir de data class multi-linha</summary>
 
 ```kotlin
 fun buildOrderResponse(order: Order, requestId: String): OrderResponse {
@@ -194,19 +194,19 @@ fun findPendingOrders(userId: Long): List<Order> =
 ## Declaração + guarda = 1 grupo
 
 Uma variável seguida do seu `if` de guarda formam par semântico **quando o
-guarda cabe em uma única linha** — `if (...) return`, `if (...) throw ...`.
+guarda cabe em uma única linha**: `if (...) return`, `if (...) throw ...`.
 Nesse caso a linha em branco vem **depois** do par, nunca entre eles. O mesmo
 vale para o atalho idiomático `?: return …` ou `?: throw …` colado na linha da
 declaração.
 
 Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas
-físicas, mesmo com uma única instrução dentro), o `if` vira fase própria — o
+físicas, mesmo com uma única instrução dentro), o `if` vira fase própria: o
 bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede
 respiro**: linha em branco **antes** do bloco. O critério é visual, não
 semântico.
 
 <details>
-<summary>❌ Ruim — variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: variável solta do seu guarda inline</summary>
 
 ```kotlin
 val order = orderRepository.findById(orderId)
@@ -218,7 +218,7 @@ val invoice = buildInvoice(order)
 </details>
 
 <details>
-<summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
 
 ```kotlin
 val order = orderRepository.findById(orderId)
@@ -230,7 +230,7 @@ val invoice = buildInvoice(order)
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
 
 ```kotlin
 val handler = eventHandlers[eventType]
@@ -246,7 +246,7 @@ val eventPayload = event.data
 </details>
 
 <details>
-<summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
 
 ```kotlin
 val response = requestFn()
@@ -258,7 +258,7 @@ if (response.status != 429) {
 val delayMs = (2.0.pow(attempt) * 1000).toLong()
 ```
 
-O bloco ocupa três linhas físicas — peso visual próprio. Inline ficaria
+O bloco ocupa três linhas físicas, peso visual próprio. Inline ficaria
 tight, mas em bloco, blank antes.
 
 </details>
@@ -270,7 +270,7 @@ Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três
 juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
-<summary>❌ Ruim — órfão entre blanks</summary>
+<summary>❌ Ruim: órfão entre blanks</summary>
 
 ```kotlin
 private const val MINIMUM_DRIVING_AGE = 18
@@ -282,7 +282,7 @@ private const val ONE_DAY_MS = 86_400_000L
 </details>
 
 <details>
-<summary>✅ Bom — trio tight</summary>
+<summary>✅ Bom: trio tight</summary>
 
 ```kotlin
 private const val MINIMUM_DRIVING_AGE = 18
@@ -293,7 +293,7 @@ private const val ONE_DAY_MS = 86_400_000L
 </details>
 
 <details>
-<summary>✅ Bom — 4 atomics viram 2+2</summary>
+<summary>✅ Bom: 4 atomics viram 2+2</summary>
 
 ```kotlin
 private const val MINIMUM_DRIVING_AGE = 18
@@ -312,7 +312,7 @@ duas formam par. A quebra natural fica antes do par, não entre ele e sua
 dependência direta.
 
 <details>
-<summary>❌ Ruim — dependência direta partida</summary>
+<summary>❌ Ruim: dependência direta partida</summary>
 
 ```kotlin
 fun buildShippingLabel(order: Order): String {
@@ -329,7 +329,7 @@ fun buildShippingLabel(order: Order): String {
 </details>
 
 <details>
-<summary>✅ Bom — par semântico tight</summary>
+<summary>✅ Bom: par semântico tight</summary>
 
 ```kotlin
 fun buildShippingLabel(order: Order): String {
@@ -348,7 +348,7 @@ fun buildShippingLabel(order: Order): String {
 
 Quando há **dois ou mais fragmentos** preparados e uma linha final que
 **consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta — blank antes dela. É o caso clássico "preparar partes →
+como fase distinta, com blank antes dela. É o caso clássico "preparar partes →
 montar resultado", diferente do par semântico encadeado (onde a última depende
 **diretamente** da penúltima e por isso fica tight).
 
@@ -360,7 +360,7 @@ Heurística rápida:
   diferentes? → fragmentos → montagem, blank antes.
 
 <details>
-<summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
 
 ```kotlin
 fun buildDeliveryMessage(user: User, order: Order): String {
@@ -372,13 +372,13 @@ fun buildDeliveryMessage(user: User, order: Order): String {
 ```
 
 `deliveryMessage` consome `fullName` *e* `address` *e* `order.id` *e*
-`order.deliveryDays`. Não é par direto com `address` — é a fase de montagem.
+`order.deliveryDays`. Não é par direto com `address`, é a fase de montagem.
 Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
 
 ```kotlin
 fun buildDeliveryMessage(user: User, order: Order): String {
@@ -396,7 +396,7 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 </details>
 
 <details>
-<summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: contraste: par semântico encadeado (última depende só da penúltima)</summary>
 
 ```kotlin
 fun buildOrderSlug(order: Order): String {
@@ -418,7 +418,7 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
 são todas atômicas homogêneas.
 
 <details>
-<summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
 
 ```kotlin
 while (attempt < maxAttempts) {
@@ -431,7 +431,7 @@ while (attempt < maxAttempts) {
 </details>
 
 <details>
-<summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
 
 ```kotlin
 while (attempt < maxAttempts) {
@@ -450,7 +450,7 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 deixar cada fase visível.
 
 <details>
-<summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
 
 ```kotlin
 fun createUserHandler(request: CreateUserRequest): ResponseEntity<UserResponse> {
@@ -465,7 +465,7 @@ fun createUserHandler(request: CreateUserRequest): ResponseEntity<UserResponse> 
 </details>
 
 <details>
-<summary>✅ Bom — fases explícitas</summary>
+<summary>✅ Bom: fases explícitas</summary>
 
 ```kotlin
 fun createUserHandler(request: CreateUserRequest): ResponseEntity<UserResponse> {
@@ -487,7 +487,7 @@ A asserção é fase distinta. A linha em branco antes dela separa o que está s
 verificado do como está sendo verificado.
 
 <details>
-<summary>❌ Ruim — assertion colada ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: assertion colada ao setup, fases invisíveis</summary>
 
 ```kotlin
 @Test
@@ -502,7 +502,7 @@ fun `applyDiscount returns price reduced by percentage`() {
 </details>
 
 <details>
-<summary>✅ Bom — assertion separada como fase própria</summary>
+<summary>✅ Bom: assertion separada como fase própria</summary>
 
 ```kotlin
 @Test
@@ -525,7 +525,7 @@ linha em branco **depois** dele para isolar o bloco grande do próximo passo.
 Sem respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
-<summary>❌ Ruim — data class instance multi-linha colada ao próximo statement</summary>
+<summary>❌ Ruim: data class instance multi-linha colada ao próximo statement</summary>
 
 ```kotlin
 fun createSession(user: User): SessionToken {
@@ -543,7 +543,7 @@ fun createSession(user: User): SessionToken {
 </details>
 
 <details>
-<summary>✅ Bom — blank depois do objeto isola o bloco</summary>
+<summary>✅ Bom: blank depois do objeto isola o bloco</summary>
 
 ```kotlin
 fun createSession(user: User): SessionToken {
@@ -568,10 +568,10 @@ muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre
 insira blank entre eles.
 
 **Exceção:** guardas de uma linha (early returns curtos) formam trio homogêneo e
-ficam tight — a regra do trio atômico se aplica.
+ficam tight; a regra do trio atômico se aplica.
 
 <details>
-<summary>❌ Ruim — dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos {} colados</summary>
 
 ```kotlin
 fun processOrder(order: Order) {
@@ -589,7 +589,7 @@ fun processOrder(order: Order) {
 </details>
 
 <details>
-<summary>✅ Bom — blank entre os blocos</summary>
+<summary>✅ Bom: blank entre os blocos</summary>
 
 ```kotlin
 fun processOrder(order: Order) {
@@ -608,7 +608,7 @@ fun processOrder(order: Order) {
 </details>
 
 <details>
-<summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
 
 ```kotlin
 fun validateInput(input: RegisterInput): RegisterInput {
@@ -629,7 +629,7 @@ Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempr
 diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
-<summary>❌ Ruim — espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
 
 ```kotlin
 val userName     = "alice"
@@ -641,7 +641,7 @@ val lastLoginAt  = Instant.now()
 </details>
 
 <details>
-<summary>✅ Bom — espaço único, sem padding</summary>
+<summary>✅ Bom: espaço único, sem padding</summary>
 
 ```kotlin
 val userName = "alice"
@@ -658,7 +658,7 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
-<summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: string imensa inline, sem semântica nas partes</summary>
 
 ```kotlin
 fun buildDeliveryMessage(user: User, order: Order): String {
@@ -669,7 +669,7 @@ fun buildDeliveryMessage(user: User, order: Order): String {
 </details>
 
 <details>
-<summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
 
 ```kotlin
 fun buildDeliveryMessage(user: User, order: Order): String {

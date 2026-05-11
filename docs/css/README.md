@@ -5,7 +5,7 @@
 Convenções CSS aplicando os mesmos princípios deste guia: nomes semânticos, baixa especificidade,
 custom properties como tokens e mobile-first por padrão.
 
-→ [Quick Reference](quick-reference.md) — nomenclatura, ordem de propriedades, tokens
+→ [Quick Reference](quick-reference.md): nomenclatura, ordem de propriedades, tokens
 
 ## Code Style
 

@@ -17,11 +17,11 @@ CSS controla como o browser renderiza a página. Seletores complexos, propriedad
 
 ## Propriedades que não disparam reflow
 
-Reflow recalcula a geometria de todos os elementos afetados: caro. `transform` e `opacity`
-operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas duas propriedades.
+Reflow recalcula a geometria de todos os elementos afetados, o que é caro. `transform` e `opacity`
+operam na GPU via compositor, sem reflow. Para animações, prefira essas duas propriedades.
 
 <details>
-<summary>❌ Ruim — anima propriedades de layout, dispara reflow por frame</summary>
+<summary>❌ Ruim: anima propriedades de layout, dispara reflow por frame</summary>
 
 ```css
 .modal {
@@ -36,7 +36,7 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 
 .notification {
   width: 0;
-  transition: width 200ms ease; /* reflow — recalcula todo o layout */
+  transition: width 200ms ease; /* reflow: recalcula todo o layout */
 }
 
 .notification--visible {
@@ -47,7 +47,7 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 </details>
 
 <details>
-<summary>✅ Bom — transform e opacity: compositor sem reflow</summary>
+<summary>✅ Bom: transform e opacity no compositor sem reflow</summary>
 
 ```css
 .modal {
@@ -58,7 +58,7 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 }
 
 .modal--visible {
-  transform: translateY(0); /* GPU — sem reflow */
+  transform: translateY(0); /* GPU: sem reflow */
 }
 
 .notification {
@@ -78,14 +78,14 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 ## will-change: uso restrito
 
 `will-change` cria uma nova camada no compositor antecipadamente. Promove o elemento para GPU
-antes da animação começar, eliminando o jank do primeiro frame. Mas cada camada consome memória:
-use apenas em elementos que realmente animam, e remova depois da animação se possível.
+antes da animação começar, eliminando o jank do primeiro frame. Cada camada consome memória:
+aplique apenas em elementos que animam, e remova depois da animação se possível.
 
 <details>
-<summary>❌ Ruim — will-change em tudo, pressão de memória desnecessária</summary>
+<summary>❌ Ruim: will-change em tudo, pressão de memória desnecessária</summary>
 
 ```css
-/* aplicado globalmente — cada card vira uma camada de GPU */
+/* aplicado globalmente: cada card vira uma camada de GPU */
 .card {
   will-change: transform, opacity;
 }
@@ -98,7 +98,7 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 </details>
 
 <details>
-<summary>✅ Bom — will-change aplicado via JS só durante a animação</summary>
+<summary>✅ Bom: will-change aplicado via JS apenas durante a animação</summary>
 
 ```css
 .card {
@@ -126,7 +126,7 @@ dependências de ordem que precisam ser sobrescritas com especificidade ainda ma
 vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 <details>
-<summary>❌ Ruim — especificidade alta força escalada de força bruta</summary>
+<summary>❌ Ruim: especificidade alta força escalada de força bruta</summary>
 
 ```css
 #main-content .product-list .product-card .product-card__title {
@@ -145,7 +145,7 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 </details>
 
 <details>
-<summary>✅ Bom — classe simples, sobrescrita trivial</summary>
+<summary>✅ Bom: classe simples, sobrescrita trivial</summary>
 
 ```css
 .product-card__title {
@@ -155,7 +155,7 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 @media (max-width: 768px) {
   .product-card__title {
-    font-size: 0.875rem; /* mesma especificidade — ordem da cascata basta */
+    font-size: 0.875rem; /* mesma especificidade: ordem da cascata basta */
   }
 }
 ```
@@ -169,15 +169,15 @@ externos. Útil em componentes que renderizam em lista: o reflow de um card não
 para o resto da página.
 
 <details>
-<summary>✅ Bom — contain isola o impacto de reflow por componente</summary>
+<summary>✅ Bom: contain isola o impacto de reflow por componente</summary>
 
 ```css
 .product-card {
-  contain: layout style; /* reflow interno não afeta fora do card */
+  contain: layout style; /* reflow interno fica isolado do card */
 }
 
 .notification-list__item {
-  contain: layout; /* lista de notificações: cada item isolado */
+  contain: layout; /* lista de notificações, cada item isolado */
 }
 ```
 
@@ -192,7 +192,7 @@ para o resto da página.
 inteira a cada recálculo. Quanto mais específico o seletor, menos elementos são percorridos.
 
 <details>
-<summary>❌ Ruim — seletor descendente profundo recalcula a árvore</summary>
+<summary>❌ Ruim: seletor descendente profundo recalcula a árvore</summary>
 
 ```css
 /* percorre todos os filhos de .form para encontrar input */
@@ -209,14 +209,14 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 </details>
 
 <details>
-<summary>✅ Bom — classe direta no elemento</summary>
+<summary>✅ Bom: classe direta no elemento</summary>
 
 ```css
 .form__input {
   border: 1px solid #ccc;
 }
 
-/* transição só nos elementos que precisam */
+/* transição apenas nos elementos que precisam */
 .button,
 .card,
 .nav__link {

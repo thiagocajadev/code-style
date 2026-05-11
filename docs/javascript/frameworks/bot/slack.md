@@ -1,10 +1,10 @@
-# Slack — Bolt for JavaScript
+# Slack: Bolt for JavaScript
 
 > Escopo: JavaScript/Node.js. Guia baseado em **@slack/bolt v4.7.1** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Slack (tokens, Socket Mode, Block Kit, scopes): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md#slack).
 
-**Bolt for JavaScript** é o framework oficial da Slack para construir aplicativos Slack. Um objeto **App** (aplicativo) registra listeners para slash commands, eventos e ações de Block Kit. Toda interação enviada pela Slack exige um **ack()** (acknowledge, reconhecimento) em até 3 segundos — sem esse retorno, a Slack exibe um erro ao usuário.
+**Bolt for JavaScript** é o framework oficial da Slack para construir aplicativos Slack. Um objeto **App** (aplicativo) registra listeners para slash commands, eventos e ações de Block Kit. Toda interação enviada pela Slack exige um **ack()** (acknowledge, reconhecimento) em até 3 segundos. Sem esse retorno, a Slack exibe um erro ao usuário.
 
 ## Conceitos fundamentais
 
@@ -31,7 +31,7 @@ npm install @slack/bolt
 Use `process.env` para todas as credenciais. O `await` em `app.start()` é obrigatório: sem ele, erros de inicialização são silenciados.
 
 <details>
-<summary>❌ Ruim — credenciais hardcoded; sem await no start</summary>
+<summary>❌ Ruim: credenciais hardcoded; sem await no start</summary>
 
 ```js
 import { App } from '@slack/bolt';
@@ -47,7 +47,7 @@ app.start(3000);
 </details>
 
 <details>
-<summary>✅ Bom — credenciais via env; await no start; port via env</summary>
+<summary>✅ Bom: credenciais via env; await no start; port via env</summary>
 
 ```js
 import { App } from '@slack/bolt';
@@ -67,20 +67,20 @@ await app.start(process.env.PORT ?? 3000);
 `ack()` deve ser chamado antes de qualquer operação assíncrona. A Slack aguarda o reconhecimento em até 3 segundos; operações longas são iniciadas após o `ack()`.
 
 <details>
-<summary>❌ Ruim — sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
+<summary>❌ Ruim: sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
 
 ```js
 app.command('/order', async ({ ack, say, command }) => {
   const orderId = command.text.trim();
   const order = await db.findOrder(orderId);
-  await say(`Pedido #${order.id}: ${order.status} — Cliente: ${order.customerName}`);
+  await say(`Pedido #${order.id}: ${order.status}, Cliente: ${order.customerName}`);
 });
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — ack() primeiro; destructuring no corpo; orquestrador + helpers abaixo</summary>
+<summary>✅ Bom: ack() primeiro; destructuring no corpo; orquestrador + helpers abaixo</summary>
 
 ```js
 app.command('/order', async (commandPayload) => {
@@ -116,7 +116,7 @@ function buildOrderReply(order) {
 Use `app.event()` para reagir a eventos da Events API. Em listeners de mensagem, adicione um guard para `event.bot_id`: sem ele, o bot responde aos próprios envios e entra em loop.
 
 <details>
-<summary>❌ Ruim — destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
+<summary>❌ Ruim: destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
 
 ```js
 app.event('app_mention', async ({ event, say }) => {
@@ -131,7 +131,7 @@ app.event('message', async ({ event, say }) => {
 </details>
 
 <details>
-<summary>✅ Bom — destructuring no corpo; guard para bot messages; compute extraído antes do say()</summary>
+<summary>✅ Bom: destructuring no corpo; guard para bot messages; compute extraído antes do say()</summary>
 
 ```js
 app.event('app_mention', async (eventPayload) => {
@@ -166,7 +166,7 @@ function buildEchoReply(messageText) {
 Block Kit é a primitiva de UI interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, a Slack exibe um spinner indefinido no botão.
 
 <details>
-<summary>❌ Ruim — blocks montados inline; action_id como string solta; sem ack() na ação</summary>
+<summary>❌ Ruim: blocks montados inline; action_id como string solta; sem ack() na ação</summary>
 
 ```js
 app.command('/menu', async ({ ack, say }) => {
@@ -192,7 +192,7 @@ app.action('view_orders', async ({ say }) => {
 </details>
 
 <details>
-<summary>✅ Bom — blocks extraídos; action_id como constante; ack() antes do processamento</summary>
+<summary>✅ Bom: blocks extraídos; action_id como constante; ack() antes do processamento</summary>
 
 ```js
 const ACTIONS = {
@@ -239,7 +239,7 @@ async function fetchUserOrders() {
 }
 
 function buildOrdersReply(orders) {
-  const lines = orders.map((order) => `#${order.id} — ${order.status}`);
+  const lines = orders.map((order) => `#${order.id}: ${order.status}`);
   const reply = lines.join('\n');
   return reply;
 }
@@ -252,7 +252,7 @@ function buildOrdersReply(orders) {
 Socket Mode elimina a necessidade de URL pública e é recomendado para bots internos e desenvolvimento local. O `appToken` deve ter o scope `connections:write`.
 
 <details>
-<summary>❌ Ruim — tokens hardcoded; sem await no start</summary>
+<summary>❌ Ruim: tokens hardcoded; sem await no start</summary>
 
 ```js
 import { App } from '@slack/bolt';
@@ -269,7 +269,7 @@ app.start();
 </details>
 
 <details>
-<summary>✅ Bom — tokens via env; await no start; sem port (Socket Mode não usa porta)</summary>
+<summary>✅ Bom: tokens via env; await no start; sem port (Socket Mode não usa porta)</summary>
 
 ```js
 import { App } from '@slack/bolt';
@@ -287,5 +287,5 @@ await app.start();
 
 ## Veja também
 
-- [shared/platform/bots-advanced.md — Slack](../../../shared/platform/bots-advanced.md#slack) — tokens, Socket Mode, Block Kit, scopes (conceitual)
-- [shared/platform/bots.md](../../../shared/platform/bots.md) — webhook vs polling, session state, rate limit
+- [shared/platform/bots-advanced.md (Slack)](../../../shared/platform/bots-advanced.md#slack): tokens, Socket Mode, Block Kit, scopes (conceitual)
+- [shared/platform/bots.md](../../../shared/platform/bots.md): webhook vs polling, session state, rate limit

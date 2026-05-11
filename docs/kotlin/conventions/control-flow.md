@@ -9,20 +9,20 @@ Fluxo limpo sai cedo na falha, nunca aninha o caminho feliz. `when` substitui ch
 
 | Conceito | O que é |
 | --- | --- |
-| **if-expression** (`if` como expressão) | `if/else` retorna valor — substitui o ternário de outras linguagens |
+| **if-expression** (`if` como expressão) | `if/else` retorna valor; substitui o ternário de outras linguagens |
 | **when** (despacho exaustivo) | substitui chains de `if/else if`; com sealed/enum o compilador exige cobrir todos os casos |
 | **early return** (retorno antecipado) | sair da função assim que o resultado for conhecido, sem `else` desnecessário |
-| **scope function** (função de escopo) | `let`, `run`, `also`, `apply`, `with` — operam dentro do contexto de um receptor |
+| **scope function** (função de escopo) | `let`, `run`, `also`, `apply`, `with`; operam dentro do contexto de um receptor |
 | **Elvis operator** (operador Elvis, `?:`) | valor padrão ou retorno antecipado quando o lado esquerdo é `null` |
 | **smart cast** (cast inteligente) | após verificação de tipo ou null em `if`/`when`, o compilador trata como o tipo testado |
 
-## if-expression — atribuição de 2 valores
+## if-expression: atribuição de 2 valores
 
-`if/else` em Kotlin é uma expressão que retorna valor — substitui o ternário `? :` de outras
+`if/else` em Kotlin é uma expressão que retorna valor. Substitui o ternário `? :` de outras
 linguagens. Limite: 2 alternativas. Três ou mais → `when`.
 
 <details>
-<summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
+<summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```kotlin
 var label: String
@@ -36,7 +36,7 @@ if (order.isPaid) {
 </details>
 
 <details>
-<summary>✅ Bom — if-expression na atribuição</summary>
+<summary>✅ Bom: if-expression na atribuição</summary>
 
 ```kotlin
 val label = if (order.isPaid) "Paid" else "Pending"
@@ -45,7 +45,7 @@ val label = if (order.isPaid) "Paid" else "Pending"
 </details>
 
 <details>
-<summary>❌ Ruim — if-expression aninhada para 3+ alternativas</summary>
+<summary>❌ Ruim: if-expression aninhada para 3+ alternativas</summary>
 
 ```kotlin
 val label = if (score >= 90) "A" else if (score >= 80) "B" else if (score >= 70) "C" else "F"
@@ -54,7 +54,7 @@ val label = if (score >= 90) "A" else if (score >= 80) "B" else if (score >= 70)
 </details>
 
 <details>
-<summary>✅ Bom — when para 3+ alternativas</summary>
+<summary>✅ Bom: when para 3+ alternativas</summary>
 
 ```kotlin
 val label = when {
@@ -67,10 +67,10 @@ val label = when {
 
 </details>
 
-## Guard clauses — retorno antecipado
+## Guard clauses: retorno antecipado
 
 <details>
-<summary>❌ Ruim — lógica principal aninhada</summary>
+<summary>❌ Ruim: lógica principal aninhada</summary>
 
 ```kotlin
 fun processOrder(order: Order?): Result<Invoice> {
@@ -94,7 +94,7 @@ fun processOrder(order: Order?): Result<Invoice> {
 </details>
 
 <details>
-<summary>✅ Bom — guards eliminam aninhamento</summary>
+<summary>✅ Bom: guards eliminam aninhamento</summary>
 
 ```kotlin
 fun processOrder(order: Order?): Result<Invoice> {
@@ -121,7 +121,7 @@ fun processOrder(order: Order?): Result<Invoice> {
 ## Aninhamento em cascata
 
 <details>
-<summary>❌ Ruim — else após return</summary>
+<summary>❌ Ruim: else após return</summary>
 
 ```kotlin
 fun classify(score: Int): String {
@@ -140,7 +140,7 @@ fun classify(score: Int): String {
 </details>
 
 <details>
-<summary>✅ Bom — when como expressão</summary>
+<summary>✅ Bom: when como expressão</summary>
 
 ```kotlin
 fun classify(score: Int): String {
@@ -158,7 +158,7 @@ fun classify(score: Int): String {
 ## `when` como lookup
 
 <details>
-<summary>❌ Ruim — chain de if/else para mapeamento de valor</summary>
+<summary>❌ Ruim: chain de if/else para mapeamento de valor</summary>
 
 ```kotlin
 fun describeStatus(status: OrderStatus): String {
@@ -177,7 +177,7 @@ fun describeStatus(status: OrderStatus): String {
 </details>
 
 <details>
-<summary>✅ Bom — when exaustivo com sealed class</summary>
+<summary>✅ Bom: when exaustivo com sealed class</summary>
 
 ```kotlin
 fun describeStatus(status: OrderStatus): String {
@@ -195,7 +195,7 @@ fun describeStatus(status: OrderStatus): String {
 ## Elvis como guard clause
 
 <details>
-<summary>❌ Ruim — null-check verboso com if</summary>
+<summary>❌ Ruim: null-check verboso com if</summary>
 
 ```kotlin
 fun findCustomerEmail(customerId: Long): String {
@@ -210,7 +210,7 @@ fun findCustomerEmail(customerId: Long): String {
 </details>
 
 <details>
-<summary>✅ Bom — elvis direto</summary>
+<summary>✅ Bom: elvis direto</summary>
 
 ```kotlin
 fun findCustomerEmail(customerId: Long): String {
@@ -226,7 +226,7 @@ fun findCustomerEmail(customerId: Long): String {
 ## `?.let` para bloco condicional null-safe
 
 <details>
-<summary>❌ Ruim — null-check explícito antes de bloco</summary>
+<summary>❌ Ruim: null-check explícito antes de bloco</summary>
 
 ```kotlin
 val discount = order.promotion
@@ -239,7 +239,7 @@ if (discount != null) {
 </details>
 
 <details>
-<summary>✅ Bom — let executa somente quando não-null</summary>
+<summary>✅ Bom: let executa somente quando não-null</summary>
 
 ```kotlin
 order.promotion?.let { discount ->
@@ -252,10 +252,10 @@ order.promotion?.let { discount ->
 
 ## Smart cast
 
-Após verificação de tipo, o compilador converte automaticamente — sem cast manual.
+Após verificação de tipo, o compilador converte automaticamente, sem cast manual.
 
 <details>
-<summary>❌ Ruim — cast manual desnecessário</summary>
+<summary>❌ Ruim: cast manual desnecessário</summary>
 
 ```kotlin
 fun describeShape(shape: Shape): String {
@@ -270,7 +270,7 @@ fun describeShape(shape: Shape): String {
 </details>
 
 <details>
-<summary>✅ Bom — smart cast automático</summary>
+<summary>✅ Bom: smart cast automático</summary>
 
 ```kotlin
 fun describeShape(shape: Shape): String {
@@ -287,10 +287,10 @@ fun describeShape(shape: Shape): String {
 ## Circuit break
 
 Antes de escrever um loop, verifique se `firstOrNull`, `any` ou `all` já resolve. Essas funções
-param no primeiro match — sem percorrer o resto.
+param no primeiro match, sem percorrer o resto.
 
 <details>
-<summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
+<summary>❌ Ruim: loop com flag percorre tudo mesmo após encontrar</summary>
 
 ```kotlin
 var expiredProduct: Product? = null
@@ -305,7 +305,7 @@ for (product in products) {
 </details>
 
 <details>
-<summary>✅ Bom — firstOrNull sai no primeiro match</summary>
+<summary>✅ Bom: firstOrNull sai no primeiro match</summary>
 
 ```kotlin
 // para no primeiro match
@@ -323,7 +323,7 @@ val allActive = products.all { it.isActive }
 ## Iteração
 
 <details>
-<summary>❌ Ruim — índice manual quando não necessário</summary>
+<summary>❌ Ruim: índice manual quando não necessário</summary>
 
 ```kotlin
 for (i in 0 until items.size) {
@@ -334,7 +334,7 @@ for (i in 0 until items.size) {
 </details>
 
 <details>
-<summary>✅ Bom — for idiomático ou operações de coleção</summary>
+<summary>✅ Bom: for idiomático ou operações de coleção</summary>
 
 ```kotlin
 for (item in items) {
@@ -358,7 +358,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 é a escolha natural.
 
 <details>
-<summary>❌ Ruim — for com índice quando o critério é condição de estado</summary>
+<summary>❌ Ruim: for com índice quando o critério é condição de estado</summary>
 
 ```kotlin
 for (attempt in 0 until maxAttempts) {
@@ -370,7 +370,7 @@ for (attempt in 0 until maxAttempts) {
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```kotlin
 var attempt = 0
@@ -390,10 +390,10 @@ while (attempt < maxAttempts) {
 Use `do-while` quando a primeira iteração deve sempre executar, independente da condição.
 
 <details>
-<summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
 
 ```kotlin
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
+// verifica antes de executar: se a fila já estiver vazia, nunca executa
 while (taskQueue.isNotEmpty()) {
     val task = taskQueue.dequeue()
     executeTask(task)
@@ -403,10 +403,10 @@ while (taskQueue.isNotEmpty()) {
 </details>
 
 <details>
-<summary>✅ Bom — do-while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: do-while quando a primeira execução é garantida</summary>
 
 ```kotlin
-// drena a fila — processa pelo menos um item antes de verificar
+// drena a fila: processa pelo menos um item antes de verificar
 do {
     val task = taskQueue.dequeue()
     executeTask(task)

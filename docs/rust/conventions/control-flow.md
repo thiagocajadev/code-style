@@ -20,11 +20,11 @@ Rust favorece fluxo linear e explícito. O operador `?` propaga erros cedo sem a
 
 ## if/else
 
-Dois caminhos mutuamente exclusivos. Nunca use `else` após um `return` — isso cria
+Dois caminhos mutuamente exclusivos. Nunca use `else` após um `return`. Isso cria
 indentação desnecessária e esconde o caminho feliz.
 
 <details>
-<summary>❌ Ruim — else após return</summary>
+<summary>❌ Ruim: else após return</summary>
 
 ```rust
 fn get_discount(order: &Order) -> f64 {
@@ -39,7 +39,7 @@ fn get_discount(order: &Order) -> f64 {
 </details>
 
 <details>
-<summary>✅ Bom — retorno antecipado, sem else</summary>
+<summary>✅ Bom: retorno antecipado, sem else</summary>
 
 ```rust
 fn get_discount(order: &Order) -> f64 {
@@ -53,13 +53,13 @@ fn get_discount(order: &Order) -> f64 {
 
 </details>
 
-## if como expressão — ternário
+## if como expressão: ternário
 
 Rust não tem operador ternário (`?:`). Use `if` como expressão para atribuir dois valores
 possíveis em uma linha. Nunca aninhe `if` expressões.
 
 <details>
-<summary>❌ Ruim — variável mutável para simular ternário</summary>
+<summary>❌ Ruim: variável mutável para simular ternário</summary>
 
 ```rust
 let label;
@@ -73,7 +73,7 @@ if order.is_paid {
 </details>
 
 <details>
-<summary>✅ Bom — if como expressão</summary>
+<summary>✅ Bom: if como expressão</summary>
 
 ```rust
 let label = if order.is_paid { "pago" } else { "pendente" };
@@ -87,7 +87,7 @@ let label = if order.is_paid { "pago" } else { "pendente" };
 guard clause em funções que retornam `Result` ou `Option`.
 
 <details>
-<summary>❌ Ruim — match aninhado para propagação de erro</summary>
+<summary>❌ Ruim: match aninhado para propagação de erro</summary>
 
 ```rust
 fn load_order(order_id: u64) -> Result<Order, AppError> {
@@ -111,7 +111,7 @@ fn load_order(order_id: u64) -> Result<Order, AppError> {
 </details>
 
 <details>
-<summary>✅ Bom — ? em cadeia linear</summary>
+<summary>✅ Bom: ? em cadeia linear</summary>
 
 ```rust
 fn load_order(order_id: u64) -> anyhow::Result<Order> {
@@ -128,10 +128,10 @@ fn load_order(order_id: u64) -> anyhow::Result<Order> {
 ## if let e let-else
 
 Use `if let` quando apenas um braço tem ação. Use `let-else` para guard clause com
-desestruturação de `Option` ou `Result` — saída antecipada se o valor não existe.
+desestruturação de `Option` ou `Result`: saída antecipada se o valor não existe.
 
 <details>
-<summary>❌ Ruim — unwrap que pânica em None</summary>
+<summary>❌ Ruim: unwrap que pânica em None</summary>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon: Option<String>) {
@@ -143,7 +143,7 @@ fn apply_coupon(order: &mut Order, coupon: Option<String>) {
 </details>
 
 <details>
-<summary>✅ Bom — let-else como guard clause</summary>
+<summary>✅ Bom: let-else como guard clause</summary>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon: Option<String>) {
@@ -163,7 +163,7 @@ Substitua chains de `if/else` para mapeamento de chave → valor por um `HashMap
 Com 3 ou mais entradas, o mapa é mais legível e extensível.
 
 <details>
-<summary>❌ Ruim — if/else chain para mapear chave em valor</summary>
+<summary>❌ Ruim: if/else chain para mapear chave em valor</summary>
 
 ```rust
 fn get_status_label(status: &str) -> &str {
@@ -184,7 +184,7 @@ fn get_status_label(status: &str) -> &str {
 </details>
 
 <details>
-<summary>✅ Bom — HashMap como tabela de mapeamento</summary>
+<summary>✅ Bom: HashMap como tabela de mapeamento</summary>
 
 ```rust
 use std::collections::HashMap;
@@ -209,13 +209,13 @@ fn get_status_label(status: &str) -> &str {
 todos os casos precisam ser cobertos. Evite `_ => {}` silencioso que esconde variantes.
 
 <details>
-<summary>❌ Ruim — catch-all que esconde variantes não tratadas</summary>
+<summary>❌ Ruim: catch-all que esconde variantes não tratadas</summary>
 
 ```rust
 fn handle_status(status: OrderStatus) {
     match status {
         OrderStatus::Paid => process_payment(),
-        _ => {} // esconde Pending, Cancelled, Refunded — sem intenção explícita
+        _ => {} // esconde Pending, Cancelled, Refunded: sem intenção explícita
     }
 }
 ```
@@ -223,7 +223,7 @@ fn handle_status(status: OrderStatus) {
 </details>
 
 <details>
-<summary>✅ Bom — match exaustivo, cada variante com ação explícita</summary>
+<summary>✅ Bom: match exaustivo, cada variante com ação explícita</summary>
 
 ```rust
 fn handle_status(status: OrderStatus) {
@@ -239,7 +239,7 @@ fn handle_status(status: OrderStatus) {
 </details>
 
 <details>
-<summary>✅ Bom — match para 3+ variantes com valor (substitui ternário aninhado)</summary>
+<summary>✅ Bom: match para 3+ variantes com valor (substitui ternário aninhado)</summary>
 
 ```rust
 let label = match order.status {
@@ -252,13 +252,13 @@ let label = match order.status {
 
 </details>
 
-## Circuit break — `.find()`, `.any()`, `.all()`
+## Circuit break: `.find()`, `.any()`, `.all()`
 
 Para busca ou verificação que deve parar no primeiro match, use iteradores funcionais.
 Evite `for` com `break` manual.
 
 <details>
-<summary>❌ Ruim — for com flag e break manual</summary>
+<summary>❌ Ruim: for com flag e break manual</summary>
 
 ```rust
 let mut has_overdue = false;
@@ -274,7 +274,7 @@ for order in &orders {
 </details>
 
 <details>
-<summary>✅ Bom — .any() para verificação que para no primeiro true</summary>
+<summary>✅ Bom: .any() para verificação que para no primeiro true</summary>
 
 ```rust
 let has_overdue = orders.iter().any(|order| order.is_overdue);
@@ -283,7 +283,7 @@ let has_overdue = orders.iter().any(|order| order.is_overdue);
 </details>
 
 <details>
-<summary>✅ Bom — .find() para busca do primeiro elemento que satisfaz condição</summary>
+<summary>✅ Bom: .find() para busca do primeiro elemento que satisfaz condição</summary>
 
 ```rust
 let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
@@ -292,7 +292,7 @@ let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
 </details>
 
 <details>
-<summary>✅ Bom — .all() para verificar se todos satisfazem condição</summary>
+<summary>✅ Bom: .all() para verificar se todos satisfazem condição</summary>
 
 ```rust
 let all_delivered = orders.iter().all(|order| order.is_delivered);
@@ -300,13 +300,13 @@ let all_delivered = orders.iter().all(|order| order.is_delivered);
 
 </details>
 
-## for — iteração com efeito colateral
+## for: iteração com efeito colateral
 
 Use `for` para iterar com efeito colateral por item. Prefira iteradores funcionais quando
-o objetivo é transformar ou filtrar — reserve `for` para efeitos como enviar, salvar, logar.
+o objetivo é transformar ou filtrar. Reserve `for` para efeitos como enviar, salvar, logar.
 
 <details>
-<summary>❌ Ruim — for com índice quando o índice não é usado</summary>
+<summary>❌ Ruim: for com índice quando o índice não é usado</summary>
 
 ```rust
 for i in 0..orders.len() {
@@ -317,7 +317,7 @@ for i in 0..orders.len() {
 </details>
 
 <details>
-<summary>✅ Bom — for sobre referência direta</summary>
+<summary>✅ Bom: for sobre referência direta</summary>
 
 ```rust
 for order in &orders {
@@ -328,7 +328,7 @@ for order in &orders {
 </details>
 
 <details>
-<summary>✅ Bom — iterador funcional quando o resultado importa</summary>
+<summary>✅ Bom: iterador funcional quando o resultado importa</summary>
 
 ```rust
 let paid_totals: Vec<f64> = orders
@@ -343,10 +343,10 @@ let paid_totals: Vec<f64> = orders
 ## while e while let
 
 `while` para critério de parada por condição sem coleção pré-definida.
-`while let` para consumir um `Option` iterativamente — para quando `None`.
+`while let` para consumir um `Option` iterativamente; para quando `None`.
 
 <details>
-<summary>❌ Ruim — while com flag booleano desnecessário</summary>
+<summary>❌ Ruim: while com flag booleano desnecessário</summary>
 
 ```rust
 let mut done = false;
@@ -367,7 +367,7 @@ while !done {
 </details>
 
 <details>
-<summary>✅ Bom — while let idiomático</summary>
+<summary>✅ Bom: while let idiomático</summary>
 
 ```rust
 let mut result = None;
@@ -382,13 +382,13 @@ while let Some(item) = queue.pop() {
 
 </details>
 
-## loop — equivalente ao do-while
+## loop: equivalente ao do-while
 
 `loop` garante ao menos uma execução antes de verificar a condição de saída.
 É o equivalente Rust de `do-while`. Use `break value` para retornar um resultado.
 
 <details>
-<summary>❌ Ruim — while com inicialização fora do loop</summary>
+<summary>❌ Ruim: while com inicialização fora do loop</summary>
 
 ```rust
 let mut attempt = 0;
@@ -406,7 +406,7 @@ while attempt < MAX_RETRIES {
 </details>
 
 <details>
-<summary>✅ Bom — loop com break value</summary>
+<summary>✅ Bom: loop com break value</summary>
 
 ```rust
 let connection = loop {

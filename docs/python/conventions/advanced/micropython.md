@@ -1,6 +1,6 @@
 # MicroPython / IoT
 
-> Escopo: MicroPython 1.28 — RP2040 (Raspberry Pi Pico) e ESP32.
+> Escopo: MicroPython 1.28 (RP2040, Raspberry Pi Pico, e ESP32).
 > Padrões de domínio IoT (debounce, FSM, watchdog): [shared/platform/iot.md](../../../../shared/platform/iot.md)
 
 MicroPython é uma implementação de Python 3 otimizada para microcontroladores. Roda com
@@ -29,8 +29,8 @@ MicroPython omite ou reduz módulos da stdlib padrão. Verifique disponibilidade
 | `logging` | Ausente | `print()` ou implementação manual |
 | `pathlib` | Ausente | `os` nativo |
 | `json` | Disponível (`ujson`) | `import ujson as json` |
-| `re` | Disponível (`ure`) — limitado | `import ure as re` |
-| `socket` | Disponível — sem SSL completo | `ssl` disponível em alguns ports |
+| `re` | Disponível (`ure`), limitado | `import ure as re` |
+| `socket` | Disponível, sem SSL completo | `ssl` disponível em alguns ports |
 | `asyncio` | Disponível (`uasyncio`) | `import asyncio` funciona em MicroPython 1.20+ |
 
 ## Restrições de memória
@@ -39,14 +39,14 @@ Evite criar listas e strings grandes em loops. Prefira operações in-place.
 Chame `gc.collect()` periodicamente em loops que alocam muito.
 
 <details>
-<summary>❌ Ruim — lista crescente em memória limitada</summary>
+<summary>❌ Ruim: lista crescente em memória limitada</summary>
 
 ```python
 import machine
 import utime
 
 temperature_adc = machine.ADC(26)
-readings = []  # cresce indefinidamente — MemoryError em dispositivos com <256 KB
+readings = []  # cresce indefinidamente: MemoryError em dispositivos com <256 KB
 
 while True:
     raw = temperature_adc.read_u16()
@@ -63,7 +63,7 @@ while True:
 </details>
 
 <details>
-<summary>✅ Bom — acumulador com tamanho fixo, sem lista</summary>
+<summary>✅ Bom: acumulador com tamanho fixo, sem lista</summary>
 
 ```python
 import machine
@@ -92,12 +92,12 @@ while True:
 
 </details>
 
-## Módulos ausentes — datetime
+## Módulos ausentes: datetime
 
 MicroPython não tem `datetime`. Use `utime.localtime()` para decompor timestamps Unix.
 
 <details>
-<summary>❌ Ruim — import que falha em MicroPython</summary>
+<summary>❌ Ruim: import que falha em MicroPython</summary>
 
 ```python
 from datetime import datetime, timedelta
@@ -109,7 +109,7 @@ expiry = now + timedelta(hours=1)
 </details>
 
 <details>
-<summary>✅ Bom — utime como substituto</summary>
+<summary>✅ Bom: utime como substituto</summary>
 
 ```python
 import utime
@@ -128,10 +128,10 @@ print(f"now: {year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}:{second:02d}")
 ## asyncio em MicroPython (uasyncio)
 
 MicroPython 1.20+ inclui `uasyncio` compatível com `asyncio`. Permite concorrência cooperativa
-sem threads — essencial para ler sensores e manter rede ao mesmo tempo.
+sem threads. Essencial para ler sensores e manter rede ao mesmo tempo.
 
 <details>
-<summary>✅ Bom — leitura de sensor + keep-alive de rede com asyncio</summary>
+<summary>✅ Bom: leitura de sensor + keep-alive de rede com asyncio</summary>
 
 ```python
 import asyncio

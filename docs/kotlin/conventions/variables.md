@@ -18,7 +18,7 @@ declara referência mutável. Prefira `val` e escreva `var` somente quando o flu
 ## `var` onde `val` resolve
 
 <details>
-<summary>❌ Ruim — var desnecessário</summary>
+<summary>❌ Ruim: var desnecessário</summary>
 
 ```kotlin
 var total = 0.0
@@ -31,7 +31,7 @@ isActive = user.status == "active"
 </details>
 
 <details>
-<summary>✅ Bom — val com inicialização direta</summary>
+<summary>✅ Bom: val com inicialização direta</summary>
 
 ```kotlin
 val total = items.sumOf { it.price }
@@ -44,7 +44,7 @@ val isActive = user.status == "active"
 ## `const val` para constantes de compilação
 
 <details>
-<summary>❌ Ruim — número mágico inline</summary>
+<summary>❌ Ruim: número mágico inline</summary>
 
 ```kotlin
 fun shouldRetry(attempt: Int): Boolean {
@@ -55,7 +55,7 @@ fun shouldRetry(attempt: Int): Boolean {
 </details>
 
 <details>
-<summary>✅ Bom — constante nomeada</summary>
+<summary>✅ Bom: constante nomeada</summary>
 
 ```kotlin
 private const val MAX_RETRIES = 3
@@ -70,7 +70,7 @@ fun shouldRetry(attempt: Int): Boolean {
 ## `by lazy` para inicialização custosa
 
 <details>
-<summary>❌ Ruim — recalcula em cada acesso</summary>
+<summary>❌ Ruim: recalcula em cada acesso</summary>
 
 ```kotlin
 class ReportService {
@@ -81,7 +81,7 @@ class ReportService {
 </details>
 
 <details>
-<summary>✅ Bom — inicializa apenas quando acessado</summary>
+<summary>✅ Bom: inicializa apenas quando acessado</summary>
 
 ```kotlin
 class ReportService {
@@ -94,7 +94,7 @@ class ReportService {
 ## Valores mágicos
 
 <details>
-<summary>❌ Ruim — literais inline sem contexto</summary>
+<summary>❌ Ruim: literais inline sem contexto</summary>
 
 ```kotlin
 if (user.role == "admin") { ... }
@@ -107,7 +107,7 @@ val discount = price * 0.15
 </details>
 
 <details>
-<summary>✅ Bom — constantes nomeadas com intenção</summary>
+<summary>✅ Bom: constantes nomeadas com intenção</summary>
 
 ```kotlin
 private const val ADMIN_ROLE = "admin"
@@ -126,7 +126,7 @@ val discount = price * SEASONAL_DISCOUNT_RATE
 ## Destructuring declarations
 
 <details>
-<summary>❌ Ruim — acesso por índice ou nome repetido</summary>
+<summary>❌ Ruim: acesso por índice ou nome repetido</summary>
 
 ```kotlin
 val pair = Pair("Alice", 30)
@@ -141,7 +141,7 @@ for (entry in map.entries) {
 </details>
 
 <details>
-<summary>✅ Bom — destructuring que nomeia o conteúdo</summary>
+<summary>✅ Bom: destructuring que nomeia o conteúdo</summary>
 
 ```kotlin
 val (name, age) = Pair("Alice", 30)
@@ -158,7 +158,7 @@ for ((key, value) in map) {
 Declare a variável no escopo mais restrito possível.
 
 <details>
-<summary>❌ Ruim — variável declarada antes do escopo real</summary>
+<summary>❌ Ruim: variável declarada antes do escopo real</summary>
 
 ```kotlin
 var message: String
@@ -175,7 +175,7 @@ sendNotification(message)
 </details>
 
 <details>
-<summary>✅ Bom — val com when como expressão</summary>
+<summary>✅ Bom: val com when como expressão</summary>
 
 ```kotlin
 val message = when {

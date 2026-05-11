@@ -23,7 +23,7 @@ na fronteira antes de chegar ao domínio.
 ## Secrets e variáveis de ambiente
 
 <details>
-<summary>❌ Ruim — secret no código-fonte</summary>
+<summary>❌ Ruim: secret no código-fonte</summary>
 
 ```php
 class AuthService
@@ -40,7 +40,7 @@ class AuthService
 </details>
 
 <details>
-<summary>✅ Bom — secret lido de variável de ambiente, fail-fast se ausente</summary>
+<summary>✅ Bom: secret lido de variável de ambiente, fail-fast se ausente</summary>
 
 ```php
 // src/Config.php
@@ -65,12 +65,12 @@ final class AuthService
 
 </details>
 
-## Prepared statements — SQL injection
+## Prepared statements: SQL injection
 
 Nunca concatene input do usuário em queries. Use sempre PDO com `prepare()` e `bindValue()`.
 
 <details>
-<summary>❌ Ruim — concatenação em query SQL</summary>
+<summary>❌ Ruim: concatenação em query SQL</summary>
 
 ```php
 $query = "SELECT * FROM users WHERE email = '" . $email . "'";
@@ -80,7 +80,7 @@ $result = $pdo->query($query); // SQL injection
 </details>
 
 <details>
-<summary>✅ Bom — prepared statement com bind</summary>
+<summary>✅ Bom: prepared statement com bind</summary>
 
 ```php
 final class UserRepository
@@ -107,12 +107,12 @@ final class UserRepository
 
 </details>
 
-## Output escaping — XSS
+## Output escaping: XSS
 
 Sempre escape output em templates HTML. Nunca exiba input do usuário sem tratar.
 
 <details>
-<summary>❌ Ruim — output sem escaping</summary>
+<summary>❌ Ruim: output sem escaping</summary>
 
 ```php
 echo "<h1>Olá, " . $_GET['name'] . "</h1>"; // XSS
@@ -121,7 +121,7 @@ echo "<h1>Olá, " . $_GET['name'] . "</h1>"; // XSS
 </details>
 
 <details>
-<summary>✅ Bom — htmlspecialchars para output HTML</summary>
+<summary>✅ Bom: htmlspecialchars para output HTML</summary>
 
 ```php
 $name = htmlspecialchars($_GET['name'] ?? '', ENT_QUOTES | ENT_HTML5, 'UTF-8');
@@ -136,7 +136,7 @@ Use `password_hash` com `PASSWORD_BCRYPT` ou `PASSWORD_ARGON2ID`. Nunca MD5, SHA
 para senhas.
 
 <details>
-<summary>❌ Ruim — hash fraco para senha</summary>
+<summary>❌ Ruim: hash fraco para senha</summary>
 
 ```php
 $passwordHash = md5($password); // quebrável por rainbow table
@@ -146,7 +146,7 @@ $passwordHash = sha256($password); // sem salt, vulnerável
 </details>
 
 <details>
-<summary>✅ Bom — password_hash + password_verify</summary>
+<summary>✅ Bom: password_hash + password_verify</summary>
 
 ```php
 final class PasswordHasher
@@ -172,7 +172,7 @@ final class PasswordHasher
 Proteja formulários com token CSRF gerado por sessão.
 
 <details>
-<summary>✅ Bom — geração e verificação de token CSRF</summary>
+<summary>✅ Bom: geração e verificação de token CSRF</summary>
 
 ```php
 final class CsrfProtection

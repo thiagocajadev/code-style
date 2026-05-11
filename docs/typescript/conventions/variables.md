@@ -13,7 +13,7 @@ As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que
 | **`any`** (tipo escape) | Desliga a checagem; anti-padrão exceto na fronteira controlada |
 | **`unknown`** (tipo seguro de origem desconhecida) | Tipo amplo que exige narrowing antes de uso; substituto correto de `any` |
 | **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; evitar fora de testes ou inicialização garantida |
-| **definite assignment** (atribuição garantida) | `let x!: T` — promete ao compilador que será atribuído antes do uso |
+| **definite assignment** (atribuição garantida) | `let x!: T`: promete ao compilador que será atribuído antes do uso |
 
 ## Inferência por padrão
 
@@ -21,7 +21,7 @@ TypeScript deriva o tipo quando a atribuição é óbvia. Anotar o que já é vi
 que polui sem agregar.
 
 <details>
-<summary>❌ Ruim — anotação repete o que a atribuição já diz</summary>
+<summary>❌ Ruim: anotação repete o que a atribuição já diz</summary>
 
 ```ts
 const userName: string = "Alice";
@@ -33,13 +33,13 @@ const orders: Order[] = [];
 </details>
 
 <details>
-<summary>✅ Bom — inferência quando o tipo é óbvio</summary>
+<summary>✅ Bom: inferência quando o tipo é óbvio</summary>
 
 ```ts
 const userName = "Alice";
 const isActive = true;
 const MAX_RETRIES = 3;
-const orders: Order[] = []; // anotação necessária — array vazio não tem tipo inferível
+const orders: Order[] = []; // anotação necessária: array vazio não tem tipo inferível
 ```
 
 </details>
@@ -50,17 +50,17 @@ Inferência quebra quando o tipo não pode ser derivado do valor inicial: variá
 arrays vazios, objetos parcialmente construídos.
 
 <details>
-<summary>❌ Ruim — tipo implícito `any` sem aviso visual</summary>
+<summary>❌ Ruim: tipo implícito `any` sem aviso visual</summary>
 
 ```ts
-let currentUser; // any — sem tipo, sem proteção
-const results = []; // never[] — TypeScript não sabe o tipo dos elementos
+let currentUser; // any: sem tipo, sem proteção
+const results = []; // never[]: TypeScript não sabe o tipo dos elementos
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — anotação explícita onde a inferência não alcança</summary>
+<summary>✅ Bom: anotação explícita onde a inferência não alcança</summary>
 
 ```ts
 let currentUser: User | null = null;
@@ -75,7 +75,7 @@ const results: Order[] = [];
 contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
 
 <details>
-<summary>❌ Ruim — any apaga todo o benefício do TypeScript</summary>
+<summary>❌ Ruim: any apaga todo o benefício do TypeScript</summary>
 
 ```ts
 async function fetchExternalData(): Promise<any> {
@@ -90,7 +90,7 @@ data.user.name; // TypeScript aceita, mas pode explodir em runtime
 </details>
 
 <details>
-<summary>✅ Bom — unknown força narrowing antes do uso</summary>
+<summary>✅ Bom: unknown força narrowing antes do uso</summary>
 
 ```ts
 async function fetchExternalData(): Promise<unknown> {
@@ -102,7 +102,7 @@ const raw = await fetchExternalData();
 
 if (!isApiResponse(raw)) throw new ValidationError({ message: "Unexpected response shape." });
 
-const data = raw; // narrowado para ApiResponse — seguro usar
+const data = raw; // narrowado para ApiResponse: seguro usar
 ```
 
 </details>
@@ -113,7 +113,7 @@ const data = raw; // narrowado para ApiResponse — seguro usar
 type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables e enums sem enum.
 
 <details>
-<summary>❌ Ruim — tipo inferido como string, perde a especificidade</summary>
+<summary>❌ Ruim: tipo inferido como string, perde a especificidade</summary>
 
 ```ts
 const ORDER_STATUS = {
@@ -122,7 +122,7 @@ const ORDER_STATUS = {
   cancelled: "cancelled",
 };
 // tipo inferido: { pending: string; approved: string; cancelled: string }
-// ORDER_STATUS.pending é string — qualquer string passa
+// ORDER_STATUS.pending é string: qualquer string passa
 
 function updateStatus(status: string) { /* ... */ } // sem restrição real
 ```
@@ -130,7 +130,7 @@ function updateStatus(status: string) { /* ... */ } // sem restrição real
 </details>
 
 <details>
-<summary>✅ Bom — as const preserva os literais</summary>
+<summary>✅ Bom: as const preserva os literais</summary>
 
 ```ts
 const ORDER_STATUS = {
@@ -153,7 +153,7 @@ function updateStatus(status: OrderStatus) { /* ... */ } // só aceita os valore
 Diferente da anotação direta, que alarga o tipo para a interface.
 
 <details>
-<summary>❌ Ruim — anotação direta alarga para o tipo base</summary>
+<summary>❌ Ruim: anotação direta alarga para o tipo base</summary>
 
 ```ts
 interface RouteConfig {
@@ -166,13 +166,13 @@ const createOrder: RouteConfig = {
   method: "POST",
 };
 
-createOrder.method; // tipo: "GET" | "POST" | "PUT" | "DELETE" — perde a especificidade
+createOrder.method; // tipo: "GET" | "POST" | "PUT" | "DELETE", perde a especificidade
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — satisfies valida e preserva o tipo literal</summary>
+<summary>✅ Bom: satisfies valida e preserva o tipo literal</summary>
 
 ```ts
 const createOrder = {
@@ -180,7 +180,7 @@ const createOrder = {
   method: "POST",
 } satisfies RouteConfig;
 
-createOrder.method; // tipo: "POST" — literal preservado
+createOrder.method; // tipo: "POST", literal preservado
 ```
 
 </details>

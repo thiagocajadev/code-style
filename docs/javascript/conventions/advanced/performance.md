@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados em volume ou frequência alta): loops apertados, handlers de requisição, processamento de stream. Fora desse contexto, prefira legibilidade. **Premature optimization** (otimização prematura) custa clareza sem ganho real — meça antes de otimizar.
+Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados em volume ou frequência alta): loops apertados, handlers de requisição, processamento de stream. Fora desse contexto, prefira legibilidade. **Premature optimization** (otimização prematura) custa clareza sem ganho real: meça antes de otimizar.
 
 ## Conceitos fundamentais
 
@@ -24,7 +24,7 @@ Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados
 execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iterável, sem callback.
 
 <details>
-<summary>❌ Ruim — callback alocado por iteração</summary>
+<summary>❌ Ruim: callback alocado por iteração</summary>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -40,7 +40,7 @@ function calculateTotalRevenue(orders) {
 </details>
 
 <details>
-<summary>✅ Bom — for...of sem overhead de callback</summary>
+<summary>✅ Bom: for...of sem overhead de callback</summary>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -62,7 +62,7 @@ O(1) via hash. Para listas fixas verificadas com frequência, defina o `Set` uma
 reutilize.
 
 <details>
-<summary>❌ Ruim — Array.includes percorre tudo a cada chamada</summary>
+<summary>❌ Ruim: Array.includes percorre tudo a cada chamada</summary>
 
 ```js
 const PREMIUM_CATEGORIES = ["electronics", "jewelry", "watches"];
@@ -79,7 +79,7 @@ function filterPremiumProducts(products) {
 </details>
 
 <details>
-<summary>✅ Bom — Set.has resolve em O(1)</summary>
+<summary>✅ Bom: Set.has resolve em O(1)</summary>
 
 ```js
 const PREMIUM_CATEGORIES = new Set(["electronics", "jewelry", "watches"]);
@@ -102,11 +102,11 @@ progressivamente. UUID v7 é time-ordered: insere sempre próximo ao fim da B-tr
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
 
 <details>
-<summary>❌ Ruim — crypto.randomUUID() é v4: random, fragmenta índice</summary>
+<summary>❌ Ruim: crypto.randomUUID() é v4: random, fragmenta índice</summary>
 
 ```js
 function createOrder(request) {
-  const orderId = crypto.randomUUID(); // v4 — random, page splits no banco
+  const orderId = crypto.randomUUID(); // v4: random, page splits no banco
 
   return saveOrder({ id: orderId, ...request });
 }
@@ -115,13 +115,13 @@ function createOrder(request) {
 </details>
 
 <details>
-<summary>✅ Bom — UUID v7: time-ordered, sequencial no índice</summary>
+<summary>✅ Bom: UUID v7: time-ordered, sequencial no índice</summary>
 
 ```js
 import { v7 as uuidv7 } from "uuid";
 
 function createOrder(request) {
-  const orderId = uuidv7(); // time-ordered — sequencial no índice, sem fragmentação
+  const orderId = uuidv7(); // time-ordered: sequencial no índice, sem fragmentação
 
   return saveOrder({ id: orderId, ...request });
 }
@@ -136,13 +136,13 @@ strings são imutáveis em JavaScript. Para construir strings dinamicamente, acu
 `join()` no final. Uma alocação, resultado único.
 
 <details>
-<summary>❌ Ruim — nova string alocada por iteração</summary>
+<summary>❌ Ruim: nova string alocada por iteração</summary>
 
 ```js
 function buildOrderReport(orders) {
   let report = "";
   for (const order of orders) {
-    report += `#${order.id}: ${order.customer} — ${order.total}\n`;
+    report += `#${order.id}: ${order.customer}, ${order.total}\n`;
   }
 
   return report;
@@ -152,13 +152,13 @@ function buildOrderReport(orders) {
 </details>
 
 <details>
-<summary>✅ Bom — array + join, uma alocação no final</summary>
+<summary>✅ Bom: array + join, uma alocação no final</summary>
 
 ```js
 function buildOrderReport(orders) {
   const lines = [];
   for (const order of orders) {
-    lines.push(`#${order.id}: ${order.customer} — ${order.total}`);
+    lines.push(`#${order.id}: ${order.customer}, ${order.total}`);
   }
 
   const report = lines.join("\n");

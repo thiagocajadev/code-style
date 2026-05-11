@@ -3,15 +3,15 @@
 > Escopo: Dart 3.7.
 
 Nomes bons tornam comentários desnecessários. Dart usa `camelCase` para identificadores e
-`snake_case` para arquivos. O prefixo `_` é o único mecanismo de visibilidade de biblioteca
-— não há `private` por classe.
+`snake_case` para arquivos. O prefixo `_` é o único mecanismo de visibilidade de biblioteca:
+não há `private` por classe.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **lowerCamelCase** (camelo minúsculo) | funções, métodos, variáveis, parâmetros e constantes — primeira letra minúscula |
-| **UpperCamelCase** (camelo maiúsculo) | classes, enums, typedefs e extensions — primeira letra maiúscula |
+| **lowerCamelCase** (camelo minúsculo) | funções, métodos, variáveis, parâmetros e constantes; primeira letra minúscula |
+| **UpperCamelCase** (camelo maiúsculo) | classes, enums, typedefs e extensions; primeira letra maiúscula |
 | **lowercase_with_underscores** (minúsculas com sublinhado) | nomes de arquivos, diretórios e bibliotecas Dart |
 | **library privacy** (privacidade de biblioteca) | prefixo `_` torna o membro privado à biblioteca; único mecanismo de visibilidade |
 | **boolean prefix** (prefixo booleano) | `is`, `has`, `can`, `should` revelam intenção em variáveis e métodos lógicos |
@@ -48,7 +48,7 @@ Order? applyDiscount(Order order, Order Function(Order) calculate) {
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Dart</summary>
+<summary>❌ Ruim: identificadores em português ficam desajeitados no idioma Dart</summary>
 
 ```dart
 final nomeDoUsuario = 'Alice';
@@ -61,7 +61,7 @@ Address? buscaEnderecoDoCliente(int id) { ... }
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês: curto, direto, universal</summary>
 
 ```dart
 final userName = 'Alice';
@@ -84,7 +84,7 @@ Address? findCustomerAddress(int customerId) { ... }
 | Privado à biblioteca | prefixo `_` | `_userId`, `_buildHeader()` |
 
 <details>
-<summary>❌ Ruim — case errado</summary>
+<summary>❌ Ruim: case errado</summary>
 
 ```dart
 const MAX_RETRIES = 3;          // SCREAMING_SNAKE não é idiomático em Dart
@@ -95,7 +95,7 @@ void Calculate_Total() {}       // função com underscore
 </details>
 
 <details>
-<summary>✅ Bom — convenções Dart respeitadas</summary>
+<summary>✅ Bom: convenções Dart respeitadas</summary>
 
 ```dart
 const maxRetries = 3;
@@ -110,7 +110,7 @@ double calculateTotal(List<Item> items) { ... }
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```dart
 final loading = true;
@@ -121,7 +121,7 @@ final valid = email.contains('@');
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```dart
 final isActive = user.status == 'active';
@@ -136,7 +136,7 @@ final shouldRetry = attempt < maxRetries;
 ## Domain-first naming
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura</summary>
+<summary>❌ Ruim: nome revela infraestrutura</summary>
 
 ```dart
 Future<void> callStripe(double amount) async { ... }
@@ -146,7 +146,7 @@ Future<User?> getUserFromDB(int userId) async { ... }
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```dart
 Future<void> chargeCustomer(double amount) async { ... }
@@ -158,7 +158,7 @@ Future<User?> findUser(int userId) async { ... }
 ## Prefixo `_` para membro privado
 
 <details>
-<summary>❌ Ruim — membro público que não faz parte da API</summary>
+<summary>❌ Ruim: membro público que não faz parte da API</summary>
 
 ```dart
 class OrderService {
@@ -170,7 +170,7 @@ class OrderService {
 </details>
 
 <details>
-<summary>✅ Bom — `_` sinaliza que é detalhe de implementação</summary>
+<summary>✅ Bom: `_` sinaliza que é detalhe de implementação</summary>
 
 ```dart
 class OrderService {

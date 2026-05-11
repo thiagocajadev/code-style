@@ -1,6 +1,6 @@
 # IoT / MicroPython
 
-> Escopo: transversal — padrões de domínio IoT com exemplos em MicroPython 1.28.
+> Escopo: transversal, com padrões de domínio IoT em exemplos MicroPython 1.28.
 
 Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit, unidade central de processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
 
@@ -21,7 +21,7 @@ Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que
 Nomes refletem o papel do sensor no domínio, não o tipo de hardware.
 
 <details>
-<summary>❌ Ruim — nome técnico sem contexto de domínio</summary>
+<summary>❌ Ruim: nome técnico sem contexto de domínio</summary>
 
 ```python
 pin0 = machine.Pin(0, machine.Pin.IN)
@@ -32,7 +32,7 @@ pwm_out = machine.PWM(machine.Pin(2))
 </details>
 
 <details>
-<summary>✅ Bom — nome de domínio revela intenção</summary>
+<summary>✅ Bom: nome de domínio revela intenção</summary>
 
 ```python
 door_sensor = machine.Pin(0, machine.Pin.IN, machine.Pin.PULL_UP)
@@ -42,13 +42,13 @@ fan_pwm = machine.PWM(machine.Pin(2), freq=1000)
 
 </details>
 
-## Debounce — filtragem de ruído de botão e sensor
+## Debounce: filtragem de ruído de botão e sensor
 
 Sensores físicos produzem leituras ruidosas na transição. Ignore leituras dentro da janela
 de tempo após a primeira detecção.
 
 <details>
-<summary>❌ Ruim — sem debounce, evento disparado múltiplas vezes</summary>
+<summary>❌ Ruim: sem debounce, evento disparado múltiplas vezes</summary>
 
 ```python
 import machine
@@ -64,7 +64,7 @@ button.irq(trigger=machine.Pin.IRQ_FALLING, handler=on_press)
 </details>
 
 <details>
-<summary>✅ Bom — debounce por timestamp</summary>
+<summary>✅ Bom: debounce por timestamp</summary>
 
 ```python
 import machine
@@ -95,12 +95,12 @@ def handle_door_open():
 
 </details>
 
-## Máquina de estados — FSM
+## Máquina de estados: FSM
 
 Modele o comportamento do dispositivo como estados explícitos. Evite flags booleanos soltos.
 
 <details>
-<summary>❌ Ruim — flags soltos sem estado explícito</summary>
+<summary>❌ Ruim: flags soltos sem estado explícito</summary>
 
 ```python
 is_door_open = False
@@ -116,7 +116,7 @@ if is_door_open and not is_alarm_active:
 </details>
 
 <details>
-<summary>✅ Bom — FSM com estados nomeados e transições explícitas</summary>
+<summary>✅ Bom: FSM com estados nomeados e transições explícitas</summary>
 
 ```python
 import utime
@@ -166,7 +166,7 @@ Envie alertas com identificador único. O servidor ignora duplicatas. Evite re-e
 o mesmo alerta enquanto a condição não mudar.
 
 <details>
-<summary>❌ Ruim — alerta reenviado a cada tick enquanto condição persiste</summary>
+<summary>❌ Ruim: alerta reenviado a cada tick enquanto condição persiste</summary>
 
 ```python
 import urequests
@@ -180,7 +180,7 @@ def check_temperature(temp_celsius):
 </details>
 
 <details>
-<summary>✅ Bom — alerta enviado uma vez por evento, com ID único</summary>
+<summary>✅ Bom: alerta enviado uma vez por evento, com ID único</summary>
 
 ```python
 import urequests
@@ -213,13 +213,13 @@ def check_temperature(temp_celsius):
 
 </details>
 
-## Watchdog — recuperação de travamento
+## Watchdog: recuperação de travamento
 
 O **Watchdog** reinicia o dispositivo se o loop principal parar de alimentá-lo.
 Útil para recuperação automática de travamentos ou deadlocks de rede.
 
 <details>
-<summary>❌ Ruim — watchdog nunca alimentado, ou ausente</summary>
+<summary>❌ Ruim: watchdog nunca alimentado, ou ausente</summary>
 
 ```python
 import machine
@@ -235,7 +235,7 @@ def main_loop():
 </details>
 
 <details>
-<summary>✅ Bom — watchdog alimentado a cada iteração do loop</summary>
+<summary>✅ Bom: watchdog alimentado a cada iteração do loop</summary>
 
 ```python
 import machine
@@ -267,13 +267,13 @@ Use IRQ para eventos rápidos (botão, borda de sinal). Use polling para leitura
 de sensores analógicos ou quando o hardware não suporta interrupção.
 
 <details>
-<summary>✅ Bom — polling periódico com sleep para sensores analógicos</summary>
+<summary>✅ Bom: polling periódico com sleep para sensores analógicos</summary>
 
 ```python
 import machine
 import utime
 
-temperature_adc = machine.ADC(26)  # GPIO26 no Pico — ADC0
+temperature_adc = machine.ADC(26)  # GPIO26 no Pico: ADC0
 READ_INTERVAL_MS = 5_000
 
 def read_temperature_celsius() -> float:

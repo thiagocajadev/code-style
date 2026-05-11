@@ -38,7 +38,7 @@ PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window f
 | Enum | `CREATE TYPE ... AS ENUM` | Conjunto fixo de valores; migração cuidadosa ao alterar |
 
 <details>
-<summary>❌ Ruim — tipos imprecisos e sem timezone</summary>
+<summary>❌ Ruim: tipos imprecisos e sem timezone</summary>
 
 ```sql
 CREATE TABLE orders (
@@ -51,7 +51,7 @@ CREATE TABLE orders (
 </details>
 
 <details>
-<summary>✅ Bom — tipos explícitos, **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7, TIMESTAMPTZ</summary>
+<summary>✅ Bom: tipos explícitos, **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7, TIMESTAMPTZ</summary>
 
 ```sql
 CREATE TABLE orders (
@@ -75,7 +75,7 @@ PostgreSQL 18 inclui `uuidv7()` nativo: UUID com prefixo de timestamp de alta re
 Sequencial, sem fragmentação de índice, com unicidade global.
 
 <details>
-<summary>✅ Bom — UUID v7 como DEFAULT, sem geração na aplicação</summary>
+<summary>✅ Bom: UUID v7 como DEFAULT, sem geração na aplicação</summary>
 
 ```sql
 CREATE TABLE events (
@@ -96,7 +96,7 @@ Substitui `SERIAL`. Padrão **SQL** (Structured Query Language, Linguagem de Con
 criada pelo `SERIAL`.
 
 <details>
-<summary>❌ Ruim — SERIAL cria uma sequência implícita difícil de inspecionar</summary>
+<summary>❌ Ruim: SERIAL cria uma sequência implícita difícil de inspecionar</summary>
 
 ```sql
 CREATE TABLE customers (
@@ -108,7 +108,7 @@ CREATE TABLE customers (
 </details>
 
 <details>
-<summary>✅ Bom — GENERATED ALWAYS AS IDENTITY</summary>
+<summary>✅ Bom: GENERATED ALWAYS AS IDENTITY</summary>
 
 ```sql
 CREATE TABLE customers (
@@ -123,13 +123,13 @@ CREATE TABLE customers (
 
 ## RETURNING
 
-`RETURNING` retorna as linhas afetadas por INSERT, UPDATE, DELETE ou MERGE — sem query adicional.
+`RETURNING` retorna as linhas afetadas por INSERT, UPDATE, DELETE ou MERGE, sem query adicional.
 
 No PostgreSQL 18, `RETURNING` suporta `OLD` e `NEW` em UPDATE e DELETE para acessar o valor
 antes e depois da operação.
 
 <details>
-<summary>❌ Ruim — query adicional para recuperar o ID após INSERT</summary>
+<summary>❌ Ruim: query adicional para recuperar o ID após INSERT</summary>
 
 ```sql
 INSERT INTO orders (customer_id, total) VALUES (@customer_id, @total);
@@ -139,7 +139,7 @@ SELECT LASTVAL(); -- necessário para recuperar o ID
 </details>
 
 <details>
-<summary>✅ Bom — RETURNING retorna o ID na mesma operação</summary>
+<summary>✅ Bom: RETURNING retorna o ID na mesma operação</summary>
 
 ```sql
 -- INSERT com RETURNING
@@ -177,7 +177,7 @@ RETURNING
 Prefira `RETURNS TABLE` a `RETURNS SETOF` para funções que retornam linhas com colunas nomeadas.
 
 <details>
-<summary>❌ Ruim — RETURNS VOID, SELECT * dentro de function</summary>
+<summary>❌ Ruim: RETURNS VOID, SELECT * dentro de function</summary>
 
 ```sql
 CREATE FUNCTION get_team(team_id INT) RETURNS VOID AS $$
@@ -190,7 +190,7 @@ $$ LANGUAGE plpgsql;
 </details>
 
 <details>
-<summary>✅ Bom — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
+<summary>✅ Bom: RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
 
 ```sql
 CREATE OR REPLACE FUNCTION fn_get_football_team_by_id
@@ -227,7 +227,7 @@ No PostgreSQL, CTEs podem ser usadas com INSERT, UPDATE e DELETE via `WITH ... R
 Permite encadear operações em uma única instrução.
 
 <details>
-<summary>✅ Bom — mover registro de tabela de origem para destino em uma instrução</summary>
+<summary>✅ Bom: mover registro de tabela de origem para destino em uma instrução</summary>
 
 ```sql
 WITH deleted_order AS
@@ -265,7 +265,7 @@ RETURNING
 estrutura completa em tempo de definição do schema.
 
 <details>
-<summary>❌ Ruim — coluna JSON sem índice: full table scan em todo acesso</summary>
+<summary>❌ Ruim: coluna JSON sem índice: full table scan em todo acesso</summary>
 
 ```sql
 CREATE TABLE events (
@@ -282,7 +282,7 @@ WHERE events.payload->>'type' = 'order.created';
 </details>
 
 <details>
-<summary>✅ Bom — JSONB com índice GIN e operador @></summary>
+<summary>✅ Bom: JSONB com índice GIN e operador @></summary>
 
 ```sql
 CREATE TABLE events (
@@ -312,13 +312,13 @@ WHERE
 mais eficiente para queries que sempre filtram pelo mesmo critério.
 
 <details>
-<summary>✅ Bom — índice apenas em pedidos pendentes</summary>
+<summary>✅ Bom: índice apenas em pedidos pendentes</summary>
 
 ```sql
 -- sem índice parcial: índice cobre todos os status, incluindo os finalizados
 CREATE INDEX ix_orders_status ON orders (status);
 
--- com índice parcial: cobre apenas os pedidos ativos — menores e mais rápidos
+-- com índice parcial: cobre apenas os pedidos ativos, menores e mais rápidos
 CREATE INDEX ix_orders_pending
   ON orders (created_at)
   WHERE status = 'pending';
@@ -329,7 +329,7 @@ CREATE INDEX ix_orders_pending
 ## Paginação
 
 <details>
-<summary>✅ Bom — LIMIT / OFFSET</summary>
+<summary>✅ Bom: LIMIT / OFFSET</summary>
 
 ```sql
 SELECT
@@ -353,7 +353,7 @@ Window functions calculam agregações sem colapsar as linhas, permitindo rankin
 comparações com linhas adjacentes.
 
 <details>
-<summary>✅ Bom — ranking de jogadores por número de camisa por time</summary>
+<summary>✅ Bom: ranking de jogadores por número de camisa por time</summary>
 
 ```sql
 SELECT
@@ -378,7 +378,7 @@ Mecanismo de pub/sub nativo do PostgreSQL para notificações assíncronas entre
 Útil para invalidar cache ou disparar processamento sem polling.
 
 <details>
-<summary>✅ Bom — notificar canal quando pedido é criado</summary>
+<summary>✅ Bom: notificar canal quando pedido é criado</summary>
 
 ```sql
 -- função que notifica o canal 'orders' após INSERT
@@ -404,7 +404,7 @@ CREATE TRIGGER trg_orders_on_insert
 
 ## Recursos do PostgreSQL 18
 
-### AIO — Asynchronous I/O
+### AIO: Asynchronous I/O
 
 PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de **I/O** (Input/Output, Entrada/Saída) em paralelo,
 em vez de aguardar cada leitura em sequência. Benchmarks mostram ganhos de até 3x em sequential
@@ -460,7 +460,7 @@ CREATE TABLE employee_roles (
 linha a linha: sem overhead de parse por linha, sem round trips pela aplicação.
 
 <details>
-<summary>✅ Bom — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com COPY (arquivo no servidor)</summary>
+<summary>✅ Bom: importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com COPY (arquivo no servidor)</summary>
 
 ```sql
 COPY players
@@ -481,7 +481,7 @@ WITH
 </details>
 
 <details>
-<summary>✅ Bom — \copy (arquivo local via cliente psql)</summary>
+<summary>✅ Bom: \copy (arquivo local via cliente psql)</summary>
 
 ```sql
 -- \copy lê o arquivo na máquina do cliente, não no servidor
@@ -498,7 +498,7 @@ WITH (FORMAT csv, HEADER true, DELIMITER ',')
 Requer `shared_preload_libraries = 'pg_cron'` no `postgresql.conf`.
 
 <details>
-<summary>✅ Bom — agendar limpeza diária com pg_cron</summary>
+<summary>✅ Bom: agendar limpeza diária com pg_cron</summary>
 
 ```sql
 -- habilitar extensão
@@ -597,8 +597,8 @@ WHERE
 
 ## Recursos relacionados
 
-- [Formatting](../conventions/formatting.md) — estilo vertical, JOIN, condições
-- [Naming](../conventions/naming.md) — snake_case no PostgreSQL, prefixos, constraints
-- [Performance](../conventions/advanced/performance.md) — índices, UUID vs BIGINT
-- [Null Safety](../conventions/advanced/null-safety.md) — IS DISTINCT FROM, NULL em ORDER BY
-- [SQL Server](./sql-server.md) — idiomas específicos do SQL Server
+- [Formatting](../conventions/formatting.md): estilo vertical, JOIN, condições
+- [Naming](../conventions/naming.md): snake_case no PostgreSQL, prefixos, constraints
+- [Performance](../conventions/advanced/performance.md): índices, UUID vs BIGINT
+- [Null Safety](../conventions/advanced/null-safety.md): IS DISTINCT FROM, NULL em ORDER BY
+- [SQL Server](./sql-server.md): idiomas específicos do SQL Server

@@ -5,7 +5,7 @@
 **State management** (gerenciamento de estado) é a disciplina de decidir onde o estado da aplicação
 vive, quem pode alterá-lo e como as mudanças se propagam para a interface. Em mobile, essa decisão
 tem peso extra: o estado precisa sobreviver a rotações de tela, process death e retomadas do
-background — situações que aplicações web raramente enfrentam.
+background, situações que aplicações web raramente enfrentam.
 
 A consequência de uma estratégia de estado mal definida é visível: spinners que nunca somem,
 formulários que resetam sem motivo, e dados inconsistentes entre telas.
@@ -55,7 +55,7 @@ O padrão mais sólido para state management em mobile é o fluxo unidirecional:
 Usuário dispara ação → ViewModel processa → Estado atualizado → UI reage
 ```
 
-Nunca o contrário. A UI não altera o estado diretamente — ela dispara uma ação e aguarda a
+Nunca o contrário. A UI não altera o estado diretamente: dispara uma ação e aguarda a
 atualização.
 
 ```
@@ -101,7 +101,7 @@ todos os consumidores. Elevar o estado além do necessário polui camadas que n�
 ## Derived state
 
 Estado derivado é qualquer valor que pode ser calculado a partir de outro estado. Nunca armazene
-estado derivado separadamente — sincronizá-lo manualmente é uma fonte garantida de inconsistências.
+estado derivado separadamente. Sincronizá-lo manualmente é uma fonte garantida de inconsistências.
 
 ```
 BAD: manter totalDoCarrinho como estado separado e atualizar manualmente a cada item adicionado

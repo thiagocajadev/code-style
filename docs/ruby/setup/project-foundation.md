@@ -41,7 +41,7 @@ Para aplicações Rails a estrutura é gerada pelo `rails new`.
 ## Gemfile
 
 <details>
-<summary>❌ Ruim — versões sem constraints, grupo de test misturado</summary>
+<summary>❌ Ruim: versões sem constraints, grupo de test misturado</summary>
 
 ```ruby
 source "https://rubygems.org"
@@ -55,7 +55,7 @@ gem "factory_bot_rails"
 </details>
 
 <details>
-<summary>✅ Bom — constraints semânticas, grupos declarados</summary>
+<summary>✅ Bom: constraints semânticas, grupos declarados</summary>
 
 ```ruby
 # frozen_string_literal: true

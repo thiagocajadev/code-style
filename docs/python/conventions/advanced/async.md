@@ -20,7 +20,7 @@ Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assínc
 ## Bloqueio síncrono
 
 <details>
-<summary>❌ Ruim — I/O síncrono dentro de função async bloqueia o event loop</summary>
+<summary>❌ Ruim: I/O síncrono dentro de função async bloqueia o event loop</summary>
 
 ```python
 import time
@@ -35,7 +35,7 @@ async def process_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — asyncio.sleep libera o event loop enquanto aguarda</summary>
+<summary>✅ Bom: asyncio.sleep libera o event loop enquanto aguarda</summary>
 
 ```python
 import asyncio
@@ -52,7 +52,7 @@ async def process_order(order_id: int):
 ## await sequencial desnecessário
 
 <details>
-<summary>❌ Ruim — await encadeado quando não há dependência</summary>
+<summary>❌ Ruim: await encadeado quando não há dependência</summary>
 
 ```python
 async def fetch_user_data(user_id: int):
@@ -68,7 +68,7 @@ async def fetch_user_data(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — async/await linear e legível</summary>
+<summary>✅ Bom: async/await linear e legível</summary>
 
 ```python
 async def fetch_user_data(user_id: int):
@@ -82,12 +82,12 @@ async def fetch_user_data(user_id: int):
 
 </details>
 
-## gather — execução paralela
+## gather: execução paralela
 
 Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
 
 <details>
-<summary>❌ Ruim — await sequencial quando não há dependência entre chamadas</summary>
+<summary>❌ Ruim: await sequencial quando não há dependência entre chamadas</summary>
 
 ```python
 async def fetch_dashboard(user_id: int):
@@ -103,7 +103,7 @@ async def fetch_dashboard(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — asyncio.gather dispara tudo ao mesmo tempo</summary>
+<summary>✅ Bom: asyncio.gather dispara tudo ao mesmo tempo</summary>
 
 ```python
 import asyncio
@@ -131,7 +131,7 @@ async def fetch_dashboard(user_id: int):
 arquivo em código async.
 
 <details>
-<summary>❌ Ruim — open() síncrono bloqueia o event loop</summary>
+<summary>❌ Ruim: open() síncrono bloqueia o event loop</summary>
 
 ```python
 async def read_config() -> dict:
@@ -146,7 +146,7 @@ async def read_config() -> dict:
 </details>
 
 <details>
-<summary>✅ Bom — asyncio.to_thread para I/O de arquivo</summary>
+<summary>✅ Bom: asyncio.to_thread para I/O de arquivo</summary>
 
 ```python
 import asyncio
@@ -168,7 +168,7 @@ Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões 
 caso de exceção.
 
 <details>
-<summary>❌ Ruim — conexão aberta sem garantia de fechamento</summary>
+<summary>❌ Ruim: conexão aberta sem garantia de fechamento</summary>
 
 ```python
 async def fetch_orders(user_id: int):
@@ -182,7 +182,7 @@ async def fetch_orders(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom — async with garante fechamento em qualquer cenário</summary>
+<summary>✅ Bom: async with garante fechamento em qualquer cenário</summary>
 
 ```python
 async def fetch_orders(user_id: int):
@@ -197,11 +197,11 @@ async def fetch_orders(user_id: int):
 ## Quando criar uma função async
 
 Toda função que contém um `await` deve ser `async`. Funções que não fazem I/O não precisam ser
-`async` — adicionar `async` sem `await` cria uma coroutine inútil que o chamador precisa
+`async`. Adicionar `async` sem `await` cria uma coroutine inútil que o chamador precisa
 aguardar sem ganho algum.
 
 <details>
-<summary>❌ Ruim — async sem await, e I/O síncrono sem async</summary>
+<summary>❌ Ruim: async sem await, e I/O síncrono sem async</summary>
 
 ```python
 async def calculate_tax(amount: float) -> float:  # async desnecessário
@@ -215,7 +215,7 @@ def fetch_user(user_id: int):  # I/O sem async
 </details>
 
 <details>
-<summary>✅ Bom — async só quando há I/O; funções puras são síncronas</summary>
+<summary>✅ Bom: async só quando há I/O; funções puras são síncronas</summary>
 
 ```python
 def calculate_tax(amount: float) -> float:

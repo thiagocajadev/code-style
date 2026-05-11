@@ -122,7 +122,7 @@ class TeamIndexRepository {
 
 ## Search
 
-### match — busca full-text
+### match (busca full-text)
 
 ```js
 async function searchTeams(query) {
@@ -139,7 +139,7 @@ async function searchTeams(query) {
 }
 ```
 
-### term — filtro exato
+### term (filtro exato)
 
 ```js
 // usar .keyword para filtro exato em campos text
@@ -147,7 +147,7 @@ async function findTeamsByCity(city) {
   const response = await esClient.search({
     index: 'teams',
     query: {
-      term: { city }, // keyword field — exato, cacheado
+      term: { city }, // keyword field: exato, cacheado
     },
   });
 
@@ -156,13 +156,13 @@ async function findTeamsByCity(city) {
 }
 ```
 
-### bool — combinação de condições
+### bool (combinação de condições)
 
 <details>
-<summary>❌ Ruim — match em campo keyword; filtro no query context; sem projeção</summary>
+<summary>❌ Ruim: match em campo keyword; filtro no query context; sem projeção</summary>
 
 ```js
-// match em campo keyword — re-analisa o termo, resultado inesperado
+// match em campo keyword: re-analisa o termo, resultado inesperado
 const response = await esClient.search({
   index: 'teams',
   query: {
@@ -180,7 +180,7 @@ const response = await esClient.search({
 </details>
 
 <details>
-<summary>✅ Bom — term/filter para condições exatas; must para relevância; _source para projeção</summary>
+<summary>✅ Bom: term/filter para condições exatas; must para relevância; _source para projeção</summary>
 
 ```js
 async function searchActiveTeamsByCity(city, nameQuery) {
@@ -208,7 +208,7 @@ async function searchActiveTeamsByCity(city, nameQuery) {
 
 </details>
 
-### range — intervalo
+### range (intervalo)
 
 ```js
 async function findTeamsByFoundedPeriod(fromYear, toYear) {

@@ -48,10 +48,10 @@ const playersCollection = database.collection('players');
 ```
 
 <details>
-<summary>❌ Ruim — novo cliente por requisição: pool destruído e recriado a cada chamada</summary>
+<summary>❌ Ruim: novo cliente por requisição; pool destruído e recriado a cada chamada</summary>
 
 ```js
-// cria conexão, usa e fecha — sem reuso de pool
+// cria conexão, usa e fecha: sem reuso de pool
 async function findTeam(teamId) {
   const client = new MongoClient(process.env.MONGODB_URI);
   await client.connect();
@@ -67,10 +67,10 @@ async function findTeam(teamId) {
 </details>
 
 <details>
-<summary>✅ Bom — cliente singleton; pool reutilizado em toda a aplicação</summary>
+<summary>✅ Bom: cliente singleton; pool reutilizado em toda a aplicação</summary>
 
 ```js
-// db.js — singleton exportado
+// db.js: singleton exportado
 import { MongoClient } from 'mongodb';
 
 const client = new MongoClient(process.env.MONGODB_URI, {
@@ -82,7 +82,7 @@ await client.connect();
 
 export const database = client.db('football');
 
-// repository.js — importa o database singleton
+// repository.js: importa o database singleton
 import { database } from './database.js';
 
 class TeamRepository {
@@ -152,7 +152,7 @@ const teams = await cursor.toArray();
 
 // ou iteração com for await
 for await (const team of cursor) {
-  // processa um documento por vez — eficiente em volumes grandes
+  // processa um documento por vez: eficiente em volumes grandes
 }
 ```
 
@@ -281,7 +281,7 @@ async function fetchSeasonReport(season) {
 // simples
 await teamsCollection.createIndex({ city: 1 });
 
-// composto — campo seletivo primeiro, depois de ordenação
+// composto: campo seletivo primeiro, depois de ordenação
 await teamsCollection.createIndex({ isActive: 1, foundedYear: -1 });
 
 // único
@@ -293,7 +293,7 @@ await playersCollection.createIndex(
 // texto para busca full-text
 await teamsCollection.createIndex({ name: 'text', city: 'text' });
 
-// TTL — remove documentos quando expiresAt < now
+// TTL: remove documentos quando expiresAt < now
 await sessionsCollection.createIndex(
   { expiresAt: 1 },
   { expireAfterSeconds: 0 },

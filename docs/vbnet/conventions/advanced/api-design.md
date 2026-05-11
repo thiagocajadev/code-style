@@ -18,7 +18,7 @@ VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para
 
 ## Controller thin: delegar para handler
 
-Controller em Web API 2 é o **boundary** entre HTTP e domínio. Recebe input, chama o handler, traduz o resultado. Handler retorna `Result(Of T)` (tipo de domínio), nunca `IHttpActionResult` — o controller é quem conhece HTTP.
+Controller em Web API 2 é o **boundary** entre HTTP e domínio. Recebe input, chama o handler, traduz o resultado. Handler retorna `Result(Of T)` (tipo de domínio), nunca `IHttpActionResult`: o controller é quem conhece HTTP.
 
 A estrutura por domínio mantém tudo colocalizado:
 
@@ -35,7 +35,7 @@ Features/
 ```
 
 <details>
-<summary>❌ Ruim — controller com lógica de negócio inline</summary>
+<summary>❌ Ruim: controller com lógica de negócio inline</summary>
 
 ```vbnet
 <RoutePrefix("api/orders")>
@@ -73,7 +73,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — controller delega para handler, traduz Result no boundary</summary>
+<summary>✅ Bom: controller delega para handler, traduz Result no boundary</summary>
 
 ```vbnet
 <RoutePrefix("api/orders")>
@@ -136,10 +136,10 @@ End Class
 
 ## Handler retorna domínio, nunca HTTP
 
-Handler não conhece HTTP. Retorna `Result(Of T)` — success com valor de domínio ou failure com mensagem. O controller traduz para `IHttpActionResult` no boundary. Assim o handler fica testável sem `HttpContext` e reaproveitável fora de Web API.
+Handler não conhece HTTP. Retorna `Result(Of T)`: success com valor de domínio ou failure com mensagem. O controller traduz para `IHttpActionResult` no boundary. Assim o handler fica testável sem `HttpContext` e reaproveitável fora de Web API.
 
 <details>
-<summary>❌ Ruim — handler retorna IHttpActionResult, acoplado a HTTP</summary>
+<summary>❌ Ruim: handler retorna IHttpActionResult, acoplado a HTTP</summary>
 
 ```vbnet
 Public Class CreateOrderHandler
@@ -161,7 +161,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — handler retorna Result(Of T), domínio puro</summary>
+<summary>✅ Bom: handler retorna Result(Of T), domínio puro</summary>
 
 ```vbnet
 Public Class CreateOrderHandler
@@ -244,7 +244,7 @@ End Class
 Web API 2 suporta roteamento convencional (`config.Routes.MapHttpRoute(...)`) e roteamento por atributo (`<Route(...)>`, `<RoutePrefix(...)>`). O roteamento por atributo é preferido: rota colocalizada com o controller, sem tabela global.
 
 <details>
-<summary>❌ Ruim — rotas convencionais, descoberta distante do handler</summary>
+<summary>❌ Ruim: rotas convencionais, descoberta distante do handler</summary>
 
 ```vbnet
 ' WebApiConfig.vb
@@ -259,7 +259,7 @@ Qualquer alteração de rota exige mexer no arquivo central. Três actions no me
 </details>
 
 <details>
-<summary>✅ Bom — roteamento por atributo, rota no próprio controller</summary>
+<summary>✅ Bom: roteamento por atributo, rota no próprio controller</summary>
 
 ```vbnet
 ' WebApiConfig.vb
@@ -287,7 +287,7 @@ Web API 2 sobre IIS expõe um `SynchronizationContext`. Chamar `.Result` ou `.Wa
 A regra é `Async/Await` ponta a ponta. Controller `Async Function`, handler `Async Function`, service `Async Function`. Nunca quebrar a cadeia.
 
 <details>
-<summary>❌ Ruim — .Result em handler async</summary>
+<summary>❌ Ruim: .Result em handler async</summary>
 
 ```vbnet
 Public Function Handle(request As OrderRequest) As Result(Of OrderResponse)
@@ -301,7 +301,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom — async ponta a ponta</summary>
+<summary>✅ Bom: async ponta a ponta</summary>
 
 ```vbnet
 Public Async Function HandleAsync(request As OrderRequest) As Task(Of Result(Of OrderResponse))

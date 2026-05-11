@@ -1,7 +1,6 @@
 # Naming
 
-Nomes bons tornam comentários desnecessários. O código deve contar a história por si só. Use
-**camelCase** (camelo) para identificadores e **PascalCase** (pascal) para tipos.
+Nomes bons tornam comentários desnecessários. Quando o nome carrega a intenção, o comentário deixa de fazer falta. Use **camelCase** (camelo) para identificadores e **PascalCase** (pascal) para tipos.
 
 ## Conceitos fundamentais
 
@@ -49,7 +48,7 @@ private Order applyDiscount(Order order, UnaryOperator<Order> calculateDiscount)
 ## Nomes em português
 
 <details>
-<summary>❌ Ruim — camelCase com português fica desajeitado</summary>
+<summary>❌ Ruim: camelCase com português fica desajeitado</summary>
 
 ```java
 final var nomeDoUsuario = "Alice";
@@ -62,7 +61,7 @@ private Address buscaEnderecoDoCliente(String id) { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês, curto, direto, universal</summary>
 
 ```java
 final var userName = "Alice";
@@ -77,7 +76,7 @@ private Address getCustomerAddress(String id) { /* ... */ }
 ## Mistura de idiomas
 
 <details>
-<summary>❌ Ruim — português e inglês no mesmo arquivo</summary>
+<summary>❌ Ruim: português e inglês no mesmo arquivo</summary>
 
 ```java
 private void notify(Order pedido) {
@@ -90,7 +89,7 @@ final var resultado = processOrder(pedido);
 </details>
 
 <details>
-<summary>✅ Bom — consistência de idioma</summary>
+<summary>✅ Bom: consistência de idioma</summary>
 
 ```java
 private void notifyDefault(Order order) {
@@ -107,7 +106,7 @@ final var invoice = processOrder(order);
 Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
 
 <details>
-<summary>❌ Ruim — ordem invertida</summary>
+<summary>❌ Ruim: ordem invertida</summary>
 
 ```java
 getProfileUser();       // "get profile, that's a user"
@@ -118,7 +117,7 @@ calculateTotalInvoice();// "invoice total" é a expressão natural
 </details>
 
 <details>
-<summary>✅ Bom — ordem natural</summary>
+<summary>✅ Bom: ordem natural</summary>
 
 ```java
 getUserProfile();
@@ -131,7 +130,7 @@ calculateInvoiceTotal();
 ## Verbos genéricos
 
 <details>
-<summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim: handle, process, manage, do não dizem nada</summary>
 
 ```java
 private void handle(Object data) { /* ... */ }
@@ -144,7 +143,7 @@ private void doStuff(Object x) { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — verbo de intenção</summary>
+<summary>✅ Bom: verbo de intenção</summary>
 
 ```java
 private void validatePayment(Payment payment) { /* ... */ }
@@ -172,7 +171,7 @@ private Order applySeasonalDiscount(Order order) { /* ... */ }
 O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
 
 <details>
-<summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
 
 ```java
 private void callStripe(BigDecimal amount) { /* ... */ }
@@ -185,7 +184,7 @@ private void saveToS3(byte[] file) { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — nome fala a linguagem do negócio</summary>
+<summary>✅ Bom: nome fala a linguagem do negócio</summary>
 
 ```java
 private void chargeCustomer(BigDecimal amount) { /* ... */ }
@@ -203,7 +202,7 @@ Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. U
 substitui qualquer comentário.
 
 <details>
-<summary>❌ Ruim — comentário repete o que o código já diz</summary>
+<summary>❌ Ruim: comentário repete o que o código já diz</summary>
 
 ```java
 // verifica se o usuário pode excluir registros
@@ -218,7 +217,7 @@ attempts++;
 </details>
 
 <details>
-<summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
+<summary>✅ Bom: nome expressivo torna o comentário desnecessário</summary>
 
 ```java
 final var canDeleteRecord = "active".equals(user.getStatus())
@@ -236,7 +235,7 @@ attempts++;
 ## Boolean naming
 
 <details>
-<summary>❌ Ruim — booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
 
 ```java
 final var loading = true;
@@ -249,7 +248,7 @@ final var valid = email.contains("@");
 </details>
 
 <details>
-<summary>✅ Bom — prefixos is, has, can, should</summary>
+<summary>✅ Bom: prefixos is, has, can, should</summary>
 
 ```java
 final var isActive = "active".equals(user.getStatus());
@@ -267,7 +266,7 @@ Java não usa o prefixo `I` para interfaces (diferente de C#). O nome deve expre
 não o artefato.
 
 <details>
-<summary>❌ Ruim — prefixo I revela o artefato, não o papel</summary>
+<summary>❌ Ruim: prefixo I revela o artefato, não o papel</summary>
 
 ```java
 public interface IUserRepository { /* ... */ }
@@ -278,7 +277,7 @@ public class UserRepositoryImpl implements IUserRepository { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom — nome expressa o papel; implementação detalha a tecnologia</summary>
+<summary>✅ Bom: nome expressa o papel; implementação detalha a tecnologia</summary>
 
 ```java
 public interface UserRepository { /* ... */ }

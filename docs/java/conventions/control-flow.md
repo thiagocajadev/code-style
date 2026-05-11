@@ -24,7 +24,7 @@ O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `r
 o fluxo já saiu.
 
 <details>
-<summary>❌ Ruim — else desnecessário após return</summary>
+<summary>❌ Ruim: else desnecessário após return</summary>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -39,7 +39,7 @@ private BigDecimal getDiscount(User user) {
 </details>
 
 <details>
-<summary>✅ Bom — early return elimina o else</summary>
+<summary>✅ Bom: early return elimina o else</summary>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -61,7 +61,7 @@ Para atribuição de dois valores possíveis em uma linha, não para lógica de 
 vira puzzle (quebra-cabeça). Três ou mais alternativas → guard clauses ou switch expression.
 
 <details>
-<summary>❌ Ruim — ternário encadeado ilegível</summary>
+<summary>❌ Ruim: ternário encadeado ilegível</summary>
 
 ```java
 final var label = score >= 90 ? "A"
@@ -74,7 +74,7 @@ final var label = score >= 90 ? "A"
 </details>
 
 <details>
-<summary>✅ Bom — ternário para dois valores; guard clauses para três ou mais</summary>
+<summary>✅ Bom: ternário para dois valores; guard clauses para três ou mais</summary>
 
 ```java
 final var label = user.isPremium() ? "Premium" : "Standard";
@@ -91,13 +91,13 @@ private String getGrade(int score) {
 
 </details>
 
-## Guard clauses — aninhamento em cascata
+## Guard clauses: aninhamento em cascata
 
 Quando as condições crescem e se aninham, cada nível enterra a lógica um nível mais fundo.
 Guard clauses invertem: valide as saídas no topo e deixe o caminho feliz limpo.
 
 <details>
-<summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -117,7 +117,7 @@ private Invoice processOrder(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom — guard clauses, caminho feliz ao fundo</summary>
+<summary>✅ Bom: guard clauses, caminho feliz ao fundo</summary>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -134,14 +134,14 @@ private Invoice processOrder(Order order) {
 
 </details>
 
-## Switch expression — lookup de valor
+## Switch expression: lookup de valor
 
 Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista de condições
 vira um catálogo. Switch expression com arrow (`->`) é compacto, sem fall-through (queda entre casos) acidental e
 sem `break`.
 
 <details>
-<summary>❌ Ruim — switch tradicional verboso com fall-through implícito</summary>
+<summary>❌ Ruim: switch tradicional verboso com fall-through implícito</summary>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -166,7 +166,7 @@ private String getStatusLabel(OrderStatus status) {
 </details>
 
 <details>
-<summary>✅ Bom — switch expression: compacto, sem fall-through, sem break</summary>
+<summary>✅ Bom: switch expression: compacto, sem fall-through, sem break</summary>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -183,13 +183,13 @@ private String getStatusLabel(OrderStatus status) {
 
 </details>
 
-## Switch — despacho de ações
+## Switch: despacho de ações
 
 Quando cada caso precisa executar múltiplas ações (não retornar um valor, mas fazer algo),
 `switch` com bloco `{}` é mais claro que um `if/else` encadeado.
 
 <details>
-<summary>❌ Ruim — if/else encadeado para despacho de ações</summary>
+<summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -209,7 +209,7 @@ private void processPaymentEvent(PaymentEvent event) {
 </details>
 
 <details>
-<summary>✅ Bom — switch para despacho de comportamento</summary>
+<summary>✅ Bom: switch para despacho de comportamento</summary>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -232,13 +232,13 @@ private void processPaymentEvent(PaymentEvent event) {
 
 </details>
 
-## Pattern matching — tipo e desestruturação
+## Pattern matching: tipo e desestruturação
 
 Java 21+ permite desestruturar no switch direto do tipo, eliminando o cast manual. Com sealed
-classes, o compilador garante exaustividade — sem `default` necessário.
+classes, o compilador garante exaustividade, sem `default` necessário.
 
 <details>
-<summary>❌ Ruim — instanceof + cast manual</summary>
+<summary>❌ Ruim: instanceof + cast manual</summary>
 
 ```java
 private String describePayment(PaymentResult result) {
@@ -256,7 +256,7 @@ private String describePayment(PaymentResult result) {
 </details>
 
 <details>
-<summary>✅ Bom — pattern matching com desestruturação; sealed garante exaustividade</summary>
+<summary>✅ Bom: pattern matching com desestruturação; sealed garante exaustividade</summary>
 
 ```java
 // sealed interface PaymentResult permits PaymentSuccess, PaymentFailure, PaymentPending {}
@@ -282,10 +282,10 @@ _As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo reso
 ## Circuit break
 
 Antes de escrever um loop, verifique se `findFirst`, `anyMatch` ou `allMatch` já resolve.
-Esses métodos param no primeiro match — sem percorrer o resto.
+Esses métodos param no primeiro match, sem percorrer o resto.
 
 <details>
-<summary>❌ Ruim — loop manual com flag percorre tudo</summary>
+<summary>❌ Ruim: loop manual com flag percorre tudo</summary>
 
 ```java
 private Product findFirstExpiredProduct(List<Product> products) {
@@ -304,7 +304,7 @@ private Product findFirstExpiredProduct(List<Product> products) {
 </details>
 
 <details>
-<summary>✅ Bom — stream para no primeiro match</summary>
+<summary>✅ Bom: stream para no primeiro match</summary>
 
 ```java
 // para no primeiro match
@@ -325,7 +325,7 @@ Para efeitos colaterais sobre cada item de uma coleção, `for-each` é legível
 sem índice, sem variável de controle.
 
 <details>
-<summary>❌ Ruim — for indexado quando o índice nunca é usado</summary>
+<summary>❌ Ruim: for indexado quando o índice nunca é usado</summary>
 
 ```java
 for (int i = 0; i < orders.size(); i++) {
@@ -336,7 +336,7 @@ for (int i = 0; i < orders.size(); i++) {
 </details>
 
 <details>
-<summary>✅ Bom — for-each para efeitos colaterais por item</summary>
+<summary>✅ Bom: for-each para efeitos colaterais por item</summary>
 
 ```java
 for (final var order : orders) {
@@ -354,7 +354,7 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 tamanho, `while` é a escolha natural.
 
 <details>
-<summary>❌ Ruim — for simulando condição de parada por estado</summary>
+<summary>❌ Ruim: for simulando condição de parada por estado</summary>
 
 ```java
 for (int attempt = 0; attempt < maxAttempts; attempt++) {
@@ -366,7 +366,7 @@ for (int attempt = 0; attempt < maxAttempts; attempt++) {
 </details>
 
 <details>
-<summary>✅ Bom — while para condição de parada por estado</summary>
+<summary>✅ Bom: while para condição de parada por estado</summary>
 
 ```java
 var attempt = 0;
@@ -386,10 +386,10 @@ while (attempt < maxAttempts) {
 Use `do-while` quando a primeira iteração deve sempre executar, independente da condição.
 
 <details>
-<summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
 
 ```java
-// verifica antes de executar — se a fila já estiver vazia, nunca executa
+// verifica antes de executar: se a fila já estiver vazia, nunca executa
 while (!taskQueue.isEmpty()) {
     final var task = taskQueue.dequeue();
     executeTask(task);
@@ -399,7 +399,7 @@ while (!taskQueue.isEmpty()) {
 </details>
 
 <details>
-<summary>✅ Bom — do-while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: do-while quando a primeira execução é garantida</summary>
 
 ```java
 // drena a fila: processa pelo menos um item antes de verificar

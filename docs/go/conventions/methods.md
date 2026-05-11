@@ -22,7 +22,7 @@ Use funções livres quando a operação não pertence semanticamente a um tipo.
 Use métodos quando a operação opera sobre o estado de um struct.
 
 <details>
-<summary>❌ Ruim — método onde função seria mais claro</summary>
+<summary>❌ Ruim: método onde função seria mais claro</summary>
 
 ```go
 type MathHelper struct{}
@@ -39,7 +39,7 @@ func (m MathHelper) Multiply(a, b float64) float64 {
 </details>
 
 <details>
-<summary>✅ Bom — funções para operações sem estado; métodos para operações com estado</summary>
+<summary>✅ Bom: funções para operações sem estado; métodos para operações com estado</summary>
 
 ```go
 // função livre: não depende de estado
@@ -62,7 +62,7 @@ Use pointer receiver quando o método modifica o estado ou quando o struct é gr
 Use value receiver para structs pequenas somente de leitura.
 
 <details>
-<summary>❌ Ruim — value receiver tenta modificar estado</summary>
+<summary>❌ Ruim: value receiver tenta modificar estado</summary>
 
 ```go
 type Order struct {
@@ -78,7 +78,7 @@ func (o Order) Cancel() {
 </details>
 
 <details>
-<summary>✅ Bom — pointer receiver para mutação; value receiver para leitura</summary>
+<summary>✅ Bom: pointer receiver para mutação; value receiver para leitura</summary>
 
 ```go
 type Order struct {
@@ -101,12 +101,12 @@ func (o Order) IsCancelable() bool {
 
 </details>
 
-## SLA — orquestrador ou implementação
+## SLA: orquestrador ou implementação
 
 Cada função deve operar em um único nível de abstração.
 
 <details>
-<summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
+<summary>❌ Ruim: god function: orquestra e implementa ao mesmo tempo</summary>
 
 ```go
 func processOrder(order Order) error {
@@ -138,7 +138,7 @@ func processOrder(order Order) error {
 </details>
 
 <details>
-<summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
+<summary>✅ Bom: orquestrador delega para funções de um nível abaixo</summary>
 
 ```go
 func (s *OrderService) ProcessOrder(ctx context.Context, order Order) error {
@@ -190,7 +190,7 @@ func applyCustomerDiscount(order Order) Order {
 Atribua a uma variável nomeada antes de retornar. O retorno nomeia o resultado, não o computa.
 
 <details>
-<summary>❌ Ruim — lógica inline no return</summary>
+<summary>❌ Ruim: lógica inline no return</summary>
 
 ```go
 func calculateOrderTotal(items []Item) float64 {
@@ -209,7 +209,7 @@ func findActiveUsers(users []User) []User {
 </details>
 
 <details>
-<summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
+<summary>✅ Bom: explaining return: resultado nomeado antes do return</summary>
 
 ```go
 func calculateOrderTotal(items []Item) float64 {
@@ -236,7 +236,7 @@ func findActiveUsers(users []User) []User {
 Até 3 parâmetros na assinatura. Com 4 ou mais, agrupe em uma struct.
 
 <details>
-<summary>❌ Ruim — assinatura com muitos parâmetros</summary>
+<summary>❌ Ruim: assinatura com muitos parâmetros</summary>
 
 ```go
 func createOrder(customerID int64, amount float64, currency string,
@@ -248,7 +248,7 @@ func createOrder(customerID int64, amount float64, currency string,
 </details>
 
 <details>
-<summary>✅ Bom — struct para agrupar parâmetros relacionados</summary>
+<summary>✅ Bom: struct para agrupar parâmetros relacionados</summary>
 
 ```go
 type CreateOrderInput struct {
@@ -272,7 +272,7 @@ func createOrder(ctx context.Context, input CreateOrderInput) (*Order, error) {
 O orquestrador aparece primeiro. Os helpers ficam abaixo, na ordem em que são chamados.
 
 <details>
-<summary>✅ Bom — leitura top-down natural</summary>
+<summary>✅ Bom: leitura top-down natural</summary>
 
 ```go
 // Orquestrador: visível primeiro

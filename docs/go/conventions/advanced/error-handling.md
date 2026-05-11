@@ -2,8 +2,8 @@
 
 > Escopo: Go 1.26.
 
-Em Go, erros são valores. Não há exceções: funções retornam `error` como último valor.
-O chamador verifica imediatamente. `panic` é reservado para invariantes da aplicação,
+Em Go, erros são valores. Não há exceções: funções retornam `error` como último valor,
+e o chamador verifica imediatamente. `panic` fica reservado para invariantes da aplicação,
 nunca para fluxo de controle esperado.
 
 ## Conceitos fundamentais
@@ -21,7 +21,7 @@ nunca para fluxo de controle esperado.
 Nunca ignore um erro com `_`. Todo erro deve ser verificado ou explicitamente propagado.
 
 <details>
-<summary>❌ Ruim — erro ignorado</summary>
+<summary>❌ Ruim: erro ignorado</summary>
 
 ```go
 file, _ := os.Open("config.json")  // falha silenciosa
@@ -32,7 +32,7 @@ config, _ := parseConfig(data)
 </details>
 
 <details>
-<summary>✅ Bom — todo erro verificado</summary>
+<summary>✅ Bom: todo erro verificado</summary>
 
 ```go
 file, err := os.Open("config.json")
@@ -60,7 +60,7 @@ Adicione contexto ao propagar um erro. Use `%w` para preservar a cadeia e permit
 `errors.Is`/`errors.As`.
 
 <details>
-<summary>❌ Ruim — erro propagado sem contexto</summary>
+<summary>❌ Ruim: erro propagado sem contexto</summary>
 
 ```go
 func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -76,7 +76,7 @@ func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
 </details>
 
 <details>
-<summary>✅ Bom — erro empacotado com contexto da operação</summary>
+<summary>✅ Bom: erro empacotado com contexto da operação</summary>
 
 ```go
 func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -100,7 +100,7 @@ func findActiveOrder(ctx context.Context, orderID int64) (*Order, error) {
 Use sentinel errors para condições que o chamador precisa tratar de forma específica.
 
 <details>
-<summary>❌ Ruim — erro como string, difícil de comparar</summary>
+<summary>❌ Ruim: erro como string, difícil de comparar</summary>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -119,7 +119,7 @@ if err.Error() == "user not found" {  // frágil
 </details>
 
 <details>
-<summary>✅ Bom — sentinel error exportado, verificado com errors.Is</summary>
+<summary>✅ Bom: sentinel error exportado, verificado com errors.Is</summary>
 
 ```go
 var ErrNotFound = errors.New("not found")
@@ -157,7 +157,7 @@ Use tipos de erro customizados quando o chamador precisa acessar campos do erro 
 da mensagem de texto.
 
 <details>
-<summary>✅ Bom — tipo de erro com campos estruturados</summary>
+<summary>✅ Bom: tipo de erro com campos estruturados</summary>
 
 ```go
 type ValidationError struct {
@@ -166,7 +166,7 @@ type ValidationError struct {
 }
 
 func (e *ValidationError) Error() string {
-    return fmt.Sprintf("validation: field %q — %s", e.Field, e.Message)
+    return fmt.Sprintf("validation: field %q: %s", e.Field, e.Message)
 }
 
 func validateOrder(order Order) error {
@@ -202,7 +202,7 @@ if err := validateOrder(order); err != nil {
 Nunca use para erros esperados como "não encontrado" ou "input inválido".
 
 <details>
-<summary>❌ Ruim — panic para erro esperado</summary>
+<summary>❌ Ruim: panic para erro esperado</summary>
 
 ```go
 func findUser(userID int64) *User {
@@ -217,12 +217,12 @@ func findUser(userID int64) *User {
 </details>
 
 <details>
-<summary>✅ Bom — panic apenas para invariantes; erros esperados retornados</summary>
+<summary>✅ Bom: panic apenas para invariantes; erros esperados retornados</summary>
 
 ```go
 func NewOrderService(repo OrderRepository) *OrderService {
     if repo == nil {
-        panic("OrderService: repository must not be nil")  // invariante: dependência obrigatória
+        panic("OrderService: repository must not be nil") // invariante: dependência obrigatória
     }
 
     service := &OrderService{repository: repo}
@@ -247,7 +247,7 @@ Converta `error` em resposta HTTP apenas na camada de handler. O service retorna
 erros tipados; o handler decide o status code.
 
 <details>
-<summary>✅ Bom — fronteira error → HTTP no handler</summary>
+<summary>✅ Bom: fronteira error → HTTP no handler</summary>
 
 ```go
 func (h *OrderHandler) GetOrder(w http.ResponseWriter, r *http.Request) {

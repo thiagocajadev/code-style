@@ -57,5 +57,5 @@ dados, não no modelo.
 
 ## Veja também
 
-- [Patterns](../architecture/patterns.md) — padrão AI-Driven e CQRS aplicados a sistemas com LLM
-- [Integrations](../platform/integrations.md#apis-de-modelos-de-ia-llm-apis) — autenticação, streaming e retry para APIs de LLM
+- [Patterns](../architecture/patterns.md): padrão AI-Driven e CQRS aplicados a sistemas com LLM
+- [Integrations](../platform/integrations.md#apis-de-modelos-de-ia-llm-apis): autenticação, streaming e retry para APIs de LLM

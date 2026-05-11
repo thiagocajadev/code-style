@@ -1,8 +1,8 @@
-# Legacy Desktop — Setup Enxuto
+# Legacy Desktop: Setup Enxuto
 
 > Escopo: VB.NET / Windows Forms / .NET Framework 4.8
 
-Aplicativos desktop com escopo limitado — consultas operacionais, relatórios locais, cadastros simples — não precisam de container de injeção de dependência (**IoC**), camadas de serviço ou padrões elaborados. A configuração do banco no **App.config** e um módulo de acesso a dados **thin** (enxuto) já resolvem o problema.
+Aplicativos desktop com escopo limitado (consultas operacionais, relatórios locais, cadastros simples) não precisam de container de injeção de dependência (**IoC**), camadas de serviço ou padrões elaborados. A configuração do banco no **App.config** e um módulo de acesso a dados **thin** (enxuto) já resolvem o problema.
 
 Fluxo: `Formulário (tela) → DataAccess (acesso mínimo) → banco → resultado`
 
@@ -25,7 +25,7 @@ Use este setup quando:
 - A equipe é pequena e o prazo não justifica camadas adicionais
 
 > [!NOTE]
-> Quando o projeto crescer — múltiplos formulários compartilhando lógica, regras de negócio emergindo, necessidade de testes — migre para o padrão com injeção manual descrito em [Project Foundation](project-foundation.md).
+> Quando o projeto crescer (múltiplos formulários compartilhando lógica, regras de negócio emergindo, necessidade de testes), migre para o padrão com injeção manual descrito em [Project Foundation](project-foundation.md).
 
 ---
 
@@ -34,12 +34,12 @@ Use este setup quando:
 A connection string (string de conexão) pertence ao `App.config`, nunca ao código. Isso permite trocar o banco sem recompilar.
 
 <details>
-<summary>❌ Ruim — connection string hardcoded no código</summary>
+<summary>❌ Ruim: connection string hardcoded no código</summary>
 
 ```vbnet
 Public Module CustomerDataAccess
     Public Function FindAll() As DataTable
-        ' credenciais expostas — qualquer um com acesso ao executável vê a senha
+        ' credenciais expostas: qualquer um com acesso ao executável vê a senha
         Using connection = New SqlConnection("Server=prod-db;Database=App;User=sa;Password=Abc123!")
             ' ...
         End Using
@@ -50,7 +50,7 @@ End Module
 </details>
 
 <details>
-<summary>✅ Bom — connection string no App.config, lida uma vez</summary>
+<summary>✅ Bom: connection string no App.config, lida uma vez</summary>
 
 ```xml
 <!-- App.config -->
@@ -78,10 +78,10 @@ End Module
 
 ## Módulo de acesso a dados thin
 
-Um módulo por domínio. Cada função executa uma query e retorna o resultado — sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
+Um módulo por domínio. Cada função executa uma query e retorna o resultado, sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
 
 <details>
-<summary>❌ Ruim — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
+<summary>❌ Ruim: acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
 
 ```vbnet
 Public Class ProductForm
@@ -107,7 +107,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom — módulo thin isolado, formulário só chama e exibe</summary>
+<summary>✅ Bom: módulo thin isolado, formulário só chama e exibe</summary>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb
@@ -173,7 +173,7 @@ End Class
 O mesmo princípio: uma função por operação, parâmetros tipados, `Using` garante descarte da conexão.
 
 <details>
-<summary>✅ Bom — INSERT com parâmetros tipados</summary>
+<summary>✅ Bom: INSERT com parâmetros tipados</summary>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb (continuação)
@@ -237,7 +237,7 @@ End Sub
 Se o `App.config` não tiver a connection string, `ConfigurationManager.ConnectionStrings` retorna `Nothing`. Falhar rápido (fail-fast) com mensagem clara é preferível a uma `NullReferenceException` genérica na primeira operação de banco.
 
 <details>
-<summary>✅ Bom — fail-fast na inicialização, antes de abrir qualquer formulário</summary>
+<summary>✅ Bom: fail-fast na inicialização, antes de abrir qualquer formulário</summary>
 
 ```vbnet
 ' ApplicationEntry.vb

@@ -23,20 +23,20 @@ não estiver definida. Sem fallback, uma propriedade indefinida resulta em valor
 browser descarta a declaração sem aviso.
 
 <details>
-<summary>❌ Ruim — custom property sem fallback, componente quebra se o token não existir</summary>
+<summary>❌ Ruim: custom property sem fallback, componente quebra se o token não existir</summary>
 
 ```css
 .button {
-  background: var(--color-primary);     /* inválido se não definido — sem cor */
-  border-radius: var(--radius-md);      /* inválido — sem borda */
-  padding: var(--spacing-sm) var(--spacing-md); /* inválido — sem padding */
+  background: var(--color-primary);     /* inválido se não definido: sem cor */
+  border-radius: var(--radius-md);      /* inválido: sem borda */
+  padding: var(--spacing-sm) var(--spacing-md); /* inválido: sem padding */
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom — fallback garante que o componente sempre renderiza</summary>
+<summary>✅ Bom: fallback garante que o componente sempre renderiza</summary>
 
 ```css
 .button {
@@ -55,7 +55,7 @@ ao `required + tipo não-nulo` das linguagens tipadas: o browser sabe o tipo esp
 usar quando a propriedade não foi atribuída.
 
 <details>
-<summary>❌ Ruim — custom property sem registro: tipo desconhecido, animação não funciona</summary>
+<summary>❌ Ruim: custom property sem registro, tipo desconhecido, animação não funciona</summary>
 
 ```css
 /* sem @property: o browser trata --color-primary como string opaca */
@@ -63,7 +63,7 @@ usar quando a propriedade não foi atribuída.
 .button {
   --color-primary: #3b82f6;
   background: var(--color-primary);
-  transition: background 200ms; /* não anima — o browser não sabe o tipo */
+  transition: background 200ms; /* não anima: o browser não sabe o tipo */
 }
 
 .button:hover {
@@ -74,13 +74,13 @@ usar quando a propriedade não foi atribuída.
 </details>
 
 <details>
-<summary>✅ Bom — @property define contrato e previne valor inválido</summary>
+<summary>✅ Bom: @property define contrato e previne valor inválido</summary>
 
 ```css
 @property --color-primary {
   syntax: "<color>";
   inherits: true;
-  initial-value: #3b82f6; /* valor quando não definido — nunca inválido */
+  initial-value: #3b82f6; /* valor quando não definido: nunca inválido */
 }
 
 @property --transition-duration {
@@ -113,7 +113,7 @@ Fallbacks podem referenciar outras custom properties. O browser resolve a cadeia
 primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 <details>
-<summary>❌ Ruim — var() sem fallback em cadeia: falha silenciosa quando token não existe</summary>
+<summary>❌ Ruim: var() sem fallback em cadeia, falha silenciosa quando token não existe</summary>
 
 ```css
 :root {
@@ -122,7 +122,7 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 /* --color-primary nunca foi definido: o button fica sem cor de fundo */
 .button {
-  background: var(--color-primary);  /* valor inválido — sem fallback */
+  background: var(--color-primary);  /* valor inválido: sem fallback */
 }
 
 /* tema alternativo esquece de definir --color-primary */
@@ -134,7 +134,7 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 </details>
 
 <details>
-<summary>✅ Bom — cadeia de fallback para tokens com herança de tema</summary>
+<summary>✅ Bom: cadeia de fallback para tokens com herança de tema</summary>
 
 ```css
 :root {
@@ -142,11 +142,11 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 }
 
 .button {
-  /* tenta o token do componente → token do tema → valor hardcoded */
+  /* tenta o token do componente, então o token do tema, depois o valor hardcoded */
   background: var(--button-bg, var(--color-primary, var(--color-brand, #3b82f6)));
 }
 
-/* tema alternativo só precisa definir --color-primary */
+/* tema alternativo precisa apenas definir --color-primary */
 [data-theme="dark"] {
   --color-primary: #60a5fa;
 }
@@ -167,10 +167,10 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 | `revert-layer` | Valor da cascade layer anterior |
 
 <details>
-<summary>❌ Ruim — valores hardcoded como sentinela para "sem estilo"</summary>
+<summary>❌ Ruim: valores hardcoded como sentinela para "sem estilo"</summary>
 
 ```css
-/* valores mágicos para "remover" estilo — frágeis e sem intenção clara */
+/* valores mágicos para "remover" estilo, frágeis e sem intenção clara */
 .card--plain {
   box-shadow: none;        /* magic value: "sem sombra" */
   border-radius: 0;        /* magic value: "sem raio" */
@@ -190,19 +190,19 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 </details>
 
 <details>
-<summary>✅ Bom — keywords semânticos no lugar de valores sentinela</summary>
+<summary>✅ Bom: keywords semânticos no lugar de valores sentinela</summary>
 
 ```css
 /* remover estilo aplicado por classe pai */
 .card--plain {
-  box-shadow: unset; /* sem sombra — não "none" como magic value */
+  box-shadow: unset; /* sem sombra, não "none" como magic value */
   border-radius: unset; /* remove o border-radius herdado */
 }
 
 /* resetar todos os estilos de um elemento */
 .unstyled-button {
   all: unset; /* reseta tudo para o valor herdado ou initial */
-  cursor: pointer; /* reaplica só o necessário */
+  cursor: pointer; /* reaplica apenas o necessário */
 }
 
 /* voltar ao estilo do browser para um elemento que foi sobrescrito */
