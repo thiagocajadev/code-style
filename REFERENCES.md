@@ -35,7 +35,16 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [Domain-Driven Design Reference, Eric Evans](https://www.domainlanguage.com/ddd/reference/)  
 [Aggregate, Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html)  
 [Value Object, Martin Fowler](https://martinfowler.com/bliki/ValueObject.html)  
-[Bounded Context, Martin Fowler](https://martinfowler.com/bliki/BoundedContext.html)
+[Bounded Context, Martin Fowler](https://martinfowler.com/bliki/BoundedContext.html)  
+[Unit of Work, Martin Fowler (PoEAA)](https://martinfowler.com/eaaCatalog/unitOfWork.html)  
+[Optimistic Offline Lock, Martin Fowler (PoEAA)](https://martinfowler.com/eaaCatalog/optimisticOfflineLock.html)  
+[Pessimistic Offline Lock, Martin Fowler (PoEAA)](https://martinfowler.com/eaaCatalog/pessimisticOfflineLock.html)  
+[Saga Pattern, microservices.io](https://microservices.io/patterns/data/saga.html)  
+[Transactional Outbox Pattern, microservices.io](https://microservices.io/patterns/data/transactional-outbox.html)  
+[Domain Event, Martin Fowler](https://martinfowler.com/eaaDev/DomainEvent.html)  
+[What do you mean by "Event-Driven"?, Martin Fowler](https://martinfowler.com/articles/201701-event-driven.html)  
+[Versioning in an Event Sourced System, Greg Young](https://leanpub.com/esversioning) _(livro)_  
+[PostgreSQL Transaction Isolation Levels](https://www.postgresql.org/docs/current/transaction-iso.html)
 
 ## Banco de Dados — SQL
 
