@@ -20,7 +20,6 @@ como parte da semântica da linguagem — convenções que o RuboCop enforça au
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -34,11 +33,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -69,7 +65,6 @@ Ruby usa capitalização como sinal semântico. O RuboCop avisa sobre violaçõe
 
 <details>
 <summary>❌ Ruim — case errado para o contexto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -82,11 +77,8 @@ def isActive?; end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções Ruby respeitadas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -110,7 +102,6 @@ Em inglês, o nome segue a ordem natural da fala: **verbo + objeto + contexto**.
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -122,11 +113,8 @@ def calculate_total_invoice(invoice_id) = nil
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -142,7 +130,6 @@ def calculate_invoice_total(invoice_id) = nil
 
 <details>
 <summary>❌ Ruim — handle, process, manage não dizem nada</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -155,11 +142,8 @@ def do_stuff(x) = nil
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -178,7 +162,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de onde a opera
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -191,11 +174,8 @@ def save_to_s3(file) = nil
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -214,7 +194,6 @@ Variáveis booleanas usam prefixo semântico. Métodos predicados usam sufixo `?
 
 <details>
 <summary>❌ Ruim — booleanos sem sinal semântico</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -226,11 +205,8 @@ valid = email.include?("@")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variáveis com prefixo; métodos com sufixo ?</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -254,7 +230,6 @@ Métodos com `!` sinalizam comportamento destrutivo ou que lança exceção em v
 
 <details>
 <summary>❌ Ruim — bang em método que não tem par sem bang</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -267,11 +242,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par save / save! com comportamentos distintos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -299,7 +271,6 @@ Trate acrônimos como palavras normais em `PascalCase`. Evite maiúsculas em seq
 
 <details>
 <summary>❌ Ruim — acrônimo inteiro em maiúsculas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -311,11 +282,8 @@ def parseJSON(raw) = nil
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — acrônimo como palavra normal</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

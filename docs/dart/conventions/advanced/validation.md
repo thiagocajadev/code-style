@@ -20,7 +20,6 @@ e verificações explícitas com `throw` atuam em produção.
 
 <details>
 <summary>❌ Ruim — guards espalhados ao longo da função de negócio</summary>
-<br>
 
 ```dart
 Future<Order> processOrder({
@@ -44,11 +43,8 @@ Future<Order> processOrder({
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — validação em init, lógica limpa na função</summary>
-<br>
 
 ```dart
 class ProcessOrderRequest {
@@ -83,7 +79,6 @@ Future<Order> processOrder(ProcessOrderRequest request) async {
 
 <details>
 <summary>❌ Ruim — para no primeiro erro (usuário corrige um por vez)</summary>
-<br>
 
 ```dart
 String? validateProfile(UserProfile profile) {
@@ -96,11 +91,8 @@ String? validateProfile(UserProfile profile) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — acumula todos os erros</summary>
-<br>
 
 ```dart
 sealed class ProfileError {}
@@ -131,7 +123,6 @@ if (errors.isNotEmpty) {
 
 <details>
 <summary>❌ Ruim — throw em código que nunca chegará em produção</summary>
-<br>
 
 ```dart
 double applyDiscount(double price, double rate) {
@@ -142,11 +133,8 @@ double applyDiscount(double price, double rate) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert em invariantes; validação real no construtor da request</summary>
-<br>
 
 ```dart
 double applyDiscount(double price, double rate) {

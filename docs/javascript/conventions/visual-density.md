@@ -12,20 +12,20 @@ JavaScript/Node.js.
 
 ## Conceitos fundamentais
 
-| Conceito                                     | O que é                                                                                                     |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
-| **visual density** (densidade visual)        | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo                         |
-| **semantic group** (grupo semântico)         | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir)            |
-| **blank line** (linha em branco)             | Separador entre grupos semânticos; substitui comentário de seção                                            |
-| **tight pair** (par tight)                   | Duas linhas com relação direta (declaração + uso, const + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico)               | Três declarações simples consecutivas e homogêneas (`const`/`let`); mantidas juntas sem blank — preferir ao 2+1 que cria órfão            |
-| **semantic pair** (par semântico encadeado)  | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta                    |
-| **single-line orphan** (órfão de 1)          | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2    |
-| **explaining return** (retorno explicativo)  | Caso particular de `tight pair`: `const X = …` single-line + `return X` sem blank entre eles                |
-| **multi-line block** (bloco multi-linha)     | Objeto literal, array literal ou statement quebrado em várias linhas; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta — blank antes da montagem |
-| **boundary** (limite)                        | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes            |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão — frágil a rename, gera diff ruidoso       |
+| Conceito                                         | O que é                                                                                                                                   |
+| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **visual density** (densidade visual)            | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo                                                       |
+| **semantic group** (grupo semântico)             | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir)                                          |
+| **blank line** (linha em branco)                 | Separador entre grupos semânticos; substitui comentário de seção                                                                          |
+| **tight pair** (par tight)                       | Duas linhas com relação direta (declaração + uso, const + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
+| **atomic trio** (trio atômico)                   | Três declarações simples consecutivas e homogêneas (`const`/`let`); mantidas juntas sem blank — preferir ao 2+1 que cria órfão            |
+| **semantic pair** (par semântico encadeado)      | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta                    |
+| **single-line orphan** (órfão de 1)              | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2                                  |
+| **explaining return** (retorno explicativo)      | Caso particular de `tight pair`: `const X = …` single-line + `return X` sem blank entre eles                                              |
+| **multi-line block** (bloco multi-linha)         | Objeto literal, array literal ou statement quebrado em várias linhas; pede blank depois para isolar o bloco                               |
+| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta — blank antes da montagem                              |
+| **boundary** (limite)                            | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes                                          |
+| **column alignment** (alinhamento de coluna)     | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão — frágil a rename, gera diff ruidoso                                     |
 
 ## A regra central
 
@@ -34,7 +34,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```js
 async function registerUser(input) {
@@ -51,11 +50,8 @@ async function registerUser(input) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```js
 async function registerUser(input) {
@@ -85,7 +81,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```js
 function mapErrorToStatus(error) {
@@ -97,11 +92,8 @@ function mapErrorToStatus(error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```js
 function mapErrorToStatus(error) {
@@ -127,7 +119,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -150,11 +141,8 @@ tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -176,11 +164,8 @@ O blank fica **depois** do `formatter` multi-linha. O par `formattedDate` +
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de objeto multi-linha</summary>
-<br>
 
 ```js
 function buildOrderResponse(order, requestId) {
@@ -222,7 +207,6 @@ semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -232,12 +216,9 @@ const invoice = buildInvoice(order);
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```js
 const order = await fetchOrder(orderId);
@@ -248,11 +229,8 @@ const invoice = buildInvoice(order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```js
 const handler = eventHandlers[eventType];
@@ -267,11 +245,8 @@ const eventPayload = event.data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```js
 const response = await requestFn();
@@ -283,8 +258,8 @@ if (response.status !== 429) {
 const delayMs = Math.pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa três linhas físicas — peso visual próprio. Inline ficaria
-tight, mas em bloco, blank antes.
+O bloco ocupa três linhas físicas — peso visual próprio. Inline ficaria tight,
+mas em bloco, blank antes.
 
 </details>
 
@@ -296,7 +271,6 @@ juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -306,12 +280,9 @@ const ONE_DAY_MS = 86_400_000;
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -321,11 +292,8 @@ const ONE_DAY_MS = 86_400_000;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -345,7 +313,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```js
 function buildShippingLabel(order) {
@@ -361,11 +328,8 @@ function buildShippingLabel(order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```js
 function buildShippingLabel(order) {
@@ -382,10 +346,10 @@ function buildShippingLabel(order) {
 
 ## Fragmentos → montagem: blank antes do consumidor
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que
-**consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta — blank antes dela. É o caso clássico "preparar partes →
-montar resultado", diferente do par semântico encadeado (onde a última depende
+Quando há **dois ou mais fragmentos** preparados e uma linha final que **consome
+múltiplos fragmentos** (não depende só do último), trate a montagem como fase
+distinta — blank antes dela. É o caso clássico "preparar partes → montar
+resultado", diferente do par semântico encadeado (onde a última depende
 **diretamente** da penúltima e por isso fica tight).
 
 Heurística rápida:
@@ -397,7 +361,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -408,17 +371,14 @@ function buildDeliveryMessage(user, order) {
 }
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.id` *e*
+`deliveryMessage` consome `fullName` _e_ `address` _e_ `order.id` _e_
 `order.deliveryDays`. Não é par direto com `address` — é a fase de montagem.
 Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -435,11 +395,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```js
 function buildOrderSlug(order) {
@@ -449,9 +406,8 @@ function buildOrderSlug(order) {
 }
 ```
 
-`slug` depende **diretamente** de `normalizedTitle` (penúltima). Par
-semântico encadeado: as duas ficam tight, e o `return` ainda tight com o
-último.
+`slug` depende **diretamente** de `normalizedTitle` (penúltima). Par semântico
+encadeado: as duas ficam tight, e o `return` ainda tight com o último.
 
 </details>
 
@@ -462,7 +418,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -474,11 +429,8 @@ while (attempt < maxAttempts) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```js
 while (attempt < maxAttempts) {
@@ -498,7 +450,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -512,11 +463,8 @@ async function createUserHandler(req, res) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```js
 async function createUserHandler(request, response) {
@@ -539,7 +487,6 @@ verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```js
 it("applies percentage discount to order price", () => {
@@ -552,11 +499,8 @@ it("applies percentage discount to order price", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expect separado, assertion como fase própria</summary>
-<br>
 
 ```js
 it("applies percentage discount to order price", () => {
@@ -579,7 +523,6 @@ bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — objeto multi-linha colado ao próximo statement</summary>
-<br>
 
 ```js
 async function createSession(user) {
@@ -596,11 +539,8 @@ async function createSession(user) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do objeto isola o bloco</summary>
-<br>
 
 ```js
 async function createSession(user) {
@@ -629,7 +569,6 @@ ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```js
 function processOrder(order) {
@@ -645,12 +584,9 @@ function processOrder(order) {
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```js
 function processOrder(order) {
@@ -668,11 +604,8 @@ function processOrder(order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```js
 function validateInput(input) {
@@ -694,7 +627,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```js
 const userName = "alice";
@@ -705,11 +637,8 @@ const lastLoginAt = new Date();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```js
 const userName = "alice";
@@ -727,7 +656,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -737,11 +665,8 @@ function buildDeliveryMessage(user, order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```js
 function buildDeliveryMessage(user, order) {

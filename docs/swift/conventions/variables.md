@@ -21,7 +21,6 @@ Propriedades computadas transformam dados sem armazenar estado extra. Prefira `l
 
 <details>
 <summary>❌ Ruim — var desnecessário</summary>
-<br>
 
 ```swift
 var total = 0.0
@@ -33,11 +32,8 @@ isActive = user.status == .active
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — let com inicialização direta</summary>
-<br>
 
 ```swift
 let total = items.reduce(0) { $0 + $1.price }
@@ -51,7 +47,6 @@ let isActive = user.status == .active
 
 <details>
 <summary>❌ Ruim — literais inline sem contexto</summary>
-<br>
 
 ```swift
 if user.role == "admin" { ... }
@@ -63,11 +58,8 @@ let discount = price * 0.15
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas com intenção</summary>
-<br>
 
 ```swift
 private let adminRole = "admin"
@@ -90,7 +82,6 @@ Propriedades computadas modelam atributos derivados (sem parâmetros). Funções
 
 <details>
 <summary>❌ Ruim — função para atributo derivado simples</summary>
-<br>
 
 ```swift
 struct Order {
@@ -104,11 +95,8 @@ struct Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — propriedade computada para valor derivado</summary>
-<br>
 
 ```swift
 struct Order {
@@ -126,7 +114,6 @@ struct Order {
 
 <details>
 <summary>❌ Ruim — objeto pesado criado mesmo quando não usado</summary>
-<br>
 
 ```swift
 class ReportService {
@@ -136,11 +123,8 @@ class ReportService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lazy adia até o primeiro acesso</summary>
-<br>
 
 ```swift
 class ReportService {
@@ -156,7 +140,6 @@ Declare no escopo mais restrito possível.
 
 <details>
 <summary>❌ Ruim — var declarado antes do escopo real</summary>
-<br>
 
 ```swift
 var message: String
@@ -172,11 +155,8 @@ sendNotification(message)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — let com expressão condicional</summary>
-<br>
 
 ```swift
 let message = order.isPaid ? "Payment confirmed" : "Payment pending"
@@ -190,7 +170,6 @@ sendNotification(message)
 
 <details>
 <summary>❌ Ruim — observação de estado via polling</summary>
-<br>
 
 ```swift
 var score = 0
@@ -203,11 +182,8 @@ func updateUI() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — didSet reage à mudança de estado</summary>
-<br>
 
 ```swift
 var score = 0 {

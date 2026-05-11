@@ -28,7 +28,6 @@ e permite trocar a implementação (Pino, Winston, mock) sem alterar os callers.
 
 <details>
 <summary>❌ Ruim — logger sem tipo aceita qualquer forma de chamada</summary>
-<br>
 
 ```ts
 // qualquer assinatura passa — strings, objetos, mistura
@@ -38,11 +37,8 @@ logger.error(error);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface tipada, caller obrigado a estruturar</summary>
-<br>
 
 ```ts
 interface Logger {
@@ -65,7 +61,6 @@ estão presentes. O caller não pode omitir `correlationId` por engano.
 
 <details>
 <summary>❌ Ruim — contexto sem tipo, campos podem estar ausentes</summary>
-<br>
 
 ```ts
 const requestStore = new AsyncLocalStorage<Record<string, unknown>>();
@@ -82,11 +77,8 @@ logger.info({ ...context }, "processing"); // context pode ser undefined
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — store tipado, campos obrigatórios em compilação</summary>
-<br>
 
 ```ts
 interface RequestContext {
@@ -134,7 +126,6 @@ a verificação em compilação.
 
 <details>
 <summary>❌ Ruim — nível como string, qualquer valor aceito</summary>
-<br>
 
 ```ts
 function createLogger(level: string) {
@@ -144,11 +135,8 @@ function createLogger(level: string) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — union type nos níveis</summary>
-<br>
 
 ```ts
 type LogLevel = "fatal" | "error" | "warn" | "info" | "debug" | "trace";

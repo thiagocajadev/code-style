@@ -25,7 +25,6 @@ Prefira `attr_reader` sobre exposição de variáveis de instância diretamente.
 
 <details>
 <summary>❌ Ruim — positional args, atributo exposto como accessor</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -43,11 +42,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — keyword args, reader apenas para campos imutáveis</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -75,7 +71,6 @@ comportamento. Mais leve que uma classe completa.
 
 <details>
 <summary>❌ Ruim — Struct mutável para dados que não deveriam mudar</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -88,11 +83,8 @@ address.city = "Rio de Janeiro"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Data.define cria value object imutável</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -113,7 +105,6 @@ comportamento de instância; `extend` para comportamento de classe.
 
 <details>
 <summary>❌ Ruim — herança apenas para reutilizar comportamento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -129,11 +120,8 @@ class Product < Auditable; end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mixin para comportamento transversal</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -165,7 +153,6 @@ de navegação segura) para cadeia que pode retornar `nil`.
 
 <details>
 <summary>❌ Ruim — NoMethodError em potencial</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -177,11 +164,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — safe navigation + guard clause</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -203,7 +187,6 @@ fronteiras de domínio onde o tipo é parte do contrato.
 
 <details>
 <summary>❌ Ruim — verificação de tipo rígida bloqueia polimorfismo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -217,11 +200,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verificação de comportamento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

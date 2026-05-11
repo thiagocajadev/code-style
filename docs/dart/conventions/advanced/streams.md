@@ -22,7 +22,6 @@ de UI em Flutter e de I/O em Dart puro.
 
 <details>
 <summary>❌ Ruim — múltiplos listeners em single-subscription stream</summary>
-<br>
 
 ```dart
 final stream = File('data.json').openRead();
@@ -33,11 +32,8 @@ stream.listen((chunk) => logChunk(chunk));   // StateError: Stream has already b
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — broadcast para múltiplos listeners</summary>
-<br>
 
 ```dart
 final controller = StreamController<List<int>>.broadcast();
@@ -55,7 +51,6 @@ controller.add(data);
 
 <details>
 <summary>❌ Ruim — StreamController manual para sequência simples</summary>
-<br>
 
 ```dart
 Stream<int> countDown(int from) {
@@ -74,11 +69,8 @@ Stream<int> countDown(int from) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async* é mais legível e gerencia ciclo de vida automaticamente</summary>
-<br>
 
 ```dart
 Stream<int> countDown(int from) async* {
@@ -95,7 +87,6 @@ Stream<int> countDown(int from) async* {
 
 <details>
 <summary>❌ Ruim — subscription sem cancelamento — memory leak</summary>
-<br>
 
 ```dart
 class OrderWidget extends StatefulWidget { ... }
@@ -112,11 +103,8 @@ class _OrderWidgetState extends State<OrderWidget> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — subscription cancelada no dispose</summary>
-<br>
 
 ```dart
 class _OrderWidgetState extends State<OrderWidget> {
@@ -167,7 +155,6 @@ final debouncedStream = searchStream.debounceTime(
 
 <details>
 <summary>❌ Ruim — controller nunca fechado</summary>
-<br>
 
 ```dart
 class EventBus {
@@ -181,11 +168,8 @@ class EventBus {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dispose fecha o controller</summary>
-<br>
 
 ```dart
 class EventBus {

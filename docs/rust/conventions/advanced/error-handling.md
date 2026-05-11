@@ -23,7 +23,6 @@ Nunca use `unwrap()` ou `expect()` em código de produção. Use `?` ou trate o 
 
 <details>
 <summary>❌ Ruim — unwrap que pânica em produção</summary>
-<br>
 
 ```rust
 fn load_config() -> Config {
@@ -34,11 +33,8 @@ fn load_config() -> Config {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ? propaga o erro ao chamador</summary>
-<br>
 
 ```rust
 fn load_config() -> anyhow::Result<Config> {
@@ -61,7 +57,6 @@ propagar contexto legível até o ponto de log ou resposta HTTP.
 
 <details>
 <summary>❌ Ruim — Box<dyn Error> sem contexto</summary>
-<br>
 
 ```rust
 fn find_order(order_id: u64) -> Result<Order, Box<dyn std::error::Error>> {
@@ -72,11 +67,8 @@ fn find_order(order_id: u64) -> Result<Order, Box<dyn std::error::Error>> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — anyhow com contexto progressivo</summary>
-<br>
 
 ```rust
 use anyhow::{Context, Result};
@@ -101,7 +93,6 @@ Permite que o chamador faça match no tipo de erro.
 
 <details>
 <summary>❌ Ruim — String como tipo de erro</summary>
-<br>
 
 ```rust
 fn charge_customer(amount: f64) -> Result<Receipt, String> {
@@ -115,11 +106,8 @@ fn charge_customer(amount: f64) -> Result<Receipt, String> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — enum de erro tipado com thiserror</summary>
-<br>
 
 ```rust
 use thiserror::Error;
@@ -157,7 +145,6 @@ Nunca ignore um erro com `let _ = ...`. Propague ou registre no log.
 
 <details>
 <summary>❌ Ruim — erro descartado silenciosamente</summary>
-<br>
 
 ```rust
 let _ = send_notification(user_id, message).await;    // falha ignorada
@@ -166,11 +153,8 @@ let _ = update_order_status(order_id, status).await;  // falha ignorada
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — erro registrado ou propagado</summary>
-<br>
 
 ```rust
 if let Err(error) = send_notification(user_id, message).await {
@@ -190,7 +174,6 @@ vazar para o cliente.
 
 <details>
 <summary>❌ Ruim — erro interno exposto na resposta</summary>
-<br>
 
 ```rust
 async fn get_order(path: axum::extract::Path<u64>) -> String {
@@ -201,11 +184,8 @@ async fn get_order(path: axum::extract::Path<u64>) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Result mapeado para status HTTP na fronteira</summary>
-<br>
 
 ```rust
 async fn get_order(

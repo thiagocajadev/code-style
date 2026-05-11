@@ -23,7 +23,6 @@ Cada método executa uma operação ou orquestra outras. Nunca as duas ao mesmo 
 
 <details>
 <summary>❌ Ruim — método que faz tudo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -44,11 +43,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador + métodos de detalhe</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -95,7 +91,6 @@ expressão) é idiomático — mas sem lógica inline.
 
 <details>
 <summary>❌ Ruim — lógica na última linha</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -107,11 +102,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — resultado nomeado, retorno implícito limpo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -132,7 +124,6 @@ principal antes de descer para os detalhes.
 
 <details>
 <summary>❌ Ruim — auxiliares antes do orquestrador</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -159,11 +150,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador no topo, detalhes abaixo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -195,7 +183,6 @@ Destructuring no corpo, não na assinatura.
 
 <details>
 <summary>❌ Ruim — argumentos posicionais em excesso</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -209,11 +196,8 @@ create_order(1, 42, 3, "SAVE10", "Rua das Flores, 100")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — keyword arguments; chamada auto-documentada</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -240,7 +224,6 @@ estilos em contextos equivalentes.
 
 <details>
 <summary>❌ Ruim — estilos misturados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -255,11 +238,8 @@ total = items.map do |item| item.price end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — {} para 1 linha, do...end para múltiplas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -281,7 +261,6 @@ Use **lambda** para comportamento de função (valida aridade, `return` local). 
 
 <details>
 <summary>❌ Ruim — Proc onde lambda é necessário (return vaza)</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -296,11 +275,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lambda para transformação com retorno local</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

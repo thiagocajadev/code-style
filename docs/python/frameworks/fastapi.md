@@ -62,7 +62,6 @@ campos internos (senhas, tokens, IDs de banco não destinados ao cliente).
 
 <details>
 <summary>❌ Ruim — dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
-<br>
 
 ```python
 @router.post("/orders")
@@ -73,11 +72,8 @@ async def create_order(data: dict):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schemas separados, response_model declarado</summary>
-<br>
 
 ```python
 # schemas/order.py
@@ -114,7 +110,6 @@ sem acesso direto ao banco.
 
 <details>
 <summary>❌ Ruim — lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
-<br>
 
 ```python
 @router.get("/orders/{order_id}")
@@ -133,11 +128,8 @@ async def get_order(order_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — handler fino, delega ao serviço, response_model declarado</summary>
-<br>
 
 ```python
 # routers/orders.py
@@ -169,7 +161,6 @@ definidas uma vez e compartilhadas entre rotas.
 
 <details>
 <summary>❌ Ruim — auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
-<br>
 
 ```python
 @router.get("/orders")
@@ -187,11 +178,8 @@ async def list_orders(token: str = Header()):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
-<br>
 
 ```python
 # dependencies/auth.py
@@ -229,7 +217,6 @@ Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O*
 
 <details>
 <summary>❌ Ruim — I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
-<br>
 
 ```python
 import time
@@ -245,11 +232,8 @@ async def get_order(order_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — I/O assíncrono com httpx, sem bloqueio do event loop</summary>
-<br>
 
 ```python
 # routers/orders.py

@@ -22,7 +22,6 @@ o narrowing.
 
 <details>
 <summary>❌ Ruim — type assertion no lugar de narrowing</summary>
-<br>
 
 ```ts
 function formatId(id: string | number): string {
@@ -33,11 +32,8 @@ function formatId(id: string | number): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — typeof para primitivos</summary>
-<br>
 
 ```ts
 function formatId(id: string | number): string {
@@ -58,7 +54,6 @@ Para instâncias de classes, incluindo as de erro, `instanceof` é o operador co
 
 <details>
 <summary>❌ Ruim — type assertion no lugar de instanceof</summary>
-<br>
 
 ```ts
 async function findUser(id: string): Promise<User> {
@@ -74,11 +69,8 @@ async function findUser(id: string): Promise<User> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — instanceof para classes e erros tipados</summary>
-<br>
 
 ```ts
 async function findUser(id: string): Promise<User> {
@@ -101,7 +93,6 @@ O nome expressa a intenção de negócio. O compilador entende o `is` como estre
 
 <details>
 <summary>❌ Ruim — verificação inline repetida, sem nome, sem reutilização</summary>
-<br>
 
 ```ts
 function processPayment(event: unknown) {
@@ -119,11 +110,8 @@ function processPayment(event: unknown) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — função predicado nomeada, reutilizável e tipada</summary>
-<br>
 
 ```ts
 function isPaymentEvent(value: unknown): value is PaymentEvent {
@@ -152,7 +140,6 @@ automaticamente dentro de cada branch, sem type guard manual.
 
 <details>
 <summary>❌ Ruim — acessa campo de variant específica sem narrowing</summary>
-<br>
 
 ```ts
 type NotificationEvent =
@@ -168,11 +155,8 @@ function sendNotification(event: NotificationEvent) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — narrowing automático via campo discriminante</summary>
-<br>
 
 ```ts
 type NotificationEvent =
@@ -207,7 +191,6 @@ tipo, o compilador aponta o erro antes do runtime.
 
 <details>
 <summary>❌ Ruim — switch sem cobertura total, novo caso passa silenciosamente</summary>
-<br>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -224,11 +207,8 @@ function getStatusLabel(status: OrderStatus): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — never no default garante cobertura total</summary>
-<br>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -256,7 +236,6 @@ clause é mais legível quando a ausência do valor é uma condição de negóci
 
 <details>
 <summary>❌ Ruim — nullish chaining esconde a condição de negócio</summary>
-<br>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
@@ -267,11 +246,8 @@ async function getOrderTotal(orderId: string): Promise<number> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clause explicita a condição</summary>
-<br>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {

@@ -41,7 +41,6 @@ await client.connect();
 
 <details>
 <summary>❌ Ruim — sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
-<br>
 
 ```js
 const client = createClient({ url: 'redis://localhost:6379' });
@@ -51,11 +50,8 @@ await client.connect();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — URL por variável de ambiente; handler de erro; connect aguardado</summary>
-<br>
 
 ```js
 import { createClient } from 'redis';
@@ -90,7 +86,6 @@ O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScr
 
 <details>
 <summary>❌ Ruim — SET sem TTL em cache; JSON.parse sem null check; KEYS * em produção</summary>
-<br>
 
 ```js
 // cache sem TTL — acumula indefinidamente
@@ -105,11 +100,8 @@ const cached = JSON.parse(await client.get('team:profile:42'));
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — SET com TTL; null check antes de parse; SCAN em vez de KEYS</summary>
-<br>
 
 ```js
 const CACHE_TTL_SECONDS = 300; // 5 minutos
@@ -151,7 +143,6 @@ cache miss → busca no banco → salva no cache → retorna valor
 
 <details>
 <summary>✅ Bom — cache-aside com TTL; sem duplicação de lógica de busca</summary>
-<br>
 
 ```js
 class TeamRepository {
@@ -227,7 +218,6 @@ Ideal para rankings, leaderboards e filas com prioridade.
 
 <details>
 <summary>✅ Bom — leaderboard de gols com Sorted Set</summary>
-<br>
 
 ```js
 const LEADERBOARD_KEY = 'season:2026:top-scorers';

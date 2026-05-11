@@ -49,7 +49,6 @@ const playersCollection = database.collection('players');
 
 <details>
 <summary>❌ Ruim — novo cliente por requisição: pool destruído e recriado a cada chamada</summary>
-<br>
 
 ```js
 // cria conexão, usa e fecha — sem reuso de pool
@@ -67,11 +66,8 @@ async function findTeam(teamId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cliente singleton; pool reutilizado em toda a aplicação</summary>
-<br>
 
 ```js
 // db.js — singleton exportado

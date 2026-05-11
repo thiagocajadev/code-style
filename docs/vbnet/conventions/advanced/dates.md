@@ -20,7 +20,6 @@
 
 <details>
 <summary>❌ Ruim — hora local do servidor, Kind implícito</summary>
-<br>
 
 ```vbnet
 Dim createdAt = DateTime.Now
@@ -30,11 +29,8 @@ Dim createdAt = DateTime.Now
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — UTC explícito, comparável em qualquer ambiente</summary>
-<br>
 
 ```vbnet
 Dim createdAt = DateTimeOffset.UtcNow
@@ -50,7 +46,6 @@ Dim createdAt = DateTimeOffset.UtcNow
 
 <details>
 <summary>❌ Ruim — DateTime sem Kind perde contexto de timezone</summary>
-<br>
 
 ```vbnet
 Public Class OrderDto
@@ -62,11 +57,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DateTimeOffset carrega o offset, sem ambiguidade</summary>
-<br>
 
 ```vbnet
 Public Class OrderDto
@@ -84,7 +76,6 @@ End Class
 
 <details>
 <summary>❌ Ruim — SpecifyKind muda o rótulo, não o valor</summary>
-<br>
 
 ```vbnet
 ' servidor no fuso -03:00; valor real é 11:00 local
@@ -95,11 +86,8 @@ Dim wrongUtc = DateTime.SpecifyKind(local, DateTimeKind.Utc)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — conversão explícita preserva o instante correto</summary>
-<br>
 
 ```vbnet
 ' converte com o offset correto do servidor
@@ -116,7 +104,6 @@ Dim createdAt = DateTimeOffset.UtcNow
 
 <details>
 <summary>❌ Ruim — DateTime com hora fantasma, sujeita a shift na serialização</summary>
-<br>
 
 ```vbnet
 Public Class CustomerRequest
@@ -129,11 +116,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — string **ISO** (International Organization for Standardization, Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
-<br>
 
 ```vbnet
 ' DTO recebe a data como string, sem ambiguidade de timezone
@@ -170,7 +154,6 @@ Ao ler `DateTime` do banco, o valor volta como `DateTimeKind.Unspecified`. Trate
 
 <details>
 <summary>❌ Ruim — DateTime lido do banco sem Kind, interpretação ambígua</summary>
-<br>
 
 ```vbnet
 Public Function FindById(id As Guid) As Order
@@ -184,11 +167,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — coluna datetimeoffset no banco, DateTimeOffset no modelo</summary>
-<br>
 
 ```sql
 -- migração: coluna com offset preservado
@@ -219,7 +199,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — formatação dependente da cultura do servidor</summary>
-<br>
 
 ```vbnet
 Dim label = order.CreatedAt.ToString("dd/MM/yyyy")
@@ -228,11 +207,8 @@ Dim label = order.CreatedAt.ToString("dd/MM/yyyy")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cultura explícita, resultado previsível</summary>
-<br>
 
 ```vbnet
 Dim label = order.CreatedAt.ToString("dd/MM/yyyy", New CultureInfo("pt-BR"))

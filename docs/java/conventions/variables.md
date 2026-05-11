@@ -18,7 +18,6 @@ bugs e torna o fluxo previsível.
 
 <details>
 <summary>❌ Ruim — variável reatribuída sem necessidade</summary>
-<br>
 
 ```java
 String userName = "Alice"; // nunca reatribuído
@@ -27,11 +26,8 @@ int maxRetries = 3;        // nunca reatribuído
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — final por padrão, mutável só quando necessário</summary>
-<br>
 
 ```java
 final var userName = "Alice";
@@ -52,7 +48,6 @@ objeto do chamador: efeito colateral invisível e difícil de rastrear.
 
 <details>
 <summary>❌ Ruim — mutação do parâmetro recebido</summary>
-<br>
 
 ```java
 private void applyDiscount(Order order) {
@@ -63,11 +58,8 @@ private void applyDiscount(Order order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
-<br>
 
 ```java
 private Order applyDiscount(Order order) {
@@ -87,7 +79,6 @@ Números e strings soltos no código não dizem nada. Constantes nomeadas tornam
 
 <details>
 <summary>❌ Ruim — o que significa 18? e 86400000?</summary>
-<br>
 
 ```java
 if (user.getAge() >= 18) { /* ... */ }
@@ -98,11 +89,8 @@ scheduler.schedule(this::syncData, 86400000, TimeUnit.MILLISECONDS);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas</summary>
-<br>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -124,7 +112,6 @@ getters, `equals`, `hashCode` e `toString` automaticamente.
 
 <details>
 <summary>❌ Ruim — classe mutável para transportar dados</summary>
-<br>
 
 ```java
 public class InvoiceData {
@@ -139,11 +126,8 @@ public class InvoiceData {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — record elimina o boilerplate e garante imutabilidade</summary>
-<br>
 
 ```java
 public record InvoiceData(
@@ -166,7 +150,6 @@ tipo inferido não é imediatamente claro.
 
 <details>
 <summary>❌ Ruim — var obscurece o tipo</summary>
-<br>
 
 ```java
 final var result = repository.fetch(); // qual é o tipo?
@@ -175,11 +158,8 @@ final var x = buildSomething();        // sem contexto
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
-<br>
 
 ```java
 final var orders = orderRepository.findAll();    // List<Order> — óbvio pelo nome
@@ -198,7 +178,6 @@ coleções genéricas for necessário.
 
 <details>
 <summary>❌ Ruim — wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
-<br>
 
 ```java
 Integer count = 0;           // autoboxing desnecessário
@@ -208,11 +187,8 @@ Long totalMs = 86_400_000L;  // valor fixo, nunca null
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — primitivo por padrão, wrapper só quando necessário</summary>
-<br>
 
 ```java
 int count = 0;

@@ -23,7 +23,6 @@ Use métodos quando a operação opera sobre o estado de um struct.
 
 <details>
 <summary>❌ Ruim — método onde função seria mais claro</summary>
-<br>
 
 ```go
 type MathHelper struct{}
@@ -39,11 +38,8 @@ func (m MathHelper) Multiply(a, b float64) float64 {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — funções para operações sem estado; métodos para operações com estado</summary>
-<br>
 
 ```go
 // função livre: não depende de estado
@@ -67,7 +63,6 @@ Use value receiver para structs pequenas somente de leitura.
 
 <details>
 <summary>❌ Ruim — value receiver tenta modificar estado</summary>
-<br>
 
 ```go
 type Order struct {
@@ -82,11 +77,8 @@ func (o Order) Cancel() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pointer receiver para mutação; value receiver para leitura</summary>
-<br>
 
 ```go
 type Order struct {
@@ -115,7 +107,6 @@ Cada função deve operar em um único nível de abstração.
 
 <details>
 <summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
-<br>
 
 ```go
 func processOrder(order Order) error {
@@ -146,11 +137,8 @@ func processOrder(order Order) error {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
-<br>
 
 ```go
 func (s *OrderService) ProcessOrder(ctx context.Context, order Order) error {
@@ -203,7 +191,6 @@ Atribua a uma variável nomeada antes de retornar. O retorno nomeia o resultado,
 
 <details>
 <summary>❌ Ruim — lógica inline no return</summary>
-<br>
 
 ```go
 func calculateOrderTotal(items []Item) float64 {
@@ -221,11 +208,8 @@ func findActiveUsers(users []User) []User {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
-<br>
 
 ```go
 func calculateOrderTotal(items []Item) float64 {
@@ -253,7 +237,6 @@ Até 3 parâmetros na assinatura. Com 4 ou mais, agrupe em uma struct.
 
 <details>
 <summary>❌ Ruim — assinatura com muitos parâmetros</summary>
-<br>
 
 ```go
 func createOrder(customerID int64, amount float64, currency string,
@@ -264,11 +247,8 @@ func createOrder(customerID int64, amount float64, currency string,
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — struct para agrupar parâmetros relacionados</summary>
-<br>
 
 ```go
 type CreateOrderInput struct {
@@ -293,7 +273,6 @@ O orquestrador aparece primeiro. Os helpers ficam abaixo, na ordem em que são c
 
 <details>
 <summary>✅ Bom — leitura top-down natural</summary>
-<br>
 
 ```go
 // Orquestrador: visível primeiro

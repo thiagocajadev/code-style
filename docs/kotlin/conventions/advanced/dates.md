@@ -21,7 +21,6 @@ transferência usa ISO 8601; a formatação para o usuário aplica o fuso e o lo
 
 <details>
 <summary>❌ Ruim — java.util.Date e Calendar têm comportamento imprevisível</summary>
-<br>
 
 ```kotlin
 val now = Date()
@@ -33,11 +32,8 @@ val nextWeek = cal.time
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — java.time é imutável e explícito</summary>
-<br>
 
 ```kotlin
 val now = Instant.now()
@@ -50,7 +46,6 @@ val nextWeek = now.plus(7, ChronoUnit.DAYS)
 
 <details>
 <summary>❌ Ruim — offset fixo quebra no horário de verão</summary>
-<br>
 
 ```kotlin
 val saoPaulo = ZoneId.of("GMT-3")   // errado: ignora horário de verão
@@ -60,11 +55,8 @@ val now = ZonedDateTime.now(saoPaulo)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome IANA do fuso inclui regras de horário de verão</summary>
-<br>
 
 ```kotlin
 val saoPaulo = ZoneId.of("America/Sao_Paulo")
@@ -78,7 +70,6 @@ val now = ZonedDateTime.now(saoPaulo)
 
 <details>
 <summary>❌ Ruim — string interpretada como data sem parse explícito</summary>
-<br>
 
 ```kotlin
 val dueDate = "2026-04-30"   // String, não LocalDate
@@ -87,11 +78,8 @@ val isOverdue = dueDate < today.toString()   // comparação lexicográfica, nã
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — LocalDate com comparação tipada</summary>
-<br>
 
 ```kotlin
 val dueDate = LocalDate.parse("2026-04-30")
@@ -104,7 +92,6 @@ val isOverdue = dueDate.isBefore(LocalDate.now())
 
 <details>
 <summary>❌ Ruim — formato de data local varia por máquina</summary>
-<br>
 
 ```kotlin
 data class OrderResponse(
@@ -115,11 +102,8 @@ data class OrderResponse(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ISO 8601 é portável e indexável</summary>
-<br>
 
 ```kotlin
 data class OrderResponse(

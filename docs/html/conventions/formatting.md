@@ -21,7 +21,6 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 
 <details>
 <summary>❌ Ruim — indentação inconsistente, bloco colado ao pai</summary>
-<br>
 
 ```html
 <ul>
@@ -34,11 +33,8 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 2 espaços, hierarquia visível</summary>
-<br>
 
 ```html
 <ul>
@@ -61,7 +57,6 @@ id → class → name → type → src | href → value → placeholder → for
 
 <details>
 <summary>❌ Ruim — atributos em ordem aleatória</summary>
-<br>
 
 ```html
 <input required placeholder="Enter email" type="email" name="email" id="user-email" class="input" />
@@ -70,11 +65,8 @@ id → class → name → type → src | href → value → placeholder → for
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem consistente, fácil de escanear</summary>
-<br>
 
 ```html
 <input id="user-email" class="input" name="email" type="email" placeholder="Enter email" required />
@@ -90,7 +82,6 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 
 <details>
 <summary>❌ Ruim — atributos numa linha longa, difícil de ler</summary>
-<br>
 
 ```html
 <input id="search-input" class="input input--search" name="q" type="search" placeholder="Search products..." autocomplete="off" aria-label="Search products" required />
@@ -98,11 +89,8 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — um atributo por linha, fechamento alinhado</summary>
-<br>
 
 ```html
 <input
@@ -126,7 +114,6 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 
 <details>
 <summary>❌ Ruim — aspas simples, valor redundante em boolean</summary>
-<br>
 
 ```html
 <input type='text' required='required' disabled='disabled' />
@@ -135,11 +122,8 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — aspas duplas, booleanos sem valor</summary>
-<br>
 
 ```html
 <input type="text" required disabled />

@@ -22,7 +22,6 @@ a identidade importa ou o ciclo de vida é gerenciado externamente.
 
 <details>
 <summary>❌ Ruim — classe onde struct é suficiente</summary>
-<br>
 
 ```swift
 class Point {
@@ -42,11 +41,8 @@ b.x = 99   // muta 'a' também — referência compartilhada
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — struct: cópia independente, sem surpresas</summary>
-<br>
 
 ```swift
 struct Point {
@@ -65,7 +61,6 @@ b.x = 99   // 'a' não muda — cópia independente
 
 <details>
 <summary>❌ Ruim — Bool + optional para modelar estado</summary>
-<br>
 
 ```swift
 struct LoadingState {
@@ -77,11 +72,8 @@ struct LoadingState {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — enum exaustivo com associated values</summary>
-<br>
 
 ```swift
 enum OrdersState {
@@ -104,7 +96,6 @@ case .failed(let message): showError(message)
 
 <details>
 <summary>❌ Ruim — herança de classe para compartilhar comportamento</summary>
-<br>
 
 ```swift
 class BaseRepository {
@@ -118,11 +109,8 @@ class UserRepository: BaseRepository { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — protocol define contrato; struct implementa sem herança</summary>
-<br>
 
 ```swift
 protocol OrderRepository {
@@ -144,7 +132,6 @@ struct SQLOrderRepository: OrderRepository {
 
 <details>
 <summary>❌ Ruim — classe com estado mutável acessado de múltiplas tasks</summary>
-<br>
 
 ```swift
 class Cache {
@@ -162,11 +149,8 @@ class Cache {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — actor serializa acessos automaticamente</summary>
-<br>
 
 ```swift
 actor Cache {
@@ -190,7 +174,6 @@ actor Cache {
 
 <details>
 <summary>❌ Ruim — tipo não-Sendable passado entre tasks (warning no Swift 6)</summary>
-<br>
 
 ```swift
 class OrderRequest {
@@ -205,11 +188,8 @@ Task {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — struct imutável é automaticamente Sendable</summary>
-<br>
 
 ```swift
 struct OrderRequest: Sendable {

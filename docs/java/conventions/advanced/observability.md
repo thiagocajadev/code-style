@@ -24,7 +24,6 @@ troca a implementação sem alterar o código.
 
 <details>
 <summary>❌ Ruim — log direto para stdout, sem estrutura</summary>
-<br>
 
 ```java
 public class OrderService {
@@ -39,11 +38,8 @@ public class OrderService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — SLF4J com placeholders, sem concatenação</summary>
-<br>
 
 ```java
 @Slf4j // Lombok gera: private static final Logger log = LoggerFactory.getLogger(OrderService.class);
@@ -76,7 +72,6 @@ public class OrderService {
 
 <details>
 <summary>❌ Ruim — nível errado obscurece o problema</summary>
-<br>
 
 ```java
 log.info("Database connection failed"); // deveria ser ERROR
@@ -85,11 +80,8 @@ log.error("User logged in: {}", user.getId()); // deveria ser INFO ou DEBUG
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nível adequado ao evento</summary>
-<br>
 
 ```java
 log.info("Order created: orderId={} customerId={}", order.getId(), order.getCustomer().getId());
@@ -106,7 +98,6 @@ Use para propagar `correlationId` e `userId` entre todas as mensagens de uma req
 
 <details>
 <summary>❌ Ruim — correlationId repetido em cada log</summary>
-<br>
 
 ```java
 log.info("Processing order: orderId={} correlationId={}", orderId, correlationId);
@@ -116,11 +107,8 @@ log.info("Invoice saved: invoiceId={} correlationId={}", invoiceId, correlationI
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — MDC popula o contexto uma vez; Logback inclui em todos os logs</summary>
-<br>
 
 ```java
 // filter/CorrelationFilter.java
@@ -155,7 +143,6 @@ senhas, tokens, CPF, cartão de crédito, endereços completos.
 
 <details>
 <summary>❌ Ruim — PII nos logs</summary>
-<br>
 
 ```java
 log.info("User login: email={} password={}", user.getEmail(), user.getPassword());
@@ -164,11 +151,8 @@ log.debug("Payment: card={} cvv={}", card.getNumber(), card.getCvv());
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — apenas identificadores não sensíveis</summary>
-<br>
 
 ```java
 log.info("User login: userId={}", user.getId());
@@ -184,7 +168,6 @@ operações críticas.
 
 <details>
 <summary>✅ Bom — contador e timer para operação de negócio</summary>
-<br>
 
 ```java
 @Service

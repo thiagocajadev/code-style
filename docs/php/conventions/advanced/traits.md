@@ -23,7 +23,6 @@ O trait deve ser coeso: todos os métodos servem ao mesmo propósito.
 
 <details>
 <summary>❌ Ruim — trait como dumping ground de métodos não relacionados</summary>
-<br>
 
 ```php
 trait Helpers
@@ -37,11 +36,8 @@ trait Helpers
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — trait coeso: um propósito, um conjunto de métodos</summary>
-<br>
 
 ```php
 trait Auditable
@@ -92,7 +88,6 @@ que o usa pode fornecer. Isso cria um contrato implícito.
 
 <details>
 <summary>✅ Bom — trait com abstract method para contrato</summary>
-<br>
 
 ```php
 trait HasTimestamps
@@ -130,7 +125,6 @@ qual usar e `as` para renomear o descartado se ainda precisar dele.
 
 <details>
 <summary>✅ Bom — insteadof e as para resolver conflito</summary>
-<br>
 
 ```php
 trait LoggingA
@@ -171,7 +165,6 @@ class OrderService
 
 <details>
 <summary>✅ Bom — trait para comportamento transversal; injeção para dependências externas</summary>
-<br>
 
 ```php
 // Comportamento transversal sem dependência externa: trait

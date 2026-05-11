@@ -22,7 +22,6 @@ e o fuso corretos.
 
 <details>
 <summary>❌ Ruim — string comparada lexicograficamente</summary>
-<br>
 
 ```swift
 let dueDate = "2026-04-30"   // String, não Date
@@ -31,11 +30,8 @@ let isOverdue = dueDate < today   // comparação de string, não temporal
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Date com comparação tipada</summary>
-<br>
 
 ```swift
 let formatter = ISO8601DateFormatter()
@@ -50,7 +46,6 @@ let isOverdue = dueDate < Date.now
 
 <details>
 <summary>❌ Ruim — offset fixo ignora horário de verão</summary>
-<br>
 
 ```swift
 let saoPaulo = TimeZone(secondsFromGMT: -3 * 3600)!   // errado: -3h fixo ignora horário de verão
@@ -58,11 +53,8 @@ let saoPaulo = TimeZone(secondsFromGMT: -3 * 3600)!   // errado: -3h fixo ignora
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — identificador IANA inclui regras de horário de verão</summary>
-<br>
 
 ```swift
 let saoPaulo = TimeZone(identifier: "America/Sao_Paulo")!
@@ -76,7 +68,6 @@ let saoPaulo = TimeZone(identifier: "America/Sao_Paulo")!
 
 <details>
 <summary>❌ Ruim — novo DateFormatter em cada chamada</summary>
-<br>
 
 ```swift
 func formatDate(_ date: Date) -> String {
@@ -89,11 +80,8 @@ func formatDate(_ date: Date) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DateFormatter como propriedade estática</summary>
-<br>
 
 ```swift
 private static let displayFormatter: DateFormatter = {

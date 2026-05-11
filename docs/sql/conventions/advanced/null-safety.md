@@ -29,7 +29,6 @@ A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verd
 
 <details>
 <summary>❌ Ruim — = NULL não retorna nenhuma linha</summary>
-<br>
 
 ```sql
 SELECT *
@@ -43,11 +42,8 @@ WHERE assigned_to != NULL;    -- retorna 0 linhas sempre
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IS NULL / IS NOT NULL</summary>
-<br>
 
 ```sql
 SELECT
@@ -89,7 +85,6 @@ Indispensável para fallbacks e para tornar cálculos seguros.
 
 <details>
 <summary>❌ Ruim — CASE WHEN para fallback: verboso e difícil de encadear</summary>
-<br>
 
 ```sql
 -- fallback com CASE WHEN: repetitivo para cada nível
@@ -111,11 +106,8 @@ FROM Orders;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fallback e cálculo null-safe</summary>
-<br>
 
 ```sql
 -- fallback em cascata
@@ -149,7 +141,6 @@ por zero e tratar string vazia como NULL.
 
 <details>
 <summary>❌ Ruim — CASE WHEN para divisão segura e normalização: mais verboso</summary>
-<br>
 
 ```sql
 -- divisão por zero com CASE
@@ -173,11 +164,8 @@ FROM Users;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — divisão segura e normalização de string vazia</summary>
-<br>
 
 ```sql
 -- divisão por zero sem CASE
@@ -204,7 +192,6 @@ a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 
 <details>
 <summary>❌ Ruim — coluna nullable sem default obriga COALESCE em todo lugar</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -226,11 +213,8 @@ FROM
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — NOT NULL + DEFAULT fecha o problema na origem</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -261,7 +245,6 @@ FROM
 
 <details>
 <summary>❌ Ruim — assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
-<br>
 
 ```sql
 -- COUNT(*) conta nulos — o resultado pode enganar
@@ -281,11 +264,8 @@ GROUP BY TeamId;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — comportamento de NULL em agregações</summary>
-<br>
 
 ```sql
 -- COUNT(*) vs COUNT(coluna)
@@ -329,7 +309,6 @@ linhas fantasmas e comportamento inesperado.
 
 <details>
 <summary>❌ Ruim — JOIN com chave nullable perde linhas silenciosamente</summary>
-<br>
 
 ```sql
 -- se CustomerId for NULL em algum pedido, a linha some no INNER JOIN
@@ -344,11 +323,8 @@ INNER JOIN Customers c ON o.CustomerId = c.Id;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — chave estrangeira NOT NULL, comportamento previsível</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -381,7 +357,6 @@ gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
 
 <details>
 <summary>❌ Ruim — NOT IN retorna vazio se a subquery contiver NULL</summary>
-<br>
 
 ```sql
 -- se Users tiver algum Id NULL, essa query retorna 0 linhas
@@ -396,11 +371,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — filtrar NULL da subquery ou usar NOT EXISTS</summary>
-<br>
 
 ```sql
 -- opção 1: filtrar NULL explicitamente
@@ -435,7 +407,6 @@ quando quiser "único entre os preenchidos".
 
 <details>
 <summary>❌ Ruim — intenção de "único quando preenchido" não está declarada explicitamente</summary>
-<br>
 
 ```sql
 CREATE TABLE Users
@@ -450,11 +421,8 @@ CREATE TABLE Users
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — índice filtrado declara explicitamente a intenção</summary>
-<br>
 
 ```sql
 CREATE TABLE Users
@@ -487,7 +455,6 @@ CREATE UNIQUE INDEX uq_users_phone_not_null
 
 <details>
 <summary>❌ Ruim — comparação sem IS DISTINCT FROM perde mudanças envolvendo NULL</summary>
-<br>
 
 ```sql
 -- NULL != 'shipped' → NULL — linha ignorada no WHERE, mudança some silenciosamente
@@ -501,11 +468,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IS DISTINCT FROM detecta qualquer mudança, incluindo de/para NULL</summary>
-<br>
 
 ```sql
 -- PostgreSQL
@@ -535,7 +499,6 @@ NULL ocupa uma posição diferente dependendo do banco. Controle explícito da p
 
 <details>
 <summary>❌ Ruim — ORDER BY sem controle de NULL: posição varia por banco</summary>
-<br>
 
 ```sql
 -- PostgreSQL: NULL vai para o fim em ASC (NULLS LAST implícito)
@@ -552,11 +515,8 @@ ORDER BY
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — controle explícito da posição de NULL na ordenação</summary>
-<br>
 
 ```sql
 -- PostgreSQL: NULLS FIRST / NULLS LAST
@@ -588,7 +548,6 @@ para a estratégia completa. O padrão SQL:
 
 <details>
 <summary>❌ Ruim — NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>
-<br>
 
 ```sql
 -- falha se a tabela já tiver registros: registros existentes não têm valor para a nova coluna
@@ -601,11 +560,8 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DEFAULT garante que registros antigos nunca ficam NULL</summary>
-<br>
 
 ```sql
 -- SQL Server: uma instrução, registros antigos recebem 'Normal'
@@ -617,11 +573,8 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — migration em lotes para tabelas grandes em produção</summary>
-<br>
 
 ```sql
 -- SQL Server

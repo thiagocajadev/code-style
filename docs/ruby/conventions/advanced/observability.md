@@ -19,7 +19,6 @@ correlação por tag e integração com Rails.
 
 <details>
 <summary>❌ Ruim — log de texto livre sem estrutura</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -36,11 +35,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — log estruturado com campos semânticos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -129,7 +125,6 @@ email, CPF e senha nunca entram em logs.
 
 <details>
 <summary>❌ Ruim — dados pessoais no log</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -139,11 +134,8 @@ logger.info("user login", email: user.email, password: params[:password])
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — apenas identificadores opacos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

@@ -17,7 +17,6 @@ Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo
 
 <details>
 <summary>❌ Ruim — constante sem tipo, reatribuível sem aviso</summary>
-<br>
 
 ```python
 MAX_RETRIES = 3
@@ -28,11 +27,8 @@ MAX_RETRIES = 5  # reatribuição silenciosa
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Final sinaliza intenção ao type checker</summary>
-<br>
 
 ```python
 from typing import Final
@@ -47,7 +43,6 @@ API_URL: Final = "https://api.example.com"
 
 <details>
 <summary>❌ Ruim — objeto de valor mutável por padrão</summary>
-<br>
 
 ```python
 class Money:
@@ -61,11 +56,8 @@ price.amount = 0  # alteração acidental sem aviso
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — frozen=True garante imutabilidade</summary>
-<br>
 
 ```python
 from dataclasses import dataclass
@@ -88,7 +80,6 @@ um efeito colateral invisível e difícil de rastrear. Prefira retornar um novo 
 
 <details>
 <summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
-<br>
 
 ```python
 def apply_discount(order):
@@ -98,11 +89,8 @@ def apply_discount(order):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
-<br>
 
 ```python
 def apply_discount(order):
@@ -123,7 +111,6 @@ Números e strings soltos no código não dizem nada. Constantes nomeadas tornam
 
 <details>
 <summary>❌ Ruim — o que significa 18? e 86400?</summary>
-<br>
 
 ```python
 if user.age >= 18:
@@ -137,11 +124,8 @@ time.sleep(86400)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas</summary>
-<br>
 
 ```python
 from typing import Final
@@ -168,7 +152,6 @@ Python 3.14 (PEP 649), forward references não precisam mais de aspas.
 
 <details>
 <summary>❌ Ruim — sintaxe legada, verbose</summary>
-<br>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -185,11 +168,8 @@ def load_config() -> Dict[str, str]:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sintaxe moderna, sem imports extras</summary>
-<br>
 
 ```python
 def find_user(user_id: int) -> User | None:
@@ -212,7 +192,6 @@ objeto `Template` que pode ser sanitizado antes de produzir a string final.
 
 <details>
 <summary>❌ Ruim — f-string em contexto sensível a injeção</summary>
-<br>
 
 ```python
 def build_query(user_input: str) -> str:
@@ -223,11 +202,8 @@ def build_query(user_input: str) -> str:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — t-string para contextos que exigem sanitização</summary>
-<br>
 
 ```python
 from string.templatelib import Template
@@ -258,7 +234,6 @@ def build_safe_query(user_input: str) -> Template:
 
 <details>
 <summary>❌ Ruim — os.path e shutil fragmentados</summary>
-<br>
 
 ```python
 import os
@@ -271,11 +246,8 @@ if os.path.exists(config_path):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pathlib.Path fluente e legível</summary>
-<br>
 
 ```python
 from pathlib import Path

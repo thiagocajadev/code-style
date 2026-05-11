@@ -21,7 +21,6 @@ unwrap) é o único ponto de falha explícita e deve ser evitado em produção.
 
 <details>
 <summary>❌ Ruim — ! como atalho perigoso</summary>
-<br>
 
 ```swift
 func getCustomerEmail(userId: UUID) -> String {
@@ -32,11 +31,8 @@ func getCustomerEmail(userId: UUID) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard com saída antecipada e erro expressivo</summary>
-<br>
 
 ```swift
 func getCustomerEmail(userId: UUID) throws -> String {
@@ -54,7 +50,6 @@ func getCustomerEmail(userId: UUID) throws -> String {
 
 <details>
 <summary>❌ Ruim — verificações manuais aninhadas</summary>
-<br>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -71,11 +66,8 @@ func getCity(order: Order?) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — optional chaining com nil-coalescing no final</summary>
-<br>
 
 ```swift
 func getCity(order: Order?) -> String {
@@ -89,7 +81,6 @@ func getCity(order: Order?) -> String {
 
 <details>
 <summary>❌ Ruim — guard separado para cada optional</summary>
-<br>
 
 ```swift
 guard let name = user.name else { return }
@@ -99,11 +90,8 @@ guard let phone = user.phone else { return }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard com vírgula une condições</summary>
-<br>
 
 ```swift
 guard let name = user.name,
@@ -119,7 +107,6 @@ guard let name = user.name,
 
 <details>
 <summary>❌ Ruim — if com nil-check explícito</summary>
-<br>
 
 ```swift
 if order.promotion != nil {
@@ -130,11 +117,8 @@ if order.promotion != nil {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — if let faz unwrap e bind em um passo</summary>
-<br>
 
 ```swift
 if let promo = order.promotion {
@@ -148,7 +132,6 @@ if let promo = order.promotion {
 
 <details>
 <summary>❌ Ruim — if/else para optional com default</summary>
-<br>
 
 ```swift
 let displayName: String
@@ -161,11 +144,8 @@ if let name = user.name {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ?? em uma linha</summary>
-<br>
 
 ```swift
 let displayName = user.name ?? "Anonymous"
@@ -177,7 +157,6 @@ let displayName = user.name ?? "Anonymous"
 
 <details>
 <summary>❌ Ruim — nil para representar lista vazia</summary>
-<br>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order]? {
@@ -188,11 +167,8 @@ func findOrdersByUser(userId: UUID) -> [Order]? {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lista vazia; nil nunca representa ausência de itens</summary>
-<br>
 
 ```swift
 func findOrdersByUser(userId: UUID) -> [Order] {

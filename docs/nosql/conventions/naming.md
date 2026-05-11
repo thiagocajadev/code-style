@@ -85,7 +85,6 @@ Regras:
 
 <details>
 <summary>❌ Ruim — nomenclatura genérica, sem padrão, sem semântica de domínio</summary>
-<br>
 
 ```js
 // MongoDB: coleção no singular, campos abreviados, boolean sem prefixo, nome técnico em vez de domínio
@@ -105,11 +104,8 @@ await redis.set('s42', JSON.stringify(stats));  // opaco
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nomenclatura expressiva, plural, camelCase, namespace Redis</summary>
-<br>
 
 ```js
 // MongoDB: plural, camelCase, boolean com prefixo, nome de domínio

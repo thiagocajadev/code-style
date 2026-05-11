@@ -25,7 +25,6 @@ A regra prática: se duas implementações vão compartilhar código, `abstract 
 
 <details>
 <summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
-<br>
 
 ```csharp
 public interface OrderProcessor
@@ -45,11 +44,8 @@ public interface OrderProcessor
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — abstract class quando há estado ou template method</summary>
-<br>
 
 ```csharp
 public abstract class OrderProcessor(ILogger logger)
@@ -82,11 +78,8 @@ public sealed class StandardOrderProcessor(ILogger logger) : OrderProcessor(logg
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface quando só o contrato importa</summary>
-<br>
 
 ```csharp
 public interface IOrderRepository
@@ -107,7 +100,6 @@ public sealed class InMemoryOrderRepository : IOrderRepository { /* testes */ }
 
 <details>
 <summary>❌ Ruim — classe concreta sem sealed, extensibilidade acidental</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository orderRepository)
@@ -124,11 +116,8 @@ public class CustomOrderService : OrderService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sealed por padrão, extensibilidade exige decisão</summary>
-<br>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -147,7 +136,6 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 
 <details>
 <summary>❌ Ruim — class mutable para dados immutable</summary>
-<br>
 
 ```csharp
 public class OrderResponse
@@ -162,11 +150,8 @@ public class OrderResponse
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — record para dados, igualdade estrutural sem boilerplate</summary>
-<br>
 
 ```csharp
 public record OrderResponse
@@ -189,7 +174,6 @@ Habilitar `<Nullable>enable</Nullable>` no `.csproj` torna a ausência de valor 
 
 <details>
 <summary>❌ Ruim — nullable desligado, null silencioso no contrato</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -205,11 +189,8 @@ public class OrderService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nullable habilitado, contrato explícito</summary>
-<br>
 
 ```csharp
 public sealed class OrderService(IOrderRepository orderRepository)
@@ -239,7 +220,6 @@ Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e
 
 <details>
 <summary>❌ Ruim — cadeia de if com cast explícito</summary>
-<br>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -262,11 +242,8 @@ public string DescribePayment(IPayment payment)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — is-expression com narrowing e descrição nomeada por variante</summary>
-<br>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -294,7 +271,6 @@ Quando o domínio tem variantes fechadas, o pattern matching troca o discriminad
 
 <details>
 <summary>✅ Bom — discriminated result via pattern matching</summary>
-<br>
 
 ```csharp
 public abstract record PaymentResult
@@ -332,7 +308,6 @@ Generic sem constraint descreve qualquer tipo — é abstração sem propósito.
 
 <details>
 <summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
-<br>
 
 ```csharp
 public T? Find<T>(Guid id) where T : class
@@ -349,11 +324,8 @@ public T? Find<T>(Guid id) where T : class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constraint declara capability, compilador valida</summary>
-<br>
 
 ```csharp
 public interface IEntity
@@ -378,7 +350,6 @@ Existem dois casos legítimos: interop com COM/Office e desserialização de sha
 
 <details>
 <summary>❌ Ruim — dynamic para conveniência</summary>
-<br>
 
 ```csharp
 public void ProcessConfig(dynamic config)
@@ -390,11 +361,8 @@ public void ProcessConfig(dynamic config)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipo concreto ou JsonElement</summary>
-<br>
 
 ```csharp
 public sealed record ApiConfig

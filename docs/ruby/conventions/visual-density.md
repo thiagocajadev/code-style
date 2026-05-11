@@ -34,7 +34,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -53,11 +52,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -92,7 +88,6 @@ Em Ruby o idiomático é a última expressão sem `return`. O par é
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -106,11 +101,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -138,7 +130,6 @@ Em todos os outros casos, vai blank antes da última expressão:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -163,11 +154,8 @@ implícito) formam Explaining Return tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -191,11 +179,8 @@ O blank fica **depois** do `formatter` multi-linha. O par
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de hash multi-linha</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -242,7 +227,6 @@ critério é visual, não semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -257,12 +241,9 @@ end
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -278,11 +259,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -302,11 +280,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -336,7 +311,6 @@ a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -348,12 +322,9 @@ ONE_DAY_SECONDS = 86_400
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -365,11 +336,8 @@ ONE_DAY_SECONDS = 86_400
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -391,7 +359,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -409,11 +376,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -447,7 +411,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -466,11 +429,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -489,11 +449,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -518,7 +475,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -532,11 +488,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -558,7 +511,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -574,11 +526,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -603,7 +552,6 @@ sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -618,11 +566,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expect separado, assertion como fase própria</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -647,7 +592,6 @@ respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — hash multi-linha colado ao próximo statement</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -665,12 +609,9 @@ end
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank depois do hash isola o bloco</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -690,11 +631,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — block multi-linha pede blank depois</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -722,7 +660,6 @@ formam trio homogêneo e ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos multi-linha colados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -740,12 +677,9 @@ end
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -765,11 +699,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -793,7 +724,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -806,11 +736,8 @@ last_login_at  = Time.now.utc
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -830,7 +757,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -842,11 +768,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -869,7 +792,6 @@ Separe métodos públicos entre si com uma linha em branco. Separe a seção
 
 <details>
 <summary>❌ Ruim — métodos colados, private sem separação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -894,11 +816,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — métodos separados, private com espaçamento correto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -934,7 +853,6 @@ separados do `initialize` por uma linha em branco.
 
 <details>
 <summary>❌ Ruim — atributos misturados sem padrão</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -951,11 +869,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — atributos agrupados acima do initialize</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

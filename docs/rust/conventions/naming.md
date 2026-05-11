@@ -19,7 +19,6 @@ determinar visibilidade e categoria do símbolo, tornando as convenções parte 
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```rust
 fn apply(x: &dyn std::any::Any, p: std::collections::HashMap<String, bool>, c: fn() -> ()) {
@@ -32,11 +31,8 @@ fn apply(x: &dyn std::any::Any, p: std::collections::HashMap<String, bool>, c: f
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```rust
 fn apply_discount(order: &Order, calculate: impl Fn(&Order) -> Order) -> Option<Order> {
@@ -67,7 +63,6 @@ Rust usa capitalização como sinal semântico. Clippy avisa sobre violações a
 
 <details>
 <summary>❌ Ruim — case errado para o contexto</summary>
-<br>
 
 ```rust
 const maxRetries: u32 = 3;          // deve ser SCREAMING_SNAKE_CASE
@@ -82,11 +77,8 @@ enum Status {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções Rust respeitadas</summary>
-<br>
 
 ```rust
 const MAX_RETRIES: u32 = 3;
@@ -110,7 +102,6 @@ Em inglês, o nome segue a ordem natural da fala: **verbo + objeto + contexto**.
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```rust
 fn get_profile_user(user_id: u64) {}
@@ -120,11 +111,8 @@ fn calculate_total_invoice(invoice_id: u64) {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```rust
 fn get_user_profile(user_id: u64) {}
@@ -138,7 +126,6 @@ fn calculate_invoice_total(invoice_id: u64) {}
 
 <details>
 <summary>❌ Ruim — handle, process, manage não dizem nada</summary>
-<br>
 
 ```rust
 fn handle(data: &[u8]) {}
@@ -149,11 +136,8 @@ fn do_stuff(x: &str) {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```rust
 fn validate_payment(payment: &Payment) -> Result<(), PaymentError> {}
@@ -170,7 +154,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de onde a opera
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```rust
 fn call_stripe(amount: f64) -> anyhow::Result<()> {}
@@ -181,11 +164,8 @@ fn save_to_s3(file: &[u8]) -> anyhow::Result<()> {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```rust
 fn charge_customer(amount: f64) -> anyhow::Result<()> {}
@@ -200,7 +180,6 @@ fn archive_document(file: &[u8]) -> anyhow::Result<()> {}
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```rust
 let loading = true;
@@ -210,11 +189,8 @@ let valid = email.contains('@');
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is_, has_, can_, should_</summary>
-<br>
 
 ```rust
 let is_active = user.status == Status::Active;
@@ -232,7 +208,6 @@ Trate acrônimos como palavras normais em `PascalCase`. Evite maiúsculas em seq
 
 <details>
 <summary>❌ Ruim — acrônimo inteiro em maiúsculas</summary>
-<br>
 
 ```rust
 struct HTTPClient {}
@@ -242,11 +217,8 @@ fn parseJSON(raw: &str) {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — acrônimo como palavra normal</summary>
-<br>
 
 ```rust
 struct HttpClient {}

@@ -28,7 +28,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```php
 public function registerUser(RegisterUserInput $input): User
@@ -45,11 +44,8 @@ public function registerUser(RegisterUserInput $input): User
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```php
 public function registerUser(RegisterUserInput $input): User
@@ -75,7 +71,6 @@ Uma variável nomeada acima do `return` explica o valor retornado. Sempre que a 
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```php
 public function mapErrorToStatus(DomainError $error): int
@@ -88,11 +83,8 @@ public function mapErrorToStatus(DomainError $error): int
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```php
 public function mapErrorToStatus(DomainError $error): int
@@ -116,7 +108,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```php
 public function formatOrderDate(\DateTimeImmutable $date, string $locale = 'pt-BR'): string
@@ -138,11 +129,8 @@ public function formatOrderDate(\DateTimeImmutable $date, string $locale = 'pt-B
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```php
 public function formatOrderDate(\DateTimeImmutable $date, string $locale = 'pt-BR'): string
@@ -164,11 +152,8 @@ O blank fica **depois** do `$formatter` multi-linha. O par `$formattedDate` + `r
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de array multi-linha</summary>
-<br>
 
 ```php
 public function buildOrderResponse(Order $order, string $requestId): array
@@ -204,7 +189,6 @@ Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas fí
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```php
 $order = $this->orderRepository->findById($orderId);
@@ -214,12 +198,9 @@ $invoice = $this->buildInvoice($order);
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```php
 $order = $this->orderRepository->findById($orderId);
@@ -230,11 +211,8 @@ $invoice = $this->buildInvoice($order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```php
 $handler = $this->eventHandlers[$eventType] ?? null;
@@ -249,11 +227,8 @@ $eventPayload = $event->data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```php
 $response = $this->requestFn();
@@ -275,7 +250,6 @@ Três declarações simples consecutivas (`$x = …;`, `const X = …`) formam g
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```php
 final class DomainLimits
@@ -288,12 +262,9 @@ final class DomainLimits
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```php
 final class DomainLimits
@@ -306,11 +277,8 @@ final class DomainLimits
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```php
 final class DomainLimits
@@ -331,7 +299,6 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```php
 public function buildShippingLabel(Order $order): string
@@ -348,11 +315,8 @@ public function buildShippingLabel(Order $order): string
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```php
 public function buildShippingLabel(Order $order): string
@@ -379,7 +343,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```php
 public function buildDeliveryMessage(User $user, Order $order): string
@@ -395,11 +358,8 @@ public function buildDeliveryMessage(User $user, Order $order): string
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```php
 public function buildDeliveryMessage(User $user, Order $order): string
@@ -416,11 +376,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar" (Explain
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```php
 public function buildOrderSlug(Order $order): string
@@ -441,7 +398,6 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```php
 public function createUserHandler(Request $request): Response
@@ -456,11 +412,8 @@ public function createUserHandler(Request $request): Response
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```php
 public function createUserHandler(Request $request): Response
@@ -484,7 +437,6 @@ O `assert` é fase distinta. A linha em branco antes dele separa o que está sen
 
 <details>
 <summary>❌ Ruim — assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```php
 public function testAppliesPercentageDiscountToOrderPrice(): void
@@ -498,11 +450,8 @@ public function testAppliesPercentageDiscountToOrderPrice(): void
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert separado, assertion como fase própria</summary>
-<br>
 
 ```php
 public function testAppliesPercentageDiscountToOrderPrice(): void
@@ -523,7 +472,6 @@ Quando um array literal, construtor com named arguments ou statement quebra em v
 
 <details>
 <summary>❌ Ruim — array multi-linha colado ao próximo statement</summary>
-<br>
 
 ```php
 public function createSession(User $user): string
@@ -541,11 +489,8 @@ public function createSession(User $user): string
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do array isola o bloco</summary>
-<br>
 
 ```php
 public function createSession(User $user): string
@@ -572,7 +517,6 @@ Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) colados formam mura
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```php
 public function processOrder(Order $order): void
@@ -589,12 +533,9 @@ public function processOrder(Order $order): void
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```php
 public function processOrder(Order $order): void
@@ -613,11 +554,8 @@ public function processOrder(Order $order): void
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```php
 public function validateInput(CreateUserInput $input): void
@@ -636,7 +574,6 @@ Não alinhe verticalmente `=`, `=>` ou valores com múltiplos espaços. Use semp
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```php
 $userName     = 'alice';
@@ -647,11 +584,8 @@ $lastLoginAt  = new \DateTimeImmutable();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```php
 $userName = 'alice';
@@ -668,7 +602,6 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```php
 public function buildDeliveryMessage(User $user, Order $order): string
@@ -679,11 +612,8 @@ public function buildDeliveryMessage(User $user, Order $order): string
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```php
 public function buildDeliveryMessage(User $user, Order $order): string

@@ -22,7 +22,6 @@ LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. 
 
 <details>
 <summary>❌ Ruim — side effect dentro de query LINQ</summary>
-<br>
 
 ```csharp
 var summaries = orders
@@ -38,11 +37,8 @@ var summaries = orders
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — LINQ transforma, foreach executa side effects</summary>
-<br>
 
 ```csharp
 var activeOrders = orders
@@ -65,7 +61,6 @@ foreach (var order in activeOrders)
 
 <details>
 <summary>❌ Ruim — Aggregate onde foreach é mais claro</summary>
-<br>
 
 ```csharp
 var totalRevenue = orders.Aggregate(
@@ -76,11 +71,8 @@ var totalRevenue = orders.Aggregate(
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — foreach manual para construir lista, sem Select</summary>
-<br>
 
 ```csharp
 var summaries = new List<OrderSummary>();
@@ -93,11 +85,8 @@ foreach (var order in orders)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — foreach com variável de acumulação explícita</summary>
-<br>
 
 ```csharp
 decimal totalRevenue = 0;
@@ -108,11 +97,8 @@ foreach (var item in order.Items)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Select para transformação 1-para-1</summary>
-<br>
 
 ```csharp
 var summaries = orders
@@ -128,7 +114,6 @@ var summaries = orders
 
 <details>
 <summary>❌ Ruim — materialização prematura no meio do pipeline</summary>
-<br>
 
 ```csharp
 public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -150,11 +135,8 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pipeline lazy, materialização única na fronteira</summary>
-<br>
 
 ```csharp
 public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)
@@ -177,7 +159,6 @@ Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupa
 
 <details>
 <summary>❌ Ruim — chain monolítica, difícil de rastrear</summary>
-<br>
 
 ```csharp
 var report = orders
@@ -191,11 +172,8 @@ var report = orders
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — etapas nomeadas, cada uma com responsabilidade clara</summary>
-<br>
 
 ```csharp
 var recentConfirmedOrders = orders
@@ -241,7 +219,6 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 
 <details>
 <summary>❌ Ruim — Join exclui registros sem correspondência</summary>
-<br>
 
 ```csharp
 var result = orders
@@ -256,11 +233,8 @@ var result = orders
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — GroupJoin + SelectMany preserva todos os registros do lado esquerdo</summary>
-<br>
 
 ```csharp
 var result = orders

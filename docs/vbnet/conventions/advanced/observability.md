@@ -26,7 +26,6 @@ Concatenação de string em logs destrói a estrutura: o valor vira texto, não 
 
 <details>
 <summary>❌ Ruim — concatenação destrói campos, perde stack trace</summary>
-<br>
 
 ```vbnet
 _logger.Info("Order " & order.Id.ToString() & " processed by " & user.Id.ToString() & " — total: " & order.Total.ToString())
@@ -35,11 +34,8 @@ _logger.Error("Payment failed: " & ex.Message & " for order " & order.Id.ToStrin
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — message templates: cada argumento vira campo estruturado</summary>
-<br>
 
 ```vbnet
 _logger.Info("Order {OrderId} processed by {UserId}, total {Total}",
@@ -54,7 +50,6 @@ _logger.Error(ex, "Payment failed for {OrderId}", order.Id)
 
 <details>
 <summary>❌ Ruim — Info para tudo, sem distinção de severidade</summary>
-<br>
 
 ```vbnet
 _logger.Info("Checkout started")
@@ -64,11 +59,8 @@ _logger.Info("User {UserId} not found", userId)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nível correto por situação</summary>
-<br>
 
 ```vbnet
 _logger.Debug("Checkout handler invoked for {CartId}", cartId)
@@ -93,7 +85,6 @@ _logger.Error("User {UserId} not found during checkout", userId)
 
 <details>
 <summary>❌ Ruim — PII e credenciais em log</summary>
-<br>
 
 ```vbnet
 _logger.Info("Login: {Email} {Password}", user.Email, user.Password)
@@ -103,11 +94,8 @@ _logger.Info("Token issued: {Token}", token)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IDs e referências, nunca dados sensíveis</summary>
-<br>
 
 ```vbnet
 _logger.Info("User {UserId} authenticated", user.Id)
@@ -125,7 +113,6 @@ Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear 
 
 <details>
 <summary>❌ Ruim — logs sem contexto de requisição</summary>
-<br>
 
 ```vbnet
 Public Async Function ProcessCheckoutAsync(request As CheckoutRequest) As Task(Of Invoice)
@@ -139,11 +126,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — CorrelationId no MDC enriquece todos os logs da request</summary>
-<br>
 
 ```vbnet
 ' Infrastructure/Filters/CorrelationIdFilter.vb
@@ -199,7 +183,6 @@ End Function
 
 <details>
 <summary>✅ Bom — NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
-<br>
 
 ```xml
 <!-- NLog.config -->

@@ -20,7 +20,6 @@ O método de entrada declara o fluxo de alto nível: o quê, não o como. Helper
 
 <details>
 <summary>❌ Ruim — implementação misturada com orquestração</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -46,11 +45,8 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador declara o fluxo, helpers implementam cada passo</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -87,7 +83,6 @@ Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um pas
 
 <details>
 <summary>❌ Ruim — orquestração e implementação no mesmo método</summary>
-<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -108,11 +103,8 @@ public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, Cancellatio
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador chama helpers, cada um com uma responsabilidade</summary>
-<br>
 
 ```csharp
 public async Task<OrderSummary> BuildOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -150,7 +142,6 @@ O `return` declara o que sai, não calcula. Uma variável nomeada antes do retor
 
 <details>
 <summary>❌ Ruim — lógica e construção inline no return</summary>
-<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order) =>
@@ -163,11 +154,8 @@ public OrderSummary BuildSummary(Order order) =>
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -179,11 +167,8 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — string imensa montada inline: ilegível e sem semântica</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order) =>
@@ -192,11 +177,8 @@ public string BuildShippingLabel(Order order) =>
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variável expressiva antes do return</summary>
-<br>
 
 ```csharp
 public OrderSummary BuildSummary(Order order)
@@ -211,11 +193,8 @@ public OrderSummary BuildSummary(Order order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome simétrico com o método deixa claro o que sai</summary>
-<br>
 
 ```csharp
 public async Task<IEnumerable<Order>> FindPendingOrdersAsync(Guid userId, CancellationToken ct)
@@ -233,11 +212,8 @@ public async Task<Invoice> ProcessCheckoutAsync(Guid cartId, CancellationToken c
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — partes nomeadas antes de montar o resultado</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -259,7 +235,6 @@ C# 12 introduziu primary constructors. Use para injeção de dependência: elimi
 
 <details>
 <summary>❌ Ruim — boilerplate de construtor tradicional</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -287,11 +262,8 @@ public class OrderService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — primary constructor, DI sem cerimônia</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository, INotifier notifier)
@@ -316,7 +288,6 @@ Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Pas
 
 <details>
 <summary>❌ Ruim — sem separação entre passos ou separação excessiva</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
@@ -339,11 +310,8 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — um grupo por passo, separados por uma linha em branco</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)

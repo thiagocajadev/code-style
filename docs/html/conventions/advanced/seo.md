@@ -21,7 +21,6 @@
 
 <details>
 <summary>❌ Ruim — title genérico, description ausente ou duplicada</summary>
-<br>
 
 ```html
 <head>
@@ -39,11 +38,8 @@
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — title e description únicos, concisos e descritivos</summary>
-<br>
 
 ```html
 <head>
@@ -64,7 +60,6 @@ a plataforma escolhe, geralmente mal.
 
 <details>
 <summary>❌ Ruim — sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
-<br>
 
 ```html
 <head>
@@ -74,11 +69,8 @@ a plataforma escolhe, geralmente mal.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
-<br>
 
 ```html
 <head>
@@ -116,7 +108,6 @@ conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de ra
 
 <details>
 <summary>❌ Ruim — sem canonical em página com parâmetros UTM</summary>
-<br>
 
 ```html
 <!-- URL: /products?utm_source=email&utm_campaign=spring -->
@@ -127,11 +118,8 @@ conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de ra
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — canonical aponta para URL limpa</summary>
-<br>
 
 ```html
 <head>
@@ -149,7 +137,6 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 <details>
 <summary>❌ Ruim — dados estruturados ausentes, sem rich snippet</summary>
-<br>
 
 ```html
 <body>
@@ -161,11 +148,8 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — JSON-LD com schema Product, preço e avaliação</summary>
-<br>
 
 ```html
 <body>

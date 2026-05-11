@@ -21,7 +21,6 @@ Go nunca deixa variáveis sem valor. Declare com `var` quando o zero value já �
 
 <details>
 <summary>❌ Ruim — inicialização redundante com zero value</summary>
-<br>
 
 ```go
 var count int = 0
@@ -32,11 +31,8 @@ var items []string = nil
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — zero value é o estado inicial, var declara a intenção</summary>
-<br>
 
 ```go
 var count int
@@ -54,7 +50,6 @@ legível em declarações longas.
 
 <details>
 <summary>❌ Ruim — var onde := seria mais natural</summary>
-<br>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -67,11 +62,8 @@ func findUser(userID int64) (*User, error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — := para inicialização com valor imediato</summary>
-<br>
 
 ```go
 func findUser(userID int64) (*User, error) {
@@ -93,7 +85,6 @@ Substitua literais inline por constantes nomeadas. Qualquer número ou string cu
 
 <details>
 <summary>❌ Ruim — literais sem nome</summary>
-<br>
 
 ```go
 if attempts > 3 {
@@ -109,11 +100,8 @@ time.Sleep(5 * time.Second)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas revelam intenção</summary>
-<br>
 
 ```go
 const (
@@ -142,7 +130,6 @@ verifique usos indevidos.
 
 <details>
 <summary>❌ Ruim — strings mágicas para status</summary>
-<br>
 
 ```go
 func updateOrderStatus(order *Order, status string) {
@@ -154,11 +141,8 @@ func updateOrderStatus(order *Order, status string) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipo enumerado com iota</summary>
-<br>
 
 ```go
 type OrderStatus int
@@ -190,7 +174,6 @@ Prefira receber e retornar valores (não ponteiros) em structs pequenas.
 
 <details>
 <summary>❌ Ruim — mutação desnecessária via ponteiro</summary>
-<br>
 
 ```go
 func applyTax(price *float64, rate float64) {
@@ -203,11 +186,8 @@ applyTax(&total, 0.1)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retornar novo valor sem efeito colateral</summary>
-<br>
 
 ```go
 func applyTax(price float64, rate float64) float64 {
@@ -226,7 +206,6 @@ Use `_` para descartar retornos que não serão usados. Nunca ignore erros com `
 
 <details>
 <summary>❌ Ruim — erro ignorado silenciosamente</summary>
-<br>
 
 ```go
 result, _ := saveOrder(order)  // erro descartado
@@ -235,11 +214,8 @@ file, _ := os.Open("data.csv") // falha silenciosa
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — erros tratados; _ apenas para valores realmente descartáveis</summary>
-<br>
 
 ```go
 result, err := saveOrder(order)

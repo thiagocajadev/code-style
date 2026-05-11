@@ -22,7 +22,6 @@ que polui sem agregar.
 
 <details>
 <summary>❌ Ruim — anotação repete o que a atribuição já diz</summary>
-<br>
 
 ```ts
 const userName: string = "Alice";
@@ -33,11 +32,8 @@ const orders: Order[] = [];
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inferência quando o tipo é óbvio</summary>
-<br>
 
 ```ts
 const userName = "Alice";
@@ -55,7 +51,6 @@ arrays vazios, objetos parcialmente construídos.
 
 <details>
 <summary>❌ Ruim — tipo implícito `any` sem aviso visual</summary>
-<br>
 
 ```ts
 let currentUser; // any — sem tipo, sem proteção
@@ -64,11 +59,8 @@ const results = []; // never[] — TypeScript não sabe o tipo dos elementos
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — anotação explícita onde a inferência não alcança</summary>
-<br>
 
 ```ts
 let currentUser: User | null = null;
@@ -84,7 +76,6 @@ contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
 
 <details>
 <summary>❌ Ruim — any apaga todo o benefício do TypeScript</summary>
-<br>
 
 ```ts
 async function fetchExternalData(): Promise<any> {
@@ -98,11 +89,8 @@ data.user.name; // TypeScript aceita, mas pode explodir em runtime
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — unknown força narrowing antes do uso</summary>
-<br>
 
 ```ts
 async function fetchExternalData(): Promise<unknown> {
@@ -126,7 +114,6 @@ type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables 
 
 <details>
 <summary>❌ Ruim — tipo inferido como string, perde a especificidade</summary>
-<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -142,11 +129,8 @@ function updateStatus(status: string) { /* ... */ } // sem restrição real
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — as const preserva os literais</summary>
-<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -170,7 +154,6 @@ Diferente da anotação direta, que alarga o tipo para a interface.
 
 <details>
 <summary>❌ Ruim — anotação direta alarga para o tipo base</summary>
-<br>
 
 ```ts
 interface RouteConfig {
@@ -188,11 +171,8 @@ createOrder.method; // tipo: "GET" | "POST" | "PUT" | "DELETE" — perde a espec
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — satisfies valida e preserva o tipo literal</summary>
-<br>
 
 ```ts
 const createOrder = {

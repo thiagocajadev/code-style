@@ -21,7 +21,6 @@ O compilador impede uso não-seguro de valores nullable. O operador `!` (null as
 
 <details>
 <summary>❌ Ruim — ! como atalho perigoso</summary>
-<br>
 
 ```dart
 Future<String> getCustomerEmail(int userId) async {
@@ -32,11 +31,8 @@ Future<String> getCustomerEmail(int userId) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — null-check explícito com throw expressivo</summary>
-<br>
 
 ```dart
 Future<String> getCustomerEmail(int userId) async {
@@ -53,7 +49,6 @@ Future<String> getCustomerEmail(int userId) async {
 
 <details>
 <summary>❌ Ruim — null-checks aninhados</summary>
-<br>
 
 ```dart
 String getCity(Order? order) {
@@ -70,11 +65,8 @@ String getCity(Order? order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — safe call chain com ?? no final</summary>
-<br>
 
 ```dart
 String getCity(Order? order) {
@@ -88,7 +80,6 @@ String getCity(Order? order) {
 
 <details>
 <summary>❌ Ruim — nullable onde o valor sempre existirá</summary>
-<br>
 
 ```dart
 class UserBloc {
@@ -104,11 +95,8 @@ class UserBloc {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — late final declara intenção sem nullable</summary>
-<br>
 
 ```dart
 class UserBloc {
@@ -128,7 +116,6 @@ class UserBloc {
 
 <details>
 <summary>❌ Ruim — parâmetro obrigatório nullable com verificação manual</summary>
-<br>
 
 ```dart
 class Order {
@@ -144,11 +131,8 @@ final order = Order(userId: 42, items: [item]);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — required para parâmetros obrigatórios</summary>
-<br>
 
 ```dart
 class Order {
@@ -167,7 +151,6 @@ final order = Order(userId: 42, items: [item]);
 
 <details>
 <summary>❌ Ruim — null para representar lista vazia</summary>
-<br>
 
 ```dart
 Future<List<Order>?> findOrdersByUser(int userId) async {
@@ -178,11 +161,8 @@ Future<List<Order>?> findOrdersByUser(int userId) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
-<br>
 
 ```dart
 Future<List<Order>> findOrdersByUser(int userId) async {

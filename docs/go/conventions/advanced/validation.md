@@ -21,7 +21,6 @@ Valide cedo; nunca confie em input não validado dentro do service.
 
 <details>
 <summary>❌ Ruim — validação manual espalhada no service</summary>
-<br>
 
 ```go
 func (s *OrderService) CreateOrder(ctx context.Context, input CreateOrderInput) (*Order, error) {
@@ -41,11 +40,8 @@ func (s *OrderService) CreateOrder(ctx context.Context, input CreateOrderInput) 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — struct tags + validação no handler antes de chamar o service</summary>
-<br>
 
 ```go
 type CreateOrderInput struct {
@@ -90,7 +86,6 @@ Converta `validator.ValidationErrors` em resposta estruturada com o campo e a re
 
 <details>
 <summary>✅ Bom — resposta estruturada de validação</summary>
-<br>
 
 ```go
 type FieldError struct {
@@ -147,7 +142,6 @@ Registre validações de domínio como tags customizadas quando a lógica se rep
 
 <details>
 <summary>✅ Bom — tag customizada para validação de moeda</summary>
-<br>
 
 ```go
 var supportedCurrencies = map[string]bool{
@@ -177,7 +171,6 @@ Valide parâmetros de URL e query string antes de usar. Nunca assuma que são v�
 
 <details>
 <summary>✅ Bom — validação explícita de path param e query string</summary>
-<br>
 
 ```go
 func (h *OrderHandler) ListOrders(w http.ResponseWriter, r *http.Request) {

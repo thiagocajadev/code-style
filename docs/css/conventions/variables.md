@@ -18,7 +18,6 @@
 
 <details>
 <summary>❌ Ruim — valores mágicos espalhados e nomes não-semânticos</summary>
-<br>
 
 ```css
 .button { background: #3b82f6; }
@@ -33,11 +32,8 @@
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — token semântico definido uma vez, referenciado em todo lugar</summary>
-<br>
 
 ```css
 :root {
@@ -70,7 +66,6 @@ componente, defini-lo no `:root` polui o namespace global.
 
 <details>
 <summary>❌ Ruim — variáveis de componente expostas globalmente</summary>
-<br>
 
 ```css
 :root {
@@ -88,11 +83,8 @@ componente, defini-lo no `:root` polui o namespace global.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variáveis de componente escopadas ao bloco</summary>
-<br>
 
 ```css
 .card {

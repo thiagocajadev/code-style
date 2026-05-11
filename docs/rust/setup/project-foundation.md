@@ -55,7 +55,6 @@ my-app/
 
 <details>
 <summary>❌ Ruim — versões sem pin, sem toolchain</summary>
-<br>
 
 ```toml
 [package]
@@ -69,11 +68,8 @@ serde = "*"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dependências versionadas e features explícitas</summary>
-<br>
 
 ```toml
 [package]
@@ -110,7 +106,6 @@ channel = "stable"
 
 <details>
 <summary>❌ Ruim — main.rs como dumping ground</summary>
-<br>
 
 ```rust
 #[tokio::main]
@@ -132,11 +127,8 @@ async fn main() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — main.rs como índice, lógica delegada</summary>
-<br>
 
 ```rust
 mod config;
@@ -172,7 +164,6 @@ Nenhum módulo acessa `std::env::var` diretamente.
 
 <details>
 <summary>❌ Ruim — env var lida em qualquer lugar</summary>
-<br>
 
 ```rust
 // src/order/repository.rs
@@ -187,11 +178,8 @@ let secret = std::env::var("JWT_SECRET").unwrap(); // espalhado
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
-<br>
 
 ```rust
 // src/config.rs
@@ -241,7 +229,6 @@ Cada domínio agrupa handler, service e repository. Evite estrutura por camada t
 
 <details>
 <summary>❌ Ruim — estrutura por camada</summary>
-<br>
 
 ```
 src/
@@ -258,11 +245,8 @@ src/
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — estrutura por domínio</summary>
-<br>
 
 ```
 src/

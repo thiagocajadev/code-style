@@ -42,7 +42,6 @@ Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 
 <details>
 <summary>❌ Ruim — sintaxe legada</summary>
-<br>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -54,11 +53,8 @@ def load_config() -> Dict[str, str]: ...
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sintaxe moderna, sem imports extras</summary>
-<br>
 
 ```python
 def find_user(user_id: int) -> User | None: ...
@@ -72,7 +68,6 @@ def load_config() -> dict[str, str]: ...
 
 <details>
 <summary>❌ Ruim — f-string em contexto sensível a injeção</summary>
-<br>
 
 ```python
 query = f"SELECT * FROM users WHERE name = '{user_input}'"
@@ -80,11 +75,8 @@ query = f"SELECT * FROM users WHERE name = '{user_input}'"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — f-string para interpolação segura; t-string para sanitização (Python 3.14+)</summary>
-<br>
 
 ```python
 # interpolação segura: UI, logs, mensagens
@@ -102,7 +94,6 @@ Sempre no corpo da função, nunca inline no return.
 
 <details>
 <summary>❌ Ruim — acesso encadeado inline</summary>
-<br>
 
 ```python
 def format_address(user):
@@ -111,11 +102,8 @@ def format_address(user):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — extrai antes de usar</summary>
-<br>
 
 ```python
 def format_address(user):

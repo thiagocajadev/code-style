@@ -25,7 +25,6 @@ o compilador já descartou o branch anterior.
 
 <details>
 <summary>❌ Ruim — else desnecessário após return</summary>
-<br>
 
 ```dart
 double getDiscount(CustomerType type) {
@@ -41,11 +40,8 @@ double getDiscount(CustomerType type) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — early return elimina o else</summary>
-<br>
 
 ```dart
 double getDiscount(CustomerType type) {
@@ -65,7 +61,6 @@ Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou ma
 
 <details>
 <summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
-<br>
 
 ```dart
 String label;
@@ -78,11 +73,8 @@ if (order.isPaid) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ternário na atribuição</summary>
-<br>
 
 ```dart
 final label = order.isPaid ? 'Paid' : 'Pending';
@@ -92,7 +84,6 @@ final label = order.isPaid ? 'Paid' : 'Pending';
 
 <details>
 <summary>❌ Ruim — ternário aninhado para 3+ alternativas</summary>
-<br>
 
 ```dart
 final priority = isUrgent ? isCritical ? 'Critical' : 'High' : 'Normal';
@@ -100,11 +91,8 @@ final priority = isUrgent ? isCritical ? 'Critical' : 'High' : 'Normal';
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — switch expression para 3+ alternativas</summary>
-<br>
 
 ```dart
 final priority = switch ((isUrgent, isCritical)) {
@@ -120,7 +108,6 @@ final priority = switch ((isUrgent, isCritical)) {
 
 <details>
 <summary>❌ Ruim — lógica principal aninhada</summary>
-<br>
 
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
@@ -143,11 +130,8 @@ Future<Result<Invoice>> processOrder(Order? order) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guards eliminam aninhamento</summary>
-<br>
 
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
@@ -167,7 +151,6 @@ Future<Result<Invoice>> processOrder(Order? order) async {
 
 <details>
 <summary>❌ Ruim — if/else manual para null</summary>
-<br>
 
 ```dart
 String getCity(Order? order) {
@@ -180,11 +163,8 @@ String getCity(Order? order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — optional chaining com ?? no final</summary>
-<br>
 
 ```dart
 String getCity(Order? order) {
@@ -202,7 +182,6 @@ String getCity(Order? order) {
 
 <details>
 <summary>❌ Ruim — if chain para mapeamento de chave string</summary>
-<br>
 
 ```dart
 String httpMessage(int code) {
@@ -216,11 +195,8 @@ String httpMessage(int code) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Map + ?? para o fallback</summary>
-<br>
 
 ```dart
 String httpMessage(int code) {
@@ -242,7 +218,6 @@ String httpMessage(int code) {
 
 <details>
 <summary>❌ Ruim — if/else chain para mapeamento de valor</summary>
-<br>
 
 ```dart
 String describeStatus(OrderStatus status) {
@@ -260,11 +235,8 @@ String describeStatus(OrderStatus status) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — switch expression exaustivo</summary>
-<br>
 
 ```dart
 String describeStatus(OrderStatus status) {
@@ -283,7 +255,6 @@ String describeStatus(OrderStatus status) {
 
 <details>
 <summary>❌ Ruim — verificação de tipo manual</summary>
-<br>
 
 ```dart
 void handleResult(OrderResult result) {
@@ -296,11 +267,8 @@ void handleResult(OrderResult result) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — if-case faz bind diretamente</summary>
-<br>
 
 ```dart
 void handleResult(OrderResult result) {
@@ -319,7 +287,6 @@ elemento, use `for-in` com `return` antecipado — é mais claro do que um loop 
 
 <details>
 <summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
-<br>
 
 ```dart
 Product? findFirstExpiredProduct(List<Product> products) {
@@ -337,11 +304,8 @@ Product? findFirstExpiredProduct(List<Product> products) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — for-in com return antecipado sai no primeiro match</summary>
-<br>
 
 ```dart
 Product? findFirstExpiredProduct(List<Product> products) {
@@ -355,11 +319,8 @@ Product? findFirstExpiredProduct(List<Product> products) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — any / every com circuit break nativo</summary>
-<br>
 
 ```dart
 // para no primeiro true
@@ -375,7 +336,6 @@ final allActive = products.every((p) => p.isActive);
 
 <details>
 <summary>❌ Ruim — índice manual quando não necessário</summary>
-<br>
 
 ```dart
 for (var i = 0; i < items.length; i++) {
@@ -385,11 +345,8 @@ for (var i = 0; i < items.length; i++) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — for-in ou operações de coleção</summary>
-<br>
 
 ```dart
 for (final item in items) {
@@ -414,7 +371,6 @@ Quando não há coleção pré-definida e o critério de parada é uma condiçã
 
 <details>
 <summary>❌ Ruim — for com índice quando o critério é condição de estado</summary>
-<br>
 
 ```dart
 for (var i = 0; i < maxAttempts; i++) {
@@ -425,11 +381,8 @@ for (var i = 0; i < maxAttempts; i++) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — while para condição de parada por estado</summary>
-<br>
 
 ```dart
 var attempt = 0;
@@ -450,7 +403,6 @@ Use `do-while` quando a primeira iteração deve sempre executar, independente d
 
 <details>
 <summary>❌ Ruim — while quando a fila deve processar ao menos um item</summary>
-<br>
 
 ```dart
 // verifica antes de executar — se a fila já estiver vazia, nunca executa
@@ -462,11 +414,8 @@ while (taskQueue.isNotEmpty) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — do-while quando a primeira execução é garantida</summary>
-<br>
 
 ```dart
 // drena a fila — processa pelo menos um item antes de verificar

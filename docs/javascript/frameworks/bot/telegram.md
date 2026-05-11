@@ -44,7 +44,6 @@ process.once('SIGTERM', () => bot.stop('SIGTERM'));
 
 <details>
 <summary>❌ Ruim — ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
-<br>
 
 ```js
 bot.command('order', async (ctx) => {
@@ -57,11 +56,8 @@ bot.command('order', async (ctx) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — context sem abreviação; handlers importados; router só delega</summary>
-<br>
 
 ```js
 import { helpCommand } from './commands/help.js';
@@ -81,7 +77,6 @@ Use o `message` filter de `telegraf/filters` para reagir a tipos específicos de
 
 <details>
 <summary>❌ Ruim — ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
-<br>
 
 ```js
 bot.on('message', (ctx) => {
@@ -99,11 +94,8 @@ bot.on('message', (ctx) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — message filter declarativo; compute extraído; format separado do argumento</summary>
-<br>
 
 ```js
 import { message } from 'telegraf/filters';
@@ -123,7 +115,6 @@ bot.on(message('text'), (context) => {
 
 <details>
 <summary>❌ Ruim — ctx abreviado; property access direto no argumento; format inline na chamada</summary>
-<br>
 
 ```js
 export async function orderCommand(ctx) {
@@ -135,11 +126,8 @@ export async function orderCommand(ctx) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — compute extraído antes do argumento; guard clause; format em função separada</summary>
-<br>
 
 ```js
 export async function orderCommand(context) {
@@ -181,7 +169,6 @@ Botões inline enviam um `callback_query` silencioso ao bot. Sempre chame `answe
 
 <details>
 <summary>❌ Ruim — ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
-<br>
 
 ```js
 export async function orderCommand(ctx) {
@@ -201,11 +188,8 @@ bot.action(/^cancel_(.+)$/, async (ctx) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — compute extraído; format nomeado antes do reply; answerCbQuery antes do editMessageText</summary>
-<br>
 
 ```js
 import { Markup } from 'telegraf';
@@ -248,7 +232,6 @@ Use `bot.createWebhook()` com `secretToken` para validar que os updates vêm do 
 
 <details>
 <summary>❌ Ruim — webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
-<br>
 
 ```js
 import express from 'express';
@@ -263,11 +246,8 @@ app.listen(3000);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — bot.createWebhook() com secretToken; await extraído do argumento; shutdown limpo</summary>
-<br>
 
 ```js
 import { createServer } from 'http';

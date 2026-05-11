@@ -46,7 +46,6 @@ como funciona.
 
 <details>
 <summary>❌ Ruim — server.js como dumping ground de configuração</summary>
-<br>
 
 ```js
 import express from "express";
@@ -93,11 +92,8 @@ app.listen(process.env.PORT || 3000);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — server.js como índice, configuração delegada</summary>
-<br>
 
 ```js
 import { config } from "./config.js";
@@ -117,7 +113,6 @@ co-localizados com o domínio que representam.
 
 <details>
 <summary>❌ Ruim — app.js conhece SQL, validação e regras de negócio</summary>
-<br>
 
 ```js
 // app.js
@@ -151,11 +146,8 @@ app.post("/api/orders", async (req, res) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — rotas definidas fora do domínio, em arquivo centralizado</summary>
-<br>
 
 ```js
 // routes.js — arquivo monolítico de rotas
@@ -180,11 +172,8 @@ export function registerRoutes(app, orderService, userService) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ponto de entrada agrega os módulos</summary>
-<br>
 
 ```js
 // app.js
@@ -206,11 +195,8 @@ export function createApp(config) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — domínio de Orders dono das suas rotas</summary>
-<br>
 
 ```js
 // features/orders/orders.module.js
@@ -260,7 +246,6 @@ acessa `process.env` diretamente: apenas importa a seção que precisa.
 
 <details>
 <summary>❌ Ruim — process.env espalhado em todo lugar</summary>
-<br>
 
 ```js
 // auth/auth.middleware.js
@@ -275,11 +260,8 @@ const port = process.env.PORT || 3000; // leitura direta
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — config.js como único ponto de entrada de env vars</summary>
-<br>
 
 ```js
 // config.js
@@ -324,7 +306,6 @@ rotas              → handlers recebem o usuário já autenticado no contexto
 
 <details>
 <summary>❌ Ruim — authenticate depois das rotas</summary>
-<br>
 
 ```js
 app.use(express.json());
@@ -338,11 +319,8 @@ app.use(authenticate(config.auth)); // tarde demais
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem correta do pipeline</summary>
-<br>
 
 ```js
 // middleware.js

@@ -32,7 +32,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -50,11 +49,8 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -86,7 +82,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -99,11 +94,8 @@ public int MapErrorToStatus(DomainError error)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -131,7 +123,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -148,11 +139,8 @@ devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Explaining Return tight</summary>
-<br>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -165,11 +153,8 @@ public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de inicializador multi-linha</summary>
-<br>
 
 ```csharp
 public OrderResponse BuildOrderResponse(Order order, string requestId)
@@ -214,7 +199,6 @@ semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -224,12 +208,9 @@ var invoice = BuildInvoice(order);
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -240,11 +221,8 @@ var invoice = BuildInvoice(order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```csharp
 var handler = _eventHandlers.GetValueOrDefault(eventType);
@@ -260,11 +238,8 @@ var eventPayload = @event.Data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```csharp
 var response = await requestFn();
@@ -290,7 +265,6 @@ Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```csharp
 public static class DomainLimits
@@ -303,12 +277,9 @@ public static class DomainLimits
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```csharp
 public static class DomainLimits
@@ -321,11 +292,8 @@ public static class DomainLimits
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```csharp
 public static class DomainLimits
@@ -348,7 +316,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -365,11 +332,8 @@ public string BuildShippingLabel(Order order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -402,7 +366,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -420,11 +383,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -442,11 +402,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```csharp
 public string BuildOrderSlug(Order order)
@@ -470,7 +427,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```csharp
 while (attempt < maxAttempts)
@@ -483,11 +439,8 @@ while (attempt < maxAttempts)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```csharp
 while (attempt < maxAttempts)
@@ -508,7 +461,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```csharp
 public async Task<IActionResult> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
@@ -523,11 +475,8 @@ public async Task<IActionResult> CreateUserAsync(CreateUserRequest request, Canc
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```csharp
 public async Task<IActionResult> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
@@ -551,7 +500,6 @@ sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — Assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -566,11 +514,8 @@ public void AppliesTenPercentDiscountToPrice()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Assert separado, assertion como fase própria</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -595,7 +540,6 @@ passo. Sem respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — inicializador multi-linha colado ao próximo statement</summary>
-<br>
 
 ```csharp
 public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
@@ -614,11 +558,8 @@ public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do inicializador isola o bloco</summary>
-<br>
 
 ```csharp
 public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
@@ -649,7 +590,6 @@ e ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```csharp
 public void ProcessOrder(Order order)
@@ -668,12 +608,9 @@ public void ProcessOrder(Order order)
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```csharp
 public void ProcessOrder(Order order)
@@ -694,11 +631,8 @@ public void ProcessOrder(Order order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```csharp
 public Input ValidateInput(Input input)
@@ -721,7 +655,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```csharp
 var userName     = "alice";
@@ -732,11 +665,8 @@ var lastLoginAt  = DateTimeOffset.UtcNow;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```csharp
 var userName = "alice";
@@ -754,7 +684,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — interpolação densa inline, sem semântica nas partes</summary>
-<br>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -765,11 +694,8 @@ public string BuildDeliveryMessage(User user, Order order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)

@@ -23,7 +23,6 @@ Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado d
 
 <details>
 <summary>❌ Ruim — On Error GoTo, modelo VB clássico</summary>
-<br>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -39,11 +38,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Try/Catch estruturado, tipado e propagável</summary>
-<br>
 
 ```vbnet
 Sub SavePurchase(purchase As Purchase)
@@ -64,7 +60,6 @@ Catch mais específico captura primeiro. `Exception` genérico no topo silencia 
 
 <details>
 <summary>❌ Ruim — Exception genérico silencia falhas específicas</summary>
-<br>
 
 ```vbnet
 Try
@@ -79,11 +74,8 @@ End Try
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipos específicos, cada um com tratamento adequado</summary>
-<br>
 
 ```vbnet
 Try
@@ -109,7 +101,6 @@ Um `Catch` sem tratamento é pior que não ter `Try`: silencia o erro, esconde o
 
 <details>
 <summary>❌ Ruim — Catch silencioso oculta falha</summary>
-<br>
 
 ```vbnet
 Try
@@ -127,11 +118,8 @@ End Try
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — loga e relança, ou trata com intenção clara</summary>
-<br>
 
 ```vbnet
 Try
@@ -158,7 +146,6 @@ A cláusula `When` filtra a exceção por condição sem capturá-la quando a co
 
 <details>
 <summary>✅ Bom — Catch When filtra sem captura desnecessária</summary>
-<br>
 
 ```vbnet
 Try
@@ -184,7 +171,6 @@ Qualquer objeto que implementa `IDisposable` deve ser criado dentro de `Using`. 
 
 <details>
 <summary>❌ Ruim — Dispose manual, não garante limpeza em exceção</summary>
-<br>
 
 ```vbnet
 Dim connection = New SqlConnection(_connectionString)
@@ -201,11 +187,8 @@ connection.Dispose()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Using garante Dispose em qualquer caminho</summary>
-<br>
 
 ```vbnet
 Using connection = New SqlConnection(_connectionString)
@@ -230,7 +213,6 @@ Quando o recurso não implementa `IDisposable` mas precisa de limpeza, use `Fina
 
 <details>
 <summary>✅ Bom — Finally garante limpeza em qualquer saída</summary>
-<br>
 
 ```vbnet
 Dim lockAcquired = False
@@ -251,7 +233,6 @@ Exceções sinalizam condições inesperadas — bugs, falhas de infraestrutura,
 
 <details>
 <summary>❌ Ruim — exceção como controle de fluxo de negócio</summary>
-<br>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As Purchase
@@ -273,11 +254,8 @@ End Try
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — resultado tipado para falhas previsíveis</summary>
-<br>
 
 ```vbnet
 Public Function FindPurchase(purchaseId As Guid) As OperationResult(Of Purchase)

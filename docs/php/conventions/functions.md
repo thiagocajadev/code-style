@@ -20,7 +20,6 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 
 <details>
 <summary>❌ Ruim — god function: orquestra e implementa ao mesmo tempo</summary>
-<br>
 
 ```php
 public function processOrder(array $data): void
@@ -49,11 +48,8 @@ public function processOrder(array $data): void
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador delega para funções de um nível abaixo</summary>
-<br>
 
 ```php
 public function processOrder(CreateOrderInput $input): Order
@@ -99,7 +95,6 @@ Atribua a uma variável nomeada antes de retornar.
 
 <details>
 <summary>❌ Ruim — lógica inline no return</summary>
-<br>
 
 ```php
 public function buildSummary(array $orders): array
@@ -114,11 +109,8 @@ public function buildSummary(array $orders): array
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — explaining return: resultado nomeado antes do return</summary>
-<br>
 
 ```php
 public function buildSummary(array $orders): array
@@ -141,7 +133,6 @@ parâmetros opcionais.
 
 <details>
 <summary>❌ Ruim — chamada com múltiplos literais sem contexto</summary>
-<br>
 
 ```php
 $order = createOrder(42, 150.0, 'BRL', true, false, null);
@@ -150,11 +141,8 @@ $order = createOrder(42, 150.0, 'BRL', true, false, null);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — named arguments tornam a chamada autodocumentada</summary>
-<br>
 
 ```php
 $order = createOrder(
@@ -175,7 +163,6 @@ Com 4 ou mais parâmetros, agrupe em um objeto de entrada.
 
 <details>
 <summary>❌ Ruim — muitos parâmetros na assinatura</summary>
-<br>
 
 ```php
 function createOrder(
@@ -190,11 +177,8 @@ function createOrder(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — objeto de entrada agrupa parâmetros relacionados</summary>
-<br>
 
 ```php
 final readonly class CreateOrderInput
@@ -220,7 +204,6 @@ Use arrow functions para transformações curtas em `array_map`, `array_filter`,
 
 <details>
 <summary>❌ Ruim — closures tradicionais: verbosas e exigem `use` explícito</summary>
-<br>
 
 ```php
 $multiplier = 1.1;
@@ -246,11 +229,8 @@ usort($orders, function (Order $a, Order $b) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — arrow functions para pipelines de transformação</summary>
-<br>
 
 ```php
 $activeOrderIDs = array_map(
@@ -276,7 +256,6 @@ abaixo, na ordem em que são chamados.
 
 <details>
 <summary>❌ Ruim — helpers antes do orquestrador: leitura de baixo para cima</summary>
-<br>
 
 ```php
 final class InvoiceService
@@ -308,11 +287,8 @@ final class InvoiceService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — leitura top-down natural</summary>
-<br>
 
 ```php
 final class InvoiceService

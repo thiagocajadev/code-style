@@ -26,7 +26,6 @@ Service locator é o antipadrão clássico de DI: buscar dependências diretamen
 
 <details>
 <summary>❌ Ruim — dependência implícita, acoplado ao container</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -47,11 +46,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dependências explícitas no construtor</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -78,7 +74,6 @@ Property injection (setter injection) cria objetos em estado inválido: a depend
 
 <details>
 <summary>❌ Ruim — property injection, dependência opcional implícita</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -96,11 +91,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constructor injection, objeto nasce válido</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -134,7 +126,6 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 
 <details>
 <summary>❌ Ruim — singleton captura scoped</summary>
-<br>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New ContainerControlledLifetimeManager())
@@ -152,11 +143,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lifetimes compatíveis</summary>
-<br>
 
 ```vbnet
 container.RegisterType(Of ReportService)(New HierarchicalLifetimeManager())
@@ -171,7 +159,6 @@ Depender de interfaces, não de implementações concretas. Permite substituiç�
 
 <details>
 <summary>❌ Ruim — dependência concreta, impossível substituir em testes</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -186,11 +173,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dependência por interface, substituível</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -217,7 +201,6 @@ Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e 
 
 <details>
 <summary>❌ Ruim — registro manual, cresce junto com os handlers</summary>
-<br>
 
 ```vbnet
 Public Module OrdersRegistration
@@ -237,11 +220,8 @@ End Module
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — registro por convenção via reflection</summary>
-<br>
 
 ```vbnet
 ' interface marcadora — sem métodos, só para identificar handlers no assembly

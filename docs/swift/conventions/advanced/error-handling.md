@@ -21,7 +21,6 @@ Exceções irrecuperáveis usam `preconditionFailure` ou `fatalError`.
 
 <details>
 <summary>❌ Ruim — String como erro (sem exaustividade)</summary>
-<br>
 
 ```swift
 func findOrder(id: UUID) throws -> Order {
@@ -34,11 +33,8 @@ func findOrder(id: UUID) throws -> Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — enum tipado com LocalizedError</summary>
-<br>
 
 ```swift
 enum OrderError: LocalizedError {
@@ -71,7 +67,6 @@ func findOrder(id: UUID) throws -> Order {
 
 <details>
 <summary>❌ Ruim — do-catch para silenciar erro sem contexto</summary>
-<br>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -85,11 +80,8 @@ func loadCachedUser(id: UUID) -> User? {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — try? quando nil é a semântica correta</summary>
-<br>
 
 ```swift
 func loadCachedUser(id: UUID) -> User? {
@@ -104,7 +96,6 @@ func loadCachedUser(id: UUID) -> User? {
 
 <details>
 <summary>❌ Ruim — catch no lugar errado, propagação perdida</summary>
-<br>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -121,11 +112,8 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tratar somente o que pode tratar; propagar o resto</summary>
-<br>
 
 ```swift
 func submitOrder(_ request: OrderRequest) async throws -> Order {
@@ -156,7 +144,6 @@ func handleSubmit() async {
 
 <details>
 <summary>❌ Ruim — closure com dois parâmetros opcionais ambíguos</summary>
-<br>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
@@ -166,11 +153,8 @@ func fetchOrder(id: UUID, completion: (Order?, Error?) -> Void) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Result torna os estados explícitos</summary>
-<br>
 
 ```swift
 func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
@@ -189,7 +173,6 @@ func fetchOrder(id: UUID, completion: (Result<Order, OrderError>) -> Void) {
 
 <details>
 <summary>❌ Ruim — fatalError com mensagem genérica</summary>
-<br>
 
 ```swift
 guard let config = Configuration.shared else {
@@ -199,11 +182,8 @@ guard let config = Configuration.shared else {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — preconditionFailure com contexto do invariante</summary>
-<br>
 
 ```swift
 guard let config = Configuration.shared else {

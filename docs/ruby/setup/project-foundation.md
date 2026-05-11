@@ -42,7 +42,6 @@ Para aplicações Rails a estrutura é gerada pelo `rails new`.
 
 <details>
 <summary>❌ Ruim — versões sem constraints, grupo de test misturado</summary>
-<br>
 
 ```ruby
 source "https://rubygems.org"
@@ -55,11 +54,8 @@ gem "factory_bot_rails"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constraints semânticas, grupos declarados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

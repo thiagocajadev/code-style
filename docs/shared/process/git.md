@@ -43,7 +43,6 @@ main → branch → commits → PR → review → merge → main
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```
 feature-nova
@@ -55,11 +54,8 @@ branch-do-joao-refactor-e-tambem-o-bug-do-login
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```
 feat/user-email-verification
@@ -97,7 +93,6 @@ Uma ótima estratégia para nomear commits (registro das alterações) é o
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```
 fix bug
@@ -110,11 +105,8 @@ feat: adiciona validação no campo de e-mail do usuário no formulário de cada
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```
 feat(auth): add email verification on signup

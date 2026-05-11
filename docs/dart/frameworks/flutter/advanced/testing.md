@@ -21,7 +21,6 @@ widget são o ponto de equilíbrio entre velocidade e cobertura.
 
 <details>
 <summary>❌ Ruim — sem pump o widget não é construído</summary>
-<br>
 
 ```dart
 testWidgets('shows order list', (tester) async {
@@ -33,11 +32,8 @@ testWidgets('shows order list', (tester) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pumpAndSettle aguarda renders e animações</summary>
-<br>
 
 ```dart
 testWidgets('shows order list when orders are loaded', (tester) async {
@@ -64,7 +60,6 @@ testWidgets('shows order list when orders are loaded', (tester) async {
 
 <details>
 <summary>✅ Bom — tap, type e verificação de estado</summary>
-<br>
 
 ```dart
 testWidgets('submits form and shows confirmation', (tester) async {
@@ -92,7 +87,6 @@ testWidgets('submits form and shows confirmation', (tester) async {
 
 <details>
 <summary>✅ Bom — golden registra e verifica aparência visual</summary>
-<br>
 
 ```dart
 testWidgets('OrderListItem matches golden', (tester) async {

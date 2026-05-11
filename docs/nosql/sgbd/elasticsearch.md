@@ -160,7 +160,6 @@ async function findTeamsByCity(city) {
 
 <details>
 <summary>❌ Ruim — match em campo keyword; filtro no query context; sem projeção</summary>
-<br>
 
 ```js
 // match em campo keyword — re-analisa o termo, resultado inesperado
@@ -180,11 +179,8 @@ const response = await esClient.search({
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — term/filter para condições exatas; must para relevância; _source para projeção</summary>
-<br>
 
 ```js
 async function searchActiveTeamsByCity(city, nameQuery) {

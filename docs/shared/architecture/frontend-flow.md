@@ -32,7 +32,6 @@ O guard (proteção de rota) verifica autorização durante a resolução da rot
 
 <details>
 <summary>❌ Ruim — guard no componente renderiza antes de redirecionar</summary>
-<br>
 
 ```js
 function OrdersPage() {
@@ -46,11 +45,8 @@ function OrdersPage() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard na resolução da rota, antes de qualquer componente montar</summary>
-<br>
 
 ```js
 {
@@ -80,7 +76,6 @@ O loader (carregador de dados) busca os dados da rota durante a resolução, ant
 
 <details>
 <summary>❌ Ruim — busca dentro do componente, após montar</summary>
-<br>
 
 ```js
 function OrderDetailPage({ orderId }) {
@@ -96,11 +91,8 @@ function OrderDetailPage({ orderId }) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — loader na rota, componente recebe dados prontos</summary>
-<br>
 
 ```js
 async function loadOrderDetail(loaderArgs) {
@@ -149,7 +141,6 @@ O schema (esquema de validação) é a fonte da verdade para formato e regras de
 
 <details>
 <summary>✅ Bom — schema único como contrato entre cliente e servidor</summary>
-<br>
 
 ```js
 import { z } from 'zod';
@@ -169,7 +160,6 @@ O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText
 
 <details>
 <summary>✅ Bom — retorno estruturado de erros do servidor</summary>
-<br>
 
 ```js
 async function submitOrder(orderInput) {

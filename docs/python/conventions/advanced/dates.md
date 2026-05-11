@@ -19,7 +19,6 @@ instante no tempo deve ser _aware_ — com fuso horário explícito.
 
 <details>
 <summary>❌ Ruim — datetime sem fuso: comparação ambígua</summary>
-<br>
 
 ```python
 from datetime import datetime
@@ -33,11 +32,8 @@ if created_at > expires_at:   # comparação ambígua: qual timezone?
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — datetime aware com UTC explícito</summary>
-<br>
 
 ```python
 from datetime import datetime, timezone
@@ -58,7 +54,6 @@ Um offset fixo como `+03:00` não muda com o DST — um fuso nomeado sim.
 
 <details>
 <summary>❌ Ruim — offset fixo ignora DST</summary>
-<br>
 
 ```python
 from datetime import datetime, timezone, timedelta
@@ -69,11 +64,8 @@ local_time = datetime.now(tz=brasilia)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ZoneInfo aplica DST automaticamente</summary>
-<br>
 
 ```python
 from datetime import datetime
@@ -91,7 +83,6 @@ Armazene e transmita datas como strings **ISO** (International Organization for 
 
 <details>
 <summary>❌ Ruim — formato não padronizado, parsing frágil</summary>
-<br>
 
 ```python
 from datetime import datetime
@@ -102,11 +93,8 @@ parsed = datetime.strptime("22/04/2026 15:30", "%d/%m/%Y %H:%M")  # naive, frág
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ISO 8601 com fuso, round-trip garantido</summary>
-<br>
 
 ```python
 from datetime import datetime, timezone
@@ -127,7 +115,6 @@ construir um `datetime` completo para descartar metade.
 
 <details>
 <summary>❌ Ruim — datetime completo só para extrair a data</summary>
-<br>
 
 ```python
 from datetime import datetime
@@ -138,11 +125,8 @@ due_date = parsed.date()  # descarta o horário depois
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — date.strptime direto (Python 3.14+)</summary>
-<br>
 
 ```python
 from datetime import date
@@ -159,7 +143,6 @@ diretamente — erros de DST e overflow são difíceis de rastrear.
 
 <details>
 <summary>❌ Ruim — aritmética com timestamp numérico</summary>
-<br>
 
 ```python
 import time
@@ -170,11 +153,8 @@ tomorrow_ts = now_ts + 86400  # pode estar errado no dia de mudança de DST
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — timedelta com aware datetime</summary>
-<br>
 
 ```python
 from datetime import datetime, timedelta, timezone

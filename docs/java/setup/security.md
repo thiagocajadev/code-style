@@ -23,7 +23,6 @@ Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-
 
 <details>
 <summary>❌ Ruim — segredo hardcoded no código</summary>
-<br>
 
 ```java
 private static final String JWT_SECRET = "minha-chave-super-secreta"; // no repositório
@@ -40,11 +39,8 @@ public DataSource dataSource() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variáveis de ambiente via @ConfigurationProperties</summary>
-<br>
 
 ```yaml
 # application.yml
@@ -75,7 +71,6 @@ public record SecurityProperties(
 
 <details>
 <summary>✅ Bom — SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
-<br>
 
 ```java
 @Configuration
@@ -112,7 +107,6 @@ Nunca armazene senhas em texto puro. Nunca use MD5 ou SHA-1.
 
 <details>
 <summary>❌ Ruim — senha em texto puro ou hash fraco</summary>
-<br>
 
 ```java
 user.setPassword(input.password());                        // texto puro
@@ -121,11 +115,8 @@ user.setPassword(DigestUtils.md5Hex(input.password()));    // MD5 é reversível
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — BCrypt com custo configurável</summary>
-<br>
 
 ```java
 @Service
@@ -153,7 +144,6 @@ Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens 
 
 <details>
 <summary>✅ Bom — filtro JWT com validação completa</summary>
-<br>
 
 ```java
 @Component
@@ -199,7 +189,6 @@ Use `@PreAuthorize` para autorização granular por role (papel) ou permissão e
 
 <details>
 <summary>✅ Bom — autorização declarativa no método</summary>
-<br>
 
 ```java
 @RestController
@@ -233,7 +222,6 @@ Nunca deixe CORS permissivo em produção. Configure origens, métodos e headers
 
 <details>
 <summary>❌ Ruim — CORS aberto para tudo</summary>
-<br>
 
 ```java
 corsConfig.addAllowedOrigin("*"); // permite qualquer origem
@@ -242,11 +230,8 @@ corsConfig.addAllowedMethod("*"); // permite qualquer método
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — CORS restrito por ambiente</summary>
-<br>
 
 ```java
 @Bean

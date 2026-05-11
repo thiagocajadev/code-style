@@ -19,7 +19,6 @@ declara referência mutável. Prefira `val` e escreva `var` somente quando o flu
 
 <details>
 <summary>❌ Ruim — var desnecessário</summary>
-<br>
 
 ```kotlin
 var total = 0.0
@@ -31,11 +30,8 @@ isActive = user.status == "active"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — val com inicialização direta</summary>
-<br>
 
 ```kotlin
 val total = items.sumOf { it.price }
@@ -49,7 +45,6 @@ val isActive = user.status == "active"
 
 <details>
 <summary>❌ Ruim — número mágico inline</summary>
-<br>
 
 ```kotlin
 fun shouldRetry(attempt: Int): Boolean {
@@ -59,11 +54,8 @@ fun shouldRetry(attempt: Int): Boolean {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constante nomeada</summary>
-<br>
 
 ```kotlin
 private const val MAX_RETRIES = 3
@@ -79,7 +71,6 @@ fun shouldRetry(attempt: Int): Boolean {
 
 <details>
 <summary>❌ Ruim — recalcula em cada acesso</summary>
-<br>
 
 ```kotlin
 class ReportService {
@@ -89,11 +80,8 @@ class ReportService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inicializa apenas quando acessado</summary>
-<br>
 
 ```kotlin
 class ReportService {
@@ -107,7 +95,6 @@ class ReportService {
 
 <details>
 <summary>❌ Ruim — literais inline sem contexto</summary>
-<br>
 
 ```kotlin
 if (user.role == "admin") { ... }
@@ -119,11 +106,8 @@ val discount = price * 0.15
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas com intenção</summary>
-<br>
 
 ```kotlin
 private const val ADMIN_ROLE = "admin"
@@ -143,7 +127,6 @@ val discount = price * SEASONAL_DISCOUNT_RATE
 
 <details>
 <summary>❌ Ruim — acesso por índice ou nome repetido</summary>
-<br>
 
 ```kotlin
 val pair = Pair("Alice", 30)
@@ -157,11 +140,8 @@ for (entry in map.entries) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — destructuring que nomeia o conteúdo</summary>
-<br>
 
 ```kotlin
 val (name, age) = Pair("Alice", 30)
@@ -179,7 +159,6 @@ Declare a variável no escopo mais restrito possível.
 
 <details>
 <summary>❌ Ruim — variável declarada antes do escopo real</summary>
-<br>
 
 ```kotlin
 var message: String
@@ -195,11 +174,8 @@ sendNotification(message)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — val com when como expressão</summary>
-<br>
 
 ```kotlin
 val message = when {

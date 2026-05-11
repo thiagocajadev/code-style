@@ -20,7 +20,6 @@ via `runTest`.
 
 <details>
 <summary>❌ Ruim — setup, ação e assert misturados</summary>
-<br>
 
 ```kotlin
 @Test
@@ -34,11 +33,8 @@ fun testOrder() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AAA explícito com nomes expressivos</summary>
-<br>
 
 ```kotlin
 @Test
@@ -67,7 +63,6 @@ fun `findOrder returns paid order when found`() {
 
 <details>
 <summary>❌ Ruim — nomes genéricos sem contexto</summary>
-<br>
 
 ```kotlin
 @Test
@@ -82,11 +77,8 @@ fun orderTest() { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — backtick notation descreve comportamento</summary>
-<br>
 
 ```kotlin
 @Test
@@ -105,7 +97,6 @@ fun `applyDiscount throws when rate is outside 0-1 range`() { ... }
 
 <details>
 <summary>❌ Ruim — runBlocking não controla tempo virtual</summary>
-<br>
 
 ```kotlin
 @Test
@@ -117,11 +108,8 @@ fun testRetryWithDelay() = runBlocking {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — runTest com advanceTimeBy</summary>
-<br>
 
 ```kotlin
 @Test
@@ -143,7 +131,6 @@ fun `retryWithDelay retries after 1 second`() = runTest {
 
 <details>
 <summary>❌ Ruim — stub genérico sem verificação de comportamento</summary>
-<br>
 
 ```kotlin
 @Test
@@ -159,11 +146,8 @@ fun testSendNotification() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verify com exatamente o que deve ser chamado</summary>
-<br>
 
 ```kotlin
 @Test
@@ -191,7 +175,6 @@ fun `confirmOrder sends confirmation email to customer`() {
 
 <details>
 <summary>❌ Ruim — testes duplicados com dados diferentes</summary>
-<br>
 
 ```kotlin
 @Test
@@ -215,11 +198,8 @@ fun `rate -0_1 is invalid`() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tabela de dados cobre todos os cenários</summary>
-<br>
 
 ```kotlin
 @ParameterizedTest

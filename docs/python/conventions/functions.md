@@ -20,7 +20,6 @@ desenho.
 
 <details>
 <summary>❌ Ruim — busca, valida, calcula, persiste e loga na mesma função</summary>
-<br>
 
 ```python
 def realiza_venda(x):
@@ -55,11 +54,8 @@ def realiza_venda(x):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador no topo, responsabilidades separadas</summary>
-<br>
 
 ```python
 async def process_order(order_id: int):
@@ -92,7 +88,6 @@ async def issue_invoice(order):
 
 <details>
 <summary>❌ Ruim — mesma função orquestra e implementa</summary>
-<br>
 
 ```python
 def build_order_summary(order):
@@ -107,11 +102,8 @@ def build_order_summary(order):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador chama helpers, cada um faz uma coisa</summary>
-<br>
 
 ```python
 def build_order_summary(order) -> str:
@@ -137,7 +129,6 @@ def build_line_items(order) -> str:
 
 <details>
 <summary>❌ Ruim — cálculo e formatação misturados</summary>
-<br>
 
 ```python
 def get_order_summary(order):
@@ -150,11 +141,8 @@ def get_order_summary(order):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cálculo separado da formatação</summary>
-<br>
 
 ```python
 def get_order_summary(order) -> str:
@@ -186,7 +174,6 @@ O retorno fica no topo da função, com os detalhes encapsulados em auxiliares a
 
 <details>
 <summary>❌ Ruim — variável auxiliar desnecessária, else após raise</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -204,11 +191,8 @@ async def find_product_by_id(product_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — intenção clara no topo, detalhe abaixo</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -233,7 +217,6 @@ função.
 
 <details>
 <summary>❌ Ruim — lógica ou expressão inline direto no return</summary>
-<br>
 
 ```python
 def build_greeting(user):
@@ -245,11 +228,8 @@ def get_active_users(users):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variável expressiva antes do return</summary>
-<br>
 
 ```python
 def build_greeting(user) -> str:
@@ -263,11 +243,8 @@ def get_active_users(users) -> list:
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — bare return: pass-through sem nome, o retorno não diz o que é</summary>
-<br>
 
 ```python
 def find_pending_orders(user_id: int):
@@ -279,11 +256,8 @@ async def process_checkout(cart_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome simétrico com a função deixa claro o que sai</summary>
-<br>
 
 ```python
 def find_pending_orders(user_id: int) -> list:
@@ -303,7 +277,6 @@ Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto (dataclass ou di
 
 <details>
 <summary>❌ Ruim — 4+ parâmetros inline, intenção obscura na chamada</summary>
-<br>
 
 ```python
 def create_invoice(order_id, customer_id, amount, due_date, currency):
@@ -314,11 +287,8 @@ create_invoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dataclass quando 4+ parâmetros</summary>
-<br>
 
 ```python
 from dataclasses import dataclass
@@ -349,7 +319,6 @@ create_invoice(InvoiceData(
 
 <details>
 <summary>❌ Ruim — condição impossível, função nunca chamada</summary>
-<br>
 
 ```python
 def get_status(value: int) -> str:
@@ -365,11 +334,8 @@ def legacy_transform(items):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — remove o que não é usado</summary>
-<br>
 
 ```python
 def get_status(value: int) -> str:

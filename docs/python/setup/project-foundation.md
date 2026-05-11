@@ -70,7 +70,6 @@ pip install ruff
 
 <details>
 <summary>❌ Ruim — configuração fragmentada em múltiplos arquivos</summary>
-<br>
 
 ```
 setup.py
@@ -83,11 +82,8 @@ mypy.ini
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pyproject.toml como **SSOT** (Single Source of Truth, Fonte Única da Verdade)</summary>
-<br>
 
 ```toml
 [project]
@@ -135,7 +131,6 @@ asyncio_mode = "auto"
 
 <details>
 <summary>❌ Ruim — os.environ espalhado em todo lugar</summary>
-<br>
 
 ```python
 # database/client.py
@@ -149,11 +144,8 @@ secret = os.environ["JWT_SECRET"]  # leitura direta
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Settings como único ponto de entrada de env vars</summary>
-<br>
 
 ```python
 # app/config.py
@@ -186,7 +178,6 @@ O arquivo serve como índice do projeto.
 
 <details>
 <summary>❌ Ruim — main.py como dumping ground de configuração</summary>
-<br>
 
 ```python
 from fastapi import FastAPI, Depends
@@ -215,11 +206,8 @@ async def create_order(data: dict):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — main.py como índice, configuração delegada</summary>
-<br>
 
 ```python
 from app.config import settings
@@ -237,7 +225,6 @@ de cada módulo — apenas monta o app.
 
 <details>
 <summary>❌ Ruim — factory conhece os internos de cada domínio</summary>
-<br>
 
 ```python
 # app/factory.py
@@ -263,11 +250,8 @@ def create_app(settings) -> FastAPI:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada domínio encapsula o próprio registro</summary>
-<br>
 
 ```python
 # app/factory.py

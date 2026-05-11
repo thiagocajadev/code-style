@@ -19,7 +19,6 @@ Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```js
 if (true) {
@@ -34,11 +33,8 @@ var count = 20; // redeclaração silenciosa
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```js
 if (true) {
@@ -54,7 +50,6 @@ console.log(contained); // ReferenceError — escopo correto
 
 <details>
 <summary>❌ Ruim — let onde const seria suficiente</summary>
-<br>
 
 ```js
 let MAX_RETRIES = 3; // nunca reatribuído
@@ -63,11 +58,8 @@ let userName = "Alice"; // nunca reatribuído
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — const por padrão, let só quando necessário</summary>
-<br>
 
 ```js
 const MAX_RETRIES = 3;
@@ -89,7 +81,6 @@ desejadas.
 
 <details>
 <summary>❌ Ruim — mutação acoplada e difícil de rastrear</summary>
-<br>
 
 ```js
 function applyDiscount(order) {
@@ -100,11 +91,8 @@ function applyDiscount(order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retorna novo estado, sem efeitos colaterais</summary>
-<br>
 
 ```js
 function applyDiscount(order) {
@@ -126,7 +114,6 @@ Números e strings soltos no código não dizem nada. Constantes nomeadas tornam
 
 <details>
 <summary>❌ Ruim — o que significa 18? e 86400000?</summary>
-<br>
 
 ```js
 if (user.age >= 18) {
@@ -140,11 +127,8 @@ setTimeout(syncData, 86400000);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas</summary>
-<br>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;

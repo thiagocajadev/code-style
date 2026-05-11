@@ -23,7 +23,6 @@ o fluxo já saiu.
 
 <details>
 <summary>❌ Ruim — else desnecessário após return</summary>
-<br>
 
 ```python
 def get_discount(user) -> float:
@@ -35,11 +34,8 @@ def get_discount(user) -> float:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — early return elimina o else</summary>
-<br>
 
 ```python
 def get_discount(user) -> float:
@@ -58,7 +54,6 @@ lookup ou `match/case`. Nunca aninhar expressões condicionais.
 
 <details>
 <summary>❌ Ruim — if/else imperativo para atribuição simples</summary>
-<br>
 
 ```python
 if order.is_paid:
@@ -69,11 +64,8 @@ else:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expressão condicional na atribuição</summary>
-<br>
 
 ```python
 label = "Paid" if order.is_paid else "Pending"
@@ -83,7 +75,6 @@ label = "Paid" if order.is_paid else "Pending"
 
 <details>
 <summary>❌ Ruim — expressão condicional aninhada para 3+ alternativas</summary>
-<br>
 
 ```python
 priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else "Normal"
@@ -91,11 +82,8 @@ priority = "Critical" if is_urgent and is_critical else "High" if is_urgent else
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dicionário de lookup para 3+ alternativas</summary>
-<br>
 
 ```python
 PRIORITY_MAP = {
@@ -116,7 +104,6 @@ o fluxo principal limpo.
 
 <details>
 <summary>❌ Ruim — lógica enterrada em múltiplos níveis</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -129,11 +116,8 @@ def process_order(order):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clauses, fluxo principal ao fundo</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -162,7 +146,6 @@ lookup ou um `match` com guard:
 
 <details>
 <summary>❌ Ruim — if/elif repetitivo mapeando chave → valor</summary>
-<br>
 
 ```python
 def get_status_label(status: str) -> str:
@@ -180,11 +163,8 @@ def get_status_label(status: str) -> str:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lookup dict: legível e extensível</summary>
-<br>
 
 ```python
 STATUS_LABELS: dict[str, str] = {
@@ -208,7 +188,6 @@ por valor. Cada `case` termina de forma explícita — não há fall-through aci
 
 <details>
 <summary>❌ Ruim — if/elif encadeado para despacho de ações</summary>
-<br>
 
 ```python
 def process_payment_event(event):
@@ -225,11 +204,8 @@ def process_payment_event(event):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — match/case para despacho de comportamento</summary>
-<br>
 
 ```python
 def process_payment_event(event):
@@ -256,7 +232,6 @@ o código de validação de tipo e forma.
 
 <details>
 <summary>❌ Ruim — isinstance + acesso de atributo manual</summary>
-<br>
 
 ```python
 def build_notification_message(event):
@@ -270,11 +245,8 @@ def build_notification_message(event):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — match/case desestrutura e nomeia</summary>
-<br>
 
 ```python
 def build_notification_message(event: dict) -> str:
@@ -300,7 +272,6 @@ param no primeiro match — sem percorrer o resto.
 
 <details>
 <summary>❌ Ruim — loop com flag força percorrer tudo</summary>
-<br>
 
 ```python
 def find_first_expired_product(products: list):
@@ -315,11 +286,8 @@ def find_first_expired_product(products: list):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — next() sai no primeiro match</summary>
-<br>
 
 ```python
 def find_first_expired_product(products: list):
@@ -333,11 +301,8 @@ def find_first_expired_product(products: list):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — any() e all() com circuit break nativo</summary>
-<br>
 
 ```python
 has_expired_product = any(product.is_expired for product in products)
@@ -354,7 +319,6 @@ efeitos colaterais por item, use `for`.
 
 <details>
 <summary>❌ Ruim — loop imperativo para transformação pura</summary>
-<br>
 
 ```python
 def get_active_user_emails(users: list) -> list[str]:
@@ -368,11 +332,8 @@ def get_active_user_emails(users: list) -> list[str]:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — list comprehension para transformação pura</summary>
-<br>
 
 ```python
 def get_active_user_emails(users: list) -> list[str]:
@@ -382,11 +343,8 @@ def get_active_user_emails(users: list) -> list[str]:
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — comprehension para efeitos colaterais</summary>
-<br>
 
 ```python
 [notify_customer(order) for order in pending_orders]
@@ -394,11 +352,8 @@ def get_active_user_emails(users: list) -> list[str]:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — for loop quando há efeito colateral</summary>
-<br>
 
 ```python
 for order in pending_orders:
@@ -415,7 +370,6 @@ execução é garantida.
 
 <details>
 <summary>❌ Ruim — for simulando condição de parada por estado</summary>
-<br>
 
 ```python
 for attempt in range(max_attempts):
@@ -426,11 +380,8 @@ for attempt in range(max_attempts):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — while para condição de parada por estado</summary>
-<br>
 
 ```python
 attempt = 0
@@ -445,11 +396,8 @@ while attempt < max_attempts:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — while True com break quando a primeira execução é garantida</summary>
-<br>
 
 ```python
 # drena a fila: processa pelo menos um item antes de verificar

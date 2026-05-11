@@ -19,7 +19,6 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 
 <details>
 <summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
-<br>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -52,11 +51,8 @@ fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
-<br>
 
 ```kotlin
 fun submitOrder(userId: Long, items: List<Item>): Result<Order> {
@@ -87,7 +83,6 @@ private fun notifyConfirmation(email: String) { ... }
 
 <details>
 <summary>❌ Ruim — função mistura nível de abstração</summary>
-<br>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -104,11 +99,8 @@ fun generateReport(orders: List<Order>): Report {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada função em um único nível</summary>
-<br>
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
@@ -131,7 +123,6 @@ private fun calculateRevenue(orders: List<Order>): Double =
 
 <details>
 <summary>❌ Ruim — lógica inline no return</summary>
-<br>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -143,11 +134,8 @@ fun findActiveCustomers(customers: List<Customer>): List<Customer> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — explaining return com val nomeada</summary>
-<br>
 
 ```kotlin
 fun findActiveCustomers(customers: List<Customer>): List<Customer> {
@@ -169,7 +157,6 @@ domínio que as usa, não em um arquivo de utilitários genérico.
 
 <details>
 <summary>❌ Ruim — utilitário genérico sem contexto</summary>
-<br>
 
 ```kotlin
 // StringUtils.kt
@@ -183,11 +170,8 @@ val label = formatCurrency(order.total)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — extension function no tipo correto</summary>
-<br>
 
 ```kotlin
 // Order.kt
@@ -205,7 +189,6 @@ val label = order.total.toCurrencyLabel()
 
 <details>
 <summary>❌ Ruim — assinatura com muitos parâmetros posicionais</summary>
-<br>
 
 ```kotlin
 fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, notes: String): Order { ... }
@@ -213,11 +196,8 @@ fun createOrder(userId: Long, productId: Long, quantity: Int, discount: Double, 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — data class agrupa parâmetros com semântica</summary>
-<br>
 
 ```kotlin
 data class CreateOrderRequest(

@@ -24,7 +24,6 @@ tratado antes de usar o valor interno.
 
 <details>
 <summary>❌ Ruim — unwrap pânica em None</summary>
-<br>
 
 ```rust
 fn get_shipping_address(order: &Order) -> String {
@@ -34,11 +33,8 @@ fn get_shipping_address(order: &Order) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Option propagada ou tratada explicitamente</summary>
-<br>
 
 ```rust
 fn get_shipping_address(order: &Order) -> Option<&str> {
@@ -59,7 +55,6 @@ fn get_shipping_address_or_default(order: &Order) -> &str {
 
 <details>
 <summary>❌ Ruim — if/else aninhado para Option</summary>
-<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
@@ -74,11 +69,8 @@ fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — let-else para guard, if para validação</summary>
-<br>
 
 ```rust
 fn apply_coupon(order: &mut Order, coupon_code: Option<String>) {
@@ -102,7 +94,6 @@ Transforme e encadeie `Option` sem sair da cadeia funcional.
 
 <details>
 <summary>❌ Ruim — checagem manual com if let em cada passo</summary>
-<br>
 
 ```rust
 fn get_customer_city(order: &Order) -> Option<String> {
@@ -119,11 +110,8 @@ fn get_customer_city(order: &Order) -> Option<String> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cadeia map/and_then</summary>
-<br>
 
 ```rust
 fn get_customer_city(order: &Order) -> Option<String> {
@@ -145,7 +133,6 @@ Converta `Option` em `Result` quando precisar de `?` para propagação de erro.
 
 <details>
 <summary>❌ Ruim — match manual para converter Option em Result</summary>
-<br>
 
 ```rust
 async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
@@ -160,11 +147,8 @@ async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ok_or_else converte Option em Result idiomaticamente</summary>
-<br>
 
 ```rust
 async fn find_active_order(order_id: u64) -> anyhow::Result<Order> {
@@ -185,7 +169,6 @@ referências thread-safe. `Mutex` ou `RwLock` para mutabilidade compartilhada.
 
 <details>
 <summary>❌ Ruim — clone excessivo de dados grandes</summary>
-<br>
 
 ```rust
 async fn process_batch(orders: Vec<Order>) {
@@ -199,11 +182,8 @@ async fn process_batch(orders: Vec<Order>) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Arc para ownership compartilhado sem clone</summary>
-<br>
 
 ```rust
 use std::sync::Arc;

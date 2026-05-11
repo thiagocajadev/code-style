@@ -35,7 +35,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```swift
 func registerUser(input: RegisterInput) async throws -> User {
@@ -51,11 +50,8 @@ func registerUser(input: RegisterInput) async throws -> User {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```swift
 func registerUser(input: RegisterInput) async throws -> User {
@@ -84,7 +80,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```swift
 func mapErrorToStatus(_ error: OrderError) -> Int {
@@ -96,11 +91,8 @@ func mapErrorToStatus(_ error: OrderError) -> Int {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```swift
 func mapErrorToStatus(_ error: OrderError) -> Int {
@@ -127,7 +119,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```swift
 func formatOrderDate(_ date: Date, locale: Locale = Locale(identifier: "pt-BR")) -> String {
@@ -147,11 +138,8 @@ formam Explaining Return tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```swift
 func formatOrderDate(_ date: Date, locale: Locale = Locale(identifier: "pt-BR")) -> String {
@@ -170,11 +158,8 @@ O blank fica **depois** do bloco de configuração multi-linha. O par
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de struct multi-linha</summary>
-<br>
 
 ```swift
 func buildOrderResponse(order: Order, requestId: UUID) -> OrderResponse {
@@ -217,7 +202,6 @@ visual, não semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```swift
 let order = try await fetchOrder(id: orderId)
@@ -227,12 +211,9 @@ let invoice = buildInvoice(order)
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```swift
 let order = try await fetchOrder(id: orderId)
@@ -243,11 +224,8 @@ let invoice = buildInvoice(order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```swift
 let handler = eventHandlers[eventType]
@@ -262,11 +240,8 @@ let eventPayload = event.data
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```swift
 let response = try await requestFn()
@@ -291,7 +266,6 @@ divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```swift
 let minimumDrivingAge = 18
@@ -301,12 +275,9 @@ let oneDayInSeconds: TimeInterval = 86_400
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```swift
 let minimumDrivingAge = 18
@@ -316,11 +287,8 @@ let oneDayInSeconds: TimeInterval = 86_400
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```swift
 let minimumDrivingAge = 18
@@ -340,7 +308,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```swift
 func buildShippingLabel(order: Order) -> String {
@@ -356,11 +323,8 @@ func buildShippingLabel(order: Order) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```swift
 func buildShippingLabel(order: Order) -> String {
@@ -392,7 +356,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```swift
 func buildDeliveryMessage(user: User, order: Order) -> String {
@@ -409,11 +372,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```swift
 func buildDeliveryMessage(user: User, order: Order) -> String {
@@ -430,11 +390,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```swift
 func buildOrderSlug(order: Order) -> String {
@@ -457,7 +414,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```swift
 while attempt < maxAttempts {
@@ -469,11 +425,8 @@ while attempt < maxAttempts {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```swift
 while attempt < maxAttempts {
@@ -493,7 +446,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```swift
 func createUserHandler(_ request: CreateUserRequest) async throws -> CreateUserResponse {
@@ -507,11 +459,8 @@ func createUserHandler(_ request: CreateUserRequest) async throws -> CreateUserR
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```swift
 func createUserHandler(_ request: CreateUserRequest) async throws -> CreateUserResponse {
@@ -534,7 +483,6 @@ antes dele separa o que está sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```swift
 @Test func appliesPercentageDiscountToOrderPrice() {
@@ -547,11 +495,8 @@ antes dele separa o que está sendo verificado do como está sendo verificado.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expect separado, assertion como fase própria</summary>
-<br>
 
 ```swift
 @Test func appliesPercentageDiscountToOrderPrice() {
@@ -574,7 +519,6 @@ respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — struct multi-linha colado ao próximo statement</summary>
-<br>
 
 ```swift
 func createSession(user: User) async throws -> String {
@@ -591,11 +535,8 @@ func createSession(user: User) async throws -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do struct isola o bloco</summary>
-<br>
 
 ```swift
 func createSession(user: User) async throws -> String {
@@ -624,7 +565,6 @@ e ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```swift
 func processOrder(_ order: Order) {
@@ -640,12 +580,9 @@ func processOrder(_ order: Order) {
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```swift
 func processOrder(_ order: Order) {
@@ -663,11 +600,8 @@ func processOrder(_ order: Order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```swift
 func validateInput(_ input: RegisterInput) throws -> RegisterInput {
@@ -689,7 +623,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```swift
 let userName     = "alice"
@@ -700,11 +633,8 @@ let lastLoginAt  = Date.now
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```swift
 let userName = "alice"
@@ -722,7 +652,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```swift
 func buildDeliveryMessage(user: User, order: Order) -> String {
@@ -732,11 +661,8 @@ func buildDeliveryMessage(user: User, order: Order) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```swift
 func buildDeliveryMessage(user: User, order: Order) -> String {

@@ -25,7 +25,6 @@ Declare `?Type` quando null é um retorno válido com semântica específica ("n
 
 <details>
 <summary>❌ Ruim — null implícito sem tipo declarado</summary>
-<br>
 
 ```php
 class UserRepository
@@ -43,11 +42,8 @@ class UserRepository
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nullable type explicita ausência</summary>
-<br>
 
 ```php
 final class UserRepository
@@ -81,7 +77,6 @@ Encadeie acessos opcionais com `?->` para evitar verificações de null intermed
 
 <details>
 <summary>❌ Ruim — verificações manuais encadeadas</summary>
-<br>
 
 ```php
 $city = null;
@@ -99,11 +94,8 @@ if ($order !== null) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nullsafe operator</summary>
-<br>
 
 ```php
 $city = $order?->customer?->address?->city;
@@ -118,7 +110,6 @@ variável não definida).
 
 <details>
 <summary>✅ Bom — ?? para valores com default</summary>
-<br>
 
 ```php
 $page = (int) ($_GET['page'] ?? 1);
@@ -137,7 +128,6 @@ e null apenas para "ausência esperada de um valor".
 
 <details>
 <summary>❌ Ruim — null para indicar falha sem contexto</summary>
-<br>
 
 ```php
 public function processOrder(int $orderID): ?Order
@@ -157,11 +147,8 @@ public function processOrder(int $orderID): ?Order
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — exceções para falhas; null apenas para ausência legítima</summary>
-<br>
 
 ```php
 public function processOrder(int $orderID): Order
@@ -203,7 +190,6 @@ PHP lança `Error` se você tentar ler uma propriedade não inicializada.
 
 <details>
 <summary>✅ Bom — propriedades inicializadas no construtor</summary>
-<br>
 
 ```php
 final class Order

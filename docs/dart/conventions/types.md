@@ -22,7 +22,6 @@ Records (Dart 3+) criam tipos de produto imutáveis sem boilerplate.
 
 <details>
 <summary>❌ Ruim — String como discriminante de estado</summary>
-<br>
 
 ```dart
 class OrderResult {
@@ -36,11 +35,8 @@ class OrderResult {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sealed class com switch exaustivo</summary>
-<br>
 
 ```dart
 sealed class OrderResult {}
@@ -73,7 +69,6 @@ String describeResult(OrderResult result) {
 
 <details>
 <summary>❌ Ruim — classe com boilerplate para par de valores</summary>
-<br>
 
 ```dart
 class Coordinate {
@@ -85,11 +80,8 @@ class Coordinate {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — record: imutável, destructuring, equals automático</summary>
-<br>
 
 ```dart
 typedef Coordinate = ({double latitude, double longitude});
@@ -105,7 +97,6 @@ final (latitude: lat, longitude: lng) = location;   // destructuring
 
 <details>
 <summary>❌ Ruim — herança para compartilhar comportamento</summary>
-<br>
 
 ```dart
 abstract class BaseRepository {
@@ -118,11 +109,8 @@ class UserRepository extends BaseRepository { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mixin compartilha comportamento sem acoplamento de hierarquia</summary>
-<br>
 
 ```dart
 mixin Loggable {
@@ -141,7 +129,6 @@ class UserRepository with Loggable { ... }
 
 <details>
 <summary>❌ Ruim — método utilitário em classe separada</summary>
-<br>
 
 ```dart
 class OrderUtils {
@@ -153,11 +140,8 @@ class OrderUtils {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — extension no tipo correto</summary>
-<br>
 
 ```dart
 extension OrderFiltering on Order {
@@ -176,7 +160,6 @@ final recentPaid = orders.where((o) => o.isPaidAndRecent(cutoff)).toList();
 
 <details>
 <summary>❌ Ruim — switch de string para mapeamento de enum</summary>
-<br>
 
 ```dart
 String getStatusLabel(String status) {
@@ -188,11 +171,8 @@ String getStatusLabel(String status) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — enum com getter carrega o comportamento</summary>
-<br>
 
 ```dart
 enum OrderStatus {

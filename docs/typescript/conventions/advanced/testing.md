@@ -28,7 +28,6 @@ tipo errado geram erro de compilação antes de rodar o teste.
 
 <details>
 <summary>❌ Ruim — fixture sem tipo, campo errado passa sem erro</summary>
-<br>
 
 ```ts
 test("applies discount to order", () => {
@@ -47,11 +46,8 @@ test("applies discount to order", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — satisfies valida o shape em compilação</summary>
-<br>
 
 ```ts
 test("applies 10% discount to order total", () => {
@@ -77,7 +73,6 @@ necessários estão presentes e com as assinaturas corretas.
 
 <details>
 <summary>❌ Ruim — mock como objeto genérico, sem contrato</summary>
-<br>
 
 ```ts
 test("saves order and sends notification", async () => {
@@ -95,11 +90,8 @@ test("saves order and sends notification", async () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mock implementa a interface, compilador verifica o contrato</summary>
-<br>
 
 ```ts
 test("saves order on creation", async () => {
@@ -126,7 +118,6 @@ test("saves order on creation", async () => {
 
 <details>
 <summary>✅ Bom — expectTypeOf verifica o contrato em compilação e runtime</summary>
-<br>
 
 ```ts
 import { expectTypeOf } from "vitest";
@@ -154,7 +145,6 @@ Testar que o tipo de erro correto foi lançado, não apenas que algum erro foi l
 
 <details>
 <summary>❌ Ruim — qualquer erro passa</summary>
-<br>
 
 ```ts
 test("throws on invalid order", async () => {
@@ -164,11 +154,8 @@ test("throws on invalid order", async () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipo e mensagem verificados</summary>
-<br>
 
 ```ts
 test("throws ValidationError when total is negative", async () => {

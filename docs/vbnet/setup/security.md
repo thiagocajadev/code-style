@@ -90,7 +90,6 @@ Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na 
 
 <details>
 <summary>❌ Ruim — verificação manual de role no corpo</summary>
-<br>
 
 ```vbnet
 Public Class OrdersController
@@ -109,11 +108,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — atributo declarativo, action sem lógica de autorização</summary>
-<br>
 
 ```vbnet
 Public Class OrdersController

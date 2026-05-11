@@ -23,7 +23,6 @@ Saia cedo na falha. Sem `else` após `return`.
 
 <details>
 <summary>❌ Ruim — aninhamento em cascata</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -41,11 +40,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clauses, fluxo plano</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -68,7 +64,6 @@ lógica com `if`.
 
 <details>
 <summary>❌ Ruim — unless com else (confuso) / unless com condição composta</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -82,11 +77,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — unless para 1 condição simples; if para o resto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -108,7 +100,6 @@ Use ternário apenas para atribuição de 2 valores. Nunca encadeie ternários.
 
 <details>
 <summary>❌ Ruim — ternário aninhado</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -118,11 +109,8 @@ label = admin? ? "Admin" : verified? ? "Verified" : "Guest"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ternário simples ou case/when para 3+</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -145,7 +133,6 @@ Use para 3 ou mais ramos sobre um mesmo valor. Mais limpo que `if/elsif` em casc
 
 <details>
 <summary>❌ Ruim — if/elsif em cascata</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -165,11 +152,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — case/when declarativo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -195,7 +179,6 @@ objetos com deconstruct.
 
 <details>
 <summary>❌ Ruim — acesso manual a campos sem garantia de forma</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -210,11 +193,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pattern matching desestrutura e garante forma</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -239,7 +219,6 @@ Prefira `map`, `filter`/`select`, `reject`, `reduce`/`sum` no lugar de loops imp
 
 <details>
 <summary>❌ Ruim — loop imperativo com mutação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -257,11 +236,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pipeline funcional sem mutação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

@@ -20,7 +20,6 @@ evitam cópias intermediárias.
 
 <details>
 <summary>❌ Ruim — cada operação cria uma lista intermediária</summary>
-<br>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -34,11 +33,8 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Sequence processa elemento a elemento sem cópias intermediárias</summary>
-<br>
 
 ```kotlin
 fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
@@ -59,7 +55,6 @@ fun findTopSpenders(customers: List<Customer>, limit: Int): List<String> {
 
 <details>
 <summary>❌ Ruim — lambda captura contexto, aloca objeto a cada chamada</summary>
-<br>
 
 ```kotlin
 fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -72,11 +67,8 @@ fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inline elimina alocação do lambda</summary>
-<br>
 
 ```kotlin
 inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
@@ -93,7 +85,6 @@ inline fun <T> List<T>.forEachLogged(logger: Logger, action: (T) -> Unit) {
 
 <details>
 <summary>❌ Ruim — mutableListOf + toList gera cópia extra</summary>
-<br>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -109,11 +100,8 @@ fun buildMenuItems(user: User): List<MenuItem> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — buildList sem cópia final</summary>
-<br>
 
 ```kotlin
 fun buildMenuItems(user: User): List<MenuItem> {
@@ -133,7 +121,6 @@ fun buildMenuItems(user: User): List<MenuItem> {
 
 <details>
 <summary>❌ Ruim — objeto pesado inicializado mesmo quando não usado</summary>
-<br>
 
 ```kotlin
 class ReportService {
@@ -143,11 +130,8 @@ class ReportService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lazy adia até o primeiro acesso</summary>
-<br>
 
 ```kotlin
 class ReportService {

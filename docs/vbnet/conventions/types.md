@@ -28,7 +28,6 @@ A regra prática: se duas implementações vão compartilhar código, `MustInher
 
 <details>
 <summary>❌ Ruim — interface usada para compartilhar código entre implementações</summary>
-<br>
 
 ```vbnet
 ' Interface não carrega estado nem implementação em VB.NET
@@ -51,11 +50,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — MustInherit Class quando há estado ou template method</summary>
-<br>
 
 ```vbnet
 Public MustInherit Class OrderProcessor
@@ -100,11 +96,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface quando só o contrato importa</summary>
-<br>
 
 ```vbnet
 Public Interface IOrderRepository
@@ -131,7 +124,6 @@ End Class
 
 <details>
 <summary>❌ Ruim — classe concreta sem NotInheritable, extensibilidade acidental</summary>
-<br>
 
 ```vbnet
 Public Class OrderService
@@ -156,11 +148,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — NotInheritable por padrão, extensibilidade exige decisão</summary>
-<br>
 
 ```vbnet
 Public NotInheritable Class OrderService
@@ -187,7 +176,6 @@ A regra prática: **default é `Class`**. `Structure` só quando a semântica de
 
 <details>
 <summary>❌ Ruim — Structure grande, cópia custosa a cada passagem</summary>
-<br>
 
 ```vbnet
 Public Structure Order ' 10+ campos, string longa, list
@@ -208,11 +196,8 @@ End Structure
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Structure pequena com semântica de valor</summary>
-<br>
 
 ```vbnet
 Public Structure Money
@@ -242,7 +227,6 @@ VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (featu
 
 <details>
 <summary>❌ Ruim — Integer para valor opcional, sentinela mágica</summary>
-<br>
 
 ```vbnet
 Public Function FindDiscount(productId As String) As Integer
@@ -257,11 +241,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Nullable(Of Integer), ausência explícita no tipo</summary>
-<br>
 
 ```vbnet
 Public Function FindDiscount(productId As String) As Integer?
@@ -293,7 +274,6 @@ A ferramenta idiomática para checagem + narrowing é `TryCast`: tenta a convers
 
 <details>
 <summary>❌ Ruim — DirectCast após TypeOf, dupla checagem</summary>
-<br>
 
 ```vbnet
 Public Function DescribePayment(payment As IPayment) As String
@@ -313,11 +293,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — TryCast combina checagem e narrowing</summary>
-<br>
 
 ```vbnet
 Public Function DescribePayment(payment As IPayment) As String
@@ -344,7 +321,6 @@ Para variantes fechadas de um domínio, a herança hierárquica substitui o patt
 
 <details>
 <summary>✅ Bom — hierarquia fechada com método polimórfico</summary>
-<br>
 
 ```vbnet
 Public MustInherit Class PaymentResult
@@ -392,7 +368,6 @@ Generic sem constraint (`Of T`) descreve qualquer tipo — é abstração sem pr
 
 <details>
 <summary>❌ Ruim — genérico sem constraint, reflection para descobrir capability</summary>
-<br>
 
 ```vbnet
 Public Function FindById(Of T As Class)(id As Guid) As T
@@ -409,11 +384,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constraint declara capability, compilador valida</summary>
-<br>
 
 ```vbnet
 Public Interface IEntity
@@ -434,7 +406,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — Object para conveniência, tipo real perdido</summary>
-<br>
 
 ```vbnet
 Public Sub ProcessConfig(config As Object)
@@ -445,11 +416,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipo concreto, contrato explícito</summary>
-<br>
 
 ```vbnet
 Public NotInheritable Class ApiConfig

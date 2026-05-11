@@ -23,7 +23,6 @@ compilador sabe que a variável é não-nula — sem assertions.
 
 <details>
 <summary>❌ Ruim — tipo nullable navega pelo código inteiro com ?.</summary>
-<br>
 
 ```ts
 async function processOrder(orderId: string): Promise<void> {
@@ -36,11 +35,8 @@ async function processOrder(orderId: string): Promise<void> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard estreita o tipo, resto do código é não-nulo</summary>
-<br>
 
 ```ts
 async function processOrder(orderId: string): Promise<void> {
@@ -62,7 +58,6 @@ sabe o shape completo de cada variante sem type assertions.
 
 <details>
 <summary>❌ Ruim — if/else com type assertions manuais</summary>
-<br>
 
 ```ts
 type PaymentEvent =
@@ -83,11 +78,8 @@ function handlePaymentEvent(event: PaymentEvent): void {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — switch com narrowing automático por discriminante</summary>
-<br>
 
 ```ts
 function handlePaymentEvent(event: PaymentEvent): void {
@@ -116,7 +108,6 @@ um novo variant é adicionado ao tipo, o compilador aponta o switch que precisa 
 
 <details>
 <summary>❌ Ruim — novo variant ignorado silenciosamente</summary>
-<br>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -134,11 +125,8 @@ function getStatusLabel(status: OrderStatus): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — never no default, compilador avisa se faltar um caso</summary>
-<br>
 
 ```ts
 function assertNever(value: never): never {
@@ -166,7 +154,6 @@ O compilador propaga o contrato para todos os callers.
 
 <details>
 <summary>❌ Ruim — verificação inline repetida, narrowing não reutilizável</summary>
-<br>
 
 ```ts
 function processApiResponse(data: unknown): void {
@@ -184,11 +171,8 @@ function processApiResponse(data: unknown): void {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — type predicate nomeia e reutiliza o narrowing</summary>
-<br>
 
 ```ts
 function isOrder(value: unknown): value is Order {

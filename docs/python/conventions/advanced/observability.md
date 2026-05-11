@@ -24,7 +24,6 @@ sensíveis e sem poluir com ruído.
 
 <details>
 <summary>❌ Ruim — print() sem nível, sem contexto</summary>
-<br>
 
 ```python
 def process_order(order_id: int):
@@ -34,11 +33,8 @@ def process_order(order_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — logging com nível e contexto</summary>
-<br>
 
 ```python
 import logging
@@ -70,7 +66,6 @@ Cada nível tem um significado fixo. Usar o nível errado polui o output e dific
 
 <details>
 <summary>❌ Ruim — nível errado para o contexto</summary>
-<br>
 
 ```python
 logger.info("Database connection failed")    # deveria ser ERROR
@@ -80,11 +75,8 @@ logger.debug("Payment processed successfully")  # deveria ser INFO
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nível correto para cada evento</summary>
-<br>
 
 ```python
 logger.info("user logged in", extra={"user_id": user.user_id})
@@ -102,7 +94,6 @@ identificadores opacos — IDs que não revelam a pessoa.
 
 <details>
 <summary>❌ Ruim — dados pessoais expostos no log</summary>
-<br>
 
 ```python
 logger.info(f"processing payment for {user.name} ({user.email}), card {card.number}")
@@ -110,11 +101,8 @@ logger.info(f"processing payment for {user.name} ({user.email}), card {card.numb
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — apenas identificadores opacos</summary>
-<br>
 
 ```python
 logger.info(
@@ -132,7 +120,6 @@ Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output, Entr
 
 <details>
 <summary>❌ Ruim — logs sem contexto de rastreamento</summary>
-<br>
 
 ```python
 async def handle_order(order_id: int):
@@ -147,11 +134,8 @@ async def handle_order(order_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — correlation_id propagado em todos os logs da operação</summary>
-<br>
 
 ```python
 import uuid
@@ -178,7 +162,6 @@ Sem ele, o log não diz onde o erro ocorreu.
 
 <details>
 <summary>❌ Ruim — exceção capturada sem traceback</summary>
-<br>
 
 ```python
 async def process_payment(payment_id: int):
@@ -192,11 +175,8 @@ async def process_payment(payment_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — exc_info preserva o traceback completo</summary>
-<br>
 
 ```python
 async def process_payment(payment_id: int):

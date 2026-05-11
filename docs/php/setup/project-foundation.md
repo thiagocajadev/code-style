@@ -59,7 +59,6 @@ instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
 <summary>✅ Bom — composer.json com PSR-4, PHPStan e scripts</summary>
-<br>
 
 ```json
 {
@@ -103,7 +102,6 @@ instalar e `composer dump-autoload` após adicionar classes.
 
 <details>
 <summary>❌ Ruim — getenv() espalhado em todo lugar</summary>
-<br>
 
 ```php
 // src/Domain/Order/OrderRepository.php
@@ -121,11 +119,8 @@ $jwtSecret = $_ENV['JWT_SECRET']; // leitura direta
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
-<br>
 
 ```php
 // src/Config.php
@@ -176,7 +171,6 @@ registra rotas; handlers ficam no domínio.
 
 <details>
 <summary>✅ Bom — index.php como índice, lógica delegada</summary>
-<br>
 
 ```php
 <?php
@@ -227,7 +221,6 @@ estrita de tipos em chamadas de função e previne coerções silenciosas.
 
 <details>
 <summary>❌ Ruim — sem strict_types, coerção silenciosa</summary>
-<br>
 
 ```php
 <?php
@@ -242,11 +235,8 @@ calculateTotal("5", "3"); // "5" é convertido para 5 silenciosamente
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — strict_types em todos os arquivos</summary>
-<br>
 
 ```php
 <?php

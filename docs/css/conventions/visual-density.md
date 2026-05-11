@@ -34,7 +34,6 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 <details>
 <summary>❌ Ruim — regras coladas, sem respiro entre blocos</summary>
-<br>
 
 ```css
 .card {
@@ -53,11 +52,8 @@ Cada bloco CSS é uma unidade semântica. Uma linha em branco entre seletores di
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma linha em branco entre cada regra</summary>
-<br>
 
 ```css
 .card {
@@ -86,7 +82,6 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 <details>
 <summary>❌ Ruim — propriedades longas sem separação entre grupos</summary>
-<br>
 
 ```css
 .modal {
@@ -108,11 +103,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — grupos separados, cada responsabilidade legível</summary>
-<br>
 
 ```css
 .modal {
@@ -143,7 +135,6 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 <details>
 <summary>❌ Ruim — @media colados, sem separação visual</summary>
-<br>
 
 ```css
 .hero {
@@ -166,11 +157,8 @@ A ordem dos grupos é definida em [Formatting](formatting.md#ordem-de-propriedad
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma linha em branco entre cada bloco</summary>
-<br>
 
 ```css
 .hero {
@@ -201,7 +189,6 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 
 <details>
 <summary>❌ Ruim — tudo colado, hierarquia difícil de ler</summary>
-<br>
 
 ```css
 .nav {
@@ -223,11 +210,8 @@ Com CSS nesting (ou SCSS), cada bloco aninhado é uma unidade separada. Uma linh
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada bloco aninhado separado, hierarquia visível</summary>
-<br>
 
 ```css
 .nav {
@@ -258,7 +242,6 @@ Não alinhe verticalmente `:`, valores ou comentários com múltiplos espaços. 
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar valores e comentários</summary>
-<br>
 
 <!-- prettier-ignore -->
 ```css
@@ -280,11 +263,8 @@ Não alinhe verticalmente `:`, valores ou comentários com múltiplos espaços. 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem espaçamento extra</summary>
-<br>
 
 ```css
 :root {

@@ -23,7 +23,6 @@ ser reaberta.
 
 <details>
 <summary>❌ Ruim — type onde interface seria natural, interface onde type seria correto</summary>
-<br>
 
 ```ts
 // type para shape de objeto — funciona, mas não é a convenção
@@ -38,11 +37,8 @@ interface OrderStatus = "pending" | "approved"; // erro de sintaxe
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface para objetos e contratos</summary>
-<br>
 
 ```ts
 interface User {
@@ -63,11 +59,8 @@ interface UserService extends EventEmitter {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — type para uniões, intersections e aliases</summary>
-<br>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "cancelled" | "shipped";
@@ -89,7 +82,6 @@ Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo.
 
 <details>
 <summary>❌ Ruim — genérico que não muda o shape</summary>
-<br>
 
 ```ts
 interface Response<T> {
@@ -100,11 +92,8 @@ interface Response<T> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — genérico quando o shape depende do tipo</summary>
-<br>
 
 ```ts
 interface ApiResponse<TData> {
@@ -135,7 +124,6 @@ os tipos sincronizados quando o tipo base muda.
 
 <details>
 <summary>❌ Ruim — duplicação manual do shape com diferenças</summary>
-<br>
 
 ```ts
 interface User {
@@ -162,11 +150,8 @@ interface UpdateUserInput {  // duplica User com todos os campos opcionais
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — derivar a partir do tipo base</summary>
-<br>
 
 ```ts
 interface User {
@@ -191,7 +176,6 @@ um campo literal discriminante permite narrowing automático, sem type assertion
 
 <details>
 <summary>❌ Ruim — campo opcional para cada variant, sem discriminante</summary>
-<br>
 
 ```ts
 interface PaymentResult {
@@ -210,11 +194,8 @@ function handlePayment(result: PaymentResult) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — campo discriminante com narrowing automático</summary>
-<br>
 
 ```ts
 interface PaymentSuccess {
@@ -249,7 +230,6 @@ classes.
 
 <details>
 <summary>❌ Ruim — duplicação manual de campos de shapes existentes</summary>
-<br>
 
 ```ts
 interface Auditable {
@@ -277,11 +257,8 @@ interface Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — intersection para compor shapes independentes</summary>
-<br>
 
 ```ts
 interface Auditable {
@@ -306,7 +283,6 @@ compilador precisa de convencimento, geralmente é o shape que está errado.
 
 <details>
 <summary>❌ Ruim — as Type para forçar o compilador a aceitar</summary>
-<br>
 
 ```ts
 const user = await fetchUser(id) as User; // e se retornar null?
@@ -316,11 +292,8 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any — qualq
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — narrowing real ou validação de esquema</summary>
-<br>
 
 ```ts
 const raw = await fetchUser(id);

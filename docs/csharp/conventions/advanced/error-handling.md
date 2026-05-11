@@ -34,7 +34,6 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 
 <details>
 <summary>❌ Ruim — exceção como controle de fluxo de negócio</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -63,11 +62,8 @@ public async Task<IResult> GetOrder(Guid orderId)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — falha de negócio como valor, contrato explícito</summary>
-<br>
 
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -102,7 +98,6 @@ Erros são tipados e carregam código semântico. O código é uma string em `UP
 
 <details>
 <summary>❌ Ruim — strings mágicas sem contrato</summary>
-<br>
 
 ```csharp
 return Result<Order>.Fail("not found", "404");
@@ -112,11 +107,8 @@ return Result<Order>.Fail("unauthorized", "401");
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — códigos semânticos, mapeamento centralizado</summary>
-<br>
 
 ```csharp
 return Result<Order>.Fail("Order not found.", "NOT_FOUND");
@@ -142,7 +134,6 @@ O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automa
 
 <details>
 <summary>❌ Ruim — Success() explícito repetido em cada retorno bem-sucedido</summary>
-<br>
 
 ```csharp
 public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
@@ -159,11 +150,8 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — implicit operator, happy path retorna o valor diretamente</summary>
-<br>
 
 ```csharp
 public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
@@ -186,7 +174,6 @@ Valide pré-condições no início do método, antes de qualquer **I/O** (Input/
 
 <details>
 <summary>❌ Ruim — validação tardia, trabalho desnecessário antes de falhar</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, CancellationToken ct)
@@ -207,11 +194,8 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — validação antes do I/O, falha rápida</summary>
-<br>
 
 ```csharp
 public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, CancellationToken ct)
@@ -237,7 +221,6 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
 <details>
 <summary>❌ Ruim — try/catch como desvio de fluxo esperado</summary>
-<br>
 
 ```csharp
 public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
@@ -256,11 +239,8 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retorno explícito para ausência, try/catch apenas na fronteira</summary>
-<br>
 
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -283,7 +263,6 @@ O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: inte
 
 <details>
 <summary>❌ Ruim — sem handler global, detalhe interno vaza</summary>
-<br>
 
 ```csharp
 // sem UseExceptionHandler no pipeline
@@ -292,11 +271,8 @@ O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: inte
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IExceptionHandler como barreira final</summary>
-<br>
 
 ```csharp
 // Infrastructure/GlobalExceptionHandler.cs

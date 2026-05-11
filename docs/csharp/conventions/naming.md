@@ -20,7 +20,6 @@ Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, p
 
 <details>
 <summary>❌ Ruim — mistura de idiomas</summary>
-<br>
 
 ```csharp
 public class PedidoService
@@ -35,11 +34,8 @@ public class PedidoService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês consistente</summary>
-<br>
 
 ```csharp
 public class OrderService
@@ -68,7 +64,6 @@ Membros públicos usam PascalCase. Membros privados usam `_camelCase` com unders
 
 <details>
 <summary>❌ Ruim — convenção inconsistente</summary>
-<br>
 
 ```csharp
 public class orderService
@@ -85,11 +80,8 @@ public class orderService
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — escopo declarado pela convenção</summary>
-<br>
 
 ```csharp
 public class OrderService(IOrderRepository repository)
@@ -112,7 +104,6 @@ Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sina
 
 <details>
 <summary>❌ Ruim — sem sufixo, natureza da operação obscura</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrder(Guid id, CancellationToken ct) { ... }
@@ -122,11 +113,8 @@ public async Task<bool> ValidatePayment(PaymentRequest request) { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sufixo declara a natureza assíncrona</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid id, CancellationToken ct) { ... }
@@ -142,7 +130,6 @@ Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`
 
 <details>
 <summary>❌ Ruim — distinção entre interface e classe ausente ou com sufixo ruído</summary>
-<br>
 
 ```csharp
 public class OrderRepository { ... }       // é interface ou classe?
@@ -152,11 +139,8 @@ public class DefaultOrderRepository { ... } // Default não diz onde persiste
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface clara, implementação pelo domínio</summary>
-<br>
 
 ```csharp
 public interface IOrderRepository { ... }
@@ -179,7 +163,6 @@ Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```csharp
 bool active = user.Status == "ACTIVE";
@@ -189,11 +172,8 @@ bool delete = user.Role == "ADMIN";
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixo declara a semântica</summary>
-<br>
 
 ```csharp
 bool isActive = user.Status == "ACTIVE";
@@ -209,7 +189,6 @@ O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`,
 
 <details>
 <summary>❌ Ruim — nomes genéricos sem contexto de domínio</summary>
-<br>
 
 ```csharp
 public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
@@ -223,11 +202,8 @@ public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nomes expressivos pelo domínio</summary>
-<br>
 
 ```csharp
 public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, CancellationToken ct)
@@ -246,7 +222,6 @@ Nomes expressivos eliminam a necessidade de comentários. Um comentário que ree
 
 <details>
 <summary>❌ Ruim — comentários repetem o código</summary>
-<br>
 
 ```csharp
 // busca o usuário pelo id
@@ -260,11 +235,8 @@ if (!u.Flag)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — código se explica; comentário só para restrições não óbvias</summary>
-<br>
 
 ```csharp
 var user = await _repo.FindByIdAsync(userId, ct);
@@ -282,7 +254,6 @@ Nomes seguem a ordem de leitura natural: domínio primeiro, ação depois, quali
 
 <details>
 <summary>❌ Ruim — qualificador antes do domínio</summary>
-<br>
 
 ```csharp
 public async Task<decimal> TotalCalculateOrderAsync(...) { ... }
@@ -292,11 +263,8 @@ public async Task<User> ByIdFindUserAsync(...) { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — domínio primeiro, ação depois</summary>
-<br>
 
 ```csharp
 public async Task<decimal> CalculateOrderTotalAsync(...) { ... }

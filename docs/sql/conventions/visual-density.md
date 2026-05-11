@@ -38,7 +38,6 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 
 <details>
 <summary>❌ Ruim — blank entre cláusulas da mesma query</summary>
-<br>
 
 ```sql
 SELECT
@@ -54,11 +53,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cláusulas grudadas formam uma frase</summary>
-<br>
 
 ```sql
 SELECT
@@ -80,7 +76,6 @@ Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de a
 
 <details>
 <summary>❌ Ruim — T-SQL: assinatura e corpo colados, sem separação visual</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -102,11 +97,8 @@ END;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — T-SQL: linha em branco entre AS e BEGIN</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -129,11 +121,8 @@ END;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — PostgreSQL: linha em branco após $$ e antes do fechamento</summary>
-<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById
@@ -170,7 +159,6 @@ Cada `WITH nome AS (...)` é uma etapa nomeada — semanticamente equivalente a 
 
 <details>
 <summary>❌ Ruim — CTEs coladas, sem separação entre as etapas</summary>
-<br>
 
 ```sql
 WITH TeamCTE AS
@@ -192,11 +180,8 @@ JOIN ActivePlayersCTE ON TeamCTE.Id = ActivePlayersCTE.TeamId;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — linha em branco entre CTEs, cada etapa legível</summary>
-<br>
 
 ```sql
 WITH TeamCTE AS
@@ -240,7 +225,6 @@ Dois ou mais statements distintos (`INSERT`, `UPDATE`, `CREATE`, `ALTER`) na mes
 
 <details>
 <summary>❌ Ruim — statements colados, sem separação entre blocos distintos</summary>
-<br>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -263,11 +247,8 @@ JOIN
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — statements separados, fluxo legível</summary>
-<br>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -297,7 +278,6 @@ Blocos `IF ... END IF`, `WHILE`, `BEGIN TRY/CATCH` ocupam peso visual próprio. 
 
 <details>
 <summary>❌ Ruim — bloco WHILE colado ao statement anterior</summary>
-<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -314,11 +294,8 @@ END;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — bloco isolado por linhas em branco</summary>
-<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -345,7 +322,6 @@ Não alinhe verticalmente `=`, tipos de coluna ou aliases com múltiplos espaço
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar tipos e atribuições</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -371,11 +347,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem espaçamento extra</summary>
-<br>
 
 ```sql
 CREATE TABLE Orders
@@ -407,7 +380,6 @@ Quando aparecem 4+ statements homogêneos consecutivos (`ALTER TABLE`, `CREATE I
 
 <details>
 <summary>❌ Ruim — muralha de quatro ALTERs sem respiro</summary>
-<br>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;
@@ -418,11 +390,8 @@ ALTER TABLE FootballTeams ADD Country NVARCHAR(100);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — quebra em 2+2</summary>
-<br>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;

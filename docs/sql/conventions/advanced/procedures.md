@@ -21,7 +21,6 @@ resultados intermediários, tornando cada passo testável e legível.
 
 <details>
 <summary>❌ Ruim — query única com subqueries aninhadas, difícil de debugar</summary>
-<br>
 
 ```sql
 SELECT
@@ -52,11 +51,8 @@ ORDER BY
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — procedure com temp tables, uma etapa por responsabilidade</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
@@ -114,7 +110,6 @@ END;
 
 <details>
 <summary>❌ Ruim — JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
@@ -147,11 +142,8 @@ END;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — parâmetros nomeados, contexto materializado antes do JOIN final</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition

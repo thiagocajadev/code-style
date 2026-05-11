@@ -20,7 +20,6 @@ quando o valor precisa mudar. O compilador avisa sobre `mut` desnecessário.
 
 <details>
 <summary>❌ Ruim — mut desnecessário</summary>
-<br>
 
 ```rust
 let mut user_id = 42_u64;      // nunca muda
@@ -32,11 +31,8 @@ println!("{}", status);        // status nunca alterado após a declaração
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mut apenas onde necessário</summary>
-<br>
 
 ```rust
 let user_id = 42_u64;
@@ -58,7 +54,6 @@ usada em qualquer escopo, incluindo dentro de funções.
 
 <details>
 <summary>❌ Ruim — valores mágicos sem nome</summary>
-<br>
 
 ```rust
 fn is_order_eligible(total: f64) -> bool {
@@ -72,11 +67,8 @@ fn retry_request(attempt: u32) -> bool {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas com intenção</summary>
-<br>
 
 ```rust
 const MINIMUM_ORDER_VALUE: f64 = 50.0;
@@ -100,7 +92,6 @@ Shadowing substitui uma ligação no mesmo escopo ou em um escopo interno.
 
 <details>
 <summary>❌ Ruim — variáveis intermediárias desnecessárias</summary>
-<br>
 
 ```rust
 let raw_input = read_input();
@@ -111,11 +102,8 @@ let order_from_input = build_order(validated_input);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — shadowing para transformações progressivas</summary>
-<br>
 
 ```rust
 let order = read_input()?;
@@ -134,7 +122,6 @@ não fica óbvia ou quando o tipo comunica intenção.
 
 <details>
 <summary>❌ Ruim — anotação redundante onde a inferência é clara</summary>
-<br>
 
 ```rust
 let user_id: u64 = 42_u64;
@@ -144,11 +131,8 @@ let items: Vec<Item> = vec![item_a, item_b];
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — anote quando agrega informação</summary>
-<br>
 
 ```rust
 let user_id = 42_u64; // sufixo já diz o tipo
@@ -167,7 +151,6 @@ variáveis que só serão usadas no final.
 
 <details>
 <summary>❌ Ruim — variáveis declaradas longe do uso</summary>
-<br>
 
 ```rust
 fn process_order(order: &Order) -> anyhow::Result<Receipt> {
@@ -187,11 +170,8 @@ fn process_order(order: &Order) -> anyhow::Result<Receipt> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração próxima ao uso</summary>
-<br>
 
 ```rust
 fn process_order(order: &Order) -> anyhow::Result<Receipt> {

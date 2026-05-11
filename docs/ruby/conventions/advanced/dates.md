@@ -20,7 +20,6 @@ para o fuso do usuário apenas na camada de apresentação.
 
 <details>
 <summary>❌ Ruim — hora local sem fuso explícito</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -32,11 +31,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — UTC explícito no armazenamento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -55,7 +51,6 @@ valida o formato e lança `ArgumentError` para entradas inválidas.
 
 <details>
 <summary>❌ Ruim — parse de string sem validação de formato</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -69,11 +64,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — iso8601 valida formato + UTC explícito</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -96,7 +88,6 @@ Converta para o fuso do usuário apenas na apresentação.
 
 <details>
 <summary>❌ Ruim — Time.now ignora config.time_zone</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -108,11 +99,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — conversão para fuso do usuário na apresentação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -133,7 +121,6 @@ aritmética legível. Para Ruby puro, use `Time` com segundos explícitos.
 
 <details>
 <summary>❌ Ruim — aritmética em segundos mágicos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -145,11 +132,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — duração nomeada com ActiveSupport</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -171,7 +155,6 @@ de data.
 
 <details>
 <summary>❌ Ruim — comparação de strings de data</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -183,11 +166,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — comparação de objetos Time</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

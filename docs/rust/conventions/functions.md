@@ -23,7 +23,6 @@ Cada função executa uma operação ou orquestra outras. Nunca as duas ao mesmo
 
 <details>
 <summary>❌ Ruim — função que faz tudo</summary>
-<br>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -55,11 +54,8 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador + funções de detalhe</summary>
-<br>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -95,7 +91,6 @@ Leia o código de cima para baixo: funções de alto nível primeiro, detalhes d
 
 <details>
 <summary>❌ Ruim — detalhes antes do orquestrador</summary>
-<br>
 
 ```rust
 fn compute_discount_rate(user_id: u64) -> f64 {
@@ -114,11 +109,8 @@ async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador declarado primeiro</summary>
-<br>
 
 ```rust
 async fn process_checkout(user_id: u64, cart: Cart) -> anyhow::Result<Receipt> {
@@ -151,7 +143,6 @@ não o computa.
 
 <details>
 <summary>❌ Ruim — lógica inline no retorno</summary>
-<br>
 
 ```rust
 fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
@@ -161,11 +152,8 @@ fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — resultado extraído antes do retorno</summary>
-<br>
 
 ```rust
 fn find_active_orders(orders: &[Order]) -> Vec<&Order> {
@@ -186,7 +174,6 @@ Quando o retorno não é óbvio, nomeie o resultado para comunicar intenção.
 
 <details>
 <summary>❌ Ruim — retorno anônimo obscuro</summary>
-<br>
 
 ```rust
 fn build_invoice(order: &Order) -> Invoice {
@@ -201,11 +188,8 @@ fn build_invoice(order: &Order) -> Invoice {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — resultado nomeado antes do retorno</summary>
-<br>
 
 ```rust
 fn build_invoice(order: &Order) -> Invoice {
@@ -229,7 +213,6 @@ quando a lógica crescer além de uma expressão.
 
 <details>
 <summary>❌ Ruim — closure longa e sem nome</summary>
-<br>
 
 ```rust
 let processed: Vec<_> = orders.iter().map(|o| {
@@ -241,11 +224,8 @@ let processed: Vec<_> = orders.iter().map(|o| {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lógica nomeada, closure como delegate</summary>
-<br>
 
 ```rust
 fn apply_pricing(order: &Order) -> ProcessedOrder {

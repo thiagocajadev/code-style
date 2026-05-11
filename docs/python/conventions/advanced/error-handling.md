@@ -21,7 +21,6 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 
 <details>
 <summary>❌ Ruim — None, False e objeto na mesma função</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -42,11 +41,8 @@ if result:  # False passa, None também
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contrato consistente, sempre o mesmo formato</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -68,7 +64,6 @@ def process_order(order):
 
 <details>
 <summary>❌ Ruim — string solta, impossível tratar com isinstance</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -82,11 +77,8 @@ async def find_user(user_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — exceções tipadas, identificáveis e tratáveis</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -104,7 +96,6 @@ async def find_user(user_id: int):
 
 <details>
 <summary>❌ Ruim — raise com string solta, sem tipo, sem contrato</summary>
-<br>
 
 ```python
 async def find_user(user_id: int):
@@ -125,11 +116,8 @@ async def process_order(order_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hierarquia centralizada para todos os erros da aplicação</summary>
-<br>
 
 ```python
 # errors.py
@@ -180,7 +168,6 @@ class InternalServerError(AppError):
 
 <details>
 <summary>❌ Ruim — captura, loga e retorna None</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -198,11 +185,8 @@ async def find_product_by_id(product_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — propaga com contexto, trata na fronteira</summary>
-<br>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -231,7 +215,6 @@ Use parênteses quando precisar de `as` ou quando o grupo tiver mais de dois tip
 
 <details>
 <summary>❌ Ruim — except separado para tipos que recebem o mesmo tratamento</summary>
-<br>
 
 ```python
 try:
@@ -244,11 +227,8 @@ except ConnectionRefusedError:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — excpet agrupado sem parênteses (Python 3.14+)</summary>
-<br>
 
 ```python
 try:
@@ -259,11 +239,8 @@ except TimeoutError, ConnectionRefusedError:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — parênteses quando há cláusula as ou 3+ tipos</summary>
-<br>
 
 ```python
 try:
@@ -279,7 +256,6 @@ except (TimeoutError, ConnectionRefusedError) as error:
 
 <details>
 <summary>❌ Ruim — try/except controlando lógica de negócio normal</summary>
-<br>
 
 ```python
 def get_user(user_id: int):
@@ -291,11 +267,8 @@ def get_user(user_id: int):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
-<br>
 
 ```python
 def get_user(user_id: int):

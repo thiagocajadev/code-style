@@ -20,7 +20,6 @@ Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressi
 
 <details>
 <summary>❌ Ruim — subquery no WHERE sem nome</summary>
-<br>
 
 ```sql
 SELECT
@@ -41,11 +40,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — CTE nomeada no topo</summary>
-<br>
 
 ```sql
 WITH ActivePlayerTeamsCTE AS
@@ -73,7 +69,6 @@ JOIN
 
 <details>
 <summary>❌ Ruim — JOIN de subqueries, difícil de acompanhar</summary>
-<br>
 
 ```sql
 SELECT t.Name, t.ChampionshipsWon, p.PlayerName
@@ -86,11 +81,8 @@ JOIN
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — duas CTEs separadas, JOIN no SELECT final</summary>
-<br>
 
 ```sql
 WITH TeamCTE AS
@@ -133,7 +125,6 @@ JOIN
 
 <details>
 <summary>❌ Ruim — prefixo genérico, nome vago, sem formatação vertical</summary>
-<br>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -144,11 +135,8 @@ END
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome descritivo, parâmetro tipado, formatação vertical</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE GetFootballTeamById
@@ -175,7 +163,6 @@ END;
 
 <details>
 <summary>❌ Ruim — RETURNS VOID, sem RETURNS TABLE, parâmetro sem tipo explícito</summary>
-<br>
 
 ```sql
 CREATE FUNCTION get_team(id INT) RETURNS VOID AS $$
@@ -187,11 +174,8 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — RETURNS TABLE com colunas declaradas, RETURN QUERY</summary>
-<br>
 
 ```sql
 CREATE OR REPLACE FUNCTION GetFootballTeamById

@@ -117,7 +117,6 @@ estado de loading, sem waterfall.
 
 <details>
 <summary>❌ Ruim — RCC desnecessário para conteúdo sem interatividade</summary>
-<br>
 
 ```tsx
 "use client";
@@ -141,11 +140,8 @@ export function ProductDetail({ id }: { id: string }) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — RSC acessa dados diretamente, sem loading state</summary>
-<br>
 
 ```tsx
 import { productRepository } from "@/lib/repositories/product";
@@ -170,7 +166,6 @@ Sem lógica de negócio inline.
 
 <details>
 <summary>❌ Ruim — lógica de dados e negócio misturada no page.tsx</summary>
-<br>
 
 ```tsx
 export default async function OrderPage({ params }: { params: { id: string } }) {
@@ -193,11 +188,8 @@ export default async function OrderPage({ params }: { params: { id: string } }) 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — page.tsx como orquestrador</summary>
-<br>
 
 ```tsx
 // app/orders/[id]/page.tsx
@@ -227,7 +219,6 @@ usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
 
 <details>
 <summary>❌ Ruim — tipo inline na assinatura do componente</summary>
-<br>
 
 ```tsx
 export function OrderCard({
@@ -251,11 +242,8 @@ export function OrderCard({
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface separada com sufixo Props</summary>
-<br>
 
 ```tsx
 interface OrderCardProps {
@@ -286,7 +274,6 @@ O retorno do hook é tipado com interface quando tem três ou mais valores.
 
 <details>
 <summary>❌ Ruim — fetch dentro do componente, pipeline colapsado</summary>
-<br>
 
 ```tsx
 "use client";
@@ -312,11 +299,8 @@ export function OrderList() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hook encapsula estado; service encapsula chamada de rede</summary>
-<br>
 
 ```ts
 // lib/services/order.ts
@@ -388,7 +372,6 @@ componente renderiza antes do redirect (redirecionamento), expondo conteúdo res
 
 <details>
 <summary>❌ Ruim — guard no componente, expõe conteúdo por um frame</summary>
-<br>
 
 ```tsx
 "use client";
@@ -406,11 +389,8 @@ export default function DashboardPage() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard no Proxy, antes de qualquer render</summary>
-<br>
 
 ```ts
 // proxy.ts
@@ -448,7 +428,6 @@ O servidor retorna erros estruturados por campo e por formulário, nunca apenas 
 
 <details>
 <summary>❌ Ruim — validação manual sem schema, erros sem estrutura</summary>
-<br>
 
 ```tsx
 // app/actions/order.ts
@@ -468,11 +447,8 @@ export async function createOrder(formData: FormData) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schema compartilhado, Server Action tipada com Result estruturado</summary>
-<br>
 
 ```ts
 // lib/schemas/order.ts
@@ -568,7 +544,6 @@ regras de negócio → persiste → retorna Response.
 
 <details>
 <summary>❌ Ruim — lógica de negócio inline, sem schema, status code hardcoded</summary>
-<br>
 
 ```ts
 // app/api/orders/route.ts
@@ -587,11 +562,8 @@ export async function POST(request: NextRequest) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schema Zod, repository, resposta estruturada</summary>
-<br>
 
 ```ts
 // app/api/orders/route.ts
@@ -642,7 +614,6 @@ POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa ide
 
 <details>
 <summary>❌ Ruim — valida sobre JSON parseado, comparação direta, processa no handler</summary>
-<br>
 
 ```ts
 // app/api/webhooks/[provider]/route.ts
@@ -666,11 +637,8 @@ export async function POST(request: NextRequest) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — raw body, timingSafeEqual, idempotência, 200 antes de enfileirar</summary>
-<br>
 
 ```ts
 // app/api/webhooks/[provider]/route.ts
@@ -732,7 +700,6 @@ usuário vê as próprias mudanças na hora.
 
 <details>
 <summary>✅ Bom — função cacheada com perfil e tag</summary>
-<br>
 
 ```ts
 // lib/queries/orders.ts
@@ -752,11 +719,8 @@ export async function getCachedOrders(): Promise<Order[]> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Server Action invalida o cache após escrita</summary>
-<br>
 
 ```ts
 // app/actions/order.ts

@@ -44,7 +44,6 @@ arquivos separados (convenção: prefixo `_`).
 
 <details>
 <summary>❌ Ruim — handler retorna página completa; HTMX recebe <html> inteiro</summary>
-<br>
 
 ```python
 @router.get("/orders")
@@ -73,11 +72,8 @@ async def list_orders(request: Request):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — handler retorna fragmento; template parcial em arquivo separado</summary>
-<br>
 
 ```html
 <!-- trigger na página principal -->
@@ -123,7 +119,6 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 
 <details>
 <summary>❌ Ruim — sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
-<br>
 
 ```html
 <button hx-get="/orders/partial">Carregar</button>
@@ -135,11 +130,8 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hx-target explícito, hx-swap intencional por caso de uso</summary>
-<br>
 
 ```html
 <!-- substituir conteúdo existente -->
@@ -173,7 +165,6 @@ IDs, sem requisições adicionais.
 
 <details>
 <summary>❌ Ruim — duas requisições separadas para atualizar lista e contador</summary>
-<br>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -188,11 +179,8 @@ IDs, sem requisições adicionais.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma resposta atualiza lista e contador via out-of-band</summary>
-<br>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -233,7 +221,6 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 
 <details>
 <summary>❌ Ruim — sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
-<br>
 
 ```html
 <button hx-get="/orders/partial" hx-target="#order-list">
@@ -245,11 +232,8 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — indicador visível durante a requisição via hx-indicator</summary>
-<br>
 
 ```html
 <button

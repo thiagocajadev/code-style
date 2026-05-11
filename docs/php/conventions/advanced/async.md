@@ -24,7 +24,6 @@ consumindo uma fila (RabbitMQ, SQS, Redis Streams), não com async dentro de um 
 
 <details>
 <summary>✅ Bom — worker simples de fila para tarefas concorrentes</summary>
-<br>
 
 ```php
 // Worker que processa mensagens de uma fila
@@ -78,7 +77,6 @@ transformação, simulações de concorrência em testes).
 
 <details>
 <summary>✅ Bom — Fiber básico com suspend/resume</summary>
-<br>
 
 ```php
 $fiber = new \Fiber(function (): void {
@@ -106,7 +104,6 @@ Use Revolt para I/O assíncrono nativo dentro de um único processo PHP com Fibe
 
 <details>
 <summary>✅ Bom — múltiplas chamadas HTTP paralelas com Revolt</summary>
-<br>
 
 ```php
 use Revolt\EventLoop;
@@ -141,7 +138,6 @@ Use `curl` com `CURLOPT_TIMEOUT` ou `stream_context_create` com timeout explíci
 
 <details>
 <summary>❌ Ruim — chamada HTTP sem timeout</summary>
-<br>
 
 ```php
 $response = file_get_contents('https://payment-api/charge');
@@ -150,11 +146,8 @@ $response = file_get_contents('https://payment-api/charge');
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — curl com timeout explícito</summary>
-<br>
 
 ```php
 final class HttpClient

@@ -22,7 +22,6 @@ Adicione `# frozen_string_literal: true` no topo de cada arquivo Ruby.
 
 <details>
 <summary>❌ Ruim — string mutable alocada em loop</summary>
-<br>
 
 ```ruby
 def build_labels(orders)
@@ -34,11 +33,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — frozen_string_literal + interpolação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -56,7 +52,6 @@ Prefira valores fixos. Mutação explícita deve ser justificada pelo fluxo.
 
 <details>
 <summary>❌ Ruim — variável reatribuída sem necessidade</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -70,11 +65,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sem mutação; resultado derivado diretamente</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -93,7 +85,6 @@ encapsuladas; não use constantes globais soltas.
 
 <details>
 <summary>❌ Ruim — valores mágicos espalhados</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -109,11 +100,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes nomeadas e encapsuladas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -141,7 +129,6 @@ Use strings para texto visível ao usuário ou dados externos.
 
 <details>
 <summary>❌ Ruim — string como chave de hash interno</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -153,11 +140,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — símbolo para chave e estado interno</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -178,7 +162,6 @@ fora da classe.
 
 <details>
 <summary>❌ Ruim — acesso direto a @variável de fora</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -196,11 +179,8 @@ puts order.instance_variable_get(:@total)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface explícita com attr_reader</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

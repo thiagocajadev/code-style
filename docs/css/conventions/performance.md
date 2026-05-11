@@ -22,7 +22,6 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 
 <details>
 <summary>❌ Ruim — anima propriedades de layout, dispara reflow por frame</summary>
-<br>
 
 ```css
 .modal {
@@ -47,11 +46,8 @@ operam na GPU via compositor, sem reflow. Para animações, prefira sempre essas
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — transform e opacity: compositor sem reflow</summary>
-<br>
 
 ```css
 .modal {
@@ -87,7 +83,6 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 
 <details>
 <summary>❌ Ruim — will-change em tudo, pressão de memória desnecessária</summary>
-<br>
 
 ```css
 /* aplicado globalmente — cada card vira uma camada de GPU */
@@ -102,11 +97,8 @@ use apenas em elementos que realmente animam, e remova depois da animação se p
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — will-change aplicado via JS só durante a animação</summary>
-<br>
 
 ```css
 .card {
@@ -135,7 +127,6 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 <details>
 <summary>❌ Ruim — especificidade alta força escalada de força bruta</summary>
-<br>
 
 ```css
 #main-content .product-list .product-card .product-card__title {
@@ -153,11 +144,8 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — classe simples, sobrescrita trivial</summary>
-<br>
 
 ```css
 .product-card__title {
@@ -182,7 +170,6 @@ para o resto da página.
 
 <details>
 <summary>✅ Bom — contain isola o impacto de reflow por componente</summary>
-<br>
 
 ```css
 .product-card {
@@ -206,7 +193,6 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 
 <details>
 <summary>❌ Ruim — seletor descendente profundo recalcula a árvore</summary>
-<br>
 
 ```css
 /* percorre todos os filhos de .form para encontrar input */
@@ -222,11 +208,8 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — classe direta no elemento</summary>
-<br>
 
 ```css
 .form__input {

@@ -136,7 +136,6 @@ A comparação usa `timingSafeEqual` para evitar timing attack (ataque de tempor
 
 <details>
 <summary>❌ Ruim — valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
-<br>
 
 ```js
 async function handleWebhook(request) {
@@ -157,11 +156,8 @@ async function handleWebhook(request) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — valida sobre raw body, comparação timing-safe</summary>
-<br>
 
 ```js
 async function handleWebhook(request) {
@@ -204,7 +200,6 @@ crescente:
 
 <details>
 <summary>✅ Bom — registry de handlers por tipo de evento</summary>
-<br>
 
 ```js
 const eventHandlers = {
@@ -269,7 +264,6 @@ consumer idempotente** entrega a mesma garantia com menos complexidade.
 
 <details>
 <summary>✅ Bom — consumer verifica idempotência antes de processar</summary>
-<br>
 
 ```js
 async function consumeEvent(event) {

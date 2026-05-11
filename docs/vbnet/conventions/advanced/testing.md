@@ -40,7 +40,6 @@ Cada teste é dividido em três fases separadas por uma linha em branco: prepara
 
 <details>
 <summary>❌ Ruim — tudo inline, fases invisíveis</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -51,11 +50,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — arrange, act e assert separados</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -77,7 +73,6 @@ End Sub
 
 <details>
 <summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -94,11 +89,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expected e actual declarados, assert semântico</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -128,7 +120,6 @@ O nome do teste descreve o cenário e o resultado esperado, não o nome do méto
 
 <details>
 <summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -143,11 +134,8 @@ Public Sub ApplyDiscount() : End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cenário + resultado esperado no título</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -168,7 +156,6 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funci
 
 <details>
 <summary>❌ Ruim — campo compartilhado entre testes, ordem importa</summary>
-<br>
 
 ```vbnet
 <TestFixture>
@@ -194,11 +181,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
-<br>
 
 ```vbnet
 <TestFixture>
@@ -233,7 +217,6 @@ Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado.
 
 <details>
 <summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -248,11 +231,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Assert.Throws(Of T) com tipo explícito</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -271,7 +251,6 @@ NUnit 3 suporta testes assíncronos com `Async Function` retornando `Task`.
 
 <details>
 <summary>❌ Ruim — .Result bloqueia thread e esconde falhas async</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -283,11 +262,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Async Function com Await, NUnit aguarda corretamente</summary>
-<br>
 
 ```vbnet
 <Test>

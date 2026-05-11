@@ -18,7 +18,6 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 
 <details>
 <summary>❌ Ruim — ordem aleatória, difícil de escanear</summary>
-<br>
 
 ```css
 .card {
@@ -39,11 +38,8 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — agrupado por responsabilidade, legível de cima pra baixo</summary>
-<br>
 
 ```css
 .card {
@@ -75,7 +71,6 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 
 <details>
 <summary>❌ Ruim — múltiplas propriedades em uma linha, diff ilegível</summary>
-<br>
 
 <!-- prettier-ignore -->
 ```css
@@ -84,11 +79,8 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma propriedade por linha, diff limpo</summary>
-<br>
 
 ```css
 .button {

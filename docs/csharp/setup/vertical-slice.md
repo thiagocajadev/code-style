@@ -450,7 +450,6 @@ O handler orquestra os 6 steps em sequência. Retorna cedo na falha, nunca imple
 
 <details>
 <summary>❌ Ruim — lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
-<br>
 
 ```csharp
 // ❌ valida inline, CQS violado (SaveAsync retorna entidade), lógica no return
@@ -470,11 +469,8 @@ public static async Task<IResult> Handle(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador slim, 6 steps explícitos</summary>
-<br>
 
 ```csharp
 // Features/Orders/Create.cs
@@ -610,7 +606,6 @@ Para convenções de teste completas, ver [testing.md](../advanced/testing.md).
 
 <details>
 <summary>❌ Ruim — violações frequentes no padrão vertical slice</summary>
-<br>
 
 ```csharp
 // ❌ SaveAsync retornando entidade — CQS violado

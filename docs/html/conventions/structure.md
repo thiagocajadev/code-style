@@ -21,7 +21,6 @@ uso, ele substitui o genérico.
 
 <details>
 <summary>❌ Ruim — div soup, estrutura sem significado</summary>
-<br>
 
 ```html
 <div class="header">
@@ -43,11 +42,8 @@ uso, ele substitui o genérico.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — elementos semânticos, estrutura legível</summary>
-<br>
 
 ```html
 <header>
@@ -81,7 +77,6 @@ tamanho padrão.
 
 <details>
 <summary>❌ Ruim — nível pulado, h3 sem h2 pai</summary>
-<br>
 
 ```html
 <h1>Blog</h1>
@@ -91,11 +86,8 @@ tamanho padrão.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hierarquia contínua, sem saltos</summary>
-<br>
 
 ```html
 <h1>Blog</h1>
@@ -116,7 +108,6 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 
 <details>
 <summary>❌ Ruim — sem lang, charset fora de posição</summary>
-<br>
 
 ```html
 <!DOCTYPE html>
@@ -130,11 +121,8 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lang e charset corretos, na ordem certa</summary>
-<br>
 
 ```html
 <!DOCTYPE html>
@@ -157,7 +145,6 @@ para parecer mais semântico.
 
 <details>
 <summary>❌ Ruim — section sem heading, usado como div</summary>
-<br>
 
 ```html
 <section class="wrapper">
@@ -170,11 +157,8 @@ para parecer mais semântico.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — section com heading, div para layout</summary>
-<br>
 
 ```html
 <section aria-labelledby="featured-heading">

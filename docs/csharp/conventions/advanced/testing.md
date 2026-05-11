@@ -45,7 +45,6 @@ execução do comportamento e verificação do resultado.
 
 <details>
 <summary>❌ Ruim — tudo inline, fases invisíveis</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -57,11 +56,8 @@ public void AppliesDiscount()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — arrange, act e assert separados</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -83,7 +79,6 @@ public void AppliesTenPercentDiscountToOrderPrice()
 
 <details>
 <summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -102,11 +97,8 @@ public void ReturnsActiveUsersOnly()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expected e actual declarados, assert semântico</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -138,7 +130,6 @@ vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecân
 
 <details>
 <summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -153,11 +144,8 @@ public void ApplyDiscount() { /* ... */ }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cenário + resultado esperado no título</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -178,7 +166,6 @@ Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funci
 
 <details>
 <summary>❌ Ruim — campo estático mutável compartilhado entre testes</summary>
-<br>
 
 ```csharp
 public class OrderTests
@@ -207,11 +194,8 @@ public class OrderTests
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
-<br>
 
 ```csharp
 public class OrderTests
@@ -248,7 +232,6 @@ verifica o tipo, não apenas a presença.
 
 <details>
 <summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
-<br>
 
 ```csharp
 [Fact]
@@ -267,11 +250,8 @@ public async Task ThrowsOnMissingOrder()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Assert.ThrowsAsync com tipo explícito</summary>
-<br>
 
 ```csharp
 [Fact]

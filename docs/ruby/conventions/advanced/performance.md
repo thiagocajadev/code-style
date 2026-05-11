@@ -24,7 +24,6 @@ Cada literal de string sem `frozen_string_literal: true` cria um novo objeto na 
 
 <details>
 <summary>❌ Ruim — string alocada a cada iteração</summary>
-<br>
 
 ```ruby
 def build_greetings(users)
@@ -34,11 +33,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — frozen_string_literal + interpolação</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -57,7 +53,6 @@ Evita processar o array inteiro.
 
 <details>
 <summary>❌ Ruim — processa toda a coleção mesmo precisando de poucos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -72,11 +67,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lazy avalia só até encontrar 10 elementos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -101,7 +93,6 @@ quando constrói um novo valor (soma, produto, string concatenada).
 
 <details>
 <summary>❌ Ruim — inject com mutação do acumulador</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -117,11 +108,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — each_with_object para acumulador mutável</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -143,7 +131,6 @@ end
 
 <details>
 <summary>❌ Ruim — dois passes na coleção</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -157,11 +144,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — filter_map em uma passagem</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -181,7 +165,6 @@ evitar N+1 queries (N+1 consultas ao banco).
 
 <details>
 <summary>❌ Ruim — N+1: 1 query por ordem para buscar o usuário</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -193,11 +176,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — includes pré-carrega em 2 queries</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

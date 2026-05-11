@@ -26,7 +26,6 @@ nunca use o logger global ou Facade.
 
 <details>
 <summary>✅ Bom — Monolog com JsonFormatter para produção</summary>
-<br>
 
 ```php
 use Monolog\Logger;
@@ -66,7 +65,6 @@ Passe contexto como array de pares chave-valor. Nunca interpole variáveis na me
 
 <details>
 <summary>❌ Ruim — interpolação na mensagem, sem estrutura</summary>
-<br>
 
 ```php
 $this->logger->info("Processing order {$order->id} for customer {$order->customerID} with amount {$order->amount}");
@@ -75,11 +73,8 @@ $this->logger->error("Error saving order {$order->id}: {$e->getMessage()}");
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contexto como array, mensagem fixa</summary>
-<br>
 
 ```php
 $this->logger->info('Processing order', [
@@ -108,7 +103,6 @@ $this->logger->error('Save order failed', [
 
 <details>
 <summary>❌ Ruim — error para evento esperado</summary>
-<br>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -120,11 +114,8 @@ if ($order === null) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — info para evento esperado; error para falha real</summary>
-<br>
 
 ```php
 $order = $this->repository->findByID($orderID);
@@ -155,7 +146,6 @@ requisição. Use um middleware HTTP para gerar ou extrair o ID do header.
 
 <details>
 <summary>✅ Bom — correlation ID via processor do Monolog</summary>
-<br>
 
 ```php
 use Monolog\Processor\ProcessorInterface;
@@ -202,7 +192,6 @@ Nunca logue dados pessoais: nome, email, CPF, senha, token, número de cartão.
 
 <details>
 <summary>❌ Ruim — PII nos logs</summary>
-<br>
 
 ```php
 $this->logger->info('User logged in', [
@@ -214,11 +203,8 @@ $this->logger->info('User logged in', [
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — apenas ID e evento, sem PII</summary>
-<br>
 
 ```php
 $this->logger->info('User logged in', [

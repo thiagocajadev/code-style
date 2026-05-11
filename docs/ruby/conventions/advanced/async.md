@@ -25,7 +25,6 @@ um job. Rails 8 usa **Solid Queue** como padrão; **Sidekiq** é preferido para 
 
 <details>
 <summary>❌ Ruim — I/O pesado dentro do request</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -44,11 +43,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — I/O longo delegado para jobs</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -75,7 +71,6 @@ serializados — passe apenas IDs, não objetos ActiveRecord.
 
 <details>
 <summary>❌ Ruim — objeto ActiveRecord como argumento</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -91,11 +86,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ID como argumento, objeto carregado dentro do job</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

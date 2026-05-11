@@ -26,7 +26,6 @@ mesma posição de memória, janela diferente.
 
 <details>
 <summary>❌ Ruim — Split aloca array e strings intermediárias</summary>
-<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -40,11 +39,8 @@ public string ExtractProductCode(string sku)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Span fatia sem alocar</summary>
-<br>
 
 ```csharp
 public string ExtractProductCode(string sku)
@@ -64,7 +60,6 @@ public string ExtractProductCode(string sku)
 
 <details>
 <summary>❌ Ruim — foreach sobre array em hot path</summary>
-<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -81,11 +76,8 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ReadOnlySpan elimina a indireção do enumerador</summary>
-<br>
 
 ```csharp
 public decimal SumLineItemAmounts(OrderItem[] items)
@@ -112,7 +104,6 @@ interno e aloca uma vez no final.
 
 <details>
 <summary>❌ Ruim — nova string alocada por iteração</summary>
-<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -129,11 +120,8 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — StringBuilder reutiliza o buffer</summary>
-<br>
 
 ```csharp
 public string BuildOrderSummary(IEnumerable<OrderItem> items)
@@ -159,7 +147,6 @@ já computado. Indicado para métodos de alta frequência: repositórios, caches
 
 <details>
 <summary>❌ Ruim — <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
-<br>
 
 ```csharp
 public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -174,11 +161,8 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — <b>ValueTask</b> sem alocação no caminho síncrono</summary>
-<br>
 
 ```csharp
 public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
@@ -204,7 +188,6 @@ da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advan
 
 <details>
 <summary>❌ Ruim — Guid.NewGuid() é v4: random, fragmenta índice</summary>
-<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
@@ -218,11 +201,8 @@ public Order CreateOrder(CreateOrderRequest request)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
-<br>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)

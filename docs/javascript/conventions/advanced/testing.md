@@ -55,7 +55,6 @@ preparação do contexto, execução do comportamento e verificação do resulta
 
 <details>
 <summary>❌ Ruim — tudo inline, fases invisíveis</summary>
-<br>
 
 ```js
 test("applies discount", () => {
@@ -65,11 +64,8 @@ test("applies discount", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — arrange, act e assert separados</summary>
-<br>
 
 ```js
 test("applies 10% discount to order price", () => {
@@ -93,7 +89,6 @@ assert sem ambiguidade.
 
 <details>
 <summary>❌ Ruim — literais inline, falha não diz o que era esperado</summary>
-<br>
 
 ```js
 test("formats full name", () => {
@@ -113,11 +108,8 @@ test("returns active users only", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expected e actual declarados, assert semântico</summary>
-<br>
 
 ```js
 test("formats full name", () => {
@@ -152,7 +144,6 @@ nem uma afirmação vaga. Sem prefixos: `should` não agrega informação e
 
 <details>
 <summary>❌ Ruim — prefixo vazio, nome que repete a implementação</summary>
-<br>
 
 ```js
 test("test 1", () => {
@@ -169,11 +160,8 @@ test("applyDiscount function", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cenário + resultado esperado, sem prefixo</summary>
-<br>
 
 ```js
 test("applies discount when order total exceeds minimum", () => {
@@ -197,7 +185,6 @@ funcionar.
 
 <details>
 <summary>❌ Ruim — estado compartilhado que muda entre testes</summary>
-<br>
 
 ```js
 let order;
@@ -219,11 +206,8 @@ test("applies discount to order", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada teste isolado, sem dependência de execução</summary>
-<br>
 
 ```js
 test("creates order with generated id", () => {
@@ -254,7 +238,6 @@ Testar que um erro foi lançado é diferente de testar qual erro foi lançado.
 
 <details>
 <summary>❌ Ruim — try/catch manual, tipo não verificado</summary>
-<br>
 
 ```js
 test("throws on missing order", async () => {
@@ -268,11 +251,8 @@ test("throws on missing order", async () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert.rejects com matcher de tipo</summary>
-<br>
 
 ```js
 test("throws NotFoundError when order does not exist", async () => {

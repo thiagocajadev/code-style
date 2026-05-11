@@ -26,7 +26,6 @@ Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados
 
 <details>
 <summary>❌ Ruim — dados brutos chegam direto na validação</summary>
-<br>
 
 ```vbnet
 Public Function CreateUser(request As CreateUserRequest) As OperationResult(Of User)
@@ -41,11 +40,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sanitize antes de validar</summary>
-<br>
 
 ```vbnet
 Private Function Sanitize(request As CreateUserRequest) As CreateUserRequest
@@ -79,7 +75,6 @@ DataAnnotations validam shape, tipos e constraints — não regras de negócio. 
 
 <details>
 <summary>❌ Ruim — validação manual espalhada no handler</summary>
-<br>
 
 ```vbnet
 Public Function CreateOrder(request As CreateOrderRequest) As IHttpActionResult
@@ -101,11 +96,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DataAnnotations centralizam o contrato, handler recebe dado válido</summary>
-<br>
 
 ```vbnet
 ' Features/Orders/CreateOrderRequest.vb
@@ -151,7 +143,6 @@ O validator valida se o dado tem o formato correto. Regras de negócio validam s
 
 <details>
 <summary>❌ Ruim — I/O e regra de domínio misturados na validação de esquema</summary>
-<br>
 
 ```vbnet
 Public Class CreateOrderRequest
@@ -166,11 +157,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schema validation separa do domínio; regras de negócio no service</summary>
-<br>
 
 ```vbnet
 ' validator valida shape apenas
@@ -210,7 +198,6 @@ Retornar a entidade direta vaza campos internos: `PasswordHash`, `IsDeleted`, fl
 
 <details>
 <summary>❌ Ruim — entidade direta vaza campos internos</summary>
-<br>
 
 ```vbnet
 Public Function GetUser(id As Guid) As User
@@ -221,11 +208,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DTO de resposta como projeção explícita do que sai</summary>
-<br>
 
 ```vbnet
 ' Features/Users/UserResponse.vb
@@ -263,7 +247,6 @@ Para evitar repetir `If Not ModelState.IsValid` em cada action, registre um `Act
 
 <details>
 <summary>✅ Bom — filtro global elimina boilerplate de ModelState em cada action</summary>
-<br>
 
 ```vbnet
 ' Infrastructure/Filters/ValidateModelAttribute.vb

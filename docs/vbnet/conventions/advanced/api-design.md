@@ -36,7 +36,6 @@ Features/
 
 <details>
 <summary>❌ Ruim — controller com lógica de negócio inline</summary>
-<br>
 
 ```vbnet
 <RoutePrefix("api/orders")>
@@ -73,11 +72,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — controller delega para handler, traduz Result no boundary</summary>
-<br>
 
 ```vbnet
 <RoutePrefix("api/orders")>
@@ -144,7 +140,6 @@ Handler não conhece HTTP. Retorna `Result(Of T)` — success com valor de domí
 
 <details>
 <summary>❌ Ruim — handler retorna IHttpActionResult, acoplado a HTTP</summary>
-<br>
 
 ```vbnet
 Public Class CreateOrderHandler
@@ -165,11 +160,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — handler retorna Result(Of T), domínio puro</summary>
-<br>
 
 ```vbnet
 Public Class CreateOrderHandler
@@ -253,7 +245,6 @@ Web API 2 suporta roteamento convencional (`config.Routes.MapHttpRoute(...)`) e 
 
 <details>
 <summary>❌ Ruim — rotas convencionais, descoberta distante do handler</summary>
-<br>
 
 ```vbnet
 ' WebApiConfig.vb
@@ -267,11 +258,8 @@ Qualquer alteração de rota exige mexer no arquivo central. Três actions no me
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — roteamento por atributo, rota no próprio controller</summary>
-<br>
 
 ```vbnet
 ' WebApiConfig.vb
@@ -300,7 +288,6 @@ A regra é `Async/Await` ponta a ponta. Controller `Async Function`, handler `As
 
 <details>
 <summary>❌ Ruim — .Result em handler async</summary>
-<br>
 
 ```vbnet
 Public Function Handle(request As OrderRequest) As Result(Of OrderResponse)
@@ -313,11 +300,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async ponta a ponta</summary>
-<br>
 
 ```vbnet
 Public Async Function HandleAsync(request As OrderRequest) As Task(Of Result(Of OrderResponse))

@@ -19,7 +19,6 @@ framework padrão. `mocktail` cria mocks sem geração de código (ao contrário
 
 <details>
 <summary>❌ Ruim — setup, ação e assert misturados</summary>
-<br>
 
 ```dart
 test('findOrder', () async {
@@ -32,11 +31,8 @@ test('findOrder', () async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AAA explícito com nomes expressivos</summary>
-<br>
 
 ```dart
 test('find returns paid order when order exists', () async {
@@ -60,7 +56,6 @@ test('find returns paid order when order exists', () async {
 
 <details>
 <summary>❌ Ruim — nomes genéricos sem contexto</summary>
-<br>
 
 ```dart
 test('validate', () { ... });
@@ -70,11 +65,8 @@ test('order', () { ... });
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — group + nome descreve comportamento</summary>
-<br>
 
 ```dart
 group('OrderService', () {
@@ -92,7 +84,6 @@ group('OrderService', () {
 
 <details>
 <summary>❌ Ruim — implementação fake inline dificulta leitura</summary>
-<br>
 
 ```dart
 class FakeOrderRepository implements OrderRepository {
@@ -105,11 +96,8 @@ class FakeOrderRepository implements OrderRepository {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Mock com mocktail, comportamento declarado no teste</summary>
-<br>
 
 ```dart
 class MockOrderRepository extends Mock implements OrderRepository {}
@@ -137,7 +125,6 @@ test('find returns order when found', () async {
 
 <details>
 <summary>❌ Ruim — listen manual sem controle de tempo</summary>
-<br>
 
 ```dart
 test('emits orders', () {
@@ -150,11 +137,8 @@ test('emits orders', () {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expectLater com emitsInOrder</summary>
-<br>
 
 ```dart
 test('countDown emits from 3 to 1', () async {
@@ -170,7 +154,6 @@ test('countDown emits from 3 to 1', () async {
 
 <details>
 <summary>❌ Ruim — repositório e serviço recriados em cada teste</summary>
-<br>
 
 ```dart
 test('find succeeds', () async {
@@ -189,11 +172,8 @@ test('find fails on null', () async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — setUp inicializa uma vez por grupo</summary>
-<br>
 
 ```dart
 group('OrderService.find', () {

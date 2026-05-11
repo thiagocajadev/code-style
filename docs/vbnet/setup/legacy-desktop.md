@@ -35,7 +35,6 @@ A connection string (string de conexão) pertence ao `App.config`, nunca ao cód
 
 <details>
 <summary>❌ Ruim — connection string hardcoded no código</summary>
-<br>
 
 ```vbnet
 Public Module CustomerDataAccess
@@ -50,11 +49,8 @@ End Module
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — connection string no App.config, lida uma vez</summary>
-<br>
 
 ```xml
 <!-- App.config -->
@@ -86,7 +82,6 @@ Um módulo por domínio. Cada função executa uma query e retorna o resultado �
 
 <details>
 <summary>❌ Ruim — acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
-<br>
 
 ```vbnet
 Public Class ProductForm
@@ -111,11 +106,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — módulo thin isolado, formulário só chama e exibe</summary>
-<br>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb
@@ -182,7 +174,6 @@ O mesmo princípio: uma função por operação, parâmetros tipados, `Using` ga
 
 <details>
 <summary>✅ Bom — INSERT com parâmetros tipados</summary>
-<br>
 
 ```vbnet
 ' Features/Products/ProductDataAccess.vb (continuação)
@@ -247,7 +238,6 @@ Se o `App.config` não tiver a connection string, `ConfigurationManager.Connecti
 
 <details>
 <summary>✅ Bom — fail-fast na inicialização, antes de abrir qualquer formulário</summary>
-<br>
 
 ```vbnet
 ' ApplicationEntry.vb

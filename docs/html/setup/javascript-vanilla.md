@@ -34,7 +34,6 @@ Cache a seleção quando reutilizar o elemento.
 
 <details>
 <summary>❌ Ruim — seleção repetida, sem cache</summary>
-<br>
 
 ```js
 document.querySelector(".card__title").classList.add("active");
@@ -43,11 +42,8 @@ document.querySelector(".card__title").textContent = "Updated";
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cache da seleção, operações encadeadas no mesmo elemento</summary>
-<br>
 
 ```js
 const title = document.querySelector(".card__title");
@@ -65,7 +61,6 @@ filtra o target pelo seletor.
 
 <details>
 <summary>❌ Ruim — listener em cada item, não cobre elementos dinâmicos</summary>
-<br>
 
 ```js
 document.querySelectorAll(".product-card").forEach((card) => {
@@ -75,11 +70,8 @@ document.querySelectorAll(".product-card").forEach((card) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — delegation no container, matches como filtro</summary>
-<br>
 
 ```js
 document.getElementById("product-list").addEventListener("click", (event) => {
@@ -97,7 +89,6 @@ document.getElementById("product-list").addEventListener("click", (event) => {
 
 <details>
 <summary>❌ Ruim — sem verificação de status, sem tratamento de erro</summary>
-<br>
 
 ```js
 fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
@@ -107,11 +98,8 @@ fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — status verificado, erro tratado, Content-Type explícito</summary>
-<br>
 
 ```js
 async function createOrder(orderData) {

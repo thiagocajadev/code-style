@@ -34,7 +34,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -50,11 +49,8 @@ async def register_user(name: str, email: str, password: str):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -83,7 +79,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```python
 def map_error_to_status(error) -> int:
@@ -94,11 +89,8 @@ def map_error_to_status(error) -> int:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```python
 def map_error_to_status(error) -> int:
@@ -124,7 +116,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```python
 def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
@@ -146,11 +137,8 @@ Return tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```python
 def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
@@ -171,11 +159,8 @@ O blank fica **depois** do dict multi-linha. O par `formatted_date` +
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de dict multi-linha</summary>
-<br>
 
 ```python
 def build_order_response(order, request_id: str) -> dict:
@@ -214,7 +199,6 @@ linha em branco **antes** do bloco. O critério é visual, não semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```python
 order = await fetch_order(order_id)
@@ -224,12 +208,9 @@ invoice = build_invoice(order)
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```python
 order = await fetch_order(order_id)
@@ -240,11 +221,8 @@ invoice = build_invoice(order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```python
 handler = event_handlers.get(event_type)
@@ -258,11 +236,8 @@ event_payload = event.data
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```python
 response = await request_fn()
@@ -286,7 +261,6 @@ três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -296,12 +270,9 @@ ONE_DAY_SECONDS: Final = 86_400
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -311,11 +282,8 @@ ONE_DAY_SECONDS: Final = 86_400
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -335,7 +303,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```python
 def build_shipping_label(order) -> str:
@@ -350,11 +317,8 @@ def build_shipping_label(order) -> str:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```python
 def build_shipping_label(order) -> str:
@@ -385,7 +349,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -401,11 +364,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -421,11 +381,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```python
 def build_order_slug(order) -> str:
@@ -447,7 +404,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```python
 while attempt < max_attempts:
@@ -458,11 +414,8 @@ while attempt < max_attempts:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```python
 while attempt < max_attempts:
@@ -481,7 +434,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```python
 async def create_user_handler(request):
@@ -494,11 +446,8 @@ async def create_user_handler(request):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```python
 async def create_user_handler(request):
@@ -520,7 +469,6 @@ sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```python
 def test_apply_discount_reduces_order_price():
@@ -532,11 +480,8 @@ def test_apply_discount_reduces_order_price():
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert separado, assertion como fase própria</summary>
-<br>
 
 ```python
 def test_apply_discount_reduces_order_price():
@@ -558,7 +503,6 @@ leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — dict multi-linha colado ao próximo statement</summary>
-<br>
 
 ```python
 async def create_session(user):
@@ -574,11 +518,8 @@ async def create_session(user):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do dict isola o bloco</summary>
-<br>
 
 ```python
 async def create_session(user):
@@ -606,7 +547,6 @@ homogêneo e ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos indentados colados</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -619,12 +559,9 @@ def process_order(order):
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```python
 def process_order(order):
@@ -639,11 +576,8 @@ def process_order(order):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```python
 def validate_input(user_input):
@@ -665,7 +599,6 @@ somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```python
 user_name     = "alice"
@@ -676,11 +609,8 @@ last_login_at = datetime.now(tz=timezone.utc)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```python
 user_name = "alice"
@@ -698,7 +628,6 @@ Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -707,11 +636,8 @@ def build_delivery_message(user, order) -> str:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```python
 def build_delivery_message(user, order) -> str:

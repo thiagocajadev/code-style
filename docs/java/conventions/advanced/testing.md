@@ -23,7 +23,6 @@ todo teste.
 
 <details>
 <summary>❌ Ruim — fases misturadas, sem separação visual</summary>
-<br>
 
 ```java
 @Test
@@ -38,11 +37,8 @@ void appliesDiscountToOrder() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AAA explícito: fases separadas por blank line</summary>
-<br>
 
 ```java
 @Test
@@ -66,7 +62,6 @@ AssertJ (biblioteca de assertions fluentes) produz mensagens de falha legíveis 
 
 <details>
 <summary>❌ Ruim — assert genérico, mensagem de falha obscura</summary>
-<br>
 
 ```java
 @Test
@@ -79,11 +74,8 @@ void findsActiveUsers() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AssertJ: assert expressivo, mensagem de falha clara</summary>
-<br>
 
 ```java
 @Test
@@ -104,7 +96,6 @@ resultado**.
 
 <details>
 <summary>❌ Ruim — nome genérico não documenta o comportamento</summary>
-<br>
 
 ```java
 @Test
@@ -116,11 +107,8 @@ void test1() { /* ... */ }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome descreve o cenário e o resultado esperado</summary>
-<br>
 
 ```java
 @Test
@@ -142,7 +130,6 @@ reais. Use `@Mock` para dependências e `@InjectMocks` para a classe sob teste.
 
 <details>
 <summary>❌ Ruim — teste depende de implementação real do repositório</summary>
-<br>
 
 ```java
 @Test
@@ -157,11 +144,8 @@ void findsUserById() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mock isola a dependência; teste foca no comportamento do serviço</summary>
-<br>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -203,7 +187,6 @@ class UserServiceTest {
 
 <details>
 <summary>✅ Bom — @Nested organiza por cenário</summary>
-<br>
 
 ```java
 class OrderServiceTest {
@@ -235,7 +218,6 @@ Extraia setup repetido para `@BeforeEach`. Cada teste inicia com estado limpo.
 
 <details>
 <summary>✅ Bom — @BeforeEach inicializa o estado compartilhado</summary>
-<br>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -273,7 +255,6 @@ Cada teste verifica um comportamento. Verificar demais acopla o teste ao detalhe
 
 <details>
 <summary>❌ Ruim — verifica estado interno que não é contrato público</summary>
-<br>
 
 ```java
 @Test
@@ -288,11 +269,8 @@ void createsUser() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verifica o contrato: o que o chamador observa</summary>
-<br>
 
 ```java
 @Test

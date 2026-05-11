@@ -21,7 +21,6 @@ Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` 
 
 <details>
 <summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
-<br>
 
 ```ts
 function processOrder(order: Order | null): { success: boolean; order: Order } | null | false {
@@ -36,11 +35,8 @@ function processOrder(order: Order | null): { success: boolean; order: Order } |
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contrato consistente, lança exceções tipadas</summary>
-<br>
 
 ```ts
 function processOrder(order: Order | null): ProcessedOrder {
@@ -59,7 +55,6 @@ function processOrder(order: Order | null): ProcessedOrder {
 
 <details>
 <summary>❌ Ruim — erros sem hierarquia, sem contrato, sem contexto</summary>
-<br>
 
 ```ts
 // erros lançados como string ou Error genérico sem tipo
@@ -95,11 +90,8 @@ try {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
-<br>
 
 ```ts
 // errors.ts
@@ -208,7 +200,6 @@ O `catch` recebe `unknown` em TypeScript estrito. Antes de usar o erro, é preci
 
 <details>
 <summary>❌ Ruim — acessa propriedades de error sem narrowing</summary>
-<br>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {
@@ -224,11 +215,8 @@ async function findProductById(id: string): Promise<Product> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — instanceof para narrowing, propaga com contexto</summary>
-<br>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {

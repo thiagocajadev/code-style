@@ -25,7 +25,6 @@ recursos. Com virtual threads, bloquear é barato e o código fica simples.
 
 <details>
 <summary>❌ Ruim — CompletableFuture encadeado apenas para "não bloquear"</summary>
-<br>
 
 ```java
 public CompletableFuture<Invoice> processOrder(String orderId) {
@@ -41,11 +40,8 @@ public CompletableFuture<Invoice> processOrder(String orderId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
-<br>
 
 ```java
 // application.yml: spring.threads.virtual.enabled=true (Spring Boot 4)
@@ -71,7 +67,6 @@ combina os resultados sem bloquear por cada um sequencialmente.
 
 <details>
 <summary>❌ Ruim — operações independentes executadas em sequência</summary>
-<br>
 
 ```java
 public DashboardData loadDashboard(String userId) {
@@ -86,11 +81,8 @@ public DashboardData loadDashboard(String userId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — operações independentes em paralelo</summary>
-<br>
 
 ```java
 public DashboardData loadDashboard(String userId) {
@@ -121,7 +113,6 @@ livre: falha em uma cancela as demais.
 
 <details>
 <summary>✅ Bom — ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
-<br>
 
 ```java
 public DashboardData loadDashboard(String userId) throws InterruptedException, ExecutionException {
@@ -152,7 +143,6 @@ em vez de pools de threads de plataforma de tamanho fixo.
 
 <details>
 <summary>❌ Ruim — pool de tamanho fixo limita throughput de I/O</summary>
-<br>
 
 ```java
 final var executor = Executors.newFixedThreadPool(10); // 10 threads — gargalo em I/O
@@ -160,11 +150,8 @@ final var executor = Executors.newFixedThreadPool(10); // 10 threads — gargalo
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — executor de virtual threads: sem limite artificial</summary>
-<br>
 
 ```java
 final var executor = Executors.newVirtualThreadPerTaskExecutor();

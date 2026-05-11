@@ -73,7 +73,6 @@ Em staging e produção, `dotenv` não entra no bundle. As variáveis são injet
 
 <details>
 <summary>❌ Ruim — process.env espalhado pela aplicação</summary>
-<br>
 
 ```js
 // orders.service.js
@@ -86,11 +85,8 @@ export function createOrderService() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — leitura em um lugar, módulos recebem por parâmetro</summary>
-<br>
 
 ```js
 // config.js
@@ -122,7 +118,6 @@ export function registerOrders(app, config) {
 
 <details>
 <summary>❌ Ruim — decode aceita token forjado</summary>
-<br>
 
 ```js
 export function authenticate(request, response, next) {
@@ -137,11 +132,8 @@ export function authenticate(request, response, next) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verify valida assinatura e expiração</summary>
-<br>
 
 ```js
 export function authenticate(request, response, next) {

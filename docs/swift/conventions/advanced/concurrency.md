@@ -22,7 +22,6 @@ que tipos são seguros para transferência entre tasks.
 
 <details>
 <summary>❌ Ruim — Task não estruturado vaza ciclo de vida</summary>
-<br>
 
 ```swift
 func loadUser(userId: UUID) {
@@ -36,11 +35,8 @@ func loadUser(userId: UUID) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Task vinculado ao ciclo de vida via async context</summary>
-<br>
 
 ```swift
 @MainActor
@@ -61,7 +57,6 @@ class UserViewModel: ObservableObject {
 
 <details>
 <summary>❌ Ruim — await sequencial sem paralelismo</summary>
-<br>
 
 ```swift
 func loadDashboard(userId: UUID) async throws -> Dashboard {
@@ -74,11 +69,8 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async let executa em paralelo</summary>
-<br>
 
 ```swift
 func loadDashboard(userId: UUID) async throws -> Dashboard {
@@ -100,7 +92,6 @@ func loadDashboard(userId: UUID) async throws -> Dashboard {
 
 <details>
 <summary>❌ Ruim — classe mutável acessada de múltiplas tasks (erro no Swift 6)</summary>
-<br>
 
 ```swift
 class RequestCounter {
@@ -112,11 +103,8 @@ class RequestCounter {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — actor serializa acesso ao estado</summary>
-<br>
 
 ```swift
 actor RequestCounter {
@@ -139,7 +127,6 @@ let total = await counter.currentCount()
 
 <details>
 <summary>❌ Ruim — atualização de UI em background thread</summary>
-<br>
 
 ```swift
 func loadOrders() async {
@@ -151,11 +138,8 @@ func loadOrders() async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — @MainActor garante execução na main thread</summary>
-<br>
 
 ```swift
 @MainActor
@@ -172,7 +156,6 @@ func loadOrders() async {
 
 <details>
 <summary>❌ Ruim — loop de tasks sem controle de falhas</summary>
-<br>
 
 ```swift
 func sendNotifications(to users: [User]) async {
@@ -184,11 +167,8 @@ func sendNotifications(to users: [User]) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — withTaskGroup com tratamento de falhas por filho</summary>
-<br>
 
 ```swift
 func sendNotifications(to users: [User]) async {
@@ -212,7 +192,6 @@ func sendNotifications(to users: [User]) async {
 
 <details>
 <summary>❌ Ruim — loop longo ignora cancelamento</summary>
-<br>
 
 ```swift
 func processItems(_ items: [Item]) async throws {
@@ -224,11 +203,8 @@ func processItems(_ items: [Item]) async throws {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verificação explícita de cancelamento</summary>
-<br>
 
 ```swift
 func processItems(_ items: [Item]) async throws {

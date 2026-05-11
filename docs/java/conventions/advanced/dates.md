@@ -32,7 +32,6 @@ legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código nov
 
 <details>
 <summary>❌ Ruim — java.util.Date é mutável e sem fuso</summary>
-<br>
 
 ```java
 import java.util.Date;
@@ -49,11 +48,8 @@ public class Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Instant para timestamps, LocalDate para datas de negócio</summary>
-<br>
 
 ```java
 public class Order {
@@ -70,7 +66,6 @@ Persistência usa `Instant` (UTC). Conversão para fuso local só na camada de a
 
 <details>
 <summary>❌ Ruim — armazena com fuso local; converte ao persistir</summary>
-<br>
 
 ```java
 final var now = LocalDateTime.now(); // sem fuso — qual timezone?
@@ -79,11 +74,8 @@ order.setCreatedAt(now);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Instant.now() é sempre UTC</summary>
-<br>
 
 ```java
 final var now = Instant.now();
@@ -100,7 +92,6 @@ final var localDateTime = now.atZone(userZone).toLocalDateTime();
 
 <details>
 <summary>❌ Ruim — SimpleDateFormat é thread-unsafe</summary>
-<br>
 
 ```java
 final var sdf = new SimpleDateFormat("dd/MM/yyyy"); // thread-unsafe
@@ -109,11 +100,8 @@ final var date = sdf.parse("27/04/2026");
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DateTimeFormatter é imutável e thread-safe (seguro para uso concorrente)</summary>
-<br>
 
 ```java
 private static final DateTimeFormatter BR_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -138,7 +126,6 @@ serializa `Instant` e `LocalDate` nesse formato por padrão quando configurado c
 
 <details>
 <summary>✅ Bom — configuração Jackson para java.time</summary>
-<br>
 
 ```yaml
 # application.yml
@@ -159,7 +146,6 @@ public record OrderResponse(String id, Instant createdAt, LocalDate dueDate) {}
 
 <details>
 <summary>✅ Bom — Duration para diferença em tempo, Period para diferença em calendário</summary>
-<br>
 
 ```java
 // duração absoluta

@@ -94,7 +94,6 @@ representa uma relação entre eles.</sub>
 
 <details>
 <summary>❌ Ruim — busca todos os países, filtra no cliente, query inline</summary>
-<br>
 
 ```js
 const response = await fetch("https://countries.trevorblades.com/", {
@@ -111,11 +110,8 @@ const country = json.data.countries.find((c) => c.code === "BR");
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — variável no servidor, só os campos necessários, erros GraphQL tratados</summary>
-<br>
 
 ```js
 const GET_COUNTRY = `
@@ -228,7 +224,6 @@ navegação retornar nulo silenciosamente. Em Node.js, a biblioteca
 
 <details>
 <summary>❌ Ruim: getElementsByTagName ignora namespace — retorna null sem erro</summary>
-<br>
 
 ```js
 import { DOMParser } from "@xmldom/xmldom";
@@ -241,11 +236,8 @@ const invoiceNumber = doc.getElementsByTagName("nNF")[0].textContent;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: getElementsByTagNameNS com namespace explícito e navegação segura</summary>
-<br>
 
 ```js
 import { DOMParser } from "@xmldom/xmldom";
@@ -299,7 +291,6 @@ registro (`|0000|`, `|C100|`).
 
 <details>
 <summary>❌ Ruim: índices mágicos espalhados — quebra silenciosamente se o layout mudar</summary>
-<br>
 
 ```js
 const fields = line.replace(/^\||\|$/g, "").split("|");
@@ -311,11 +302,8 @@ const periodStart = fields[3];
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: parser dedicado com campos nomeados</summary>
-<br>
 
 ```js
 function parseRecord0000(line) {
@@ -342,7 +330,6 @@ manutenção de layout um risco.
 
 <details>
 <summary>❌ Ruim: posições hardcoded inline — impossível auditar contra o manual do banco</summary>
-<br>
 
 ```js
 const bankCode = line.slice(0, 3);
@@ -353,11 +340,8 @@ const companyRegistrationNumber = line.slice(18, 32); // CNPJ
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: layout como objeto, helper nomeado — posição e comprimento declarados juntos</summary>
-<br>
 
 ```js
 const CNAB240_HEADER = {
@@ -416,7 +400,6 @@ Estrutura mínima de uma etiqueta ZPL:
 
 <details>
 <summary>❌ Ruim: ZPL montado por concatenação — posições e campos difíceis de manter</summary>
-<br>
 
 ```js
 const zpl =
@@ -435,11 +418,8 @@ port.write(zpl);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: template dedicado, campos via destructuring</summary>
-<br>
 
 ```js
 function buildProductLabel({ name: productName, barcode, lot: lotNumber }) {
@@ -487,7 +467,6 @@ configurado, o processo aguarda indefinidamente se o equipamento não responder.
 
 <details>
 <summary>❌ Ruim: sem timeout — aguarda indefinidamente, sem tratamento de erro</summary>
-<br>
 
 ```js
 import { SerialPort } from "serialport";
@@ -503,11 +482,8 @@ parser.on("data", (rawLine) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: timeout explícito, porta fechada em todos os caminhos</summary>
-<br>
 
 ```js
 import { SerialPort } from "serialport";
@@ -581,7 +557,6 @@ A **API key** (chave da API) nunca entra no código. Ela é resolvida via variá
 
 <details>
 <summary>❌ Ruim — API key hardcoded no código</summary>
-<br>
 
 ```js
 const client = new Anthropic({ apiKey: "sk-ant-..." });
@@ -589,11 +564,8 @@ const client = new Anthropic({ apiKey: "sk-ant-..." });
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — API key resolvida via variável de ambiente</summary>
-<br>
 
 ```js
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -611,7 +583,6 @@ Com streaming, o primeiro token chega em milissegundos.
 
 <details>
 <summary>❌ Ruim — aguarda resposta completa antes de renderizar</summary>
-<br>
 
 ```js
 const message = await client.messages.create({
@@ -625,11 +596,8 @@ console.log(message.content[0].text);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — streaming token-a-token via chunks</summary>
-<br>
 
 ```js
 const stream = client.messages.stream({
@@ -656,7 +624,6 @@ impõem rate limits por minuto (RPM) e por token (TPM). Erros
 
 <details>
 <summary>❌ Ruim — sem retry, qualquer 429 vira erro irrecuperável</summary>
-<br>
 
 ```js
 const response = await fetch(apiUrl, options);
@@ -668,11 +635,8 @@ if (!response.ok) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — exponential backoff em 429 Too Many Requests</summary>
-<br>
 
 ```js
 async function callWithRetry(requestFn, maxAttempts = 3) {

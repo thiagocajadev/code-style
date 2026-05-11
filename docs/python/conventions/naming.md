@@ -20,7 +20,6 @@ classes — é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta d
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```python
 r = apply(d, p, c)
@@ -33,11 +32,8 @@ def apply(x, p, c):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```python
 discounted_order = apply_discount(order, calculate_discount)
@@ -56,7 +52,6 @@ def apply_discount(order, calculate_discount):
 
 <details>
 <summary>❌ Ruim — snake_case com português fica desajeitado</summary>
-<br>
 
 ```python
 nome_do_usuario = "Alice"
@@ -71,11 +66,8 @@ def busca_endereco_do_cliente(id):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês: curto, direto, universal</summary>
-<br>
 
 ```python
 user_name = "Alice"
@@ -105,7 +97,6 @@ Python tem convenções fortes definidas pela PEP 8. Segui-las é parte do idiom
 
 <details>
 <summary>❌ Ruim — case errado para o contexto</summary>
-<br>
 
 ```python
 maxRetries = 3
@@ -118,11 +109,8 @@ class order_repository:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções PEP 8 respeitadas</summary>
-<br>
 
 ```python
 MAX_RETRIES = 3
@@ -142,7 +130,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```python
 get_profile_user()
@@ -153,11 +140,8 @@ calculate_total_invoice()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```python
 get_user_profile()
@@ -172,7 +156,6 @@ calculate_invoice_total()
 
 <details>
 <summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
-<br>
 
 ```python
 def handle(data):
@@ -190,11 +173,8 @@ def do_stuff(x):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```python
 def validate_payment(payment):
@@ -229,7 +209,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```python
 def call_stripe(amount):
@@ -247,11 +226,8 @@ def save_to_s3(file):
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```python
 def charge_customer(amount):
@@ -276,7 +252,6 @@ substitui qualquer comentário.
 
 <details>
 <summary>❌ Ruim — comentário repete o que o código já diz</summary>
-<br>
 
 ```python
 # verifica se o usuário pode excluir registros
@@ -289,11 +264,8 @@ attempts += 1
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
-<br>
 
 ```python
 can_delete_record = user.status == "active" and "admin" in user.roles
@@ -309,7 +281,6 @@ attempts += 1
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```python
 loading = True
@@ -321,11 +292,8 @@ valid = "@" in email
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is_, has_, can_, should_</summary>
-<br>
 
 ```python
 is_active = user.status == "active"

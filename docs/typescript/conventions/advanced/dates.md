@@ -27,7 +27,6 @@ protegido.
 
 <details>
 <summary>❌ Ruim — string genérica aceita qualquer valor em qualquer posição</summary>
-<br>
 
 ```ts
 interface Order {
@@ -49,11 +48,8 @@ const order: Order = {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — branded type distingue timestamp de string genérica</summary>
-<br>
 
 ```ts
 type IsoTimestamp = string & { readonly __brand: "IsoTimestamp" };
@@ -97,7 +93,6 @@ disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambie
 
 <details>
 <summary>✅ Bom — Temporal com tipos explícitos</summary>
-<br>
 
 ```ts
 function createScheduledEvent(
@@ -133,7 +128,6 @@ sem inspecionar a implementação.
 
 <details>
 <summary>❌ Ruim — retorno inferido, contrato invisível</summary>
-<br>
 
 ```ts
 function parseOrderDate(raw: unknown) {
@@ -144,11 +138,8 @@ function parseOrderDate(raw: unknown) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — input validado, retorno explícito</summary>
-<br>
 
 ```ts
 function parseIsoDate(isoString: IsoTimestamp): Date {

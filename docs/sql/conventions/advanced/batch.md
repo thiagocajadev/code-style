@@ -23,7 +23,6 @@ operações. Lotes menores liberam o lock entre cada commit.
 
 <details>
 <summary>❌ Ruim — um INSERT por linha, um round trip por registro</summary>
-<br>
 
 ```sql
 INSERT INTO Players (Id, Name, Position, TeamId) VALUES (1, 'Alice', 'GK', @TeamId);
@@ -33,11 +32,8 @@ INSERT INTO Players (Id, Name, Position, TeamId) VALUES (3, 'Carol', 'ST', @Team
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — um INSERT com múltiplos VALUES</summary>
-<br>
 
 ```sql
 INSERT INTO Players
@@ -62,7 +58,6 @@ construção de lista de VALUES no código.
 
 <details>
 <summary>✅ Bom — INSERT ... SELECT de tabela de origem</summary>
-<br>
 
 ```sql
 INSERT INTO Players
@@ -91,7 +86,6 @@ WHERE
 
 <details>
 <summary>❌ Ruim — DELETE único em tabela grande: lock de longa duração</summary>
-<br>
 
 ```sql
 -- bloqueia Players pela duração inteira da operação
@@ -104,11 +98,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DELETE em lotes com TOP + WHILE: lock liberado a cada commit</summary>
-<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -132,7 +123,6 @@ END;
 
 <details>
 <summary>❌ Ruim — UPDATE único em tabela grande</summary>
-<br>
 
 ```sql
 -- deactivate players from dissolved teams: pode modificar milhões de linhas
@@ -152,11 +142,8 @@ WHERE
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — UPDATE TOP + WHILE: lotes de tamanho fixo</summary>
-<br>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -187,7 +174,6 @@ END;
 
 <details>
 <summary>❌ Ruim — inserir dados externos diretamente na tabela de produção sem validação</summary>
-<br>
 
 ```sql
 -- dados brutos do parceiro entram direto: posições inválidas ou times inexistentes quebram no FK
@@ -209,11 +195,8 @@ FROM
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — staging → validar → inserir apenas registros válidos</summary>
-<br>
 
 ```sql
 -- Etapa 1: receber dados brutos na staging

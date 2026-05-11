@@ -22,7 +22,6 @@ O par fundamental. `SqlConnection` abre o canal com o banco; `SqlCommand` execut
 
 <details>
 <summary>✅ Bom — query com SqlDataReader, Using garante descarte</summary>
-<br>
 
 ```vbnet
 Public Async Function FindByIdAsync(id As Guid) As Task(Of Customer)
@@ -57,7 +56,6 @@ A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (S
 
 <details>
 <summary>❌ Ruim — concatenação de strings abre porta para SQL injection</summary>
-<br>
 
 ```vbnet
 ' entrada: name = "'; DROP TABLE Customers; --"
@@ -70,11 +68,8 @@ command.CommandText = $"SELECT Id FROM Customers WHERE Name = '{name}'"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — parâmetro nomeado, valor isolado do SQL</summary>
-<br>
 
 ```vbnet
 command.CommandText = "SELECT Id FROM Customers WHERE Name = @Name"
@@ -89,7 +84,6 @@ Prefira `Add` com tipo explícito a `AddWithValue`. `AddWithValue` infere o tipo
 
 <details>
 <summary>❌ Ruim — AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
-<br>
 
 ```vbnet
 command.Parameters.AddWithValue("@CustomerId", customerId)  ' tipo inferido
@@ -99,11 +93,8 @@ command.Parameters.AddWithValue("@CreatedAt", date)         ' DateTime vs DateTi
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Add com tipo explícito, sem surpresas de conversão</summary>
-<br>
 
 ```vbnet
 command.Parameters.Add("@CustomerId", SqlDbType.UniqueIdentifier).Value = customerId
@@ -119,7 +110,6 @@ Para operações que não retornam linhas. Retorna o número de linhas afetadas 
 
 <details>
 <summary>✅ Bom — INSERT com ExecuteNonQueryAsync</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateAsync(purchase As Purchase) As Task
@@ -144,11 +134,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — UPDATE verificando se o registro foi encontrado</summary>
-<br>
 
 ```vbnet
 Public Async Function UpdateStatusAsync(purchaseId As Guid, status As String) As Task(Of Boolean)
@@ -178,7 +165,6 @@ End Function
 
 <details>
 <summary>✅ Bom — procedure de leitura</summary>
-<br>
 
 ```vbnet
 Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOnlyList(Of PurchaseSummary))
@@ -218,7 +204,6 @@ Procedures que retornam um valor via `OUTPUT` exigem um `SqlParameter` com `Dire
 
 <details>
 <summary>✅ Bom — procedure com OUTPUT param para Id gerado no banco</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(Of Guid)
@@ -252,7 +237,6 @@ End Function
 
 <details>
 <summary>✅ Bom — SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
-<br>
 
 ```vbnet
 Public Function GetPurchaseTable(customerId As Guid) As DataTable
@@ -281,11 +265,8 @@ GridView1.DataBind()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DataTable via stored procedure</summary>
-<br>
 
 ```vbnet
 Public Function GetPurchaseReport(startDate As Date, endDate As Date) As DataTable
@@ -312,7 +293,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — sem transação, operações parcialmente persistidas em caso de erro</summary>
-<br>
 
 ```vbnet
 Public Async Function CheckoutAsync(cart As Cart) As Task
@@ -324,11 +304,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — transação garante consistência entre as operações</summary>
-<br>
 
 ```vbnet
 Public Async Function CheckoutAsync(cart As Cart) As Task
@@ -395,7 +372,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — leitura direta sem verificar DBNull</summary>
-<br>
 
 ```vbnet
 ' coluna DeletedAt é NULL — GetDateTime lança InvalidCastException
@@ -404,11 +380,8 @@ Dim deletedAt = reader.GetDateTime(reader.GetOrdinal("DeletedAt"))
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IsDBNull antes de ler coluna anulável</summary>
-<br>
 
 ```vbnet
 Dim deletedAtOrdinal = reader.GetOrdinal("DeletedAt")
@@ -426,7 +399,6 @@ Para queries que retornam um único valor (COUNT, MAX, SUM, ou uma coluna de uma
 
 <details>
 <summary>✅ Bom — contagem e verificação de existência com ExecuteScalar</summary>
-<br>
 
 ```vbnet
 Public Async Function CountByCustomerAsync(customerId As Guid) As Task(Of Integer)

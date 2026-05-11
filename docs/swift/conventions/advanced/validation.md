@@ -20,7 +20,6 @@ lógica de negócio: dados chegam válidos ou o fluxo para antes de começar.
 
 <details>
 <summary>❌ Ruim — guard espalhado pela função de negócio</summary>
-<br>
 
 ```swift
 func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order {
@@ -40,11 +39,8 @@ func processOrder(userId: UUID, items: [Item], discount: Double) throws -> Order
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — init valida; função recebe objeto já válido</summary>
-<br>
 
 ```swift
 struct OrderRequest {
@@ -77,7 +73,6 @@ func processOrder(_ request: OrderRequest) async throws -> Order {
 
 <details>
 <summary>❌ Ruim — para no primeiro erro</summary>
-<br>
 
 ```swift
 func validateProfile(_ profile: UserProfile) throws {
@@ -89,11 +84,8 @@ func validateProfile(_ profile: UserProfile) throws {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — acumula todos os erros</summary>
-<br>
 
 ```swift
 enum ProfileValidationError: Error {
@@ -123,7 +115,6 @@ func validateProfile(_ profile: UserProfile) throws {
 
 <details>
 <summary>❌ Ruim — guard/return silencia um invariante</summary>
-<br>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {
@@ -134,11 +125,8 @@ func applyDiscount(_ amount: Double, rate: Double) -> Double {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — precondition falha com mensagem clara</summary>
-<br>
 
 ```swift
 func applyDiscount(_ amount: Double, rate: Double) -> Double {

@@ -21,7 +21,6 @@ irrecuperáveis de infraestrutura.
 
 <details>
 <summary>❌ Ruim — exceção para erro esperado de negócio</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Order {
@@ -42,11 +41,8 @@ fun processRequest(orderId: Long): Response {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Result comunica explicitamente a ausência</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Result<Order> {
@@ -72,7 +68,6 @@ fun processRequest(orderId: Long): Response {
 
 <details>
 <summary>❌ Ruim — exceção engolida sem rastro</summary>
-<br>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -86,11 +81,8 @@ fun sendNotification(userId: Long) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
-<br>
 
 ```kotlin
 fun sendNotification(userId: Long) {
@@ -107,7 +99,6 @@ fun sendNotification(userId: Long) {
 
 <details>
 <summary>❌ Ruim — string como discriminante de erro</summary>
-<br>
 
 ```kotlin
 data class ServiceError(val code: String, val message: String)
@@ -121,11 +112,8 @@ fun validateOrder(order: Order): ServiceError? {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sealed class com when exaustivo</summary>
-<br>
 
 ```kotlin
 sealed class OrderValidationError {
@@ -162,7 +150,6 @@ fun handleValidationError(error: OrderValidationError): String {
 
 <details>
 <summary>❌ Ruim — if manual com mensagem genérica</summary>
-<br>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -175,11 +162,8 @@ fun applyDiscount(price: Double, rate: Double): Double {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — require com mensagem expressiva</summary>
-<br>
 
 ```kotlin
 fun applyDiscount(price: Double, rate: Double): Double {
@@ -197,7 +181,6 @@ fun applyDiscount(price: Double, rate: Double): Double {
 
 <details>
 <summary>❌ Ruim — sealed class de domínio exposta diretamente na resposta HTTP</summary>
-<br>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
@@ -212,11 +195,8 @@ fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tradução explícita do erro de domínio para HTTP</summary>
-<br>
 
 ```kotlin
 fun createOrder(request: CreateOrderRequest): ResponseEntity<Any> {

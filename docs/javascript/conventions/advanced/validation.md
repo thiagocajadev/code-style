@@ -31,7 +31,6 @@ busca no banco.
 
 <details>
 <summary>❌ Ruim — dados brutos chegam direto na validação</summary>
-<br>
 
 ```js
 async function createUserHandler(req, res) {
@@ -44,11 +43,8 @@ async function createUserHandler(req, res) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sanitize antes de validar</summary>
-<br>
 
 ```js
 function sanitizeCreateUser(body) {
@@ -80,7 +76,6 @@ contrato técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
 <summary>❌ Ruim — validação manual espalhada no handler</summary>
-<br>
 
 ```js
 async function createOrder(body) {
@@ -96,11 +91,8 @@ async function createOrder(body) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schema centralizado, handler recebe dado tipado e validado</summary>
-<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -127,7 +119,6 @@ serviços externos) e não pertencem ao schema.
 
 <details>
 <summary>❌ Ruim — I/O dentro do schema (refine async) mistura camadas</summary>
-<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -146,11 +137,8 @@ const createOrderSchema = z.object({
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — schema valida shape, domínio valida regras após</summary>
-<br>
 
 ```js
 const createOrderSchema = z.object({
@@ -193,7 +181,6 @@ diretamente.
 
 <details>
 <summary>❌ Ruim — entidade direta vaza campos internos</summary>
-<br>
 
 ```js
 async function findUserByIdHandler(req, res) {
@@ -205,11 +192,8 @@ async function findUserByIdHandler(req, res) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — projeção explícita do que sai na resposta</summary>
-<br>
 
 ```js
 function toUserResponse(user) {

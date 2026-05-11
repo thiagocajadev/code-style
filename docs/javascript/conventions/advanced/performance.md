@@ -25,7 +25,6 @@ execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iter�
 
 <details>
 <summary>❌ Ruim — callback alocado por iteração</summary>
-<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -40,11 +39,8 @@ function calculateTotalRevenue(orders) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — for...of sem overhead de callback</summary>
-<br>
 
 ```js
 function calculateTotalRevenue(orders) {
@@ -67,7 +63,6 @@ reutilize.
 
 <details>
 <summary>❌ Ruim — Array.includes percorre tudo a cada chamada</summary>
-<br>
 
 ```js
 const PREMIUM_CATEGORIES = ["electronics", "jewelry", "watches"];
@@ -83,11 +78,8 @@ function filterPremiumProducts(products) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Set.has resolve em O(1)</summary>
-<br>
 
 ```js
 const PREMIUM_CATEGORIES = new Set(["electronics", "jewelry", "watches"]);
@@ -111,7 +103,6 @@ Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sq
 
 <details>
 <summary>❌ Ruim — crypto.randomUUID() é v4: random, fragmenta índice</summary>
-<br>
 
 ```js
 function createOrder(request) {
@@ -123,11 +114,8 @@ function createOrder(request) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — UUID v7: time-ordered, sequencial no índice</summary>
-<br>
 
 ```js
 import { v7 as uuidv7 } from "uuid";
@@ -149,7 +137,6 @@ strings são imutáveis em JavaScript. Para construir strings dinamicamente, acu
 
 <details>
 <summary>❌ Ruim — nova string alocada por iteração</summary>
-<br>
 
 ```js
 function buildOrderReport(orders) {
@@ -164,11 +151,8 @@ function buildOrderReport(orders) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — array + join, uma alocação no final</summary>
-<br>
 
 ```js
 function buildOrderReport(orders) {

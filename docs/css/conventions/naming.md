@@ -19,7 +19,6 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 
 <details>
 <summary>❌ Ruim — nome descreve aparência, quebra ao mudar o design</summary>
-<br>
 
 ```css
 .blue-header {
@@ -40,11 +39,8 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome descreve papel, sobrevive a mudanças de design</summary>
-<br>
 
 ```css
 .heading--primary {
@@ -71,7 +67,6 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 
 <details>
 <summary>❌ Ruim — hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
-<br>
 
 ```html
 <div class="card featured">
@@ -95,11 +90,8 @@ relacionamento entre partes da **UI** (User Interface, Interface do Usuário) se
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — BEM: bloco__elemento--modificador</summary>
-<br>
 
 ```html
 <div class="card card--featured">
@@ -130,7 +122,6 @@ específico.
 
 <details>
 <summary>❌ Ruim — IDs e seletores encadeados inflam a especificidade</summary>
-<br>
 
 ```css
 #app .container .card h2 {
@@ -143,11 +134,8 @@ específico.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — classes simples, especificidade baixa e previsível</summary>
-<br>
 
 ```css
 .card__title {

@@ -21,7 +21,6 @@ compilador impede `NullPointerException` em tempo de compilação. O operador `!
 
 <details>
 <summary>❌ Ruim — !! como atalho perigoso</summary>
-<br>
 
 ```kotlin
 fun getCustomerEmail(userId: Long): String {
@@ -32,11 +31,8 @@ fun getCustomerEmail(userId: Long): String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — elvis com saída antecipada e erro expressivo</summary>
-<br>
 
 ```kotlin
 fun getCustomerEmail(userId: Long): String {
@@ -53,7 +49,6 @@ fun getCustomerEmail(userId: Long): String {
 
 <details>
 <summary>❌ Ruim — verificações manuais aninhadas</summary>
-<br>
 
 ```kotlin
 fun getCity(order: Order?): String {
@@ -70,11 +65,8 @@ fun getCity(order: Order?): String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — safe call chain com elvis no final</summary>
-<br>
 
 ```kotlin
 fun getCity(order: Order?): String {
@@ -89,7 +81,6 @@ fun getCity(order: Order?): String {
 
 <details>
 <summary>❌ Ruim — if de null-check antes de bloco</summary>
-<br>
 
 ```kotlin
 val promo = order.activePromotion
@@ -101,11 +92,8 @@ if (promo != null) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — let executa somente quando não-null</summary>
-<br>
 
 ```kotlin
 order.activePromotion?.let { promo ->
@@ -120,7 +108,6 @@ order.activePromotion?.let { promo ->
 
 <details>
 <summary>❌ Ruim — null chega até a lógica de negócio</summary>
-<br>
 
 ```kotlin
 fun createOrder(userId: Long?, items: List<Item>?): Order {
@@ -132,11 +119,8 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — falha rápida na fronteira com mensagem expressiva</summary>
-<br>
 
 ```kotlin
 fun createOrder(userId: Long?, items: List<Item>?): Order {
@@ -156,7 +140,6 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 
 <details>
 <summary>❌ Ruim — if/else para null-check com retorno</summary>
-<br>
 
 ```kotlin
 fun findProductPrice(productId: Long): Double {
@@ -170,11 +153,8 @@ fun findProductPrice(productId: Long): Double {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — elvis guard em uma linha</summary>
-<br>
 
 ```kotlin
 fun findProductPrice(productId: Long): Double {
@@ -191,7 +171,6 @@ fun findProductPrice(productId: Long): Double {
 
 <details>
 <summary>❌ Ruim — null para representar lista vazia</summary>
-<br>
 
 ```kotlin
 fun findOrdersByUser(userId: Long): List<Order>? {
@@ -202,11 +181,8 @@ fun findOrdersByUser(userId: Long): List<Order>? {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lista vazia; null nunca representa ausência de itens</summary>
-<br>
 
 ```kotlin
 fun findOrdersByUser(userId: Long): List<Order> {

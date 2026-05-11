@@ -40,7 +40,6 @@ Chame `gc.collect()` periodicamente em loops que alocam muito.
 
 <details>
 <summary>❌ Ruim — lista crescente em memória limitada</summary>
-<br>
 
 ```python
 import machine
@@ -63,11 +62,8 @@ while True:
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — acumulador com tamanho fixo, sem lista</summary>
-<br>
 
 ```python
 import machine
@@ -102,7 +98,6 @@ MicroPython não tem `datetime`. Use `utime.localtime()` para decompor timestamp
 
 <details>
 <summary>❌ Ruim — import que falha em MicroPython</summary>
-<br>
 
 ```python
 from datetime import datetime, timedelta
@@ -113,11 +108,8 @@ expiry = now + timedelta(hours=1)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — utime como substituto</summary>
-<br>
 
 ```python
 import utime
@@ -140,7 +132,6 @@ sem threads — essencial para ler sensores e manter rede ao mesmo tempo.
 
 <details>
 <summary>✅ Bom — leitura de sensor + keep-alive de rede com asyncio</summary>
-<br>
 
 ```python
 import asyncio

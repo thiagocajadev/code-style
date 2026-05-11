@@ -22,7 +22,6 @@ Todo **I/O** (Input/Output, Entrada/Saída) é assíncrono. Métodos que realiza
 
 <details>
 <summary>❌ Ruim — I/O síncrono bloqueia a thread</summary>
-<br>
 
 ```csharp
 public Order FindOrder(Guid orderId)
@@ -40,11 +39,8 @@ public void SaveOrder(Order order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async/await do início ao fim</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -67,7 +63,6 @@ Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em ope
 
 <details>
 <summary>❌ Ruim — await sequencial em chamadas independentes</summary>
-<br>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -85,11 +80,8 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Task.WhenAll para chamadas independentes em paralelo</summary>
-<br>
 
 ```csharp
 public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken ct)
@@ -118,7 +110,6 @@ Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o 
 
 <details>
 <summary>❌ Ruim — CancellationToken ignorado ou ausente</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId)
@@ -139,11 +130,8 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — CancellationToken propagado em toda a cadeia</summary>
-<br>
 
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -171,7 +159,6 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 <details>
 <summary>❌ Ruim — bloqueio síncrono em contexto async</summary>
-<br>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase
@@ -187,11 +174,8 @@ public class OrderController(OrderService service) : ControllerBase
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — endpoint async de ponta a ponta</summary>
-<br>
 
 ```csharp
 public class OrderController(OrderService service) : ControllerBase

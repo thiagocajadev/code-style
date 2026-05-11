@@ -43,7 +43,6 @@ testável sem o container Spring.
 
 <details>
 <summary>❌ Ruim — @Autowired em campo: dependências ocultas, dificulta teste</summary>
-<br>
 
 ```java
 @Service
@@ -59,11 +58,8 @@ public class OrderService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — injeção via construtor: dependências explícitas</summary>
-<br>
 
 ```java
 @Service
@@ -100,7 +96,6 @@ diretamente. Use `@ConfigurationProperties` para agrupar propriedades por domín
 
 <details>
 <summary>❌ Ruim — System.getenv() espalhado em todo lugar</summary>
-<br>
 
 ```java
 @Service
@@ -115,11 +110,8 @@ public class PaymentService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — @ConfigurationProperties agrupa e valida a configuração</summary>
-<br>
 
 ```java
 // config/PaymentProperties.java
@@ -153,7 +145,6 @@ Organize por domínio (feature), não por camada técnica. O código de um domí
 
 <details>
 <summary>❌ Ruim — pacotes por camada técnica: acopla tudo</summary>
-<br>
 
 ```
 src/main/java/com/example/
@@ -170,11 +161,8 @@ src/main/java/com/example/
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pacotes por domínio: cada domínio é dono do seu código</summary>
-<br>
 
 ```
 src/main/java/com/example/

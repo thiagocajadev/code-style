@@ -21,7 +21,6 @@ coroutine tem escopo, cancelamento e espera definidos — sem goroutines soltas 
 
 <details>
 <summary>❌ Ruim — GlobalScope vaza ciclo de vida</summary>
-<br>
 
 ```kotlin
 fun loadUser(userId: Long) {
@@ -34,11 +33,8 @@ fun loadUser(userId: Long) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — escopo vinculado ao ciclo de vida</summary>
-<br>
 
 ```kotlin
 class UserViewModel(
@@ -60,7 +56,6 @@ class UserViewModel(
 
 <details>
 <summary>❌ Ruim — async sequencial não tem ganho de paralelismo</summary>
-<br>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -73,11 +68,8 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async antes do await permite execução paralela</summary>
-<br>
 
 ```kotlin
 suspend fun loadDashboard(userId: Long): Dashboard {
@@ -97,7 +89,6 @@ suspend fun loadDashboard(userId: Long): Dashboard {
 
 <details>
 <summary>❌ Ruim — I/O no dispatcher Main (congela UI)</summary>
-<br>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -107,11 +98,8 @@ suspend fun saveOrder(order: Order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — withContext isola o dispatcher de I/O</summary>
-<br>
 
 ```kotlin
 suspend fun saveOrder(order: Order) {
@@ -127,7 +115,6 @@ suspend fun saveOrder(order: Order) {
 
 <details>
 <summary>❌ Ruim — callback manual para stream de eventos</summary>
-<br>
 
 ```kotlin
 fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
@@ -137,11 +124,8 @@ fun observeOrders(userId: Long, callback: (List<Order>) -> Unit) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Flow tipado e cancelável</summary>
-<br>
 
 ```kotlin
 fun observeOrders(userId: Long): Flow<List<Order>> {
@@ -162,7 +146,6 @@ viewModelScope.launch {
 
 <details>
 <summary>❌ Ruim — MutableLiveData com mutação direta</summary>
-<br>
 
 ```kotlin
 private val _orders = MutableLiveData<List<Order>>()
@@ -175,11 +158,8 @@ fun loadOrders() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — StateFlow com UiState sealed class</summary>
-<br>
 
 ```kotlin
 sealed class OrdersUiState {
@@ -211,7 +191,6 @@ fun loadOrders() {
 
 <details>
 <summary>❌ Ruim — falha em um filho cancela todos os outros</summary>
-<br>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {
@@ -225,11 +204,8 @@ suspend fun sendNotifications(users: List<User>) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — supervisorScope isola falhas por filho</summary>
-<br>
 
 ```kotlin
 suspend fun sendNotifications(users: List<User>) {

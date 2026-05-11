@@ -32,7 +32,6 @@ Use `process.env` para todas as credenciais. O `await` em `app.start()` é obrig
 
 <details>
 <summary>❌ Ruim — credenciais hardcoded; sem await no start</summary>
-<br>
 
 ```js
 import { App } from '@slack/bolt';
@@ -47,11 +46,8 @@ app.start(3000);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — credenciais via env; await no start; port via env</summary>
-<br>
 
 ```js
 import { App } from '@slack/bolt';
@@ -72,7 +68,6 @@ await app.start(process.env.PORT ?? 3000);
 
 <details>
 <summary>❌ Ruim — sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
-<br>
 
 ```js
 app.command('/order', async ({ ack, say, command }) => {
@@ -84,11 +79,8 @@ app.command('/order', async ({ ack, say, command }) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ack() primeiro; destructuring no corpo; orquestrador + helpers abaixo</summary>
-<br>
 
 ```js
 app.command('/order', async (commandPayload) => {
@@ -125,7 +117,6 @@ Use `app.event()` para reagir a eventos da Events API. Em listeners de mensagem,
 
 <details>
 <summary>❌ Ruim — destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
-<br>
 
 ```js
 app.event('app_mention', async ({ event, say }) => {
@@ -139,11 +130,8 @@ app.event('message', async ({ event, say }) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — destructuring no corpo; guard para bot messages; compute extraído antes do say()</summary>
-<br>
 
 ```js
 app.event('app_mention', async (eventPayload) => {
@@ -179,7 +167,6 @@ Block Kit é a primitiva de UI interativa do Slack. Botões e selects disparam `
 
 <details>
 <summary>❌ Ruim — blocks montados inline; action_id como string solta; sem ack() na ação</summary>
-<br>
 
 ```js
 app.command('/menu', async ({ ack, say }) => {
@@ -204,11 +191,8 @@ app.action('view_orders', async ({ say }) => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blocks extraídos; action_id como constante; ack() antes do processamento</summary>
-<br>
 
 ```js
 const ACTIONS = {
@@ -269,7 +253,6 @@ Socket Mode elimina a necessidade de URL pública e é recomendado para bots int
 
 <details>
 <summary>❌ Ruim — tokens hardcoded; sem await no start</summary>
-<br>
 
 ```js
 import { App } from '@slack/bolt';
@@ -285,11 +268,8 @@ app.start();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tokens via env; await no start; sem port (Socket Mode não usa porta)</summary>
-<br>
 
 ```js
 import { App } from '@slack/bolt';

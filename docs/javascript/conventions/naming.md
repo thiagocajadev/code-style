@@ -28,7 +28,6 @@ por si só.
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```js
 const r = apply(data, pedido, callback);
@@ -41,11 +40,8 @@ function apply(x, p, c) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```js
 const discountedOrder = applyDiscount(order, calculateDiscount);
@@ -64,7 +60,6 @@ function applyDiscount(order, calculateDiscount) {
 
 <details>
 <summary>❌ Ruim — camelCase com português fica desajeitado</summary>
-<br>
 
 ```js
 const nomeDoUsuario = "Alice";
@@ -80,11 +75,8 @@ function buscaEnderecoDoCliente(id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês: curto, direto, universal</summary>
-<br>
 
 ```js
 const userName = "Alice";
@@ -104,7 +96,6 @@ function getCustomerAddress(id) {
 
 <details>
 <summary>❌ Ruim — português e inglês no mesmo arquivo</summary>
-<br>
 
 ```js
 function notify(pedido) {
@@ -116,11 +107,8 @@ const resultado = processOrder(pedido);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — consistência de idioma</summary>
-<br>
 
 ```js
 function notifyDefault(order) {
@@ -138,7 +126,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```js
 getProfileUser(); // "get profile, that's a user"
@@ -149,11 +136,8 @@ calculateTotalInvoice(); // "invoice total" é a expressão natural
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```js
 getUserProfile();
@@ -168,7 +152,6 @@ calculateInvoiceTotal();
 
 <details>
 <summary>❌ Ruim — handle, process, manage, do não dizem nada</summary>
-<br>
 
 ```js
 function handle(data) {
@@ -188,11 +171,8 @@ function doStuff(x) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```js
 function validatePayment(payment) {
@@ -230,7 +210,6 @@ operação acontece.
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```js
 function callStripe(amount) {
@@ -254,11 +233,8 @@ function queryElastic(term) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```js
 function chargeCustomer(amount) {
@@ -289,7 +265,6 @@ nome expressivo substitui qualquer comentário.
 
 <details>
 <summary>❌ Ruim — comentário repete o que o código já diz</summary>
-<br>
 
 ```js
 // verifica se o usuário pode excluir registros
@@ -303,11 +278,8 @@ attempts++;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome expressivo torna o comentário desnecessário</summary>
-<br>
 
 ```js
 const canDeleteRecord =
@@ -325,7 +297,6 @@ attempts++;
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```js
 const loading = true;
@@ -337,11 +308,8 @@ const valid = email.includes("@");
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is, has, can, should</summary>
-<br>
 
 ```js
 const isActive = user.status === "active";

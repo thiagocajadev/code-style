@@ -20,7 +20,6 @@ por uma `let`.
 
 <details>
 <summary>❌ Ruim — busca, valida, calcula e persiste em uma função só</summary>
-<br>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -48,11 +47,8 @@ func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orquestrador limpo, detalhes em funções dedicadas</summary>
-<br>
 
 ```swift
 func submitOrder(userId: UUID, items: [Item]) async throws -> Order {
@@ -83,7 +79,6 @@ private func notifyConfirmation(to email: String) async { ... }
 
 <details>
 <summary>❌ Ruim — função mistura nível de abstração</summary>
-<br>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -100,11 +95,8 @@ func generateReport(orders: [Order]) -> Report {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cada função em um único nível</summary>
-<br>
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
@@ -130,7 +122,6 @@ private func calculateRevenue(_ orders: [Order]) -> Double {
 
 <details>
 <summary>❌ Ruim — lógica inline no return</summary>
-<br>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -143,11 +134,8 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — explaining return com let nomeada</summary>
-<br>
 
 ```swift
 func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
@@ -167,7 +155,6 @@ func findActiveCustomers(_ customers: [Customer]) -> [Customer] {
 
 <details>
 <summary>❌ Ruim — chamada ambígua sem labels</summary>
-<br>
 
 ```swift
 func move(_ source: Index, _ destination: Index) { }
@@ -177,11 +164,8 @@ move(2, 5)   // o que é 2 e o que é 5?
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — labels que leem como prosa</summary>
-<br>
 
 ```swift
 func move(from source: Index, to destination: Index) { }
@@ -195,7 +179,6 @@ move(from: 2, to: 5)
 
 <details>
 <summary>❌ Ruim — warning desnecessário em função de efeito colateral</summary>
-<br>
 
 ```swift
 func registerEvent(_ event: AnalyticsEvent) -> Bool {
@@ -207,11 +190,8 @@ registerEvent(.pageView("Home"))   // ⚠️ result of call is unused
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — @discardableResult quando o retorno é opcional para o chamador</summary>
-<br>
 
 ```swift
 @discardableResult

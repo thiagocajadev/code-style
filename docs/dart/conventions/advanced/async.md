@@ -23,7 +23,6 @@ operações. `unawaited` marca fire-and-forget intencional.
 
 <details>
 <summary>❌ Ruim — awaits em série sem necessidade de ordem</summary>
-<br>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -36,11 +35,8 @@ Future<Dashboard> loadDashboard(int userId) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Future.wait executa em paralelo</summary>
-<br>
 
 ```dart
 Future<Dashboard> loadDashboard(int userId) async {
@@ -64,7 +60,6 @@ Future<Dashboard> loadDashboard(int userId) async {
 
 <details>
 <summary>❌ Ruim — await esquecido ou Future ignorado sem intenção clara</summary>
-<br>
 
 ```dart
 void confirmOrder(Order order) async {
@@ -75,11 +70,8 @@ void confirmOrder(Order order) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — unawaited declara a intenção de não esperar</summary>
-<br>
 
 ```dart
 import 'dart:async' show unawaited;
@@ -96,7 +88,6 @@ void confirmOrder(Order order) async {
 
 <details>
 <summary>❌ Ruim — callback exposto ao chamador sem Future</summary>
-<br>
 
 ```dart
 void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onError) {
@@ -106,11 +97,8 @@ void fetchUser(int id, void Function(User) onSuccess, void Function(Object) onEr
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Completer wraps callback em Future</summary>
-<br>
 
 ```dart
 Future<User> fetchUser(int id) {
@@ -132,7 +120,6 @@ Future<User> fetchUser(int id) {
 
 <details>
 <summary>❌ Ruim — sem limite de tempo em chamada externa</summary>
-<br>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -143,11 +130,8 @@ Future<double> fetchExchangeRate(String currency) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — timeout cancela se exceder o prazo</summary>
-<br>
 
 ```dart
 Future<double> fetchExchangeRate(String currency) async {
@@ -165,7 +149,6 @@ Future<double> fetchExchangeRate(String currency) async {
 
 <details>
 <summary>❌ Ruim — catchError com tipo Any</summary>
-<br>
 
 ```dart
 Future<Order> findOrder(int id) {
@@ -177,11 +160,8 @@ Future<Order> findOrder(int id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — try/catch com tipo explícito</summary>
-<br>
 
 ```dart
 Future<Order?> findOrder(int id) async {

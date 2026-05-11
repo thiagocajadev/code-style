@@ -24,7 +24,6 @@ Sempre limitar os campos retornados ao mínimo necessário para a operação.
 
 <details>
 <summary>❌ Ruim — documento inteiro trafegado para usar dois campos</summary>
-<br>
 
 ```js
 // carrega todos os campos do documento
@@ -39,11 +38,8 @@ async function fetchTeamSummary(teamId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — projeção limita o tráfego ao mínimo</summary>
-<br>
 
 ```js
 async function fetchTeamSummary(teamId) {
@@ -95,7 +91,6 @@ await sessionsCollection.createIndex(
 
 <details>
 <summary>❌ Ruim — campo de função no filtro desativa o índice; campo de baixa cardinalidade indexado</summary>
-<br>
 
 ```js
 // LOWER() equivalente em JS — índice em name não é usado
@@ -109,11 +104,8 @@ await teamsCollection.createIndex({ isActive: 1 });
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — índice de texto para buscas; índice composto com campo seletivo primeiro</summary>
-<br>
 
 ```js
 // índice de texto serve $text queries com seletividade alta
@@ -150,7 +142,6 @@ N+1 não aparece no código; aparece no log. O sinal é um padrão de queries id
 
 <details>
 <summary>❌ Ruim — uma query por item para buscar documento relacionado</summary>
-<br>
 
 ```js
 // N queries para N times — cada iteração dispara uma roundtrip ao banco
@@ -173,11 +164,8 @@ async function fetchTeamsWithPlayers(teamIds) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — $lookup resolve em uma única passagem no banco</summary>
-<br>
 
 ```js
 async function fetchTeamsWithPlayers(teamIds) {
@@ -216,7 +204,6 @@ TTL é responsabilidade do código na inserção, não de um job de limpeza exte
 
 <details>
 <summary>❌ Ruim — sem TTL; acúmulo de documentos expirados; limpeza manual necessária</summary>
-<br>
 
 ```js
 // session sem expiração — acumula indefinidamente
@@ -232,11 +219,8 @@ async function createSession(userId, token) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — TTL index + expiresAt definido no insert</summary>
-<br>
 
 ```js
 // na inicialização: TTL index aponta para expiresAt

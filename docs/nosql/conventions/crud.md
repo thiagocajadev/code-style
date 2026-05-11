@@ -20,7 +20,6 @@ As convenções abaixo usam MongoDB como referência primária. Princípios de p
 
 <details>
 <summary>❌ Ruim — inserção fora do repository, sem campo de auditoria, dado inline no driver</summary>
-<br>
 
 ```js
 // lógica de negócio acoplada ao driver
@@ -38,11 +37,8 @@ async function createTeam(name, city, year) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — repository encapsula o driver; campos de auditoria; nomes de domínio</summary>
-<br>
 
 ```js
 class TeamRepository {
@@ -68,7 +64,6 @@ class TeamRepository {
 
 <details>
 <summary>❌ Ruim — sem projeção, filtro no cliente, nome genérico</summary>
-<br>
 
 ```js
 // carrega o documento inteiro para usar dois campos
@@ -91,11 +86,8 @@ async function getActiveTeams() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — projeção limita campos; filtro no banco; repository</summary>
-<br>
 
 ```js
 class TeamRepository {
@@ -128,7 +120,6 @@ class TeamRepository {
 
 <details>
 <summary>❌ Ruim — replace completo em vez de patch; sem campo de auditoria; expõe driver</summary>
-<br>
 
 ```js
 // substitui o documento inteiro — apaga campos não enviados
@@ -147,11 +138,8 @@ async function setManager(id, manager) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — patch com $set; updatedAt de auditoria; repository</summary>
-<br>
 
 ```js
 class TeamRepository {
@@ -193,7 +181,6 @@ class TeamRepository {
 
 <details>
 <summary>❌ Ruim — hard delete sem auditoria; condição fraca; expõe driver</summary>
-<br>
 
 ```js
 // apaga fisicamente sem registro de quem ou quando
@@ -209,11 +196,8 @@ async function cleanup() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — soft delete com campo de auditoria; hard delete explícito e restrito</summary>
-<br>
 
 ```js
 class TeamRepository {
@@ -252,7 +236,6 @@ class TeamRepository {
 
 <details>
 <summary>❌ Ruim — find + insert manual, não atômico, condição de corrida</summary>
-<br>
 
 ```js
 // find-then-insert: janela de condição de corrida entre as duas operações
@@ -269,11 +252,8 @@ async function saveStandings(teamId, points) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — **upsert** (atualizar ou inserir) atômico com $setOnInsert para campos de criação</summary>
-<br>
 
 ```js
 class StandingsRepository {

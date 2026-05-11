@@ -20,7 +20,6 @@ de nomenclatura. Dentro dessas convenções, o mesmo princípio vale: o código 
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```php
 declare(strict_types=1);
@@ -36,11 +35,8 @@ function apply($x, array $p, callable $c)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```php
 declare(strict_types=1);
@@ -62,7 +58,6 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
 
 <details>
 <summary>❌ Ruim — nomes em português no código</summary>
-<br>
 
 ```php
 $nomeDoUsuario = 'Alice';
@@ -74,11 +69,8 @@ function buscaEnderecoDoCliente(int $id): Address { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês: curto, direto, universal</summary>
-<br>
 
 ```php
 $userName = 'Alice';
@@ -103,7 +95,6 @@ function findCustomerAddress(int $customerID): Address { ... }
 
 <details>
 <summary>❌ Ruim — case errado para o contexto</summary>
-<br>
 
 ```php
 class order_service {}          // classe com underscore
@@ -116,11 +107,8 @@ $order_id = 42;                 // variável com underscore
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções PSR respeitadas</summary>
-<br>
 
 ```php
 class OrderService {}
@@ -143,7 +131,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -155,11 +142,8 @@ function statusUpdateOrder(int $orderID): void {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```php
 function getUserProfile(int $userID): UserProfile {}
@@ -173,7 +157,6 @@ function calculateInvoiceTotal(Invoice $invoice): float {}
 
 <details>
 <summary>❌ Ruim — handle, process, manage não dizem nada</summary>
-<br>
 
 ```php
 function handle($data): mixed {}
@@ -184,11 +167,8 @@ function doStuff($x): mixed {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```php
 function validatePayment(Payment $payment): void {}
@@ -203,7 +183,6 @@ function applySeasonalDiscount(Order $order): Order {}
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```php
 function callStripe(float $amount): ChargeResult {}
@@ -213,11 +192,8 @@ function postToSlack(string $message): void {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```php
 function chargeCustomer(float $amount): ChargeResult {}
@@ -231,7 +207,6 @@ function notifyTeam(string $message): void {}
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```php
 $loading = true;
@@ -241,11 +216,8 @@ $valid = str_contains($email, '@');
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is, has, can, should</summary>
-<br>
 
 ```php
 $isActive = $user->status === 'active';

@@ -20,7 +20,6 @@ ponto de uso deve ler como prosa: `users.remove(at: index)` é mais claro que `u
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```swift
 func apply(_ x: Any, _ p: [String: Any], _ c: (Any) -> Any) -> Any {
@@ -31,11 +30,8 @@ func apply(_ x: Any, _ p: [String: Any], _ c: (Any) -> Any) -> Any {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```swift
 func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
@@ -52,7 +48,6 @@ func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
 
 <details>
 <summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Swift</summary>
-<br>
 
 ```swift
 let nomeDoUsuario = "Alice"
@@ -64,11 +59,8 @@ func buscaEnderecoDoCliente(id: Int64) -> Address? { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês: curto, direto, universal</summary>
-<br>
 
 ```swift
 let userName = "Alice"
@@ -91,7 +83,6 @@ func findCustomerAddress(customerId: Int64) -> Address? { ... }
 
 <details>
 <summary>❌ Ruim — case errado</summary>
-<br>
 
 ```swift
 struct order_service { }         // struct com snake_case
@@ -101,11 +92,8 @@ let MaxRetries = 3               // constante com UpperCamelCase
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções Swift respeitadas</summary>
-<br>
 
 ```swift
 struct OrderService { }
@@ -124,7 +112,6 @@ nome da função já o implica.
 
 <details>
 <summary>❌ Ruim — labels que repetem o tipo ou são desnecessários</summary>
-<br>
 
 ```swift
 func send(message message: String, toUser user: User) { }
@@ -133,11 +120,8 @@ func send(message message: String, toUser user: User) { }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — chamada lê como prosa</summary>
-<br>
 
 ```swift
 func send(_ message: String, to user: User) { }
@@ -153,7 +137,6 @@ func move(from source: Index, to destination: Index) { }
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```swift
 let loading = true
@@ -163,11 +146,8 @@ let valid = email.contains("@")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is, has, can, should</summary>
-<br>
 
 ```swift
 let isActive = user.status == .active
@@ -189,7 +169,6 @@ let shouldRetry = attempt < maxRetries
 
 <details>
 <summary>❌ Ruim — sufixo genérico ou ambíguo</summary>
-<br>
 
 ```swift
 protocol UserProtocol { }
@@ -198,11 +177,8 @@ protocol IRepository { }     // prefixo I ao estilo C#, não idiomático em Swif
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome que descreve o papel</summary>
-<br>
 
 ```swift
 protocol UserRepository { }
@@ -216,7 +192,6 @@ protocol Cacheable { }
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura</summary>
-<br>
 
 ```swift
 func callStripe(amount: Decimal) async throws { }
@@ -225,11 +200,8 @@ func getUserFromCoreData(id: UUID) -> User? { }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```swift
 func chargeCustomer(amount: Decimal) async throws { }

@@ -24,7 +24,6 @@ Fases explícitas em cada `it`. Um `expect` por exemplo; sem lógica inline no a
 
 <details>
 <summary>❌ Ruim — fases misturadas, assert com lógica inline</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -39,11 +38,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AAA explícito, resultado nomeado</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -67,7 +63,6 @@ declara a expectativa em linguagem de negócio.
 
 <details>
 <summary>❌ Ruim — nomes sem contexto, fases coladas</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -86,11 +81,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hierarquia semântica, 1 expectativa por exemplo</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -125,7 +117,6 @@ válido na factory base; use `trait` para variações.
 
 <details>
 <summary>❌ Ruim — criação manual sem contexto</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -135,11 +126,8 @@ let(:order) { Order.new(id: 1, user_id: 5, total: 200, status: "active", created
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — factory com estado mínimo e traits semânticos</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -171,7 +159,6 @@ prefira objetos reais ou fakes nomeados — não inline stubs.
 
 <details>
 <summary>❌ Ruim — stub inline sem nome</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -187,11 +174,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — double nomeado, interface explícita</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

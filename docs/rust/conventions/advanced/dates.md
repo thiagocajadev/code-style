@@ -23,7 +23,6 @@ Nunca armazene `NaiveDateTime` sem documentar explicitamente que o timezone é i
 
 <details>
 <summary>❌ Ruim — NaiveDateTime sem timezone</summary>
-<br>
 
 ```rust
 use chrono::NaiveDateTime;
@@ -42,11 +41,8 @@ fn order_is_expired(order: &Order) -> bool {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DateTime<Utc> explícito</summary>
-<br>
 
 ```rust
 use chrono::{DateTime, Utc};
@@ -70,7 +66,6 @@ Parse datas de entrada com formato explícito. Nunca confie em inferência de fo
 
 <details>
 <summary>❌ Ruim — parse sem formato definido</summary>
-<br>
 
 ```rust
 fn parse_due_date(raw: &str) -> chrono::NaiveDate {
@@ -80,11 +75,8 @@ fn parse_due_date(raw: &str) -> chrono::NaiveDate {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — parse com Result e formato documentado</summary>
-<br>
 
 ```rust
 use chrono::NaiveDate;
@@ -104,7 +96,6 @@ fn parse_due_date(raw: &str) -> anyhow::Result<NaiveDate> {
 
 <details>
 <summary>❌ Ruim — timestamp como inteiro sem contexto</summary>
-<br>
 
 ```rust
 #[derive(serde::Serialize)]
@@ -116,11 +107,8 @@ struct OrderResponse {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — DateTime<Utc> serializado como RFC 3339</summary>
-<br>
 
 ```rust
 use chrono::{DateTime, Utc};
@@ -143,7 +131,6 @@ Use `chrono::Duration` para operações de data. Evite aritmética manual com se
 
 <details>
 <summary>❌ Ruim — aritmética manual com segundos</summary>
-<br>
 
 ```rust
 fn is_session_valid(created_at: DateTime<Utc>) -> bool {
@@ -155,11 +142,8 @@ fn is_session_valid(created_at: DateTime<Utc>) -> bool {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Duration com intenção legível</summary>
-<br>
 
 ```rust
 const SESSION_DURATION: chrono::Duration = chrono::Duration::hours(1);

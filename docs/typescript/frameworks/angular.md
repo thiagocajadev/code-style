@@ -63,7 +63,6 @@ Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada compo
 
 <details>
 <summary>❌ Ruim — componente declarado em NgModule</summary>
-<br>
 
 ```ts
 @NgModule({
@@ -84,11 +83,8 @@ export class UserCardComponent {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — standalone com imports e @Input({ required: true })</summary>
-<br>
 
 ```ts
 import { Component, input } from "@angular/core";
@@ -121,7 +117,6 @@ Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` 
 
 <details>
 <summary>❌ Ruim — BehaviorSubject para estado local simples</summary>
-<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -143,11 +138,8 @@ export class CartComponent implements OnInit, OnDestroy {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — signal e computed para estado local</summary>
-<br>
 
 ```ts
 import { Component, signal, computed } from "@angular/core";
@@ -189,7 +181,6 @@ Fluxo: `Smart → @Input() → Dumb → @Output() → Smart`
 
 <details>
 <summary>❌ Ruim — componente de lista com lógica de negócio misturada</summary>
-<br>
 
 ```ts
 @Component({
@@ -218,11 +209,8 @@ export class OrderListComponent implements OnInit {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Smart orquestra com signals; Dumb apresenta</summary>
-<br>
 
 ```ts
 // Smart Component
@@ -291,7 +279,6 @@ Services encapsulam lógica de negócio e acesso a dados. Usam `inject()` em vez
 
 <details>
 <summary>❌ Ruim — injeção via construtor, return type implícito</summary>
-<br>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -306,11 +293,8 @@ export class OrderService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inject(), return type explícito, tipos genéricos no HttpClient</summary>
-<br>
 
 ```ts
 import { Injectable, inject } from "@angular/core";
@@ -349,7 +333,6 @@ Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado
 
 <details>
 <summary>❌ Ruim — guard no ngOnInit do componente</summary>
-<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -367,11 +350,8 @@ export class DashboardComponent implements OnInit {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — CanActivateFn na definição da rota</summary>
-<br>
 
 ```ts
 // guards/auth.guard.ts
@@ -436,7 +416,6 @@ O **Resolver** cobre o papel do **Loader** definido em [frontend-flow.md](../../
 
 <details>
 <summary>❌ Ruim — busca no ngOnInit, componente monta sem dados</summary>
-<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -457,11 +436,8 @@ export class OrderDetailComponent implements OnInit {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ResolveFn na rota, componente recebe dados prontos via signal</summary>
-<br>
 
 ```ts
 // resolvers/order-detail.resolver.ts
@@ -524,7 +500,6 @@ O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Ang
 
 <details>
 <summary>❌ Ruim — FormGroup não-tipado, acesso por string</summary>
-<br>
 
 ```ts
 @Component({ /* ... */ })
@@ -543,11 +518,8 @@ export class LoginFormComponent {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — FormBuilder tipado, acesso direto aos controls, fieldset disabled</summary>
-<br>
 
 ```ts
 import { Component, inject, signal } from "@angular/core";
@@ -621,7 +593,6 @@ Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient �
 
 <details>
 <summary>❌ Ruim — token injetado manualmente em cada service</summary>
-<br>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -641,11 +612,8 @@ export class OrderService {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — auth interceptor centraliza o token em todas as requisições</summary>
-<br>
 
 ```ts
 // interceptors/auth.interceptor.ts
@@ -686,11 +654,8 @@ export const appConfig: ApplicationConfig = {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — error interceptor trata 401 e 500 globalmente</summary>
-<br>
 
 ```ts
 // interceptors/error.interceptor.ts

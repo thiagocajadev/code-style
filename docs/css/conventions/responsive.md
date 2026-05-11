@@ -18,7 +18,6 @@
 
 <details>
 <summary>❌ Ruim — desktop-first: base para tela grande, override para tela pequena</summary>
-<br>
 
 ```css
 .layout {
@@ -37,11 +36,8 @@
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mobile-first: base simples, expansão progressiva</summary>
-<br>
 
 ```css
 .layout {
@@ -67,7 +63,6 @@ grep no projeto inteiro.
 
 <details>
 <summary>❌ Ruim — pixel values mágicos e inconsistentes entre arquivos</summary>
-<br>
 
 ```css
 /* layout.css */
@@ -81,11 +76,8 @@ grep no projeto inteiro.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — breakpoints centralizados como fonte única de verdade</summary>
-<br>
 
 ```css
 /* tokens/breakpoints.css — definição única */

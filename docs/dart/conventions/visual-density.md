@@ -34,7 +34,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```dart
 Future<Receipt> processPayment(PaymentRequest request) async {
@@ -52,11 +51,8 @@ Future<Receipt> processPayment(PaymentRequest request) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```dart
 Future<Receipt> processPayment(PaymentRequest request) async {
@@ -93,7 +89,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```dart
 int mapErrorToStatus(AppError error) {
@@ -105,11 +100,8 @@ int mapErrorToStatus(AppError error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```dart
 int mapErrorToStatus(AppError error) {
@@ -136,7 +128,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```dart
 String formatOrderDate(String isoString, {String locale = 'pt_BR'}) {
@@ -153,11 +144,8 @@ e `return formattedDate` formam Explaining Return tight — não devem ser separ
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Explaining Return tight</summary>
-<br>
 
 ```dart
 String formatOrderDate(String isoString, {String locale = 'pt_BR'}) {
@@ -174,11 +162,8 @@ O blank separa o par "preparar formatter" do par "formatar + retornar". O par
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de objeto multi-linha</summary>
-<br>
 
 ```dart
 OrderResponse buildOrderResponse(Order order, String requestId) {
@@ -219,7 +204,6 @@ semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```dart
 final order = await _fetchOrder(orderId);
@@ -229,12 +213,9 @@ final invoice = _buildInvoice(order);
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```dart
 final order = await _fetchOrder(orderId);
@@ -245,11 +226,8 @@ final invoice = _buildInvoice(order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```dart
 final handler = eventHandlers[eventType];
@@ -264,11 +242,8 @@ final eventPayload = event.data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```dart
 final response = await _requestFn();
@@ -293,7 +268,6 @@ três juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```dart
 const minimumDrivingAge = 18;
@@ -303,12 +277,9 @@ const oneDayMs = 86400000;
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```dart
 const minimumDrivingAge = 18;
@@ -318,11 +289,8 @@ const oneDayMs = 86400000;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```dart
 const minimumDrivingAge = 18;
@@ -342,7 +310,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```dart
 String buildShippingLabel(Order order) {
@@ -358,11 +325,8 @@ String buildShippingLabel(Order order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```dart
 String buildShippingLabel(Order order) {
@@ -394,7 +358,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```dart
 String buildDeliveryMessage(User user, Order order) {
@@ -411,11 +374,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```dart
 String buildDeliveryMessage(User user, Order order) {
@@ -432,11 +392,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```dart
 String buildOrderSlug(Order order) {
@@ -458,7 +415,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```dart
 while (attempt < maxAttempts) {
@@ -470,11 +426,8 @@ while (attempt < maxAttempts) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```dart
 while (attempt < maxAttempts) {
@@ -494,7 +447,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```dart
 Future<void> createUserHandler(CreateUserRequest request) async {
@@ -508,11 +460,8 @@ Future<void> createUserHandler(CreateUserRequest request) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```dart
 Future<void> createUserHandler(CreateUserRequest request) async {
@@ -535,7 +484,6 @@ verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```dart
 test('applies percentage discount to order price', () {
@@ -548,11 +496,8 @@ test('applies percentage discount to order price', () {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expect separado, assertion como fase própria</summary>
-<br>
 
 ```dart
 test('applies percentage discount to order price', () {
@@ -575,7 +520,6 @@ bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — construtor multi-linha colado ao próximo statement</summary>
-<br>
 
 ```dart
 Future<String> createSession(User user) async {
@@ -592,11 +536,8 @@ Future<String> createSession(User user) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do construtor isola o bloco</summary>
-<br>
 
 ```dart
 Future<String> createSession(User user) async {
@@ -625,7 +566,6 @@ e ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```dart
 void processOrder(Order order) {
@@ -641,12 +581,9 @@ void processOrder(Order order) {
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```dart
 void processOrder(Order order) {
@@ -664,11 +601,8 @@ void processOrder(Order order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```dart
 CreateUserInput validateInput(Map<String, dynamic> input) {
@@ -690,7 +624,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```dart
 final userName     = 'alice';
@@ -701,11 +634,8 @@ final lastLoginAt  = DateTime.now();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```dart
 final userName = 'alice';
@@ -723,7 +653,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```dart
 String buildDeliveryMessage(User user, Order order) {
@@ -733,11 +662,8 @@ String buildDeliveryMessage(User user, Order order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```dart
 String buildDeliveryMessage(User user, Order order) {
@@ -758,7 +684,6 @@ têm efeitos colaterais não óbvios.
 
 <details>
 <summary>❌ Ruim — cascade misturado com lógica</summary>
-<br>
 
 ```dart
 final buffer = StringBuffer()
@@ -770,11 +695,8 @@ final buffer = StringBuffer()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lógica extraída; cascade só para operações de configuração</summary>
-<br>
 
 ```dart
 final itemsLine = items.isEmpty ? 'No items' : items.map((i) => i.name).join(', ');

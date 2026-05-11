@@ -37,7 +37,6 @@ Prefira tipos de precisão explícita. Evite aliases legados (`INT` é preferív
 
 <details>
 <summary>❌ Ruim — tipos imprecisos e legados</summary>
-<br>
 
 ```sql
 CREATE TABLE Products
@@ -51,11 +50,8 @@ CREATE TABLE Products
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipos explícitos e precisos</summary>
-<br>
 
 ```sql
 CREATE TABLE Products
@@ -86,7 +82,6 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 
 <details>
 <summary>✅ Bom — **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
-<br>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
@@ -125,7 +120,6 @@ Padrão: `SP_VERBO_TABELA` ou `SP_VERBO_TABELA_BY_CAMPO` em `UPPER_SNAKE_CASE`.
 
 <details>
 <summary>❌ Ruim — nome genérico, sem parâmetros tipados, sem formatação vertical</summary>
-<br>
 
 ```sql
 CREATE PROCEDURE sp_GetData @id INT AS
@@ -136,11 +130,8 @@ END
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome descritivo, parâmetro tipado, linha em branco entre AS e BEGIN</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_GET_FOOTBALL_TEAM_BY_ID
@@ -169,7 +160,6 @@ END;
 
 <details>
 <summary>❌ Ruim — sem tratamento de erro, falha silenciosa</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_ADD_ORDER
@@ -187,11 +177,8 @@ END;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — TRY/CATCH com ROLLBACK e THROW</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_ADD_ORDER
@@ -235,7 +222,6 @@ Toda operação que modifica múltiplas tabelas deve estar em uma transação ex
 
 <details>
 <summary>❌ Ruim — múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
-<br>
 
 ```sql
 INSERT INTO Orders (Id, CustomerId, TotalAmount) VALUES (@Id, @CustomerId, @TotalAmount);
@@ -244,11 +230,8 @@ INSERT INTO OrderItems (OrderId, ProductId, Quantity) VALUES (@Id, @ProductId, @
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — transação explícita garante atomicidade</summary>
-<br>
 
 ```sql
 BEGIN TRY
@@ -318,7 +301,6 @@ SQL Server 2025 introduz funções `REGEXP_LIKE`, `REGEXP_REPLACE`, `REGEXP_SUBS
 
 <details>
 <summary>✅ Bom — validação de e-mail sem CLR ou função auxiliar</summary>
-<br>
 
 ```sql
 SELECT
@@ -339,7 +321,6 @@ para deduplicação e busca tolerante a erros.
 
 <details>
 <summary>✅ Bom — encontrar nomes similares com tolerância a typos</summary>
-<br>
 
 ```sql
 SELECT
@@ -363,7 +344,6 @@ O tipo `JSON` nativo armazena até 2 GB por linha com indexação direta, sem ne
 
 <details>
 <summary>✅ Bom — coluna JSON nativa com índice</summary>
-<br>
 
 ```sql
 CREATE TABLE Events
@@ -389,7 +369,6 @@ em T-SQL, usando **DiskANN** para indexação eficiente.
 
 <details>
 <summary>✅ Bom — busca por similaridade vetorial</summary>
-<br>
 
 ```sql
 CREATE TABLE Documents
@@ -421,7 +400,6 @@ eliminando parameter sniffing sem `OPTION (RECOMPILE)`.
 
 <details>
 <summary>✅ Bom — ativar OPPO na procedure</summary>
-<br>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_LIST_ORDERS_BY_FILTER
@@ -461,7 +439,6 @@ linha a linha para volumes acima de milhares de registros.
 
 <details>
 <summary>✅ Bom — importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
-<br>
 
 ```sql
 BULK INSERT Players
@@ -485,7 +462,6 @@ mais etapas e um ou mais schedules.
 
 <details>
 <summary>✅ Bom — criar job com etapa T-SQL e agendamento diário</summary>
-<br>
 
 ```sql
 -- criar o job

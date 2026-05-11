@@ -92,7 +92,6 @@ Executar: `swiftlint --strict` em CI.
 
 <details>
 <summary>❌ Ruim — force unwrap detectado pelo SwiftLint</summary>
-<br>
 
 ```swift
 let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
@@ -100,11 +99,8 @@ let user = userRepository.find(id: userId)!   // força unwrap sem mensagem
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard let com saída antecipada expressiva</summary>
-<br>
 
 ```swift
 guard let user = userRepository.find(id: userId) else {

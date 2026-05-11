@@ -34,7 +34,6 @@ três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```rust
 async fn register_user(input: RegisterUserInput) -> anyhow::Result<User> {
@@ -51,11 +50,8 @@ async fn register_user(input: RegisterUserInput) -> anyhow::Result<User> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```rust
 async fn register_user(input: RegisterUserInput) -> anyhow::Result<User> {
@@ -86,7 +82,6 @@ antes, não fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```rust
 fn map_error_to_status(error: &AppError) -> u16 {
@@ -98,11 +93,8 @@ fn map_error_to_status(error: &AppError) -> u16 {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```rust
 fn map_error_to_status(error: &AppError) -> u16 {
@@ -128,7 +120,6 @@ Em todos os outros casos, vai blank antes do retorno:
 
 <details>
 <summary>❌ Ruim — retorno fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```rust
 fn format_order_date(iso_string: &str) -> anyhow::Result<String> {
@@ -149,11 +140,8 @@ tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```rust
 fn format_order_date(iso_string: &str) -> anyhow::Result<String> {
@@ -173,11 +161,8 @@ O blank fica **depois** do `formatter` multi-linha. O par `formatted_date` +
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de struct multi-linha</summary>
-<br>
 
 ```rust
 fn build_order_response(order: &Order, request_id: &str) -> OrderResponse {
@@ -220,7 +205,6 @@ visual, não semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```rust
 let order = fetch_order(order_id).await?;
@@ -231,11 +215,8 @@ let invoice = build_invoice(&order.unwrap());
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```rust
 let order = fetch_order(order_id).await?;
@@ -246,11 +227,8 @@ let invoice = build_invoice(&order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```rust
 let handler = event_handlers.get(&event_type);
@@ -265,11 +243,8 @@ let event_payload = event.data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```rust
 let response = request_fn().await?;
@@ -294,7 +269,6 @@ juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```rust
 const MINIMUM_DRIVING_AGE: u32 = 18;
@@ -304,12 +278,9 @@ const ONE_DAY_MS: u64 = 86_400_000;
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```rust
 const MINIMUM_DRIVING_AGE: u32 = 18;
@@ -319,11 +290,8 @@ const ONE_DAY_MS: u64 = 86_400_000;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```rust
 const MINIMUM_DRIVING_AGE: u32 = 18;
@@ -343,7 +311,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```rust
 fn build_shipping_label(order: &Order) -> String {
@@ -359,11 +326,8 @@ fn build_shipping_label(order: &Order) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```rust
 fn build_shipping_label(order: &Order) -> String {
@@ -395,7 +359,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```rust
 fn build_delivery_message(user: &User, order: &Order) -> String {
@@ -412,11 +375,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```rust
 fn build_delivery_message(user: &User, order: &Order) -> String {
@@ -433,11 +393,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```rust
 fn build_order_slug(order: &Order) -> String {
@@ -460,7 +417,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```rust
 while attempt < MAX_ATTEMPTS {
@@ -472,11 +428,8 @@ while attempt < MAX_ATTEMPTS {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```rust
 while attempt < MAX_ATTEMPTS {
@@ -496,7 +449,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```rust
 async fn create_user_handler(
@@ -512,11 +464,8 @@ async fn create_user_handler(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```rust
 async fn create_user_handler(
@@ -541,7 +490,6 @@ sendo verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```rust
 #[test]
@@ -555,11 +503,8 @@ fn applies_percentage_discount_to_order_price() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert separado, assertion como fase própria</summary>
-<br>
 
 ```rust
 #[test]
@@ -583,7 +528,6 @@ o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — struct multi-linha colada ao próximo statement</summary>
-<br>
 
 ```rust
 async fn create_session(user: &User) -> anyhow::Result<String> {
@@ -600,11 +544,8 @@ async fn create_session(user: &User) -> anyhow::Result<String> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois da struct isola o bloco</summary>
-<br>
 
 ```rust
 async fn create_session(user: &User) -> anyhow::Result<String> {
@@ -634,7 +575,6 @@ atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```rust
 fn process_order(order: &mut Order) {
@@ -650,12 +590,9 @@ fn process_order(order: &mut Order) {
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```rust
 fn process_order(order: &mut Order) {
@@ -673,11 +610,8 @@ fn process_order(order: &mut Order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas inline em sequência ficam tight (trio atômico)</summary>
-<br>
 
 ```rust
 fn validate_input(input: &CreateUserInput) -> anyhow::Result<()> {
@@ -699,7 +633,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```rust
 let user_name     = "alice";
@@ -710,11 +643,8 @@ let last_login_at = chrono::Utc::now();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```rust
 let user_name = "alice";
@@ -732,7 +662,6 @@ Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```rust
 fn build_delivery_message(user: &User, order: &Order) -> String {
@@ -747,11 +676,8 @@ fn build_delivery_message(user: &User, order: &Order) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```rust
 fn build_delivery_message(user: &User, order: &Order) -> String {

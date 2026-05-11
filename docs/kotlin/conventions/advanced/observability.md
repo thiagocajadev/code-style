@@ -21,7 +21,6 @@ contexto de diagnóstico mapeado) propaga identificadores de correlação automa
 
 <details>
 <summary>❌ Ruim — string concatenada sem campos estruturados</summary>
-<br>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
@@ -33,11 +32,8 @@ fun processOrder(orderId: Long, userId: Long) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — campos nomeados com contexto completo</summary>
-<br>
 
 ```kotlin
 fun processOrder(orderId: Long, userId: Long) {
@@ -53,7 +49,6 @@ fun processOrder(orderId: Long, userId: Long) {
 
 <details>
 <summary>❌ Ruim — correlationId passado manualmente em cada chamada</summary>
-<br>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -65,11 +60,8 @@ fun handleRequest(requestId: String, userId: Long) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — MDC propagado automaticamente em todos os logs do request</summary>
-<br>
 
 ```kotlin
 fun handleRequest(requestId: String, userId: Long) {
@@ -100,7 +92,6 @@ fun handleRequest(requestId: String, userId: Long) {
 
 <details>
 <summary>❌ Ruim — ERROR para situação esperada; INFO para exceção</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Order? {
@@ -122,11 +113,8 @@ fun chargeCard(cardId: Long) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nível proporcional à severidade</summary>
-<br>
 
 ```kotlin
 fun findOrder(id: Long): Order? {

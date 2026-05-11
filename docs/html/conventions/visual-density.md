@@ -38,7 +38,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Ruim — landmarks colados, sem respiro entre fases</summary>
-<br>
 
 ```html
 <header>
@@ -62,11 +61,8 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma linha em branco entre landmarks e seções irmãs</summary>
-<br>
 
 ```html
 <header>
@@ -104,7 +100,6 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 
 <details>
 <summary>❌ Ruim — campos multi-linha colados, fases indistintas</summary>
-<br>
 
 ```html
 <form>
@@ -130,11 +125,8 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois de cada par label+input multi-linha</summary>
-<br>
 
 ```html
 <form>
@@ -170,7 +162,6 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 
 <details>
 <summary>❌ Ruim — itens curtos com blanks inúteis</summary>
-<br>
 
 ```html
 <ul>
@@ -183,12 +174,9 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — itens de uma linha ficam tight</summary>
-<br>
 
 ```html
 <ul>
@@ -200,11 +188,8 @@ Cada par label+input é uma unidade — sem blank entre eles. O respiro separa c
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — itens expandidos pedem respiro entre eles</summary>
-<br>
 
 ```html
 <ul class="product-grid">
@@ -236,7 +221,6 @@ Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar jun
 
 <details>
 <summary>❌ Ruim — quatro meta tags como muralha sem respiro</summary>
-<br>
 
 ```html
 <head>
@@ -249,11 +233,8 @@ Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar jun
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — quatro meta tags quebradas em 2+2</summary>
-<br>
 
 ```html
 <head>
@@ -275,7 +256,6 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar atributos verticalmente</summary>
-<br>
 
 ```html
 <input id="first-name"  type="text"     name="first_name"  required />
@@ -285,11 +265,8 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — um único espaço entre atributos</summary>
-<br>
 
 ```html
 <input id="first-name" type="text" name="first_name" required />
@@ -305,7 +282,6 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 
 <details>
 <summary>❌ Ruim — comentário sobre o que o código faz, não onde termina</summary>
-<br>
 
 ```html
 <!-- This is the navigation menu with links -->
@@ -315,11 +291,8 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — comentário de fechamento identifica a seção</summary>
-<br>
 
 ```html
 <!-- Navigation -->

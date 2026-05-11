@@ -21,7 +21,6 @@ bugs de programação (não capturar em produção).
 
 <details>
 <summary>❌ Ruim — throw de string ou Exception genérica</summary>
-<br>
 
 ```dart
 Future<Order> findOrder(int id) async {
@@ -35,11 +34,8 @@ Future<Order> findOrder(int id) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Exception subclassificada por tipo de erro</summary>
-<br>
 
 ```dart
 class OrderNotFoundException implements Exception {
@@ -64,7 +60,6 @@ Future<Order> findOrder(int id) async {
 
 <details>
 <summary>❌ Ruim — catch engole sem log</summary>
-<br>
 
 ```dart
 Future<void> sendNotification(int userId) async {
@@ -78,11 +73,8 @@ Future<void> sendNotification(int userId) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — log estruturado + decisão explícita de continuar</summary>
-<br>
 
 ```dart
 Future<void> sendNotification(int userId) async {
@@ -104,7 +96,6 @@ Future<void> sendNotification(int userId) async {
 
 <details>
 <summary>❌ Ruim — catch genérico captura até Errors de programação</summary>
-<br>
 
 ```dart
 Future<Order?> processOrder(int orderId) async {
@@ -118,11 +109,8 @@ Future<Order?> processOrder(int orderId) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — on com tipo específico; re-throw o resto</summary>
-<br>
 
 ```dart
 Future<Order?> processOrder(int orderId) async {
@@ -141,7 +129,6 @@ Future<Order?> processOrder(int orderId) async {
 
 <details>
 <summary>❌ Ruim — Exception para controle de fluxo no chamador</summary>
-<br>
 
 ```dart
 Future<void> submitOrder(OrderRequest request) async {
@@ -158,11 +145,8 @@ Future<void> submitOrder(OrderRequest request) async {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Result como valor; switch exaustivo no chamador</summary>
-<br>
 
 ```dart
 sealed class SubmitOrderResult {}

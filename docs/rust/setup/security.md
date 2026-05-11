@@ -26,7 +26,6 @@ toda leitura de env vars em `src/config.rs`.
 
 <details>
 <summary>❌ Ruim — secret hardcoded</summary>
-<br>
 
 ```rust
 const JWT_SECRET: &str = "minha-chave-super-secreta"; // exposto no git
@@ -43,11 +42,8 @@ fn sign_token(user_id: u64) -> String {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — secret via variável de ambiente</summary>
-<br>
 
 ```rust
 // .env.example
@@ -90,7 +86,6 @@ Use tipos como contratos: se o compilador aceita o tipo, os invariantes estão g
 
 <details>
 <summary>❌ Ruim — dado cru repassado sem validação</summary>
-<br>
 
 ```rust
 async fn create_order(
@@ -105,11 +100,8 @@ async fn create_order(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipo validado na fronteira do handler</summary>
-<br>
 
 ```rust
 use serde::Deserialize;
@@ -143,7 +135,6 @@ e revisão obrigatória em code review.
 
 <details>
 <summary>❌ Ruim — unsafe sem justificativa</summary>
-<br>
 
 ```rust
 fn read_config_ptr(ptr: *const u8, len: usize) -> &'static str {
@@ -153,11 +144,8 @@ fn read_config_ptr(ptr: *const u8, len: usize) -> &'static str {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — unsafe justificado ou eliminado com safe alternative</summary>
-<br>
 
 ```rust
 // Versão safe — prefira sempre que possível

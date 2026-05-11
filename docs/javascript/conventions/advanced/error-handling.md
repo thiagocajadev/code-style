@@ -21,7 +21,6 @@ Erros bem estruturados separam o que é **problema de negócio** (regra violada,
 
 <details>
 <summary>❌ Ruim — null, undefined, false e objeto na mesma função</summary>
-<br>
 
 ```js
 function processOrder(order) {
@@ -42,11 +41,8 @@ if (result !== null) { /* ... */ }  // e undefined?
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contrato consistente, sempre o mesmo formato</summary>
-<br>
 
 ```js
 function processOrder(order) {
@@ -67,7 +63,6 @@ function processOrder(order) {
 
 <details>
 <summary>❌ Ruim — string solta, impossível tratar com instanceof</summary>
-<br>
 
 ```js
 async function findUser(id) {
@@ -83,11 +78,8 @@ async function findUser(id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — erros tipados, identificáveis e tratáveis</summary>
-<br>
 
 ```js
 async function findUser(id) {
@@ -104,7 +96,6 @@ async function findUser(id) {
 
 <details>
 <summary>❌ Ruim — throw com string solta, sem tipo, sem contrato</summary>
-<br>
 
 ```js
 // errors.js — não existe, cada módulo lança o que quiser
@@ -128,11 +119,8 @@ async function processOrder(orderId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contrato único para todos os erros da aplicação</summary>
-<br>
 
 ```js
 // errors.js
@@ -201,7 +189,6 @@ export class InternalServerError extends BaseError {
 
 <details>
 <summary>❌ Ruim — captura, loga e retorna null</summary>
-<br>
 
 ```js
 async function findProductById(id) {
@@ -222,11 +209,8 @@ async function findProductById(id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — propaga com contexto, trata no limite do sistema</summary>
-<br>
 
 ```js
 async function findProductById(id) {
@@ -255,7 +239,6 @@ async function findProductById(id) {
 
 <details>
 <summary>❌ Ruim — try/catch controlando lógica de negócio normal</summary>
-<br>
 
 ```js
 function getUser(id) {
@@ -269,11 +252,8 @@ function getUser(id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verificação explícita, sem exceção para fluxo normal</summary>
-<br>
 
 ```js
 function getUser(id) {

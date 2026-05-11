@@ -24,7 +24,6 @@ Clone só quando o valor precisa viver mais que a referência ou quando não é 
 
 <details>
 <summary>❌ Ruim — clone onde &str seria suficiente</summary>
-<br>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -39,11 +38,8 @@ fn find_by_name(orders: &[Order], name: String) -> Option<&Order> { // String qu
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — referências onde o valor não precisa ser owned</summary>
-<br>
 
 ```rust
 fn log_order_id(order: &Order) {
@@ -64,7 +60,6 @@ com tanto `String` quanto `&str` sem alocação.
 
 <details>
 <summary>❌ Ruim — String em parâmetro que só lê</summary>
-<br>
 
 ```rust
 fn validate_email(email: String) -> bool {
@@ -77,11 +72,8 @@ validate_email(user.email.clone());
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — &str aceita String e &str sem alocação</summary>
-<br>
 
 ```rust
 fn validate_email(email: &str) -> bool {
@@ -101,7 +93,6 @@ Não colete em `Vec` antes de precisar do resultado final. Encadeie iteradores l
 
 <details>
 <summary>❌ Ruim — coleta intermediária desnecessária</summary>
-<br>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -113,11 +104,8 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — pipeline lazy sem alocação intermediária</summary>
-<br>
 
 ```rust
 fn get_paid_order_totals(orders: &[Order]) -> f64 {
@@ -137,7 +125,6 @@ Quando o tamanho do `HashMap` é conhecido de antemão, pré-aloque para evitar 
 
 <details>
 <summary>❌ Ruim — HashMap sem capacidade inicial</summary>
-<br>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -153,11 +140,8 @@ fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — with_capacity evita rehashing</summary>
-<br>
 
 ```rust
 fn index_orders(orders: &[Order]) -> std::collections::HashMap<u64, &Order> {
@@ -179,7 +163,6 @@ Use `criterion` para benchmarks reproduzíveis. Não confie em timing manual.
 
 <details>
 <summary>✅ Bom — benchmark com criterion</summary>
-<br>
 
 ```rust
 // benches/order_bench.rs

@@ -39,7 +39,6 @@ my-program/
 
 <details>
 <summary>❌ Ruim — sem validação de accounts, lógica na instrução</summary>
-<br>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -81,11 +80,8 @@ pub struct Product {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constraint de autorização + validação de entrada</summary>
-<br>
 
 ```rust
 use anchor_lang::prelude::*;
@@ -180,7 +176,6 @@ mutabilidade e assinatura antes de executar o programa.
 
 <details>
 <summary>❌ Ruim — account sem constraint, mutabilidade excessiva</summary>
-<br>
 
 ```rust
 #[derive(Accounts)]
@@ -197,11 +192,8 @@ pub struct WithdrawFunds<'info> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — account tipado, constraint de ownership, PDA verificado</summary>
-<br>
 
 ```rust
 #[derive(Accounts)]

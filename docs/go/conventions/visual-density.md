@@ -22,7 +22,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Ruim — bloco sem separação entre grupos lógicos</summary>
-<br>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -45,11 +44,8 @@ func processOrder(ctx context.Context, orderID int64) (*Order, error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```go
 func processOrder(ctx context.Context, orderID int64) (*Order, error) {
@@ -82,7 +78,6 @@ Uma variável nomeada acima do `return` explica o valor retornado. Sempre que a 
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```go
 func mapErrorToStatus(err error) int {
@@ -94,11 +89,8 @@ func mapErrorToStatus(err error) int {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```go
 func mapErrorToStatus(err error) int {
@@ -122,7 +114,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é declaração single-line</summary>
-<br>
 
 ```go
 func calculateTotal(items []Item) float64 {
@@ -139,11 +130,8 @@ func calculateTotal(items []Item) float64 {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```go
 func buildOrderResponse(order Order, requestID string) OrderResponse {
@@ -162,11 +150,8 @@ O bloco multi-linha `data` exige blank depois de si. O par `response` + `return 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando retorna chamada (sem variável nomeada)</summary>
-<br>
 
 ```go
 func findPendingOrders(userID int64) ([]Order, error) {
@@ -186,7 +171,6 @@ Quando o guarda cabe em **uma única linha** (raro em Go, mas válido — `if er
 
 <details>
 <summary>❌ Ruim — declaração solta do seu guarda em bloco</summary>
-<br>
 
 ```go
 order, err := repository.FindByID(ctx, orderID)
@@ -199,11 +183,8 @@ invoice := buildInvoice(order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em bloco como par, blank depois</summary>
-<br>
 
 ```go
 order, err := repository.FindByID(ctx, orderID)
@@ -224,7 +205,6 @@ Dois `if` consecutivos com **bloco** colados formam muralha: o olho não disting
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```go
 func processOrder(order Order) {
@@ -241,11 +221,8 @@ func processOrder(order Order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```go
 func processOrder(order Order) {
@@ -269,7 +246,6 @@ Três declarações simples consecutivas (`const`, `:=` com literal) formam grup
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```go
 const (
@@ -282,11 +258,8 @@ const (
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```go
 const (
@@ -300,11 +273,8 @@ Atenção: `const` em bloco aqui ganha alinhamento natural do `gofmt`. Em declar
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```go
 const (
@@ -324,7 +294,6 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```go
 func buildShippingLabel(order Order) string {
@@ -340,11 +309,8 @@ func buildShippingLabel(order Order) string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```go
 func buildShippingLabel(order Order) string {
@@ -372,7 +338,6 @@ Heurística:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```go
 func buildDeliveryMessage(user User, order Order) string {
@@ -387,11 +352,8 @@ func buildDeliveryMessage(user User, order Order) string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```go
 func buildDeliveryMessage(user User, order Order) string {
@@ -413,7 +375,6 @@ Quando um struct literal, slice/map literal ou call quebra em várias linhas, o 
 
 <details>
 <summary>❌ Ruim — struct literal multi-linha colado ao próximo statement</summary>
-<br>
 
 ```go
 func createSession(user User) (string, error) {
@@ -434,11 +395,8 @@ func createSession(user User) (string, error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do struct literal isola o bloco</summary>
-<br>
 
 ```go
 func createSession(user User) (string, error) {
@@ -466,7 +424,6 @@ Não alinhe verticalmente `:=` ou `=` com múltiplos espaços. Use sempre **um e
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar `:=`</summary>
-<br>
 
 ```go
 userName     := "alice"
@@ -477,11 +434,8 @@ lastLoginAt  := time.Now().UTC()
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```go
 userName := "alice"
@@ -498,7 +452,6 @@ Agrupe importações em blocos: stdlib, externos, internos. `goimports` faz isso
 
 <details>
 <summary>✅ Bom — importações em 3 grupos separados por linha em branco</summary>
-<br>
 
 ```go
 import (
@@ -522,7 +475,6 @@ Campos de um struct ficam agrupados por responsabilidade. Separação por linha 
 
 <details>
 <summary>❌ Ruim — campos sem separação lógica</summary>
-<br>
 
 ```go
 type OrderService struct {
@@ -538,11 +490,8 @@ type OrderService struct {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — campos agrupados por responsabilidade</summary>
-<br>
 
 ```go
 type OrderService struct {
@@ -566,7 +515,6 @@ Em testes, o `assert`/`require` é fase distinta. A linha em branco antes dele s
 
 <details>
 <summary>❌ Ruim — assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```go
 func TestAppliesTenPercentDiscount(t *testing.T) {
@@ -579,11 +527,8 @@ func TestAppliesTenPercentDiscount(t *testing.T) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — assert separado, assertion como fase própria</summary>
-<br>
 
 ```go
 func TestAppliesTenPercentDiscount(t *testing.T) {
@@ -603,7 +548,6 @@ Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
 
 <details>
 <summary>❌ Ruim — interpolação densa inline, sem semântica nas partes</summary>
-<br>
 
 ```go
 func buildShippingMessage(order Order) string {
@@ -617,11 +561,8 @@ func buildShippingMessage(order Order) string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```go
 func buildShippingMessage(order Order) string {

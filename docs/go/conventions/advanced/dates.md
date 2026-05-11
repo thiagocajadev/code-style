@@ -24,7 +24,6 @@ timestamps do sistema e `time.ParseInLocation` para input do usuário com timezo
 
 <details>
 <summary>❌ Ruim — time sem fuso horário definido</summary>
-<br>
 
 ```go
 scheduledAt, _ := time.Parse("2006-01-02", "2026-01-15")
@@ -34,11 +33,8 @@ scheduledAt, _ := time.Parse("2006-01-02", "2026-01-15")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fuso horário explícito em toda criação de time</summary>
-<br>
 
 ```go
 // timestamp do sistema: sempre UTC
@@ -60,7 +56,6 @@ e desserializar datas em APIs e bancos de dados.
 
 <details>
 <summary>❌ Ruim — formato de data não padronizado</summary>
-<br>
 
 ```go
 type OrderRequest struct {
@@ -72,11 +67,8 @@ scheduledAt, _ := time.Parse("02/01/2006", req.ScheduledAt)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — RFC 3339 com parsing explícito</summary>
-<br>
 
 ```go
 type OrderRequest struct {
@@ -104,7 +96,6 @@ o campo é opcionalmente nulo (diferente de zero time).
 
 <details>
 <summary>✅ Bom — time.Time direto para campos obrigatórios</summary>
-<br>
 
 ```go
 type Order struct {
@@ -130,7 +121,6 @@ Para durations, componha usando as constantes de `time`: `time.Second`, `time.Mi
 
 <details>
 <summary>❌ Ruim — número mágico de nanosegundos</summary>
-<br>
 
 ```go
 time.Sleep(5000000000)         // 5 segundos? 5ms? impossível ler
@@ -139,11 +129,8 @@ timeout := 300000000000        // 5 minutos em nanosegundos
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — constantes compostas e nomeadas</summary>
-<br>
 
 ```go
 const (
@@ -166,7 +153,6 @@ Nunca compare strings de datas.
 
 <details>
 <summary>❌ Ruim — comparação via string</summary>
-<br>
 
 ```go
 if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) {
@@ -176,11 +162,8 @@ if order.ExpiresAt.Format(time.RFC3339) < time.Now().UTC().Format(time.RFC3339) 
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — comparação via métodos de time.Time</summary>
-<br>
 
 ```go
 func (o Order) IsExpired() bool {
@@ -198,7 +181,6 @@ antes de salvar evita divergência entre o que foi salvo e o que foi retornado.
 
 <details>
 <summary>✅ Bom — truncar para microsegundos antes de persistir</summary>
-<br>
 
 ```go
 func (r *orderRepository) Save(ctx context.Context, order Order) (*Order, error) {

@@ -25,7 +25,6 @@ negócio fica aqui.
 
 <details>
 <summary>❌ Ruim — controller com lógica de negócio e acesso direto ao banco</summary>
-<br>
 
 ```java
 @RestController
@@ -51,11 +50,8 @@ public class OrderController {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — controller delega ao service; request e response são records tipados</summary>
-<br>
 
 ```java
 @Slf4j
@@ -95,7 +91,6 @@ Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos D
 
 <details>
 <summary>✅ Bom — records como contrato de API</summary>
-<br>
 
 ```java
 // request
@@ -142,7 +137,6 @@ O service orquestra as regras de negócio. Não conhece HTTP nem detalhes de ban
 
 <details>
 <summary>✅ Bom — service orquestra, não implementa detalhes de infra</summary>
-<br>
 
 ```java
 @Slf4j
@@ -203,7 +197,6 @@ pelo nome da classe — ou SQL nativo com `nativeQuery = true` — referencia a 
 
 <details>
 <summary>✅ Bom — JPQL: referencia a entidade Java, alias expressivo</summary>
-<br>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -237,11 +230,8 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — SQL nativo: tabela real, padrão Tabela.coluna</summary>
-<br>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -280,7 +270,6 @@ de escrita.
 
 <details>
 <summary>❌ Ruim — @Transactional no controller ou sem readOnly</summary>
-<br>
 
 ```java
 @Transactional // no controller — camada errada
@@ -294,11 +283,8 @@ public class OrderService { /* ... */ }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — readOnly por padrão na classe, @Transactional nos métodos de escrita</summary>
-<br>
 
 ```java
 @Service
@@ -320,7 +306,6 @@ Centralize o mapeamento de exceções para respostas HTTP em um `@RestController
 
 <details>
 <summary>✅ Bom — tratamento centralizado por tipo de exceção</summary>
-<br>
 
 ```java
 @Slf4j
@@ -359,7 +344,6 @@ Use `Pageable` e `Page<T>` para endpoints que retornam listas potencialmente gra
 
 <details>
 <summary>✅ Bom — paginação via Pageable</summary>
-<br>
 
 ```java
 // controller

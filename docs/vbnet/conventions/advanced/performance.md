@@ -25,7 +25,6 @@ imutáveis em .NET. `StringBuilder` reutiliza um buffer interno e aloca uma vez 
 
 <details>
 <summary>❌ Ruim — nova string alocada por iteração</summary>
-<br>
 
 ```vbnet
 Public Function BuildOrderSummary(items As IEnumerable(Of OrderItem)) As String
@@ -40,11 +39,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — StringBuilder reutiliza o buffer</summary>
-<br>
 
 ```vbnet
 Public Function BuildOrderSummary(items As IEnumerable(Of OrderItem)) As String
@@ -67,7 +63,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — For Each cria enumerador por iteração em hot path</summary>
-<br>
 
 ```vbnet
 Public Function CalculateTotalRevenue(orders As Order()) As Decimal
@@ -82,11 +77,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — For com índice em array: sem enumerador</summary>
-<br>
 
 ```vbnet
 Public Function CalculateTotalRevenue(orders As Order()) As Decimal
@@ -108,7 +100,6 @@ boxing: alocação de um wrapper no heap. Em hot paths, prefira genéricos ou ti
 
 <details>
 <summary>❌ Ruim — ArrayList usa Object, boxing por item</summary>
-<br>
 
 ```vbnet
 Public Function SumAmounts(amounts As ArrayList) As Decimal
@@ -123,11 +114,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — List(Of Decimal) sem boxing</summary>
-<br>
 
 ```vbnet
 Public Function SumAmounts(amounts As List(Of Decimal)) As Decimal
@@ -150,7 +138,6 @@ vez no módulo e reutilize.
 
 <details>
 <summary>❌ Ruim — List.Contains percorre tudo a cada chamada</summary>
-<br>
 
 ```vbnet
 Private ReadOnly _premiumCategories As New List(Of String) From {
@@ -166,11 +153,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — HashSet.Contains resolve em O(1)</summary>
-<br>
 
 ```vbnet
 Private ReadOnly _premiumCategories As New HashSet(Of String) From {
@@ -194,7 +178,6 @@ retornar o valor diretamente quando possível.
 
 <details>
 <summary>❌ Ruim — Task desnecessário quando resultado está em cache</summary>
-<br>
 
 ```vbnet
 Public Async Function FindProductAsync(id As Guid) As Task(Of Product)
@@ -211,11 +194,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — retorno síncrono direto quando possível</summary>
-<br>
 
 ```vbnet
 Public Function FindProduct(id As Guid) As Product

@@ -54,7 +54,6 @@ my-app/
 
 <details>
 <summary>❌ Ruim — sem versão de toolchain, dependências soltas</summary>
-<br>
 
 ```go
 module my-app
@@ -68,11 +67,8 @@ require (
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — módulo com toolchain fixo e dependências versionadas</summary>
-<br>
 
 ```go
 module github.com/company/my-app
@@ -102,7 +98,6 @@ ausência de valor vazio.
 
 <details>
 <summary>❌ Ruim — os.Getenv espalhado em todo lugar</summary>
-<br>
 
 ```go
 // internal/order/repository.go
@@ -121,11 +116,8 @@ secret := os.Getenv("JWT_SECRET") // leitura direta
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Config como único ponto de entrada de env vars</summary>
-<br>
 
 ```go
 // internal/config/config.go
@@ -190,7 +182,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 
 <details>
 <summary>❌ Ruim — main.go como dumping ground</summary>
-<br>
 
 ```go
 package main
@@ -216,11 +207,8 @@ func main() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — main.go como índice, lógica delegada</summary>
-<br>
 
 ```go
 // cmd/api/main.go
@@ -289,7 +277,6 @@ Cada domínio encapsula handler, service e repository. O server não conhece os 
 
 <details>
 <summary>❌ Ruim — estrutura por camada técnica</summary>
-<br>
 
 ```
 internal/
@@ -306,11 +293,8 @@ internal/
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — estrutura por domínio (feature-based)</summary>
-<br>
 
 ```
 internal/

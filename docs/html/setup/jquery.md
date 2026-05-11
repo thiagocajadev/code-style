@@ -33,7 +33,6 @@ está em contexto jQuery.
 
 <details>
 <summary>❌ Ruim — inline no head, DOM ainda não existe</summary>
-<br>
 
 ```html
 <head>
@@ -45,11 +44,8 @@ está em contexto jQuery.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — aguarda DOM com $(fn) ou script defer</summary>
-<br>
 
 ```js
 $(function () {
@@ -66,7 +62,6 @@ atributo percorrem o DOM. Reduzir o escopo com contexto ou cache melhora perform
 
 <details>
 <summary>❌ Ruim — seletor global repetido, sem cache</summary>
-<br>
 
 ```js
 $('.card .title').css('color', 'blue');
@@ -76,11 +71,8 @@ $('.card .title').addClass('active');
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — seleção cacheada, escopo limitado</summary>
-<br>
 
 ```js
 const $cards = $('#product-list');
@@ -101,7 +93,6 @@ depois do bind.
 
 <details>
 <summary>❌ Ruim — handler em cada item, não funciona com itens adicionados dinamicamente</summary>
-<br>
 
 ```js
 $('.product-card').on('click', function () {
@@ -111,11 +102,8 @@ $('.product-card').on('click', function () {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — delegation no container estático, selector como filtro</summary>
-<br>
 
 ```js
 $('#product-list').on('click', '.product-card', function () {
@@ -132,7 +120,6 @@ repetir a seleção. Cada nível de chain é uma operação, não uma nova query
 
 <details>
 <summary>❌ Ruim — seleção repetida para cada operação</summary>
-<br>
 
 ```js
 $('#notification').removeClass('hidden');
@@ -143,11 +130,8 @@ $('#notification').fadeIn(300);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — chain, uma seleção, múltiplas operações</summary>
-<br>
 
 ```js
 $('#notification')
@@ -167,7 +151,6 @@ compatível com `.then()` / `.catch()`.
 
 <details>
 <summary>❌ Ruim — sem contentType, callback no sucesso, sem tratamento de erro</summary>
-<br>
 
 ```js
 $.post('/api/orders', orderData, function (createdOrder) {
@@ -177,11 +160,8 @@ $.post('/api/orders', orderData, function (createdOrder) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — JSON explícito, Promise com then/catch</summary>
-<br>
 
 ```js
 $.ajax({

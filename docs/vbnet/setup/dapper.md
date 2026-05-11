@@ -24,7 +24,6 @@ Cada operação de domínio tem sua própria procedure. O repositório chama e m
 
 <details>
 <summary>❌ Ruim — SQL de domínio inline no repositório</summary>
-<br>
 
 ```vbnet
 Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOnlyList(Of PurchaseSummary))
@@ -44,11 +43,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — procedure encapsula a lógica, repositório só mapeia</summary>
-<br>
 
 ```sql
 -- FindPurchasesByCustomer.sql
@@ -94,11 +90,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — procedure de escrita com OUTPUT param</summary>
-<br>
 
 ```sql
 -- CreatePurchase.sql
@@ -147,7 +140,6 @@ Quando a operação é simples demais para justificar uma procedure (lookup por 
 
 <details>
 <summary>✅ Bom — lookup simples por chave primária</summary>
-<br>
 
 ```vbnet
 Public Async Function FindByIdAsync(id As Guid) As Task(Of Customer)
@@ -160,11 +152,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verificação de existência</summary>
-<br>
 
 ```vbnet
 Public Async Function ExistsAsync(email As String) As Task(Of Boolean)
@@ -184,7 +173,6 @@ SQL injection acontece quando um valor externo é interpretado como código SQL 
 
 <details>
 <summary>❌ Ruim — concatenação deixa o atacante escrever SQL</summary>
-<br>
 
 ```vbnet
 ' email recebido: ' OR '1'='1
@@ -200,11 +188,8 @@ Dim sql = "SELECT Id, Name FROM Customers WHERE Email = '" & email & "'"
 
 </details>
 
-<br>
-
 <details>
 <summary>❌ Ruim — LIKE com concatenação, wildcard no SQL permite injeção</summary>
-<br>
 
 ```vbnet
 Public Async Function SearchByNameAsync(term As String) As Task(Of IReadOnlyList(Of Customer))
@@ -220,11 +205,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — parâmetro nomeado, valor tratado como dado pelo banco</summary>
-<br>
 
 ```vbnet
 Public Async Function FindByEmailAsync(email As String) As Task(Of Customer)
@@ -237,11 +219,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — LIKE com parâmetro, wildcard no valor não no SQL</summary>
-<br>
 
 ```vbnet
 Public Async Function SearchByNameAsync(term As String) As Task(Of IReadOnlyList(Of Customer))
@@ -261,7 +240,6 @@ End Function
 
 <details>
 <summary>❌ Ruim — conexão instanciada dentro do repositório</summary>
-<br>
 
 ```vbnet
 Public Class PurchaseRepository
@@ -275,11 +253,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — IDbConnection injetado via construtor</summary>
-<br>
 
 ```vbnet
 Public Class PurchaseRepository
@@ -326,7 +301,6 @@ Quando uma procedure retorna múltiplos result sets, `QueryMultiple` lê cada um
 
 <details>
 <summary>✅ Bom — procedure com múltiplos SELECTs, uma única chamada</summary>
-<br>
 
 ```sql
 -- GetPurchaseDashboard.sql

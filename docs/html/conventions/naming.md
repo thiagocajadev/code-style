@@ -21,7 +21,6 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 
 <details>
 <summary>❌ Ruim — ID duplicável, classe descreve aparência</summary>
-<br>
 
 ```html
 <div id="box" class="blue-card big-text">
@@ -34,11 +33,8 @@ use IDs como seletor CSS. Classes seguem kebab-case semântico (mesmo BEM do CSS
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ID único e semântico, classe descreve papel</summary>
-<br>
 
 ```html
 <div id="checkout-summary" class="order-summary">
@@ -59,7 +55,6 @@ reutilize classes CSS como gatilhos de comportamento: isso acopla estilo e lógi
 
 <details>
 <summary>❌ Ruim — classe CSS usada como gatilho JS, sem data-*</summary>
-<br>
 
 ```html
 <button class="btn btn-primary open-modal">Open</button>
@@ -73,11 +68,8 @@ document.querySelectorAll('.open-modal').forEach((btn) => { ... });
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — data-* para comportamento, classe só para estilo</summary>
-<br>
 
 ```html
 <button class="button button--primary" data-modal-target="product-details">Open</button>
@@ -98,7 +90,6 @@ repetir o elemento pai).
 
 <details>
 <summary>❌ Ruim — prefixo redundante, nome opaco</summary>
-<br>
 
 ```html
 <tr data-row-data-id="42" data-row-data-status="active" data-x="1">
@@ -106,11 +97,8 @@ repetir o elemento pai).
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome direto, kebab-case, sem redundância</summary>
-<br>
 
 ```html
 <tr data-user-id="42" data-status="active" data-page="1">

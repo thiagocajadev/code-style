@@ -20,7 +20,6 @@ para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via 
 
 <details>
 <summary>❌ Ruim — secret hardcoded no código</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -37,11 +36,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lido do ambiente na inicialização</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -125,7 +121,6 @@ end
 
 <details>
 <summary>❌ Ruim — parâmetro de usuário usado diretamente</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -137,11 +132,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tipagem e sanitização antes de usar</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

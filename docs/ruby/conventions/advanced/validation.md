@@ -21,7 +21,6 @@ Use para modelos de domínio ou objetos de formulário sem ActiveRecord.
 
 <details>
 <summary>❌ Ruim — validação manual espalhada no método</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -37,11 +36,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — validação declarativa com ActiveModel</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -115,7 +111,6 @@ aceitos. Nunca passe `params` diretamente para o modelo.
 
 <details>
 <summary>❌ Ruim — mass assignment sem whitelist</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -127,11 +122,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — strong parameters com whitelist explícita</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -158,7 +150,6 @@ Eles lançam `ArgumentError` para entradas inválidas — ao contrário de `.to_
 
 <details>
 <summary>❌ Ruim — to_i silencia entrada inválida</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true
@@ -171,11 +162,8 @@ end
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Integer() lança ArgumentError em entrada inválida</summary>
-<br>
 
 ```ruby
 # frozen_string_literal: true

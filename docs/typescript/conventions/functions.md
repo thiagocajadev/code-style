@@ -22,7 +22,6 @@ leitor e para garantir que a assinatura pública não mude silenciosamente.
 
 <details>
 <summary>❌ Ruim — return type implícito em função exportada</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string) {
@@ -38,11 +37,8 @@ export function calculateInvoiceTotal(items: LineItem[]) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return type explícito nas funções exportadas</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -66,7 +62,6 @@ separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](..
 
 <details>
 <summary>❌ Ruim — tipo inline obscurece a assinatura</summary>
-<br>
 
 ```ts
 function createInvoice(data: {
@@ -80,11 +75,8 @@ function createInvoice(data: {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — interface separada, assinatura limpa</summary>
-<br>
 
 ```ts
 interface CreateInvoiceInput {
@@ -107,7 +99,6 @@ Isso os distingue dos tipos de domínio puros como `User` e `Invoice`.
 
 <details>
 <summary>❌ Ruim — primitivos soltos sem interface, contrato sem nome</summary>
-<br>
 
 ```ts
 async function createUser(
@@ -126,11 +117,8 @@ async function createUser(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
-<br>
 
 ```ts
 interface CreateUserInput {
@@ -162,7 +150,6 @@ Use apenas quando a variação é real e precisa ser capturada pelo compilador.
 
 <details>
 <summary>❌ Ruim — union type no retorno sem discriminação — o caller recebe `string | number` sem saber qual</summary>
-<br>
 
 ```ts
 function parse(value: string | number): string | number {
@@ -175,11 +162,8 @@ const result = parse("42"); // string | number — compilador não sabe que é n
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — overloads tornam o contrato preciso</summary>
-<br>
 
 ```ts
 function parse(value: string): number;
@@ -202,7 +186,6 @@ relação, é só complexidade.
 
 <details>
 <summary>❌ Ruim — genérico sem propósito, poderia ser unknown ou o tipo concreto</summary>
-<br>
 
 ```ts
 function logAndReturn<T>(value: T): T {
@@ -217,11 +200,8 @@ function validateSchema<T>(schema: ZodSchema<T>, data: unknown): boolean {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — genérico quando o tipo do retorno depende do argumento</summary>
-<br>
 
 ```ts
 function firstOrThrow<TItem>(items: TItem[]): TItem {

@@ -19,7 +19,6 @@ Nomes bons tornam comentários desnecessários. O código deve contar a históri
 
 <details>
 <summary>❌ Ruim</summary>
-<br>
 
 ```go
 func apply(x interface{}, p map[string]interface{}, c func(interface{}) interface{}) interface{} {
@@ -32,11 +31,8 @@ func apply(x interface{}, p map[string]interface{}, c func(interface{}) interfac
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom</summary>
-<br>
 
 ```go
 func applyDiscount(order Order, calculate func(Order) Order) *Order {
@@ -55,7 +51,6 @@ func applyDiscount(order Order, calculate func(Order) Order) *Order {
 
 <details>
 <summary>❌ Ruim — identificadores em português ficam desajeitados no idioma Go</summary>
-<br>
 
 ```go
 nomeDoUsuario := "Alice"
@@ -67,11 +62,8 @@ func buscaEnderecoDoCliente(id int) *Endereco { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — inglês: curto, direto, universal</summary>
-<br>
 
 ```go
 userName := "Alice"
@@ -99,7 +91,6 @@ Essa não é uma convenção opcional — é parte da semântica da linguagem.
 
 <details>
 <summary>❌ Ruim — case errado para o contexto</summary>
-<br>
 
 ```go
 const max_retries = 3           // underscore em Go não é idiomático
@@ -112,11 +103,8 @@ func (service *OrderService) FindByID(id int64) { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — convenções Go respeitadas</summary>
-<br>
 
 ```go
 const MaxRetries = 3
@@ -137,7 +125,6 @@ Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**
 
 <details>
 <summary>❌ Ruim — ordem invertida</summary>
-<br>
 
 ```go
 func GetProfileUser(userID int64) {}
@@ -147,11 +134,8 @@ func CalculateTotalInvoice(invoiceID int64) {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ordem natural</summary>
-<br>
 
 ```go
 func GetUserProfile(userID int64) {}
@@ -165,7 +149,6 @@ func CalculateInvoiceTotal(invoiceID int64) {}
 
 <details>
 <summary>❌ Ruim — Handle, Process, Manage não dizem nada</summary>
-<br>
 
 ```go
 func Handle(data interface{}) {}
@@ -176,11 +159,8 @@ func DoStuff(x interface{}) {}
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo de intenção</summary>
-<br>
 
 ```go
 func ValidatePayment(payment Payment) error { ... }
@@ -197,7 +177,6 @@ O nome reflete a intenção de negócio, não o detalhe técnico de onde a opera
 
 <details>
 <summary>❌ Ruim — nome revela infraestrutura, não domínio</summary>
-<br>
 
 ```go
 func CallStripe(amount float64) error { ... }
@@ -208,11 +187,8 @@ func SaveToS3(file []byte) error { ... }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — nome fala a linguagem do negócio</summary>
-<br>
 
 ```go
 func ChargeCustomer(amount float64) error { ... }
@@ -227,7 +203,6 @@ func ArchiveDocument(file []byte) error { ... }
 
 <details>
 <summary>❌ Ruim — booleanos sem prefixo semântico</summary>
-<br>
 
 ```go
 loading := true
@@ -237,11 +212,8 @@ valid := strings.Contains(email, "@")
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixos is, has, can, should</summary>
-<br>
 
 ```go
 isActive := user.Status == "active"
@@ -259,7 +231,6 @@ Variáveis de erro exportadas recebem o prefixo `Err`; tipos de erro recebem o s
 
 <details>
 <summary>❌ Ruim — nome de erro sem convenção</summary>
-<br>
 
 ```go
 var NotFound = errors.New("not found")
@@ -270,11 +241,8 @@ type ValidationProblem struct { Field string }
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — prefixo Err + sufixo Error</summary>
-<br>
 
 ```go
 var ErrNotFound = errors.New("not found")

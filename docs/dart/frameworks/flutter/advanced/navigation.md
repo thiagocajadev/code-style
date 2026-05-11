@@ -24,7 +24,6 @@ routes (tabs com estado persistente).
 
 <details>
 <summary>❌ Ruim — Navigator.push imperativo sem URL</summary>
-<br>
 
 ```dart
 ElevatedButton(
@@ -40,11 +39,8 @@ ElevatedButton(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — GoRouter declarativo com URL tipada</summary>
-<br>
 
 ```dart
 // router.dart
@@ -79,7 +75,6 @@ ElevatedButton(
 
 <details>
 <summary>❌ Ruim — verificação de auth dentro de cada tela</summary>
-<br>
 
 ```dart
 class OrderListScreen extends StatelessWidget {
@@ -98,11 +93,8 @@ class OrderListScreen extends StatelessWidget {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — redirect centralizado no GoRouter</summary>
-<br>
 
 ```dart
 final router = GoRouter(
@@ -125,7 +117,6 @@ final router = GoRouter(
 
 <details>
 <summary>❌ Ruim — IndexedStack sem URLs — deep links impossíveis</summary>
-<br>
 
 ```dart
 class MainScreen extends StatefulWidget { ... }
@@ -151,11 +142,8 @@ class _MainScreenState extends State<MainScreen> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ShellRoute com tab bar e URLs independentes</summary>
-<br>
 
 ```dart
 final router = GoRouter(

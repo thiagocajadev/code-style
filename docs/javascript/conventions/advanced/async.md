@@ -17,7 +17,6 @@ Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assínc
 
 <details>
 <summary>❌ Ruim — aninhamento cresce sem controle</summary>
-<br>
 
 ```js
 function fetchUserData(id, callback) {
@@ -33,11 +32,8 @@ function fetchUserData(id, callback) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — async/await, linear e legível</summary>
-<br>
 
 ```js
 async function fetchUserData(id) {
@@ -58,7 +54,6 @@ async function fetchUserData(id) {
 
 <details>
 <summary>❌ Ruim — verboso, difícil de depurar</summary>
-<br>
 
 ```js
 function fetchUserData(id) {
@@ -72,11 +67,8 @@ function fetchUserData(id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — mesmo resultado, sem o ruído</summary>
-<br>
 
 ```js
 async function fetchUserData(id) {
@@ -97,7 +89,6 @@ async function fetchUserData(id) {
 
 <details>
 <summary>❌ Ruim — loop síncrono trava o thread principal</summary>
-<br>
 
 ```js
 function wait(ms) {
@@ -110,11 +101,8 @@ wait(3000); // aplicação trava por 3 segundos
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Promise libera o thread enquanto aguarda</summary>
-<br>
 
 ```js
 function wait(ms) {
@@ -136,7 +124,6 @@ Quando as operações são independentes entre si, rodá-las em paralelo reduz o
 
 <details>
 <summary>❌ Ruim — await sequencial quando não há dependência</summary>
-<br>
 
 ```js
 async function fetchDashboard(userId) {
@@ -153,11 +140,8 @@ async function fetchDashboard(userId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Promise.all dispara tudo ao mesmo tempo</summary>
-<br>
 
 ```js
 async function fetchDashboard(userId) {
@@ -185,7 +169,6 @@ Um único cliente carrega a configuração base. Os módulos recebem o cliente p
 
 <details>
 <summary>❌ Ruim — fetch direto, configuração duplicada em todo lugar</summary>
-<br>
 
 ```js
 // user.service.js
@@ -211,11 +194,8 @@ async function fetchOrders(userId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cliente único, injetado onde precisar</summary>
-<br>
 
 ```js
 // api.client.js
@@ -257,7 +237,6 @@ async function fetchOrders(apiClient, userId) {
 
 <details>
 <summary>❌ Ruim — I/O síncrono bloqueia o event loop</summary>
-<br>
 
 ```js
 // banco de dados síncrono — não existe, mas ilustra o padrão errado
@@ -275,11 +254,8 @@ function readConfig() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — toda operação de I/O é async</summary>
-<br>
 
 ```js
 // banco de dados

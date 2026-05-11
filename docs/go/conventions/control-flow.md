@@ -22,7 +22,6 @@ Após um `return`, `panic` ou `continue`, o `else` é desnecessário e cria anin
 
 <details>
 <summary>❌ Ruim — else após return</summary>
-<br>
 
 ```go
 func findActiveOrder(orderID int64) (*Order, error) {
@@ -41,11 +40,8 @@ func findActiveOrder(orderID int64) (*Order, error) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clauses, sem else após return</summary>
-<br>
 
 ```go
 func findActiveOrder(orderID int64) (*Order, error) {
@@ -70,7 +66,6 @@ Máximo 2 níveis de indentação. Extraia funções quando o aninhamento cresce
 
 <details>
 <summary>❌ Ruim — pyramid of doom</summary>
-<br>
 
 ```go
 func processPayment(order Order) error {
@@ -97,11 +92,8 @@ func processPayment(order Order) error {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clauses, fluxo linear</summary>
-<br>
 
 ```go
 func processPayment(order Order) error {
@@ -135,7 +127,6 @@ Use `switch` para múltiplas condições sobre o mesmo valor. Go não faz fallth
 
 <details>
 <summary>❌ Ruim — if/else chain para múltiplos valores</summary>
-<br>
 
 ```go
 if status == "pending" {
@@ -151,11 +142,8 @@ if status == "pending" {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — switch idiomático</summary>
-<br>
 
 ```go
 switch order.Status {
@@ -179,7 +167,6 @@ resolve. Para busca com lógica customizada, `range` com retorno antecipado é d
 
 <details>
 <summary>❌ Ruim — loop com flag percorre tudo mesmo após encontrar</summary>
-<br>
 
 ```go
 func findFirstExpiredItem(items []Item) *Item {
@@ -197,11 +184,8 @@ func findFirstExpiredItem(items []Item) *Item {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — range com retorno antecipado sai no primeiro match</summary>
-<br>
 
 ```go
 func findFirstExpiredItem(items []Item) *Item {
@@ -217,11 +201,8 @@ func findFirstExpiredItem(items []Item) *Item {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — slices declarativo com circuit break nativo (Go 1.21+)</summary>
-<br>
 
 ```go
 import "slices"
@@ -245,7 +226,6 @@ Go tem apenas `for`. Use-o para while, loop infinito e iteração com range.
 
 <details>
 <summary>❌ Ruim — loop com flag de controle desnecessária</summary>
-<br>
 
 ```go
 found := false
@@ -262,11 +242,8 @@ for i < len(items) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — range + early break</summary>
-<br>
 
 ```go
 func hasExpiredItem(items []Item) bool {
@@ -289,7 +266,6 @@ sair). Use para cleanup de recursos: fechar arquivos, liberar locks, fechar cone
 
 <details>
 <summary>❌ Ruim — cleanup manual sem defer</summary>
-<br>
 
 ```go
 func processFile(path string) error {
@@ -317,11 +293,8 @@ func processFile(path string) error {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — defer garante cleanup em qualquer saída</summary>
-<br>
 
 ```go
 func processFile(path string) error {
@@ -354,7 +327,6 @@ de variáveis de erro ao bloco.
 
 <details>
 <summary>✅ Bom — escopo de err limitado ao bloco</summary>
-<br>
 
 ```go
 func findAndNotify(userID int64) error {
@@ -374,7 +346,6 @@ Use type switch para inspecionar o tipo concreto de uma interface.
 
 <details>
 <summary>✅ Bom — type switch idiomático</summary>
-<br>
 
 ```go
 func describeShape(shape Shape) string {

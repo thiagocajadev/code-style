@@ -20,7 +20,6 @@ alocações intermediárias. Instruments (Xcode) é a ferramenta de diagnóstico
 
 <details>
 <summary>❌ Ruim — classe com ARC overhead desnecessário</summary>
-<br>
 
 ```swift
 class Coordinate {
@@ -37,11 +36,8 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de referê
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — struct: sem ARC, cópia eficiente</summary>
-<br>
 
 ```swift
 struct Coordinate {
@@ -58,7 +54,6 @@ let path = [Coordinate(latitude: -23.5, longitude: -46.6)]   // array de values,
 
 <details>
 <summary>❌ Ruim — cada operação aloca array intermediário</summary>
-<br>
 
 ```swift
 func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
@@ -72,11 +67,8 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — lazy adia operações sem alocação intermediária</summary>
-<br>
 
 ```swift
 func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
@@ -97,7 +89,6 @@ func findTopSpenders(_ customers: [Customer], limit: Int) -> [String] {
 
 <details>
 <summary>❌ Ruim — closure captura self fortemente — memory leak</summary>
-<br>
 
 ```swift
 class OrderViewModel {
@@ -114,11 +105,8 @@ class OrderViewModel {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — [weak self] quebra o retain cycle</summary>
-<br>
 
 ```swift
 class OrderViewModel {

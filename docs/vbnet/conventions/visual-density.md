@@ -27,7 +27,6 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```vbnet
 Public Async Function RegisterUserAsync(request As RegisterUserRequest) As Task(Of UserDto)
@@ -44,11 +43,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```vbnet
 Public Async Function RegisterUserAsync(request As RegisterUserRequest) As Task(Of UserDto)
@@ -76,7 +72,6 @@ Uma `Dim` nomeada acima do `Return` explica o valor retornado. Sempre que a linh
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -88,11 +83,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -115,7 +107,6 @@ Em todos os outros casos, vai blank antes do `Return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```vbnet
 Public Function FormatOrderDate(isoString As String, Optional locale As String = "pt-BR") As String
@@ -135,11 +126,8 @@ O object initializer multi-linha exige blank depois de si, mas o blank foi posto
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```vbnet
 Public Function FormatOrderDate(isoString As String, Optional locale As String = "pt-BR") As String
@@ -159,11 +147,8 @@ O blank fica **depois** do object initializer multi-linha. O par `formattedDate`
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de objeto multi-linha</summary>
-<br>
 
 ```vbnet
 Public Function BuildOrderResponse(order As Order, requestId As String) As OrderResponse
@@ -197,7 +182,6 @@ Quando o guarda é escrito em **bloco multi-linha** (`If ... Then` em uma linha,
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```vbnet
 Dim order = Await _orderRepository.FindByIdAsync(orderId)
@@ -207,12 +191,9 @@ Dim invoice = BuildInvoice(order)
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```vbnet
 Dim order = Await _orderRepository.FindByIdAsync(orderId)
@@ -223,11 +204,8 @@ Dim invoice = BuildInvoice(order)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```vbnet
 Dim handler = _eventHandlers(eventType)
@@ -242,11 +220,8 @@ Dim eventPayload = [event].Data
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```vbnet
 Dim response = Await requestFn()
@@ -268,7 +243,6 @@ Três declarações simples consecutivas (`Const`, `ReadOnly`, `Dim` com literal
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```vbnet
 Public Class DomainLimits
@@ -280,12 +254,9 @@ End Class
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```vbnet
 Public Class DomainLimits
@@ -297,11 +268,8 @@ End Class
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```vbnet
 Public Class DomainLimits
@@ -321,7 +289,6 @@ Quando a linha final **depende** da penúltima (usa o valor recém declarado), a
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```vbnet
 Public Function BuildShippingLabel(order As Order) As String
@@ -337,11 +304,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```vbnet
 Public Function BuildShippingLabel(order As Order) As String
@@ -367,7 +331,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```vbnet
 Public Function BuildDeliveryMessage(user As User, order As Order) As String
@@ -382,11 +345,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```vbnet
 Public Function BuildDeliveryMessage(user As User, order As Order) As String
@@ -402,11 +362,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar" (Explain
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```vbnet
 Public Function BuildOrderSlug(order As Order) As String
@@ -426,7 +383,6 @@ Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não 
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```vbnet
 While attempt < maxAttempts
@@ -438,11 +394,8 @@ End While
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```vbnet
 While attempt < maxAttempts
@@ -461,7 +414,6 @@ Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateUserHandlerAsync(request As CreateUserRequest) As Task(Of IHttpActionResult)
@@ -475,11 +427,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateUserHandlerAsync(request As CreateUserRequest) As Task(Of IHttpActionResult)
@@ -501,7 +450,6 @@ O `Assert` é fase distinta. A linha em branco antes dele separa o que está sen
 
 <details>
 <summary>❌ Ruim — Assert colado ao setup, fases invisíveis</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -515,11 +463,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Assert separado, assertion como fase própria</summary>
-<br>
 
 ```vbnet
 <Test>
@@ -540,7 +485,6 @@ Quando um object initializer expande em várias linhas ou um statement quebra co
 
 <details>
 <summary>❌ Ruim — object initializer multi-linha colado ao próximo statement</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateSessionAsync(user As User) As Task(Of String)
@@ -557,11 +501,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do objeto isola o bloco</summary>
-<br>
 
 ```vbnet
 Public Async Function CreateSessionAsync(user As User) As Task(Of String)
@@ -587,7 +528,6 @@ Dois `If` consecutivos com **bloco multi-linha** (`If ... Then` / `End If`) cola
 
 <details>
 <summary>❌ Ruim — dois blocos If colados</summary>
-<br>
 
 ```vbnet
 Public Sub ProcessOrder(order As Order)
@@ -603,12 +543,9 @@ End Sub
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```vbnet
 Public Sub ProcessOrder(order As Order)
@@ -626,11 +563,8 @@ End Sub
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```vbnet
 Public Function ValidateInput(input As CreateUserInput) As CreateUserInput
@@ -650,7 +584,6 @@ Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempr
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```vbnet
 Dim userName     = "alice"
@@ -661,11 +594,8 @@ Dim lastLoginAt  = DateTime.UtcNow
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```vbnet
 Dim userName = "alice"
@@ -682,7 +612,6 @@ Uma string longa colada em um `Return` esconde as partes que a compõem. Extraia
 
 <details>
 <summary>❌ Ruim — concatenação densa inline, sem semântica nas partes</summary>
-<br>
 
 ```vbnet
 Public Function BuildDeliveryMessage(user As User, order As Order) As String
@@ -692,11 +621,8 @@ End Function
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```vbnet
 Public Function BuildDeliveryMessage(user As User, order As Order) As String

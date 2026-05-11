@@ -22,7 +22,6 @@ Toda função `async` retorna uma `Promise`. O tipo do retorno deve declarar o q
 
 <details>
 <summary>❌ Ruim — return type implícito em função async exportada</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string) {
@@ -33,11 +32,8 @@ export async function findUserById(id: string) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Promise<T> explícito</summary>
-<br>
 
 ```ts
 export async function findUserById(id: string): Promise<User | null> {
@@ -60,7 +56,6 @@ infere cada posição corretamente.
 
 <details>
 <summary>❌ Ruim — await sequencial quando não há dependência</summary>
-<br>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -76,11 +71,8 @@ async function fetchDashboard(userId: string): Promise<Dashboard> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Promise.all com tipos preservados</summary>
-<br>
 
 ```ts
 async function fetchDashboard(userId: string): Promise<Dashboard> {
@@ -108,7 +100,6 @@ caller, que sabe o shape esperado, sem usar `any`.
 
 <details>
 <summary>❌ Ruim — fetch direto com any espalhado pelo código</summary>
-<br>
 
 ```ts
 // user.service.ts
@@ -124,11 +115,8 @@ async function fetchUser(id: string) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — cliente genérico, caller declara o tipo esperado</summary>
-<br>
 
 ```ts
 // api.client.ts
@@ -189,7 +177,6 @@ resolvidos. Use `Promise.all` para aguardar.
 
 <details>
 <summary>❌ Ruim — map com async retorna Promise[], não os valores</summary>
-<br>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
@@ -205,11 +192,8 @@ async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Promise.all resolve o array de promises</summary>
-<br>
 
 ```ts
 async function enrichOrders(orders: Order[]): Promise<EnrichedOrder[]> {

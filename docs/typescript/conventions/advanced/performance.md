@@ -26,7 +26,6 @@ valores que são apenas constantes de domínio, `as const` não gera nada em run
 
 <details>
 <summary>❌ Ruim — enum gera objeto runtime desnecessário</summary>
-<br>
 
 ```ts
 enum OrderStatus {
@@ -50,11 +49,8 @@ function getLabel(status: OrderStatus): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — const object + union type: sem overhead runtime</summary>
-<br>
 
 ```ts
 const ORDER_STATUS = {
@@ -86,7 +82,6 @@ type guard valida o valor explicitamente: custo mínimo, contrato real.
 
 <details>
 <summary>❌ Ruim — as T aceita sem verificar</summary>
-<br>
 
 ```ts
 async function fetchOrder(id: string): Promise<Order> {
@@ -99,11 +94,8 @@ async function fetchOrder(id: string): Promise<Order> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — type guard valida o contrato na fronteira</summary>
-<br>
 
 ```ts
 function isOrder(value: unknown): value is Order {
@@ -134,7 +126,6 @@ Defina a profundidade máxima explicitamente.
 
 <details>
 <summary>❌ Ruim — recursão ilimitada, compilador infere profundidade arbitrária</summary>
-<br>
 
 ```ts
 type DeepPartial<T> = {
@@ -146,11 +137,8 @@ type Config = DeepPartial<ApplicationConfig>; // pode atingir dezenas de níveis
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — profundidade máxima explícita</summary>
-<br>
 
 ```ts
 type DeepPartial<T, Depth extends number = 3> = Depth extends 0
@@ -171,7 +159,6 @@ literais para uso em narrowing, enquanto garante que todas as chaves estão pres
 
 <details>
 <summary>❌ Ruim — Record<> alarga os tipos, perde literais</summary>
-<br>
 
 ```ts
 const DISCOUNT_RATES: Record<string, number> = {
@@ -186,11 +173,8 @@ const DISCOUNT_RATES: Record<string, number> = {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — satisfies valida sem alargar</summary>
-<br>
 
 ```ts
 type CustomerTier = "premium" | "standard" | "trial";

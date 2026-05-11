@@ -24,7 +24,6 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 
 <details>
 <summary>❌ Ruim — script no head sem defer, bloqueia o parse</summary>
-<br>
 
 ```html
 <head>
@@ -35,11 +34,8 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — defer para scripts dependentes de DOM; async para scripts independentes</summary>
-<br>
 
 ```html
 <head>
@@ -67,7 +63,6 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 <details>
 <summary>❌ Ruim — todas as imagens carregam imediatamente</summary>
-<br>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" />
@@ -78,11 +73,8 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — hero sem lazy (above the fold), demais com lazy</summary>
-<br>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" fetchpriority="high" />
@@ -103,7 +95,6 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 
 <details>
 <summary>❌ Ruim — fonte crítica descoberta tarde, origem externa sem preconnect</summary>
-<br>
 
 ```html
 <head>
@@ -114,11 +105,8 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — preconnect abre conexão, preload antecipa recursos críticos</summary>
-<br>
 
 ```html
 <head>
@@ -146,7 +134,6 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 <details>
 <summary>❌ Ruim — sem dimensões, layout shift ao carregar</summary>
-<br>
 
 ```html
 <img src="/img/product.jpg" alt="Product photo" loading="lazy" />
@@ -154,11 +141,8 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — dimensões declaradas, CSS mantém proporção</summary>
-<br>
 
 ```html
 <img

@@ -42,7 +42,6 @@ em runtime.
 
 <details>
 <summary>❌ Ruim — tsconfig sem strict, com padrões obsoletos do TS5</summary>
-<br>
 
 ```json
 {
@@ -66,11 +65,8 @@ em runtime.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — tsconfig base com strict e paths</summary>
-<br>
 
 ```json
 {
@@ -116,7 +112,6 @@ contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no 
 
 <details>
 <summary>❌ Ruim — importações relativas profundas</summary>
-<br>
 
 ```ts
 import { UserRepository } from "../../../infra/database/user.repository";
@@ -126,11 +121,8 @@ import { config } from "../../../config";
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — alias limpo e independente de profundidade</summary>
-<br>
 
 ```ts
 import { UserRepository } from "@/infra/database/user.repository";
@@ -167,7 +159,6 @@ O arquivo serve como índice do projeto.
 
 <details>
 <summary>✅ Bom — server.ts como índice, configuração delegada</summary>
-<br>
 
 ```ts
 // server.ts
@@ -187,7 +178,6 @@ acessa `process.env` diretamente e que os campos obrigatórios são verificados 
 
 <details>
 <summary>❌ Ruim — process.env espalhado e sem validação</summary>
-<br>
 
 ```ts
 // auth.middleware.ts
@@ -199,11 +189,8 @@ const url = process.env.DATABASE_URL!; // non-null assertion sem garantia
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — config.ts como único ponto, com validação na inicialização</summary>
-<br>
 
 ```ts
 // config.ts

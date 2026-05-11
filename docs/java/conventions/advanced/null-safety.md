@@ -21,7 +21,6 @@ chamador a lidar com ela.
 
 <details>
 <summary>❌ Ruim — null silencioso: o chamador pode esquecer de verificar</summary>
-<br>
 
 ```java
 public User findUser(String id) {
@@ -35,11 +34,8 @@ final var email = user.getEmail(); // NullPointerException em runtime
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Optional torna a ausência explícita no contrato</summary>
-<br>
 
 ```java
 public Optional<User> findUser(String id) {
@@ -62,7 +58,6 @@ em vez de verificar o `Optional` manualmente.
 
 <details>
 <summary>❌ Ruim — verificação manual verbosa</summary>
-<br>
 
 ```java
 public User getUser(String id) {
@@ -76,11 +71,8 @@ public User getUser(String id) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — orElseThrow expressa a intenção diretamente</summary>
-<br>
 
 ```java
 public User getUser(String id) {
@@ -100,7 +92,6 @@ Para parâmetros que podem ser null mas têm um padrão razoável, `Objects.requ
 
 <details>
 <summary>❌ Ruim — ternário com verificação de null</summary>
-<br>
 
 ```java
 public String getDisplayName(String name) {
@@ -110,11 +101,8 @@ public String getDisplayName(String name) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — semântica declarativa</summary>
-<br>
 
 ```java
 public String getDisplayName(String name) {
@@ -132,7 +120,6 @@ topo — não deixe o null propagar.
 
 <details>
 <summary>❌ Ruim — null propaga para NullPointerException interno</summary>
-<br>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -143,11 +130,8 @@ public Invoice processOrder(Order order) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guard clause no topo, falha rápida e mensagem clara</summary>
-<br>
 
 ```java
 public Invoice processOrder(Order order) {
@@ -168,7 +152,6 @@ em coleções.
 
 <details>
 <summary>❌ Ruim — Optional em lugares errados</summary>
-<br>
 
 ```java
 public void notify(Optional<User> user) { /* ... */ } // parâmetro
@@ -182,11 +165,8 @@ final var users = List.of(Optional.of(user1), Optional.empty()); // em coleção
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Optional apenas no retorno de método</summary>
-<br>
 
 ```java
 public Optional<User> findUser(String id) { /* ... */ }

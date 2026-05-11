@@ -18,7 +18,6 @@ Por padrão, o EF rastreia todas as entidades retornadas: qualquer alteração �
 
 <details>
 <summary>❌ Ruim — rastreamento habilitado em query somente leitura</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid customerId, CancellationToken ct)
@@ -37,11 +36,8 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AsNoTracking para leitura sem rastreamento</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid customerId, CancellationToken ct)
@@ -64,7 +60,6 @@ Nunca exponha entidades EF diretamente: elas carregam estado de rastreamento, na
 
 <details>
 <summary>❌ Ruim — entidade exposta, materialização antes da projeção</summary>
-<br>
 
 ```csharp
 public async Task<List<Order>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -79,11 +74,8 @@ public async Task<List<Order>> FindOrdersAsync(Guid customerId, CancellationToke
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — projeção para DTO dentro da query, sem materializar entidade</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -111,7 +103,6 @@ Acesso a propriedades de navegação sem `Include` dispara uma query por registr
 
 <details>
 <summary>❌ Ruim — N+1: uma query por order para acessar Items</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid customerId, CancellationToken ct)
@@ -134,11 +125,8 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — projeção com Select, EF resolve o JOIN em uma query</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid customerId, CancellationToken ct)
@@ -158,11 +146,8 @@ public async Task<IReadOnlyList<OrderDetail>> FindOrderDetailsAsync(Guid custome
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Include para grafo completo necessário</summary>
-<br>
 
 ```csharp
 public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToken ct)
@@ -184,7 +169,6 @@ public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToke
 
 <details>
 <summary>❌ Ruim — múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
-<br>
 
 ```csharp
 public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -200,11 +184,8 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — AsSplitQuery divide em queries separadas</summary>
-<br>
 
 ```csharp
 public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -227,7 +208,6 @@ Toda query que usa paginação ou que o chamador espera em ordem determinística
 
 <details>
 <summary>❌ Ruim — paginação sem ordenação, resultado não determinístico</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
@@ -247,11 +227,8 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — OrderBy antes de Skip/Take, ordem estável e determinística</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
@@ -272,11 +249,8 @@ public async Task<IReadOnlyList<OrderSummary>> FindPagedOrdersAsync(
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — ThenBy para desempate estável</summary>
-<br>
 
 ```csharp
 public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, CancellationToken ct)
@@ -301,7 +275,6 @@ Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os d
 
 <details>
 <summary>❌ Ruim — duas queries independentes, sem compartilhar o filtro base</summary>
-<br>
 
 ```csharp
 public async Task<List<OrderSummary>> FindOrdersAsync(Guid customerId, int page, int pageSize, CancellationToken ct)
@@ -319,11 +292,8 @@ public async Task<List<OrderSummary>> FindOrdersAsync(Guid customerId, int page,
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — query base compartilhada, metadados e dados na mesma chamada</summary>
-<br>
 
 ```csharp
 public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
@@ -356,7 +326,6 @@ EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era nec
 
 <details>
 <summary>❌ Ruim — intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
-<br>
 
 ```csharp
 var result = await _context.Orders
@@ -380,11 +349,8 @@ var result = await _context.Orders
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — LeftJoin (EF Core 10), intenção clara</summary>
-<br>
 
 ```csharp
 var result = await _context.Orders
@@ -415,7 +381,6 @@ O nome segue a convenção Rails: verbo + substantivo, descrevendo a mudança co
 
 <details>
 <summary>❌ Ruim — nomes vagos que não descrevem a mudança</summary>
-<br>
 
 ```bash
 dotnet ef migrations add Initial
@@ -426,11 +391,8 @@ dotnet ef migrations add SchemaChanges
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — verbo + substantivo, mudança óbvia pelo nome</summary>
-<br>
 
 ```bash
 dotnet ef migrations add CreateOrdersTable
@@ -448,7 +410,6 @@ Migrations são append-only: `Down()` não é implementado. Reverter um schema �
 
 <details>
 <summary>❌ Ruim — Down() implementado, ilusão de reversibilidade</summary>
-<br>
 
 ```csharp
 public partial class CreateOrdersTable : Migration
@@ -474,11 +435,8 @@ public partial class CreateOrdersTable : Migration
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — Down() sinaliza explicitamente que não é suportado</summary>
-<br>
 
 ```csharp
 public partial class CreateOrdersTable : Migration
@@ -508,7 +466,6 @@ Cada migration resolve uma coisa. Agrupar mudanças não relacionadas dificulta 
 
 <details>
 <summary>❌ Ruim — múltiplas mudanças sem relação na mesma migration</summary>
-<br>
 
 ```csharp
 public partial class UpdateSchema : Migration // nome vago, mudanças misturadas
@@ -533,11 +490,8 @@ public partial class UpdateSchema : Migration // nome vago, mudanças misturadas
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — uma migration por mudança, histórico legível</summary>
-<br>
 
 ```bash
 # três migrations atômicas, cada uma com contexto próprio
@@ -571,7 +525,6 @@ public partial class AddEmailToCustomers : Migration
 
 <details>
 <summary>✅ Bom — RightJoin (EF Core 10), products sem reviews incluídos</summary>
-<br>
 
 ```csharp
 var result = await _context.Reviews

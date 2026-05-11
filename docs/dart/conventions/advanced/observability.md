@@ -22,7 +22,6 @@ de produção com ferramentas externas.
 
 <details>
 <summary>❌ Ruim — print() não tem contexto, nível nem filtro</summary>
-<br>
 
 ```dart
 void processOrder(int orderId) {
@@ -34,11 +33,8 @@ void processOrder(int orderId) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — developer.log com name e contexto</summary>
-<br>
 
 ```dart
 import 'dart:developer' as developer;
@@ -80,7 +76,6 @@ developer.log('payment.failed', name: 'PaymentService', level: levelSevere, erro
 
 <details>
 <summary>❌ Ruim — erros assíncronos escapam sem captura</summary>
-<br>
 
 ```dart
 void main() {
@@ -90,11 +85,8 @@ void main() {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — runZonedGuarded captura erros de qualquer zona</summary>
-<br>
 
 ```dart
 void main() {

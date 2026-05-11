@@ -41,7 +41,6 @@ Anotações de tipo não contam como passo separado.
 
 <details>
 <summary>❌ Ruim — denso demais: todos os passos colados</summary>
-<br>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -58,11 +57,8 @@ async function registerUser(input: CreateUserInput): Promise<User> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases visíveis, no máximo 2 linhas por grupo</summary>
-<br>
 
 ```ts
 async function registerUser(input: CreateUserInput): Promise<User> {
@@ -92,7 +88,6 @@ fragmenta o par.
 
 <details>
 <summary>❌ Ruim — blank fragmenta o par</summary>
-<br>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -104,11 +99,8 @@ function mapErrorToStatus(error: DomainError): number {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par tight</summary>
-<br>
 
 ```ts
 function mapErrorToStatus(error: DomainError): number {
@@ -134,7 +126,6 @@ Em todos os outros casos, vai blank antes do `return`:
 
 <details>
 <summary>❌ Ruim — return fragmentado quando a linha acima é single-line</summary>
-<br>
 
 ```ts
 function formatOrderDate(isoString: string, locale: string = "pt-BR"): string {
@@ -157,11 +148,8 @@ tight — não devem ser separados.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — multi-linha isolada, Explaining Return tight</summary>
-<br>
 
 ```ts
 function formatOrderDate(isoString: string, locale: string = "pt-BR"): string {
@@ -183,11 +171,8 @@ O blank fica **depois** do `formatter` multi-linha. O par `formattedDate` +
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — return com blank quando construído a partir de objeto multi-linha</summary>
-<br>
 
 ```ts
 function buildOrderResponse(order: Order, requestId: string): OrderResponse {
@@ -229,7 +214,6 @@ semântico.
 
 <details>
 <summary>❌ Ruim — variável solta do seu guarda inline</summary>
-<br>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -239,12 +223,9 @@ const invoice = buildInvoice(order);
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — guarda inline (uma linha), par tight com a declaração</summary>
-<br>
 
 ```ts
 const order = await fetchOrder(orderId);
@@ -255,11 +236,8 @@ const invoice = buildInvoice(order);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco, fase própria com blank antes</summary>
-<br>
 
 ```ts
 const handler = eventHandlers[eventType];
@@ -274,11 +252,8 @@ const eventPayload = event.data;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
-<br>
 
 ```ts
 const response = await requestFn();
@@ -303,7 +278,6 @@ juntas. Só divida em 2+2 a partir de quatro.
 
 <details>
 <summary>❌ Ruim — órfão entre blanks</summary>
-<br>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -313,12 +287,9 @@ const ONE_DAY_MS: number = 86_400_000;
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — trio tight</summary>
-<br>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -328,11 +299,8 @@ const ONE_DAY_MS: number = 86_400_000;
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — 4 atomics viram 2+2</summary>
-<br>
 
 ```ts
 const MINIMUM_DRIVING_AGE: number = 18;
@@ -352,7 +320,6 @@ dependência direta.
 
 <details>
 <summary>❌ Ruim — dependência direta partida</summary>
-<br>
 
 ```ts
 function buildShippingLabel(order: Order): string {
@@ -368,11 +335,8 @@ function buildShippingLabel(order: Order): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — par semântico tight</summary>
-<br>
 
 ```ts
 function buildShippingLabel(order: Order): string {
@@ -404,7 +368,6 @@ Heurística rápida:
 
 <details>
 <summary>❌ Ruim — fragmentos e montagem coladas como se fossem trio homogêneo</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -421,11 +384,8 @@ Coladas como trio, as fases ficam invisíveis.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos como par, montagem isolada, Explaining Return tight</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -442,11 +402,8 @@ Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — contraste: par semântico encadeado (última depende só da penúltima)</summary>
-<br>
 
 ```ts
 function buildOrderSlug(order: Order): string {
@@ -469,7 +426,6 @@ são todas atômicas homogêneas.
 
 <details>
 <summary>❌ Ruim — 3 linhas heterogêneas coladas</summary>
-<br>
 
 ```ts
 while (attempt < maxAttempts) {
@@ -481,11 +437,8 @@ while (attempt < maxAttempts) {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — declaração + guarda em par, incremento separado</summary>
-<br>
 
 ```ts
 while (attempt < maxAttempts) {
@@ -505,7 +458,6 @@ deixar cada fase visível.
 
 <details>
 <summary>❌ Ruim — todas as fases coladas, sem separação visual</summary>
-<br>
 
 ```ts
 async function createUserHandler(req: Request, res: Response): Promise<void> {
@@ -519,11 +471,8 @@ async function createUserHandler(req: Request, res: Response): Promise<void> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fases explícitas</summary>
-<br>
 
 ```ts
 async function createUserHandler(request: Request, response: Response): Promise<void> {
@@ -546,7 +495,6 @@ verificado do como está sendo verificado.
 
 <details>
 <summary>❌ Ruim — expect colado ao setup, fases invisíveis</summary>
-<br>
 
 ```ts
 it("applies percentage discount to order price", () => {
@@ -559,11 +507,8 @@ it("applies percentage discount to order price", () => {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — expect separado, assertion como fase própria</summary>
-<br>
 
 ```ts
 it("applies percentage discount to order price", () => {
@@ -586,7 +531,6 @@ bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim — objeto multi-linha colado ao próximo statement</summary>
-<br>
 
 ```ts
 async function createSession(user: User): Promise<string> {
@@ -603,11 +547,8 @@ async function createSession(user: User): Promise<string> {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — blank depois do objeto isola o bloco</summary>
-<br>
 
 ```ts
 async function createSession(user: User): Promise<string> {
@@ -636,7 +577,6 @@ ficam tight — a regra do trio atômico se aplica.
 
 <details>
 <summary>❌ Ruim — dois blocos {} colados</summary>
-<br>
 
 ```ts
 function processOrder(order: Order): void {
@@ -652,12 +592,9 @@ function processOrder(order: Order): void {
 ```
 
 </details>
-
-<br>
 
 <details>
 <summary>✅ Bom — blank entre os blocos</summary>
-<br>
 
 ```ts
 function processOrder(order: Order): void {
@@ -675,11 +612,8 @@ function processOrder(order: Order): void {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — guardas de uma linha ficam tight (trio atômico)</summary>
-<br>
 
 ```ts
 function validateInput(input: CreateUserInput): CreateUserInput {
@@ -701,7 +635,6 @@ diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
 
 <details>
 <summary>❌ Ruim — espaços extras para alinhar colunas</summary>
-<br>
 
 ```ts
 const userName: string   = "alice";
@@ -712,11 +645,8 @@ const lastLoginAt: Date  = new Date();
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — espaço único, sem padding</summary>
-<br>
 
 ```ts
 const userName: string = "alice";
@@ -734,7 +664,6 @@ fragmentos em variáveis nomeadas antes de montar o resultado.
 
 <details>
 <summary>❌ Ruim — string imensa inline, sem semântica nas partes</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {
@@ -744,11 +673,8 @@ function buildDeliveryMessage(user: User, order: Order): string {
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom — fragmentos nomeados, template final limpo</summary>
-<br>
 
 ```ts
 function buildDeliveryMessage(user: User, order: Order): string {

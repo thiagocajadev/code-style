@@ -62,7 +62,6 @@ Nunca interpole entrada do usuário diretamente no system prompt. Mantenha as fr
 
 <details>
 <summary>❌ Ruim: entrada do usuário interpola o system prompt — direct injection trivial</summary>
-<br>
 
 ```js
 const systemPrompt = `
@@ -74,11 +73,8 @@ const systemPrompt = `
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: system prompt estático, entrada do usuário vai no papel correto</summary>
-<br>
 
 ```js
 const reply = await anthropic.messages.create({
@@ -100,7 +96,6 @@ Inclua no system prompt uma instrução explícita sobre como tratar tentativas 
 
 <details>
 <summary>❌ Ruim: sem instrução de escopo — jailbreak e role-play redirecionam sem resistência</summary>
-<br>
 
 ```
 Você é um assistente de vendas. Responda perguntas sobre nossos produtos.
@@ -108,11 +103,8 @@ Você é um assistente de vendas. Responda perguntas sobre nossos produtos.
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: instrução de escopo e recusa explícitas</summary>
-<br>
 
 ```
 Você é um assistente de vendas. Responda apenas perguntas sobre os produtos da empresa.
@@ -131,7 +123,6 @@ Nunca use a resposta do modelo diretamente como entrada de operações destrutiv
 
 <details>
 <summary>❌ Ruim: resposta do modelo vira parâmetro de operação sem verificação</summary>
-<br>
 
 ```js
 const modelReply = await askModel(userRequest);
@@ -141,11 +132,8 @@ await deleteRecord(modelReply.recordId);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: estrutura e existência validadas antes de agir</summary>
-<br>
 
 ```js
 const modelReply = await askModel(userRequest);
@@ -170,7 +158,6 @@ Dados lidos de fontes externas (documentos, páginas web, e-mails) devem ser san
 
 <details>
 <summary>❌ Ruim: conteúdo externo vai direto ao modelo — indirect injection via página ou documento</summary>
-<br>
 
 ```js
 const pageContent = await fetchPage(url);
@@ -180,11 +167,8 @@ const summary = await summarize(pageContent);
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: conteúdo sanitizado e enquadrado como dado antes de enviar</summary>
-<br>
 
 ```js
 const pageContent = await fetchPage(url);
@@ -210,7 +194,6 @@ Em sistemas agenticos, cada ferramenta exposta ao modelo deve ter o menor escopo
 
 <details>
 <summary>❌ Ruim: agente de consulta exposto a ferramentas com efeito colateral</summary>
-<br>
 
 ```js
 const tools = [
@@ -223,11 +206,8 @@ const tools = [
 
 </details>
 
-<br>
-
 <details>
 <summary>✅ Bom: agente de consulta recebe apenas o que precisa</summary>
-<br>
 
 ```js
 const tools = [
