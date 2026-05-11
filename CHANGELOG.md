@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.10] - 2026-05-11
+
+### Added
+
+- `docs/shared/architecture/entity-modeling.md` criado (820 linhas, 12 seções, 13 blocos Bad/Good): modelagem de entidades transversal com exemplos em JavaScript puro. Cobre tamanho saudável (heurística de coesão 5-10 / 10-15 / 15+), composição via value object embutido/opcional/satélite (Address, TaxInfo, CustomerProfile), strongly-typed IDs (CustomerId vs string crua), BaseEntity mínima com auditoria por composição, propriedade vs lista (cardinalidade 0..1, 1, 0..N), relacionamentos 1:N com aggregate root protegendo invariantes, N:N com entidade intermediária quando há atributos próprios (Enrollment), identidade vs referência cruzando aggregate boundary, multitenancy com TenantId só no aggregate root + enforcement no repositório, e 8 anti-patterns nomeados. README raiz +1 entrada na tabela Architecture. Audit `npm run audit:docs` clean: 2336 blocos Good em 374 arquivos
+
 ## [1.28.9] - 2026-05-11
 
 ### Changed

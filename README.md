@@ -183,6 +183,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Architecture](docs/shared/architecture/architecture.md)                       | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas                                 |
 | [Component Architecture](docs/shared/architecture/component-architecture.md)   | Composição, container/presentational, estado, memoization, fronteiras                         |
 | [Patterns](docs/shared/architecture/patterns.md)                               | Result, Factory, Repository, Strategy, Observer, Builder, Decorator, CQRS, AI-Driven, SDD     |
+| [Entity Modeling](docs/shared/architecture/entity-modeling.md)                 | Tamanho saudável, value objects, strongly-typed IDs, BaseEntity, cardinalidade, 1:N e N:N     |
 | [Scaling](docs/shared/architecture/scaling.md)                                 | Load Balancing, API Gateway, escala vertical e horizontal, estratégias e anti-overengineering |
 | [Operation Flow](docs/shared/architecture/operation-flow.md)                   | Fluxo de operação backend e frontend: puro nas bordas, I/O no meio, CQS                       |
 | [Frontend Flow](docs/shared/architecture/frontend-flow.md)                     | Routing, guards, loaders, layouts aninhados, forms e updates otimistas                        |
