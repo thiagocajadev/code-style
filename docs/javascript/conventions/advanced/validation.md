@@ -164,6 +164,7 @@ async function validateOrderRules(input) {
 
   if (!product.isAvailable)
     return Result.fail("Product unavailable", "UNAVAILABLE");
+
   if (product.stock < input.quantity)
     return Result.fail("Insufficient stock", "OUT_OF_STOCK");
 

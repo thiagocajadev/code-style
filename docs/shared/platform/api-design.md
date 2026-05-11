@@ -96,15 +96,14 @@ storage exige mexer no controller. Testar a regra de preço exige subir um servi
 export function registerOrdersController(app, { createOrder }) {
   app.post('/api/orders', async (httpRequest, httpResponse) => {
     const result = await createOrder.handle(httpRequest.body);
+
     if (result.isFailure) {
       const badRequest = httpResponse.status(400).json({ message: result.error });
-
       return badRequest;
     }
 
     const apiResponse = buildEnvelope(result.value, httpRequest);
     const created = httpResponse.status(201).json(apiResponse);
-
     return created;
   });
 }
@@ -115,6 +114,7 @@ export function registerOrdersController(app, { createOrder }) {
 export function createOrderHandler({ orderService }) {
   async function handle(request) {
     const serviceResult = await orderService.createOrder(request);
+
     if (serviceResult.isFailure) {
       const failure = Result.fail(serviceResult.error);
       return failure;
@@ -188,6 +188,7 @@ export const orderRequestSchema = z.object({
 
 export function parseOrderRequest(body) {
   const parsed = orderRequestSchema.safeParse(body);
+
   if (!parsed.success) {
     const validation = Result.fail(parsed.error.issues);
     return validation;
@@ -201,9 +202,9 @@ export function parseOrderRequest(body) {
 ```js
 app.post('/api/orders', async (httpRequest, httpResponse) => {
   const parsed = parseOrderRequest(httpRequest.body);
+
   if (parsed.isFailure) {
     const badRequest = httpResponse.status(400).json({ errors: parsed.error });
-
     return badRequest;
   }
 
@@ -250,6 +251,7 @@ ninguém revisar.
 ```js
 async function handle(id) {
   const serviceResult = await orderService.findById(id);
+
   if (serviceResult.isFailure) {
     const failure = Result.fail(serviceResult.error);
     return failure;
@@ -321,23 +323,22 @@ export function buildEnvelope(data, httpRequest) {
     correlationId,
     requestedAt: new Date().toISOString(),
   };
-  const envelope = { data, meta };
 
+  const envelope = { data, meta };
   return envelope;
 }
 
 export function buildErrorEnvelope(code, message, httpRequest, details) {
   const correlationId = httpRequest.headers['x-correlation-id'] ?? crypto.randomUUID();
   const error = { code, message };
-  if (details) {
-    error.details = details;
-  }
+  if (details) error.details = details;
+
   const meta = {
     correlationId,
     requestedAt: new Date().toISOString(),
   };
-  const envelope = { error, meta };
 
+  const envelope = { error, meta };
   return envelope;
 }
 ```
@@ -437,6 +438,7 @@ async function handle(id, res) {
 export function findOrderByIdHandler({ orderService }) {
   async function handle(id) {
     const serviceResult = await orderService.findById(id);
+
     if (serviceResult.isFailure) {
       const failure = Result.fail(serviceResult.error);
       return failure;
@@ -463,17 +465,16 @@ export function findOrderByIdHandler({ orderService }) {
 // features/orders/ordersController.js
 app.get('/api/orders/:id', async (httpRequest, httpResponse) => {
   const result = await findOrderById.handle(httpRequest.params.id);
+
   if (result.isFailure) {
     const httpStatus = mapErrorToStatus(result.error);
     const envelope = buildErrorEnvelope(result.error.code, result.error.message, httpRequest);
     const errorResponse = httpResponse.status(httpStatus).json(envelope);
-
     return errorResponse;
   }
 
   const envelope = buildEnvelope(result.value, httpRequest);
   const okResponse = httpResponse.status(200).json(envelope);
-
   return okResponse;
 });
 ```

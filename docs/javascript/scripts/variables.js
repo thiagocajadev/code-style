@@ -9,6 +9,7 @@ const discountedOrder = applyDiscount(order);
 
 console.log("original:", order);
 console.log("discounted:", discountedOrder);
+
 console.log("max retries:", MAX_RETRIES);
 console.log("one day ms:", ONE_DAY_MS);
 

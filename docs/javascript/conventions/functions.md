@@ -98,7 +98,6 @@ async function processOrder(orderId) {
   async function issueInvoice(order) {
     const discountedOrder = applyDiscount(order);
     const invoice = await saveOrder(discountedOrder);
-
     return invoice;
   }
 }
@@ -149,7 +148,6 @@ function buildOrderSummary(order) {
   function buildLineItems(order) {
     const lines = order.items.map((item) => `  - ${item.name}: $${item.price.toFixed(2)}`);
     const lineItems = lines.join("\n");
-
     return lineItems;
   }
 }
@@ -186,7 +184,6 @@ function getOrderSummary(order) {
 function getOrderSummary(order) {
   const totals = calculateTotals(order.items);
   const summary = formatSummary(order.id, totals);
-
   return summary;
 
   function calculateTotals(items) {
@@ -194,14 +191,12 @@ function getOrderSummary(order) {
     const tax = subtotal * 0.1;
 
     const totals = { subtotal, tax, total: subtotal + tax };
-
     return totals;
   }
 
   function formatSummary(orderId, totals) {
     const { subtotal, tax, total } = totals;
     const summary = `Order #${orderId}: $${subtotal.toFixed(2)} + tax $${tax.toFixed(2)} = $${total.toFixed(2)}`;
-
     return summary;
   }
 }
@@ -248,7 +243,6 @@ async function findProductById(id) {
 
   async function fetchProduct(id) {
     const product = await productRepository.findById(id);
-
     if (!product) throw new NotFoundError("Product not found.");
 
     return product;
@@ -325,7 +319,6 @@ function getActiveUsers(users) {
 ```js
 function buildGreeting(user) {
   const greeting = `Hello, ${user.name}! You have ${user.notifications.length} notifications.`;
-
   return greeting;
 }
 
@@ -402,7 +395,6 @@ function buildShippingLabel(order) {
 
   const cityLine = `${order.address.city} - ${order.address.state}, ${order.address.zipCode}`;
   const label = `${fullName}\n${addressLine}\n${cityLine}\nOrder #${order.id}`;
-
   return label;
 }
 ```
@@ -520,7 +512,6 @@ Template literal gigante? Extraia as partes compostas em variáveis nomeadas.
 ```js
 function buildConfirmationEmail(user, order) {
   const message = `Olá ${user.firstName} ${user.lastName}, seu pedido #${order.id} foi confirmado e será entregue no endereço ${order.address.street}, ${order.address.city} - ${order.address.state} em até ${order.deliveryDays} dias úteis.`;
-
   return message;
 }
 ```
@@ -543,7 +534,6 @@ function buildConfirmationEmail(user, order) {
   const deliveryInfo = `e será entregue em ${address} em até ${order.deliveryDays} dias úteis`;
 
   const message = `${greeting}, ${orderInfo} ${deliveryInfo}.`;
-
   return message;
 }
 ```

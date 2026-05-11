@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.6] - 2026-05-11
+
+### Changed
+
+- `docs/javascript/conventions/visual-density.md` + `docs/shared/standards/visual-density.md` — regra **Explaining Return** refinada: `return` tight com a `const` imediatamente acima sempre que essa linha for single-line e nomeie o valor retornado, independente de quantos passos haja acima (antes a regra antiga "2+ passos → blank" criava falsos positivos). Novas seções: `## Multi-linha: respiro depois do bloco` (objeto/array/statement quebrado em várias linhas pede blank depois), `## Ifs consecutivos: blocos com chaves precisam de respiro` (cenário B + exceção do trio atômico para guardas inline), `## Sem alinhamento de coluna` (espaço único, sem padding artificial), `## Fragmentos → montagem` (blank antes do consumidor que costura múltiplos fragmentos, em contraste com par semântico encadeado)
+- `docs/javascript/conventions/visual-density.md` + `docs/shared/standards/visual-density.md` — regra **Declaração + guarda** refinada com critério **visual**: guarda inline (`if (...) return;`) forma par tight com a `const` acima; guarda em bloco `{ }` (qualquer corpo, mesmo uma única instrução) vira fase própria e pede blank antes. Adicionado terceiro exemplo Bom mostrando bloco com instrução única
+- `docs/javascript/conventions/visual-density.md` — `Conceitos fundamentais` ganha `tight pair`, `atomic trio`, `semantic pair`, `multi-line block`, `fragments → assembly`, `column alignment`; tabela do shared traduz todos os termos no corpo (mantendo `**termo-en** (pt-br)` na coluna Conceito como padrão canônico)
+- `docs/javascript/conventions/functions.md` — 9 violações corrigidas: `issueInvoice`, `buildLineItems`, `getOrderSummary`, `calculateTotals`, `formatSummary`, `buildGreeting`, `buildShippingLabel`, `buildConfirmationEmail` viraram Explaining Return tight; `fetchProduct` ajustado (declaração + guarda inline tight)
+- `docs/javascript/conventions/advanced/error-handling.md` — `findUser` ajustado (declaração + guarda inline tight); `findProductById` preserva blank antes do `if` bloco (guarda multi-linha com throw expandido)
+- `docs/javascript/conventions/advanced/validation.md` — `validateOrderRules` ganha blank entre os dois `if` quebrados em múltiplas linhas (regra de statement multi-linha pedindo respiro)
+- `docs/javascript/scripts/{variables.js,test/testing.jest.js,test/testing.node.js,test/testing.vitest.js}` — 4 console.logs em `variables.js` quebrados em 2+2; nos 3 arquivos de teste, `applyDiscount` refatorado para Explaining Return e cada `it`/`test` reorganizado para eliminar órfãos de 1 linha do padrão AAA
+- `docs/shared/standards/null-safety.md` — `buildOrder` e `getEffectivePriority` viraram Explaining Return tight
+- `docs/shared/architecture/frontend-flow.md` — `loadOrderDetail` e `OrderDetailPage` viraram Explaining Return tight; `submitOrder` recuperou blank antes do `if` bloco
+- `docs/shared/architecture/backend-flow.md` — `dispatchWebhookEvent` preserva blank antes do `if` bloco multi-linha (log + return)
+- `docs/shared/platform/api-design.md` — 7 funções alinhadas: `buildEnvelope` e `buildErrorEnvelope` ganham blank após `meta` multi-linha + Explaining Return tight; `registerOrdersController`, `createOrderHandler.handle`, `parseOrderRequest`, app.post boundary, `findOrderByIdHandler.handle`, `handle(id)` e `app.get '/api/orders/:id'` recebem blank antes dos `if` bloco e Explaining Returns tight quando aplicável
+- `docs/shared/platform/performance.md` — `loadOrdersWithCustomers` 4 declarações reorganizadas em 2+2 semântico (carregar+extrair / carregar+indexar)
+
 ## [1.28.5] - 2026-05-10
 
 ### Fixed

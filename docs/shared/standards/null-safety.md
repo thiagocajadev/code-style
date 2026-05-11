@@ -108,7 +108,6 @@ const total = calculateTotal(order);
 ```js
 function buildOrder(id, items) {
   const order = { id, items: items ?? [] }; // items sempre [], nunca null
-
   return order;
 }
 ```
@@ -205,7 +204,6 @@ campo é opcional por design, e o domínio tem uma função central que resolve 
 // priority é opcional — ausência significa "criado antes dessa feature existir"
 function getEffectivePriority(order) {
   const priority = order.priority ?? "normal"; // uma função resolve, sem espalhar ?. pelo domínio
-
   return priority;
 }
 ```

@@ -106,14 +106,12 @@ function OrderDetailPage({ orderId }) {
 async function loadOrderDetail(loaderArgs) {
   const { params } = loaderArgs;
   const order = await fetchOrder(params.orderId);
-
   return order;
 }
 
 function OrderDetailPage() {
   const order = useLoaderData();
   const orderView = <OrderDetailView order={order} />;
-
   return orderView;
 }
 ```

@@ -217,6 +217,7 @@ for (const order of orders) {
 async function loadOrdersWithCustomers() {
   const orders = await orderRepository.findAll();
   const customerIds = orders.map(order => order.customerId);
+
   const customers = await customerRepository.findByIds(customerIds);
   const customerIndex = new Map(customers.map(customer => [customer.id, customer]));
 

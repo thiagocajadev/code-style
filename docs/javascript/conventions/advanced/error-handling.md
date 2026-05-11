@@ -92,7 +92,6 @@ async function findUser(id) {
 ```js
 async function findUser(id) {
   const user = await userRepository.findById(id);
-
   if (!user) throw new NotFoundError({ message: `User ${id} not found.` });
 
   return user;
