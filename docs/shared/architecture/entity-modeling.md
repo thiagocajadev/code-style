@@ -826,9 +826,12 @@ Os padrões abaixo aparecem com frequência em código real, e cada um é um sin
 
 ## Referências
 
+Cross-links dentro do guia:
+
 - [`architecture/patterns.md`](patterns.md): padrões de design e quando aplicar
 - [`architecture/principles.md`](principles.md): princípios transversais (SLA, CQS, SSOT)
 - [`architecture/component-architecture.md`](component-architecture.md): arquitetura por componentes e regras de fronteira
 - [`standards/null-safety.md`](../standards/null-safety.md): fronteiras de validação e coleções vazias
-- [`platform/database.md`](../platform/database.md): persistência, ORM, multi-tenancy no banco
-- Bibliografia de referência: _Domain-Driven Design_ (Eric Evans, 2003), _Implementing Domain-Driven Design_ (Vaughn Vernon, 2013), _Patterns of Enterprise Application Architecture_ (Martin Fowler, 2002)
+- [`platform/database.md`](../platform/database.md): persistência, ORM, multitenancy no banco
+
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

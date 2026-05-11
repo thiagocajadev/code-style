@@ -13,7 +13,6 @@ The Clean Coder, Robert C. Martin _(livro)_
 
 ## Metodologias e Processo
 
-[Domain-Driven Design Reference, Eric Evans](https://www.domainlanguage.com/ddd/reference/)  
 [Behavior-Driven Development, Dan North](https://dannorth.net/introducing-bdd/)  
 [Test-Driven Development by Example, Kent Beck](https://www.oreilly.com/library/view/test-driven-development/0321146530/) _(livro)_  
 [Extreme Programming Explained, Kent Beck](https://www.oreilly.com/library/view/extreme-programming-explained/0201616416/) _(livro)_  
@@ -27,6 +26,16 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Strangler Fig Pattern, Martin Fowler](https://martinfowler.com/bliki/StranglerFigApplication.html)  
 [Event-Driven Architecture, Martin Fowler](https://martinfowler.com/articles/201701-event-driven.html)  
 [CloudEvents Spec](https://cloudevents.io/)
+
+## DDD e Modelagem de Domínio
+
+Domain-Driven Design, Eric Evans _(livro)_  
+Implementing Domain-Driven Design, Vaughn Vernon _(livro)_  
+[Patterns of Enterprise Application Architecture, Martin Fowler](https://martinfowler.com/books/eaa.html) _(livro)_  
+[Domain-Driven Design Reference, Eric Evans](https://www.domainlanguage.com/ddd/reference/)  
+[Aggregate, Martin Fowler](https://martinfowler.com/bliki/DDD_Aggregate.html)  
+[Value Object, Martin Fowler](https://martinfowler.com/bliki/ValueObject.html)  
+[Bounded Context, Martin Fowler](https://martinfowler.com/bliki/BoundedContext.html)
 
 ## Banco de Dados — SQL
 

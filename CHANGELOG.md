@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.12] - 2026-05-11
+
+### Changed
+
+- `REFERENCES.md` ganha nova seção `## DDD e Modelagem de Domínio` com 7 entradas: livros _Domain-Driven Design_ (Evans), _Implementing Domain-Driven Design_ (Vernon) e _Patterns of Enterprise Application Architecture_ (Fowler, com link para martinfowler.com); o link "Domain-Driven Design Reference, Eric Evans" foi movido de "Metodologias e Processo" para a nova seção (lugar mais natural); três bliki posts do Fowler adicionados (Aggregate, Value Object, Bounded Context)
+- `docs/shared/architecture/entity-modeling.md` — seção Referências reorganizada para separar cross-links internos (5 docs do guia) de bibliografia externa (ponteiro `→ REFERENCES.md#ddd-e-modelagem-de-domínio`), restaurando o SSOT: bibliografia centralizada em REFERENCES.md, cross-links contextuais inline. Audit clean: 2336 blocos Good em 374 arquivos
+
 ## [1.28.11] - 2026-05-11
 
 ### Changed
