@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.11] - 2026-05-11
+
+### Changed
+
+- `docs/shared/architecture/entity-modeling.md` revisado aplicando writing-soul estrita: tabela de Conceitos fundamentais expandida de 9 para 17 termos (adicionados invariant, boundary, nullable, God Object, repository, ORM, soft delete, row-level security) cobrindo todos os termos técnicos usados no corpo; 9 aberturas de seção suavizadas com tom convidativo e bridging sentences (intro com explícito "esta página serve a duas pessoas", Strongly-typed IDs abrindo pelo bug concreto antes da defesa, BaseEntity com sequência tentadora "já que tem base...", Composição com motivação antes dos três padrões, Anti-patterns com critério de revisão); cardinality e nullable ganham gloss funcional na tabela; explanação inline de mixin/trait/protocol/interface ao primeiro uso. Audit `npm run audit:docs` clean: 2336 blocos Good em 374 arquivos. 834 linhas
+
 ## [1.28.10] - 2026-05-11
 
 ### Added
