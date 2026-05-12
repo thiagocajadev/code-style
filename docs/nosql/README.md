@@ -47,6 +47,7 @@ Base conceitual de SQL vs NoSQL: [shared/platform/database.md](../../shared/plat
 | [Visual Density](conventions/visual-density.md) | Paragraphs of intent em drivers JS |
 | [Performance](conventions/advanced/performance.md) | Índices, projeção, N+1, TTL |
 | [Aggregation](conventions/advanced/aggregation.md) | Pipeline stages, $lookup, $group, $project |
+| [Entity Modeling](conventions/advanced/entity-modeling.md) | Embedded vs referenced, schema validation, shard key, denormalização controlada |
 
 ---
 

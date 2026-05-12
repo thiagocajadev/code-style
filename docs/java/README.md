@@ -42,6 +42,7 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 | [Validation](conventions/advanced/validation.md)              | Jakarta Bean Validation, fronteiras, custom       |
 | [Null Safety](conventions/advanced/null-safety.md)            | Optional, Objects.requireNonNullElse, guard       |
 | [Dates](conventions/advanced/dates.md)                        | java.time, UTC, ISO 8601, DateTimeFormatter       |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)    | `record` para IDs, `sealed interface`, `Optional` em retorno, factory estática |
 | [Quick Reference](quick-reference.md)                         | Nomenclatura, verbos, taboos                      |
 
 ## Frameworks

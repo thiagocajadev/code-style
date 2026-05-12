@@ -42,6 +42,7 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | [Observability](conventions/advanced/observability.md)             | `Logger`, structured logging, semantic_logger                    |
 | [Validation](conventions/advanced/validation.md)                   | ActiveModel, dry-validation, validação na fronteira              |
 | [Dates](conventions/advanced/dates.md)                             | `Time.now.utc`, `Time.parse`, `ActiveSupport::TimeZone`, ISO 8601 |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)         | `Data.define` para IDs, `attr_reader`, `dup` em coleções, factory class method |
 
 ## Frameworks
 

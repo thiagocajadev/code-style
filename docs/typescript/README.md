@@ -42,6 +42,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | [Testing](conventions/advanced/testing.md)                   | Fixtures com `satisfies`, mocks tipados, `expectTypeOf`       |
 | [Validation](conventions/advanced/validation.md)             | `z.infer`, `safeParse`, discriminated unions, output DTO      |
 | [Dates](conventions/advanced/dates.md)                       | Branded types para timestamps, Temporal API tipada            |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)   | Branded types, ReadonlyArray, discriminated unions, `Entity<TId>`, factory pattern |
 | [Quick Reference](quick-reference.md)                        | Tipos, utilitários, taboos                                    |
 
 ## Frameworks

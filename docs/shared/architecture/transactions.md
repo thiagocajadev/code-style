@@ -96,7 +96,6 @@ concorrência, todo cliente fica gargalado por suas próprias compras paralelas.
 async function placeOrder(orderInput, customerId) {
   const order = Order.place({ customerId, ...orderInput });
   const persistedOrder = await orderRepository.save(order);
-
   return persistedOrder;
 }
 
@@ -247,7 +246,6 @@ raros e tempos de processamento maiores, onde manter lock seria desperdício.
 ```js
 async function topUpWallet(walletId, amount) {
   const wallet = await walletRepository.findById(walletId);
-
   const newBalance = wallet.balance + amount;
   wallet.balance = newBalance;
 

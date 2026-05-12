@@ -36,6 +36,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [Traits](conventions/advanced/traits.md)                         | Composição, conflito, abstract em traits               |
 | [Async](conventions/advanced/async.md)                           | Fibers, ReactPHP, Revolt                               |
 | [Null Safety](conventions/advanced/null-safety.md)               | Nullable types, `??`, `?->`, never null                |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)       | `readonly class`, property promotion, `backed enum`, factory estático |
 | [Testing](conventions/advanced/testing.md)                       | PHPUnit 11, AAA, data providers, mocks                 |
 | [Performance](conventions/advanced/performance.md)               | OPcache, generators, lazy objects, N+1                 |
 | [Observability](conventions/advanced/observability.md)           | Monolog, structured logging, PSR-3, correlation ID     |

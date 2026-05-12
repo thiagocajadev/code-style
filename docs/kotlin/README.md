@@ -35,6 +35,7 @@ Configuração inicial de um projeto Kotlin: estrutura, tooling e segurança.
 | [Async](conventions/advanced/async.md) | `async`/`await`, `withContext`, `Dispatchers`, `launch` |
 | [Error Handling](conventions/advanced/error-handling.md) | `Result`, `runCatching`, sealed classes de erro, fronteiras |
 | [Null Safety](conventions/advanced/null-safety.md) | `?.`, `?:`, `!!`, `let`, `run`, smart cast |
+| [Entity Modeling](conventions/advanced/entity-modeling.md) | `@JvmInline value class`, `sealed class`, `MutableList` privada, `companion` factory |
 | [Testing](conventions/advanced/testing.md) | JUnit 5, `kotest`, `mockk`, estrutura AAA, coroutine tests |
 | [Performance](conventions/advanced/performance.md) | Inline functions, lazy, `buildList`, evitar alocação, benchmarks |
 | [Observability](conventions/advanced/observability.md) | `slf4j`, structured logging, MDC, níveis, correlação |

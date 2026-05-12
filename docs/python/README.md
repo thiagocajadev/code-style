@@ -37,6 +37,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [Observability](conventions/advanced/observability.md)        | logging estruturado, níveis, PII, correlation_id     |
 | [Validation](conventions/advanced/validation.md)              | Pydantic, validação na fronteira, output filter      |
 | [Dates](conventions/advanced/dates.md)                        | datetime aware, zoneinfo, ISO 8601, strptime         |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)    | `NewType` para IDs, `@dataclass(frozen=True)`, `Sequence[T]` read-only, `classmethod` factory |
 
 ## Frameworks
 

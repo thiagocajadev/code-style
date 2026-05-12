@@ -34,6 +34,7 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | [Error Handling](conventions/advanced/error-handling.md)           | `thiserror`, `anyhow`, `?`, sem `unwrap()` em produção          |
 | [Async](conventions/advanced/async.md)                             | Tokio, `async fn`, `.await`, `spawn`, `select!`, shutdown        |
 | [Null Safety](conventions/advanced/null-safety.md)                 | `Option<T>`, `if let`, `let-else`, `?`, `map`/`and_then`        |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)         | Newtype com `derive`, `Option<T>`, trait `Entity`, ownership como guard de invariantes |
 | [Testing](conventions/advanced/testing.md)                         | `#[test]`, `#[tokio::test]`, table-driven, testes de integração |
 | [Performance](conventions/advanced/performance.md)                 | Ownership, clones desnecessários, `Arc`, `Mutex`, benchmarks     |
 | [Observability](conventions/advanced/observability.md)             | `tracing`, spans estruturados, `#[instrument]`, níveis           |

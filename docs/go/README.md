@@ -35,6 +35,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [Concurrency](conventions/advanced/concurrency.md)                 | Goroutines, channels, `select`, `sync`, `context`      |
 | [Async](conventions/advanced/async.md)                             | `context.Context`, cancelamento, timeouts, `errgroup`  |
 | [Null Safety](conventions/advanced/null-safety.md)                 | Zero values, nil handling, ponteiros opcionais         |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)         | Named type para IDs, embedding, pointer receiver, cópia defensiva de slice |
 | [Testing](conventions/advanced/testing.md)                         | `testing`, table-driven tests, `testify`, subtests     |
 | [Performance](conventions/advanced/performance.md)                 | Escape analysis, `sync.Pool`, benchmarks, allocs       |
 | [Observability](conventions/advanced/observability.md)             | `log/slog`, structured logging, níveis, correlation    |

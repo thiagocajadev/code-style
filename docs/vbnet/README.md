@@ -52,6 +52,7 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | [Visual Density](conventions/visual-density.md) | Fases de método, `Return` separado, declaração + guarda, strings longas |
 | [Performance](conventions/advanced/performance.md) | `StringBuilder`, boxing, `HashSet`, `For` vs `For Each` em hot paths |
 | [Null Safety](conventions/advanced/null-safety.md) | `Is Nothing`, `Nullable(Of T)`, `If()` null-coalescing, guard em construtor |
+| [Entity Modeling](conventions/advanced/entity-modeling.md)        | `Structure` como ID tipado, `NotInheritable`, `IReadOnlyList(Of T)`, factory `Shared` |
 
 ## Princípios
 

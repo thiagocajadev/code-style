@@ -33,6 +33,7 @@ Configuração inicial de um projeto Swift: estrutura, tooling e segurança.
 | [Concurrency](conventions/advanced/concurrency.md) | `async`/`await`, `actor`, `Sendable`, structured concurrency, `Task` |
 | [Error Handling](conventions/advanced/error-handling.md) | `throws`/`Result`, `do/catch`, erros de domínio |
 | [Null Safety](conventions/advanced/null-safety.md) | Optionals, `guard let`, `if let`, `??`, `!` proibido |
+| [Entity Modeling](conventions/advanced/entity-modeling.md) | `struct` VO + `final class` Entity, `protocol` com `associatedtype`, `private(set)` |
 | [Testing](conventions/advanced/testing.md) | XCTest, Swift Testing, mocking com protocolos, AAA |
 | [Performance](conventions/advanced/performance.md) | Value types, `@inlinable`, evitar alocação, Instruments |
 | [Observability](conventions/advanced/observability.md) | `os.Logger`, structured logging, signposts, níveis |

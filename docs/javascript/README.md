@@ -38,6 +38,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Observability](conventions/advanced/observability.md)     | Logging estruturado, níveis, PII, correlationId |
 | [Validation](conventions/advanced/validation.md)           | Sanitize, Zod, regras de negócio, output filter |
 | [Dates](conventions/advanced/dates.md)                     | UTC, ISO 8601, parsing, Temporal API            |
+| [Entity Modeling](conventions/advanced/entity-modeling.md) | Lean pointer ao canônico shared, `#field` privacy, `Object.freeze`, `Symbol.iterator`, `instanceof` boundary |
 | [Quick Reference](quick-reference.md)                      | Nomenclatura, verbos, taboos                    |
 
 ## Frameworks

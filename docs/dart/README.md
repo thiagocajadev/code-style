@@ -34,6 +34,7 @@ Configuração inicial de um projeto Dart: estrutura, tooling e segurança.
 | [Async](conventions/advanced/async.md) | `async`/`await`, `Future`, `FutureOr`, `Completer` |
 | [Error Handling](conventions/advanced/error-handling.md) | `Exception`, `Error`, `Result` pattern, `try/catch`, `onError` |
 | [Null Safety](conventions/advanced/null-safety.md) | `?`, `!`, `??`, `?.`, late, `required` |
+| [Entity Modeling](conventions/advanced/entity-modeling.md) | `extension type` para IDs, `sealed class`, `UnmodifiableListView`, factory constructor |
 | [Testing](conventions/advanced/testing.md) | `package:test`, `mockito`/`mocktail`, AAA, async tests |
 | [Performance](conventions/advanced/performance.md) | `const` constructors, `Uint8List`, evitar alocação, benchmarks |
 | [Observability](conventions/advanced/observability.md) | `dart:developer`, `log()`, níveis, zones |
