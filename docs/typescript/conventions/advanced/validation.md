@@ -4,7 +4,7 @@
 
 Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript adiciona: **type inference** (inferência de tipo) a partir do schema **Zod** (biblioteca de validação por schema), tipos derivados em vez de declarados manualmente e garantia de que o output do **parse** (transformação) corresponde ao tipo esperado.
 
-> Base JavaScript: [javascript/conventions/advanced/validation.md](../../../../javascript/conventions/advanced/validation.md)
+> Base JavaScript: [javascript/conventions/advanced/validation.md](../../../javascript/conventions/advanced/validation.md)
 
 ## Conceitos fundamentais
 

@@ -1,6 +1,6 @@
 # Async
 
-> Escopo: Ruby 4.0. Padrões agnósticos de I/O assíncrono em [shared/platform/backend-flow.md](../../../../shared/platform/backend-flow.md).
+> Escopo: Ruby 4.0. Padrões agnósticos de I/O assíncrono em [shared/platform/backend-flow.md](../../../shared/architecture/backend-flow.md).
 
 Ruby não tem `async/await` nativo como JavaScript ou Python. Concorrência é modelada com
 **Threads** (fios de execução), **Fibers** (fibras, corrotinas cooperativas) e

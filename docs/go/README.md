@@ -51,7 +51,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [Escrita em inglês](conventions/naming.md#nomes-em-português)                               | Código universal, nomes curtos e sem ambiguidade                     |
 | [PascalCase exportado](conventions/naming.md#convenções-de-case)                            | Exported: `PascalCase`; unexported: `camelCase`; sem underscores     |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                  | Variáveis e funções que dispensam explicação                         |
-| [Orquestrador no topo](conventions/methods.md#god-function--múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
+| [Orquestrador no topo](conventions/methods.md#stepdown-rule)    | Chamada visível antes dos detalhes (top-down)                        |
 | [SLA](conventions/methods.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
@@ -63,7 +63,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                   | Saída cedo na falha, sem else após return                            |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                            | Aninhamento em cascata substituído por fluxo plano                   |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Zero value por padrão](conventions/variables.md#zero-values)                                 | Go inicializa tudo; declare com intenção, não com ruído              |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
 
@@ -77,4 +77,4 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [Falhar rápido](conventions/advanced/error-handling.md#erro-silencioso)                        | Validar cedo, interromper fluxo inválido                     |
 | [Contexto propagado](conventions/advanced/async.md#contexto-ignorado)                          | `context.Context` no primeiro parâmetro, sempre propagado    |
 | [Goroutines controladas](conventions/advanced/concurrency.md#goroutine-sem-controle)           | Toda goroutine tem dono, cancelamento e espera definidos     |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa)                   | Table-driven + AAA; assert semântico via `testify`           |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                   | Table-driven + AAA; assert semântico via `testify`           |

@@ -6,7 +6,7 @@ O sistema de logs unificado da Apple (os.Logger) é o padrão para iOS e macOS. 
 o Console.app e são coletados pelo sistema operacional com baixo overhead. Signposts permitem
 marcar regiões de código para profiling no Instruments.
 
-→ Princípios gerais: [shared/platform/observability.md](../../../shared/platform/observability.md)
+→ Princípios gerais: [shared/platform/observability.md](../../../shared/standards/observability.md)
 
 ## Conceitos fundamentais
 

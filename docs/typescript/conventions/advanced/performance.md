@@ -4,7 +4,7 @@
 
 As diretrizes de performance do JavaScript se aplicam sem mudança. O TypeScript adiciona: evitar padrões que forçam trabalho desnecessário no **compiler** (compilador) e no **runtime** (tempo de execução). **`enum`** (enumeração com runtime) gera código; **`as const`** (afirmação literal) não. Meça antes de otimizar.
 
-> Base JavaScript: [javascript/conventions/advanced/performance.md](../../../../javascript/conventions/advanced/performance.md)
+> Base JavaScript: [javascript/conventions/advanced/performance.md](../../../javascript/conventions/advanced/performance.md)
 
 ## Conceitos fundamentais
 

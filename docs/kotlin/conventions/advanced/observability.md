@@ -6,7 +6,7 @@ Logs são eventos estruturados, não mensagens de texto. Cada evento tem nível,
 o quê, com quais IDs) e dados relevantes para diagnóstico. O **MDC** (Mapped Diagnostic Context,
 contexto de diagnóstico mapeado) propaga identificadores de correlação automaticamente.
 
-→ Princípios gerais: [shared/platform/observability.md](../../../shared/platform/observability.md)
+→ Princípios gerais: [shared/platform/observability.md](../../../shared/standards/observability.md)
 
 ## Conceitos fundamentais
 

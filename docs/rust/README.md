@@ -55,8 +55,8 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | [snake_case universal](conventions/naming.md#convenções-de-case)                                   | Funções, variáveis e módulos: `snake_case`; tipos e traits: `PascalCase` |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                         | Identificadores que dispensam comentário                                 |
-| [Orquestrador no topo](conventions/functions.md#stepdown--orquestrador-acima-dos-detalhes)         | Chamada visível antes dos detalhes (top-down)                            |
-| [SLA](conventions/functions.md#sla--uma-responsabilidade-um-nível)                                 | Uma responsabilidade, um nível de abstração                              |
+| [Orquestrador no topo](conventions/functions.md#stepdown-orquestrador-acima-dos-detalhes)         | Chamada visível antes dos detalhes (top-down)                            |
+| [SLA](conventions/functions.md#sla-uma-responsabilidade-um-nível)                                 | Uma responsabilidade, um nível de abstração                              |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                            | Extraia o resultado antes de retornar                                    |
 
 <br>
@@ -65,7 +65,7 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 
 | Princípio                                                                                          | Descrição                                                                 |
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| [Retorno antecipado com `?`](conventions/control-flow.md#operador-)                               | Propague erros cedo com `?`; sem else após retorno implícito              |
+| [Retorno antecipado com `?`](conventions/control-flow.md#guard-clause-com-)                               | Propague erros cedo com `?`; sem else após retorno implícito              |
 | [Match exaustivo](conventions/control-flow.md#match)                                               | Todos os casos cobertos pelo compilador; sem padrão catch-all desnecessário |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                            | Linhas relacionadas juntas, grupos separados por linha em branco          |
 | [Imutável por padrão](conventions/variables.md#let-vs-let-mut)                                     | `let` é o padrão; `let mut` só quando necessário                         |

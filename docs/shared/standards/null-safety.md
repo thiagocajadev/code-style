@@ -209,7 +209,7 @@ function getEffectivePriority(order) {
 
 ## Implementação por linguagem
 
-- [TypeScript](../typescript/conventions/advanced/null-safety.md): `strictNullChecks`,
+- [TypeScript](../../typescript/conventions/advanced/null-safety.md): `strictNullChecks`,
   `noUncheckedIndexedAccess`, `??`, `?.`
-- [C#](../csharp/conventions/advanced/null-safety.md): nullable reference types, `required`, `??=`,
+- [C#](../../csharp/conventions/advanced/null-safety.md): nullable reference types, `required`, `??=`,
   `Array.Empty<T>()`

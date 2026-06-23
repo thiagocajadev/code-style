@@ -1,7 +1,7 @@
 # Observability
 
 > Escopo: Rust 1.95.
-> Princípios gerais de observabilidade: [shared/platform/observability.md](../../../../shared/platform/observability.md)
+> Princípios gerais de observabilidade: [shared/platform/observability.md](../../../shared/standards/observability.md)
 
 O ecossistema Rust usa a crate `tracing` como padrão de observabilidade estruturada.
 `tracing` emite eventos e spans com campos estruturados, compatível com exportadores

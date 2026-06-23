@@ -94,17 +94,17 @@ CREATE INDEX idx_orders_status_created ON orders(status, created_at);
 - Indexar colunas usadas em WHERE, JOIN e ORDER BY com alta seletividade
 - Não indexar colunas com poucos valores distintos (`boolean`, `gender`); o banco prefere full scan
 - Índices têm custo de escrita: cada INSERT/UPDATE/DELETE atualiza todos os índices da tabela
-- Colunas com função no WHERE desativam o índice: `WHERE LOWER(email) = ?` não usa índice em `email`; criar índice funcional ou normalizar no insert. O mesmo vale para `CAST`/`CONVERT` na coluna: converter o parâmetro, nunca a coluna. Ver [sql/performance.md](../../../sql/conventions/advanced/performance.md#cast-e-conversão-de-tipo-em-colunas)
+- Colunas com função no WHERE desativam o índice: `WHERE LOWER(email) = ?` não usa índice em `email`; criar índice funcional ou normalizar no insert. O mesmo vale para `CAST`/`CONVERT` na coluna: converter o parâmetro, nunca a coluna. Ver [sql/performance.md](../../sql/conventions/advanced/performance.md#cast-e-conversão-de-tipo-em-colunas)
 
 ### Boas práticas de query
 
-Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md).
+Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../../sql/conventions/advanced/performance.md).
 
 ### Consultas NoSQL
 
 Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho desnecessário no servidor é mais barato que trabalho no cliente.
 
-Guia completo por SGBD: [docs/nosql/](../../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../../nosql/conventions/).
+Guia completo por SGBD: [docs/nosql/](../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../nosql/conventions/).
 
 <details>
 <summary>❌ Ruim: sem projeção: trafega o documento inteiro para usar um campo</summary>
@@ -234,9 +234,9 @@ próxima execução deve continuar de onde parou sem duplicar ou corromper dados
 condição de filtro do próprio UPDATE/DELETE como cursor natural: o WHERE já exclui as linhas
 já processadas nas iterações anteriores.
 
-Padrões de query: [sql/conventions/advanced/batch.md](../../../sql/conventions/advanced/batch.md).
+Padrões de query: [sql/conventions/advanced/batch.md](../../sql/conventions/advanced/batch.md).
 
-Recursos específicos por banco: [SQL Server](../../../sql/sgbd/sql-server.md#operações-em-lote) | [PostgreSQL](../../../sql/sgbd/postgres.md#operações-em-lote).
+Recursos específicos por banco: [SQL Server](../../sql/sgbd/sql-server.md#operações-em-lote) | [PostgreSQL](../../sql/sgbd/postgres.md#operações-em-lote).
 
 ---
 
@@ -246,7 +246,7 @@ O plano de execução mostra _como_ o banco vai executar a query: quais índices
 
 **Antes de deployar qualquer query em uma tabela grande, analisar o plano.**
 
-Sintaxe por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
+Sintaxe por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../sql/sgbd/sql-server.md#diagnóstico).
 
 ### O que procurar no plano
 
@@ -275,7 +275,7 @@ Seq Scan on orders  (cost=0.00..4521.00 rows=150000 width=16)
 
 O primeiro passo para identificar problemas em produção é habilitar o log de queries lentas.
 
-Configuração por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
+Configuração por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../sql/sgbd/sql-server.md#diagnóstico).
 
 ### N+1 em runtime
 
@@ -295,7 +295,7 @@ Ferramentas que expõem N+1 automaticamente: **Bullet** (Rails), **Hibernate Sta
 
 Quando todas as conexões do pool estão em uso, novas requisições ficam em fila. Sintoma: timeouts em requisições simples que normalmente são rápidas, sem aumento de **CPU** (Central Processing Unit, Unidade Central de Processamento) ou lentidão de queries.
 
-Diagnóstico por banco: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
+Diagnóstico por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../sql/sgbd/sql-server.md#diagnóstico).
 
 Causas comuns: queries longas segurando conexão, transaction não fechada, pool subdimensionado, pico de tráfego inesperado.
 
@@ -303,7 +303,7 @@ Causas comuns: queries longas segurando conexão, transaction não fechada, pool
 
 Lock é esperado: é o mecanismo de consistência. O problema é lock de longa duração ou deadlock.
 
-**Identificar locks ativos**: [PostgreSQL](../../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../../sql/sgbd/sql-server.md#diagnóstico).
+**Identificar locks ativos**: [PostgreSQL](../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../sql/sgbd/sql-server.md#diagnóstico).
 
 **Deadlock** aparece no log com mensagem explícita. A causa mais comum é duas transações acessando as mesmas linhas em ordem inversa. A solução é padronizar a ordem de acesso.
 

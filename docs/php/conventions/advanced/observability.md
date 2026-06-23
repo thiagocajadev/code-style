@@ -7,7 +7,7 @@ PHP usa **Monolog** como biblioteca de logging padrão. Implemente a interface *
 Logs devem ser em JSON para produção. Nunca logue **PII** (Personally Identifiable
 Information, Informação Pessoalmente Identificável).
 
-→ Princípios gerais de observabilidade em [shared/standards/observability.md](../../../../shared/standards/observability.md).
+→ Princípios gerais de observabilidade em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 ## Conceitos fundamentais
 

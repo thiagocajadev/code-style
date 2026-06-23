@@ -6,7 +6,7 @@ Testes documentam o comportamento esperado. Um teste que falha conta uma histór
 
 Os exemplos seguem a abordagem **AAA** (Arrange Act Assert, Preparar Executar Verificar): uma convenção que divide cada teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do resultado).
 
-O [code style](../../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
+O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
 
 As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
 

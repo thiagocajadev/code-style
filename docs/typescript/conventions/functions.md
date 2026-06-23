@@ -57,7 +57,7 @@ export function calculateInvoiceTotal(items: LineItem[]): number {
 ## Parâmetros tipados: interface para objetos
 
 Quando a função recebe um objeto de configuração ou dados de domínio, o tipo vai em uma interface
-separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](../../javascript/conventions/functions.md#estilo-vertical--parâmetros):
+separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](../../javascript/conventions/functions.md#estilo-vertical-parâmetros):
 4+ campos usam objeto; o objeto usa interface.
 
 <details>

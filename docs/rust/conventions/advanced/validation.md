@@ -1,7 +1,7 @@
 # Validation
 
 > Escopo: Rust 1.95.
-> Princípios gerais de validação: [shared/platform/security.md](../../../../shared/platform/security.md)
+> Princípios gerais de validação: [shared/platform/security.md](../../../shared/platform/security.md)
 
 Valide na fronteira do sistema, não no interior do domínio. Use tipos como contratos:
 um `OrderId` válido nunca chega ao service como zero ou negativo se o handler validar antes.

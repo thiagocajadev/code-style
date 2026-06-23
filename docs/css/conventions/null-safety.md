@@ -2,7 +2,7 @@
 
 CSS não tem `null` como tipo, mas tem o equivalente: uma **custom property** (propriedade customizada) referenciada antes de ser definida produz um **invalid value** (valor inválido) que o browser descarta sem aviso. O mecanismo de defesa é o **fallback** (valor de reserva) em `var()` e o **@property** com **initial-value** (valor inicial).
 
-> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
+> Conceito geral: [Null Safety](../../shared/standards/null-safety.md)
 
 ## Conceitos fundamentais
 

@@ -151,7 +151,7 @@ Quando a complexidade supera 10, as ações são as mesmas que para funções lo
 
 ## Por linguagem
 
-- [JavaScript](../javascript/conventions/advanced/testing.md)
-- [TypeScript](../typescript/conventions/advanced/testing.md)
-- [C#](../csharp/conventions/advanced/testing.md)
-- [VB.NET](../vbnet/conventions/advanced/testing.md)
+- [JavaScript](../../javascript/conventions/advanced/testing.md)
+- [TypeScript](../../typescript/conventions/advanced/testing.md)
+- [C#](../../csharp/conventions/advanced/testing.md)
+- [VB.NET](../../vbnet/conventions/advanced/testing.md)

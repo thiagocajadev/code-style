@@ -588,7 +588,7 @@ A regra "no máximo 3" mora em `addPhone`, onde dá pra mudar sem mexer no schem
 
 </details>
 
-Listas seguem a mesma regra de [null-safety](../null-safety.md): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a mesma regra de [null-safety](null-safety.md): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 

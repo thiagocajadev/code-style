@@ -1,7 +1,7 @@
 # Control Flow
 
 > Escopo: Rust 1.95.
-> Referência canônica: [shared/standards/control-flow.md](../../../shared/standards/control-flow.md)
+> Referência canônica: [shared/standards/control-flow.md](../../shared/standards/control-flow.md)
 
 Rust favorece fluxo linear e explícito. O operador `?` propaga erros cedo sem aninhamento.
 `match` é exaustivo por design: o compilador rejeita casos não cobertos.

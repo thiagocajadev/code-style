@@ -4,7 +4,7 @@
 
 JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possibilidade de o valor ser nulo). A responsabilidade é do código: validar nos **boundaries** (limites, pontos de entrada de dados externos) e confiar no interior. Operadores específicos (`??`, `?.`) tornam a intenção explícita; usar o operador errado (`||` em vez de `??`) descarta valores válidos como `0` ou `""`.
 
-> Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
+> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
 ## Conceitos fundamentais
 

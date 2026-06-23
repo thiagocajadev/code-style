@@ -1,6 +1,6 @@
 # Validation
 
-> Escopo: Ruby 4.0. Padrões transversais de validação em [shared/platform/security.md](../../../../shared/platform/security.md).
+> Escopo: Ruby 4.0. Padrões transversais de validação em [shared/platform/security.md](../../../shared/platform/security.md).
 
 Validação acontece na fronteira do sistema: entrada de usuário, parâmetros de API,
 eventos externos. Dentro do domínio, confie nos tipos. Ruby oferece **ActiveModel::Validations**

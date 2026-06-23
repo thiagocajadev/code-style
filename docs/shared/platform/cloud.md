@@ -73,7 +73,7 @@ Logs em disco local não funcionam em cloud: containers são efêmeros, instânc
 
 Toda saída de log vai para um sink centralizado (CloudWatch, Datadog, GCP Logging, Azure Monitor). O padrão é stdout/stderr: o orquestrador captura e encaminha. Nenhum serviço escreve log em arquivo local em produção.
 
-Ver [Observabilidade](./observability.md) para estrutura de logs, níveis e correlation ID.
+Ver [Observabilidade](../standards/observability.md) para estrutura de logs, níveis e correlation ID.
 
 ## Ambientes
 

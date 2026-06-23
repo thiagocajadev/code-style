@@ -1,6 +1,6 @@
 # Dates
 
-> Escopo: Ruby 4.0. Padrão ISO 8601 em [shared/standards/editorconfig.md](../../../../shared/standards/editorconfig.md).
+> Escopo: Ruby 4.0. Padrão ISO 8601 em [shared/standards/editorconfig.md](../../../shared/standards/editorconfig.md).
 
 Ruby oferece `Time` na stdlib para datas e horas. Rails adiciona `ActiveSupport::TimeWithZone`
 para manipulação de fusos horários. A regra é simples: **sempre armazene UTC**, converta

@@ -184,7 +184,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 
 `Guid.NewGuid()` gera **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v4: aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sempre próximo ao fim
-da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id--bigint-vs-uuid).
+da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 
 <details>
 <summary>❌ Ruim: Guid.NewGuid() é v4: random, fragmenta índice</summary>

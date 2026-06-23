@@ -4,7 +4,7 @@
 
 Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona: **branded type** (tipo marcado) para distinguir **timestamps** (carimbos de tempo) de datas formatadas em nível de tipo, e tipagem das funções utilitárias de data.
 
-> Base JavaScript: [javascript/conventions/advanced/dates.md](../../../../javascript/conventions/advanced/dates.md)
+> Base JavaScript: [javascript/conventions/advanced/dates.md](../../../javascript/conventions/advanced/dates.md)
 
 ## Conceitos fundamentais
 

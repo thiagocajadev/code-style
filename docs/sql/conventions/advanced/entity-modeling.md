@@ -1,6 +1,6 @@
 # Modelagem de entidades
 
-> Escopo: SQL relacional. Referência canônica (modelagem OO): [`../../../../shared/architecture/entity-modeling.md`](../../../../shared/architecture/entity-modeling.md). As decisões de domínio — quando extrair, como relacionar, onde mora a invariante — são as mesmas; aqui o foco é o idiom relacional: tabelas, colunas, constraints, FKs e tipos nativos do PostgreSQL 18, com notas pontuais para SQL Server e SQLite.
+> Escopo: SQL relacional. Referência canônica (modelagem OO): [`../../../../shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md). As decisões de domínio — quando extrair, como relacionar, onde mora a invariante — são as mesmas; aqui o foco é o idiom relacional: tabelas, colunas, constraints, FKs e tipos nativos do PostgreSQL 18, com notas pontuais para SQL Server e SQLite.
 
 Esta página serve a duas pessoas. A primeira está desenhando o schema inicial do projeto e ainda não sabe quantas colunas é demais em uma tabela. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `customers` agora que ela tem 22 colunas?). As duas saem daqui com critério, não com receita fechada.
 
@@ -755,6 +755,6 @@ Cross-links dentro do guia:
 - [`../../../shared/architecture/transactions.md`](../../../shared/architecture/transactions.md): boundary transacional, Unit of Work
 - [`../../../shared/architecture/domain-events.md`](../../../shared/architecture/domain-events.md): naming, outbox, eventual consistency
 - [`../../../shared/platform/database.md`](../../../shared/platform/database.md): tuning, EXPLAIN, troubleshooting
-- [`../sgbd/postgres.md`](../sgbd/postgres.md): idiom PostgreSQL
+- [`../sgbd/postgres.md`](../../sgbd/postgres.md): idiom PostgreSQL
 
 Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

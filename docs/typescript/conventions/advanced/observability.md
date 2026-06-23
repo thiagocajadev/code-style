@@ -4,9 +4,9 @@
 
 Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam sem mudança. O TypeScript adiciona: **interface** (contrato de objeto) tipada para o logger, contexto de correlação tipado e garantia em compilação de que campos obrigatórios não são omitidos.
 
-> Base JavaScript: [javascript/conventions/advanced/observability.md](../../../../javascript/conventions/advanced/observability.md)
+> Base JavaScript: [javascript/conventions/advanced/observability.md](../../../javascript/conventions/advanced/observability.md)
 
-> Conceitos agnósticos: [shared/standards/observability.md](../../../../shared/standards/observability.md)
+> Conceitos agnósticos: [shared/standards/observability.md](../../../shared/standards/observability.md)
 
 ## Conceitos fundamentais
 

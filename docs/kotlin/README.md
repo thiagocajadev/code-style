@@ -64,8 +64,8 @@ Kotlin é a linguagem principal para **Android** nativo. Os fundamentos cross-pl
 | [Escrita em inglês](conventions/naming.md#nomes-em-português) | Código universal, nomes curtos e sem ambiguidade |
 | [PascalCase para tipos](conventions/naming.md#convenções-de-case) | Classes/interfaces: `PascalCase`; funções/vars: `camelCase` |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado) | Variáveis e funções que dispensam explicação |
-| [Orquestrador no topo](conventions/methods.md#god-function--múltiplas-responsabilidades) | Chamada visível antes dos detalhes (top-down) |
-| [SLA](conventions/methods.md#sla--orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
+| [Orquestrador no topo](conventions/methods.md#god-function-múltiplas-responsabilidades) | Chamada visível antes dos detalhes (top-down) |
+| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
 <br>
@@ -76,7 +76,7 @@ Kotlin é a linguagem principal para **Android** nativo. Os fundamentos cross-pl
 | --- | --- |
 | [Retorno antecipado](conventions/control-flow.md#aninhamento-em-cascata) | Saída cedo na falha, sem else após return |
 | [Fluxo linear](conventions/control-flow.md#when-como-lookup) | `when` substitui chains de if/else |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [`val` por padrão](conventions/variables.md#var-onde-val-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
 
@@ -88,5 +88,5 @@ Kotlin é a linguagem principal para **Android** nativo. Os fundamentos cross-pl
 | --- | --- |
 | [Result explícito](conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo) | `Result`/sealed class; exceção só para invariantes |
 | [Falhar rápido](conventions/advanced/error-handling.md#erro-silencioso) | Validar cedo, interromper fluxo inválido |
-| [Structured concurrency](conventions/advanced/coroutines.md#goroutine-solta) | Toda coroutine tem escopo, cancelamento e espera definidos |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa) | AAA explícito; assert semântico via `kotest` |
+| [Structured concurrency](conventions/advanced/coroutines.md#coroutine-solta-sem-escopo-definido) | Toda coroutine tem escopo, cancelamento e espera definidos |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa) | AAA explícito; assert semântico via `kotest` |

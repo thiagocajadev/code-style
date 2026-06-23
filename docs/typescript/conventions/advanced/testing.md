@@ -4,7 +4,7 @@
 
 Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adiciona: **fixture** (massa de teste) tipada com **`satisfies`** (operador de conformidade), **mock** (dados fictícios) com contratos explícitos e verificação de tipos nos testes.
 
-> Base JavaScript: [javascript/conventions/advanced/testing.md](../../../../javascript/conventions/advanced/testing.md)
+> Base JavaScript: [javascript/conventions/advanced/testing.md](../../../javascript/conventions/advanced/testing.md)
 
 Usa [Vitest](https://vitest.dev/) nos exemplos. Mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
 

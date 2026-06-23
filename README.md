@@ -82,10 +82,10 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | Princípio                                                                                                  | Descrição                                                        |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [Escrita em inglês](docs/javascript/conventions/naming.md#nomes-em-português)                              | Código universal, nomes curtos e sem ambiguidade                 |
-| [Código narrativo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades)     | O código conta a história, sem precisar de comentários           |
+| [Código narrativo](docs/javascript/conventions/functions.md#god-function-múltiplas-responsabilidades)     | O código conta a história, sem precisar de comentários           |
 | [Ponto de entrada limpo](docs/javascript/conventions/functions.md#ponto-de-entrada-limpo)                  | Caller de uma linha — o quê, não o como                          |
-| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical--parâmetros)                    | Até 3 parâmetros por linha — 4+ usa objeto                       |
-| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function--múltiplas-responsabilidades) | Chamada visível antes dos detalhes — top-down                    |
+| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical-parâmetros)                    | Até 3 parâmetros por linha — 4+ usa objeto                       |
+| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function-múltiplas-responsabilidades) | Chamada visível antes dos detalhes — top-down                    |
 | [Detalhes abaixo](docs/javascript/conventions/functions.md#direct-return)                                  | Helpers ficam abaixo do orquestrador — step-down rule            |
 | [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                    | Saída de uma linha — o retorno nomeia o resultado, não o computa |
 
@@ -108,17 +108,17 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 | Princípio                                                                                                                    | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Funções pequenas](docs/javascript/conventions/functions.md#sla--orquestrador-ou-implementação-nunca-os-dois)                | Uma responsabilidade, um nível de abstração                  |
+| [Funções pequenas](docs/javascript/conventions/functions.md#sla-orquestrador-ou-implementação-nunca-os-dois)                | Uma responsabilidade, um nível de abstração                  |
 | [Cálculo vs formatação](docs/javascript/conventions/functions.md#separar-cálculo-de-formatação)                              | Computar dados e formatar saída em funções separadas         |
 | [Imutabilidade por padrão](docs/javascript/conventions/variables.md#let-desnecessário)                                       | `const` primeiro, `let` só quando necessário                 |
 | [CQS](docs/javascript/conventions/variables.md#mutação-direta-de-objetos)                                                    | Separar comando de consulta, sem efeitos colaterais ocultos  |
 | [Dependências explícitas](docs/javascript/conventions/advanced/async.md#api-client-centralizado)                             | Injetar via parâmetros, evitar estado global                 |
 | [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                     |
 | [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                       |
-| [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato               |
-| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror--abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras            |
+| [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror-abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato               |
+| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror-abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras            |
 | [I/O assíncrono](docs/javascript/conventions/advanced/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                  |
-| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas--aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline |
+| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas-aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline |
 
 </details>
 

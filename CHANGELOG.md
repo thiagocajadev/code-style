@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.15] - 2026-06-23
+
+### Fixed
+
+- Links e âncoras quebrados em toda a documentação (varredura completa: 0 restantes). `docs/csharp/setup/vertical-slice.md`: 2 links relativos com pasta errada (`../advanced/...` → `../conventions/advanced/...`) e bloco anti-pattern ganhou o par **✅ Bom** que faltava (CQS, query separada do comando, regra de negócio no step, sem lógica no return). 78 alvos de arquivo inexistentes corrigidos em 47 arquivos: profundidade relativa errada, arquivos `shared/` movidos (`platform/observability.md` → `standards/observability.md`), 4 links órfãos `null-safety.md` em python/ruby repontados ao canônico `shared/standards/null-safety.md`, e 2 dir-links `../../../nosql/`. 57 âncoras `#secção` stale (headings renomeados nas revisões writing-soul: em-dash → dois-pontos muda o slug de `--` para `-`; seções expandidas) corrigidas em READMEs por linguagem e no README raiz. Audit clean: 2509 blocos Good em 391 arquivos
+
 ## [1.28.14] - 2026-06-23
 
 ### Fixed

@@ -6,7 +6,7 @@ Gerenciamento de estado separa a lógica de negócio da camada de UI. O widget l
 despacha eventos; o ViewModel ou Notifier detém a lógica. Estado de UI (carregando, erro,
 dado) é modelado com sealed classes ou `AsyncValue`.
 
-→ Fundamentos cross-platform: [shared/mobile/state-management.md](../../../../../shared/mobile/state-management.md)
+→ Fundamentos cross-platform: [shared/mobile/state-management.md](../../../../shared/mobile/state-management.md)
 
 ## Conceitos fundamentais
 
@@ -166,4 +166,4 @@ class OrdersNotifier extends _$OrdersNotifier {
 }
 ```
 
-→ Conceitos de state management agnóstico de plataforma: [shared/mobile/state-management.md](../../../../../shared/mobile/state-management.md)
+→ Conceitos de state management agnóstico de plataforma: [shared/mobile/state-management.md](../../../../shared/mobile/state-management.md)

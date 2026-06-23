@@ -58,8 +58,8 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | [snake_case universal](conventions/naming.md#convenções-de-case)                                  | Métodos e variáveis: `snake_case`; classes e módulos: `PascalCase`      |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                        | Identificadores que dispensam comentário                                |
-| [Orquestrador no topo](conventions/methods.md#sla--uma-responsabilidade-um-nível)                 | Chamada visível antes dos detalhes (top-down)                           |
-| [SLA](conventions/methods.md#sla--uma-responsabilidade-um-nível)                                  | Uma responsabilidade, um nível de abstração                             |
+| [Orquestrador no topo](conventions/methods.md#sla-uma-responsabilidade-um-nível)                 | Chamada visível antes dos detalhes (top-down)                           |
+| [SLA](conventions/methods.md#sla-uma-responsabilidade-um-nível)                                  | Uma responsabilidade, um nível de abstração                             |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                             | Extraia o resultado antes de retornar (implicit ou explicit return)     |
 
 <br>
@@ -70,7 +70,7 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
 | [Retorno antecipado](conventions/control-flow.md#guard-clauses)                                   | Saia cedo na falha; sem `else` após `return`                              |
 | [Pattern matching](conventions/control-flow.md#pattern-matching)                                  | `case/in` para desestruturar e ramificar por forma                        |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código)                          | Linhas relacionadas juntas, grupos separados por linha em branco          |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                          | Linhas relacionadas juntas, grupos separados por linha em branco          |
 | [Valor fixo por padrão](conventions/variables.md#mutabilidade)                                    | `freeze` explícito; mutação é exceção declarada                           |
 | [Sem valores mágicos](conventions/variables.md#constantes-nomeadas)                               | Constantes nomeadas no lugar de literais inline                           |
 
@@ -83,4 +83,4 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 | [Exceções tipadas](conventions/advanced/error-handling.md#tipos-de-exceção)                       | Subclasses de `StandardError`, identificáveis e tratáveis          |
 | [rescue nas fronteiras](conventions/advanced/error-handling.md#rescue-nas-fronteiras)             | `rescue` no ponto de entrada; propague com contexto dentro         |
 | [Jobs para I/O longo](conventions/advanced/async.md#background-jobs)                              | Solid Queue / Sidekiq para operações longas fora do request cycle  |
-| [Testes estruturados](conventions/advanced/testing.md#aaa--arrange-act-assert)                    | AAA: fases explícitas; assert limpo, sem expressões inline          |
+| [Testes estruturados](conventions/advanced/testing.md#aaa-arrange-act-assert)                    | AAA: fases explícitas; assert limpo, sem expressões inline          |

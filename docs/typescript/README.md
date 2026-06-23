@@ -72,7 +72,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | [Interface para objetos](conventions/types.md#type-vs-interface)             | Contratos e shapes usam `interface`: extensíveis por padrão                     |
 | [Type para uniões](conventions/types.md#type-vs-interface)                   | `type` para union types, mapped types e aliases de primitivos                    |
-| [Union types > enums](conventions/types.md#enums)                            | Const object + union type: sem runtime overhead, sem conversão                  |
+| [Union types > enums](conventions/types.md#discriminated-unions)                            | Const object + union type: sem runtime overhead, sem conversão                  |
 | [Genérico com propósito](conventions/types.md#genéricos)                     | Genérico quando a função precisa preservar o tipo do chamador, sem especulação  |
 
 <br>

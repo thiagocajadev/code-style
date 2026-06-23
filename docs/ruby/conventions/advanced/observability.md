@@ -1,6 +1,6 @@
 # Observability
 
-> Escopo: Ruby 4.0. Padrões transversais de observabilidade em [shared/standards/observability.md](../../../../shared/standards/observability.md).
+> Escopo: Ruby 4.0. Padrões transversais de observabilidade em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Logs estruturados (JSON) permitem busca e correlação por ferramentas de observabilidade.
 Ruby oferece `Logger` na stdlib (biblioteca padrão); `semantic_logger` adiciona saída JSON,

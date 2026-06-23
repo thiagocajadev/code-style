@@ -6,7 +6,7 @@ Dart fornece `dart:developer` como API de logging e diagnóstico. Em Flutter, o 
 consome os eventos e timelines emitidos. Logs estruturados facilitam diagnóstico em ambientes
 de produção com ferramentas externas.
 
-→ Princípios gerais: [shared/platform/observability.md](../../../shared/platform/observability.md)
+→ Princípios gerais: [shared/platform/observability.md](../../../shared/standards/observability.md)
 
 ## Conceitos fundamentais
 

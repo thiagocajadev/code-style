@@ -1,7 +1,7 @@
 # Performance
 
 > Escopo: Rust 1.95.
-> Princípios gerais de performance: [shared/platform/performance.md](../../../../shared/platform/performance.md)
+> Princípios gerais de performance: [shared/platform/performance.md](../../../shared/platform/performance.md)
 
 Rust é zero-cost por design: abstrações não têm overhead de runtime. O maior risco de
 performance em Rust é a clonagem desnecessária de dados e a alocação onde referências

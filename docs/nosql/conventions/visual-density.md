@@ -2,7 +2,7 @@
 
 > Escopo: NoSQL. Aplica as regras de densidade visual a queries, pipelines e drivers de bancos não-relacionais.
 
-As regras gerais estão em [shared/standards/visual-density.md](../../../shared/standards/visual-density.md). Esta seção aplica os mesmos princípios ao contexto **NoSQL** (Not Only SQL, Não Apenas SQL): filtros, projeções, pipelines de agregação e código host (JS) que chama o driver.
+As regras gerais estão em [shared/standards/visual-density.md](../../shared/standards/visual-density.md). Esta seção aplica os mesmos princípios ao contexto **NoSQL** (Not Only SQL, Não Apenas SQL): filtros, projeções, pipelines de agregação e código host (JS) que chama o driver.
 
 ## Conceitos fundamentais
 

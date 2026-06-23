@@ -1,7 +1,7 @@
 # MicroPython / IoT
 
 > Escopo: MicroPython 1.28 (RP2040, Raspberry Pi Pico, e ESP32).
-> Padrões de domínio IoT (debounce, FSM, watchdog): [shared/platform/iot.md](../../../../shared/platform/iot.md)
+> Padrões de domínio IoT (debounce, FSM, watchdog): [shared/platform/iot.md](../../../shared/platform/iot.md)
 
 MicroPython é uma implementação de Python 3 otimizada para microcontroladores. Roda com
 256 KB de RAM ou menos, sem sistema operacional, sem `pip` completo e com uma stdlib

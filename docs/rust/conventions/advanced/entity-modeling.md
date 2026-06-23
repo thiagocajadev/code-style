@@ -504,7 +504,7 @@ A regra "no máximo 3" mora em `add_phone`, onde dá pra mudar sem mexer no sche
 
 </details>
 
-Listas seguem a regra de [`null-safety`](../null-safety.md): nunca `None`, sempre `Vec::new()`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a regra de [`null-safety`](null-safety.md): nunca `None`, sempre `Vec::new()`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 
@@ -972,6 +972,6 @@ Cross-links dentro do guia:
 - [`../../../shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md): canônico transversal
 - [`../../../shared/architecture/transactions.md`](../../../shared/architecture/transactions.md): limite transacional, Unit of Work
 - [`../../../shared/architecture/domain-events.md`](../../../shared/architecture/domain-events.md): naming, outbox, eventual consistency
-- [`../null-safety.md`](../null-safety.md): null-safety idiomático Rust
+- [`../null-safety.md`](null-safety.md): null-safety idiomático Rust
 
 Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

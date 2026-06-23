@@ -6,7 +6,7 @@ VB.NET representa ausência de valor com **Nothing**. Com **Option Strict On** e
 o compilador bloqueia a maior parte dos acessos a `Nothing` em tempo de compilação, mas não
 todos. As diretrizes abaixo cobrem os padrões que o compilador não verifica sozinho.
 
-> Conceito geral: [Null Safety](../../../../shared/standards/null-safety.md)
+> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
 ## Conceitos fundamentais
 

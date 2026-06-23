@@ -65,7 +65,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                     | Variáveis e métodos que dispensam explicação                        |
 | [Código como documentação](conventions/naming.md#código-como-documentação)                     | Nomes substituem comentários: comentários mentem                    |
 | [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo)                            | Chamada visível antes dos detalhes: top-down                        |
-| [SLA](conventions/methods.md#sla--orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
+| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
 | [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                          | Saída de uma linha: o retorno nomeia o resultado, não o computa     |
 
 <br>
@@ -94,5 +94,5 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [I/O assíncrono](conventions/advanced/async.md#asyncawait)                                     | `async/await`: nunca `.Result` ou `.Wait()`                         |
 | [CancellationToken](conventions/advanced/async.md#cancellationtoken)                           | Propagado em todas as chamadas de I/O públicas                      |
 | [Concorrência explícita](conventions/advanced/async.md#taskwhenall)                            | `Task.WhenAll` para chamadas independentes em paralelo              |
-| [LINQ puro](conventions/advanced/linq.md#linq-puro--sem-side-effects)                          | Sem efeitos colaterais em queries: transformação, não orquestração  |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa)                   | AAA: fases explícitas; assert limpo, sem expressões inline          |
+| [LINQ puro](conventions/advanced/linq.md#linq-puro-sem-side-effects)                          | Sem efeitos colaterais em queries: transformação, não orquestração  |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                   | AAA: fases explícitas; assert limpo, sem expressões inline          |

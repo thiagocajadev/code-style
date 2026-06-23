@@ -1,7 +1,7 @@
 # Security Setup
 
 > Escopo: Rust 1.95. Especificidades do ecossistema Rust.
-> Princípios gerais de segurança: [shared/platform/security.md](../../../shared/platform/security.md)
+> Princípios gerais de segurança: [shared/platform/security.md](../../shared/platform/security.md)
 
 Rust elimina classes inteiras de vulnerabilidade por design (buffer overflow, use-after-free,
 data races). O que resta requer atenção explícita: gestão de secrets, validação de entrada

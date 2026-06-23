@@ -542,7 +542,7 @@ public static class GetById
 
 ## 7. Shared: Result e extensões
 
-`Result<T>` é o tipo de retorno de todo step do pipeline. Ver [error-handling.md](../advanced/error-handling.md) para o raciocínio completo.
+`Result<T>` é o tipo de retorno de todo step do pipeline. Ver [error-handling.md](../conventions/advanced/error-handling.md) para o raciocínio completo.
 
 ```csharp
 // Shared/Result.cs
@@ -598,7 +598,7 @@ public async Task ReturnsBusinessRuleFailureWhenCustomerDoesNotExist()
 }
 ```
 
-Para convenções de teste completas, ver [testing.md](../advanced/testing.md).
+Para convenções de teste completas, ver [testing.md](../conventions/advanced/testing.md).
 
 ---
 
@@ -621,6 +621,32 @@ if (!customerExists)
 
 // ❌ lógica no return: URL e DTO construídos inline
 return TypedResults.Created($"/orders/{order.Id}", OrderResponseFilterOutput.Apply(saved.Value!));
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: cada step no seu lugar, comando e query separados</summary>
+
+```csharp
+// ✅ SaveAsync sem retorno: comando persiste, não devolve estado (CQS)
+await repository.SaveAsync(order, cancellationToken);
+
+// ✅ leitura por contrato próprio: query dedicada após o comando
+var saved = await reader.FindByIdAsync(order.Id, cancellationToken);
+
+// ✅ regra de negócio no step dedicado: handler orquestra, não decide
+var businessValidation = await businessRules.ValidateAsync(sanitized, cancellationToken);
+
+if (!businessValidation.IsSuccess)
+    return TypedResults.Problem(businessValidation.Error!.Message);
+
+// ✅ sem lógica no return: URL e DTO nomeados antes da saída
+var orderLocation = $"/orders/{order.Id}";
+var orderResponse = OrderResponseFilterOutput.Apply(saved.Value!);
+var response = TypedResults.Created(orderLocation, orderResponse);
+
+return response;
 ```
 
 </details>

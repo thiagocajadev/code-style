@@ -53,7 +53,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | [MicroPython](conventions/advanced/micropython.md)           | Diferenças da stdlib, restrições de hardware, asyncio, watchdog        |
 
-→ Padrões de domínio IoT (debounce, FSM, alertas): [shared/platform/iot.md](../../shared/platform/iot.md)
+→ Padrões de domínio IoT (debounce, FSM, alertas): [shared/platform/iot.md](../shared/platform/iot.md)
 
 ## Princípios
 
@@ -77,7 +77,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                  | Saída cedo na falha, sem else após return                            |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                           | Aninhamento em cascata substituído por fluxo plano                   |
-| [Baixa densidade visual](conventions/visual-density.md#parede-de-código)                     | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                     | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Valor fixo por padrão](conventions/variables.md#mutação-direta)                             | `Final`, `frozen=True`: alteração é exceção explícita                |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos)                              | Constantes nomeadas no lugar de literais inline                      |
 | [CQS](conventions/variables.md#mutação-direta)                                               | Retornar novo estado, sem efeitos colaterais ocultos                 |
@@ -90,7 +90,7 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | [Exceções tipadas](conventions/advanced/error-handling.md#exceção-como-string)                     | Subclasses de `Exception`, identificáveis e tratáveis        |
 | [Falhar rápido](conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                  | Validar cedo, interromper fluxo inválido                     |
-| [Fronteira de erro](conventions/advanced/error-handling.md#trycatch-que-engole-o-erro)              | try/except nas fronteiras, propagar com contexto             |
+| [Fronteira de erro](conventions/advanced/error-handling.md#tryexcept-que-engole-o-erro)              | try/except nas fronteiras, propagar com contexto             |
 | [I/O assíncrono](conventions/advanced/async.md#bloqueio-síncrono)                                  | async/await, sem bloqueio do event loop                      |
 | [Concorrência explícita](conventions/advanced/async.md#gather-execução-paralela)                   | `asyncio.gather` para chamadas independentes em paralelo     |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa)                        | AAA: fases explícitas; assert limpo, sem expressões inline   |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                        | AAA: fases explícitas; assert limpo, sem expressões inline   |

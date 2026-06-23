@@ -4,7 +4,7 @@
 
 Configuração é **tudo que varia entre ambientes sem mudar o comportamento do código**: URLs de dependências, tamanhos de pool, flags de habilitação, chaves de integração. A organização certa permite promover o mesmo artefato de dev para produção sem recompilar. A errada espalha `if (env === "prod")` pelo código e transforma cada deploy em aposta.
 
-Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armazenamento, escopo) são tratados em [security.md](security.md). Feature flags, como mecanismo de release gradual, em [ci-cd.md](ci-cd.md).
+Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armazenamento, escopo) são tratados em [security.md](security.md). Feature flags, como mecanismo de release gradual, em [ci-cd.md](../process/ci-cd.md).
 
 ## Conceitos fundamentais
 
@@ -139,7 +139,7 @@ Configuração é **dependência**, não fato global. A forma como o código ace
 
 A injeção explícita é a forma preferida. O caller do módulo decide qual config usar. Em testes, é trivial passar uma config específica para cada cenário. Em produção, o container de injeção resolve o valor uma vez no startup e distribui.
 
-Ver também [code-style.md](../../.ai/skills/code-style.md) seção **Explicit Dependencies** e [data-access.md](../../.ai/skills/data-access.md) para a mesma regra aplicada a conexões.
+Ver também [code-style.md](../../../.ai/skills/code-style.md) seção **Explicit Dependencies** e [data-access.md](../../../.ai/skills/data-access.md) para a mesma regra aplicada a conexões.
 
 ---
 
@@ -147,7 +147,7 @@ Ver também [code-style.md](../../.ai/skills/code-style.md) seção **Explicit D
 
 A maioria da configuração é estática: lida no startup, não muda até o próximo deploy. Alguns valores, porém, precisam mudar sem reiniciar:
 
-- Feature flags (granularidade: mudar por usuário, percentual ou geografia, ver [ci-cd.md](ci-cd.md))
+- Feature flags (granularidade: mudar por usuário, percentual ou geografia, ver [ci-cd.md](../process/ci-cd.md))
 - Limites operacionais (rate limit, tamanho de batch) ajustados durante incidente
 - Níveis de log temporariamente elevados para debugging em produção
 
@@ -171,4 +171,4 @@ Config dinâmica é uma faca afiada. Reservar para o que realmente precisa muda 
 | Forma de consumir no código | Objeto tipado injetado, não leitura direta de env |
 | Validação | Fail-fast no startup, antes de aceitar tráfego |
 | Mudança sem restart | Apenas para flags e limites operacionais, com auditoria |
-| Feature flags como release gradual | Ver [ci-cd.md](ci-cd.md), seção Feature Flags |
+| Feature flags como release gradual | Ver [ci-cd.md](../process/ci-cd.md), seção Feature Flags |

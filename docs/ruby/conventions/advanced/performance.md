@@ -1,6 +1,6 @@
 # Performance
 
-> Escopo: Ruby 4.0. Padrões transversais de performance em [shared/architecture/performance.md](../../../../shared/architecture/performance.md).
+> Escopo: Ruby 4.0. Padrões transversais de performance em [shared/architecture/performance.md](../../../shared/platform/performance.md).
 
 Performance em Ruby começa com o básico: `frozen_string_literal` reduz alocação de strings,
 lazy enumerators (enumeradores tardios) evitam processar coleções inteiras, e

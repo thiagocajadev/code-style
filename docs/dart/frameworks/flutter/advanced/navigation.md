@@ -6,7 +6,7 @@ Navegação em Flutter é gerenciada por um **Router**. GoRouter é a solução 
 define rotas como URLs, suporta deep links, parâmetros, redirecionamentos condicionais e shell
 routes (tabs com estado persistente).
 
-→ Fundamentos cross-platform: [shared/mobile/navigation.md](../../../../../shared/mobile/navigation.md)
+→ Fundamentos cross-platform: [shared/mobile/navigation.md](../../../../shared/mobile/navigation.md)
 
 ## Conceitos fundamentais
 
@@ -187,4 +187,4 @@ class MainShell extends StatelessWidget {
 
 </details>
 
-→ Conceitos de navegação agnósticos de plataforma: [shared/mobile/navigation.md](../../../../../shared/mobile/navigation.md)
+→ Conceitos de navegação agnósticos de plataforma: [shared/mobile/navigation.md](../../../../shared/mobile/navigation.md)

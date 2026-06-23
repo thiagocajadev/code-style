@@ -275,7 +275,7 @@ End Module
 
 ## Registro
 
-O registro das dependências pertence ao módulo do domínio, não ao `Global.asax.vb`. O `UnityConfig.vb` (ou equivalente) apenas orquestra os módulos de cada feature. Veja [Project Foundation](../../setup/project-foundation.md#unity-ioc-e-registro-por-domínio).
+O registro das dependências pertence ao módulo do domínio, não ao `Global.asax.vb`. O `UnityConfig.vb` (ou equivalente) apenas orquestra os módulos de cada feature. Veja [Project Foundation](../../setup/project-foundation.md#registro-por-domínio).
 
 ```vbnet
 Public Module UnityConfig

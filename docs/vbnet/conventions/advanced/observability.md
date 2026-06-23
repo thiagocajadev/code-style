@@ -3,7 +3,7 @@
 > Escopo: VB.NET. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Veja os princípios agnósticos em [shared/standards/observability.md](../../../../shared/standards/observability.md).
+Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
 

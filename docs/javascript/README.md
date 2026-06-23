@@ -90,7 +90,7 @@ Configuração inicial de um projeto Node.js: estrutura, módulos e pipeline.
 | [Dependências explícitas](conventions/advanced/async.md#api-client-centralizado)                                 | Injetar via parâmetros, evitar estado global                 |
 | [Falhar rápido](conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                               | Validar cedo, interromper fluxo inválido                     |
 | [Retorno explícito](conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                       | Evitar exceções como controle de fluxo                       |
-| [Contratos consistentes](conventions/advanced/error-handling.md#baseerror--abstração-centralizada)               | Respostas padronizadas, sempre o mesmo formato               |
-| [Tratamento centralizado de erros](conventions/advanced/error-handling.md#baseerror--abstração-centralizada)     | Classes de erro tipadas, try/catch nos limites do sistema    |
+| [Contratos consistentes](conventions/advanced/error-handling.md#baseerror-abstração-centralizada)               | Respostas padronizadas, sempre o mesmo formato               |
+| [Tratamento centralizado de erros](conventions/advanced/error-handling.md#baseerror-abstração-centralizada)     | Classes de erro tipadas, try/catch nos limites do sistema    |
 | [I/O assíncrono](conventions/advanced/async.md#callback-hell)                                                    | `async/await`, sem bloqueio                                  |
 | [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                                     | AAA: fases explícitas; assert limpo: sem expressões inline   |

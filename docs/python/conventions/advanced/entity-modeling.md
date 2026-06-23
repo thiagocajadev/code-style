@@ -550,7 +550,7 @@ A regra "no máximo 3" mora em `add_phone`, onde dá pra mudar sem mexer no sche
 
 </details>
 
-Listas seguem a regra de [`null-safety`](null-safety.md): nunca `None`, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a regra de [`null-safety`](../../../shared/standards/null-safety.md): nunca `None`, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 
@@ -1010,6 +1010,6 @@ Cross-links dentro do guia:
 - [`../../../shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md): canônico transversal
 - [`../../../shared/architecture/transactions.md`](../../../shared/architecture/transactions.md): boundary transacional, Unit of Work
 - [`../../../shared/architecture/domain-events.md`](../../../shared/architecture/domain-events.md): naming, outbox, eventual consistency
-- [`../advanced/null-safety.md`](null-safety.md): null-safety idiomático Python
+- [`shared/standards/null-safety.md`](../../../shared/standards/null-safety.md): null-safety idiomático
 
 Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

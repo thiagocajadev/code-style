@@ -34,7 +34,7 @@ Bancos não-relacionais otimizam para padrão de acesso, escala horizontal e fle
 
 **O que não fazer**: escolher NoSQL porque "escala melhor" sem medir. Banco relacional bem indexado suporta volumes maiores do que a maioria dos projetos vai atingir. A complexidade operacional de NoSQL tem custo real.
 
-Base conceitual de SQL vs NoSQL: [shared/platform/database.md](../../shared/platform/database.md).
+Base conceitual de SQL vs NoSQL: [shared/platform/database.md](../shared/platform/database.md).
 
 ---
 

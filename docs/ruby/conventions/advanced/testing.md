@@ -1,6 +1,6 @@
 # Testing
 
-> Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../../shared/standards/testing.md).
+> Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../shared/standards/testing.md).
 
 RSpec (Ruby Specification Framework, framework de especificação) é o padrão para projetos
 Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert: Arrumar, Agir,

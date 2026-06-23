@@ -7,7 +7,7 @@ para produção, com chave-valor consistentes. Nunca logue dados pessoais (**PII
 Identifiable Information, Informação Pessoalmente Identificável). Propague `correlation_id`
 (identificador de correlação) em toda a cadeia de chamadas via `context`.
 
-→ Princípios gerais de observabilidade em [shared/standards/observability.md](../../../../shared/standards/observability.md).
+→ Princípios gerais de observabilidade em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 ## Conceitos fundamentais
 

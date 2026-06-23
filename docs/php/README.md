@@ -50,9 +50,9 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | Princípio                                                                                     | Descrição                                                            |
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Escrita em inglês](conventions/naming.md#nomes-em-português)                                 | Código universal, nomes curtos e sem ambiguidade                     |
-| [PSR-12 nativo](conventions/naming.md#convenções-de-case)                                     | PascalCase para classes; camelCase para métodos e variáveis          |
+| [PSR-12 nativo](conventions/naming.md#convenções-de-case-psr-1--psr-12)                                     | PascalCase para classes; camelCase para métodos e variáveis          |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                    | Variáveis e funções que dispensam explicação                         |
-| [Orquestrador no topo](conventions/functions.md#god-function--múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
+| [Orquestrador no topo](conventions/functions.md#stepdown-rule)    | Chamada visível antes dos detalhes (top-down)                        |
 | [SLA](conventions/functions.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 

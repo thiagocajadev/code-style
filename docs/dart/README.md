@@ -70,7 +70,7 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 | [PascalCase para tipos](conventions/naming.md#convenções-de-case) | Classes/enums: `PascalCase`; funções/vars: `camelCase` |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado) | Variáveis e funções que dispensam explicação |
 | [Named parameters](conventions/functions.md#named-parameters) | Chamada legível: `createOrder(userId: id, items: list)` |
-| [SLA](conventions/functions.md#sla--orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
+| [SLA](conventions/functions.md#god-function-múltiplas-responsabilidades) | Uma responsabilidade, um nível de abstração |
 | [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
 <br>
@@ -79,8 +79,8 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 
 | Princípio | Descrição |
 | --- | --- |
-| [Retorno antecipado](conventions/control-flow.md#aninhamento-em-cascata) | Saída cedo na falha, sem else após return |
-| [`switch` exaustivo](conventions/control-flow.md#switch-como-expressão) | switch expression substitui chains de if/else |
+| [Retorno antecipado](conventions/control-flow.md#guard-clauses-retorno-antecipado) | Saída cedo na falha, sem else após return |
+| [`switch` exaustivo](conventions/control-flow.md#switch-como-expressão-dart-3) | switch expression substitui chains de if/else |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [`final` por padrão](conventions/variables.md#var-onde-final-resolve) | Imutabilidade como default; `var` apenas quando necessário |
 | [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
@@ -93,4 +93,4 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../shared/mobile/README.
 | --- | --- |
 | [Exception tipada](conventions/advanced/error-handling.md#exception-genérica) | `Exception` subclassificada; nunca `throw 'string'` |
 | [Falhar rápido](conventions/advanced/error-handling.md#erro-silencioso) | Validar cedo, interromper fluxo inválido |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas--aaa) | AAA explícito; `expect` semântico via `package:test` |
+| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa) | AAA explícito; `expect` semântico via `package:test` |

@@ -1,6 +1,6 @@
 # Security
 
-> Escopo: Ruby 4.0. Princípios de segurança transversais em [shared/platform/security.md](../../../shared/platform/security.md).
+> Escopo: Ruby 4.0. Princípios de segurança transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
 Secrets (segredos) nunca entram no repositório. Ruby on Rails usa `credentials.yml.enc`
 para secrets criptografados; projetos Ruby puro usam variáveis de ambiente via `dotenv`.
