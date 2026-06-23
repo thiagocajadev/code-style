@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.14] - 2026-06-23
+
+### Fixed
+
+- Lint limpo (7 erros pré-existentes → 0). `.ai/tooling/scripts/translate-bad-good.mjs`: regex de extensões extraído para constante `SUPPORTED_EXTENSION` + condição convertida em guard clause (elimina linha longa e aninhamento); cálculo de `matches` com operador `+` no fim da linha e blank lines nos pontos exigidos pela regra `local/semantic-spacing`. `docs/nosql/scripts/mongodb/04-delete.js`: blank line antes do explaining-return group em `removePlayer`, dogfood da própria regra de densidade visual. Audit clean: 2508 blocos Good em 391 arquivos
+
 ## [1.28.13] - 2026-06-23
 
 ### Fixed
