@@ -826,18 +826,18 @@ Quando o status carrega dados além do nome, use `sealed interface` com `permits
 
 ```java
 public sealed interface OrderState
-    permits OrderState.Pending, OrderState.Paid, OrderState.Shipped, OrderState.Cancelled {
+    permits OrderState.Pending, OrderState.Settled, OrderState.Shipped, OrderState.Cancelled {
 
     record Pending() implements OrderState {}
-    record Paid(Instant paidAt) implements OrderState {}
-    record Shipped(Instant paidAt, String trackingCode) implements OrderState {}
+    record Settled(Instant settledAt) implements OrderState {}
+    record Shipped(Instant settledAt, String trackingCode) implements OrderState {}
     record Cancelled(Instant cancelledAt, String reason) implements OrderState {}
 }
 
 public String summarize(OrderState state) {
     var summary = switch (state) {
         case OrderState.Pending p -> "Pending";
-        case OrderState.Paid p -> "Paid at " + p.paidAt();
+        case OrderState.Settled p -> "Settled at " + p.settledAt();
         case OrderState.Shipped s -> "Shipped, tracking " + s.trackingCode();
         case OrderState.Cancelled c -> "Cancelled: " + c.reason();
     };
@@ -845,7 +845,7 @@ public String summarize(OrderState state) {
 }
 ```
 
-Para estado simples (sem dados associados), `enum OrderStatus { PENDING, PAID, SHIPPED, CANCELLED }` em um único campo basta. A `sealed interface` só ganha tração quando cada estado carrega informação própria.
+Para estado simples (sem dados associados), `enum OrderStatus { PENDING, SETTLED, SHIPPED, CANCELLED }` em um único campo basta. A `sealed interface` só ganha tração quando cada estado carrega informação própria.
 
 </details>
 

@@ -832,16 +832,16 @@ Quando o status precisa carregar dados além do nome (data de pagamento, código
 public abstract record OrderState
 {
     public sealed record Pending : OrderState;
-    public sealed record Paid(DateTime PaidAt) : OrderState;
-    public sealed record Shipped(DateTime PaidAt, string TrackingCode) : OrderState;
+    public sealed record Settled(DateTime SettledAt) : OrderState;
+    public sealed record Shipped(DateTime SettledAt, string TrackingCode) : OrderState;
     public sealed record Cancelled(DateTime CancelledAt, string Reason) : OrderState;
 }
 
 public string Summarize(OrderState state)
 {
-    if (state is OrderState.Paid paid)
+    if (state is OrderState.Settled settled)
     {
-        var summary = $"Paid at {paid.PaidAt:O}";
+        var summary = $"Settled at {settled.SettledAt:O}";
         return summary;
     }
     if (state is OrderState.Shipped shipped)

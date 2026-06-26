@@ -683,20 +683,20 @@ Quando o status de uma entidade carrega dados além do nome, vale subir de `enum
 
 ```kotlin
 // status simples: enum basta
-enum class OrderStatus { PENDING, PAID, SHIPPED, CANCELLED }
+enum class OrderStatus { PENDING, SETTLED, SHIPPED, CANCELLED }
 
 // estado com dados: sealed class com smart cast
 sealed class OrderState {
     data object Pending : OrderState()
-    data class Paid(val paidAt: Instant) : OrderState()
-    data class Shipped(val paidAt: Instant, val trackingCode: String) : OrderState()
+    data class Settled(val settledAt: Instant) : OrderState()
+    data class Shipped(val settledAt: Instant, val trackingCode: String) : OrderState()
     data class Cancelled(val cancelledAt: Instant, val reason: String) : OrderState()
 }
 
 fun summarize(state: OrderState): String {
     return when (state) {
         is OrderState.Pending -> "Aguardando pagamento"
-        is OrderState.Paid -> "Pago em ${state.paidAt}" // smart cast: state.paidAt disponível
+        is OrderState.Settled -> "Pago em ${state.settledAt}" // smart cast: state.settledAt disponível
         is OrderState.Shipped -> "Enviado, rastreio ${state.trackingCode}"
         is OrderState.Cancelled -> "Cancelado: ${state.reason}"
     }

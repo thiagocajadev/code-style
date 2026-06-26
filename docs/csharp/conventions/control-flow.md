@@ -62,8 +62,8 @@ expression. Nunca aninhar ternários.
 
 ```csharp
 string label;
-if (order.IsPaid)
-    label = "Paid";
+if (order.IsSettled)
+    label = "Settled";
 else
     label = "Pending";
 ```
@@ -74,7 +74,7 @@ else
 <summary>✅ Bom: ternário na atribuição</summary>
 
 ```csharp
-var label = order.IsPaid ? "Paid" : "Pending";
+var label = order.IsSettled ? "Settled" : "Pending";
 ```
 
 </details>

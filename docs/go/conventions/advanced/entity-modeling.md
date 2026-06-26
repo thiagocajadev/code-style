@@ -718,7 +718,7 @@ type OrderStatus string
 
 const (
 	OrderStatusPending   OrderStatus = "pending"
-	OrderStatusPaid      OrderStatus = "paid"
+	OrderStatusSettled      OrderStatus = "settled"
 	OrderStatusShipped   OrderStatus = "shipped"
 	OrderStatusCancelled OrderStatus = "cancelled"
 )

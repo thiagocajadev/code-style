@@ -34,15 +34,15 @@ O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além
 
 Os dois carregam a palavra evento mas servem propósitos diferentes, e misturá-los gera dores específicas. A separação aparece cedo: quando o consumidor vive no mesmo processo que o produtor, o evento é de domínio; quando atravessa fronteira de processo ou contexto, é de integração.
 
-**Domain event** circula dentro do mesmo bounded context. Schema é interno; evolui junto com o domínio; consumidores são módulos da mesma aplicação. Quando o agregado `Order` publica `OrderPaid`, quem reage (estoque, e-mail, métrica) faz parte do mesmo modelo de domínio. Trocar um campo de `OrderPaid` exige tocar nos consumidores, mas todos vivem no mesmo repositório, com o mesmo deploy.
+**Domain event** circula dentro do mesmo bounded context. Schema é interno; evolui junto com o domínio; consumidores são módulos da mesma aplicação. Quando o agregado `Order` publica `OrderSettled`, quem reage (estoque, e-mail, métrica) faz parte do mesmo modelo de domínio. Trocar um campo de `OrderSettled` exige tocar nos consumidores, mas todos vivem no mesmo repositório, com o mesmo deploy.
 
-**Integration event** atravessa a fronteira. Schema é contrato público; evolui com cuidado; consumidores podem ser outros serviços, parceiros, jobs externos. `OrderPaid` que vai para o sistema de **BI** (Business Intelligence) ou para um **ERP** (Enterprise Resource Planning) parceiro vira contrato; mudar formato sem versionar quebra integração que não está no seu radar.
+**Integration event** atravessa a fronteira. Schema é contrato público; evolui com cuidado; consumidores podem ser outros serviços, parceiros, jobs externos. `OrderSettled` que vai para o sistema de **BI** (Business Intelligence) ou para um **ERP** (Enterprise Resource Planning) parceiro vira contrato; mudar formato sem versionar quebra integração que não está no seu radar.
 
 <details>
 <summary>❌ Ruim: o mesmo evento atende uso interno e externo, schema vai engordando</summary>
 
 ```js
-class OrderPaid {
+class OrderSettled {
   constructor(order) {
     this.orderId = order.id;
     this.customerId = order.customerId;
@@ -56,8 +56,8 @@ class OrderPaid {
   }
 }
 
-eventBus.publish(new OrderPaid(order));
-analyticsBroker.publish(new OrderPaid(order));
+eventBus.publish(new OrderSettled(order));
+analyticsBroker.publish(new OrderSettled(order));
 ```
 
 O mesmo objeto vira contrato interno (handler de e-mail, handler de estoque) e externo (BI, parceiro). Cada novo campo entra para algum dos consumidores e contamina os outros. Quando o parceiro reclama de payload de 80 KB, ninguém sabe quem precisa de qual campo.
@@ -68,51 +68,51 @@ O mesmo objeto vira contrato interno (handler de e-mail, handler de estoque) e e
 <summary>✅ Bom: domain event interno, integration event derivado e enxuto</summary>
 
 ```js
-class OrderPaid {
-  constructor({ orderId, customerId, total, paidAt }) {
+class OrderSettled {
+  constructor({ orderId, customerId, total, settledAt }) {
     this.orderId = orderId;
     this.customerId = customerId;
     this.total = total;
-    this.paidAt = paidAt;
+    this.settledAt = settledAt;
   }
 
   static from(order) {
-    const event = new OrderPaid({
+    const event = new OrderSettled({
       orderId: order.id,
       customerId: order.customerId,
       total: order.total,
-      paidAt: order.paidAt,
+      settledAt: order.settledAt,
     });
 
     return event;
   }
 }
 
-class OrderPaidIntegrationV1 {
-  constructor({ orderId, customerId, total, currency, paidAt }) {
+class OrderSettledIntegrationV1 {
+  constructor({ orderId, customerId, total, currency, settledAt }) {
     this.eventVersion = 1;
     this.orderId = orderId;
     this.customerId = customerId;
     this.total = total;
     this.currency = currency;
-    this.paidAt = paidAt;
+    this.settledAt = settledAt;
   }
 
   static from(order) {
-    const event = new OrderPaidIntegrationV1({
+    const event = new OrderSettledIntegrationV1({
       orderId: order.id,
       customerId: order.customerId,
       total: order.total,
       currency: order.currency,
-      paidAt: order.paidAt,
+      settledAt: order.settledAt,
     });
 
     return event;
   }
 }
 
-eventBus.publish(OrderPaid.from(order));
-integrationBus.publish(OrderPaidIntegrationV1.from(order));
+eventBus.publish(OrderSettled.from(order));
+integrationBus.publish(OrderSettledIntegrationV1.from(order));
 ```
 
 O evento de domínio fica curto e evolui livre. O evento de integração ganha campo `eventVersion`, currency explícito, contrato versionado. Mudar um não obriga mudar o outro.
@@ -316,7 +316,7 @@ O nome do evento descreve um fato que aconteceu. Verbo no passado, sujeito impl�
 
 A regra prática:
 
-- **Verbo no passado**: `Placed`, `Cancelled`, `Refunded`, `Shipped`, `Paid`. Em inglês, particípio passado.
+- **Verbo no passado**: `Placed`, `Cancelled`, `Refunded`, `Shipped`, `Settled`. Em inglês, particípio passado.
 - **Sujeito do domínio**: `Order`, `Customer`, `Invoice`. Não `Entity`, não `Record`, não `Item` genérico.
 - **Sem auxiliar técnico**: evitar `OrderUpdatedEvent`, `CustomerSavedEvent`. O sufixo `Event` é ruído; já se sabe pelo contexto.
 - **Sem `*Updated` quando se pode ser específico**: `OrderUpdated` esconde o que mudou. Quebrar em `OrderAddressChanged`, `OrderItemAdded`, `OrderItemRemoved`. Cada um carrega regra distinta.
@@ -404,13 +404,13 @@ O payload é o contrato do evento. Três princípios ditam o desenho:
 <summary>❌ Ruim: payload carrega o agregado inteiro</summary>
 
 ```js
-class OrderPaid {
+class OrderSettled {
   constructor(order) {
     this.order = order;
   }
 }
 
-eventBus.publish(new OrderPaid(order));
+eventBus.publish(new OrderSettled(order));
 
 class StockReservationHandler {
   async on(event) {
@@ -429,26 +429,26 @@ O handler depende do shape interno de `Order`. Quando o agregado adiciona um cam
 <summary>✅ Bom: payload com IDs e dados essenciais, schema explícito e versionado</summary>
 
 ```js
-class OrderPaidV1 {
-  constructor({ eventId, eventVersion, orderId, customerId, total, currency, paidAt }) {
+class OrderSettledV1 {
+  constructor({ eventId, eventVersion, orderId, customerId, total, currency, settledAt }) {
     this.eventId = eventId;
     this.eventVersion = eventVersion;
     this.orderId = orderId;
     this.customerId = customerId;
     this.total = total;
     this.currency = currency;
-    this.paidAt = paidAt;
+    this.settledAt = settledAt;
   }
 
   static from(order) {
-    const event = new OrderPaidV1({
-      eventId: OrderPaidV1.generateId(),
+    const event = new OrderSettledV1({
+      eventId: OrderSettledV1.generateId(),
       eventVersion: 1,
       orderId: order.id,
       customerId: order.customerId,
       total: order.total,
       currency: order.currency,
-      paidAt: order.paidAt,
+      settledAt: order.settledAt,
     });
 
     return event;
@@ -466,14 +466,14 @@ class StockReservationHandler {
 }
 ```
 
-O payload tem só o que basta para o consumer reagir. Quem precisar dos itens consulta o agregado pelo ID. O contrato é o construtor de `OrderPaidV1`; mudanças exigem `OrderPaidV2` ou retrocompatibilidade explícita.
+O payload tem só o que basta para o consumer reagir. Quem precisar dos itens consulta o agregado pelo ID. O contrato é o construtor de `OrderSettledV1`; mudanças exigem `OrderSettledV2` ou retrocompatibilidade explícita.
 
 </details>
 
 Migração de schema sem quebrar consumers segue duas regras:
 
 - **Adicionar campo é sempre seguro**. Consumers antigos ignoram o campo novo.
-- **Remover ou renomear campo exige nova versão**. `OrderPaidV2` substitui `OrderPaidV1`; o produtor pode publicar os dois durante a janela de migração; consumers escolhem qual escutar; quando todos migrarem, `V1` é desligado.
+- **Remover ou renomear campo exige nova versão**. `OrderSettledV2` substitui `OrderSettledV1`; o produtor pode publicar os dois durante a janela de migração; consumers escolhem qual escutar; quando todos migrarem, `V1` é desligado.
 
 ## Handler isolation
 
@@ -491,7 +491,7 @@ Três regras concretas:
 <summary>❌ Ruim: handler chama outro handler em cadeia síncrona</summary>
 
 ```js
-class OrderPaidHandler {
+class OrderSettledHandler {
   async on(event) {
     await this.stockHandler.reserveItems(event.order);
     await this.shippingHandler.scheduleDelivery(event.order);
@@ -653,7 +653,7 @@ A combinação também é válida: orchestration entre serviços; choreography d
 
 **Publish dentro da transação**. Evento publicado antes do `commit`. Sintoma: consumer recebe evento de agregado que falhou no save; ou transação segura lock esperando broker. Tratamento: outbox + worker.
 
-**Handler que muda o agregado origem**. `OrderPaidHandler` que atualiza o próprio `Order` que disparou o evento. Sintoma: novo evento `OrderPaidUpdated` vira ruído; o agregado nunca para de mudar. Tratamento: agregado já gravou a mudança que disparou o evento; handlers reagem em outros agregados ou em sistemas externos.
+**Handler que muda o agregado origem**. `OrderSettledHandler` que atualiza o próprio `Order` que disparou o evento. Sintoma: novo evento `OrderSettledUpdated` vira ruído; o agregado nunca para de mudar. Tratamento: agregado já gravou a mudança que disparou o evento; handlers reagem em outros agregados ou em sistemas externos.
 
 **Sem versionamento de schema**. Evento muda payload em produção sem `eventVersion`. Sintoma: consumer antigo quebra, deploy de produtor obriga deploy coordenado de N consumers. Tratamento: versionar; publicar `V1` e `V2` durante migração.
 
@@ -663,7 +663,7 @@ A combinação também é válida: orchestration entre serviços; choreography d
 
 **Choreography em fluxo de 12 passos**. Operação longa modelada como sucessão de eventos sem coordenador. Sintoma: ninguém consegue dizer em que passo o fluxo está; debug exige seguir 12 handlers em ordem; novo passo no meio é doloroso. Tratamento: orchestration; estado da saga persistido pelo coordenador.
 
-**Handler que chama outro handler direto**. `OrderPaidHandler` invoca `StockReservationHandler.run()` no código. Sintoma: falha em cascata; retry duplo; sem isolamento. Tratamento: handlers se comunicam por evento, nunca por chamada direta.
+**Handler que chama outro handler direto**. `OrderSettledHandler` invoca `StockReservationHandler.run()` no código. Sintoma: falha em cascata; retry duplo; sem isolamento. Tratamento: handlers se comunicam por evento, nunca por chamada direta.
 
 ## Referências
 

@@ -48,7 +48,7 @@ if (result !== null) { /* ... */ }  // e undefined?
 function processOrder(order) {
   if (!order) throw new ValidationError({ message: "Order is required." });
   if (order.items.length === 0) throw new ValidationError({ message: "Order has no items." });
-  if (order.customer.defaulted) throw new BusinessError({ message: "Customer has unpaid debts." });
+  if (order.customer.defaulted) throw new BusinessError({ message: "Customer has unsettled debts." });
 
   const processedOrder = { success: true, order };
   return processedOrder;

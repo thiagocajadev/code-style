@@ -101,8 +101,8 @@ ternários.
 
 ```php
 $label = '';
-if ($order->isPaid) {
-    $label = 'Paid';
+if ($order->isSettled) {
+    $label = 'Settled';
 } else {
     $label = 'Pending';
 }
@@ -114,7 +114,7 @@ if ($order->isPaid) {
 <summary>✅ Bom: ternário na atribuição</summary>
 
 ```php
-$label = $order->isPaid ? 'Paid' : 'Pending';
+$label = $order->isSettled ? 'Settled' : 'Pending';
 ```
 
 </details>

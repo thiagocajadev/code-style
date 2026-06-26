@@ -61,11 +61,11 @@ dados diferentes. Use para modelar estados e resultados distintos.
 
 ```rust
 struct Order {
-    pub status: String, // "active", "paid", "cancelled": sem garantia do compilador
+    pub status: String, // "active", "settled", "cancelled": sem garantia do compilador
 }
 
-fn is_paid(order: &Order) -> bool {
-    order.status == "paid" // typo silencioso
+fn is_settled(order: &Order) -> bool {
+    order.status == "settled" // typo silencioso
 }
 ```
 
@@ -78,13 +78,13 @@ fn is_paid(order: &Order) -> bool {
 #[derive(Debug, Clone, PartialEq)]
 pub enum OrderStatus {
     Pending,
-    Paid { payment_id: String },
+    Settled { payment_id: String },
     Cancelled { reason: String },
     Refunded { amount: f64 },
 }
 
-fn is_paid(order: &Order) -> bool {
-    matches!(order.status, OrderStatus::Paid { .. })
+fn is_settled(order: &Order) -> bool {
+    matches!(order.status, OrderStatus::Settled { .. })
 }
 ```
 
@@ -102,8 +102,8 @@ Prefira `impl Trait` em parâmetros para funções simples; `Box<dyn Trait>` par
 struct EmailNotifier;
 struct SmsNotifier;
 
-fn notify_order_paid_email(notifier: &EmailNotifier, order: &Order) {}
-fn notify_order_paid_sms(notifier: &SmsNotifier, order: &Order) {}
+fn notify_order_settled_email(notifier: &EmailNotifier, order: &Order) {}
+fn notify_order_settled_sms(notifier: &SmsNotifier, order: &Order) {}
 ```
 
 </details>
@@ -133,7 +133,7 @@ impl Notifier for SmsNotifier {
     }
 }
 
-async fn notify_order_paid(notifier: &impl Notifier, order: &Order) -> anyhow::Result<()> {
+async fn notify_order_settled(notifier: &impl Notifier, order: &Order) -> anyhow::Result<()> {
     notifier.send(order.customer_id, "seu pedido foi pago").await
 }
 ```

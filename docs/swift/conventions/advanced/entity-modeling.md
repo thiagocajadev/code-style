@@ -857,7 +857,7 @@ Quando o status carrega dados além do nome, vale subir para `enum` com **associ
 ```swift
 enum OrderState: Codable, Sendable {
     case pending
-    case paid(Date)
+    case settled(Date)
     case shipped(Date, trackingCode: String)
     case cancelled(Date, reason: String)
 }
@@ -867,8 +867,8 @@ func summarize(_ state: OrderState) -> String {
     case .pending:
         let summary = "Pending"
         return summary
-    case .paid(let paidAt):
-        let summary = "Paid at \(paidAt.ISO8601Format())"
+    case .settled(let settledAt):
+        let summary = "Settled at \(settledAt.ISO8601Format())"
         return summary
     case .shipped(_, let trackingCode):
         let summary = "Shipped, tracking \(trackingCode)"
@@ -880,7 +880,7 @@ func summarize(_ state: OrderState) -> String {
 }
 ```
 
-Para o estado simples (sem dados associados), um `enum OrderStatus: String, Codable, Sendable { case pending, paid, shipped, cancelled }` em um único campo basta. O `enum` com associated values só ganha tração quando o estado carrega informação própria.
+Para o estado simples (sem dados associados), um `enum OrderStatus: String, Codable, Sendable { case pending, settled, shipped, cancelled }` em um único campo basta. O `enum` com associated values só ganha tração quando o estado carrega informação própria.
 
 </details>
 

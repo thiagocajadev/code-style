@@ -960,7 +960,7 @@ declare(strict_types=1);
 enum OrderStatus: string
 {
     case Pending = 'pending';
-    case Paid = 'paid';
+    case Settled = 'settled';
     case Shipped = 'shipped';
     case Cancelled = 'cancelled';
 
@@ -982,15 +982,15 @@ class Order extends Entity
     public function pay(): void
     {
         if ($this->status !== OrderStatus::Pending) {
-            throw new \DomainException('Only pending orders can be paid.');
+            throw new \DomainException('Only pending orders can be settled.');
         }
 
-        $this->status = OrderStatus::Paid;
+        $this->status = OrderStatus::Settled;
     }
 }
 ```
 
-O `match` com `self::` é exaustivo e o IDE/PHPStan apontam caso não tratado. O backed enum serializa para `'paid'` automaticamente, sem lógica adicional.
+O `match` com `self::` é exaustivo e o IDE/PHPStan apontam caso não tratado. O backed enum serializa para `'settled'` automaticamente, sem lógica adicional.
 
 </details>
 

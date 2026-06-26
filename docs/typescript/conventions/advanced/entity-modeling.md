@@ -827,13 +827,13 @@ Quando o status carrega dados além do nome, vale subir para **discriminated uni
 ```ts
 type OrderState =
   | { readonly status: "pending" }
-  | { readonly status: "paid"; readonly paidAt: Date }
-  | { readonly status: "shipped"; readonly paidAt: Date; readonly trackingCode: string }
+  | { readonly status: "settled"; readonly settledAt: Date }
+  | { readonly status: "shipped"; readonly settledAt: Date; readonly trackingCode: string }
   | { readonly status: "cancelled"; readonly cancelledAt: Date; readonly reason: string };
 
 function summarize(state: OrderState): string {
-  if (state.status === "paid") {
-    const summary = `Paid at ${state.paidAt.toISOString()}`;
+  if (state.status === "settled") {
+    const summary = `Settled at ${state.settledAt.toISOString()}`;
     return summary;
   }
   if (state.status === "shipped") {
@@ -850,7 +850,7 @@ function summarize(state: OrderState): string {
 }
 ```
 
-Para o estado simples (sem dados associados), uma `type OrderStatus = "pending" | "paid" | "shipped" | "cancelled"` em um único campo basta. A discriminated union só ganha tração quando o estado carrega informação própria.
+Para o estado simples (sem dados associados), uma `type OrderStatus = "pending" | "settled" | "shipped" | "cancelled"` em um único campo basta. A discriminated union só ganha tração quando o estado carrega informação própria.
 
 </details>
 

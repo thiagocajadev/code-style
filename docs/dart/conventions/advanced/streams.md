@@ -135,7 +135,7 @@ class _OrderWidgetState extends State<OrderWidget> {
 final nameStream = orderStream.map((order) => order.customerName);
 
 // where: filtra eventos
-final paidStream = orderStream.where((order) => order.isPaid);
+final settledStream = orderStream.where((order) => order.isSettled);
 
 // expand: um evento → múltiplos eventos
 final itemStream = orderStream.expand((order) => order.items);

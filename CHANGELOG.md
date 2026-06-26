@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.18] - 2026-06-26
+
+### Fixed
+
+- Termo `Paid` renomeado para `Settled` em todos os exemplos da documentação. A pronúncia de "Paid" em pt-br é interpretada de forma jocosa, o que destoava do tom profissional dos docs. Rename mecânico **case-preserving** do morfema (`PAID`→`SETTLED`, `Paid`→`Settled`, `paid`→`settled`), que cobre todas as formas derivadas: estado/enum (`OrderState.Settled`, `OrderStatus::Settled`), boolean (`isSettled`, `is_settled`, `IsSettled`), timestamp (`settledAt`, `settled_at`, `SettledAt`), eventos (`OrderSettled`, `OrderSettledV1`, `OrderSettledHandler`), métodos (`markAsSettled`, `mark_as_settled`, `MarkOrderAsSettled`), negações (`unsettled`, `UnsettledOrderError`) e literais de string. 251 ocorrências em 49 arquivos / 18 linguagens + shared. `Settled` mantém a gramática de particípio passado da regra de naming em `domain-events.md` (`Placed, Cancelled, Refunded, Shipped, Settled`). Tokens de tradução PT (`pago`, `Pago`, `pagamento`) preservados intactos — só o token inglês mudou. Audit clean: 2509 blocos Good em 391 arquivos
+
 ## [1.28.17] - 2026-06-26
 
 ### Added

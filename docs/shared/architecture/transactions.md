@@ -488,7 +488,7 @@ A saga aparece em dois sabores:
 
 **Choreography** (coreografia): cada serviço escuta eventos e reage. Não há
 coordenador central. Acoplamento por contrato de evento; bom para fluxos com
-poucas etapas e regras estáveis. Exemplo: pedido pago publica `OrderPaid` →
+poucas etapas e regras estáveis. Exemplo: pedido pago publica `OrderSettled` →
 módulo de estoque reserva → publica `StockReserved` → módulo de entrega agenda.
 
 **Orchestration** (orquestração): um coordenador comanda os passos. O
@@ -512,7 +512,7 @@ async function processPayment(orderId, paymentDetails) {
 
     const paymentResult = await paymentGateway.charge(paymentDetails);
 
-    order.markAsPaid(paymentResult.transactionId);
+    order.markAsSettled(paymentResult.transactionId);
     await orderRepository.save(order, transaction);
 
     await transaction.commit();
@@ -542,18 +542,18 @@ class Order {
     return order;
   }
 
-  markAsPaid(externalTransactionId) {
+  markAsSettled(externalTransactionId) {
     if (this.status !== "pending") {
       throw new Error(`Cannot pay order in status ${this.status}`);
     }
 
-    this.status = "paid";
+    this.status = "settled";
     this.externalTransactionId = externalTransactionId;
-    this.events.push(OrderPaid.from(this));
+    this.events.push(OrderSettled.from(this));
   }
 
   markAsRefunded(reason) {
-    if (this.status !== "paid") {
+    if (this.status !== "settled") {
       throw new Error(`Cannot refund order in status ${this.status}`);
     }
 
@@ -577,7 +577,7 @@ class PaymentHandler {
     }
 
     await this.commandBus.send(
-      new MarkOrderAsPaid(event.orderId, paymentResult.transactionId),
+      new MarkOrderAsSettled(event.orderId, paymentResult.transactionId),
     );
   }
 }
@@ -600,7 +600,7 @@ Pontos importantes sobre saga:
   "esquecer".
 - **Estado da saga é explícito**. Em orchestration, o coordenador persiste em
   qual etapa está. Em choreography, o estado vive no agregado
-  (`Order.status = "awaiting_payment" → "paid"`).
+  (`Order.status = "awaiting_payment" → "settled"`).
 - **Falha humana é parte do fluxo**. Tempo de espera por aprovação manual, retry
   com backoff, escalation para suporte. Saga modela bem porque cada estado é
   nomeado.
@@ -777,19 +777,19 @@ class Order {
     return order;
   }
 
-  markAsPaid(externalTransactionId) {
+  markAsSettled(externalTransactionId) {
     if (this.status !== "awaiting_payment") {
       throw new Error(`Cannot pay order in status ${this.status}`);
     }
 
-    this.status = "paid";
+    this.status = "settled";
     this.externalTransactionId = externalTransactionId;
-    this.events.push(OrderPaid.from(this));
+    this.events.push(OrderSettled.from(this));
   }
 
   cancelDueToPaymentFailure(reason) {
     if (this.status !== "awaiting_payment") {
-      throw new Error(`Cannot cancel paid order; refund instead`);
+      throw new Error(`Cannot cancel settled order; refund instead`);
     }
 
     this.status = "cancelled";

@@ -838,12 +838,12 @@ class Pending:
     pass
 
 @dataclass(frozen=True, slots=True)
-class Paid:
-    paid_at: datetime
+class Settled:
+    settled_at: datetime
 
 @dataclass(frozen=True, slots=True)
 class Shipped:
-    paid_at: datetime
+    settled_at: datetime
     tracking_code: str
 
 @dataclass(frozen=True, slots=True)
@@ -851,12 +851,12 @@ class Cancelled:
     cancelled_at: datetime
     reason: str
 
-OrderState = Pending | Paid | Shipped | Cancelled
+OrderState = Pending | Settled | Shipped | Cancelled
 
 def summarize(state: OrderState) -> str:
     match state:
-        case Paid(paid_at=paid_at):
-            summary = f"Paid at {paid_at.isoformat()}"
+        case Settled(settled_at=settled_at):
+            summary = f"Settled at {settled_at.isoformat()}"
             return summary
         case Shipped(tracking_code=tracking_code):
             summary = f"Shipped, tracking {tracking_code}"

@@ -163,7 +163,7 @@ Declare a variável no escopo mais restrito possível.
 ```kotlin
 var message: String
 
-if (order.isPaid) {
+if (order.isSettled) {
     message = "Payment confirmed"
 } else {
     message = "Payment pending"
@@ -179,7 +179,7 @@ sendNotification(message)
 
 ```kotlin
 val message = when {
-    order.isPaid -> "Payment confirmed"
+    order.isSettled -> "Payment confirmed"
     else -> "Payment pending"
 }
 

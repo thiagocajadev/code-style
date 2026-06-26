@@ -25,9 +25,9 @@ via `runTest`.
 @Test
 fun testOrder() {
     val repo = mockk<OrderRepository>()
-    every { repo.findById(1L) } returns Order(id = 1L, status = OrderStatus.PAID)
+    every { repo.findById(1L) } returns Order(id = 1L, status = OrderStatus.SETTLED)
     val service = OrderService(repo)
-    assertEquals(OrderStatus.PAID, service.findOrder(1L).getOrThrow().status)
+    assertEquals(OrderStatus.SETTLED, service.findOrder(1L).getOrThrow().status)
 }
 ```
 
@@ -38,11 +38,11 @@ fun testOrder() {
 
 ```kotlin
 @Test
-fun `findOrder returns paid order when found`() {
+fun `findOrder returns settled order when found`() {
     // Arrange
-    val paidOrder = Order(id = 1L, status = OrderStatus.PAID)
+    val settledOrder = Order(id = 1L, status = OrderStatus.SETTLED)
     val repository = mockk<OrderRepository> {
-        every { findById(1L) } returns paidOrder
+        every { findById(1L) } returns settledOrder
     }
 
     val service = OrderService(repository)
@@ -52,7 +52,7 @@ fun `findOrder returns paid order when found`() {
 
     // Assert
     result shouldBeSuccess { order ->
-        order.status shouldBe OrderStatus.PAID
+        order.status shouldBe OrderStatus.SETTLED
     }
 }
 ```

@@ -52,7 +52,7 @@ def process_order(order):
         raise ValidationError("Order has no items.")
 
     if order.customer.defaulted:
-        raise BusinessError("Customer has unpaid debts.")
+        raise BusinessError("Customer has unsettled debts.")
 
     processed_order = {"success": True, "order": order}
     return processed_order

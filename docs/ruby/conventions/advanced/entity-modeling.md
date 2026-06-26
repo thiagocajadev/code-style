@@ -729,7 +729,7 @@ Dentro do mesmo agregado, referência direta é o caminho natural: `Order#line_i
 
 Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customer_id`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
 
-Em Ruby, símbolos (`:pending`, `:paid`, `:shipped`, `:cancelled`) são a escolha idiomática para **status** simples. Quando status carrega dados além do nome (data de pagamento, código de rastreio), mover para um módulo de constantes (`OrderStatus::PAID`) ou objeto de estado dedicado comunica melhor a intenção.
+Em Ruby, símbolos (`:pending`, `:settled`, `:shipped`, `:cancelled`) são a escolha idiomática para **status** simples. Quando status carrega dados além do nome (data de pagamento, código de rastreio), mover para um módulo de constantes (`OrderStatus::SETTLED`) ou objeto de estado dedicado comunica melhor a intenção.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -765,11 +765,11 @@ order = Order.new(id: order_id, customer:)
 
 module OrderStatus
   PENDING = :pending
-  PAID = :paid
+  SETTLED = :settled
   SHIPPED = :shipped
   CANCELLED = :cancelled
 
-  ALL = [PENDING, PAID, SHIPPED, CANCELLED].freeze
+  ALL = [PENDING, SETTLED, SHIPPED, CANCELLED].freeze
 end
 
 class Order < Entity
@@ -782,10 +782,10 @@ class Order < Entity
     @items = []
   end
 
-  def mark_as_paid
-    raise "Only pending orders can be paid" unless status == OrderStatus::PENDING
+  def mark_as_settled
+    raise "Only pending orders can be settled" unless status == OrderStatus::PENDING
 
-    @status = OrderStatus::PAID
+    @status = OrderStatus::SETTLED
   end
 
   def cancel
@@ -801,7 +801,7 @@ order = Order.new(id: order_id, customer_id:)
 customer = CustomerRepository.find_by_id(order.customer_id)
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Os métodos de domínio (`mark_as_paid`, `cancel`) validam as invariantes de status diretamente na entidade.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Os métodos de domínio (`mark_as_settled`, `cancel`) validam as invariantes de status diretamente na entidade.
 
 </details>
 

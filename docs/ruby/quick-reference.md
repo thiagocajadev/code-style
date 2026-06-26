@@ -63,7 +63,7 @@
 | Unless para negação simples   | `unless user.active?` (máx 1 condição; sem `else unless`) |
 | Ternário (2 valores)          | `label = admin? ? "Admin" : "User"`                      |
 | Case/when (3+ ramos)          | `case status when :active then ... when :pending then ...` |
-| Pattern matching              | `case order in { status: :paid, total: (..100) } then ...` |
+| Pattern matching              | `case order in { status: :settled, total: (..100) } then ...` |
 | Iterator funcional            | `items.filter(&:active?).map { |i| i.name }`              |
 
 ## Erros

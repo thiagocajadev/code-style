@@ -56,8 +56,8 @@ lookup ou `match/case`. Nunca aninhar expressões condicionais.
 <summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
 
 ```python
-if order.is_paid:
-    label = "Paid"
+if order.is_settled:
+    label = "Settled"
 else:
     label = "Pending"
 ```
@@ -68,7 +68,7 @@ else:
 <summary>✅ Bom: expressão condicional na atribuição</summary>
 
 ```python
-label = "Paid" if order.is_paid else "Pending"
+label = "Settled" if order.is_settled else "Pending"
 ```
 
 </details>
@@ -193,7 +193,7 @@ por valor. Cada `case` termina de forma explícita: não há fall-through aciden
 def process_payment_event(event):
     if event.event_type == "payment_success":
         send_receipt(event.order_id)
-        update_order_status(event.order_id, "paid")
+        update_order_status(event.order_id, "settled")
     elif event.event_type == "payment_failed":
         notify_failure(event.user_id)
         schedule_retry(event.order_id)
@@ -212,7 +212,7 @@ def process_payment_event(event):
     match event.event_type:
         case "payment_success":
             send_receipt(event.order_id)
-            update_order_status(event.order_id, "paid")
+            update_order_status(event.order_id, "settled")
 
         case "payment_failed":
             notify_failure(event.user_id)

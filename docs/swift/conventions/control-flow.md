@@ -64,8 +64,8 @@ Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou ma
 
 ```swift
 var label: String
-if order.isPaid {
-    label = "Paid"
+if order.isSettled {
+    label = "Settled"
 } else {
     label = "Pending"
 }
@@ -77,7 +77,7 @@ if order.isPaid {
 <summary>✅ Bom: ternário na atribuição</summary>
 
 ```swift
-let label = order.isPaid ? "Paid" : "Pending"
+let label = order.isSettled ? "Settled" : "Pending"
 ```
 
 </details>
@@ -327,7 +327,7 @@ let allActive = products.allSatisfy(\.isActive)
 
 ```swift
 for order in orders {
-    if order.status != .paid { continue }
+    if order.status != .settled { continue }
     processInvoice(for: order)
 }
 ```
@@ -338,7 +338,7 @@ for order in orders {
 <summary>✅ Bom: where filtra sem corpo extra</summary>
 
 ```swift
-for order in orders where order.status == .paid {
+for order in orders where order.status == .settled {
     processInvoice(for: order)
 }
 ```

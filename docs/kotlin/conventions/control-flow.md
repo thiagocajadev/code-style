@@ -26,8 +26,8 @@ linguagens. Limite: 2 alternativas. Três ou mais → `when`.
 
 ```kotlin
 var label: String
-if (order.isPaid) {
-    label = "Paid"
+if (order.isSettled) {
+    label = "Settled"
 } else {
     label = "Pending"
 }
@@ -39,7 +39,7 @@ if (order.isPaid) {
 <summary>✅ Bom: if-expression na atribuição</summary>
 
 ```kotlin
-val label = if (order.isPaid) "Paid" else "Pending"
+val label = if (order.isSettled) "Settled" else "Pending"
 ```
 
 </details>
@@ -75,7 +75,7 @@ val label = when {
 ```kotlin
 fun processOrder(order: Order?): Result<Invoice> {
     if (order != null) {
-        if (order.isPaid) {
+        if (order.isSettled) {
             if (order.items.isNotEmpty()) {
                 val invoice = generateInvoice(order)
                 return Result.success(invoice)
@@ -83,7 +83,7 @@ fun processOrder(order: Order?): Result<Invoice> {
                 return Result.failure(EmptyOrderError())
             }
         } else {
-            return Result.failure(UnpaidOrderError())
+            return Result.failure(UnsettledOrderError())
         }
     } else {
         return Result.failure(NullOrderError())
@@ -102,8 +102,8 @@ fun processOrder(order: Order?): Result<Invoice> {
         return Result.failure(NullOrderError())
     }
 
-    if (!order.isPaid) {
-        return Result.failure(UnpaidOrderError())
+    if (!order.isSettled) {
+        return Result.failure(UnsettledOrderError())
     }
 
     if (order.items.isEmpty()) {

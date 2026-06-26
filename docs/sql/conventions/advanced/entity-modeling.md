@@ -13,7 +13,7 @@ O texto cobre as mesmas perguntas do canônico, traduzidas para o vocabulário r
 | **aggregate root** (raiz do agregado) | Tabela principal que representa o agregado; carrega `id`, `tenant_id` e as colunas de auditoria; é a única tabela referenciada por FKs externas ao agregado |
 | **entity** (entidade) | Tabela com identidade própria via `PRIMARY KEY`; duas linhas com os mesmos valores mas IDs distintos são registros distintos |
 | **value object** (objeto de valor) | Conceito sem identidade própria; mapeado como colunas com prefixo na tabela dona (`billing_address_street`) ou tabela satélite 1:1 quando o volume é alto |
-| **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo banco via `NOT NULL`, `CHECK`, `UNIQUE` ou `FOREIGN KEY`; ex.: `CHECK (status != 'paid' OR paid_at IS NOT NULL)` |
+| **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo banco via `NOT NULL`, `CHECK`, `UNIQUE` ou `FOREIGN KEY`; ex.: `CHECK (status != 'settled' OR settled_at IS NOT NULL)` |
 | **constraint** (restrição) | Declaração de regra no DDL — `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY`; nomeadas com prefixo `pk_`, `fk_`, `uq_`, `ck_` |
 | **DOMAIN** (domínio de tipo) | Tipo derivado em PostgreSQL via `CREATE DOMAIN`; aplica constraints automaticamente a toda coluna declarada com esse tipo |
 | **UUID** (Universally Unique Identifier, identificador único global) | Identificador de 128 bits no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; no PostgreSQL 18, `uuidv7()` é nativo e sequencial |
@@ -583,7 +583,7 @@ A alternativa portável é `VARCHAR` com `CHECK`: mais fácil de migrar (basta a
 ```sql
 CREATE TYPE order_status AS ENUM (
   'pending',
-  'paid',
+  'settled',
   'shipped',
   'delivered',
   'cancelled'
@@ -612,7 +612,7 @@ CREATE TABLE orders
   id UUID NOT NULL DEFAULT uuidv7(),
   customer_id UUID NOT NULL,
   status VARCHAR(20) NOT NULL DEFAULT 'pending',
-  paid_at TIMESTAMPTZ,
+  settled_at TIMESTAMPTZ,
   shipped_at TIMESTAMPTZ,
   cancelled_at TIMESTAMPTZ,
   cancel_reason VARCHAR(255),
@@ -621,11 +621,11 @@ CREATE TABLE orders
 
   CONSTRAINT pk_orders PRIMARY KEY (id),
   CONSTRAINT ck_orders_status CHECK (
-    orders.status IN ('pending', 'paid', 'shipped', 'delivered', 'cancelled')
+    orders.status IN ('pending', 'settled', 'shipped', 'delivered', 'cancelled')
   ),
-  CONSTRAINT ck_orders_paid_has_paid_at CHECK (
-    orders.status != 'paid' OR
-    orders.paid_at IS NOT NULL
+  CONSTRAINT ck_orders_settled_has_settled_at CHECK (
+    orders.status != 'settled' OR
+    orders.settled_at IS NOT NULL
   ),
   CONSTRAINT ck_orders_shipped_has_shipped_at CHECK (
     orders.status != 'shipped' OR
@@ -639,7 +639,7 @@ CREATE TABLE orders
 );
 ```
 
-As constraints `CHECK` garantem coerência entre o status e os campos de data. Não é possível ter `status = 'paid'` sem `paid_at` preenchido. Adicionar um novo status é `ALTER TABLE ... DROP CONSTRAINT ... ADD CONSTRAINT` — reversível dentro de uma transação.
+As constraints `CHECK` garantem coerência entre o status e os campos de data. Não é possível ter `status = 'settled'` sem `settled_at` preenchido. Adicionar um novo status é `ALTER TABLE ... DROP CONSTRAINT ... ADD CONSTRAINT` — reversível dentro de uma transação.
 
 </details>
 
@@ -745,7 +745,7 @@ Os padrões abaixo aparecem com frequência em schemas reais, e cada um é um si
 
 **tenant_id em tabelas filhas**. Duplicar `tenant_id` em `order_items`, `invoice_lines`, `enrollment_grades`. Sintoma: risco de inconsistência entre tenant do pai e tenant do filho; surface de filtro aumenta. Tratamento: `tenant_id` só na aggregate root; filhos acessados sempre via FK para o pai.
 
-**ENUM type para status com dados adicionais**. `CREATE TYPE order_status AS ENUM (...)` quando cada status precisa de campos extras (`paid_at`, `cancelled_at`). Sintoma: colunas de data sempre nullable sem garantia de preenchimento. Tratamento: `VARCHAR` + `CHECK` de coerência entre status e campos associados.
+**ENUM type para status com dados adicionais**. `CREATE TYPE order_status AS ENUM (...)` quando cada status precisa de campos extras (`settled_at`, `cancelled_at`). Sintoma: colunas de data sempre nullable sem garantia de preenchimento. Tratamento: `VARCHAR` + `CHECK` de coerência entre status e campos associados.
 
 ## Referências
 

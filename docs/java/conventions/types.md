@@ -96,7 +96,7 @@ public class PaymentFailure extends PaymentResult { /* ... */ }
 
 // alguém pode adicionar PaymentPending sem atualizar o switch
 String message = switch (result) {
-    case PaymentSuccess s -> "Paid: " + s.getAmount();
+    case PaymentSuccess s -> "Settled: " + s.getAmount();
     case PaymentFailure f -> "Failed: " + f.getReason();
     default -> "Unknown"; // escapa o problema
 };
@@ -117,7 +117,7 @@ public record PaymentPending(String transactionId) implements PaymentResult {}
 
 // compilador exige todos os cases, sem default necessário
 String message = switch (result) {
-    case PaymentSuccess s -> "Paid: " + s.amount();
+    case PaymentSuccess s -> "Settled: " + s.amount();
     case PaymentFailure f -> "Failed: " + f.reason();
     case PaymentPending p -> "Pending: " + p.transactionId();
 };

@@ -86,14 +86,14 @@ private fun notifyConfirmation(email: String) { ... }
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
-    val paid = orders.filter { it.status == OrderStatus.PAID }
+    val settled = orders.filter { it.status == OrderStatus.SETTLED }
 
     var total = 0.0
-    for (order in paid) {
+    for (order in settled) {
         total += order.items.sumOf { it.price * it.quantity }
     }
 
-    return Report(orderCount = paid.size, revenue = total)
+    return Report(orderCount = settled.size, revenue = total)
 }
 ```
 
@@ -104,14 +104,14 @@ fun generateReport(orders: List<Order>): Report {
 
 ```kotlin
 fun generateReport(orders: List<Order>): Report {
-    val paidOrders = filterPaidOrders(orders)
-    val revenue = calculateRevenue(paidOrders)
+    val settledOrders = filterSettledOrders(orders)
+    val revenue = calculateRevenue(settledOrders)
 
-    return Report(orderCount = paidOrders.size, revenue = revenue)
+    return Report(orderCount = settledOrders.size, revenue = revenue)
 }
 
-private fun filterPaidOrders(orders: List<Order>): List<Order> =
-    orders.filter { it.status == OrderStatus.PAID }
+private fun filterSettledOrders(orders: List<Order>): List<Order> =
+    orders.filter { it.status == OrderStatus.SETTLED }
 
 private fun calculateRevenue(orders: List<Order>): Double =
     orders.sumOf { order -> order.items.sumOf { it.price * it.quantity } }

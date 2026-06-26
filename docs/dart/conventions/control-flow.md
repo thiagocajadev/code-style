@@ -64,8 +64,8 @@ Ternário `? :` somente para atribuição de 2 valores em uma linha. Três ou ma
 
 ```dart
 String label;
-if (order.isPaid) {
-  label = 'Paid';
+if (order.isSettled) {
+  label = 'Settled';
 } else {
   label = 'Pending';
 }
@@ -77,7 +77,7 @@ if (order.isPaid) {
 <summary>✅ Bom: ternário na atribuição</summary>
 
 ```dart
-final label = order.isPaid ? 'Paid' : 'Pending';
+final label = order.isSettled ? 'Settled' : 'Pending';
 ```
 
 </details>
@@ -112,7 +112,7 @@ final priority = switch ((isUrgent, isCritical)) {
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
   if (order != null) {
-    if (order.isPaid) {
+    if (order.isSettled) {
       if (order.items.isNotEmpty) {
         final invoice = await generateInvoice(order);
         return Result.success(invoice);
@@ -120,7 +120,7 @@ Future<Result<Invoice>> processOrder(Order? order) async {
         return Result.failure(const EmptyOrderError());
       }
     } else {
-      return Result.failure(const UnpaidOrderError());
+      return Result.failure(const UnsettledOrderError());
     }
   } else {
     return Result.failure(const NullOrderError());
@@ -136,7 +136,7 @@ Future<Result<Invoice>> processOrder(Order? order) async {
 ```dart
 Future<Result<Invoice>> processOrder(Order? order) async {
   if (order == null) return Result.failure(const NullOrderError());
-  if (!order.isPaid) return Result.failure(const UnpaidOrderError());
+  if (!order.isSettled) return Result.failure(const UnsettledOrderError());
   if (order.items.isEmpty) return Result.failure(const EmptyOrderError());
 
   final invoice = await generateInvoice(order);

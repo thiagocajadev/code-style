@@ -132,8 +132,8 @@ class UserRepository with Loggable { ... }
 
 ```dart
 class OrderUtils {
-  static bool isPaidAndRecent(Order order) {
-    return order.isPaid && order.createdAt.isAfter(cutoff);
+  static bool isSettledAndRecent(Order order) {
+    return order.isSettled && order.createdAt.isAfter(cutoff);
   }
 }
 ```
@@ -145,13 +145,13 @@ class OrderUtils {
 
 ```dart
 extension OrderFiltering on Order {
-  bool isPaidAndRecent(DateTime cutoff) {
-    return isPaid && createdAt.isAfter(cutoff);
+  bool isSettledAndRecent(DateTime cutoff) {
+    return isSettled && createdAt.isAfter(cutoff);
   }
 }
 
 // uso
-final recentPaid = orders.where((o) => o.isPaidAndRecent(cutoff)).toList();
+final recentSettled = orders.where((o) => o.isSettledAndRecent(cutoff)).toList();
 ```
 
 </details>
@@ -164,7 +164,7 @@ final recentPaid = orders.where((o) => o.isPaidAndRecent(cutoff)).toList();
 ```dart
 String getStatusLabel(String status) {
   if (status == 'pending') return 'Waiting for payment';
-  if (status == 'paid') return 'Payment confirmed';
+  if (status == 'settled') return 'Payment confirmed';
   return 'Unknown';
 }
 ```
@@ -177,13 +177,13 @@ String getStatusLabel(String status) {
 ```dart
 enum OrderStatus {
   pending,
-  paid,
+  settled,
   shipped,
   delivered;
 
   String get label => switch (this) {
     pending => 'Waiting for payment',
-    paid => 'Payment confirmed',
+    settled => 'Payment confirmed',
     shipped => 'On the way',
     delivered => 'Delivered',
   };

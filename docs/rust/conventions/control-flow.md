@@ -63,7 +63,7 @@ possíveis em uma linha. Nunca aninhe `if` expressões.
 
 ```rust
 let label;
-if order.is_paid {
+if order.is_settled {
     label = "pago";
 } else {
     label = "pendente";
@@ -76,7 +76,7 @@ if order.is_paid {
 <summary>✅ Bom: if como expressão</summary>
 
 ```rust
-let label = if order.is_paid { "pago" } else { "pendente" };
+let label = if order.is_settled { "pago" } else { "pendente" };
 ```
 
 </details>
@@ -167,7 +167,7 @@ Com 3 ou mais entradas, o mapa é mais legível e extensível.
 
 ```rust
 fn get_status_label(status: &str) -> &str {
-    if status == "paid" {
+    if status == "settled" {
         "Pago"
     } else if status == "pending" {
         "Pendente"
@@ -191,7 +191,7 @@ use std::collections::HashMap;
 
 fn get_status_label(status: &str) -> &str {
     let labels: HashMap<&str, &str> = HashMap::from([
-        ("paid", "Pago"),
+        ("settled", "Pago"),
         ("pending", "Pendente"),
         ("cancelled", "Cancelado"),
         ("refunded", "Reembolsado"),
@@ -214,7 +214,7 @@ todos os casos precisam ser cobertos. Evite `_ => {}` silencioso que esconde var
 ```rust
 fn handle_status(status: OrderStatus) {
     match status {
-        OrderStatus::Paid => process_payment(),
+        OrderStatus::Settled => process_payment(),
         _ => {} // esconde Pending, Cancelled, Refunded: sem intenção explícita
     }
 }
@@ -228,7 +228,7 @@ fn handle_status(status: OrderStatus) {
 ```rust
 fn handle_status(status: OrderStatus) {
     match status {
-        OrderStatus::Paid => process_payment(),
+        OrderStatus::Settled => process_payment(),
         OrderStatus::Pending => schedule_reminder(),
         OrderStatus::Cancelled => archive_order(),
         OrderStatus::Refunded => notify_finance(),
@@ -243,7 +243,7 @@ fn handle_status(status: OrderStatus) {
 
 ```rust
 let label = match order.status {
-    OrderStatus::Paid => "pago",
+    OrderStatus::Settled => "pago",
     OrderStatus::Pending => "pendente",
     OrderStatus::Cancelled => "cancelado",
     OrderStatus::Refunded => "reembolsado",
@@ -286,7 +286,7 @@ let has_overdue = orders.iter().any(|order| order.is_overdue);
 <summary>✅ Bom: .find() para busca do primeiro elemento que satisfaz condição</summary>
 
 ```rust
-let first_paid = orders.iter().find(|order| order.status == OrderStatus::Paid);
+let first_settled = orders.iter().find(|order| order.status == OrderStatus::Settled);
 ```
 
 </details>
@@ -331,9 +331,9 @@ for order in &orders {
 <summary>✅ Bom: iterador funcional quando o resultado importa</summary>
 
 ```rust
-let paid_totals: Vec<f64> = orders
+let settled_totals: Vec<f64> = orders
     .iter()
-    .filter(|order| order.status == OrderStatus::Paid)
+    .filter(|order| order.status == OrderStatus::Settled)
     .map(|order| order.total)
     .collect();
 ```

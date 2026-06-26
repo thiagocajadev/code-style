@@ -237,7 +237,7 @@ ou `return` explícito: fall-through acidental é bug silencioso.
 function processPaymentEvent(event) {
   if (event.type === "payment_success") {
     sendReceipt(event.orderId);
-    updateOrderStatus(event.orderId, "paid");
+    updateOrderStatus(event.orderId, "settled");
 
   } else if (event.type === "payment_failed") {
     notifyFailure(event.userId);
@@ -260,7 +260,7 @@ function processPaymentEvent(event) {
   switch (event.type) {
     case "payment_success":
       sendReceipt(event.orderId);
-      updateOrderStatus(event.orderId, "paid");
+      updateOrderStatus(event.orderId, "settled");
       break;
 
     case "payment_failed":

@@ -95,9 +95,9 @@ Não colete em `Vec` antes de precisar do resultado final. Encadeie iteradores l
 <summary>❌ Ruim: coleta intermediária desnecessária</summary>
 
 ```rust
-fn get_paid_order_totals(orders: &[Order]) -> f64 {
-    let paid: Vec<&Order> = orders.iter().filter(|o| o.is_paid).collect();
-    let totals: Vec<f64> = paid.iter().map(|o| o.total).collect();
+fn get_settled_order_totals(orders: &[Order]) -> f64 {
+    let settled: Vec<&Order> = orders.iter().filter(|o| o.is_settled).collect();
+    let totals: Vec<f64> = settled.iter().map(|o| o.total).collect();
     totals.iter().sum()
 }
 ```
@@ -108,10 +108,10 @@ fn get_paid_order_totals(orders: &[Order]) -> f64 {
 <summary>✅ Bom: pipeline lazy sem alocação intermediária</summary>
 
 ```rust
-fn get_paid_order_totals(orders: &[Order]) -> f64 {
+fn get_settled_order_totals(orders: &[Order]) -> f64 {
     orders
         .iter()
-        .filter(|o| o.is_paid)
+        .filter(|o| o.is_settled)
         .map(|o| o.total)
         .sum()
 }
@@ -172,7 +172,7 @@ fn benchmark_order_total(bencher: &mut Criterion) {
     let orders = generate_test_orders(1000);
 
     bencher.bench_function("calculate_totals_1k_orders", |b| {
-        b.iter(|| get_paid_order_totals(&orders))
+        b.iter(|| get_settled_order_totals(&orders))
     });
 }
 

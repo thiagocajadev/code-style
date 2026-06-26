@@ -268,7 +268,7 @@ State extrai cada estado em sua própria implementação:
 ```
 Order
   ├── PendingState   → permite: pay(), cancel()
-  ├── PaidState      → permite: ship(), refund()
+  ├── SettledState      → permite: ship(), refund()
   └── ShippedState   → permite: deliver(), return()
 ```
 

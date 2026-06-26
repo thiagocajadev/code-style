@@ -144,7 +144,7 @@ Declare no escopo mais restrito possível.
 ```swift
 var message: String
 
-if order.isPaid {
+if order.isSettled {
     message = "Payment confirmed"
 } else {
     message = "Payment pending"
@@ -159,7 +159,7 @@ sendNotification(message)
 <summary>✅ Bom: let com expressão condicional</summary>
 
 ```swift
-let message = order.isPaid ? "Payment confirmed" : "Payment pending"
+let message = order.isSettled ? "Payment confirmed" : "Payment pending"
 
 sendNotification(message)
 ```

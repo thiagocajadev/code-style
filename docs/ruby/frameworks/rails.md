@@ -122,15 +122,15 @@ class Order < ApplicationRecord
   belongs_to :user
   has_many :items, dependent: :destroy
 
-  validates :status, inclusion: { in: %w[pending active paid cancelled] }
+  validates :status, inclusion: { in: %w[pending active settled cancelled] }
   validates :total, numericality: { greater_than_or_equal_to: 0 }
 
   scope :active, -> { where(status: :active) }
-  scope :paid, -> { where(status: :paid) }
+  scope :settled, -> { where(status: :settled) }
   scope :recent, -> { order(created_at: :desc) }
 
   def active? = status == "active"
-  def paid? = status == "paid"
+  def settled? = status == "settled"
 end
 ```
 

@@ -23,9 +23,9 @@ framework padrão. `mocktail` cria mocks sem geração de código (ao contrário
 ```dart
 test('findOrder', () async {
   final repo = MockOrderRepository();
-  when(() => repo.findById(1)).thenAnswer((_) async => Order(id: 1, status: OrderStatus.paid));
+  when(() => repo.findById(1)).thenAnswer((_) async => Order(id: 1, status: OrderStatus.settled));
   final service = OrderService(repo);
-  expect((await service.find(1)).status, OrderStatus.paid);
+  expect((await service.find(1)).status, OrderStatus.settled);
 });
 ```
 
@@ -35,18 +35,18 @@ test('findOrder', () async {
 <summary>✅ Bom: AAA explícito com nomes expressivos</summary>
 
 ```dart
-test('find returns paid order when order exists', () async {
+test('find returns settled order when order exists', () async {
   // Arrange
-  final paidOrder = Order(id: 1, status: OrderStatus.paid);
+  final settledOrder = Order(id: 1, status: OrderStatus.settled);
   final repository = MockOrderRepository();
-  when(() => repository.findById(1)).thenAnswer((_) async => paidOrder);
+  when(() => repository.findById(1)).thenAnswer((_) async => settledOrder);
   final service = OrderService(repository);
 
   // Act
   final foundOrder = await service.find(1);
 
   // Assert
-  expect(foundOrder.status, OrderStatus.paid);
+  expect(foundOrder.status, OrderStatus.settled);
 });
 ```
 
@@ -88,7 +88,7 @@ group('OrderService', () {
 ```dart
 class FakeOrderRepository implements OrderRepository {
   @override
-  Future<Order?> findById(int id) async => Order(id: id, status: OrderStatus.paid);
+  Future<Order?> findById(int id) async => Order(id: id, status: OrderStatus.settled);
   @override
   Future<void> save(Order order) async {}
 }
@@ -105,7 +105,7 @@ class MockOrderRepository extends Mock implements OrderRepository {}
 test('find returns order when found', () async {
   // Arrange
   final repository = MockOrderRepository();
-  final order = Order(id: 1, status: OrderStatus.paid);
+  final order = Order(id: 1, status: OrderStatus.settled);
   when(() => repository.findById(1)).thenAnswer((_) async => order);
 
   final service = OrderService(repository);

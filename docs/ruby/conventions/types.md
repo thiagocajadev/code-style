@@ -58,7 +58,7 @@ class Order
   end
 
   def active? = status == :active
-  def paid? = status == :paid
+  def settled? = status == :settled
 end
 ```
 

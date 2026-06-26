@@ -23,8 +23,8 @@ válido em projetos existentes. Mocking é feito via protocolos, sem frameworks 
 
 ```swift
 @Test func testOrder() async throws {
-    let service = OrderService(repository: MockOrderRepository(order: Order(id: UUID(), status: .paid)))
-    #expect(try await service.find(id: UUID()).status == .paid)
+    let service = OrderService(repository: MockOrderRepository(order: Order(id: UUID(), status: .settled)))
+    #expect(try await service.find(id: UUID()).status == .settled)
 }
 ```
 
@@ -34,18 +34,18 @@ válido em projetos existentes. Mocking é feito via protocolos, sem frameworks 
 <summary>✅ Bom: AAA explícito com nomes expressivos</summary>
 
 ```swift
-@Test("findOrder returns paid order when found")
-func findOrderReturnsPaidOrderWhenFound() async throws {
+@Test("findOrder returns settled order when found")
+func findOrderReturnsSettledOrderWhenFound() async throws {
     // Arrange
-    let paidOrder = Order(id: UUID(), status: .paid)
-    let repository = MockOrderRepository(order: paidOrder)
+    let settledOrder = Order(id: UUID(), status: .settled)
+    let repository = MockOrderRepository(order: settledOrder)
     let service = OrderService(repository: repository)
 
     // Act
-    let foundOrder = try await service.find(id: paidOrder.id)
+    let foundOrder = try await service.find(id: settledOrder.id)
 
     // Assert
-    #expect(foundOrder.status == .paid)
+    #expect(foundOrder.status == .settled)
 }
 ```
 

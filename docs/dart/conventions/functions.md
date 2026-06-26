@@ -146,8 +146,8 @@ createOrder(userId: 42, productId: 100, quantity: 3, discount: 0.15);
 <summary>❌ Ruim: bloco com return para corpo trivial</summary>
 
 ```dart
-bool isPaidOrder(Order order) {
-  return order.status == OrderStatus.paid;
+bool isSettledOrder(Order order) {
+  return order.status == OrderStatus.settled;
 }
 
 List<String> getOrderIds(List<Order> orders) {
@@ -163,7 +163,7 @@ List<String> getOrderIds(List<Order> orders) {
 <summary>✅ Bom: arrow para corpo de uma expressão</summary>
 
 ```dart
-bool isPaidOrder(Order order) => order.status == OrderStatus.paid;
+bool isSettledOrder(Order order) => order.status == OrderStatus.settled;
 
 List<String> getOrderIds(List<Order> orders) =>
     orders.map((order) => order.id.toString()).toList();

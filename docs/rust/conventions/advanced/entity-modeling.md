@@ -813,8 +813,8 @@ Quando o status carrega dados além do nome, vale usar **enum com dados por vari
 #[derive(Debug, Clone, PartialEq)]
 pub enum OrderState {
     Pending,
-    Paid { paid_at: DateTime<Utc> },
-    Shipped { paid_at: DateTime<Utc>, tracking_code: String },
+    Settled { settled_at: DateTime<Utc> },
+    Shipped { settled_at: DateTime<Utc>, tracking_code: String },
     Cancelled { cancelled_at: DateTime<Utc>, reason: String },
 }
 
@@ -824,8 +824,8 @@ fn summarize(state: &OrderState) -> String {
             let summary = String::from("Aguardando pagamento");
             summary
         }
-        OrderState::Paid { paid_at } => {
-            let summary = format!("Pago em {}", paid_at.format("%d/%m/%Y"));
+        OrderState::Settled { settled_at } => {
+            let summary = format!("Pago em {}", settled_at.format("%d/%m/%Y"));
             summary
         }
         OrderState::Shipped { tracking_code, .. } => {
@@ -840,7 +840,7 @@ fn summarize(state: &OrderState) -> String {
 }
 ```
 
-O match exaustivo garante que toda nova variante adicionada ao enum quebre os pontos de acesso não atualizados, em compile time. Para estados sem dados associados, `pub enum OrderStatus { Pending, Paid, Shipped, Cancelled }` em um campo separado basta.
+O match exaustivo garante que toda nova variante adicionada ao enum quebre os pontos de acesso não atualizados, em compile time. Para estados sem dados associados, `pub enum OrderStatus { Pending, Settled, Shipped, Cancelled }` em um campo separado basta.
 
 </details>
 

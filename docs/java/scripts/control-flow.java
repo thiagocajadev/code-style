@@ -117,7 +117,7 @@ public class ControlFlowExamples {
         switch (event.type()) {
             case SUCCESS -> {
                 sendReceipt(event.orderId());
-                updateOrderStatus(event.orderId(), "paid");
+                updateOrderStatus(event.orderId(), "settled");
             }
             case FAILED -> {
                 notifyFailure(event.userId());
@@ -136,7 +136,7 @@ public class ControlFlowExamples {
     private String describePaymentBad(PaymentResult result) {
         if (result instanceof PaymentSuccess) {
             final var success = (PaymentSuccess) result;
-            return "Paid: " + success.amount();
+            return "Settled: " + success.amount();
         } else if (result instanceof PaymentFailure) {
             final var failure = (PaymentFailure) result;
             return "Failed: " + failure.reason();
@@ -147,7 +147,7 @@ public class ControlFlowExamples {
     // ✅ Bom: pattern matching com desestruturação; sealed garante exaustividade
     private String describePayment(PaymentResult result) {
         final var description = switch (result) {
-            case PaymentSuccess s -> "Paid: " + s.amount();
+            case PaymentSuccess s -> "Settled: " + s.amount();
             case PaymentFailure f -> "Failed: " + f.reason();
             case PaymentPending p -> "Pending: " + p.transactionId();
         };

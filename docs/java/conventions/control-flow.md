@@ -195,7 +195,7 @@ Quando cada caso precisa executar múltiplas ações (não retornar um valor, ma
 private void processPaymentEvent(PaymentEvent event) {
     if (event.type() == PaymentEventType.SUCCESS) {
         sendReceipt(event.orderId());
-        updateOrderStatus(event.orderId(), "paid");
+        updateOrderStatus(event.orderId(), "settled");
     } else if (event.type() == PaymentEventType.FAILED) {
         notifyFailure(event.userId());
         scheduleRetry(event.orderId());
@@ -216,7 +216,7 @@ private void processPaymentEvent(PaymentEvent event) {
     switch (event.type()) {
         case SUCCESS -> {
             sendReceipt(event.orderId());
-            updateOrderStatus(event.orderId(), "paid");
+            updateOrderStatus(event.orderId(), "settled");
         }
         case FAILED -> {
             notifyFailure(event.userId());
@@ -244,7 +244,7 @@ classes, o compilador garante exaustividade, sem `default` necessário.
 private String describePayment(PaymentResult result) {
     if (result instanceof PaymentSuccess) {
         final var success = (PaymentSuccess) result;
-        return "Paid: " + success.amount();
+        return "Settled: " + success.amount();
     } else if (result instanceof PaymentFailure) {
         final var failure = (PaymentFailure) result;
         return "Failed: " + failure.reason();
@@ -263,7 +263,7 @@ private String describePayment(PaymentResult result) {
 
 private String describePayment(PaymentResult result) {
     final var description = switch (result) {
-        case PaymentSuccess s -> "Paid: " + s.amount();
+        case PaymentSuccess s -> "Settled: " + s.amount();
         case PaymentFailure f -> "Failed: " + f.reason();
         case PaymentPending p -> "Pending: " + p.transactionId();
     };

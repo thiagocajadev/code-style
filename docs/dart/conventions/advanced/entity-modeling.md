@@ -906,15 +906,15 @@ sealed class OrderState {}
 
 class OrderPending extends OrderState {}
 
-class OrderPaid extends OrderState {
-  final DateTime paidAt;
-  OrderPaid({required this.paidAt});
+class OrderSettled extends OrderState {
+  final DateTime settledAt;
+  OrderSettled({required this.settledAt});
 }
 
 class OrderShipped extends OrderState {
-  final DateTime paidAt;
+  final DateTime settledAt;
   final String trackingCode;
-  OrderShipped({required this.paidAt, required this.trackingCode});
+  OrderShipped({required this.settledAt, required this.trackingCode});
 }
 
 class OrderCancelled extends OrderState {
@@ -926,7 +926,7 @@ class OrderCancelled extends OrderState {
 String summarize(OrderState state) {
   return switch (state) {
     OrderPending() => 'Pending',
-    OrderPaid(:final paidAt) => 'Paid at ${paidAt.toIso8601String()}',
+    OrderSettled(:final settledAt) => 'Settled at ${settledAt.toIso8601String()}',
     OrderShipped(:final trackingCode) => 'Shipped, tracking $trackingCode',
     OrderCancelled(:final reason) => 'Cancelled: $reason',
   };

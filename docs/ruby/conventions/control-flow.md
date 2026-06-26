@@ -184,7 +184,7 @@ objetos com deconstruct.
 # frozen_string_literal: true
 
 def handle_event(event)
-  if event[:type] == "payment" && event[:status] == "paid"
+  if event[:type] == "payment" && event[:status] == "settled"
     amount = event[:data][:amount]
     notify_finance(amount)
   end
@@ -201,7 +201,7 @@ end
 
 def handle_event(event)
   case event
-  in { type: "payment", status: "paid", data: { amount: Integer => amount } }
+  in { type: "payment", status: "settled", data: { amount: Integer => amount } }
     notify_finance(amount)
   in { type: "payment", status: "failed" }
     log_payment_failure(event)

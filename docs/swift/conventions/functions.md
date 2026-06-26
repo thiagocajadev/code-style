@@ -82,14 +82,14 @@ private func notifyConfirmation(to email: String) async { ... }
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
-    let paidOrders = orders.filter { $0.status == .paid }
+    let settledOrders = orders.filter { $0.status == .settled }
 
     var total = 0.0
-    for order in paidOrders {
+    for order in settledOrders {
         total += order.items.reduce(0) { $0 + $1.price * Double($1.quantity) }
     }
 
-    return Report(orderCount: paidOrders.count, revenue: total)
+    return Report(orderCount: settledOrders.count, revenue: total)
 }
 ```
 
@@ -100,15 +100,15 @@ func generateReport(orders: [Order]) -> Report {
 
 ```swift
 func generateReport(orders: [Order]) -> Report {
-    let paidOrders = filterPaidOrders(orders)
-    let revenue = calculateRevenue(paidOrders)
+    let settledOrders = filterSettledOrders(orders)
+    let revenue = calculateRevenue(settledOrders)
 
-    let report = Report(orderCount: paidOrders.count, revenue: revenue)
+    let report = Report(orderCount: settledOrders.count, revenue: revenue)
     return report
 }
 
-private func filterPaidOrders(_ orders: [Order]) -> [Order] {
-    orders.filter { $0.status == .paid }
+private func filterSettledOrders(_ orders: [Order]) -> [Order] {
+    orders.filter { $0.status == .settled }
 }
 
 private func calculateRevenue(_ orders: [Order]) -> Double {

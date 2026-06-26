@@ -94,7 +94,7 @@ testWidgets('OrderListItem matches golden', (tester) async {
     MaterialApp(
       home: Scaffold(
         body: OrderListItem(
-          order: Order(id: 1, total: 99.90, status: OrderStatus.paid),
+          order: Order(id: 1, total: 99.90, status: OrderStatus.settled),
         ),
       ),
     ),

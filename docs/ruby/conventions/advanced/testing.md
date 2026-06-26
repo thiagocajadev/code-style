@@ -140,7 +140,7 @@ FactoryBot.define do
     status { :pending }
 
     trait :active do status { :active } end
-    trait :paid do status { :paid } end
+    trait :settled do status { :settled } end
     trait :large do total { 500.0 } end
   end
 end

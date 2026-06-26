@@ -77,7 +77,7 @@ async def create_order(body: dict):
 
     customer = await customer_repository.find_by_id(body["customer_id"])
     if customer.defaulted:
-        raise ValueError("Customer has unpaid debts.")
+        raise ValueError("Customer has unsettled debts.")
 
     order = await order_repository.create(body)
 
@@ -216,7 +216,7 @@ class OrderInput(BaseModel):
     def customer_must_not_be_defaulted(cls, customer_id):
         customer = database.get_customer(customer_id)  # I/O dentro de validador
         if customer.defaulted:
-            raise ValueError("Customer has unpaid debts.")
+            raise ValueError("Customer has unsettled debts.")
 
         return customer_id
 ```
@@ -236,7 +236,7 @@ class OrderInput(BaseModel):
 async def create_order(data: OrderInput):
     customer = await customer_repository.find_by_id(data.customer_id)
     if customer.defaulted:
-        raise BusinessError("Customer has unpaid debts.")
+        raise BusinessError("Customer has unsettled debts.")
 
     order = await order_repository.create(data)
     return order
