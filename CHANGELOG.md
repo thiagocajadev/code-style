@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.17] - 2026-06-26
+
+### Added
+
+- Publicação do C# no site de docs (`.github/workflows/docs.yml`). A etapa "Sync docs content into renderer" passou de dois `cp` hardcoded (`javascript`, `shared`) para um loop sobre `LANGS="javascript csharp shared"` — acrescentar uma linguagem agora é só editar a lista. csharp soma 27 arquivos `.md` (~106 páginas no total, +34% sobre as ~79 anteriores), folgado no orçamento do runner free. Verificado autocontido: zero links cross-language (relativos internos + `shared`), estrutura idêntica à do javascript, então a navegação do renderer monta igual (ordem alfabética: csharp, javascript, shared). **Guarda de estrutura** no mesmo loop: antes de copiar cada pasta, falha rápido com `::error::` se a pasta estiver ausente (path errado) ou sem nenhum `.md` (vazia → nav quebrada silenciosa). Escopo segue reduzido de propósito (comentário atualizado) enquanto o build completo das 18 linguagens não cabe no runner free.
+
 ## [1.28.16] - 2026-06-26
 
 ### Fixed

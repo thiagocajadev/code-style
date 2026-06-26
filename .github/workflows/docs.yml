@@ -59,12 +59,26 @@ jobs:
 
       - name: Sync docs content into renderer
         run: |
+          # Escopo reduzido enquanto o build não cabe no runner free.
+          # Ampliar acrescentando a pasta a LANGS conforme o disco permitir.
+          LANGS="javascript csharp shared"
+
           rm -rf docs-renderer/docs
           mkdir -p docs-renderer/docs
-          # Escopo reduzido enquanto o build não cabe no runner free.
-          # Ampliar adicionando subpastas conforme o disco permitir.
-          cp -r code-style/docs/javascript docs-renderer/docs/javascript
-          cp -r code-style/docs/shared docs-renderer/docs/shared
+
+          for lang in $LANGS; do
+            src="code-style/docs/$lang"
+            if [ ! -d "$src" ]; then
+              echo "::error::$lang: pasta ausente em docs/ — estrutura inválida"
+              exit 1
+            fi
+            if [ -z "$(find "$src" -name '*.md' -print -quit)" ]; then
+              echo "::error::$lang: nenhum .md encontrado — pasta vazia"
+              exit 1
+            fi
+            cp -r "$src" "docs-renderer/docs/$lang"
+          done
+
           cp -r code-style/assets docs-renderer/assets
 
       - name: Cache Next.js build
