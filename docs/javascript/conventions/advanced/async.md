@@ -39,11 +39,9 @@ function fetchUserData(id, callback) {
 async function fetchUserData(id) {
   const user = await getUser(id);
   const orders = await getOrders(user.id);
-
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
-
   return userData;
 }
 ```
@@ -74,11 +72,9 @@ function fetchUserData(id) {
 async function fetchUserData(id) {
   const user = await getUser(id);
   const orders = await getOrders(user.id);
-
   const invoices = await getInvoices(orders[0].id);
 
   const userData = { user, orders, invoices };
-
   return userData;
 }
 ```
@@ -153,7 +149,6 @@ async function fetchDashboard(userId) {
   const [orders, invoices, profile] = await Promise.all(requests);
 
   const dashboard = { orders, invoices, profile };
-
   return dashboard;
 }
 ```
@@ -219,14 +214,12 @@ export const apiClient = createApiClient("https://api.example.com", token);
 // user.service.js
 async function fetchUser(apiClient, id) {
   const user = await apiClient.get(`/users/${id}`);
-
   return user;
 }
 
 // order.service.js
 async function fetchOrders(apiClient, userId) {
   const orders = await apiClient.get(`/orders?userId=${userId}`);
-
   return orders;
 }
 ```
@@ -268,7 +261,6 @@ async function findUser(id) {
 async function fetchRates() {
   const response = await fetch("https://api.example.com/rates");
   const rates = await response.json();
-
   return rates;
 }
 

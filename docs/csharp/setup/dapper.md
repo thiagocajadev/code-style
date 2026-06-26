@@ -153,7 +153,6 @@ public async Task<Customer?> FindByIdAsync(Guid id, CancellationToken ct)
     const string sql = "SELECT Id, Name, Email FROM Customers WHERE Id = @Id";
 
     var customer = await _connection.QueryFirstOrDefaultAsync<Customer>(sql, new { id });
-
     return customer;
 }
 ```
@@ -170,7 +169,6 @@ public async Task<bool> ExistsAsync(string email, CancellationToken ct)
 
     var count = await _connection.ExecuteScalarAsync<int>(sql, new { email });
     var exists = count > 0;
-
     return exists;
 }
 ```
@@ -227,7 +225,6 @@ public async Task<Customer?> FindByEmailAsync(string email, CancellationToken ct
     const string sql = "SELECT Id, Name FROM Customers WHERE Email = @Email";
 
     var customer = await _connection.QueryFirstOrDefaultAsync<Customer>(sql, new { email });
-
     return customer;
 }
 ```
@@ -245,7 +242,6 @@ public async Task<IReadOnlyList<Customer>> SearchByNameAsync(string term, Cancel
 
     var customers = await _connection.QueryAsync<Customer>(sql, new { Term = $"%{term}%" });
     var result = customers.ToList();
-
     return result;
 }
 ```

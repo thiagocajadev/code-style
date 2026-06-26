@@ -317,7 +317,6 @@ export class OrderService {
 
   cancel(id: string): Observable<void> {
     const cancellation = this.http.delete<void>(`/api/orders/${id}`);
-
     return cancellation;
   }
 }
@@ -448,7 +447,6 @@ export const orderDetailResolver: ResolveFn<Order> = (route) => {
   const id = route.paramMap.get("id")!;
   const orderService = inject(OrderService);
   const order = orderService.findById(id);
-
   return order;
 };
 ```
@@ -635,8 +633,8 @@ export const authInterceptor: HttpInterceptorFn = (
   const authenticatedRequest = request.clone({
     headers: request.headers.set("Authorization", `Bearer ${token}`),
   });
-  const authenticatedResponse = next(authenticatedRequest);
 
+  const authenticatedResponse = next(authenticatedRequest);
   return authenticatedResponse;
 };
 ```

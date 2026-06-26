@@ -337,7 +337,6 @@ export function useOrders(): UseOrdersResult {
   }, []);
 
   const ordersResult = { orders, isLoading, error };
-
   return ordersResult;
 }
 ```
@@ -403,7 +402,6 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
   if (!session) {
     const loginUrl = new URL("/login", request.url);
     const redirectResponse = NextResponse.redirect(loginUrl);
-
     return redirectResponse;
   }
 
@@ -488,13 +486,11 @@ export async function createOrder(
   if (!parsed.success) {
     const fieldErrors = parsed.error.flatten().fieldErrors;
     const failResult = { ok: false, fieldErrors };
-
     return failResult;
   }
 
   const order = await orderRepository.create(parsed.data);
   const orderResult = { ok: true, orderId: order.id };
-
   return orderResult;
 }
 ```
@@ -574,7 +570,6 @@ import { orderRepository } from "@/lib/repositories/order";
 export async function GET(): Promise<NextResponse> {
   const orders = await orderRepository.listAll();
   const response = NextResponse.json(orders);
-
   return response;
 }
 
@@ -585,13 +580,11 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   if (!parsed.success) {
     const fieldErrors = parsed.error.flatten().fieldErrors;
     const errorResponse = NextResponse.json({ fieldErrors }, { status: 422 });
-
     return errorResponse;
   }
 
   const order = await orderRepository.create(parsed.data);
   const createdResponse = NextResponse.json(order, { status: 201 });
-
   return createdResponse;
 }
 ```
@@ -662,7 +655,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   if (!signaturesMatch) {
     const unauthorizedResponse = NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
     return unauthorizedResponse;
   }
 
@@ -670,7 +662,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
   if (alreadyReceived) {
     const duplicateResponse = NextResponse.json({ ok: true });
-
     return duplicateResponse;
   }
 
@@ -678,7 +669,6 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
   await jobQueue.enqueue("webhook.process", { eventId });
 
   const acceptedResponse = NextResponse.json({ ok: true });
-
   return acceptedResponse;
 }
 ```
@@ -742,7 +732,6 @@ export async function createOrder(
   if (!parsed.success) {
     const fieldErrors = parsed.error.flatten().fieldErrors;
     const failResult = { ok: false, fieldErrors };
-
     return failResult;
   }
 
@@ -751,7 +740,6 @@ export async function createOrder(
   updateTag("orders");
 
   const orderResult = { ok: true, orderId: order.id };
-
   return orderResult;
 }
 ```

@@ -104,7 +104,6 @@ const createOrderSchema = z.object({
 async function createOrder(body) {
   const input = createOrderSchema.parse(body);
   const invoice = await buildInvoice(input);
-
   return invoice;
 }
 ```

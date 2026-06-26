@@ -45,7 +45,6 @@ function findByIdentifier(int|string $identifier): ?User
     }
 
     $user = $this->repository->findByEmail($identifier);
-
     return $user;
 }
 ```

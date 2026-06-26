@@ -505,8 +505,8 @@ public static class Create
 
         var orderLocation = $"/orders/{order.Id}";
         var orderResponse = OrderResponseFilterOutput.Apply(saved.Value!);
-        var response = TypedResults.Created(orderLocation, orderResponse);
 
+        var response = TypedResults.Created(orderLocation, orderResponse);
         return response;
     }
 }
@@ -530,7 +530,6 @@ public static class GetById
 
         var orderResponse = OrderResponseFilterOutput.Apply(found.Value!);
         var response = TypedResults.Ok(orderResponse);
-
         return response;
     }
 }
@@ -644,8 +643,8 @@ if (!businessValidation.IsSuccess)
 // ✅ sem lógica no return: URL e DTO nomeados antes da saída
 var orderLocation = $"/orders/{order.Id}";
 var orderResponse = OrderResponseFilterOutput.Apply(saved.Value!);
-var response = TypedResults.Created(orderLocation, orderResponse);
 
+var response = TypedResults.Created(orderLocation, orderResponse);
 return response;
 ```
 

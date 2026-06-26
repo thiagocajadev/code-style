@@ -317,7 +317,6 @@ async function sendTextMessage(chatId, text) {
 
   const body = JSON.stringify(payload);
   const response = await fetch(endpoint, { method: 'POST', headers, body });
-
   return response;
 }
 ```
@@ -357,7 +356,6 @@ async function sendOrderTemplate(chatId, orderId, orderStatus) {
 
   const body = JSON.stringify(payload);
   const response = await fetch(endpoint, { method: 'POST', headers, body });
-
   return response;
 }
 ```

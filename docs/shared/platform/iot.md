@@ -280,7 +280,6 @@ def read_temperature_celsius() -> float:
     raw = temperature_adc.read_u16()
     voltage = raw * 3.3 / 65535
     temperature = 27 - (voltage - 0.706) / 0.001721  # fórmula do sensor interno RP2040
-
     return temperature
 
 def main_loop():

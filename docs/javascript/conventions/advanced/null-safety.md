@@ -151,7 +151,6 @@ async function findOrdersByUser(userId) {
 async function fetchUserOrders(userId) {
   const response = await externalApi.get(`/users/${userId}/orders`);
   const orders = response.orders ?? []; // normaliza aqui, não no caller
-
   return orders;
 }
 ```

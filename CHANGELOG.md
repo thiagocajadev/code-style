@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.16] - 2026-06-26
+
+### Fixed
+
+- Densidade visual em blocos Good: linhas soltas (orphans) que quebravam a leitura. Dois padrões: (1) Explaining Return fragmentado por blank quando a declaração que nomeia o valor retornado é single-line — incluindo object/array literal inline (`const userData = { user, orders, invoices };`) e linguagens sem keyword de declaração (Python, PHP); (2) órfão de `await` sequencial em trio `2+1`. 38 ocorrências corrigidas em 12 arquivos / 6 linguagens (js, ts, csharp, php, python, swift): ambos `fetchUserData` e `fetchDashboard` (async.md), 12 em react-nextjs, 3 em angular (um movendo o blank para depois do bloco multi-line), dapper e vertical-slice (fragments→assembly), guard órfão de `BusinessError` em error-handling.md. Lint `audit-docs.mjs` ampliado: `density-explaining-return-blank` agora detecta declaração single-line nomeando o retorno em qualquer indentação, com guard de indentação que exclui declaração em bloco aninhado (ex: `match/case` do Python); `density-orphan-single-line` passa a pegar trios homogêneos de `await` além de literais. Tests +5 (27 pass). Audit clean: 2509 blocos Good em 391 arquivos
+
 ## [1.28.15] - 2026-06-23
 
 ### Fixed

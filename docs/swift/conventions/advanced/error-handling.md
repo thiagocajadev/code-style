@@ -119,7 +119,6 @@ func submitOrder(_ request: OrderRequest) async throws -> Order {
 func submitOrder(_ request: OrderRequest) async throws -> Order {
     let user = try await userRepository.find(id: request.userId)
     let order = try await orderService.create(request)
-
     return order
 }
 
