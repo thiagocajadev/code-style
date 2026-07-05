@@ -98,7 +98,7 @@ function filterPremiumProducts(products) {
 ## ID: UUID v4 vs UUID v7
 
 `crypto.randomUUID()` gera **UUID** (Universally Unique Identifier, Identificador Único Universal) v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
-progressivamente. UUID v7 é time-ordered: insere sempre próximo ao fim da B-tree, sem fragmentação.
+progressivamente. UUID v7 é **time-ordered** (ordenado por tempo): insere sempre próximo ao fim da B-tree, sem fragmentação.
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 
 <details>
@@ -132,8 +132,8 @@ function createOrder(request) {
 ## String building
 
 Concatenação com `+` ou template literal dentro de um loop aloca uma nova string a cada iteração:
-strings são imutáveis em JavaScript. Para construir strings dinamicamente, acumule em array e chame
-`join()` no final. Uma alocação, resultado único.
+strings em JavaScript não podem ser alteradas depois de criadas. Para construir strings
+dinamicamente, acumule em array e chame `join()` no final. Uma alocação, resultado único.
 
 <details>
 <summary>❌ Ruim: nova string alocada por iteração</summary>

@@ -4,7 +4,7 @@
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Telegram (BotFather, Inline Keyboard, tipos de chat): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-**Telegraf** é o framework Node.js para a **Bot API** (Interface de Programação para Bots) do Telegram. Usa arquitetura de middleware encadeado: cada update passa por uma pilha de funções antes de chegar ao **Handler** (tratador) final. A biblioteca chama o parâmetro de contexto de `ctx` por convenção, mas este guia usa `context` para seguir o code style do projeto.
+**Telegraf** é o framework Node.js para a **Bot API** (Interface de Programação para Bots) do Telegram. Usa arquitetura de middleware encadeado: cada update passa por uma pilha de funções antes de chegar ao **Handler** (processador de requisição/evento) final. A biblioteca chama o parâmetro de contexto de `ctx` por convenção, mas este guia usa `context` para seguir o code style do projeto.
 
 ## Conceitos fundamentais
 
@@ -38,7 +38,7 @@ process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
 ```
 
-`bot.launch()` inicia polling por padrão. Para webhook, use `bot.createWebhook()` (ver seção Webhook em Produção).
+`bot.launch()` inicia **polling** (consulta periódica) por padrão. Para webhook, use `bot.createWebhook()` (ver seção Webhook em Produção).
 
 ## Command Router
 
@@ -231,7 +231,7 @@ bot.action(/^cancel_(.+)$/, async (context) => {
 Use `bot.createWebhook()` com `secretToken` para validar que os updates vêm do Telegram.
 
 <details>
-<summary>❌ Ruim: webhookCallback deprecado no v4.16; sem secretToken; sem shutdown limpo</summary>
+<summary>❌ Ruim: webhookCallback descontinuado no v4.16; sem secretToken; sem shutdown limpo</summary>
 
 ```js
 import express from 'express';

@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Erros bem estruturados separam o que é **problema de negócio** (regra violada, recurso inexistente) do que é **falha técnica** (timeout, banco fora). Cada categoria pede tratamento diferente: a primeira vira resposta semântica ao chamador; a segunda vira log, métrica e retry. `try/catch` existe para capturar, nunca para esconder.
+Erros bem estruturados separam o que é **problema de negócio** (regra violada, recurso inexistente) do que é **falha técnica** (timeout, banco fora). Cada categoria pede tratamento diferente: a primeira vira resposta semântica ao chamador; a segunda vira log, métrica e **retry** (nova tentativa). `try/catch` existe para capturar, nunca para esconder.
 
 ## Conceitos fundamentais
 
@@ -15,7 +15,7 @@ Erros bem estruturados separam o que é **problema de negócio** (regra violada,
 | **stack trace** (rastro de chamadas) | Lista de funções chamadas até o ponto do erro; preservar é essencial para debug |
 | **error cause** (causa do erro) | Erro original encapsulado em um novo (`new Error('msg', { cause: original })`) |
 | **fail fast** (falhar rápido) | Lançar erro no menor escopo possível; evita estado corrompido se propagando |
-| **swallow** (engolir) | Capturar erro sem tratar nem propagar; anti-padrão clássico |
+| **swallow** (engolir) | Capturar erro sem tratar nem propagar; antipadrão clássico |
 
 ## Múltiplos tipos de retorno
 

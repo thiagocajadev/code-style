@@ -45,7 +45,7 @@ módulos. O arquivo serve como índice do projeto: o leitor vê o que existe, n�
 como funciona.
 
 <details>
-<summary>❌ Ruim: server.js como dumping ground de configuração</summary>
+<summary>❌ Ruim: server.js como depósito de toda a configuração</summary>
 
 ```js
 import express from "express";
@@ -108,8 +108,8 @@ app.listen(config.port);
 ## Módulos por domínio
 
 Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece
-SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam
-co-localizados com o domínio que representam.
+SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam lado a lado
+com o domínio que representam.
 
 <details>
 <summary>❌ Ruim: app.js conhece SQL, validação e regras de negócio</summary>
@@ -297,7 +297,7 @@ A ordem do **middleware** (componente de pipeline) é determinística e importa.
 Registrar autenticação após roteamento não protege as rotas.
 
 ```
-express.json()     → parseia o body antes de qualquer handler
+express.json()     → faz parse do body antes de qualquer handler
 rateLimit          → rejeita cedo, antes de autenticação e I/O
 cors               → cabeçalhos CORS antes de autenticação
 authenticate       → resolve a identidade

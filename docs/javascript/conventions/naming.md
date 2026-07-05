@@ -5,9 +5,10 @@ identificador expressivo elimina comentários, encurta a leitura e revela
 intenção.
 
 Um nome genérico (`data`, `result`, `tmp`) força o programador a abrir o corpo
-da função pra entender o que está acontecendo. Em funções e módulos, o nome
+da função para entender o que está acontecendo. Em funções e módulos, o nome
 ainda compõe a **API** (Application Programming Interface, Interface de
-Programação) que outro código vai consumir. Errar ali custa mais caro.
+Programação de Aplicações) que outro código vai consumir. Errar ali custa mais
+caro.
 
 Quando o nome carrega a intenção, o comentário deixa de fazer falta.
 
@@ -75,7 +76,7 @@ function buscaEnderecoDoCliente(id) {
 </details>
 
 <details>
-<summary>✅ Bom: inglês: curto, direto, universal</summary>
+<summary>✅ Bom: inglês é curto, direto e universal</summary>
 
 ```js
 const userName = "Alice";

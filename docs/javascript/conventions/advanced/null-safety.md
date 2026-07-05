@@ -13,7 +13,7 @@ JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possi
 | **null** (nulo) | Valor explícito que indica "ausência intencional"; atribuído pelo programador |
 | **undefined** (indefinido) | Valor padrão de variável não inicializada ou propriedade inexistente; atribuído pela engine |
 | **nullish** (ausente: nulo ou indefinido) | Conjunto que reúne `null` e `undefined`; o que `??` e `?.` tratam |
-| **falsy** (avalia como falso) | Valores que coercionam para `false` em booleano: `null`, `undefined`, `0`, `""`, `false`, `NaN` |
+| **falsy** (avalia como falso) | Valores que avaliam como `false` em booleano: `null`, `undefined`, `0`, `""`, `false`, `NaN` |
 | **nullish coalescing** (coalescência de ausente, `??`) | Retorna o lado direito apenas se o esquerdo for `null` ou `undefined` |
 | **optional chaining** (encadeamento opcional, `?.`) | Acessa propriedade ou chama método sem lançar erro se a base for nullish |
 | **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
@@ -22,8 +22,8 @@ JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possi
 ## ?? vs ||
 
 `||` retorna o lado direito para qualquer valor falsy: `0`, `""` e `false` disparam o fallback.
-`??` retorna o lado direito **só para `null` e `undefined`**. Para defaults, `??` é o correto
-na maioria dos casos.
+`??` retorna o lado direito **só para `null` e `undefined`**. Para **defaults**
+(valores padrão), `??` é o correto na maioria dos casos.
 
 <details>
 <summary>❌ Ruim: || descarta valores falsy válidos</summary>
@@ -192,7 +192,8 @@ const parsed = rawItems.flatMap((item) => {
 ## Object.hasOwn: checar propriedade com segurança
 
 `Object.hasOwn(obj, key)` verifica se a propriedade existe no próprio objeto, sem riscos de
-prototype pollution. Substitui o padrão antigo `obj.hasOwnProperty(key)`.
+**prototype pollution** (injeção de propriedades no protótipo). Substitui o padrão antigo
+`obj.hasOwnProperty(key)`.
 
 <details>
 <summary>❌ Ruim: hasOwnProperty vulnerável a prototype pollution</summary>
@@ -235,7 +236,7 @@ function mergeConfig(defaults, overrides) {
 `Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.
 
 <details>
-<summary>❌ Ruim: **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) round-trip perde undefined, Date e Map</summary>
+<summary>❌ Ruim: JSON round-trip perde undefined, Date e Map</summary>
 
 ```js
 const order = {

@@ -4,7 +4,7 @@
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Slack (tokens, Socket Mode, Block Kit, scopes): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md#slack).
 
-**Bolt for JavaScript** é o framework oficial da Slack para construir aplicativos Slack. Um objeto **App** (aplicativo) registra listeners para slash commands, eventos e ações de Block Kit. Toda interação enviada pela Slack exige um **ack()** (acknowledge, reconhecimento) em até 3 segundos. Sem esse retorno, a Slack exibe um erro ao usuário.
+**Bolt for JavaScript** é o framework oficial da Slack para construir aplicativos Slack. Um objeto **App** (aplicativo) registra listeners para slash commands, eventos e ações de Block Kit. Toda interação enviada pelo Slack exige um **ack()** (acknowledge, reconhecimento) em até 3 segundos. Sem esse retorno, o Slack exibe um erro ao usuário.
 
 ## Conceitos fundamentais
 
@@ -13,11 +13,11 @@
 | **App** (aplicativo Bolt) | Instância principal do bot; registra listeners e gerencia a conexão com o Slack |
 | **ack()** (reconhecer recebimento) | Função de reconhecimento obrigatória; confirma ao Slack que o evento foi recebido em até 3 segundos |
 | **say()** (dizer no canal) | Envia uma mensagem ao canal onde o evento ocorreu; aceita string ou objeto com `blocks` |
-| **respond()** (responder via URL) | Responde via `response_url`; funciona fora do canal original e aceita `thread_ts` para replies em thread |
+| **respond()** (responder via URL) | Responde via `response_url`; funciona fora do canal original e aceita `thread_ts` para respostas em thread |
 | **Block Kit** (kit de blocos de UI) | Sistema de UI do Slack; mensagens compostas por blocos (`section`, `actions`, `image`) com elementos interativos |
 | **Socket Mode** (modo socket) | Conexão via WebSocket usando um App-Level Token; dispensa URL pública; indicado para desenvolvimento e bots internos |
 | **Bot Token** (token do bot) | Credencial `xoxb-...` emitida pela Slack para chamadas à API; obtida em OAuth & Permissions |
-| **Signing Secret** (segredo de assinatura) | Chave usada para validar que as requisições HTTP vêm da Slack; obtida em Basic Information |
+| **Signing Secret** (segredo de assinatura) | Chave usada para validar que as requisições HTTP vêm do Slack; obtida em Basic Information |
 | **App-Level Token** (token de nível de aplicativo) | Credencial `xapp-...` usada exclusivamente no Socket Mode; requer scope `connections:write` |
 
 ## Instalação
@@ -64,7 +64,7 @@ await app.start(process.env.PORT ?? 3000);
 
 ## Slash Commands
 
-`ack()` deve ser chamado antes de qualquer operação assíncrona. A Slack aguarda o reconhecimento em até 3 segundos; operações longas são iniciadas após o `ack()`.
+`ack()` deve ser chamado antes de qualquer operação assíncrona. O Slack aguarda o reconhecimento em até 3 segundos; operações longas são iniciadas após o `ack()`.
 
 <details>
 <summary>❌ Ruim: sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
@@ -163,7 +163,7 @@ function buildEchoReply(messageText) {
 
 ## Actions (Block Kit)
 
-Block Kit é a primitiva de UI interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, a Slack exibe um spinner indefinido no botão.
+Block Kit é a primitiva de **UI** (User Interface, Interface do Usuário) interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, o Slack exibe um spinner indefinido no botão.
 
 <details>
 <summary>❌ Ruim: blocks montados inline; action_id como string solta; sem ack() na ação</summary>

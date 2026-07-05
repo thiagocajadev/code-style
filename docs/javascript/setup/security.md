@@ -41,7 +41,7 @@ RATE_LIMIT_MAX=100
 RATE_LIMIT_WINDOW_MS=60000
 ```
 
-Chaves com valor zero indicam segredos (devem vir do ambiente). Chaves com valor default indicam config não sensível.
+Chaves sem valor indicam segredos (devem vir do ambiente). Chaves com valor padrão indicam config não sensível.
 
 ---
 

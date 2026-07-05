@@ -12,7 +12,7 @@ Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quant
 | **switch** (selecionar caso) | Comando de despacho por valor; bom para enums e mapeamento explícito |
 | **lookup table** (tabela de busca) | Objeto `{ chave: valor }` que substitui cadeias de `if/else` ou `switch` simples |
 | **short-circuit** (curto-circuito) | `&&` retorna o primeiro falsy; `||` retorna o primeiro truthy; `??` retorna o primeiro não-nulo |
-| **truthy / falsy** (avalia como verdadeiro / como falso) | Valores que coercionam para `true` ou `false` em contexto booleano (`0`, `""`, `null` são falsy) |
+| **truthy / falsy** (avalia como verdadeiro / como falso) | Valores que avaliam como `true` ou `false` em contexto booleano (`0`, `""`, `null` são falsy) |
 
 ## If e else
 
@@ -49,7 +49,8 @@ function getDiscount(user) {
 ## Aninhamento em cascata
 
 Quando as condições crescem e se aninham, cada nível enterra a lógica um nível
-mais fundo. O fluxo vira uma pirâmide: o _arrow antipattern_.
+mais fundo. O fluxo vira uma pirâmide: o **arrow antipattern** (código em
+formato de seta).
 
 Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal
 limpo.
@@ -93,8 +94,8 @@ function processOrder(order) {
 
 ## Coerção implícita
 
-Trap frequente dentro de condicionais: `==` coerce tipos silenciosamente e torna
-a comparação imprevisível.
+Armadilha frequente dentro de condicionais: `==` converte tipos silenciosamente
+e torna a comparação imprevisível.
 
 <details>
 <summary>❌ Ruim: coerção silenciosa</summary>
@@ -135,7 +136,7 @@ if (count === 3) {
 ## Ternário
 
 Para atribuição de dois valores possíveis, não para lógica de fluxo. Encadeado,
-vira puzzle (quebra cabeça).
+vira **puzzle** (quebra-cabeça).
 
 <details>
 <summary>❌ Ruim: lógica inline ilegível</summary>
@@ -161,7 +162,6 @@ const label =
 ```js
 const isA = score >= 90;
 const isB = score >= 80;
-
 const isC = score >= 70;
 const isD = score >= 60;
 
@@ -227,7 +227,8 @@ function getStatusLabel(status) {
 Lookup table resolve mapeamento de valores. Quando cada caso precisa executar
 múltiplas ações (não retornar um valor, mas fazer algo), `switch` torna a
 intenção mais clara que um `if/else` encadeado. Cada `case` termina com `break`
-ou `return` explícito: fall-through acidental é bug silencioso.
+ou `return` explícito: **fall-through** (execução que vaza para o caso seguinte)
+acidental é bug silencioso.
 
 <details>
 <summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
@@ -280,7 +281,7 @@ function processPaymentEvent(event) {
 
 ## Map
 
-Lookup table com plain object tem limitações: chaves são sempre coercidas para
+Lookup table com plain object tem limitações: chaves são sempre convertidas para
 string e não há métodos nativos para tamanho ou verificação segura. `Map` é a
 estrutura certa quando a chave não é string, quando os dados são dinâmicos, ou
 quando você precisa de `has`, `delete` e `size` nativos.
@@ -300,7 +301,7 @@ const count = Object.keys(userCache).length; // verbose
 </details>
 
 <details>
-<summary>✅ Bom: Map preserva tipo e tem **API** (Application Programming Interface, Interface de Programação de Aplicações) nativa</summary>
+<summary>✅ Bom: Map preserva tipo e tem API (Interface de Programação) nativa</summary>
 
 ```js
 const userCache = new Map();
@@ -324,7 +325,8 @@ resolvem **iteração**: quantas vezes percorrer._
 ## Circuit break
 
 Antes de escrever um loop, verifique se `find`, `some` ou `every` já resolve.
-Esses métodos param no primeiro match, sem percorrer o resto. Para busca com
+Esses métodos param no primeiro **match** (correspondência), sem percorrer o
+resto. Para busca com
 lógica de saída explícita, `for...of` com `return` é direto.
 
 <details>

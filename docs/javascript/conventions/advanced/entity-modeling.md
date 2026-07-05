@@ -15,7 +15,7 @@ Os dois arquivos formam um par. Leia o canônico para entender o modelo; leia es
 | **defineProperty** (definir propriedade) | `Object.defineProperty(obj, key, descriptor)` configura os descritores `enumerable`, `configurable` e `writable` para controle fino de mutabilidade |
 | **enumerable / configurable / writable** (descritores de propriedade) | Atributos internos de cada propriedade: `enumerable` controla se aparece em `for...in`, `configurable` controla se pode ser redefinida, `writable` controla se o valor pode ser alterado |
 | **instanceof** (operador de verificação de tipo) | Testa se um objeto foi criado por um construtor específico; único mecanismo confiável para verificar strongly-typed IDs como classes em JavaScript puro |
-| **prototype** (cadeia de protótipos) | Mecanismo de herança interno do JS; toda classe usa protótipos sob os panos; entender a cadeia é necessário para saber o que `instanceof` verifica de fato |
+| **prototype** (cadeia de protótipos) | Mecanismo de herança interno do JS; toda classe usa protótipos por baixo dos panos; entender a cadeia é necessário para saber o que `instanceof` verifica de fato |
 | **Proxy** (interceptor de operações) | Objeto que envolve outro e intercepta operações (`get`, `set`, `deleteProperty`); útil para criar value objects que rejeitem qualquer alteração |
 | **Reflect** (API de reflexão) | Conjunto de métodos estáticos que espelham operações do JS (`Reflect.get`, `Reflect.set`); usado com `Proxy` para delegar comportamentos padrão |
 
@@ -59,7 +59,7 @@ class CustomerId {
 
 const id = new CustomerId("cust-1");
 id._value = null; // caller altera o estado interno sem restrição
-console.log(id.toString()); // null — invariante quebrada
+console.log(id.toString()); // null: invariante quebrada
 ```
 
 </details>
@@ -120,7 +120,7 @@ class CustomerId {
 }
 ```
 
-O `WeakMap` mantém o valor fora do objeto. Quando a instância for coletada pelo garbage collector, a entrada some do mapa automaticamente. O caller nunca vê `customerIdValues` porque não é exportado.
+O `WeakMap` mantém o valor fora do objeto. Quando a instância for coletada pelo **garbage collector** (coletor de lixo), a entrada some do mapa automaticamente. O caller nunca vê `customerIdValues` porque não é exportado.
 
 </details>
 
@@ -315,7 +315,7 @@ Nunca `return this.#items` diretamente, mesmo sendo campo privado: quem recebe a
 
 Em TypeScript, o compilador rejeita em tempo de compilação a troca de dois IDs de tipos distintos. Em JavaScript puro, o único mecanismo confiável para o mesmo efeito é o `instanceof` no início da função.
 
-Duck-typing falha aqui porque dois strongly-typed IDs diferentes têm a mesma forma: ambos têm `.value`, ambos têm `.toString()`. O `instanceof` verifica qual construtor gerou a instância.
+**Duck-typing** (verificação pela forma do objeto) falha aqui porque dois strongly-typed IDs diferentes têm a mesma forma: ambos têm `.value`, ambos têm `.toString()`. O `instanceof` verifica qual construtor gerou a instância.
 
 <details>
 <summary>❌ Ruim: duck-typing aceita qualquer objeto com .value, sem distinção de tipo</summary>
@@ -392,7 +392,7 @@ transferOwnership({ customerId: wrongId, orderId: correctOrderId });
 transferOwnership({ customerId: correctCustomerId, orderId: correctOrderId });
 ```
 
-O `instanceof` falha cedo, antes da lógica tocar o banco. Em ambientes com múltiplos realms (iframes, workers), `instanceof` pode falhar porque o construtor do outro realm é diferente; nesse caso, use um campo sentinel (`static [Symbol.hasInstance]`) ou uma propriedade discriminante explícita.
+O `instanceof` falha cedo, antes da lógica tocar o banco. Em ambientes com múltiplos **realms** (contextos de execução isolados: iframes, workers), `instanceof` pode falhar porque o construtor do outro realm é diferente; nesse caso, use um campo sentinel (`static [Symbol.hasInstance]`) ou uma propriedade discriminante explícita.
 
 </details>
 

@@ -499,7 +499,7 @@ async function processOrder(orderId) {
 
 ## Baixa densidade visual: agrupamento
 
-Blank lines em excesso dentro de um grupo quebram o ritmo. Blank lines ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
+Linhas em branco em excesso dentro de um grupo quebram o ritmo. Linhas em branco ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
 
 <details>
 <summary>❌ Ruim: espaço dentro dos grupos, sem separação entre grupos</summary>
@@ -549,7 +549,7 @@ async function registerUser(input) {
 
 ## Strings longas
 
-Template literal gigante? Extraia as partes compostas em variáveis nomeadas.
+**Template literal** (string com interpolação) gigante? Extraia as partes compostas em variáveis nomeadas.
 
 <details>
 <summary>❌ Ruim: todos os detalhes interpolados inline</summary>

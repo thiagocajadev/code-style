@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Validação não é uma única coisa: é um pipeline com três responsabilidades distintas, cada uma no seu lugar: limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
+Validação não é uma única coisa: é um **pipeline** (sequência de etapas) com três responsabilidades distintas, cada uma no seu lugar: limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
 
 ```javascript
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -20,8 +20,6 @@ Validação não é uma única coisa: é um pipeline com três responsabilidades
 | **parse, don't validate** (transforme, não só verifique) | Princípio: converter a entrada em tipo seguro de uma vez, em vez de só checar e seguir com `unknown` |
 | **Zod** (biblioteca de validação) | Biblioteca JS de validação com schemas componíveis e tipo inferido |
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
-
-Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
 
 ## Sanitização de entrada
 
@@ -71,7 +69,7 @@ async function createUserHandler(request, response) {
 
 ## Schema validation com Zod
 
-Zod valida shape, tipos e constraints, nunca regras de negócio. Centraliza o
+Zod valida formato, tipos e restrições, nunca regras de negócio. Centraliza o
 contrato técnico e elimina validação manual espalhada pelos handlers.
 
 <details>
@@ -137,7 +135,7 @@ const createOrderSchema = z.object({
 </details>
 
 <details>
-<summary>✅ Bom: schema valida shape, domínio valida regras após</summary>
+<summary>✅ Bom: schema valida formato, domínio valida regras depois</summary>
 
 ```js
 const createOrderSchema = z.object({

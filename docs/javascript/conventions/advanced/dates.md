@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura local time e **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas), converter para o fuso local só na exibição.
+Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mistura **local time** (hora local da máquina) e **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) de forma imprevisível. A regra é simples: armazenar e transmitir sempre em UTC **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas), converter para o fuso local só na exibição.
 
 ## Conceitos fundamentais
 
@@ -15,7 +15,7 @@ Datas são uma das maiores fontes de bugs silenciosos em JavaScript. `Date` mist
 
 ## UTC vs local time
 
-`new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com timezones diferentes, o mesmo código produz resultados diferentes.
+`new Date()` sem argumentos retorna a hora **local da máquina**. Em servidores com **timezones** (fusos horários) diferentes, o mesmo código produz resultados diferentes.
 
 <details>
 <summary>❌ Ruim: captura hora local, comportamento depende do servidor</summary>
@@ -39,7 +39,7 @@ const createdAt = new Date().toISOString();
 
 ## Parsing inconsistente
 
-O comportamento de `new Date(string)` muda conforme o formato passado e varia entre engines.
+O comportamento de `new Date(string)` muda conforme o formato passado e varia entre **engines** (motores de execução).
 
 <details>
 <summary>❌ Ruim: formato ambíguo, resultado local-dependente</summary>
@@ -56,7 +56,7 @@ const date2 = new Date("2026-01-15");
 </details>
 
 <details>
-<summary>✅ Bom: **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601 completo, sem ambiguidade</summary>
+<summary>✅ Bom: ISO 8601 completo, sem ambiguidade</summary>
 
 ```js
 const date = new Date("2026-01-15T00:00:00.000Z");
@@ -130,4 +130,4 @@ const appointment = Temporal.ZonedDateTime.from(
 
 > `Temporal` tem suporte nativo no Chrome 144+ e Firefox 139+; Safari ainda em progresso.
 > Enquanto não há suporte universal, `date-fns` ou `Luxon` são as alternativas recomendadas.
-> Evite `moment.js`: deprecated desde 2020.
+> Evite `moment.js`: descontinuado desde 2020.

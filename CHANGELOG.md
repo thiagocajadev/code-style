@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.22] - 2026-07-05
+
+### Fixed
+
+- Revisão writing soul da prosa explicativa, task T3 completa: `docs/javascript/` inteiro (22 arquivos revisados, 19 editados; `variables.md`, `README.md` e `quick-reference.md` já estavam limpos — coerente com o status de referência canônica da revisão de 2026-05-09). Prosa apenas: blocos de código Good/Bad intactos. Defeitos substantivos: **falso cognato** `redaction` glossado como "redação" em observability.md → "mascaramento de dados sensíveis"; **erro factual** em setup/security.md ("chaves com valor zero indicam segredos" quando as chaves do `.env.example` estão vazias, não zeradas); **verbo inventado** "coercionam/coercidas" (control-flow, null-safety) → "avaliam como"/"convertidas"; prosa triplicada do AAA/`expected` explícito em testing.md condensada (intro + preâmbulo + seções repetiam o mesmo texto); frase duplicada verbatim removida em validation.md; em dash em comentário de código zerado (entity-modeling). Anglicismos e calques: Trap→Armadilha, dumping ground→depósito, co-localizados→lado a lado, parseia→faz parse, deprecado/deprecated→descontinuado, "sob os panos"→"por baixo dos panos", Blank lines→Linhas em branco, shape/constraints→formato/restrições, replies→respostas, "é quebrado"→"não funciona", "pra"→"para", "refator"→"refatoração", "quebra cabeça"→"quebra-cabeça". Glosses novas no padrão consolidado: Handler = processador de requisição/evento, polling = consulta periódica, UI = Interface do Usuário, thread = linha de execução, timezone = fuso horário, duck-typing = verificação pela forma do objeto, prototype pollution, tradeoffs, SDK, ESM-only, fall-through, arrow antipattern, Strategy Map, time-ordered, retry, match. Expansões de sigla removidas de `<summary>` (regra de título usa forma curta): ISO, JSON, API. Consistência de gênero: "a Slack"→"o Slack" quando é o produto agindo (empresa permanece "a Slack"). Gramática: "coladas"→"colados" (concordância), "confirmar dono"→"confirmar o dono", API completada para "Interface de Programação de Aplicações" (naming.md). Nenhum heading renomeado: âncoras e links internos intactos. Audit clean: 2510 blocos Good em 391 arquivos; tests 38/38; audit-concepts javascript 20 OK / 0 violações
+
 ## [1.28.21] - 2026-07-05
 
 ### Fixed

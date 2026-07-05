@@ -5,7 +5,7 @@
 
 Testes documentam o comportamento esperado. Um teste que falha conta uma
 história: quem chamou, o que recebeu, o que esperava. Em JS, a base é
-`node:test` + `node:assert/strict` (built-in desde Node 18) e a estrutura é
+`node:test` + `node:assert/strict` (nativos desde o Node 18) e a estrutura é
 **AAA** (Arrange, Act, Assert): três fases visíveis em todo teste, separadas
 por linha em branco.
 
@@ -23,21 +23,13 @@ por linha em branco.
 | **assertion** (asserção)                                 | Verificação explícita do resultado esperado (`assert.strictEqual`, `assert.deepStrictEqual`)                                        |
 | **expressive naming** (nomeação expressiva)              | Variáveis de assert com nome do conceito (`actualPrice`, `expectedName`), nunca genéricos                                           |
 
-Os exemplos seguem a abordagem AAA, que divide cada teste em três fases
-explícitas: preparação do contexto, execução do comportamento e verificação do
-resultado.
-
 O [code style](../variables.md) se aplica dentro dos testes. O assert recebe
-variáveis nomeadas: sem expressões, acessos de propriedade ou literais inline.
+variáveis nomeadas de forma expressiva (`actualPrice`, `expectedName`), sem
+expressões, acessos de propriedade ou literais inline.
 
-As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`,
-`expectedName`, `actualOrder` em vez de genéricos), e o `expected` é sempre
-declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão
-AAA consistente: cada fase é visível e o assert lê como uma frase.
-
-Usa [`node:test`](https://nodejs.org/api/test.html) e
-[`node:assert/strict`](https://nodejs.org/api/assert.html): built-in desde Node
-18, sem dependências externas.
+Os exemplos usam [`node:test`](https://nodejs.org/api/test.html) e
+[`node:assert/strict`](https://nodejs.org/api/assert.html): nativos desde o
+Node 18, sem dependências externas.
 
 ```js
 import { test, describe } from "node:test";
@@ -46,7 +38,7 @@ import assert from "node:assert/strict";
 
 > [!NOTE] Em `node:assert`, a convenção é
 > `assert.strictEqual(actual, expected)`: actual primeiro. Em Jest e Vitest, a
-> API fluent deixa a ordem explícita: `expect(actual).toBe(expected)`.
+> API fluente deixa a ordem explícita: `expect(actual).toBe(expected)`.
 
 ## Fases misturadas: AAA
 

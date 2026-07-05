@@ -33,7 +33,7 @@ JavaScript/Node.js.
 três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
 
 <details>
-<summary>❌ Ruim: denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: denso demais, todos os passos colados</summary>
 
 ```js
 async function registerUser(input) {
@@ -560,7 +560,7 @@ async function createSession(user) {
 
 ## Ifs consecutivos: blocos com chaves precisam de respiro
 
-Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) coladas formam
+Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) colados formam
 muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre
 insira blank entre eles.
 
@@ -623,7 +623,8 @@ function validateInput(input) {
 
 Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre
 **um espaço único**. Alinhamento artificial quebra com qualquer rename, gera
-diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
+diff ruidoso e treina o olho a procurar colunas que somem na primeira
+refatoração.
 
 <details>
 <summary>❌ Ruim: espaços extras para alinhar colunas</summary>

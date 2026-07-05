@@ -4,7 +4,7 @@
 > Conceitos transversais de bots (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Diferença entre API oficial e cliente não-oficial, Template Messages, verificação de webhook: [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-O WhatsApp tem dois caminhos de automação com tradeoffs muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O SDK Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
+O WhatsApp tem dois caminhos de automação com **tradeoffs** (ganhos e perdas) muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O **SDK** (Software Development Kit, Kit de Desenvolvimento de Software) Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
 
 ## Conceitos fundamentais
 
@@ -15,7 +15,7 @@ O WhatsApp tem dois caminhos de automação com tradeoffs muito diferentes. **Ba
 | **WhatsApp Business Account** (Conta WhatsApp Business) | Entidade que agrupa números e templates aprovados pela Meta |
 | **Template Message** (mensagem por template) | Mensagem com formato pré-aprovado pela Meta; obrigatória fora da janela de 24h |
 | **24-hour window** (janela de 24 horas) | Período após mensagem do usuário em que o bot pode responder com texto livre |
-| **webhook verification** (verificação de webhook) | Handshake `hub.challenge` que a Meta exige para confirmar dono do endpoint |
+| **webhook verification** (verificação de webhook) | Handshake `hub.challenge` que a Meta exige para confirmar o dono do endpoint |
 | **QR pairing** (pareamento por QR) | Fluxo do Baileys que registra a sessão lendo um QR code com o app do celular |
 | **multi-file auth state** (estado de autenticação em múltiplos arquivos) | Persistência de credenciais Baileys em arquivos separados (`useMultiFileAuthState`) |
 
@@ -34,7 +34,7 @@ npm install @whiskeysockets/baileys
 
 ### Import
 
-Baileys v7 é **ESM-only**: `require` é quebrado. `makeWASocket` é `default export`; os utilitários são named imports.
+Baileys v7 é **ESM-only** (somente módulos ES): `require` não funciona. `makeWASocket` é `default export`; os utilitários são named imports.
 
 <details>
 <summary>❌ Ruim: CommonJS quebrado no v7; makeWASocket como named import</summary>

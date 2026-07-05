@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o thread principal trava a aplicação.
+Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o **thread** (linha de execução) principal trava a aplicação.
 
 ## Conceitos fundamentais
 

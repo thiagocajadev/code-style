@@ -127,7 +127,7 @@ registerCommands();
 
 ## Command Router
 
-Use `Events.InteractionCreate` e o type guard `isChatInputCommand()`. Centralize o roteamento em um **Strategy Map**.
+Use `Events.InteractionCreate` e o type guard `isChatInputCommand()`. Centralize o roteamento em um **Strategy Map** (mapa de estratégias).
 
 <details>
 <summary>❌ Ruim: string literal no evento; sem type guard; lógica de negócio no router; sem deferReply</summary>
