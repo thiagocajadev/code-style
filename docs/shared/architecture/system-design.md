@@ -15,7 +15,7 @@ System Design é o raciocínio feito **antes** de qualquer linha de código. Def
 | **Throughput** (vazão) | Quantidade de requisições processadas por unidade de tempo |
 | **Availability** (disponibilidade) | Percentual de tempo em que o sistema responde corretamente |
 | **Consistency** (consistência) | Garantia de que leituras refletem a última escrita |
-| **Bounded context** (contexto delimitado) | Fronteira onde um modelo de domínio é válido e consistente |
+| **Bounded context** (contexto delimitado) | Limite onde um modelo de domínio é válido e consistente |
 | **Capacity planning** (planejamento de capacidade) | Estimativa de recursos necessários para atender a demanda prevista |
 
 ## O papel do System Design
@@ -24,7 +24,7 @@ System Design não descreve **como** o código é escrito. Descreve o sistema vi
 
 - Quais entidades existem e como se relacionam
 - Quais fluxos atravessam o sistema
-- Onde estão as fronteiras entre partes independentes
+- Onde estão os limites entre partes independentes
 - Em que condições o sistema precisa continuar funcionando
 
 Quando essas perguntas ficam respondidas antes da implementação, o código tem critério de avaliação. Sem elas, cada decisão técnica vira opinião.
@@ -43,7 +43,7 @@ Requisitos funcionais vêm quase sempre do produto. Requisitos não-funcionais p
 - Qual a latência aceitável para cada operação?
 - Qual o volume esperado em pico?
 - O sistema pode ficar fora do ar por quanto tempo?
-- Dados perdidos geram que impacto?
+- Qual o impacto de perder dados?
 - Qual orçamento de infraestrutura está disponível?
 
 Sem essas respostas, o design assume valores arbitrários e descobre tarde que não são os corretos.
@@ -53,16 +53,16 @@ Sem essas respostas, o design assume valores arbitrários e descobre tarde que n
 Decompor um sistema tem uma ordem que funciona:
 
 ```
-Entidades → Fluxos → Fronteiras → Contratos → Componentes
+Entidades → Fluxos → Limites → Contratos → Componentes
 ```
 
 **Entidades**: os substantivos do domínio (Pedido, Usuário, Produto, Pagamento). Aparecem na linguagem do negócio antes de aparecer em qualquer tabela.
 
 **Fluxos**: os verbos que atravessam entidades (criar pedido, confirmar pagamento, enviar notificação). Cada fluxo tem início, meio e fim rastreáveis.
 
-**Fronteiras**: onde um fluxo deixa uma área e entra em outra. Fronteiras viram interfaces no código e pontos de observabilidade em produção.
+**Limites**: onde um fluxo deixa uma área e entra em outra. Limites viram interfaces no código e pontos de observabilidade em produção.
 
-**Contratos**: o que cada fronteira recebe e retorna. Contrato explícito reduz acoplamento entre componentes.
+**Contratos**: o que cada limite recebe e retorna. Contrato explícito reduz acoplamento entre componentes.
 
 **Componentes**: a tradução dos blocos anteriores em partes implantáveis. Só nessa etapa aparecem decisões de linguagem, banco e infraestrutura.
 
@@ -91,7 +91,7 @@ O trabalho de design é escolher conscientemente, não evitar a escolha. Evitar 
 1. Quais entidades e fluxos compõem o sistema?
 2. Quais requisitos não-funcionais ele precisa atender?
 3. Quais trade-offs foram aceitos conscientemente?
-4. Quais fronteiras e contratos organizam os componentes?
+4. Quais limites e contratos organizam os componentes?
 
 Respondidas essas perguntas, o próximo passo é `patterns.md` (padrões táticos), `architecture.md` (organização de código) e `scaling.md` (técnicas de escala). Aprofundamento em `SLA`, `CAP`, modelos de consistência e capacity planning fica em `system-design-advanced.md`.
 

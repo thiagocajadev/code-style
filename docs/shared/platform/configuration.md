@@ -20,7 +20,7 @@ Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armaz
 
 ## Config vs Secret
 
-Os dois parecem iguais (uma string injetada no startup) mas têm ciclo de vida e superfície de risco distintos:
+Os dois parecem iguais (uma string injetada no startup), mas têm ciclo de vida e superfície de risco distintos:
 
 | Eixo | Config | Secret |
 |---|---|---|
@@ -37,7 +37,7 @@ Misturar os dois no mesmo arquivo força o arquivo inteiro a seguir o regime mai
 
 ## Precedência em camadas
 
-Configuração resolve-se por camadas, do menos específico ao mais específico. Cada camada sobrescreve a anterior:
+A configuração se resolve por camadas, do menos específico ao mais específico. Cada camada sobrescreve a anterior:
 
 ```
 1. defaults no código        → última linha de defesa
@@ -92,7 +92,7 @@ AppConfig {
 
 O resto do código recebe `AppConfig` como dependência, não lê variáveis de ambiente diretamente. Mudanças de nome de chave viram erro de compilação, não surpresa em runtime. Testar um cenário com config específica é construir um `AppConfig` de teste, sem monkey-patching em `process.env`.
 
-Em linguagens com forte tipagem (TypeScript, C#, VB.NET), o objeto de config é uma classe ou record com propriedades não-nulas. Em linguagens dinâmicas, validar a forma na carga (schema de **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), dataclass com validação) cobre o mesmo papel.
+Em linguagens com tipagem forte (TypeScript, C#, VB.NET), o objeto de config é uma classe ou record com propriedades não-nulas. Em linguagens dinâmicas, validar a forma na carga (schema de **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), dataclass com validação) cobre o mesmo papel.
 
 ---
 
@@ -139,7 +139,7 @@ Configuração é **dependência**, não fato global. A forma como o código ace
 
 A injeção explícita é a forma preferida. O caller do módulo decide qual config usar. Em testes, é trivial passar uma config específica para cada cenário. Em produção, o container de injeção resolve o valor uma vez no startup e distribui.
 
-Ver também [code-style.md](../../../.ai/skills/code-style.md) seção **Explicit Dependencies** e [data-access.md](../../../.ai/skills/data-access.md) para a mesma regra aplicada a conexões.
+Ver também a seção [Dependências explícitas](../architecture/principles.md#dependências-explícitas) em principles.md; [database.md](database.md) aplica a mesma regra a conexões.
 
 ---
 
@@ -157,7 +157,7 @@ Esses valores precisam de um mecanismo explícito (serviço de configuração di
 - **Reversão rápida**: voltar ao estado anterior em um clique.
 - **Escopo restrito**: apenas valores marcados como dinâmicos, nunca config estrutural (connection strings, chaves de criptografia).
 
-Config dinâmica é uma faca afiada. Reservar para o que realmente precisa muda em runtime; o resto continua estático e previsível.
+Config dinâmica é uma faca afiada. Reserve para o que precisa mudar em runtime; o resto continua estático e previsível.
 
 ---
 

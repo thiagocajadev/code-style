@@ -28,7 +28,7 @@ esse fluxo está em [git.md](git.md).
 
 ## Pipeline
 
-O pipeline (sequência de etapas de verificação) é a sequência de verificações que todo código precisa passar. Cada estágio é um portão:
+O **pipeline** é a sequência de verificações por onde todo código passa. Cada estágio é um portão:
 falhou, parou.
 
 ```
@@ -94,7 +94,7 @@ validado com tráfego real em percentual controlado e só então ser ativado par
 
 ## Feature Flags
 
-Feature flags (interruptores de funcionalidade) separam o ciclo de vida do código do ciclo de vida
+**Feature flags** (interruptores de funcionalidade) separam o ciclo de vida do código do ciclo de vida
 da feature.
 
 | Situação                             | Ação                                        |
@@ -109,7 +109,7 @@ permanentes que crescem com o código.
 
 ## Pre-commit
 
-CI detecta problemas tarde: após o push, na esteira. Pre-commit hooks (ganchos de automação) detectam imediatamente, antes
+CI detecta problemas tarde: após o push, na esteira. Pre-commit hooks detectam imediatamente, antes
 do commit.
 
 ```
@@ -120,7 +120,7 @@ O custo deve ser baixo: menos de 5 segundos para não criar atrito no fluxo de t
 
 ## Fix Forward e Rollback
 
-Fix forward (corrigir para frente) é a abordagem preferida. A `main` segue para frente com histórico
+**Fix forward** (corrigir para frente) é a abordagem preferida. A `main` segue para frente com histórico
 linear.
 
 ```

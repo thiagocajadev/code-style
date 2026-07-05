@@ -1,7 +1,7 @@
 # Git (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto. Pré-requisito:
-> [git.md](git.md): nomenclatura de branches, commits convencionais e PRs.
+> [git.md](git.md), que cobre nomenclatura de branches, commits convencionais e PRs.
 
 Rotina prática, limpeza de histórico e recuperação de erros comuns.
 

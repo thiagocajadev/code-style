@@ -9,7 +9,7 @@ Design Thinking é o raciocínio feito **antes** de decidir o que construir. Par
 | Conceito | O que é |
 |---|---|
 | **User-centered** (centrado no usuário) | Design que parte da necessidade real do usuário, não da capacidade técnica disponível |
-| **Persona** (persona) | Representação arquetípica de um usuário, construída a partir de pesquisa |
+| **Persona** (arquétipo de usuário) | Representação arquetípica de um usuário, construída a partir de pesquisa |
 | **Journey** (jornada do usuário) | Mapa das etapas que o usuário atravessa para atingir um objetivo |
 | **Problem framing** (enquadramento de problema) | Formulação do problema em termos que orientam a solução sem prescrevê-la |
 | **HMW** (How Might We, Como Poderíamos) | Pergunta aberta que transforma um problema em oportunidade de solução |

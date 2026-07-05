@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Feature flags (interruptores de funcionalidade) separam o ciclo de vida do **código** do ciclo de
+**Feature flags** (interruptores de funcionalidade) separam o ciclo de vida do **código** do ciclo de
 vida da **feature**. Código pode estar em produção desativado. Feature pode ser ativada para 1% dos
 usuários antes de 100%. Uma feature problemática pode ser desligada sem rollback de deploy.
 
@@ -28,7 +28,7 @@ release. Flags como caso particular de configuração dinâmica aparecem também
 ## Toggle (interruptor) por propósito
 
 Nem toda flag serve ao mesmo fim. Misturar propósitos no mesmo mecanismo cria confusão: a regra de
-negócio convive com o experimento, o kill switch (desligador de emergência) convive com permissão de
+negócio convive com o experimento, o kill switch convive com permissão de
 usuário. Quatro categorias cobrem a maioria dos casos:
 
 | Categoria      | Propósito                                                                               | Vida útil                                  |
@@ -61,7 +61,7 @@ O padrão comum é: **interno → beta → gradual → total**. Cada transição
 métricas (erro, latência, conversão) antes de ampliar. Pular etapas é trocar visibilidade por
 velocidade.
 
-**Sinal de rollout mal feito**: o time pula de 0% direto para 100%. A flag existe mas não entrega o
+**Sinal de rollout mal feito**: o time pula de 0% direto para 100%. A flag existe, mas não entrega o
 benefício de release controlada. Vira apenas uma ramificação condicional extra no código.
 
 ---
@@ -86,10 +86,10 @@ cálculo, troca de provedor). Mais caro de implementar, mais barato que um incid
 
 ---
 
-## Kill switch (matar feature)
+## Kill switch (chave de emergência)
 
 Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir **PR** (Pull Request, Pedido de Integração), sem rebuild
-(recompilação), sem deploy. É a rede de segurança quando algo descompensa: picos de erro, latência
+(recompilação), sem deploy. É a rede de segurança quando algo sai do controle: picos de erro, latência
 fora do limite, regressão detectada em métrica.
 
 Diferente de uma flag de release, o kill switch:
@@ -107,7 +107,7 @@ descobrir tarde demais.
 
 ## Avaliação: onde a decisão acontece
 
-Uma flag é avaliada em três pontos possíveis, cada um com trade-off (equilíbrio entre fatores)
+Uma flag é avaliada em três pontos possíveis, cada um com **trade-off** (equilíbrio entre fatores)
 próprio:
 
 | Ponto                                   | Latência                     | Consistência   | Exemplo de uso                                                      |
@@ -170,7 +170,7 @@ implementação venceu, é apagar a escolha e manter a implementação.
 ## Dívida: toda flag tem prazo de validade
 
 Flag que nunca é removida vira débito permanente: condicional no código, configuração no sistema,
-cognição para quem lê. O custo cresce em juros compostos: quantas flags inativas estão rodando
+carga cognitiva para quem lê. O custo cresce em juros compostos: quantas flags inativas estão rodando
 hoje? Quais são seguras de remover?
 
 Três práticas contêm a dívida:

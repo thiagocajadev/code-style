@@ -64,7 +64,7 @@ O **Load Balancer** (balanceador de carga) distribui requisições entre as inst
 
 ### Health checks
 
-O balanceador consulta periodicamente um endpoint de cada instância (`GET /health`). Instâncias que não respondem ou respondem com erro são removidas da rotação automaticamente até se recuperar.
+O balanceador consulta periodicamente um endpoint de cada instância (`GET /health`). O balanceador remove da rotação as instâncias que não respondem ou respondem com erro, até se recuperarem.
 
 ```
 Load Balancer → GET /health → 200 OK → instância saudável, recebe tráfego
@@ -81,7 +81,7 @@ Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
 
 ## API Gateway
 
-O **API** (Application Programming Interface, Interface de Programação de Aplicações) **Gateway** é o ponto de entrada único para todos os serviços de uma API. Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
+O **API Gateway** é o ponto de entrada único para todos os serviços de uma **API** (Application Programming Interface, Interface de Programação de Aplicações). Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
 
 Responsabilidades centrais:
 
@@ -122,7 +122,7 @@ Escrita → banco primário
 Leitura → read replica 1 | read replica 2 | read replica N
 ```
 
-**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileirar e processar em background. O servidor de aplicação responde rápido; o **worker** (trabalhador) absorve o pico no seu próprio ritmo.
+**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileirar e processar em background. O servidor de aplicação responde rápido; o **worker** (processo que executa tarefas em segundo plano) absorve o pico no seu próprio ritmo.
 
 ## Anti-Overengineering
 
@@ -135,7 +135,7 @@ A maioria dos projetos nunca vai precisar de escala horizontal, load balancer de
 2. Otimizar queries e adicionar cache quando os dados indicarem
 3. Adicionar load balancer e tornar stateless quando o tráfego exigir
 4. Considerar read replicas quando leitura virar gargalo no banco
-5. Microsserviços apenas quando fronteiras de domínio ou times impuserem isolamento real
+5. Microsserviços apenas quando limites de domínio ou times impuserem isolamento real
 ```
 
 Cada etapa só faz sentido depois que a anterior foi esgotada. Pular etapas aumenta complexidade sem benefício proporcional.

@@ -17,7 +17,7 @@ O escopo é puro domínio: como as entidades são desenhadas e como elas se rela
 | **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItems` formam um agregado) |
 | **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo construtor e pelos métodos que alteram estado (ex.: pedido sempre tem ao menos um item, telefone não passa de 11 dígitos) |
-| **boundary** (limite) | Fronteira entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
+| **boundary** (limite) | Limite entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
 | **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `string` ou `GUID` cru, para impedir trocas acidentais entre IDs |
 | **cardinality** (cardinalidade, quantidade da relação) | Quantos elementos a relação aceita entre dois conceitos: 0..1, 1, 0..N, 1..N, N..N |
 | **nullable** (anulável, aceita ausência de valor) | Campo que aceita `null` quando o conceito não está presente; representa "zero ou um" em cardinalidade |
@@ -34,7 +34,7 @@ O escopo é puro domínio: como as entidades são desenhadas e como elas se rela
 
 ## Tamanho saudável da entidade
 
-A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria comprometer-se com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
+A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria se comprometer com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
 
 Mesmo sem número fixo, ajuda ter referência para reconhecer a faixa em que se está. Os números abaixo são heurística, não regra:
 
@@ -483,7 +483,7 @@ class Customer {
 }
 ```
 
-A regra "no máximo 3" mora no método `addPhone`, onde dá pra mudar sem mexer no schema. Lista vazia (`[]`) é o estado neutro: itera sem `?.`, sem caso especial.
+A regra "no máximo 3" mora no método `addPhone`, onde dá para mudar sem mexer no schema. Lista vazia (`[]`) é o estado neutro: itera sem `?.`, sem caso especial.
 
 </details>
 
@@ -495,7 +495,7 @@ Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muit
 
 Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** é quem orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas o `Order` faz sentido sem o `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza fronteira de agregado, então vai por ID, nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas o `Order` faz sentido sem o `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza limite de agregado, então vai por ID, nunca por objeto completo.
 
 <details>
 <summary>❌ Ruim: filho carrega referência completa ao pai, círculo bidirecional sem dono</summary>
@@ -663,7 +663,7 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 Dentro do mesmo agregado, referência direta é o caminho natural: `Order.items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
 
-Cruzando a fronteira de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Ao cruzar o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -830,8 +830,8 @@ Cross-links dentro do guia:
 
 - [`architecture/patterns.md`](patterns.md): padrões de design e quando aplicar
 - [`architecture/principles.md`](principles.md): princípios transversais (SLA, CQS, SSOT)
-- [`architecture/component-architecture.md`](component-architecture.md): arquitetura por componentes e regras de fronteira
-- [`standards/null-safety.md`](../standards/null-safety.md): fronteiras de validação e coleções vazias
+- [`architecture/component-architecture.md`](component-architecture.md): arquitetura por componentes e regras de limite
+- [`standards/null-safety.md`](../standards/null-safety.md): limites de validação e coleções vazias
 - [`platform/database.md`](../platform/database.md): persistência, ORM, multitenancy no banco
 
 Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

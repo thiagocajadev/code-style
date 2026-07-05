@@ -54,7 +54,7 @@ consistência no banco. Quando uma operação precisa alterar dois agregados, o
 desenho está pedindo dois passos, não uma transação maior.
 
 Esse alinhamento vem de [`entity-modeling.md`](entity-modeling.md). Lá, o
-agregado é a fronteira de invariantes. Aqui, a transação é a fronteira mecânica
+agregado é o limite de invariantes. Aqui, a transação é o limite mecânico
 que garante essas invariantes contra concorrência e falha. Quando os dois
 limites coincidem, o código é simples; quando não coincidem, alguém vai precisar
 pagar a diferença com lock distribuído, **2PC** ou bug intermitente.
@@ -128,7 +128,7 @@ agregados juntos, há três caminhos.
   atravessa os dois, não dá para separar a regra). Fundir.
 - **Aceitar consistência eventual**. Um agregado atualiza sincronamente, o outro
   reage ao evento. Trade-off explícito: o segundo pode ficar momentaneamente
-  fora do dia.
+  desatualizado.
 - **Compor com saga**. Quando a operação envolve mais de duas etapas com regras
   de cancelamento, modelar como saga (ver seção [Saga](#saga-e-long-running)).
 
@@ -145,7 +145,7 @@ não enxerga o detalhe; apenas executa a operação dentro de um bloco que abre 
 UoW no começo e fecha no fim.
 
 <details>
-<summary>❌ Ruim: cada mutação chama o repositório, sem fronteira clara</summary>
+<summary>❌ Ruim: cada mutação chama o repositório, sem limite claro</summary>
 
 ```js
 async function fulfillOrder(orderId) {
@@ -381,8 +381,8 @@ estratégia e mantém durante a transação.
 
 ## Isolation levels
 
-Quatro níveis padrão do **SQL** (Structured Query Language, Linguagem
-Estruturada de Consulta) decidem o quanto uma transação enxerga do trabalho em
+Quatro níveis padrão do **SQL** (Structured Query Language, Linguagem de
+Consulta Estruturada) decidem o quanto uma transação enxerga do trabalho em
 curso das outras. O nível default da maioria dos bancos modernos (PostgreSQL,
 SQL Server) é Read Committed, e essa é a escolha razoável para a maior parte dos
 casos.
@@ -716,7 +716,7 @@ entregue. Detalhes do worker em
 </details>
 
 A consequência operacional da consistência eventual aparece na **UI** (User
-Interface, Interface de Usuário): logo após o `POST /orders`, o usuário pode
+Interface, Interface do Usuário): logo após o `POST /orders`, o usuário pode
 ainda não ver os efeitos no `Customer` ou no estoque. Duas abordagens:
 
 - **Estado intermediário visível**. Pedido confirmado, mas com badge
@@ -726,7 +726,7 @@ ainda não ver os efeitos no `Customer` ou no estoque. Duas abordagens:
 
 Em geral, modelar o estado intermediário no agregado (`status = "processing"` →
 `"confirmed"`) deixa o sistema honesto. O usuário entende que o pedido foi
-aceito e o restante vai acontecer; a tela reflete a verdade do back.
+aceito e o restante vai acontecer; a tela reflete a verdade do backend.
 
 ## Compensação semântica vs rollback
 

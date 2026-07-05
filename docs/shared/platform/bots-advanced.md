@@ -1,9 +1,9 @@
 # Bots de Mensageria (avançado)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
-> Pré-requisito: [bots.md](bots.md): conceitos fundamentais (webhook, polling, command routing, session, rate limit).
+> Pré-requisito: [bots.md](bots.md), que cobre webhook, polling, command routing, session e rate limit.
 
-Este guia cobre as particularidades de cada plataforma: como autenticar, quais primitivas de **UI** (User Interface, interface do usuário) cada uma oferece e onde estão os limites de cada **gateway** (ponto de entrada da plataforma).
+Este guia cobre as particularidades de cada plataforma: como autenticar, quais primitivas de **UI** (User Interface, Interface do Usuário) cada uma oferece e onde estão os limites de cada **gateway** (ponto de entrada da plataforma).
 
 ## Conceitos fundamentais
 
@@ -13,7 +13,7 @@ Este guia cobre as particularidades de cada plataforma: como autenticar, quais p
 | **Slash Command** (comando de barra) | Comando registrado na plataforma com `/prefixo`; aparece com autocomplete para o usuário |
 | **Embed** (mensagem incorporada) | Mensagem rica do Discord com título, descrição, cor, imagem e campos estruturados |
 | **Inline Keyboard** (teclado inline) | Botões renderizados abaixo de uma mensagem no Telegram; cada botão dispara um **callback** |
-| **BotFather** (bot pai do Telegram) | Bot oficial do Telegram para criar e configurar bots: gera o token de autenticação |
+| **BotFather** (bot oficial do Telegram que cria bots) | Bot oficial do Telegram para criar e configurar bots: gera o token de autenticação |
 | **Bot Token** (token do bot) | Credencial de autenticação emitida pela plataforma; nunca exposta em código ou repositório |
 | **Business API** (API empresarial) | API oficial do WhatsApp para envio de mensagens; exige aprovação Meta e número homologado |
 | **Unofficial Client** (cliente não-oficial) | Biblioteca que simula o cliente WhatsApp Web para automação; sem suporte oficial e sujeita a banimento |
@@ -71,7 +71,7 @@ Limites de embed:
 
 ### Autenticação e setup
 
-O bot autentica via **Bot Token** gerado pelo **BotFather** ([@BotFather](https://t.me/BotFather) no Telegram). Todas as requisições à **Bot API** usam o token na **URL** (Uniform Resource Locator, Localizador Uniforme de Recursos): `https://api.telegram.org/bot<token>/método`.
+O bot autentica via **Bot Token** gerado pelo **BotFather** ([@BotFather](https://t.me/BotFather) no Telegram). Todas as requisições à **Bot API** usam o token na **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso): `https://api.telegram.org/bot<token>/método`.
 
 ```
 /newbot no BotFather → define nome e username → BotFather entrega o token
@@ -90,7 +90,7 @@ No polling, o parâmetro `offset` deve avançar a cada lote para não reprocessa
 
 ### Inline Keyboard
 
-O Telegram oferece dois tipos de botões:
+O Telegram oferece três variações de botão:
 
 | Tipo | Comportamento |
 |---|---|
@@ -117,7 +117,7 @@ Em grupos e supergrupos, o bot só recebe mensagens se for mencionado (`@bot`) o
 
 ### API oficial vs cliente não-oficial
 
-O WhatsApp tem dois caminhos radicalmente diferentes para automação:
+O WhatsApp tem dois caminhos distintos para automação:
 
 | | Business API (oficial) | Bibliotecas não-oficiais |
 |---|---|---|
@@ -152,7 +152,7 @@ O webhook da Business API envia eventos no formato:
 }
 ```
 
-O endpoint de webhook precisa responder `200 OK` imediatamente. Processar a mensagem de forma síncrona no handler do webhook causa timeout. Enfileirar e processar de forma assíncrona.
+O endpoint de webhook precisa responder `200 OK` imediatamente. Processar a mensagem de forma síncrona no handler do webhook causa timeout: enfileire e processe de forma assíncrona.
 
 ### Verificação do webhook
 
@@ -199,7 +199,7 @@ Nunca expor o `Bot Token`, o `Signing Secret` ou o `App-Level Token` em código.
 | `header` | Título em plain text em fonte maior |
 | `input` | Campo de entrada para modais e Home Tab |
 
-O bot recebe o evento de ação via `app.action(action_id, handler)`. O **ack()** (reconhecimento) é obrigatório dentro de 3 segundos; sem ele, a Slack exibe um spinner indefinido no botão.
+O bot recebe o evento de ação via `app.action(action_id, handler)`. O `ack()` (confirmação de recebimento) é obrigatório dentro de 3 segundos; sem ele, a Slack exibe um spinner indefinido no botão.
 
 ### Scopes
 

@@ -2,7 +2,7 @@
 
 > Escopo: transversal, com padrões de domínio IoT em exemplos MicroPython 1.28.
 
-Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit, unidade central de processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
+Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit, Unidade Central de Processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
 
 ## Conceitos fundamentais
 
@@ -10,9 +10,9 @@ Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que
 | -------- | ------- |
 | **debounce** (filtragem de ruído) | Ignorar leituras redundantes de sensor durante uma janela de tempo após a primeira leitura |
 | **FSM** (Finite State Machine, Máquina de Estados Finitos) | Modelo de controle onde o sistema está sempre em um estado definido; transições são explícitas |
-| **watchdog** (cão de guarda) | Timer de hardware que reinicia o dispositivo se o firmware travar |
-| **idempotency** (idempotência) | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
-| **polling** (varredura) | Leitura periódica de um sensor; alternativa a interrupções quando GPIO não suporta IRQ |
+| **watchdog** (timer de reinício automático) | Timer de hardware que reinicia o dispositivo se o firmware travar |
+| **idempotency** (operação repetível sem efeito adicional) | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
+| **polling** (consulta periódica) | Leitura periódica de um sensor; alternativa a interrupções quando GPIO não suporta IRQ |
 | **IRQ** (Interrupt Request, Requisição de Interrupção) | Sinal de hardware que interrompe o loop principal para tratar um evento |
 | `machine` | Módulo MicroPython de acesso ao hardware: GPIO, I2C, SPI, UART, Timer, WDT |
 
@@ -97,7 +97,7 @@ def handle_door_open():
 
 ## Máquina de estados: FSM
 
-Modele o comportamento do dispositivo como estados explícitos. Evite flags booleanos soltos.
+Modele o comportamento do dispositivo como estados explícitos. Evite flags booleanas soltas.
 
 <details>
 <summary>❌ Ruim: flags soltos sem estado explícito</summary>
@@ -162,7 +162,7 @@ def tick():
 
 ## Alertas idempotentes
 
-Envie alertas com identificador único. O servidor ignora duplicatas. Evite re-enviar
+Envie alertas com identificador único. O servidor ignora duplicatas. Evite reenviar
 o mesmo alerta enquanto a condição não mudar.
 
 <details>

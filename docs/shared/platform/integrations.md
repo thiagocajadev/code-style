@@ -17,14 +17,14 @@ Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, N
 | **Namespace XML** (espaço de nomes XML)                                                     | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML                                        |
 | **CSV** (Comma-Separated Values, valores separados por vírgula)                             | Formato tabular em texto plano; separador pode ser vírgula, ponto-e-vírgula ou pipe                                     |
 | **Fixed-width** (largura fixa)                                                              | Formato de arquivo texto onde cada campo ocupa posições fixas na linha; comum em CNAB e SINTEGRA                        |
-| **CNAB** (Centro Nacional de Automação Bancária, Centro Nacional de Automação Bancária)     | Padrão de arquivo texto para remessa e retorno bancário (cobranças, pagamentos); linhas de 240 ou 400 caracteres        |
-| **SPED** (Sistema Público de Escrituração Digital, Sistema Público de Escrituração Digital) | Obrigação fiscal digital brasileira; arquivos pipe-delimited com registros tipados (SPED Fiscal, SPED Contábil)         |
+| **CNAB** (Centro Nacional de Automação Bancária)                                            | Padrão de arquivo texto para remessa e retorno bancário (cobranças, pagamentos); linhas de 240 ou 400 caracteres        |
+| **SPED** (Sistema Público de Escrituração Digital)                                          | Obrigação fiscal digital brasileira; arquivos pipe-delimited com registros tipados (SPED Fiscal, SPED Contábil)         |
 | **NF-e** (Nota Fiscal eletrônica)                                                           | Documento fiscal digital brasileiro emitido como XML assinado e transmitido à SEFAZ                                     |
 | **CT-e** (Conhecimento de Transporte eletrônico)                                            | Documento fiscal para transporte de cargas; mesmo modelo XML/SEFAZ da NF-e                                              |
 | **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra)                        | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios              |
 | **RS-232** (Recommended Standard 232)                                                       | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
 | **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor)                                | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM                    |
-| **LLM API** (API de modelo de linguagem grande)                                             | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
+| **LLM API** (API de Modelo de Linguagem de Grande Escala)                                   | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
 
 ---
 
@@ -69,7 +69,7 @@ query {
 - Múltiplos clientes (mobile, web, parceiros) com necessidades de dados muito
   diferentes
 - Over-fetching recorrente em APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) existentes que não podem ser quebradas
-- Produto com queries de alto dinamismo que mudam com frequência
+- Produto cujas queries mudam com frequência
 
 **Quando não usar:**
 
@@ -185,7 +185,7 @@ ferramentas CLI.
 
 ## YAML
 
-**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. Esse termo combina **CI** (Continuous Integration, Integração Contínua) com **CD** (Continuous Delivery, Entrega Contínua). A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
+**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration/Continuous Delivery, Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
 
 ```yaml
 # docker-compose.yml
@@ -371,7 +371,7 @@ const companyRegistrationNumber = extractField(
 
 **Boas práticas para arquivos texto:**
 
-- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO** (International Organization for Standardization, Organização Internacional de Normalização)-8859-1 (Latin-1). Em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
+- Validar encoding antes de processar; arquivos legados brasileiros frequentemente usam **ISO-8859-1** (Latin-1, codificação de caracteres de 1 byte). Em Node.js, usar `{ encoding: 'latin1' }` no `fs.readFile`
 - Verificar total de linhas e somatório de valores contra os registros de
   trailer antes de importar
 - Nunca processar arquivo parcialmente; ler tudo, validar estrutura, só então
@@ -666,7 +666,7 @@ async function callWithRetry(requestFn, maxAttempts = 3) {
 - **Logar input/output tokens**: custo é proporcional ao volume de tokens. Sem
   log, não há visibilidade de gasto por feature ou por usuário.
 - **Timeout explícito**: respostas de LLM podem demorar dezenas de segundos.
-  Definir timeout protege contra hanging requests.
+  Definir timeout protege contra requisições que nunca terminam.
 
 ---
 

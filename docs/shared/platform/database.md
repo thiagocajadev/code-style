@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-O banco de dados é o componente com maior impacto em performance e o mais difícil de escalar retroativamente. Escolher o modelo certo, escrever queries eficientes e saber diagnosticar gargalos antes de chegarem à produção são habilidades que mudam a capacidade de um sistema.
+O banco de dados é o componente com maior impacto em performance e o mais difícil de escalar retroativamente. Escolher o modelo certo, escrever queries eficientes e diagnosticar gargalos antes de chegarem à produção definem até onde o sistema escala.
 
 ## Conceitos fundamentais
 
@@ -17,10 +17,10 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 | **Query plan** (plano de execução) | Sequência de operações que o banco escolhe para executar uma query |
 | **Seq Scan** (varredura sequencial) | Leitura linha a linha da tabela; indica ausência de índice útil |
 | **Index Scan** (varredura por índice) | Leitura via índice; muito mais eficiente que Seq Scan para filtros seletivos |
-| **N+1** (consulta repetida em loop, anti-padrão) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
+| **N+1** (consulta repetida em loop) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Slow query log** (log de queries lentas) | Registro automático de queries que excedem um tempo limite configurado |
 | **Lock** (bloqueio) | Mecanismo que impede acesso simultâneo conflitante a um recurso; pode causar espera ou deadlock |
-| **Deadlock** (bloqueio morto) | Situação onde duas transações esperam uma pela outra indefinidamente |
+| **Deadlock** (impasse entre transações) | Situação onde duas transações esperam uma pela outra indefinidamente |
 | **Connection pool exhaustion** (esgotamento do pool de conexões) | Todas as conexões do pool estão em uso; novas requisições ficam em fila ou falham |
 | **Projection** (projeção) | Define quais campos retornar em uma consulta NoSQL; evita trafegar o documento inteiro |
 | **Aggregation pipeline** (pipeline de agregação) | Sequência de estágios para processar documentos em lote no MongoDB; substitui JOINs e GROUP BY do SQL |
@@ -58,7 +58,7 @@ Quatro modelos principais, cada um otimizado para um padrão de acesso diferente
 | **Document** (documento) | Documentos JSON aninhados, sem schema rígido | Dados hierárquicos com estrutura variável (catálogo, CMS, perfis) |
 | **Key-Value** (chave-valor) | Acesso por chave única, valor opaco | Cache, sessão, contadores, filas simples |
 | **Column-Family** (família de colunas) | Colunas agrupadas, leitura eficiente em colunas específicas | Analytics, séries temporais, telemetria em alta escala |
-| **Graph** (grafo) | Nós e arestas como cidadãos de primeira classe | Redes sociais, recomendação, detecção de fraude |
+| **Graph** (grafo) | Nós e arestas como estrutura primária de armazenamento | Redes sociais, recomendação, detecção de fraude |
 
 **Quando usar**: escala de escrita muito alta que bancos relacionais não absorvem, dados sem schema previsível, padrão de acesso fixo e conhecido (key-value, full document), ou quando o modelo de grafo representa a estrutura natural dos dados.
 
@@ -102,7 +102,7 @@ Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../..
 
 ### Consultas NoSQL
 
-Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: trabalho desnecessário no servidor é mais barato que trabalho no cliente.
+Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: filtrar e projetar no servidor é mais barato do que trafegar dados para descartar no cliente.
 
 Guia completo por SGBD: [docs/nosql/](../../nosql/). Convenções de **CRUD** (Create Read Update Delete, Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../nosql/conventions/).
 
@@ -219,7 +219,7 @@ de longa duração em operações de manutenção.
 | **Chunked UPDATE/DELETE** | Atualizar ou remover grandes volumes sem bloquear a tabela por minutos |
 | **BULK INSERT / COPY** | Importar arquivos CSV ou binários diretamente no banco, sem round trips pela aplicação |
 | **Staging table** | Validar dados externos antes de inserir na tabela de produção |
-| **Scheduled job** | Executar operações periódicas; limpeza, agregação, archive; sem intervenção manual |
+| **Scheduled job** | Executar operações periódicas (limpeza, agregação, arquivamento) sem intervenção manual |
 
 ### Chunk size
 
@@ -244,7 +244,7 @@ Recursos específicos por banco: [SQL Server](../../sql/sgbd/sql-server.md#opera
 
 O plano de execução mostra _como_ o banco vai executar a query: quais índices vai usar, como vai fazer joins, qual o custo estimado de cada operação.
 
-**Antes de deployar qualquer query em uma tabela grande, analisar o plano.**
+**Antes de levar qualquer query a uma tabela grande em produção, analise o plano.**
 
 Sintaxe por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnóstico) | [SQL Server](../../sql/sgbd/sql-server.md#diagnóstico).
 

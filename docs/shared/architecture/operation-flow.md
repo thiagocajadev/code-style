@@ -4,7 +4,7 @@
 
 Uma operação (criar um recurso, processar um formulário, buscar dados) segue sempre o mesmo ciclo: recebe input (entrada), transforma, executa, retorna output (saída). Operation flow é a estrutura que torna esse ciclo explícito: cada passo tem uma responsabilidade, um tipo de entrada e um tipo de saída.
 
-O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e a fronteira entre lógica pura e **I/O** (Input/Output, Entrada/Saída) é visível na estrutura.
+O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e o limite entre lógica pura e **I/O** (Input/Output, Entrada/Saída) é visível na estrutura.
 
 ## Conceitos fundamentais
 
@@ -21,40 +21,32 @@ O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho expl
 ## Backend
 
 ```
-Request
-  ↓
-1. Sanitize          → normaliza input                                    (puro)
-  ↓
-2. Validate          → Result<T>      falha → erro de validação           (puro)
-  ↓
-3. Business Rules    → Result<bool>   falha → não encontrado / conflito   (I/O)
-  ↓
-4. Save              → void (CQS)                                        (I/O)
-  ↓
-5. Read              → Result<T>      falha → erro de servidor            (I/O)
-  ↓
-6. Filter Output     → ResponseDTO                                        (puro)
-  ↓
-Response
+Request → 1. Sanitize → 2. Validate → 3. Business Rules → 4. Save → 5. Read → 6. Filter Output → Response
 ```
+
+| Passo | Natureza | Retorna | Falha vira |
+|---|---|---|---|
+| 1. Sanitize | puro | input normalizado | |
+| 2. Validate | puro | `Result<T>` | erro de validação |
+| 3. Business Rules | I/O | `Result<bool>` | não encontrado / conflito |
+| 4. Save | I/O | `void` (CQS) | |
+| 5. Read | I/O | `Result<T>` | erro de servidor |
+| 6. Filter Output | puro | `ResponseDTO` | |
 
 Os passos puros (1, 2, 6) ficam nas bordas, sem dependências externas, testáveis em isolamento. Os passos com I/O (3, 4, 5) ficam no meio. Save e Read são separados: **CQS** (Command-Query Separation, Separação de Comando e Consulta) significa que escrita não retorna dado e leitura não persiste.
 
 ## Frontend
 
 ```
-User Action / Mount
-  ↓
-Component            → dispara hook
-  ↓
-Hook                 → gerencia estado UI (data, error, isLoading)
-  ↓
-Service              → chama apiClient, transforma Result<T> em View type  (puro: só a transformação)
-  ↓
-apiClient            → único caller de rede, retorna Result<T>             (I/O)
-  ↓
-HTTP Response
+User Action / Mount → Component → Hook → Service → apiClient → HTTP Response
 ```
+
+| Camada | Responsabilidade |
+|---|---|
+| **Component** | dispara o hook |
+| **Hook** | gerencia o estado de UI (data, error, isLoading) |
+| **Service** | chama o apiClient e transforma `Result<T>` em tipo de view; pura, só a transformação |
+| **apiClient** | único caller de rede; retorna `Result<T>` (I/O) |
 
 O `apiClient` é o único ponto de I/O; tudo acima dele é puro. O `Service` recebe `Result<T>` e entrega um tipo de view que o componente consome diretamente, sem lógica adicional.
 

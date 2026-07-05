@@ -4,7 +4,7 @@
 >
 > **SSOT** (Single Source of Truth, fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
 
-Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem a pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
+Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem à pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
 
 Organizados como checklist de revisão, do mais impactante ao mais granular:
 
@@ -36,7 +36,7 @@ Código escrito em inglês é **universal**: funciona em qualquer equipe, reposi
 
 ### Código narrativo
 
-Um bom código **conta uma história**. Você lê a função de cima pra baixo e entende o que acontece sem precisar de comentários para guiar a leitura. Quando um comentário é necessário para explicar o que o código faz, é sinal de que o código pode ser melhor **nomeado** ou **decomposto**.
+Um bom código **conta uma história**. Você lê a função de cima para baixo e entende o que acontece sem precisar de comentários para guiar a leitura. Quando um comentário é necessário para explicar o que o código faz, é sinal de que o código pode ser melhor **nomeado** ou **decomposto**.
 
 ### Ponto de entrada limpo
 
@@ -48,7 +48,7 @@ Até **3 parâmetros** podem ficar na mesma linha. Com 4 ou mais, use um **objet
 
 ### Orquestrador no topo
 
-A função que coordena o fluxo fica **visível antes** das que implementam os detalhes. Você lê a intenção no topo (_buscar, transformar, persistir_) e os detalhes ficam abaixo como funções auxiliares. Essa ordem é chamada de **top-down** (de cima pra baixo).
+A função que coordena o fluxo fica **visível antes** das que implementam os detalhes. Você lê a intenção no topo (_buscar, transformar, persistir_) e os detalhes ficam abaixo como funções auxiliares. Essa ordem é chamada de **top-down** (de cima para baixo).
 
 ### Detalhes abaixo
 
@@ -106,7 +106,7 @@ Computar dados e formatar a saída são **responsabilidades distintas**. Uma fun
 
 Variáveis declaradas como constantes (`const`, `readonly`) comunicam que **o valor não muda**: qualquer alteração posterior é uma exceção explícita, não um efeito colateral silencioso. Immutable (valor fixo) por padrão **reduz surpresas** e torna o fluxo de dados rastreável.
 
-### CQS: Command Query Separation (Separação de Comando e Consulta)
+### CQS
 
 Uma função ou **retorna um valor** (query, consulta) ou **produz um efeito colateral** (command, comando), nunca os dois ao mesmo tempo. Funções que mudam estado _e_ retornam dados acoplam leitura e escrita de forma implícita, dificultando rastreamento e teste.
 
@@ -128,9 +128,9 @@ Toda resposta da função segue **o mesmo formato**, sucesso e erro incluídos. 
 
 ### Tratamento centralizado de erros
 
-Erros são capturados **nas fronteiras do sistema**, nas camadas de entrada da aplicação, não espalhados em cada função de negócio. Centralizar o tratamento evita duplicação, garante **formato consistente** nas respostas e mantém o código de domínio livre de preocupações de infraestrutura.
+Erros são capturados **nos limites do sistema**, nas camadas de entrada da aplicação, não espalhados em cada função de negócio. Centralizar o tratamento evita duplicação, garante **formato consistente** nas respostas e mantém o código de domínio livre de preocupações de infraestrutura.
 
-### I/O assíncrono: Input/Output (Entrada/Saída) assíncrono
+### I/O assíncrono
 
 Operações de I/O (_leitura de banco, chamadas de rede, acesso a disco_) bloqueiam o processamento se feitas de forma síncrona. `async/await` (assíncrono/aguardar) torna essas operações **não-bloqueantes**: a execução continua enquanto aguarda a resposta, sem travar o processo inteiro.
 

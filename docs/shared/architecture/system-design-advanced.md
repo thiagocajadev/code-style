@@ -4,7 +4,7 @@
 >
 > Avançado em relação a [`system-design.md`](./system-design.md). Este documento cobre os instrumentos quantitativos e os teoremas que orientam decisões em sistemas distribuídos.
 
-Projetar sistemas em escala exige vocabulário preciso: acordos de nível de serviço, modelos de consistência, teoremas de distribuição, estimativas de capacidade. Cada um responde uma pergunta específica que System Design conceitual não resolve sozinho.
+Projetar sistemas em escala exige vocabulário preciso: acordos de nível de serviço, modelos de consistência, teoremas de distribuição, estimativas de capacidade. Cada um responde a uma pergunta específica que System Design conceitual não resolve sozinho.
 
 ## Conceitos fundamentais
 
@@ -163,7 +163,7 @@ Antes de considerar o design concluído:
 
 - [ ] Requisitos funcionais listados e revisados com produto
 - [ ] Requisitos não-funcionais explícitos (latência, QPS, disponibilidade, custo)
-- [ ] Entidades, fluxos, fronteiras e contratos definidos
+- [ ] Entidades, fluxos, limites e contratos definidos
 - [ ] Trade-offs escolhidos conscientemente, não por default de ferramenta
 - [ ] SLO e error budget definidos para cada operação crítica
 - [ ] Modelo de consistência escolhido por operação

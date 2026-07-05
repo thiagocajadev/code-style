@@ -3,7 +3,7 @@
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
 Componentização é a decisão de **onde cortar o sistema**: como dividir responsabilidades, como os
-dados fluem entre as partes e onde ficam as fronteiras de reuso.
+dados fluem entre as partes e onde ficam os limites de reuso.
 
 ```
 dado externo → container (busca, estado, regras) → presentational (renderiza, emite eventos) → output
@@ -57,7 +57,7 @@ A mesma lógica vale para componentes de **UI** (User Interface, Interface do Us
 aceita `children` compõe. Um `ProductCard extends Card` herda. O primeiro é reutilizável por design;
 o segundo precisa de uma subclasse nova para cada variação.
 
-**Quando usar herança**: hierarquia genuinamente is-a (relação de "é um"), raramente mais de um nível, em domínios
+**Quando usar herança**: hierarquia is-a legítima (relação de "é um"), raramente mais de um nível, em domínios
 estáveis (exceções, entidades de framework). Para tudo mais, composição vence: mais testável, mais
 flexível, menos frágil a mudanças.
 
@@ -88,12 +88,13 @@ OrderDetailsView (pure)
   └── emite eventos ao clicar
 ```
 
-O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte (**API** (Application Programming Interface, Interface de Programação de Aplicações)
-real, mock em Storybook, fixture de teste pré-definido) sem tocar na UI. O container não sabe **como** a tela é
+O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte sem
+tocar na UI: **API** (Application Programming Interface, Interface de Programação de Aplicações)
+real, mock em Storybook ou fixture de teste pré-definida. O container não sabe **como** a tela é
 desenhada. Designers trocam o layout sem medo de quebrar a lógica.
 
 A separação vira anti-padrão quando a aplicação é **pequena o suficiente** para que container e view
-coincidam sem atrito. Dividir por disciplina vazia cria indireção sem ganho. A regra é: divide
+coincidam sem atrito. Dividir por disciplina vazia cria indireção sem ganho. A regra é: dividir
 quando a mesma tela aparece em dois contextos, ou quando a regra de negócio do container fica grande
 o bastante para merecer teste isolado.
 
@@ -102,7 +103,7 @@ o bastante para merecer teste isolado.
 ## Estado: onde colocar, por onde passar
 
 Estado é a pergunta mais cara da arquitetura de componentes. Colocar no lugar errado gera prop
-drilling, re-renders (re-renderizações) desnecessários, bugs de sincronização e fronteiras de teste confusas.
+drilling, re-renders (re-renderizações) desnecessários, bugs de sincronização e limites de teste confusos.
 
 A decisão segue um caminho progressivo: começa pelo mínimo e sobe conforme a necessidade.
 
@@ -140,7 +141,7 @@ Três saídas, em ordem de preferência:
 3. **Context / injection**: compartilha dados transversais (tema, usuário logado, localização) sem
    drill. Usar com parcimônia: toda referência implícita é um acoplamento escondido.
 
-### Context boundaries (fronteiras de contexto)
+### Context boundaries (limites de contexto)
 
 Contexto global resolve drill, mas transforma qualquer consumidor em dependente invisível do
 provider (fornecedor de contexto). Três regras para não vazar:
@@ -185,17 +186,17 @@ cache vira overhead (custo extra).
 | Cálculo trivial (soma de dois campos, concatenação curta)                 | Não, a comparação custa mais que o trabalho |
 | Componente que depende de contexto que muda a cada render                 | Não, o cache nunca acerta                   |
 
-O sinal de memoization mal aplicada é o time gastar tempo debugando **por que o cache não invalida**
-ou **por que uma prop muda de identidade a cada render**. Quando o debugging (depuração) do cache domina, a
+O sinal de memoization mal aplicada é o time gastar tempo investigando **por que o cache não
+invalida** ou **por que uma prop muda de identidade a cada render**. Quando o debugging (depuração) do cache domina, a
 memoization está no lugar errado.
 
 **Regra prática**: medir antes de memoizar. Otimização sem medição é crença, não engenharia.
 
 ---
 
-## Fronteiras de módulo e regras de import
+## Limites de módulo e regras de import
 
-Módulos são as unidades que o sistema empacota, testa e versiona. As fronteiras entre eles
+Módulos são as unidades que o sistema empacota, testa e versiona. Os limites entre eles
 determinam o que pode depender de quê. Sem regras explícitas, o grafo de dependências vira um
 emaranhado: mudança em um módulo distante quebra um módulo qualquer sem que o autor saiba.
 
@@ -251,11 +252,11 @@ tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuo
 testes e build a cada commit) não degradam; as confiadas na disciplina humana erodem em dois
 sprints.
 
-### Sinais de fronteira errada
+### Sinais de limite errado
 
 - O mesmo domínio aparece em três features diferentes, sempre ligeiramente diferente. Falta um
   módulo compartilhado.
-- Uma mudança em uma feature exige tocar arquivos em outras quatro. Fronteira vazando.
+- Uma mudança em uma feature exige tocar arquivos em outras quatro. Limite vazando.
 - Um módulo `shared/utils` cresce indefinidamente e vira lixeira. Falta naming (nomenclatura) por domínio:
   `shared/formatting`, `shared/validation`, não `shared/utils`.
 - O grafo de dependências tem ciclos. Qualquer ciclo é um bug de design; quebrar exige inverter uma

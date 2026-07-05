@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.21] - 2026-07-05
+
+### Fixed
+
+- Revisão writing soul da prosa explicativa, tasks T1 e T2 completas: README raiz + `docs/shared/` inteiro (architecture 13, platform 13, standards 8, process 7, mobile 6), 44 arquivos alterados, blocos de código Good/Bad intactos. Padrões aplicados: em dashes eliminados; **fronteira → limite** com ajuste de gênero (null-safety, testing, methodologies — diretiva boundary→limite agora sem pendências em shared/); traduções literais substituídas por comportamentais (worker ≠ trabalhador → "processo que executa tarefas em segundo plano", Data Mart ≠ "mercado de dados", watchdog ≠ "cão de guarda", deadlock → "impasse entre transações", kill switch → "chave de emergência", Handler → "processador de requisição"); diagramas verticais com `↓` convertidos para lineares (observability, offline-first, permissions); expansões unificadas (UI = Interface do Usuário, URL = Localizador Uniforme de Recurso, CPU = Unidade Central de Processamento, LLM = Modelo de Linguagem de Grande Escala, CNAB/SPED sem duplicação); glosses repetidos removidos (ARIA, BOM, EOF, pipeline, pre-commit); PT-em-bold corrigido fora do alcance do audit (authentication/authorization em security, cyclomatic complexity em testing, boundary em null-safety). Defeitos substantivos encontrados pela revisão: link para `.ai/skills/` (gitignored, quebrado no clone e no site) em configuration.md redirecionado para `principles.md#dependências-explícitas`; tabela de estratégias de cache em performance.md com header de 2 colunas e linhas de 3; semântica invertida em "TTL curto = cache quente" (performance.md) e no princípio servidor/cliente de consultas NoSQL (database.md); typos "precisa muda" (configuration.md) e "negocio" (governance.md); "pra" → "para" e gloss triplo do TBD (git.md). Workflow `docs.yml` passa a publicar `sql` no site (4/18 linguagens). Audit clean: 2510 blocos Good em 391 arquivos; tests 38/38; audit-concepts shared 55 OK / 0 violações
+
 ## [1.28.20] - 2026-07-05
 
 ### Fixed

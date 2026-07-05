@@ -2,17 +2,17 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma de mensagens e responde a eventos em nome de um usuário ou serviço. O bot recebe eventos da plataforma (mensagem, reação, **callback** (retorno de interação)), executa lógica e devolve uma resposta. A plataforma age como intermediária: o **bot** nunca fala diretamente com o usuário final, a mensagem passa pelo **gateway** (ponto de entrada da plataforma) em ambas as direções.
+Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma de mensagens e responde a eventos em nome de um usuário ou serviço. O bot recebe eventos da plataforma (mensagem, reação, **callback** (retorno de interação)), executa lógica e devolve uma resposta. A plataforma age como intermediária: o **bot** nunca fala diretamente com o usuário final; a mensagem passa pelo **gateway** (ponto de entrada da plataforma) em ambas as direções.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
 | **Bot** (agente automatizado) | Programa que interage com usuários em nome de um serviço via plataforma de mensagens |
-| **Gateway** (porta de entrada) | Servidor da plataforma que recebe eventos e os entrega ao bot |
+| **Gateway** (ponto de entrada da plataforma) | Servidor da plataforma que recebe eventos e os entrega ao bot |
 | **Event** (evento) | Unidade de dado que o gateway envia ao bot: nova mensagem, reação, callback de botão |
 | **Command** (comando) | Instrução enviada pelo usuário, tipicamente prefixada com `/` ou uma palavra-chave |
-| **Handler** (tratador) | Função registrada para processar um tipo específico de evento ou comando |
+| **Handler** (processador de evento ou comando) | Função registrada para processar um tipo específico de evento ou comando |
 | **Webhook** (callback HTTP) | Endpoint HTTP do bot onde a plataforma envia eventos via POST; o bot fica passivo |
 | **Polling** (consulta periódica) | Bot consulta o gateway em intervalo fixo para buscar novos eventos; o bot fica ativo |
 | **Rate limit** (limite de taxa) | Número máximo de requisições que o bot pode enviar à plataforma por unidade de tempo |
@@ -66,7 +66,7 @@ bot/
 
 ## Session State
 
-Bots stateless (sem estado) respondem a cada mensagem de forma independente. Para fluxos com múltiplas etapas (ex: wizard de cadastro), o bot precisa de sessão: guardar onde o usuário está no fluxo entre mensagens.
+Bots **stateless** (sem estado) respondem a cada mensagem de forma independente. Para fluxos com múltiplas etapas (ex: wizard de cadastro), o bot precisa de sessão: guardar onde o usuário está no fluxo entre mensagens.
 
 Opções por complexidade:
 
@@ -85,7 +85,7 @@ Toda plataforma impõe limites de envio. Exceder o limite resulta em erro `429 T
 Padrões para respeitar rate limits:
 
 - **Fila de envio**: enfileirar mensagens de saída e processar com intervalo mínimo entre envios
-- **Retry com backoff exponencial**: ao receber `429`, aguardar intervalo crescente antes de retentar
+- **Retry com backoff exponencial**: ao receber `429`, aguardar intervalo crescente antes de tentar de novo
 - **Bulk operations**: agrupar notificações em vez de enviar uma por evento
 
 Nunca enviar mensagens em loop sem controle de intervalo. Em notificações em massa, processar em lotes com pausa entre lotes.
@@ -106,6 +106,6 @@ Shutdown abrupto pode deixar eventos sem resposta e usuários em estados de sess
 
 ## Veja também
 
-- [bots-advanced.md](bots-advanced.md): plataformas: Discord, Telegram, WhatsApp, Slack
-- [messaging.md](messaging.md): mensageria assíncrona interna: broker, queue, pub/sub
+- [bots-advanced.md](bots-advanced.md): guia por plataforma (Discord, Telegram, WhatsApp, Slack)
+- [messaging.md](messaging.md): mensageria assíncrona interna (broker, queue, pub/sub)
 - [api-design.md](api-design.md): design de endpoints para webhook receivers

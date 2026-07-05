@@ -112,7 +112,7 @@ Leitor de tela lê o que o HTML diz, não o que a tela mostra. Um `<div>` com vi
 
 ### ARIA
 
-ARIA (Accessible Rich Internet Applications, Aplicações de Internet Ricas Acessíveis) complementa a semântica nativa para padrões complexos: menus, tooltips (dicas flutuantes), modais, comboboxes (campos de seleção combinados).
+ARIA complementa a semântica nativa para padrões complexos: menus, **tooltips** (dicas flutuantes), modais, **comboboxes** (campos de seleção combinados).
 
 A regra de uso é simples: ARIA é o último recurso. Preferir elemento HTML semântico nativo antes de qualquer atributo ARIA. ARIA mal usado é pior que nenhum ARIA.
 

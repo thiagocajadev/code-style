@@ -41,9 +41,9 @@ Patterns de design são soluções consolidadas para problemas recorrentes: voca
 | [**Command**](#command) | Operação precisa ser enfileirada ou auditada | Fila de tarefas, undo/redo |
 | [**State**](#state) | Comportamento muda por estado interno | Entidades com ciclo de vida (pedidos, contratos) |
 | [**Template Method**](#template-method) | Algoritmo fixo com etapas variáveis por tipo | Relatórios, importações com formatos diferentes |
-| [**CQRS**](#cqrs-command-query-responsibility-segregation) | Write model e read model divergem | Relatórios complexos, alto volume de leitura |
-| [**AI-Driven**](#ai-driven-development-desenvolvimento-assistido-por-ia) | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
-| [**SDD**](#sdd-spec-driven-development-desenvolvimento-orientado-a-especificações) | Spec antes de código | Decisões de design sem custo de implementação |
+| [**CQRS**](#cqrs) | Write model e read model divergem | Relatórios complexos, alto volume de leitura |
+| [**AI-Driven**](#ai-driven-development) | Aceleração de geração com revisão crítica | Ciclos rápidos com spec bem definida |
+| [**SDD**](#sdd) | Spec antes de código | Decisões de design sem custo de implementação |
 
 _Especializados, com aplicabilidade mais restrita e sem seção dedicada:_
 
@@ -181,7 +181,7 @@ Config (instância única)
   → nunca reinstanciada
 ```
 
-**Quando usar**: estado genuinamente global e sem variação por contexto: pool de conexões, configuração da aplicação, logger compartilhado. Evitar em lógica de domínio: oculta dependências e dificulta testes.
+**Quando usar**: estado global por natureza, sem variação por contexto: pool de conexões, configuração da aplicação, logger compartilhado. Evitar em lógica de domínio: oculta dependências e dificulta testes.
 
 ## Adapter
 
@@ -268,7 +268,7 @@ State extrai cada estado em sua própria implementação:
 ```
 Order
   ├── PendingState   → permite: pay(), cancel()
-  ├── SettledState      → permite: ship(), refund()
+  ├── SettledState   → permite: ship(), refund()
   └── ShippedState   → permite: deliver(), return()
 ```
 
@@ -294,7 +294,7 @@ A sequência é controlada pela base. As variações ficam nas subclasses sem du
 
 **Quando usar**: algoritmos com estrutura fixa e etapas variáveis por tipo: geração de relatórios, processamento de arquivos, pipelines de importação com formatos diferentes.
 
-## CQRS: Command Query Responsibility Segregation
+## CQRS
 
 > Não confundir com **CQS** (Command-Query Separation), que é um princípio de _função_: a função retorna valor ou produz efeito, nunca os dois. CQRS é um padrão _arquitetural_ que separa modelos inteiros de escrita e leitura.
 
@@ -320,7 +320,7 @@ O **write model** (modelo de escrita) aplica as regras de domínio e persiste o 
 
 **Quando usar**: sistemas onde o modelo de leitura e o de escrita divergem de forma significativa: relatórios complexos, dashboards de alto volume, auditoria, histórico de eventos. Em CRUDs simples, CQRS é overhead sem benefício.
 
-## AI-Driven Development (Desenvolvimento Assistido por IA)
+## AI-Driven Development
 
 Desenvolvimento assistido por **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) integrado ao ciclo de engenharia: geração de código, revisão, sugestão de refactoring e navegação em bases de código grandes.
 
@@ -336,9 +336,9 @@ Nesse modelo, a IA acelera a geração; o engenheiro mantém a responsabilidade 
 
 **Quando usar**: qualquer tarefa onde o contrato já está definido. A IA produz melhor quando sabe o que deve entregar; tarefas sem spec clara geram código sem critério de aceitação.
 
-## SDD: Spec-Driven Development (Desenvolvimento Orientado a Especificações)
+## SDD
 
-A spec (especificação) define entradas, saídas e comportamentos esperados antes de qualquer linha de implementação. O código serve a spec, não o contrário.
+**SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações): a spec (especificação) define entradas, saídas e comportamentos esperados antes de qualquer linha de implementação. O código serve a spec, não o contrário.
 
 Ciclo:
 

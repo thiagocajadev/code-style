@@ -25,12 +25,12 @@
 
 # Code Style
 
-Olá Dev! Nesse projeto documento meu **code style** (estilo de código) e
+Olá Dev! Neste projeto documento meu **code style** (estilo de código) e
 **setup** (configurações). Demonstro convenções, padrões e boas práticas que
 sigo.
 
 > [!NOTE]  
-> Busco aprimoramento contínuo. Esse guia é um reflexo do que pratico hoje, não
+> Busco aprimoramento contínuo. Este guia é um reflexo do que pratico hoje, não
 > um conjunto fechado de regras. Podem existir princípios adicionais ou que se
 > sobrepõem dependendo do contexto: tipo de projeto, cultura da empresa ou
 > alinhamento com outros profissionais. O entendimento coletivo sempre
@@ -41,22 +41,21 @@ pelo exemplo).
 
 ## O que eu penso sobre código
 
-Penso como um **Resolvedor de Problemas**. Tenho que aplicar as melhores
-práticas, igual a um **staff engineer** (engenheiro sênior de alto nível),
-focando mais no **ciclo de vida completo do software** do que na implementação
-imediata.
+Penso como um **resolvedor de problemas**. Aplico as melhores práticas como um
+**staff engineer** (engenheiro sênior de alto nível): o foco está no **ciclo de
+vida completo do software**, não só na implementação imediata.
 
-O **Código serve o time** e a **Governança** cobre todo o ciclo. A
-**Complexidade tem que ser abstraída** pra todos entenderem (do não técnico ao
-especialista), abrindo espaço para novas ideias e melhorias.
+O código serve o time e a governança cobre todo o ciclo. Abstraio a
+complexidade para que todos entendam, do não técnico ao especialista. Isso abre
+espaço para novas ideias e melhorias.
 
 Confira os detalhes em [Governança](docs/shared/process/governance.md).
 
-## Como eu leio e escrevo código.
+## Como eu leio e escrevo código
 
-Os fundamentos aqui são agnósticos de linguagem. Escolhi usar JavaScript como
-linguagem para ilustrar os conceitos. Os mesmos princípios se aplicam a qualquer
-**stack** (combinação de tecnologias).
+Os fundamentos aqui são agnósticos de linguagem. Escolhi JavaScript para
+ilustrar os conceitos. Os mesmos princípios se aplicam a qualquer **stack**
+(combinação de tecnologias).
 
 > [!NOTE]  
 > Ao trabalhar em equipe, a melhor abordagem sempre é a **convenção definida
@@ -66,11 +65,12 @@ linguagem para ilustrar os conceitos. Os mesmos princípios se aplicam a qualque
 
 Cada princípio pode ser aplicado em qualquer linguagem.
 
-Organizados como checklist de revisão, do mais impactante ao mais granular:
+Estão organizados como checklist de revisão, do mais impactante ao mais
+granular:
 
-- **Forma** — avalia a estrutura da função de fora para dentro
-- **Legibilidade** — analisa fluxo, espaçamento e nomes linha a linha
-- **Controle de Qualidade** — verifica as garantias de robustez: estado, erros,
+- **Forma:** avalia a estrutura da função de fora para dentro
+- **Legibilidade:** analisa fluxo, espaçamento e nomes linha a linha
+- **Controle de Qualidade:** verifica as garantias de robustez: estado, erros,
   async e testes
 
 <details>
@@ -78,21 +78,21 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Forma** — estrutura e narrativa da função
+**Forma:** estrutura e narrativa da função
 
 | Princípio                                                                                                  | Descrição                                                        |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [Escrita em inglês](docs/javascript/conventions/naming.md#nomes-em-português)                              | Código universal, nomes curtos e sem ambiguidade                 |
 | [Código narrativo](docs/javascript/conventions/functions.md#god-function-múltiplas-responsabilidades)     | O código conta a história, sem precisar de comentários           |
-| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#ponto-de-entrada-limpo)                  | Caller de uma linha — o quê, não o como                          |
-| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical-parâmetros)                    | Até 3 parâmetros por linha — 4+ usa objeto                       |
-| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function-múltiplas-responsabilidades) | Chamada visível antes dos detalhes — top-down                    |
-| [Detalhes abaixo](docs/javascript/conventions/functions.md#direct-return)                                  | Helpers ficam abaixo do orquestrador — step-down rule            |
-| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                    | Saída de uma linha — o retorno nomeia o resultado, não o computa |
+| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#ponto-de-entrada-limpo)                  | Caller de uma linha: o quê, não o como                           |
+| [Estilo vertical](docs/javascript/conventions/functions.md#estilo-vertical-parâmetros)                    | Até 3 parâmetros por linha (4+ usa objeto)                       |
+| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function-múltiplas-responsabilidades) | Chamada visível antes dos detalhes (top-down)                    |
+| [Detalhes abaixo](docs/javascript/conventions/functions.md#direct-return)                                  | Helpers ficam abaixo do orquestrador (step-down rule)            |
+| [Sem lógica no retorno](docs/javascript/conventions/functions.md#sem-lógica-no-retorno)                    | Saída de uma linha: o retorno nomeia o resultado, não o computa  |
 
 <br>
 
-**Legibilidade** — fluxo, densidade visual e nomes
+**Legibilidade:** fluxo, densidade visual e nomes
 
 | Princípio                                                                                  | Descrição                                                            |
 | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
@@ -100,12 +100,12 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Fluxo linear](docs/javascript/conventions/control-flow.md#aninhamento-em-cascata)         | Aninhamento em cascata substituído por fluxo plano                   |
 | [Baixa densidade visual](docs/javascript/conventions/functions.md#baixa-densidade-visual)  | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Nomes expressivos](docs/javascript/conventions/naming.md#identificadores-sem-significado) | Variáveis e funções que dispensam explicação                         |
-| [Código como documentação](docs/javascript/conventions/naming.md#código-como-documentação) | Nomes substituem comentários — comentários mentem                    |
+| [Código como documentação](docs/javascript/conventions/naming.md#código-como-documentação) | Nomes substituem comentários, porque comentários mentem              |
 | [Sem valores mágicos](docs/javascript/conventions/variables.md#evitar-valores-mágicos)     | Constantes nomeadas no lugar de números e strings soltos             |
 
 <br>
 
-**Controle de Qualidade** — estado, erros, async e testes
+**Controle de Qualidade:** estado, erros, async e testes
 
 | Princípio                                                                                                                    | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
@@ -117,9 +117,9 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                           | Validar cedo, interromper fluxo inválido                     |
 | [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                   | Evitar exceções como controle de fluxo                       |
 | [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror-abstração-centralizada)           | Respostas padronizadas, sempre o mesmo formato               |
-| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror-abstração-centralizada) | Classes de erro tipadas, try/catch nas fronteiras            |
+| [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror-abstração-centralizada) | Classes de erro tipadas, try/catch nos limites do sistema            |
 | [I/O assíncrono](docs/javascript/conventions/advanced/async.md#callback-hell)                                                | `async/await`, sem bloqueio                                  |
-| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas-aaa)                                 | AAA — fases explícitas; assert limpo — sem expressões inline |
+| [Testes estruturados](docs/javascript/conventions/advanced/testing.md#fases-misturadas-aaa)                                 | AAA com fases explícitas; assert limpo, sem expressões inline |
 
 </details>
 
@@ -135,19 +135,19 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | Linguagem                                         | Descrição                                                                      |
 | ------------------------------------------------- | ------------------------------------------------------------------------------ |
 | [HTML](docs/html/README.md)                       | Semântica, acessibilidade, performance, SEO, jQuery                            |
-| [JavaScript](docs/javascript/README.md)           | Fundamentos ilustrados com JS — variáveis, funções, fluxo, async               |
+| [JavaScript](docs/javascript/README.md)           | Fundamentos ilustrados com JS: variáveis, funções, fluxo, async                |
 | [TypeScript](docs/typescript/README.md)           | Tipos, interfaces, narrowing, generics, null-safety                            |
 | [CSS](docs/css/README.md)                         | BEM, custom properties, mobile-first, Tailwind, Bootstrap                      |
-| [C#](docs/csharp/README.md)                       | Convenções C#/.NET — records, Result\<T\>, async, LINQ                         |
-| [VB.NET](docs/vbnet/README.md)                    | Convenções VB.NET/.NET Framework 4.8 — legado, async, LINQ                     |
-| [Python](docs/python/README.md)                   | Convenções Python 3.14 — dataclasses, async, Pydantic, match/case              |
-| [Go](docs/go/README.md)                           | Convenções Go 1.26 — structs, interfaces, goroutines, error values             |
-| [PHP](docs/php/README.md)                         | Convenções PHP 8.4 — readonly, enums, traits, Fibers, PSR-12                   |
-| [Kotlin](docs/kotlin/README.md)                   | Convenções Kotlin 2.2 — coroutines, sealed classes, K2 compiler                |
-| [Swift](docs/swift/README.md)                     | Convenções Swift 6.1 — actors, async/await, Sendable, strict concurrency       |
-| [Dart](docs/dart/README.md)                       | Convenções Dart 3.7 — null safety, records, streams, sealed classes            |
-| [Flutter](docs/dart/frameworks/flutter/README.md) | Framework Flutter 3.29 — widgets, GoRouter, Riverpod, platform channels        |
-| [Java](docs/java/README.md)                       | Convenções Java 25 LTS — records, sealed classes, virtual threads, Spring Boot |
+| [C#](docs/csharp/README.md)                       | Convenções C#/.NET: records, Result\<T\>, async, LINQ                          |
+| [VB.NET](docs/vbnet/README.md)                    | Convenções VB.NET/.NET Framework 4.8: legado, async, LINQ                      |
+| [Python](docs/python/README.md)                   | Convenções Python 3.14: dataclasses, async, Pydantic, match/case               |
+| [Go](docs/go/README.md)                           | Convenções Go 1.26: structs, interfaces, goroutines, error values              |
+| [PHP](docs/php/README.md)                         | Convenções PHP 8.4: readonly, enums, traits, Fibers, PSR-12                    |
+| [Kotlin](docs/kotlin/README.md)                   | Convenções Kotlin 2.2: coroutines, sealed classes, K2 compiler                 |
+| [Swift](docs/swift/README.md)                     | Convenções Swift 6.1: actors, async/await, Sendable, strict concurrency        |
+| [Dart](docs/dart/README.md)                       | Convenções Dart 3.7: null safety, records, streams, sealed classes             |
+| [Flutter](docs/dart/frameworks/flutter/README.md) | Framework Flutter 3.29: widgets, GoRouter, Riverpod, platform channels         |
+| [Java](docs/java/README.md)                       | Convenções Java 25 LTS: records, sealed classes, virtual threads, Spring Boot  |
 | [SQL](docs/sql/README.md)                         | Formatação e nomenclatura para SQL Server, PostgreSQL e SQLite                 |
 | [NoSQL](docs/nosql/README.md)                     | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch                            |
 
@@ -160,7 +160,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Processo** — como o time trabalha e entrega
+**Processo:** como o time trabalha e entrega
 
 | Tópico                                                                        | Descrição                                                                                     |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
@@ -174,7 +174,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Arquitetura** — como o código é estruturado
+**Arquitetura:** como o código é estruturado
 
 | Tópico                                                                         | Descrição                                                                                     |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
@@ -182,7 +182,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [System Design](docs/shared/architecture/system-design.md)                     | Requisitos funcionais e não-funcionais, decomposição, trade-offs essenciais                   |
 | [System Design (avançado)](docs/shared/architecture/system-design-advanced.md) | SLA/SLO/SLI, CAP, PACELC, modelos de consistência, sharding, replicação e capacity planning   |
 | [Architecture](docs/shared/architecture/architecture.md)                       | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas                                 |
-| [Component Architecture](docs/shared/architecture/component-architecture.md)   | Composição, container/presentational, estado, memoization, fronteiras                         |
+| [Component Architecture](docs/shared/architecture/component-architecture.md)   | Composição, container/presentational, estado, memoization, limites de módulo                         |
 | [Patterns](docs/shared/architecture/patterns.md)                               | Result, Factory, Repository, Strategy, Observer, Builder, Decorator, CQRS, AI-Driven, SDD     |
 | [Entity Modeling](docs/shared/architecture/entity-modeling.md)                 | Tamanho saudável, value objects, strongly-typed IDs, BaseEntity, cardinalidade, 1:N e N:N     |
 | [Transactions](docs/shared/architecture/transactions.md)                       | Boundary transacional, Unit of Work, locking otimista/pessimista, saga, eventual consistency  |
@@ -194,13 +194,13 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Qualidade** — como o código é escrito
+**Qualidade:** como o código é escrito
 
 | Tópico                                                    | Descrição                                                                                                      |
 | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | [Control Flow](docs/shared/standards/control-flow.md)     | Quando usar cada ferramenta de fluxo: tabela semântica simples → complexo                                      |
 | [Visual Density](docs/shared/standards/visual-density.md) | Densidade visual agnóstica de linguagem: princípios e regras                                                   |
-| [Null Safety](docs/shared/standards/null-safety.md)       | Fronteira vs interior, contratos de entrada e schema evolution                                                 |
+| [Null Safety](docs/shared/standards/null-safety.md)       | Limite vs interior, contratos de entrada e schema evolution                                                 |
 | [Testing](docs/shared/standards/testing.md)               | AAA, no logic no assert, testes unitários e de integração                                                      |
 | [Observability](docs/shared/standards/observability.md)   | Logging estruturado, níveis, PII, correlation ID                                                               |
 | [UI/UX](docs/shared/standards/ui-ux.md)                   | Espaçamento, tipografia, temas claro/escuro, acessibilidade e estados                                          |
@@ -209,7 +209,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Plataforma** — infraestrutura e configuração
+**Plataforma:** infraestrutura e configuração
 
 | Tópico                                                 | Descrição                                                                                            |
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
@@ -219,7 +219,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 | [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida                                     |
 | [Performance](docs/shared/platform/performance.md)     | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O               |
 | [Database](docs/shared/platform/database.md)           | SQL vs NoSQL, tuning de queries, operações em lote, plano de execução e troubleshooting              |
-| [NoSQL](docs/nosql/README.md)                          | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch — convenções, SGBD e scripts                     |
+| [NoSQL](docs/nosql/README.md)                          | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch: convenções, SGBD e scripts                      |
 | [ETL e BI](docs/shared/platform/etl-bi.md)             | OLTP vs OLAP, pipeline de dados, extração incremental, ELT, modelagem dimensional, SCD e BI          |
 | [Integrations](docs/shared/platform/integrations.md)   | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial                           |
 | [Messaging](docs/shared/platform/messaging.md)         | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure                       |
@@ -228,7 +228,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**IA (Inteligência Artificial)** — modelos, agentes e integração com LLMs
+**IA (Inteligência Artificial):** modelos, agentes e integração com LLMs
 
 | Tópico                                             | Descrição                                                                                             |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
@@ -243,7 +243,7 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 <br>
 
-**Mobile** — fundamentos cross-platform para Android, iOS e Flutter
+**Mobile:** fundamentos cross-platform para Android, iOS e Flutter
 
 | Tópico                                                     | Descrição                                                        |
 | ---------------------------------------------------------- | ---------------------------------------------------------------- |

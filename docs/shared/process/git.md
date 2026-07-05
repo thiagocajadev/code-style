@@ -17,12 +17,11 @@ de entrega.
 
 ## Branches
 
-**Trunk-based development** (TBD / Desenvolvimento baseado no tronco / fluxo principal): é uma
-estratégia de desenvolvimento de software onde a `main` (fluxo principal) é a **fonte única da
-verdade**.
+**Trunk-based development** (TBD, desenvolvimento baseado no tronco) é uma estratégia de
+desenvolvimento de software onde a `main` (fluxo principal) é a **fonte única da verdade**.
 
-As Branches (cópias) derivam da `main`. Essas cópias devem existir por poucos dias, servindo pra
-desenvolver melhorias e correções, voltando pra `main` via Pull Request (PR / Pedido de Integração).
+As branches derivam da `main`. Essas cópias devem existir por poucos dias, para desenvolver
+melhorias e correções, e voltam à `main` via **PR** (Pull Request, Pedido de Integração).
 
 ```
 main → branch → commits → PR → review → merge → main
@@ -68,7 +67,7 @@ refactor/payment-service-split
 
 ## Commits
 
-Uma ótima estratégia para nomear commits (registro das alterações) é o
+Uma boa estratégia para nomear commits é o
 [Conventional Commits](https://www.conventionalcommits.org/). Cada commit descreve **o que** mudou e
 **por que**, não como.
 

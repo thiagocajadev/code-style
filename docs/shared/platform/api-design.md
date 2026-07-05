@@ -5,7 +5,7 @@
 
 **API** (Application Programming Interface, Interface de Programação de Aplicações) é o contrato entre
 cliente e servidor. Um design bom padroniza quatro coisas: o pipeline de uma requisição, o contrato
-de entrada e saída, o shape (formato) da resposta e a semântica de verbos e status. Quando esses
+de entrada e saída, o **shape** (formato) da resposta e a semântica de verbos e status. Quando esses
 quatro pontos estão previsíveis, o cliente trata qualquer endpoint da mesma forma, e o servidor
 evolui sem quebrar integração.
 
@@ -15,6 +15,7 @@ evolui sem quebrar integração.
 |---|---|
 | **BFF** (Backend for Frontend, Backend para Frontend) | Camada de borda que serve um cliente específico, traduz domínio em contrato de transporte e isola regras de UI do core |
 | **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Tipo dedicado ao contrato externo, distinto da entidade de domínio, usado para request e response |
+| **Handler** (processador de requisição) | Função que orquestra um caso de uso e devolve `Result`, sem conhecer HTTP |
 | **Envelope** (envelope de resposta) | Estrutura padrão `{ data, meta }` que dá shape consistente a sucesso, erro, objeto único e coleção |
 | **Correlation ID** (identificador de correlação) | Id gerado na borda, propagado em `meta` e logs, que rastreia uma requisição ponta a ponta |
 | **Result** (resultado) | Tipo de domínio que carrega sucesso ou falha sem usar exceções; o controller traduz para HTTP no boundary |
@@ -53,8 +54,8 @@ O **BFF** (Backend for Frontend) é o único ponto que conhece HTTP. Qualquer co
 service, repository, fala domínio. Isso vale mesmo quando o projeto não tem microsserviços: o BFF é
 uma disciplina de camadas, não um deploy separado.
 
-O sinal de que o boundary foi respeitado é simples: se você renomeasse `HttpContext` para `Envelope`
-em todo o código e o handler continuasse funcionando, o boundary está no lugar.
+O teste é simples: renomeie `HttpContext` para `Envelope` em todo o código. Se o handler continua
+funcionando, o boundary está no lugar.
 
 <details>
 <summary>❌ Ruim: controller com acesso a banco e regra de negócio</summary>
@@ -205,8 +206,8 @@ app.post('/api/orders', async (httpRequest, httpResponse) => {
 });
 ```
 
-A validação acontece uma vez, na borda. O handler recebe um objeto já com tipos corretos e garante
-que qualquer objeto que chegue nele é válido.
+A validação acontece uma vez, na borda. O handler recebe um objeto com tipos corretos: tudo que
+chega até ele já passou pelo schema.
 
 </details>
 
@@ -406,7 +407,8 @@ async function handle(id, res) {
 }
 ```
 
-**Handler** (manipulador) acoplado a `res`. Não dá para reaproveitar em um **worker** (trabalhador) que lê da fila e não tem `res`.
+**Handler** acoplado a `res`. Não dá para reaproveitar em um **worker** (processo que executa
+tarefas em segundo plano) que lê da fila e não tem `res`.
 
 </details>
 

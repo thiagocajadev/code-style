@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Null tem um espaço definido: as fronteiras do sistema. O sintoma mais comum de uso incorreto é `?.`
+Null tem um espaço definido: os limites do sistema. O sintoma mais comum de uso incorreto é `?.`
 espalhado em todo o código como defesa preventiva. Isso é sinal de que os **contratos de entrada não
 estão fechados**.
 
@@ -13,40 +13,40 @@ A pergunta certa é _"esse null deveria chegar até aqui?"_
 | Conceito | O que é |
 |---|---|
 | **Null** (valor ausente) | Representa ausência de valor; comportamento varia entre linguagens |
-| **Fronteira** (boundary) | Ponto onde dados externos entram no sistema: request, resposta de API, leitura de banco |
-| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato externo que pode produzir nulls; checagem obrigatória na fronteira |
+| **boundary** (limite do sistema) | Ponto onde dados externos entram no sistema: request, resposta de API, leitura de banco |
+| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato externo que pode produzir nulls; checagem obrigatória no limite |
 | **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo onde requests trazem dados não confiáveis |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que cruza fronteira; banco, arquivo e rede são fontes de null |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que cruza o limite; banco, arquivo e rede são fontes de null |
 | **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) | Formato de serialização onde campos ausentes viram `null` ou `undefined` |
 
-## A regra: checa na fronteira, confia no interior
+## A regra: checa no limite, confia no interior
 
 O sistema tem dois territórios com regras diferentes:
 
 | Território    | O que é                                                                            | Regra                                        |
 | ------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Fronteira** | Onde dados de fora entram: request HTTP, resposta de API, leitura de banco, config | Checar. Normalizar. Rejeitar o inválido.     |
+| **Limite**    | Onde dados de fora entram: request HTTP, resposta de API, leitura de banco, config | Checar. Normalizar. Rejeitar o inválido.     |
 | **Interior**  | Domínio, serviços, funções de negócio                                              | Confiar no contrato. Sem checagem defensiva. |
 
 ```
-entrada externa → fronteira (checa + normaliza) → domínio (confia no contrato)
+entrada externa → limite (checa + normaliza) → domínio (confia no contrato)
 ```
 
-Null que chega no interior é um **bug de fronteira** que deve ser corrigido na entrada.
+Null que chega no interior é um **bug de limite** que deve ser corrigido na entrada.
 
-## O que é fronteira
+## O que é limite
 
-| Fronteira                      | Exemplos                                               |
+| Limite                         | Exemplos                                               |
 | ------------------------------ | ------------------------------------------------------ |
 | Entrada de request             | Body, query params, path params de uma requisição HTTP |
 | Resposta de API externa        | JSON de terceiros, webhooks                            |
 | Retorno de banco de dados      | `findById` que pode retornar null quando não encontra  |
 | Variáveis de ambiente / config | `process.env`, `appsettings.json`                      |
 
-## O que não é fronteira
+## O que não é limite
 
-Funções internas, serviços de domínio, cálculos: tudo que recebe dados **que já passaram pela
-fronteira**. Essas funções confiam que quem chamou já garantiu o contrato.
+Funções internas, serviços de domínio, cálculos: tudo que recebe dados **que já passaram pelo
+limite**. Essas funções confiam que quem chamou já garantiu o contrato.
 
 <details>
 <summary>❌ Ruim: interior checando null que não deveria existir</summary>
@@ -77,7 +77,7 @@ function calculateDiscount(order) {
 A diferença é **responsabilidade bem definida**. Quem chama `calculateDiscount` é responsável por
 passar um `Order` válido. Se não passar, é um bug de quem chamou.
 
-## Como fechar a fronteira
+## Como fechar o limite
 
 Três padrões resolvem a maioria dos casos:
 
@@ -150,11 +150,11 @@ contrato.
 ## Schema evolution: campo novo em tabela existente
 
 Quando uma regra de negócio muda e um campo novo entra no banco, os registros antigos ficam com null
-por compatibilidade. Esse null não deve vazar para o domínio: o repositório é a fronteira que
+por compatibilidade. Esse null não deve vazar para o domínio: o repositório é o limite que
 absorve esse caso.
 
 ```
-campo novo → registros antigos nulos → fronteira absorve → domínio nunca vê null
+campo novo → registros antigos nulos → limite absorve → domínio nunca vê null
 ```
 
 Três abordagens em ordem de preferência:
@@ -169,7 +169,7 @@ ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 -- registros existentes recebem 'normal' automaticamente
 ```
 
-**2. Normalização no repositório: null morre na fronteira**
+**2. Normalização no repositório: null morre no limite**
 
 Quando não é possível alterar o banco (legado, multi-tenant, sem controle da migration).
 
@@ -180,7 +180,7 @@ async function findById(id) {
 
   const order = {
     ...row,
-    priority: row.priority ?? "normal", // null histórico normalizado na fronteira
+    priority: row.priority ?? "normal", // null histórico normalizado no limite
   };
 
   return order;
@@ -205,7 +205,7 @@ function getEffectivePriority(order) {
 | Campo sem significado em registros antigos | Migration com `DEFAULT`                             |
 | Banco legado, sem controle da migration    | Normaliza no repositório                            |
 | Ausência tem significado de negócio        | Campo opcional, função de resolução centralizada    |
-| `?.` espalhado "porque pode ser null"      | Problema de fronteira: fechar em um dos casos acima |
+| `?.` espalhado "porque pode ser null"      | Problema de limite: fechar em um dos casos acima |
 
 ## Implementação por linguagem
 

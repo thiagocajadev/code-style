@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus outputs (saídas).
+Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus **outputs** (saídas).
 Logging estruturado, níveis consistentes, proteção de dados sensíveis e rastreamento de requisição
 são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
 
@@ -11,7 +11,7 @@ são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
 | Conceito | O que é |
 |---|---|
 | **Logging** (registro estruturado) | Emissão de eventos do sistema como objetos com campos nomeados, pesquisáveis por ferramentas de observabilidade |
-| **APM** (Application Performance Monitoring, monitoramento de performance de aplicações) | Rastreamento distribuído de requisições, latência e erros em toda a stack |
+| **APM** (Application Performance Monitoring, Monitoramento de Performance de Aplicações) | Rastreamento distribuído de requisições, latência e erros em toda a stack |
 | **Correlation ID** (identificador de correlação) | Identificador único gerado na borda e propagado por todos os logs de uma requisição para rastreamento ponta a ponta |
 | **Stack trace** (rastreamento de pilha) | Sequência de chamadas de função que levou a um erro |
 | **Runtime** (tempo de execução) | Período em que o processo está rodando; logs de nível `debug` são suprimidos em produção |
@@ -59,11 +59,7 @@ O correlation ID entra pelo header (cabeçalho) `X-Correlation-Id`; se ausente, 
 entry da requisição carrega esse ID. A resposta retorna o header ao cliente.
 
 ```
-Request → [middleware: extrai ou gera correlationId]
-                        ↓
-         [propaga para todos os log entries da request]
-                        ↓
-         [retorna X-Correlation-Id no response]
+Request → middleware extrai ou gera correlationId → propaga para todos os log entries → response retorna X-Correlation-Id
 ```
 
 ## Ferramentas
@@ -71,7 +67,7 @@ Request → [middleware: extrai ou gera correlationId]
 | Ferramenta | Uso primário |
 | --- | --- |
 | Pino / Serilog | Logging estruturado no runtime (tempo de execução) |
-| Datadog | Logs, métricas, **APM** (Application Performance Monitoring, monitoramento de performance de aplicações) distribuído |
+| Datadog | Logs, métricas, **APM** (Application Performance Monitoring, Monitoramento de Performance de Aplicações) distribuído |
 | Grafana + Loki | Dashboards (painéis), logs centralizados |
 | CloudWatch | Logs e métricas AWS-native |
 | New Relic | APM, distributed tracing (rastreamento distribuído), dashboards |

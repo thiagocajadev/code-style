@@ -12,7 +12,7 @@ O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além
 |---|---|
 | **event** (evento) | Fato que aconteceu no passado, registrado pelo agregado como parte do estado da operação |
 | **domain event** (evento de domínio) | Evento que circula dentro do mesmo **bounded context** (contexto delimitado); contrato interno, evoluível |
-| **integration event** (evento de integração) | Evento que atravessa fronteira de sistema ou contexto; contrato público, versionado, estável |
+| **integration event** (evento de integração) | Evento que atravessa limite de sistema ou contexto; contrato público, versionado, estável |
 | **aggregate root** (raiz do agregado) | Entidade que orquestra o agregado; ponto que registra eventos durante operações de escrita |
 | **event handler** (processador de evento) | Função ou objeto que recebe um evento e executa a reação correspondente |
 | **event bus** (barramento de eventos) | Componente que entrega eventos publicados aos handlers registrados; pode ser in-process, fila ou broker externo |
@@ -22,7 +22,7 @@ O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além
 | **schema versioning** (versionamento de esquema) | Disciplina de evoluir o formato do payload sem quebrar consumidores antigos (V1, V2 coexistem) |
 | **at-least-once delivery** (entrega ao menos uma vez) | Garantia de que o evento chega pelo menos uma vez; pode chegar mais, então handler é idempotente |
 | **idempotency** (idempotência, operação repetível sem efeito adicional) | Propriedade do handler de aplicar o mesmo evento múltiplas vezes com o mesmo resultado |
-| **DLQ** (Dead Letter Queue, fila de cartas mortas) | Fila para eventos que falharam todas as tentativas; permite inspeção manual sem travar o consumidor |
+| **DLQ** (Dead Letter Queue, fila de mensagens com falha persistente) | Fila para eventos que falharam todas as tentativas; permite inspeção manual sem travar o consumidor |
 | **eventual consistency** (consistência eventual) | Estado entre agregados converge no tempo após o evento; não é instantâneo |
 | **choreography** (coreografia) | Cada serviço reage a eventos sem coordenador central; acoplamento por contrato de evento |
 | **orchestration** (orquestração) | Um coordenador comanda os passos da operação; cada serviço recebe comando e responde |
@@ -32,11 +32,11 @@ O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além
 
 ## Domain event vs integration event
 
-Os dois carregam a palavra evento mas servem propósitos diferentes, e misturá-los gera dores específicas. A separação aparece cedo: quando o consumidor vive no mesmo processo que o produtor, o evento é de domínio; quando atravessa fronteira de processo ou contexto, é de integração.
+Os dois carregam a palavra evento mas servem propósitos diferentes, e misturá-los gera dores específicas. A separação aparece cedo: quando o consumidor vive no mesmo processo que o produtor, o evento é de domínio; quando atravessa limite de processo ou contexto, é de integração.
 
 **Domain event** circula dentro do mesmo bounded context. Schema é interno; evolui junto com o domínio; consumidores são módulos da mesma aplicação. Quando o agregado `Order` publica `OrderSettled`, quem reage (estoque, e-mail, métrica) faz parte do mesmo modelo de domínio. Trocar um campo de `OrderSettled` exige tocar nos consumidores, mas todos vivem no mesmo repositório, com o mesmo deploy.
 
-**Integration event** atravessa a fronteira. Schema é contrato público; evolui com cuidado; consumidores podem ser outros serviços, parceiros, jobs externos. `OrderSettled` que vai para o sistema de **BI** (Business Intelligence) ou para um **ERP** (Enterprise Resource Planning) parceiro vira contrato; mudar formato sem versionar quebra integração que não está no seu radar.
+**Integration event** atravessa o limite. Schema é contrato público; evolui com cuidado; consumidores podem ser outros serviços, parceiros, jobs externos. `OrderSettled` que vai para o sistema de **BI** (Business Intelligence) ou para um **ERP** (Enterprise Resource Planning) parceiro vira contrato; mudar formato sem versionar quebra integração que não está no seu radar.
 
 <details>
 <summary>❌ Ruim: o mesmo evento atende uso interno e externo, schema vai engordando</summary>
@@ -216,7 +216,7 @@ A consequência: novos casos de uso ganham eventos automaticamente. Adicionar `o
 
 Eventos só viram públicos depois que a transação do agregado confirma. Publicar antes do commit é apostar que a transação vai concluir; publicar fora da transação é apostar que o broker não vai falhar. As duas apostas perdem cedo.
 
-A ferramenta que resolve sem aposta é o **outbox**: o evento é gravado no banco, na mesma transação que persiste o agregado. Um worker separado lê o outbox e publica no broker. Se o worker falhar, o evento fica no outbox até a próxima tentativa. Se o broker falhar, mesmo. Se o consumer falhar, a entrega é at-least-once, e a idempotência cobre o restante.
+A ferramenta que resolve sem aposta é o **outbox**: o evento é gravado no banco, na mesma transação que persiste o agregado. Um worker separado lê o outbox e publica no broker. Se o worker falhar, o evento fica no outbox até a próxima tentativa; o mesmo vale se o broker falhar. Se o consumer falhar, a entrega é at-least-once, e a idempotência cobre o restante.
 
 <details>
 <summary>❌ Ruim: publish síncrono dentro da transação</summary>

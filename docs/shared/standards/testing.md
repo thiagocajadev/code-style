@@ -96,7 +96,7 @@ O custo é o setup: precisam de ambiente, são mais lentos e têm mais variávei
 | ----------------- | ---------------------------------------------------- |
 | Velocidade        | Baixa: com I/O real                                  |
 | Isolamento        | Parcial: envolve infraestrutura                      |
-| Cobertura natural | Fronteiras entre componentes e sistemas externos     |
+| Cobertura natural | Limites entre componentes e sistemas externos        |
 | Quando falha      | Indica problema na integração, não na lógica isolada |
 
 Um erro frequente é usar mocks extensivos para simular o banco em testes
@@ -112,7 +112,7 @@ com infraestrutura real. Os dois são necessários e se complementam.
 
 ```
 lógica isolada (funções, cálculos, validações) → unitário
-fronteira com I/O real (banco, rede, fila)     → integração
+limite com I/O real (banco, rede, fila)        → integração
 ```
 
 | Cenário                                        | Tipo certo |
@@ -126,7 +126,7 @@ fronteira com I/O real (banco, rede, fila)     → integração
 
 ## Complexidade ciclomática
 
-**Complexidade ciclomática** (cyclomatic complexity) mede o número de caminhos
+**Cyclomatic complexity** (complexidade ciclomática) mede o número de caminhos
 independentes em uma função. A complexidade mínima é 1 (linha reta); cada `if`,
 `else if`, `case`, loop, `&&`, `||` e `catch` soma +1.
 

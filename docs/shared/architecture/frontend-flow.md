@@ -154,7 +154,7 @@ const orderSchema = z.object({
 
 </details>
 
-Validação no cliente é **UX** (User Experience, experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (fronteira) de segurança. Nunca confia no que veio do cliente. As duas sempre executam.
+Validação no cliente é **UX** (User Experience, experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (limite) de segurança: o servidor nunca confia no que veio do cliente. As duas sempre executam.
 
 O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) isolado:
 
@@ -194,7 +194,7 @@ Erros por formulário ficam no escopo do `<form>`, adjacentes ao botão de submi
 
 ### Submissão in-flight (em voo)
 
-O formulário fica desabilitado durante a requisição. Não apenas o botão de submit: todos os campos. Previne double-submit (envio duplicado) e comunica estado ao usuário. `<fieldset disabled>` é a forma mais acessível: o atributo se propaga para todos os inputs filhos sem precisar desabilitar cada um individualmente.
+O formulário fica desabilitado durante a requisição. Não apenas o botão de submit: todos os campos. Desabilitar tudo previne double-submit (envio duplicado) e comunica o estado ao usuário. `<fieldset disabled>` é a forma mais acessível: o atributo se propaga para todos os inputs filhos sem precisar desabilitar cada um individualmente.
 
 ### Optimistic updates
 
@@ -202,7 +202,7 @@ Optimistic update altera o estado local imediatamente, antes da confirmação do
 
 Usar quando: a alteração é de baixo risco, reversível, e o servidor raramente rejeita. Exemplos: favoritar, reordenar, marcar como lido.
 
-Não usar em: formulários com validação de negócio complexa, operações financeiras, fluxos irreversíveis, ou onde o servidor produz dados que o cliente não consegue prever: IDs gerados, campos calculados, timestamps.
+Não usar em: formulários com validação de negócio complexa, operações financeiras, fluxos irreversíveis, ou onde o servidor produz dados que o cliente não consegue prever (IDs gerados, campos calculados, timestamps).
 
 O update otimista substitui o spinner de loading (carregamento), não o tratamento de erro. O caminho de falha sempre existe.
 

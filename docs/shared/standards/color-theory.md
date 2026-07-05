@@ -97,7 +97,7 @@ Combinar os dois (texto escuro frio sobre fundo claro quente) produz separação
 
 ### Espaço em branco como cor
 
-O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em **UI** (User Interface, interface do usuário) ou em código, agrupamento por respiro é a estrutura que guia a leitura.
+O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em **UI** (User Interface, Interface do Usuário) ou em código, agrupamento por respiro é a estrutura que guia a leitura.
 
 Não tente preencher todos os espaços. Interface sem respiro tem o mesmo problema que código sem linhas em branco entre grupos: o olho não sabe onde uma seção termina e outra começa.
 

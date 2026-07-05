@@ -17,7 +17,7 @@ Arquitetura é a decisão de como organizar o código para que o sistema possa c
 | Conceito | O que é |
 |---|---|
 | **Vertical Slice** (fatia vertical) | Arquitetura que organiza o código por feature, agrupando tudo que pertence a uma funcionalidade na mesma pasta |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
 | **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
 | **TDD** (Test-Driven Development, Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
 | **Blast radius** (raio de impacto) | Extensão do sistema afetada por uma alteração ou falha |
@@ -58,9 +58,9 @@ features/
     logging/
 ```
 
-Cada slice é independente: adicionar uma feature é adicionar uma pasta. Mudar uma feature toca apenas os arquivos daquela pasta. Mudanças ficam contidas na pasta da feature.
+Cada slice é independente: adicionar uma feature é adicionar uma pasta. Mudar uma feature toca apenas os arquivos daquela pasta.
 
-O custo é o compartilhamento: código verdadeiramente comum (autenticação, logging, infraestrutura) precisa de uma camada `shared/` bem definida. Sem isso, duplicação aparece entre os slices.
+O custo é o compartilhamento: código comum a todos os slices (autenticação, logging, infraestrutura) precisa de uma camada `shared/` bem definida. Sem isso, duplicação aparece entre os slices.
 
 **Melhor para**: sistemas com muitas features independentes, times que trabalham em paralelo em diferentes domínios, projetos que crescem por adição de funcionalidades.
 
@@ -120,7 +120,7 @@ Trabalhar em código legado tem regras diferentes:
 
 **Mudanças cirúrgicas.** O blast radius (raio de impacto) de uma alteração em código legado é difícil de mapear. Refatorar enquanto conserta um bug mistura riscos. O ideal é: conserta o bug, valida, refatora separado.
 
-**Testes antes de tocar.** Antes de alterar uma função sem testes, escreva um teste que capture o comportamento atual, mesmo que o comportamento pareça errado. Isso dá uma rede antes de qualquer mudança.
+**Testes antes de tocar.** Antes de alterar uma função sem testes, escreva um teste que capture o comportamento atual, mesmo que o comportamento pareça errado. Isso dá uma rede de segurança antes de qualquer mudança.
 
 **Estrutura enxuta é intencional.** Sistemas legados com pouca abstração são pragmáticos para o contexto em que foram construídos. A tentação de "fazer direito do zero" costuma subestimar o conhecimento implícito incorporado no código que funciona.
 

@@ -63,8 +63,7 @@ nesse estado não tem efeito: o sistema o ignora.
 O único caminho restante é direcionar o usuário para as configurações do dispositivo:
 
 ```
-App detecta permissão permanentemente negada → Exibe explicação do impacto → Botão "Abrir Configurações"
-                                                ↓ usuário não quis ir → funcionalidade desativada graciosamente
+App detecta permanently denied → explica o impacto → botão "Abrir Configurações" → usuário recusou? funcionalidade desativada graciosamente
 ```
 
 Nunca: ignorar o estado permanently denied e tentar exibir o diálogo. Nunca: bloquear o app

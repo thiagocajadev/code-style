@@ -154,7 +154,7 @@ O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
 
 | Norma | O que padroniza |
 |---|---|
-| RFC 7231 e RFC 9110 | Semântica do HTTP (Hypertext Transfer Protocol, Protocolo de Transferência de Hipertexto): métodos, status codes, cabeçalhos |
+| RFC 7231 e RFC 9110 | Semântica do HTTP: métodos, status codes, cabeçalhos |
 | RFC 6749 | OAuth 2.0 (Open Authorization, Autorização Aberta): fluxo de autorização delegada |
 | RFC 7519 | JWT (JSON Web Token, Token Web JSON): formato de token de claims assinado |
 
@@ -165,7 +165,7 @@ O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
 | ISO/IEC 25010 | Atributos de qualidade de software: manutenibilidade, confiabilidade, performance, segurança, usabilidade |
 | ISO/IEC 27001 | Controles de segurança da informação no nível de organização |
 | ISO/IEC 27035 | Resposta a incidentes: detecção, contenção, erradicação, pós-mortem |
-| **OWASP ASVS** (Open Worldwide Application Security Project, Projeto Aberto Mundial de Segurança de Aplicações, Application Security Verification Standard, Padrão de Verificação de Segurança de Aplicação) | Checklist de requisitos de segurança de aplicação com níveis de maturidade |
+| **OWASP ASVS** (Application Security Verification Standard, Padrão de Verificação de Segurança de Aplicação) | Checklist de requisitos de segurança de aplicação com níveis de maturidade, mantido pela OWASP |
 | OWASP Top 10 | Lista das dez classes de vulnerabilidade mais comuns em aplicações web |
 
 **Versionamento e entrega**
@@ -202,7 +202,7 @@ Um processo é bom quando se torna auditável. Auditável significa que em qualq
 possível medir qualidade sem depender de memória ou de quem estava presente.
 
 Cada etapa tem entrada, saída e um critério verificável. Quando isso está em ordem, qualquer pessoa
-(dev, tech lead, pessoas de negocio) consegue inspecionar um ponto ou o ciclo inteiro e aferir o
+(dev, tech lead, pessoas de negócio) consegue inspecionar um ponto ou o ciclo inteiro e aferir o
 estado real do projeto.
 
 ```

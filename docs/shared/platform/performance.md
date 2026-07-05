@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Performance é uma decisão de design. As escolhas de paginação, cache (armazenamento temporário de respostas), processamento assíncrono e lazy loading determinam se o sistema escala ou trava sob carga real.
+Performance é uma decisão de design. As escolhas de paginação, **cache** (armazenamento temporário de respostas), processamento assíncrono e **lazy loading** (carregamento sob demanda) determinam se o sistema escala ou trava sob carga real.
 
 ## Conceitos fundamentais
 
@@ -13,7 +13,7 @@ Performance é uma decisão de design. As escolhas de paginação, cache (armaze
 | **Offset/limit** (paginação por deslocamento e quantidade) | Modelo de paginação que pula N registros e retorna os próximos M |
 | **Cursor** (ponteiro de paginação) | Referência ao último item retornado, usada para paginação estável em dados que mudam |
 | **Lazy loading** (carregamento sob demanda) | Carregar dados ou código apenas no momento em que são necessários |
-| **N+1** (consulta repetida em loop, anti-padrão) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
+| **N+1** (consulta repetida em loop) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Connection pooling** (agrupamento de conexões) | Reutilização de conexões abertas com o banco para reduzir o custo de handshake por requisição |
 | **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
 | **Big O** (notação de complexidade assintótica) | Notação que descreve como o tempo ou espaço de um algoritmo cresce em função do tamanho da entrada |
@@ -37,12 +37,12 @@ A resposta de uma lista paginada inclui os dados e metadados de navegação: tot
 
 ## Cache
 
-Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit, unidade de processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
+Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit, Unidade Central de Processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
 
-A decisão central é o **TTL** (Time To Live, tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto = cache quente mas dado fresco. TTL longo = menos pressão no banco, dado potencialmente obsoleto.
+A decisão central é o **TTL** (Time To Live, tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto significa mais idas ao banco e dado fresco; TTL longo, menos pressão no banco e dado potencialmente obsoleto.
 
-| Estratégia | Quando usar |
-|---|---|
+| Estratégia | Como funciona | Quando usar |
+|---|---|---|
 | **Cache-aside** | App verifica cache → miss (ausência no cache) → busca no banco → armazena | Leituras frequentes, escrita infrequente |
 | **Write-through** | Escrita vai ao banco e ao cache ao mesmo tempo | Consistência alta, latência de escrita aceitável |
 | **Invalidação por evento** | Cache limpo quando dado muda | Dado crítico que não pode ser obsoleto |
@@ -51,7 +51,7 @@ Dados que mudam frequentemente com custo de desatualização alto (saldo, estoqu
 
 ## Fila e Processamento Assíncrono
 
-Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (trabalhador) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
+Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (processo que executa tarefas em segundo plano) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
 
 O padrão é: aceitar o trabalho, responder imediatamente, processar em background.
 
@@ -69,7 +69,7 @@ Benefícios diretos: tempo de resposta previsível, isolamento de falhas (job fa
 
 ## Webhook
 
-Webhook (notificação HTTP enviada pelo servidor ao cliente quando o job conclui) elimina o polling: o servidor chama o cliente, sem o cliente precisar perguntar.
+**Webhook** (notificação HTTP enviada pelo servidor ao cliente quando o job conclui) elimina o polling: o servidor chama o cliente, sem o cliente precisar perguntar.
 
 ```
 Worker conclui job → POST <endpoint-do-cliente> → Cliente responde 200 OK
@@ -79,14 +79,14 @@ Worker conclui job → POST <endpoint-do-cliente> → Cliente responde 200 OK
 |---|---|
 | ID do job no payload | Idempotência: reentregas não duplicam efeito |
 | Assinar com **HMAC** (Hash-based Message Authentication Code, código de autenticação de mensagem por hash) | Valida que a chamada veio do servidor esperado |
-| Retry com backoff (espera crescente entre tentativas) exponencial | Absorve falhas transitórias sem sobrecarregar o cliente |
+| Retry com **backoff exponencial** (espera crescente entre tentativas) | Absorve falhas transitórias sem sobrecarregar o cliente |
 | Registrar todas as tentativas | Auditoria e diagnóstico de entrega |
 
 **Quando usar**: cliente expõe endpoint público, job pode levar minutos ou horas.
 
 ## Polling
 
-Polling (consulta periódica ao servidor) é o cliente verificando o status do job em intervalos regulares até a resposta estar pronta.
+**Polling** (consulta periódica ao servidor) é o cliente verificando o status do job em intervalos regulares até a resposta estar pronta.
 
 ```
 GET /jobs/{id}/status → 202 In Progress → GET /jobs/{id}/status → 200 Done + resultado
@@ -105,7 +105,7 @@ Sem dependência de endpoint no cliente. O custo é carga desnecessária: a maio
 
 ## WebSocket
 
-WebSocket (canal bidirecional persistente entre cliente e servidor) mantém uma conexão aberta. O servidor envia o resultado quando o job conclui, sem o cliente perguntar.
+**WebSocket** (canal bidirecional persistente entre cliente e servidor) mantém uma conexão aberta. O servidor envia o resultado quando o job conclui, sem o cliente perguntar.
 
 ```
 Cliente conecta → handshake → [conexão ativa] → Servidor envia resultado → Cliente processa
@@ -119,7 +119,7 @@ O custo é operacional: cada cliente conectado mantém uma conexão aberta no se
 
 ## Lazy Loading
 
-Carregar dados antes de precisar deles desperdiça recursos e aumenta o tempo de inicialização. Lazy loading (carregamento sob demanda) adia o carregamento para o momento do uso.
+Carregar dados antes de precisar deles desperdiça recursos e aumenta o tempo de inicialização. **Lazy loading** adia o carregamento para o momento do uso.
 
 | Contexto | Aplicação |
 |---|---|

@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Três fluxos cobrem a maior parte da lógica assíncrona de backend: **background job** (trabalho em
+Três fluxos cobrem a maior parte da lógica assíncrona de backend: **background job** (tarefa em
 segundo plano), **webhook** (notificação HTTP acionada por evento externo) e **event-driven**
 (orientado a eventos). Os três seguem o mesmo princípio: aceitar, persistir e processar fora do
 ciclo de request/response. Esta página complementa [operation-flow.md](operation-flow.md), que cobre
@@ -13,7 +13,7 @@ o ciclo síncrono.
 | Conceito | O que é |
 |---|---|
 | **Background job** (tarefa em segundo plano) | Trabalho desacoplado do ciclo de request/response, executado de forma assíncrona |
-| **Worker** (processo trabalhador) | Processo que consome e executa jobs de forma independente |
+| **Worker** (processo que executa jobs) | Processo que consome e executa jobs de forma independente, fora do ciclo de request/response |
 | **Outbox pattern** (padrão de caixa de saída) | Garantia de atomicidade entre persistência no banco e publicação no broker, usando a mesma transação |
 | **Relay** (processo de retransmissão) | Processo que lê registros pendentes do outbox e publica no broker com retry |
 | **Broker** (intermediário de mensagens) | Serviço que recebe, armazena e distribui mensagens entre producers e consumers |
@@ -28,8 +28,8 @@ o ciclo síncrono.
 ## Background Job
 
 Um job (tarefa assíncrona) desacopla o aceite de trabalho da sua execução. A **API** (Application Programming Interface, Interface de Programação de Aplicações) aceita a
-requisição, persiste o job, responde 202, e o **worker** (processo trabalhador) executa de forma
-independente.
+requisição, persiste o job, responde 202, e o **worker** (processo que executa jobs) executa de
+forma independente.
 
 ```
 HTTP Request → valida input → persiste job → 202 Accepted → Worker dequeue → executa → armazena resultado → notifica
@@ -59,7 +59,7 @@ COMMIT;
 
 Um **relay** (processo de retransmissão) separado lê os registros não publicados do outbox, publica no
 **broker** (intermediário de mensagens) e marca como enviado. O commit no banco e a intenção de publicar
-são atômicos; o relay entrega com retry (retentatva).
+são atômicos; o relay entrega com retry (retentativa).
 
 Quando a fila de jobs **é** o banco principal (PostgreSQL com `pgboss`, por exemplo), o outbox está
 implícito na ferramenta. O pattern só é necessário explicitamente quando banco e broker são sistemas
@@ -87,7 +87,7 @@ CREATE TABLE jobs (
 
 O worker verifica antes de executar: se a chave já existe com status `done`, retorna o resultado em
 cache sem reprocessar. A constraint (restrição) `UNIQUE` é a proteção contra race condition
-(condição de corrida) quando dois workers dequeuam o mesmo job ao mesmo tempo. O que perder o
+(condição de corrida) quando dois workers retiram o mesmo job da fila ao mesmo tempo. O que perder o
 `INSERT` recebe um erro de violação e aborta sem efeito colateral.
 
 ### Entrega do resultado
@@ -182,7 +182,7 @@ async function handleWebhook(request) {
 ### Idempotência por chave externa
 
 Todo provedor envia um ID único no header: `X-Stripe-Event`, `X-GitHub-Delivery`. Esse ID é a chave
-de idempotência. Antes de enfileirar, verifica se o evento já foi recebido:
+de idempotência. Antes de enfileirar, o handler verifica se o evento já foi recebido:
 
 ```sql
 INSERT INTO webhook_deliveries (event_id, provider, payload)
@@ -237,8 +237,7 @@ para um **broker**. **Subscribers** (assinantes) independentes consomem e proces
 
 ```
 Publisher emite evento → Broker (tópico/fila) → Subscriber consome → processa → ack → broker remove
-                                                                    ↓ falha N vezes
-                                                                 DLQ → alerta → revisão manual
+Falha N vezes → DLQ → alerta → revisão manual
 ```
 
 ### Dead-letter queue
@@ -248,13 +247,13 @@ repetidamente bloqueia o consumer group (grupo de consumidores) inteiro.
 
 O fluxo padrão:
 
-- Retry (retentatva) com backoff exponencial (espera crescente entre tentativas), tipicamente 3–5
+- Retry (retentativa) com backoff exponencial (espera crescente entre tentativas), tipicamente 3–5
   tentativas
 - Após esgotar as tentativas, a mensagem vai para a DLQ
 - Qualquer mensagem na DLQ dispara alerta. DLQ silenciosa é lixeira de perda de dados
 
 A mensagem na DLQ deve preservar: payload original, número de tentativas, último erro e timestamp do
-evento. Sem esse contexto, mensagens mortas são indebuggáveis.
+evento. Sem esse contexto, mensagens mortas são impossíveis de depurar.
 
 ### Entrega at-least-once
 

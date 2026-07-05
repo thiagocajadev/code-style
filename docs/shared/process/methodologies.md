@@ -15,7 +15,7 @@ Metodologias definem _como_ um time organiza o trabalho. Estilos arquiteturais d
 | **XGH** (eXtreme Go Horse, Vai Cavalo Extremo) | Anti-metodologia satírica; útil para nomear o que _não_ fazer |
 | **Monolith** (Monolito) | Aplicação inteira em um único processo e deployável |
 | **Microservices** (Microsserviços) | Serviços independentes com deploy e escala separados |
-| **Modular Monolith** (Monolito Modular) | Módulos com fronteiras de domínio dentro de um único processo |
+| **Modular Monolith** (Monolito Modular) | Módulos com limites de domínio dentro de um único processo |
 | **Bounded Context** (Contexto Delimitado) | Limite explícito onde um modelo de domínio é válido e consistente |
 | **Ubiquitous Language** (Linguagem Ubíqua) | Vocabulário compartilhado entre engenheiros e especialistas de negócio, refletido no código |
 
@@ -25,7 +25,7 @@ Metodologias definem _como_ um time organiza o trabalho. Estilos arquiteturais d
 
 ### DDD: Domain-Driven Design (Design Orientado ao Domínio)
 
-O código organiza-se em torno do domínio de negócio, não da infraestrutura. Os termos do negócio aparecem nos identificadores, nas classes e nas fronteiras do sistema, formando a **Ubiquitous Language** (Linguagem Ubíqua) entre engenheiros e especialistas de domínio.
+O código organiza-se em torno do domínio de negócio, não da infraestrutura. Os termos do negócio aparecem nos identificadores, nas classes e nos limites do sistema, formando a **Ubiquitous Language** (Linguagem Ubíqua) entre engenheiros e especialistas de domínio.
 
 Conceitos centrais:
 
@@ -34,7 +34,7 @@ Conceitos centrais:
 | **Entity** (Entidade) | Objeto com identidade única que persiste no tempo (`Order`, `User`) |
 | **Value Object** (Objeto de Valor) | Objeto sem identidade, definido pelos seus atributos (`Money`, `Address`) |
 | **Aggregate** (Agregado) | Grupo de entidades com uma raiz que garante consistência interna |
-| **Bounded Context** | Fronteira explícita onde um modelo é válido; modelos diferentes coexistem sem conflito |
+| **Bounded Context** | Limite explícito onde um modelo é válido; modelos diferentes coexistem sem conflito |
 | **Domain Service** (Serviço de Domínio) | Operação de domínio sem estado natural em uma entidade (`PricingService`) |
 
 **Quando usar**: sistemas com regras de negócio ricas e domínio complexo. Em CRUDs simples, o overhead de DDD supera o benefício.
@@ -107,7 +107,7 @@ Risco: sem refactoring regular, dívida técnica se acumula silenciosamente. TDD
 
 Anti-metodologia satírica. Premissa: "pensar é perda de tempo; commit primeiro".
 
-Não é uma abordagem séria. É útil para **nomear o que não fazer**: código sem testes, sem revisão, sem fronteiras, com dependências ocultas e deploy por coragem.
+Não é uma abordagem séria. É útil para **nomear o que não fazer**: código sem testes, sem revisão, sem limites entre módulos, com dependências ocultas e deploy por coragem.
 
 Quando alguém descreve uma decisão técnica e você reconhece XGH, é um sinal de alerta.
 
@@ -121,7 +121,7 @@ Toda a aplicação em um único processo e deployável. O banco de dados, o serv
 
 **Vantagens**: simples de desenvolver, depurar, testar e deployar. Uma única base de código, um único deploy, rastreamento direto de chamadas.
 
-**Quando o problema aparece**: escalar um módulo obriga a escalar tudo. Acoplamento cresce com o time se não houver disciplina de fronteiras. Um bug pode derrubar o sistema inteiro.
+**Quando o problema aparece**: escalar um módulo obriga a escalar tudo. Acoplamento cresce com o time se não houver disciplina de limites. Um bug pode derrubar o sistema inteiro.
 
 **Quando usar**: início de projeto, times pequenos, domínio ainda sendo descoberto.
 
@@ -144,7 +144,7 @@ Serviços independentes, cada um com sua própria base de código, banco de dado
 
 ### Monolito Modular (Modular Monolith)
 
-Módulos com fronteiras de domínio bem definidas dentro de um único processo. Cada módulo tem suas próprias camadas internas, expõe uma interface pública e não acessa diretamente os internos de outro módulo.
+Módulos com limites de domínio bem definidos dentro de um único processo. Cada módulo tem suas próprias camadas internas, expõe uma interface pública e não acessa diretamente os internos de outro módulo.
 
 ```
 Monolito Modular
@@ -161,8 +161,8 @@ Monolito Modular
 **Por que é o padrão recomendado em 2026**:
 
 - Deploy simples de monolito, sem overhead operacional de microsserviços
-- Fronteiras de domínio claras desde o início, sem acoplamento invisível
-- Refactoring para microsserviços se torna cirúrgico quando necessário: o módulo já tem fronteira definida
+- Limites de domínio claros desde o início, sem acoplamento invisível
+- Refactoring para microsserviços se torna cirúrgico quando necessário: o módulo já tem limite definido
 - Escala vertical (mais **CPU** (Central Processing Unit, Unidade Central de Processamento)/**RAM** (Random Access Memory, Memória de Acesso Aleatório)) resolve a maioria dos casos antes de precisar distribuir
 
 **Quando extrair um microsserviço**: quando um módulo tem requisito de escala, ciclo de deploy ou equipe radicalmente diferentes dos demais. Não antes.
@@ -187,5 +187,5 @@ Monolito Modular
 | Estilo | Quando faz sentido | Trade-off principal |
 |---|---|---|
 | **Monolito** | Início de projeto, time pequeno | Escala acoplada ao crescer |
-| **Monolito Modular** | Padrão recomendado; domínio claro, time crescendo | Exige disciplina de fronteiras |
+| **Monolito Modular** | Padrão recomendado; domínio claro, time crescendo | Exige disciplina de limites |
 | **Microsserviços** | Escala de time ou domínio impõe isolamento real | Complexidade operacional alta |

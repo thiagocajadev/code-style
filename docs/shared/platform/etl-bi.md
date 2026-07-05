@@ -13,7 +13,7 @@
 | **ETL** (Extract, Transform, Load, Extração, Transformação e Carga) | Pipeline que extrai dados da fonte, transforma e carrega no destino |
 | **ELT** (Extract, Load, Transform, Extração, Carga e Transformação) | Variante moderna: carrega dados brutos no destino e transforma com SQL dentro do warehouse |
 | **Data Warehouse** (armazém de dados) | Banco analítico central que consolida dados de múltiplas fontes com schema definido |
-| **Data Mart** (mercado de dados) | Subconjunto do Data Warehouse focado em um domínio: financeiro, vendas, operações |
+| **Data Mart** (recorte do warehouse por domínio) | Subconjunto do Data Warehouse focado em um domínio: financeiro, vendas, operações |
 | **Data Lake** (lago de dados) | Repositório de dados brutos em formato original (JSON, CSV, Parquet), sem schema rígido |
 | **Staging layer** (camada de preparação) | Área intermediária que recebe dados brutos antes da transformação |
 | **Fact table** (tabela de fatos) | Tabela central do modelo dimensional: métricas numéricas e chaves estrangeiras para dimensões |
@@ -23,7 +23,7 @@
 | **Star schema** (esquema estrela) | Modelo com uma fact table central e dimensões planas; rápido para queries analíticas |
 | **Snowflake schema** (esquema floco de neve) | Variante com dimensões normalizadas; menor redundância, queries com mais JOINs |
 | **Grain** (granularidade) | Nível de detalhe de cada linha na fact table: uma linha por evento, por dia, por transação |
-| **Watermark** (marca d'água) | Valor que registra o ponto até onde a extração chegou; base para carga incremental |
+| **Watermark** (marcador de progresso da extração) | Valor que registra o ponto até onde a extração chegou; base para carga incremental |
 
 ---
 
@@ -57,7 +57,7 @@ O pipeline move dados da fonte ao consumidor em camadas com responsabilidade cla
 | **Data Marts** | Subconjuntos por domínio, otimizados para as queries do time de negócio |
 | **BI** | Dashboards, relatórios e exploração ad-hoc; consome Data Marts ou DW diretamente |
 
-A **Staging** layer é o ponto de recuperação do pipeline: se a transformação falhar, os dados brutos estão intactos e o pipeline reexecuta sem re-extrair da fonte.
+A camada de **Staging** é o ponto de recuperação do pipeline: se a transformação falhar, os dados brutos estão intactos e o pipeline reexecuta sem re-extrair da fonte.
 
 ---
 
@@ -215,7 +215,7 @@ Ferramentas de BI (Power BI, Tableau, Metabase, Looker) conectam ao Data Warehou
 
 ### Definição centralizada de métricas
 
-Cada dashboard calcular o mesmo `SUM` de forma ligeiramente diferente gera divergência entre relatórios. A solução é definir a métrica uma vez e reusar em todos os contextos.
+Quando cada dashboard calcula o mesmo `SUM` de um jeito ligeiramente diferente, os relatórios divergem. A solução é definir a métrica uma vez e reusar em todos os contextos.
 
 Ferramentas com camada semântica resolvem isso diretamente: Power BI com **measures** DAX, Looker com **LookML**, dbt com **metrics**. Sem uma dessas ferramentas, a alternativa é uma view ou tabela agregada no DW que serve de fonte única.
 
@@ -254,5 +254,5 @@ CREATE TABLE AggGoalsByPlayerByDay
 ## Referências relacionadas
 
 - [Database](./database.md): tuning de queries, operações em lote, plano de execução
-- [Integrations](./integrations.md): fontes externas: APIs, arquivos, protocolos
+- [Integrations](./integrations.md): fontes externas (APIs, arquivos, protocolos)
 - [Messaging](./messaging.md): filas e eventos como fonte de dados para pipelines CDC

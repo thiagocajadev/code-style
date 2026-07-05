@@ -1,6 +1,6 @@
 {
   "name": "code-style",
-  "version": "1.28.20",
+  "version": "1.28.21",
   "private": true,
   "type": "module",
   "scripts": {

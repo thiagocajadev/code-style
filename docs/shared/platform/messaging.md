@@ -24,7 +24,7 @@ Queue:   Producer → Queue → Consumer único
 Pub/Sub: Producer → Topic → Consumer A, Consumer B, Consumer C (todos recebem)
 ```
 
-Queue é ponto-a-ponto: a mensagem vai para um consumer e sai da fila. Pub/sub (publicação e assinatura) é difusão: cada subscriber (assinante) recebe uma cópia independente. O mesmo evento pode disparar múltiplos fluxos sem o producer conhecer nenhum deles.
+Queue é ponto-a-ponto: a mensagem vai para um consumer e sai da fila. **Pub/sub** (publicação e assinatura) é difusão: cada **subscriber** (assinante) recebe uma cópia independente. O mesmo evento pode disparar múltiplos fluxos sem o producer conhecer nenhum deles.
 
 ## Garantias de entrega
 
@@ -62,12 +62,12 @@ A **DLQ** (Dead-letter queue, fila de mensagens com falha persistente) isola men
 
 ## Backpressure
 
-Backpressure (controle de fluxo sob sobrecarga) ocorre quando o consumer processa mais devagar do que o producer envia. Sem controle, a fila cresce indefinidamente e o sistema degrada.
+**Backpressure** (controle de fluxo sob sobrecarga) ocorre quando o consumer processa mais devagar do que o producer envia. Sem controle, a fila cresce indefinidamente e o sistema degrada.
 
 Estratégias:
 
-- Limitar o prefetch (quantidade de mensagens entregues ao consumer de uma vez)
-- Escalar consumers horizontalmente quando a fila crescer além do threshold (limite aceitável)
+- Limitar o **prefetch** (quantidade de mensagens entregues ao consumer de uma vez)
+- Escalar consumers horizontalmente quando a fila crescer além do **threshold** (limite aceitável)
 - Monitorar tamanho da fila como métrica de capacidade
 
 ## Ferramentas
@@ -75,6 +75,6 @@ Estratégias:
 | Ferramenta | Modelo | Melhor para |
 |---|---|---|
 | **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, **RPC** (Remote Procedure Call, chamada de procedimento remoto) |
-| **Kafka** | Log distribuído, pub/sub | Alto volume, replay de eventos, event sourcing (eventos como fonte da verdade) |
-| **SQS** (Amazon Simple Queue Service, Fila Simples Amazon) | Queue gerenciada | Integração AWS, baixo overhead operacional |
+| **Kafka** | Log distribuído, pub/sub | Alto volume, replay de eventos, **event sourcing** (eventos como fonte da verdade) |
+| **SQS** (Amazon Simple Queue Service, Serviço de Filas Simples da Amazon) | Queue gerenciada | Integração AWS, baixo overhead operacional |
 | **Redis Streams** | Log leve | Mensageria simples em stacks que já usam Redis |

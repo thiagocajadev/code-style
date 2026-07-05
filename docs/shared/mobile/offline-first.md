@@ -8,7 +8,7 @@ túnel, roaming, sinal fraco. Um app que falha silenciosamente sem rede transfer
 problema que é responsabilidade do produto.
 
 A diferença em relação a um app com cache simples: no offline-first, o banco local é a fonte de
-verdade da **UI** (User Interface, interface do usuário). A rede atualiza o banco; o banco atualiza
+verdade da **UI** (User Interface, Interface do Usuário). A rede atualiza o banco; o banco atualiza
 a UI.
 
 ## Conceitos fundamentais
@@ -16,7 +16,7 @@ a UI.
 | Conceito | O que é |
 |---|---|
 | **Cache** (armazenamento em cache) | Cópia local de dados remotos para acesso sem rede |
-| **Sync** (sincronia) | Processo de reconciliar dados locais com o servidor |
+| **Sync** (sincronização) | Processo de reconciliar dados locais com o servidor |
 | **Conflict resolution** (resolução de conflito) | Estratégia para decidir qual versão vence quando local e remoto divergem |
 | **Optimistic update** (atualização otimista) | Aplicar a mudança localmente antes da confirmação do servidor |
 | **Stale-while-revalidate** (cache imediato com revalidação ao fundo) | Exibir dado em cache enquanto busca versão atualizada em background |
@@ -62,8 +62,7 @@ Optimistic update aplica a mudança na UI antes de o servidor confirmar. A hipó
 vai ter sucesso, daí o otimismo.
 
 ```
-Usuário curte post → UI mostra curtida imediatamente → requisição vai ao servidor em background
-                                                       ↓ falha → reverte curtida na UI + notifica
+Usuário curte post → UI mostra curtida imediatamente → requisição em background → falha? reverte curtida na UI + notifica
 ```
 
 Regras para usar optimistic update com segurança:
@@ -113,9 +112,9 @@ O estado da rede deve ser visível e comunicado sem alarmar:
 |---|---|
 | Conectado | Fluxo normal; sem indicadores desnecessários |
 | Desconectado | Banner discreto informando modo offline; funcionalidades disponíveis claras |
-| Reconectado | Sincronia automática em background; notificação apenas se relevante |
-| Operação pendente | Indicador de "aguardando sincronia" na entidade afetada |
-| Sincronia falhou | Mensagem clara com opção de nova tentativa; nunca perder a operação silenciosamente |
+| Reconectado | Sincronização automática em background; notificação apenas se relevante |
+| Operação pendente | Indicador de "aguardando sincronização" na entidade afetada |
+| Sincronização falhou | Mensagem clara com opção de nova tentativa; nunca perder a operação silenciosamente |
 
 O erro mais comum é mostrar uma tela de erro onde deveria aparecer dado em cache. Se o dado existe
 localmente, exibi-lo. A rede é um detalhe de implementação, não um estado de erro do produto.

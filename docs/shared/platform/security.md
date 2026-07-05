@@ -24,7 +24,7 @@ A regra é simples: segredos ficam fora do repositório, inclusive em branches d
 
 ## Configuração em camadas
 
-Configuração resolve por precedência. Cada camada sobrescreve a anterior:
+A configuração se resolve por precedência. Cada camada sobrescreve a anterior:
 
 ```
 config base           → valores não sensíveis (commitado)
@@ -38,7 +38,7 @@ Nunca inverta essa ordem. Um valor commitado nunca deve sobrescrever uma variáv
 
 ## Frontend: escopo mínimo
 
-O navegador é um ambiente hostil. Todo código entregue ao cliente é visível para qualquer pessoa que abre o DevTools, inspeciona o bundle ou intercepta o tráfego de rede. Não há segredo seguro no frontend.
+O navegador é um ambiente hostil. Todo código entregue ao cliente é visível para qualquer pessoa que abra o DevTools, inspecione o bundle ou intercepte o tráfego de rede. Não há segredo seguro no frontend.
 
 | Pode expor no frontend | Nunca expor no frontend |
 | --- | --- |
@@ -67,8 +67,8 @@ São dois controles distintos com implementações distintas.
 
 | Conceito | Pergunta | O que garante |
 | --- | --- | --- |
-| **Autenticação** (authentication) | Quem é você? | Identidade: sessão válida, token assinado |
-| **Autorização** (authorization) | O que você pode fazer? | Permissão: roles, policies, escopos |
+| **authentication** (autenticação) | Quem é você? | Identidade: sessão válida, token assinado |
+| **authorization** (autorização) | O que você pode fazer? | Permissão: roles, policies, escopos |
 
 ```
 Request → autenticação (quem é você?) → autorização (o que pode fazer?) → handler
