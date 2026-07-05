@@ -16,6 +16,8 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 | **rest parameter** (parâmetro variádico) | `...args`: coleta argumentos restantes em array |
 | **pure function** (função pura) | Mesma entrada → mesma saída; sem efeito colateral observável |
 | **side effect** (efeito colateral) | Leitura ou escrita fora dos argumentos: I/O, mutação externa, log |
+| **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe, nunca os dois |
 
 ## God function: múltiplas responsabilidades
 
@@ -79,16 +81,24 @@ await processOrder(123);
 
 async function processOrder(orderId) {
   const order = await getOrder(orderId);
-  if (isInvalid(order)) return;
+
+  if (isInvalid(order)) {
+    notifyRejection(order);
+    return;
+  }
 
   const invoice = await issueInvoice(order);
   return invoice;
 
   function isInvalid(order) {
     if (!order || order.items.length === 0) return true;
-    if (order.customer.defaulted) return notifyDefault(order);
+    if (order.customer.defaulted) return true;
 
     return false;
+  }
+
+  function notifyRejection(order) {
+    console.log("pedido rejeitado", order?.customer?.name);
   }
 
   async function issueInvoice(order) {
@@ -101,7 +111,85 @@ async function processOrder(orderId) {
 
 </details>
 
+## Helpers aninhados: quando extrair
+
+Os exemplos deste guia declaram **helpers** (funções auxiliares) de uso único dentro do orquestrador. A função aninhada mantém a narrativa em um bloco só: o leitor vê o caller no topo e os detalhes logo abaixo, sem sair do contexto. Esse formato tem custo, e o custo define o limite do padrão:
+
+- **Teste isolado**: função aninhada não é exportável; só é exercitada através do orquestrador (estratégias em [testing](advanced/testing.md)).
+- **Reuso**: um segundo caller não alcança um helper preso dentro de outra função.
+- **Recriação**: cada chamada do orquestrador recria as funções internas (**closure**, função que captura o escopo onde foi criada). Irrelevante na maioria dos fluxos, mensurável em **hot path** (trecho executado com alta frequência; medição em [performance](advanced/performance.md)).
+
+Regra prática: o helper nasce aninhado. Ele sobe para o nível do módulo quando ganha um segundo caller, quando precisa de teste próprio ou quando o orquestrador passa do tamanho de uma tela. Em linguagens de classe (Java, C#), o mesmo padrão vira métodos privados: irmãos abaixo do método público, na ordem de chamada.
+
+<details>
+<summary>❌ Ruim: helper com dois callers duplicado dentro de cada orquestrador</summary>
+
+```js
+function buildInvoiceEmail(invoice) {
+  const totalLabel = formatCurrency(invoice.total);
+  const email = `Total: ${totalLabel}`;
+  return email;
+
+  function formatCurrency(amount) {
+    const formatted = amount.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    return formatted;
+  }
+}
+
+function buildReceiptPdf(receipt) {
+  // segundo caller não alcança o helper aninhado: cópia colada
+  const totalLabel = formatCurrency(receipt.total);
+  const receiptPdf = renderPdf(totalLabel);
+  return receiptPdf;
+
+  function formatCurrency(amount) {
+    const formatted = amount.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+
+    return formatted;
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: segundo caller promove o helper ao nível do módulo</summary>
+
+```js
+function buildInvoiceEmail(invoice) {
+  const totalLabel = formatCurrency(invoice.total);
+  const email = `Total: ${totalLabel}`;
+  return email;
+}
+
+function buildReceiptPdf(receipt) {
+  const totalLabel = formatCurrency(receipt.total);
+  const receiptPdf = renderPdf(totalLabel);
+  return receiptPdf;
+}
+
+function formatCurrency(amount) {
+  const formatted = amount.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  });
+
+  return formatted;
+}
+```
+
+</details>
+
 ## SLA: orquestrador ou implementação, nunca os dois
+
+**SLA** (Single Level of Abstraction, Único Nível de Abstração) é o princípio por trás da divisão: uma função orquestra passos nomeados ou implementa um detalhe. Quando faz os dois, o leitor troca de altitude no meio da leitura.
 
 <details>
 <summary>❌ Ruim: mesma função orquestra e implementa</summary>
@@ -273,6 +361,8 @@ async function submitOrder(orderId) {
 ## Sem lógica no retorno
 
 O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção da função.
+
+A regra vale até para helper de duas linhas, e o motivo é operacional: a variável nomeada dá ponto de **breakpoint** (ponto de parada) sobre o valor pronto, aparece limpa no diff quando o cálculo muda e obriga o autor a batizar o que a função entrega. O custo é uma linha a mais por função. O guia aceita esse custo de forma deliberada: consistência mecânica revisa melhor que exceção caso a caso.
 
 <details>
 <summary>❌ Ruim: lógica ou objeto anônimo direto no return</summary>

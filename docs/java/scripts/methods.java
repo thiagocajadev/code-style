@@ -43,7 +43,11 @@ public class MethodsExamples {
     // ✅ Bom: orquestrador no topo, responsabilidades separadas
     public Order processOrder(String orderId) {
         final var order = fetchOrder(orderId);
-        if (isInvalid(order)) return null;
+
+        if (isInvalid(order)) {
+            notifyRejection(order);
+            return null;
+        }
 
         final var invoice = issueInvoice(order);
         return invoice;
@@ -56,11 +60,13 @@ public class MethodsExamples {
 
     private boolean isInvalid(Order order) {
         if (order.getItems().isEmpty()) return true;
-        if (order.getCustomer().isDefaulted()) {
-            notifyDefault(order);
-            return true;
-        }
+        if (order.getCustomer().isDefaulted()) return true;
+
         return false;
+    }
+
+    private void notifyRejection(Order order) {
+        log.warn("pedido rejeitado: {}", order.getCustomer().getName());
     }
 
     private Order issueInvoice(Order order) {

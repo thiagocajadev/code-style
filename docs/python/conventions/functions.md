@@ -9,8 +9,10 @@ desenho.
 | Conceito | O que é |
 | --- | --- |
 | **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada função tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | cada função opera em um só nível: orquestra passos ou implementa detalhe |
 | **cohesion** (coesão) | grau em que as instruções da função pertencem à mesma tarefa |
 | **god function** (função-deus) | função que faz tudo: busca, valida, calcula, persiste, loga |
+| **helper** (função auxiliar) | função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 | **side effect** (efeito colateral) | alteração observável fora do retorno (I/O, estado global, mutação de argumento) |
 | **pure function** (função pura) | sem efeito colateral; mesma entrada produz mesma saída |
 | **type hint** (anotação de tipo) | `def f(x: int) -> str` documenta contrato e habilita type checker |
@@ -60,7 +62,9 @@ def realiza_venda(x):
 ```python
 async def process_order(order_id: int):
     order = await get_order(order_id)
+
     if not is_valid(order):
+        notify_rejection(order)
         return None
 
     invoice = await issue_invoice(order)
@@ -71,10 +75,13 @@ def is_valid(order) -> bool:
         return False
 
     if order.customer.defaulted:
-        notify_default(order)
         return False
 
     return True
+
+def notify_rejection(order) -> None:
+    customer_name = order.customer.name if order else None
+    print("pedido rejeitado", customer_name)
 
 async def issue_invoice(order):
     discounted_order = apply_discount(order)

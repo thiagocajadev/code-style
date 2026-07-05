@@ -3,7 +3,7 @@
 > Escopo: PHP 8.4.
 
 PHP distingue **funções livres** de **métodos**. Ambos seguem SLA (Single Level of
-Abstraction, nível único de abstração): uma função orquestra ou implementa, nunca os dois.
+Abstraction, Único Nível de Abstração): uma função orquestra ou implementa, nunca os dois.
 O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduziu
 **named arguments** (argumentos nomeados) que tornam chamadas com muitos parâmetros legíveis.
 
@@ -13,8 +13,9 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 | -------- | ------- |
 | **named argument** (argumento nomeado) | Passado pelo nome do parâmetro: `create(name: 'Alice', age: 30)`; disponível desde PHP 8.0 |
 | **arrow function** (função em flecha) | `fn($x) => expr`: closure de uma linha que captura escopo externo automaticamente |
-| **SLA** (Single Level of Abstraction, nível único de abstração) | Cada função opera em um único nível: orquestra ou implementa, nunca os dois |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em um único nível: orquestra ou implementa, nunca os dois |
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
+| **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
 ## SLA: orquestrador ou implementação
 

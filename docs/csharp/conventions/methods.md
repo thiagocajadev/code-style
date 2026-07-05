@@ -8,7 +8,7 @@ Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de
 | --- | --- |
 | **orchestrator** (orquestrador) | Método público de entrada que descreve o fluxo em alto nível; chama helpers em sequência |
 | **helper** (método auxiliar) | Método privado abaixo do orquestrador, com responsabilidade única e nome de domínio |
-| **abstraction level** (nível de abstração) | Cada método opera num único nível; misturar passos altos e baixos prejudica leitura |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada método opera num único nível; misturar passos altos e baixos prejudica leitura |
 | **single responsibility** (responsabilidade única) | Um método faz uma coisa; o nome descreve essa coisa por completo |
 | **side effect** (efeito colateral) | Mutação de estado externo, I/O, log; deixar explícito no nome ou na assinatura |
 | **pure function** (função pura) | Método sem side effects; saída depende só dos argumentos; mais fácil de testar |

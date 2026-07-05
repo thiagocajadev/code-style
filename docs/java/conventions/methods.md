@@ -9,11 +9,13 @@ guiam o desenho.
 | Conceito | O que é |
 | --- | --- |
 | **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada método tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | cada método opera em um só nível: orquestra passos ou implementa detalhe |
 | **cohesion** (coesão) | grau em que as instruções do método pertencem à mesma tarefa |
 | **god method** (método-deus) | método que faz tudo: busca, valida, calcula, persiste, loga |
 | **side effect** (efeito colateral) | alteração observável fora do retorno do método (I/O, mutação de estado) |
 | **pure function** (função pura) | função sem efeito colateral; mesma entrada produz mesma saída |
 | **method extraction** (extração de método) | extrair bloco coeso para método nomeado, reduzindo o tamanho do original |
+| **helper** (método auxiliar) | método de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 | **builder** (construtor fluente) | padrão para construir objetos com muitos parâmetros sem listas longas |
 
 ## God method: múltiplas responsabilidades
@@ -56,7 +58,11 @@ public Order realizaVenda(String id) {
 ```java
 public Order processOrder(String orderId) {
     final var order = fetchOrder(orderId);
-    if (isInvalid(order)) return null;
+
+    if (isInvalid(order)) {
+        notifyRejection(order);
+        return null;
+    }
 
     final var invoice = issueInvoice(order);
     return invoice;
@@ -69,11 +75,13 @@ private Order fetchOrder(String orderId) {
 
 private boolean isInvalid(Order order) {
     if (order.getItems().isEmpty()) return true;
-    if (order.getCustomer().isDefaulted()) {
-        notifyDefault(order);
-        return true;
-    }
+    if (order.getCustomer().isDefaulted()) return true;
+
     return false;
+}
+
+private void notifyRejection(Order order) {
+    log.warn("pedido rejeitado: {}", order.getCustomer().getName());
 }
 
 private Order issueInvoice(Order order) {

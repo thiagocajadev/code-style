@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.19] - 2026-07-05
+
+### Fixed
+
+- Sete achados da avaliação profunda do repositório resolvidos em ciclo único. **Predicado impuro em bloco Good** (o mais grave): `isInvalid` disparava `notifyDefault` dentro da query (violação de CQS), chamava função inexistente no exemplo e, no JS, retornava o `undefined` do comando — cliente inadimplente passava como válido e a invoice era emitida. Corrigido em `javascript/functions.md`, `java/methods.md` + `methods.java` e `python/functions.md` (variante `is_valid`/`notify_default`, encontrada pela regra nova de lint, não pelo grep manual): predicado puro com guards paralelos, notificação movida ao orquestrador como comando explícito (`notifyRejection`). **Regra `predicate-purity`** no linter local: função com prefixo booleano (`is/has/can/...`) que chama verbo de comando (`notify`, `save`, `send`, `log`, `print`...) no corpo agora falha o audit; +3 testes (30 pass). **Guard style reconciliado**: docs/ é SSOT do guard de linha única; governança local passa de `curly: all` para `curly: multi-line`. **LICENSE** CC BY 4.0 (texto oficial da Creative Commons) e **CONTRIBUTING.md** (fluxo de proposta, gates de qualidade, estilo dos exemplos) criados; README ganhou badge de licença e seções Contribuindo/Licença. **Link-check CI** (`.github/workflows/link-check.yml`): lychee `--offline --include-fragments` valida links e âncoras internas de todos os `.md` em push/PR — os 135+ links quebrados da v1.28.15 não acumulam mais em silêncio. **Badges sem versão pinada**: 29 badges do README de-versionados (Next 16, FastAPI 0.136.0, SQLite 3.53...); versões permanecem apenas nas descrições da tabela, que documentam o escopo dos docs. **`functions.md` (JS)**: nova seção "Helpers aninhados: quando extrair" com par Bad/Good (`formatCurrency` duplicado em dois orquestradores → promovido ao módulo) e trade-offs nomeados (teste isolado, reuso, recriação por closure); rationale operacional do Explaining Return (breakpoint, diff, naming). Conceitos **helper** e **SLA** (Single Level of Abstraction, Único Nível de Abstração) adicionados às tabelas de Conceitos fundamentais de 10 linguagens, com tradução unificada ao canônico de `shared/architecture/principles.md`. Audit clean: 2510 blocos Good em 391 arquivos
+
 ## [1.28.18] - 2026-06-26
 
 ### Fixed

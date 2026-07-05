@@ -16,6 +16,8 @@ apenas para saída antecipada (guard clause). Blocks, procs e lambdas são prime
 | **lambda** (função anônima estrita) | Proc com checagem estrita de aridade e `return` que sai apenas da lambda |
 | **splat** (`*args`, `**kwargs`) | Coleta argumentos posicionais ou nomeados em array/hash dentro do método |
 | **keyword arguments** (argumentos nomeados) | Parâmetros declarados com `:`, passados pelo nome no call site |
+| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada método opera em um só nível: orquestra passos ou implementa detalhe |
+| **helper** (método auxiliar) | Método de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
 ## SLA: uma responsabilidade, um nível
 
