@@ -126,7 +126,6 @@ fun createOrder(userId: Long?, items: List<Item>?): Order {
 fun createOrder(userId: Long?, items: List<Item>?): Order {
     val validUserId = requireNotNull(userId) { "userId is required to create an order" }
     val validItems = requireNotNull(items) { "items list is required" }
-
     require(validItems.isNotEmpty()) { "Order must contain at least one item" }
 
     val order = Order(userId = validUserId, items = validItems)

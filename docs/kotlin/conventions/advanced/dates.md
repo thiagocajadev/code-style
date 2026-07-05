@@ -60,7 +60,6 @@ val now = ZonedDateTime.now(saoPaulo)
 
 ```kotlin
 val saoPaulo = ZoneId.of("America/Sao_Paulo")
-
 val now = ZonedDateTime.now(saoPaulo)
 ```
 

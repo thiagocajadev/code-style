@@ -250,7 +250,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
 ```js
 client.on(Events.GuildMemberAdd, async (member) => {
   const welcomeChannel = member.guild.systemChannel;
-
   if (!welcomeChannel) return;
 
   const welcomeMessage = `Bem-vindo ao servidor, ${member.user.username}!`;

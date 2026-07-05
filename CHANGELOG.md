@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.20] - 2026-07-05
+
+### Fixed
+
+- Densidade visual em blocos Good + scripts de exemplo, segunda varredura: padrões de blank line estranha que as regras da v1.28.16 não cobriam. 16 correções em 15 arquivos / 10 linguagens, em três famílias: (1) **declaração + guard de 1 linha separados por blank** — o par fica tight, com respiro depois (`csharp/naming.md`, que tinha guard quebrado com `if` numa linha e `return` na outra; discord; whatsapp ×2; typescript variables/performance/types); (2) **par semântico encadeado fragmentado** — consumidor direto isolado da declaração que consome (kotlin dates, dart types, go performance, php performance, ruby types, `mongodb/04-delete.js`); (3) **trio atômico fragmentado** em `2+1` ou `1+1+1` (javascript null-safety, rust variables, kotlin null-safety com `require` órfão). Linter ganhou duas regras permanentes: `density-guard-split` (declaração + guard de linha única com blank no meio; `if` headless separado do corpo) e `density-lonely-chain` (declaração solitária + consumidor direto solitário), com exceções codificadas para os padrões legítimos — fase de guards consecutivos, fases AAA de teste, constantes SCREAMING_CASE, return separado e side-effect sem atribuição como fase própria. Tests +8 (38 pass). Os 59 scripts de exemplo e teste das linguagens entraram na varredura: testes jest/vitest/mstest/nunit já estavam no padrão AAA. Audit clean: 2510 blocos Good em 391 arquivos
+
 ## [1.28.19] - 2026-07-05
 
 ### Fixed

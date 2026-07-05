@@ -298,7 +298,6 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any: qualquer
 ```ts
 const raw = await fetchUser(id);
 if (!raw) throw new NotFoundError({ message: `User ${id} not found.` });
-
 const user = raw; // narrowado para User
 
 const parsed = AppConfigSchema.parse(JSON.parse(raw)); // Zod valida e retorna AppConfig

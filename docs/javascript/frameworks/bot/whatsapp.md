@@ -157,7 +157,6 @@ const COMMAND_MAP = {
 async function routeCommand(socket, chatId, text) {
   const commandKey = text.split(' ')[0].toLowerCase();
   const command = COMMAND_MAP[commandKey];
-
   if (!command) return;
 
   await command(socket, chatId, text);
@@ -256,11 +255,9 @@ app.post('/webhook', (request, response) => {
   response.sendStatus(200);
 
   const isWhatsAppEvent = request.body?.object === 'whatsapp_business_account';
-
   if (!isWhatsAppEvent) return;
 
   const message = extractMessage(request.body);
-
   if (message) processMessage(message);
 });
 

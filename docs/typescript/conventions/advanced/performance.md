@@ -110,7 +110,6 @@ function isOrder(value: unknown): value is Order {
 async function fetchOrder(id: string): Promise<Order> {
   const response = await fetch(`/api/orders/${id}`);
   const data: unknown = await response.json();
-
   if (!isOrder(data)) throw new Error(`Invalid order shape for id ${id}`);
 
   return data;

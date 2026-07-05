@@ -43,7 +43,6 @@ const debug = options.debug || false;   // false → false: ok aqui, mas por aci
 ```js
 const timeout = config.timeout ?? 5000;
 const retries = input.retries ?? 3;
-
 const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbacks
 ```
 

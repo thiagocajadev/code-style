@@ -92,7 +92,6 @@ address.city = "Rio de Janeiro"
 Address = Data.define(:street, :city, :country)
 
 address = Address.new(street: "Rua das Flores", city: "São Paulo", country: "BR")
-
 updated_address = address.with(city: "Rio de Janeiro")
 ```
 

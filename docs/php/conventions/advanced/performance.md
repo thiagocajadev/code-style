@@ -135,7 +135,6 @@ final class ServiceContainer
     public function bind(string $abstract, callable $factory): void
     {
         $reflection = new ReflectionClass($abstract);
-
         $this->bindings[$abstract] = $reflection->newLazyProxy($factory);
     }
 

@@ -234,7 +234,6 @@ func buildOrdersWithCustomers(ctx context.Context, orders []Order) ([]OrderWithC
 
     for _, order := range orders {
         customer := customerIndex[order.CustomerID]
-
         result = append(result, OrderWithCustomer{Order: order, Customer: customer})
     }
 

@@ -99,7 +99,6 @@ async function fetchExternalData(): Promise<unknown> {
 }
 
 const raw = await fetchExternalData();
-
 if (!isApiResponse(raw)) throw new ValidationError({ message: "Unexpected response shape." });
 
 const data = raw; // narrowado para ApiResponse: seguro usar

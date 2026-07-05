@@ -240,10 +240,7 @@ if (!u.Flag)
 
 ```csharp
 var user = await _repo.FindByIdAsync(userId, ct);
-
-if (!user.IsActive)
-
-    return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
+if (!user.IsActive) return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
 ```
 
 </details>

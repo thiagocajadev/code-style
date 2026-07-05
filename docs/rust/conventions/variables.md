@@ -136,9 +136,7 @@ let items: Vec<Item> = vec![item_a, item_b];
 
 ```rust
 let user_id = 42_u64; // sufixo já diz o tipo
-
 let timeout: Duration = Duration::from_secs(30); // tipo comunica intenção
-
 let scores: HashMap<u64, f64> = HashMap::new(); // sem valor inicial, inferência falha
 ```
 

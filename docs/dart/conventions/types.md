@@ -87,7 +87,6 @@ class Coordinate {
 typedef Coordinate = ({double latitude, double longitude});
 
 final location = (latitude: -23.5, longitude: -46.6);
-
 final (latitude: lat, longitude: lng) = location;   // destructuring
 ```
 

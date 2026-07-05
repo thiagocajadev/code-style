@@ -52,7 +52,6 @@ async function purgeDeletedTeams(cutoffDate) {
 
 export async function removePlayer(playerId) {
   const filter = { _id: playerId };
-
   const result = await playersCollection.deleteOne(filter);
 
   const wasDeleted = result.deletedCount === 1;
