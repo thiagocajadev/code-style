@@ -5,8 +5,6 @@
 NULL em **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
 único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
 
-> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
-
 > Os exemplos seguem a convenção SQL Server (PascalCase). Exemplos específicos de PostgreSQL são
 > marcados com `-- PostgreSQL`.
 
@@ -33,11 +31,11 @@ A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verd
 ```sql
 SELECT *
 FROM orders
-WHERE assigned_to = NULL;     -- retorna 0 linhas sempre
+WHERE assigned_to = NULL; -- retorna 0 linhas sempre
 
 SELECT *
 FROM orders
-WHERE assigned_to != NULL;    -- retorna 0 linhas sempre
+WHERE assigned_to != NULL; -- retorna 0 linhas sempre
 ```
 
 </details>
@@ -196,16 +194,16 @@ a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
 ```sql
 CREATE TABLE Orders
 (
-  Id        INT,
-  Status    VARCHAR(20),   -- nullable, sem default
-  Priority  VARCHAR(20),   -- nullable, sem default
-  CreatedAt DATETIME2      -- nullable, sem default
+  Id INT,
+  Status VARCHAR(20), -- nullable, sem default
+  Priority VARCHAR(20), -- nullable, sem default
+  CreatedAt DATETIME2 -- nullable, sem default
 );
 
 -- toda query precisa se defender
 SELECT
   Orders.Id,
-  COALESCE(Orders.Status, 'unknown')  AS Status,
+  COALESCE(Orders.Status, 'unknown') AS Status,
   COALESCE(Orders.Priority, 'normal') AS Priority
 FROM
   Orders;
@@ -411,9 +409,9 @@ quando quiser "único entre os preenchidos".
 ```sql
 CREATE TABLE Users
 (
-  Id    INT          NOT NULL IDENTITY(1, 1),
+  Id INT NOT NULL IDENTITY(1, 1),
   Email VARCHAR(255) NOT NULL,
-  Phone VARCHAR(20)  UNIQUE NULL -- intenção ambígua
+  Phone VARCHAR(20) UNIQUE NULL, -- intenção ambígua
 
   CONSTRAINT PK_Users PRIMARY KEY (Id)
 );

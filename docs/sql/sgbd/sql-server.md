@@ -2,10 +2,10 @@
 
 > Escopo: SQL Server 2025. Referência: [docs.microsoft.com/sql/sql-server](https://learn.microsoft.com/en-us/sql/sql-server/).
 >
-> Este documento cobre idiomas e recursos específicos do SQL Server. Convenções gerais de formatação
+> Este documento cobre idioms e recursos específicos do SQL Server. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 
-**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (Agente) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
+SQL Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (serviço de jobs agendados) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
 
 ## Conceitos fundamentais
 
@@ -17,6 +17,7 @@
 | **CTE** (Common Table Expression, Expressão de Tabela Comum) | Resultado nomeado via `WITH`, descartado após a query |
 | **DiskANN** (Disk-based Approximate Nearest Neighbor, vizinho mais próximo aproximado em disco) | Algoritmo de indexação vetorial usado em vector search no SQL Server 2025 |
 | **OPPO** (Optional Parameter Plan Optimization, Otimização de Plano com Parâmetros Opcionais) | Recurso de SQL Server 2025 que gera planos distintos para cada valor de parâmetro, reduzindo parameter sniffing |
+| **UUID** (Universally Unique Identifier, identificador único global) | Identificador de 128 bits; v7 é sequencial e amigável a índices; no SQL Server, o tipo é `UNIQUEIDENTIFIER` |
 
 ## Tipos de dados
 
@@ -41,10 +42,10 @@ Prefira tipos de precisão explícita. Evite aliases legados (`INT` é preferív
 ```sql
 CREATE TABLE Products
 (
-  Id       INTEGER,          -- alias legado
-  Price    FLOAT,            -- ponto flutuante: impreciso para moeda
-  IsActive TINYINT,          -- semântica obscura
-  Notes    TEXT              -- obsoleto; sem comprimento explícito
+  Id INTEGER, -- alias legado
+  Price FLOAT, -- ponto flutuante: impreciso para moeda
+  IsActive TINYINT, -- semântica obscura
+  Notes TEXT -- obsoleto; sem comprimento explícito
 );
 ```
 
@@ -81,7 +82,7 @@ Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ve
 | `NEWSEQUENTIALID()` | UUID sequencial gerado pelo banco; só como `DEFAULT`, não portável |
 
 <details>
-<summary>✅ Bom: **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7 gerado na aplicação (.NET 9+)</summary>
+<summary>✅ Bom: UUID v7 gerado na aplicação (.NET 9+)</summary>
 
 ```sql
 -- o ID é gerado na aplicação antes do INSERT
@@ -434,11 +435,11 @@ END;
 
 ### BULK INSERT
 
-`BULK INSERT` importa um arquivo de texto diretamente para uma tabela. Mais eficiente que INSERT
+`BULK INSERT` importa um arquivo de texto, como um **CSV** (Comma-Separated Values, Valores Separados por Vírgula), diretamente para uma tabela. Mais eficiente que INSERT
 linha a linha para volumes acima de milhares de registros.
 
 <details>
-<summary>✅ Bom: importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com BULK INSERT</summary>
+<summary>✅ Bom: importar CSV com BULK INSERT</summary>
 
 ```sql
 BULK INSERT Players
@@ -484,7 +485,6 @@ EXEC sp_add_jobstep
       WHERE
         Players.IsActive = 0 AND
         Players.InactivatedAt < DATEADD(year, -1, GETUTCDATE());
-
       SET @RowsDeleted = @@ROWCOUNT;
     END;
   ';
@@ -520,8 +520,8 @@ SET STATISTICS IO ON;
 SET STATISTICS TIME ON;
 
 SELECT
-  orders.id,
-  orders.total
+  Orders.Id,
+  Orders.Total
 FROM
   Orders
 WHERE
@@ -585,4 +585,4 @@ GROUP BY
 - [Procedures](../conventions/advanced/procedures.md): temp tables, etapas nomeadas
 - [Performance](../conventions/advanced/performance.md): índices, paginação, UUID vs BIGINT
 - [Null Safety](../conventions/advanced/null-safety.md): NULL, COALESCE, IS NULL
-- [PostgreSQL](./postgres.md): idiomas específicos do PostgreSQL
+- [PostgreSQL](./postgres.md): idioms específicos do PostgreSQL

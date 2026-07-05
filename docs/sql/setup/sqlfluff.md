@@ -1,6 +1,6 @@
 # SQLFluff
 
-SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Enforça automaticamente as convenções de formatação deste guia.
+SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Aplica automaticamente as convenções de formatação deste guia.
 
 ## Conceitos fundamentais
 
@@ -98,4 +98,4 @@ sqlfluff lint script.sql --dialect tsql
 | `indented_joins = false` | JOIN alinhado com FROM, sem indentação extra |
 
 > [!NOTE]
-> SQLFluff não enforça todas as convenções do guia. Formatação vertical, ordem de cláusulas e CTEs precisam de revisão manual ou configuração adicional via rules personalizadas.
+> SQLFluff não cobre todas as convenções do guia. Formatação vertical, ordem de cláusulas e CTEs precisam de revisão manual ou configuração adicional via rules personalizadas.

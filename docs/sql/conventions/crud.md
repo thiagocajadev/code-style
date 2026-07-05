@@ -1,6 +1,6 @@
 # CRUD
 
-INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão. **CRUD** (Create, Read, Update, Delete; criar, ler, atualizar, excluir) cobre as quatro operações básicas sobre uma tabela.
+INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão. **CRUD** cobre as quatro operações básicas sobre uma tabela.
 
 ## Conceitos fundamentais
 
@@ -67,13 +67,13 @@ INSERT INTO Users
   Email
 )
 SELECT
-  ExternalId,
-  FullName,
-  ContactEmail
+  ExternalUsers.ExternalId,
+  ExternalUsers.FullName,
+  ExternalUsers.ContactEmail
 FROM
   ExternalUsers
 WHERE
-  IsVerified = 1; -- verified account
+  ExternalUsers.IsVerified = 1; -- verified account
 ```
 
 </details>
@@ -135,7 +135,7 @@ UPDATE
   Users
 SET
   Users.IsActive = 0, -- inactive
-  Users.InactivatedAt = GETDATE()
+  Users.InactivatedAt = GETUTCDATE()
 WHERE
   Users.Id = 1;
 ```
@@ -322,7 +322,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom: parâmetros nomeados (**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server / PostgreSQL)</summary>
+<summary>✅ Bom: parâmetros nomeados (SQL Server / PostgreSQL)</summary>
 
 ```sql
 -- SQL Server

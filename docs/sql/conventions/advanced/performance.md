@@ -2,7 +2,7 @@
 
 > Escopo: SQL. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (uso de índice) e ordem de filtros dominam o custo: o otimizador escolhe um plano só pode escolher entre os caminhos disponíveis.
+Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (uso de índice) e ordem de filtros dominam o custo: o otimizador só pode escolher entre os caminhos disponíveis.
 
 ## Conceitos fundamentais
 
@@ -139,7 +139,7 @@ ORDER BY
 
 ### Conversão implícita por tipo incompatível
 
-**SQL** (Structured Query Language, Linguagem de Consulta Estruturada) Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
+SQL Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
 nenhum erro aparece, e o índice é ignorado em silêncio.
 
 <details>
@@ -235,7 +235,7 @@ FROM
   Players
 WHERE
   CONVERT(DATE, Players.JoinedAt) >= '2024-01-01' AND
-  CONVERT(DATE, Players.JoinedAt) <  '2025-01-01';
+  CONVERT(DATE, Players.JoinedAt) < '2025-01-01';
 ```
 
 </details>
@@ -477,11 +477,11 @@ B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, n�
 ```sql
 CREATE TABLE Orders
 (
-    Id UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), -- random: page splits constantes
-    CustomerId UNIQUEIDENTIFIER NOT NULL,
-    CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+  Id UNIQUEIDENTIFIER NOT NULL DEFAULT NEWID(), -- random: page splits constantes
+  CustomerId UNIQUEIDENTIFIER NOT NULL,
+  CreatedAt DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
 
-    CONSTRAINT PK_Orders PRIMARY KEY (Id)
+  CONSTRAINT PK_Orders PRIMARY KEY (Id)
 );
 ```
 

@@ -2,14 +2,14 @@
 
 > Escopo: SQLite 3.53. Referência: [sqlite.org/docs.html](https://sqlite.org/docs.html).
 >
-> Este documento cobre idiomas e recursos específicos do SQLite. Convenções gerais de formatação
+> Este documento cobre idioms e recursos específicos do SQLite. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 >
 > SQLite é um banco embutido: sem servidor, sem usuários, sem roles. O arquivo `.db` é o banco.
 > Indicado para apps mobile, desktop, CLI, testes e edge computing. Não substitui PostgreSQL ou
 > SQL Server em workloads de alta concorrência com múltiplas escritas.
 
-SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) com idiomas próprios: tipos dinâmicos (type affinity), pragmas de configuração por conexão, Write-Ahead Logging para concorrência de leitura, `UPSERT` com `ON CONFLICT` e full-text search via `FTS5`. As seções abaixo cobrem o que distingue o SQLite de bancos servidor-cliente.
+SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) com idioms próprios: tipos dinâmicos (type affinity), pragmas de configuração por conexão, Write-Ahead Logging para concorrência de leitura, `UPSERT` com `ON CONFLICT` e full-text search via `FTS5`. As seções abaixo cobrem o que distingue o SQLite de bancos servidor-cliente.
 
 ## Conceitos fundamentais
 
@@ -23,7 +23,7 @@ SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language,
 
 ## Type affinity
 
-SQLite não enforce tipos rígidos. Uma coluna `INTEGER` aceita texto; uma coluna `TEXT` aceita
+SQLite não impõe tipos rígidos. Uma coluna `INTEGER` aceita texto; uma coluna `TEXT` aceita
 número. O tipo declarado define a **afinidade** usada para conversões implícitas.
 
 | Afinidade | Regra de mapeamento | Exemplo de declaração |
@@ -39,7 +39,7 @@ número. O tipo declarado define a **afinidade** usada para conversões implíci
 
 ```sql
 CREATE TABLE Orders (
-  Id,         -- sem tipo: afinidade BLOB, aceita qualquer coisa
+  Id, -- sem tipo: afinidade BLOB, aceita qualquer coisa
   TotalAmount -- sem tipo: somas podem retornar resultados inesperados
 );
 ```
@@ -71,7 +71,7 @@ CREATE TABLE Orders
 Foreign keys estão **desativadas por padrão** no SQLite. Precisam ser ativadas por conexão.
 
 <details>
-<summary>❌ Ruim: FK declarada mas não enforçada: dados inválidos inseridos sem erro</summary>
+<summary>❌ Ruim: FK declarada mas não aplicada: dados inválidos inseridos sem erro</summary>
 
 ```sql
 -- sem PRAGMA foreign_keys = ON, esta inserção passa silenciosamente
@@ -261,7 +261,7 @@ CREATE VIRTUAL TABLE ProductSearch USING fts5
 (
   Name,
   Description,
-  content=Products,  -- content table: sincroniza com a tabela principal
+  content=Products, -- content table: sincroniza com a tabela principal
   content_rowid=Id
 );
 
@@ -372,5 +372,5 @@ PRAGMA mmap_size = 268435456; -- 256 MB de mmap
 - [Naming](../conventions/naming.md): PascalCase, prefixos, constraints
 - [Null Safety](../conventions/advanced/null-safety.md): NULL, COALESCE, IS NULL
 - [Migrations](../conventions/advanced/migrations.md): forward only, uma responsabilidade
-- [SQL Server](./sql-server.md): idiomas específicos do SQL Server
-- [PostgreSQL](./postgres.md): idiomas específicos do PostgreSQL
+- [SQL Server](./sql-server.md): idioms específicos do SQL Server
+- [PostgreSQL](./postgres.md): idioms específicos do PostgreSQL

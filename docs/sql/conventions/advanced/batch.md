@@ -26,7 +26,7 @@ operações. Lotes menores liberam o lock entre cada commit.
 
 ```sql
 INSERT INTO Players (Id, Name, Position, TeamId) VALUES (1, 'Alice', 'GK', @TeamId);
-INSERT INTO Players (Id, Name, Position, TeamId) VALUES (2, 'Bob',   'CB', @TeamId);
+INSERT INTO Players (Id, Name, Position, TeamId) VALUES (2, 'Bob', 'CB', @TeamId);
 INSERT INTO Players (Id, Name, Position, TeamId) VALUES (3, 'Carol', 'ST', @TeamId);
 ```
 
@@ -45,7 +45,7 @@ INSERT INTO Players
 )
 VALUES
   (1, 'Alice', 'GK', @TeamId),
-  (2, 'Bob',   'CB', @TeamId),
+  (2, 'Bob', 'CB', @TeamId),
   (3, 'Carol', 'ST', @TeamId);
 ```
 
@@ -112,7 +112,6 @@ BEGIN
   WHERE
     Players.IsActive = 0 AND
     Players.InactivatedAt < @CutoffDate;
-
   SET @RowsDeleted = @@ROWCOUNT;
 END;
 ```
@@ -129,7 +128,7 @@ END;
 UPDATE
   Players
 SET
-  Players.IsActive    = 0,
+  Players.IsActive = 0,
   Players.InactivatedAt = GETUTCDATE()
 FROM
   Players
@@ -163,7 +162,6 @@ BEGIN
   WHERE
     FootballTeams.IsActive = 0 AND
     Players.IsActive = 1;
-
   SET @RowsUpdated = @@ROWCOUNT;
 END;
 ```
@@ -187,8 +185,8 @@ INSERT INTO Players
 SELECT
   ExternalPlayers.ExternalId,
   ExternalPlayers.FullName,
-  ExternalPlayers.Position,  -- pode conter valores fora do domínio
-  ExternalPlayers.TeamId     -- pode referenciar time inexistente
+  ExternalPlayers.Position, -- pode conter valores fora do domínio
+  ExternalPlayers.TeamId -- pode referenciar time inexistente
 FROM
   ExternalPlayers;
 ```

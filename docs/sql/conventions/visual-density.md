@@ -12,7 +12,7 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 | **clause separator** (separador de cláusula) | `SELECT`, `FROM`, `WHERE`, `JOIN` já agem como marcos visuais; não adicionar blank entre cláusulas da mesma query |
 | **CTE separator** (separador de CTE) | Cada `WITH nome AS (...)` é uma etapa nomeada, equivalente a uma variável; merece linha em branco antes da próxima |
 | **multi-line block** (bloco multi-linha) | CTE grande, subquery multi-linha, `CASE WHEN` expandido; pede linha em branco depois quando seguido de outro statement |
-| **signature / body boundary** (limite assinatura/corpo) | Em procedures e functions, blank entre `AS`/`$$` e a primeira instrução; deixa a fronteira visível |
+| **signature / body boundary** (limite assinatura/corpo) | Em procedures e functions, blank entre `AS`/`$$` e a primeira instrução; deixa o limite visível |
 | **statement separator** (separador de statement) | Dois ou mais statements consecutivos (`INSERT ...; SELECT ...`) ficam separados por linha em branco |
 | **control flow block** (bloco de fluxo de controle) | `IF ... THEN ... END IF`, `WHILE`, `BEGIN TRY/CATCH`; bloco multi-linha que pede respiro antes e depois |
 | **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=`, tipos ou aliases verticalmente; antipadrão frágil a renomeações, gera diff ruidoso |
@@ -29,6 +29,7 @@ SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens impera
 | **Assinatura e corpo separados** | Blank entre `AS`/`$$` e a primeira instrução de procedure/function |
 | **Sem alinhamento de coluna** | Um espaço único ao redor de `=`, tipos e aliases; sem espaçamento artificial |
 | **Control flow é multi-linha** | `IF ... END IF`, `WHILE`, `TRY/CATCH` recebem blank antes e depois |
+| **Par encadeado fica colado** | Statement que consome o resultado do anterior (`SET @Rows = @@ROWCOUNT` após DML) não leva blank no meio |
 | **4+ statements homogêneos quebram em 2+2** | Série longa de `ALTER TABLE`, `CREATE INDEX` etc. ganha respiro a cada par |
 | **Nunca duplo respiro** | Exatamente uma linha em branco entre grupos; duas é ruído |
 
@@ -70,7 +71,7 @@ WHERE
 
 ## Assinatura e corpo
 
-Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros, tipo de retorno) e corpo (lógica). Uma linha em branco entre eles deixa essa fronteira visível.
+Procedures e functions têm dois blocos distintos: assinatura (nome, parâmetros, tipo de retorno) e corpo (lógica). Uma linha em branco entre eles deixa esse limite visível.
 
 Em T-SQL, a linha vai entre `AS` e `BEGIN`. Em PostgreSQL, vai após o `$$` de abertura e antes do `$$` de fechamento.
 
@@ -276,6 +277,8 @@ JOIN
 
 Blocos `IF ... END IF`, `WHILE`, `BEGIN TRY/CATCH` ocupam peso visual próprio. Aplica-se a regra de **multi-linha pede respiro**: linha em branco antes e depois do bloco.
 
+Dentro do bloco vale a exceção do **par encadeado**: `SET @RowsDeleted = @@ROWCOUNT` consome o resultado do `DELETE` imediatamente anterior, então os dois formam um par e ficam colados, sem blank no meio.
+
 <details>
 <summary>❌ Ruim: bloco WHILE colado ao statement anterior</summary>
 
@@ -307,7 +310,6 @@ BEGIN
     Players
   WHERE
     Players.IsActive = 0;
-
   SET @RowsDeleted = @@ROWCOUNT;
 END;
 ```

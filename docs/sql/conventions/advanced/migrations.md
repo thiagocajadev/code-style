@@ -1,6 +1,6 @@
 # Migrations
 
-> Escopo: SQL. Idiomas específicos deste ecossistema.
+> Escopo: SQL. Idioms específicos deste ecossistema.
 
 Migrações são incrementais e irreversíveis. Cada arquivo representa uma mudança atômica no schema. **Forward-only migrations** (migrações apenas para frente) eliminam ambiguidade e simplificam pipelines de **CI** (Continuous Integration, Integração Contínua).
 
@@ -54,7 +54,7 @@ CREATE TABLE FootballTeams
 (
   Id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(),
   Name NVARCHAR(100) NOT NULL,
-  IsActive BIT DEFAULT 1  -- adicionado depois
+  IsActive BIT DEFAULT 1 -- adicionado depois
 );
 ```
 

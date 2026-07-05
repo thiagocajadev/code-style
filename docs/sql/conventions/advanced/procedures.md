@@ -1,6 +1,6 @@
 # Procedures
 
-> Escopo: SQL. Idiomas específicos deste ecossistema.
+> Escopo: SQL. Idioms específicos deste ecossistema.
 
 Procedures decompõem queries complexas em etapas nomeadas. Tabelas temporárias materializam
 resultados intermediários, tornando cada passo testável e legível.
@@ -87,7 +87,7 @@ BEGIN
   GROUP BY
     Players.TeamId;
 
-   -- Resultado final: combina as etapas
+  -- Resultado final: combina as etapas
   SELECT
     #ActiveChampionTeams.Name,
     #ActiveChampionTeams.ChampionshipsWon,

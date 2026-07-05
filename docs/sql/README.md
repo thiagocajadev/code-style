@@ -28,7 +28,7 @@ O banco de dados é um **store**: armazena e devolve dados. Regras de negócio, 
 
 ## SGBD
 
-Idiomas e recursos específicos de cada banco de dados.
+Idioms e recursos específicos de cada banco de dados.
 
 | SGBD | Versão | Conceitos |
 | --- | --- | --- |
@@ -61,7 +61,7 @@ Idiomas e recursos específicos de cada banco de dados.
 
 | Princípio                                                                                                    | Descrição                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [Fluxo linear](conventions/formatting.md#consulta-em-linha-única)                                            | Leitura de cima pra baixo: filtros antes de JOINs, resultado no final       |
+| [Fluxo linear](conventions/formatting.md#consulta-em-linha-única)                                            | Leitura de cima para baixo: filtros antes de JOINs, resultado no final      |
 | [Etapas explícitas](conventions/advanced/procedures.md#query-monolítica-vs-etapas-com-temp-tables)           | Queries complexas decompostas em passos nomeados com temp tables            |
 | [Sem subqueries profundas](conventions/advanced/advanced.md#subquery-aninhada)                               | Subqueries substituídas por CTEs nomeadas                                   |
 | [CTE vs temp table](conventions/advanced/advanced.md#ctes-encadeadas)                                        | CTE para leitura simples; temp table (`#`) para reuso e performance         |

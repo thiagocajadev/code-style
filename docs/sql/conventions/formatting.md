@@ -1,6 +1,6 @@
 # Formatting
 
-Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) legível de cima pra baixo, sem scroll horizontal.
+Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) legível de cima para baixo, sem scroll horizontal.
 
 ## Conceitos fundamentais
 
@@ -193,7 +193,7 @@ ORDER BY
 </details>
 
 <details>
-<summary>✅ Bom: AND ao final da linha, fluxo de cima pra baixo</summary>
+<summary>✅ Bom: AND ao final da linha, fluxo de cima para baixo</summary>
 
 ```sql
 SELECT

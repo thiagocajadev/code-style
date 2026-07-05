@@ -1,6 +1,6 @@
 # Advanced
 
-> Escopo: SQL. Idiomas específicos deste ecossistema.
+> Escopo: SQL. Idioms específicos deste ecossistema.
 
 Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressions, expressões de tabela comum) nomeiam os passos e tornam a intenção legível. Quando o pipeline cresce, **window functions** (funções de janela) substituem subqueries correlacionadas e mantêm a query plana.
 

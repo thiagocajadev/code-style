@@ -2,7 +2,7 @@
 
 > Escopo: PostgreSQL 18. Referência: [postgresql.org/docs/18](https://www.postgresql.org/docs/18/).
 >
-> Este documento cobre idiomas e recursos específicos do PostgreSQL. Convenções gerais de formatação
+> Este documento cobre idioms e recursos específicos do PostgreSQL. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 >
 > **Naming no PostgreSQL**: `snake_case` para tabelas, colunas e funções, conforme a convenção da
@@ -42,16 +42,16 @@ PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window f
 
 ```sql
 CREATE TABLE orders (
-  id         SERIAL,            -- serial é alias legado; prefira GENERATED ALWAYS AS IDENTITY
-  price      FLOAT,             -- ponto flutuante: impreciso para moeda
-  created_at TIMESTAMP          -- sem fuso horário: problema em sistemas distribuídos
+  id SERIAL, -- serial é alias legado; prefira GENERATED ALWAYS AS IDENTITY
+  price FLOAT, -- ponto flutuante: impreciso para moeda
+  created_at TIMESTAMP -- sem fuso horário: problema em sistemas distribuídos
 );
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom: tipos explícitos, **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v7, TIMESTAMPTZ</summary>
+<summary>✅ Bom: tipos explícitos, UUID v7, TIMESTAMPTZ</summary>
 
 ```sql
 CREATE TABLE orders (
@@ -100,7 +100,7 @@ criada pelo `SERIAL`.
 
 ```sql
 CREATE TABLE customers (
-  id   SERIAL PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name VARCHAR(200) NOT NULL
 );
 ```
@@ -158,7 +158,8 @@ RETURNING
   orders.created_at;
 
 -- UPDATE com NEW e OLD (PostgreSQL 18)
-UPDATE orders
+UPDATE
+  orders
 SET
   orders.status = 'shipped'
 WHERE
@@ -269,8 +270,8 @@ estrutura completa em tempo de definição do schema.
 
 ```sql
 CREATE TABLE events (
-  id      UUID  NOT NULL DEFAULT uuidv7(),
-  payload JSON  NOT NULL -- JSON, não JSONB: sem suporte a índice GIN
+  id UUID NOT NULL DEFAULT uuidv7(),
+  payload JSON NOT NULL -- JSON, não JSONB: sem suporte a índice GIN
 );
 
 -- full scan: lento em tabelas grandes
@@ -363,7 +364,7 @@ SELECT
   ROW_NUMBER() OVER (
     PARTITION BY players.team_id
     ORDER BY players.squad_number
-  ) AS PositionInTeam
+  ) AS position_in_team
 FROM
   players
 WHERE
@@ -456,11 +457,11 @@ CREATE TABLE employee_roles (
 
 ### COPY
 
-`COPY` importa ou exporta dados entre arquivo e tabela com performance muito superior ao INSERT
+`COPY` importa ou exporta dados entre um arquivo, como um **CSV** (Comma-Separated Values, Valores Separados por Vírgula), e uma tabela com performance muito superior ao INSERT
 linha a linha: sem overhead de parse por linha, sem round trips pela aplicação.
 
 <details>
-<summary>✅ Bom: importar **CSV** (Comma-Separated Values, Valores Separados por Vírgula) com COPY (arquivo no servidor)</summary>
+<summary>✅ Bom: importar CSV com COPY (arquivo no servidor)</summary>
 
 ```sql
 COPY players
@@ -534,7 +535,7 @@ SELECT cron.unschedule('clean-inactive-players');
 `postgresql.conf`:
 
 ```
-log_min_duration_statement = 500   # loga queries acima de 500ms
+log_min_duration_statement = 500 # loga queries acima de 500ms
 log_statement = 'none'
 ```
 
@@ -601,4 +602,4 @@ WHERE
 - [Naming](../conventions/naming.md): snake_case no PostgreSQL, prefixos, constraints
 - [Performance](../conventions/advanced/performance.md): índices, UUID vs BIGINT
 - [Null Safety](../conventions/advanced/null-safety.md): IS DISTINCT FROM, NULL em ORDER BY
-- [SQL Server](./sql-server.md): idiomas específicos do SQL Server
+- [SQL Server](./sql-server.md): idioms específicos do SQL Server

@@ -1,10 +1,10 @@
 # Modelagem de entidades
 
-> Escopo: SQL relacional. Referência canônica (modelagem OO): [`../../../../shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md). As decisões de domínio — quando extrair, como relacionar, onde mora a invariante — são as mesmas; aqui o foco é o idiom relacional: tabelas, colunas, constraints, FKs e tipos nativos do PostgreSQL 18, com notas pontuais para SQL Server e SQLite.
+> Escopo: SQL relacional. Referência canônica (modelagem OO): [`../../../shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom relacional: tabelas, colunas, constraints, FKs e tipos nativos do PostgreSQL 18, com notas pontuais para SQL Server e SQLite.
 
 Esta página serve a duas pessoas. A primeira está desenhando o schema inicial do projeto e ainda não sabe quantas colunas é demais em uma tabela. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `customers` agora que ela tem 22 colunas?). As duas saem daqui com critério, não com receita fechada.
 
-O texto cobre as mesmas perguntas do canônico, traduzidas para o vocabulário relacional: quantas colunas uma tabela aguenta antes de fragmentar; quando uma coluna vira tabela filha; como expressar relacionamentos 1:N e N:N; quais colunas toda tabela de agregado deve ter; e como o `tenant_id` e o **RLS** (Row-Level Security, segurança por linha) fecham o isolamento multitenant. As invariantes do domínio viram constraints — `NOT NULL`, `CHECK`, `UNIQUE`, `FOREIGN KEY` — e é o banco que as aplica, não só a aplicação.
+O texto cobre as mesmas perguntas do canônico, traduzidas para o vocabulário relacional: quantas colunas uma tabela aguenta antes de fragmentar; quando uma coluna vira tabela filha; como expressar relacionamentos 1:N e N:N; quais colunas toda tabela de agregado deve ter; e como o `tenant_id` e o **RLS** (Row-Level Security, segurança por linha) fecham o isolamento multitenant. As invariantes do domínio viram constraints (`NOT NULL`, `CHECK`, `UNIQUE`, `FOREIGN KEY`), e é o banco que as aplica, não só a aplicação.
 
 ## Conceitos fundamentais
 
@@ -14,7 +14,7 @@ O texto cobre as mesmas perguntas do canônico, traduzidas para o vocabulário r
 | **entity** (entidade) | Tabela com identidade própria via `PRIMARY KEY`; duas linhas com os mesmos valores mas IDs distintos são registros distintos |
 | **value object** (objeto de valor) | Conceito sem identidade própria; mapeado como colunas com prefixo na tabela dona (`billing_address_street`) ou tabela satélite 1:1 quando o volume é alto |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo banco via `NOT NULL`, `CHECK`, `UNIQUE` ou `FOREIGN KEY`; ex.: `CHECK (status != 'settled' OR settled_at IS NOT NULL)` |
-| **constraint** (restrição) | Declaração de regra no DDL — `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY`; nomeadas com prefixo `pk_`, `fk_`, `uq_`, `ck_` |
+| **constraint** (restrição) | Declaração de regra no DDL: `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY`; nomeadas com prefixo `pk_`, `fk_`, `uq_`, `ck_` |
 | **DOMAIN** (domínio de tipo) | Tipo derivado em PostgreSQL via `CREATE DOMAIN`; aplica constraints automaticamente a toda coluna declarada com esse tipo |
 | **UUID** (Universally Unique Identifier, identificador único global) | Identificador de 128 bits no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; no PostgreSQL 18, `uuidv7()` é nativo e sequencial |
 | **ENUM type** (tipo enumerado) | Conjunto fixo de valores via `CREATE TYPE ... AS ENUM`; alternativa portável: `VARCHAR` + `CHECK` constraint |
@@ -124,7 +124,7 @@ CREATE TABLE customer_tax_info
 );
 ```
 
-Cada tabela responde a uma pergunta clara. `customer_addresses` é reusada por `orders` (endereço de entrega) via FK. `customer_tax_info` é uma tabela satélite 1:1 — existindo só quando o cliente é pessoa jurídica, sem poluir a tabela principal com nulos.
+Cada tabela responde a uma pergunta clara. `customer_addresses` é reusada por `orders` (endereço de entrega) via FK. `customer_tax_info` é uma tabela satélite 1:1. Existe só quando o cliente é pessoa jurídica e não polui a tabela principal com nulos.
 
 </details>
 
@@ -193,7 +193,7 @@ CREATE TABLE orders
 );
 ```
 
-Cada grupo de endereço tem prefixo explícito. Não é preciso JOIN para ler o endereço; está na mesma linha. Quando o endereço de cobrança coincidir com o de entrega, a aplicação copia os valores — redundância intencional para preservar histórico de snapshot.
+Cada grupo de endereço tem prefixo explícito. Não é preciso JOIN para ler o endereço; está na mesma linha. Quando o endereço de cobrança coincidir com o de entrega, a aplicação copia os valores: redundância intencional para preservar histórico de snapshot.
 
 </details>
 
@@ -222,7 +222,7 @@ CREATE TABLE orders
 );
 ```
 
-`customer`, `assignee`, `reference`: qual tabela cada um referencia? Não há como saber sem ler as constraints. Trocar `customer` por `assignee` na aplicação não gera erro de compilação nem erro de banco — apenas dados errados.
+`customer`, `assignee`, `reference`: qual tabela cada um referencia? Não há como saber sem ler as constraints. Trocar `customer` por `assignee` na aplicação não gera erro de compilação nem erro de banco, apenas dados errados.
 
 </details>
 
@@ -249,13 +249,13 @@ CREATE TABLE orders
 );
 ```
 
-O sufixo `_id` documenta a FK pelo nome. O `DOMAIN customer_id` impede que um `order_id` seja atribuído à coluna — o banco rejeita na inserção se os tipos de domínio diferirem. Em sistemas que não usam DOMAIN, o sufixo e a FK são a proteção mínima.
+O sufixo `_id` documenta a FK pelo nome. O `DOMAIN customer_id` impede que um `order_id` seja atribuído à coluna: o banco rejeita a inserção quando os tipos de domínio diferem. Em sistemas que não usam DOMAIN, o sufixo e a FK são a proteção mínima.
 
 </details>
 
 ## Colunas comuns: id, created_at, updated_at, deleted_at, tenant_id
 
-Toda tabela de **aggregate root** carrega um conjunto fixo de colunas que expressam identidade, auditoria e ciclo de vida. Esse conjunto é o equivalente relacional da `BaseEntity` do modelo OO — mas, aqui, "herança" é uma convenção de DDL repetida, não uma classe pai.
+Toda tabela de **aggregate root** carrega um conjunto fixo de colunas que expressam identidade, auditoria e ciclo de vida. Esse conjunto é o equivalente relacional da `BaseEntity` do modelo OO. Aqui, "herança" é uma convenção de DDL repetida, não uma classe pai.
 
 As tabelas filhas do agregado (ex.: `order_items`) não carregam `tenant_id` nem colunas de auditoria: acessadas sempre pelo pai, herdam o contexto da aggregate root.
 
@@ -441,7 +441,7 @@ CREATE TABLE student_course
 );
 ```
 
-Sem índice em `course_id`, consultas do tipo "quais alunos estão matriculados no curso X" viram full scan. Quando o domínio precisar de data de matrícula ou status, esse schema precisa de ALTER TABLE — sinal de que a entidade foi submodelada.
+Sem índice em `course_id`, consultas do tipo "quais alunos estão matriculados no curso X" viram full scan. Quando o domínio precisar de data de matrícula ou status, esse schema precisa de ALTER TABLE, sinal de que a entidade foi submodelada.
 
 </details>
 
@@ -512,7 +512,7 @@ CREATE INDEX ix_enrollments_course_id ON enrollments (course_id);
 
 Dentro do mesmo agregado, a FK garante integridade referencial e o JOIN é esperado: `order_items.order_id` liga à aggregate root. A aplicação carrega o agregado inteiro.
 
-Cruzando a fronteira entre agregados, a FK ainda existe no banco para integridade referencial, mas a aplicação não usa JOIN para "carregar o customer dentro do order". Cada agregado é carregado com queries separadas. Se `orders` carregasse `customers` via JOIN em toda query, o cache de `orders` seria invalidado toda vez que o email do cliente mudasse.
+Ao cruzar o limite entre agregados, a FK ainda existe no banco para integridade referencial, mas a aplicação não usa JOIN para "carregar o customer dentro do order". Cada agregado é carregado com queries separadas. Se `orders` carregasse `customers` via JOIN em toda query, o cache de `orders` seria invalidado toda vez que o email do cliente mudasse.
 
 <details>
 <summary>❌ Ruim: query que faz JOIN cross-aggregate para "completar" o pedido</summary>
@@ -639,7 +639,7 @@ CREATE TABLE orders
 );
 ```
 
-As constraints `CHECK` garantem coerência entre o status e os campos de data. Não é possível ter `status = 'settled'` sem `settled_at` preenchido. Adicionar um novo status é `ALTER TABLE ... DROP CONSTRAINT ... ADD CONSTRAINT` — reversível dentro de uma transação.
+As constraints `CHECK` garantem coerência entre o status e os campos de data. Não é possível ter `status = 'settled'` sem `settled_at` preenchido. Adicionar um novo status é `ALTER TABLE ... DROP CONSTRAINT ... ADD CONSTRAINT`, reversível dentro de uma transação.
 
 </details>
 
@@ -737,7 +737,7 @@ Os padrões abaixo aparecem com frequência em schemas reais, e cada um é um si
 
 **Lista mascarada como colunas numeradas**. `phone1`, `phone2`, `phone3` quando o domínio diz "muitos telefones". Sintoma: lógica `CASE WHEN phone1 IS NULL THEN ... WHEN phone2 IS NULL THEN ...`. Tratamento: tabela filha com FK e constraint de cardinalidade.
 
-**JSONB como substituto de schema**. Coluna `data JSONB` contendo campos que deveriam ser colunas tipadas. Sintoma: queries com `->>'field'` em condições de filtro, sem índice. Tratamento: promover campos frequentemente filtrados para colunas — JSONB é para dados semi-estruturados genuinamente variáveis, não para escapar do DDL.
+**JSONB como substituto de schema**. Coluna `data JSONB` contendo campos que deveriam ser colunas tipadas. Sintoma: queries com `->>'field'` em condições de filtro, sem índice. Tratamento: promover campos frequentemente filtrados para colunas. JSONB serve para dados semi-estruturados que variam de fato, não para escapar do DDL.
 
 **Referência cruzada via JOIN em carga de agregado**. Query que faz JOIN em `customers` para "completar" o `orders`. Sintoma: cache de `orders` é invalidado quando `customers` muda. Tratamento: queries separadas por agregado; caller resolve o `customer_id`.
 
@@ -755,6 +755,6 @@ Cross-links dentro do guia:
 - [`../../../shared/architecture/transactions.md`](../../../shared/architecture/transactions.md): boundary transacional, Unit of Work
 - [`../../../shared/architecture/domain-events.md`](../../../shared/architecture/domain-events.md): naming, outbox, eventual consistency
 - [`../../../shared/platform/database.md`](../../../shared/platform/database.md): tuning, EXPLAIN, troubleshooting
-- [`../sgbd/postgres.md`](../../sgbd/postgres.md): idiom PostgreSQL
+- [`../../sgbd/postgres.md`](../../sgbd/postgres.md): idiom PostgreSQL
 
 Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).

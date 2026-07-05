@@ -26,7 +26,7 @@ Antes de iniciar, configure o editor:
 
 ## Estrutura de arquivos
 
-Separar scripts por responsabilidade facilita revisão, rollback e automação de **CI** (Continuous Integration, Integração Contínua).
+Separar scripts por responsabilidade facilita revisão, rollback e automação de CI.
 
 ```
 sql/
