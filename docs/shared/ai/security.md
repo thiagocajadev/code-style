@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack que integre LLMs.
 
-Integrar um **LLM** (Large Language Model, Modelo de Linguagem Grande) em um sistema cria uma superfície de ataque nova: o modelo processa texto como instrução, não como dado inerte. Qualquer entrada que chegue ao modelo sem sanitização pode redirecionar seu comportamento, independente das instruções originais do sistema.
+Integrar um **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) em um sistema cria uma superfície de ataque nova: o modelo processa texto como instrução, não como dado inerte. Qualquer entrada que chegue ao modelo sem sanitização pode redirecionar seu comportamento, independente das instruções originais do sistema.
 
 ## Conceitos fundamentais
 
@@ -13,7 +13,7 @@ Integrar um **LLM** (Large Language Model, Modelo de Linguagem Grande) em um sis
 | **Indirect injection** (injeção indireta) | Instruções maliciosas chegam via dados externos lidos pelo agente (documentos, páginas web, e-mails) |
 | **Jailbreak** (quebra de restrições) | Técnica para contornar as restrições de segurança do modelo e fazê-lo produzir conteúdo proibido |
 | **Prompt leaking** (vazamento de prompt) | Ataque que extrai o conteúdo do system prompt, expondo lógica de negócio ou segredos |
-| **Trust boundary** (fronteira de confiança) | Limite entre entrada confiável (system prompt controlado) e entrada não confiável (usuário, dados externos) |
+| **Trust boundary** (limite de confiança) | Limite entre entrada confiável (system prompt controlado) e entrada não confiável (usuário, dados externos) |
 | **Grounding** (ancoragem) | Técnica de restringir o modelo a um contexto específico de dados para reduzir desvios |
 | **Output validation** (validação de saída) | Verificação programática da resposta do modelo antes de usá-la em operações downstream |
 
@@ -40,7 +40,7 @@ O ataque não vem do usuário diretamente. Está embutido em dados que o agente 
 </div>
 ```
 
-É o vetor mais perigoso em sistemas agenticos com acesso a ferramentas externas.
+É o vetor mais perigoso em sistemas agênticos com acesso a ferramentas externas.
 
 ### Jailbreak
 
@@ -58,7 +58,7 @@ Expõe o system prompt ao usuário, revelando lógica de negócio, chaves de com
 
 ### 1. Separação explícita de contextos
 
-Nunca interpole entrada do usuário diretamente no system prompt. Mantenha as fronteiras de confiança claras na estrutura da requisição.
+Nunca interpole entrada do usuário diretamente no system prompt. Mantenha os limites de confiança claros na estrutura da requisição.
 
 <details>
 <summary>❌ Ruim: entrada do usuário interpola o system prompt, direct injection trivial</summary>
@@ -190,7 +190,7 @@ const summary = await summarize(`
 
 ### 5. Princípio do menor privilégio para ferramentas
 
-Em sistemas agenticos, cada ferramenta exposta ao modelo deve ter o menor escopo possível. Um agente que só precisa ler não deve ter acesso a ferramentas de escrita.
+Em sistemas agênticos, cada ferramenta exposta ao modelo deve ter o menor escopo possível. Um agente que só precisa ler não deve ter acesso a ferramentas de escrita.
 
 <details>
 <summary>❌ Ruim: agente de consulta exposto a ferramentas com efeito colateral</summary>
@@ -228,7 +228,7 @@ const tools = [
 | Expor ferramentas desnecessárias ao agente | Superfície de ataque ampliada em indirect injection | Princípio do menor privilégio por agente |
 | System prompt sem instrução de resistência | Jailbreak e role-play redirecionam comportamento | Adicionar instrução explícita de escopo e recusa |
 | Dados externos sem enquadramento como dado | Indirect injection via documento ou página | Prefixar conteúdo externo com marcador de dado |
-| Logar o conteúdo de prompts com dados sensíveis | Vazamento de PII nos logs | Sanitizar antes de logar; nunca logar o prompt completo |
+| Logar o conteúdo de prompts com dados sensíveis | Vazamento de **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) nos logs | Sanitizar antes de logar; nunca logar o prompt completo |
 
 ## Veja também
 

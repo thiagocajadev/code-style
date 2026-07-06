@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Modelos de linguagem, por si só, só produzem texto. **Tool use** (uso de ferramentas) é o mecanismo que permite ao modelo invocar funções externas, como buscar dados em uma **API** (Application Programming Interface, Interface de Programação de Aplicações), ler um arquivo ou executar código. O **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo) é o padrão aberto que padroniza como ferramentas e recursos são expostos a modelos de IA.
+Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferramentas) é o mecanismo que permite ao modelo invocar funções externas, como buscar dados em uma **API** (Application Programming Interface, Interface de Programação de Aplicações), ler um arquivo ou executar código. O **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo) é o padrão aberto que padroniza como ferramentas e recursos são expostos a modelos de IA.
 
 ## Conceitos fundamentais
 
@@ -29,7 +29,7 @@ Modelo decide → Retorna tool_call com argumentos → Harness executa a funçã
 
 O modelo recebe o schema das ferramentas disponíveis junto com o prompt. A partir daí, decide se e quando invocá-las com base no objetivo.
 
-**Exemplo de schema em **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript):**
+**Exemplo de schema em JSON** (JavaScript Object Notation, Notação de Objetos JavaScript):
 
 ```json
 {
@@ -55,7 +55,7 @@ O modelo recebe o schema das ferramentas disponíveis junto com o prompt. A part
 - Parâmetros com nomes de domínio (não tipos técnicos)
 - Uma responsabilidade por ferramenta (princípio da responsabilidade única)
 
-**Parallel tool calls** permite que o modelo invoque múltiplas ferramentas no mesmo turno quando as chamadas são independentes. Reduz o número de roundtrips e a latência total.
+**Parallel tool calls** permite que o modelo invoque múltiplas ferramentas no mesmo turno quando as chamadas são independentes. Reduz o número de chamadas de ida e volta e a latência total.
 
 ```
 Modelo → [fetch_weather("SP") | fetch_weather("RJ") | fetch_weather("BH")] → 3 resultados → Gera resposta
@@ -105,7 +105,7 @@ O **MCP Server** expõe três tipos de capacidades:
 
 ### Adoção
 
-O MCP é suportado por Claude Code, Cursor, VS Code Copilot, Zed, Windsurf e centenas de servidores públicos no registry oficial. Servidores populares cobrem: filesystem, banco de dados (PostgreSQL, SQLite), Git, GitHub, Slack, Notion, Browserbase e Docker.
+O MCP é suportado por Claude Code, Cursor, VS Code Copilot, Zed, Windsurf e centenas de servidores públicos no registro oficial. Servidores populares cobrem: filesystem, banco de dados (PostgreSQL, SQLite), Git, GitHub, Slack, Notion, Browserbase e Docker.
 
 ### MCP vs tool use direto
 

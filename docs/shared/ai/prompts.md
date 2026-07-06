@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Prompt engineering é a prática de estruturar entradas para modelos de linguagem de forma a obter respostas corretas, consistentes e econômicas. Um prompt bem construído elimina ambiguidade, reduz tokens desperdiçados e diminui a chance de o modelo alucinar ou divergir do objetivo.
+**Prompt engineering** é a prática de estruturar entradas para modelos de linguagem de forma a obter respostas corretas, consistentes e econômicas. Um prompt bem construído elimina ambiguidade, reduz tokens desperdiçados e diminui a chance de o modelo alucinar ou divergir do objetivo.
 
 ## Conceitos fundamentais
 
@@ -32,17 +32,17 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 
 ## Princípios de eficiência
 
-**Seja específico, não genérico.** Quanto mais específico o pedido, menor a chance de a resposta vagar. Verbos de ação precisos (listar, resumir, corrigir, converter) performam melhor que verbos vagos (analisar, explorar, ver).
+**Seja específico, não genérico.** Quanto mais específico o pedido, menor a chance de a resposta vagar. Verbos de ação precisos (listar, resumir, corrigir, converter) funcionam melhor que verbos vagos (analisar, explorar, ver).
 
 **Forneça contexto suficiente, não excessivo.** Contexto relevante melhora a resposta; contexto irrelevante ocupa tokens e pode confundir o modelo. Inclua apenas o que muda a resposta.
 
-**Especifique o formato de saída.** Sem instrução de formato, o modelo escolhe. Com instrução, o output é previsível e parseável.
+**Especifique o formato de saída.** Sem instrução de formato, o modelo escolhe. Com instrução, o output é previsível e processável por código.
 
-**Use few-shot examples para tarefas de formatação.** Para saídas com padrão específico (**JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), tabela, convenção de nomes), um exemplo vale mais que dez frases descritivas.
+**Use few-shot examples para tarefas de formatação.** Para saídas com padrão específico, como **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), tabela ou convenção de nomes, um exemplo vale mais que dez frases descritivas.
 
 **Instrua raciocínio passo a passo em tarefas complexas.** "Pense passo a passo" ou "raciocine antes de responder" aumenta a precisão em problemas lógicos, matemáticos e de código.
 
-**Coloque o conteúdo mais importante no início ou no fim.** Modelos têm melhor recall das extremidades do contexto (primacy/recency bias). Instruções críticas não devem ficar enterradas no meio de um prompt longo.
+**Coloque o conteúdo mais importante no início ou no fim.** Modelos recuperam melhor o que está nas extremidades do contexto (**primacy/recency bias**, viés de primazia e recência). Instruções críticas não devem ficar enterradas no meio de um prompt longo.
 
 ## Exemplos BAD/GOOD
 
@@ -102,7 +102,7 @@ Liste boas práticas de API REST.
 </details>
 
 <details>
-<summary>✅ Bom: formato definido, output previsível e parseável</summary>
+<summary>✅ Bom: formato definido, output previsível e processável por código</summary>
 
 ```
 Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). Formato: tabela Markdown com colunas "Prática" e "Por quê". Máximo 1 frase por célula. Não inclua boas práticas de leitura.

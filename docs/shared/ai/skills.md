@@ -26,7 +26,7 @@ Skills e tools são complementares, não equivalentes.
 | Granularidade | Atômica; faz uma coisa | Composta; orquestra várias ações |
 | Definição | Schema JSON (nome, params, tipos) | Arquivo de instrução (markdown, YAML, código) |
 | Executa | Código determinístico | LLM + tools + lógica de raciocínio |
-| Reutilização | Por API call | Por harness em múltiplos contextos |
+| Reutilização | Por chamada de API | Por harness em múltiplos contextos |
 | Exemplo | `search_web(query)` | Skill de pesquisa: reescreve query → busca → resume → formata |
 
 Uma skill pode usar várias tools. Uma tool não usa skills.
@@ -42,7 +42,7 @@ Uma skill bem definida tem quatro componentes:
 [Formato]     Estrutura esperada de saída (texto, JSON, tabela, código)
 ```
 
-**Exemplo em markdown (formato usado em harnessses como Claude Code):**
+**Exemplo em markdown (formato usado em harnesses como Claude Code):**
 
 ```markdown
 # Skill: Revisão de Código
@@ -99,7 +99,7 @@ Skill: Análise de PR
   └─ Sub-skill: Revisão de docs (changelog, README)
 ```
 
-Em harnessses multi-agente, cada skill pode ser executada por um agente especializado em paralelo. O orquestrador agrega os resultados e produz o output final.
+Em harnesses multi-agente, cada skill pode ser executada por um agente especializado em paralelo. O orquestrador agrega os resultados e produz o output final.
 
 ## Exemplos de skills por domínio
 
@@ -116,8 +116,8 @@ Em harnessses multi-agente, cada skill pode ser executada por um agente especial
 
 **Uma skill por domínio.** Skills que cobrem múltiplos domínios produzem raciocínio genérico. Uma skill de "análise geral" é menos útil que uma skill de "revisão de segurança".
 
-**Instrução operacional, não descritiva.** A instrução diz o que fazer, não o que a skill é. "Identifique os 3 principais riscos de segurança" performa melhor que "Você é um especialista em segurança".
+**Instrução operacional, não descritiva.** A instrução diz o que fazer, não o que a skill é. "Identifique os 3 principais riscos de segurança" funciona melhor que "Você é um especialista em segurança".
 
-**Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura (tabela, lista numerada, **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript)) garante parsabilidade.
+**Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura, como tabela, lista numerada ou **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), garante saída processável por código.
 
 **Versionar skills como código.** Skills em produção devem ter controle de versão, testes de output e processo de deploy: os mesmos critérios de qualquer artefato de software.

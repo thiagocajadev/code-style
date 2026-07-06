@@ -1,4 +1,4 @@
-# RAG (Retrieval-Augmented Generation, Geração com Recuperação Aumentada)
+# RAG (Geração Aumentada por Recuperação)
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
@@ -14,8 +14,8 @@
 | **Chunking** (fragmentação) | Divisão de documentos longos em trechos menores para indexação e recuperação |
 | **Re-ranking** (reclassificação) | Etapa que ordena os resultados recuperados por relevância mais precisa antes de injetar no prompt |
 | **Hybrid search** (busca híbrida) | Combinação de busca vetorial (semântica) com BM25 (lexical) para maior cobertura |
-| **Query rewriting** (reescrita de query) | Técnica que reformula a pergunta do usuário antes da busca para melhorar recall |
-| **HyDE** (Hypothetical Document Embeddings) | Gera um documento hipotético que responderia a query, então usa seu embedding para buscar |
+| **Query rewriting** (reescrita de query) | Técnica que reformula a pergunta do usuário antes da busca para recuperar mais resultados relevantes |
+| **HyDE** (Hypothetical Document Embeddings, embeddings de documento hipotético) | Gera um documento hipotético que responderia à query, então usa seu embedding para buscar |
 
 ## Como funciona o RAG
 
@@ -45,11 +45,11 @@ Um embedding transforma texto em um vetor de números (ex: 1536 dimensões para 
 "refrigerador" → [-0.54, 0.23, -0.71, ...] ← distantes
 ```
 
-Modelos de embedding populares: `text-embedding-3-small` e `text-embedding-3-large` (OpenAI), `voyage-3` (Voyage **AI** (Artificial Intelligence, Inteligência Artificial), recomendado pela Anthropic para uso com Claude).
+Modelos de embedding populares: `text-embedding-3-small` e `text-embedding-3-large` (OpenAI), `voyage-3` (Voyage AI, recomendado pela Anthropic para uso com Claude).
 
 ## Vector store (Banco vetorial)
 
-O vector store armazena embeddings e executa busca por similaridade em alta velocidade. A busca retorna os K vetores mais próximos de uma query (K-nearest neighbors).
+O vector store armazena embeddings e executa busca por similaridade em alta velocidade. A busca retorna os K vetores mais próximos de uma query (**K-nearest neighbors**, os K vizinhos mais próximos).
 
 | Opção | Perfil |
 |---|---|

@@ -3,7 +3,7 @@
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
 Este guia cobre conceitos que aparecem em sistemas de IA em produção: ajuste fino de modelos,
-alucinações, saídas estruturadas, raciocínio estendido, engines de inferência e **AI** (Artificial Intelligence, Inteligência Artificial) Gateway. Cada
+alucinações, saídas estruturadas, raciocínio estendido, motores de inferência e AI Gateway. Cada
 conceito impacta diretamente decisões de arquitetura e custo.
 
 ## Conceitos fundamentais
@@ -23,7 +23,7 @@ conceito impacta diretamente decisões de arquitetura e custo.
 ## Fine-tuning (Ajuste fino)
 
 Fine-tuning parte de um modelo pré-treinado e continua o treinamento com um dataset menor e
-específico. O resultado é um modelo que performa melhor no domínio-alvo sem perder o conhecimento
+específico. O resultado é um modelo com desempenho melhor no domínio-alvo, sem perder o conhecimento
 geral.
 
 ```
@@ -48,9 +48,9 @@ menos custo e sem a complexidade de um pipeline de treinamento.
 | Variante                                   | O que é                                                                     | Indicação                                      |
 | ------------------------------------------ | --------------------------------------------------------------------------- | ---------------------------------------------- |
 | **Full fine-tuning**                       | Atualiza todos os pesos do modelo                                           | Máxima especialização; exige GPU               |
-| **LoRA** (Low-Rank Adaptation, Adaptação de Baixo Rank) | Atualiza apenas matrizes de baixo rank (classicação); pesos base congelados | Eficiente em memória; mais comum               |
-| **QLoRA**                                  | LoRA sobre modelo quantizado                                                | Fine-tuning em hardware consumer (GPU de 24GB) |
-| **PEFT** (Parameter-Efficient Fine-Tuning, Ajuste Fino com Eficiência de Parâmetros) | Família de técnicas que incluem LoRA, prefix tuning e adapters              | Termo genérico para ajuste fino eficiente      |
+| **LoRA** (Low-Rank Adaptation, Adaptação de Posto Reduzido) | Atualiza apenas matrizes de posto reduzido; pesos base congelados | Eficiente em memória; mais comum               |
+| **QLoRA**                                  | LoRA sobre modelo quantizado                                                | Fine-tuning em hardware doméstico (GPU de 24GB) |
+| **PEFT** (Parameter-Efficient Fine-Tuning, Ajuste Fino com Eficiência de Parâmetros) | Família de técnicas que inclui LoRA, prefix tuning e adapters              | Termo genérico para ajuste fino eficiente      |
 
 ## Hallucination (Alucinação)
 
@@ -71,7 +71,7 @@ domínios raros no treinamento e outputs longos sem ancoragem.
 
 ```
 Grounding → Fornecer os fatos no prompt em vez de deixar o modelo lembrar
-RAG      → Recuperar informação atualizada e injetá-la no contexto
+RAG → Recuperar informação atualizada e injetá-la no contexto
 Verificação → Pedir ao modelo que cite a fonte no próprio output
 Temperature → Usar temperature baixa (0-0.3) para tarefas factuais
 ```
@@ -143,7 +143,7 @@ Se não tiver certeza, diga que não sabe e recomende verificar a documentação
 ## Structured outputs (Saídas estruturadas)
 
 Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) que segue um schema definido. O output é
-parseável sem regex, sem pós-processamento frágil.
+processável por código sem regex, sem pós-processamento frágil.
 
 <details>
 <summary>❌ Ruim: sem schema, resposta em texto livre, parsing manual e frágil</summary>
@@ -159,7 +159,7 @@ const rawText = response.content[0].text;
 </details>
 
 <details>
-<summary>✅ Bom: schema forçado via tool, output parseável diretamente</summary>
+<summary>✅ Bom: schema forçado via tool, output processável diretamente</summary>
 
 ```js
 const response = await client.messages.create({
@@ -182,7 +182,7 @@ Suporte por provedor:
 | Ollama    | `format: "json"` ou schema via `format` field                  |
 
 Structured outputs são obrigatórios quando o output alimenta outro sistema de forma programática.
-Nunca parsear texto livre em produção.
+Nunca extrair dados de texto livre em produção.
 
 ## Extended thinking (Raciocínio estendido)
 
@@ -226,17 +226,17 @@ engine impacta velocidade, compatibilidade e recursos suportados.
 | ----------------------------------- | ------------------------------------------------------------- | -------------------------------------------------------- |
 | **llama.cpp**                       | Rodar modelos GGUF em CPU/GPU; base do Ollama                 | Compatibilidade máxima; hardware variado                 |
 | **Ollama**                          | Wrapper de llama.cpp com API REST e CLI simples               | Desenvolvimento local; prototipagem                      |
-| **vLLM**                            | Alto throughput em GPU; PagedAttention; batching contínuo     | Produção em servidor GPU; múltiplos usuários simultâneos |
-| **LM Studio**                       | Interface gráfica sobre llama.cpp; servidor OpenAI-compatible | Exploração local com UI; sem linha de comando            |
+| **vLLM**                            | Alto **throughput** (vazão) em GPU; PagedAttention; batching contínuo     | Produção em servidor GPU; múltiplos usuários simultâneos |
+| **LM Studio**                       | Interface gráfica sobre llama.cpp; servidor compatível com a API da OpenAI | Exploração local com UI; sem linha de comando            |
 | **TGI** (Text Generation Inference, Inferência para Geração de Texto) | Servidor Hugging Face; quantização, streaming, batching       | Modelos Hugging Face em produção                         |
 
 Para uso em produção com múltiplos usuários, **vLLM** é a escolha padrão: batching contínuo maximiza
-throughput (vazão) e PagedAttention (atenção paginada) gerencia a KV cache (armazenamento rápido e
+o throughput e PagedAttention (atenção paginada) gerencia o KV cache (armazenamento rápido e
 temporário das matrizes de atenção chave-valor de tokens já processados) de forma eficiente.
 
 ## AI Gateway
 
-Um AI Gateway (portão de IA) é uma camada intermediária entre a aplicação e as APIs de **LLM** (Large Language Model, Modelo de Linguagem Grande).
+Um AI Gateway é uma camada intermediária entre a aplicação e as APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala).
 Centraliza responsabilidades que não devem viver na lógica de negócio.
 
 ```
@@ -248,21 +248,21 @@ Aplicação → AI Gateway → [Claude | GPT | Gemini | modelo local]
 | Responsabilidade    | O que resolve                                               |
 | ------------------- | ----------------------------------------------------------- |
 | **Roteamento**      | Selecionar provedor por custo, latência ou capacidade       |
-| **Rate limiting**   | Controlar volume de requisições por usuário ou tenant       |
+| **Rate limiting**   | Controlar volume de requisições por usuário ou **tenant** (inquilino)       |
 | **Cache semântico** | Reutilizar respostas de prompts semanticamente equivalentes |
 | **Fallback**        | Trocar de provedor automaticamente em caso de falha         |
 | **Observabilidade** | Centralizar logs, latência, custo e tokens por chamada      |
-| **PII scrubbing**   | Remover dados sensíveis antes de enviar ao provedor externo |
+| **PII scrubbing** (remoção de dados pessoais)   | Remover dados sensíveis antes de enviar ao provedor externo |
 | **Cost allocation** | Associar consumo de tokens a projetos, times ou clientes    |
 
 | Ferramenta | Open-source? | Foco principal |
 |---|---|---|
-| **LiteLLM** | Sim | 140+ provedores; custo, balanceamento e roteamento; mais completo do ecossistema OSS |
+| **LiteLLM** | Sim | 140+ provedores; custo, balanceamento e roteamento; o mais completo do ecossistema open-source |
 | **Portkey** | Sim (desde mar/2026) | Observabilidade, controle de custo, governança de agentes; MCP Gateway nativo |
 | **Bifrost** | Sim (Apache 2.0) | Altíssima performance em Go; overhead de ~11µs; indicado para produção de alto volume |
 | **OpenRouter** | Não (SaaS) | Catálogo de 300+ modelos via endpoint único compatível com OpenAI; foco em variedade |
 | **Cloudflare AI Gateway** | Não (SaaS) | Roteamento no edge; cache semântico; 70+ modelos; integrado ao ecossistema Cloudflare |
 
 O AI Gateway é indicado quando a aplicação usa múltiplos provedores, precisa de controle de custo
-por tenant (inquilino) ou opera em ambiente regulado (PII, compliance). Para um único provedor em
+por tenant ou opera em ambiente regulado (PII, conformidade). Para um único provedor em
 projeto simples, a abstração é overhead desnecessário.

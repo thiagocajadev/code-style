@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo de Linguagem Grande) para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
+Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
 
 ## Conceitos fundamentais
 
@@ -22,7 +22,7 @@ Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo d
 Um agente recebe um objetivo em linguagem natural e opera em loop até completá-lo. O ciclo básico é:
 
 ```
-Objetivo → Raciocina → Escolhe ferramenta → Executa → Observa resultado → Raciocina → ...→ Resposta final
+Objetivo → Raciocina → Escolhe ferramenta → Executa → Observa resultado → Raciocina → ... → Resposta final
 ```
 
 O padrão **ReAct** é o mais adotado. Em cada iteração, o modelo produz um bloco de raciocínio (Thought) antes de decidir a ação (Action). Isso melhora a qualidade das decisões e facilita depuração.
@@ -46,7 +46,7 @@ O **Harness** é o código de infraestrutura que faz o agente funcionar. Ele nã
 - Interrupções, timeouts e limites de iteração
 - Checkpoints para retomada após falha
 
-Exemplos de harnesses: **Claude Code** (Anthropic), **LangGraph**, **CrewAI**, **AutoGen/AG2** (Microsoft), **OpenAI Agents SDK** (Software Development Kit, Kit de Desenvolvimento de Software), **Google ADK**.
+Exemplos de harnesses: **Claude Code** (Anthropic), **LangGraph**, **CrewAI**, **AutoGen/AG2** (Microsoft), **OpenAI Agents SDK** e **Google ADK**.
 
 Um harness bem construído é independente do domínio: a lógica de negócio fica nas ferramentas, não no loop de execução.
 
@@ -61,7 +61,7 @@ Paralelo:   Objetivo → [Agente A | Agente B | Agente C] → Agregador → Resu
 
 **Sequencial** é indicado quando cada etapa depende do resultado da anterior. **Paralelo** é indicado quando as tarefas são independentes e o tempo importa.
 
-Frameworks como **LangGraph** modelam orquestração como grafos dirigidos com estado compartilhado, checkpointing e suporte a time travel (voltar a um estado anterior para reprocessar).
+Frameworks como **LangGraph** modelam orquestração como grafos dirigidos com estado compartilhado, checkpointing e suporte a **time travel** (voltar a um estado anterior para reprocessar).
 
 ## Multi-agent (Multi-agente)
 
@@ -76,11 +76,11 @@ Vantagens em relação a um agente único:
 - Paralelismo: agentes independentes podem executar simultaneamente
 - Controle: handoffs explícitos tornam o fluxo auditável
 
-O risco principal é a propagação de erros: um agente upstream com output incorreto contamina todos os downstream. Validação de output entre handoffs é obrigatória.
+O risco principal é a propagação de erros: um agente **upstream** (etapa anterior) com output incorreto contamina todos os **downstream** (etapas seguintes). Validação de output entre handoffs é obrigatória.
 
 ## Memory (Memória)
 
-Modelos de linguagem são stateless por natureza: cada chamada começa do zero. O agente precisa de mecanismos explícitos para reter informações.
+Modelos de linguagem são **stateless** (não retêm estado) por natureza: cada chamada começa do zero. O agente precisa de mecanismos explícitos para reter informações.
 
 | Tipo | Como funciona | Indicação |
 |---|---|---|
@@ -89,4 +89,4 @@ Modelos de linguagem são stateless por natureza: cada chamada começa do zero. 
 | **External long-term** | Embeddings em vector store; recuperados via RAG | Conhecimento acumulado entre sessões |
 | **Episodic** (episódica) | Registro de interações passadas com o usuário | Personalização e continuidade |
 
-A memória in-context é a mais simples, mas cresce com o número de iterações e pode esgotar a janela de contexto. Para agentes de longa duração, combine checkpoint (estado estruturado) com **RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) (recuperação semântica).
+A memória in-context é a mais simples, mas cresce com o número de iterações e pode esgotar a janela de contexto. Para agentes de longa duração, combine checkpoint (estado estruturado) com **RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) para a recuperação semântica.

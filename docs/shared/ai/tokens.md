@@ -2,13 +2,13 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Token é a unidade mínima de texto que um modelo de linguagem processa. Entender tokens é essencial para estimar custo, respeitar limites de contexto e otimizar prompts. A maioria das APIs cobra por token, não por caractere ou palavra.
+Token é a unidade mínima de texto que um modelo de linguagem processa. Entender tokens é essencial para estimar custo, respeitar limites de contexto e otimizar prompts. A maioria das **APIs** (Application Programming Interface, Interface de Programação de Aplicações) cobra por token, não por caractere ou palavra.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **token** (token, unidade mínima) | Sequência de caracteres que o tokenizador trata como unidade: pode ser uma palavra, parte de palavra ou pontuação |
+| **Token** (unidade mínima de texto) | Sequência de caracteres que o tokenizador trata como unidade: pode ser uma palavra, parte de palavra ou pontuação |
 | **Tokenizer** (tokenizador) | Algoritmo que converte texto em tokens antes de enviar ao modelo |
 | **Input tokens** (tokens de entrada) | Tokens do prompt: system prompt, mensagens, tool schemas e tool results |
 | **Output tokens** (tokens de saída) | Tokens gerados pelo modelo na resposta |
@@ -49,7 +49,7 @@ A context window define o limite de entrada por chamada. A saída máxima é um 
 | GPT-4.1 | 1.000.000 tokens | 32.768 tokens |
 | Gemini 2.5 Pro | 1.000.000 tokens | 65.536 tokens |
 | Gemini 2.5 Flash | 1.000.000 tokens | 65.536 tokens |
-| Llama 4 Scout | 10.000.000 tokens |; |
+| Llama 4 Scout | 10.000.000 tokens | não divulgada |
 
 Contexto longo é útil, mas não gratuito: mais tokens de entrada significa maior custo e, em alguns modelos, aumento de latência.
 
@@ -105,7 +105,7 @@ O cache tem **TTL** (Time To Live, tempo de vida) de aproximadamente 5 minutos p
 
 **Usar o modelo certo para cada tarefa.** Haiku 4.5 custa 5x menos que Sonnet 4.6 por token de saída. Tarefas simples (classificação, extração, resumo curto) não precisam do modelo mais capaz.
 
-**Combinar Prompt Caching com Batch API.** A Batch **API** (Application Programming Interface, Interface de Programação de Aplicações) acumula o desconto do cache (90%) com o desconto do Batch (50%). Para processamento de documentos em volume, a redução de custo pode chegar a 95%.
+**Combinar Prompt Caching com Batch API.** A Batch API acumula o desconto do cache (90%) com o desconto do Batch (50%). Para processamento de documentos em volume, a redução de custo pode chegar a 95%.
 
 **Evitar output tokens desnecessários.** Instruir o modelo a responder de forma concisa quando a tarefa permite. Output tokens são os mais caros.
 
