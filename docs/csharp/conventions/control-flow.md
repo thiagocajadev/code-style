@@ -105,7 +105,7 @@ var priority = (isUrgent, isCritical) switch
 ## Aninhamento em cascata
 
 Quando as condições crescem e se aninham, o fluxo vira uma pirâmide: o _arrow antipattern_. Guard
-clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
+clauses invertem a pirâmide: trate os casos inválidos no topo e deixe o fluxo principal limpo.
 
 <details>
 <summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
@@ -255,7 +255,7 @@ public string GetStatusLabel(string status)
 </details>
 
 <details>
-<summary>❌ Ruim: if/else encadeado para mapear Result em resposta **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)</summary>
+<summary>❌ Ruim: if/else encadeado para mapear Result em resposta HTTP</summary>
 
 ```csharp
 public IResult MapResult(Result<Order> result)
@@ -297,7 +297,7 @@ public IResult MapResult(Result<Order> result)
 
 Switch expression resolve mapeamento de valores. Quando cada caso precisa executar múltiplas ações
 (não retornar um valor, mas fazer algo), `switch` statement torna a intenção mais clara que um
-`if/else` encadeado. Cada `case` termina com `break` explícito: fall-through acidental é bug
+`if/else` encadeado. Cada `case` termina com `break` explícito: **fall-through** (execução que continua no caso seguinte) acidental é bug
 silencioso.
 
 <details>
@@ -402,7 +402,7 @@ _As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo reso
 ## Circuit break
 
 Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` já resolve. Esses métodos
-LINQ param no primeiro match, sem percorrer o resto. Para busca com lógica de saída explícita,
+**LINQ** (Language Integrated Query, consulta integrada à linguagem) param no primeiro match, sem percorrer o resto. Para busca com lógica de saída explícita,
 `foreach` com `return` antecipado é direto.
 
 <details>

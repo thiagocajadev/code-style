@@ -1,7 +1,7 @@
 # Project Foundation
 
 > [!NOTE]
-> Essa estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
+> Esta estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
 
 Um projeto .NET bem fundado define três coisas antes da primeira linha de domínio: editor e linter alinhados, `Program.cs` como índice legível da aplicação, e configuração delegada a **appsettings** com secrets fora do repositório. O resto cresce a partir daí.
 
@@ -34,7 +34,7 @@ dotnet format
 `Program.cs` declara intenção, não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
 
 <details>
-<summary>❌ Ruim: Program.cs como dumping ground de configuração</summary>
+<summary>❌ Ruim: Program.cs como depósito de toda a configuração</summary>
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -97,7 +97,7 @@ app.Run();
 
 ## Extension methods por domínio
 
-Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam co-localizados com o domínio que registram.
+Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam junto do domínio que registram.
 
 <details>
 <summary>❌ Ruim: dependências de domínio registradas diretamente no Program.cs</summary>

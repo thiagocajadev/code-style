@@ -204,7 +204,7 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 
 ## OrderBy e ThenBy
 
-Toda query que usa paginação ou que o chamador espera em ordem determinística precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem: o resultado varia entre execuções.
+Toda query paginada, ou cujo resultado o chamador espera em ordem determinística, precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem: o resultado varia entre execuções.
 
 <details>
 <summary>❌ Ruim: paginação sem ordenação, resultado não determinístico</summary>

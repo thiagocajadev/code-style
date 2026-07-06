@@ -651,7 +651,7 @@ public Input ValidateInput(Input input)
 
 Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre
 **um espaço único**. Alinhamento artificial quebra com qualquer rename, gera
-diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
+diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
 
 <details>
 <summary>❌ Ruim: espaços extras para alinhar colunas</summary>

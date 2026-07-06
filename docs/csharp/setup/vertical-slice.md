@@ -11,10 +11,10 @@ Este documento segue o ciclo de vida de uma requisição: de `Program.cs` até o
 | Conceito | O que é |
 |---|---|
 | **Vertical Slice** (fatia vertical) | Organização por feature onde rota, contrato, regra e acesso a dados ficam colocalizados |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de entrada ou saída da feature, imutável |
+| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de entrada ou saída da feature; não muda depois de criado |
 | **CQS** (Command-Query Separation, Separação Comando-Consulta) | Handler altera estado OU retorna dado, nunca os dois |
 | **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da fatia: verbo, status, envelope no boundary |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa fronteira do processo: banco, rede, arquivo; sempre assíncrona |
+| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: banco, rede, arquivo; sempre assíncrona |
 
 ## Estrutura de arquivos
 
@@ -51,27 +51,19 @@ src/
 
 ## Pipeline
 
-```
-HTTP Request
-  ↓
-ValidationFilter     → body nulo → 400
-  ↓
-[AsParameters]       → DI resolve o context record
-  ↓
-1. Sanitize          → normaliza input                        (puro, sem I/O)
-  ↓
-2. Validate          → Result<T>      falha → 400             (puro, sem I/O)
-  ↓
-3. Business Rules    → Result<bool>   falha → 404 / 409       (com I/O)
-  ↓
-4. Save              → void (CQS)                            (com I/O)
-  ↓
-5. Read              → Result<Order>  falha → 500             (com I/O)
-  ↓
-6. Filter Output     → OrderResponse                          (puro, sem I/O)
-  ↓
-TypedResults         → 201 Created / 200 Ok / 400 / 404 / 500
-```
+`HTTP Request → ValidationFilter → [AsParameters] → Sanitize → Validate → Business Rules → Save → Read → Filter Output → TypedResults`
+
+| Etapa | Papel | I/O | Falha |
+| --- | --- | --- | --- |
+| ValidationFilter | Rejeita body nulo antes do handler | - | 400 |
+| [AsParameters] | DI resolve o context record | - | - |
+| 1. Sanitize | Normaliza o input | puro | - |
+| 2. Validate | Regras de input, retorna `Result<T>` | puro | 400 |
+| 3. Business Rules | Regras de domínio, retorna `Result<bool>` | com I/O | 404 / 409 |
+| 4. Save | Persiste, `void` (CQS) | com I/O | - |
+| 5. Read | Busca o que foi salvo, `Result<Order>` | com I/O | 500 |
+| 6. Filter Output | Projeta `OrderResponse` | puro | - |
+| TypedResults | Resposta final | - | 201 / 200 / 400 / 404 / 500 |
 
 ---
 

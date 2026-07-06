@@ -2,7 +2,7 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação que atravessa o limite do processo (banco, rede, arquivo) retorna `Task`. O chamador aguarda com `await`; bloquear (`Result`, `Wait()`) trava threads do pool e leva a **deadlock** (impasse). **CancellationToken** propaga cancelamento ao longo da cadeia.
+Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação que atravessa o limite do processo (banco, rede, arquivo) retorna `Task`. O chamador aguarda com `await`; bloquear (`Result`, `Wait()`) trava threads do pool e leva a **deadlock**. **CancellationToken** propaga cancelamento ao longo da cadeia.
 
 ## Conceitos fundamentais
 
@@ -14,11 +14,11 @@ Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação q
 | **deadlock** (impasse) | Travamento por bloqueio síncrono (`.Result`, `.Wait()`) sobre código assíncrono no mesmo contexto |
 | **CancellationToken** (sinalizador de cancelamento) | Token propagado pela cadeia para abortar operações longas com cooperação |
 | **ConfigureAwait** (configurar continuação) | Método que controla se a continuação retorna ao contexto original; em libraries usa-se `false` |
-| **thread pool** (conjunto de threads gerenciado) | Pool de threads do .NET reutilizado para executar continuações; bloquear esgota o pool |
+| **thread pool** (conjunto gerenciado de linhas de execução) | Threads do .NET reutilizadas para executar continuações; bloquear esgota o pool |
 
 ## async/await
 
-Todo **I/O** (Input/Output, Entrada/Saída) é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
+Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
 
 <details>
 <summary>❌ Ruim: I/O síncrono bloqueia a thread</summary>

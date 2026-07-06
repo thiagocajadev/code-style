@@ -2,7 +2,7 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-**DI** (Dependency Injection, Injeção de Dependências) torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+**DI** torna dependências explícitas, testáveis e substituíveis. O container do .NET resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
 
 ## Conceitos fundamentais
 

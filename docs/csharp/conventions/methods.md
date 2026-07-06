@@ -10,7 +10,7 @@ Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de
 | **helper** (método auxiliar) | Método privado abaixo do orquestrador, com responsabilidade única e nome de domínio |
 | **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada método opera num único nível; misturar passos altos e baixos prejudica leitura |
 | **single responsibility** (responsabilidade única) | Um método faz uma coisa; o nome descreve essa coisa por completo |
-| **side effect** (efeito colateral) | Mutação de estado externo, I/O, log; deixar explícito no nome ou na assinatura |
+| **side effect** (efeito colateral) | Alteração de estado externo, I/O, log; deixar explícito no nome ou na assinatura |
 | **pure function** (função pura) | Método sem side effects; saída depende só dos argumentos; mais fácil de testar |
 | **expression-bodied member** (membro com corpo de expressão) | Sintaxe `=>` para métodos curtos com retorno único |
 
@@ -231,7 +231,7 @@ public string BuildShippingLabel(Order order)
 
 ## Primary constructors
 
-C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o boilerplate de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
+C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o **boilerplate** (código repetitivo de cerimônia) de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
 
 <details>
 <summary>❌ Ruim: boilerplate de construtor tradicional</summary>

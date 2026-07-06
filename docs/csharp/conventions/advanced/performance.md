@@ -11,7 +11,7 @@ contexto, prefira legibilidade. Meça antes de otimizar. **Span\<T\>** elimina a
 | --- | --- |
 | **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
 | **Span\<T\>** (fatia de memória) | Tipo do .NET que representa janela sobre memória existente; sem alocação |
-| **ReadOnlySpan\<char\>** (fatia somente leitura) | Janela imutável sobre uma string; substitui `Substring` em hot paths |
+| **ReadOnlySpan\<char\>** (fatia somente leitura) | Janela somente leitura sobre uma string; substitui `Substring` em hot paths |
 | **GC** (Garbage Collector, Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
 | **allocation** (alocação) | Reserva de memória no heap gerenciado; `new`, boxing e concatenação alocam |
 | **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `object`/interface; evite em laços |
@@ -98,9 +98,9 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 
 ## StringBuilder
 
-Concatenação com `+` ou interpolação dentro de um loop aloca uma nova string a cada iteração: cada
-string é imutável em .NET. Para construir strings dinamicamente, `StringBuilder` reutiliza um buffer
-interno e aloca uma vez no final.
+Concatenação com `+` ou interpolação dentro de um loop aloca uma nova string a cada iteração:
+string em .NET não muda depois de criada. Para construir strings dinamicamente, `StringBuilder`
+reutiliza um buffer interno e aloca uma vez no final.
 
 <details>
 <summary>❌ Ruim: nova string alocada por iteração</summary>
@@ -178,7 +178,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 </details>
 <br>
 
-`ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task` tem menos overhead de leitura e não oferece risco de double-await.
+`ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task` tem menos overhead de leitura e não traz o risco de double-await.
 
 ## ID: Guid v4 vs Guid v7
 

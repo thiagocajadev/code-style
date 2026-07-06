@@ -107,7 +107,7 @@ public static WebApplicationBuilder AddAuth(this WebApplicationBuilder builder)
 
 ## JWT: middleware valida, não `ReadJwtToken`
 
-`ReadJwtToken()` lê o **payload** (corpo da mensagem) sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
+`ReadJwtToken()` lê o payload sem verificar assinatura nem expiração; qualquer token forjado ou vencido passa. `AddJwtBearer` faz a validação completa automaticamente.
 
 <details>
 <summary>❌ Ruim: ReadJwtToken dentro do handler</summary>
@@ -127,7 +127,7 @@ app.MapGet("/orders", async (HttpContext ctx, IOrderRepository repo, Cancellatio
 </details>
 
 <details>
-<summary>✅ Bom: **middleware** (componente de pipeline) valida antes do **handler** (manipulador) rodar</summary>
+<summary>✅ Bom: middleware valida antes de o handler rodar</summary>
 
 ```csharp
 app.MapGet("/orders", async (IOrderRepository orderRepository, CancellationToken ct) =>
@@ -167,7 +167,7 @@ app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository orderRepository, 
 
 ## Session cookie com flags
 
-`AddSession` aceita as três flags obrigatórias diretamente no binding. Ver [shared/platform/security.md](../../shared/platform/security.md) para o racional de cada uma.
+`AddSession` aceita as três flags obrigatórias diretamente no binding. Ver [shared/platform/security.md](../../shared/platform/security.md) para o porquê de cada uma.
 
 ```csharp
 builder.Services.AddSession(options =>

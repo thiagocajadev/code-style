@@ -79,7 +79,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Pattern matching](conventions/control-flow.md#pattern-matching)                               | `switch` expressions sobre `if-else` encadeado                      |
 | [Valor fixo por padrão](conventions/variables.md#records-immutable)                            | `readonly`, `const`, `record`: alteração é exceção explícita        |
 | [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos)                            | Constantes nomeadas em vez de literais inline                       |
-| [CQS](conventions/variables.md#mutação-direta)                                                 | Retornar novo estado, sem efeitos colaterais ocultos                |
+| [CQS](conventions/variables.md#alteração-direta)                                              | Retornar novo estado, sem efeitos colaterais ocultos                |
 
 <br>
 

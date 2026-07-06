@@ -1,6 +1,6 @@
 # Modelagem de entidades
 
-> Escopo: C#. Visão transversal: [shared/architecture/entity-modeling.md](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom: `readonly record struct` para IDs tipados, `abstract class Entity<TId>` com igualdade por ID, `IReadOnlyList<T>` em propriedades públicas e `#nullable enable` como guard rail.
+> Escopo: C#. Visão transversal: [shared/architecture/entity-modeling.md](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom: `readonly record struct` para IDs tipados, `abstract class Entity<TId>` com igualdade por ID, `IReadOnlyList<T>` em propriedades públicas e `#nullable enable` como **guard rail** (barreira de proteção).
 
 Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em C# e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério, não com receita fechada.
 
@@ -15,7 +15,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItem` formam um agregado) |
 | **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo construtor ou factory e pelos métodos que alteram estado (ex.: pedido sempre tem ao menos um item) |
-| **boundary** (limite) | Fronteira entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
+| **boundary** (limite) | Limite entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
 | **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `Guid` ou `string` cru, para impedir trocas acidentais entre IDs |
 | **record struct** (estrutura de registro) | `readonly record struct` em C#: value type com igualdade estrutural nativa, `IEquatable<T>` implícito, alocação em pilha |
 | **init setter** (setter de inicialização) | Modificador `init` que permite atribuição apenas durante a construção do objeto, tornando a propriedade efetivamente não-alterável |
@@ -144,7 +144,7 @@ public sealed record TaxInfo(
     string InvoiceEmail);
 ```
 
-Cada tipo responde a uma pergunta clara. `Address` é reusada por `Customer`, `Order` (endereço de entrega) e qualquer outro contexto que precise de endereço, sem reinventar. `TaxInfo` é nullable inteiro, e quando presente vem completo. O `record` entrega igualdade estrutural sem boilerplate.
+Cada tipo responde a uma pergunta clara. `Address` é reusada por `Customer`, `Order` (endereço de entrega) e qualquer outro contexto que precise de endereço, sem reinventar. `TaxInfo` é nullable inteiro, e quando presente vem completo. O `record` entrega igualdade estrutural sem **boilerplate** (código repetitivo de cerimônia).
 
 </details>
 
@@ -159,7 +159,7 @@ Sinais concretos de que chegou a hora de quebrar:
 
 Quando uma entidade fica grande, há três padrões clássicos para extrair partes dela. Cada um responde a um cenário diferente, e a escolha depende de como o conceito extraído vai ser usado.
 
-**Value object embutido** (`Address` dentro de `Customer`): o conceito é pequeno, não tem identidade própria, e faz parte do estado natural do dono. O endereço muda inteiro, nunca por partes. Em C#, vira `sealed record` com todos os campos como parâmetros do construtor primário, imutável por padrão.
+**Value object embutido** (`Address` dentro de `Customer`): o conceito é pequeno, não tem identidade própria, e faz parte do estado natural do dono. O endereço muda inteiro, nunca por partes. Em C#, vira `sealed record` com todos os campos como parâmetros do construtor primário, sem alteração depois de criado.
 
 **Value object opcional** (`TaxInfo` dentro de `Customer`): o conceito existe apenas em alguns casos. Cliente pessoa física não tem; cliente pessoa jurídica tem. O campo é `TaxInfo?`; quando presente, traz o conceito completo (todos os campos juntos, validados juntos).
 
@@ -445,7 +445,7 @@ A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos
 | Zero ou mais | `IReadOnlyList<T>` (vazio, nunca null) | `IReadOnlyList<OrderItem> Items` |
 | Exatamente N (N fixo) | N campos nomeados | `Address.{Street, City, Country}` |
 
-Em C#, listas públicas usam `IReadOnlyList<T>` para impedir que callers façam `Add` direto. A mutação interna passa por um `List<T>` `private`, e o método de domínio é a única forma de alterar.
+Em C#, listas públicas usam `IReadOnlyList<T>` para impedir que callers façam `Add` direto. A escrita interna passa por um `List<T>` `private`, e o método de domínio é a única forma de alterar.
 
 <details>
 <summary>❌ Ruim: três campos numerados forçando uma lista mascarada</summary>
@@ -505,7 +505,7 @@ public sealed class Customer : Entity<CustomerId>
 }
 ```
 
-A regra "no máximo 3" mora em `AddPhone`, onde dá pra mudar sem mexer no schema. A lista exposta é `IReadOnlyList<Phone>`: callers iteram à vontade, mas `Add` não existe na interface. Lista vazia (`[]`) é o estado neutro: itera sem verificação de nulo.
+A regra "no máximo 3" mora em `AddPhone`, onde dá para mudar sem mexer no schema. A lista exposta é `IReadOnlyList<Phone>`: callers iteram à vontade, mas `Add` não existe na interface. Lista vazia (`[]`) é o estado neutro: itera sem verificação de nulo.
 
 </details>
 
@@ -517,7 +517,7 @@ Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muit
 
 Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado, e o construtor da entidade filha pode ser `internal` ou `private` para que só o root produza instâncias.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza fronteira de agregado, então vai por ID (`CustomerId`), nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza o limite do agregado, então vai por ID (`CustomerId`), nunca por objeto completo.
 
 <details>
 <summary>❌ Ruim: filho carrega referência ao pai, ciclo bidirecional sem dono</summary>
@@ -761,7 +761,7 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 Dentro do mesmo agregado, referência direta é o caminho natural: `Order.Items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
 
-Cruzando a fronteira de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -823,7 +823,7 @@ var customer = await customerRepository.FindByIdAsync(order.CustomerId, ct);
 
 </details>
 
-Quando o status precisa carregar dados além do nome (data de pagamento, código de rastreio, motivo do cancelamento), vale usar uma hierarquia fechada de records em vez de enum simples. O pattern matching com `is` faz narrowing automático:
+Quando o status precisa carregar dados além do nome (data de pagamento, código de rastreio, motivo do cancelamento), vale usar uma hierarquia fechada de records em vez de enum simples. O pattern matching com `is` faz **narrowing** (estreitamento do tipo) automático:
 
 <details>
 <summary>✅ Bom: hierarquia de records quando o estado carrega dados</summary>
@@ -917,7 +917,7 @@ public decimal CalculateOrderTotal(Order order, TenantId activeTenant)
 </details>
 
 <details>
-<summary>✅ Bom: TenantId só no aggregate root, enforcement no repositório</summary>
+<summary>✅ Bom: TenantId só no aggregate root, filtro aplicado no repositório</summary>
 
 ```csharp
 public sealed class Order : Entity<OrderId>
@@ -979,7 +979,7 @@ Os padrões abaixo aparecem com frequência em código C# real, e cada um é um 
 
 **Referência direta cruzando agregado**. `Order.Customer` (tipo `Customer`) em vez de `Order.CustomerId`. Sintoma: para carregar um pedido, o ORM puxa cinco tabelas via `Include`. Tratamento: referência por ID tipado; quem precisa do objeto resolve no momento certo.
 
-**Setter público em propriedade de domínio**. `public string Name { get; set; }` em entidade de domínio. Sintoma: qualquer caller pode alterar o estado sem passar pela invariante. Tratamento: `private set` ou `private init`; mutação só via método de domínio.
+**Setter público em propriedade de domínio**. `public string Name { get; set; }` em entidade de domínio. Sintoma: qualquer caller pode alterar o estado sem passar pela invariante. Tratamento: `private set` ou `private init`; alteração só via método de domínio.
 
 **Bidirecionalidade automática**. `Order.Items` e `OrderItem.Order` mantidos sincronizados manualmente. Sintoma: bug onde lado A foi atualizado mas lado B ficou desatualizado. Tratamento: relação unidirecional do aggregate root para os filhos; `OrderItem` não conhece `Order`.
 

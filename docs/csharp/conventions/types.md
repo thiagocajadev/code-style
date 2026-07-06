@@ -10,10 +10,10 @@ O sistema de tipos do C# oferece várias formas de descrever contratos: **interf
 | --- | --- |
 | **interface** (contrato sem estado) | Descreve capacidade; suporta múltipla implementação; sem campos nem implementação obrigatória |
 | **abstract class** (classe abstrata) | Identidade parcial: estado e comportamento compartilhados, completados pelas filhas |
-| **class** (tipo de referência) | Tipo padrão: identidade por referência, mutável, alocado no heap |
-| **record** (tipo com igualdade por valor) | Tipo imutável por padrão com igualdade estrutural; ideal para DTOs e value objects |
+| **class** (tipo de referência) | Tipo padrão: identidade por referência, estado pode ser alterado, alocado no heap |
+| **record** (tipo com igualdade por valor) | Tipo que não muda após criação, com igualdade estrutural; ideal para DTOs e value objects |
 | **struct** (tipo de valor) | Tipo alocado em pilha, igualdade por valor; para dados pequenos e sem identidade |
-| **sealed** (selada) | Modificador que impede herança; comunica que a classe não foi pensada para ser estendida |
+| **sealed** (fechada para herança) | Modificador que impede herança; comunica que a classe não foi pensada para ser estendida |
 | **generic** (tipo genérico) | Parâmetro de tipo (`Result<T>`); reaproveita o contrato sem perder verificação |
 | **value object** (objeto de valor) | Tipo cuja igualdade é definida pelos campos, não pela referência (`record` cobre o caso) |
 
@@ -132,10 +132,10 @@ Exceções legítimas ao sealed: tipos explicitamente desenhados para herança (
 
 ## Record vs class
 
-`record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de **API** (Application Programming Interface, Interface de Programação de Aplicações), resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem boilerplate. `class` fica para tipos com identidade, estado mutável ou comportamento rico.
+`record` é a escolha padrão para **tipos de dados immutable** (que não mudam): DTOs, Value Objects, respostas de **API** (Application Programming Interface, Interface de Programação de Aplicações), resultados de domínio. Fornece igualdade por valor, `ToString()` útil, e `with` expressions sem **boilerplate** (código repetitivo de cerimônia). `class` fica para tipos com identidade, estado que muda ou comportamento rico.
 
 <details>
-<summary>❌ Ruim: class mutable para dados immutable</summary>
+<summary>❌ Ruim: class com setters para dados que não mudam</summary>
 
 ```csharp
 public class OrderResponse
@@ -212,11 +212,11 @@ var total = order.Total; // narrowed para Order não-nulo
 
 </details>
 
-O operador `!` (null-forgiving) suprime o aviso do compilador. Usar apenas quando o contrato externo do tipo já garante não-nulo e o compilador não consegue inferir, nunca para calar alerta genuíno. Detalhes em [null-safety.md](./advanced/null-safety.md).
+O operador `!` (null-forgiving) suprime o aviso do compilador. Usar apenas quando o contrato externo do tipo já garante não-nulo e o compilador não consegue inferir, nunca para calar alerta legítimo. Detalhes em [null-safety.md](./advanced/null-safety.md).
 
 ## Pattern matching
 
-Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e property patterns. Reduz boilerplate e faz narrowing automático. O compilador garante exaustividade quando o input é uma hierarquia fechada.
+Pattern matching substitui cadeias de `if/else` com `is`, `switch` expressions e property patterns. Reduz boilerplate e faz **narrowing** (estreitamento do tipo) automático. O compilador garante exaustividade quando o input é uma hierarquia fechada.
 
 <details>
 <summary>❌ Ruim: cadeia de if com cast explícito</summary>
@@ -304,7 +304,7 @@ public IActionResult HandlePayment(PaymentResult result)
 
 ## Generics com constraints
 
-Generic sem constraint descreve qualquer tipo: é abstração sem propósito. Constraints (`where T : IEntity`, `where T : struct`, `where T : new()`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
+Generic sem **constraint** (restrição de tipo) descreve qualquer tipo: é abstração sem propósito. Constraints (`where T : IEntity`, `where T : struct`, `where T : new()`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
 
 <details>
 <summary>❌ Ruim: genérico sem constraint, reflection para descobrir capability</summary>
@@ -346,7 +346,7 @@ public T? Find<T>(Guid id) where T : class, IEntity
 
 `dynamic` desliga a checagem de tipos: volta o C# ao mundo do JavaScript dos anos 2000. Erros que seriam de compilação viram `RuntimeBinderException` em produção.
 
-Existem dois casos legítimos: interop com COM/Office e desserialização de shapes genuinamente dinâmicos (e mesmo assim, preferir `JsonElement` / `JsonNode`).
+Existem dois casos legítimos: interop com COM/Office e desserialização de shapes dinâmicos por natureza (e mesmo assim, preferir `JsonElement` / `JsonNode`).
 
 <details>
 <summary>❌ Ruim: dynamic para conveniência</summary>

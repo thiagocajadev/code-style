@@ -7,8 +7,6 @@ garantido) de `string?` (pode ser null). C# 14 adicionou **null-conditional assi
 o conjunto de operadores null-safe. Ativado globalmente, o compilador bloqueia violações antes do
 runtime.
 
-> Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
-
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -39,8 +37,8 @@ apenas avisa.
 
 ## required e init: contratos não-nulos em tempo de compilação
 
-`required` (C# 11) força o inicializador de objeto a preencher o campo. `init` torna o campo
-imutável após a construção. Juntos, eliminam a necessidade de checar null em propriedades que
+`required` (C# 11) força o inicializador de objeto a preencher o campo. `init` impede que o campo
+seja alterado após a construção. Juntos, eliminam a necessidade de checar null em propriedades que
 sempre devem ter valor.
 
 <details>
@@ -132,10 +130,10 @@ foreach (var order in orders) ProcessOrder(order);
 
 </details>
 
-## ArgumentNullException.ThrowIfNull: validação nas fronteiras
+## ArgumentNullException.ThrowIfNull: validação nos limites
 
 `ArgumentNullException.ThrowIfNull` (C# 11) substitui o padrão verboso de `if (x is null) throw`.
-Usado nas fronteiras do sistema: construtores, métodos públicos, endpoints.
+Usado nos limites do sistema: construtores, métodos públicos, endpoints.
 
 <details>
 <summary>❌ Ruim: verificação manual verbosa ou ausente</summary>
@@ -162,7 +160,7 @@ public class OrderService
 </details>
 
 <details>
-<summary>✅ Bom: ThrowIfNull no construtor e nas fronteiras públicas</summary>
+<summary>✅ Bom: ThrowIfNull no construtor e nos limites públicos</summary>
 
 ```csharp
 public class OrderService(IOrderRepository repo)

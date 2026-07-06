@@ -34,7 +34,7 @@ os dados da view e o `OnPost` para processar o formulário.
 **Fluxo POST:** `POST /orders/create → Binding → OnPost → Validate → Service → Redirect`
 
 <details>
-<summary>❌ Ruim: lógica de negócio no PageModel; validação ad hoc (improvisada); acesso direto ao banco</summary>
+<summary>❌ Ruim: lógica de negócio no PageModel; validação ad hoc; acesso direto ao banco</summary>
 
 ```csharp
 // Pages/Orders/Create.cshtml.cs
@@ -159,7 +159,7 @@ e injeta o token anti-falsificação automaticamente.
 ## MVC: Controller thin
 
 Controllers MVC são adaptadores: recebem a requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto), delegam para um **Service** ou
-**Handler** (manipulador), e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
+**Handler** (processador de requisição), e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
 controller. O acesso ao banco passa pelo **Repository**; o controller nunca injeta `DbContext`.
 
 **Fluxo:** `HTTP Request → Controller → Service → Result<T> → IActionResult → HTTP Response`

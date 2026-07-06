@@ -94,7 +94,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 
 ## ApiError
 
-Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) status no adapter sem `if-else` espalhados pela aplicação.
+Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
 <summary>❌ Ruim: strings mágicas sem contrato</summary>
@@ -217,7 +217,7 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
 ## Exceção como controle de fluxo
 
-`try/catch` tem custo: é reservado para fronteiras de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
+`try/catch` tem custo: é reservado para limites de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
 
 <details>
 <summary>❌ Ruim: try/catch como desvio de fluxo esperado</summary>
@@ -240,7 +240,7 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom: retorno explícito para ausência, try/catch apenas na fronteira</summary>
+<summary>✅ Bom: retorno explícito para ausência, try/catch apenas no limite</summary>
 
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
@@ -257,7 +257,7 @@ public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken 
 
 ## Global exception handler
 
-Exceções não capturadas borbulham até o topo. Sem um handler global, o runtime devolve stack trace ou detalhes internos ao cliente: vazamento de informação e contrato quebrado.
+Exceções não capturadas propagam até o topo. Sem um handler global, o runtime devolve stack trace ou detalhes internos ao cliente: vazamento de informação e contrato quebrado.
 
 O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura: nada disso chega ao cliente.
 

@@ -3,8 +3,7 @@
 > Escopo: C#. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-**ILogger** preserva campos como propriedades; **message template** evita interpolação. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
-Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
+**ILogger** preserva campos como propriedades; **message template** evita interpolação. **PII** nunca pode aparecer em logs.
 
 ## Conceitos fundamentais
 
@@ -50,6 +49,10 @@ _logger.LogError(ex, "Payment failed for {OrderId}", order.Id);
 
 ## Níveis de log
 
+O nível comunica severidade e roteia alertas: `Debug` para diagnóstico local, `Warning` para
+anomalia tolerada, `Error` para falha que exige ação. Logar tudo como `Information` esconde o que
+importa.
+
 <details>
 <summary>❌ Ruim: LogInformation para tudo, sem distinção de severidade</summary>
 
@@ -75,6 +78,9 @@ _logger.LogError("User {UserId} not found during checkout", userId);
 </details>
 
 ## O que nunca logar
+
+Credenciais, tokens e PII ficam fora do log. Registre IDs e referências: eles permitem rastrear a
+operação sem expor o dado.
 
 <details>
 <summary>❌ Ruim: PII e credenciais em log</summary>

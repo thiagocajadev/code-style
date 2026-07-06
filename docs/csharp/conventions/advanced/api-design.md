@@ -1,9 +1,9 @@
 # API Design
 
 > Escopo: C#. Idiomas .NET deste arquivo.
-> **SSOT** (Single Source of Truth, Fonte Única da Verdade) do pipeline, envelope, verbos, status codes e Result → **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto): [shared/platform/api-design.md](../../../shared/platform/api-design.md).
+> SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-**API** (Application Programming Interface, Interface de Programação de Aplicações) em C# tem dois caminhos idiomáticos: **Minimal API** (ASP.NET Core 6+) e Controllers (herança de **MVC** (Model-View-Controller, Modelo-Visão-Controle)). O padrão deste guia é Minimal API com Result → HTTP tipado, alinhado ao pipeline agnóstico definido no SSOT transversal.
+**API** em C# tem dois caminhos idiomáticos: **Minimal API** (ASP.NET Core 6+) e Controllers (herança de **MVC**). O padrão deste guia é Minimal API com Result → HTTP tipado, alinhado ao pipeline agnóstico definido no **SSOT** transversal. As siglas estão na tabela abaixo.
 
 ## Conceitos fundamentais
 
@@ -12,15 +12,15 @@
 | **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
 | **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural que usa verbos HTTP sobre recursos identificados por URL |
 | **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Padrão que separa dados, apresentação e controle; em ASP.NET, o pipeline de Controllers |
+| **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Padrão que separa dados, apresentação e controle; em ASP.NET, o pipeline de Controllers |
 | **CQS** (Command-Query Separation, Separação Comando-Consulta) | Princípio: um método ou altera estado (command) ou retorna dado (query), nunca os dois |
 | **SSOT** (Single Source of Truth, Fonte Única da Verdade) | Um único lugar canônico para cada regra ou contrato; cross-links apontam para ele |
 
 ## Minimal API: preferência
 
 Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice
-Architecture**: toda a lógica de uma funcionalidade fica co-localizada, não fragmentada em camadas
-horizontais.
+Architecture**: toda a lógica de uma funcionalidade fica reunida no mesmo lugar, não fragmentada
+em camadas horizontais.
 
 Para endpoints triviais sem dependências, uma lambda direta é suficiente e idiomática:
 
@@ -28,7 +28,7 @@ Para endpoints triviais sem dependências, uma lambda direta é suficiente e idi
 app.MapGet("/health", () => TypedResults.Ok());
 ```
 
-Para endpoints com lógica de negócio e serviços injetados, o **handler class** organiza as
+Para endpoints com lógica de negócio e serviços injetados, a classe **handler** (processador de requisição) organiza as
 dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
 
 ```
@@ -360,7 +360,7 @@ return response;
 ## TypedResults aliases
 
 A assinatura `Results<T1, T2, T3>` enumera todos os retornos possíveis, mas repetir namespaces
-completos em cada handler polui o código. `global using` aliasa o tipo uma vez para todo o assembly:
+completos em cada handler polui o código. `global using` dá um apelido ao tipo uma vez para todo o assembly:
 os handlers ficam limpos, o contrato permanece explícito e o OpenAPI continua enumerando cada
 status.
 

@@ -27,7 +27,7 @@ com JavaScript seguindo os princípios de [methods.md](../conventions/methods.md
 ## Render Modes
 
 Blazor .NET 10 oferece quatro modos de renderização. Cada componente declara o próprio modo com
-`@rendermode`, ou herda do componente pai. Escolher o modo errado desperdiça conexões **SignalR**
+`@rendermode`, ou herda do componente pai. Escolher o modo errado desperdiça conexões SignalR
 ou impede recursos interativos.
 
 **Fluxo Static SSR:** `Request → Prerender → HTML estático → Browser`
@@ -239,7 +239,7 @@ anotações do model (`[Required]`, `[Range]`) ao `EditContext`. `ValidationMess
 por campo; `ValidationSummary` exibe todos os erros consolidados.
 
 <details>
-<summary>❌ Ruim: formulário manual sem EditForm; validação ad hoc (improvisada) no handler</summary>
+<summary>❌ Ruim: formulário manual sem EditForm; validação ad hoc no handler</summary>
 
 ```razor
 <form @onsubmit="SubmitAsync">

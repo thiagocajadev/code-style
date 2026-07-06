@@ -1,7 +1,7 @@
 # Dapper
 
 > [!NOTE]
-> Essa estrutura reflete como costumo usar Dapper em projetos C#. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples.
+> Esta estrutura reflete como costumo usar Dapper em projetos C#. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples.
 
 A preferência é usar **stored procedures** para operações de domínio: a lógica de acesso a dados fica no banco, o C# só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
 

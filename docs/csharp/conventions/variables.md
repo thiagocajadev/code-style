@@ -42,15 +42,15 @@ var items = new List<OrderItem>(); // tipo explícito no lado direito
 
 ## `const` e `readonly`
 
-`const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` não pode ser alterado após o construtor, para valores determinados em runtime. Campos que mudam onde só leitura é necessária são um contrato fraco.
+`const` é resolvido em tempo de compilação: apenas para primitivos e strings. `readonly` vale para valores determinados em runtime: atribuído no construtor, não pode ser alterado depois. Campos que mudam onde só leitura é necessária são um contrato fraco.
 
 <details>
-<summary>❌ Ruim: campo mutable onde deveria ser immutable</summary>
+<summary>❌ Ruim: campo reatribuível onde o valor deveria ser fixo</summary>
 
 ```csharp
 public class OrderService
 {
-    private static int maxRetries = 3; // mutável: qualquer método pode alterar
+    private static int maxRetries = 3; // qualquer método pode alterar
     private string _apiUrl;             // reatribuível após o construtor
 
     public OrderService(IConfiguration config)
@@ -80,13 +80,13 @@ public class OrderService(IConfiguration config)
 `record` expressa um contrato de dados immutable (que não muda) sem cerimônia. Prefira `record` sobre `class` para DTOs, requests, responses e value objects: a semântica de igualdade por valor vem de graça.
 
 <details>
-<summary>❌ Ruim: class mutável como contrato de dados</summary>
+<summary>❌ Ruim: class aberta a alteração como contrato de dados</summary>
 
 ```csharp
 public class OrderRequest
 {
-    public string ProductId { get; set; } // setter público: qualquer código pode mutar
-    public int Quantity { get; set; }     // estado mutável sem controle
+    public string ProductId { get; set; } // setter público: qualquer código pode alterar
+    public int Quantity { get; set; }     // estado alterado sem controle
 }
 ```
 
@@ -134,12 +134,12 @@ if (discount > MaxDiscountRate)
 
 </details>
 
-## Mutação direta
+## Alteração direta
 
-`record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a mutar o objeto recebido: o chamador não deve ter seu estado alterado silenciosamente.
+`record` suporta `with` para criar cópias com campos alterados. Prefira retornar novo estado a alterar o objeto recebido: o chamador não deve ter seu estado alterado silenciosamente.
 
 <details>
-<summary>❌ Ruim: mutação acoplada e efeito colateral oculto</summary>
+<summary>❌ Ruim: alteração acoplada e efeito colateral oculto</summary>
 
 ```csharp
 public void ApplyDiscount(Order order)

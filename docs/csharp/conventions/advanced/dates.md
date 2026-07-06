@@ -4,7 +4,7 @@
 
 `DateTime` em C# tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou
 `Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira
-**DateTimeOffset** para eliminar a ambiguidade: o offset está embutido no tipo. **UTC** é o ponto comum entre servidores; conversão para timezone do usuário é responsabilidade da camada de apresentação.
+**DateTimeOffset** para eliminar a ambiguidade: o offset está embutido no tipo. **UTC** é o ponto comum entre servidores; conversão para o **timezone** (fuso horário) do usuário é responsabilidade da camada de apresentação.
 
 ## Conceitos fundamentais
 
@@ -92,7 +92,7 @@ public record CustomerRequest
 {
     public required string Name { get; init; }
     public required DateTime BirthDate { get; init; }
-    // "1990-08-21T00:00:00": hora zero sem sentido, sujeita a shift de timezone
+    // "1990-08-21T00:00:00": hora zero sem sentido, sujeita a deslocamento de timezone
 }
 ```
 

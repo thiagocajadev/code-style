@@ -2,7 +2,7 @@
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-**LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) é a linguagem de transformação de coleções em C#: declarativa, composável e com avaliação preguiçosa. Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
+**LINQ** é a linguagem de transformação de coleções em C#. O estilo é declarativo: operadores encadeados descrevem a transformação, e a query só executa quando o resultado é percorrido (**lazy evaluation**). Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
 
 ## Conceitos fundamentais
 
@@ -11,14 +11,14 @@
 | **LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) | API de C# para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
 | **IEnumerable\<T\>** (sequência iterável) | Interface que expõe iteração em memória; cada operador aplica em sequência |
 | **IQueryable\<T\>** (sequência consultável) | Interface que constrói árvore de expressão; provedor traduz para SQL/remote query |
-| **lazy evaluation** (avaliação preguiçosa) | A query só executa no momento da iteração (`ToList`, `foreach`); permite composição |
-| **side effect** (efeito colateral) | Mudança de estado externo (log, mutação, I/O); proibido dentro de queries LINQ |
+| **lazy evaluation** (avaliação sob demanda) | A query só executa no momento da iteração (`ToList`, `foreach`); permite composição |
+| **side effect** (efeito colateral) | Mudança de estado externo (log, escrita, I/O); proibido dentro de queries LINQ |
 | **deferred execution** (execução adiada) | Resultado materializado só quando enumerado; `ToList()`/`ToArray()` força execução |
 | **method syntax** (sintaxe de método) | Forma fluente `xs.Where(...).Select(...)`; preferida no projeto sobre query syntax |
 
 ## LINQ puro: sem side effects
 
-LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, mutação e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
+LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, alteração de estado e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
 <summary>❌ Ruim: side effect dentro de query LINQ</summary>
@@ -29,7 +29,7 @@ var summaries = orders
     .Select(order =>
     {
         _logger.LogInformation("Processing order {Id}", order.Id); // side effect
-        order.ProcessedAt = DateTime.UtcNow;                        // mutação
+        order.ProcessedAt = DateTime.UtcNow;                        // altera estado
         return new OrderSummary(order.Id, order.Total);
     })
     .ToList();
@@ -108,9 +108,9 @@ var summaries = orders
 
 </details>
 
-## Materialização nas fronteiras
+## Materialização nos limites
 
-`IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nas fronteiras: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
+`IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nos limites: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
 
 <details>
 <summary>❌ Ruim: materialização prematura no meio do pipeline</summary>
@@ -136,7 +136,7 @@ public IEnumerable<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateT
 </details>
 
 <details>
-<summary>✅ Bom: pipeline lazy, materialização única na fronteira</summary>
+<summary>✅ Bom: pipeline lazy, materialização única no limite</summary>
 
 ```csharp
 public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, DateTime cutoff)

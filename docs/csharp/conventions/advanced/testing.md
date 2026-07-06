@@ -5,13 +5,10 @@
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o
 que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA** (Arrange Act Assert, Preparar Executar Verificar): uma convenção que divide cada
-teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do
-resultado).
-
-O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
-
-As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente, mesmo quando o valor já tem nome. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
+Os exemplos seguem a abordagem **AAA**: cada teste em três fases explícitas, com os detalhes na
+tabela abaixo. O [code style](../variables.md) se aplica dentro dos testes: o assert recebe
+variáveis nomeadas (`actualPrice`, `expectedName`), sem expressões, acessos de propriedade ou
+literais inline.
 
 ## Conceitos fundamentais
 
@@ -19,14 +16,14 @@ As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`,
 | --- | --- |
 | **AAA** (Arrange Act Assert, Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
 | **xUnit** (framework de teste do .NET) | Framework padrão do projeto: `[Fact]` para casos únicos, `[Theory]` parametrizadas |
-| **mock** (dados fictícios e dublê de comportamento) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
+| **mock** (dados fictícios) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
 | **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
 | **fake** (implementação simplificada) | Substituto funcional, mais leve que o real (ex: `InMemoryRepository`) |
 | **fixture** (estado compartilhado de teste) | Objeto que prepara contexto reutilizado entre testes (`IClassFixture<T>`) |
 | **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
 | **FluentAssertions** (biblioteca de asserts fluentes) | API que torna asserts legíveis: `actualOrder.Should().BeEquivalentTo(expectedOrder)` |
 
-Usa [xUnit](https://xunit.net/) como referência: o framework mais adotado no ecossistema .NET, sem boilerplate de `[TestClass]`.
+O guia usa [xUnit](https://xunit.net/) como referência: o framework mais adotado no ecossistema .NET, sem o **boilerplate** (código repetitivo de cerimônia) de `[TestClass]`.
 
 ```csharp
 using Xunit;
@@ -165,7 +162,7 @@ public void ThrowsValidationExceptionWhenDiscountIsNegative() { /* ... */ }
 Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
 
 <details>
-<summary>❌ Ruim: campo estático mutável compartilhado entre testes</summary>
+<summary>❌ Ruim: campo estático que um teste escreve e outro lê</summary>
 
 ```csharp
 public class OrderTests
