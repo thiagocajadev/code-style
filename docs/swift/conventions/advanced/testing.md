@@ -2,7 +2,7 @@
 
 > Escopo: Swift 6.1, XCTest / Swift Testing.
 
-Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. Swift Testing (framework
+Testes seguem o padrão AAA (Arrange, Act, Assert · Arranjar, Agir, Atestar) com fases explícitas. Swift Testing (framework
 moderno introduzido no Swift 5.9/Xcode 16) é preferível para novos projetos. XCTest continua
 válido em projetos existentes. Mocking é feito via protocolos, sem frameworks externos.
 
@@ -10,7 +10,7 @@ válido em projetos existentes. Mocking é feito via protocolos, sem frameworks 
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | **Swift Testing** (framework de testes moderno do Swift) | `@Test`, `#expect`, `@Suite`; melhor diagnósticos |
 | **XCTest** (framework de testes clássico da Apple) | `XCTestCase`, `XCTAssert*` |
 | **protocol mock** (mock via protocolo) | Stub criado via conformance de protocolo; sem dependência de framework |
@@ -36,15 +36,11 @@ válido em projetos existentes. Mocking é feito via protocolos, sem frameworks 
 ```swift
 @Test("findOrder returns settled order when found")
 func findOrderReturnsSettledOrderWhenFound() async throws {
-    // Arrange
     let settledOrder = Order(id: UUID(), status: .settled)
     let repository = MockOrderRepository(order: settledOrder)
     let service = OrderService(repository: repository)
-
-    // Act
     let foundOrder = try await service.find(id: settledOrder.id)
 
-    // Assert
     #expect(foundOrder.status == .settled)
 }
 ```
@@ -152,7 +148,6 @@ func testFindUser() {
 // Swift Testing
 @Test func findUserReturnsUserWhenExists() async throws {
     let service = UserService(repository: MockUserRepository(user: .alice))
-
     let user = try await service.find(id: User.alice.id)
 
     #expect(user.name == "Alice")
@@ -161,7 +156,6 @@ func testFindUser() {
 // XCTest
 func testFindUserReturnsUserWhenExists() async throws {
     let service = UserService(repository: MockUserRepository(user: .alice))
-
     let user = try await service.find(id: User.alice.id)
 
     XCTAssertEqual(user.name, "Alice")

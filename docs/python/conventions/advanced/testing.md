@@ -9,7 +9,7 @@ exatamente o que quebrou, sem precisar abrir o código.
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | **pytest** (framework de testes) | runner padrão do ecossistema Python; usa funções e fixtures |
 | **fixture** (acessório reutilizável) | função decorada com `@pytest.fixture` que prepara estado de teste |
 | **parametrize** (parametrização de teste) | `@pytest.mark.parametrize` roda o mesmo teste com várias entradas |
@@ -19,8 +19,8 @@ exatamente o que quebrou, sem precisar abrir o código.
 
 ## Fases misturadas: AAA
 
-Arrange → Act → Assert: três fases separadas por uma linha em branco. Misturá-las esconde o que
-está sendo testado.
+Arrange → Act → Assert: as declarações ficam agrupadas e uma linha em branco isola a asserção.
+Misturá-las esconde o que está sendo testado.
 
 <details>
 <summary>❌ Ruim: fases misturadas, intenção obscura</summary>
@@ -33,12 +33,11 @@ def test_apply_discount():
 </details>
 
 <details>
-<summary>✅ Bom: **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar): fases explícitas</summary>
+<summary>✅ Bom: **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar): fases explícitas</summary>
 
 ```python
 def test_apply_discount_reduces_total():
     customer = Customer(defaulted=False)
-
     order = Order(total=100.0, customer=customer)
     discounted_order = apply_discount(order, discount=10.0)
 
@@ -69,7 +68,6 @@ def test_user():
 ```python
 def test_create_user_sets_email():
     user = create_user("Alice", "alice@example.com")
-
     assert user.email == "alice@example.com"
 ```
 
@@ -117,12 +115,10 @@ def standard_order():
 
 def test_order_total(standard_order):
     total = calculate_order_total(standard_order)
-
     assert total == 80.0
 
 def test_order_with_discount(standard_order):
     discounted_order = apply_discount(standard_order, discount=10.0)
-
     assert discounted_order["total"] == 70.0
 ```
 
@@ -185,7 +181,6 @@ import pytest
 @pytest.mark.asyncio
 async def test_fetch_user_returns_correct_name():
     user = await fetch_user(1)
-
     assert user.name == "Alice"
 ```
 

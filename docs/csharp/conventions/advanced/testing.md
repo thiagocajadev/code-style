@@ -14,7 +14,7 @@ literais inline.
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange Act Assert, Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
+| **AAA** (Arrange Act Assert · Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
 | **xUnit** (framework de teste do .NET) | Framework padrão do projeto: `[Fact]` para casos únicos, `[Theory]` parametrizadas |
 | **mock** (dados fictícios) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
 | **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
@@ -37,8 +37,8 @@ using Xunit;
 
 ## Fases misturadas: AAA
 
-Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto,
-execução do comportamento e verificação do resultado.
+Cada teste agrupa as declarações — contexto, execução e valor esperado — em um bloco; uma linha em
+branco isola a asserção do resultado.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -54,7 +54,7 @@ public void AppliesDiscount()
 </details>
 
 <details>
-<summary>✅ Bom: arrange, act e assert separados</summary>
+<summary>✅ Bom: setup agrupado, asserção isolada por linha em branco</summary>
 
 ```csharp
 [Fact]
@@ -211,7 +211,6 @@ public class OrderTests
     {
         var order = new Order { Items = [new Item(1, 50m)], Total = 100m };
         var actualOrder = ApplyDiscount(order, 10);
-
         var actualPrice = actualOrder.Price;
         var expectedPrice = 90m;
 

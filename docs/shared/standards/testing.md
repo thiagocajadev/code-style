@@ -18,21 +18,21 @@ história: quem chamou, o que recebeu, o que esperava.
 
 ## AAA
 
-O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) divide cada
-teste em três fases explícitas, separadas por uma linha em branco.
+O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) organiza cada
+teste em duas partes visuais: as declarações — contexto, execução e valores
+nomeados — formam um bloco; uma linha em branco isola a asserção.
 
 ```
 [Arrange]  montar o contexto: entidades, inputs, dependências
+[Act]      executar o comportamento e nomear actual/expected
 
-[Act]      executar o comportamento sob teste
-
-[Assert]   verificar o resultado com variáveis nomeadas
+[Assert]   comparar com variáveis nomeadas
 ```
 
-A separação visual é parte do padrão. Cada linha em branco entre fases é
-intencional: sinaliza onde termina o contexto, onde acontece a execução e onde
-está a verificação. Um teste sem separação mistura as três fases e obriga o
-leitor a identificar os limites antes de entender o que está sendo testado.
+A separação visual é parte do padrão. A linha em branco antes da asserção é
+intencional: sinaliza onde termina o preparo e onde começa a verificação. Um
+teste sem separação mistura as fases e obriga o leitor a identificar os limites
+antes de entender o que está sendo testado.
 
 ### No logic no assert
 
@@ -90,7 +90,7 @@ desenvolvimento e cobertura exaustiva de casos de borda.
 Verificam como múltiplos componentes funcionam juntos, com infraestrutura real:
 banco de dados, APIs externas, filas, sistema de arquivos.
 
-O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) gerada está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
+O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) gerada está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
 
 | Característica    | Detalhe                                              |
 | ----------------- | ---------------------------------------------------- |

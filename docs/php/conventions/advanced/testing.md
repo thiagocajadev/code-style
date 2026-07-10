@@ -4,7 +4,7 @@
 
 PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 **data providers** (provedores de dados) para múltiplos casos e **AAA**
-(Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases visualmente separadas. Mocks de interfaces via
+(Arrange, Act, Assert · Arranjar, Agir, Atestar) com fases visualmente separadas. Mocks de interfaces via
 `createMock()` isolam dependências externas.
 
 ## Conceitos fundamentais
@@ -12,7 +12,7 @@ PHP usa **PHPUnit** como framework padrão de testes. O padrão idiomático é
 | Conceito | O que é |
 | -------- | ------- |
 | **data provider** (provedor de dados) | Método que retorna múltiplos conjuntos de argumentos para um teste; reduz duplicação |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação de testes: preparar, executar, verificar; fases visualmente separadas |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | Padrão de estruturação de testes: preparar, executar, verificar; fases visualmente separadas |
 | `createMock` | PHPUnit gera um mock (objeto simulado) de uma interface sem implementação real |
 | `createStub` | PHPUnit gera um stub (esboço) sem verificações de chamada |
 | `#[DataProvider]` | Atributo PHP 8.x que liga um método de teste ao seu data provider |
@@ -37,19 +37,15 @@ public function testApplyDiscount(): void
 </details>
 
 <details>
-<summary>✅ Bom: data provider + AAA com fases separadas</summary>
+<summary>✅ Bom: data provider + AAA (declarações agrupadas, asserção isolada)</summary>
 
 ```php
 #[DataProvider('discountCases')]
 public function testApplyDiscount(float $amount, float $rate, float $expected): void
 {
-    // Arrange
     $order = new Order(customerID: 1, amount: $amount);
-
-    // Act
     $result = $this->service->applyDiscount($order, $rate);
 
-    // Assert
     $this->assertSame($expected, $result->amount);
 }
 
@@ -93,9 +89,7 @@ final class OrderServiceTest extends TestCase
 
     public function testCreateOrderSavesAndNotifies(): void
     {
-        // Arrange
         $input = new CreateOrderInput(customerID: 42, amount: 150.0, currency: 'BRL');
-
         $expectedOrder = new Order(id: 1, customerID: 42, amount: 150.0);
 
         $this->repositoryMock
@@ -108,10 +102,8 @@ final class OrderServiceTest extends TestCase
             ->method('notifyOrderCreated')
             ->with($expectedOrder);
 
-        // Act
         $actualOrder = $this->service->createOrder($input);
 
-        // Assert
         $this->assertSame(42, $actualOrder->customerID);
         $this->assertSame(150.0, $actualOrder->amount);
     }
@@ -130,14 +122,11 @@ Use `expectException` antes da ação para verificar que a exceção certa é la
 ```php
 public function testCreateOrderThrowsOnMissingCustomer(): void
 {
-    // Arrange
     $input = new CreateOrderInput(customerID: 0, amount: 150.0, currency: 'BRL');
 
-    // Assert (antes do Act para exceções)
     $this->expectException(ValidationException::class);
     $this->expectExceptionMessage('customer_id');
 
-    // Act
     $this->service->createOrder($input);
 }
 ```
@@ -199,12 +188,7 @@ final class UserRepositoryTest extends TestCase
 
     public function testFindByEmailReturnsNullWhenNotFound(): void
     {
-        // Arrange: tabela vazia do setUp
-
-        // Act
         $result = $this->repository->findByEmail('notexists@example.com');
-
-        // Assert
         $this->assertNull($result);
     }
 }

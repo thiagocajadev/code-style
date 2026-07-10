@@ -2,7 +2,7 @@
 
 > Escopo: Kotlin 2.2, JUnit 5, Kotest 5.9, MockK 1.13.
 
-Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. Todo comportamento novo
+Testes seguem o padrão AAA (Arrange, Act, Assert · Arranjar, Agir, Atestar) com fases explícitas. Todo comportamento novo
 ganha um teste; toda correção de bug ganha um teste de regressão. Coroutines têm suporte nativo
 via `runTest`.
 
@@ -10,7 +10,7 @@ via `runTest`.
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | **kotest** (framework de testes Kotlin) | asserções expressivas e estilos `Spec` (`StringSpec`, `BehaviorSpec`) |
 | **mockk** (biblioteca de mocking) | mocks idiomáticos para Kotlin com suporte a `suspend`, `object` e `companion` |
 | `runTest` | executor de coroutines em testes; controla tempo virtual com `advanceTimeBy` |
@@ -39,18 +39,13 @@ fun testOrder() {
 ```kotlin
 @Test
 fun `findOrder returns settled order when found`() {
-    // Arrange
     val settledOrder = Order(id = 1L, status = OrderStatus.SETTLED)
     val repository = mockk<OrderRepository> {
         every { findById(1L) } returns settledOrder
     }
-
     val service = OrderService(repository)
-
-    // Act
     val result = service.findOrder(1L)
 
-    // Assert
     result shouldBeSuccess { order ->
         order.status shouldBe OrderStatus.SETTLED
     }
@@ -116,9 +111,7 @@ fun testRetryWithDelay() = runBlocking {
 fun `retryWithDelay retries after 1 second`() = runTest {
     var callCount = 0
     val service = NotificationService()
-
     service.retryWithDelay { callCount++ }
-
     advanceTimeBy(1_001)
 
     callCount shouldBe 2
@@ -152,17 +145,12 @@ fun testSendNotification() {
 ```kotlin
 @Test
 fun `confirmOrder sends confirmation email to customer`() {
-    // Arrange
     val notificationService = mockk<NotificationService>()
     every { notificationService.send(any(), any()) } returns Unit
-
     val handler = OrderHandler(notificationService)
     val order = Order(id = 1L, customerEmail = "alice@email.com")
-
-    // Act
     handler.confirmOrder(order)
 
-    // Assert
     verify(exactly = 1) {
         notificationService.send("alice@email.com", match { it.contains("confirmed") })
     }
@@ -206,7 +194,6 @@ fun `rate -0_1 is invalid`() {
 @CsvSource("0.0,true", "0.5,true", "1.0,true", "-0.1,false", "1.1,false")
 fun `validateRate succeeds only for values in 0-1 range`(rate: Double, isValid: Boolean) {
     val result = validateRate(rate)
-
     result.isSuccess shouldBe isValid
 }
 ```

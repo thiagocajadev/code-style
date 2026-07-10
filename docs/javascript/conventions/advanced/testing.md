@@ -6,8 +6,8 @@
 Testes documentam o comportamento esperado. Um teste que falha conta uma
 história: quem chamou, o que recebeu, o que esperava. Em JS, a base é
 `node:test` + `node:assert/strict` (nativos desde o Node 18) e a estrutura é
-**AAA** (Arrange, Act, Assert): três fases visíveis em todo teste, separadas
-por linha em branco.
+**AAA** (Arrange, Act, Assert): as declarações do teste ficam agrupadas e uma
+linha em branco isola a asserção.
 
 ## Conceitos fundamentais
 
@@ -36,14 +36,15 @@ import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 ```
 
-> [!NOTE] Em `node:assert`, a convenção é
-> `assert.strictEqual(actual, expected)`: actual primeiro. Em Jest e Vitest, a
-> API fluente deixa a ordem explícita: `expect(actual).toBe(expected)`.
+> [!NOTE]
+> Em `node:assert`, a convenção é `assert.strictEqual(actual, expected)`: actual
+> primeiro. Em Jest e Vitest, a API fluente deixa a ordem explícita:
+> `expect(actual).toBe(expected)`.
 
 ## Fases misturadas: AAA
 
-Cada teste é dividido em três fases separadas por uma linha em branco:
-preparação do contexto, execução do comportamento e verificação do resultado.
+Cada teste agrupa as declarações — contexto, execução e valor esperado — em um
+bloco; uma linha em branco isola a asserção do resultado.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -57,15 +58,14 @@ test("applies discount", () => {
 </details>
 
 <details>
-<summary>✅ Bom: arrange, act e assert separados</summary>
+<summary>✅ Bom: setup agrupado, asserção isolada por linha em branco</summary>
 
 ```js
 test("applies 10% discount to order price", () => {
   const order = { price: 100, discountPct: 10 }; // arrange
-
   const actualPrice = applyDiscount(order); // act
-
   const expectedPrice = 90; // assert
+
   assert.strictEqual(actualPrice, expectedPrice);
 });
 ```
@@ -106,10 +106,9 @@ test("returns active users only", () => {
 ```js
 test("formats full name", () => {
   const user = { first: "John", last: "Doe" };
-
   const actualName = formatName(user);
-
   const expectedName = "John Doe";
+
   assert.strictEqual(actualName, expectedName);
 });
 
@@ -120,8 +119,8 @@ test("returns active users only", () => {
   ];
 
   const actualUsers = filterActive(users);
-
   const expectedUsers = [{ name: "Alice", active: true }];
+
   assert.deepStrictEqual(actualUsers, expectedUsers);
 });
 ```
@@ -204,7 +203,6 @@ test("applies discount to order", () => {
 ```js
 test("creates order with generated id", () => {
   const order = createOrder({ items: [{ id: 1, price: 50 }] });
-
   const actualId = order.id;
 
   assert.ok(actualId);
@@ -212,11 +210,10 @@ test("creates order with generated id", () => {
 
 test("applies 10% discount to order price", () => {
   const order = { items: [{ id: 1, price: 50 }], total: 100 };
-
   const actualOrder = applyDiscount(order, 10);
   const actualPrice = actualOrder.price;
-
   const expectedPrice = 90;
+
   assert.strictEqual(actualPrice, expectedPrice);
 });
 ```
@@ -249,10 +246,9 @@ test("throws on missing order", async () => {
 ```js
 test("throws NotFoundError when order does not exist", async () => {
   const invalidId = "nonexistent-id";
-
   const actual = findOrder(invalidId);
-
   const expected = { name: "NotFoundError" };
+
   await assert.rejects(actual, expected);
 });
 ```

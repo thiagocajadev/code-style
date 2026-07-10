@@ -4,7 +4,7 @@
 
 Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
 
-Os exemplos seguem a abordagem **AAA** (Arrange Act Assert, Preparar Executar Verificar): uma convenção que divide cada teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do resultado).
+Os exemplos seguem a abordagem **AAA** (Arrange Act Assert · Preparar Executar Verificar): uma convenção que divide cada teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do resultado).
 
 O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
 
@@ -20,7 +20,7 @@ Imports NUnit.Framework
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange Act Assert, Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
+| **AAA** (Arrange Act Assert · Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
 | **NUnit** (framework de testes para .NET) | Framework popular em .NET Framework: `<Test>` para casos, `<TestCase>` parametrizadas |
 | **mock** (dados fictícios e dublê de comportamento) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
 | **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
@@ -36,7 +36,7 @@ Imports NUnit.Framework
 
 ## Fases misturadas: AAA
 
-Cada teste é dividido em três fases separadas por uma linha em branco: preparação do contexto, execução do comportamento e verificação do resultado.
+Cada teste agrupa as declarações — contexto, execução e valor esperado — em um bloco; uma linha em branco isola a asserção do resultado.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -51,16 +51,15 @@ End Sub
 </details>
 
 <details>
-<summary>✅ Bom: arrange, act e assert separados</summary>
+<summary>✅ Bom: declarações agrupadas, asserção isolada por linha em branco</summary>
 
 ```vbnet
 <Test>
 Public Sub AppliesTenPercentDiscountToOrderPrice()
     Dim order = New Order With {.Price = 100D, .DiscountPct = 10}   ' arrange
-
     Dim actualPrice = ApplyDiscount(order)                          ' act
-
     Dim expectedPrice = 90D                                         ' assert
+
     Assert.That(actualPrice, Is.EqualTo(expectedPrice))
 End Sub
 ```
@@ -96,18 +95,17 @@ End Sub
 <Test>
 Public Sub FormatsFullName()
     Dim actualName = FormatName("John", "Doe")
-
     Dim expectedName = "John Doe"
+
     Assert.That(actualName, Is.EqualTo(expectedName))
 End Sub
 
 <Test>
 Public Sub ReturnsActiveUsersOnly()
     Dim users = {New User("Alice", True), New User("Bob", False)}
-
     Dim actualUsers = FilterActive(users)
-
     Dim expectedUsers = {New User("Alice", True)}
+
     Assert.That(actualUsers, Is.EquivalentTo(expectedUsers))
 End Sub
 ```
@@ -190,7 +188,6 @@ Public Class OrderTests
     <Test>
     Public Sub CreatesOrderWithGeneratedId()
         Dim order = New Order With {.Items = {New Item(1, 50D)}}
-
         Dim actualId = order.Id
 
         Assert.That(actualId, Is.Not.Null)
@@ -199,11 +196,10 @@ Public Class OrderTests
     <Test>
     Public Sub AppliesTenPercentDiscountToOrderPrice()
         Dim order = New Order With {.Items = {New Item(1, 50D)}, .Total = 100D}
-
         Dim actualOrder = ApplyDiscount(order, 10)
         Dim actualPrice = actualOrder.Price
-
         Dim expectedPrice = 90D
+
         Assert.That(actualPrice, Is.EqualTo(expectedPrice))
     End Sub
 End Class
@@ -238,7 +234,6 @@ End Sub
 <Test>
 Public Sub ThrowsArgumentExceptionWhenOrderIdIsNothing()
     Dim invalidId As Guid = Guid.Empty
-
     Assert.Throws(Of ArgumentException)(Sub() FindOrder(invalidId))
 End Sub
 ```

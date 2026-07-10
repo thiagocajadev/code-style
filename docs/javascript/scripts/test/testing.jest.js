@@ -21,7 +21,6 @@ describe("applyDiscount", () => {
   it("applies percentage discount to order price", () => {
     const order = { price: 100, discountPct: 10 };
     const actualOrder = applyDiscount(order);
-
     const actualPrice = actualOrder.price;
     const expectedPrice = 90;
 

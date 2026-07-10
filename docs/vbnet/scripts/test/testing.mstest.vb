@@ -22,20 +22,18 @@ Public Class ApplyDiscountTests
     <TestMethod>
     Public Sub AppliesTenPercentDiscountToPrice()
         Dim price = 100D
-
         Dim actualPrice = ApplyDiscount(price, 10)
-
         Dim expectedPrice = 90D
+
         Assert.AreEqual(expectedPrice, actualPrice)
     End Sub
 
     <TestMethod>
     Public Sub ReturnsOriginalPriceWhenDiscountIsZero()
         Dim price = 100D
-
         Dim actualPrice = ApplyDiscount(price, 0)
-
         Dim expectedPrice = price
+
         Assert.AreEqual(expectedPrice, actualPrice)
     End Sub
 
@@ -47,8 +45,8 @@ Public Class FormatNameTests
     <TestMethod>
     Public Sub FormatsFirstAndLastNameIntoFullName()
         Dim actualName = FormatName("John", "Doe")
-
         Dim expectedName = "John Doe"
+
         Assert.AreEqual(expectedName, actualName)
     End Sub
 

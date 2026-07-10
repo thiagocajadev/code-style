@@ -52,14 +52,12 @@ mod tests {
     #[test]
     fn applies_discount_when_total_meets_threshold() {
         let discount = calculate_discount(200.0);
-
         assert_eq!(discount, 20.0);
     }
 
     #[test]
     fn no_discount_below_threshold() {
         let discount = calculate_discount(50.0);
-
         assert_eq!(discount, 0.0);
     }
 }
@@ -146,7 +144,6 @@ mod tests {
     #[tokio::test]
     async fn returns_none_when_order_not_found() {
         let pool = setup_test_pool().await;
-
         let order = find_order(&pool, 999).await.unwrap();
 
         assert!(order.is_none());
@@ -230,7 +227,6 @@ mod tests {
     #[test]
     fn creates_order_with_correct_total() {
         let order = Order { id: 1, total: 99.0 };
-
         assert_eq!(order, Order { id: 1, total: 99.0 });
         // falha exibe: left: Order { id: 1, total: 50.0 }
         //             right: Order { id: 1, total: 99.0 }
@@ -242,7 +238,7 @@ mod tests {
 
 ## Fases AAA: Arrange, Act, Assert (Arranjar, Agir, Atestar)
 
-Testes Rust são funções comuns: AAA aplica sem adaptação. Separe as fases por linha em branco.
+Testes Rust são funções comuns: AAA aplica sem adaptação. Agrupe as declarações e isole a asserção por linha em branco.
 
 <details>
 <summary>❌ Ruim: fases misturadas, dois comportamentos no mesmo teste</summary>
@@ -269,7 +265,6 @@ fn applies_extra_discount_for_vip_customers() {
         total: 500.0,
         customer: Customer { is_vip: true },
     };
-
     let discount = calculate_discount(&order);
 
     assert_eq!(discount, 75.0);

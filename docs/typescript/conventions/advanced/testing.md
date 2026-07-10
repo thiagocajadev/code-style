@@ -6,13 +6,13 @@ Os padrões de testing do JavaScript se aplicam sem mudança. O TypeScript adici
 
 > Base JavaScript: [javascript/conventions/advanced/testing.md](../../../javascript/conventions/advanced/testing.md)
 
-Usa [Vitest](https://vitest.dev/) nos exemplos. Mesma **API** (Application Programming Interface, Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
+Usa [Vitest](https://vitest.dev/) nos exemplos. Mesma **API** (Application Programming Interface · Interface de Programação de Aplicações) do Jest, integração nativa com TypeScript.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Estrutura em três fases: preparar contexto, executar comportamento, verificar resultado |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | Estrutura em três fases: preparar contexto, executar comportamento, verificar resultado |
 | **fixture** (massa de teste) | Dado de entrada conhecido reutilizado entre testes; tipado com `satisfies` |
 | **`satisfies`** (operador de conformidade) | Valida que a fixture cumpre o tipo sem alargar a tipagem inferida |
 | **mock** (dados fictícios) | Objeto falso que substitui dependência real e devolve respostas pré-definidas |
@@ -58,8 +58,8 @@ test("applies 10% discount to order total", () => {
   } satisfies Order;
 
   const actualOrder = applyDiscount(order, 10);
-
   const expectedTotal = 90;
+
   expect(actualOrder.total).toBe(expectedTotal);
 });
 ```
@@ -100,9 +100,7 @@ test("saves order on creation", async () => {
     findById: vi.fn().mockResolvedValue(null),
     findByCustomer: vi.fn().mockResolvedValue([]),
   };
-
   const service = new OrderService(mockRepo);
-
   await service.createOrder({ customerId: "cust-1", total: 200 });
 
   expect(mockRepo.save).toHaveBeenCalledOnce();
@@ -124,13 +122,11 @@ import { expectTypeOf } from "vitest";
 
 test("findById returns Order or null", () => {
   const result = findById("ord-1");
-
   expectTypeOf(result).toEqualTypeOf<Promise<Order | null>>();
 });
 
 test("applyDiscount preserves Order shape", () => {
   const order = { id: "ord-1", customerId: "cust-1", total: 100 } satisfies Order;
-
   const result = applyDiscount(order, 10);
 
   expectTypeOf(result).toEqualTypeOf<Order>();
@@ -160,7 +156,6 @@ test("throws on invalid order", async () => {
 ```ts
 test("throws ValidationError when total is negative", async () => {
   const invalidInput = { customerId: "cust-1", total: -1 };
-
   const actual = createOrder(invalidInput);
 
   await expect(actual).rejects.toThrow(ValidationError);

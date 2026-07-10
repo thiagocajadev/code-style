@@ -12,7 +12,7 @@ Go tem um framework de testes na stdlib. O padrão idiomático é **table-driven
 | -------- | ------- |
 | **table-driven test** (teste por tabela) | Slice de structs onde cada elemento é um caso de teste; reduz duplicação e facilita adição de cenários |
 | **subtest** (subteste) | `t.Run("nome", func(t *testing.T){})`; cria testes nomeados dentro de um teste |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Padrão de estruturação: preparar, executar, verificar; fases visualmente separadas |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | Padrão de estruturação: preparar, executar, verificar; fases visualmente separadas |
 | `testify` | Biblioteca `github.com/stretchr/testify` com `assert` e `require` para mensagens de erro claras |
 | `t.Helper()` | Marca a função auxiliar como helper; erros aparecem na linha do chamador, não na helper |
 
@@ -58,13 +58,9 @@ func TestApplyDiscount(t *testing.T) {
 
     for _, tc := range tests {
         t.Run(tc.name, func(t *testing.T) {
-            // Arrange
             order := Order{Amount: tc.amount}
-
-            // Act
             result := applyDiscount(order, tc.rate)
 
-            // Assert
             assert.Equal(t, tc.expected, result.Amount)
         })
     }
@@ -83,14 +79,10 @@ Use `assert` para verificações adicionais onde a execução pode continuar.
 
 ```go
 func TestCreateOrder(t *testing.T) {
-    // Arrange
     service := NewOrderService(fakeRepository{})
     input := CreateOrderInput{CustomerID: 42, Amount: 150.0, Currency: "BRL"}
-
-    // Act
     order, err := service.CreateOrder(context.Background(), input)
 
-    // Assert
     require.NoError(t, err)               // se err != nil, para aqui
     require.NotNil(t, order)              // se order == nil, para aqui
 
@@ -160,14 +152,10 @@ func (r *fakeOrderRepository) Save(_ context.Context, order Order) (*Order, erro
 
 // teste
 func TestFindOrder_NotFound(t *testing.T) {
-    // Arrange
     repo := newFakeOrderRepository()
     service := NewOrderService(repo)
-
-    // Act
     _, err := service.FindOrder(context.Background(), 999)
 
-    // Assert
     assert.ErrorIs(t, err, ErrNotFound)
 }
 ```
@@ -208,10 +196,8 @@ func TestValidateOrder(t *testing.T) {
 
     for _, tc := range tests {
         t.Run(tc.name, func(t *testing.T) {
-            // Act
             err := validateOrder(tc.order)
 
-            // Assert
             if tc.expectedErr == nil {
                 assert.NoError(t, err)
                 return
@@ -253,15 +239,11 @@ func buildTestOrder(t *testing.T, overrides ...func(*Order)) Order {
 }
 
 func TestCancelOrder(t *testing.T) {
-    // Arrange
     order := buildTestOrder(t, func(o *Order) {
         o.Status = OrderStatusProcessing
     })
-
-    // Act
     err := order.Cancel()
 
-    // Assert
     require.NoError(t, err)
     assert.Equal(t, OrderStatusCanceled, order.Status)
 }

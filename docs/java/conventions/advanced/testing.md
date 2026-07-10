@@ -3,14 +3,14 @@
 > Escopo: Java 25 LTS com JUnit 6 + AssertJ + Mockito.
 
 Testes bem estruturados documentam o comportamento, isolam falhas e resistem ao refactor
-(refatoração). **AAA** (Arrange, Act, Assert / Arranjar, Agir, Atestar) é o esqueleto de
+(refatoração). **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) é o esqueleto de
 todo teste.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert; Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | **AssertJ** (biblioteca de afirmações fluentes para Java) | biblioteca de assertions (afirmações) fluentes para Java |
 | **Mockito** (biblioteca de dados fictícios para Java) | biblioteca de mocks (objetos simulados) para Java |
 | **mock** (objeto simulado) | substituto de uma dependência real que responde conforme programado |
@@ -38,14 +38,13 @@ void appliesDiscountToOrder() {
 </details>
 
 <details>
-<summary>✅ Bom: AAA explícito: fases separadas por blank line</summary>
+<summary>✅ Bom: AAA explícito: setup agrupado, asserção isolada por blank line</summary>
 
 ```java
 @Test
 void appliesDiscountToOrder() {
     final var order = new Order("ord-1", new BigDecimal("100"));
     order.setDiscountPct(10);
-
     final var actualOrder = discountService.apply(order);
 
     assertThat(actualOrder.getTotal()).isEqualByComparingTo("90");
@@ -161,7 +160,6 @@ class UserServiceTest {
     void findsUserById() {
         final var expectedUser = new User("u-1", "Alice", "alice@example.com");
         when(userRepository.findById("u-1")).thenReturn(Optional.of(expectedUser));
-
         final var actualUser = userService.findUser("u-1");
 
         assertThat(actualUser).isPresent();
@@ -239,7 +237,6 @@ class DiscountServiceTest {
     @Test
     void appliesTenPercentDiscount() {
         baseOrder.setDiscountPct(10);
-
         final var actualOrder = discountService.apply(baseOrder);
 
         assertThat(actualOrder.getTotal()).isEqualByComparingTo("90");
@@ -276,7 +273,6 @@ void createsUser() {
 @Test
 void createsUserAndSendsWelcomeEmail() {
     final var input = new UserInput("Alice", "alice@example.com");
-
     final var createdUser = userService.create(input);
 
     assertThat(createdUser.getName()).isEqualTo("Alice");

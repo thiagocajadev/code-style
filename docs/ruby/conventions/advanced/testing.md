@@ -3,7 +3,7 @@
 > Escopo: Ruby 4.0. Padrões transversais de testes em [shared/standards/testing.md](../../../shared/standards/testing.md).
 
 RSpec (Ruby Specification Framework, framework de especificação) é o padrão para projetos
-Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert: Arrumar, Agir,
+Ruby e Rails. Testes seguem o padrão **AAA** (Arrange, Act, Assert · Arrumar, Agir,
 Atestar), com fases explícitas e assertions (verificações) sem expressões inline.
 
 ## Conceitos fundamentais
@@ -47,7 +47,6 @@ end
 it "applies 10% discount for eligible users" do
   order = build(:order, items: [build(:item, price: 100)])
   service = OrderService.new
-
   total = service.calculate_total(order, user_id: 2)
 
   expect(total).to eq(90.0)
@@ -92,7 +91,6 @@ describe Order do
     context "when status is :active" do
       it "returns true" do
         order = build(:order, status: :active)
-
         expect(order.active?).to be(true)
       end
     end
@@ -100,7 +98,6 @@ describe Order do
     context "when status is :cancelled" do
       it "returns false" do
         order = build(:order, status: :cancelled)
-
         expect(order.active?).to be(false)
       end
     end
@@ -183,7 +180,6 @@ end
 it "notifies customer after submission" do
   mailer = instance_double(OrderMailer, deliver_later: true)
   allow(OrderMailer).to receive(:confirmation).and_return(mailer)
-
   order = create(:order)
   OrderService.new.submit(order)
 

@@ -37,19 +37,15 @@ testWidgets('shows order list', (tester) async {
 
 ```dart
 testWidgets('shows order list when orders are loaded', (tester) async {
-  // Arrange
   final orders = [Order(id: 1, total: 100.0), Order(id: 2, total: 50.0)];
-
   await tester.pumpWidget(
     ProviderScope(
       overrides: [ordersNotifierProvider.overrideWith(() => MockOrdersNotifier(orders))],
       child: const MaterialApp(home: OrderListScreen()),
     ),
   );
-
   await tester.pumpAndSettle();
 
-  // Assert
   expect(find.byType(OrderListItem), findsNWidgets(2));
 });
 ```
@@ -63,20 +59,16 @@ testWidgets('shows order list when orders are loaded', (tester) async {
 
 ```dart
 testWidgets('submits form and shows confirmation', (tester) async {
-  // Arrange
   await tester.pumpWidget(
     ProviderScope(
       overrides: [orderServiceProvider.overrideWithValue(MockOrderService())],
       child: const MaterialApp(home: CreateOrderScreen()),
     ),
   );
-
-  // Act
   await tester.enterText(find.byKey(const Key('quantity-field')), '3');
   await tester.tap(find.text('Confirm Order'));
   await tester.pumpAndSettle();
 
-  // Assert
   expect(find.text('Order confirmed!'), findsOneWidget);
 });
 ```
@@ -127,7 +119,6 @@ testWidgets('shows error when load fails', (tester) async {
       child: const MaterialApp(home: OrderListScreen()),
     ),
   );
-
   await tester.pumpAndSettle();
 
   expect(find.text('Failed to load orders'), findsOneWidget);

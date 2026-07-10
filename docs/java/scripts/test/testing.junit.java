@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 // Demonstra os princípios de testing.md:
-// - AAA (Arrange, Act, Assert) com fases separadas por blank line
+// - AAA (Arrange, Act, Assert) com declarações agrupadas e asserção isolada por blank line
 // - AssertJ para assertions expressivas
 // - Mockito para isolamento de dependências
 // - @Nested para agrupamento por contexto
@@ -48,12 +48,8 @@ class OrderServiceTest {
 
         @Test
         void findsOrderById() {
-            // Arrange — setup em @BeforeEach
-
-            // Act
             final var actualOrder = orderService.findById("ord-1");
 
-            // Assert
             assertThat(actualOrder.getId()).isEqualTo("ord-1");
             assertThat(actualOrder.getCustomerId()).isEqualTo("cust-99");
         }
@@ -61,7 +57,6 @@ class OrderServiceTest {
         @Test
         void appliesDiscountWhenOrderQualifies() {
             existingOrder.setDiscountPct(10);
-
             final var actualOrder = orderService.applyDiscount(existingOrder);
             final var expectedTotal = new BigDecimal("90");
 
@@ -71,7 +66,6 @@ class OrderServiceTest {
         @Test
         void notifiesCustomerAfterProcessing() {
             orderService.process("ord-1");
-
             verify(notificationService).notifyOrderProcessed(existingOrder);
         }
     }
@@ -129,7 +123,6 @@ class DiscountServiceTest {
     @Test
     void appliesTenPercentDiscount() {
         baseOrder.setDiscountPct(10);
-
         final var actualOrder = discountService.apply(baseOrder);
         final var expectedTotal = new BigDecimal("90");
 
@@ -139,7 +132,6 @@ class DiscountServiceTest {
     @Test
     void appliesZeroDiscountWhenPctIsZero() {
         baseOrder.setDiscountPct(0);
-
         final var actualOrder = discountService.apply(baseOrder);
 
         assertThat(actualOrder.getTotal()).isEqualByComparingTo(new BigDecimal("100"));

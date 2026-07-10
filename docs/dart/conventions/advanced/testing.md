@@ -2,14 +2,14 @@
 
 > Escopo: Dart 3.7, package:test 1.25, mocktail 1.x.
 
-Testes seguem o padrão AAA (Arrange, Act, Assert, Arranjar, Agir, Atestar) com fases explícitas. `package:test` é o
+Testes seguem o padrão AAA (Arrange, Act, Assert · Arranjar, Agir, Atestar) com fases explícitas. `package:test` é o
 framework padrão. `mocktail` cria mocks sem geração de código (ao contrário de `mockito`).
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
 | `package:test` | framework de testes nativo do Dart: `test()`, `group()`, `expect()` |
 | `mocktail` | mocking sem geração de código; `when()`, `verify()`, `any()` |
 | `setUp` / `tearDown` | executam antes e depois de cada teste no grupo |
@@ -36,16 +36,12 @@ test('findOrder', () async {
 
 ```dart
 test('find returns settled order when order exists', () async {
-  // Arrange
   final settledOrder = Order(id: 1, status: OrderStatus.settled);
   final repository = MockOrderRepository();
   when(() => repository.findById(1)).thenAnswer((_) async => settledOrder);
   final service = OrderService(repository);
-
-  // Act
   final foundOrder = await service.find(1);
 
-  // Assert
   expect(foundOrder.status, OrderStatus.settled);
 });
 ```
@@ -103,17 +99,12 @@ class FakeOrderRepository implements OrderRepository {
 class MockOrderRepository extends Mock implements OrderRepository {}
 
 test('find returns order when found', () async {
-  // Arrange
   final repository = MockOrderRepository();
   final order = Order(id: 1, status: OrderStatus.settled);
   when(() => repository.findById(1)).thenAnswer((_) async => order);
-
   final service = OrderService(repository);
-
-  // Act
   final result = await service.find(1);
 
-  // Assert
   expect(result, order);
   verify(() => repository.findById(1)).called(1);
 });
@@ -143,7 +134,6 @@ test('emits orders', () {
 ```dart
 test('countDown emits from 3 to 1', () async {
   final stream = countDown(3);
-
   await expectLater(stream, emitsInOrder([3, 2, 1, emitsDone]));
 });
 ```

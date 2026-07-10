@@ -50,7 +50,7 @@ public class FormatNameTests
     {
         var actualName = FormatName("John", "Doe");
         var expectedName = "John Doe";
-
+        
         Assert.AreEqual(expectedName, actualName);
     }
 }
