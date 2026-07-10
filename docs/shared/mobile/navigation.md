@@ -67,7 +67,7 @@ usuário vai consultar frequentemente: isso pertence à stack ou à tab bar.
 ## Deep link
 
 Deep link é a capacidade de navegar diretamente para uma tela específica via
-**URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) ou intenção
+**URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) ou intenção
 externa. É o ponto de entrada de notificações push, e-mails e links
 compartilhados.
 

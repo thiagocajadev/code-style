@@ -15,7 +15,7 @@ Redis é um banco de dados em memória com persistência opcional. Funciona como
 | **List** (lista) | Lista duplamente encadeada; suporta push/pop nas duas extremidades |
 | **Set** (conjunto) | Coleção não ordenada de strings únicas |
 | **Sorted Set** (conjunto ordenado) | Set com score numérico por membro; ordenado por score |
-| **TTL** (Time To Live, tempo de vida) | Expiração automática da chave após o intervalo configurado |
+| **TTL** (Time To Live · tempo de vida) | Expiração automática da chave após o intervalo configurado |
 | **Cache-aside** (cache ao lado) | Padrão: verificar cache → miss → buscar no banco → preencher cache |
 | **Pub/Sub** (publish/subscribe) | Canal de mensagens: publicadores emitem, assinantes recebem |
 | **Atomic operation** (operação atômica) | Operação que executa como unidade indivisível; INCR é atômico por natureza |
@@ -40,7 +40,7 @@ await client.connect();
 ```
 
 <details>
-<summary>❌ Ruim: sem tratamento de erro de conexão; **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) hardcoded</summary>
+<summary>❌ Ruim: sem tratamento de erro de conexão; **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) hardcoded</summary>
 
 ```js
 const client = createClient({ url: 'redis://localhost:6379' });
@@ -74,7 +74,7 @@ export { client };
 
 ## Strings
 
-O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) serializado.
+O tipo mais simples. Usar para valores atômicos, contadores e **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) serializado.
 
 | Comando | Uso |
 | --- | --- |

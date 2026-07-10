@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack que integre LLMs.
 
-Integrar um **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) em um sistema cria uma superfície de ataque nova: o modelo processa texto como instrução, não como dado inerte. Qualquer entrada que chegue ao modelo sem sanitização pode redirecionar seu comportamento, independente das instruções originais do sistema.
+Integrar um **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) em um sistema cria uma superfície de ataque nova: o modelo processa texto como instrução, não como dado inerte. Qualquer entrada que chegue ao modelo sem sanitização pode redirecionar seu comportamento, independente das instruções originais do sistema.
 
 ## Conceitos fundamentais
 
@@ -228,7 +228,7 @@ const tools = [
 | Expor ferramentas desnecessárias ao agente | Superfície de ataque ampliada em indirect injection | Princípio do menor privilégio por agente |
 | System prompt sem instrução de resistência | Jailbreak e role-play redirecionam comportamento | Adicionar instrução explícita de escopo e recusa |
 | Dados externos sem enquadramento como dado | Indirect injection via documento ou página | Prefixar conteúdo externo com marcador de dado |
-| Logar o conteúdo de prompts com dados sensíveis | Vazamento de **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) nos logs | Sanitizar antes de logar; nunca logar o prompt completo |
+| Logar o conteúdo de prompts com dados sensíveis | Vazamento de **PII** (Personally Identifiable Information · Informações de Identificação Pessoal) nos logs | Sanitizar antes de logar; nunca logar o prompt completo |
 
 ## Veja também
 

@@ -13,7 +13,7 @@ Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use
 | **var** (variável) | Declaração de função (legado): vaza para fora do bloco e permite redeclaração silenciosa |
 | **block scope** (escopo de bloco) | Visibilidade limitada às chaves `{ }` mais próximas |
 | **hoisting** (içamento) | Antecipação da declaração para o topo do escopo na fase de parsing |
-| **TDZ** (Temporal Dead Zone, Zona Morta Temporal) | Trecho entre o início do bloco e a declaração `let`/`const` onde acessar a variável lança erro |
+| **TDZ** (Temporal Dead Zone · Zona Morta Temporal) | Trecho entre o início do bloco e a declaração `let`/`const` onde acessar a variável lança erro |
 
 ## var: escopo de função, não de bloco
 

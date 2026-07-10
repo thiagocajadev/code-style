@@ -118,6 +118,6 @@ Em harnesses multi-agente, cada skill pode ser executada por um agente especiali
 
 **Instrução operacional, não descritiva.** A instrução diz o que fazer, não o que a skill é. "Identifique os 3 principais riscos de segurança" funciona melhor que "Você é um especialista em segurança".
 
-**Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura, como tabela, lista numerada ou **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), garante saída processável por código.
+**Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura, como tabela, lista numerada ou **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), garante saída processável por código.
 
 **Versionar skills como código.** Skills em produção devem ter controle de versão, testes de output e processo de deploy: os mesmos critérios de qualquer artefato de software.

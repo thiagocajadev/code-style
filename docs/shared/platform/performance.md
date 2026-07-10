@@ -9,20 +9,20 @@ Performance é uma decisão de design. As escolhas de paginação, **cache** (ar
 | Conceito | O que é |
 |---|---|
 | **Cache** (armazenamento temporário) | Resposta armazenada para evitar recomputação ou nova consulta ao banco |
-| **TTL** (Time To Live, tempo de vida) | Tempo durante o qual uma entrada em cache é considerada válida |
+| **TTL** (Time To Live · tempo de vida) | Tempo durante o qual uma entrada em cache é considerada válida |
 | **Offset/limit** (paginação por deslocamento e quantidade) | Modelo de paginação que pula N registros e retorna os próximos M |
 | **Cursor** (ponteiro de paginação) | Referência ao último item retornado, usada para paginação estável em dados que mudam |
 | **Lazy loading** (carregamento sob demanda) | Carregar dados ou código apenas no momento em que são necessários |
 | **N+1** (consulta repetida em loop) | Anti-padrão que executa uma query por item de uma lista em vez de uma única query em lote |
 | **Connection pooling** (agrupamento de conexões) | Reutilização de conexões abertas com o banco para reduzir o custo de handshake por requisição |
-| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+| **I/O** (Input/Output · entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
 | **Big O** (notação de complexidade assintótica) | Notação que descreve como o tempo ou espaço de um algoritmo cresce em função do tamanho da entrada |
 | **Time complexity** (complexidade de tempo) | Quantas operações o algoritmo executa em relação ao tamanho da entrada |
 | **Space complexity** (complexidade de espaço) | Quanta memória o algoritmo usa em relação ao tamanho da entrada |
 
 ## Paginação
 
-Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da **API** (Application Programming Interface, Interface de Programação de Aplicações)) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.
+Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da **API** (Application Programming Interface · Interface de Programação de Aplicações)) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.
 
 Dois modelos cobrem a maioria dos casos:
 
@@ -37,9 +37,9 @@ A resposta de uma lista paginada inclui os dados e metadados de navegação: tot
 
 ## Cache
 
-Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit, Unidade Central de Processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
+Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit · Unidade Central de Processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
 
-A decisão central é o **TTL** (Time To Live, tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto significa mais idas ao banco e dado fresco; TTL longo, menos pressão no banco e dado potencialmente obsoleto.
+A decisão central é o **TTL** (Time To Live · tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto significa mais idas ao banco e dado fresco; TTL longo, menos pressão no banco e dado potencialmente obsoleto.
 
 | Estratégia | Como funciona | Quando usar |
 |---|---|---|
@@ -51,7 +51,7 @@ Dados que mudam frequentemente com custo de desatualização alto (saldo, estoqu
 
 ## Fila e Processamento Assíncrono
 
-Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (processo que executa tarefas em segundo plano) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
+Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (processo que executa tarefas em segundo plano) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
 
 O padrão é: aceitar o trabalho, responder imediatamente, processar em background.
 
@@ -63,7 +63,7 @@ Benefícios diretos: tempo de resposta previsível, isolamento de falhas (job fa
 
 **Quando usar fila:**
 - Operação leva mais de ~500ms
-- Depende de serviço externo com **SLA** (Service Level Agreement, Acordo de Nível de Serviço) variável
+- Depende de serviço externo com **SLA** (Service Level Agreement · Acordo de Nível de Serviço) variável
 - Pode falhar e precisa de retry
 - Volume pode criar picos que o banco não absorve em tempo real
 
@@ -115,7 +115,7 @@ Menor latência entre as três opções: o resultado chega assim que disponível
 
 O custo é operacional: cada cliente conectado mantém uma conexão aberta no servidor. Gateway, load balancer (balanceador de carga) e infra precisam suportar conexões persistentes, o que afeta o escalonamento horizontal.
 
-**Quando usar**: **UI** (User Interface, Interface do Usuário) em tempo real, dashboards (painéis ao vivo) e feeds ao vivo, onde a latência mínima justifica a complexidade operacional.
+**Quando usar**: **UI** (User Interface · Interface do Usuário) em tempo real, dashboards (painéis ao vivo) e feeds ao vivo, onde a latência mínima justifica a complexidade operacional.
 
 ## Lazy Loading
 

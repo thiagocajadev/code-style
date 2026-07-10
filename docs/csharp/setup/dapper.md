@@ -20,7 +20,7 @@ A preferência é usar **stored procedures** para operações de domínio: a ló
 
 ## Procedure por domínio
 
-Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
+Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language · Linguagem de Consulta Estruturada).
 
 <details>
 <summary>❌ Ruim: SQL de domínio inline no repositório</summary>

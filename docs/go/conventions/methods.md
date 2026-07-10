@@ -3,7 +3,7 @@
 > Escopo: Go 1.26.
 
 Go distingue **funções** (sem receptor) de **métodos** (com receptor). Ambos seguem os mesmos
-princípios de SLA (Single Level of Abstraction, Único Nível de Abstração): uma função orquestra
+princípios de SLA (Single Level of Abstraction · Único Nível de Abstração): uma função orquestra
 ou implementa, nunca os dois. O **explaining return** nomeia o resultado antes de retornar.
 
 ## Conceitos fundamentais
@@ -13,7 +13,7 @@ ou implementa, nunca os dois. O **explaining return** nomeia o resultado antes d
 | **receiver** (receptor) | Parâmetro especial que associa uma função a um tipo; escrito antes do nome da função |
 | **value receiver** (receptor por valor) | Recebe uma cópia do tipo; não modifica o original |
 | **pointer receiver** (receptor por ponteiro) | Recebe o endereço do tipo; pode modificar o original |
-| **SLA** (Single Level of Abstraction, nível único de abstração) | cada função opera em um único nível: orquestra chamadas OU implementa detalhe |
+| **SLA** (Single Level of Abstraction · nível único de abstração) | cada função opera em um único nível: orquestra chamadas OU implementa detalhe |
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
 | **helper** (função auxiliar) | função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 

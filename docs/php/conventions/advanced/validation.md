@@ -11,7 +11,7 @@ O service recebe objetos já validados e tipados, nunca arrays brutos sem valida
 | Conceito | O que é |
 | --- | --- |
 | **Symfony Validator** (biblioteca de validação do Symfony) | Componente que aplica regras declarativas via atributos PHP em DTOs |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura tipada que carrega dados entre camadas; alvo das regras de validação |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Estrutura tipada que carrega dados entre camadas; alvo das regras de validação |
 | **PHP attribute** (atributo PHP 8) | Sintaxe `#[NotBlank]` que anota classes, propriedades e métodos com metadados |
 | **constraint** (restrição) | Regra individual: `NotBlank`, `Email`, `Range`; agrupa-se sobre um DTO |
 | **boundary** (limite) | Camada onde a validação acontece: handler HTTP, consumer de fila, comando CLI |

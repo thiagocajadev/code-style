@@ -4,7 +4,7 @@
 >
 > Driver: `@aws-sdk/client-dynamodb` + `@aws-sdk/lib-dynamodb` (SDK v3).
 
-DynamoDB é o banco **NoSQL** (Not Only SQL, Não Apenas SQL) gerenciado da AWS. Escala automaticamente e elimina operações de cluster. Exige design cuidadoso de access patterns antes de criar a tabela.
+DynamoDB é o banco **NoSQL** (Not Only SQL · Não Apenas SQL) gerenciado da AWS. Escala automaticamente e elimina operações de cluster. Exige design cuidadoso de access patterns antes de criar a tabela.
 
 ## Conceitos fundamentais
 
@@ -12,11 +12,11 @@ DynamoDB é o banco **NoSQL** (Not Only SQL, Não Apenas SQL) gerenciado da AWS.
 | --- | --- |
 | **Partition key** (chave de partição) | Atributo obrigatório que determina em qual partição o item é armazenado; deve ter alta cardinalidade |
 | **Sort key** (chave de ordenação) | Atributo opcional que ordena itens dentro da mesma partição; permite range queries |
-| **GSI** (Global Secondary Index, Índice Secundário Global) | Índice alternativo com partition key diferente da tabela base; criado a qualquer momento |
-| **LSI** (Local Secondary Index, Índice Secundário Local) | Índice com mesma partition key da tabela, sort key diferente; criado apenas na criação da tabela |
+| **GSI** (Global Secondary Index · Índice Secundário Global) | Índice alternativo com partition key diferente da tabela base; criado a qualquer momento |
+| **LSI** (Local Secondary Index · Índice Secundário Local) | Índice com mesma partition key da tabela, sort key diferente; criado apenas na criação da tabela |
 | **Single-table design** (design de tabela única) | Armazena múltiplas entidades na mesma tabela usando prefixos em PK/SK |
-| **RCU** (Read Capacity Unit, Unidade de Capacidade de Leitura) | Unidade de leitura: 1 RCU = uma leitura fortemente consistente de até 4 KB |
-| **WCU** (Write Capacity Unit, Unidade de Capacidade de Escrita) | Unidade de escrita: 1 WCU = uma escrita de até 1 KB |
+| **RCU** (Read Capacity Unit · Unidade de Capacidade de Leitura) | Unidade de leitura: 1 RCU = uma leitura fortemente consistente de até 4 KB |
+| **WCU** (Write Capacity Unit · Unidade de Capacidade de Escrita) | Unidade de escrita: 1 WCU = uma escrita de até 1 KB |
 | **Hot spot** (ponto quente) | Partição sobrecarregada pela má distribuição do partition key |
 | **Scan** (varredura) | Lê todos os itens da tabela; anti-padrão em produção |
 

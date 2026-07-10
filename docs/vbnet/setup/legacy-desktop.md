@@ -15,7 +15,7 @@ Fluxo: `Formulário (tela) → DataAccess (acesso mínimo) → banco → resulta
 | **connectionStrings** (seção de cadeias de conexão) | Bloco do `App.config` que centraliza credenciais e endpoint do banco |
 | **DataAccess** (módulo de acesso a dados) | Módulo `thin` (enxuto) com funções de leitura/escrita; substitui camada de serviço em apps simples |
 | **Module** (módulo VB.NET) | Container de membros compartilhados; equivale a `static class` em C# |
-| **IoC** (Inversion of Control, Inversão de Controle) | Padrão evitado em desktop legado simples; manter dependências explícitas via parâmetros |
+| **IoC** (Inversion of Control · Inversão de Controle) | Padrão evitado em desktop legado simples; manter dependências explícitas via parâmetros |
 | **Async / Await** (assíncrono / aguardar) | Mantém a UI responsiva durante I/O; obrigatório mesmo em apps simples |
 | **DataGridView** (grid de dados do WinForms) | Componente padrão para listagem; bind direto a `DataTable` ou `BindingList` |
 
@@ -81,7 +81,7 @@ End Module
 Um módulo por domínio. Cada função executa uma query e retorna o resultado, sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
 
 <details>
-<summary>❌ Ruim: acesso a dados misturado com lógica de **UI** (User Interface, Interface do Usuário) no Form</summary>
+<summary>❌ Ruim: acesso a dados misturado com lógica de **UI** (User Interface · Interface do Usuário) no Form</summary>
 
 ```vbnet
 Public Class ProductForm

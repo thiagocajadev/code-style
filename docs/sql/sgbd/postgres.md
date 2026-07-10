@@ -14,11 +14,11 @@ PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window f
 
 | Conceito | O que é |
 | --- | --- |
-| **PL/pgSQL** (Procedural Language/PostgreSQL, linguagem procedural do PostgreSQL) | Linguagem nativa do PostgreSQL para functions e procedures |
+| **PL/pgSQL** (Procedural Language/PostgreSQL · linguagem procedural do PostgreSQL) | Linguagem nativa do PostgreSQL para functions e procedures |
 | **RETURNING** (cláusula de retorno) | Cláusula que retorna linhas afetadas por INSERT, UPDATE, DELETE ou MERGE |
 | **JSONB** (JSON Binário) | JSON armazenado em formato binário com suporte a índices GIN; preferível a `JSON` |
-| **CTE** (Common Table Expression, Expressão de Tabela Comum) | Resultado nomeado via `WITH`; no PostgreSQL, `WITH` em DML pode ser usado com `RETURNING` |
-| **AIO** (Asynchronous I/O, Entrada e Saída Assíncrona) | Subsistema do PostgreSQL 18 que emite múltiplas operações de I/O em paralelo |
+| **CTE** (Common Table Expression · Expressão de Tabela Comum) | Resultado nomeado via `WITH`; no PostgreSQL, `WITH` em DML pode ser usado com `RETURNING` |
+| **AIO** (Asynchronous I/O · Entrada e Saída Assíncrona) | Subsistema do PostgreSQL 18 que emite múltiplas operações de I/O em paralelo |
 | **UUID v7** (Universally Unique Identifier versão 7) | UUID com prefixo de timestamp; gerado via `uuidv7()` nativo no PostgreSQL 18 |
 | **Temporal constraint** (restrição temporal) | Constraint sobre intervalos de tempo (PRIMARY KEY, UNIQUE, FK); disponível no PostgreSQL 18 |
 
@@ -92,7 +92,7 @@ CREATE TABLE events (
 
 ## GENERATED ALWAYS AS IDENTITY
 
-Substitui `SERIAL`. Padrão **SQL** (Structured Query Language, Linguagem de Consulta Estruturada), compatível com `INSERT ... RETURNING`, sem a sequência implícita
+Substitui `SERIAL`. Padrão **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), compatível com `INSERT ... RETURNING`, sem a sequência implícita
 criada pelo `SERIAL`.
 
 <details>
@@ -262,7 +262,7 @@ RETURNING
 
 ## JSONB: índice GIN
 
-`JSONB` suporta índice GIN para busca eficiente em documentos **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript), sem precisar conhecer a
+`JSONB` suporta índice GIN para busca eficiente em documentos **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), sem precisar conhecer a
 estrutura completa em tempo de definição do schema.
 
 <details>
@@ -407,7 +407,7 @@ CREATE TRIGGER trg_orders_on_insert
 
 ### AIO: Asynchronous I/O
 
-PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de **I/O** (Input/Output, Entrada/Saída) em paralelo,
+PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de **I/O** (Input/Output · Entrada/Saída) em paralelo,
 em vez de aguardar cada leitura em sequência. Benchmarks mostram ganhos de até 3x em sequential
 scans e vacuum em cargas de trabalho I/O-bound. Não requer configuração: ativo por padrão.
 

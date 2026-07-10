@@ -52,7 +52,7 @@ End Function
 
 ## Parâmetros: nunca concatenação
 
-A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução; o banco nunca o interpreta como código.
+A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução; o banco nunca o interpreta como código.
 
 <details>
 <summary>❌ Ruim: concatenação de strings abre porta para SQL injection</summary>

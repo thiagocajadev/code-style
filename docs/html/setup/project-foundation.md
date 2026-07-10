@@ -1,6 +1,6 @@
 # Project Foundation: HTML
 
-Template base pra novos projetos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: **charset** (codificação de caracteres) e **viewport** (área visível) primeiro, recursos críticos antes do CSS, scripts com **defer** (adiar execução).
+Template base pra novos projetos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: **charset** (codificação de caracteres) e **viewport** (área visível) primeiro, recursos críticos antes do CSS, scripts com **defer** (adiar execução).
 
 ## Conceitos fundamentais
 

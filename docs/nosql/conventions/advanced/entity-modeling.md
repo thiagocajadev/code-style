@@ -4,7 +4,7 @@
 
 Em um document store, o **aggregate root** (raiz do agregado) vira documento completo: um único objeto BSON que pode ser gravado e lido atomicamente. Essa fronteira física coincide com a fronteira do agregado no domínio. `OrderItem` vive embutido em `Order` não por conveniência técnica, mas porque o domínio diz que um item não faz sentido fora do pedido. Quando o domínio separa os conceitos, a separação aparece em coleções distintas, com referência por `_id`.
 
-As invariantes do agregado continuam morando no código da aplicação (driver, **ODM** (Object Document Mapper, mapeador de objeto para documento)) e no **schema validator** (validador de esquema) declarado no banco. O MongoDB não tem chave estrangeira nem constraint declarativa entre coleções; a consistência entre documentos distintos é responsabilidade da aplicação.
+As invariantes do agregado continuam morando no código da aplicação (driver, **ODM** (Object Document Mapper · mapeador de objeto para documento)) e no **schema validator** (validador de esquema) declarado no banco. O MongoDB não tem chave estrangeira nem constraint declarativa entre coleções; a consistência entre documentos distintos é responsabilidade da aplicação.
 
 ## Conceitos fundamentais
 

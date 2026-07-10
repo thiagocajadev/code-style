@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um agente de IA é um sistema que usa um **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
+Um agente de IA é um sistema que usa um **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) para raciocinar sobre um objetivo, decidir quais ações tomar e executá-las em loop até concluir a tarefa. A diferença fundamental em relação a uma chamada direta ao modelo é a autonomia: o agente decide o próximo passo com base no resultado anterior, sem intervenção humana em cada iteração.
 
 ## Conceitos fundamentais
 

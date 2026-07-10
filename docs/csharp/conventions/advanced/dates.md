@@ -12,7 +12,7 @@
 | --- | --- |
 | **DateTime** (data e hora) | Tipo de data/hora cujo campo `Kind` pode ser `Local`, `Utc` ou `Unspecified`; ambíguo por padrão |
 | **DateTimeOffset** (data, hora e deslocamento) | Tipo que carrega o offset junto com o instante; elimina ambiguidade entre fusos |
-| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência global de tempo sem fuso; padrão para armazenamento e troca entre serviços |
+| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Referência global de tempo sem fuso; padrão para armazenamento e troca entre serviços |
 | **Kind** (tipo de instante) | Campo de `DateTime` que indica se o valor é local, UTC ou indefinido |
 | **TimeZoneInfo** (informação de fuso horário) | Tipo que descreve um fuso e suas regras; usado para converter UTC em hora local |
 | **DateOnly / TimeOnly** (apenas data / apenas hora) | Tipos do .NET 6+ para representar apenas data ou apenas hora, sem componente residual |

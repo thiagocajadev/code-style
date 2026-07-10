@@ -12,7 +12,7 @@
 | **log level** (nível de log) | Severidade: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
 | **correlation ID** (ID de correlação) | Identificador único por requisição que aparece em todos os logs do mesmo fluxo |
 | **redaction** (mascaramento de dados sensíveis) | Remoção ou mascaramento de campos sensíveis (senha, token, CPF) antes de emitir |
-| **PII** (Personally Identifiable Information, Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
+| **PII** (Personally Identifiable Information · Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
 | **trace** (rastro) | Caminho de uma requisição atravessando múltiplos serviços; cada salto é um span |
 | **span** (trecho) | Unidade de trabalho dentro de um trace; tem início, fim e atributos |
 | **metric** (métrica) | Valor numérico agregado (contador, gauge, histograma) emitido periodicamente |

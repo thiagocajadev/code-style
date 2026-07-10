@@ -2,7 +2,7 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-**DI** (Dependency Injection, injeção de dependência) torna dependências explícitas, testáveis e substituíveis. O container resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+**DI** (Dependency Injection · injeção de dependência) torna dependências explícitas, testáveis e substituíveis. O container resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
 
 VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (container DI da Microsoft, padrão em projetos legados) ou **Autofac** (container DI com ecossistema mais rico). Os exemplos abaixo usam Unity por ser o mais comum em bases VB.NET; o idioma é equivalente em Autofac.
 
@@ -10,8 +10,8 @@ VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (container DI
 
 | Conceito | O que é |
 | --- | --- |
-| **DI** (Dependency Injection, Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
-| **IoC container** (Inversion of Control, Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências |
+| **DI** (Dependency Injection · Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
+| **IoC container** (Inversion of Control · Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências |
 | **Unity** (container DI da Microsoft) | Container clássico em projetos VB.NET sobre .NET Framework |
 | **Autofac** (container DI alternativo) | Container popular com ecossistema rico de extensões |
 | **Service Locator** (localizador de serviços) | Antipadrão: buscar dependências do container dentro da classe |

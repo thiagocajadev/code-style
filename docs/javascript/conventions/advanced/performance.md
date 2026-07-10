@@ -13,7 +13,7 @@ Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados
 | **V8** (engine do Chrome/Node.js) | Motor JavaScript do Node.js e Chrome; otimiza quando o código é previsível e mantém formas estáveis de objeto |
 | **JIT** (Just-In-Time, Compilação Sob Demanda) | Compilador que traduz JS para código de máquina em tempo de execução |
 | **allocation** (alocação) | Criação de objeto na heap; pressão de alocação custa GC |
-| **GC** (Garbage Collection, Coleta de Lixo) | Liberação automática de memória; pausas afetam latência |
+| **GC** (Garbage Collection · Coleta de Lixo) | Liberação automática de memória; pausas afetam latência |
 | **Big O** (notação assintótica) | Custo do algoritmo em função do tamanho da entrada (`O(n)`, `O(n²)`, `O(log n)`) |
 | **profiling** (perfilamento) | Medição empírica de onde tempo e memória são gastos; `node --prof`, `clinic`, Chrome DevTools |
 | **stream** (fluxo) | Leitura/escrita em pedaços; evita carregar arquivo inteiro na memória |
@@ -97,7 +97,7 @@ function filterPremiumProducts(products) {
 
 ## ID: UUID v4 vs UUID v7
 
-`crypto.randomUUID()` gera **UUID** (Universally Unique Identifier, Identificador Único Universal) v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
+`crypto.randomUUID()` gera **UUID** (Universally Unique Identifier · Identificador Único Universal) v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. UUID v7 é **time-ordered** (ordenado por tempo): insere sempre próximo ao fim da B-tree, sem fragmentação.
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 

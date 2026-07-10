@@ -2,14 +2,14 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um modelo de IA é um conjunto de pesos e parâmetros resultante do treinamento em grandes volumes de dados. Para uso em produção, os modelos se dividem em duas categorias: **cloud** (nuvem), acessados via **API** (Application Programming Interface, Interface de Programação de Aplicações) mediante pagamento por token, e **local**, executados diretamente na máquina do desenvolvedor.
+Um modelo de IA é um conjunto de pesos e parâmetros resultante do treinamento em grandes volumes de dados. Para uso em produção, os modelos se dividem em duas categorias: **cloud** (nuvem), acessados via **API** (Application Programming Interface · Interface de Programação de Aplicações) mediante pagamento por token, e **local**, executados diretamente na máquina do desenvolvedor.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
 | **Parameters** (parâmetros) | Valores numéricos aprendidos durante o treinamento; "tamanho" do modelo, medido em bilhões (B) |
-| **MoE** (Mixture of Experts, Mistura de Especialistas) | Arquitetura que ativa apenas uma fração dos parâmetros por inferência, reduzindo custo computacional |
+| **MoE** (Mixture of Experts · Mistura de Especialistas) | Arquitetura que ativa apenas uma fração dos parâmetros por inferência, reduzindo custo computacional |
 | **Multimodal** (multimodal) | Modelo que processa mais de um tipo de entrada: texto, imagem, áudio |
 | **Open weights** (pesos abertos) | Modelo cujos pesos são públicos, podendo ser rodados localmente |
 | **Proprietary** (proprietário) | Modelo cujos pesos não são públicos; acesso via API |
@@ -19,7 +19,7 @@ Um modelo de IA é um conjunto de pesos e parâmetros resultante do treinamento 
 
 ## Modelos em nuvem (Cloud Models)
 
-Modelos em nuvem são acessados via API **REST** (Representational State Transfer, Transferência de Estado Representacional). O desenvolvedor envia tokens e paga por volume de entrada e saída. Nenhum hardware especializado é necessário no lado do cliente.
+Modelos em nuvem são acessados via API **REST** (Representational State Transfer · Transferência de Estado Representacional). O desenvolvedor envia tokens e paga por volume de entrada e saída. Nenhum hardware especializado é necessário no lado do cliente.
 
 ### Claude (Anthropic)
 

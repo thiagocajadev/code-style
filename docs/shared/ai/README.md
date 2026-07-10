@@ -9,8 +9,8 @@ de forma eficiente, segura e econômica.
 
 ## Na verdade, o que é IA?
 
-O nome **AI** (Artificial Intelligence, Inteligência Artificial) é uma escolha de marketing, não uma
-descrição técnica precisa. Um **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala)
+O nome **AI** (Artificial Intelligence · Inteligência Artificial) é uma escolha de marketing, não uma
+descrição técnica precisa. Um **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala)
 não pensa, não entende e não tem intenção. O modelo executa uma
 operação estatística sofisticada: dado o texto de entrada, calcula a sequência de tokens mais
 provável como continuação, com base em padrões aprendidos de bilhões de exemplos de texto humano.
@@ -29,7 +29,7 @@ dados, não no modelo.
 
 | Conceito                                                                    | O que é                                                                                             |
 | --------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala)        | Modelo treinado para prever e gerar texto; base de assistentes como Claude, GPT e Gemini            |
+| **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala)        | Modelo treinado para prever e gerar texto; base de assistentes como Claude, GPT e Gemini            |
 | **Inference** (inferência)                                                  | Processo de usar um modelo treinado para gerar uma resposta; o oposto de treinamento                |
 | **Prompt** (instrução de entrada)                                           | Entrada de texto enviada ao modelo para guiar a resposta                                            |
 | **Token** (unidade mínima de texto)                                          | Unidade mínima de texto processada pelo modelo; aproximadamente 4 caracteres em inglês              |
@@ -38,7 +38,7 @@ dados, não no modelo.
 | **Agent** (agente)                                                          | Sistema autônomo que usa um LLM para raciocinar, planejar e executar ações em sequência             |
 | **RAG** (Retrieval-Augmented Generation, Geração Aumentada por Recuperação) | Técnica que injeta conteúdo recuperado de uma base de dados no prompt antes da geração              |
 | **Tool** (ferramenta)                                                       | Função externa que o modelo pode invocar para buscar dados ou executar ações                        |
-| **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo)           | Protocolo padrão para expor ferramentas e recursos a modelos de IA                                  |
+| **MCP** (Model Context Protocol · Protocolo de Contexto de Modelo)           | Protocolo padrão para expor ferramentas e recursos a modelos de IA                                  |
 | **Embedding** (representação vetorial)                                      | Vetor numérico que representa o significado semântico de um texto                                   |
 | **Quantization** (quantização)                                              | Técnica que reduz a precisão dos pesos do modelo para diminuir uso de memória e aumentar velocidade |
 

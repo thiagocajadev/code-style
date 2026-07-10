@@ -402,7 +402,7 @@ _As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo reso
 ## Circuit break
 
 Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` já resolve. Esses métodos
-**LINQ** (Language Integrated Query, consulta integrada à linguagem) param no primeiro match, sem percorrer o resto. Para busca com lógica de saída explícita,
+**LINQ** (Language Integrated Query · consulta integrada à linguagem) param no primeiro match, sem percorrer o resto. Para busca com lógica de saída explícita,
 `foreach` com `return` antecipado é direto.
 
 <details>

@@ -1,6 +1,6 @@
 # SQLFluff
 
-SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language, Linguagem de Consulta Estruturada). Aplica automaticamente as convenções de formatação deste guia.
+SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language · Linguagem de Consulta Estruturada). Aplica automaticamente as convenções de formatação deste guia.
 
 ## Conceitos fundamentais
 

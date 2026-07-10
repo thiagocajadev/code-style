@@ -13,9 +13,9 @@ via `spring.threads.virtual.enabled=true`.
 | **@RestController** (anotação de controlador REST) | combina `@Controller` e `@ResponseBody`; cada método retorna o corpo HTTP serializado |
 | **@Service** (anotação de serviço) | marca a camada de negócio; orquestra regras e dependências |
 | **@Repository** (anotação de repositório) | marca a camada de acesso a dados; traduz exceções de persistência |
-| **JPA** (Jakarta Persistence API, API de Persistência Java) | especificação Java para mapeamento objeto-relacional |
-| **DI** (Dependency Injection, Injeção de Dependência) | o container Spring fornece dependências via construtor |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | record para input/output HTTP; não vaza entidade JPA |
+| **JPA** (Jakarta Persistence API · API de Persistência Java) | especificação Java para mapeamento objeto-relacional |
+| **DI** (Dependency Injection · Injeção de Dependência) | o container Spring fornece dependências via construtor |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | record para input/output HTTP; não vaza entidade JPA |
 | **virtual threads** (threads leves gerenciadas pela JVM) | habilitadas no Spring Boot 4 por padrão; código bloqueante escala como reativo |
 
 ## Controller: camada HTTP
@@ -87,7 +87,7 @@ public class OrderController {
 ## Request e Response: records tipados
 
 Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos DTOs
-(Data Transfer Objects, Objetos de Transferência de Dados).
+(Data Transfer Objects · Objetos de Transferência de Dados).
 
 <details>
 <summary>✅ Bom: records como contrato de API</summary>

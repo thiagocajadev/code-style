@@ -14,10 +14,10 @@ A pergunta certa é _"esse null deveria chegar até aqui?"_
 |---|---|
 | **Null** (valor ausente) | Representa ausência de valor; comportamento varia entre linguagens |
 | **boundary** (limite do sistema) | Ponto onde dados externos entram no sistema: request, resposta de API, leitura de banco |
-| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato externo que pode produzir nulls; checagem obrigatória no limite |
-| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo onde requests trazem dados não confiáveis |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que cruza o limite; banco, arquivo e rede são fontes de null |
-| **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) | Formato de serialização onde campos ausentes viram `null` ou `undefined` |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato externo que pode produzir nulls; checagem obrigatória no limite |
+| **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo onde requests trazem dados não confiáveis |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que cruza o limite; banco, arquivo e rede são fontes de null |
+| **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) | Formato de serialização onde campos ausentes viram `null` ou `undefined` |
 
 ## A regra: checa no limite, confia no interior
 

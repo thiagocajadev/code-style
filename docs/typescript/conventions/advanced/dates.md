@@ -10,7 +10,7 @@ Os padrões de data do JavaScript se aplicam sem mudança. O TypeScript adiciona
 
 | Conceito | O que é |
 | --- | --- |
-| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
+| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
 | **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ss.sssZ` para datas em texto |
 | **branded type** (tipo marcado) | `string & { __brand: "IsoTimestamp" }`: distingue valores semânticos em nível de tipo |
 | **timestamp** (carimbo de tempo) | Instante no tempo em UTC, normalmente como string ISO ou epoch ms |
@@ -88,7 +88,7 @@ const order: Order = {
 
 ## Temporal API tipada (ES2026)
 
-A [**Temporal** (padrão moderno de datas) **API** (Application Programming Interface, Interface de Programação de Aplicações)](https://tc39.es/proposal-temporal/docs/) é nativa do ES2026. Os tipos estão
+A [**Temporal** (padrão moderno de datas) **API** (Application Programming Interface · Interface de Programação de Aplicações)](https://tc39.es/proposal-temporal/docs/) é nativa do ES2026. Os tipos estão
 disponíveis via `@types/temporal-polyfill` ou no `lib` do TypeScript para ambientes ES2026.
 
 <details>

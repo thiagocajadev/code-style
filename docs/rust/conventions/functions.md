@@ -16,7 +16,7 @@ saída antecipada. O operador `?` propaga erros sem ruído. Closures são primei
 | **lifetime** (tempo de vida) | Anotação `'a` que diz ao compilador por quanto uma referência é válida |
 | **return expression** (expressão de retorno) | Última linha sem `;`; `return` explícito só em early return |
 | **`impl Trait`** (tipo de retorno opaco) | Indica "alguma coisa que implementa este trait" sem expor o tipo concreto |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe |
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
 ## SLA: uma responsabilidade, um nível

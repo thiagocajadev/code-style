@@ -283,7 +283,7 @@ public static class DatabaseExtensions
 
 ## OpenAPI
 
-.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como **UI** (User Interface, Interface do Usuário).
+.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como **UI** (User Interface · Interface do Usuário).
 
 <details>
 <summary>❌ Ruim: Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>

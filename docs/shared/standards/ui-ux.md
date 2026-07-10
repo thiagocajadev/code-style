@@ -11,8 +11,8 @@ Interface é o contrato entre o sistema e o usuário. Cada decisão de espaçame
 | **Padding** (preenchimento interno) | Espaço entre o conteúdo e a borda de um container |
 | **Token** (valor nomeado do sistema de design) | Variável semântica que representa um valor de design (cor, espaçamento, tipografia) |
 | **Viewport** (área visível da tela) | Porção da tela disponível para renderização no momento |
-| **WCAG** (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web) | Padrão internacional de acessibilidade para conteúdo web, com níveis A, AA e AAA |
-| **ARIA** (Accessible Rich Internet Applications, Aplicações de Internet Ricas Acessíveis) | Atributos HTML que complementam a semântica nativa para padrões complexos de UI |
+| **WCAG** (Web Content Accessibility Guidelines · Diretrizes de Acessibilidade para Conteúdo Web) | Padrão internacional de acessibilidade para conteúdo web, com níveis A, AA e AAA |
+| **ARIA** (Accessible Rich Internet Applications · Aplicações de Internet Ricas Acessíveis) | Atributos HTML que complementam a semântica nativa para padrões complexos de UI |
 | **Skeleton** (esqueleto de carregamento) | Placeholder visual que representa o formato do conteúdo enquanto os dados carregam |
 | **Toast** (notificação temporária) | Mensagem de feedback exibida brevemente na interface, sem interromper o fluxo do usuário |
 
@@ -99,7 +99,7 @@ Foco visível é obrigatório. Nunca remover o outline (contorno) de foco sem su
 
 ### Semântica HTML
 
-Elementos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) semânticos comunicam estrutura para leitores de tela:
+Elementos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) semânticos comunicam estrutura para leitores de tela:
 
 | Evitar | Usar |
 |---|---|

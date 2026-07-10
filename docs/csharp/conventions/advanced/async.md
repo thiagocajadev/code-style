@@ -10,7 +10,7 @@ Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação q
 | --- | --- |
 | **Task** (tarefa assíncrona) | Tipo `Task<T>` que representa um resultado futuro de uma operação assíncrona |
 | **async/await** (assíncrono / aguardar) | Palavras-chave que marcam um método como assíncrono e suspendem a execução até o resultado estar pronto |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
 | **deadlock** (impasse) | Travamento por bloqueio síncrono (`.Result`, `.Wait()`) sobre código assíncrono no mesmo contexto |
 | **CancellationToken** (sinalizador de cancelamento) | Token propagado pela cadeia para abortar operações longas com cooperação |
 | **ConfigureAwait** (configurar continuação) | Método que controla se a continuação retorna ao contexto original; em libraries usa-se `false` |
@@ -106,7 +106,7 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 ## CancellationToken
 
-Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) canceladas ou timeouts não interrompem o trabalho em andamento.
+Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) canceladas ou timeouts não interrompem o trabalho em andamento.
 
 <details>
 <summary>❌ Ruim: CancellationToken ignorado ou ausente</summary>

@@ -7,8 +7,8 @@ Entity Framework Core é o **ORM** (Object-Relational Mapper, Mapeador Objeto-Re
 | Conceito | O que é |
 |---|---|
 | **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Camada que traduz objetos do domínio para tabelas relacionais e vice-versa |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de leitura; projeção `Select` materializa o DTO sem carregar a entidade inteira |
-| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem gerada pelo provider; `EXPLAIN` ou logs do EF mostram o SQL produzido |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Contrato de leitura; projeção `Select` materializa o DTO sem carregar a entidade inteira |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Linguagem gerada pelo provider; `EXPLAIN` ou logs do EF mostram o SQL produzido |
 | **Change Tracker** (rastreador de alterações) | Componente do `DbContext` que detecta mudanças entre `Load` e `SaveChanges` |
 | **N+1** (consulta repetida por item) | Anti-padrão: 1 query para a lista + N queries para cada item; resolve com `Include` ou projeção |
 

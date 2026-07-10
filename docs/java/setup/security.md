@@ -10,7 +10,7 @@ Segurança começa no limite do sistema: nunca confie em **input** (entrada), nu
 | Conceito | O que é |
 | --- | --- |
 | **secret** (segredo) | credencial, token ou chave que nunca pode aparecer no código-fonte |
-| **JWT** (JSON Web Token, Token Web JSON) | token assinado para autenticação stateless |
+| **JWT** (JSON Web Token · Token Web JSON) | token assinado para autenticação stateless |
 | **CSRF** (Cross-Site Request Forgery, Falsificação de Requisição entre Sites) | ataque que executa ações em nome do usuário autenticado |
 | **CORS** (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens) | mecanismo que controla qual origem pode chamar a API |
 | **BCrypt** (algoritmo de hash de senha) | função adaptativa para armazenar senhas com salt embutido |
@@ -138,7 +138,7 @@ public class UserService {
 
 </details>
 
-## JWT (JSON Web Token, Token Web em JSON): validação rigorosa
+## JWT (JSON Web Token · Token Web em JSON): validação rigorosa
 
 Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens malformados.
 

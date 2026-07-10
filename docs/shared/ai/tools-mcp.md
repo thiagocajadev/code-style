@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferramentas) é o mecanismo que permite ao modelo invocar funções externas, como buscar dados em uma **API** (Application Programming Interface, Interface de Programação de Aplicações), ler um arquivo ou executar código. O **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo) é o padrão aberto que padroniza como ferramentas e recursos são expostos a modelos de IA.
+Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferramentas) é o mecanismo que permite ao modelo invocar funções externas, como buscar dados em uma **API** (Application Programming Interface · Interface de Programação de Aplicações), ler um arquivo ou executar código. O **MCP** (Model Context Protocol · Protocolo de Contexto de Modelo) é o padrão aberto que padroniza como ferramentas e recursos são expostos a modelos de IA.
 
 ## Conceitos fundamentais
 
@@ -13,7 +13,7 @@ Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferrame
 | **Tool schema** (schema da ferramenta) | Definição JSON da ferramenta: nome, descrição, parâmetros e tipos |
 | **Tool result** (resultado da ferramenta) | Resposta da função devolvida ao modelo para continuar o raciocínio |
 | **Parallel tool calls** (chamadas paralelas) | Capacidade do modelo de invocar múltiplas ferramentas simultaneamente |
-| **MCP** (Model Context Protocol, Protocolo de Contexto de Modelo) | Protocolo cliente/servidor para expor ferramentas, recursos e prompts a modelos de IA |
+| **MCP** (Model Context Protocol · Protocolo de Contexto de Modelo) | Protocolo cliente/servidor para expor ferramentas, recursos e prompts a modelos de IA |
 | **MCP Server** (servidor MCP) | Processo que expõe ferramentas e recursos seguindo o protocolo MCP |
 | **MCP Client** (cliente MCP) | Componente do harness que conecta ao MCP Server e traduz chamadas para o modelo |
 | **Host** (hospedeiro) | Aplicação que instancia o MCP Client e gerencia a conversa (ex: Claude Code, Cursor) |
@@ -29,7 +29,7 @@ Modelo decide → Retorna tool_call com argumentos → Harness executa a funçã
 
 O modelo recebe o schema das ferramentas disponíveis junto com o prompt. A partir daí, decide se e quando invocá-las com base no objetivo.
 
-**Exemplo de schema em JSON** (JavaScript Object Notation, Notação de Objetos JavaScript):
+**Exemplo de schema em JSON** (JavaScript Object Notation · Notação de Objetos JavaScript):
 
 ```json
 {
@@ -63,7 +63,7 @@ Modelo → [fetch_weather("SP") | fetch_weather("RJ") | fetch_weather("BH")] →
 
 ## MCP (Model Context Protocol)
 
-O MCP foi criado pela Anthropic e publicado como padrão aberto em novembro de 2024 (spec atual: 2025-11-25). O objetivo é padronizar a integração entre modelos de IA e o ambiente externo, da mesma forma que o protocolo **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) padroniza a comunicação web.
+O MCP foi criado pela Anthropic e publicado como padrão aberto em novembro de 2024 (spec atual: 2025-11-25). O objetivo é padronizar a integração entre modelos de IA e o ambiente externo, da mesma forma que o protocolo **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) padroniza a comunicação web.
 
 ### Arquitetura
 

@@ -8,7 +8,7 @@
 
 | Conceito | O que é |
 | --- | --- |
-| **LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) | API de C# para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
+| **LINQ** (Language Integrated Query · Consulta Integrada à Linguagem) | API de C# para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
 | **IEnumerable\<T\>** (sequência iterável) | Interface que expõe iteração em memória; cada operador aplica em sequência |
 | **IQueryable\<T\>** (sequência consultável) | Interface que constrói árvore de expressão; provedor traduz para SQL/remote query |
 | **lazy evaluation** (avaliação sob demanda) | A query só executa no momento da iteração (`ToList`, `foreach`); permite composição |
@@ -18,7 +18,7 @@
 
 ## LINQ puro: sem side effects
 
-LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, alteração de estado e **I/O** (Input/Output, Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
+LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, alteração de estado e **I/O** (Input/Output · Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
 
 <details>
 <summary>❌ Ruim: side effect dentro de query LINQ</summary>

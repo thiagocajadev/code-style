@@ -21,7 +21,7 @@ release. Flags como caso particular de configuração dinâmica aparecem também
 | **Dark launch** (ativação invisível)      | Executar o novo código em produção sem expor o resultado ao usuário                              |
 | **Kill switch** (chave de emergência)     | Flag que desativa uma feature problemática imediatamente, sem deploy ou rollback                 |
 | **Runtime** (tempo de execução)           | Ponto de avaliação da flag a cada requisição, permitindo mudança sem restart                     |
-| **TTL** (Time To Live, tempo de validade) | Tempo durante o qual o valor de uma flag em cache local é considerado válido                     |
+| **TTL** (Time To Live · tempo de validade) | Tempo durante o qual o valor de uma flag em cache local é considerado válido                     |
 
 ---
 
@@ -88,7 +88,7 @@ cálculo, troca de provedor). Mais caro de implementar, mais barato que um incid
 
 ## Kill switch (chave de emergência)
 
-Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir **PR** (Pull Request, Pedido de Integração), sem rebuild
+Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir **PR** (Pull Request · Pedido de Integração), sem rebuild
 (recompilação), sem deploy. É a rede de segurança quando algo sai do controle: picos de erro, latência
 fora do limite, regressão detectada em métrica.
 
@@ -120,7 +120,7 @@ A maioria das flags úteis é runtime: o valor muda sem restart (reinicializaç�
 ajustável, o kill switch responde ao incidente imediatamente.
 
 O custo por avaliação importa. Consultar um serviço externo a cada chamada de função é
-insustentável. O padrão é **cache local com TTL (Time To Live, tempo de validade) curto**: o cliente
+insustentável. O padrão é **cache local com TTL (Time To Live · tempo de validade) curto**: o cliente
 da flag sincroniza com o backend a cada poucos segundos e responde localmente ao código. Ver
 [performance.md](performance.md) seção Cache.
 

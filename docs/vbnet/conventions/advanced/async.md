@@ -12,7 +12,7 @@ Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmo
 | **Async/Await** (assíncrono / aguardar) | Palavras-chave que marcam um método como assíncrono e suspendem a execução até o resultado |
 | **Async Function** (função assíncrona) | Forma aguardável: retorna `Task` ou `Task(Of T)`; exceções propagam ao caller |
 | **Async Sub** (subrotina assíncrona) | Não é aguardável; usar APENAS em event handlers do Windows Forms/WebForms |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
 | **deadlock** (impasse) | Travamento por bloqueio síncrono (`.Result`, `.Wait()`) sobre código assíncrono |
 | **CancellationToken** (sinalizador de cancelamento) | Token propagado pela cadeia para abortar operações longas com cooperação |
 | **ConfigureAwait** (configurar continuação) | Método que controla retorno ao contexto original; em libraries usa-se `False` |
@@ -98,7 +98,7 @@ End Function
 
 ## Task.WhenAll para chamadas independentes
 
-Chamadas de **I/O** (Input/Output, Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
+Chamadas de **I/O** (Input/Output · Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
 
 <details>
 <summary>❌ Ruim: chamadas independentes em sequência</summary>
@@ -137,7 +137,7 @@ End Function
 
 ## ConfigureAwait
 
-Em bibliotecas reutilizáveis (não **UI** (User Interface, Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita: o contexto é necessário para atualizar UI ou HttpContext.
+Em bibliotecas reutilizáveis (não **UI** (User Interface · Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita: o contexto é necessário para atualizar UI ou HttpContext.
 
 <details>
 <summary>✅ Bom: ConfigureAwait(False) em código de biblioteca</summary>

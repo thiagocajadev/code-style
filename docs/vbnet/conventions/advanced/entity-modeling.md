@@ -29,7 +29,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **ORM** (Object-Relational Mapping, mapeamento objeto-relacional) | Camada que traduz objetos do código para tabelas do banco e de volta (Entity Framework, Dapper, NHibernate) |
 | **soft delete** (remoção lógica) | Marcar o registro como excluído (`DeletedAt` preenchido) sem apagar fisicamente, preservando histórico |
 | **multitenancy** (multilocação) | Uma instância da aplicação serve múltiplos clientes (tenants) com isolamento de dados entre eles |
-| **GUID** (Globally Unique Identifier, identificador único global) | Valor de 128 bits usado como ID, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; `Guid` em .NET |
+| **GUID** (Globally Unique Identifier · identificador único global) | Valor de 128 bits usado como ID, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; `Guid` em .NET |
 
 ---
 

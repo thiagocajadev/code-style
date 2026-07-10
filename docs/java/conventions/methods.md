@@ -8,8 +8,8 @@ guiam o desenho.
 
 | Conceito | O que é |
 | --- | --- |
-| **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada método tem uma única razão para mudar |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | cada método opera em um só nível: orquestra passos ou implementa detalhe |
+| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | cada método tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | cada método opera em um só nível: orquestra passos ou implementa detalhe |
 | **cohesion** (coesão) | grau em que as instruções do método pertencem à mesma tarefa |
 | **god method** (método-deus) | método que faz tudo: busca, valida, calcula, persiste, loga |
 | **side effect** (efeito colateral) | alteração observável fora do retorno do método (I/O, mutação de estado) |

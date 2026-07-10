@@ -17,7 +17,7 @@ Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript a
 | **`safeParse`** (parse com resultado tipado) | Variante que retorna `{ success, data }` ou `{ success, error }` em vez de lançar |
 | **branded type** (tipo marcado) | Primitivo + tag (`z.string().brand<"Email">()`) para distinguir valores semânticos |
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas; derivada do schema |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas; derivada do schema |
 
 ## z.infer: tipo deriva do schema
 
@@ -162,7 +162,7 @@ function processPayment(payment: Payment): void {
 
 ## Output filtering tipado
 
-O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object, Objeto de Transferência de Dados) de resposta, não a entidade. `Pick` ou um tipo
+O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object · Objeto de Transferência de Dados) de resposta, não a entidade. `Pick` ou um tipo
 explícito documentam o contrato publicamente e impedem o vazamento acidental de campos.
 
 <details>

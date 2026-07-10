@@ -8,8 +8,8 @@
 
 | Conceito | O que é |
 | --- | --- |
-| **DI** (Dependency Injection, Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
-| **IoC container** (Inversion of Control, Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências por construtor |
+| **DI** (Dependency Injection · Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
+| **IoC container** (Inversion of Control · Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências por construtor |
 | **Service Locator** (localizador de serviços) | Antipadrão: buscar dependências do container dentro da classe; torna dependências implícitas |
 | **constructor injection** (injeção via construtor) | Forma preferida: parâmetros do construtor declaram tudo que a classe precisa |
 | **Singleton** (instância única) | Tempo de vida em que uma única instância serve todo o app |

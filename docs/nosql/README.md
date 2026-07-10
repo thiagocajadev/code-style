@@ -15,7 +15,7 @@ Bancos não-relacionais otimizam para padrão de acesso, escala horizontal e fle
 | **Replication factor** (fator de replicação) | Número de cópias de cada dado mantidas no cluster |
 | **Eventual consistency** (consistência eventual) | Réplicas convergem para o mesmo valor, mas não são garantidas como síncronas no momento da leitura |
 | **Partition key** (chave de partição) | Campo que determina em qual nó o dado é armazenado; design crítico para distribuição uniforme |
-| **TTL** (Time To Live, tempo de vida) | Expiração automática de registros após um intervalo configurado |
+| **TTL** (Time To Live · tempo de vida) | Expiração automática de registros após um intervalo configurado |
 | **Projection** (projeção) | Define quais campos retornar; evita trafegar o documento inteiro |
 | **Index** (índice) | Estrutura auxiliar para acelerar buscas sem varrer toda a coleção |
 | **Hot spot** (ponto quente) | Nó sobrecarregado porque a partition key não distribui dados de forma uniforme |

@@ -16,9 +16,9 @@ O texto cobre as mesmas perguntas do canônico, traduzidas para o vocabulário r
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo banco via `NOT NULL`, `CHECK`, `UNIQUE` ou `FOREIGN KEY`; ex.: `CHECK (status != 'settled' OR settled_at IS NOT NULL)` |
 | **constraint** (restrição) | Declaração de regra no DDL: `NOT NULL`, `CHECK`, `UNIQUE`, `PRIMARY KEY`, `FOREIGN KEY`; nomeadas com prefixo `pk_`, `fk_`, `uq_`, `ck_` |
 | **DOMAIN** (domínio de tipo) | Tipo derivado em PostgreSQL via `CREATE DOMAIN`; aplica constraints automaticamente a toda coluna declarada com esse tipo |
-| **UUID** (Universally Unique Identifier, identificador único global) | Identificador de 128 bits no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; no PostgreSQL 18, `uuidv7()` é nativo e sequencial |
+| **UUID** (Universally Unique Identifier · identificador único global) | Identificador de 128 bits no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`; no PostgreSQL 18, `uuidv7()` é nativo e sequencial |
 | **ENUM type** (tipo enumerado) | Conjunto fixo de valores via `CREATE TYPE ... AS ENUM`; alternativa portável: `VARCHAR` + `CHECK` constraint |
-| **FK** (Foreign Key, chave estrangeira) | Constraint que liga uma coluna a `id` de outra tabela; declara a cardinalidade e o comportamento ao deletar (`ON DELETE CASCADE`, `RESTRICT`, `SET NULL`) |
+| **FK** (Foreign Key · chave estrangeira) | Constraint que liga uma coluna a `id` de outra tabela; declara a cardinalidade e o comportamento ao deletar (`ON DELETE CASCADE`, `RESTRICT`, `SET NULL`) |
 | **RLS** (Row-Level Security, segurança por linha) | Recurso do PostgreSQL que filtra linhas antes que a query chegue à aplicação, com base em variável de sessão (`current_setting`) |
 | **soft delete** (remoção lógica) | Coluna `deleted_at TIMESTAMPTZ` preenchida no lugar de `DELETE`; preserva histórico e permite auditoria |
 | **multitenancy** (multilocação) | Uma instância serve múltiplos clientes (tenants) com `tenant_id UUID NOT NULL` na aggregate root e RLS no banco como segunda camada de isolamento |

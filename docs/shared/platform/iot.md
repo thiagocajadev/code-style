@@ -2,18 +2,18 @@
 
 > Escopo: transversal, com padrões de domínio IoT em exemplos MicroPython 1.28.
 
-Sistemas **IoT** (Internet of Things, Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit, Unidade Central de Processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
+Sistemas **IoT** (Internet of Things · Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit · Unidade Central de Processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | -------- | ------- |
 | **debounce** (filtragem de ruído) | Ignorar leituras redundantes de sensor durante uma janela de tempo após a primeira leitura |
-| **FSM** (Finite State Machine, Máquina de Estados Finitos) | Modelo de controle onde o sistema está sempre em um estado definido; transições são explícitas |
+| **FSM** (Finite State Machine · Máquina de Estados Finitos) | Modelo de controle onde o sistema está sempre em um estado definido; transições são explícitas |
 | **watchdog** (timer de reinício automático) | Timer de hardware que reinicia o dispositivo se o firmware travar |
 | **idempotency** (operação repetível sem efeito adicional) | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
 | **polling** (consulta periódica) | Leitura periódica de um sensor; alternativa a interrupções quando GPIO não suporta IRQ |
-| **IRQ** (Interrupt Request, Requisição de Interrupção) | Sinal de hardware que interrompe o loop principal para tratar um evento |
+| **IRQ** (Interrupt Request · Requisição de Interrupção) | Sinal de hardware que interrompe o loop principal para tratar um evento |
 | `machine` | Módulo MicroPython de acesso ao hardware: GPIO, I2C, SPI, UART, Timer, WDT |
 
 ## Naming de sensores e atuadores

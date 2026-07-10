@@ -2,13 +2,13 @@
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-**LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) em VB.NET tem duas sintaxes: **method syntax** (mesma do C#) e **query syntax** (com palavras-chave `From`, `Where`, `Select`). Prefira method syntax para consistência e capacidade de encadeamento. Query syntax é mais verbosa e se fragmenta quando o encadeamento cresce.
+**LINQ** (Language Integrated Query · Consulta Integrada à Linguagem) em VB.NET tem duas sintaxes: **method syntax** (mesma do C#) e **query syntax** (com palavras-chave `From`, `Where`, `Select`). Prefira method syntax para consistência e capacidade de encadeamento. Query syntax é mais verbosa e se fragmenta quando o encadeamento cresce.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **LINQ** (Language Integrated Query, Consulta Integrada à Linguagem) | API de .NET para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
+| **LINQ** (Language Integrated Query · Consulta Integrada à Linguagem) | API de .NET para transformar coleções de forma declarativa: `Where`, `Select`, `GroupBy`, `OrderBy` |
 | **method syntax** (sintaxe de método) | Forma fluente `xs.Where(...).Select(...)`; preferida no projeto sobre query syntax |
 | **query syntax** (sintaxe de consulta) | Forma com `From`, `Where`, `Select`; mais verbosa e difícil de encadear |
 | **IEnumerable(Of T)** (sequência iterável) | Interface que expõe iteração em memória; cada operador aplica em sequência |
@@ -84,7 +84,7 @@ Dim dtos = purchases.Select(Function(purchase) MapToDto(purchase)).ToList()
 
 ## Materialização explícita
 
-Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()` ou `ToArray()` no momento certo evita múltiplas execuções da query, garante snapshot dos dados e deixa explícito onde o **I/O** (Input/Output, Entrada/Saída) acontece.
+Consultas LINQ são lazy: executam quando enumeradas. Materializar com `ToList()` ou `ToArray()` no momento certo evita múltiplas execuções da query, garante snapshot dos dados e deixa explícito onde o **I/O** (Input/Output · Entrada/Saída) acontece.
 
 <details>
 <summary>❌ Ruim: IEnumerable lazy enumerado múltiplas vezes</summary>

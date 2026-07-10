@@ -10,15 +10,15 @@ Patterns de design são soluções consolidadas para problemas recorrentes: voca
 |---|---|
 | **Caller** (quem invoca a função) | Código que chama uma função ou serviço e trata o resultado |
 | **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Biblioteca que mapeia objetos do código para tabelas do banco de dados |
-| **OCP** (Open/Closed Principle, Princípio Aberto/Fechado) | Design aberto para extensão por novas implementações, fechado para modificação do código existente |
+| **OCP** (Open/Closed Principle · Princípio Aberto/Fechado) | Design aberto para extensão por novas implementações, fechado para modificação do código existente |
 | **CRUD** (Create, Read, Update, Delete, Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
 | **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Princípio de função: retorna valor OU produz efeito colateral, nunca os dois; ver `principles.md` |
-| **CQRS** (Command Query Responsibility Segregation, Segregação de Responsabilidade de Comando e Consulta) | Padrão arquitetural: modelos de escrita e leitura completamente separados |
+| **CQRS** (Command Query Responsibility Segregation · Segregação de Responsabilidade de Comando e Consulta) | Padrão arquitetural: modelos de escrita e leitura completamente separados |
 | **Command** (Comando) | Operação que altera estado; não retorna dado de negócio |
 | **Query** (Consulta) | Operação que lê e retorna dado; não altera estado |
 | **Projection** (Projeção) | Modelo de leitura desnormalizado, otimizado para consulta |
 | **SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações) | Spec define contrato de entradas, saídas e comportamentos antes de qualquer implementação |
-| **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) | Modelo de IA treinado em texto que gera código, explica conceitos e auxilia no desenvolvimento |
+| **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) | Modelo de IA treinado em texto que gera código, explica conceitos e auxilia no desenvolvimento |
 | **Handler** (processador de evento ou requisição) | Função ou objeto que recebe um evento ou requisição e decide como processar |
 | **Middleware** (intermediário de requisição) | Componente em um pipeline que intercepta a requisição, processa e repassa para o próximo elo |
 
@@ -92,7 +92,7 @@ UserFactory.create({ name, email, role })
 
 ## Repository
 
-O código de negócio não deveria conhecer **SQL** (Structured Query Language, Linguagem de Consulta Estruturada), **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
+O código de negócio não deveria conhecer **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
 
 ```
 UserRepository
@@ -116,7 +116,7 @@ ShippingStrategy
   └── PickupStrategy.calculate(order)
 ```
 
-O caller recebe a strategy como dependência. Adicionar uma nova variação é adicionar uma nova implementação, sem tocar o código existente. Isso é o **OCP** (Open/Closed Principle, Princípio Aberto/Fechado): aberto para extensão, fechado para modificação.
+O caller recebe a strategy como dependência. Adicionar uma nova variação é adicionar uma nova implementação, sem tocar o código existente. Isso é o **OCP** (Open/Closed Principle · Princípio Aberto/Fechado): aberto para extensão, fechado para modificação.
 
 **Quando usar**: comportamento que varia por tipo, contexto ou configuração e que tem chance real de crescer.
 
@@ -193,7 +193,7 @@ EmailService (interno)
     → SendGridClient (externo)
 ```
 
-O código de domínio chama `EmailService.send()`. O adapter traduz para a **API** (Application Programming Interface, Interface de Programação de Aplicações) do SendGrid. Trocar o provedor é trocar o adapter, sem tocar o domínio.
+O código de domínio chama `EmailService.send()`. O adapter traduz para a **API** (Application Programming Interface · Interface de Programação de Aplicações) do SendGrid. Trocar o provedor é trocar o adapter, sem tocar o domínio.
 
 **Quando usar**: integrar bibliotecas externas, APIs de terceiros ou código legado com interface diferente da esperada pelo domínio.
 
@@ -322,7 +322,7 @@ O **write model** (modelo de escrita) aplica as regras de domínio e persiste o 
 
 ## AI-Driven Development
 
-Desenvolvimento assistido por **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala) integrado ao ciclo de engenharia: geração de código, revisão, sugestão de refactoring e navegação em bases de código grandes.
+Desenvolvimento assistido por **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) integrado ao ciclo de engenharia: geração de código, revisão, sugestão de refactoring e navegação em bases de código grandes.
 
 O risco central não é a IA: é a ausência de revisão crítica. Código gerado sem avaliação contra a spec e os padrões do projeto cria dívida técnica opaca: funciona, mas não se encaixa no modelo de domínio, ignora convenções ou duplica lógica existente.
 

@@ -12,7 +12,7 @@ Design Thinking é o raciocínio feito **antes** de decidir o que construir. Par
 | **Persona** (arquétipo de usuário) | Representação arquetípica de um usuário, construída a partir de pesquisa |
 | **Journey** (jornada do usuário) | Mapa das etapas que o usuário atravessa para atingir um objetivo |
 | **Problem framing** (enquadramento de problema) | Formulação do problema em termos que orientam a solução sem prescrevê-la |
-| **HMW** (How Might We, Como Poderíamos) | Pergunta aberta que transforma um problema em oportunidade de solução |
+| **HMW** (How Might We · Como Poderíamos) | Pergunta aberta que transforma um problema em oportunidade de solução |
 | **Prototype** (protótipo) | Artefato descartável que materializa uma hipótese para validação |
 | **Usability** (usabilidade) | Facilidade com que o usuário atinge o objetivo com a interface proposta |
 
@@ -80,7 +80,7 @@ Aprofundamento em journey maps e service blueprints fica em `design-thinking-adv
 
 Gerar soluções sem filtro prematuro. A regra central é separar quantidade de qualidade: primeiro produzir muitas ideias, depois avaliar.
 
-A pergunta que abre ideação é **HMW** (How Might We, Como Poderíamos):
+A pergunta que abre ideação é **HMW** (How Might We · Como Poderíamos):
 
 ```
 Problema:  "O gestor perde tempo abrindo relatórios"
@@ -125,7 +125,7 @@ Design Thinking responde **o que construir**. A execução visual e de interaç�
 | Sistema de design, tipografia, acessibilidade, estados | [`../standards/ui-ux.md`](../standards/ui-ux.md) |
 | Metodologia de implementação (DDD, BDD, TDD) | [`methodologies.md`](./methodologies.md) |
 
-Confundir Design Thinking com **UI** (User Interface, Interface do Usuário)/**UX** (User Experience, Experiência do Usuário) é comum. UI/UX é a execução visual do que Design Thinking decidiu construir.
+Confundir Design Thinking com **UI** (User Interface · Interface do Usuário)/**UX** (User Experience · Experiência do Usuário) é comum. UI/UX é a execução visual do que Design Thinking decidiu construir.
 
 ## Quando Design Thinking começa e termina
 

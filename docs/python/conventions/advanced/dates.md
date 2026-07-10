@@ -11,7 +11,7 @@ instante no tempo deve ser _aware_, com fuso horário explícito.
 | --- | --- |
 | **naive datetime** (datetime sem fuso) | `datetime` sem informação de fuso; comparações e aritmética são ambíguas |
 | **aware datetime** (datetime com fuso) | `datetime` com `tzinfo` definido; instante no tempo inequívoco |
-| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Fuso de referência; armazene sempre em UTC, converta apenas para exibição |
+| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Fuso de referência; armazene sempre em UTC, converta apenas para exibição |
 | **zoneinfo** (módulo padrão de fusos horários) | Módulo padrão (Python 3.9+) para fusos com suporte a DST (Daylight Saving Time, horário de verão) |
 | **ISO 8601** (norma ISO de datas) | Formato de serialização universal: `2026-04-22T15:30:00+00:00` |
 
@@ -78,7 +78,7 @@ local_time = datetime.now(tz=ZoneInfo("America/Sao_Paulo"))
 
 ## Serialização e parsing: ISO 8601
 
-Armazene e transmita datas como strings **ISO** (International Organization for Standardization, Organização Internacional de Normalização) 8601. Use `isoformat()` para serializar e
+Armazene e transmita datas como strings **ISO** (International Organization for Standardization · Organização Internacional de Normalização) 8601. Use `isoformat()` para serializar e
 `datetime.fromisoformat()` para desserializar.
 
 <details>

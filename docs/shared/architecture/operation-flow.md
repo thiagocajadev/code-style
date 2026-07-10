@@ -4,7 +4,7 @@
 
 Uma operação (criar um recurso, processar um formulário, buscar dados) segue sempre o mesmo ciclo: recebe input (entrada), transforma, executa, retorna output (saída). Operation flow é a estrutura que torna esse ciclo explícito: cada passo tem uma responsabilidade, um tipo de entrada e um tipo de saída.
 
-O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e o limite entre lógica pura e **I/O** (Input/Output, Entrada/Saída) é visível na estrutura.
+O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho explícito e o limite entre lógica pura e **I/O** (Input/Output · Entrada/Saída) é visível na estrutura.
 
 ## Conceitos fundamentais
 
@@ -16,7 +16,7 @@ O resultado é um fluxo legível de ponta a ponta, onde falhas têm caminho expl
 | **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Escrita retorna void; leitura retorna dado. A mesma operação não faz os dois |
 | **Pipeline** (sequência de processamento) | Conjunto de etapas ordenadas de transformação de dados, cada uma com entrada e saída definidas |
 | **Caller** (quem invoca a operação) | Código que chama uma função ou serviço e é responsável por tratar os dois caminhos do resultado |
-| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+| **I/O** (Input/Output · entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
 
 ## Backend
 

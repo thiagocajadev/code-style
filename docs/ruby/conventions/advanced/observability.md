@@ -120,7 +120,7 @@ logger.info("application started")
 
 ## Não logar PII
 
-**PII** (Personally Identifiable Information, Informação Pessoal Identificável) como
+**PII** (Personally Identifiable Information · Informação Pessoal Identificável) como
 email, CPF e senha nunca entram em logs.
 
 <details>

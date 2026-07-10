@@ -10,8 +10,8 @@ navegar, entender e contribuir com contexto.
 
 | Conceito | O que é |
 |---|---|
-| **SDLC** (Software Development Life Cycle, Ciclo de Vida de Desenvolvimento de Software) | Conjunto de fases do desenvolvimento: design, implementação, testes, entrega, operação e manutenção |
-| **ADR** (Architecture Decision Record, Registro de Decisão de Arquitetura) | Documento que registra o porquê de uma decisão técnica, as alternativas consideradas e as consequências |
+| **SDLC** (Software Development Life Cycle · Ciclo de Vida de Desenvolvimento de Software) | Conjunto de fases do desenvolvimento: design, implementação, testes, entrega, operação e manutenção |
+| **ADR** (Architecture Decision Record · Registro de Decisão de Arquitetura) | Documento que registra o porquê de uma decisão técnica, as alternativas consideradas e as consequências |
 | **Onboarding** (integração) | Processo de integração de um novo membro ao projeto, transferindo conhecimento estrutural |
 | **Landing** (primeiro contato) | Ponto de entrada do projeto; o que um dev vê primeiro ao abrir o repositório |
 
@@ -37,7 +37,7 @@ corrigir, é o que impede a falha de se repetir.
 
 ## O Pensamento de Staff Engineer (Engenheiro de Alto Nível)
 
-O **SDLC** (Software Development Life Cycle, Ciclo de Vida de Desenvolvimento de Software) começa antes
+O **SDLC** (Software Development Life Cycle · Ciclo de Vida de Desenvolvimento de Software) começa antes
 do primeiro commit e termina depois do último deploy. Design, implementação, testes, entrega,
 operação e manutenção: cada fase tem peso nas decisões que o engenheiro toma hoje.
 
@@ -119,7 +119,7 @@ transferência de conhecimento não funciona, porque cada parte do sistema "tem 
 
 ## Decision Records
 
-**ADRs** (Architecture Decision Records, Registros de Decisão de Arquitetura) documentam o porquê das
+**ADRs** (Architecture Decision Records · Registros de Decisão de Arquitetura) documentam o porquê das
 decisões, não apenas o quê. Código mostra o que foi feito. O ADR mostra por que foi feito assim e
 quais alternativas foram consideradas.
 
@@ -147,16 +147,16 @@ O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
 
 | Norma | O que padroniza |
 |---|---|
-| **RFC 2119** (Request for Comments, Pedido de Comentários) | Vocabulário de obrigatoriedade: MUST, SHOULD, MAY. Usado em specs e ADRs para deixar o grau de exigência explícito |
-| **ISO 8601** (International Organization for Standardization, Organização Internacional de Normalização) | Representação de datas e horários: `2026-04-23T14:30:00Z`. Resolve ambiguidade entre formatos regionais |
+| **RFC 2119** (Request for Comments · Pedido de Comentários) | Vocabulário de obrigatoriedade: MUST, SHOULD, MAY. Usado em specs e ADRs para deixar o grau de exigência explícito |
+| **ISO 8601** (International Organization for Standardization · Organização Internacional de Normalização) | Representação de datas e horários: `2026-04-23T14:30:00Z`. Resolve ambiguidade entre formatos regionais |
 
-**Protocolos HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) **e autenticação**
+**Protocolos HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) **e autenticação**
 
 | Norma | O que padroniza |
 |---|---|
 | RFC 7231 e RFC 9110 | Semântica do HTTP: métodos, status codes, cabeçalhos |
-| RFC 6749 | OAuth 2.0 (Open Authorization, Autorização Aberta): fluxo de autorização delegada |
-| RFC 7519 | JWT (JSON Web Token, Token Web JSON): formato de token de claims assinado |
+| RFC 6749 | OAuth 2.0 (Open Authorization · Autorização Aberta): fluxo de autorização delegada |
+| RFC 7519 | JWT (JSON Web Token · Token Web JSON): formato de token de claims assinado |
 
 **Qualidade e segurança**
 
@@ -165,14 +165,14 @@ O agrupamento por domínio ajuda a localizar a norma certa no contexto certo.
 | ISO/IEC 25010 | Atributos de qualidade de software: manutenibilidade, confiabilidade, performance, segurança, usabilidade |
 | ISO/IEC 27001 | Controles de segurança da informação no nível de organização |
 | ISO/IEC 27035 | Resposta a incidentes: detecção, contenção, erradicação, pós-mortem |
-| **OWASP ASVS** (Application Security Verification Standard, Padrão de Verificação de Segurança de Aplicação) | Checklist de requisitos de segurança de aplicação com níveis de maturidade, mantido pela OWASP |
+| **OWASP ASVS** (Application Security Verification Standard · Padrão de Verificação de Segurança de Aplicação) | Checklist de requisitos de segurança de aplicação com níveis de maturidade, mantido pela OWASP |
 | OWASP Top 10 | Lista das dez classes de vulnerabilidade mais comuns em aplicações web |
 
 **Versionamento e entrega**
 
 | Norma | O que padroniza |
 |---|---|
-| **SemVer 2.0.0** (Semantic Versioning, Versionamento Semântico) | Formato `MAJOR.MINOR.PATCH` com regras de incremento conforme o tipo de mudança |
+| **SemVer 2.0.0** (Semantic Versioning · Versionamento Semântico) | Formato `MAJOR.MINOR.PATCH` com regras de incremento conforme o tipo de mudança |
 | **Conventional Commits** (Commits Convencionais) | Prefixos padronizados em mensagens de commit: `feat:`, `fix:`, `docs:`, `chore:` |
 | Keep a Changelog | Estrutura do `CHANGELOG.md`: `Added`, `Changed`, `Fixed`, `Removed`, `Deprecated`, `Security` |
 

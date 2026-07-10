@@ -13,8 +13,8 @@ Ciclos maiores de Design Thinking exigem ferramentas mais formais: frameworks qu
 | **Double Diamond** (diamante duplo) | Framework do British Design Council que alterna fases divergentes e convergentes |
 | **Service Blueprint** (planta de serviço) | Diagrama que mapeia jornada do usuário junto com operações internas de bastidores |
 | **Journey Map** (mapa de jornada) | Visualização detalhada das etapas, emoções e pontos de fricção do usuário |
-| **MVP** (Minimum Viable Product, Produto Mínimo Viável) | Versão com o mínimo necessário para validar uma hipótese |
-| **MLP** (Minimum Lovable Product, Produto Mínimo Encantador) | MVP com qualidade de experiência suficiente para gerar adesão, não só uso |
+| **MVP** (Minimum Viable Product · Produto Mínimo Viável) | Versão com o mínimo necessário para validar uma hipótese |
+| **MLP** (Minimum Lovable Product · Produto Mínimo Encantador) | MVP com qualidade de experiência suficiente para gerar adesão, não só uso |
 | **Usability testing** (teste de usabilidade) | Observação estruturada de usuário real interagindo com a solução |
 | **Think-aloud** (pensar em voz alta) | Técnica em que o usuário narra o raciocínio enquanto usa o protótipo |
 
@@ -137,7 +137,7 @@ Ambos são versões reduzidas do produto, mas com objetivos distintos:
 | **MVP** | Validação da hipótese de valor com o mínimo viável | Problema ainda não é claro; quer testar se vale a pena construir |
 | **MLP** | Experiência suficientemente boa para gerar adesão emocional | Problema é claro; quer testar se a solução será adotada |
 
-MVP pode ter **UX** (User Experience, Experiência do Usuário) desagradável desde que valide a hipótese. MLP precisa de qualidade de experiência para gerar retorno real do usuário.
+MVP pode ter **UX** (User Experience · Experiência do Usuário) desagradável desde que valide a hipótese. MLP precisa de qualidade de experiência para gerar retorno real do usuário.
 
 A escolha depende da fase: descoberta de problema usa MVP, validação de adoção usa MLP.
 
@@ -172,8 +172,8 @@ A narração revela expectativas implícitas e pontos onde a interface não corr
 | **Task success rate** (taxa de sucesso da tarefa) | Percentual de usuários que completa a tarefa sem ajuda |
 | **Time on task** (tempo na tarefa) | Quanto tempo leva para completar |
 | **Error rate** (taxa de erro) | Quantos erros ocorrem durante a execução |
-| **SUS** (System Usability Scale, Escala de Usabilidade do Sistema) | Questionário de 10 perguntas com escore de 0 a 100 |
-| **NPS** (Net Promoter Score, Escore Líquido de Promotor) | Probabilidade de o usuário recomendar a solução |
+| **SUS** (System Usability Scale · Escala de Usabilidade do Sistema) | Questionário de 10 perguntas com escore de 0 a 100 |
+| **NPS** (Net Promoter Score · Escore Líquido de Promotor) | Probabilidade de o usuário recomendar a solução |
 
 Métricas quantitativas orientam tendências. Observação qualitativa explica o porquê por trás dos números.
 

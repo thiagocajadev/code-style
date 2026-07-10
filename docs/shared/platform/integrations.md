@@ -2,18 +2,18 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto). Configuração de ferramentas, **API** (Application Programming Interface, Interface de Programação de Aplicações) de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns, dos modernos aos legados.
+Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) sobre **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto). Configuração de ferramentas, **API** (Application Programming Interface · Interface de Programação de Aplicações) de parceiros, integração fiscal e hardware periférico exigem conhecer outros formatos e protocolos. Este guia cobre os padrões mais comuns, dos modernos aos legados.
 
 ## Conceitos fundamentais
 
 | Conceito                                                                                    | O que é                                                                                                                 |
 | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **GraphQL** (Graph Query Language, linguagem de consulta em grafo)                          | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer. Não é banco de dados                    |
+| **GraphQL** (Graph Query Language · linguagem de consulta em grafo)                          | Linguagem de consulta para APIs; o cliente define exatamente quais campos quer. Não é banco de dados                    |
 | **TOML** (Tom's Obvious, Minimal Language)                                                  | Formato de configuração legível com semântica clara e tipos nativos; comum em Rust, Python e Go                         |
 | **YAML** (YAML Ain't Markup Language, YAML Não é uma Linguagem de Marcação)                 | Formato hierárquico baseado em indentação; dominante em CI/CD, Kubernetes e automação                                   |
-| **SOAP** (Simple Object Access Protocol, Protocolo Simples de Acesso a Objetos)             | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros                   |
-| **WSDL** (Web Services Description Language, Linguagem de Descrição de WebServices)         | Documento XML que descreve métodos, tipos e endereços de um WebService SOAP                                             |
-| **XSD** (XML Schema Definition, Definição de Esquema XML)                                   | Define a estrutura válida de um documento XML; usado para validar NF-e, CT-e e outros documentos fiscais                |
+| **SOAP** (Simple Object Access Protocol · Protocolo Simples de Acesso a Objetos)             | Protocolo de comunicação baseado em XML; padrão em WebServices legados e sistemas fiscais brasileiros                   |
+| **WSDL** (Web Services Description Language · Linguagem de Descrição de WebServices)         | Documento XML que descreve métodos, tipos e endereços de um WebService SOAP                                             |
+| **XSD** (XML Schema Definition · Definição de Esquema XML)                                   | Define a estrutura válida de um documento XML; usado para validar NF-e, CT-e e outros documentos fiscais                |
 | **Namespace XML** (espaço de nomes XML)                                                     | Prefixo URI que distingue elementos de schemas diferentes no mesmo documento XML                                        |
 | **CSV** (Comma-Separated Values, valores separados por vírgula)                             | Formato tabular em texto plano; separador pode ser vírgula, ponto-e-vírgula ou pipe                                     |
 | **Fixed-width** (largura fixa)                                                              | Formato de arquivo texto onde cada campo ocupa posições fixas na linha; comum em CNAB e SINTEGRA                        |
@@ -21,7 +21,7 @@ Sistemas reais raramente consomem apenas **JSON** (JavaScript Object Notation, N
 | **SPED** (Sistema Público de Escrituração Digital)                                          | Obrigação fiscal digital brasileira; arquivos pipe-delimited com registros tipados (SPED Fiscal, SPED Contábil)         |
 | **NF-e** (Nota Fiscal eletrônica)                                                           | Documento fiscal digital brasileiro emitido como XML assinado e transmitido à SEFAZ                                     |
 | **CT-e** (Conhecimento de Transporte eletrônico)                                            | Documento fiscal para transporte de cargas; mesmo modelo XML/SEFAZ da NF-e                                              |
-| **ZPL** (Zebra Programming Language, Linguagem de Programação Zebra)                        | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios              |
+| **ZPL** (Zebra Programming Language · Linguagem de Programação Zebra)                        | Linguagem de comandos para impressoras térmicas Zebra; usada para etiquetas, códigos de barras e romaneios              |
 | **RS-232** (Recommended Standard 232)                                                       | Padrão de comunicação via porta serial; base da integração com balanças, impressoras antigas e equipamentos industriais |
 | **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor)                                | Protocolo HTTP de streaming unidirecional; padrão de entrega incremental de respostas em APIs de LLM                    |
 | **LLM API** (API de Modelo de Linguagem de Grande Escala)                                   | API REST de modelo de linguagem; cobra por token, entrega resposta via streaming SSE e impõe rate limits por minuto     |
@@ -68,7 +68,7 @@ query {
 
 - Múltiplos clientes (mobile, web, parceiros) com necessidades de dados muito
   diferentes
-- Over-fetching recorrente em APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) existentes que não podem ser quebradas
+- Over-fetching recorrente em APIs **REST** (Representational State Transfer · Transferência de Estado Representacional) existentes que não podem ser quebradas
 - Produto cujas queries mudam com frequência
 
 **Quando não usar:**
@@ -185,7 +185,7 @@ ferramentas CLI.
 
 ## YAML
 
-**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration/Continuous Delivery, Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
+**YAML** domina configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration/Continuous Delivery · Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. A hierarquia via indentação é expressiva, mas um tab no lugar de espaço quebra silenciosamente o parse.
 
 ```yaml
 # docker-compose.yml
@@ -531,7 +531,7 @@ function readWeight(path = "COM3") {
 | Parity (paridade)               | None             | Bit de detecção de erro por frame; `Even` (par) / `Odd` (ímpar) somam os bits para checar integridade, mas a maioria dos equipamentos modernos usa `None` e delega a verificação ao protocolo |
 | Handshake                       | None ou RTS/CTS  | Impressoras antigas frequentemente requerem RTS/CTS                                                                                                                                           |
 
-**RTS** (Ready to Send, Pronto para Enviar) e **CTS** (Clear to Send, Livre para Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a linha RTS para indicar que quer transmitir; o receptor responde com CTS para indicar que está pronto para receber. Sem esse handshake, equipamentos lentos podem perder bytes durante a transmissão.
+**RTS** (Ready to Send · Pronto para Enviar) e **CTS** (Clear to Send · Livre para Enviar) são sinais de controle de fluxo por hardware. O dispositivo ativa a linha RTS para indicar que quer transmitir; o receptor responde com CTS para indicar que está pronto para receber. Sem esse handshake, equipamentos lentos podem perder bytes durante a transmissão.
 
 **Boas práticas:**
 
@@ -549,7 +549,7 @@ function readWeight(path = "COM3") {
 
 ## APIs de Modelos de IA (LLM APIs)
 
-APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias: cobrança por token, respostas incrementais via streaming e rate limits por minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User Experience, Experiência do Usuário) ruim e falhas em produção.
+APIs de modelos de linguagem seguem REST/JSON, mas têm características próprias: cobrança por token, respostas incrementais via streaming e rate limits por minuto. Ignorar essas três dimensões gera custo desnecessário, **UX** (User Experience · Experiência do Usuário) ruim e falhas em produção.
 
 ### Autenticação
 
@@ -617,7 +617,7 @@ for await (const chunk of stream) {
 
 ### Rate limits e retries
 
-APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala)
+APIs de **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala)
 impõem rate limits por minuto (RPM) e por token (TPM). Erros
 `429 Too Many Requests` são esperados em produção e devem ser tratados com
 **exponential backoff** (recuo exponencial).

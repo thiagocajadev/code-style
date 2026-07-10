@@ -1,6 +1,6 @@
 # Tailwind
 
-**Tailwind** (framework de CSS utility-first) é **utility-first** (utilidades em primeiro lugar). A produtividade vem de não sair do **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto), mas há um limite. Quando a lista de **utility class** (classe utilitária) cresce, o HTML vira ruído e o padrão se repete sem nome.
+**Tailwind** (framework de CSS utility-first) é **utility-first** (utilidades em primeiro lugar). A produtividade vem de não sair do **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto), mas há um limite. Quando a lista de **utility class** (classe utilitária) cresce, o HTML vira ruído e o padrão se repete sem nome.
 
 ## Conceitos fundamentais
 

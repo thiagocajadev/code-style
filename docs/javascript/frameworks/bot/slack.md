@@ -163,7 +163,7 @@ function buildEchoReply(messageText) {
 
 ## Actions (Block Kit)
 
-Block Kit é a primitiva de **UI** (User Interface, Interface do Usuário) interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, o Slack exibe um spinner indefinido no botão.
+Block Kit é a primitiva de **UI** (User Interface · Interface do Usuário) interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, o Slack exibe um spinner indefinido no botão.
 
 <details>
 <summary>❌ Ruim: blocks montados inline; action_id como string solta; sem ack() na ação</summary>

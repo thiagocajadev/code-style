@@ -17,7 +17,7 @@ na fronteira antes de chegar ao domínio.
 | **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites) | Ataque que força o usuário a executar ações autenticadas; mitigado com token por sessão |
 | **XSS** (Cross-Site Scripting, injeção de scripts entre sites) | Ataque que injeta JavaScript no HTML; mitigado com `htmlspecialchars` na saída |
 | **password_hash** (geração de hash de senha) | Função PHP que aplica `bcrypt`/`argon2` com salt automático; nunca usar `md5` ou `sha1` |
-| **HTTPS** (HTTP Secure, HTTP sobre TLS) | Camada de transporte criptografada; obrigatório em produção, mesmo atrás de proxy |
+| **HTTPS** (HTTP Secure · HTTP sobre TLS) | Camada de transporte criptografada; obrigatório em produção, mesmo atrás de proxy |
 | **boundary** (limite) | Camada onde input externo entra: handler HTTP, consumer; ponto de validação e sanitização |
 
 ## Secrets e variáveis de ambiente

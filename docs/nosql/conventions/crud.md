@@ -2,7 +2,7 @@
 
 > Escopo: NoSQL. Padrões de operações de leitura e escrita para bancos não-relacionais.
 
-As convenções abaixo usam MongoDB como referência primária. Princípios de projeção, filtro e repository pattern aplicam-se a qualquer SGBD **NoSQL** (Not Only SQL, Não Apenas SQL).
+As convenções abaixo usam MongoDB como referência primária. Princípios de projeção, filtro e repository pattern aplicam-se a qualquer SGBD **NoSQL** (Not Only SQL · Não Apenas SQL).
 
 ## Conceitos fundamentais
 

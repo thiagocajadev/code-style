@@ -10,8 +10,8 @@ Esta página cobre apenas o que é específico do .NET: onde colocar o quê, qua
 |---|---|
 | **Config** (configuração) | Valor não sensível que muda entre ambientes, commitado no repositório |
 | **Secret** (segredo) | Credencial, chave ou token; nunca vai para o repositório |
-| **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) | Formato de serialização de dados usado em `appsettings` |
-| **JWT** (JSON Web Token, Token Web em JSON) | Token assinado usado para autenticação stateless |
+| **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) | Formato de serialização de dados usado em `appsettings` |
+| **JWT** (JSON Web Token · Token Web em JSON) | Token assinado usado para autenticação stateless |
 | **Middleware** (componente de pipeline) | Componente que intercepta a requisição antes ou depois de chegar ao handler |
 | **Payload** (corpo da mensagem) | Dados que acompanham a requisição ou o token |
 

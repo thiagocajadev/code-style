@@ -12,7 +12,7 @@ Nomenclatura consistente reduz atrito entre consumidores de uma mesma coleção 
 | **Namespace** (espaço de nomes) | Prefixo que qualifica a chave Redis para evitar colisão entre serviços (`team:profile:42`) |
 | **Partition key** (chave de partição) | Atributo que determina o nó de armazenamento em DynamoDB e Cassandra |
 | **Sort key** (chave de ordenação) | Atributo secundário que define a ordem dentro de uma partição DynamoDB |
-| **GSI** (Global Secondary Index, Índice Secundário Global) | Índice alternativo no DynamoDB com partition key diferente da tabela base |
+| **GSI** (Global Secondary Index · Índice Secundário Global) | Índice alternativo no DynamoDB com partition key diferente da tabela base |
 
 ---
 

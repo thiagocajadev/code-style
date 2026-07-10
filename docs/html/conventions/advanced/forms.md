@@ -120,7 +120,7 @@ contextual, sem JavaScript adicional.
 
 ## Validação nativa
 
-Atributos **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) (`required`, `pattern`, `min`, `max`, `minlength`, `maxlength`) ativam validação
+Atributos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) (`required`, `pattern`, `min`, `max`, `minlength`, `maxlength`) ativam validação
 nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine com
 `setCustomValidity` ou `aria-describedby`.
 

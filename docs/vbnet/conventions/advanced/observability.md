@@ -5,7 +5,7 @@
 Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
 Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) nunca pode aparecer em logs.
+Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information · Informação de Identificação Pessoal) nunca pode aparecer em logs.
 
 ## Conceitos fundamentais
 
@@ -15,9 +15,9 @@ Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado 
 | **structured logging** (logging estruturado) | Cada argumento vira propriedade indexável no sink, não texto formatado |
 | **message template** (template de mensagem) | String com placeholders nomeados (`{OrderId}`) que preservam a estrutura |
 | **log level** (nível de severidade) | `Trace`/`Debug`/`Info`/`Warn`/`Error`/`Fatal`; controla volume e roteamento |
-| **MDC** (Mapped Diagnostic Context, Contexto de Diagnóstico Mapeado) | Mapa de campos por thread; propaga `correlationId` entre logs da mesma operação |
+| **MDC** (Mapped Diagnostic Context · Contexto de Diagnóstico Mapeado) | Mapa de campos por thread; propaga `correlationId` entre logs da mesma operação |
 | **correlation ID** (identificador de correlação) | ID único por requisição que conecta logs entre serviços |
-| **PII** (Personally Identifiable Information, Informação de Identificação Pessoal) | Dados que identificam pessoa: nunca em logs sem mascaramento |
+| **PII** (Personally Identifiable Information · Informação de Identificação Pessoal) | Dados que identificam pessoa: nunca em logs sem mascaramento |
 | **sink** (destino de log) | Saída configurada: arquivo, banco, Seq, Application Insights |
 
 ## Logging estruturado
@@ -182,7 +182,7 @@ End Function
 ## Configuração do NLog
 
 <details>
-<summary>✅ Bom: NLog.config mínimo para Web **API** (Application Programming Interface, Interface de Programação de Aplicações) 2</summary>
+<summary>✅ Bom: NLog.config mínimo para Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2</summary>
 
 ```xml
 <!-- NLog.config -->

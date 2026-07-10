@@ -12,7 +12,7 @@ Dois fluxos estruturam a maior parte da lógica de interação em aplicações d
 | **Guard** (proteção de rota) | Verificação de autorização executada durante a resolução da rota, antes de qualquer componente montar |
 | **Loader** (carregador de dados) | Busca os dados da rota durante a resolução, antes do componente montar |
 | **Schema** (esquema de validação) | Fonte da verdade para formato e regras de campos de um formulário, usada no cliente e no servidor |
-| **UX** (User Experience, experiência do usuário) | Qualidade da interação do usuário com a interface |
+| **UX** (User Experience · experiência do usuário) | Qualidade da interação do usuário com a interface |
 | **Optimistic update** (atualização otimista) | Alterar o estado local imediatamente, antes da confirmação do servidor, e reverter em caso de erro |
 | **Waterfall** (cascata de requisições) | Anti-padrão onde requisições são feitas em série, cada uma aguardando a anterior |
 
@@ -20,7 +20,7 @@ Dois fluxos estruturam a maior parte da lógica de interação em aplicações d
 
 ## Routing (Roteamento)
 
-Routing é o contrato entre **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) e tela. Uma URL sempre resolve para o mesmo componente, com os mesmos dados, para qualquer usuário autorizado a vê-la.
+Routing é o contrato entre **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) e tela. Uma URL sempre resolve para o mesmo componente, com os mesmos dados, para qualquer usuário autorizado a vê-la.
 
 ```
 Ação do usuário → URL atualiza → rota correspondida (tipada) → guard executa → loader busca dados → componente recebe dados → render
@@ -154,9 +154,9 @@ const orderSchema = z.object({
 
 </details>
 
-Validação no cliente é **UX** (User Experience, experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (limite) de segurança: o servidor nunca confia no que veio do cliente. As duas sempre executam.
+Validação no cliente é **UX** (User Experience · experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (limite) de segurança: o servidor nunca confia no que veio do cliente. As duas sempre executam.
 
-O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) isolado:
+O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) isolado:
 
 <details>
 <summary>✅ Bom: retorno estruturado de erros do servidor</summary>

@@ -4,7 +4,7 @@
 > Conceitos transversais de bots (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Diferença entre API oficial e cliente não-oficial, Template Messages, verificação de webhook: [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-O WhatsApp tem dois caminhos de automação com **tradeoffs** (ganhos e perdas) muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O **SDK** (Software Development Kit, Kit de Desenvolvimento de Software) Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
+O WhatsApp tem dois caminhos de automação com **tradeoffs** (ganhos e perdas) muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O **SDK** (Software Development Kit · Kit de Desenvolvimento de Software) Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
 
 ## Conceitos fundamentais
 

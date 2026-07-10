@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 >
-> **SSOT** (Single Source of Truth, fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
+> **SSOT** (Single Source of Truth · fonte centralizada da verdade): documentações por linguagem aplicam estes princípios ao idioma, não os redefinem. Em caso de conflito, este documento prevalece.
 
 Princípios são **critérios de avaliação**, não regras de formatação. Eles respondem à pergunta _"esse código está bem escrito?"_ antes de qualquer ferramenta automática entrar em cena.
 
@@ -10,19 +10,19 @@ Organizados como checklist de revisão, do mais impactante ao mais granular:
 
 - **Forma:** a estrutura da função avaliada de fora para dentro
 - **Legibilidade:** fluxo, espaçamento e nomes lidos linha a linha
-- **Controle de qualidade:** as garantias de robustez: estado, erros, **I/O** (Input/Output, Entrada/Saída) e testes
+- **Controle de qualidade:** as garantias de robustez: estado, erros, **I/O** (Input/Output · Entrada/Saída) e testes
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **SSOT** (Single Source of Truth, fonte centralizada da verdade) | Uma única fonte autoritativa de informação; documentações por linguagem aplicam, não redefinem |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em apenas um nível de detalhe: ou coordena ou implementa |
+| **SSOT** (Single Source of Truth · fonte centralizada da verdade) | Uma única fonte autoritativa de informação; documentações por linguagem aplicam, não redefinem |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em apenas um nível de detalhe: ou coordena ou implementa |
 | **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Funções que retornam valor não produzem efeitos colaterais; as que produzem efeitos retornam void |
 | **Caller** (quem chama a função) | Código que invoca uma função e é responsável por garantir o contrato de entrada |
 | **Guard clause** (cláusula de guarda) | Verificação antecipada no topo da função que elimina casos inválidos antes da lógica principal |
-| **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) | Estrutura de três fases para testes: contexto, execução e verificação |
-| **I/O** (Input/Output, entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | Estrutura de três fases para testes: contexto, execução e verificação |
+| **I/O** (Input/Output · entrada/saída) | Operações que leem ou escrevem em sistemas externos: banco, rede, disco |
 
 ---
 
@@ -96,7 +96,7 @@ Controle de qualidade é o que você avalia nas **propriedades de robustez** do 
 
 ### Funções pequenas
 
-Uma função **faz uma coisa**. Esse é o **SLA** (Single Level of Abstraction, Único Nível de Abstração): o orquestrador coordena, a implementação executa, nunca os dois na mesma função. Funções pequenas são fáceis de **nomear**, **testar** e **reutilizar**.
+Uma função **faz uma coisa**. Esse é o **SLA** (Single Level of Abstraction · Único Nível de Abstração): o orquestrador coordena, a implementação executa, nunca os dois na mesma função. Funções pequenas são fáceis de **nomear**, **testar** e **reutilizar**.
 
 ### Cálculo vs formatação
 
@@ -136,4 +136,4 @@ Operações de I/O (_leitura de banco, chamadas de rede, acesso a disco_) bloque
 
 ### Testes estruturados
 
-O padrão **AAA** (Arrange, Act, Assert, Arranjar, Agir, Atestar) divide cada teste em **três fases explícitas**. A fase de preparação monta o contexto. A execução chama o comportamento. A verificação confirma o resultado com **variáveis nomeadas**, sem expressões inline no assert. Testes estruturados são legíveis como especificações do comportamento esperado.
+O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) divide cada teste em **três fases explícitas**. A fase de preparação monta o contexto. A execução chama o comportamento. A verificação confirma o resultado com **variáveis nomeadas**, sem expressões inline no assert. Testes estruturados são legíveis como especificações do comportamento esperado.

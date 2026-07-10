@@ -12,7 +12,7 @@ contexto, prefira legibilidade. Meça antes de otimizar. **Span\<T\>** elimina a
 | **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
 | **Span\<T\>** (fatia de memória) | Tipo do .NET que representa janela sobre memória existente; sem alocação |
 | **ReadOnlySpan\<char\>** (fatia somente leitura) | Janela somente leitura sobre uma string; substitui `Substring` em hot paths |
-| **GC** (Garbage Collector, Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
+| **GC** (Garbage Collector · Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
 | **allocation** (alocação) | Reserva de memória no heap gerenciado; `new`, boxing e concatenação alocam |
 | **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `object`/interface; evite em laços |
 | **StringBuilder** (construtor de strings) | Tipo que acumula strings sem realocar a cada concatenação |
@@ -182,7 +182,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 
 ## ID: Guid v4 vs Guid v7
 
-`Guid.NewGuid()` gera **UUID** (Universally Unique Identifier, Identificador Universalmente Único) v4: aleatório. Inserções aleatórias fragmentam o índice primário
+`Guid.NewGuid()` gera **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4: aleatório. Inserções aleatórias fragmentam o índice primário
 progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sempre próximo ao fim
 da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 

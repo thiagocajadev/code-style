@@ -381,7 +381,7 @@ estratégia e mantém durante a transação.
 
 ## Isolation levels
 
-Quatro níveis padrão do **SQL** (Structured Query Language, Linguagem de
+Quatro níveis padrão do **SQL** (Structured Query Language · Linguagem de
 Consulta Estruturada) decidem o quanto uma transação enxerga do trabalho em
 curso das outras. O nível default da maioria dos bancos modernos (PostgreSQL,
 SQL Server) é Read Committed, e essa é a escolha razoável para a maior parte dos

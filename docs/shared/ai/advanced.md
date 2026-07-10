@@ -18,7 +18,7 @@ conceito impacta diretamente decisões de arquitetura e custo.
 | **Chain-of-thought** (cadeia de raciocínio)                                                        | Técnica de prompt que instrui o modelo a raciocinar passo a passo antes de responder                      |
 | **Inference engine** (motor de inferência)                                                         | Software que executa o modelo para gerar tokens: llama.cpp, vLLM, Ollama                                  |
 | **AI Gateway** (gateway de IA)                                                                     | Camada intermediária entre o cliente e as APIs de LLM: roteamento, cache, rate limiting e observabilidade |
-| **RLHF** (Reinforcement Learning from Human Feedback, Aprendizado por Reforço com Feedback Humano) | Técnica usada no pós-treinamento para alinhar o modelo com preferências humanas                           |
+| **RLHF** (Reinforcement Learning from Human Feedback · Aprendizado por Reforço com Feedback Humano) | Técnica usada no pós-treinamento para alinhar o modelo com preferências humanas                           |
 
 ## Fine-tuning (Ajuste fino)
 
@@ -142,7 +142,7 @@ Se não tiver certeza, diga que não sabe e recomende verificar a documentação
 
 ## Structured outputs (Saídas estruturadas)
 
-Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) que segue um schema definido. O output é
+Structured outputs forçam o modelo a gerar um **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) que segue um schema definido. O output é
 processável por código sem regex, sem pós-processamento frágil.
 
 <details>
@@ -228,7 +228,7 @@ engine impacta velocidade, compatibilidade e recursos suportados.
 | **Ollama**                          | Wrapper de llama.cpp com API REST e CLI simples               | Desenvolvimento local; prototipagem                      |
 | **vLLM**                            | Alto **throughput** (vazão) em GPU; PagedAttention; batching contínuo     | Produção em servidor GPU; múltiplos usuários simultâneos |
 | **LM Studio**                       | Interface gráfica sobre llama.cpp; servidor compatível com a API da OpenAI | Exploração local com UI; sem linha de comando            |
-| **TGI** (Text Generation Inference, Inferência para Geração de Texto) | Servidor Hugging Face; quantização, streaming, batching       | Modelos Hugging Face em produção                         |
+| **TGI** (Text Generation Inference · Inferência para Geração de Texto) | Servidor Hugging Face; quantização, streaming, batching       | Modelos Hugging Face em produção                         |
 
 Para uso em produção com múltiplos usuários, **vLLM** é a escolha padrão: batching contínuo maximiza
 o throughput e PagedAttention (atenção paginada) gerencia o KV cache (armazenamento rápido e
@@ -236,7 +236,7 @@ temporário das matrizes de atenção chave-valor de tokens já processados) de 
 
 ## AI Gateway
 
-Um AI Gateway é uma camada intermediária entre a aplicação e as APIs de **LLM** (Large Language Model, Modelo de Linguagem de Grande Escala).
+Um AI Gateway é uma camada intermediária entre a aplicação e as APIs de **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala).
 Centraliza responsabilidades que não devem viver na lógica de negócio.
 
 ```

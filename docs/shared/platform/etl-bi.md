@@ -2,14 +2,14 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**ETL** (Extract, Transform, Load, Extração, Transformação e Carga) e **BI** (Business Intelligence, Inteligência de Negócios) formam a camada analítica de um sistema: movem dados operacionais para um ambiente otimizado para leitura e análise. O banco transacional **OLTP** (Online Transaction Processing, Processamento de Transações Online) é projetado para escrita rápida e consistência. O banco analítico **OLAP** (Online Analytical Processing, Processamento Analítico Online) é projetado para queries agregadas em grandes volumes históricos. Rodar análises pesadas diretamente no OLTP compromete a latência do sistema operacional.
+**ETL** (Extract, Transform, Load, Extração, Transformação e Carga) e **BI** (Business Intelligence · Inteligência de Negócios) formam a camada analítica de um sistema: movem dados operacionais para um ambiente otimizado para leitura e análise. O banco transacional **OLTP** (Online Transaction Processing · Processamento de Transações Online) é projetado para escrita rápida e consistência. O banco analítico **OLAP** (Online Analytical Processing · Processamento Analítico Online) é projetado para queries agregadas em grandes volumes históricos. Rodar análises pesadas diretamente no OLTP compromete a latência do sistema operacional.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **OLTP** (Online Transaction Processing, Processamento de Transações Online) | Banco operacional: muitas escritas pequenas, schema normalizado, otimizado para consistência |
-| **OLAP** (Online Analytical Processing, Processamento Analítico Online) | Banco analítico: poucas queries grandes, schema denormalizado, otimizado para leitura |
+| **OLTP** (Online Transaction Processing · Processamento de Transações Online) | Banco operacional: muitas escritas pequenas, schema normalizado, otimizado para consistência |
+| **OLAP** (Online Analytical Processing · Processamento Analítico Online) | Banco analítico: poucas queries grandes, schema denormalizado, otimizado para leitura |
 | **ETL** (Extract, Transform, Load, Extração, Transformação e Carga) | Pipeline que extrai dados da fonte, transforma e carrega no destino |
 | **ELT** (Extract, Load, Transform, Extração, Carga e Transformação) | Variante moderna: carrega dados brutos no destino e transforma com SQL dentro do warehouse |
 | **Data Warehouse** (armazém de dados) | Banco analítico central que consolida dados de múltiplas fontes com schema definido |
@@ -18,8 +18,8 @@
 | **Staging layer** (camada de preparação) | Área intermediária que recebe dados brutos antes da transformação |
 | **Fact table** (tabela de fatos) | Tabela central do modelo dimensional: métricas numéricas e chaves estrangeiras para dimensões |
 | **Dimension table** (tabela de dimensão) | Atributos descritivos que contextualizam os fatos: quem, o quê, onde, quando |
-| **SCD** (Slowly Changing Dimension, Dimensão de Mudança Lenta) | Estratégia para preservar ou sobrescrever histórico quando atributos mudam ao longo do tempo |
-| **CDC** (Change Data Capture, Captura de Mudanças de Dados) | Técnica que lê inserções, atualizações e exclusões diretamente do log de transações do banco |
+| **SCD** (Slowly Changing Dimension · Dimensão de Mudança Lenta) | Estratégia para preservar ou sobrescrever histórico quando atributos mudam ao longo do tempo |
+| **CDC** (Change Data Capture · Captura de Mudanças de Dados) | Técnica que lê inserções, atualizações e exclusões diretamente do log de transações do banco |
 | **Star schema** (esquema estrela) | Modelo com uma fact table central e dimensões planas; rápido para queries analíticas |
 | **Snowflake schema** (esquema floco de neve) | Variante com dimensões normalizadas; menor redundância, queries com mais JOINs |
 | **Grain** (granularidade) | Nível de detalhe de cada linha na fact table: uma linha por evento, por dia, por transação |
@@ -106,7 +106,7 @@ A diferença está em onde a transformação acontece.
 | Quando usar | Dados sensíveis que não podem entrar brutos no DW; transformações que SQL não expressa bem | Warehouse com poder computacional suficiente; equipe com SQL forte |
 | Ferramentas comuns | Apache Spark, SSIS, Talend, Airflow com Python | dbt, Dataform, SQL nativo do warehouse |
 
-**ELT é o padrão moderno** para warehouses como BigQuery, Snowflake e Redshift: armazenamento barato, **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) nativo poderoso e transformações versionáveis com dbt. ETL continua a escolha certa quando os dados brutos não podem sair da rede interna ou quando a transformação exige lógica que SQL não expressa.
+**ELT é o padrão moderno** para warehouses como BigQuery, Snowflake e Redshift: armazenamento barato, **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) nativo poderoso e transformações versionáveis com dbt. ETL continua a escolha certa quando os dados brutos não podem sair da rede interna ou quando a transformação exige lógica que SQL não expressa.
 
 ---
 

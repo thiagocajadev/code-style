@@ -12,7 +12,7 @@ request cycle vai para **background jobs** (Solid Queue ou Sidekiq).
 | Conceito              | O que é                                                                     |
 | --------------------- | --------------------------------------------------------------------------- |
 | **Thread** (fio de execução) | Fio gerenciado pelo SO; GIL limita paralelismo de CPU no MRI    |
-| **GIL** (Global Interpreter Lock, trava global do interpretador) | MRI executa 1 thread Ruby por vez (I/O é liberado) |
+| **GIL** (Global Interpreter Lock · trava global do interpretador) | MRI executa 1 thread Ruby por vez (I/O é liberado) |
 | **Fiber** (corrotina cooperativa) | Corrotina leve; `Fiber.yield` suspende, `.resume` retoma        |
 | **Fiber Scheduler** (escalonador de fibers) | Interface (Ruby 3.0+) que permite I/O não-bloqueante via gems como `async`  |
 | **Ractor** (ator paralelo) | Ruby 3.x+ com memória própria; paralelismo real de CPU      |

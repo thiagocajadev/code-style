@@ -11,7 +11,7 @@ pacotes se organizam por domínio, e como o entry point orquestra o boot da apli
 
 | Conceito                        | O que é                                                                          |
 | ------------------------------- | -------------------------------------------------------------------------------- |
-| **DI** (Dependency Injection, Injeção de Dependência) | Framework provê dependências, não o componente as busca |
+| **DI** (Dependency Injection · Injeção de Dependência) | Framework provê dependências, não o componente as busca |
 | **Bean** (componente gerenciado)                      | Objeto gerenciado pelo container Spring                                          |
 | **Controller** (controlador HTTP)                     | Camada HTTP: recebe requisições, retorna respostas                               |
 | **Service** (serviço de negócio)                      | Camada de negócio: orquestra regras e coordena dependências                      |

@@ -4,7 +4,7 @@
 
 FastAPI é um framework web assíncrono para construção de **APIs** (Application Programming
 Interfaces, Interfaces de Programação). Usa type hints para validação automática via Pydantic e
-gera documentação **OpenAPI** (Open API Specification, Especificação de API Aberta) sem
+gera documentação **OpenAPI** (Open API Specification · Especificação de API Aberta) sem
 configuração extra.
 
 Este guia mostra como organizar schemas, path operations e dependências seguindo os princípios
@@ -212,7 +212,7 @@ async def list_orders(
 
 ## Async
 
-Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O** (Input/Output, Entrada/Saída) (**ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) síncrono,
+Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O** (Input/Output · Entrada/Saída) (**ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) síncrono,
 `time.sleep`, biblioteca `requests`) congestionam todas as requisições em andamento.
 
 <details>

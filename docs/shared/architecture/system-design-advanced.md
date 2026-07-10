@@ -10,15 +10,15 @@ Projetar sistemas em escala exige vocabulário preciso: acordos de nível de ser
 
 | Conceito | O que é |
 |---|---|
-| **SLA** (Service Level Agreement, Acordo de Nível de Serviço) | Contrato formal com consequências contratuais em caso de descumprimento |
-| **SLO** (Service Level Objective, Objetivo de Nível de Serviço) | Meta interna mensurável, geralmente mais estrita que o SLA |
-| **SLI** (Service Level Indicator, Indicador de Nível de Serviço) | Métrica concreta que mede o SLO em produção |
+| **SLA** (Service Level Agreement · Acordo de Nível de Serviço) | Contrato formal com consequências contratuais em caso de descumprimento |
+| **SLO** (Service Level Objective · Objetivo de Nível de Serviço) | Meta interna mensurável, geralmente mais estrita que o SLA |
+| **SLI** (Service Level Indicator · Indicador de Nível de Serviço) | Métrica concreta que mede o SLO em produção |
 | **CAP** (Consistency, Availability, Partition tolerance) | Teorema que afirma que um sistema distribuído escolhe entre Consistência e Disponibilidade sob partição de rede |
 | **PACELC** (Partition-Availability-Consistency Else Latency-Consistency, Partição-Disponibilidade-Consistência Senão Latência-Consistência) | Extensão do CAP: fora de partição, o trade-off é Latência vs Consistência |
 | **Sharding** (particionamento horizontal) | Distribuir dados entre múltiplos nós por chave de partição |
 | **Replication** (replicação) | Manter cópias dos mesmos dados em nós diferentes para leitura e disponibilidade |
 | **Quorum** (quórum) | Número mínimo de nós que precisam concordar para uma operação ser aceita |
-| **QPS** (Queries Per Second, Consultas Por Segundo) | Medida de carga: quantas operações o sistema recebe por segundo |
+| **QPS** (Queries Per Second · Consultas Por Segundo) | Medida de carga: quantas operações o sistema recebe por segundo |
 | **p50 / p95 / p99** (percentis 50, 95 e 99) | Percentis de latência: mediana, cauda e cauda longa das respostas |
 
 ## SLA, SLO e SLI

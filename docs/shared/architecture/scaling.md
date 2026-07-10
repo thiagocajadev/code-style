@@ -13,7 +13,7 @@ Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais da
 | **Stateless** (sem estado local) | Aplicação que não guarda estado em memória entre requisições; pode ser replicada sem coordenação |
 | **Load Balancer** (balanceador de carga) | Componente que distribui requisições entre múltiplas instâncias da aplicação |
 | **API Gateway** (gateway de API) | Ponto de entrada único que centraliza autenticação, roteamento, rate limiting e logging |
-| **CDN** (Content Delivery Network, Rede de Distribuição de Conteúdo) | Rede de servidores geograficamente distribuídos que serve assets estáticos próximo ao usuário |
+| **CDN** (Content Delivery Network · Rede de Distribuição de Conteúdo) | Rede de servidores geograficamente distribuídos que serve assets estáticos próximo ao usuário |
 | **Rate limiting** (limitação de taxa) | Controle do número de requisições aceitas por cliente em um intervalo de tempo |
 | **SSL termination** (encerramento de SSL) | Descriptografia do tráfego HTTPS no balanceador, aliviando as instâncias da aplicação |
 | **Health check** (verificação de saúde) | Endpoint que o balanceador consulta para saber se uma instância está saudável |
@@ -24,7 +24,7 @@ Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais da
 
 ## Escala Vertical
 
-Aumentar a capacidade da máquina: mais **CPU** (Central Processing Unit, Unidade Central de Processamento), mais **RAM** (Random Access Memory, Memória de Acesso Aleatório), disco mais rápido.
+Aumentar a capacidade da máquina: mais **CPU** (Central Processing Unit · Unidade Central de Processamento), mais **RAM** (Random Access Memory · Memória de Acesso Aleatório), disco mais rápido.
 
 **Vantagens**: zero mudança de código, zero complexidade de infraestrutura. Resolve a maioria dos gargalos de um sistema em crescimento.
 
@@ -73,7 +73,7 @@ Load Balancer → GET /health → timeout → instância removida da rotação
 
 ### SSL termination
 
-O balanceador recebe o tráfego **HTTPS** (HyperText Transfer Protocol Secure, Protocolo Seguro de Transferência de Hipertexto), descriptografa e repassa **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) simples para as instâncias internas. As instâncias não precisam gerenciar certificados; o balanceador centraliza isso.
+O balanceador recebe o tráfego **HTTPS** (HyperText Transfer Protocol Secure · Protocolo Seguro de Transferência de Hipertexto), descriptografa e repassa **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) simples para as instâncias internas. As instâncias não precisam gerenciar certificados; o balanceador centraliza isso.
 
 ```
 Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
@@ -81,7 +81,7 @@ Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
 
 ## API Gateway
 
-O **API Gateway** é o ponto de entrada único para todos os serviços de uma **API** (Application Programming Interface, Interface de Programação de Aplicações). Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
+O **API Gateway** é o ponto de entrada único para todos os serviços de uma **API** (Application Programming Interface · Interface de Programação de Aplicações). Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
 
 Responsabilidades centrais:
 
@@ -154,7 +154,7 @@ Cada etapa só faz sentido depois que a anterior foi esgotada. Pular etapas aume
 - Configurar load balancer antes de ter tráfego que justifique
 - Separar em microsserviços porque "vai crescer"
 - Montar Kubernetes para uma aplicação com 10 usuários simultâneos
-- Implementar **CQRS** (Command Query Responsibility Segregation, Separação de Responsabilidade entre Comando e Consulta) e event sourcing sem complexidade de leitura/escrita que justifique
+- Implementar **CQRS** (Command Query Responsibility Segregation · Separação de Responsabilidade entre Comando e Consulta) e event sourcing sem complexidade de leitura/escrita que justifique
 
 ---
 

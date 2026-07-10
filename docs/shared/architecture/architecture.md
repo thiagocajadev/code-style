@@ -18,10 +18,10 @@ Arquitetura é a decisão de como organizar o código para que o sistema possa c
 |---|---|
 | **Vertical Slice** (fatia vertical) | Arquitetura que organiza o código por feature, agrupando tudo que pertence a uma funcionalidade na mesma pasta |
 | **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
-| **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
+| **REST** (Representational State Transfer · Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
 | **TDD** (Test-Driven Development, Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
 | **Blast radius** (raio de impacto) | Extensão do sistema afetada por uma alteração ou falha |
-| **MVP** (Minimum Viable Product, Produto Mínimo Viável) | Versão mais simples de um produto que valida uma hipótese de negócio |
+| **MVP** (Minimum Viable Product · Produto Mínimo Viável) | Versão mais simples de um produto que valida uma hipótese de negócio |
 
 ## Como escolher
 
@@ -95,7 +95,7 @@ O benefício central é a separação entre lógica de negócio e lógica de apr
 
 O risco clássico é o **Fat Controller**: quando o **Controller** (controlador) acumula lógica que deveria estar no Model. Controllers devem ser finos: o papel deles é coordenar o fluxo, não implementar lógica.
 
-**Melhor para**: aplicações web tradicionais com renderização server-side, APIs **REST** (Representational State Transfer, Transferência de Estado Representacional) com múltiplas entidades.
+**Melhor para**: aplicações web tradicionais com renderização server-side, APIs **REST** (Representational State Transfer · Transferência de Estado Representacional) com múltiplas entidades.
 
 ---
 
@@ -191,7 +191,7 @@ Os axiomas são conhecidos:
 - _"Commit antes de testar é commit corajoso."_
 - _"Arquitetura é pra quem tem prazo."_
 
-XGH tem um espaço legítimo, estreito, mas real. Protótipos descartáveis, scripts de uso único, hackathons, MVPs (Minimum Viable Product, Produto Mínimo Viável) que podem ser reescritos: contextos onde o custo de engenharia supera o valor do que está sendo construído.
+XGH tem um espaço legítimo, estreito, mas real. Protótipos descartáveis, scripts de uso único, hackathons, MVPs (Minimum Viable Product · Produto Mínimo Viável) que podem ser reescritos: contextos onde o custo de engenharia supera o valor do que está sendo construído.
 
 Usar XGH em projetos de vida curta tem sentido. O problema aparece quando XGH se torna o padrão de um sistema que precisa durar, quando cada nova feature é construída sobre a última gambiarra e o time passa mais tempo desfazendo do que construindo.
 

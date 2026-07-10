@@ -2,13 +2,13 @@
 
 > Escopo: SQL. Idioms específicos deste ecossistema.
 
-Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressions, expressões de tabela comum) nomeiam os passos e tornam a intenção legível. Quando o pipeline cresce, **window functions** (funções de janela) substituem subqueries correlacionadas e mantêm a query plana.
+Subqueries aninhadas são difíceis de rastrear. **CTEs** (Common Table Expressions · expressões de tabela comum) nomeiam os passos e tornam a intenção legível. Quando o pipeline cresce, **window functions** (funções de janela) substituem subqueries correlacionadas e mantêm a query plana.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **CTE** (Common Table Expression, expressão de tabela comum) | Resultado nomeado via `WITH ... AS (...)`; cada CTE é um passo legível |
+| **CTE** (Common Table Expression · expressão de tabela comum) | Resultado nomeado via `WITH ... AS (...)`; cada CTE é um passo legível |
 | **subquery** (subconsulta) | Query aninhada dentro de outra; sem nome próprio, dificulta leitura quando aninhada |
 | **window function** (função de janela) | `OVER (PARTITION BY ... ORDER BY ...)`; calcula sobre uma faixa sem agrupar |
 | **recursive CTE** (CTE recursiva) | `WITH RECURSIVE`, que referencia a si mesma; usada para hierarquias e grafos |

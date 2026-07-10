@@ -10,8 +10,8 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 | Conceito | O que é |
 | --- | --- |
 | **Exception** (exceção) | classe base de erros; subclasse para criar tipos de domínio |
-| **EAFP** (Easier to Ask Forgiveness than Permission, Mais fácil pedir perdão que permissão) | estilo idiomático Python: tente a operação e capture a falha |
-| **LBYL** (Look Before You Leap, Olhe antes de saltar) | estilo defensivo com `if` antes da operação; menos pythônico |
+| **EAFP** (Easier to Ask Forgiveness than Permission · Mais fácil pedir perdão que permissão) | estilo idiomático Python: tente a operação e capture a falha |
+| **LBYL** (Look Before You Leap · Olhe antes de saltar) | estilo defensivo com `if` antes da operação; menos pythônico |
 | **context manager** (gerenciador de contexto) | objeto usado com `with` que garante setup e teardown mesmo em erro |
 | **traceback** (rastreamento de pilha) | sequência de chamadas que levou à exceção |
 | **exception chaining** (encadeamento de exceções) | `raise ... from err` preserva a causa raiz |

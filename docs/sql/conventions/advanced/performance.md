@@ -459,7 +459,7 @@ CREATE INDEX IX_Players_TeamId
 ## Tipo de ID: BIGINT vs UUID
 
 A escolha do tipo de ID impacta diretamente o tamanho do índice e a frequência de page splits.
-**UUID** (Universally Unique Identifier, Identificador Universalmente Único) v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
+**UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
 com alto volume de inserções, a fragmentação degrada leituras e escritas.
 
 | Tipo | Tamanho | Unicidade global | Sequencial | Page splits |

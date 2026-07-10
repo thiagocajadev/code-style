@@ -11,10 +11,10 @@ Este documento segue o ciclo de vida de uma requisição: de `Program.cs` até o
 | Conceito | O que é |
 |---|---|
 | **Vertical Slice** (fatia vertical) | Organização por feature onde rota, contrato, regra e acesso a dados ficam colocalizados |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato de entrada ou saída da feature; não muda depois de criado |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Contrato de entrada ou saída da feature; não muda depois de criado |
 | **CQS** (Command-Query Separation, Separação Comando-Consulta) | Handler altera estado OU retorna dado, nunca os dois |
-| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da fatia: verbo, status, envelope no boundary |
-| **I/O** (Input/Output, Entrada/Saída) | Operação que atravessa o limite do processo: banco, rede, arquivo; sempre assíncrona |
+| **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo da fatia: verbo, status, envelope no boundary |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa o limite do processo: banco, rede, arquivo; sempre assíncrona |
 
 ## Estrutura de arquivos
 

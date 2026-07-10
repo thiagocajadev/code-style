@@ -29,7 +29,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **soft delete** (remoção lógica) | Marcar o registro como excluído (`DeletedAt` preenchido) sem apagar fisicamente, preservando histórico |
 | **multitenancy** (multilocação) | Uma instância da aplicação serve múltiplos clientes (tenants) com isolamento de dados entre eles |
 | **row-level security** (segurança por linha, RLS) | Recurso do banco que filtra linhas pelo contexto da requisição antes da query chegar ao app |
-| **GUID** (Globally Unique Identifier, identificador único global) | Valor de 128 bits usado como ID, representado como `Guid` no .NET, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+| **GUID** (Globally Unique Identifier · identificador único global) | Valor de 128 bits usado como ID, representado como `Guid` no .NET, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 
 ---
 

@@ -5,7 +5,7 @@
 > Este documento cobre idioms e recursos específicos do SQL Server. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 
-SQL Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation, Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (serviço de jobs agendados) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
+SQL Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (serviço de jobs agendados) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
 
 ## Conceitos fundamentais
 
@@ -14,10 +14,10 @@ SQL Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation, Not
 | **T-SQL** (Transact-SQL) | Extensão SQL da Microsoft com suporte a variáveis, fluxo de controle e funções do sistema |
 | **Stored Procedure** (procedimento armazenado) | Bloco T-SQL compilado e armazenado no banco, executável com `EXEC` |
 | **Temp Table** (tabela temporária) | Prefixada com `#` (sessão) ou `##` (global), útil para etapas intermediárias |
-| **CTE** (Common Table Expression, Expressão de Tabela Comum) | Resultado nomeado via `WITH`, descartado após a query |
+| **CTE** (Common Table Expression · Expressão de Tabela Comum) | Resultado nomeado via `WITH`, descartado após a query |
 | **DiskANN** (Disk-based Approximate Nearest Neighbor, vizinho mais próximo aproximado em disco) | Algoritmo de indexação vetorial usado em vector search no SQL Server 2025 |
-| **OPPO** (Optional Parameter Plan Optimization, Otimização de Plano com Parâmetros Opcionais) | Recurso de SQL Server 2025 que gera planos distintos para cada valor de parâmetro, reduzindo parameter sniffing |
-| **UUID** (Universally Unique Identifier, identificador único global) | Identificador de 128 bits; v7 é sequencial e amigável a índices; no SQL Server, o tipo é `UNIQUEIDENTIFIER` |
+| **OPPO** (Optional Parameter Plan Optimization · Otimização de Plano com Parâmetros Opcionais) | Recurso de SQL Server 2025 que gera planos distintos para cada valor de parâmetro, reduzindo parameter sniffing |
+| **UUID** (Universally Unique Identifier · identificador único global) | Identificador de 128 bits; v7 é sequencial e amigável a índices; no SQL Server, o tipo é `UNIQUEIDENTIFIER` |
 
 ## Tipos de dados
 

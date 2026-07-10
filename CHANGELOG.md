@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.26] - 2026-07-10
+
+### Changed
+
+- **Layout AAA dos testes padronizado para "interp 1"** em 15 linguagens (`docs/*/conventions/advanced/testing.md`), na visão transversal (`docs/shared/standards/testing.md`) e nos scripts de referência (`docs/*/scripts/test/*`): todas as declarações do teste (arrange + act + `expected`) formam um bloco único e uma linha em branco isola a asserção — antes as fases apareciam fragmentadas (`1+1+1`), agora formam o `2+2` da regra de densidade visual. Casos finos: 1 declaração + 1 assert ficam juntos sem blank; objeto/array multi-linha ganha respiro depois; exemplos rotulados com `// Arrange // Act // Assert` (Go, Kotlin, Java, PHP, Swift, Dart) ficaram tersos sem os comentários de fase. Também corrigido o callout `[!NOTE]` quebrado em `docs/javascript/conventions/advanced/testing.md` (o marcador precisa de linha própria). `node --test` no script node: 3 pass, 0 fail.
+- **Glosa de sigla passa a usar interpoint `·`** no lugar da vírgula entre a expansão em inglês e a tradução em português: `**API** (Application Programming Interface · Interface de Programação de Aplicações)`, `**AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar)`. Substituição literal ancorada em `(EN, ` → `(EN · ` — segura contra vírgulas de prosa e cobre glosas quebradas em duas linhas —, ~470 ocorrências em 165+ arquivos; separadores antigos do AAA (`,` `/` `;` `:`) normalizados para `·`. Preservados por não serem glosas: assinaturas de método (`(Guid id, CancellationToken ct)`), listas de traits (`(Debug, Clone)`) e comparações de tecnologia (`(PostgreSQL, SQL Server)`). Audit clean: 2509 blocos Good em 391 arquivos.
+
 ## [1.28.25] - 2026-07-06
 
 ### Fixed

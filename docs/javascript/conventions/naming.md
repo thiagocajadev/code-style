@@ -6,7 +6,7 @@ intenção.
 
 Um nome genérico (`data`, `result`, `tmp`) força o programador a abrir o corpo
 da função para entender o que está acontecendo. Em funções e módulos, o nome
-ainda compõe a **API** (Application Programming Interface, Interface de
+ainda compõe a **API** (Application Programming Interface · Interface de
 Programação de Aplicações) que outro código vai consumir. Errar ali custa mais
 caro.
 

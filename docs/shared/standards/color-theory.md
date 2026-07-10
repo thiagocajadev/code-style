@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer interface, em qualquer linguagem ou stack do projeto.
 
-Cor não é decoração. Cada cor numa interface comunica hierarquia, estado, temperatura emocional e legibilidade. Decisões aleatórias produzem interfaces que cansam o olho, falham em acessibilidade e se descontrolam em escala. Este guia consolida a teoria mínima necessária para decidir cores com intenção: do círculo cromático ao espaço **OKLCH** (Lightness, Chroma, Hue, espaço de cor perceptualmente uniforme), das harmonias ao **WCAG** (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web), da hierarquia de superfícies à escala tonal.
+Cor não é decoração. Cada cor numa interface comunica hierarquia, estado, temperatura emocional e legibilidade. Decisões aleatórias produzem interfaces que cansam o olho, falham em acessibilidade e se descontrolam em escala. Este guia consolida a teoria mínima necessária para decidir cores com intenção: do círculo cromático ao espaço **OKLCH** (Lightness, Chroma, Hue, espaço de cor perceptualmente uniforme), das harmonias ao **WCAG** (Web Content Accessibility Guidelines · Diretrizes de Acessibilidade para Conteúdo Web), da hierarquia de superfícies à escala tonal.
 
 Para padrões de espaçamento, tipografia e estados, consulte [ui-ux.md](ui-ux.md). Para densidade visual em código, consulte [visual-density.md](visual-density.md).
 
@@ -18,8 +18,8 @@ Para padrões de espaçamento, tipografia e estados, consulte [ui-ux.md](ui-ux.m
 | **Harmonia** (relação geométrica no círculo) | Conjunto de matizes em posições específicas que formam uma paleta coesa |
 | **Escala tonal** (tonal scale, gradação por luminosidade) | Sequência de variações da mesma cor com luminosidade crescente, tipicamente 11 paradas (50 a 950) |
 | **Parada** (stop, posição na escala tonal) | Cada um dos 11 valores discretos numa escala tonal |
-| **WCAG** (Web Content Accessibility Guidelines, Diretrizes de Acessibilidade para Conteúdo Web) | Padrão internacional do W3C que define critérios mensuráveis de acessibilidade |
-| **APCA** (Advanced Perceptual Contrast Algorithm, Algoritmo Avançado de Contraste Perceptual) | Método de cálculo de contraste do WCAG 3.0 baseado em luminância perceptual |
+| **WCAG** (Web Content Accessibility Guidelines · Diretrizes de Acessibilidade para Conteúdo Web) | Padrão internacional do W3C que define critérios mensuráveis de acessibilidade |
+| **APCA** (Advanced Perceptual Contrast Algorithm · Algoritmo Avançado de Contraste Perceptual) | Método de cálculo de contraste do WCAG 3.0 baseado em luminância perceptual |
 
 ## Círculo cromático e OKLCH
 
@@ -97,7 +97,7 @@ Combinar os dois (texto escuro frio sobre fundo claro quente) produz separação
 
 ### Espaço em branco como cor
 
-O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em **UI** (User Interface, Interface do Usuário) ou em código, agrupamento por respiro é a estrutura que guia a leitura.
+O espaço negativo (branco no tema claro, neutro escuro no tema escuro) é uma cor ativa na composição. Cria respiro, separa grupos e amplifica a percepção das cores adjacentes. Esse princípio se conecta diretamente à densidade visual em código (ver [visual-density.md](visual-density.md)): em **UI** (User Interface · Interface do Usuário) ou em código, agrupamento por respiro é a estrutura que guia a leitura.
 
 Não tente preencher todos os espaços. Interface sem respiro tem o mesmo problema que código sem linhas em branco entre grupos: o olho não sabe onde uma seção termina e outra começa.
 
@@ -116,7 +116,7 @@ A **proporção de contraste** compara a luminância relativa de duas cores. Bra
 
 ### OKLCH e WCAG
 
-O cálculo oficial de contraste do **WCAG 2.x** usa luminância em **sRGB** (Standard RGB, espaço de cor padrão para web), não OKLCH. Mesmo assim, a uniformidade perceptual do OKLCH torna paletas geradas neste espaço previsíveis: paradas afastadas por 4 ou mais posições na escala tonal tendem a satisfazer AA na maioria dos matizes.
+O cálculo oficial de contraste do **WCAG 2.x** usa luminância em **sRGB** (Standard RGB · espaço de cor padrão para web), não OKLCH. Mesmo assim, a uniformidade perceptual do OKLCH torna paletas geradas neste espaço previsíveis: paradas afastadas por 4 ou mais posições na escala tonal tendem a satisfazer AA na maioria dos matizes.
 
 O **WCAG 3.0** (em desenvolvimento) deve adotar **APCA**, que usa luminância perceptual próxima ao OKLCH. Paletas projetadas em OKLCH já estão alinhadas com essa direção.
 

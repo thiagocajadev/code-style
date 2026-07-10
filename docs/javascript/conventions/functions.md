@@ -17,7 +17,7 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 | **pure function** (função pura) | Mesma entrada → mesma saída; sem efeito colateral observável |
 | **side effect** (efeito colateral) | Leitura ou escrita fora dos argumentos: I/O, mutação externa, log |
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe, nunca os dois |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe, nunca os dois |
 
 ## God function: múltiplas responsabilidades
 
@@ -189,7 +189,7 @@ function formatCurrency(amount) {
 
 ## SLA: orquestrador ou implementação, nunca os dois
 
-**SLA** (Single Level of Abstraction, Único Nível de Abstração) é o princípio por trás da divisão: uma função orquestra passos nomeados ou implementa um detalhe. Quando faz os dois, o leitor troca de altitude no meio da leitura.
+**SLA** (Single Level of Abstraction · Único Nível de Abstração) é o princípio por trás da divisão: uma função orquestra passos nomeados ou implementa um detalhe. Quando faz os dois, o leitor troca de altitude no meio da leitura.
 
 <details>
 <summary>❌ Ruim: mesma função orquestra e implementa</summary>

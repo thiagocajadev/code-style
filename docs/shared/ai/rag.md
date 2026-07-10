@@ -15,7 +15,7 @@
 | **Re-ranking** (reclassificação) | Etapa que ordena os resultados recuperados por relevância mais precisa antes de injetar no prompt |
 | **Hybrid search** (busca híbrida) | Combinação de busca vetorial (semântica) com BM25 (lexical) para maior cobertura |
 | **Query rewriting** (reescrita de query) | Técnica que reformula a pergunta do usuário antes da busca para recuperar mais resultados relevantes |
-| **HyDE** (Hypothetical Document Embeddings, embeddings de documento hipotético) | Gera um documento hipotético que responderia à query, então usa seu embedding para buscar |
+| **HyDE** (Hypothetical Document Embeddings · embeddings de documento hipotético) | Gera um documento hipotético que responderia à query, então usa seu embedding para buscar |
 
 ## Como funciona o RAG
 

@@ -13,7 +13,7 @@ sensíveis e sem poluir com ruído.
 | **structlog** (biblioteca de log estruturado) | biblioteca para logs em chave-valor ou JSON, prontos para agregadores |
 | **log level** (nível de log) | severidade do evento: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` |
 | **structured log** (log estruturado) | log em chave-valor ou JSON; consultável em ferramentas de observabilidade |
-| **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
+| **PII** (Personally Identifiable Information · Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
 | **correlation id** (identificador de correlação) | identificador único de uma requisição, propagado em todos os logs |
 | **OpenTelemetry** (padrão de telemetria distribuída) | padrão aberto para traces, métricas e logs entre serviços |
 
@@ -116,7 +116,7 @@ logger.info(
 ## Logging estruturado com correlation_id
 
 Em sistemas distribuídos, rastrear uma requisição entre serviços exige um identificador comum.
-Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output, Entrada/Saída).
+Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output · Entrada/Saída).
 
 <details>
 <summary>❌ Ruim: logs sem contexto de rastreamento</summary>

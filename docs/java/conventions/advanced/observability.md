@@ -3,18 +3,18 @@
 > Escopo: Java 25 LTS com SLF4J + Logback + Micrometer.
 
 Observabilidade cobre três pilares: **logs** (eventos), **métricas** e **traces** (rastreamentos).
-O stack padrão Spring Boot 4 já inclui SLF4J (Simple Logging Facade for Java, Fachada de Log
+O stack padrão Spring Boot 4 já inclui SLF4J (Simple Logging Facade for Java · Fachada de Log
 para Java) como abstração, Logback como implementação e Micrometer para métricas.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **SLF4J** (Simple Logging Facade for Java, Fachada de Log para Java) | abstração de log; a implementação (Logback, Log4j2) é trocável sem alterar o código |
+| **SLF4J** (Simple Logging Facade for Java · Fachada de Log para Java) | abstração de log; a implementação (Logback, Log4j2) é trocável sem alterar o código |
 | **Logback** (biblioteca de log padrão do Spring Boot) | implementação de log padrão do Spring Boot; sucessor do Log4j |
 | **Micrometer** (fachada de métricas para JVM) | fachada de métricas da JVM; exporta para Prometheus, Datadog e outros |
-| **MDC** (Mapped Diagnostic Context, Contexto de Diagnóstico Mapeado) | mapa de contexto na thread atual; propagado para todos os logs da requisição |
-| **PII** (Personally Identifiable Information, Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
+| **MDC** (Mapped Diagnostic Context · Contexto de Diagnóstico Mapeado) | mapa de contexto na thread atual; propagado para todos os logs da requisição |
+| **PII** (Personally Identifiable Information · Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
 | **correlationId** (identificador de correlação) | identificador único de uma requisição; propagado via MDC |
 
 ## SLF4J: abstração de log
@@ -138,7 +138,7 @@ public class CorrelationFilter implements Filter {
 
 ## PII: dados pessoais nos logs
 
-Nunca logue PII (Personally Identifiable Information, Informações de Identificação Pessoal):
+Nunca logue PII (Personally Identifiable Information · Informações de Identificação Pessoal):
 senhas, tokens, CPF, cartão de crédito, endereços completos.
 
 <details>

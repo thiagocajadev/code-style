@@ -9,12 +9,12 @@
 
 | Conceito | O que é |
 |---|---|
-| **API** (Application Programming Interface, Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
-| **REST** (Representational State Transfer, Transferência de Estado Representacional) | Estilo arquitetural que usa verbos HTTP sobre recursos identificados por URL |
-| **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
+| **REST** (Representational State Transfer · Transferência de Estado Representacional) | Estilo arquitetural que usa verbos HTTP sobre recursos identificados por URL |
+| **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
 | **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Padrão que separa dados, apresentação e controle; em ASP.NET, o pipeline de Controllers |
 | **CQS** (Command-Query Separation, Separação Comando-Consulta) | Princípio: um método ou altera estado (command) ou retorna dado (query), nunca os dois |
-| **SSOT** (Single Source of Truth, Fonte Única da Verdade) | Um único lugar canônico para cada regra ou contrato; cross-links apontam para ele |
+| **SSOT** (Single Source of Truth · Fonte Única da Verdade) | Um único lugar canônico para cada regra ou contrato; cross-links apontam para ele |
 
 ## Minimal API: preferência
 
@@ -333,7 +333,7 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 
 ### Location header sem lógica no return
 
-`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso) em variável
+`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) em variável
 nomeada antes do retorno; o `return` nomeia, não computa.
 
 <details>

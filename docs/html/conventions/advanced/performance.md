@@ -2,7 +2,7 @@
 
 > Escopo: HTML. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-**HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão; imagens fora da **viewport** (área visível) consomem banda desnecessária; recursos críticos chegam tarde sem **preload** (pré-carregamento) explícito.
+**HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão; imagens fora da **viewport** (área visível) consomem banda desnecessária; recursos críticos chegam tarde sem **preload** (pré-carregamento) explícito.
 
 ## Conceitos fundamentais
 

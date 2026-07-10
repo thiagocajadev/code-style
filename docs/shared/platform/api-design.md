@@ -3,7 +3,7 @@
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 > Idiomas específicos em [csharp/conventions/advanced/api-design.md](../../csharp/conventions/advanced/api-design.md) e [vbnet/conventions/advanced/api-design.md](../../vbnet/conventions/advanced/api-design.md).
 
-**API** (Application Programming Interface, Interface de Programação de Aplicações) é o contrato entre
+**API** (Application Programming Interface · Interface de Programação de Aplicações) é o contrato entre
 cliente e servidor. Um design bom padroniza quatro coisas: o pipeline de uma requisição, o contrato
 de entrada e saída, o **shape** (formato) da resposta e a semântica de verbos e status. Quando esses
 quatro pontos estão previsíveis, o cliente trata qualquer endpoint da mesma forma, e o servidor
@@ -13,8 +13,8 @@ evolui sem quebrar integração.
 
 | Conceito | O que é |
 |---|---|
-| **BFF** (Backend for Frontend, Backend para Frontend) | Camada de borda que serve um cliente específico, traduz domínio em contrato de transporte e isola regras de UI do core |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Tipo dedicado ao contrato externo, distinto da entidade de domínio, usado para request e response |
+| **BFF** (Backend for Frontend · Backend para Frontend) | Camada de borda que serve um cliente específico, traduz domínio em contrato de transporte e isola regras de UI do core |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Tipo dedicado ao contrato externo, distinto da entidade de domínio, usado para request e response |
 | **Handler** (processador de requisição) | Função que orquestra um caso de uso e devolve `Result`, sem conhecer HTTP |
 | **Envelope** (envelope de resposta) | Estrutura padrão `{ data, meta }` que dá shape consistente a sucesso, erro, objeto único e coleção |
 | **Correlation ID** (identificador de correlação) | Id gerado na borda, propagado em `meta` e logs, que rastreia uma requisição ponta a ponta |
@@ -41,7 +41,7 @@ Cada camada tem uma responsabilidade única:
 | **Service** | Regra de negócio, invariantes, coordenação entre repositórios | Validar input de transporte, falar HTTP |
 | **Repository** | Ler e escrever no storage, devolver entidade ou primitivo | Regra de negócio, tradução para contrato externo |
 
-A separação protege o domínio: o handler pode ser testado sem montar uma requisição **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto), o service
+A separação protege o domínio: o handler pode ser testado sem montar uma requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto), o service
 pode ser reaproveitado por um job em background e o repository pode trocar de storage sem mexer no
 resto.
 
@@ -341,7 +341,7 @@ O `correlationId` em `meta` é o mesmo propagado nos logs da requisição. Veja
 
 ## Verbos REST e rotas
 
-**REST** (Representational State Transfer, Transferência de Estado Representacional) usa verbos HTTP
+**REST** (Representational State Transfer · Transferência de Estado Representacional) usa verbos HTTP
 com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer endpoint.
 
 | Verbo | Semântica | Idempotente | Exemplo |
@@ -354,7 +354,7 @@ com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer
 
 Convenções de rota:
 
-- Kebab-case na **URL** (Uniform Resource Locator, Localizador Uniforme de Recurso): `/api/order-items`, não `/api/orderItems`
+- Kebab-case na **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso): `/api/order-items`, não `/api/orderItems`
 - Plural para coleções: `/api/orders`, não `/api/order`
 - Sem verbo na URL: `POST /api/orders`, não `POST /api/create-order`
 - Recurso aninhado quando há relação clara: `/api/orders/{id}/items`

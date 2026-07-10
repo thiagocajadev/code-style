@@ -9,7 +9,7 @@
 
 Um projeto PHP bem fundado usa **Composer** (gerenciador de dependências) para autoload e
 dependências, **PSR-12** (PHP Standards Recommendation 12, padrão de estilo de código) para
-formatação, e **PHPStan** (PHP Static Analysis Tool, analisador estático) para detecção de erros
+formatação, e **PHPStan** (PHP Static Analysis Tool · analisador estático) para detecção de erros
 em tempo de desenvolvimento. O entry point delega configuração ao container de dependências;
 módulos ficam organizados por domínio.
 

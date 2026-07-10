@@ -1,6 +1,6 @@
 # Formatting
 
-Formatação consistente torna o **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto) escaneável: **indentation** (indentação) revela hierarquia, ordem de **attribute** (atributo) cria previsibilidade e aspas duplas eliminam ambiguidade.
+Formatação consistente torna o **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) escaneável: **indentation** (indentação) revela hierarquia, ordem de **attribute** (atributo) cria previsibilidade e aspas duplas eliminam ambiguidade.
 
 ## Conceitos fundamentais
 

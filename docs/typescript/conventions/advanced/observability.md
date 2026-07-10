@@ -18,7 +18,7 @@ Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam
 | **correlation ID** (ID de correlação) | Identificador único por requisição que aparece em todos os logs do mesmo fluxo |
 | **`LogContext`** (contexto tipado) | Tipo do payload do log; campos obrigatórios não podem ser omitidos |
 | **redaction** (redação) | Remoção ou mascaramento de campos sensíveis antes de emitir |
-| **PII** (Personally Identifiable Information, Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
+| **PII** (Personally Identifiable Information · Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
 | **trace** (rastro) | Caminho de uma requisição atravessando múltiplos serviços; cada salto é um span |
 
 ## Interface tipada para o logger

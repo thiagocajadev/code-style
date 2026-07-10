@@ -10,7 +10,7 @@ por uma `let`.
 
 | Conceito | O que é |
 | --- | --- |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | uma função orquestra OU implementa, nunca os dois ao mesmo tempo |
 | **Explaining Return** (retorno explicado) | Atribuir o resultado a uma `let` nomeada antes de retornar |
 | **Stepdown Rule** (regra do stepdown) | Chamador visível antes do detalhe; helpers abaixo do chamador |
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |

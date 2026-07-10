@@ -14,7 +14,7 @@ Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno)
 | **Optional** (parâmetro opcional) | Parâmetro com valor padrão; `Optional ByVal logger As ILogger = Nothing` |
 | **Overloads** (sobrecarga) | Múltiplas assinaturas do mesmo nome; comunica variantes da operação |
 | **single responsibility** (responsabilidade única) | Um método faz uma coisa; o nome descreve essa coisa por completo |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | Cada método opera em um só nível: orquestra passos ou implementa detalhe |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada método opera em um só nível: orquestra passos ou implementa detalhe |
 
 ## Sub vs Function
 

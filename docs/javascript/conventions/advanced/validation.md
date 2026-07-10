@@ -16,7 +16,7 @@ Validação não é uma única coisa: é um **pipeline** (sequência de etapas) 
 | **schema validation** (validação de esquema) | Conferência de formato: tipos, comprimento, presença de campos obrigatórios |
 | **business rule** (regra de negócio) | Validação que depende do estado do sistema (ex: email já cadastrado, saldo suficiente) |
 | **output filter** (filtro de saída) | Remoção de campos sensíveis ou internos antes de responder ao cliente |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas |
 | **parse, don't validate** (transforme, não só verifique) | Princípio: converter a entrada em tipo seguro de uma vez, em vez de só checar e seguir com `unknown` |
 | **Zod** (biblioteca de validação) | Biblioteca JS de validação com schemas componíveis e tipo inferido |
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
@@ -111,7 +111,7 @@ async function createOrder(body) {
 ## Regras de negócio
 
 Schema valida se o dado tem o formato correto. Regras de negócio validam se faz
-sentido no domínio: dependem de **I/O** (Input/Output, Entrada/Saída) (banco,
+sentido no domínio: dependem de **I/O** (Input/Output · Entrada/Saída) (banco,
 serviços externos) e não pertencem ao schema.
 
 <details>

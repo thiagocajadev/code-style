@@ -11,7 +11,7 @@ contexto, prefira legibilidade. Meça antes de otimizar. **StringBuilder** evita
 | --- | --- |
 | **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
 | **StringBuilder** (construtor de strings) | Tipo que acumula strings com buffer interno reutilizado; substitui `&` em laço |
-| **GC** (Garbage Collector, Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
+| **GC** (Garbage Collector · Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
 | **allocation** (alocação) | Reserva de memória no heap gerenciado; `New`, boxing e concatenação alocam |
 | **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `Object`; evite em laços |
 | **Dictionary lookup** (busca em dicionário) | `Dictionary(Of K,V)` substitui `For Each` linear quando a coleção é grande |

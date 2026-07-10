@@ -2,11 +2,11 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**CI/CD** (Continuous Integration, Continuous Delivery e Continuous Deployment, Integração Contínua, Entrega Contínua e Deploy Contínuo) é o
+**CI/CD** (Continuous Integration · Continuous Delivery e Continuous Deployment, Integração Contínua, Entrega Contínua e Deploy Contínuo) é o
 processo que garante que qualquer mudança no código passe por verificação automática antes de chegar
 ao usuário.
 
-**CI** (Continuous Integration, Integração Contínua) e **CD** (Continuous Delivery, Entrega Contínua) são processos distintos com objetivos diferentes. A estratégia de branches que viabiliza
+**CI** (Continuous Integration · Integração Contínua) e **CD** (Continuous Delivery · Entrega Contínua) são processos distintos com objetivos diferentes. A estratégia de branches que viabiliza
 esse fluxo está em [git.md](git.md).
 
 | Processo                          | O que faz                                                           | Resultado           |

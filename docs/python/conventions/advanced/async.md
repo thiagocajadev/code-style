@@ -2,14 +2,14 @@
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de **I/O** (Input/Output, Entrada/Saída) é assíncrona. Bloquear o
+Toda operação que depende de **I/O** (Input/Output · Entrada/Saída) é assíncrona. Bloquear o
 **event loop** (laço de eventos) congela a aplicação inteira.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **I/O** (Input/Output, Entrada/Saída) | operação que atravessa o limite do processo: rede, disco, banco |
+| **I/O** (Input/Output · Entrada/Saída) | operação que atravessa o limite do processo: rede, disco, banco |
 | **event loop** (laço de eventos) | despachante de tarefas async; processa coroutines até `await` |
 | **coroutine** (corrotina) | função `async def` que pode pausar com `await` sem bloquear o thread |
 | **await** (palavra-chave de espera) | suspende a coroutine atual até o awaitable resolver |
@@ -163,7 +163,7 @@ async def read_config() -> dict:
 
 ## Context managers assíncronos
 
-Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto)) usam
+Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto)) usam
 `async with`. O protocolo `__aenter__`/`__aexit__` garante que o recurso seja liberado mesmo em
 caso de exceção.
 

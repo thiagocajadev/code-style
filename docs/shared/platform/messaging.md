@@ -74,7 +74,7 @@ Estratégias:
 
 | Ferramenta | Modelo | Melhor para |
 |---|---|---|
-| **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, **RPC** (Remote Procedure Call, chamada de procedimento remoto) |
+| **RabbitMQ** | Queue e pub/sub | Workflows com roteamento complexo, **RPC** (Remote Procedure Call · chamada de procedimento remoto) |
 | **Kafka** | Log distribuído, pub/sub | Alto volume, replay de eventos, **event sourcing** (eventos como fonte da verdade) |
-| **SQS** (Amazon Simple Queue Service, Serviço de Filas Simples da Amazon) | Queue gerenciada | Integração AWS, baixo overhead operacional |
+| **SQS** (Amazon Simple Queue Service · Serviço de Filas Simples da Amazon) | Queue gerenciada | Integração AWS, baixo overhead operacional |
 | **Redis Streams** | Log leve | Mensageria simples em stacks que já usam Redis |

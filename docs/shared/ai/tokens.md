@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Token é a unidade mínima de texto que um modelo de linguagem processa. Entender tokens é essencial para estimar custo, respeitar limites de contexto e otimizar prompts. A maioria das **APIs** (Application Programming Interface, Interface de Programação de Aplicações) cobra por token, não por caractere ou palavra.
+Token é a unidade mínima de texto que um modelo de linguagem processa. Entender tokens é essencial para estimar custo, respeitar limites de contexto e otimizar prompts. A maioria das **APIs** (Application Programming Interface · Interface de Programação de Aplicações) cobra por token, não por caractere ou palavra.
 
 ## Conceitos fundamentais
 
@@ -97,7 +97,7 @@ Chamadas seguintes: apenas os tokens novos (ex: mensagem do usuário) são proce
 
 **OpenAI**: cache automático, sem marcação explícita no **payload** (corpo da mensagem).
 
-O cache tem **TTL** (Time To Live, tempo de vida) de aproximadamente 5 minutos para prompts com variação frequente.
+O cache tem **TTL** (Time To Live · tempo de vida) de aproximadamente 5 minutos para prompts com variação frequente.
 
 ## Boas práticas de custo
 

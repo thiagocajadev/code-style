@@ -26,7 +26,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **soft delete** (remoção lógica) | Marcar o registro como excluído (`deleted_at` preenchido) sem apagar fisicamente, preservando histórico |
 | **multitenancy** (multilocação) | Uma instância da aplicação serve múltiplos clientes (tenants) com isolamento de dados entre eles |
 | **row-level security** (segurança por linha, RLS) | Recurso do banco que filtra linhas pelo contexto da requisição antes da query chegar ao app |
-| **GUID** (Globally Unique Identifier, identificador único global) | String de 128 bits usada como ID, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
+| **GUID** (Globally Unique Identifier · identificador único global) | String de 128 bits usada como ID, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 | **Data** (classe de valor imutável) | `Data.define(:field)` cria uma classe Ruby 3.2+ com igualdade estrutural, campos somente leitura e sem herança de estado |
 | **Struct** (estrutura mutável) | `Struct.new(:field, keyword_init: true)` cria uma classe mutável; evitar para value objects de domínio |
 | **attr_reader** (leitor de atributo) | Gera método de leitura para variável de instância; preferir sobre `attr_accessor` em domínio |
@@ -34,7 +34,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **frozen** (congelado, valor que não muda após criação) | Objeto marcado com `freeze` que levanta `FrozenError` em qualquer tentativa de alteração |
 | **dup** (cópia superficial) | `Array#dup` retorna nova instância com os mesmos elementos; protege a coleção interna de alterações externas |
 | **safe navigation** (`&.`, navegação segura) | Operador que interrompe a cadeia e retorna `nil` quando o receptor é `nil`, evitando `NoMethodError` |
-| **RBS** (Ruby Signature, assinatura de tipo Ruby) | Arquivo `.rbs` que declara tipos estáticos para classes Ruby; utilizado por Steep e Sorbet |
+| **RBS** (Ruby Signature · assinatura de tipo Ruby) | Arquivo `.rbs` que declara tipos estáticos para classes Ruby; utilizado por Steep e Sorbet |
 
 ---
 

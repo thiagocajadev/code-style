@@ -2,13 +2,13 @@
 
 > Escopo: TypeScript. Guia baseado em **Vue 3.5** (LTS) com **Nuxt 4.4** e **Pinia 3**.
 
-Vue é uma library reativa de **UI** (User Interface, Interface do Usuário). Nuxt é o framework: roteamento por arquivo, server routes, middleware e otimizações de build integradas. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Vue moderno e Nuxt 4.
+Vue é uma library reativa de **UI** (User Interface · Interface do Usuário). Nuxt é o framework: roteamento por arquivo, server routes, middleware e otimizações de build integradas. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Vue moderno e Nuxt 4.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **SFC** (Single File Component, Componente em Arquivo Único) | Arquivo `.vue` com `<template>`, `<script setup>` e `<style>` no mesmo módulo |
+| **SFC** (Single File Component · Componente em Arquivo Único) | Arquivo `.vue` com `<template>`, `<script setup>` e `<style>` no mesmo módulo |
 | **Composition API** (API de Composição) | Estilo de autoria que organiza a lógica do componente em funções reativas, sem `this` |
 | **`<script setup>`** (bloco setup do SFC) | Açúcar de compilação que executa o bloco como `setup()` e expõe identificadores ao template |
 | **`ref`** (referência reativa) | Container reativo para primitivos: leitura e escrita via `.value` no script, automático no template |
@@ -21,7 +21,7 @@ Vue é uma library reativa de **UI** (User Interface, Interface do Usuário). Nu
 | **Smart Component** (componente inteligente) | Componente que orquestra dados e estado, delega renderização a **Dumb Components** |
 | **Dumb Component** (componente de apresentação) | Componente que recebe dados via `defineProps` e emite eventos via `defineEmits`; sem lógica de negócio |
 | **Route Middleware** (proteção de rota Nuxt) | Função executada antes de qualquer página montar, definida em `middleware/` |
-| **Server Route** (rota de servidor Nuxt) | Handler em `server/api/`, executado pelo Nitro como endpoint **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) |
+| **Server Route** (rota de servidor Nuxt) | Handler em `server/api/`, executado pelo Nitro como endpoint **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) |
 | **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash) | Mecanismo que valida origem e integridade de um webhook comparando assinaturas com segredo compartilhado |
 
 ## Fluxo de Operação
@@ -50,7 +50,7 @@ Vue cuida da **UI**. Roteamento via Vue Router, acesso a dados via `apiClient` a
 
 ### Nuxt fullstack
 
-Nuxt é frontend e backend. `pages/index.vue` acessa o banco diretamente via Repository em `useAsyncData`, sem passar pela própria **API** (Application Programming Interface, Interface de Programação de Aplicações). Server routes existem para clientes externos (mobile, integrações B2B). Componentes e composables funcionam igual ao cenário SPA para interações client-side.
+Nuxt é frontend e backend. `pages/index.vue` acessa o banco diretamente via Repository em `useAsyncData`, sem passar pela própria **API** (Application Programming Interface · Interface de Programação de Aplicações). Server routes existem para clientes externos (mobile, integrações B2B). Componentes e composables funcionam igual ao cenário SPA para interações client-side.
 
 **Leitura:** `URL → middleware → page.vue → useAsyncData → Repository → render`
 

@@ -12,10 +12,10 @@ Configuração base compatível com VS Code, JetBrains, Vim e qualquer editor qu
 | Conceito | O que é |
 |---|---|
 | **EditorConfig** (configuração de editor) | Padrão multi-editor para regras de formatação por arquivo |
-| **EOF** (End Of File, Fim do Arquivo) | Caractere final do arquivo; convenção exige linha em branco terminal |
-| **BOM** (Byte Order Mark, Marca de Ordem de Bytes) | Marcador UTF-8 no início do arquivo; incompatível com várias toolchains |
+| **EOF** (End Of File · Fim do Arquivo) | Caractere final do arquivo; convenção exige linha em branco terminal |
+| **BOM** (Byte Order Mark · Marca de Ordem de Bytes) | Marcador UTF-8 no início do arquivo; incompatível com várias toolchains |
 | **LF vs CRLF** (Line Feed / Carriage Return + Line Feed, Fim de Linha Unix vs Windows) | Separador de linhas; `LF` é o padrão cross-platform |
-| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Arquivos `.sql` herdam overrides específicos (indentação, quebra de linha) |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Arquivos `.sql` herdam overrides específicos (indentação, quebra de linha) |
 
 ## Arquivo pronto para uso
 

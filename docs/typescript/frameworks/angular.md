@@ -2,7 +2,7 @@
 
 > Escopo: TypeScript. Guia baseado em **Angular 21** com **Standalone API** e **Signals**.
 
-Angular é um framework completo: roteamento, injeção de dependência, formulários reativos e comunicação **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) fazem parte do core. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Angular moderno.
+Angular é um framework completo: roteamento, injeção de dependência, formulários reativos e comunicação **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) fazem parte do core. Este guia mostra como implementar os contratos de [operation-flow.md](../../shared/architecture/operation-flow.md) e [frontend-flow.md](../../shared/architecture/frontend-flow.md) com Angular moderno.
 
 ## Conceitos fundamentais
 
@@ -12,7 +12,7 @@ Angular é um framework completo: roteamento, injeção de dependência, formul�
 | **Computed** (derivado) | Signal calculado a partir de outros signals: recalcula automaticamente quando os inputs mudam |
 | **Effect** (efeito colateral) | Função que executa quando um Signal muda: sincronização com sistemas externos |
 | **Standalone Component** (componente autônomo) | Componente sem NgModule: declara suas dependências diretamente em `imports` |
-| **DI** (Dependency Injection, Injeção de Dependência) | Mecanismo do Angular que fornece dependências via `inject()` sem instanciação direta |
+| **DI** (Dependency Injection · Injeção de Dependência) | Mecanismo do Angular que fornece dependências via `inject()` sem instanciação direta |
 | **Smart Component** (componente inteligente) | Componente que orquestra dados e estado; delega renderização a **Dumb Components** |
 | **Dumb Component** (componente de apresentação) | Componente que recebe dados via `@Input()` e emite eventos via `@Output()`; sem lógica de negócio |
 | **Guard** (proteção de rota) | Verificação de autorização executada durante a resolução da rota, antes de qualquer componente montar |
@@ -111,7 +111,7 @@ export class UserCardComponent {
 
 ## Signals: estado local reativo
 
-Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A **API** (Application Programming Interface, Interface de Programação de Aplicações) é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
+Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A **API** (Application Programming Interface · Interface de Programação de Aplicações) é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
 
 Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
 

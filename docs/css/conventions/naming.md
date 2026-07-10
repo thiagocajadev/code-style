@@ -1,6 +1,6 @@
 # Naming
 
-Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** (User Interface, Interface do Usuário), não sua aparência. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
+Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** (User Interface · Interface do Usuário), não sua aparência. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
 
 ## Conceitos fundamentais
 
@@ -8,7 +8,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 | --- | --- |
 | **class** (classe) | Identificador reutilizável aplicado via `class="..."`; alvo do seletor `.nome` |
 | **kebab-case** (palavras separadas por hífen) | Convenção CSS: `product-card`, não `productCard` |
-| **BEM** (Block Element Modifier, Bloco-Elemento-Modificador) | `block__element--modifier`; vincula classe ao papel no componente |
+| **BEM** (Block Element Modifier · Bloco-Elemento-Modificador) | `block__element--modifier`; vincula classe ao papel no componente |
 | **block** (bloco) | Componente raiz no BEM: `.card`, `.menu` |
 | **element** (elemento) | Parte do bloco no BEM: `.card__title`, `.menu__item` |
 | **modifier** (modificador) | Variante de estado/aparência: `.button--danger`, `.menu--open` |
@@ -63,10 +63,10 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 ## BEM
 
 BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explícita a hierarquia e o
-relacionamento entre partes da **UI** (User Interface, Interface do Usuário) sem depender de aninhamento no CSS.
+relacionamento entre partes da **UI** (User Interface · Interface do Usuário) sem depender de aninhamento no CSS.
 
 <details>
-<summary>❌ Ruim: hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto)</summary>
+<summary>❌ Ruim: hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto)</summary>
 
 ```html
 <div class="card featured">

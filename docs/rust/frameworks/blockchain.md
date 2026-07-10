@@ -3,7 +3,7 @@
 > Escopo: Solana (solana-program 4.0, Agave 2.1) + Anchor 1.0.
 
 Programas Solana são contratos inteligentes escritos em Rust e compilados para
-**BPF** (Berkeley Packet Filter, formato de bytecode da Solana Virtual Machine).
+**BPF** (Berkeley Packet Filter · formato de bytecode da Solana Virtual Machine).
 O framework Anchor abstrai o boilerplate do SDK nativo e adiciona validação de accounts
 em tempo de compilação via macros.
 

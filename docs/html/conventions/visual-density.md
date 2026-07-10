@@ -1,6 +1,6 @@
 # Visual density: HTML
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language, Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco). HTML é marcação, não fluxo de controle, então as regras de retorno explicativo e declaração + guarda não se aplicam. O foco aqui é agrupamento semântico de elementos, respiro após blocos multi-linha e ausência de alinhamento de coluna.
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco). HTML é marcação, não fluxo de controle, então as regras de retorno explicativo e declaração + guarda não se aplicam. O foco aqui é agrupamento semântico de elementos, respiro após blocos multi-linha e ausência de alinhamento de coluna.
 
 ## Conceitos fundamentais
 

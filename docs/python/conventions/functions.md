@@ -8,8 +8,8 @@ desenho.
 
 | Conceito | O que é |
 | --- | --- |
-| **SRP** (Single Responsibility Principle, Princípio da Responsabilidade Única) | cada função tem uma única razão para mudar |
-| **SLA** (Single Level of Abstraction, Único Nível de Abstração) | cada função opera em um só nível: orquestra passos ou implementa detalhe |
+| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | cada função tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | cada função opera em um só nível: orquestra passos ou implementa detalhe |
 | **cohesion** (coesão) | grau em que as instruções da função pertencem à mesma tarefa |
 | **god function** (função-deus) | função que faz tudo: busca, valida, calcula, persiste, loga |
 | **helper** (função auxiliar) | função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |

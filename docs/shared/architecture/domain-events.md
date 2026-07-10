@@ -22,7 +22,7 @@ O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além
 | **schema versioning** (versionamento de esquema) | Disciplina de evoluir o formato do payload sem quebrar consumidores antigos (V1, V2 coexistem) |
 | **at-least-once delivery** (entrega ao menos uma vez) | Garantia de que o evento chega pelo menos uma vez; pode chegar mais, então handler é idempotente |
 | **idempotency** (idempotência, operação repetível sem efeito adicional) | Propriedade do handler de aplicar o mesmo evento múltiplas vezes com o mesmo resultado |
-| **DLQ** (Dead Letter Queue, fila de mensagens com falha persistente) | Fila para eventos que falharam todas as tentativas; permite inspeção manual sem travar o consumidor |
+| **DLQ** (Dead Letter Queue · fila de mensagens com falha persistente) | Fila para eventos que falharam todas as tentativas; permite inspeção manual sem travar o consumidor |
 | **eventual consistency** (consistência eventual) | Estado entre agregados converge no tempo após o evento; não é instantâneo |
 | **choreography** (coreografia) | Cada serviço reage a eventos sem coordenador central; acoplamento por contrato de evento |
 | **orchestration** (orquestração) | Um coordenador comanda os passos da operação; cada serviço recebe comando e responde |

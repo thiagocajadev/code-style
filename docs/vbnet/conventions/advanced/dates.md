@@ -8,11 +8,11 @@
 
 | Conceito | O que é |
 |---|---|
-| **UTC** (Coordinated Universal Time, Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
+| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
 | **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ssZ` para datas em texto |
 | **DateTimeOffset** (data com fuso) | Tipo .NET que carrega o offset embutido; elimina ambiguidade do `Kind` |
-| **DTO** (Data Transfer Object, Objeto de Transferência de Dados) | Contrato que transporta datas entre camadas; sempre em UTC ISO 8601 |
-| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Banco relacional; colunas `datetime2` + UTC é o padrão seguro |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Contrato que transporta datas entre camadas; sempre em UTC ISO 8601 |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Banco relacional; colunas `datetime2` + UTC é o padrão seguro |
 
 ## DateTime.Now vs DateTimeOffset.UtcNow
 
@@ -117,7 +117,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom: string **ISO** (International Organization for Standardization, Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
+<summary>✅ Bom: string **ISO** (International Organization for Standardization · Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
 
 ```vbnet
 ' DTO recebe a data como string, sem ambiguidade de timezone

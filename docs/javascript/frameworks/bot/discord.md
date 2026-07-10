@@ -17,7 +17,7 @@
 | **isChatInputCommand()** (verificação de tipo) | Type guard que confirma que a Interaction é um slash command; obrigatório antes de acessar `commandName` |
 | **SlashCommandBuilder** (construtor de comando barra) | Classe para definir o schema de um slash command antes de registrá-lo via REST |
 | **EmbedBuilder** (construtor de mensagem rica) | Classe para construir mensagens ricas; enviada dentro do array `embeds: [embed]`, nunca como objeto solto |
-| **REST** (Representational State Transfer, cliente HTTP) | Cliente HTTP do discord.js configurado com `version: '10'`; usado para registrar commands via API |
+| **REST** (Representational State Transfer · cliente HTTP) | Cliente HTTP do discord.js configurado com `version: '10'`; usado para registrar commands via API |
 
 ## Instalação
 

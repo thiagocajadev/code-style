@@ -79,7 +79,7 @@ Conjunto de práticas de engenharia voltadas a feedback rápido e qualidade cont
 | **Releases pequenos** | Entregar incrementos pequenos e frequentes em vez de grandes lotes |
 | **Posse coletiva do código** | Qualquer engenheiro pode melhorar qualquer parte do sistema |
 
-XP é a base conceitual de práticas que hoje chamamos de DevOps e **CI/CD** (Continuous Integration and Continuous Delivery, Integração e Entrega Contínuas: **CI** é Integração Contínua; **CD** é Entrega Contínua).
+XP é a base conceitual de práticas que hoje chamamos de DevOps e **CI/CD** (Continuous Integration and Continuous Delivery · Integração e Entrega Contínuas: **CI** é Integração Contínua; **CD** é Entrega Contínua).
 
 **Quando usar**: times pequenos com entregas frequentes e domínio em evolução.
 
@@ -127,7 +127,7 @@ Toda a aplicação em um único processo e deployável. O banco de dados, o serv
 
 ### Microsserviços (Microservices)
 
-Serviços independentes, cada um com sua própria base de código, banco de dados e ciclo de deploy. Comunicam-se via **API** (Application Programming Interface, Interface de Programação de Aplicações) ou mensageria.
+Serviços independentes, cada um com sua própria base de código, banco de dados e ciclo de deploy. Comunicam-se via **API** (Application Programming Interface · Interface de Programação de Aplicações) ou mensageria.
 
 **Vantagens**: escala e evolui cada serviço de forma independente. Times diferentes ownam (são responsáveis por) serviços diferentes sem coordenação constante.
 
@@ -163,7 +163,7 @@ Monolito Modular
 - Deploy simples de monolito, sem overhead operacional de microsserviços
 - Limites de domínio claros desde o início, sem acoplamento invisível
 - Refactoring para microsserviços se torna cirúrgico quando necessário: o módulo já tem limite definido
-- Escala vertical (mais **CPU** (Central Processing Unit, Unidade Central de Processamento)/**RAM** (Random Access Memory, Memória de Acesso Aleatório)) resolve a maioria dos casos antes de precisar distribuir
+- Escala vertical (mais **CPU** (Central Processing Unit · Unidade Central de Processamento)/**RAM** (Random Access Memory · Memória de Acesso Aleatório)) resolve a maioria dos casos antes de precisar distribuir
 
 **Quando extrair um microsserviço**: quando um módulo tem requisito de escala, ciclo de deploy ou equipe radicalmente diferentes dos demais. Não antes.
 

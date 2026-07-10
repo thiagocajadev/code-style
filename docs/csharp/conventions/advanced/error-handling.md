@@ -94,7 +94,7 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 
 ## ApiError
 
-Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para status **HTTP** (HyperText Transfer Protocol, Protocolo de Transferência de Hipertexto) no adapter sem `if-else` espalhados pela aplicação.
+Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) no adapter sem `if-else` espalhados pela aplicação.
 
 <details>
 <summary>❌ Ruim: strings mágicas sem contrato</summary>
@@ -170,7 +170,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 
 ## Falhar rápido
 
-Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output, Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
+Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output · Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
 
 <details>
 <summary>❌ Ruim: validação tardia, trabalho desnecessário antes de falhar</summary>

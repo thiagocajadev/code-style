@@ -53,7 +53,7 @@ class User {
 }
 ```
 
-A mesma lógica vale para componentes de **UI** (User Interface, Interface do Usuário). Um `Card` que
+A mesma lógica vale para componentes de **UI** (User Interface · Interface do Usuário). Um `Card` que
 aceita `children` compõe. Um `ProductCard extends Card` herda. O primeiro é reutilizável por design;
 o segundo precisa de uma subclasse nova para cada variação.
 
@@ -89,7 +89,7 @@ OrderDetailsView (pure)
 ```
 
 O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte sem
-tocar na UI: **API** (Application Programming Interface, Interface de Programação de Aplicações)
+tocar na UI: **API** (Application Programming Interface · Interface de Programação de Aplicações)
 real, mock em Storybook ou fixture de teste pré-definida. O container não sabe **como** a tela é
 desenhada. Designers trocam o layout sem medo de quebrar a lógica.
 
@@ -248,7 +248,7 @@ Três regras mantêm o grafo saudável entre features:
 - **Public API explícita.** Cada módulo tem um `index` ou barrel file (arquivo índice) como único ponto de exportação. Consumidores importam desse contrato, não de arquivos internos. Mudanças internas ficam contidas.
 
 Quando a ferramenta suporta, as regras viram **configuração verificável** (ESLint boundaries, Nx
-tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration, Integração Contínua, pipeline que automatiza lint,
+tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration · Integração Contínua, pipeline que automatiza lint,
 testes e build a cada commit) não degradam; as confiadas na disciplina humana erodem em dois
 sprints.
 

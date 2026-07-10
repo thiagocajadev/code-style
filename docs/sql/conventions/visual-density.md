@@ -1,6 +1,6 @@
 # Visual density: SQL
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **SQL** (Structured Query Language, Linguagem de Consulta Estruturada).
+Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **SQL** (Structured Query Language · Linguagem de Consulta Estruturada).
 
 SQL é declarativo: não tem o mesmo fluxo de control flow das linguagens imperativas. Regras como **explaining return** e **declaration + guard** não se aplicam diretamente. O que importa em SQL é distinguir **fases de uma query** (SELECT / FROM / WHERE / ORDER BY já agem como separadores visuais) de **etapas independentes** (CTEs, blocos de procedure, statements consecutivos).
 

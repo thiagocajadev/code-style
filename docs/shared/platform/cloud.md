@@ -8,16 +8,16 @@
 
 | Conceito | O que é |
 |---|---|
-| **PaaS/SaaS** (Platform/Software as a Service, Plataforma/Software como Serviço) | Modelos de serviço onde o provedor gerencia a infraestrutura; o time gerencia apenas a aplicação |
-| **IAM** (Identity and Access Management, Gerenciamento de Identidade e Acesso) | Sistema de controle de permissões em cloud: define quem pode fazer o quê em quais recursos |
+| **PaaS/SaaS** (Platform/Software as a Service · Plataforma/Software como Serviço) | Modelos de serviço onde o provedor gerencia a infraestrutura; o time gerencia apenas a aplicação |
+| **IAM** (Identity and Access Management · Gerenciamento de Identidade e Acesso) | Sistema de controle de permissões em cloud: define quem pode fazer o quê em quais recursos |
 | **Container** (contêiner) | Unidade de empacotamento que garante paridade entre ambientes: o que roda em dev é o que vai para prod |
 | **Multi-stage build** (build em múltiplos estágios) | Estratégia de build que separa a etapa de compilação da imagem final, reduzindo o tamanho e a superfície de ataque |
 | **Health check** (verificação de saúde) | Declaração de como o orquestrador verifica se o container está saudável para receber tráfego |
-| **OOMKilled** (Out Of Memory Killed, Processo encerrado por falta de memória) | Sinal do orquestrador indicando que o container esgotou a memória disponível |
+| **OOMKilled** (Out Of Memory Killed · Processo encerrado por falta de memória) | Sinal do orquestrador indicando que o container esgotou a memória disponível |
 
 ## Serviços Gerenciados
 
-A escolha entre serviço gerenciado, **PaaS** (Platform as a Service, Plataforma como Serviço) ou **SaaS** (Software as a Service, Software como Serviço), e **self-hosted** (operado pelo próprio time) afeta diretamente o custo operacional e a complexidade do time.
+A escolha entre serviço gerenciado, **PaaS** (Platform as a Service · Plataforma como Serviço) ou **SaaS** (Software as a Service · Software como Serviço), e **self-hosted** (operado pelo próprio time) afeta diretamente o custo operacional e a complexidade do time.
 
 | Categoria | Gerenciado | Self-hosted |
 |---|---|---|
@@ -32,7 +32,7 @@ Use gerenciado como padrão. Escolha self-hosted quando há restrição de custo
 
 ## Least Privilege (Menor Privilégio)
 
-Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity and Access Management, Gerenciamento de Identidade e Acesso) mal configurado é uma das maiores superfícies de ataque em cloud.
+Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity and Access Management · Gerenciamento de Identidade e Acesso) mal configurado é uma das maiores superfícies de ataque em cloud.
 
 | Prática | Por quê |
 |---|---|
@@ -57,7 +57,7 @@ Containers garantem paridade entre ambientes: o que roda em dev é o que vai par
 
 ## Limites de Recursos
 
-Todo container em produção declara limites de **CPU** (Central Processing Unit, Unidade Central de Processamento) e memória. Sem limites, um serviço com leak de memória consome os recursos do host inteiro.
+Todo container em produção declara limites de **CPU** (Central Processing Unit · Unidade Central de Processamento) e memória. Sem limites, um serviço com leak de memória consome os recursos do host inteiro.
 
 | Configuração | Efeito |
 |---|---|
@@ -65,7 +65,7 @@ Todo container em produção declara limites de **CPU** (Central Processing Unit
 | Limite conservador com monitoramento | OOMKilled sinaliza o problema real |
 | CPU sem limite | **Starvation** (privação de recursos) de outros serviços no mesmo host |
 
-**OOMKilled** (Out Of Memory Killed, Processo encerrado por falta de memória) é um sinal a investigar. Restart automático silencioso mascara o problema e adia o diagnóstico.
+**OOMKilled** (Out Of Memory Killed · Processo encerrado por falta de memória) é um sinal a investigar. Restart automático silencioso mascara o problema e adia o diagnóstico.
 
 ## Observabilidade
 

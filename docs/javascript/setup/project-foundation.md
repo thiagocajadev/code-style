@@ -18,8 +18,8 @@ alinhados antes da primeira linha de domínio.
 | ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | **Entry point** (ponto de entrada)                                     | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor |
 | **Middleware** (componente de pipeline)                                | Função que intercepta a requisição antes ou depois do handler              |
-| **JWT** (JSON Web Token, Token Web em JSON)                            | Token assinado usado para autenticação stateless                           |
-| **SQL** (Structured Query Language, Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM         |
+| **JWT** (JSON Web Token · Token Web em JSON)                            | Token assinado usado para autenticação stateless                           |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM         |
 
 ## Ambiente
 

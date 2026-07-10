@@ -12,7 +12,7 @@ de entrega.
 | **TBD** (Trunk-Based Development, Desenvolvimento baseado no tronco) | Estratégia onde a main é a única fonte da verdade; branches são curtas e focadas |
 | **Branch** (cópia)                                                   | Cópia isolada do código para desenvolver uma mudança sem afetar a main           |
 | **Commit** (registro de alteração)                                   | Snapshot do código em um momento, com descrição do que mudou e por quê           |
-| **PR** (Pull Request, Pedido de Integração)                          | Solicitação de mesclagem de uma branch para a main, com revisão obrigatória      |
+| **PR** (Pull Request · Pedido de Integração)                          | Solicitação de mesclagem de uma branch para a main, com revisão obrigatória      |
 | **Merge** (mesclagem)                                                | Integração das alterações de uma branch de volta à main                          |
 
 ## Branches
@@ -21,7 +21,7 @@ de entrega.
 desenvolvimento de software onde a `main` (fluxo principal) é a **fonte única da verdade**.
 
 As branches derivam da `main`. Essas cópias devem existir por poucos dias, para desenvolver
-melhorias e correções, e voltam à `main` via **PR** (Pull Request, Pedido de Integração).
+melhorias e correções, e voltam à `main` via **PR** (Pull Request · Pedido de Integração).
 
 ```
 main → branch → commits → PR → review → merge → main
