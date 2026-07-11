@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.27] - 2026-07-10
+
+### Added
+
+- **Versionamento de API** em `docs/shared/platform/api-design.md`: seção nova que fixa o contrato no prefixo da rota (`/api/v1`), separa mudança aditiva de incompatível numa tabela, mostra `/api/v2` convivendo lado a lado com `/api/v1` e deixa `GET /health` fora do contrato de versão. Todos os exemplos de rota do arquivo passaram a carregar o prefixo de versão (`/api/orders` → `/api/v1/orders`, incluindo verbos, convenções de rota e blocos de código).
+- **Verbo QUERY** em `api-design.md`: linha nova na tabela de verbos REST e seção "Leituras com corpo" explicando a leitura segura e idempotente que carrega o filtro no body (rascunho na IETF), com exemplo `curl` e a ressalva de tooling do OpenAPI 3.1/3.2. GraphQL entra ao lado como a outra forma de recorte por campo.
+- **Erros no padrão Problem Details (RFC 9457)** em `api-design.md`: seção nova com a tabela de campos (`type`, `title`, `status`, `detail`, `instance`, `code`, `errors`) e o mapeamento do `{ code, message }` mínimo para a forma completa do RFC.
+- **Paginação** e **Limite de requisições** em `api-design.md`: `meta.pagination` com `page`/`pageSize`/`totalPages`/`totalItems` e o porquê do teto de `pageSize`; contrato de `429 Too Many Requests` com `Retry-After` e cabeçalhos `X-RateLimit-*`, por cliente e por rota.
+- **Documentação a partir do schema** e **Padrões e RFCs** em `api-design.md`: um schema gera validação, tipos e OpenAPI de uma vez (Scalar, Swagger UI, Redoc, GraphiQL); tabela de normas com links (RFC 9110, 9457, rascunho QUERY, 6750, 7519, 8259, OpenAPI 3.1) e quem é a IETF. Novas linhas na tabela de Conceitos: `versioning`, `QUERY`, `Problem Details`, `RFC`, `IETF`.
+- **Integração com observabilidade** em `docs/shared/platform/integrations.md`: seção nova mostrando que o contrato estável (envelope único, `error.code` previsível, `traceId` em toda resposta) deixa Sentry, Datadog, New Relic, Grafana, Logtail e Slack consumirem os mesmos campos sem adaptação por rota.
+- **CORS** em `docs/shared/platform/security.md`: seção "CORS: allowlist no boundary" com Bad/Good (allowlist vs `*`), a incompatibilidade de `Access-Control-Allow-Credentials: true` com `*` e a nota de que CORS só existe no navegador; linha nova na tabela de Conceitos.
+- **APIs, HTTP e RFCs** em `REFERENCES.md`: seção nova de bibliografia com RFC 9110, 9457, rascunho QUERY, 6750, 7519, 8259, OpenAPI 3.1 e o catálogo oficial das RFCs.
+
+### Changed
+
+- **Alinhamento do C#** em `docs/csharp/conventions/advanced/api-design.md`: nota apontando que versionamento (`Asp.Versioning.Http`), verbo QUERY (`MapMethods`) e Problem Details (`TypedResults.Problem`) são agnósticos e vivem na SSOT, com o idiom de cada um em ASP.NET Core.
+- Diagrama do pipeline de requisição em `api-design.md` reescrito como dois fluxos lineares da esquerda para a direita (Requisição / Resposta), no lugar do desenho bidirecional com setas de retorno.
+
 ## [1.28.26] - 2026-07-10
 
 ### Changed

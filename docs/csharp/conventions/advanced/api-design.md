@@ -493,3 +493,9 @@ public record ApiResponse<T>
 
 A tradução de `Result` para HTTP acontece no handler ou em uma extensão sobre `Result`, usando
 `TypedResults` (ver seção [TypedResults vs Results](#typedresults-vs-results)).
+
+Versionamento, verbo QUERY e o padrão de erro Problem Details também são agnósticos e vivem na SSOT.
+Em ASP.NET Core, o versionamento de rota usa o pacote `Asp.Versioning.Http` para servir `/api/v1` e
+`/api/v2` lado a lado; um verbo fora dos padrão entra por `app.MapMethods("/reports", ["QUERY"], ...)`;
+e o corpo de erro sai pronto no formato Problem Details via `TypedResults.Problem(...)`, que já emite
+`type`, `title`, `status` e `detail`.

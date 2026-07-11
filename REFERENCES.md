@@ -27,6 +27,17 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Event-Driven Architecture, Martin Fowler](https://martinfowler.com/articles/201701-event-driven.html)  
 [CloudEvents Spec](https://cloudevents.io/)
 
+## APIs, HTTP e RFCs
+
+[RFC 9110: HTTP Semantics](https://www.rfc-editor.org/rfc/rfc9110)  
+[RFC 9457: Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc9457)  
+[QUERY: rascunho IETF do método de leitura com corpo](https://datatracker.ietf.org/doc/draft-ietf-httpbis-safe-method-w-body/)  
+[RFC 6750: Bearer Token Usage](https://www.rfc-editor.org/rfc/rfc6750)  
+[RFC 7519: JSON Web Token (JWT)](https://www.rfc-editor.org/rfc/rfc7519)  
+[RFC 8259: The JSON Data Interchange Format](https://www.rfc-editor.org/rfc/rfc8259)  
+[OpenAPI Specification 3.1](https://spec.openapis.org/oas/v3.1.0)  
+[Catálogo oficial das RFCs, rfc-editor.org](https://www.rfc-editor.org/series/rfc/)
+
 ## DDD e Modelagem de Domínio
 
 Domain-Driven Design, Eric Evans _(livro)_  

@@ -78,9 +78,15 @@ query {
 - Quando o time não tem familiaridade; a curva de aprendizado de schema,
   resolvers e N+1 interno é real
 
+GraphQL não versiona pela URL como o REST. O schema evolui somando campos e
+marcando os antigos como `deprecated`; quem consome escolhe quando parar de
+pedir o campo velho. Para leitura com filtro grande sem abrir mão do envelope
+REST, veja o verbo QUERY em
+[api-design.md](api-design.md#leituras-com-corpo-o-verbo-query).
+
 ### Consulta com variável
 
-O risco mais comum em queries maiores é o over-fetching combinado com filtragem
+O risco mais comum em queries maiores é o over-fetching (busca excessiva) combinado com filtragem
 no cliente: buscar tudo e encontrar um. Variáveis no servidor resolvem os dois
 problemas ao mesmo tempo.
 
@@ -669,6 +675,25 @@ async function callWithRetry(requestFn, maxAttempts = 3) {
   Definir timeout protege contra requisições que nunca terminam.
 
 ---
+
+## Integração com observabilidade
+
+Um contrato estável é o que torna a integração barata. Quando o envelope é único, o `error.code` é
+previsível e o `traceId` vem em toda resposta (também no cabeçalho `X-Trace-Id`), cada ferramenta de
+observabilidade e alerta consome os mesmos campos, sem adaptação por rota.
+
+| Ferramenta | Como consome o contrato |
+| --- | --- |
+| [Sentry](https://sentry.io) | Captura de erros e stack traces, agrupados por `error.code` |
+| [Datadog](https://www.datadoghq.com) | Métricas, traces e dashboards; o `traceId` casa com o `http.route` |
+| [New Relic](https://newrelic.com) | **APM** (Application Performance Monitoring, monitoramento de desempenho) ponta a ponta |
+| [Grafana](https://grafana.com) | Painéis e visualização sobre logs e métricas |
+| [Logtail](https://betterstack.com/log-management) | Busca e retenção de logs por `traceId`, com ingestão via [OpenTelemetry](https://opentelemetry.io) |
+| [Slack](https://slack.com) | Alertas e notificações de incidente no canal do time |
+
+São exemplos conhecidos; outras plataformas entram do mesmo jeito conforme a aplicação exigir. O
+fluxo do `traceId` que liga resposta e log está em
+[observability.md](../standards/observability.md#correlation-id).
 
 ## Referência rápida
 

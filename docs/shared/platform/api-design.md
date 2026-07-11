@@ -4,10 +4,10 @@
 > Idiomas específicos em [csharp/conventions/advanced/api-design.md](../../csharp/conventions/advanced/api-design.md) e [vbnet/conventions/advanced/api-design.md](../../vbnet/conventions/advanced/api-design.md).
 
 **API** (Application Programming Interface · Interface de Programação de Aplicações) é o contrato entre
-cliente e servidor. Um design bom padroniza quatro coisas: o pipeline de uma requisição, o contrato
-de entrada e saída, o **shape** (formato) da resposta e a semântica de verbos e status. Quando esses
-quatro pontos estão previsíveis, o cliente trata qualquer endpoint da mesma forma, e o servidor
-evolui sem quebrar integração.
+cliente e servidor. Um design bom padroniza o caminho de uma requisição, o contrato de entrada e
+saída, o **shape** (formato) da resposta, a semântica de verbos e status, e o versionamento que
+mantém tudo isso estável no tempo. Quando esses pontos estão previsíveis, o cliente trata qualquer
+endpoint da mesma forma, e o servidor evolui sem quebrar integração.
 
 ## Conceitos fundamentais
 
@@ -20,6 +20,11 @@ evolui sem quebrar integração.
 | **Correlation ID** (identificador de correlação) | Id gerado na borda, propagado em `meta` e logs, que rastreia uma requisição ponta a ponta |
 | **Result** (resultado) | Tipo de domínio que carrega sucesso ou falha sem usar exceções; o controller traduz para HTTP no boundary |
 | **idempotency** (operação repetível sem efeito adicional) | Propriedade de uma operação que produz o mesmo estado quando repetida com os mesmos parâmetros |
+| **versioning** (versionamento de contrato) | Prefixo estável na rota (`/api/v1`) que congela o formato das respostas; uma mudança incompatível estreia como `/api/v2`, lado a lado |
+| **QUERY** (verbo HTTP de leitura com corpo) | Método HTTP de leitura segura que leva o filtro no corpo, não na query string; rascunho na IETF |
+| **Problem Details** (corpo de erro padronizado · RFC 9457) | Formato comum para o corpo de um erro HTTP: `type`, `title`, `status`, `detail`, `instance` |
+| **RFC** (Request for Comments · Pedido de Comentários) | Documento numerado da IETF que fixa um padrão da internet: HTTP, JSON, tokens |
+| **IETF** (Internet Engineering Task Force · força-tarefa de engenharia da internet) | Organização aberta, movida por consenso técnico, que padroniza os protocolos da internet e publica as RFCs |
 
 ## Pipeline de uma requisição
 
@@ -28,8 +33,8 @@ boundary (limite) externo; o handler é o coração do caso de uso; o service co
 compartilhada; o repository isola o acesso a dados.
 
 ```
-Cliente → Controller thin → Handler → Service → Repository → Storage
-       ←    Envelope     ← Result ← domínio ← entidade   ←
+Requisição:  Cliente → Controller thin → Handler → Service → Repository → Storage
+Resposta:    Storage → entidade → domínio → Result → Envelope → Cliente
 ```
 
 Cada camada tem uma responsabilidade única:
@@ -61,7 +66,7 @@ funcionando, o boundary está no lugar.
 <summary>❌ Ruim: controller com acesso a banco e regra de negócio</summary>
 
 ```js
-app.post('/api/orders', async (httpRequest, httpResponse) => {
+app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
   const { productId, quantity } = httpRequest.body;
 
   if (!productId) {
@@ -91,7 +96,7 @@ storage exige mexer no controller. Testar a regra de preço exige subir um servi
 ```js
 // features/orders/ordersController.js
 export function registerOrdersController(app, { createOrder }) {
-  app.post('/api/orders', async (httpRequest, httpResponse) => {
+  app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
     const result = await createOrder.handle(httpRequest.body);
 
     if (result.isFailure) {
@@ -151,7 +156,7 @@ Dois sinais de um contrato de request saudável: campos com nome de domínio (`p
 <summary>❌ Ruim: objeto mutável montado ad-hoc, sem validação explícita</summary>
 
 ```js
-app.post('/api/orders', async (httpRequest, httpResponse) => {
+app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
   const request = httpRequest.body;
   request.quantity = parseInt(request.quantity);
 
@@ -193,7 +198,7 @@ export function parseOrderRequest(body) {
 ```
 
 ```js
-app.post('/api/orders', async (httpRequest, httpResponse) => {
+app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
   const parsed = parseOrderRequest(httpRequest.body);
 
   if (parsed.isFailure) {
@@ -279,7 +284,7 @@ na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). 
 | `data` | DTO de resposta (objeto, array ou `null` em delete) | Sempre presente em sucesso |
 | `meta.correlationId` | Id propagado nos logs para rastreamento ponta a ponta | Sempre |
 | `meta.requestedAt` | Timestamp ISO 8601 UTC da requisição | Sempre |
-| `meta.pagination` | `{ page, pageSize, total }` | Apenas em coleções paginadas |
+| `meta.pagination` | `{ page, pageSize, totalPages, totalItems }` | Apenas em coleções paginadas |
 | `error.code` | Código estável do erro (ex: `ORDER_NOT_FOUND`) | Apenas em falha |
 | `error.message` | Mensagem legível, sem detalhes internos | Apenas em falha |
 | `error.details` | Lista de issues de validação | Apenas em `400 Bad Request` |
@@ -339,6 +344,57 @@ O `correlationId` em `meta` é o mesmo propagado nos logs da requisição. Veja
 
 </details>
 
+## Erros no padrão Problem Details
+
+O corpo de erro merece o mesmo cuidado que o de sucesso. Em vez de inventar um formato próprio, o
+**Problem Details** (RFC 9457) já define um: um objeto com `type`, `title`, `status`, `detail` e
+`instance`. Adotá-lo dá ao cliente um contrato de erro que ele já conhece, e liga a resposta às
+ferramentas que leem esse padrão.
+
+| Campo | Conteúdo |
+|---|---|
+| `type` | URI que identifica a classe do problema (ex: `/problems/not-found`) |
+| `title` | Resumo curto e estável do problema (`Not Found`) |
+| `status` | Código HTTP, igual ao status da resposta |
+| `detail` | Mensagem legível sobre este caso específico |
+| `instance` | Caminho do recurso que falhou (`/api/v1/orders/123`) |
+| `code` | Identificador estável de máquina (`ORDER_NOT_FOUND`), extensão comum ao RFC |
+| `errors` | Lista de campos inválidos, presente só em `400` de validação |
+
+```json
+{
+  "error": {
+    "status": 404,
+    "title": "Not Found",
+    "detail": "Order 123 not found.",
+    "code": "ORDER_NOT_FOUND",
+    "type": "/problems/not-found",
+    "instance": "/api/v1/orders/123"
+  }
+}
+```
+
+O `error.code` é a chave que o cliente compara em código; `error.detail` é o texto que uma pessoa
+lê; `error.status` repete o HTTP para quem só tem o corpo em mãos. O `{ code, message }` mínimo da
+seção anterior é a forma compacta desse mesmo contrato: `title` no lugar de `message`, com `detail`
+quando o caso pede mais.
+
+## Paginação
+
+Coleções grandes não voltam inteiras. A listagem aceita `?page=` e `?pageSize=`, e a resposta
+descreve onde o cliente está no conjunto. Os campos ficam em `meta.pagination`, ao lado de `data`, na
+ordem em que se lê: "página X de Y, tantos por página, tantos no total".
+
+| Campo | Conteúdo |
+|---|---|
+| `page` | Página atual, começa em 1 |
+| `pageSize` | Registros por página, com um padrão e um teto (ex: padrão 10, máximo 100) |
+| `totalPages` | Última página, `ceil(totalItems / pageSize)`, nunca abaixo de 1 |
+| `totalItems` | Total de registros no conjunto |
+
+Um teto no `pageSize` protege o servidor. Sem ele, `?pageSize=1000000` puxa a coleção inteira numa
+requisição só. O padrão cobre o caso comum; o teto limita o pior caso.
+
 ## Verbos REST e rotas
 
 **REST** (Representational State Transfer · Transferência de Estado Representacional) usa verbos HTTP
@@ -346,22 +402,23 @@ com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer
 
 | Verbo | Semântica | Idempotente | Exemplo |
 |---|---|---|---|
-| `GET` | Leitura sem efeito colateral | Sim | `GET /api/orders`, `GET /api/orders/{id}` |
-| `POST` | Criação de recurso | Não | `POST /api/orders` |
-| `PUT` | Substituição completa | Sim | `PUT /api/orders/{id}` |
-| `PATCH` | Atualização parcial | Não | `PATCH /api/orders/{id}` |
-| `DELETE` | Remoção | Sim | `DELETE /api/orders/{id}` |
+| `GET` | Leitura sem efeito colateral | Sim | `GET /api/v1/orders`, `GET /api/v1/orders/{id}` |
+| `POST` | Criação de recurso | Não | `POST /api/v1/orders` |
+| `PUT` | Substituição completa | Sim | `PUT /api/v1/orders/{id}` |
+| `PATCH` | Atualização parcial | Não | `PATCH /api/v1/orders/{id}` |
+| `DELETE` | Remoção | Sim | `DELETE /api/v1/orders/{id}` |
+| `QUERY` | Leitura segura com filtro no corpo | Sim | `QUERY /api/v1/reports` (rascunho IETF) |
 
 Convenções de rota:
 
-- Kebab-case na **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso): `/api/order-items`, não `/api/orderItems`
-- Plural para coleções: `/api/orders`, não `/api/order`
-- Sem verbo na URL: `POST /api/orders`, não `POST /api/create-order`
-- Recurso aninhado quando há relação clara: `/api/orders/{id}/items`
-- Query string para filtro e paginação: `/api/orders?status=pending&page=2`
+- Kebab-case na **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso): `/api/v1/order-items`, não `/api/v1/orderItems`
+- Plural para coleções: `/api/v1/orders`, não `/api/v1/order`
+- Sem verbo na URL: `POST /api/v1/orders`, não `POST /api/v1/create-order`
+- Recurso aninhado quando há relação clara: `/api/v1/orders/{id}/items`
+- Query string para filtro e paginação: `/api/v1/orders?status=pending&page=2`
 
 Verbos customizados (`/cancel`, `/approve`) entram como sub-recurso de ação quando a operação não se
-encaixa nos cinco verbos padrão: `POST /api/orders/{id}/cancel`.
+encaixa nos cinco verbos padrão: `POST /api/v1/orders/{id}/cancel`.
 
 ## Status codes
 
@@ -386,6 +443,79 @@ deu certo, se o erro é dele ou do servidor, e se vale tentar de novo.
 A distinção entre `400` e `422` é sutil mas útil: `400` é erro de forma (o servidor não entendeu),
 `422` é erro de regra (o servidor entendeu, mas rejeitou). Cliente com validação local evita `400`;
 `422` sempre vem do servidor.
+
+## Limite de requisições
+
+Uma API aberta se protege de abuso e de picos acidentais. O **rate limiting** (limitação de taxa)
+conta as requisições de cada cliente numa janela de tempo e recusa o excesso com `429 Too Many
+Requests`. A resposta diz quando voltar a tentar.
+
+| Cabeçalho | Conteúdo |
+|---|---|
+| `Retry-After` | Segundos até a próxima tentativa ser aceita |
+| `X-RateLimit-Limit` | Teto de requisições na janela |
+| `X-RateLimit-Remaining` | Quantas ainda cabem na janela atual |
+| `X-RateLimit-Reset` | Quando a janela reinicia |
+
+O limite se aplica por cliente e por rota, não ao servidor inteiro: um cliente ruidoso não derruba os
+outros. Caminhos de navegação (páginas, documentação, favicon) ficam fora da conta. Do lado do
+cliente, tratar `429` é igual a qualquer integração externa, com **exponential backoff** (recuo
+exponencial): ver [Integrations](./integrations.md#rate-limits-e-retries).
+
+## Versionamento
+
+A API é um contrato público. Enquanto alguém consome uma rota, o formato da resposta não pode mudar
+de um jeito que quebre a integração. O versionamento fixa esse contrato num ponto visível: o prefixo
+da rota.
+
+Os recursos vivem sob `/api/v1`. O `/api` separa a superfície de API das páginas de navegação e da
+documentação; o `v1` congela o contrato. Enquanto ele existir, os campos e o shape das respostas
+continuam os mesmos.
+
+Nem toda mudança quebra. A distinção guia onde ela entra:
+
+| Mudança | Exemplo | Onde entra |
+|---|---|---|
+| Aditiva | Campo opcional novo, rota nova, status novo | Mesma versão (`/api/v1`) |
+| Incompatível | Renomear ou remover campo, mudar tipo, remover rota | Versão nova (`/api/v2`) |
+
+Uma mudança incompatível estreia como `/api/v2` e convive lado a lado com `/api/v1`. Ninguém migra
+de um dia para o outro: o cliente antigo continua na v1, o novo já nasce na v2, e a v1 sai de cena
+quando o último consumidor sair.
+
+Endpoints operacionais ficam fora do contrato de versão. `GET /health` responde status e versão,
+não faz parte da API de recursos, então vive fora do prefixo, em `/health`.
+
+GraphQL não versiona pela URL. O schema evolui somando campos e marcando os antigos como
+`deprecated`; quem consome escolhe quando parar de pedir o campo velho. Veja
+[Integrations](./integrations.md#graphql).
+
+## Leituras com corpo: o verbo QUERY
+
+Relatório é a leitura que o `GET` não resolve bem: cada tela quer um recorte, e o filtro nem sempre
+cabe na URL. A query string tem limite de tamanho, aparece em log e fica em cache. Dois caminhos
+cobrem esse caso.
+
+O **QUERY** é um método HTTP recente ([rascunho na IETF](https://datatracker.ietf.org/doc/draft-ietf-httpbis-safe-method-w-body/)).
+É uma leitura segura e idempotente, igual ao `GET`, com uma diferença: carrega um corpo. O filtro
+grande vai no body, sem estourar o limite da URL e sem vazar em log ou cache. A resposta volta no
+mesmo envelope das rotas REST, porque continua sendo uma leitura como as outras.
+
+```bash
+curl -X QUERY https://api.exemplo.dev/api/v1/reports \
+  -H "Authorization: Bearer SEU_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"type":"expense","from":"2026-01-01","to":"2026-01-31"}'
+```
+
+Uma ressalva de tooling: o OpenAPI 3.1 não tem campo para o método QUERY no Path Item, e só o 3.2
+traz `query`. Enquanto as UIs de documentação não renderizam o verbo, documente-o em prosa, com o
+exemplo acima.
+
+Para o mesmo problema com recorte por campo, o **GraphQL** deixa o cliente escolher o que volta em
+uma única consulta. A resposta segue o contrato do próprio GraphQL (`data` e `errors`), fora do
+envelope REST: cada protocolo mantém a forma que já se espera dele. Detalhe em
+[Integrations](./integrations.md#graphql).
 
 ## Result para HTTP no boundary
 
@@ -445,7 +575,7 @@ export function findOrderByIdHandler({ orderService }) {
 
 ```js
 // features/orders/ordersController.js
-app.get('/api/orders/:id', async (httpRequest, httpResponse) => {
+app.get('/api/v1/orders/:id', async (httpRequest, httpResponse) => {
   const result = await findOrderById.handle(httpRequest.params.id);
 
   if (result.isFailure) {
@@ -480,6 +610,59 @@ O handler volta para ser testável como função pura de domínio. A tabela de m
 lugar, versionada e auditável.
 
 </details>
+
+## Documentação a partir do schema
+
+A documentação da API não precisa ser escrita à mão, nem manter sincronia à força. Ela nasce do
+mesmo schema que valida a entrada. Você declara o schema uma vez, e dele saem três coisas: a
+validação no boundary, os tipos da linguagem e a especificação **OpenAPI** (formato padrão que
+descreve a API num documento). Nenhuma das três sai do lugar sem as outras.
+
+```
+schema → validação no boundary → tipos → OpenAPI → UI de documentação
+```
+
+Com a spec pronta, ferramentas de leitura a renderizam sem trabalho extra: Scalar, Swagger UI e
+Redoc mostram cada rota, o corpo esperado e as respostas; GraphiQL faz o mesmo para o schema GraphQL
+via introspection. A regra que sustenta isso: anotar a rota junto do schema, para o documento nascer
+do código em vez de correr atrás dele.
+
+```js
+// features/orders/orderRequest.js
+import { z } from 'zod';
+
+export const orderRequestSchema = z
+  .object({
+    productId: z.string().uuid(),
+    quantity: z.number().int().positive(),
+  })
+  .openapi('OrderRequest');
+```
+
+O mesmo `orderRequestSchema` valida o body, infere o tipo do request e entra na spec OpenAPI. Um
+campo novo aparece nos três lugares de uma vez.
+
+## Padrões e RFCs
+
+Um contrato previsível se apoia em normas públicas. Cada RFC recebe um número estável e texto
+público, mantido pela IETF: a [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457), por exemplo,
+especifica o Problem Details usado nos erros.
+
+Adotar um padrão conhecido é ganho de processo. Quem consome a API não reaprende um formato a cada
+rota, a revisão de uma mudança fica mais rápida e as ferramentas (clientes, validadores, monitores)
+funcionam sem adaptação caso a caso.
+
+| Norma | O que define |
+|---|---|
+| [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110) | Semântica de HTTP: verbos, status codes, cabeçalhos |
+| [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) | Problem Details: o corpo padrão de um erro |
+| [QUERY (rascunho IETF)](https://datatracker.ietf.org/doc/draft-ietf-httpbis-safe-method-w-body/) | O método QUERY: leitura segura com corpo |
+| [RFC 6750](https://www.rfc-editor.org/rfc/rfc6750) | Bearer Token: o cabeçalho `Authorization: Bearer` |
+| [RFC 7519](https://www.rfc-editor.org/rfc/rfc7519) | JWT: token assinado que carrega a identidade |
+| [RFC 8259](https://www.rfc-editor.org/rfc/rfc8259) | JSON: o formato de troca das mensagens |
+| [OpenAPI 3.1](https://spec.openapis.org/oas/v3.1.0) | A especificação que descreve a API |
+
+Catálogo oficial das normas: [rfc-editor.org/series/rfc](https://www.rfc-editor.org/series/rfc/).
 
 ## Cross-links
 

@@ -10,6 +10,7 @@ Segurança é uma propriedade que atravessa todas as decisões de design, do ban
 |---|---|
 | **XSS** (Cross-Site Scripting, injeção de script) | Ataque que injeta scripts maliciosos na página para roubar dados ou sequestrar sessões |
 | **CSRF** (Cross-Site Request Forgery, falsificação de requisição entre sites) | Ataque que força o navegador do usuário autenticado a fazer requisições não autorizadas |
+| **CORS** (Cross-Origin Resource Sharing, compartilhamento de recursos entre origens) | Regra que o navegador aplica para decidir quais origens podem chamar a API a partir de outra origem |
 | **JWT** (JSON Web Token · Token Web em JSON) | Token assinado que transmite identidade e claims entre cliente e servidor |
 | **authentication** (autenticação) | Verificação de identidade: quem é você? |
 | **authorization** (autorização) | Verificação de permissão: o que você pode fazer? |
@@ -93,3 +94,44 @@ Cookies de sessão sem flags de segurança são vetores para dois ataques cláss
 | `SameSite=Strict` | CSRF | Cookie não é enviado em requisições cross-origin |
 
 As três flags são complementares. Ausência de qualquer uma deixa um vetor de ataque aberto.
+
+## CORS: allowlist no boundary
+
+**CORS** é a regra que o navegador aplica antes de deixar uma página de uma origem chamar uma API de
+outra. O servidor declara as origens que aceita no cabeçalho `Access-Control-Allow-Origin`. Devolver
+`*` abre a API para qualquer site; o correto é uma allowlist de origens conhecidas.
+
+<details>
+<summary>❌ Ruim: libera qualquer origem</summary>
+
+```
+Access-Control-Allow-Origin: *
+```
+
+Qualquer página na web chama a API pelo navegador do usuário. E o `*` cai por terra no dia em que a
+sessão virar cookie: `Access-Control-Allow-Credentials: true` não combina com `*`.
+
+</details>
+
+<details>
+<summary>✅ Bom: reflete só origens conhecidas</summary>
+
+```js
+const allowedOrigins = new Set([
+  'https://app.exemplo.dev',
+  'http://localhost:3000',
+]);
+
+function resolveCorsOrigin(requestOrigin) {
+  const isAllowed = allowedOrigins.has(requestOrigin);
+  if (!isAllowed) return null;
+
+  return requestOrigin;
+}
+```
+
+</details>
+
+CORS só existe dentro do navegador. `curl`, Postman e consumo server-side não passam por ele. O
+allowlist não atrapalha ferramentas nem integração de backend; ele fecha só o caminho que o navegador
+de um terceiro usaria.
