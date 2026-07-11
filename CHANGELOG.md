@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.28.28] - 2026-07-10
+
+### Fixed
+
+- **Writing soul elevado de lista de proibições para contrato de clareza** (`.ai/skills/writing-soul.md`), Ciclo A do épico de alinhamento de documentação. Duas seções novas ancoram a compreensão como meta: "Why this soul exists" (clareza acima de brevidade, cleverness e completude; o teste do leitor que segue o texto na primeira passada) e "Clarity mandate" (simplificar a frase, explicar em vez de só afirmar, glosar entre parênteses o termo que o leitor pode não conhecer julgando pela audiência e não por ser sigla, liderar pela conclusão). A regra de em dash passou a valer em qualquer surface, inclusive comentários de código e scripts de exemplo. Anti-AIismo reforçado: heurística "machine-generated smell" (parágrafos de tamanho par, hedges balanceados, tricolons arrumados → reescrever como um sênior explicando a um colega) e listas de openers e jargão ampliadas (leverage/utilize/delve/seamless/robust, "It's worth noting", "That said", "When it comes to", "At the end of the day"). A glosa na Default voice virou dirigida por compreensão, com 2ª glosa quando o termo reaparece longe da primeira. "Language of delivery" agora reconhece os `docs/**` pt-BR e aponta as Standing Directives de `tasks.md` como SSOT do formato pt-BR. Standing Directives ganharam a linha do contrato de clareza no topo (cross-ref, sem duplicar). Gates: soul sem em dash próprio (só menções da regra) nem adverbs banidos, dogfood `just` corrigido; audit 2514/391/0; test:docs 38/0; writing-lint 19/0; lint 0. Base canônica para os próximos ciclos (JS redo profundo → shared → C# → SQL → AI → 15 linguagens).
+
 ## [1.28.27] - 2026-07-10
 
 ### Added
