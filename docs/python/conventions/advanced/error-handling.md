@@ -17,6 +17,8 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 | **exception chaining** (encadeamento de exceções) | `raise ... from err` preserva a causa raiz |
 | **bare except** (except genérico) | `except:` sem tipo; mascara erros e nunca deve ser usado |
 
+<a id="multiple-return-types"></a>
+
 ## Múltiplos tipos de retorno
 
 <details>
@@ -59,6 +61,8 @@ def process_order(order):
 ```
 
 </details>
+
+<a id="exception-as-string"></a>
 
 ## Exceção como string
 

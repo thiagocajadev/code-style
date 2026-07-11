@@ -210,4 +210,4 @@ public static WebApplicationBuilder AddOrders(this WebApplicationBuilder builder
 
 ## Registro
 
-O registro das dependências pertence ao extension method do domínio, não ao `Program.cs`. Veja [Project Foundation](../../setup/project-foundation.md#extension-methods-por-domínio).
+O registro das dependências pertence ao extension method do domínio, não ao `Program.cs`. Veja [Project Foundation](../../setup/project-foundation.md#extension-methods-by-domain).

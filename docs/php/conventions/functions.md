@@ -17,6 +17,8 @@ O **explaining return** nomeia o resultado antes de retornar. PHP 8.0+ introduzi
 | **stepdown rule** (regra de descida) | Orquestrador aparece primeiro; detalhes ficam abaixo na ordem de leitura |
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação
 
 <details>
@@ -89,6 +91,8 @@ private function applyCustomerDiscount(CreateOrderInput $input): CreateOrderInpu
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

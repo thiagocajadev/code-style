@@ -16,6 +16,8 @@ mesmas regras: orquestrador visível no topo, detalhes abaixo, retorno explicado
 | **extension function** (função de extensão) | função adicionada a um tipo existente sem herança; sintaxe `fun Type.name()` |
 | **top-level function** (função de topo) | função declarada fora de qualquer classe; favorita ao utilitário estático |
 
+<a id="god-function"></a>
+
 ## God function: múltiplas responsabilidades
 
 <details>
@@ -80,6 +82,8 @@ private fun notifyConfirmation(email: String) { ... }
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação
 
 <details>
@@ -119,6 +123,8 @@ private fun calculateRevenue(orders: List<Order>): Double =
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

@@ -623,4 +623,4 @@ Cross-links dentro do guia:
 - [`../../../shared/platform/database.md`](../../../shared/platform/database.md): SQL vs NoSQL, tuning
 - [`../sgbd/mongodb.md`](../../sgbd/mongodb.md): idiom MongoDB: conexão, CRUD, aggregation, indexing
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-and-domain-modeling).

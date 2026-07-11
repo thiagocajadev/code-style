@@ -95,6 +95,8 @@ app.Run();
 
 </details>
 
+<a id="extension-methods-by-domain"></a>
+
 ## Extension methods por domínio
 
 Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam junto do domínio que registram.

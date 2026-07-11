@@ -76,6 +76,8 @@ private func notifyConfirmation(to email: String) async { ... }
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação
 
 <details>
@@ -118,6 +120,8 @@ private func calculateRevenue(_ orders: [Order]) -> Double {
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

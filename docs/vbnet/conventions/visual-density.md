@@ -95,6 +95,8 @@ End Function
 
 </details>
 
+<a id="return-separated"></a>
+
 ## Return tight vs return separado
 
 A regra é simples: `Return` é **tight** com a linha imediatamente acima **somente quando essa linha é a `Dim` que nomeia o valor retornado** (Explaining Return), e essa `Dim` está em uma única linha.

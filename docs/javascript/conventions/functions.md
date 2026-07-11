@@ -21,6 +21,8 @@ separado, porque cada tarefa fica presa às outras.
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 | **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe, nunca os dois |
 
+<a id="god-function"></a>
+
 ## Função que faz tudo: várias responsabilidades
 
 <details>
@@ -113,6 +115,8 @@ async function processOrder(orderId) {
 
 </details>
 
+<a id="nested-helpers"></a>
+
 ## Funções auxiliares aninhadas: quando separar
 
 Os exemplos deste guia declaram funções auxiliares (as que executam um passo do
@@ -204,6 +208,8 @@ function formatCurrency(amount) {
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## Um nível de abstração por função
 
 O princípio por trás dessa divisão é manter um único nível de abstração por
@@ -255,6 +261,8 @@ function buildOrderSummary(order) {
 ```
 
 </details>
+
+<a id="separate-compute-from-format"></a>
 
 ## Separar cálculo de formatação
 
@@ -380,6 +388,8 @@ async function submitOrder(orderId) {
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 
@@ -615,6 +625,8 @@ function buildConfirmationEmail(user, order) {
 ```
 
 </details>
+
+<a id="vertical-parameters"></a>
 
 ## Estilo vertical: parâmetros
 

@@ -214,6 +214,8 @@ String httpMessage(int code) {
 
 </details>
 
+<a id="switch-expression"></a>
+
 ## `switch` como expressão (Dart 3)
 
 <details>

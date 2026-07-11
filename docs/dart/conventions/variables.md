@@ -101,6 +101,8 @@ class OrderService {
 
 </details>
 
+<a id="magic-values"></a>
+
 ## Valores mágicos
 
 <details>

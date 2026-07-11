@@ -14,6 +14,8 @@ Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para t
 | **Hungarian notation** (notação húngara) | Antipadrão: prefixos como `strName`, `intCount`; evitar em VB.NET moderno |
 | **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `' why:`.
@@ -223,6 +225,8 @@ End Function
 ```
 
 </details>
+
+<a id="hungarian-notation"></a>
 
 ## Notação húngara
 

@@ -15,6 +15,8 @@ Erros bem estruturados separam o que é **problema de negócio** do que é **fal
 | **AutoCloseable** (autofechável) | interface que marca um recurso fechável automaticamente pelo `try-with-resources` |
 | **stack trace** (rastreamento de pilha) | sequência de chamadas que levou à exceção |
 
+<a id="multiple-return-types"></a>
+
 ## Múltiplos tipos de retorno
 
 <details>
@@ -53,6 +55,8 @@ public Order processOrder(String orderId) {
 ```
 
 </details>
+
+<a id="baseexception-centralized-abstraction"></a>
 
 ## BaseException: abstração centralizada
 

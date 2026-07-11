@@ -19,6 +19,8 @@ dado) é modelado com sealed classes ou `AsyncValue`.
 | `StateNotifier` | ViewModel no Riverpod; gerencia estado e expõe para os widgets |
 | `BlocBuilder` | widget que reconstrói quando o Bloc emite novo estado |
 
+<a id="logic-in-the-ui"></a>
+
 ## Lógica na UI
 
 <details>

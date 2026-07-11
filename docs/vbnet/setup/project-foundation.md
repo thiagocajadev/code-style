@@ -547,6 +547,8 @@ End Class
 
 </details>
 
+<a id="registration-by-domain"></a>
+
 ## Registro por domínio
 
 Cada domínio registra suas próprias dependências em um extension method de `IUnityContainer`. `ContainerConfig` agrega, sem conhecer os detalhes de nenhum domínio.

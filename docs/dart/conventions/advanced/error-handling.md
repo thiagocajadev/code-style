@@ -17,6 +17,8 @@ bugs de programação (não capturar em produção).
 | `on ExceptionType` | captura tipo específico; mais preciso que `catch (e)` genérico |
 | **Result pattern** (padrão Resultado) | sealed class com `Success` e `Failure` como alternativa ao throw |
 
+<a id="generic-exception"></a>
+
 ## Exception genérica
 
 <details>

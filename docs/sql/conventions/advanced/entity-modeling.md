@@ -757,4 +757,4 @@ Cross-links dentro do guia:
 - [`../../../shared/platform/database.md`](../../../shared/platform/database.md): tuning, EXPLAIN, troubleshooting
 - [`../../sgbd/postgres.md`](../../sgbd/postgres.md): idiom PostgreSQL
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-and-domain-modeling).

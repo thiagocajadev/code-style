@@ -49,12 +49,12 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 
 | Princípio                                                                                     | Descrição                                                            |
 | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                                 | Código universal, nomes curtos e sem ambiguidade                     |
-| [PSR-12 nativo](conventions/naming.md#convenções-de-case-psr-1--psr-12)                                     | PascalCase para classes; camelCase para métodos e variáveis          |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                 | Código universal, nomes curtos e sem ambiguidade                     |
+| [PSR-12 nativo](conventions/naming.md#case-conventions)                                     | PascalCase para classes; camelCase para métodos e variáveis          |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                    | Variáveis e funções que dispensam explicação                         |
 | [Orquestrador no topo](conventions/functions.md#stepdown-rule)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/functions.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
-| [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
+| [SLA](conventions/functions.md#single-level-of-abstraction)                             | Uma responsabilidade, um nível de abstração                          |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>
 
@@ -65,8 +65,8 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                   | Saída cedo na falha, sem else após return                            |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                            | Aninhamento em cascata substituído por fluxo plano                   |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                       | Linhas relacionadas juntas, grupos separados por uma linha em branco |
-| [Readonly por padrão](conventions/variables.md#mutação-direta)                                | `readonly` em propriedades e parâmetros; mutação é exceção           |
-| [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
+| [Readonly por padrão](conventions/variables.md#direct-mutation)                                | `readonly` em propriedades e parâmetros; mutação é exceção           |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                               | Constantes nomeadas no lugar de literais inline                      |
 
 <br>
 
@@ -74,7 +74,7 @@ Configuração inicial de um projeto PHP: estrutura, tooling e segurança.
 
 | Princípio                                                                                      | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Exceções tipadas](conventions/advanced/error-handling.md#exceção-como-string)                | Subclasses de `\RuntimeException`, identificáveis e tratáveis|
-| [Falhar rápido](conventions/advanced/error-handling.md#validação-tardia)                       | Validar cedo, interromper fluxo inválido                     |
+| [Exceções tipadas](conventions/advanced/error-handling.md#exception-as-string)                | Subclasses de `\RuntimeException`, identificáveis e tratáveis|
+| [Falhar rápido](conventions/advanced/error-handling.md#late-validation)                       | Validar cedo, interromper fluxo inválido                     |
 | [Fronteira de erro](conventions/advanced/error-handling.md#trycatch-espalhado)                 | try/catch nas fronteiras, propagar com contexto              |
 | [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                    | AAA: fases explícitas; data providers para múltiplos casos   |

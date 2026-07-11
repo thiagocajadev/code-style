@@ -18,6 +18,8 @@ desenho.
 | **type hint** (anotação de tipo) | `def f(x: int) -> str` documenta contrato e habilita type checker |
 | **keyword-only argument** (argumento exclusivo por nome) | argumento após `*` na assinatura; obriga chamada nominal e elimina ambiguidade |
 
+<a id="god-function"></a>
+
 ## God function: múltiplas responsabilidades
 
 <details>
@@ -90,6 +92,8 @@ async def issue_invoice(order):
 ```
 
 </details>
+
+<a id="single-level-of-abstraction"></a>
 
 ## SLA: orquestrador ou implementação, nunca os dois
 
@@ -216,6 +220,8 @@ async def fetch_product(product_id: int):
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

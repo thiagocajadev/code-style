@@ -14,6 +14,8 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured 
 | **trailing whitespace** (espaço em branco final) | Remover sempre; ruído invisível em diffs |
 | **line length** (comprimento de linha) | Limite de 120 colunas; sqlfluff aplica automaticamente |
 
+<a id="single-line-query"></a>
+
 ## Consulta em linha única
 
 <details>
@@ -41,6 +43,8 @@ WHERE
 ```
 
 </details>
+
+<a id="rule-of-three-inline"></a>
 
 ## Regra de 3: exceção inline
 
@@ -168,6 +172,8 @@ WHERE
 ```
 
 </details>
+
+<a id="vertical-conditions"></a>
 
 ## Condições verticais
 

@@ -18,6 +18,8 @@ guiam o desenho.
 | **helper** (método auxiliar) | método de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 | **builder** (construtor fluente) | padrão para construir objetos com muitos parâmetros sem listas longas |
 
+<a id="god-method"></a>
+
 ## God method: múltiplas responsabilidades
 
 <details>
@@ -93,6 +95,8 @@ private Order issueInvoice(Order order) {
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação, nunca os dois
 
 <details>
@@ -139,6 +143,8 @@ private String buildLineItems(Order order) {
 ```
 
 </details>
+
+<a id="separate-compute-from-format"></a>
 
 ## Separar cálculo de formatação
 
@@ -269,6 +275,8 @@ private Invoice submitOrder(String orderId) {
 
 </details>
 
+<a id="no-logic-in-return"></a>
+
 ## Sem lógica no retorno
 
 O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção
@@ -354,6 +362,8 @@ public Invoice processOrder(String orderId) {
 ```
 
 </details>
+
+<a id="vertical-parameters"></a>
 
 ## Estilo vertical: parâmetros
 

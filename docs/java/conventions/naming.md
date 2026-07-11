@@ -45,6 +45,8 @@ private Order applyDiscount(Order order, UnaryOperator<Order> calculateDiscount)
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -195,6 +197,8 @@ private void archiveDocument(byte[] file) { /* ... */ }
 ```
 
 </details>
+
+<a id="code-as-documentation"></a>
 
 ## Código como documentação
 

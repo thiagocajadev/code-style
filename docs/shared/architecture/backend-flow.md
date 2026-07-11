@@ -65,6 +65,8 @@ Quando a fila de jobs **é** o banco principal (PostgreSQL com `pgboss`, por exe
 implícito na ferramenta. O pattern só é necessário explicitamente quando banco e broker são sistemas
 distintos.
 
+<a id="job-idempotency"></a>
+
 ### Idempotência do job
 
 O worker deve ser seguro para re-executar o mesmo job mais de uma vez. Redes distribuídas entregam

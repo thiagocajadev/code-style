@@ -17,6 +17,8 @@ Exceções irrecuperáveis usam `preconditionFailure` ou `fatalError`.
 | `try?` | converte throws em opcional: sucesso = valor, erro = `nil` |
 | `try!` | força sucesso; lança fatalError se falhar; proibido em produção |
 
+<a id="domain-error-enum"></a>
+
 ## Enum de erros de domínio
 
 <details>

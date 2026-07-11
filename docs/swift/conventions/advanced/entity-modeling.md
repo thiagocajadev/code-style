@@ -560,7 +560,7 @@ A regra "no máximo 3" mora em `addPhone`, onde dá pra mudar sem mexer no schem
 
 </details>
 
-Listas seguem a regra de [`null-safety`](null-safety.md#coleções-preferir-vazio-a-optional): nunca nil, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a regra de [`null-safety`](null-safety.md#collections-empty-over-optional): nunca nil, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 
@@ -1024,4 +1024,4 @@ Cross-links dentro do guia:
 - [`../../../shared/architecture/domain-events.md`](../../../shared/architecture/domain-events.md): naming, outbox, eventual consistency
 - [`../null-safety.md`](null-safety.md): null-safety idiomático Swift
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-and-domain-modeling).

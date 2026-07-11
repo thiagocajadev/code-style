@@ -14,6 +14,8 @@
 | **div soup** (sopa de divs) | Anti-padrão: estrutura feita só de `<div>`/`<span>`, sem significado |
 | **figure** (figura) | `<figure>` com `<figcaption>`; agrupa mídia ao seu rótulo |
 
+<a id="semantic-elements"></a>
+
 ## Elementos semânticos
 
 `<div>` e `<span>` são elementos sem significado. Quando existe um elemento semântico para o caso de

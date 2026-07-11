@@ -229,6 +229,8 @@ JOIN
 
 </details>
 
+<a id="explicit-ordering"></a>
+
 ## Ordenação explícita
 
 Nunca assumir ordem natural. Declarar ORDER BY em todo SELECT que retorna lista.
@@ -300,6 +302,8 @@ WHERE
 ```
 
 </details>
+
+<a id="named-parameters"></a>
 
 ## Parâmetros nomeados: sem valores mágicos
 

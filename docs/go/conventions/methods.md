@@ -102,6 +102,8 @@ func (o Order) IsCancelable() bool {
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação
 
 Cada função deve operar em um único nível de abstração.
@@ -185,6 +187,8 @@ func applyCustomerDiscount(order Order) Order {
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

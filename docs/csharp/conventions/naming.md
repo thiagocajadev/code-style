@@ -14,6 +14,8 @@ Nomes em C# seguem convenções da plataforma .NET: **PascalCase** para tipos, m
 | **abbreviation** (abreviação) | Evite contrações ambíguas (`mgr`, `svc`); siglas conhecidas mantêm forma do .NET (`Id`, `Url`) |
 | **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
@@ -215,6 +217,8 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 ```
 
 </details>
+
+<a id="code-as-documentation"></a>
 
 ## Código como documentação
 

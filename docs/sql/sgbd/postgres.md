@@ -453,6 +453,8 @@ CREATE TABLE employee_roles (
 );
 ```
 
+<a id="batch-operations"></a>
+
 ## Operações em Lote
 
 ### COPY
@@ -527,6 +529,8 @@ SELECT cron.unschedule('clean-inactive-players');
 </details>
 
 ---
+
+<a id="diagnostics"></a>
 
 ## Diagnóstico
 

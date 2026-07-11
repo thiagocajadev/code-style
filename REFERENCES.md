@@ -38,6 +38,8 @@ The Clean Coder, Robert C. Martin _(livro)_
 [OpenAPI Specification 3.1](https://spec.openapis.org/oas/v3.1.0)  
 [Catálogo oficial das RFCs, rfc-editor.org](https://www.rfc-editor.org/series/rfc/)
 
+<a id="ddd-and-domain-modeling"></a>
+
 ## DDD e Modelagem de Domínio
 
 Domain-Driven Design, Eric Evans _(livro)_  

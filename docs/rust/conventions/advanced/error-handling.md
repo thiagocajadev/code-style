@@ -50,6 +50,8 @@ fn load_config() -> anyhow::Result<Config> {
 
 </details>
 
+<a id="anyhow-for-applications"></a>
+
 ## anyhow para aplicações
 
 `anyhow::Result` elimina a necessidade de definir tipos de erro quando o objetivo é

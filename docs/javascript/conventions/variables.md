@@ -51,6 +51,8 @@ console.log(contained); // ReferenceError: escopo correto
 
 </details>
 
+<a id="unnecessary-let"></a>
+
 ## let desnecessário
 
 <details>
@@ -77,6 +79,8 @@ while (attempt < MAX_RETRIES) {
 ```
 
 </details>
+
+<a id="direct-object-mutation"></a>
 
 ## Alteração direta de objetos
 
@@ -113,6 +117,8 @@ function applyDiscount(order) {
 ```
 
 </details>
+
+<a id="magic-values"></a>
 
 ## Evitar valores mágicos
 

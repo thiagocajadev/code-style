@@ -121,6 +121,8 @@ interface UpdateUserInput {
 
 </details>
 
+<a id="collections-never-null"></a>
+
 ## Coleções nunca são nulas
 
 Função que retorna uma coleção **sempre retorna** `[]` quando não há elementos. Null em lista não

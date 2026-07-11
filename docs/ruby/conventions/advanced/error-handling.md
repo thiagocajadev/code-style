@@ -16,6 +16,8 @@ dentro do domínio, propague com contexto.
 | `StandardError`    | Classe base para exceções de aplicação; `Exception` é a raiz, não capture ela  |
 | **Bang method** (método com `!`) | Lança exceção em vez de retornar `nil`/`false`                   |
 
+<a id="exception-types"></a>
+
 ## Tipos de exceção
 
 Crie hierarquia de exceções por domínio. Herdar de `StandardError` permite que `rescue`

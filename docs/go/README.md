@@ -48,12 +48,12 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 
 | Princípio                                                                                   | Descrição                                                            |
 | ------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                               | Código universal, nomes curtos e sem ambiguidade                     |
-| [PascalCase exportado](conventions/naming.md#convenções-de-case)                            | Exported: `PascalCase`; unexported: `camelCase`; sem underscores     |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                               | Código universal, nomes curtos e sem ambiguidade                     |
+| [PascalCase exportado](conventions/naming.md#case-conventions)                            | Exported: `PascalCase`; unexported: `camelCase`; sem underscores     |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                  | Variáveis e funções que dispensam explicação                         |
 | [Orquestrador no topo](conventions/methods.md#stepdown-rule)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação)                             | Uma responsabilidade, um nível de abstração                          |
-| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
+| [SLA](conventions/methods.md#single-level-of-abstraction)                             | Uma responsabilidade, um nível de abstração                          |
+| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return)                       | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>
 
@@ -65,7 +65,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                            | Aninhamento em cascata substituído por fluxo plano                   |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Zero value por padrão](conventions/variables.md#zero-values)                                 | Go inicializa tudo; declare com intenção, não com ruído              |
-| [Sem valores mágicos](conventions/variables.md#valores-mágicos)                               | Constantes nomeadas no lugar de literais inline                      |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                               | Constantes nomeadas no lugar de literais inline                      |
 
 <br>
 
@@ -73,7 +73,7 @@ Configuração inicial de um projeto Go: estrutura, tooling e segurança.
 
 | Princípio                                                                                      | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Erros como valores](conventions/advanced/error-handling.md#pânico-como-controle-de-fluxo)    | `error` retornado explicitamente; `panic` só para invariantes|
+| [Erros como valores](conventions/advanced/error-handling.md#panic-as-control-flow)    | `error` retornado explicitamente; `panic` só para invariantes|
 | [Falhar rápido](conventions/advanced/error-handling.md#erro-silencioso)                        | Validar cedo, interromper fluxo inválido                     |
 | [Contexto propagado](conventions/advanced/async.md#contexto-ignorado)                          | `context.Context` no primeiro parâmetro, sempre propagado    |
 | [Goroutines controladas](conventions/advanced/concurrency.md#goroutine-sem-controle)           | Toda goroutine tem dono, cancelamento e espera definidos     |

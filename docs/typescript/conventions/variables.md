@@ -15,6 +15,8 @@ As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que
 | **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; evitar fora de testes ou inicialização garantida |
 | **definite assignment** (atribuição garantida) | `let x!: T`: promete ao compilador que será atribuído antes do uso |
 
+<a id="inference-by-default"></a>
+
 ## Inferência por padrão
 
 TypeScript deriva o tipo quando a atribuição é óbvia. Anotar o que já é visível é redundância

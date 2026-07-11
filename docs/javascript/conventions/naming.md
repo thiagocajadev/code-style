@@ -52,6 +52,8 @@ function applyDiscount(order, calculateDiscount) {
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -254,6 +256,8 @@ function searchProducts(term) {
 ```
 
 </details>
+
+<a id="code-as-documentation"></a>
 
 ## Código como documentação
 

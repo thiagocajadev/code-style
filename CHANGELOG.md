@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2026-07-11
+
+### Fixed
+
+- **Âncoras de link agora são ids ASCII em inglês, declarados explicitamente.** Todo heading que é alvo de link ganhou um `<a id="ingles-ascii"></a>` logo acima dele, e os links passaram a apontar para esse id em vez da âncora que o renderer deriva do texto do heading. O motivo prático: heading em pt-BR gera âncora acentuada (`#operações-longas-viram-sequência-de-passos-curtos`), e o épico writing-soul renomeia headings o tempo todo, então toda reescrita de prosa quebrava link. Com o id explícito, o link deixa de depender do texto. Sweep de 127 ids inseridos em 18 linguagens mais `shared/`, e 177 links reescritos, com zero âncora acentuada restante em `docs/`, `README.md`, `REFERENCES.md` e `.ai/`.
+- **Vocabulário canônico dos ids**: `no-logic-in-return` (12 alvos), `portuguese-names` (11), `single-level-of-abstraction` (10, unificando as quatro variantes de heading do SLA), `magic-values` (10), `case-conventions` (7), mais `god-function`, `code-as-documentation`, `multiple-return-types`, `collections-never-null`, `correlation-id`, `batch-operations`, `long-running-saga`, `multitenancy` e `ddd-and-domain-modeling`.
+- **Sete links que já estavam quebrados foram consertados no caminho.** O `README.md` raiz ainda apontava para âncoras renomeadas pelo épico do JS (`#god-function-múltiplas-responsabilidades` em duas linhas, `#sla-orquestrador-ou-implementação-nunca-os-dois`, `#mutação-direta-de-objetos`, `#direct-return`, `#api-client-centralizado`, `#callback-hell`), e `.ai/backlog/troubleshoot.md` apontava para `#return-sempre-separado`. Os READMEs de cada linguagem tinham sido atualizados na época; o raiz ficou para trás.
+- **Gates**: 384 links com âncora na árvore, 0 quebrados, 0 id duplicado por arquivo, 0 id dentro de bloco de código; audit 2516 blocos Good / 391 arquivos / 0 violações; test:docs 38/38; lint 0.
+
 ## [2.0.0] - 2026-07-11
 
 ### Fixed

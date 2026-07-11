@@ -73,6 +73,8 @@ price = Money(100.0, "BRL")
 
 </details>
 
+<a id="direct-mutation"></a>
+
 ## Mutação direta
 
 Objetos passados como parâmetro são referências. Alterar um parâmetro muda o estado do chamador:
@@ -104,6 +106,8 @@ def apply_discount(order):
 ```
 
 </details>
+
+<a id="magic-values"></a>
 
 ## Valores mágicos
 

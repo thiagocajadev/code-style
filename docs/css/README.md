@@ -32,7 +32,7 @@ custom properties como tokens e mobile-first por padrão.
 
 | Princípio                                                             | Descrição                                                               |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [Nomes semânticos](conventions/naming.md#semântico-vs-presentacional) | Classes descrevem propósito, não aparência                              |
+| [Nomes semânticos](conventions/naming.md#semantic-vs-presentational) | Classes descrevem propósito, não aparência                              |
 | [BEM](conventions/naming.md#bem)                                      | Bloco\_\_Elemento--Modificador, hierarquia explícita                    |
 | [Baixa especificidade](conventions/naming.md#especificidade)          | Classes simples, sem IDs, sem `!important`                              |
 
@@ -42,6 +42,6 @@ custom properties como tokens e mobile-first por padrão.
 
 | Princípio                                                             | Descrição                                                               |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [Custom properties](conventions/variables.md#tokens-semânticos)       | Valores reutilizáveis com nomes que descrevem papel, não cor            |
+| [Custom properties](conventions/variables.md#semantic-tokens)       | Valores reutilizáveis com nomes que descrevem papel, não cor            |
 | [Ordem lógica](conventions/formatting.md#ordem-de-propriedades)       | Propriedades agrupadas por responsabilidade, legíveis de cima pra baixo |
 | [Mobile-first](conventions/responsive.md#mobile-first)                | `min-width` como base, expansão progressiva                             |

@@ -1,6 +1,6 @@
 # Operações em Lote
 
-> Escopo: SQL. Visão transversal: [shared/platform/database.md](../../../shared/platform/database.md#operações-em-lote).
+> Escopo: SQL. Visão transversal: [shared/platform/database.md](../../../shared/platform/database.md#batch-operations).
 
 Operações em lote reduzem round trips e aumentam throughput em inserções de alto volume. Em
 atualizações e exclusões de grande escala, o padrão é dividir em lotes de tamanho fixo: uma

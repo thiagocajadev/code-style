@@ -59,14 +59,14 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 
 | Princípio                                                                                      | Descrição                                                           |
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                                  | Código universal, nomes curtos e sem ambiguidade                    |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                  | Código universal, nomes curtos e sem ambiguidade                    |
 | [PascalCase e \_camelCase](conventions/naming.md#pascalcase-e-_camelcase)                      | Público PascalCase, privado `_camelCase`                            |
 | [Sufixo Async](conventions/naming.md#sufixo-async)                                             | Todo método assíncrono termina em `Async`                           |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                     | Variáveis e métodos que dispensam explicação                        |
-| [Código como documentação](conventions/naming.md#código-como-documentação)                     | Nomes substituem comentários: comentários mentem                    |
+| [Código como documentação](conventions/naming.md#code-as-documentation)                     | Nomes substituem comentários: comentários mentem                    |
 | [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo)                            | Chamada visível antes dos detalhes: top-down                        |
-| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação)                               | Uma responsabilidade, um nível de abstração                         |
-| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                          | Saída de uma linha: o retorno nomeia o resultado, não o computa     |
+| [SLA](conventions/methods.md#single-level-of-abstraction)                               | Uma responsabilidade, um nível de abstração                         |
+| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return)                          | Saída de uma linha: o retorno nomeia o resultado, não o computa     |
 
 <br>
 
@@ -78,8 +78,8 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                             | Aninhamento em cascata substituído por fluxo plano                  |
 | [Pattern matching](conventions/control-flow.md#pattern-matching)                               | `switch` expressions sobre `if-else` encadeado                      |
 | [Valor fixo por padrão](conventions/variables.md#records-immutable)                            | `readonly`, `const`, `record`: alteração é exceção explícita        |
-| [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos)                            | Constantes nomeadas em vez de literais inline                       |
-| [CQS](conventions/variables.md#alteração-direta)                                              | Retornar novo estado, sem efeitos colaterais ocultos                |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                            | Constantes nomeadas em vez de literais inline                       |
+| [CQS](conventions/variables.md#direct-mutation)                                              | Retornar novo estado, sem efeitos colaterais ocultos                |
 
 <br>
 
@@ -89,7 +89,7 @@ Configuração inicial de um projeto C#/.NET: estrutura, infraestrutura e segura
 | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | [Primary constructors](conventions/methods.md#primary-constructors)                            | DI por construtor primário, sem service locator                     |
 | [Result\<T\>](conventions/advanced/error-handling.md#resultt)                                  | Exceção para falhas inesperadas; `Result` para fluxo de negócio     |
-| [Falhar rápido](conventions/advanced/error-handling.md#falhar-rápido)                          | Validar cedo, interromper fluxo inválido                            |
+| [Falhar rápido](conventions/advanced/error-handling.md#fail-fast)                          | Validar cedo, interromper fluxo inválido                            |
 | [Contratos consistentes](conventions/advanced/error-handling.md#apierror)                      | Erros tipados, sempre o mesmo formato                               |
 | [I/O assíncrono](conventions/advanced/async.md#asyncawait)                                     | `async/await`: nunca `.Result` ou `.Wait()`                         |
 | [CancellationToken](conventions/advanced/async.md#cancellationtoken)                           | Propagado em todas as chamadas de I/O públicas                      |

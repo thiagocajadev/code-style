@@ -48,6 +48,8 @@ def apply_discount(order, calculate_discount):
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -81,6 +83,8 @@ def get_customer_address(customer_id):
 ```
 
 </details>
+
+<a id="case-conventions"></a>
 
 ## Convenções de case
 
@@ -244,6 +248,8 @@ def archive_document(file):
 ```
 
 </details>
+
+<a id="code-as-documentation"></a>
 
 ## Código como documentação
 

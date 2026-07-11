@@ -47,6 +47,8 @@ Leitores de tela pulam imagens decorativas. Sem `alt`, o leitor lê o nome do ar
 
 </details>
 
+<a id="button-vs-link"></a>
+
 ## Botão vs link
 
 `<button>` executa uma ação na página. `<a>` navega para outro destino (URL). Trocar os dois

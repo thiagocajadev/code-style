@@ -90,6 +90,8 @@ ORDER BY
 
 </details>
 
+<a id="cast-and-type-conversion"></a>
+
 ## CAST e conversão de tipo em colunas
 
 Aplicar `CAST` ou `CONVERT` sobre uma coluna indexada tem o mesmo efeito de qualquer função no
@@ -409,6 +411,8 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 ```
 
 </details>
+
+<a id="fk-without-index"></a>
 
 ## FK sem índice
 

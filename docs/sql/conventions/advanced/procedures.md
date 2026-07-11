@@ -17,6 +17,8 @@ resultados intermediários, tornando cada passo testável e legível.
 | **idempotent procedure** (procedure idempotente) | Pode ser executada várias vezes com o mesmo efeito; chave para retry seguro |
 | **stepdown rule** (regra de descida) | Orquestrador no topo, etapas detalhadas abaixo na ordem de leitura |
 
+<a id="monolithic-query-vs-temp-tables"></a>
+
 ## Query monolítica vs etapas com temp tables
 
 <details>

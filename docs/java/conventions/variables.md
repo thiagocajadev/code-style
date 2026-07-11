@@ -13,6 +13,8 @@ Dúvida? Use `final`. Só omita quando precisar reatribuir. **Immutability** (im
 | **scope** (escopo) | região do código em que a variável é visível; declarar perto do uso encurta o escopo |
 | **effectively final** (efetivamente final) | variável que nunca é reatribuída, mesmo sem `final`; lambdas exigem isso |
 
+<a id="unnecessary-mutation"></a>
+
 ## Mutação desnecessária
 
 <details>
@@ -39,6 +41,8 @@ while (attempt < maxRetries) {
 ```
 
 </details>
+
+<a id="parameter-mutation"></a>
 
 ## Mutação de parâmetros
 
@@ -71,6 +75,8 @@ private Order applyDiscount(Order order) {
 ```
 
 </details>
+
+<a id="magic-values"></a>
 
 ## Evitar valores mágicos
 

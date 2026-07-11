@@ -17,6 +17,8 @@ Um bom tratamento de erro começa por separar dois tipos que pedem respostas opo
 | **fail fast** (falhar rápido) | Lançar erro no menor escopo possível; evita estado corrompido se propagando |
 | **swallow** (engolir) | Capturar erro sem tratar nem propagar; antipadrão clássico |
 
+<a id="multiple-return-types"></a>
+
 ## Múltiplos tipos de retorno
 
 Uma função que devolve `null`, `undefined`, `false` ou um objeto conforme o caso obriga quem chama a adivinhar. Cada saída pede uma verificação diferente, e é fácil deixar um caso passar. Lançar um erro tipado para cada falha deixa o caminho de sucesso com um único formato de retorno.
@@ -93,6 +95,8 @@ async function findUser(id) {
 ```
 
 </details>
+
+<a id="baseerror-centralized-abstraction"></a>
 
 ## BaseError: abstração centralizada
 
@@ -240,6 +244,8 @@ async function findProductById(id) {
 ```
 
 </details>
+
+<a id="exception-as-control-flow"></a>
 
 ## Exceção como controle de fluxo
 

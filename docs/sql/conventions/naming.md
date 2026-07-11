@@ -25,6 +25,8 @@ palavras reservadas sem precisar de delimitadores.
 > | Procedure / Function | `SP_GET_ORDERS_BY_ID` | `fn_get_orders_by_id` |
 > | Index                | `IX_PLAYERS_TEAM_ID`  | `ix_players_team_id`  |
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 Palavras comuns no português colidem com tipos e funções **SQL** (Structured Query Language · Linguagem de Consulta Estruturada): `Data` (data type), `Time` (time
@@ -114,6 +116,8 @@ FROM
 ```
 
 </details>
+
+<a id="explicit-qualification"></a>
 
 ## Qualificação explícita: sempre Tabela.Coluna
 

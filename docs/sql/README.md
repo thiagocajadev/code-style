@@ -42,16 +42,16 @@ Idioms e recursos específicos de cada banco de dados.
 
 | Princípio                                                                                                    | Descrição                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                                                | Tabelas, colunas e objetos nomeados em inglês                               |
-| [Escrita vertical](conventions/formatting.md#consulta-em-linha-única)                                        | Uma cláusula por linha: SELECT, FROM, JOIN, WHERE, ORDER BY                 |
-| [Baixa densidade visual](conventions/formatting.md#regra-de-3-exceção-inline)                                | Inline somente com ≤3 campos e ≤1 condição                                  |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                                | Tabelas, colunas e objetos nomeados em inglês                               |
+| [Escrita vertical](conventions/formatting.md#single-line-query)                                        | Uma cláusula por linha: SELECT, FROM, JOIN, WHERE, ORDER BY                 |
+| [Baixa densidade visual](conventions/formatting.md#rule-of-three-inline)                                | Inline somente com ≤3 campos e ≤1 condição                                  |
 | [Indentação consistente](conventions/formatting.md#colunas-sem-recuo)                                        | 2 espaços sob cada cláusula, blocos alinhados por nível                     |
-| [Nomes expressivos](conventions/naming.md#qualificação-explícita-sempre-tabelacoluna)                        | Aliases descritivos pelo domínio; nunca `t`, `c`, `x`                       |
-| [Qualificação explícita](conventions/naming.md#qualificação-explícita-sempre-tabelacoluna)                   | Sempre `Tabela.Coluna`, nunca colunas nuas                                  |
+| [Nomes expressivos](conventions/naming.md#explicit-qualification)                        | Aliases descritivos pelo domínio; nunca `t`, `c`, `x`                       |
+| [Qualificação explícita](conventions/naming.md#explicit-qualification)                   | Sempre `Tabela.Coluna`, nunca colunas nuas                                  |
 | [Joins legíveis](conventions/formatting.md#join-com-on-simples)                                              | JOIN e ON em linhas separadas; ON complexo expandido                        |
-| [Condições verticais](conventions/formatting.md#condições-verticais)                                         | Uma condição por linha, AND e OR ao final da linha                          |
-| [Sem valores mágicos](conventions/crud.md#parâmetros-nomeados-sem-valores-mágicos)                           | Parâmetros nomeados em vez de literais inline                               |
-| [Ordenação explícita](conventions/crud.md#ordenação-explícita)                                               | ORDER BY sempre declarado                                                   |
+| [Condições verticais](conventions/formatting.md#vertical-conditions)                                         | Uma condição por linha, AND e OR ao final da linha                          |
+| [Sem valores mágicos](conventions/crud.md#named-parameters)                           | Parâmetros nomeados em vez de literais inline                               |
+| [Ordenação explícita](conventions/crud.md#explicit-ordering)                                               | ORDER BY sempre declarado                                                   |
 | [Objetos nomeados](conventions/naming.md#prefixos-de-objetos)                                                | `SP_`, `FN_`, `IX_`, `VW_`: prefixo declara a intenção                     |
 | [Constraints nomeadas](conventions/naming.md#constraints-nomeadas)                                           | `PK_`, `FK_`, `UQ_`, `CK_`: toda constraint tem nome explícito             |
 
@@ -61,8 +61,8 @@ Idioms e recursos específicos de cada banco de dados.
 
 | Princípio                                                                                                    | Descrição                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [Fluxo linear](conventions/formatting.md#consulta-em-linha-única)                                            | Leitura de cima para baixo: filtros antes de JOINs, resultado no final      |
-| [Etapas explícitas](conventions/advanced/procedures.md#query-monolítica-vs-etapas-com-temp-tables)           | Queries complexas decompostas em passos nomeados com temp tables            |
+| [Fluxo linear](conventions/formatting.md#single-line-query)                                            | Leitura de cima para baixo: filtros antes de JOINs, resultado no final      |
+| [Etapas explícitas](conventions/advanced/procedures.md#monolithic-query-vs-temp-tables)           | Queries complexas decompostas em passos nomeados com temp tables            |
 | [Sem subqueries profundas](conventions/advanced/advanced.md#subquery-aninhada)                               | Subqueries substituídas por CTEs nomeadas                                   |
 | [CTE vs temp table](conventions/advanced/advanced.md#ctes-encadeadas)                                        | CTE para leitura simples; temp table (`#`) para reuso e performance         |
 | [Filtros antecipados](conventions/crud.md#filtros-antecipados)                                               | WHERE na tabela principal antes dos JOINs                                   |
@@ -74,6 +74,6 @@ Idioms e recursos específicos de cada banco de dados.
 | Princípio                                                                                                    | Descrição                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | [Consultas enxutas](conventions/advanced/performance.md#select-)                                             | Sem `SELECT *`; trazer apenas as colunas necessárias                        |
-| [FK com índice](conventions/advanced/performance.md#fk-sem-índice)                                           | FK sempre acompanhada de índice na coluna referenciadora                    |
-| [Migrations incrementais](conventions/advanced/migrations.md#convenção-de-nomenclatura)                      | `YYYYMMDDHHMMSS_descricao.sql`: uma mudança por arquivo                     |
+| [FK com índice](conventions/advanced/performance.md#fk-without-index)                                           | FK sempre acompanhada de índice na coluna referenciadora                    |
+| [Migrations incrementais](conventions/advanced/migrations.md#naming-convention)                      | `YYYYMMDDHHMMSS_descricao.sql`: uma mudança por arquivo                     |
 | [Forward only](conventions/advanced/migrations.md#somente-para-frente-forward-only)                         | Nunca editar migration existente; ajuste = nova migration                   |

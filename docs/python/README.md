@@ -61,13 +61,13 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 
 | Princípio                                                                                    | Descrição                                                            |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                                | Código universal, nomes curtos e sem ambiguidade                     |
-| [snake_case nativo](conventions/naming.md#convenções-de-case)                                | Identificadores em snake_case; classes em PascalCase                 |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                | Código universal, nomes curtos e sem ambiguidade                     |
+| [snake_case nativo](conventions/naming.md#case-conventions)                                | Identificadores em snake_case; classes em PascalCase                 |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                   | Variáveis e funções que dispensam explicação                         |
-| [Código como documentação](conventions/naming.md#código-como-documentação)                   | Nomes substituem comentários; comentários mentem                     |
-| [Orquestrador no topo](conventions/functions.md#god-function-múltiplas-responsabilidades)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/functions.md#sla-orquestrador-ou-implementação-nunca-os-dois)              | Uma responsabilidade, um nível de abstração                          |
-| [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                      | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
+| [Código como documentação](conventions/naming.md#code-as-documentation)                   | Nomes substituem comentários; comentários mentem                     |
+| [Orquestrador no topo](conventions/functions.md#god-function)    | Chamada visível antes dos detalhes (top-down)                        |
+| [SLA](conventions/functions.md#single-level-of-abstraction)              | Uma responsabilidade, um nível de abstração                          |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                      | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>
 
@@ -78,9 +78,9 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 | [Retorno antecipado](conventions/control-flow.md#if-e-else)                                  | Saída cedo na falha, sem else após return                            |
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                           | Aninhamento em cascata substituído por fluxo plano                   |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                     | Linhas relacionadas juntas, grupos separados por uma linha em branco |
-| [Valor fixo por padrão](conventions/variables.md#mutação-direta)                             | `Final`, `frozen=True`: alteração é exceção explícita                |
-| [Sem valores mágicos](conventions/variables.md#valores-mágicos)                              | Constantes nomeadas no lugar de literais inline                      |
-| [CQS](conventions/variables.md#mutação-direta)                                               | Retornar novo estado, sem efeitos colaterais ocultos                 |
+| [Valor fixo por padrão](conventions/variables.md#direct-mutation)                             | `Final`, `frozen=True`: alteração é exceção explícita                |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                              | Constantes nomeadas no lugar de literais inline                      |
+| [CQS](conventions/variables.md#direct-mutation)                                               | Retornar novo estado, sem efeitos colaterais ocultos                 |
 
 <br>
 
@@ -88,9 +88,9 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 
 | Princípio                                                                                           | Descrição                                                    |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Exceções tipadas](conventions/advanced/error-handling.md#exceção-como-string)                     | Subclasses de `Exception`, identificáveis e tratáveis        |
-| [Falhar rápido](conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                  | Validar cedo, interromper fluxo inválido                     |
+| [Exceções tipadas](conventions/advanced/error-handling.md#exception-as-string)                     | Subclasses de `Exception`, identificáveis e tratáveis        |
+| [Falhar rápido](conventions/advanced/error-handling.md#multiple-return-types)                  | Validar cedo, interromper fluxo inválido                     |
 | [Fronteira de erro](conventions/advanced/error-handling.md#tryexcept-que-engole-o-erro)              | try/except nas fronteiras, propagar com contexto             |
-| [I/O assíncrono](conventions/advanced/async.md#bloqueio-síncrono)                                  | async/await, sem bloqueio do event loop                      |
-| [Concorrência explícita](conventions/advanced/async.md#gather-execução-paralela)                   | `asyncio.gather` para chamadas independentes em paralelo     |
+| [I/O assíncrono](conventions/advanced/async.md#blocking-sync-call)                                  | async/await, sem bloqueio do event loop                      |
+| [Concorrência explícita](conventions/advanced/async.md#gather-parallel-execution)                   | `asyncio.gather` para chamadas independentes em paralelo     |
 | [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                        | AAA: fases explícitas; assert limpo, sem expressões inline   |

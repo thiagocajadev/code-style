@@ -54,6 +54,8 @@ function applyDiscount(Order $order, callable $calculateDiscount): ?Order
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -81,6 +83,8 @@ function findCustomerAddress(int $customerID): Address { ... }
 ```
 
 </details>
+
+<a id="case-conventions"></a>
 
 ## Convenções de case (PSR-1 + PSR-12)
 

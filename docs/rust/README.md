@@ -53,11 +53,11 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 
 | Princípio                                                                                          | Descrição                                                                |
 | -------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| [snake_case universal](conventions/naming.md#convenções-de-case)                                   | Funções, variáveis e módulos: `snake_case`; tipos e traits: `PascalCase` |
+| [snake_case universal](conventions/naming.md#case-conventions)                                   | Funções, variáveis e módulos: `snake_case`; tipos e traits: `PascalCase` |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                         | Identificadores que dispensam comentário                                 |
 | [Orquestrador no topo](conventions/functions.md#stepdown-orquestrador-acima-dos-detalhes)         | Chamada visível antes dos detalhes (top-down)                            |
-| [SLA](conventions/functions.md#sla-uma-responsabilidade-um-nível)                                 | Uma responsabilidade, um nível de abstração                              |
-| [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                            | Extraia o resultado antes de retornar                                    |
+| [SLA](conventions/functions.md#single-level-of-abstraction)                                 | Uma responsabilidade, um nível de abstração                              |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                            | Extraia o resultado antes de retornar                                    |
 
 <br>
 
@@ -79,6 +79,6 @@ Configuração inicial de um projeto Rust: estrutura, tooling e segurança.
 | -------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | [Sem unwrap() em produção](conventions/advanced/error-handling.md#unwrap-e-expect)                 | Use `?` ou trate o `Result`; `unwrap` apenas em testes ou demos  |
 | [thiserror para bibliotecas](conventions/advanced/error-handling.md#tipos-de-erro-com-thiserror)   | Erros tipados e descritivos nas fronteiras de biblioteca          |
-| [anyhow para aplicações](conventions/advanced/error-handling.md#anyhow-para-aplicações)            | Contexto de erro progressivo sem overhead de types customizados   |
+| [anyhow para aplicações](conventions/advanced/error-handling.md#anyhow-for-applications)            | Contexto de erro progressivo sem overhead de types customizados   |
 | [async com Tokio](conventions/advanced/async.md#tokio-runtime)                                     | Runtime padrão; `#[tokio::main]` no entry point                  |
 | [Testes table-driven](conventions/advanced/testing.md#table-driven-tests)                          | Casos de teste em vec de structs; cobertura por dados, não por cópias |

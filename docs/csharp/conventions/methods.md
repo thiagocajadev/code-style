@@ -77,6 +77,8 @@ private static Invoice BuildInvoice(Order order) { ... }
 
 </details>
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: orquestrador ou implementação
 
 Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
@@ -135,6 +137,8 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

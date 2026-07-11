@@ -17,6 +17,8 @@ irrecuperáveis de infraestrutura.
 | `check` | lança `IllegalStateException` para invariantes internas |
 | **silent failure** (erro silencioso) | capturar e ignorar uma exceção sem log ou propagação |
 
+<a id="exception-as-control-flow"></a>
+
 ## Exceção como controle de fluxo
 
 <details>

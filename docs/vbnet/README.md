@@ -60,10 +60,10 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 
 | Princípio | Descrição |
 | --- | --- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português) | Código universal, nomes curtos e sem ambiguidade |
+| [Escrita em inglês](conventions/naming.md#portuguese-names) | Código universal, nomes curtos e sem ambiguidade |
 | [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo) | Chamada visível antes dos detalhes: top-down |
-| [SLA](conventions/methods.md#sla-orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
-| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno) | Saída de uma linha: o `Return` nomeia o resultado, não o computa |
+| [SLA](conventions/methods.md#single-level-of-abstraction) | Uma responsabilidade, um nível de abstração |
+| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return) | Saída de uma linha: o `Return` nomeia o resultado, não o computa |
 | [Sub vs Function](conventions/methods.md#sub-vs-function) | Se produz resultado, use `Function`; `ByRef` para output é design smell |
 
 **Legibilidade**: fluxo, densidade visual e nomes
@@ -73,8 +73,8 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | [Retorno antecipado](conventions/control-flow.md#aninhamento-em-cascata) | Guard clauses no topo, sem aninhamento em cascata |
 | [Select Case](conventions/control-flow.md#select-case) | `Select Case` sobre cadeia de `ElseIf` para valor único |
 | [Booleans expressivos](conventions/naming.md#booleans-expressivos) | Prefixo `is`, `has`, `can`, `should` declara a semântica |
-| [Sem notação húngara](conventions/naming.md#notação-húngara) | Nome pelo domínio, não pelo tipo |
-| [Sem valores mágicos](conventions/variables.md#sem-valores-mágicos) | `Const` nomeado em vez de literais inline |
+| [Sem notação húngara](conventions/naming.md#hungarian-notation) | Nome pelo domínio, não pelo tipo |
+| [Sem valores mágicos](conventions/variables.md#magic-values) | `Const` nomeado em vez de literais inline |
 
 **Controle de qualidade**: estado, erros e async
 

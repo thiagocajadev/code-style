@@ -16,6 +16,8 @@ para corpo de uma única expressão.
 | **arrow function** (função flecha)        | `=>` para corpo de uma única expressão, sem `{ return }`               |
 | **Stepdown Rule** (regra de descida)      | chamador visível antes do detalhe; helpers privados abaixo do chamador |
 
+<a id="god-function"></a>
+
 ## God function: múltiplas responsabilidades
 
 <details>
@@ -75,6 +77,8 @@ Future<void> _notifyConfirmation(String email) async { ... }
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

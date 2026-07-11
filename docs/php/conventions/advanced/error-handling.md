@@ -20,6 +20,8 @@ propósito específico.
 | **exception chaining** (encadeamento de exceções) | `previous` parameter no construtor; preserva a causa original ao relançar |
 | **error suppression** (supressão de erro) | Operador `@`; nunca usar: esconde problemas e dificulta diagnóstico |
 
+<a id="exception-as-string"></a>
+
 ## Exceção como string
 
 Nunca lance strings ou `\Exception` diretamente. Crie uma hierarquia de exceções
@@ -178,6 +180,8 @@ class OrderHandler
 ```
 
 </details>
+
+<a id="late-validation"></a>
 
 ## Validação tardia
 

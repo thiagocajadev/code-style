@@ -520,7 +520,7 @@ A regra "no máximo 3" mora em `addPhone`, onde dá pra mudar sem mexer no schem
 
 </details>
 
-Listas seguem a regra de [null-safety](./null-safety.md#coleções-nunca-são-nulas): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a regra de [null-safety](./null-safety.md#collections-never-null): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 
@@ -995,4 +995,4 @@ Cross-links dentro do guia:
 - [`../../../shared/standards/null-safety.md`](../../../shared/standards/null-safety.md): boundary de validação
 - [`./null-safety.md`](./null-safety.md): null-safety idiomático TS
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../../REFERENCES.md#ddd-and-domain-modeling).

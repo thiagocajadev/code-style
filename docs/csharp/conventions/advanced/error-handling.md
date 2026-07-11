@@ -168,6 +168,8 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 
 </details>
 
+<a id="fail-fast"></a>
+
 ## Falhar rápido
 
 Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output · Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.

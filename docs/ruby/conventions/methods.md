@@ -19,6 +19,8 @@ apenas para saída antecipada (guard clause). Blocks, procs e lambdas são prime
 | **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada método opera em um só nível: orquestra passos ou implementa detalhe |
 | **helper** (método auxiliar) | Método de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: uma responsabilidade, um nível
 
 Cada método executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
@@ -85,6 +87,8 @@ end
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

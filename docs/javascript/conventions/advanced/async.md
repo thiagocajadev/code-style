@@ -13,6 +13,8 @@ JavaScript executa o seu código em um **thread** (linha de execução) único. 
 | **Promise** (promessa de valor) | Objeto que representa o resultado futuro de uma operação assíncrona |
 | **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato público de uma biblioteca ou serviço externo |
 
+<a id="nested-callbacks"></a>
+
 ## Callbacks aninhados sem controle
 
 Um `callback` (função de retorno) que depende do resultado de outro vira um aninhamento que empurra o código para a direita a cada passo. Com três operações encadeadas já fica difícil de ler e de tratar erro em cada nível.
@@ -163,6 +165,8 @@ async function fetchDashboard(userId) {
 
 > Use `Promise.all` quando as operações não dependem umas das outras.
 > Se uma falhar, todas falham. Use `Promise.allSettled` quando quiser continuar mesmo com erros parciais.
+
+<a id="centralized-api-client"></a>
 
 ## Cliente de API centralizado
 

@@ -101,6 +101,8 @@ public record OrderRequest(string ProductId, int Quantity);
 
 </details>
 
+<a id="magic-values"></a>
+
 ## Sem valores mágicos
 
 Literais embutidos escondem intenção. `const` nomeado documenta o significado: o nome é a documentação.
@@ -133,6 +135,8 @@ if (discount > MaxDiscountRate)
 ```
 
 </details>
+
+<a id="direct-mutation"></a>
 
 ## Alteração direta
 

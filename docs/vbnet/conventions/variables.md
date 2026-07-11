@@ -188,6 +188,8 @@ End If
 
 </details>
 
+<a id="magic-values"></a>
+
 ## Sem valores mágicos
 
 Números e strings literais inline são código sem contexto. O leitor precisa deduzir o significado. Uma constante nomeada declara a intenção e centraliza a mudança.

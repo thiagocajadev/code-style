@@ -59,7 +59,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 
 | Princípio                                                                           | Descrição                                                                   |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [Inferência por padrão](conventions/variables.md#inferência-por-padrão)             | Deixe o TypeScript derivar o tipo quando óbvio; anotação redundante polui  |
+| [Inferência por padrão](conventions/variables.md#inference-by-default)             | Deixe o TypeScript derivar o tipo quando óbvio; anotação redundante polui  |
 | [Anotar fronteiras](conventions/functions.md#return-type)                           | Funções exportadas sempre têm return type explícito                         |
 | [Nunca any](conventions/variables.md#any-vs-unknown)                                | `unknown` força narrowing; `any` desativa o compilador                     |
 | [Tipos sem prefixo](conventions/naming.md#prefixo-i)                                | Sem `I` em interfaces; o contexto já diz que é contrato                   |
@@ -73,7 +73,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | [Interface para objetos](conventions/types.md#type-vs-interface)             | Contratos e shapes usam `interface`: extensíveis por padrão                     |
 | [Type para uniões](conventions/types.md#type-vs-interface)                   | `type` para union types, mapped types e aliases de primitivos                    |
 | [Union types > enums](conventions/types.md#discriminated-unions)                            | Const object + union type: sem runtime overhead, sem conversão                  |
-| [Genérico com propósito](conventions/types.md#genéricos)                     | Genérico quando a função precisa preservar o tipo do chamador, sem especulação  |
+| [Genérico com propósito](conventions/types.md#generics)                     | Genérico quando a função precisa preservar o tipo do chamador, sem especulação  |
 
 <br>
 

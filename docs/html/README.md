@@ -40,7 +40,7 @@ propósito e acessibilidade como padrão, não como adição.
 
 | Princípio                                                                    | Descrição                                                           |
 | ---------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [Semântica em vez de div](conventions/structure.md#elementos-semânticos)     | Elemento correto carrega significado sem classe extra               |
+| [Semântica em vez de div](conventions/structure.md#semantic-elements)     | Elemento correto carrega significado sem classe extra               |
 | [Hierarquia de headings](conventions/structure.md#hierarquia-de-headings)    | `h1` → `h2` → `h3` sem pular níveis                                |
 | [Nomes que descrevem propósito](conventions/naming.md#ids-e-classes)         | IDs e classes descrevem papel, não aparência                        |
 | [data-* para comportamento](conventions/naming.md#data-attributes)           | `data-*` para JS; classes só para CSS                               |
@@ -53,7 +53,7 @@ propósito e acessibilidade como padrão, não como adição.
 | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
 | [alt em toda imagem](conventions/advanced/accessibility.md#imagens)                | Descritivo para conteúdo, vazio para decorativo                     |
 | [Label associado](conventions/advanced/forms.md#label)                             | Todo input tem `<label>` explícita; placeholder não substitui       |
-| [Botão vs link](conventions/advanced/accessibility.md#botão-vs-link)               | `<button>` para ação, `<a>` para navegação                          |
+| [Botão vs link](conventions/advanced/accessibility.md#button-vs-link)               | `<button>` para ação, `<a>` para navegação                          |
 | [lang no html](conventions/structure.md#lang-e-charset)                            | `lang` correto habilita pronúncia e hifenização do leitor de tela   |
 
 <br>

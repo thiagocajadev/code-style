@@ -196,6 +196,8 @@ if err := validateOrder(order); err != nil {
 
 </details>
 
+<a id="panic-as-control-flow"></a>
+
 ## Pânico como controle de fluxo
 
 `panic` é reservado para falhas que indicam bug no programa (nil injetado, estado impossível).

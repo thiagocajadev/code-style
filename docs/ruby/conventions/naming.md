@@ -48,6 +48,8 @@ end
 
 </details>
 
+<a id="case-conventions"></a>
+
 ## Convenções de case
 
 Ruby usa capitalização como sinal semântico. O RuboCop avisa sobre violações automaticamente.

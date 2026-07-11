@@ -56,11 +56,11 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 
 | Princípio                                                                                         | Descrição                                                               |
 | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| [snake_case universal](conventions/naming.md#convenções-de-case)                                  | Métodos e variáveis: `snake_case`; classes e módulos: `PascalCase`      |
+| [snake_case universal](conventions/naming.md#case-conventions)                                  | Métodos e variáveis: `snake_case`; classes e módulos: `PascalCase`      |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                        | Identificadores que dispensam comentário                                |
-| [Orquestrador no topo](conventions/methods.md#sla-uma-responsabilidade-um-nível)                 | Chamada visível antes dos detalhes (top-down)                           |
-| [SLA](conventions/methods.md#sla-uma-responsabilidade-um-nível)                                  | Uma responsabilidade, um nível de abstração                             |
-| [Sem lógica no retorno](conventions/methods.md#sem-lógica-no-retorno)                             | Extraia o resultado antes de retornar (implicit ou explicit return)     |
+| [Orquestrador no topo](conventions/methods.md#single-level-of-abstraction)                 | Chamada visível antes dos detalhes (top-down)                           |
+| [SLA](conventions/methods.md#single-level-of-abstraction)                                  | Uma responsabilidade, um nível de abstração                             |
+| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return)                             | Extraia o resultado antes de retornar (implicit ou explicit return)     |
 
 <br>
 
@@ -80,7 +80,7 @@ Configuração inicial de um projeto Ruby: estrutura, tooling e segurança.
 
 | Princípio                                                                                         | Descrição                                                          |
 | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| [Exceções tipadas](conventions/advanced/error-handling.md#tipos-de-exceção)                       | Subclasses de `StandardError`, identificáveis e tratáveis          |
+| [Exceções tipadas](conventions/advanced/error-handling.md#exception-types)                       | Subclasses de `StandardError`, identificáveis e tratáveis          |
 | [rescue nas fronteiras](conventions/advanced/error-handling.md#rescue-nas-fronteiras)             | `rescue` no ponto de entrada; propague com contexto dentro         |
 | [Jobs para I/O longo](conventions/advanced/async.md#background-jobs)                              | Solid Queue / Sidekiq para operações longas fora do request cycle  |
 | [Testes estruturados](conventions/advanced/testing.md#aaa-arrange-act-assert)                    | AAA: fases explícitas; assert limpo, sem expressões inline          |

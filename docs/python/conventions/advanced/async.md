@@ -17,6 +17,8 @@ Toda operação que depende de **I/O** (Input/Output · Entrada/Saída) é assí
 | **TaskGroup** (grupo estruturado de tarefas) | escopo (Python 3.11+) que cancela todas as tarefas se uma falhar |
 | **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; não escala com asyncio |
 
+<a id="blocking-sync-call"></a>
+
 ## Bloqueio síncrono
 
 <details>
@@ -81,6 +83,8 @@ async def fetch_user_data(user_id: int):
 ```
 
 </details>
+
+<a id="gather-parallel-execution"></a>
 
 ## gather: execução paralela
 

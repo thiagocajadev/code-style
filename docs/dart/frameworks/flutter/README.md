@@ -41,8 +41,8 @@ Os fundamentos cross-platform vivem em [shared/mobile/](../../../shared/mobile/R
 
 | Princípio | Descrição |
 | --- | --- |
-| [Composição sobre herança](conventions/widgets.md#composição-sobre-herança) | Widgets pequenos compostos são mais fáceis de testar e reutilizar |
-| [StatelessWidget por padrão](conventions/widgets.md#statefulwidget-quando-necessário) | Estado gerenciado externamente; StatefulWidget somente para estado local de UI |
+| [Composição sobre herança](conventions/widgets.md#composition-over-inheritance) | Widgets pequenos compostos são mais fáceis de testar e reutilizar |
+| [StatelessWidget por padrão](conventions/widgets.md#statefulwidget-when-needed) | Estado gerenciado externamente; StatefulWidget somente para estado local de UI |
 | [const em todo widget possível](conventions/widgets.md#const-em-widgets) | Evita rebuilds desnecessários; Flutter reutiliza instâncias const |
-| [Separar lógica de UI](advanced/state-management.md#lógica-na-ui) | ViewModel/Notifier fora do build; widget somente lê e renderiza |
+| [Separar lógica de UI](advanced/state-management.md#logic-in-the-ui) | ViewModel/Notifier fora do build; widget somente lê e renderiza |
 | [Deep links declarativos](advanced/navigation.md#rota-imperativa) | GoRouter define rotas como URLs; suporta deep link e web |

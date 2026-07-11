@@ -14,6 +14,8 @@
 | **theme switch** (troca de tema) | Redefinir tokens em `[data-theme="dark"]` ou `:root.dark` |
 | **semantic token** (token semântico) | Nome descreve o papel (`--surface-card`), não a aparência (`--white`) |
 
+<a id="semantic-tokens"></a>
+
 ## Tokens semânticos
 
 <details>

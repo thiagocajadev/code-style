@@ -47,6 +47,8 @@ fn apply_discount(order: &Order, calculate: impl Fn(&Order) -> Order) -> Option<
 
 </details>
 
+<a id="case-conventions"></a>
+
 ## Convenções de case
 
 Rust usa capitalização como sinal semântico. Clippy avisa sobre violações automaticamente.

@@ -431,6 +431,8 @@ END;
 
 </details>
 
+<a id="batch-operations"></a>
+
 ## Operações em Lote
 
 ### BULK INSERT
@@ -509,6 +511,8 @@ EXEC sp_add_jobserver
 </details>
 
 ---
+
+<a id="diagnostics"></a>
 
 ## Diagnóstico
 

@@ -43,6 +43,8 @@ let isActive = user.status == .active
 
 </details>
 
+<a id="magic-values"></a>
+
 ## Valores mágicos
 
 <details>

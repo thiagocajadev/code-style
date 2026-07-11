@@ -44,6 +44,8 @@ func applyDiscount(to order: Order, calculate: (Order) -> Order) -> Order? {
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -71,6 +73,8 @@ func findCustomerAddress(customerId: Int64) -> Address? { ... }
 ```
 
 </details>
+
+<a id="case-conventions"></a>
 
 ## Convenções de case
 

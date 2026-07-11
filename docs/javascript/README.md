@@ -59,13 +59,13 @@ se dividem e onde os segredos ficam.
 
 | Princípio                                                                                                        | Descrição                                                            |
 | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português)                                                    | Código universal, nomes curtos e sem ambiguidade                     |
-| [Código narrativo](conventions/functions.md#função-que-faz-tudo-várias-responsabilidades)                       | O código conta a história, sem precisar de comentários               |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                                    | Código universal, nomes curtos e sem ambiguidade                     |
+| [Código narrativo](conventions/functions.md#god-function)                       | O código conta a história, sem precisar de comentários               |
 | [Ponto de entrada limpo](conventions/functions.md#ponto-de-entrada-limpo)                                        | Caller de uma linha: o quê, não o como                               |
-| [Estilo vertical](conventions/functions.md#estilo-vertical-parâmetros)                                          | Até 3 parâmetros por linha; 4+ usa objeto                            |
-| [Orquestrador no topo](conventions/functions.md#função-que-faz-tudo-várias-responsabilidades)                   | Chamada visível antes dos detalhes (top-down)                        |
+| [Estilo vertical](conventions/functions.md#vertical-parameters)                                          | Até 3 parâmetros por linha; 4+ usa objeto                            |
+| [Orquestrador no topo](conventions/functions.md#god-function)                   | Chamada visível antes dos detalhes (top-down)                        |
 | [Detalhes abaixo](conventions/functions.md#retorno-direto)                                                        | Helpers ficam abaixo do orquestrador (step-down rule)                |
-| [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno)                                          | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                                          | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
 
 <br>
 
@@ -77,8 +77,8 @@ se dividem e onde os segredos ficam.
 | [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                                    | Aninhamento em cascata substituído por fluxo plano                   |
 | [Baixa densidade visual](conventions/functions.md#baixa-densidade-visual)                             | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                            | Variáveis e funções que dispensam explicação                         |
-| [Código como documentação](conventions/naming.md#código-como-documentação)                            | Nomes substituem comentários; comentários mentem                     |
-| [Sem valores mágicos](conventions/variables.md#evitar-valores-mágicos)                                | Constantes nomeadas no lugar de números e strings soltos             |
+| [Código como documentação](conventions/naming.md#code-as-documentation)                            | Nomes substituem comentários; comentários mentem                     |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                                | Constantes nomeadas no lugar de números e strings soltos             |
 
 <br>
 
@@ -86,14 +86,14 @@ se dividem e onde os segredos ficam.
 
 | Princípio                                                                                                        | Descrição                                                    |
 | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| [Funções pequenas](conventions/functions.md#um-nível-de-abstração-por-função)                                   | Uma responsabilidade, um nível de abstração                  |
-| [Cálculo vs formatação](conventions/functions.md#separar-cálculo-de-formatação)                                  | Computar dados e formatar saída em funções separadas         |
-| [Valor fixo por padrão](conventions/variables.md#let-desnecessário)                                              | `const` primeiro, `let` só quando necessário                 |
-| [CQS](conventions/variables.md#alteração-direta-de-objetos)                                                        | Separar comando de consulta, sem efeitos colaterais ocultos  |
+| [Funções pequenas](conventions/functions.md#single-level-of-abstraction)                                   | Uma responsabilidade, um nível de abstração                  |
+| [Cálculo vs formatação](conventions/functions.md#separate-compute-from-format)                                  | Computar dados e formatar saída em funções separadas         |
+| [Valor fixo por padrão](conventions/variables.md#unnecessary-let)                                              | `const` primeiro, `let` só quando necessário                 |
+| [CQS](conventions/variables.md#direct-object-mutation)                                                        | Separar comando de consulta, sem efeitos colaterais ocultos  |
 | [Dependências explícitas](conventions/advanced/async.md#cliente-de-api-centralizado)                             | Injetar via parâmetros, evitar estado global                 |
-| [Falhar rápido](conventions/advanced/error-handling.md#múltiplos-tipos-de-retorno)                               | Validar cedo, interromper fluxo inválido                     |
-| [Retorno explícito](conventions/advanced/error-handling.md#exceção-como-controle-de-fluxo)                       | Evitar exceções como controle de fluxo                       |
-| [Contratos consistentes](conventions/advanced/error-handling.md#baseerror-abstração-centralizada)               | Respostas padronizadas, sempre o mesmo formato               |
-| [Tratamento centralizado de erros](conventions/advanced/error-handling.md#baseerror-abstração-centralizada)     | Classes de erro tipadas, try/catch nos limites do sistema    |
+| [Falhar rápido](conventions/advanced/error-handling.md#multiple-return-types)                               | Validar cedo, interromper fluxo inválido                     |
+| [Retorno explícito](conventions/advanced/error-handling.md#exception-as-control-flow)                       | Evitar exceções como controle de fluxo                       |
+| [Contratos consistentes](conventions/advanced/error-handling.md#baseerror-centralized-abstraction)               | Respostas padronizadas, sempre o mesmo formato               |
+| [Tratamento centralizado de erros](conventions/advanced/error-handling.md#baseerror-centralized-abstraction)     | Classes de erro tipadas, try/catch nos limites do sistema    |
 | [I/O assíncrono](conventions/advanced/async.md#callbacks-aninhados-sem-controle)                                 | `async/await`, sem bloqueio                                  |
 | [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                                     | AAA: fases explícitas; assert limpo: sem expressões inline   |

@@ -17,6 +17,8 @@ variáveis sem tipagem explícita onde o tipo é conhecível.
 | **asymmetric visibility** (PHP 8.4) | `public private(set)`: leitura pública, escrita restrita ao escopo privado |
 | `const` | Constante de classe avaliada em tempo de compilação; sempre `UPPER_SNAKE` |
 
+<a id="direct-mutation"></a>
+
 ## Mutação direta
 
 Prefira `readonly` para propriedades que representam identidade ou configuração.
@@ -61,6 +63,8 @@ $id = new OrderID(42);
 ```
 
 </details>
+
+<a id="magic-values"></a>
 
 ## Valores mágicos
 

@@ -16,6 +16,8 @@ Migrações são incrementais e irreversíveis. Cada arquivo representa uma muda
 | **breaking change** (alteração quebradora) | Mudança incompatível com código antigo; aplicar em duas etapas (expand → contract) |
 | **backfill** (preenchimento retroativo) | Popular nova coluna ou tabela com dados históricos; rodar em lotes |
 
+<a id="naming-convention"></a>
+
 ## Convenção de nomenclatura
 
 Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`

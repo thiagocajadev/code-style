@@ -59,12 +59,12 @@ vivem em [shared/mobile/](../shared/mobile/README.md):
 
 | Princípio | Descrição |
 | --- | --- |
-| [Escrita em inglês](conventions/naming.md#nomes-em-português) | Código universal, nomes curtos e sem ambiguidade |
-| [PascalCase para tipos](conventions/naming.md#convenções-de-case) | Tipos e protocolos: `PascalCase`; funções/vars: `camelCase` |
+| [Escrita em inglês](conventions/naming.md#portuguese-names) | Código universal, nomes curtos e sem ambiguidade |
+| [PascalCase para tipos](conventions/naming.md#case-conventions) | Tipos e protocolos: `PascalCase`; funções/vars: `camelCase` |
 | [Nomes expressivos](conventions/naming.md#identificadores-sem-significado) | Variáveis e funções que dispensam explicação |
 | [Labels de argumento](conventions/functions.md#labels-de-argumento) | Chamada lê como prosa: `send(message: "Hi", to: user)` |
-| [SLA](conventions/functions.md#sla-orquestrador-ou-implementação) | Uma responsabilidade, um nível de abstração |
-| [Sem lógica no retorno](conventions/functions.md#sem-lógica-no-retorno) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
+| [SLA](conventions/functions.md#single-level-of-abstraction) | Uma responsabilidade, um nível de abstração |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return) | Saída de uma linha: o retorno nomeia o resultado, não o computa |
 
 <br>
 
@@ -76,7 +76,7 @@ vivem em [shared/mobile/](../shared/mobile/README.md):
 | [switch com pattern matching](conventions/control-flow.md#switch-exaustivo-com-enums) | `switch` exaustivo substitui chains de `if/else if` |
 | [Baixa densidade visual](conventions/visual-density.md#a-regra-central) | Linhas relacionadas juntas, grupos separados por uma linha em branco |
 | [`let` por padrão](conventions/variables.md#var-onde-let-resolve) | Imutabilidade como default; `var` apenas quando necessário |
-| [Sem valores mágicos](conventions/variables.md#valores-mágicos) | Constantes nomeadas no lugar de literais inline |
+| [Sem valores mágicos](conventions/variables.md#magic-values) | Constantes nomeadas no lugar de literais inline |
 
 <br>
 
@@ -84,7 +84,7 @@ vivem em [shared/mobile/](../shared/mobile/README.md):
 
 | Princípio | Descrição |
 | --- | --- |
-| [throws / Result explícito](conventions/advanced/error-handling.md#enum-de-erros-de-domínio) | Erros de domínio como valores; `throw` só para erros irrecuperáveis |
+| [throws / Result explícito](conventions/advanced/error-handling.md#domain-error-enum) | Erros de domínio como valores; `throw` só para erros irrecuperáveis |
 | [Actors para estado compartilhado](conventions/advanced/concurrency.md#race-condition-em-classe) | `actor` protege mutação concorrente sem locks manuais |
 | [Structured concurrency](conventions/advanced/concurrency.md#task-solta-sem-escopo-estruturado) | Toda `Task` tem escopo; cancelamento se propaga |
 | [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-e-aaa) | AAA explícito; XCTAssert semântico ou Swift Testing `#expect` |

@@ -19,6 +19,8 @@ saída antecipada. O operador `?` propaga erros sem ruído. Closures são primei
 | **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe |
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 
+<a id="single-level-of-abstraction"></a>
+
 ## SLA: uma responsabilidade, um nível
 
 Cada função executa uma operação ou orquestra outras. Nunca as duas ao mesmo tempo.
@@ -137,6 +139,8 @@ fn compute_discount_rate(user_id: u64) -> f64 {
 ```
 
 </details>
+
+<a id="no-logic-in-return"></a>
 
 ## Sem lógica no retorno
 

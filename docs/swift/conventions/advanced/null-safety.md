@@ -153,6 +153,8 @@ let displayName = user.name ?? "Anonymous"
 
 </details>
 
+<a id="collections-empty-over-optional"></a>
+
 ## Coleções: preferir vazio a optional
 
 <details>

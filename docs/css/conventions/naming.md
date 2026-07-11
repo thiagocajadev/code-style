@@ -15,6 +15,8 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 | **semantic class** (classe semântica) | Nome descreve o papel; sobrevive a mudanças de design |
 | **utility class** (classe utilitária) | Classe atômica focada em uma propriedade: `.text-center`, `.mt-2` |
 
+<a id="semantic-vs-presentational"></a>
+
 ## Semântico vs presentacional
 
 <details>

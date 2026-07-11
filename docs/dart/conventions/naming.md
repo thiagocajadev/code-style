@@ -45,6 +45,8 @@ Order? applyDiscount(Order order, Order Function(Order) calculate) {
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -72,6 +74,8 @@ Address? findCustomerAddress(int customerId) { ... }
 ```
 
 </details>
+
+<a id="case-conventions"></a>
 
 ## Convenções de case
 

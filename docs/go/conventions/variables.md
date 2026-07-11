@@ -78,6 +78,8 @@ func findUser(userID int64) (*User, error) {
 
 </details>
 
+<a id="magic-values"></a>
+
 ## Valores mágicos
 
 Substitua literais inline por constantes nomeadas. Qualquer número ou string cujo significado não

@@ -154,6 +154,8 @@ Widget build(BuildContext context) {
 
 </details>
 
+<a id="statefulwidget-when-needed"></a>
+
 ## `StatefulWidget` quando necessário
 
 `StatefulWidget` é adequado para estado local de UI: foco, animações, controladores de formulário.
@@ -204,6 +206,8 @@ class OrderListScreen extends ConsumerWidget {
 ```
 
 </details>
+
+<a id="composition-over-inheritance"></a>
 
 ## Composição sobre herança
 

@@ -75,6 +75,8 @@ type ApiResponse<T> = { data: T; meta: ResponseMeta };
 
 </details>
 
+<a id="generics"></a>
+
 ## Genéricos
 
 Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo. Sem variação real,

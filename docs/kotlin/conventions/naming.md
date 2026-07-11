@@ -47,6 +47,8 @@ fun applyDiscount(order: Order, calculate: (Order) -> Order): Order? {
 
 </details>
 
+<a id="portuguese-names"></a>
+
 ## Nomes em português
 
 <details>
@@ -74,6 +76,8 @@ fun findCustomerAddress(customerId: Long): Address? { ... }
 ```
 
 </details>
+
+<a id="case-conventions"></a>
 
 ## Convenções de case
 
