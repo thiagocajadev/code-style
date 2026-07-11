@@ -1,15 +1,15 @@
-# Performance
+# Performance em JavaScript
 
 > Escopo: JavaScript. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados em volume ou frequência alta): loops apertados, handlers de requisição, processamento de stream. Fora desse contexto, prefira legibilidade. **Premature optimization** (otimização prematura) custa clareza sem ganho real: meça antes de otimizar.
+Estas diretrizes valem para os **hot paths** (caminhos quentes, o código executado em grande volume ou com frequência alta): laços apertados, handlers de requisição, processamento de stream. Fora deles, escolha a legibilidade. A **premature optimization** (otimização prematura) troca clareza por um ganho que muitas vezes nem existe. Meça primeiro, otimize depois.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
 | **hot path** (caminho quente) | Trecho de código executado em volume ou frequência alta; otimizar aqui rende |
-| **cold path** (caminho frio) | Trecho raro (inicialização, erro); otimizar aqui é desperdício de clareza |
+| **cold path** (caminho frio) | Trecho raro (inicialização, erro); aqui a legibilidade vale mais que a velocidade |
 | **V8** (engine do Chrome/Node.js) | Motor JavaScript do Node.js e Chrome; otimiza quando o código é previsível e mantém formas estáveis de objeto |
 | **JIT** (Just-In-Time, Compilação Sob Demanda) | Compilador que traduz JS para código de máquina em tempo de execução |
 | **allocation** (alocação) | Criação de objeto na heap; pressão de alocação custa GC |
@@ -18,10 +18,11 @@ Estas diretrizes se aplicam a **hot paths** (caminhos quentes, fluxos executados
 | **profiling** (perfilamento) | Medição empírica de onde tempo e memória são gastos; `node --prof`, `clinic`, Chrome DevTools |
 | **stream** (fluxo) | Leitura/escrita em pedaços; evita carregar arquivo inteiro na memória |
 
-## for...of vs forEach
+## for...of no lugar de forEach em hot paths
 
-`forEach` executa um **callback** (função de retorno) por iteração: há custo de chamada de função e criação de contexto de
-execução a cada item. Em hot paths, `for...of` itera diretamente sobre o iterável, sem callback.
+`forEach` chama um **callback** (função de retorno) para cada item da lista: cada volta paga o
+custo de mais uma chamada de função. O laço `for...of` não usa callback: ele pega o próximo item e
+roda o corpo do laço direto. Em um hot path, essa diferença por item soma.
 
 <details>
 <summary>❌ Ruim: callback alocado por iteração</summary>
@@ -55,11 +56,11 @@ function calculateTotalRevenue(orders) {
 
 </details>
 
-## Set para membership
+## Set para testar pertencimento
 
-`Array.includes()` percorre o array do início ao fim: O(n) por verificação. `Set.has()` resolve em
-O(1) via hash. Para listas fixas verificadas com frequência, defina o `Set` uma vez no módulo e
-reutilize.
+`Array.includes()` percorre o array do início ao fim: O(n) por verificação. `Set.has()` responde em
+O(1) via hash. Para uma lista fixa consultada com frequência, crie o `Set` uma vez no módulo e
+reutilize a cada chamada.
 
 <details>
 <summary>❌ Ruim: Array.includes percorre tudo a cada chamada</summary>
@@ -95,10 +96,9 @@ function filterPremiumProducts(products) {
 
 </details>
 
-## ID: UUID v4 vs UUID v7
+## UUID v7 para chaves ordenadas no índice
 
-`crypto.randomUUID()` gera **UUID** (Universally Unique Identifier · Identificador Único Universal) v4, que é aleatório. Inserções aleatórias fragmentam o índice primário
-progressivamente. UUID v7 é **time-ordered** (ordenado por tempo): insere sempre próximo ao fim da B-tree, sem fragmentação.
+`crypto.randomUUID()` gera um **UUID** (Universally Unique Identifier · Identificador Único Universal) v4, que é aleatório. Como o valor é imprevisível, cada nova linha entra em um ponto qualquer do índice, e o banco precisa remanejar as páginas para abrir espaço no meio. O UUID v7 é **time-ordered** (ordenado por tempo): um valor gerado depois é sempre maior que o anterior, então cada inserção vai para o fim do índice, em sequência, sem remanejar nada.
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 
 <details>
@@ -129,11 +129,11 @@ function createOrder(request) {
 
 </details>
 
-## String building
+## Concatenar strings em loop
 
-Concatenação com `+` ou template literal dentro de um loop aloca uma nova string a cada iteração:
-strings em JavaScript não podem ser alteradas depois de criadas. Para construir strings
-dinamicamente, acumule em array e chame `join()` no final. Uma alocação, resultado único.
+Concatenar com `+` ou com template literal dentro de um loop aloca uma nova string a cada iteração,
+porque uma string em JavaScript não pode ser alterada depois de criada. Para montar uma string aos
+poucos, acumule os pedaços em um array e chame `join()` no final: uma única alocação, um resultado só.
 
 <details>
 <summary>❌ Ruim: nova string alocada por iteração</summary>

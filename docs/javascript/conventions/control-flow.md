@@ -1,6 +1,10 @@
-# Control Flow
+# Controle de fluxo em JavaScript
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada. **Guard clauses** (cláusulas de proteção) achatam aninhamento; **lookup tables** (tabelas de busca) eliminam cadeias longas de `if/else`.
+Controle de fluxo é como o código escolhe qual caminho seguir e quantas vezes
+repetir um trecho. A ferramenta certa depende de quantas condições existem, se
+elas escolhem um valor ou disparam ações, e se o fluxo pode precisar sair no
+meio. Este guia vai da ferramenta mais simples (`if`) à mais específica, sempre
+com um exemplo ruim e um bom lado a lado.
 
 ## Conceitos fundamentais
 
@@ -16,8 +20,9 @@ Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quant
 
 ## If e else
 
-O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um
-`return` é ruído: o fluxo já saiu.
+É o ponto de partida. Para dois caminhos, `if/else` resolve. Só que um `else`
+depois de um `return` é ruído: se o fluxo já saiu no `return`, o `else` não
+acrescenta nada.
 
 <details>
 <summary>❌ Ruim: else desnecessário após return</summary>
@@ -48,12 +53,11 @@ function getDiscount(user) {
 
 ## Aninhamento em cascata
 
-Quando as condições crescem e se aninham, cada nível enterra a lógica um nível
-mais fundo. O fluxo vira uma pirâmide: o **arrow antipattern** (código em
-formato de seta).
-
-Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal
-limpo.
+Quando as condições se aninham uma dentro da outra, cada nível empurra a lógica
+principal mais para dentro. O código vira uma pirâmide deitada, um formato que
+ganhou o apelido de código em forma de seta (**arrow antipattern**). A guard
+clause inverte isso: valide as saídas no topo, uma por uma, e deixe o caminho
+principal reto no fim.
 
 <details>
 <summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
@@ -94,8 +98,9 @@ function processOrder(order) {
 
 ## Coerção implícita
 
-Armadilha frequente dentro de condicionais: `==` converte tipos silenciosamente
-e torna a comparação imprevisível.
+Uma armadilha comum dentro das condições: o `==` converte os tipos por baixo dos
+panos antes de comparar, e o resultado fica imprevisível. Use sempre `===`, que
+compara valor e tipo sem conversão.
 
 <details>
 <summary>❌ Ruim: coerção silenciosa</summary>
@@ -135,8 +140,8 @@ if (count === 3) {
 
 ## Ternário
 
-Para atribuição de dois valores possíveis, não para lógica de fluxo. Encadeado,
-vira **puzzle** (quebra-cabeça).
+Serve para escolher entre dois valores numa atribuição, não para controlar o
+fluxo. Encadeado, vira um quebra-cabeça de ler.
 
 <details>
 <summary>❌ Ruim: lógica inline ilegível</summary>
@@ -177,9 +182,9 @@ const grade = isA ? "A"
 
 ## Lookup table
 
-Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista
-de condições vira um catálogo. Substitua por um objeto: a chave é a condição, o
-valor é o resultado.
+Quando vários `if/else` (ou `case`) só devolvem um valor para cada chave, a lista
+de condições é na verdade um catálogo. Troque por um objeto: a chave é a
+condição, o valor é o resultado.
 
 <details>
 <summary>❌ Ruim: switch repetitivo mapeando chave → valor</summary>
@@ -224,11 +229,11 @@ function getStatusLabel(status) {
 
 ## Switch
 
-Lookup table resolve mapeamento de valores. Quando cada caso precisa executar
-múltiplas ações (não retornar um valor, mas fazer algo), `switch` torna a
-intenção mais clara que um `if/else` encadeado. Cada `case` termina com `break`
-ou `return` explícito: **fall-through** (execução que vaza para o caso seguinte)
-acidental é bug silencioso.
+A tabela de busca resolve quando cada caso devolve um valor. Quando cada caso
+precisa executar várias ações (fazer algo, não só devolver um valor), o `switch`
+deixa a intenção mais clara do que um `if/else` encadeado. Termine cada `case`
+com `break` ou `return`: sem isso, a execução vaza para o próximo caso (o
+**fall-through**), e esse vazamento acidental é um bug silencioso.
 
 <details>
 <summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
@@ -281,10 +286,11 @@ function processPaymentEvent(event) {
 
 ## Map
 
-Lookup table com plain object tem limitações: chaves são sempre convertidas para
-string e não há métodos nativos para tamanho ou verificação segura. `Map` é a
-estrutura certa quando a chave não é string, quando os dados são dinâmicos, ou
-quando você precisa de `has`, `delete` e `size` nativos.
+A tabela de busca feita com objeto comum tem limites: a chave é sempre convertida
+para texto, e não há método pronto para contar o tamanho ou checar a presença com
+segurança. O `Map` é a estrutura certa quando a chave não é texto, quando os
+dados mudam em tempo de execução, ou quando você precisa de `has`, `delete` e
+`size` prontos.
 
 <details>
 <summary>❌ Ruim: plain object perde o tipo da chave</summary>
@@ -301,7 +307,7 @@ const count = Object.keys(userCache).length; // verbose
 </details>
 
 <details>
-<summary>✅ Bom: Map preserva tipo e tem API (Interface de Programação) nativa</summary>
+<summary>✅ Bom: Map preserva o tipo da chave e traz métodos prontos</summary>
 
 ```js
 const userCache = new Map();
@@ -319,15 +325,14 @@ userCache.size;
 
 ---
 
-_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo
-resolvem **iteração**: quantas vezes percorrer._
+_As ferramentas acima decidem **qual caminho** seguir. As de baixo resolvem a
+**repetição**: quantas vezes percorrer uma coleção._
 
-## Circuit break
+## Parar no primeiro resultado
 
-Antes de escrever um loop, verifique se `find`, `some` ou `every` já resolve.
-Esses métodos param no primeiro **match** (correspondência), sem percorrer o
-resto. Para busca com
-lógica de saída explícita, `for...of` com `return` é direto.
+Antes de escrever um laço na mão, veja se `find`, `some` ou `every` já resolvem.
+Esses métodos param assim que acham o que procuravam, sem percorrer o resto. Para
+uma busca com saída explícita, `for...of` com `return` é direto.
 
 <details>
 <summary>❌ Ruim: forEach com flag força percorrer tudo</summary>
@@ -349,7 +354,7 @@ function findFirstExpiredProduct(products) {
 </details>
 
 <details>
-<summary>✅ Bom: for...of sai no primeiro match</summary>
+<summary>✅ Bom: for...of para no primeiro que corresponde</summary>
 
 ```js
 function findFirstExpiredProduct(products) {
@@ -381,7 +386,7 @@ function hasExpiredProduct(products) {
 </details>
 
 <details>
-<summary>✅ Bom: métodos declarativos com circuit break nativo</summary>
+<summary>✅ Bom: métodos que já param no primeiro resultado</summary>
 
 ```js
 // para no primeiro match
@@ -398,8 +403,9 @@ const allProductsActive = products.every((product) => product.isActive);
 
 ## forEach
 
-Para efeitos colaterais sobre cada item de uma coleção, `forEach` é declarativo
-e suficiente: sem índice, sem variável de controle.
+Quando você só precisa fazer algo com cada item de uma coleção (um efeito
+colateral, como notificar ou salvar), `forEach` basta e é claro: sem índice, sem
+variável de controle.
 
 <details>
 <summary>❌ Ruim: for com índice quando o índice nunca é usado</summary>
@@ -428,9 +434,9 @@ orders.forEach((order) => {
 
 ## for...of
 
-Quando o laço precisa de saída antecipada ou iteração com valores diretos,
-`for...of` é a escolha: sem índice implícito, com suporte a `break` e
-`continue`, compatível com qualquer iterável.
+Quando o laço precisa sair no meio ou trabalhar direto com os valores, `for...of`
+é a escolha: sem índice no caminho, com `break` e `continue`, e funciona com
+qualquer coleção percorrível.
 
 <details>
 <summary>❌ Ruim: for...in em array percorre o protótipo</summary>
@@ -486,9 +492,9 @@ for (const [key, value] of Object.entries(config)) {
 
 ## while
 
-Quando não há coleção pré-definida e o critério de parada é uma condição, não um
-índice ou tamanho, `while` é a escolha natural. Use `do...while` quando a
-primeira iteração deve sempre executar, independente da condição.
+Quando não há uma coleção pronta e a parada depende de uma condição (não de um
+índice ou tamanho), `while` é a escolha natural. Use `do...while` quando a
+primeira volta precisa acontecer sempre, antes de checar a condição.
 
 <details>
 <summary>❌ Ruim: for simulando condição de parada por estado</summary>

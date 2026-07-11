@@ -1,8 +1,8 @@
-# Error Handling
+# Tratamento de erros em JavaScript
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Erros bem estruturados separam o que é **problema de negócio** (regra violada, recurso inexistente) do que é **falha técnica** (timeout, banco fora). Cada categoria pede tratamento diferente: a primeira vira resposta semântica ao chamador; a segunda vira log, métrica e **retry** (nova tentativa). `try/catch` existe para capturar, nunca para esconder.
+Um bom tratamento de erro começa por separar dois tipos que pedem respostas opostas. O **problema de negócio** (uma regra violada, um recurso que não existe) o chamador precisa conhecer para responder ao usuário. A **falha técnica** (um timeout, o banco fora do ar) o chamador raramente consegue tratar: ela vira log, métrica e, quando cabe, **retry** (nova tentativa). Misturar os dois esconde o que importa. E `try/catch` serve para capturar o erro no lugar certo, nunca para engoli-lo em silêncio.
 
 ## Conceitos fundamentais
 
@@ -18,6 +18,8 @@ Erros bem estruturados separam o que é **problema de negócio** (regra violada,
 | **swallow** (engolir) | Capturar erro sem tratar nem propagar; antipadrão clássico |
 
 ## Múltiplos tipos de retorno
+
+Uma função que devolve `null`, `undefined`, `false` ou um objeto conforme o caso obriga quem chama a adivinhar. Cada saída pede uma verificação diferente, e é fácil deixar um caso passar. Lançar um erro tipado para cada falha deixa o caminho de sucesso com um único formato de retorno.
 
 <details>
 <summary>❌ Ruim: null, undefined, false e objeto na mesma função</summary>
@@ -59,6 +61,8 @@ function processOrder(order) {
 
 ## Erro como string
 
+`throw` de uma string joga fora o tipo e o contexto. Quem captura não consegue distinguir um erro do outro com `instanceof`, nem ler um código ou uma ação sugerida. O mínimo é lançar uma subclasse de `Error`, que carrega nome, mensagem e rastro de chamadas.
+
 <details>
 <summary>❌ Ruim: string solta, impossível tratar com instanceof</summary>
 
@@ -91,6 +95,8 @@ async function findUser(id) {
 </details>
 
 ## BaseError: abstração centralizada
+
+Uma classe base concentra o contrato de todos os erros da aplicação: nome, mensagem, ação sugerida e código HTTP. As subclasses (`NotFoundError`, `ValidationError`) só preenchem esses campos. O limite do sistema então serializa qualquer uma delas do mesmo jeito, com um `toJSON` único.
 
 <details>
 <summary>❌ Ruim: throw com string solta, sem tipo, sem contrato</summary>
@@ -185,6 +191,8 @@ export class InternalServerError extends BaseError {
 
 ## try/catch que engole o erro
 
+Capturar o erro, logar uma frase genérica e devolver `null` esconde a falha: o chamador recebe um vazio sem saber por quê. O `catch` no lugar certo faz o oposto: relança o erro de negócio como veio e embrulha a falha técnica em um erro da aplicação, com a causa original preservada.
+
 <details>
 <summary>❌ Ruim: captura, loga e retorna null</summary>
 
@@ -234,6 +242,8 @@ async function findProductById(id) {
 </details>
 
 ## Exceção como controle de fluxo
+
+Exceção sinaliza o que foge do esperado, não o caminho normal. Buscar uma chave que pode não existir é caminho normal: um `??` com valor padrão resolve. Reservar `try/catch` para isso troca uma verificação barata por um desvio caro e mais difícil de seguir.
 
 <details>
 <summary>❌ Ruim: try/catch controlando lógica de negócio normal</summary>

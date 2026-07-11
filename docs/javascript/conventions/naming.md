@@ -1,16 +1,12 @@
-# Naming
+# Nomes em JavaScript
 
-Nomear bem as coisas ajuda o programador a ler e entender o código. Um
-identificador expressivo elimina comentários, encurta a leitura e revela
-intenção.
-
-Um nome genérico (`data`, `result`, `tmp`) força o programador a abrir o corpo
-da função para entender o que está acontecendo. Em funções e módulos, o nome
-ainda compõe a **API** (Application Programming Interface · Interface de
-Programação de Aplicações) que outro código vai consumir. Errar ali custa mais
-caro.
-
-Quando o nome carrega a intenção, o comentário deixa de fazer falta.
+Nomear bem é o que faz outra pessoa (ou você mesmo daqui a três meses) ler o
+código e entender na hora. Um nome expressivo mostra a intenção, encurta a
+leitura e dispensa comentário. Um nome genérico (`data`, `result`, `tmp`) faz o
+contrário: obriga o leitor a abrir o corpo da função para descobrir o que
+acontece ali. Em funções e módulos o erro custa ainda mais caro, porque o nome
+vira parte da **API** (Application Programming Interface · Interface de
+Programação de Aplicações), o contrato que outro código vai usar.
 
 ## Conceitos fundamentais
 
@@ -203,10 +199,11 @@ function applySeasonalDiscount(order) {
 | Validar            | `validate`, `check`, `assert`, `verify`   | `handle`, `test`   |
 | Notificar          | `send`, `dispatch`, `notify`, `emit`      | `fire`, `trigger`  |
 
-## Domain-first naming
+## Nome pelo domínio, não pela infraestrutura
 
-O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a
-operação acontece.
+O nome mostra a intenção de negócio, não o detalhe técnico de onde ou como a
+operação acontece. `chargeCustomer` diz o que importa; `callStripe` prende o nome
+à ferramenta do momento, que amanhã pode mudar.
 
 <details>
 <summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
@@ -260,8 +257,9 @@ function searchProducts(term) {
 
 ## Código como documentação
 
-Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. Um
-nome expressivo substitui qualquer comentário.
+Um comentário que explica o _quê_ o código faz envelhece mal: o código muda, o
+comentário fica para trás e passa a mentir. Um nome expressivo dispensa o
+comentário e nunca sai de sincronia com o código.
 
 <details>
 <summary>❌ Ruim: comentário repete o que o código já diz</summary>
@@ -293,7 +291,7 @@ attempts++;
 
 </details>
 
-## Boolean naming
+## Nomes de booleano
 
 <details>
 <summary>❌ Ruim: booleanos sem prefixo semântico</summary>

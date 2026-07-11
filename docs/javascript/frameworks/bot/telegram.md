@@ -1,10 +1,10 @@
-# Telegram: Telegraf
+# Bot de Telegram com Telegraf
 
 > Escopo: JavaScript/Node.js. Guia baseado em **Telegraf v4.16** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Telegram (BotFather, Inline Keyboard, tipos de chat): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-**Telegraf** é o framework Node.js para a **Bot API** (Interface de Programação para Bots) do Telegram. Usa arquitetura de middleware encadeado: cada update passa por uma pilha de funções antes de chegar ao **Handler** (processador de requisição/evento) final. A biblioteca chama o parâmetro de contexto de `ctx` por convenção, mas este guia usa `context` para seguir o code style do projeto.
+Tudo que acontece com o bot no Telegram chega como um **update** (uma novidade: mensagem nova, clique em botão, entrada em grupo). O **Telegraf** é o framework Node.js que recebe esse fluxo e o empurra por uma pilha de **middlewares** (funções encadeadas que veem o update antes de quem vai de fato tratá-lo) até o handler final. Cada função recebe o mesmo objeto de contexto, que carrega o update atual e todos os métodos de resposta. A biblioteca chama esse parâmetro de `ctx` por convenção; este guia escreve `context` por inteiro, seguindo o code style do projeto.
 
 ## Conceitos fundamentais
 
@@ -23,7 +23,9 @@
 npm install telegraf
 ```
 
-## Setup do Bot
+## Ligar o bot e encerrar sem perder update
+
+O arquivo de entrada cria a instância com o token, registra a saudação inicial e sobe o bot. As duas últimas linhas existem para o desligamento: quando o processo recebe um sinal de término, `bot.stop()` fecha a conexão em vez de derrubá-la no meio de um update.
 
 ```js
 import { Telegraf } from 'telegraf';
@@ -38,9 +40,11 @@ process.once('SIGINT', () => bot.stop('SIGINT'));
 process.once('SIGTERM', () => bot.stop('SIGTERM'));
 ```
 
-`bot.launch()` inicia **polling** (consulta periódica) por padrão. Para webhook, use `bot.createWebhook()` (ver seção Webhook em Produção).
+Por padrão, `bot.launch()` entra em **polling**: o bot pergunta ao Telegram, de tempos em tempos, se há update novo. É o modo simples, bom para desenvolver. Em produção você inverte a direção e deixa o Telegram bater no seu servidor, o que é assunto da seção sobre webhook mais adiante.
 
-## Command Router
+## Encaminhar cada comando ao seu módulo
+
+O roteador é um índice: nome do comando de um lado, função que o executa do outro. Ele não abre mensagem, não consulta banco, não formata texto. Quando a lógica de `/order` mora dentro do `bot.command('order', ...)`, o arquivo de entrada vira o depósito de todas as regras do bot.
 
 <details>
 <summary>❌ Ruim: ctx abreviado; lógica de negócio dentro do handler; sem separação</summary>
@@ -71,9 +75,9 @@ bot.command('status', statusCommand);
 
 </details>
 
-## Filtrando por Tipo de Mensagem
+## Tratar só o tipo de mensagem que interessa
 
-Use o `message` filter de `telegraf/filters` para reagir a tipos específicos de conteúdo sem verificações manuais.
+O filtro `message` de `telegraf/filters` deixa você declarar o tipo de conteúdo que o handler aceita: figurinha, foto, texto. O Telegraf faz a triagem e chama seu código apenas quando o update bate. A versão manual, com uma cadeia de `if` olhando qual campo existe no objeto, faz o mesmo trabalho de um jeito que o leitor precisa reconstruir na cabeça.
 
 <details>
 <summary>❌ Ruim: ctx abreviado; verificação manual de tipo; compute e format misturados no argumento</summary>
@@ -111,7 +115,9 @@ bot.on(message('text'), (context) => {
 
 </details>
 
-## Implementando um Command
+## Escrever um comando de ponta a ponta
+
+Um comando do Telegram chega como texto puro: `/order 12345` é uma string, e o argumento é o que vem depois do espaço. O handler tem então três trabalhos distintos, e a versão boa dá um nome a cada um: extrair o ID do texto, buscar o pedido, montar o texto da resposta. O orquestrador fica em cima, legível de ponta a ponta, e as três funções aparecem embaixo na ordem em que são chamadas.
 
 <details>
 <summary>❌ Ruim: ctx abreviado; property access direto no argumento; format inline na chamada</summary>
@@ -163,9 +169,11 @@ function buildOrderSummary(order) {
 
 </details>
 
-## Inline Keyboard e Callbacks
+O guard no topo trata o caso mais comum de erro do usuário, que é digitar `/order` sem o número, e devolve o exemplo de uso em vez de estourar mais adiante.
 
-Botões inline enviam um `callback_query` silencioso ao bot. Sempre chame `answerCbQuery` ao final. Sem isso, o Telegram exibe o indicador de carregamento no botão indefinidamente.
+## Botões na mensagem e a resposta ao clique
+
+Botões inline aparecem colados na mensagem e, ao serem clicados, mandam ao bot um `callback_query`: um evento silencioso que carrega o dado que você embutiu no botão (aqui, `cancel_12345`). Dois detalhes decidem se a experiência funciona. O `bot.action` casa esse dado por expressão regular e recupera o ID. E `answerCbQuery()` precisa ser chamado, sempre: enquanto ele não chega, o Telegram mantém o botão girando o indicador de carregamento, mesmo que a ação já tenha sido concluída.
 
 <details>
 <summary>❌ Ruim: ctx abreviado; format inline no argumento; sem answerCbQuery</summary>
@@ -226,9 +234,9 @@ bot.action(/^cancel_(.+)$/, async (context) => {
 
 </details>
 
-## Webhook em Produção
+## Receber os updates por webhook em produção
 
-Use `bot.createWebhook()` com `secretToken` para validar que os updates vêm do Telegram.
+Em produção o polling é desperdício: o bot fica perguntando por novidade que quase nunca existe. O **webhook** inverte o fluxo, e o Telegram passa a chamar uma URL sua a cada update. Isso abre uma porta pública, então o `secretToken` vem junto: o Telegram o envia em um cabeçalho a cada chamada, e o Telegraf recusa qualquer requisição que não o traga. Sem ele, qualquer pessoa que descubra a URL pode fabricar updates para o seu bot.
 
 <details>
 <summary>❌ Ruim: webhookCallback descontinuado no v4.16; sem secretToken; sem shutdown limpo</summary>
@@ -274,6 +282,8 @@ process.once('SIGTERM', () => {
 ```
 
 </details>
+
+O encerramento agora fecha as duas pontas: o servidor HTTP para de aceitar conexão e o bot se despede do Telegram.
 
 ## Veja também
 

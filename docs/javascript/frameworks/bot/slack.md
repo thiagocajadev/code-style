@@ -1,10 +1,10 @@
-# Slack: Bolt for JavaScript
+# Bot de Slack com Bolt for JavaScript
 
 > Escopo: JavaScript/Node.js. Guia baseado em **@slack/bolt v4.7.1** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Slack (tokens, Socket Mode, Block Kit, scopes): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md#slack).
 
-**Bolt for JavaScript** é o framework oficial da Slack para construir aplicativos Slack. Um objeto **App** (aplicativo) registra listeners para slash commands, eventos e ações de Block Kit. Toda interação enviada pelo Slack exige um **ack()** (acknowledge, reconhecimento) em até 3 segundos. Sem esse retorno, o Slack exibe um erro ao usuário.
+O Slack cobra pontualidade do seu bot, e esse é o fato que organiza este guia. Toda interação que ele envia, seja um comando digitado, um clique de botão ou uma menção, precisa de um **ack()** (de *acknowledge*, o aviso de "recebi") em até três segundos, senão o usuário vê um erro na tela mesmo que o trabalho esteja em andamento. O **Bolt for JavaScript** é o framework oficial da Slack para lidar com isso: você cria um objeto **App** e registra nele os listeners de comando, evento e botão, cada um começando pelo `ack()` e só depois indo trabalhar.
 
 ## Conceitos fundamentais
 
@@ -26,9 +26,9 @@
 npm install @slack/bolt
 ```
 
-## Setup do App
+## Criar o app e subir com as credenciais certas
 
-Use `process.env` para todas as credenciais. O `await` em `app.start()` é obrigatório: sem ele, erros de inicialização são silenciados.
+Duas credenciais aparecem já na criação do App. O **Bot Token** (`xoxb-...`) autoriza o bot a chamar a API do Slack. O **Signing Secret** é o que permite ao Bolt provar que uma requisição veio mesmo do Slack, e não de alguém que descobriu sua URL. Nenhuma das duas entra no código: leia de variável de ambiente. E use `await` no `app.start()`, porque sem ele uma falha de inicialização vira uma promise rejeitada que ninguém observa, e o processo segue como se estivesse no ar.
 
 <details>
 <summary>❌ Ruim: credenciais hardcoded; sem await no start</summary>
@@ -62,9 +62,9 @@ await app.start(process.env.PORT ?? 3000);
 
 </details>
 
-## Slash Commands
+## Comandos digitados com barra
 
-`ack()` deve ser chamado antes de qualquer operação assíncrona. O Slack aguarda o reconhecimento em até 3 segundos; operações longas são iniciadas após o `ack()`.
+O `ack()` é a primeira linha do handler, antes de qualquer `await` de trabalho. A ordem importa: se você buscar o pedido primeiro e reconhecer depois, a janela de três segundos pode fechar durante a consulta e o Slack já terá mostrado o erro. Reconheça, depois trabalhe, depois responda com `say()`.
 
 <details>
 <summary>❌ Ruim: sem ack(); destructuring no parâmetro; lógica de negócio no handler; format inline no say()</summary>
@@ -111,9 +111,9 @@ function buildOrderReply(order) {
 
 </details>
 
-## Events
+## Reagir ao que acontece no workspace
 
-Use `app.event()` para reagir a eventos da Events API. Em listeners de mensagem, adicione um guard para `event.bot_id`: sem ele, o bot responde aos próprios envios e entra em loop.
+Além dos comandos, o Slack empurra eventos: alguém mencionou o bot, alguém escreveu no canal. Você os captura com `app.event()`. Em listener de mensagem, o guard de `event.bot_id` não é opcional: as mensagens que o próprio bot envia também chegam como evento, então sem o guard ele responde a si mesmo e o loop não para.
 
 <details>
 <summary>❌ Ruim: destructuring no parâmetro; sem guard para bot messages; format inline no say()</summary>
@@ -161,9 +161,11 @@ function buildEchoReply(messageText) {
 
 </details>
 
-## Actions (Block Kit)
+## Botões e blocos interativos
 
-Block Kit é a primitiva de **UI** (User Interface · Interface do Usuário) interativa do Slack. Botões e selects disparam `app.action()`. O `ack()` é obrigatório também nas ações: sem ele, o Slack exibe um spinner indefinido no botão.
+O **Block Kit** é o sistema de interface do Slack: em vez de texto puro, a mensagem vira uma lista de blocos (um parágrafo, uma linha de botões, uma imagem). Cada botão carrega um `action_id`, e é por ele que o Slack encontra o listener registrado em `app.action()` quando alguém clica. O clique é uma interação como qualquer outra, então o `ack()` vale aqui também: enquanto ele não chega, o botão fica girando o indicador de carregamento.
+
+Duas coisas saem do meio do código na versão boa: os blocos viram uma constante nomeada, e o `action_id` vira uma entrada de `ACTIONS`. Assim o nome da ação é escrito uma vez e usado nos dois lugares, em vez de repetido como string solta no botão e no listener, onde um erro de digitação não avisa ninguém.
 
 <details>
 <summary>❌ Ruim: blocks montados inline; action_id como string solta; sem ack() na ação</summary>
@@ -247,9 +249,9 @@ function buildOrdersReply(orders) {
 
 </details>
 
-## Socket Mode
+## Conexão de saída em vez de webhook
 
-Socket Mode elimina a necessidade de URL pública e é recomendado para bots internos e desenvolvimento local. O `appToken` deve ter o scope `connections:write`.
+O modo padrão exige que o Slack alcance uma URL pública sua, o que é um problema no notebook do desenvolvedor e um risco a mais em bot interno. O **Socket Mode** inverte a direção: o bot abre uma conexão WebSocket de saída e recebe os eventos por ela. Nada precisa entrar pela sua rede, e não há porta para escutar. O preço é uma credencial extra, o **App-Level Token** (`xapp-...`), que precisa do scope `connections:write`.
 
 <details>
 <summary>❌ Ruim: tokens hardcoded; sem await no start</summary>
@@ -284,6 +286,8 @@ await app.start();
 ```
 
 </details>
+
+Repare que o `app.start()` não recebe porta aqui. Quem abriu a conexão foi o bot, então não há servidor esperando ninguém.
 
 ## Veja também
 

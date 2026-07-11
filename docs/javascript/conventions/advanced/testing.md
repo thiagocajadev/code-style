@@ -1,13 +1,14 @@
-# Testing
+# Testes
 
 > Escopo: JavaScript. Visão transversal:
 > [shared/standards/testing.md](../../../shared/standards/testing.md).
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma
-história: quem chamou, o que recebeu, o que esperava. Em JS, a base é
-`node:test` + `node:assert/strict` (nativos desde o Node 18) e a estrutura é
-**AAA** (Arrange, Act, Assert): as declarações do teste ficam agrupadas e uma
-linha em branco isola a asserção.
+Um teste é a documentação viva do comportamento esperado, e a única que não
+mente porque roda. Quando falha, conta a história inteira: quem foi chamado, com
+o quê, e o que deveria ter voltado. Em JavaScript a base é `node:test` mais
+`node:assert/strict` (ambos nativos desde o Node 18), e a estrutura é o **AAA**
+(Arrange, Act, Assert · Arranjar, Agir, Atestar): as declarações ficam agrupadas
+e uma linha em branco isola a asserção do resto.
 
 ## Conceitos fundamentais
 
@@ -43,8 +44,8 @@ import assert from "node:assert/strict";
 
 ## Fases misturadas: AAA
 
-Cada teste agrupa as declarações — contexto, execução e valor esperado — em um
-bloco; uma linha em branco isola a asserção do resultado.
+Cada teste agrupa as três fases (contexto, execução e valor esperado) em um
+bloco único, e uma linha em branco isola a asserção do resultado.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -72,12 +73,12 @@ test("applies 10% discount to order price", () => {
 
 </details>
 
-## Assert inline: semantic assert
+## Assert com valores soltos
 
-`expected` e `actual` são nomeados antes da comparação. O assert lê como uma
-frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem
-nome, declare `expected` explicitamente para manter consistência e deixar o
-assert sem ambiguidade.
+Nomeie `actual` e `expected` antes de comparar. O assert passa a ler como uma
+frase em vez de um cálculo, e a mensagem de falha diz o que era esperado sem
+você abrir o arquivo. A regra vale sempre: mesmo quando o valor já tem nome,
+declare `expected` de forma explícita para o assert não deixar dúvida.
 
 <details>
 <summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
@@ -171,8 +172,10 @@ test("throws ValidationError when discount percentage is negative", () => {
 
 ## Estado compartilhado
 
-Cada teste monta seu próprio contexto. Nenhum teste depende de outro para
-funcionar.
+Cada teste monta o próprio contexto e não depende de nenhum outro para
+funcionar. Estado que sobrevive de um teste para o seguinte produz a falha mais
+cara de depurar: o teste passa sozinho, quebra dentro da suíte, e o culpado é a
+ordem de execução.
 
 <details>
 <summary>❌ Ruim: estado compartilhado que muda entre testes</summary>

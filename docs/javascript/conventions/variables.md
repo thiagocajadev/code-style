@@ -1,8 +1,13 @@
-# Variables
+# Variáveis em JavaScript
 
-Declarações controlam três coisas: **scope** (escopo, onde a variável existe), **mutability** (se o valor pode ser alterado depois) e **hoisting** (içamento, quando a declaração é processada). A escolha errada vaza variáveis para fora do bloco, permite reatribuição acidental e quebra o raciocínio sobre o fluxo.
+A forma como você declara uma variável controla três coisas: o **scope** (escopo,
+onde a variável existe e pode ser usada), se o valor pode ser trocado depois, e o
+**hoisting** (içamento, o momento em que a declaração é processada). Errar a
+escolha vaza a variável para fora do bloco, abre espaço para uma troca acidental
+de valor e embaralha o raciocínio sobre o fluxo.
 
-Dúvida? Use `const`. Só troque por `let` quando precisar reatribuir. Nunca use `var`.
+Na dúvida, use `const`. Troque por `let` só quando precisar reatribuir o valor. E
+não use `var`: ele é legado e vaza para fora do bloco.
 
 ## Conceitos fundamentais
 
@@ -73,11 +78,12 @@ while (attempt < MAX_RETRIES) {
 
 </details>
 
-## Mutação direta de objetos
+## Alteração direta de objetos
 
-Objetos são passados por referência. Alterar um parâmetro muda o estado do chamador: um efeito
-colateral invisível e difícil de rastrear. Prefira retornar um novo objeto com as propriedades
-desejadas.
+Objetos são passados por referência: quando você altera um parâmetro dentro da
+função, muda também o objeto lá fora, na mão de quem chamou. Esse é um efeito
+colateral invisível e difícil de rastrear. Em vez disso, devolva um objeto novo
+com os valores que mudaram.
 
 <details>
 <summary>❌ Ruim: mutação acoplada e difícil de rastrear</summary>
@@ -110,7 +116,9 @@ function applyDiscount(order) {
 
 ## Evitar valores mágicos
 
-Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
+Um número ou texto solto no meio do código não conta o que significa. Uma
+constante com nome coloca a intenção à vista: `MINIMUM_DRIVING_AGE` explica o que
+o `18` cru escondia.
 
 <details>
 <summary>❌ Ruim: o que significa 18? e 86400000?</summary>

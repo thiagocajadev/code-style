@@ -1,8 +1,8 @@
-# Validation
+# Validação em JavaScript
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Validação não é uma única coisa: é um **pipeline** (sequência de etapas) com três responsabilidades distintas, cada uma no seu lugar: limpar a entrada, conferir formato e aplicar regras de negócio. Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. Em JS, **Zod** é o padrão de fato para validação de esquema com tipos inferidos.
+Validação não é um passo único, e sim um **pipeline** (sequência de etapas) com três responsabilidades separadas: limpar a entrada, conferir o formato e aplicar as regras de negócio. Cada uma tem o seu lugar. Juntar as três em um só ponto acopla o código, dificulta o teste e abre brechas de segurança. Em JavaScript, **Zod** (biblioteca de validação) é a escolha padrão para validar o esquema e ainda derivar os tipos a partir dele.
 
 ```javascript
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
@@ -18,7 +18,7 @@ Validação não é uma única coisa: é um **pipeline** (sequência de etapas) 
 | **output filter** (filtro de saída) | Remoção de campos sensíveis ou internos antes de responder ao cliente |
 | **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas |
 | **parse, don't validate** (transforme, não só verifique) | Princípio: converter a entrada em tipo seguro de uma vez, em vez de só checar e seguir com `unknown` |
-| **Zod** (biblioteca de validação) | Biblioteca JS de validação com schemas componíveis e tipo inferido |
+| **Zod** (biblioteca de validação) | Você descreve o formato esperado; ela valida os dados e deriva o tipo a partir dessa descrição |
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
 
 ## Sanitização de entrada
@@ -67,10 +67,10 @@ async function createUserHandler(request, response) {
 
 </details>
 
-## Schema validation com Zod
+## Validação de esquema com Zod
 
-Zod valida formato, tipos e restrições, nunca regras de negócio. Centraliza o
-contrato técnico e elimina validação manual espalhada pelos handlers.
+Zod confere formato, tipos e restrições, nunca regras de negócio. Reúne o
+contrato técnico em um lugar e apaga a validação manual espalhada pelos handlers.
 
 <details>
 <summary>❌ Ruim: validação manual espalhada no handler</summary>
@@ -110,9 +110,9 @@ async function createOrder(body) {
 
 ## Regras de negócio
 
-Schema valida se o dado tem o formato correto. Regras de negócio validam se faz
-sentido no domínio: dependem de **I/O** (Input/Output · Entrada/Saída) (banco,
-serviços externos) e não pertencem ao schema.
+O schema confere se o dado tem o formato certo. As regras de negócio conferem se
+ele faz sentido no domínio: dependem de **I/O** (Input/Output · Entrada/Saída),
+como banco e serviços externos, e por isso não cabem no schema.
 
 <details>
 <summary>❌ Ruim: I/O dentro do schema (refine async) mistura camadas</summary>
@@ -170,11 +170,11 @@ async function createOrder(body) {
 
 </details>
 
-## Output filtering
+## Filtro de saída
 
-Retornar a entidade direta vaza campos internos: `passwordHash`, `deletedAt`,
-`internalFlags`. Projete explicitamente o que sai, nunca o objeto do banco
-diretamente.
+Devolver a entidade direto do banco vaza campos internos: `passwordHash`, `deletedAt`,
+`internalFlags`. Monte de forma explícita o objeto que sai na resposta, campo a campo, em vez
+de entregar a linha do banco como está.
 
 <details>
 <summary>❌ Ruim: entidade direta vaza campos internos</summary>

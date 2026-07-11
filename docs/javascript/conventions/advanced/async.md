@@ -1,8 +1,8 @@
-# Async
+# Programação assíncrona em JavaScript
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de **I/O** (Input/Output · Entrada/Saída) é assíncrona. Bloquear o **thread** (linha de execução) principal trava a aplicação.
+JavaScript executa o seu código em um **thread** (linha de execução) único. Enquanto esse thread trabalha, mais nada avança: o clique não responde, a próxima requisição fica na fila. A saída é nunca segurar o thread em uma operação lenta. Toda operação de **I/O** (Input/Output · Entrada/Saída), seja rede, disco ou banco, é assíncrona: ela sai do caminho, libera o thread e avisa quando o resultado chega. O trabalho deste guia é escrever esse fluxo de forma linear com `async`/`await`, sem o aninhamento que os callbacks acumulavam.
 
 ## Conceitos fundamentais
 
@@ -13,10 +13,12 @@ Toda operação que depende de **I/O** (Input/Output · Entrada/Saída) é assí
 | **Promise** (promessa de valor) | Objeto que representa o resultado futuro de uma operação assíncrona |
 | **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato público de uma biblioteca ou serviço externo |
 
-## Callback hell
+## Callbacks aninhados sem controle
+
+Um `callback` (função de retorno) que depende do resultado de outro vira um aninhamento que empurra o código para a direita a cada passo. Com três operações encadeadas já fica difícil de ler e de tratar erro em cada nível.
 
 <details>
-<summary>❌ Ruim: aninhamento cresce sem controle</summary>
+<summary>❌ Ruim: cada passo empurra o código mais para a direita</summary>
 
 ```js
 function fetchUserData(id, callback) {
@@ -48,7 +50,9 @@ async function fetchUserData(id) {
 
 </details>
 
-## .then() encadeado
+## Cadeia de .then() no lugar de await
+
+Encadear `.then()` desfaz o aninhamento, mas cobra outro preço: funções dentro de funções só para levar o resultado de um passo ao próximo. `await` lê como código síncrono e mantém cada valor no mesmo escopo, à mão do passo seguinte.
 
 <details>
 <summary>❌ Ruim: verboso, difícil de depurar</summary>
@@ -81,7 +85,9 @@ async function fetchUserData(id) {
 
 </details>
 
-## Bloqueio síncrono
+## Bloqueio síncrono do thread principal
+
+Um laço que gira só para deixar o tempo passar segura o thread inteiro: nada mais roda até ele terminar. A espera correta devolve o thread e agenda a volta, com `setTimeout` dentro de uma `Promise`.
 
 <details>
 <summary>❌ Ruim: loop síncrono trava o thread principal</summary>
@@ -114,9 +120,9 @@ async function run() {
 
 </details>
 
-## Promise.all: execução paralela
+## Promise.all para operações independentes
 
-Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
+Quando as operações não dependem uma da outra, dispará-las juntas em vez de uma após a outra corta o tempo total de espera para o tempo da mais lenta.
 
 <details>
 <summary>❌ Ruim: await sequencial quando não há dependência</summary>
@@ -158,9 +164,9 @@ async function fetchDashboard(userId) {
 > Use `Promise.all` quando as operações não dependem umas das outras.
 > Se uma falhar, todas falham. Use `Promise.allSettled` quando quiser continuar mesmo com erros parciais.
 
-## API client centralizado
+## Cliente de API centralizado
 
-Um único cliente carrega a configuração base. Os módulos recebem o cliente por injeção: sem `fetch` solto espalhado pelo código.
+Um único cliente guarda a configuração base: URL, cabeçalhos, autenticação. Os módulos recebem esse cliente por parâmetro, sem `fetch` solto e sem a mesma configuração repetida em cada arquivo.
 
 <details>
 <summary>❌ Ruim: fetch direto, configuração duplicada em todo lugar</summary>
@@ -227,6 +233,8 @@ async function fetchOrders(apiClient, userId) {
 </details>
 
 ## Quando criar uma função async
+
+A regra é direta: se a função faz I/O, ela é `async` e usa `await`. As versões síncronas de leitura de banco ou de arquivo (`readFileSync`) bloqueiam o thread e não têm lugar no caminho de uma requisição.
 
 <details>
 <summary>❌ Ruim: I/O síncrono bloqueia o event loop</summary>

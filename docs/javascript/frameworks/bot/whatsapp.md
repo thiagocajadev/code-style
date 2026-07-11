@@ -1,10 +1,10 @@
-# WhatsApp: Baileys e Meta Cloud API
+# Bot de WhatsApp com Baileys ou Meta Cloud API
 
 > Escopo: JavaScript/Node.js. Guia baseado em **Baileys v7** e **Meta Cloud API v21.0** com **Node.js 22**.
 > Conceitos transversais de bots (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Diferença entre API oficial e cliente não-oficial, Template Messages, verificação de webhook: [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-O WhatsApp tem dois caminhos de automação com **tradeoffs** (ganhos e perdas) muito diferentes. **Baileys** simula o cliente WhatsApp Web (não-oficial, sem aprovação necessária). A **Meta Cloud API** (Interface de Programação Meta na Nuvem) é a via oficial, com aprovação e número homologado. O **SDK** (Software Development Kit · Kit de Desenvolvimento de Software) Node.js oficial da Meta foi arquivado: use `fetch` nativo do Node.js 22.
+Automatizar WhatsApp começa com uma escolha, e ela muda tudo que vem depois. O **Baileys** finge ser o WhatsApp Web: você lê um QR code com o celular, a sessão abre e o bot funciona hoje, sem pedir licença a ninguém. Como a Meta não autoriza esse caminho, o número pode ser bloqueado. A **Meta Cloud API** é a via oficial, com número homologado, mensagens pré-aprovadas e regra sobre quando o bot pode falar; custa aprovação e burocracia, e em troca não desaparece. Baileys serve a protótipo e uso interno; a Cloud API, a produto que precisa durar. Uma pegadinha vale registrar de saída: a Meta arquivou o SDK Node.js oficial, então o caminho dela aqui é `fetch` puro do Node.js 22.
 
 ## Conceitos fundamentais
 
@@ -32,9 +32,9 @@ npm install @whiskeysockets/baileys
 
 ## Baileys v7
 
-### Import
+### O que importar do pacote
 
-Baileys v7 é **ESM-only** (somente módulos ES): `require` não funciona. `makeWASocket` é `default export`; os utilitários são named imports.
+A versão 7 do Baileys é **ESM-only** (publicada só como módulo ES), e `require` deixou de funcionar. O detalhe que costuma custar meia hora: `makeWASocket` é o export padrão, enquanto os utilitários são exports nomeados. Trocar os dois de lugar produz um `undefined` na hora de criar o socket.
 
 <details>
 <summary>❌ Ruim: CommonJS quebrado no v7; makeWASocket como named import</summary>
@@ -54,7 +54,9 @@ import makeWASocket, { useMultiFileAuthState, DisconnectReason } from '@whiskeys
 
 </details>
 
-### Setup do Client
+### Abrir a sessão e sobreviver às quedas
+
+A conexão do Baileys cai: a rede oscila, o WhatsApp encerra a sessão, o processo reinicia. O que separa um bot utilizável de um que exige babá é o tratamento de `connection.update`. Quando a conexão fecha, você olha o motivo: se foi logout de verdade, reconectar não adianta, porque a credencial morreu e o QR precisa ser lido de novo; qualquer outro motivo é queda passageira e pede um `startBot()` novo. `useMultiFileAuthState` é o que faz o reinício ser barato, guardando a credencial em disco para que o QR não volte a cada restart.
 
 <details>
 <summary>❌ Ruim: sem reconnect; sem tratamento de logout; printQRInTerminal ausente</summary>
@@ -108,7 +110,9 @@ startBot();
 
 </details>
 
-### Processando Mensagens
+### Ler a mensagem recebida e despachar
+
+Duas armadilhas moram aqui. A primeira: o evento `messages.upsert` também entrega o que o próprio bot enviou, então o guard de `message.key.fromMe` evita que ele converse consigo mesmo. A segunda: o texto da mensagem não vem sempre no mesmo campo. Mensagem simples chega em `conversation`; mensagem que cita outra, ou que traz link, chega em `extendedTextMessage.text`. Por isso a extração vira uma função própria, e o handler fica com três passos legíveis: descartar o que é seu, pegar o texto, despachar pelo mapa de comandos.
 
 <details>
 <summary>❌ Ruim: sem guard para fromMe; routing inline com texto; lógica misturada</summary>
@@ -165,7 +169,11 @@ async function routeCommand(socket, chatId, text) {
 
 </details>
 
-### Enviando Mensagens
+O `remoteJid` que vira `chatId` é o identificador da conversa no WhatsApp, e é para ele que a resposta volta.
+
+### Responder ao contato
+
+O comando recebe o socket, a conversa e o texto, e devolve a resposta pelo mesmo caminho. O `sendMessage` sempre leva um objeto, nunca uma string solta, porque a mesma chamada serve para texto, imagem e documento; o formato do objeto é que decide.
 
 ```js
 async function orderCommand(socket, chatId, messageText) {
@@ -189,7 +197,9 @@ async function orderCommand(socket, chatId, messageText) {
 
 ## Meta Cloud API
 
-### Verificação do Webhook
+### Provar à Meta que o endpoint é seu
+
+Antes de mandar qualquer mensagem para o seu webhook, a Meta faz uma visita de conferência: chama a URL com três parâmetros e espera receber de volta o valor de `hub.challenge`. Devolver o challenge sem olhar o resto é o erro comum, e ele entrega o endpoint a qualquer um que descubra a URL. A verificação real confere duas coisas antes: que `hub.mode` é `subscribe` e que `hub.verify_token` bate com o segredo que você cadastrou no painel da Meta.
 
 <details>
 <summary>❌ Ruim: sem verificação de hub.mode; responde 200 sem checar token</summary>
@@ -224,9 +234,9 @@ app.get('/webhook', (request, response) => {
 
 </details>
 
-### Recebendo Mensagens
+### Aceitar rápido e processar depois
 
-Responda `200 OK` imediatamente. A Meta cancela a entrega se o endpoint demorar para responder.
+Responda `200 OK` na primeira linha, antes de processar. A Meta trata demora como falha de entrega: ela cancela, tenta de novo e, se o padrão se repetir, desativa o webhook. Buscar pedido no banco antes de responder coloca o tempo do seu banco dentro do orçamento dela. A inversão resolve: confirma o recebimento, e o processamento continua depois que a resposta já saiu.
 
 <details>
 <summary>❌ Ruim: req/res abreviados; processamento síncrono; sem checar body.object</summary>
@@ -276,7 +286,11 @@ async function processMessage(message) {
 
 </details>
 
-### Enviando Mensagens
+O caminho até a mensagem dentro do corpo é longo e cheio de arrays, e nem todo evento traz mensagem: notificação de entrega e de leitura chegam pelo mesmo endpoint. Daí a cadeia de acesso opcional em `extractMessage`, terminando em `null` quando não há nada para tratar.
+
+### Chamar a API para responder
+
+Sem SDK, a resposta é um `POST` montado à mão. Vale reparar em três detalhes que a versão ruim erra. A versão vai no caminho (`/v21.0/`), porque endpoint sem versão segue a versão padrão da conta e muda debaixo do seu código. O `Content-Type: application/json` precisa estar presente, senão a Meta não lê o corpo. E o `recipient_type` explícito evita ambiguidade quando o destino não é uma pessoa.
 
 <details>
 <summary>❌ Ruim: endpoint sem versão; env vars fora do padrão Meta; sem recipient_type; sem Content-Type</summary>
@@ -320,9 +334,9 @@ async function sendTextMessage(chatId, text) {
 
 </details>
 
-### Template Message
+### Mensagem pré-aprovada fora da janela de 24 horas
 
-O primeiro contato com um usuário exige uma **Template Message** aprovada pela Meta.
+Texto livre só é permitido dentro da **janela de 24 horas**, contada a partir da última mensagem que o usuário mandou. Passado esse prazo, ou quando é o bot quem inicia a conversa, a Meta só aceita uma **Template Message**: um formato que você cadastrou antes e que ela aprovou, com os trechos variáveis marcados. No envio, você não manda o texto pronto, manda o nome do template, o idioma e os valores que preenchem as lacunas, na ordem em que foram declaradas.
 
 ```js
 async function sendOrderTemplate(chatId, orderId, orderStatus) {

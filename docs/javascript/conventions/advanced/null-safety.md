@@ -1,8 +1,8 @@
-# Null Safety
+# Segurança contra nulos em JavaScript
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possibilidade de o valor ser nulo). A responsabilidade é do código: validar nos **boundaries** (limites, pontos de entrada de dados externos) e confiar no interior. Operadores específicos (`??`, `?.`) tornam a intenção explícita; usar o operador errado (`||` em vez de `??`) descarta valores válidos como `0` ou `""`.
+JavaScript não tem um compilador que avise, antes de rodar, quando um valor pode ser nulo. Essa **nullability** (possibilidade de o valor ser nulo ou indefinido) fica por conta do código: validar nos **boundaries** (limites, os pontos onde dados externos entram) e confiar no interior a partir daí. Os operadores `??` e `?.` deixam essa intenção explícita. Escolher o operador errado, `||` no lugar de `??`, descarta valores válidos como `0` e `""`, o tipo de bug que costuma aparecer só em produção.
 
 > Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
@@ -19,11 +19,11 @@ JavaScript não tem compilador que rastreie **nullability** (nulabilidade, possi
 | **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
 | **non-null assertion** (afirmação de não-nulo) | Garantia explícita ao leitor de que o valor não é nulo neste ponto; em JS via comentário ou guard |
 
-## ?? vs ||
+## Valor padrão sem descartar 0 e ""
 
-`||` retorna o lado direito para qualquer valor falsy: `0`, `""` e `false` disparam o fallback.
-`??` retorna o lado direito **só para `null` e `undefined`**. Para **defaults**
-(valores padrão), `??` é o correto na maioria dos casos.
+`||` devolve o lado direito para qualquer valor **falsy** (que avalia como falso): `0`, `""` e
+`false` já disparam o valor alternativo. `??` devolve o lado direito só quando o esquerdo é
+`null` ou `undefined`. Para preencher um valor padrão, `??` é o certo na maioria dos casos.
 
 <details>
 <summary>❌ Ruim: || descarta valores falsy válidos</summary>
@@ -48,10 +48,10 @@ const port = process.env.PORT ?? config.port ?? 3000; // encadeamento de fallbac
 
 </details>
 
-## ??= vs ||=
+## Atribuir um padrão só quando o valor é nulo
 
-`??=` atribui só se o valor atual for `null` ou `undefined`. `||=` atribui se for qualquer falsy.
-A mesma distinção de `??` vs `||`, aplicada à atribuição lógica.
+`??=` atribui só se o valor atual for `null` ou `undefined`. `||=` atribui para qualquer falsy.
+É a mesma distinção entre `??` e `||`, agora na forma de atribuição.
 
 <details>
 <summary>❌ Ruim: ||= sobrescreve zero, que é um valor válido</summary>
@@ -78,12 +78,12 @@ config.port ??= 8080; // não executa: port já é 3000
 
 </details>
 
-## ?. navegação segura
+## Quando ?. ajuda e quando esconde um bug
 
-`?.` retorna `undefined` se o receptor for `null` ou `undefined`, sem lançar exceção.
+`?.` devolve `undefined` se o receptor for `null` ou `undefined`, sem lançar exceção.
 
-Tem lugar para campos **opcionais por design**. Quando o campo deveria sempre existir, a ausência
-é um bug: use guard clause.
+O lugar dele é o campo opcional por natureza. Quando o campo deveria sempre existir, a ausência
+é um bug, e abafá-la com `?.` só adia a descoberta: use uma guard clause que falha na hora.
 
 <details>
 <summary>❌ Ruim: ?. esconde contrato fraco</summary>
@@ -156,10 +156,10 @@ async function fetchUserOrders(userId) {
 
 </details>
 
-## Array.flatMap: filtrar e mapear sem null
+## flatMap: filtrar e transformar em uma passagem
 
-`flatMap` com retorno de `[]` nos casos inválidos é o padrão moderno para remover nulls durante
-uma transformação: mais expressivo que `.filter().map()` por percorrer o array uma única vez.
+`flatMap` que devolve `[]` nos casos inválidos remove os nulos durante a própria transformação.
+Lê melhor que `.filter().map()` e percorre o array uma única vez em vez de duas.
 
 <details>
 <summary>❌ Ruim: filter + map percorre o array duas vezes</summary>
@@ -189,11 +189,11 @@ const parsed = rawItems.flatMap((item) => {
 
 </details>
 
-## Object.hasOwn: checar propriedade com segurança
+## Object.hasOwn para checar propriedade com segurança
 
-`Object.hasOwn(obj, key)` verifica se a propriedade existe no próprio objeto, sem riscos de
-**prototype pollution** (injeção de propriedades no protótipo). Substitui o padrão antigo
-`obj.hasOwnProperty(key)`.
+`Object.hasOwn(obj, key)` verifica se a propriedade existe no próprio objeto, sem cair na
+**prototype pollution** (propriedades injetadas no protótipo por um atacante). Substitui o
+padrão antigo `obj.hasOwnProperty(key)`, que pode ser sobrescrito.
 
 <details>
 <summary>❌ Ruim: hasOwnProperty vulnerável a prototype pollution</summary>
@@ -230,10 +230,10 @@ function mergeConfig(defaults, overrides) {
 
 </details>
 
-## structuredClone: cópia profunda sem perder nulls
+## structuredClone para cópia profunda
 
-`JSON.parse(JSON.stringify(obj))` descarta campos `undefined` e não preserva `Date`, `Map` e
-`Set`. `structuredClone` copia corretamente, preservando `null` e os tipos nativos.
+`JSON.parse(JSON.stringify(obj))` descarta campos `undefined` e não preserva `Date`, `Map` nem
+`Set`. `structuredClone` faz a cópia profunda mantendo `null` e os tipos nativos como estão.
 
 <details>
 <summary>❌ Ruim: JSON round-trip perde undefined, Date e Map</summary>

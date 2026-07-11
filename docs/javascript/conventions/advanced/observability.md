@@ -1,8 +1,8 @@
-# Observability
+# Observabilidade
 
 > Escopo: JavaScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-**Observability** (observabilidade) é a capacidade de entender o estado interno de um sistema a partir do que ele emite para fora. Em JS/Node, isso significa logging estruturado em vez de strings concatenadas, níveis de severidade corretos, proteção de dados sensíveis e um identificador de correlação que liga todos os logs de uma mesma requisição. Os princípios agnósticos estão em [shared/standards/observability.md](../../../shared/standards/observability.md).
+Um sistema observável responde a uma pergunta: o que ele estava fazendo quando algo deu errado. **Observability** (observabilidade) é essa capacidade de entender o estado interno pelo que o sistema emite para fora, sem abrir o código. Em JavaScript e Node, quatro hábitos entregam isso: logar objetos estruturados em vez de strings concatenadas, escolher o nível de severidade certo, nunca deixar dado sensível vazar no log e carregar um **correlation ID** (identificador que liga todos os logs de uma mesma requisição). Os princípios que valem para qualquer linguagem estão em [shared/standards/observability.md](../../../shared/standards/observability.md).
 
 ## Conceitos fundamentais
 
@@ -19,8 +19,7 @@
 
 ## Logging estruturado
 
-`console.log` com strings é ilegível para sistemas de observabilidade. Use Pino (ou Winston) com
-objetos estruturados: cada campo vira uma propriedade pesquisável.
+Log é dado, não texto para humano ler. Uma string concatenada com `console.log` não dá para filtrar nem agregar: a ferramenta recebe uma frase pronta e não sabe onde termina o `orderId`. Emita um objeto com Pino (ou Winston) e cada campo vira uma propriedade que você pesquisa e agrupa.
 
 <details>
 <summary>❌ Ruim: string concatenada, ilegível para ferramentas</summary>
@@ -46,6 +45,8 @@ logger.error(paymentErrorContext, "payment failed");
 </details>
 
 ## Níveis de log
+
+O nível de um log diz o quão urgente ele é. `info` narra o fluxo normal, `warn` marca algo estranho que ainda não quebrou nada, `error` marca uma falha que precisa de atenção. Jogar tudo em `console.log` apaga essa diferença e afoga o erro real no meio do ruído.
 
 <details>
 <summary>❌ Ruim: console.log para tudo, sem distinção de severidade</summary>
@@ -77,6 +78,8 @@ logger.error(userNotFoundContext, "user not found during checkout");
 
 ## O que nunca logar
 
+Log vaza. Ele vai para arquivo, para serviço de terceiros, para a tela de quem dá suporte. Senha, token, número de cartão e qualquer **PII** (Personally Identifiable Information · Informação Pessoal Identificável) nunca entram no log. Registre o identificador do recurso, uma referência que você resolve depois, e pare por aí.
+
 <details>
 <summary>❌ Ruim: PII e credenciais em log</summary>
 
@@ -105,10 +108,9 @@ logger.info(authContext, "user authenticated");
 
 </details>
 
-## Correlation ID
+## ID de correlação
 
-Sem um identificador comum, logs de uma mesma requisição são ilhas: impossível rastrear o fluxo.
-`AsyncLocalStorage` propaga o `correlationId` para todos os logs sem passar por parâmetro.
+Sem um identificador comum, os logs de uma mesma requisição viram ilhas soltas e você não consegue reconstruir o que aconteceu. O **correlation ID** é o fio que costura essas ilhas: o mesmo valor aparece em todos os logs do fluxo. O `AsyncLocalStorage` do Node guarda esse valor por baixo e injeta em cada log, sem você passar o ID de função em função.
 
 <details>
 <summary>❌ Ruim: logs sem contexto de requisição</summary>

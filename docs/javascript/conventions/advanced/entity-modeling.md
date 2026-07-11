@@ -1,8 +1,8 @@
 # Modelagem de entidades
 
-> Escopo: JavaScript. O canônico [`docs/shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md) apresenta os 12 padrões em JavaScript puro e é a fonte de verdade para decisões de domínio. Este arquivo cobre idioms ES2022+ que aparecem na implementação real e que o canônico não detalha: privacidade real com `#field`, imutabilidade além de `const`, iteração de coleções com `Symbol.iterator`, e verificação de tipo sem types estáticos.
+> Escopo: JavaScript. O canônico [`docs/shared/architecture/entity-modeling.md`](../../../shared/architecture/entity-modeling.md) traz os 12 padrões de modelagem em JavaScript puro e é a fonte de verdade para decisões de domínio. Este arquivo cobre o que o canônico não detalha: os recursos da linguagem, de ES2022 em diante, que você usa na hora de escrever o código. São quatro: privacidade de verdade com `#field`, valor que não muda além do que o `const` garante, coleção exposta por `Symbol.iterator` e verificação de tipo numa linguagem sem tipos estáticos.
 
-Os dois arquivos formam um par. Leia o canônico para entender o modelo; leia este para saber como expressá-lo com idioms JS modernos. As seções aqui não repetem padrões já cobertos, como tamanho saudável de entidade, BaseEntity, relacionamentos 1:N, N:N, identidade vs referência ou multitenancy.
+Os dois arquivos formam um par. O canônico explica o modelo; este mostra como expressar esse modelo com os recursos modernos da linguagem. Nada aqui repete o que já está lá, como tamanho saudável de entidade, BaseEntity, relacionamentos 1:N e N:N, identidade vs referência ou multitenancy.
 
 ## Conceitos fundamentais
 
@@ -36,11 +36,11 @@ O canônico [`docs/shared/architecture/entity-modeling.md`](../../../shared/arch
 
 Não replique esses padrões aqui. Quando um code review precisar discutir um deles, aponte para o canônico.
 
-## Idiom JS: privacidade real
+## Privacidade real: `#field` e WeakMap
 
-O JavaScript oferece duas formas de encapsulamento: **private class fields** (`#field`, disponível desde ES2022) e **WeakMap** externo à classe (padrão mais antigo, ainda útil em bibliotecas que precisam suportar ambientes sem transpiler).
+O underscore não protege nada. `this._field` é um pedido de licença, e qualquer **caller** (quem chama o código) lê e altera o campo sem encontrar obstáculo, derrubando a invariante que a classe deveria garantir.
 
-O encapsulamento com `this._field` por convenção não é privacidade: qualquer caller consegue ler e alterar o campo sem obstáculo.
+JavaScript tem duas formas de encapsular de verdade: o **private class field** (`#field`, campo privado disponível desde ES2022) e um **WeakMap** declarado fora da classe (padrão mais antigo, ainda útil em bibliotecas que rodam em ambientes sem transpiler).
 
 <details>
 <summary>❌ Ruim: encapsulamento por convenção não protege o estado</summary>
@@ -124,9 +124,9 @@ O `WeakMap` mantém o valor fora do objeto. Quando a instância for coletada pel
 
 </details>
 
-## Idiom JS: imutabilidade
+## Valor que não muda: além do `const`
 
-Em JavaScript, `const` garante que a variável não receba outra referência, mas não impede alterar as propriedades do objeto apontado. Para value objects, isso cria uma lacuna: o caller pode alterar `address.street` mesmo que `address` seja `const`.
+`const` protege menos do que parece. Ele garante que a variável não passe a apontar para outro objeto, mas não impede ninguém de alterar as propriedades do objeto apontado. Para um **value object** (objeto definido pelo valor que carrega, não por identidade própria), isso abre um buraco: o caller altera `address.city` mesmo com `address` declarado como `const`.
 
 <details>
 <summary>❌ Ruim: const não protege as propriedades internas</summary>
@@ -213,13 +213,13 @@ class Money {
 }
 ```
 
-Para objetos com aninhamento profundo, prefira criar novos objetos em vez de mutação. `deepFreeze` é uma ferramenta de proteção; o idiom principal continua sendo o construtor que cria um novo value object em vez de alterar o existente.
+Para objetos com aninhamento profundo, prefira criar um objeto novo em vez de alterar o existente. `deepFreeze` é a rede de proteção; o caminho principal continua sendo o construtor que devolve um novo value object a cada mudança.
 
 </details>
 
-## Idiom JS: iteração de coleções
+## Expor coleção sem vazar a lista
 
-Um aggregate root que expõe sua lista interna diretamente permite que callers façam `push`, alterem elementos e contornem as invariantes do agregado. A proteção é expor a coleção como um iterável, não como um array.
+Exponha a coleção como iterável, nunca como o array interno. Um **aggregate root** (a entidade que governa o agregado e faz valer as regras dele) que devolve a própria lista deixa qualquer caller dar `push`, trocar elementos e furar as invariantes que a entidade deveria impor. Entregar um iterável mantém a porta fechada.
 
 <details>
 <summary>❌ Ruim: lista interna exposta diretamente, caller pode contornar o agregado</summary>
@@ -296,7 +296,7 @@ for (const item of order) {
 const items = [...order]; // cria um array novo a partir do iterador
 ```
 
-O `snapshot = [...this.#items]` dentro do iterador garante que o caller que guarda o iterador em uma variável não veja mutações futuras na lista interna. A lista original permanece acessível apenas pelo agregado.
+O `snapshot = [...this.#items]` dentro do iterador garante que quem guardar o iterador em uma variável não veja as alterações seguintes na lista interna. A lista original continua acessível só pelo agregado.
 
 </details>
 
@@ -311,11 +311,11 @@ lineItems() {
 
 Nunca `return this.#items` diretamente, mesmo sendo campo privado: quem recebe a referência pode alterar o array.
 
-## Idiom JS: boundary check sem types
+## Verificar o tipo no limite da função
 
-Em TypeScript, o compilador rejeita em tempo de compilação a troca de dois IDs de tipos distintos. Em JavaScript puro, o único mecanismo confiável para o mesmo efeito é o `instanceof` no início da função.
+Em TypeScript o compilador barra a troca de dois IDs de tipos diferentes antes de o código rodar. Em JavaScript puro não existe esse compilador, e o único mecanismo confiável é o `instanceof` logo na entrada da função.
 
-**Duck-typing** (verificação pela forma do objeto) falha aqui porque dois strongly-typed IDs diferentes têm a mesma forma: ambos têm `.value`, ambos têm `.toString()`. O `instanceof` verifica qual construtor gerou a instância.
+O **duck-typing** (verificar o objeto pela forma dele, não pelo tipo) não resolve aqui. Dois **strongly-typed IDs** (identificadores com tipo próprio, como `CustomerId` e `OrderId`) têm exatamente a mesma forma: os dois expõem `.value`, os dois expõem `.toString()`. Só o `instanceof` responde qual construtor criou a instância.
 
 <details>
 <summary>❌ Ruim: duck-typing aceita qualquer objeto com .value, sem distinção de tipo</summary>

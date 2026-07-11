@@ -1,4 +1,4 @@
-# Project Foundation
+# Fundação de um projeto Node.js
 
 > [!NOTE]  
 > Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são
@@ -7,23 +7,29 @@
 > importa é o princípio: entry point como índice, configuração centralizada,
 > módulos por domínio.
 
-A fundação de um projeto Node.js define três decisões estruturantes: onde fica a
-configuração, como módulos se organizam por domínio, e como o entry point
-orquestra o boot da aplicação. Editor, linter e gerenciador de pacotes ficam
-alinhados antes da primeira linha de domínio.
+Três decisões definem a fundação de um projeto Node.js, e as três se pagam ou se
+cobram por anos: onde a configuração é lida, como os módulos se dividem por
+domínio, e o que o **entry point** (arquivo por onde a aplicação começa a rodar)
+faz quando o processo sobe. Esta página mostra a forma que mantém as três
+respostas visíveis no código. Editor, linter e gerenciador de pacotes ficam
+alinhados antes da primeira linha de domínio, porque acertar isso depois custa um
+diff que toca o repositório inteiro.
 
 ## Conceitos fundamentais
 
-| Conceito                                                               | O que é                                                                    |
-| ---------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| **Entry point** (ponto de entrada)                                     | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor |
-| **Middleware** (componente de pipeline)                                | Função que intercepta a requisição antes ou depois do handler              |
-| **JWT** (JSON Web Token · Token Web em JSON)                            | Token assinado usado para autenticação stateless                           |
-| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM         |
+| Conceito                                                                | O que é                                                                                                    |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Entry point** (ponto de entrada)                                      | Arquivo inicial que carrega configuração, registra rotas e sobe o servidor                                 |
+| **Handler** (função que atende a rota)                                  | Função que recebe a requisição e devolve a resposta                                                        |
+| **Middleware** (função que roda antes do handler)                       | Função que intercepta a requisição antes ou depois do handler                                              |
+| **Token** (bilhete de acesso)                                           | Texto que o cliente apresenta a cada requisição para provar quem é, como um crachá / credencial                       |
+| **JWT** (JSON Web Token · token assinado que identifica o usuário)      | Credencial que o cliente envia a cada requisição; o servidor confere a assinatura em vez de guardar sessão |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Linguagem de consulta do banco relacional; usada via driver ou ORM                                         |
 
-## Ambiente
+## Preparar o editor antes do primeiro arquivo
 
-Antes de iniciar, configure o editor:
+Duas ferramentas resolvem o atrito de formatação que aparece na primeira revisão
+de código em dupla:
 
 - [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset,
   trailing whitespace
@@ -38,11 +44,13 @@ npm install --save-dev prettier
 > ESLint + Prettier em um único binário: mais rápido e sem conflito de
 > configuração entre as duas ferramentas.
 
-## Entry point enxuto
+## O arquivo que sobe o servidor é um índice, não um depósito
 
-`server.js` declara intenção, não implementa. Toda configuração é delegada para
-módulos. O arquivo serve como índice do projeto: o leitor vê o que existe, não
-como funciona.
+`server.js` declara a intenção e delega o resto. Quem abre o arquivo vê o que o
+projeto tem, não como cada parte funciona: lê a configuração, monta a aplicação,
+escuta a porta. Quando esse mesmo arquivo acumula rota, autenticação e conexão de
+banco, ele vira o lugar onde toda mudança passa, e duas pessoas nunca conseguem
+mexer no projeto sem conflito.
 
 <details>
 <summary>❌ Ruim: server.js como depósito de toda a configuração</summary>
@@ -105,11 +113,15 @@ app.listen(config.port);
 
 </details>
 
-## Módulos por domínio
+## Cada domínio registra as próprias rotas
 
-Cada domínio registra suas próprias rotas e dependências. `app.js` não conhece
-SQL, JWT ou validação: apenas chama quem conhece. Os módulos ficam lado a lado
-com o domínio que representam.
+Quem cuida de pedidos é o módulo de pedidos. Ele registra as rotas de `/orders`,
+cria o serviço de que precisa e recebe a fatia da configuração que lhe diz
+respeito. O `app.js` não conhece SQL, não conhece JWT, não valida corpo de
+requisição: ele chama quem conhece, e a lista dessas chamadas é o mapa do
+sistema. Um arquivo central de rotas parece organizado no primeiro mês e vira
+lista de conflitos de merge no terceiro, porque todo domínio novo edita a mesma
+linha.
 
 <details>
 <summary>❌ Ruim: app.js conhece SQL, validação e regras de negócio</summary>
@@ -239,10 +251,14 @@ export function create(orderService) {
 
 </details>
 
-## Configuração centralizada
+## Uma única porta de entrada para as variáveis de ambiente
 
-`config.js` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo
-acessa `process.env` diretamente: apenas importa a seção que precisa.
+`config.js` lê `process.env` e mais ninguém lê. Cada módulo recebe por parâmetro
+a seção que lhe cabe: o de pedidos recebe `config.database`, o de autenticação
+recebe `config.auth`. O ganho aparece no teste, onde passar um objeto qualquer
+substitui a configuração real, e aparece no dia em que uma variável muda de nome:
+existe um arquivo para editar, não uma busca por `process.env` no repositório
+inteiro.
 
 <details>
 <summary>❌ Ruim: process.env espalhado em todo lugar</summary>
@@ -291,10 +307,12 @@ export function registerOrders(app, config) {
 
 </details>
 
-## Middleware pipeline
+## A ordem do pipeline decide o que fica protegido
 
-A ordem do **middleware** (componente de pipeline) é determinística e importa.
-Registrar autenticação após roteamento não protege as rotas.
+O Express executa cada **middleware** (função que roda antes do handler) na ordem em que ele foi registrado, sem exceção. Registrar a
+autenticação depois das rotas deixa as rotas abertas: quando o pedido chega, o
+handler já respondeu, e o middleware de autenticação nunca é alcançado. A
+sequência abaixo é a que protege:
 
 ```
 express.json()     → faz parse do body antes de qualquer handler
@@ -340,7 +358,11 @@ export function applyMiddleware(app, config) {
 
 </details>
 
-## Estrutura de arquivos
+## Onde cada arquivo mora
+
+A árvore abaixo é o desenho completo: quatro arquivos na raiz de `src/` para
+subir e configurar, uma pasta por domínio em `features/`, e o que conversa com o
+mundo externo (banco, autenticação) isolado em `infra/`.
 
 ```
 src/

@@ -1,10 +1,10 @@
-# Discord: discord.js
+# Bot de Discord com discord.js
 
 > Escopo: JavaScript/Node.js. Guia baseado em **discord.js v14.19** com **Node.js 22**.
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Discord (Gateway Intents, Slash Commands, Embeds): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md).
 
-**discord.js** é a biblioteca Node.js para interagir com a API do Discord. Um **Client** (instância do bot) conecta ao **Gateway** via WebSocket, recebe eventos e responde por meio da API REST. Eventos e flags são enumerados via objetos tipados (`Events`, `GatewayIntentBits`), nunca strings literais.
+Um bot de Discord vive em dois canais ao mesmo tempo, e entender essa divisão explica quase todo o resto do código. Pelo **Gateway** (a conexão WebSocket que o Discord mantém aberta com o bot) chegam os eventos: alguém digitou um comando, entrou no servidor, reagiu a uma mensagem. Pela **API REST** (as chamadas HTTP comuns) o bot age: responde, publica comandos, envia mensagem. O **discord.js** é a biblioteca Node.js que embrulha os dois lados. Ela também expõe cada nome de evento e cada flag como constante (`Events`, `GatewayIntentBits`), o que evita o erro de digitação silencioso que uma string solta produziria.
 
 ## Conceitos fundamentais
 
@@ -25,9 +25,9 @@
 npm install discord.js
 ```
 
-## Setup do Client
+## Abrir a conexão e escutar eventos
 
-Use o enum `Events` em todos os listeners. Strings literais como `'ready'` ou `'interactionCreate'` foram removidas no v14.
+Registre os listeners usando o enum `Events`, não strings. A versão 14 removeu o suporte a `'ready'` e `'interactionCreate'` escritos à mão: o listener não dispara e nenhum erro aparece, porque o discord.js não tem como saber que você quis dizer outra coisa.
 
 <details>
 <summary>❌ Ruim: strings literais removidas no v14; sem type safety</summary>
@@ -69,11 +69,11 @@ client.login(process.env.DISCORD_TOKEN);
 
 </details>
 
-Declare apenas as intents que o bot usa. `MessageContent` e `GuildMembers` são intents privilegiadas: precisam ser habilitadas no Discord Developer Portal para bots em mais de 100 servidores.
+As **intents** (as categorias de evento que o bot pede para receber) funcionam como uma assinatura: o que você não declarar, o Gateway não envia, e o listener correspondente fica mudo. Declare só o que o bot usa. Duas delas, `MessageContent` e `GuildMembers`, são privilegiadas: o Discord exige que você as habilite no Developer Portal, e bots presentes em mais de 100 servidores passam por revisão para obtê-las.
 
-## Registro de Slash Commands
+## Publicar os comandos no Discord
 
-O registro por servidor (`applicationGuildCommands`) é instantâneo, ideal para desenvolvimento. O registro global (`applicationCommands`) leva até 1 hora para propagar.
+Antes de o usuário poder digitar `/order`, o Discord precisa conhecer esse comando. Publicar em um servidor específico (`applicationGuildCommands`) tem efeito imediato, o que é o que você quer durante o desenvolvimento. Publicar globalmente (`applicationCommands`) leva até uma hora para aparecer em todos os servidores, então deixe para o deploy.
 
 <details>
 <summary>❌ Ruim: REST sem version; schema como objeto literal sem validação</summary>
@@ -125,9 +125,11 @@ registerCommands();
 
 </details>
 
-## Command Router
+O `SlashCommandBuilder` valida o formato do comando na hora em que você o monta. O objeto literal só falha quando a API do Discord recusa o registro, longe da linha que causou o problema.
 
-Use `Events.InteractionCreate` e o type guard `isChatInputCommand()`. Centralize o roteamento em um **Strategy Map** (mapa de estratégias).
+## Encaminhar cada comando ao seu módulo
+
+Todo slash command chega pelo mesmo evento, `Events.InteractionCreate`. Um clique de botão também. Por isso a primeira linha do listener confirma o tipo com `isChatInputCommand()`, e a segunda consulta um **Strategy Map** (um objeto que associa o nome do comando à função que o executa). O listener escolhe e delega; quem sabe o que `/order` significa é o módulo do comando.
 
 <details>
 <summary>❌ Ruim: string literal no evento; sem type guard; lógica de negócio no router; sem deferReply</summary>
@@ -174,9 +176,11 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
 </details>
 
-## Implementando um Command
+Comando novo passa a ser uma linha no mapa e um arquivo novo. O listener nunca cresce.
 
-A resposta a uma Interaction deve ocorrer em até 3 segundos. Para operações assíncronas, chame `deferReply` antes e finalize com `editReply`.
+## Escrever um comando de ponta a ponta
+
+O Discord dá três segundos para o bot responder uma Interaction. Se o comando consulta banco ou chama outro serviço, esse orçamento acaba antes da resposta ficar pronta, e a interação expira na cara do usuário. A saída é `deferReply()`: ele avisa o Discord "recebi, estou trabalhando", o usuário vê o indicador de digitação e você ganha até 15 minutos para fechar com `editReply()`.
 
 <details>
 <summary>❌ Ruim: reply direto em operação assíncrona; embed como objeto solto (sintaxe v13 removida)</summary>
@@ -227,7 +231,11 @@ function buildOrderEmbed(order) {
 
 </details>
 
-## Eventos além de slash commands
+O comando bom lê como um resumo: adia a resposta, lê o argumento, busca o pedido, monta o **embed** (o cartão formatado que o Discord renderiza com título, cor e campos) e edita a resposta. Buscar e formatar viraram funções logo abaixo, na ordem em que são chamadas. Repare também que o embed vai dentro de um array, em `embeds: [embed]`: a chave `embed` no singular é sintaxe da v13 e foi removida.
+
+## Reagir a eventos que não são comandos
+
+Nem tudo que interessa ao bot começa com barra. Membro que entra, reação que aparece: são eventos do Gateway como qualquer outro, e a diferença é que os dados chegam mais crus. O canal de sistema do servidor pode não existir, e o próprio bot dispara reações que ele mesmo escuta. Guarde as duas coisas antes de agir.
 
 <details>
 <summary>❌ Ruim: string literal no evento; acesso a canal nulo sem guard; sem guard para bot</summary>
@@ -266,6 +274,8 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 ```
 
 </details>
+
+Sem o guard de `user.bot`, a resposta do próprio bot vira gatilho para uma nova resposta e o loop se alimenta sozinho.
 
 ## Veja também
 

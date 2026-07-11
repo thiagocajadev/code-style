@@ -1,8 +1,10 @@
-# Functions
+# Funções em JavaScript
 
-Função é a unidade mínima de reuso e teste. Seu valor está em **single responsibility** (responsabilidade única, fazer uma coisa só), assinatura clara e tamanho que cabe na tela. Quando uma função busca, valida, calcula e persiste tudo junto, ela vira um ponto de acoplamento que ninguém consegue reaproveitar nem testar isoladamente.
-
-Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
+A função é a menor peça de código que você reaproveita e testa sozinha. Ela vale
+mais quando faz uma coisa só, tem uma assinatura clara (o nome e os parâmetros
+que recebe) e cabe na tela. Quando uma mesma função busca, valida, calcula e
+salva tudo junto, ela vira um nó que ninguém consegue reaproveitar nem testar em
+separado, porque cada tarefa fica presa às outras.
 
 ## Conceitos fundamentais
 
@@ -19,7 +21,7 @@ Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela.
 | **helper** (função auxiliar) | Função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
 | **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função opera em um só nível: orquestra passos ou implementa detalhe, nunca os dois |
 
-## God function: múltiplas responsabilidades
+## Função que faz tudo: várias responsabilidades
 
 <details>
 <summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
@@ -74,7 +76,7 @@ function realizaVenda(x) {
 </details>
 
 <details>
-<summary>✅ Bom: orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom: a função principal no topo, responsabilidades separadas</summary>
 
 ```js
 await processOrder(123);
@@ -111,18 +113,33 @@ async function processOrder(orderId) {
 
 </details>
 
-## Helpers aninhados: quando extrair
+## Funções auxiliares aninhadas: quando separar
 
-Os exemplos deste guia declaram **helpers** (funções auxiliares) de uso único dentro do orquestrador. A função aninhada mantém a narrativa em um bloco só: o leitor vê o caller no topo e os detalhes logo abaixo, sem sair do contexto. Esse formato tem custo, e o custo define o limite do padrão:
+Os exemplos deste guia declaram funções auxiliares (as que executam um passo do
+trabalho) de uso único dentro da função principal, aquela que organiza os passos.
+Colocar a auxiliar ali dentro mantém a história em um bloco só: o leitor vê quem
+chama no topo e o detalhe logo abaixo, sem sair do contexto. Esse formato tem um
+custo, e o custo define até onde ele vale:
 
-- **Teste isolado**: função aninhada não é exportável; só é exercitada através do orquestrador (estratégias em [testing](advanced/testing.md)).
-- **Reuso**: um segundo caller não alcança um helper preso dentro de outra função.
-- **Recriação**: cada chamada do orquestrador recria as funções internas (**closure**, função que captura o escopo onde foi criada). Irrelevante na maioria dos fluxos, mensurável em **hot path** (trecho executado com alta frequência; medição em [performance](advanced/performance.md)).
+- **Teste em separado**: a função aninhada não pode ser exportada, então só é
+  testada através da função principal que a contém (estratégias em
+  [testing](advanced/testing.md)).
+- **Reaproveitamento**: uma segunda função que precise da auxiliar não alcança
+  ela, presa dentro de outra.
+- **Recriação**: cada chamada da função principal cria de novo as funções
+  internas. Cada uma delas é uma **closure** (função que guarda o acesso às
+  variáveis do lugar onde foi escrita). Isso não pesa na maioria dos casos, mas
+  dá para medir em um trecho executado com muita frequência, o chamado **hot
+  path** (medição em [performance](advanced/performance.md)).
 
-Regra prática: o helper nasce aninhado. Ele sobe para o nível do módulo quando ganha um segundo caller, quando precisa de teste próprio ou quando o orquestrador passa do tamanho de uma tela. Em linguagens de classe (Java, C#), o mesmo padrão vira métodos privados: irmãos abaixo do método público, na ordem de chamada.
+Regra prática: a função auxiliar nasce aninhada. Ela sobe para o nível do arquivo
+quando um segundo lugar passa a usá-la, quando precisa de teste próprio ou quando
+a função principal cresce além de uma tela. Em linguagens com classes (Java, C#),
+o mesmo padrão vira métodos privados: colocados logo abaixo do método público, na
+ordem em que são chamados.
 
 <details>
-<summary>❌ Ruim: helper com dois callers duplicado dentro de cada orquestrador</summary>
+<summary>❌ Ruim: a função auxiliar, usada em dois lugares, copiada dentro de cada um</summary>
 
 ```js
 function buildInvoiceEmail(invoice) {
@@ -141,7 +158,7 @@ function buildInvoiceEmail(invoice) {
 }
 
 function buildReceiptPdf(receipt) {
-  // segundo caller não alcança o helper aninhado: cópia colada
+  // formatCurrency duplicado: preso em buildInvoiceEmail, este uso não o alcança
   const totalLabel = formatCurrency(receipt.total);
   const receiptPdf = renderPdf(totalLabel);
   return receiptPdf;
@@ -160,7 +177,7 @@ function buildReceiptPdf(receipt) {
 </details>
 
 <details>
-<summary>✅ Bom: segundo caller promove o helper ao nível do módulo</summary>
+<summary>✅ Bom: o segundo uso leva a função auxiliar para o nível do arquivo</summary>
 
 ```js
 function buildInvoiceEmail(invoice) {
@@ -187,12 +204,16 @@ function formatCurrency(amount) {
 
 </details>
 
-## SLA: orquestrador ou implementação, nunca os dois
+## Um nível de abstração por função
 
-**SLA** (Single Level of Abstraction · Único Nível de Abstração) é o princípio por trás da divisão: uma função orquestra passos nomeados ou implementa um detalhe. Quando faz os dois, o leitor troca de altitude no meio da leitura.
+O princípio por trás dessa divisão é manter um único nível de abstração por
+função (na sigla em inglês, SLA, de Single Level of Abstraction). Ou a função
+organiza passos com nome, ou implementa um detalhe. Quando faz as duas coisas ao
+mesmo tempo, a leitura pula da visão geral para o detalhe miúdo sem aviso, e quem
+lê se perde.
 
 <details>
-<summary>❌ Ruim: mesma função orquestra e implementa</summary>
+<summary>❌ Ruim: a mesma função organiza e implementa</summary>
 
 ```js
 function buildOrderSummary(order) {
@@ -210,7 +231,7 @@ function buildOrderSummary(order) {
 </details>
 
 <details>
-<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: a função principal chama auxiliares, cada uma faz uma coisa</summary>
 
 ```js
 function buildOrderSummary(order) {
@@ -280,12 +301,13 @@ function getOrderSummary(order) {
 
 </details>
 
-## Direct return
+## Retorno direto
 
-O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
+O retorno aparece no topo da função; os detalhes ficam em funções auxiliares logo
+abaixo.
 
 <details>
-<summary>❌ Ruim: variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim: variável auxiliar desnecessária, `else` depois de um `throw`</summary>
 
 ```js
 async function findProductById(id) {
@@ -326,10 +348,11 @@ async function findProductById(id) {
 
 ## Ponto de entrada limpo
 
-O caller expressa o quê, não o como. Toda construção de contexto fica dentro da função.
+Quem chama a função diz o **quê**, não o **como**. Toda a montagem do contexto
+acontece dentro da função.
 
 <details>
-<summary>❌ Ruim: caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim: quem chama monta a lógica na mão antes de chamar</summary>
 
 ```js
 await submitOrder({
@@ -360,12 +383,18 @@ async function submitOrder(orderId) {
 
 ## Sem lógica no retorno
 
-O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção da função.
+O retorno dá nome ao resultado, não o calcula. A variável tem um nome expressivo,
+alinhado com o que a função promete entregar.
 
-A regra vale até para helper de duas linhas, e o motivo é operacional: a variável nomeada dá ponto de **breakpoint** (ponto de parada) sobre o valor pronto, aparece limpa no diff quando o cálculo muda e obriga o autor a batizar o que a função entrega. O custo é uma linha a mais por função. O guia aceita esse custo de forma deliberada: consistência mecânica revisa melhor que exceção caso a caso.
+A regra vale até para uma função auxiliar de duas linhas, por um motivo prático:
+a variável com nome te dá onde parar o depurador (o **breakpoint**, a pausa na
+execução para inspecionar o valor) já com o valor pronto, aparece limpa no diff
+quando o cálculo muda e obriga quem escreve a batizar o que a função entrega. O
+custo é uma linha a mais por função. O guia aceita esse custo de propósito: uma
+regra mecânica se revisa melhor do que uma exceção decidida caso a caso.
 
 <details>
-<summary>❌ Ruim: lógica ou objeto anônimo direto no return</summary>
+<summary>❌ Ruim: lógica ou objeto sem nome direto no `return`</summary>
 
 ```js
 function buildGreeting(user) {
@@ -380,7 +409,7 @@ function getActiveUsers(users) {
 </details>
 
 <details>
-<summary>✅ Bom: variável expressiva antes do return</summary>
+<summary>✅ Bom: variável com nome expressivo antes do `return`</summary>
 
 ```js
 function buildGreeting(user) {
@@ -397,7 +426,7 @@ function getActiveUsers(users) {
 </details>
 
 <details>
-<summary>❌ Ruim: bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim: retorno cru, repassa o valor sem nome e não diz o que é</summary>
 
 ```js
 function findPendingOrders(userId) {
@@ -412,7 +441,7 @@ async function processCheckout(cartId) {
 </details>
 
 <details>
-<summary>✅ Bom: nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom: um nome alinhado com a função deixa claro o que sai</summary>
 
 ```js
 function findPendingOrders(userId) {
@@ -429,7 +458,7 @@ async function processCheckout(cartId) {
 </details>
 
 <details>
-<summary>❌ Ruim: string imensa montada inline: ilegível e sem semântica</summary>
+<summary>❌ Ruim: texto enorme montado em uma linha, ilegível e sem sentido nas partes</summary>
 
 ```js
 function buildShippingLabel(order) {
@@ -440,7 +469,7 @@ function buildShippingLabel(order) {
 </details>
 
 <details>
-<summary>✅ Bom: partes nomeadas antes de montar o resultado</summary>
+<summary>✅ Bom: partes com nome antes de montar o resultado</summary>
 
 ```js
 function buildShippingLabel(order) {
@@ -457,7 +486,8 @@ function buildShippingLabel(order) {
 
 ## Baixa densidade visual
 
-Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco. Nunca duas.
+Linhas que se relacionam ficam juntas. Grupos diferentes se separam com uma linha
+em branco, e só uma: duas linhas em branco já são espaço demais.
 
 <details>
 <summary>❌ Ruim: parede de código sem respiro entre grupos</summary>
@@ -478,7 +508,7 @@ async function processOrder(orderId) {
 </details>
 
 <details>
-<summary>✅ Bom: parágrafos de intenção</summary>
+<summary>✅ Bom: cada grupo é um parágrafo de intenção</summary>
 
 ```js
 async function processOrder(orderId) {
@@ -499,7 +529,9 @@ async function processOrder(orderId) {
 
 ## Baixa densidade visual: agrupamento
 
-Linhas em branco em excesso dentro de um grupo quebram o ritmo. Linhas em branco ausentes entre grupos colam o que não se relaciona. A regra: 0 linhas dentro, 1 entre, nunca 2+.
+Uma linha em branco sobrando dentro de um grupo quebra o ritmo. Uma linha em
+branco faltando entre dois grupos cola o que não tem relação. A regra: nenhuma
+dentro do grupo, uma entre grupos, nunca duas ou mais.
 
 <details>
 <summary>❌ Ruim: espaço dentro dos grupos, sem separação entre grupos</summary>
@@ -526,7 +558,7 @@ async function registerUser(input) {
 </details>
 
 <details>
-<summary>✅ Bom: 0 linhas dentro do grupo, 1 entre grupos</summary>
+<summary>✅ Bom: nenhuma linha dentro do grupo, uma entre grupos</summary>
 
 ```js
 async function registerUser(input) {
@@ -547,12 +579,14 @@ async function registerUser(input) {
 
 </details>
 
-## Strings longas
+## Textos longos
 
-**Template literal** (string com interpolação) gigante? Extraia as partes compostas em variáveis nomeadas.
+Um texto montado com **template string** (o texto entre crases que aceita valores
+no meio com `${...}`) ficou gigante? Separe as partes compostas em variáveis com
+nome.
 
 <details>
-<summary>❌ Ruim: todos os detalhes interpolados inline</summary>
+<summary>❌ Ruim: todos os detalhes montados em uma linha</summary>
 
 ```js
 function buildConfirmationEmail(user, order) {
@@ -564,7 +598,7 @@ function buildConfirmationEmail(user, order) {
 </details>
 
 <details>
-<summary>✅ Bom: compostos extraídos, string final legível</summary>
+<summary>✅ Bom: partes separadas, texto final legível</summary>
 
 ```js
 function buildConfirmationEmail(user, order) {
@@ -618,19 +652,31 @@ createInvoice({
 
 </details>
 
-## Arrow function: preservar `this` em callbacks
+## Arrow function: preservar o `this` em callbacks
 
-Em JavaScript, o `this` é decidido por **quem chama** a função, não por quem a escreve. É daí que vêm os bugs sutis: você escreve um método, passa `function () {}` como **callback** (função de retorno), e dentro dele o `this` deixa de ser o objeto que você esperava.
+Em JavaScript, o valor de `this` (a palavra que aponta para o objeto atual) é
+decidido por **quem chama** a função, não por quem a escreveu. É daí que vêm os
+bugs difíceis de achar: você escreve um método, passa uma `function () {}` como
+**callback** (a função que será chamada mais tarde por outro código) e, dentro
+dela, o `this` deixa de ser o objeto que você esperava.
 
 Duas formas de declarar uma função, dois comportamentos diferentes:
 
-- `function () {}` tem `this` próprio. Em callbacks de `setInterval`, `forEach` ou `addEventListener`, o `this` esperado se perde: vira `undefined` em **strict mode** (modo estrito) ou o objeto global.
-- `() => {}` **não tem `this` próprio**. A **arrow function** (função flecha) herda o `this` **lexical** (léxico), ou seja, o `this` do escopo onde ela foi escrita. Por isso preserva a referência da instância dentro do método.
+- `function () {}` tem `this` próprio. Em callbacks de `setInterval`, `forEach` ou
+  `addEventListener`, o `this` que você esperava se perde: vira `undefined` no
+  **modo estrito** (o `'use strict'`, que deixa as regras da linguagem mais
+  rígidas) ou vira o objeto global.
+- `() => {}` **não tem `this` próprio**. A **arrow function** (função flecha,
+  escrita com `=>`) usa o `this` do lugar onde foi escrita, não o de quem a
+  chama. Por isso ela mantém a referência ao objeto atual dentro do método.
 
-Regra prática: em callbacks dentro de métodos, use arrow. Em métodos de objeto e classe, use **method shorthand** (método curto, `obj.foo() {}`). O `this` é resolvido no **call site** (ponto de chamada): `obj.foo()` → `this === obj`.
+Regra prática: quando a função é um callback (passada para outro código chamar
+depois) dentro de um método, use a função flecha. Para declarar o próprio método de um
+objeto ou classe, use a forma curta (`obj.foo() {}`). Aí o `this` é resolvido no
+momento da chamada: quando você escreve `obj.foo()`, o `this` é `obj`.
 
 <details>
-<summary>❌ Ruim: callback `function` dentro do método quebra o `this` da instância</summary>
+<summary>❌ Ruim: callback `function` dentro do método quebra o `this` do objeto</summary>
 
 ```js
 class Cart {
@@ -654,7 +700,7 @@ cart.addAll([10, 20, 30]); // TypeError: Cannot read properties of undefined (re
 </details>
 
 <details>
-<summary>✅ Bom: arrow function captura o `this` léxico do método</summary>
+<summary>✅ Bom: a função flecha usa o `this` do método onde foi escrita</summary>
 
 ```js
 class Cart {
@@ -678,7 +724,7 @@ cart.addAll([10, 20, 30]);
 </details>
 
 <details>
-<summary>❌ Ruim: `setInterval` com `function` perde acesso aos campos da instância</summary>
+<summary>❌ Ruim: `setInterval` com `function` perde o acesso aos campos do objeto</summary>
 
 ```js
 class BuildTimer {
@@ -701,7 +747,7 @@ new BuildTimer("build").start();
 </details>
 
 <details>
-<summary>✅ Bom: arrow herda `this`; `label` e `elapsed` continuam acessíveis</summary>
+<summary>✅ Bom: a função flecha mantém o `this`; `label` e `elapsed` continuam acessíveis</summary>
 
 ```js
 class BuildTimer {
@@ -724,7 +770,7 @@ new BuildTimer("build").start();
 </details>
 
 <details>
-<summary>❌ Ruim: arrow como método de objeto: o `this` léxico não é o objeto</summary>
+<summary>❌ Ruim: função flecha como método do objeto: o `this` não aponta para o objeto</summary>
 
 ```js
 const counter = {
@@ -741,7 +787,7 @@ console.log(counter.count); // 0
 </details>
 
 <details>
-<summary>✅ Bom: method shorthand mantém `this` ligado ao objeto na chamada</summary>
+<summary>✅ Bom: a forma curta mantém o `this` ligado ao objeto na chamada</summary>
 
 ```js
 const counter = {
