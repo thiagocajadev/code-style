@@ -1,4 +1,4 @@
-// Princípios: imutabilidade por padrão, sem valores mágicos, CQS, const assertion
+// Princípios: valor não muda depois de atribuído, sem valores mágicos, CQS, const assertion
 
 const STANDARD_DISCOUNT = 10 as const;
 const APPROVED_STATUS = "approved" as const;

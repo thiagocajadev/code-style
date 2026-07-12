@@ -1,6 +1,6 @@
-# Quick Reference
+# Referência rápida
 
-> Escopo: TypeScript. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: TypeScript. Resumo das convenções; os detalhes estão em `conventions/`.
 
 ## Nomenclatura
 
@@ -32,19 +32,19 @@
 | `Pick<T, K>`     | Subconjunto de propriedades             | `Pick<User, 'id' \| 'email'>`            |
 | `Omit<T, K>`     | Remover propriedades                    | `Omit<User, 'password'>` em DTOs         |
 | `Record<K, V>`   | Mapa chave → valor tipado               | `Record<OrderStatus, string>`            |
-| `Readonly<T>`    | Imutabilidade em compile time           | `Readonly<Config>`                       |
+| `Readonly<T>`    | Campos que não podem ser alterados      | `Readonly<Config>`                       |
 | `ReturnType<T>`  | Tipo de retorno de uma função           | `ReturnType<typeof buildOrder>`          |
 | `Parameters<T>`  | Tipos dos parâmetros de uma função      | `Parameters<typeof createUser>`          |
 | `NonNullable<T>` | Remove `null` e `undefined` do tipo     | `NonNullable<string \| null>`            |
 
-## Taboos
+## O que evitar
 
 | Evitar                             | Usar                                                            |
 | ---------------------------------- | --------------------------------------------------------------- |
-| `any`                              | `unknown`: força narrowing antes do uso                         |
-| Prefixo `I` em interface           | PascalCase direto: `User`, não `IUser`                          |
-| `as Type` para silenciar o erro    | Narrowing real ou refatorar a função                            |
-| Enum nativo                        | Const object + union type                                       |
-| `Object`, `String`, `Number`       | `object`, `string`, `number`: tipos primitivos, não wrappers    |
-| `Function` como tipo               | Assinatura explícita: `(id: string) => Promise<User>`           |
-| `!` (non-null assertion) inline    | Guard clause ou narrowing explícito                             |
+| `any`                              | `unknown`: obriga a checar o tipo antes do uso                  |
+| Prefixo `I` em interface           | PascalCase direto: `User`                                       |
+| `as Type` para calar o compilador  | Uma checagem de verdade, ou repensar a função                   |
+| Enum nativo                        | Objeto `as const` com o union type derivado dele                |
+| `Object`, `String`, `Number`       | `object`, `string`, `number`: os primitivos, e não os wrappers  |
+| `Function` como tipo               | A assinatura escrita: `(id: string) => Promise<User>`           |
+| `!` (afirmação de não-nulo) solto  | Cláusula de proteção, ou uma checagem explícita                 |

@@ -1,6 +1,13 @@
-# Types
+# Tipos em TypeScript
 
-O sistema de tipos do TypeScript tem duas construções principais para descrever formas: **interface** (contrato de objeto) e **type alias** (apelido de tipo). Cada uma tem um domínio natural. Usá-las nos lugares errados não quebra, mas cria inconsistência que escala mal. Acima delas, **structural typing** (tipagem estrutural) determina compatibilidade pelo formato, não pelo nome.
+O TypeScript tem duas construções para descrever a forma de um valor: a **interface** (contrato de
+objeto) e o **type alias** (apelido de tipo). Cada uma tem o seu lugar natural, e trocar as duas
+compila do mesmo jeito. O que se perde é a consistência: quem lê o código passa a não conseguir
+prever qual das duas vai encontrar.
+
+Acima das duas está o **structural typing** (tipagem estrutural), a regra que decide se um valor
+cabe em um tipo. O TypeScript compara o formato: se o objeto tem os campos que o tipo pede, com os
+tipos que o tipo pede, ele serve. O nome que foi dado ao tipo não participa dessa decisão.
 
 ## Conceitos fundamentais
 
@@ -8,21 +15,27 @@ O sistema de tipos do TypeScript tem duas construções principais para descreve
 | --- | --- |
 | **interface** (contrato de objeto) | Forma de objeto extensível via `extends` e implementável via `implements` |
 | **type alias** (apelido de tipo) | `type X = ...`: apelido para union, intersection, mapped, primitivo ou shape |
-| **structural typing** (tipagem estrutural) | Compatibilidade decidida pelo formato; tipos com mesmo shape são compatíveis |
+| **structural typing** (tipagem estrutural) | Compatibilidade decidida pelo formato; dois tipos com os mesmos campos são intercambiáveis |
 | **union** (união) | `A | B`: valor que pode ser de um ou outro tipo |
 | **intersection** (interseção) | `A & B`: valor que satisfaz ambos os tipos simultaneamente |
 | **literal type** (tipo literal) | Valor exato como tipo (`"active"`, `42`); usado em discriminated unions |
 | **utility type** (tipo utilitário) | `Partial`, `Pick`, `Omit`, `Record`: derivam tipos de outros sem repetição |
 | **branded type** (tipo marcado) | Primitivo + tag de tipo para distinguir valores semânticos (`UserId`, `Email`) |
 
-## type vs interface
+<a id="type-vs-interface"></a>
 
-A distinção prática: `interface` descreve o shape de um objeto e pode ser estendida ou implementada.
-`type` descreve qualquer coisa: union, intersection, mapped type, alias de primitivo. Não pode
-ser reaberta.
+## Quando usar `interface` e quando usar `type`
+
+`interface` descreve o formato de um objeto. Ela aceita `extends` e `implements`, e é a escolha
+para contratos: o que um objeto de domínio tem, o que um repositório oferece, o que um serviço
+expõe.
+
+`type` descreve qualquer outra coisa que a `interface` não alcança: union, intersection, apelido de
+um primitivo, tipo derivado de outro tipo. Um union escrito como `interface` nem compila, e é essa
+a linha que separa as duas na prática.
 
 <details>
-<summary>❌ Ruim: type onde interface seria natural, interface onde type seria correto</summary>
+<summary>❌ Ruim: type para um objeto simples, e interface onde só type funciona</summary>
 
 ```ts
 // type para shape de objeto: funciona, mas não é a convenção
@@ -79,11 +92,13 @@ type ApiResponse<T> = { data: T; meta: ResponseMeta };
 
 ## Genéricos
 
-Genérico em tipos é justificado quando o shape varia com o parâmetro de tipo. Sem variação real,
-é abstração sem propósito.
+Um genérico se justifica quando o formato do tipo muda de acordo com o parâmetro recebido.
+`PaginatedResult<TItem>` é o caso: os campos `total` e `hasNextPage` são sempre iguais, e `items`
+muda conforme quem usa. Quando o parâmetro de tipo não aparece em campo nenhum, ele é uma peça a
+mais na assinatura sem efeito no resultado.
 
 <details>
-<summary>❌ Ruim: genérico que não muda o shape</summary>
+<summary>❌ Ruim: o parâmetro de tipo não aparece em nenhum campo</summary>
 
 ```ts
 interface Response<T> {
@@ -95,7 +110,7 @@ interface Response<T> {
 </details>
 
 <details>
-<summary>✅ Bom: genérico quando o shape depende do tipo</summary>
+<summary>✅ Bom: o parâmetro de tipo decide o formato de um campo</summary>
 
 ```ts
 interface ApiResponse<TData> {
@@ -119,13 +134,18 @@ async function listUsers(): Promise<PaginatedResult<User>> { /* ... */ }
 
 </details>
 
-## Utility types: compor em vez de duplicar
+## Derive o tipo a partir do que já existe
 
-Utility types permitem derivar contratos a partir de tipos existentes. Evitam duplicação e mantêm
-os tipos sincronizados quando o tipo base muda.
+`UserDTO` copiado à mão a partir de `User` fica correto no dia em que foi escrito. O problema chega
+depois: quem acrescenta um campo em `User` precisa lembrar de acrescentar nos outros três tipos que
+copiaram os campos dele, e o compilador não lembra por ninguém.
+
+Os **utility types** (tipos utilitários, como `Partial`, `Pick`, `Omit` e `Record`) escrevem essa
+relação em código. `Omit<User, "password">` é lido como "o usuário, sem a senha", e ele acompanha o
+`User` sozinho: campo novo em `User` aparece no DTO no mesmo instante.
 
 <details>
-<summary>❌ Ruim: duplicação manual do shape com diferenças</summary>
+<summary>❌ Ruim: o tipo é copiado à mão e sai de sincronia com o original</summary>
 
 ```ts
 interface User {
@@ -171,13 +191,22 @@ type UpdateUserInput = Partial<Pick<User, "name" | "email" | "password">>;
 
 </details>
 
-## Discriminated unions
+<a id="discriminated-unions"></a>
 
-Quando um valor pode ser de formas diferentes dependendo do contexto, uma union de interfaces com
-um campo literal discriminante permite narrowing automático, sem type assertion, sem cast.
+## A união discriminada modela o valor que tem formas diferentes
+
+Um `PaymentResult` com todos os campos opcionais descreve estados que não existem. O tipo aceita um
+resultado com `success: true` e `errorCode` preenchido ao mesmo tempo, e aceita um objeto vazio. Do
+outro lado, dentro do `if (result.success)`, o compilador continua dizendo que `transactionId` pode
+ser `undefined`, porque nada no tipo liga um campo ao outro.
+
+A união discriminada declara os estados que existem de verdade, um por interface, cada um com um
+campo literal que o identifica (`status: "success"`). O compilador passa a conhecer a ligação:
+depois de checar `result.status === "success"`, `transactionId` é uma `string`, e os campos de erro
+não estão disponíveis ali.
 
 <details>
-<summary>❌ Ruim: campo opcional para cada variant, sem discriminante</summary>
+<summary>❌ Ruim: campos opcionais soltos, e o tipo aceita combinações impossíveis</summary>
 
 ```ts
 interface PaymentResult {
@@ -197,7 +226,7 @@ function handlePayment(result: PaymentResult) {
 </details>
 
 <details>
-<summary>✅ Bom: campo discriminante com narrowing automático</summary>
+<summary>✅ Bom: o campo discriminante diz qual é o estado, e o compilador acompanha</summary>
 
 ```ts
 interface PaymentSuccess {
@@ -225,13 +254,18 @@ function handlePayment(result: PaymentResult) {
 
 </details>
 
-## Intersection types: combinar sem herança
+## A intersection soma dois tipos sem criar hierarquia
 
-Intersection combina dois tipos em um. Útil para compor shapes ortogonais sem criar hierarquia de
-classes.
+Auditoria e exclusão lógica são preocupações que aparecem em várias entidades e não têm relação
+entre si. Resolver isso com herança obriga a inventar uma classe base que carrega as duas, e toda
+entidade que precisa de uma acaba herdando a outra.
+
+A **intersection** (interseção, escrita com `&`) soma os campos sem hierarquia nenhuma.
+`BaseOrder & Auditable & SoftDeletable` é lido como a soma das três partes, cada uma declarada
+separada e reaproveitável onde fizer sentido.
 
 <details>
-<summary>❌ Ruim: duplicação manual de campos de shapes existentes</summary>
+<summary>❌ Ruim: os campos de cada parte são copiados dentro da entidade</summary>
 
 ```ts
 interface Auditable {
@@ -260,7 +294,7 @@ interface Order {
 </details>
 
 <details>
-<summary>✅ Bom: intersection para compor shapes independentes</summary>
+<summary>✅ Bom: cada parte é declarada uma vez, e a entidade soma as três</summary>
 
 ```ts
 interface Auditable {
@@ -278,13 +312,19 @@ type Order = BaseOrder & Auditable & SoftDeletable;
 
 </details>
 
-## Evitar type assertions
+## O `as` desliga a checagem no ponto em que ela era necessária
 
-`as Type` diz ao compilador "confie em mim" e desliga a verificação naquele ponto. Quando o
-compilador precisa de convencimento, geralmente é o shape que está errado.
+`as User` é uma afirmação sua, e o compilador aceita sem conferir nada. Se `fetchUser` devolver
+`null`, o tipo continua dizendo `User`, e a linha que lê `user.name` quebra em runtime. Com
+`JSON.parse`, que devolve `any`, é pior: qualquer formato passa pelo `as AppConfig`, inclusive um
+JSON de outra versão da aplicação.
+
+O `as` costuma aparecer no lugar exato onde o dado veio de fora e ninguém sabe o que ele é, que é
+onde a checagem mais valia. Nesses pontos, cabe estreitar o tipo com um `if` de verdade, ou validar
+o dado com um schema.
 
 <details>
-<summary>❌ Ruim: as Type para forçar o compilador a aceitar</summary>
+<summary>❌ Ruim: o as afirma um tipo que ninguém conferiu</summary>
 
 ```ts
 const user = await fetchUser(id) as User; // e se retornar null?
@@ -295,7 +335,7 @@ const config = JSON.parse(raw) as AppConfig; // JSON.parse retorna any: qualquer
 </details>
 
 <details>
-<summary>✅ Bom: narrowing real ou validação de esquema</summary>
+<summary>✅ Bom: uma checagem de verdade, ou um schema que valida o dado</summary>
 
 ```ts
 const raw = await fetchUser(id);

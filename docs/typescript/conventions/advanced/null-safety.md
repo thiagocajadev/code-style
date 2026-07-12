@@ -1,8 +1,13 @@
-# Null Safety
+# Segurança contra nulos em TypeScript
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-TypeScript tem dois mecanismos complementares: o sistema de tipos em **compile time** (tempo de compilação) e os operadores de **runtime** (tempo de execução). Juntos, eles eliminam null inesperado sem obrigar checagem manual em cada ponto de uso. **`strictNullChecks`** (checagem estrita de nulos) inclui `null` e `undefined` no tipo só quando declarado.
+O TypeScript ataca o nulo por dois lados. Em **compile time** (tempo de compilação), o sistema de
+tipos só deixa um valor ser `null` ou `undefined` quando alguém declarou isso, e acusa toda leitura
+que não tratou o caso. Em **runtime** (tempo de execução), os operadores `?.` e `??` tratam a
+ausência na linha em que ela aparece. A chave que liga o primeiro lado é o
+**`strictNullChecks`** (checagem estrita de nulos): sem ele, `null` cabe dentro de qualquer tipo, e
+o compilador não tem o que apontar.
 
 > Conceito geral: [Null Safety](../../../shared/standards/null-safety.md)
 
@@ -19,10 +24,12 @@ TypeScript tem dois mecanismos complementares: o sistema de tipos em **compile t
 | **type guard** (guarda de tipo) | `if (x !== null)`; estreita o tipo após a checagem dentro do bloco |
 | **boundary** (limite) | Ponto onde dados externos entram (HTTP, DB, fila); local correto para validar nulos |
 
-## Configuração: compilador como primeira linha de defesa
+## O compilador é a primeira linha de defesa
 
-`strict: true` já inclui `strictNullChecks`. `noUncheckedIndexedAccess` vai além: acesso por índice
-passa a retornar `T | undefined`, forçando o tratamento de posições que podem não existir.
+`strict: true` já liga o `strictNullChecks`, e é o mínimo. `noUncheckedIndexedAccess` vai além e
+trata um buraco que passa despercebido: por padrão, `users[10]` tem tipo `User` mesmo quando o array
+tem três elementos, e o `undefined` que sai dali só aparece quando a página quebra. Com a flag
+ligada, o acesso por índice devolve `User | undefined`, e o compilador exige o tratamento.
 
 ```json
 // tsconfig.json
@@ -70,9 +77,10 @@ function getFirstOrThrow(items: string[]): string {
 
 </details>
 
-## null vs undefined
+## `null` e `undefined` têm papéis diferentes
 
-TypeScript tem dois valores de ausência. A convenção:
+O TypeScript tem dois valores para dizer que algo não está lá, e usar os dois sem critério faz o
+leitor perguntar, a cada campo, qual dos dois vai chegar. A convenção do projeto separa os papéis:
 
 | Valor | Quando usar |
 | --- | --- |
@@ -125,11 +133,13 @@ interface UpdateUserInput {
 
 ## Coleções nunca são nulas
 
-Função que retorna uma coleção **sempre retorna** `[]` quando não há elementos. Null em lista não
-tem semântica útil. Quem chama não deveria precisar checar antes de iterar.
+Uma função que devolve lista devolve `[]` quando não há elementos. Uma lista nula e uma lista vazia
+significam a mesma coisa para quem vai percorrê-la (não há o que percorrer), e a diferença entre as
+duas só serve para obrigar uma checagem antes de cada `for` e cada `map`. Devolvendo `[]`, o laço
+roda zero vezes e o assunto está resolvido.
 
 <details>
-<summary>❌ Ruim: null em coleção quebra qualquer iteração</summary>
+<summary>❌ Ruim: a lista nula quebra o laço de quem a recebeu</summary>
 
 ```ts
 async function findOrdersByUser(userId: string): Promise<Order[] | null> {
@@ -162,13 +172,14 @@ orders.forEach(processOrder);
 
 </details>
 
-## Propriedades de coleção em interfaces e classes
+## O campo de lista já nasce como lista vazia
 
-Propriedades que representam listas sempre têm tipo `T[]`, nunca `T[] | null`. Inicializadas
-como `[]` na declaração ou no construtor.
+A mesma regra vale para campos de interface e de classe. Um campo declarado como `T[]` e inicializado
+com `[]` na declaração ou no construtor nunca chega nulo a quem o lê. Declará-lo como `T[] | null`
+espalha a checagem por todo lugar que toca o campo, e basta um esquecimento para a página quebrar.
 
 <details>
-<summary>❌ Ruim: null como estado inicial de lista</summary>
+<summary>❌ Ruim: a lista começa nula, e todo acesso precisa checar</summary>
 
 ```ts
 interface Order {
@@ -188,7 +199,7 @@ class Cart {
 </details>
 
 <details>
-<summary>✅ Bom: lista vazia como default, sem null</summary>
+<summary>✅ Bom: a lista vazia é o valor inicial, e o campo nunca é nulo</summary>
 
 ```ts
 interface Order {
@@ -208,13 +219,19 @@ class Cart {
 
 </details>
 
-## Normalizar na fronteira
+## Limpe o dado no limite, antes de ele entrar no domínio
 
-Dados externos: resposta de **API** (Application Programming Interface · Interface de Programação de Aplicações), input de formulário, config. Chegam sem garantia. Normalize
-com `?? []` no ponto de entrada, antes de propagar para o domínio.
+Resposta de **API** (Application Programming Interface · Interface de Programação de Aplicações),
+campo de formulário e arquivo de configuração chegam sem garantia nenhuma. Se o `null` que veio de
+fora entrar no domínio como está, cada função lá dentro passa a conviver com ele, e a checagem se
+repete em toda camada.
+
+O lugar de resolver isso é o ponto de entrada. Um `?? []` e um `?? ""` no limite convertem a
+ausência no valor neutro de uma vez, e o domínio inteiro passa a trabalhar com tipos que não
+carregam nulo.
 
 <details>
-<summary>❌ Ruim: campos null/undefined da API propagam direto para o domínio</summary>
+<summary>❌ Ruim: o null da API entra no domínio e se espalha por todas as camadas</summary>
 
 ```ts
 interface ApiUserResponse {
@@ -233,33 +250,38 @@ async function fetchUserOrders(userId: string): Promise<Order[]> {
 // caller obrigado a se defender de null em cada uso
 async function buildUserSummary(userId: string) {
   const orders = await fetchUserOrders(userId);
-  const count = orders?.length ?? 0; // defesa que deveria ter acontecido na fronteira
+  const count = orders?.length ?? 0; // defesa que deveria ter acontecido no limite
 }
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom: normalização na fronteira, domínio trabalha com tipos limpos</summary>
+<summary>✅ Bom: o dado é limpo no limite, e o domínio recebe tipos sem nulo</summary>
 
 ```ts
 async function fetchUserOrders(userId: string): Promise<Order[]> {
   const response = await externalApi.get<{ orders?: Order[] }>(`/users/${userId}/orders`);
-  const orders = response.orders ?? []; // normaliza na fronteira
+  const orders = response.orders ?? []; // normaliza no limite
   return orders;
 }
 ```
 
 </details>
 
-## Optional chaining e nullish coalescing
+## `?.` e `??` tratam a ausência esperada
 
-`?.` e `??` são atalhos para navegação segura e defaults, não substitutos de validação. Use
-quando a ausência é um caso esperado e tratável inline. Quando a ausência é um erro, use guard
-clause.
+Os dois operadores servem quando a ausência faz parte do fluxo normal e tem um valor padrão óbvio:
+o usuário não preencheu o telefone, e o campo aparece em branco. Nesses casos, resolver na própria
+linha é o certo.
+
+Quando a ausência significa que algo deu errado, esses operadores escondem o erro atrás de um valor
+qualquer. `order?.total ?? 0` devolve zero para um pedido que não existe, e a resposta sai como se
+fosse um pedido legítimo de valor zero. Aí o lugar é a cláusula de proteção, que interrompe o fluxo
+e diz o que aconteceu.
 
 <details>
-<summary>❌ Ruim: encadeamento que esconde condição de negócio</summary>
+<summary>❌ Ruim: o encadeamento devolve um valor padrão para um caso que era erro</summary>
 
 ```ts
 async function getOrderTotal(orderId: string): Promise<number> {
@@ -271,7 +293,7 @@ async function getOrderTotal(orderId: string): Promise<number> {
 </details>
 
 <details>
-<summary>✅ Bom: guard clause quando ausência é erro; ?. quando ausência é esperada</summary>
+<summary>✅ Bom: a proteção trata o erro, e o ?. trata a ausência que era esperada</summary>
 
 ```ts
 // ausência é erro → guard clause
@@ -292,13 +314,17 @@ function formatUserCity(user?: User): string {
 
 </details>
 
-## Non-null assertion: uso restrito
+## O `!` desliga a checagem, e cabe em poucos lugares
 
-O operador `!` diz ao compilador "confie em mim, não é null". Desliga a verificação naquele ponto.
-Aceitável apenas quando você tem garantia externa que o compilador não consegue verificar.
+O operador `!` afirma ao compilador que aquele valor não é nulo, e ele acredita sem conferir. Se a
+afirmação estiver errada, o erro reaparece em runtime, no mesmo lugar onde a checagem teria pegado.
+
+Ele se justifica quando você tem uma garantia que o compilador não consegue enxergar, como um
+elemento do DOM que o próprio arquivo HTML declara. Fora disso, cabe a cláusula de proteção, que
+custa uma linha e trata o caso em vez de negá-lo.
 
 <details>
-<summary>❌ Ruim: ! para silenciar o compilador sem garantia real</summary>
+<summary>❌ Ruim: o ! cala o compilador sem nenhuma garantia por trás</summary>
 
 ```ts
 const user = findUser(id)!; // e se retornar null?
@@ -308,7 +334,7 @@ const email = form.fields.get("email")!.value; // e se a chave não existir?
 </details>
 
 <details>
-<summary>✅ Bom: guard clause no lugar de !</summary>
+<summary>✅ Bom: a cláusula de proteção no lugar do !</summary>
 
 ```ts
 const user = await findUser(id);

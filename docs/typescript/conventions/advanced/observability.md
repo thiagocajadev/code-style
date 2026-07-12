@@ -1,8 +1,12 @@
-# Observability
+# Observabilidade em TypeScript
 
 > Escopo: TypeScript. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam sem mudança. O TypeScript adiciona: **interface** (contrato de objeto) tipada para o logger, contexto de correlação tipado e garantia em compilação de que campos obrigatórios não são omitidos.
+O **structured logging** (log estruturado, o log emitido como objeto JSON em vez de frase solta) do
+JavaScript continua igual aqui. O que o TypeScript acrescenta é a garantia de que o log sai
+completo. Uma interface tipada para o logger obriga quem chama a passar um objeto, e um contexto
+tipado faz o compilador acusar o `correlationId` que alguém esqueceu de incluir. O campo que falta
+deixa de ser algo que você descobre no dia do incidente, quando o log não serve para nada.
 
 > Base JavaScript: [javascript/conventions/advanced/observability.md](../../../javascript/conventions/advanced/observability.md)
 
@@ -13,7 +17,7 @@ Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam
 | Conceito | O que é |
 | --- | --- |
 | **structured logging** (log estruturado) | Log emitido como objeto JSON com campos pesquisáveis, não string concatenada |
-| **`Logger`** (interface tipada de log) | Contrato que o logger deve cumprir; força chamador a passar objeto estruturado |
+| **`Logger`** (interface tipada de log) | Contrato que o logger cumpre; obriga quem chama a passar um objeto estruturado |
 | **log level** (nível de log) | Severidade tipada por união literal: `"trace" | "debug" | "info" | "warn" | "error"` |
 | **correlation ID** (ID de correlação) | Identificador único por requisição que aparece em todos os logs do mesmo fluxo |
 | **`LogContext`** (contexto tipado) | Tipo do payload do log; campos obrigatórios não podem ser omitidos |
@@ -21,13 +25,18 @@ Os padrões de **structured logging** (log estruturado) do JavaScript se aplicam
 | **PII** (Personally Identifiable Information · Informação Pessoal Identificável) | Dado que identifica um indivíduo; nunca sai cru no log |
 | **trace** (rastro) | Caminho de uma requisição atravessando múltiplos serviços; cada salto é um span |
 
-## Interface tipada para o logger
+## A interface do logger obriga o log a ser estruturado
 
-Tipar a interface do logger força o caller a passar um objeto estruturado (não uma string),
-e permite trocar a implementação (Pino, Winston, mock) sem alterar os callers.
+Um logger sem tipo aceita `logger.info("pedido criado " + orderId)`, e o resultado é uma frase.
+Buscar por ela no painel de logs significa procurar por texto, e filtrar por cliente ou por status
+deixa de ser possível, porque não existe campo para filtrar.
+
+A interface tipada resolve na origem: o segundo parâmetro é um objeto, e quem chama não tem como
+passar uma string concatenada. Ela também deixa a implementação trocável, porque o código depende
+do contrato e não do Pino ou do Winston.
 
 <details>
-<summary>❌ Ruim: logger sem tipo aceita qualquer forma de chamada</summary>
+<summary>❌ Ruim: o logger sem tipo aceita a frase concatenada</summary>
 
 ```ts
 // qualquer assinatura passa: strings, objetos, mistura
@@ -38,7 +47,7 @@ logger.error(error);
 </details>
 
 <details>
-<summary>✅ Bom: interface tipada, caller obrigado a estruturar</summary>
+<summary>✅ Bom: a interface obriga quem chama a passar campos pesquisáveis</summary>
 
 ```ts
 interface Logger {
@@ -54,13 +63,18 @@ logger.info(orderContext, "order created");
 
 </details>
 
-## Contexto de correlação tipado
+## O contexto de correlação declara os campos obrigatórios
 
-`AsyncLocalStorage` com tipo explícito garante que todos os campos obrigatórios do contexto
-estão presentes. O caller não pode omitir `correlationId` por engano.
+O **correlation ID** (ID de correlação) é o que permite juntar todas as linhas de log de uma mesma
+requisição, mesmo quando ela passa por três serviços. Ele só serve se estiver em todas elas, e um
+contexto sem tipo não garante isso: basta alguém montar o objeto sem o campo, e aquele fluxo fica
+sem rastro.
+
+`AsyncLocalStorage` com o tipo declarado transforma o esquecimento em erro de compilação. O
+`correlationId` faz parte do contrato do contexto, e um objeto sem ele não entra.
 
 <details>
-<summary>❌ Ruim: contexto sem tipo, campos podem estar ausentes</summary>
+<summary>❌ Ruim: o contexto não tem tipo, e o campo pode faltar sem ninguém notar</summary>
 
 ```ts
 const requestStore = new AsyncLocalStorage<Record<string, unknown>>();
@@ -78,7 +92,7 @@ logger.info({ ...context }, "processing"); // context pode ser undefined
 </details>
 
 <details>
-<summary>✅ Bom: store tipado, campos obrigatórios em compilação</summary>
+<summary>✅ Bom: o contexto é tipado, e o campo que falta vira erro de compilação</summary>
 
 ```ts
 interface RequestContext {
@@ -119,13 +133,14 @@ export const logger = pino({
 
 </details>
 
-## Níveis de log tipados
+## O nível de log é uma união literal, não uma string
 
-Tipar os níveis impede strings inválidas e permite que o caller seja configurável sem perder
-a verificação em compilação.
+Com o nível declarado como `string`, `logger.log("infoo", ...)` compila, e a linha some do painel
+porque nenhum filtro conhece esse nível. A união literal (`"trace" | "debug" | "info" | "warn" |
+"error"`) limita os valores aceitos aos que existem, e o erro de digitação vira erro de compilação.
 
 <details>
-<summary>❌ Ruim: nível como string, qualquer valor aceito</summary>
+<summary>❌ Ruim: o nível é uma string, e qualquer valor passa</summary>
 
 ```ts
 function createLogger(level: string) {

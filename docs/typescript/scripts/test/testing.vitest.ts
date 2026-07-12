@@ -1,8 +1,8 @@
 // @ts-nocheck
-// Vitest — framework moderno, suporte nativo a TypeScript e ESM
+// Vitest: framework moderno, suporte nativo a TypeScript e ESM
 // Referência: copiar para .ts e instalar vitest antes de executar
 // Executar: vitest run testing.vitest.ts
-// Convenção: expect(actual).toBe(expected) — actual em expect(), expected em toBe()
+// Convenção: expect(actual).toBe(expected), actual em expect(), expected em toBe()
 
 import { describe, it, expect } from "vitest";
 

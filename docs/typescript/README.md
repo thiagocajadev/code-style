@@ -2,14 +2,16 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/docs/)
 
-TypeScript é o superconjunto tipado de JavaScript. Os princípios de legibilidade deste guia:
-nomes expressivos, guard clauses, funções pequenas, fluxo linear. Aplicam-se aqui com a mesma
-força.
+TypeScript é o JavaScript com um sistema de tipos por cima. Todo o resto do guia continua valendo
+aqui: nomes que dizem a intenção, cláusulas de proteção no início da função, funções pequenas,
+fluxo que se lê de cima para baixo.
 
-Este guia cobre o que é específico do TypeScript: quando anotar tipos, como nomear contratos,
-como modelar variações e como extrair o máximo do sistema de tipos sem adicionar ruído.
+O que estas páginas cobrem é o que só existe em TypeScript. Quando escrever o tipo e quando deixar o
+compilador inferir. Como nomear um contrato. Como modelar um valor que tem formas diferentes. E como
+usar o sistema de tipos para o compilador acusar o erro antes de ele chegar no usuário, sem encher o
+código de anotação que não informa nada.
 
-→ [Quick Reference](quick-reference.md): nomenclatura, type vs interface, utility types, narrowing
+→ [Referência rápida](quick-reference.md): nomes, `type` e `interface`, tipos utilitários, estreitamento de tipo
 
 ## Setup
 
@@ -17,33 +19,33 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 
 | Tópico                                            | Conceitos                                        |
 | ------------------------------------------------- | ------------------------------------------------ |
-| [Project Foundation](setup/project-foundation.md) | tsconfig, strict mode, path aliases, pipeline    |
+| [Fundação do projeto](setup/project-foundation.md) | tsconfig, modo estrito, apelidos de caminho, pipeline |
 
 ## Fundamentos
 
 | Tópico                                          | Conceitos                                                          |
 | ----------------------------------------------- | ------------------------------------------------------------------ |
-| [Variables](conventions/variables.md)           | Annotations, inferência, `as const`, `unknown` vs `any`            |
-| [Naming](conventions/naming.md)                 | Interface, type alias, genérico: convenções de nome               |
-| [Functions](conventions/functions.md)           | Return types, parâmetros tipados, overloads                        |
-| [Types](conventions/types.md)                   | `type` vs `interface`, genéricos, utility types                    |
-| [Narrowing](conventions/narrowing.md)           | Type guards, discriminated unions, exhaustiveness                  |
-| [Control Flow](conventions/control-flow.md)     | Narrowing como guard, discriminated unions, exhaustiveness check   |
-| [Visual Density](conventions/visual-density.md) | Passos separados, `return` separado, anotações na mesma linha      |
+| [Variáveis](conventions/variables.md)           | Anotação, inferência, `as const`, `unknown` no lugar de `any`      |
+| [Nomes](conventions/naming.md)                  | Interface, apelido de tipo e genérico: como nomear cada um         |
+| [Funções](conventions/functions.md)             | Tipo de retorno, parâmetros tipados, sobrecargas                   |
+| [Tipos](conventions/types.md)                   | `type` e `interface`, genéricos, tipos utilitários                 |
+| [Estreitamento de tipo](conventions/narrowing.md) | Checagens que estreitam, uniões discriminadas, exaustividade     |
+| [Controle de fluxo](conventions/control-flow.md) | A checagem que estreita o tipo, o `switch` exaustivo              |
+| [Densidade visual](conventions/visual-density.md) | Passos separados, `return` junto do valor, anotação na mesma linha |
 
 ## Avançados
 
 | Tópico                                                        | Conceitos                                                     |
 | ------------------------------------------------------------- | ------------------------------------------------------------- |
-| [Error Handling](conventions/advanced/error-handling.md)     | Erros tipados, BaseError, try/catch nas fronteiras            |
-| [Async](conventions/advanced/async.md)                       | `Promise<T>`, typed async/await, generics em I/O             |
-| [Performance](conventions/advanced/performance.md)           | `as const`, enums vs const objects, satisfies, tipos recursivos |
-| [Observability](conventions/advanced/observability.md)       | Logger tipado, contexto de correlação tipado, níveis          |
-| [Testing](conventions/advanced/testing.md)                   | Fixtures com `satisfies`, mocks tipados, `expectTypeOf`       |
-| [Validation](conventions/advanced/validation.md)             | `z.infer`, `safeParse`, discriminated unions, output DTO      |
-| [Dates](conventions/advanced/dates.md)                       | Branded types para timestamps, Temporal API tipada            |
-| [Entity Modeling](conventions/advanced/entity-modeling.md)   | Branded types, ReadonlyArray, discriminated unions, `Entity<TId>`, factory pattern |
-| [Quick Reference](quick-reference.md)                        | Tipos, utilitários, taboos                                    |
+| [Tratamento de erros](conventions/advanced/error-handling.md) | Erros com tipo, classe base, `try/catch` nos limites          |
+| [Código assíncrono](conventions/advanced/async.md)           | `Promise<T>`, `async`/`await` tipado, genérico no cliente de I/O |
+| [Performance](conventions/advanced/performance.md)           | `as const` no lugar do enum, `satisfies`, tipos recursivos    |
+| [Observabilidade](conventions/advanced/observability.md)     | Logger tipado, contexto de correlação, níveis de log          |
+| [Testes](conventions/advanced/testing.md)                    | Massa de teste com `satisfies`, mocks tipados, `expectTypeOf` |
+| [Validação](conventions/advanced/validation.md)              | `z.infer`, `safeParse`, união discriminada, DTO de resposta   |
+| [Datas](conventions/advanced/dates.md)                       | Tipo marcado para timestamps, a API Temporal tipada           |
+| [Modelagem de entidades](conventions/advanced/entity-modeling.md) | Tipo marcado, lista somente leitura, união discriminada, `Entity<TId>`, fábrica |
+| [Referência rápida](quick-reference.md)                      | Tipos, utilitários, o que evitar                              |
 
 ## Frameworks
 
@@ -59,10 +61,10 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 
 | Princípio                                                                           | Descrição                                                                   |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [Inferência por padrão](conventions/variables.md#inference-by-default)             | Deixe o TypeScript derivar o tipo quando óbvio; anotação redundante polui  |
-| [Anotar fronteiras](conventions/functions.md#return-type)                           | Funções exportadas sempre têm return type explícito                         |
-| [Nunca any](conventions/variables.md#any-vs-unknown)                                | `unknown` força narrowing; `any` desativa o compilador                     |
-| [Tipos sem prefixo](conventions/naming.md#prefixo-i)                                | Sem `I` em interfaces; o contexto já diz que é contrato                   |
+| [Inferência por padrão](conventions/variables.md#inference-by-default)             | Deixe o compilador derivar o tipo óbvio; a anotação repetida só ocupa espaço |
+| [Anotar os limites](conventions/functions.md#return-type)                           | Toda função exportada declara o tipo que devolve                            |
+| [Nunca any](conventions/variables.md#any-vs-unknown)                                | `unknown` obriga a checar antes de usar; `any` desliga o compilador         |
+| [Tipos sem prefixo](conventions/naming.md#i-prefix)                                | Sem `I` em interface: a palavra `interface` já está ali                     |
 
 <br>
 
@@ -70,17 +72,17 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 
 | Princípio                                                                    | Descrição                                                                        |
 | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| [Interface para objetos](conventions/types.md#type-vs-interface)             | Contratos e shapes usam `interface`: extensíveis por padrão                     |
-| [Type para uniões](conventions/types.md#type-vs-interface)                   | `type` para union types, mapped types e aliases de primitivos                    |
-| [Union types > enums](conventions/types.md#discriminated-unions)                            | Const object + union type: sem runtime overhead, sem conversão                  |
-| [Genérico com propósito](conventions/types.md#generics)                     | Genérico quando a função precisa preservar o tipo do chamador, sem especulação  |
+| [Interface para objetos](conventions/types.md#type-vs-interface)             | O contrato e a forma de um objeto usam `interface`, que aceita `extends`         |
+| [Type para uniões](conventions/types.md#type-vs-interface)                   | `type` para união, interseção e apelido de primitivo                             |
+| [União no lugar do enum](conventions/types.md#discriminated-unions)          | Objeto `as const` com o union derivado: não sobra código no arquivo final        |
+| [Genérico com propósito](conventions/types.md#generics)                     | Genérico quando o retorno depende do tipo que entrou                             |
 
 <br>
 
-**Narrowing**: transitar entre tipos com segurança
+**Estreitamento de tipo**: chegar ao tipo específico com segurança
 
 | Princípio                                                                         | Descrição                                                                  |
 | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| [Type guards explícitos](conventions/narrowing.md#custom-type-guards)             | Funções predicado nomeadas no lugar de type assertions inline              |
-| [Discriminated unions](conventions/narrowing.md#discriminated-unions)             | Campo literal identifica o variant: narrowing automático no switch        |
-| [Exhaustiveness check](conventions/narrowing.md#exhaustiveness)                   | `never` no default do switch; o compilador avisa se faltar um caso        |
+| [Função predicado com nome](conventions/narrowing.md#custom-type-guards)          | Uma função `value is T` no lugar do `as` escrito no meio do código          |
+| [União discriminada](conventions/narrowing.md#discriminated-unions)               | O campo literal diz qual é o formato, e o `switch` estreita o tipo sozinho  |
+| [Verificação de exaustividade](conventions/narrowing.md#exhaustiveness)           | `never` no `default`: o compilador acusa o caso que ninguém tratou          |

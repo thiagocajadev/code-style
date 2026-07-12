@@ -1,8 +1,13 @@
-# Validation
+# Validação em TypeScript
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript adiciona: **type inference** (inferência de tipo) a partir do schema **Zod** (biblioteca de validação por schema), tipos derivados em vez de declarados manualmente e garantia de que o output do **parse** (transformação) corresponde ao tipo esperado.
+As regras de validação do JavaScript continuam valendo. O que o TypeScript acrescenta resolve uma
+duplicação que o JavaScript não tinha como evitar: sem tipos, o **schema** (a descrição do formato
+esperado, escrito com o **Zod**) era a única declaração do dado. Com tipos, aparece a tentação de
+escrever a mesma forma duas vezes, uma no schema e uma na `interface`, e as duas saem de sincronia
+na primeira mudança. O `z.infer` acaba com isso: o tipo passa a ser derivado do schema, e existe uma
+declaração só.
 
 > Base JavaScript: [javascript/conventions/advanced/validation.md](../../../javascript/conventions/advanced/validation.md)
 
@@ -19,14 +24,18 @@ Os padrões de validação do JavaScript se aplicam sem mudança. O TypeScript a
 | **trust boundary** (limite de confiança) | Ponto onde dados externos viram dados confiáveis após validação |
 | **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Estrutura sem comportamento usada para mover dados entre camadas; derivada do schema |
 
-## z.infer: tipo deriva do schema
+## O tipo é derivado do schema, e não escrito de novo
 
-Declarar o tipo separado e o schema separado cria duas fontes de verdade que podem divergir.
-`z.infer<typeof schema>` extrai o tipo do schema automaticamente: uma fonte de verdade, sem
-divergência.
+Um schema Zod e uma `interface` que descrevem o mesmo dado são duas declarações da mesma coisa.
+Alguém acrescenta um campo no schema, esquece a interface, e o compilador não tem como reclamar:
+as duas continuam válidas por conta própria. O erro aparece quando o campo novo chega em runtime e
+o código não sabe o que fazer com ele.
+
+`z.infer<typeof schema>` deriva o tipo do schema. O schema passa a ser a única declaração do
+formato, e o tipo acompanha sozinho toda mudança feita nele.
 
 <details>
-<summary>❌ Ruim: tipo declarado manualmente, pode divergir do schema</summary>
+<summary>❌ Ruim: o tipo é escrito à mão e pode sair de sincronia com o schema</summary>
 
 ```ts
 type CreateOrderInput = {
@@ -47,7 +56,7 @@ const createOrderSchema = z.object({
 </details>
 
 <details>
-<summary>✅ Bom: tipo inferido do schema, fonte única</summary>
+<summary>✅ Bom: o schema é a única declaração, e o tipo sai dele</summary>
 
 ```ts
 const createOrderSchema = z.object({
@@ -64,14 +73,18 @@ type CreateOrderInput = z.infer<typeof createOrderSchema>;
 
 </details>
 
-## safeParse para fluxo Result
+## `parse` lança, `safeParse` devolve o resultado
 
-`parse` lança exceção: adequado em handlers de entrada onde o erro é fatal. `safeParse`
-retorna `{ success, data, error }`: adequado quando a falha de validação é um caso esperado
-no fluxo de negócio.
+Os dois fazem a mesma validação e diferem no que acontece quando o dado não passa. `parse` lança
+uma exceção, e serve no ponto de entrada, onde um dado inválido interrompe a requisição. `safeParse`
+devolve `{ success, data }` ou `{ success, error }`, e serve quando a falha de validação é um
+caminho previsto do negócio, que precisa virar uma resposta em vez de um erro.
+
+Envolver `parse` em um `try/catch` para tratar um caso esperado é usar exceção como fluxo de
+controle. O `safeParse` diz a mesma coisa no tipo do retorno, e quem chama trata o erro sem `catch`.
 
 <details>
-<summary>❌ Ruim: parse lança exceção tratada com try/catch para fluxo de negócio</summary>
+<summary>❌ Ruim: exceção usada como fluxo de controle do negócio</summary>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -93,7 +106,7 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 </details>
 
 <details>
-<summary>✅ Bom: safeParse retorna Result, sem try/catch para validação</summary>
+<summary>✅ Bom: safeParse devolve o resultado, e a falha vira resposta sem try/catch</summary>
 
 ```ts
 async function applyDiscount(body: unknown): Promise<Result<Order>> {
@@ -108,13 +121,17 @@ async function applyDiscount(body: unknown): Promise<Result<Order>> {
 
 </details>
 
-## Discriminated unions do Zod
+## `z.discriminatedUnion` entrega o tipo já discriminado
 
-`z.discriminatedUnion` gera um tipo discriminado a partir dos schemas: o TypeScript faz
-narrowing automático no switch sem type assertions.
+Um `z.union` comum valida o dado e devolve um tipo em que os membros não estão ligados a campo
+nenhum. Para chegar aos campos de um deles, o código precisa do `as`, e o `as` desliga a checagem
+logo depois da validação, que era exatamente o ponto onde ela valia.
+
+`z.discriminatedUnion` recebe o nome do campo que identifica cada membro e devolve uma união
+discriminada de verdade. O `switch` sobre esse campo estreita o tipo sozinho, e o `as` some.
 
 <details>
-<summary>❌ Ruim: z.union sem discriminante, narrowing manual com as</summary>
+<summary>❌ Ruim: a união não tem discriminante, e o as reaparece depois da validação</summary>
 
 ```ts
 const paymentSchema = z.union([
@@ -135,7 +152,7 @@ function processPayment(payment: Payment): void {
 </details>
 
 <details>
-<summary>✅ Bom: discriminatedUnion com narrowing automático</summary>
+<summary>✅ Bom: o campo discriminante estreita o tipo dentro de cada case</summary>
 
 ```ts
 const paymentSchema = z.discriminatedUnion("method", [
@@ -160,13 +177,18 @@ function processPayment(payment: Payment): void {
 
 </details>
 
-## Output filtering tipado
+## O handler declara o DTO de resposta
 
-O tipo de retorno do handler deve ser o **DTO** (Data Transfer Object · Objeto de Transferência de Dados) de resposta, não a entidade. `Pick` ou um tipo
-explícito documentam o contrato publicamente e impedem o vazamento acidental de campos.
+Devolver a entidade inteira do banco entrega ao cliente tudo que ela carrega, inclusive o hash da
+senha e os campos internos que ninguém pretendia publicar. Basta um campo novo entrar na entidade
+para ele aparecer na resposta da API, sem que ninguém tenha decidido isso.
+
+O retorno do handler declara um **DTO** (Data Transfer Object · Objeto de Transferência de Dados),
+escrito com `Pick` ou como tipo próprio. Ele diz em código quais campos são públicos, e o campo novo
+que entrar na entidade fica de fora até alguém acrescentá-lo ali de propósito.
 
 <details>
-<summary>❌ Ruim: retorna a entidade completa, sem contrato explícito</summary>
+<summary>❌ Ruim: devolve a entidade inteira, e o campo interno vai junto</summary>
 
 ```ts
 async function findUserHandler(req: Request, res: Response): Promise<void> {
@@ -179,7 +201,7 @@ async function findUserHandler(req: Request, res: Response): Promise<void> {
 </details>
 
 <details>
-<summary>✅ Bom: DTO tipado define o contrato da resposta</summary>
+<summary>✅ Bom: o DTO declara quais campos a resposta publica</summary>
 
 ```ts
 type UserResponse = Pick<User, "id" | "name" | "email" | "createdAt">;

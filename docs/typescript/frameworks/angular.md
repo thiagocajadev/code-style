@@ -32,11 +32,11 @@ Angular é um framework completo: roteamento, injeção de dependência, formul�
 | **Service** | Encapsula a lógica de acesso HTTP e retorna `Observable<T>` | `features/` |
 | **Interceptor** | Processa todas as requisições (injeta token) e respostas (trata 401, 500) de forma centralizada | `core/` |
 | **HttpClient** | Injectable do framework: configurado em `app.config.ts`, injetado nos Services via `inject(HttpClient)` | `core/` · `features/` |
-| **API** | Fronteira do frontend com o backend | backend |
+| **API** | O limite entre o frontend e o backend | backend |
 
 ## Estrutura de pastas
 
-Angular não impõe estrutura de pastas. O roteamento é configurado em código, não por arquivo. Isso permite organização por slice vertical: cada feature reúne pages, components, services e resolvers. Guards e interceptors ficam em `core/` por serem infraestrutura compartilhada por todos os slices.
+Angular deixa a estrutura de pastas por sua conta, e o roteamento é declarado em código, dentro de `app.routes.ts`. Como o caminho da URL não depende de onde o arquivo está, as pastas ficam livres para agrupar por funcionalidade: cada fatia reúne as páginas, os componentes, os services e os resolvers do mesmo assunto. Guards e interceptors ficam em `core/`, porque são infraestrutura que atende todas as fatias.
 
 ```
 src/app/
@@ -59,10 +59,13 @@ src/app/
 
 ## Componentes standalone
 
-Componentes standalone são o padrão. Sem NgModule, sem boilerplate. Cada componente declara as dependências que usa diretamente em `imports`.
+O componente standalone é o padrão. Ele declara em `imports` as dependências que usa, e dispensa o
+`NgModule`, que era um segundo arquivo por onde cada componente precisava passar para existir. Com
+ele, a lista do que o componente usa fica no próprio componente, e não em um registro à parte que
+ninguém lembra de atualizar.
 
 <details>
-<summary>❌ Ruim: componente declarado em NgModule</summary>
+<summary>❌ Ruim: o componente precisa ser registrado em um NgModule</summary>
 
 ```ts
 @NgModule({
@@ -109,14 +112,19 @@ export class UserCardComponent {
 
 </details>
 
-## Signals: estado local reativo
+## Signals: o estado local do componente
 
-Signals substituem `BehaviorSubject` e `Subject` do RxJS para estado local de componentes. A **API** (Application Programming Interface · Interface de Programação de Aplicações) é síncrona, sem subscribe, sem gerenciamento de ciclo de vida.
+Para o estado que vive dentro de um componente, o **Signal** substitui o `BehaviorSubject` do RxJS.
+A diferença prática está no que ele dispensa: a leitura é direta, sem `subscribe`, e sem o
+cancelamento que todo `subscribe` exige quando o componente é destruído, sob pena de vazar memória.
 
-Regra: `signal()` para estado mutável, `computed()` para derivados, `effect()` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar signals entre si.
+A divisão é esta: `signal()` guarda um valor que muda, `computed()` calcula um valor a partir de
+outros signals, e `effect()` reage a uma mudança para falar com o mundo de fora (o DOM, o
+`localStorage`, o analytics). Usar `effect()` para manter dois signals em sincronia é reescrever à
+mão o que o `computed()` faz sozinho.
 
 <details>
-<summary>❌ Ruim: BehaviorSubject para estado local simples</summary>
+<summary>❌ Ruim: BehaviorSubject para um estado local simples</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -180,7 +188,7 @@ O pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) s
 Fluxo: `Smart → @Input() → Dumb → @Output() → Smart`
 
 <details>
-<summary>❌ Ruim: componente de lista com lógica de negócio misturada</summary>
+<summary>❌ Ruim: o componente de lista carrega a regra de negócio dentro dele</summary>
 
 ```ts
 @Component({
@@ -273,12 +281,15 @@ export class OrderListComponent {
 
 ## Services e injeção de dependência
 
-Services encapsulam lógica de negócio e acesso a dados. Usam `inject()` em vez de injeção via construtor. Return type explícito em todos os métodos públicos.
+O Service guarda a regra de negócio e o acesso a dados, e recebe suas dependências por `inject()`. A
+função dispensa o construtor cheio de parâmetros e funciona também fora de classes, em guards e
+resolvers escritos como função. Todo método público declara o tipo de retorno.
 
-`providedIn: "root"` cria um singleton na aplicação. Use como padrão; escopos menores apenas quando houver razão explícita.
+`providedIn: "root"` cria uma instância única para a aplicação inteira, e é o padrão. Um escopo menor
+só se justifica quando o Service guarda estado que precisa morrer junto com a tela.
 
 <details>
-<summary>❌ Ruim: injeção via construtor, return type implícito</summary>
+<summary>❌ Ruim: dependências pelo construtor, e o retorno sem tipo declarado</summary>
 
 ```ts
 @Injectable({ providedIn: "root" })
@@ -324,14 +335,20 @@ export class OrderService {
 
 </details>
 
-## Guards: CanActivateFn
+## A checagem de acesso mora na rota, antes de qualquer render
 
-Guards de autorização ficam na definição da rota: executam antes de qualquer componente montar, conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro do componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito.
+A verificação de permissão fica na definição da rota, e roda antes de o componente montar, como manda
+o [frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
-Rotas com restrição por papel (role) são agrupadas sob um guard compartilhado; roda uma vez para o grupo, não individualmente em cada rota filha.
+Feita no `ngOnInit`, ela chega tarde. O componente já montou, o template já foi pintado, e o
+redirecionamento acontece depois. Nesse intervalo o conteúdo restrito aparece na tela para quem não
+deveria vê-lo.
+
+Rotas que exigem o mesmo papel ficam agrupadas sob um guard só, no nó pai. Ele roda uma vez para o
+grupo inteiro, e não a cada rota filha.
 
 <details>
-<summary>❌ Ruim: guard no ngOnInit do componente</summary>
+<summary>❌ Ruim: a checagem no ngOnInit, depois de o componente já ter montado</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -409,12 +426,18 @@ export const routes: Routes = [
 
 </details>
 
-## Resolvers: dados antes do render
+## O Resolver busca os dados antes de o componente montar
 
-O **Resolver** cobre o papel do **Loader** definido em [frontend-flow.md](../../shared/architecture/frontend-flow.md): busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos via `ActivatedRoute`, sem estado de loading interno.
+O **Resolver** cumpre o papel do **Loader** de
+[frontend-flow.md](../../shared/architecture/frontend-flow.md): ele busca os dados durante a
+resolução da rota, e o componente monta com o dado já em mãos, recebido pelo `ActivatedRoute`.
+
+A alternativa, buscar no `ngOnInit`, obriga o componente a nascer vazio e a lidar com o intervalo em
+que o dado ainda não chegou. Aparece o estado de carregamento, aparece o `?.` em toda propriedade, e
+a tela pisca entre o esqueleto e o conteúdo.
 
 <details>
-<summary>❌ Ruim: busca no ngOnInit, componente monta sem dados</summary>
+<summary>❌ Ruim: a busca no ngOnInit, e o componente monta sem dado nenhum</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -490,14 +513,20 @@ export class OrderDetailPageComponent {
 
 </details>
 
-## Formulários reativos tipados
+## Formulários reativos com tipo
 
-Angular tem `FormGroup` e `FormControl` com tipagem genérica. Use `FormBuilder`: acesso direto aos controls, sem `form.get("campo")?.value` não-tipado.
+`FormGroup` e `FormControl` aceitam tipo, e o `FormBuilder` os monta já tipados. O ganho aparece no
+acesso: `form.controls.email.value` é uma `string`, enquanto `form.get("email")?.value` devolve um
+valor sem tipo, e ainda aceita um nome de campo que não existe, sem erro de compilação.
 
-O schema Zod valida a fronteira com o servidor (API call). O `Validators` do Angular valida a experiência do usuário no formulário; os dois executam sempre, conforme o padrão de [frontend-flow.md](../../shared/architecture/frontend-flow.md).
+As duas validações convivem, e cada uma tem seu papel. O `Validators` do Angular cuida da
+experiência do usuário e avisa enquanto ele digita. O schema Zod valida no limite com o servidor,
+antes da chamada de API, porque a checagem do navegador é conveniência, e conveniência pode ser
+contornada. Os dois rodam sempre, como manda o
+[frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
 <details>
-<summary>❌ Ruim: FormGroup não-tipado, acesso por string</summary>
+<summary>❌ Ruim: o FormGroup não tem tipo, e os campos são acessados por texto</summary>
 
 ```ts
 @Component({ /* ... */ })
@@ -583,14 +612,16 @@ export class LoginFormComponent {
 
 </details>
 
-## Interceptors: HTTP global
+## O Interceptor trata o que vale para toda requisição HTTP
 
-**Interceptors** (`HttpInterceptorFn`) processam todas as requisições HTTP antes de chegarem ao serviço e todas as respostas antes de chegarem ao componente. Centralizam autenticação, error handling e retry, sem repetir lógica em cada **Service**.
+O **Interceptor** (`HttpInterceptorFn`) fica no caminho de todas as requisições que saem e de todas as respostas que voltam. É o lugar do que vale para todas elas: pendurar o token de autenticação, tratar o 401 que expirou a sessão, decidir o que fazer com o 500.
+
+Sem ele, cada Service repete as mesmas linhas, e a regra passa a existir em vinte lugares. Basta um Service novo esquecer o token para uma tela quebrar, e o motivo não vai estar no Service que quebrou.
 
 Fluxo: `Service → Interceptor (auth) → Interceptor (error) → HttpClient → API`
 
 <details>
-<summary>❌ Ruim: token injetado manualmente em cada service</summary>
+<summary>❌ Ruim: cada service pendura o token por conta própria</summary>
 
 ```ts
 @Injectable({ providedIn: "root" })

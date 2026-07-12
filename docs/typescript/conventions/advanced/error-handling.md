@@ -1,8 +1,13 @@
-# Error Handling
+# Tratamento de erros em TypeScript
 
 > Escopo: TypeScript. Idiomas específicos deste ecossistema.
 
-Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` nas fronteiras, não engolir exceções. Aplicam-se sem mudança. O TypeScript adiciona: hierarquia de classes tipadas com contratos explícitos, **`instanceof`** (verificação de instância) como mecanismo de narrowing e **`Result<T, E>`** (resultado tipado) para sinalizar falha sem `throw`.
+Os princípios do JavaScript continuam valendo: erros com tipo próprio, `try/catch` nos limites do
+sistema, e nenhum `catch` que captura a falha sem avisar ninguém. O TypeScript acrescenta três
+coisas. A hierarquia de erros vira um contrato que o compilador conhece, o **`instanceof`**
+(verificação de instância) estreita o tipo do erro dentro do `catch`, e o **`Result<T, E>`**
+(resultado tipado) permite devolver a falha como valor de retorno, sem `throw`, quando ela é
+esperada.
 
 ## Conceitos fundamentais
 
@@ -17,10 +22,18 @@ Os princípios de tratamento de erros do JavaScript: erros tipados, `try/catch` 
 | **`unknown`** (tipo seguro de origem desconhecida) | Tipo do `catch` por padrão; exige narrowing antes de uso |
 | **error cause** (causa do erro) | Erro original encapsulado no novo (`new Error(msg, { cause: original })`) |
 
-## Múltiplos tipos de retorno
+## A função devolve uma coisa só, e falha lançando erro
+
+Uma função que devolve `null` em um caminho, `false` em outro e um objeto de erro em um terceiro
+obriga quem chama a testar as três formas para descobrir o que aconteceu. Pior: as três significam
+coisas diferentes, e nada no tipo diz qual delas indica o quê.
+
+O contrato consistente é devolver o valor quando dá certo e lançar um erro com nome quando não dá.
+Quem chama trata `NotFoundError` e `ValidationError` pelo nome, e o compilador acompanha o tipo do
+retorno em um caminho só.
 
 <details>
-<summary>❌ Ruim: null, undefined, false e objeto na mesma função</summary>
+<summary>❌ Ruim: null, undefined, false e objeto saindo da mesma função</summary>
 
 ```ts
 function processOrder(order: Order | null): { success: boolean; order: Order } | null | false {
@@ -51,10 +64,20 @@ function processOrder(order: Order | null): ProcessedOrder {
 
 </details>
 
-## BaseError: hierarquia tipada
+## Uma classe base dá contrato a todos os erros da aplicação
+
+Erros criados com `new Error("not found")` chegam ao `catch` como texto. Quem trata precisa comparar
+a mensagem para saber o que aconteceu, e a comparação quebra no dia em que alguém corrige uma
+palavra da frase. Não há código de status, não há contexto, e não há como distinguir um erro de
+negócio de uma falha de infraestrutura.
+
+Uma classe base resolve isso de uma vez: ela fixa o que todo erro da aplicação carrega (nome,
+mensagem, código HTTP, contexto, causa original), e cada subclasse preenche a parte dela. O `catch`
+passa a perguntar pelo tipo, e o limite HTTP passa a ter todos os campos de que precisa para montar
+a resposta.
 
 <details>
-<summary>❌ Ruim: erros sem hierarquia, sem contrato, sem contexto</summary>
+<summary>❌ Ruim: erros sem hierarquia, sem contrato e sem contexto</summary>
 
 ```ts
 // erros lançados como string ou Error genérico sem tipo
@@ -194,12 +217,19 @@ export class InternalServerError extends BaseError {
 
 </details>
 
-## try/catch: narrowing do error
+## No `catch`, o erro chega como `unknown`
 
-O `catch` recebe `unknown` em TypeScript estrito. Antes de usar o erro, é preciso fazer narrowing.
+Em TypeScript estrito, o parâmetro do `catch` é `unknown`, e a razão é simples: `throw` aceita
+qualquer valor, então o que chega ali pode ser um `Error`, uma string, ou um número. Ler
+`error.message` direto não compila, e não deveria mesmo.
+
+O `instanceof` é a checagem que resolve. Ele pergunta pelo construtor, o compilador estreita o tipo
+a partir da resposta, e dentro do `if` o erro tem os campos daquela classe. É o que permite separar
+o erro de negócio, que sobe como está, do erro técnico, que é encapsulado com contexto antes de
+subir.
 
 <details>
-<summary>❌ Ruim: acessa propriedades de error sem narrowing</summary>
+<summary>❌ Ruim: lê os campos do erro sem checar o que ele é</summary>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {
@@ -216,7 +246,7 @@ async function findProductById(id: string): Promise<Product> {
 </details>
 
 <details>
-<summary>✅ Bom: instanceof para narrowing, propaga com contexto</summary>
+<summary>✅ Bom: instanceof identifica o erro, e a causa original sobe junto</summary>
 
 ```ts
 async function findProductById(id: string): Promise<Product> {
@@ -241,10 +271,13 @@ async function findProductById(id: string): Promise<Product> {
 
 </details>
 
-## Quando usar try/catch
+## Onde o try/catch cabe
 
-| Use                                              | Não use                                                 |
+O `try/catch` existe para os pontos em que você tem o que fazer com a falha. Nos demais, ele
+acrescenta um bloco que só repassa o erro adiante, e o erro já subiria sozinho.
+
+| Cabe                                             | Não cabe                                                |
 | ------------------------------------------------ | ------------------------------------------------------- |
-| I/O externo (DB, rede, arquivo)                  | Para encadear chamadas que já propagam erros            |
-| Fronteira do sistema (controller HTTP)           | Para logar e ignorar: mascara problemas                |
-| Para mapear erro técnico → erro de negócio       | Quando o erro já será tratado em camada superior        |
+| Chamada de I/O externo (banco, rede, arquivo)    | Em volta de chamadas que já propagam o erro sozinhas    |
+| Limite do sistema (o controller HTTP)            | Para registrar no log e seguir como se nada tivesse acontecido |
+| Para traduzir erro técnico em erro de negócio    | Quando a camada de cima já trata aquele erro            |

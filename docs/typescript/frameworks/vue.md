@@ -45,7 +45,7 @@ Vue cuida da **UI**. Roteamento via Vue Router, acesso a dados via `apiClient` a
 | **Composable** | Encapsula estado de **UI** (`data`, `error`, `isLoading`) | `features/` |
 | **Service** | Chama apiClient e transforma para view type | `features/` |
 | **apiClient** | Único caller de rede: retorna `Result<T>` | `lib/` |
-| **Zod** | Valida dados na fronteira da API | `features/` |
+| **Zod** | Valida os dados no limite entre a API e o sistema | `features/` |
 | **API** | Backend externo | backend |
 
 ### Nuxt fullstack
@@ -75,7 +75,7 @@ Nuxt é frontend e backend. `pages/index.vue` acessa o banco diretamente via Rep
 
 ## Estrutura de pastas
 
-Vue não impõe estrutura. Nuxt 4 introduz a separação `app/` (cliente) versus `server/` (servidor) por padrão. Slice vertical (feature) reúne pages, components, composables, stores e schemas. Middleware e server routes ficam em pastas próprias por serem infraestrutura compartilhada.
+Vue deixa a estrutura por sua conta. O Nuxt 4 já vem com a separação entre `app/` (o que roda no cliente) e `server/` (o que roda no servidor). Dentro delas, a organização é por funcionalidade: cada fatia reúne as páginas, os componentes, os composables, as stores e os schemas do mesmo assunto. Middleware e server routes ficam em pastas próprias, porque são infraestrutura que atende o sistema inteiro.
 
 ```
 app/
@@ -111,12 +111,15 @@ shared/
 └── schemas/order.ts                    → Zod compartilhado app/ ↔ server/
 ```
 
-## SFC com `<script setup>`
+## O componente usa `<script setup>`
 
-Componentes em **SFC** com `<script setup lang="ts">` são o padrão. Sem `setup()` explícito, sem `return` manual, sem `defineComponent`. Props seguem a regra de tipagem do TypeScript: três ou mais campos usam interface separada com sufixo `Props`.
+O padrão é o **SFC** com `<script setup lang="ts">`. Ele dispensa o `setup()` escrito à mão, o
+`return` que expunha cada variável ao template e o `defineComponent` em volta de tudo: o que você
+declara no bloco já está visível para o template. As props seguem a regra do TypeScript, e a partir
+de três campos ganham uma interface própria com o sufixo `Props`.
 
 <details>
-<summary>❌ Ruim: Options API com props inline e tipagem fraca</summary>
+<summary>❌ Ruim: Options API, props declaradas como tipo solto e tipagem fraca</summary>
 
 ```vue
 <script lang="ts">
@@ -164,14 +167,23 @@ const { customerName, total } = defineProps<OrderCardProps>();
 
 </details>
 
-## Composition API: estado reativo
+## Estado reativo: `ref`, `computed` e `watch`
 
-`ref` para primitivos, `reactive` para objetos. `computed` para derivados. `watch` apenas para sincronização com sistemas externos (DOM direto, localStorage, analytics), nunca para sincronizar valores reativos entre si.
+`ref` guarda um valor que muda, `computed` calcula um valor a partir de outros, e `watch` reage a
+uma mudança para falar com o mundo de fora (o DOM, o `localStorage`, o analytics).
 
-A regra: prefira `ref` por consistência (sempre `.value` no script, sempre automático no template). `reactive` é útil para grupos coesos de campos que se movem juntos.
+O erro comum é usar `watch` para manter dois valores reativos em sincronia, recalculando o total
+sempre que a lista muda. Isso é o trabalho do `computed`, que declara a relação uma vez e recalcula
+sozinho, sem que ninguém precise lembrar de disparar a atualização. O `watch` escrito para isso é
+uma cópia manual dessa mesma lógica, e ela sai de sincronia no dia em que alguém alterar a lista por
+outro caminho.
+
+Prefira `ref` por padrão, inclusive para objetos: o acesso é sempre por `.value` no script e sempre
+direto no template, e essa consistência evita a dúvida a cada leitura. `reactive` cabe em grupos de
+campos que andam juntos.
 
 <details>
-<summary>❌ Ruim: estado solto, total recalculado em watcher manual</summary>
+<summary>❌ Ruim: o total é recalculado à mão dentro de um watch</summary>
 
 ```vue
 <script setup lang="ts">
@@ -193,7 +205,7 @@ function addItem(item: CartItem): void {
 </details>
 
 <details>
-<summary>✅ Bom: `computed` deriva o total; mutação via cópia imutável</summary>
+<summary>✅ Bom: o `computed` deriva o total, e a lista é substituída por uma cópia nova</summary>
 
 ```vue
 <script setup lang="ts">
@@ -224,12 +236,15 @@ function clearCart(): void {
 
 </details>
 
-### Reactive props destructuring (Vue 3.5)
+### Props podem ser desestruturadas direto (Vue 3.5)
 
-Vue 3.5 trouxe destructuring reativo de props. A versão antiga quebrava reatividade no destructure; a nova mantém. Use direto, sem `toRefs`.
+Até o Vue 3.4, desestruturar as props no `<script setup>` quebrava a reatividade: o valor era copiado
+uma vez e não acompanhava mais as mudanças, e por isso existia o `toRefs`. O Vue 3.5 mudou isso, e a
+desestruturação passou a manter a reatividade, inclusive com valor padrão. O `toRefs` deixou de ser
+necessário nesse caso.
 
 <details>
-<summary>❌ Ruim: `toRefs` desnecessário; verbosidade de antes da 3.5</summary>
+<summary>❌ Ruim: `toRefs` mantido por hábito, do tempo em que era obrigatório</summary>
 
 ```vue
 <script setup lang="ts">
@@ -250,7 +265,7 @@ const formatted = computed(() => `${currency.value} ${price.value.toFixed(2)}`);
 </details>
 
 <details>
-<summary>✅ Bom: destructure direto com defaults; reatividade preservada</summary>
+<summary>✅ Bom: desestrutura direto, com valor padrão, e a reatividade continua</summary>
 
 ```vue
 <script setup lang="ts">
@@ -279,7 +294,7 @@ O pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) s
 Fluxo: `Smart → defineProps → Dumb → defineEmits → Smart`
 
 <details>
-<summary>❌ Ruim: componente de lista com lógica de negócio inline</summary>
+<summary>❌ Ruim: o componente de lista carrega a regra de negócio dentro dele</summary>
 
 ```vue
 <script setup lang="ts">
@@ -355,12 +370,14 @@ function handleCancel(orderId: string): void {
 
 </details>
 
-### `defineModel` para `v-model` em filhos
+### `defineModel` para o `v-model` no componente filho
 
-Antes do Vue 3.4, `v-model` em filho exigia prop `modelValue` + evento `update:modelValue` manuais. `defineModel` substitui esse boilerplate.
+Até o Vue 3.4, aceitar `v-model` em um componente filho exigia declarar a prop `modelValue` e o
+evento `update:modelValue` à mão, e lembrar de emitir o evento a cada mudança. `defineModel` cria os
+dois de uma vez e devolve uma referência que se escreve direto.
 
 <details>
-<summary>❌ Ruim: prop e evento manuais para `v-model`</summary>
+<summary>❌ Ruim: a prop e o evento declarados um a um</summary>
 
 ```vue
 <script setup lang="ts">
@@ -401,12 +418,20 @@ const searchTerm = defineModel<string>({ required: true });
 
 </details>
 
-## Composables: pipeline Component → Service → apiClient
+## O caminho é componente, composable, service, apiClient
 
-Composables encapsulam estado de **UI** (`data`, `error`, `isLoading`) e delegam ao **Service**. O **Service** chama o `apiClient` (único ponto de rede) e entrega um tipo de view ao composable. Nome começa com `use`, retorno tipado por interface quando tem três ou mais valores.
+O composable guarda o estado da tela (`data`, `error`, `isLoading`) e não sabe de rede. O **Service**
+aplica a regra e transforma o dado no formato que a tela usa. O `apiClient` é o único lugar que fala
+com a rede.
+
+Com `fetch` e `ref` dentro do componente, as três responsabilidades ficam no mesmo arquivo: a chamada
+não é reaproveitável, o tratamento de erro se repete a cada tela, e testar a regra exige montar o
+componente.
+
+O nome do composable começa com `use`, e o retorno vira interface quando tem três valores ou mais.
 
 <details>
-<summary>❌ Ruim: fetch direto no componente, pipeline colapsado</summary>
+<summary>❌ Ruim: fetch, estado e regra dentro do componente</summary>
 
 ```vue
 <script setup lang="ts">
@@ -496,14 +521,18 @@ const { orders, isLoading, error } = useOrders();
 
 </details>
 
-## Pinia 3: estado global tipado
+## Pinia: o estado que atravessa rotas
 
-Pinia é a store oficial do Vue 3. A **setup syntax** mantém o mesmo idioma do `<script setup>`: `ref` para state, `computed` para getters, funções para actions. Tipagem por inferência, sem `defineComponent`-like wrapping.
+Pinia é a store oficial do Vue 3, e a **setup syntax** dela fala a mesma língua do `<script setup>`:
+`ref` para o estado, `computed` para os valores derivados, funções para as ações. Os tipos saem da
+inferência, sem nenhuma casca em volta.
 
-Use Pinia para estado compartilhado entre rotas (sessão, carrinho, preferências). Estado de uma única página fica em composable, não em store.
+A Pinia serve ao estado que várias rotas compartilham: a sessão do usuário, o carrinho, as
+preferências. O estado que só uma página usa fica no composable dela, que morre junto com a página.
+Colocá-lo na store faz o valor sobreviver à navegação, e a tela reabre com o dado da visita anterior.
 
 <details>
-<summary>❌ Ruim: Options API da store, tipos perdidos em getters</summary>
+<summary>❌ Ruim: a store escrita em Options API, e os getters perdem o tipo</summary>
 
 ```ts
 // stores/cart.ts
@@ -527,7 +556,7 @@ export const useCartStore = defineStore("cart", {
 </details>
 
 <details>
-<summary>✅ Bom: setup syntax, tipos inferidos, mutação imutável</summary>
+<summary>✅ Bom: setup syntax, tipos inferidos, e a escrita troca a lista por uma cópia nova</summary>
 
 ```ts
 // stores/cart.ts
@@ -574,14 +603,20 @@ const { total } = storeToRefs(cartStore);
 
 `storeToRefs` preserva reatividade ao destructurar state e getters; actions podem ser destructuradas direto da store, sem perder o `this` interno.
 
-## Guards: Route Middleware do Nuxt
+## A checagem de acesso mora no middleware, antes de qualquer render
 
-Guards de autenticação e autorização ficam em `middleware/`: executam antes de qualquer page montar, conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro do componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
+A verificação de autenticação e de permissão fica em `middleware/`, e roda antes de a página montar,
+como manda o [frontend-flow.md](../../shared/architecture/frontend-flow.md).
 
-`defineNuxtRouteMiddleware` aceita escopo global (em `middleware/global.global.ts`) ou por página via `definePageMeta({ middleware: 'auth' })`.
+Feita dentro do componente, ela chega tarde. O componente monta, o `onMounted` roda depois, e o
+redirecionamento acontece por último. Nesse intervalo o conteúdo restrito já foi pintado na tela, e
+o usuário sem permissão chega a vê-lo antes de ser mandado embora.
+
+`defineNuxtRouteMiddleware` vale para o app inteiro (em `middleware/global.global.ts`) ou para uma
+página só, declarado em `definePageMeta({ middleware: 'auth' })`.
 
 <details>
-<summary>❌ Ruim: guard no componente, expõe conteúdo por um frame</summary>
+<summary>❌ Ruim: a checagem no componente deixa o conteúdo aparecer antes do redirecionamento</summary>
 
 ```vue
 <script setup lang="ts">
@@ -650,14 +685,19 @@ definePageMeta({
 
 </details>
 
-## Formulários: schema → Server Route
+## O formulário valida com o mesmo schema no cliente e no servidor
 
-O fluxo de formulários de [frontend-flow.md](../../shared/architecture/frontend-flow.md) se aplica direto. O schema Zod é a fonte da verdade para cliente e servidor. A **Server Route** implementa o pipeline de escrita: valida, executa regras de negócio, persiste, retorna `Result`.
+O fluxo de [frontend-flow.md](../../shared/architecture/frontend-flow.md) vale aqui inteiro. O schema
+Zod é a única declaração das regras do formulário, e os dois lados o usam: o cliente para avisar o
+usuário na hora, o servidor para não confiar no que chegou. A **Server Route** executa a escrita na
+ordem de sempre: valida, aplica a regra, persiste, devolve o resultado.
 
-O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
+O erro volta estruturado, campo a campo, e é isso que permite à tela mostrar a mensagem embaixo do
+input que a causou. Um `ok: false` sozinho obriga o formulário a exibir um aviso genérico, e o
+usuário fica procurando qual campo errou.
 
 <details>
-<summary>❌ Ruim: validação manual sem schema, erros sem estrutura</summary>
+<summary>❌ Ruim: validação escrita à mão, sem schema, e o erro volta sem estrutura</summary>
 
 ```vue
 <script setup lang="ts">
@@ -786,14 +826,18 @@ async function submit(): Promise<void> {
 
 `<fieldset :disabled>` cobre todos os campos durante a requisição: previne double-submit (envio duplicado) sem desabilitar cada input individualmente.
 
-## Server Routes (Nuxt)
+## As rotas de servidor do Nuxt
 
-Server routes ficam em `server/api/[recurso].[método].ts`. O nome do arquivo declara o método **HTTP**: `index.post.ts` responde a `POST /api/orders`. O pipeline segue o contrato do [operation-flow.md](../../shared/architecture/operation-flow.md): valida com Zod, executa regras, persiste, retorna resposta tipada.
+As rotas ficam em `server/api/[recurso].[método].ts`, e o nome do arquivo declara o método
+**HTTP**: `index.post.ts` responde a `POST /api/orders`. O caminho dentro da rota é o do
+[operation-flow.md](../../shared/architecture/operation-flow.md): valida com Zod, aplica a regra,
+persiste, devolve a resposta tipada.
 
-`readValidatedBody` integra Zod direto no handler, sem pipeline manual de parse + validate.
+`readValidatedBody` faz a leitura do corpo e a validação em um passo só, o que dispensa converter o
+JSON e depois validá-lo em duas linhas separadas.
 
 <details>
-<summary>❌ Ruim: lógica de negócio inline, sem schema, status hardcoded</summary>
+<summary>❌ Ruim: regra de negócio dentro da rota, sem schema, e o status escrito na mão</summary>
 
 ```ts
 // server/api/orders/index.post.ts
@@ -850,18 +894,24 @@ export default defineEventHandler(async () => {
 
 </details>
 
-## Webhook Handler
+## O handler de webhook
 
-O webhook handler implementa o fluxo de [backend-flow.md](../../shared/architecture/backend-flow.md): captura o raw body antes de qualquer parse, valida o **HMAC**, checa idempotência e responde 200 antes de processar.
+O handler segue o fluxo de [backend-flow.md](../../shared/architecture/backend-flow.md): pega o
+corpo cru da requisição antes de qualquer conversão, confere a assinatura **HMAC**, verifica se
+aquele evento já foi recebido, responde 200 e só então processa.
 
-Duas regras sem exceção: responder 200 antes de processar (provedores como Stripe e GitHub fazem retry se não receberem resposta em até 30 segundos), e validar o **HMAC** sobre o raw body (parsear o **JSON** antes invalida o cálculo da assinatura).
+Duas regras não abrem exceção. A primeira é responder 200 antes de processar: provedores como Stripe
+e GitHub reenviam o evento se a resposta demorar mais de 30 segundos, e um processamento lento vira
+evento duplicado. A segunda é calcular o **HMAC** sobre o corpo cru. Converter o **JSON** primeiro
+reordena campos e muda espaços, e a assinatura calculada sobre esse texto não bate mais com a que o
+provedor enviou.
 
 ```
 POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa idempotência → 200 OK → enfileira → processa
 ```
 
 <details>
-<summary>❌ Ruim: valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<summary>❌ Ruim: assina o JSON já convertido, compara com ===, e processa antes de responder</summary>
 
 ```ts
 // server/api/webhooks/[provider].post.ts
@@ -932,13 +982,19 @@ export default defineEventHandler(async (event) => {
 
 </details>
 
-A checagem de comprimento antes do `timingSafeEqual` é necessária: buffers de tamanhos diferentes lançam exceção em runtime. Retornar 200 silenciosamente para eventos duplicados é o contrato correto: o provedor não precisa saber que o evento já foi recebido.
+A checagem de comprimento antes do `timingSafeEqual` é obrigatória: a função lança exceção quando os dois buffers têm tamanhos diferentes. Devolver 200 para um evento repetido é o contrato certo, e não é omissão: o provedor precisa saber que a entrega chegou, e o que ele faz com essa informação é parar de reenviar.
 
-## Caching: `defineCachedEventHandler` e `useFetch`
+## Cache com `defineCachedEventHandler` e `useFetch`
 
-Nuxt 4 traz a Nitro caching layer com `defineCachedEventHandler` (servidor) e cache integrado em `useFetch` (cliente + server-side). Toda rota é dinâmica por padrão; cache é declarado explicitamente por handler ou por chamada.
+No Nuxt 4, nada é guardado em cache sem que alguém peça: toda rota é dinâmica, e o cache é declarado
+handler a handler, ou chamada a chamada. `defineCachedEventHandler` cuida do lado do servidor, e o
+`useFetch` traz cache integrado no cliente.
 
-`maxAge` define o **TTL** (Time-To-Live, Tempo de Vida). `swr` (stale-while-revalidate) serve cache enquanto revalida em background. Tags permitem invalidação seletiva via `useStorage('cache').removeItem()` ou helpers do Nitro.
+`maxAge` diz por quanto tempo o dado vale, o **TTL** (Time-To-Live · Tempo de Vida). `swr`
+(stale-while-revalidate) entrega o dado vencido de imediato e busca a versão nova em segundo plano,
+o que troca uma espera do usuário por um dado alguns segundos velho. As tags dão nome ao dado, e é
+por elas que ele é descartado depois, com `useStorage('cache').removeItem()` ou com os utilitários
+do Nitro.
 
 <details>
 <summary>✅ Bom: handler cacheado com TTL, SWR e tag</summary>
@@ -1016,4 +1072,4 @@ export default defineEventHandler(async (event) => {
 
 </details>
 
-`useFetch` deduplica requisições pela mesma `key` em toda a aplicação: dois componentes pedindo `orders-list` compartilham o resultado. Para cache server-side com invalidação granular, prefira `defineCachedEventHandler` com `name` explícito; para fetching client-side com hidratação, `useFetch` é o caminho.
+`useFetch` junta em uma só as requisições que compartilham a mesma `key`: dois componentes pedindo `orders-list` ao mesmo tempo geram uma chamada, e os dois recebem o resultado dela. Para cache no servidor com descarte por nome, use `defineCachedEventHandler` com o `name` declarado. Para buscar no cliente e aproveitar o que veio renderizado do servidor, use `useFetch`.

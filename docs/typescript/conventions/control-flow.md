@@ -1,6 +1,12 @@
-# Control Flow
+# Controle de fluxo em TypeScript
 
-Os padrões de controle de fluxo do JavaScript se aplicam sem mudança. O TypeScript adiciona: **narrowing** (estreitamento) pelo sistema de tipos, **discriminated union** (união discriminada) em `switch` e **exhaustiveness check** (verificação de exaustividade) para garantir que todos os casos são tratados.
+Os padrões de controle de fluxo do JavaScript continuam iguais aqui: sair cedo, evitar aninhamento,
+deixar o caminho feliz no nível de menos recuo. O TypeScript acrescenta um efeito que o JavaScript
+não tem. Cada checagem que você escreve para controlar o fluxo também informa o compilador, que
+passa a saber mais sobre o tipo da variável depois dela. Isso é o **narrowing** (estreitamento de
+tipo), e ele aparece de três formas nesta página: no guard que elimina o nulo, no `switch` sobre uma
+**discriminated union** (união discriminada) e no **exhaustiveness check** (verificação de
+exaustividade), que faz o compilador acusar o caso esquecido.
 
 > Base JavaScript: [javascript/conventions/control-flow.md](../../javascript/conventions/control-flow.md)
 
@@ -16,13 +22,16 @@ Os padrões de controle de fluxo do JavaScript se aplicam sem mudança. O TypeSc
 | **assertion function** (função de afirmação) | Função que lança se a condição falha e estreita o tipo no caller (`asserts x is T`) |
 | **early return** (retorno antecipado) | Sair da função assim que o resultado é conhecido; reduz aninhamento |
 
-## Narrowing como guard clause
+## A cláusula de proteção elimina o nulo do resto da função
 
-Guard clauses em TypeScript estreitam o tipo além de controlar o fluxo. Após o guard, o
-compilador sabe que a variável é não-nula, sem assertions.
+Em TypeScript, a **guard clause** (cláusula de proteção, o `if` que sai da função assim que o caso
+inválido aparece) faz dois trabalhos ao mesmo tempo. Ela interrompe o fluxo, como em qualquer
+linguagem, e ensina o tipo ao compilador. Depois de `if (!order) return`, o tipo de `order` deixa de
+ser `Order | null` e passa a ser `Order` até o fim da função. O `?.` some de todas as linhas
+seguintes, porque não existe mais nulo para tratar.
 
 <details>
-<summary>❌ Ruim: tipo nullable navega pelo código inteiro com ?.</summary>
+<summary>❌ Ruim: o valor pode ser nulo, e o ?. se espalha por todas as linhas</summary>
 
 ```ts
 async function processOrder(orderId: string): Promise<void> {
@@ -51,13 +60,16 @@ async function processOrder(orderId: string): Promise<void> {
 
 </details>
 
-## Discriminated unions em switch
+## O switch sobre o campo discriminante estreita o tipo sozinho
 
-`switch` sobre um campo literal estreita o tipo automaticamente em cada `case`. O TypeScript
-sabe o shape completo de cada variante sem type assertions.
+Uma união discriminada é um union em que cada membro carrega um campo literal que o identifica,
+como o `type` de `PaymentEvent`. Ao ver `switch (event.type)`, o compilador liga cada `case` ao
+membro correspondente: dentro de `case "payment_success"`, `event.amount` existe e é um `number`;
+dentro de `case "payment_failed"`, quem existe é `event.reason`. Escrever `as` para chegar ao campo
+é trabalho que o compilador já fez, e o `as` ainda desliga a checagem que protegia aquela linha.
 
 <details>
-<summary>❌ Ruim: if/else com type assertions manuais</summary>
+<summary>❌ Ruim: if/else com o tipo forçado à mão em cada ramo</summary>
 
 ```ts
 type PaymentEvent =
@@ -79,7 +91,7 @@ function handlePaymentEvent(event: PaymentEvent): void {
 </details>
 
 <details>
-<summary>✅ Bom: switch com narrowing automático por discriminante</summary>
+<summary>✅ Bom: dentro de cada case, o compilador já sabe qual é o tipo</summary>
 
 ```ts
 function handlePaymentEvent(event: PaymentEvent): void {
@@ -101,13 +113,19 @@ function handlePaymentEvent(event: PaymentEvent): void {
 
 </details>
 
-## Exhaustiveness check
+## O never no default faz o compilador acusar o caso que faltou
 
-`never` no `default` do switch garante que todos os casos do union type são tratados. Quando
-um novo variant é adicionado ao tipo, o compilador aponta o switch que precisa ser atualizado.
+Um `default: return "Unknown"` aceita qualquer status que ninguém tratou, e o dia em que
+`"cancelled"` entra no tipo, a tela passa a mostrar "Unknown" sem que nada tenha quebrado no build.
+O erro só aparece quando alguém abre a página.
+
+`assertNever` inverte isso. O parâmetro é do tipo `never`, que não aceita valor nenhum. Enquanto
+todos os `case` estiverem cobertos, o que sobra no `default` é `never`, e a chamada compila. Assim
+que um membro novo entra na união, sobra esse membro no `default`, ele não cabe em `never`, e o
+compilador aponta a linha. O caso esquecido vira erro de build.
 
 <details>
-<summary>❌ Ruim: novo variant ignorado silenciosamente</summary>
+<summary>❌ Ruim: o caso novo entra no tipo e o switch continua compilando</summary>
 
 ```ts
 type OrderStatus = "pending" | "approved" | "shipped" | "cancelled";
@@ -147,13 +165,19 @@ function getStatusLabel(status: OrderStatus): string {
 
 </details>
 
-## Type predicates como guards reutilizáveis
+## A função predicado dá nome à checagem e a torna reaproveitável
 
-Quando o mesmo narrowing é necessário em múltiplos lugares, extraia para uma função predicado.
-O compilador propaga o contrato para todos os callers.
+A checagem escrita dentro do `if` estreita o tipo até certo ponto e para: o compilador conclui que
+`data` é um objeto com aquelas chaves, e ainda assim exige o `as Order` para chegar em
+`customerId`. Além disso, a mesma sequência de condições precisa ser repetida em cada lugar que
+recebe o valor.
+
+Uma função com retorno `value is Order` resolve as duas coisas. Ela dá um nome à checagem
+(`isOrder`), e o compilador propaga a conclusão para quem chamou: depois de `if (!isOrder(data))
+throw`, `data` é um `Order`, e o `as` desaparece.
 
 <details>
-<summary>❌ Ruim: verificação inline repetida, narrowing não reutilizável</summary>
+<summary>❌ Ruim: a checagem se repete e ainda exige o as no final</summary>
 
 ```ts
 function processApiResponse(data: unknown): void {
@@ -172,7 +196,7 @@ function processApiResponse(data: unknown): void {
 </details>
 
 <details>
-<summary>✅ Bom: type predicate nomeia e reutiliza o narrowing</summary>
+<summary>✅ Bom: a função predicado nomeia a checagem, e o compilador confia nela</summary>
 
 ```ts
 function isOrder(value: unknown): value is Order {

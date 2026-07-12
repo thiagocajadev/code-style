@@ -1,8 +1,8 @@
 // @ts-nocheck
-// Jest com TypeScript — via ts-jest ou Babel
+// Jest com TypeScript: via ts-jest ou Babel
 // Referência: copiar para .ts e instalar @types/jest antes de executar
 // Executar: jest testing.jest.ts
-// Convenção: expect(actual).toBe(expected) — actual em expect(), expected em toBe()
+// Convenção: expect(actual).toBe(expected), actual em expect(), expected em toBe()
 
 function applyDiscount(price: number, discountPercentage: number): number {
   if (discountPercentage <= 0) return price;

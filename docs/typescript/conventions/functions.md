@@ -1,6 +1,12 @@
-# Functions
+# Funções em TypeScript
 
-Os princípios de funções do JavaScript: responsabilidade única, top-down, sem lógica no retorno. Aplicam-se aqui sem exceção. O TypeScript adiciona: anotar o **return type** (tipo de retorno) de funções exportadas e tipar parâmetros de forma que o **signature** (assinatura) se sustente sem comentários, com **generics** (tipos paramétricos) quando o contrato precisar carregar tipos.
+Os princípios de função do JavaScript valem aqui inteiros: uma responsabilidade por função, o
+orquestrador no topo, nenhuma lógica dentro do `return`. O TypeScript acrescenta uma camada de
+contrato. A **signature** (assinatura, a lista de parâmetros tipados mais o tipo de retorno) passa
+a ser a documentação da função, e ela precisa se sustentar sozinha: quem chama entende o que entra
+e o que sai sem abrir a implementação. Isso pede **return type** (tipo de retorno) explícito nas
+funções exportadas, e **generics** (tipos paramétricos) quando o retorno depende do tipo que o
+chamador passou.
 
 ## Conceitos fundamentais
 
@@ -15,10 +21,16 @@ Os princípios de funções do JavaScript: responsabilidade única, top-down, se
 | **arrow function** (função flecha) | `() => {}`: sintaxe curta sem `this` próprio; ideal para callbacks |
 | **void return** (retorno vazio) | Função sem valor de retorno significativo; declara `: void` explicitamente |
 
-## Return type
+<a id="return-type"></a>
 
-Funções exportadas sempre têm return type explícito. O compilador já infere. A anotação é para o
-leitor e para garantir que a assinatura pública não mude silenciosamente.
+## Toda função exportada declara o que devolve
+
+O compilador infere o retorno sozinho, então a anotação existe por dois outros motivos. O primeiro
+é o leitor: `Promise<User | null>` na assinatura avisa que o usuário pode não existir, e quem chama
+trata o caso sem precisar abrir a função. O segundo é a estabilidade do contrato. Sem a anotação, o
+dia em que alguém mudar o corpo da função e passar a devolver outra coisa, o tipo público muda
+junto, sem um erro sequer no arquivo que foi editado. O erro aparece longe dali, nos arquivos que
+consomem a função.
 
 <details>
 <summary>❌ Ruim: return type implícito em função exportada</summary>
@@ -54,14 +66,17 @@ export function calculateInvoiceTotal(items: LineItem[]): number {
 
 </details>
 
-## Parâmetros tipados: interface para objetos
+## O objeto de entrada ganha uma interface própria
 
-Quando a função recebe um objeto de configuração ou dados de domínio, o tipo vai em uma interface
-separada, não inline no parâmetro. Segue a mesma regra do [estilo vertical](../../javascript/conventions/functions.md#vertical-parameters):
-4+ campos usam objeto; o objeto usa interface.
+Quando a função recebe um objeto de configuração ou de domínio, declare o tipo em uma interface
+separada e use o nome dela no parâmetro. Escrever o objeto inteiro dentro dos parênteses empurra
+cinco linhas de campo para dentro da assinatura, e o leitor que queria saber o que a função faz
+precisa atravessar a lista antes de chegar ao retorno. Vale a mesma regra do
+[estilo vertical](../../javascript/conventions/functions.md#vertical-parameters): a partir de quatro
+campos, os argumentos viram um objeto, e o objeto vira uma interface.
 
 <details>
-<summary>❌ Ruim: tipo inline obscurece a assinatura</summary>
+<summary>❌ Ruim: o tipo escrito dentro dos parênteses esconde a assinatura</summary>
 
 ```ts
 function createInvoice(data: {
@@ -92,13 +107,16 @@ function createInvoice(input: CreateInvoiceInput): Promise<Invoice> { /* ... */ 
 
 </details>
 
-## Convenção de sufixo Input/Output
+## Os sufixos Input e Result nomeiam o contrato da operação
 
-Interfaces de entrada e saída de uma operação usam os sufixos `Input` e `Output` (ou `Result`).
-Isso os distingue dos tipos de domínio puros como `User` e `Invoice`.
+`User` e `Invoice` são tipos do domínio: existem no negócio, e sobrevivem a qualquer função. O que
+uma operação recebe e devolve é outra coisa, que só existe por causa dela. Os sufixos `Input` e
+`Result` (ou `Output`) marcam essa diferença. `CreateUserInput` diz o que a criação de usuário
+precisa receber, e `CreateUserResult` diz o que ela entrega, sem que nenhum dos dois se confunda
+com o `User` que o sistema inteiro usa.
 
 <details>
-<summary>❌ Ruim: primitivos soltos sem interface, contrato sem nome</summary>
+<summary>❌ Ruim: parâmetros soltos e um objeto de retorno que ninguém nomeou</summary>
 
 ```ts
 async function createUser(
@@ -118,7 +136,7 @@ async function createUser(
 </details>
 
 <details>
-<summary>✅ Bom: sufixos Input e Output separam contratos de operação dos tipos de domínio</summary>
+<summary>✅ Bom: o contrato da operação tem nome próprio, separado do tipo de domínio</summary>
 
 ```ts
 interface CreateUserInput {
@@ -143,13 +161,17 @@ async function createUser(input: CreateUserInput): Promise<CreateUserResult> {
 
 </details>
 
-## Overloads: quando a assinatura varia com o tipo
+## O overload amarra o tipo do retorno ao tipo da entrada
 
-Overloads expressam explicitamente que a função retorna tipos diferentes dependendo do parâmetro.
-Use apenas quando a variação é real e precisa ser capturada pelo compilador.
+Uma função que devolve `string | number` obriga quem chama a checar qual dos dois veio, mesmo
+quando isso já está decidido: quem passou uma `string` sabe que vai receber um `number`. O
+**overload** (sobrecarga, várias assinaturas declaradas para a mesma implementação) escreve essa
+relação em código, e o compilador passa a saber dela. `parse("42")` tem tipo `number`, e nenhuma
+checagem sobra para quem chamou. Declare overload quando a variação é real; para uma assinatura
+que não varia, ele é uma linha a mais para manter.
 
 <details>
-<summary>❌ Ruim: union type no retorno sem discriminação; o caller recebe `string | number` sem saber qual</summary>
+<summary>❌ Ruim: o retorno é `string | number`, e quem chama não sabe qual dos dois veio</summary>
 
 ```ts
 function parse(value: string | number): string | number {
@@ -179,13 +201,16 @@ const asString = parse(42); // string, compilador sabe
 
 </details>
 
-## Genéricos em funções: só quando preserva o tipo do chamador
+## O genérico serve para o retorno acompanhar o argumento
 
-Genérico em função é justificado quando o tipo do retorno depende do tipo do argumento. Sem essa
-relação, é só complexidade.
+Um genérico se paga quando o tipo do retorno depende do tipo que entrou. `firstOrThrow` é o caso:
+passe um `Order[]` e receba um `Order`, passe um `User[]` e receba um `User`, sem `as` e sem
+checagem no lado de quem chamou. Quando o tipo declarado não aparece no retorno, o genérico
+adiciona um parâmetro de tipo à assinatura e não entrega nada em troca. `logAndReturn<T>` funciona
+igual com `unknown`, e `validateSchema<T>` devolve `boolean` de qualquer jeito.
 
 <details>
-<summary>❌ Ruim: genérico sem propósito, poderia ser unknown ou o tipo concreto</summary>
+<summary>❌ Ruim: o genérico não chega ao retorno, então não serve para nada</summary>
 
 ```ts
 function logAndReturn<T>(value: T): T {

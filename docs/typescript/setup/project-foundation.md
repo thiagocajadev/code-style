@@ -1,10 +1,17 @@
-# Project Foundation
+# Fundação de um projeto TypeScript
 
 > [!NOTE] Essa estrutura reflete como costumo iniciar projetos TypeScript. Os exemplos são
 > referências conceituais. O que importa é o princípio: strict mode sempre ativo, path aliases
 > para importações limpas, e o compilador como primeira linha de defesa.
 
-A fundação de um projeto TypeScript define três decisões-chave: **`tsconfig.json`** (arquivo de configuração do compilador) com **`strict`** (modo estrito) ativado (nada de `any` implícito), **path alias** (apelido de caminho) configurado em `compilerOptions.paths` para evitar `../../../`, e o compilador integrado ao pipeline (pre-commit, **CI** (Continuous Integration · Integração Contínua)) como primeira linha de defesa contra regressões de tipo.
+Três decisões tomadas no início do projeto definem quanto o TypeScript vai ajudar depois. A
+primeira é ligar o **`strict`** (modo estrito) no **`tsconfig.json`** (arquivo de configuração do
+compilador): sem ele, o compilador aceita `any` implícito e deixa passar o nulo, e a linguagem vira
+decoração. A segunda é configurar o **path alias** (apelido de caminho) em `compilerOptions.paths`,
+para que mover um arquivo de pasta não exija consertar uma sequência de `../../../` em quinze
+imports. A terceira é rodar o compilador no pre-commit e na **CI** (Continuous Integration ·
+Integração Contínua), porque uma checagem que só roda na máquina de quem lembrou de rodá-la não
+protege ninguém.
 
 ## Conceitos fundamentais
 
@@ -34,14 +41,18 @@ npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslin
 > [!NOTE] [Biome](https://biomejs.dev) suporta TypeScript nativamente e substitui ESLint + Prettier
 > em um único binário.
 
-## tsconfig: strict mode sempre ativo
+## O modo estrito fica ligado desde o primeiro dia
 
-`strict: true` ativa o conjunto de verificações que torna o TypeScript útil: `strictNullChecks`,
-`noImplicitAny`, `strictFunctionTypes` e outros. Sem ele, o compilador aceita código que explode
-em runtime.
+`strict: true` liga de uma vez o conjunto de checagens que faz o TypeScript valer a pena:
+`strictNullChecks`, `noImplicitAny`, `strictFunctionTypes` e outras. Sem elas, o parâmetro sem tipo
+vira `any` em silêncio, o nulo cabe em qualquer tipo, e o compilador aprova código que quebra assim
+que roda.
+
+Ligar depois é caro: um projeto de meses acumula centenas de erros no dia em que a flag é ativada,
+e a saída fácil vira desligá-la de novo. No primeiro dia, o custo é zero.
 
 <details>
-<summary>❌ Ruim: tsconfig sem strict, com padrões obsoletos do TS5</summary>
+<summary>❌ Ruim: tsconfig sem strict, e com padrões que o TS6 já deixou para trás</summary>
 
 ```json
 {
@@ -105,13 +116,16 @@ em runtime.
 > que o projeto usa (ex.: `["node"]`, `["node", "jest"]`). `baseUrl` foi depreciado: use `paths`
 > com caminhos relativos completos a partir da raiz (`"./src/*"`).
 
-## Path aliases: importações sem `../../`
+## O apelido de caminho tira o `../../` dos imports
 
-Path aliases tornam as importações independentes de onde o arquivo está na hierarquia, sem
-contagem de `../`. A configuração em `tsconfig.json` precisa ser espelhada no bundler ou loader.
+Com `@/features/orders`, o import não depende de onde o arquivo que importa está. Mover o arquivo de
+pasta deixa de quebrar a linha, e ninguém precisa contar quantos níveis subir.
+
+A configuração vive no `tsconfig.json`, e precisa ser repetida no bundler ou no loader que roda o
+código. O compilador entende o apelido, e quem executa o programa também precisa entender.
 
 <details>
-<summary>❌ Ruim: importações relativas profundas</summary>
+<summary>❌ Ruim: o import conta os níveis até a raiz</summary>
 
 ```ts
 import { UserRepository } from "../../../infra/database/user.repository";
@@ -122,7 +136,7 @@ import { config } from "../../../config";
 </details>
 
 <details>
-<summary>✅ Bom: alias limpo e independente de profundidade</summary>
+<summary>✅ Bom: o apelido não muda quando o arquivo muda de pasta</summary>
 
 ```ts
 import { UserRepository } from "@/infra/database/user.repository";
@@ -152,13 +166,14 @@ import { config } from "@/config";
 
 </details>
 
-## Entry point enxuto
+## O ponto de entrada é um índice
 
-`server.ts` declara intenção, não implementa. Toda configuração é delegada para módulos tipados.
-O arquivo serve como índice do projeto.
+`server.ts` mostra o que a aplicação faz ao subir, em ordem, e cada linha delega o trabalho a um
+módulo próprio. Quem abre o arquivo pela primeira vez entende a aplicação em vinte linhas, e sabe
+onde procurar cada assunto.
 
 <details>
-<summary>✅ Bom: server.ts como índice, configuração delegada</summary>
+<summary>✅ Bom: o server.ts lista os passos, e cada módulo cuida do seu</summary>
 
 ```ts
 // server.ts
@@ -171,13 +186,17 @@ app.listen(config.port);
 
 </details>
 
-## Configuração centralizada e tipada
+## A configuração é lida em um lugar só, e validada ao subir
 
-`config.ts` é o único ponto de leitura de variáveis de ambiente. O tipo garante que nenhum módulo
-acessa `process.env` diretamente e que os campos obrigatórios são verificados na inicialização.
+`config.ts` é o único arquivo que toca `process.env`. Com `process.env` espalhado, cada módulo lê a
+variável do jeito dele, e uma variável ausente vira `undefined` que atravessa o sistema até quebrar
+longe da causa, em produção, na primeira requisição que precisar dela.
+
+Lendo tudo em um arquivo e validando ali, a aplicação nem sobe com a configuração errada. A falha
+aparece no deploy, com o nome da variável que falta, e não em uma tela de usuário.
 
 <details>
-<summary>❌ Ruim: process.env espalhado e sem validação</summary>
+<summary>❌ Ruim: process.env lido em todo lugar, sem ninguém validar</summary>
 
 ```ts
 // auth.middleware.ts
@@ -190,7 +209,7 @@ const url = process.env.DATABASE_URL!; // non-null assertion sem garantia
 </details>
 
 <details>
-<summary>✅ Bom: config.ts como único ponto, com validação na inicialização</summary>
+<summary>✅ Bom: um só arquivo lê o ambiente, e a aplicação não sobe sem o que precisa</summary>
 
 ```ts
 // config.ts

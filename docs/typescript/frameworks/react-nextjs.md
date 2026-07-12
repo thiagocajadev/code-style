@@ -40,7 +40,7 @@ Next.js cuida de UI e roteamento. Todo acesso a dados passa pelo `apiClient`, qu
 | **Hook** | Gerencia estado de UI (`data`, `error`, `isLoading`) | `features/` |
 | **Service** | Chama apiClient e transforma para view type | `features/` |
 | **apiClient** | Único caller de rede: retorna `Result<T>` | `lib/` |
-| **Zod** | Valida dados na fronteira da API | `features/` |
+| **Zod** | Valida os dados no limite entre a API e o sistema | `features/` |
 | **API** | Backend externo (C#, Java, Node, etc.) | backend |
 
 ```
@@ -52,7 +52,7 @@ features/orders/
 │   └── CreateOrderForm.tsx   → RCC "use client": captura estado e eventos
 ├── hooks/use-orders.ts       → estado de UI: data, error, isLoading
 ├── services/order.ts         → chama apiClient, transforma para view type
-└── schemas/order.ts          → Zod: valida na fronteira da API
+└── schemas/order.ts          → Zod: valida no limite da API
 lib/
 └── api-client.ts             → único caller de rede: retorna Result<T>
 proxy.ts                      → guard: executa antes de qualquer render
@@ -106,17 +106,20 @@ lib/
 proxy.ts                              → guard: executa antes de qualquer render
 ```
 
-## Componentes: Server vs Client
+## O componente começa no servidor e só vai para o cliente quando precisa
 
-Todo componente começa como **RSC**. Recebe `"use client"` apenas quando precisa de interatividade:
-estado, efeitos ou eventos de browser.
+Todo componente nasce como **RSC**, e ganha `"use client"` apenas quando precisa de algo que só
+existe no navegador: estado, efeito ou evento do usuário. Marcar como cliente o que não precisa
+disso manda código para o navegador à toa, e o texto estático da página passa a viajar junto com o
+JavaScript que o renderiza.
 
-**RSC** cobre o papel do **Loader** definido em
-[frontend-flow.md](../../shared/architecture/frontend-flow.md): acessa dados antes do render, sem
-estado de loading, sem waterfall.
+O **RSC** cumpre o papel do **Loader** de
+[frontend-flow.md](../../shared/architecture/frontend-flow.md): ele busca os dados antes de
+renderizar, o que dispensa o estado de carregamento e evita a cascata de requisições que aparece
+quando cada componente busca o que precisa depois de já estar na tela.
 
 <details>
-<summary>❌ Ruim: RCC desnecessário para conteúdo sem interatividade</summary>
+<summary>❌ Ruim: o componente vira cliente sem ter nenhuma interatividade</summary>
 
 ```tsx
 "use client";
@@ -141,7 +144,7 @@ export function ProductDetail({ id }: { id: string }) {
 </details>
 
 <details>
-<summary>✅ Bom: RSC acessa dados diretamente, sem loading state</summary>
+<summary>✅ Bom: o componente de servidor busca os dados e renderiza já preenchido</summary>
 
 ```tsx
 import { productRepository } from "@/lib/repositories/product";
@@ -161,11 +164,12 @@ export async function ProductDetail({ id }: ProductDetailProps) {
 
 </details>
 
-O `page.tsx` é o orquestrador da rota: delega renderização a componentes e dados a repositórios.
-Sem lógica de negócio inline.
+O `page.tsx` é o orquestrador da rota. Ele chama quem busca os dados e monta os componentes que os
+exibem, e a regra de negócio fica com o Service ou o Repository. Um `page.tsx` que calcula desconto
+e monta query é onde a lógica se esconde de quem a procura.
 
 <details>
-<summary>❌ Ruim: lógica de dados e negócio misturada no page.tsx</summary>
+<summary>❌ Ruim: o page.tsx busca dados e ainda aplica regra de negócio</summary>
 
 ```tsx
 export default async function OrderPage({ params }: { params: { id: string } }) {
@@ -212,13 +216,15 @@ export default async function OrderPage({ params }: OrderPageProps) {
 
 </details>
 
-## Props: interface com sufixo Props
+## As props do componente ganham uma interface com sufixo Props
 
-Props de componentes seguem a mesma regra das funções TypeScript: objetos com três ou mais campos
-usam interface separada, com sufixo `Props`. Sem `I` prefix, sem tipo inline.
+As props seguem a regra das funções TypeScript: a partir de três campos, o tipo sai da assinatura e
+vira uma interface própria, com o sufixo `Props`. O prefixo `I` continua fora, e o tipo escrito
+dentro dos parênteses também: ele empurra a lista de campos para o meio da assinatura, e o leitor
+atravessa cinco linhas antes de ver o que o componente recebe.
 
 <details>
-<summary>❌ Ruim: tipo inline na assinatura do componente</summary>
+<summary>❌ Ruim: o tipo escrito dentro dos parênteses do componente</summary>
 
 ```tsx
 export function OrderCard({
@@ -264,16 +270,22 @@ export function OrderCard({ id, status, total, customerName }: OrderCardProps) {
 
 </details>
 
-## Hooks: pipeline Component → Service → apiClient
+## O caminho é componente, hook, service, apiClient
 
-Em **RCCs**, o pipeline de [operation-flow.md](../../shared/architecture/operation-flow.md) se
-aplica diretamente: o hook encapsula estado de UI (`data`, `error`, `isLoading`) e delega ao
-**Service**. O **Service** chama o `apiClient` (único ponto de rede) e entrega um tipo de view ao hook.
+Nos componentes de cliente, o fluxo de
+[operation-flow.md](../../shared/architecture/operation-flow.md) aparece em três peças. O **hook**
+guarda o estado da tela (`data`, `error`, `isLoading`) e não sabe de rede. O **Service** aplica a
+regra e transforma o dado no formato que a tela usa. O `apiClient` é o único lugar que fala com a
+rede.
 
-O retorno do hook é tipado com interface quando tem três ou mais valores.
+Quando tudo isso acontece dentro do componente, com `fetch` e `useState` juntos, a chamada de rede
+não é reaproveitável, o tratamento de erro se repete a cada tela, e testar a regra exige montar o
+componente.
+
+O retorno do hook vira interface quando tem três valores ou mais.
 
 <details>
-<summary>❌ Ruim: fetch dentro do componente, pipeline colapsado</summary>
+<summary>❌ Ruim: fetch, estado e regra dentro do componente</summary>
 
 ```tsx
 "use client";
@@ -363,14 +375,17 @@ export function OrderList() {
 
 </details>
 
-## Guards: Proxy
+## A checagem de acesso mora no Proxy, antes de qualquer render
 
-Guards de autenticação e autorização ficam no `proxy.ts`: executam antes de qualquer render,
-conforme o padrão do [frontend-flow.md](../../shared/architecture/frontend-flow.md). Guard dentro de
-componente renderiza antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
+A verificação de autenticação e de permissão fica no `proxy.ts`, que roda antes de a página começar
+a renderizar, como manda o [frontend-flow.md](../../shared/architecture/frontend-flow.md).
+
+Feita dentro do componente, ela chega tarde. O componente renderiza, o `useEffect` roda depois, e o
+redirecionamento acontece por último. Nesse intervalo o conteúdo restrito já foi pintado na tela, e
+o usuário sem permissão chega a vê-lo antes de ser mandado embora.
 
 <details>
-<summary>❌ Ruim: guard no componente, expõe conteúdo por um frame</summary>
+<summary>❌ Ruim: a checagem no componente deixa o conteúdo aparecer antes do redirecionamento</summary>
 
 ```tsx
 "use client";
@@ -416,16 +431,19 @@ export const config = {
 
 </details>
 
-## Formulários: schema → Server Action
+## O formulário valida com o mesmo schema no cliente e no servidor
 
-O fluxo de formulários de [frontend-flow.md](../../shared/architecture/frontend-flow.md) se aplica
-diretamente. O schema Zod é a fonte da verdade para cliente e servidor. A **Server Action**
-implementa o pipeline de escrita: valida → regras de negócio → persiste → retorna `Result`.
+O fluxo de [frontend-flow.md](../../shared/architecture/frontend-flow.md) vale aqui inteiro. O
+schema Zod é a única declaração das regras do formulário, e os dois lados o usam: o cliente para
+avisar o usuário na hora, o servidor para não confiar no que chegou. A **Server Action** executa a
+escrita na ordem de sempre: valida, aplica a regra, persiste, devolve o resultado.
 
-O servidor retorna erros estruturados por campo e por formulário, nunca apenas `ok: false`.
+O erro volta estruturado, campo a campo, e é isso que permite à tela mostrar a mensagem embaixo do
+input que a causou. Um `ok: false` sozinho obriga o formulário a exibir um aviso genérico, e o
+usuário fica procurando qual campo errou.
 
 <details>
-<summary>❌ Ruim: validação manual sem schema, erros sem estrutura</summary>
+<summary>❌ Ruim: validação escrita à mão, sem schema, e o erro volta sem estrutura</summary>
 
 ```tsx
 // app/actions/order.ts
@@ -446,7 +464,7 @@ export async function createOrder(formData: FormData) {
 </details>
 
 <details>
-<summary>✅ Bom: schema compartilhado, Server Action tipada com Result estruturado</summary>
+<summary>✅ Bom: um schema para os dois lados, e o erro volta campo a campo</summary>
 
 ```ts
 // lib/schemas/order.ts
@@ -532,14 +550,15 @@ export function CreateOrderForm() {
 `<fieldset disabled>` cobre todos os campos durante a requisição: previne double-submit (envio
 duplicado) sem desabilitar cada input individualmente.
 
-## API Routes
+## As rotas de API
 
-API Routes ficam em `app/api/[recurso]/route.ts`. Cada método **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) é um named export. O pipeline
-segue o mesmo contrato do [operation-flow.md](../../shared/architecture/operation-flow.md): valida →
-regras de negócio → persiste → retorna Response.
+As rotas ficam em `app/api/[recurso]/route.ts`, e cada método **HTTP** (HyperText Transfer Protocol ·
+Protocolo de Transferência de Hipertexto) vira uma função exportada com o nome dele. O caminho
+dentro da rota é o mesmo do [operation-flow.md](../../shared/architecture/operation-flow.md): valida
+a entrada, aplica a regra, persiste, devolve a resposta.
 
 <details>
-<summary>❌ Ruim: lógica de negócio inline, sem schema, status code hardcoded</summary>
+<summary>❌ Ruim: regra de negócio dentro da rota, sem schema, e o status escrito na mão</summary>
 
 ```ts
 // app/api/orders/route.ts
@@ -591,22 +610,24 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 </details>
 
-## Webhook Handler
+## O handler de webhook
 
-O webhook handler implementa o fluxo de
-[backend-flow.md](../../shared/architecture/backend-flow.md): captura o raw body antes de qualquer
-parse, valida o **HMAC**, checa idempotência e responde 200 antes de processar.
+O handler segue o fluxo de [backend-flow.md](../../shared/architecture/backend-flow.md): pega o
+corpo cru da requisição antes de qualquer conversão, confere a assinatura **HMAC**, verifica se
+aquele evento já foi recebido, responde 200 e só então processa.
 
-Duas regras sem exceção: responder 200 antes de processar (provedores como Stripe e GitHub fazem
-retry se não receberem resposta em até 30 segundos) e validar o **HMAC** sobre o raw body (parsear
-o **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) antes invalida o cálculo da assinatura).
+Duas regras não abrem exceção. A primeira é responder 200 antes de processar: provedores como Stripe
+e GitHub reenviam o evento se a resposta demorar mais de 30 segundos, e um processamento lento vira
+evento duplicado. A segunda é calcular o **HMAC** sobre o corpo cru. Converter o
+**JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) primeiro reordena campos e
+muda espaços, e a assinatura calculada sobre esse texto não bate mais com a que o provedor enviou.
 
 ```
 POST /api/webhooks/[provider] → captura raw body → valida HMAC → checa idempotência → 200 OK → enfileira → processa
 ```
 
 <details>
-<summary>❌ Ruim: valida sobre JSON parseado, comparação direta, processa no handler</summary>
+<summary>❌ Ruim: assina o JSON já convertido, compara com ===, e processa antes de responder</summary>
 
 ```ts
 // app/api/webhooks/[provider]/route.ts
@@ -675,18 +696,20 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
 
 </details>
 
-A checagem de comprimento antes do `timingSafeEqual` é necessária: buffers de tamanhos diferentes
-lançam exceção em runtime. Retornar 200 silenciosamente para eventos duplicados é o contrato correto:
-o provedor não precisa saber que o evento já foi recebido.
+A checagem de comprimento antes do `timingSafeEqual` é obrigatória: a função lança exceção quando os
+dois buffers têm tamanhos diferentes. Devolver 200 para um evento repetido é o contrato certo, e não
+é omissão: o provedor precisa saber que a entrega chegou, e o que ele faz com essa informação é parar
+de reenviar.
 
-## Caching: `use cache`
+## Cache com `use cache`
 
-Next.js 16 introduz o `"use cache"` como diretiva opt-in. Todo código dinâmico executa em tempo de
-requisição por padrão; cache é declarado explicitamente por função ou componente.
+No Next.js 16, nada é guardado em cache sem que alguém peça. Todo código dinâmico roda a cada
+requisição, e a diretiva `"use cache"` é o que marca uma função ou um componente como cacheável.
 
-`cacheLife()` define o perfil de expiração. `cacheTag()` marca os dados para invalidação seletiva.
-`updateTag()` em Server Actions garante **read-your-writes** (leitura imediata após escrita): o
-usuário vê as próprias mudanças na hora.
+As três peças se dividem assim: `cacheLife()` define quanto tempo o dado vale, `cacheTag()` dá um
+nome ao dado para poder invalidá-lo depois, e `updateTag()`, chamado dentro de uma Server Action,
+descarta o cache daquele nome logo após a escrita. É esta última que garante que o usuário veja a
+própria alteração na hora, em vez de continuar olhando a versão antiga da tela.
 
 <details>
 <summary>✅ Bom: função cacheada com perfil e tag</summary>

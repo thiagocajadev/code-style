@@ -1,6 +1,9 @@
-# Variables
+# Variáveis em TypeScript
 
-As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que TypeScript adiciona é o sistema de tipos: quando anotar, quando deixar a **type inference** (inferência de tipo) trabalhar, e como evitar buracos no contrato com `as const`, `satisfies` e tipos não-`any`.
+As regras de `const`, `let` e valor que não muda depois de atribuído vêm do JavaScript e continuam
+as mesmas. O que o TypeScript acrescenta é a decisão de tipo: quando anotar, quando deixar a
+**type inference** (inferência de tipo, o compilador deduzindo o tipo a partir do valor) trabalhar
+sozinha, e como usar `as const`, `satisfies` e `unknown` para o contrato não abrir buraco.
 
 ## Conceitos fundamentais
 
@@ -10,17 +13,39 @@ As regras de `const`, `let` e de valor fixo do JavaScript se aplicam aqui. O que
 | **type annotation** (anotação de tipo) | Declaração explícita do tipo (`const x: number = 0`); usar quando agrega informação |
 | **`as const`** (afirmação literal) | Congela o valor como literal exato e torna campos `readonly` |
 | **`satisfies`** (operador de conformidade) | Valida que o valor cumpre o tipo sem alargar a tipagem inferida |
-| **`any`** (tipo escape) | Desliga a checagem; anti-padrão exceto na fronteira controlada |
-| **`unknown`** (tipo seguro de origem desconhecida) | Tipo amplo que exige narrowing antes de uso; substituto correto de `any` |
+| **`any`** (tipo escape) | Desliga a checagem naquela variável; anti-padrão, salvo em um limite controlado do sistema |
+| **`unknown`** (tipo seguro de origem desconhecida) | Tipo amplo que obriga a checar antes de usar; o substituto correto de `any` |
+| **narrowing** (estreitamento de tipo) | Checagem que reduz o tipo até o compilador saber com o que está lidando |
 | **non-null assertion** (afirmação de não-nulo, `!`) | Força não-nulo sem checagem; evitar fora de testes ou inicialização garantida |
 | **definite assignment** (atribuição garantida) | `let x!: T`: promete ao compilador que será atribuído antes do uso |
 
+<a id="what-is-inference"></a>
+
+## O que é inferência de tipo
+
+Inferência é o compilador descobrir o tipo sozinho, olhando para o valor que você atribuiu. Quando
+você escreve `const userName = "Alice"`, ninguém disse ao TypeScript que `userName` é uma `string`.
+Ele leu o valor `"Alice"`, concluiu que só pode ser uma `string`, e passou a tratar a variável assim
+daí em diante. A partir desse momento `userName.toUpperCase()` é aceito, e `userName * 2` é acusado
+como erro, exatamente como se o tipo estivesse escrito na declaração.
+
+Isso vale para o resto da linguagem, e não só para variáveis. O retorno de uma função é inferido a
+partir do que ela devolve; o tipo de um item dentro de um `map` é inferido a partir do array; o tipo
+de um objeto é inferido campo a campo. Escrever tipo à mão é a exceção, reservada para os casos em
+que não existe valor de onde inferir, ou em que o tipo inferido é mais amplo do que se quer.
+
+Vale saber o limite da inferência: ela olha o valor daquele momento, e nada mais. Um array vazio
+não tem elemento de onde tirar o tipo, uma variável declarada sem valor não tem valor nenhum, e uma
+resposta que chegou pela rede é um `unknown` que o compilador não tem como adivinhar. Nesses três
+casos a anotação deixa de ser redundância e vira a única fonte de informação.
+
 <a id="inference-by-default"></a>
 
-## Inferência por padrão
+## Deixe o compilador inferir o tipo óbvio
 
-TypeScript deriva o tipo quando a atribuição é óbvia. Anotar o que já é visível é redundância
-que polui sem agregar.
+O TypeScript deriva o tipo a partir do valor atribuído. Escrever `const userName: string = "Alice"`
+repete no tipo o que o valor já mostra, e o leitor passa por duas informações para receber uma. A
+anotação vale quando ela acrescenta algo que o valor não diz.
 
 <details>
 <summary>❌ Ruim: anotação repete o que a atribuição já diz</summary>
@@ -46,10 +71,11 @@ const orders: Order[] = []; // anotação necessária: array vazio não tem tipo
 
 </details>
 
-## Anotar quando a inferência falha
+## Anote quando não há valor de onde inferir
 
-Inferência quebra quando o tipo não pode ser derivado do valor inicial: variáveis não inicializadas,
-arrays vazios, objetos parcialmente construídos.
+A inferência precisa de um valor inicial para funcionar. Sem ele, o compilador não tem de onde tirar
+o tipo: uma variável declarada vazia vira `any`, e um array vazio vira `never[]`, que não aceita
+nenhum elemento depois. Nos dois casos a anotação é o que informa o tipo.
 
 <details>
 <summary>❌ Ruim: tipo implícito `any` sem aviso visual</summary>
@@ -71,10 +97,14 @@ const results: Order[] = [];
 
 </details>
 
-## any vs unknown
+<a id="any-vs-unknown"></a>
 
-`any` desliga o sistema de tipos naquela variável: é um buraco no contrato. `unknown` mantém o
-contrato, pois para usar o valor é obrigatório fazer narrowing primeiro.
+## Use `unknown` no lugar de `any`
+
+`any` desliga a checagem de tipos naquela variável, e o efeito atravessa tudo que sai dela:
+`data.user.name` compila mesmo quando a resposta não tem `user`, e o erro só aparece em runtime,
+no navegador do usuário. `unknown` diz a mesma coisa (o valor chegou de fora e não se sabe o que é)
+sem abrir mão da checagem: para usar o valor, é preciso primeiro provar ao compilador o que ele é.
 
 <details>
 <summary>❌ Ruim: any apaga todo o benefício do TypeScript</summary>
@@ -92,7 +122,7 @@ data.user.name; // TypeScript aceita, mas pode explodir em runtime
 </details>
 
 <details>
-<summary>✅ Bom: unknown força narrowing antes do uso</summary>
+<summary>✅ Bom: unknown obriga a checar o formato antes de usar o valor</summary>
 
 ```ts
 async function fetchExternalData(): Promise<unknown> {
@@ -108,10 +138,13 @@ const data = raw; // narrowado para ApiResponse: seguro usar
 
 </details>
 
-## as const: tipos literais
+## `as const` prende o valor ao literal exato
 
-`as const` converte um objeto ou array em sua forma mais específica: cada valor vira um literal
-type, e o objeto inteiro se torna `readonly`. Indispensável para lookup tables e enums sem enum.
+Sem `as const`, o compilador vê `pending: "pending"` e infere `string`, porque supõe que o campo
+pode receber outra string depois. O tipo aceita qualquer string, e a restrição que o objeto parecia
+declarar não existe. Com `as const`, cada valor vira o literal exato (`"pending"`, e não `string`),
+e o objeto inteiro passa a ser somente leitura. É o que permite derivar dele um union type com os
+valores válidos, o padrão que substitui o `enum`.
 
 <details>
 <summary>❌ Ruim: tipo inferido como string, perde a especificidade</summary>
@@ -148,13 +181,17 @@ function updateStatus(status: OrderStatus) { /* ... */ } // só aceita os valore
 
 </details>
 
-## satisfies: validar sem alargar o tipo
+## `satisfies` confere o tipo e preserva o literal
 
-`satisfies` valida que um objeto atende a uma interface sem perder o tipo literal inferido.
-Diferente da anotação direta, que alarga o tipo para a interface.
+Anotar `const createOrder: RouteConfig` faz o compilador tratar o objeto como um `RouteConfig`
+qualquer, e `createOrder.method` volta a ser o union inteiro (`"GET" | "POST" | "PUT" | "DELETE"`).
+A informação de que ali dentro o método é `"POST"` se perde na anotação.
+
+`satisfies` faz a mesma conferência (o objeto cumpre o contrato? falta campo? sobra campo?) e
+mantém o tipo que foi inferido do valor. `createOrder.method` continua sendo `"POST"`.
 
 <details>
-<summary>❌ Ruim: anotação direta alarga para o tipo base</summary>
+<summary>❌ Ruim: a anotação troca o literal pelo tipo base</summary>
 
 ```ts
 interface RouteConfig {

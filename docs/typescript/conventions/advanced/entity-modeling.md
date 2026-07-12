@@ -421,7 +421,7 @@ class OrderItem extends Entity<OrderItemId> {
 
 ## Propriedade vs lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade modela a regra de negócio. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
 
 A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos TS:
 
@@ -468,7 +468,7 @@ class Customer {
 }
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra. O `readonly` precisou sair dos campos para permitir mutação.
+A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Aceitar um quarto telefone passa a exigir mudança no schema, quando deveria exigir mudança na regra. O `readonly` precisou sair dos campos para permitir a escrita.
 
 </details>
 
@@ -528,7 +528,7 @@ Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muit
 
 Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado, e o construtor da entidade filha pode ser `private` para que só o root produza instâncias.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza fronteira de agregado, então vai por ID (`CustomerId`), nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza o limite de um agregado para o outro, então vai por ID (`CustomerId`), com o objeto completo ficando de fora.
 
 <details>
 <summary>❌ Ruim: filho carrega referência ao pai, ciclo bidirecional sem dono</summary>
@@ -755,9 +755,9 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 ## Identidade vs referência
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order.items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, a referência é direta: `Order.items` é uma lista de `OrderItem`, com os objetos ali dentro. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
 
-Cruzando a fronteira de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId: CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId: CustomerId`, e o objeto `Customer` completo fica de fora. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Com dois donos para a mesma invariante, cada um deles pode salvar uma versão diferente do mesmo cliente, e a última escrita apaga a outra.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -815,7 +815,7 @@ const order = new Order({ id: newOrderId, customerId: targetCustomerId, items: [
 const customer = await customerRepository.findById(order.customerId);
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Assim, pedir um pedido busca o pedido, e não o cliente, os endereços dele e o histórico de compras junto.
 
 </details>
 

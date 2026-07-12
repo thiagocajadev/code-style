@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2026-07-12
+
+### Changed
+
+- **`docs/typescript/` reescrito na voz sênior-para-leigo (Épico C7, Ciclo C).** 22 arquivos `.md` e 8 scripts `.ts`, 7.589 linhas, entregues como unidade única. 20 dos 22 H1 viraram pt-BR (`Naming` → "Nomes em TypeScript", `Narrowing` → "Estreitamento de tipo em TypeScript", `Quick Reference` → "Referência rápida", com `Taboos` → "O que evitar"). Os 3 preservados são nome de produto (React + Next.js, Vue + Nuxt, Angular). Contraste binário, metáfora de mecânica, fecho de efeito e advérbio banido zerados na pasta.
+- **Os `<summary>` de Bom/Ruim entraram no escopo, e eram o alvo mais pesado do ciclo até aqui**: 247 títulos de exemplo. Saíram `type assertion no lugar de narrowing`, `narrowing não reutilizável`, `satisfies valida sem alargar`, `const object + union type: sem overhead runtime`, `pipeline colapsado`, `status hardcoded` e `type guard valida o contrato na fronteira`. Todos viraram descrição em pt-BR na voz de `docs/javascript/`.
+- **Os termos nativos do TypeScript ficaram em inglês, com glosa na primeira ocorrência** (decisão do Thiago): `narrowing`, `type guard`, `satisfies` e `discriminated union` são vocabulário real da comunidade, e um deles dá nome a um arquivo do guia. O que saiu foi o fragmento telegráfico e o jargão cunhado pelo projeto.
+- **`conventions/visual-density.md` espelhou o canônico JavaScript.** Os 15 headings ganharam a redação de `docs/javascript/conventions/visual-density.md` (`Explaining Return: par tight` → "O `return` fica junto da linha que nomeia o valor"; `Órfão de 1 linha` → "Não deixe uma linha sozinha entre espaços"; `Fragmentos → montagem` → "Prepare as partes, depois monte o resultado"), e a **tabela de Conceitos caiu de 14 para 8 linhas**: o jargão cunhado (`tight pair`, `atomic trio`, `semantic pair`, `single-line orphan`, `explaining return`, `fragments → assembly`) saiu da tabela e virou descrição pt-BR no corpo. As 2 linhas específicas do TypeScript (anotação de tipo, genérico) ficaram, porque carregam regra de densidade própria da linguagem.
+- **9 âncoras que resolviam por slug gerado do texto viraram id ASCII explícito**, com os referrers reescritos no mesmo passo: `#i-prefix` (era `#prefixo-i`, o único pt-BR), `#any-vs-unknown`, `#return-type`, `#type-vs-interface`, `#discriminated-unions`, `#custom-type-guards`, `#exhaustiveness`. Nenhum link com âncora entra em `docs/typescript/` vindo de fora, então toda a sincronia coube no próprio README.
+- **`conventions/advanced/entity-modeling.md` recebeu edição cirúrgica**, como em C# e SQL: o arquivo já estava na voz certa, e saíram 2 dramas (`receita certa de bug`, `carregar o universo`) e 3 caudas de contraste binário.
+
+### Fixed
+
+- **A página de nomes afirmava que o apelido de tipo protegia contra a troca de argumentos, e ele não protege.** `type UserId = string` e `type ProductId = string` são a mesma `string` para o compilador, que aceita um no lugar do outro sem reclamar. A prosa agora diz o que o apelido faz (deixa a assinatura legível: `createOrder(userId: UserId, productId: ProductId)` mostra qual valor vai em qual posição) e explicita o que ele não faz.
+- **4 em dash em comentário dos scripts `.ts`**, em `scripts/test/testing.jest.ts` e `scripts/test/testing.vitest.ts`. Nenhum gate automático lê `.ts` (o `audit:prose` só olha `.md`), então o buraco é o mesmo que o épico do VB.NET expôs, e nos mesmos arquivos. Viraram dois pontos e vírgula.
+- **"Imutabilidade por padrão" em `scripts/variables.ts`** virou "valor não muda depois de atribuído", que é a tradução canônica do projeto: descrever o comportamento em vez de nomear o jargão.
+- **"Fronteira" sobrevivia em 3 comentários dentro de fenced blocks**, contrariando a tradução canônica do projeto (mesma classe do `_repo`). Corrigidas para "limite" em `conventions/advanced/null-safety.md` e na árvore de diretórios de `frameworks/react-nextjs.md`. **É a única divergência de bloco desta release**, e alcança 2 dos 22 arquivos; os outros 20 batem por SHA-256 com o HEAD.
+
+### Added
+
+- **`conventions/variables.md` ganhou a seção "O que é inferência de tipo"** (a pedido do Thiago). O arquivo mandava deixar o compilador inferir sem nunca explicar o que inferência é. A seção nova abre pelo mecanismo (`const userName = "Alice"`: ninguém disse que é `string`, o compilador leu o valor e concluiu), mostra que isso vale para retorno de função e item de array, e fecha pelo limite da inferência: array vazio, variável sem valor e resposta de rede não têm de onde inferir, e ali a anotação é a única fonte de informação.
+- **`typescript` entrou em `LANGS` de `.github/workflows/docs.yml`**, e a linguagem passa a ser publicada no site. `vbnet` segue fora por decisão do Thiago, mesmo tendo sido entregue em v2.4.0: o comentário do workflow avisa que o escopo é reduzido porque o build não cabia no runner free, e uma linguagem por vez é o salto seguro.
+
 ## [2.4.1] - 2026-07-12
 
 ### Fixed
