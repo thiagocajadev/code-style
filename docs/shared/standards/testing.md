@@ -13,6 +13,8 @@ Testes documentam o comportamento esperado numa forma que a máquina consegue co
 | **Integration test** (teste de integração)               | Teste com infraestrutura real (banco, rede, fila) para verificar que os componentes funcionam juntos                               |
 | **Doubles** (substitutos de teste)                       | Substitutos de dependências externas: stubs (retornam valor fixo), mocks (verificam interação), fakes (implementação simplificada) |
 | **Fixture** (dado de teste pré-definido)                 | Contexto ou dado passado para configurar o estado do teste                                                                         |
+| **actual** (valor atual)                                | O que o código devolveu de fato na execução do teste; é o valor que está sob verificação                                           |
+| **expected** (valor esperado)                            | O que o código deveria ter devolvido; é o valor que você escreve à mão no teste, como referência                                   |
 | **cyclomatic complexity** (complexidade ciclomática)     | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
 
 ## As três fases de um teste

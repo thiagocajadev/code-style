@@ -19,25 +19,25 @@ O SQL tem uma particularidade. As palavras-chave que abrem cada parte da query (
 
 | Regra | Descrição |
 | --- | --- |
-| **Cláusulas da mesma query ficam coladas** | `SELECT`, `FROM`, `WHERE`, `JOIN`, `ORDER BY` são partes de uma frase só |
+| **Cláusulas da mesma query ficam juntas** | `SELECT`, `FROM`, `WHERE`, `JOIN`, `ORDER BY` são partes de uma frase só |
 | **Uma linha em branco entre CTEs** | Cada `WITH nome AS (...)` é uma etapa nomeada e ganha o próprio respiro |
 | **Bloco de várias linhas respira depois** | CTE, subquery ou `CASE WHEN` expandido, quando vem outro comando em seguida |
 | **Comandos consecutivos se separam** | Dois `INSERT`, dois `UPDATE`, uma linha em branco entre eles |
 | **Assinatura e corpo se separam** | Uma linha em branco entre `AS` (ou `$$`) e a primeira instrução |
 | **Um espaço único ao redor de `=`, tipos e aliases** | Sem espaços extras para alinhar colunas na vertical |
 | **Fluxo de controle respira antes e depois** | `IF ... END IF`, `WHILE`, `TRY / CATCH` ficam isolados por linha em branco |
-| **O comando que consome o anterior fica colado** | `SET @Rows = @@ROWCOUNT` logo abaixo do DML que ele mede |
+| **O comando que consome o anterior fica junto dele** | `SET @Rows = @@ROWCOUNT` logo abaixo do DML que ele mede |
 | **Quatro comandos iguais quebram em 2+2** | Série longa de `ALTER TABLE` ou `CREATE INDEX` ganha respiro a cada par |
 | **Nunca duas linhas em branco seguidas** | Exatamente uma entre grupos; duas viram ruído |
 
 <a id="clauses-without-blank"></a>
 
-## As cláusulas da mesma query ficam coladas
+## As cláusulas da mesma query ficam juntas
 
 O olho já reconhece `SELECT`, `FROM` e `WHERE` como marcos: cada uma abre a própria linha e começa na margem. A linha em branco entre elas quebra a query em pedaços que não são pedaços de verdade, porque as três formam uma frase só.
 
 <details>
-<summary>❌ Ruim: blank entre cláusulas da mesma query</summary>
+<summary>❌ Ruim: linha em branco entre as cláusulas de uma mesma query</summary>
 
 ```sql
 SELECT
@@ -54,7 +54,7 @@ WHERE
 </details>
 
 <details>
-<summary>✅ Bom: cláusulas grudadas formam uma frase</summary>
+<summary>✅ Bom: as cláusulas da query ficam juntas e se leem como uma frase</summary>
 
 ```sql
 SELECT
@@ -79,7 +79,7 @@ No T-SQL, a linha vai entre o `AS` e o `BEGIN`. No PostgreSQL, ela vai logo depo
 Repare também no nome de cada objeto. No SQL Server, a procedure segue `SP_VERBO_TABELA` em maiúsculas. No PostgreSQL, a function segue o `snake_case` da linguagem, com o prefixo `fn_`. Os detalhes estão em [prefixos de objetos](naming.md#object-prefixes).
 
 <details>
-<summary>❌ Ruim: T-SQL: assinatura e corpo colados, sem separação visual</summary>
+<summary>❌ Ruim: T-SQL: a assinatura e o corpo da procedure juntos</summary>
 
 ```sql
 CREATE OR ALTER PROCEDURE SP_GET_FOOTBALL_TEAM_BY_ID
@@ -161,10 +161,10 @@ $$ LANGUAGE plpgsql;
 
 ## Uma linha em branco entre uma CTE e a próxima
 
-A CTE cumpre em SQL o papel que a variável cumpre em outras linguagens: ela dá nome a um resultado para que o próximo passo use aquele nome. Duas CTEs coladas parecem um bloco só. Separadas por uma linha em branco, cada etapa se lê por conta própria.
+A CTE cumpre em SQL o papel que a variável cumpre em outras linguagens: ela dá nome a um resultado para que o próximo passo use aquele nome. Duas CTEs juntas parecem um bloco só. Separadas por uma linha em branco, cada etapa se lê por conta própria.
 
 <details>
-<summary>❌ Ruim: CTEs coladas, sem separação entre as etapas</summary>
+<summary>❌ Ruim: CTEs juntas, sem separação entre as etapas</summary>
 
 ```sql
 WITH TeamCTE AS
@@ -232,7 +232,7 @@ JOIN
 Dois comandos seguidos (`INSERT` e depois `SELECT`, por exemplo) são duas etapas independentes: cada um tem começo, meio e ponto e vírgula. Colados, o ponto e vírgula do primeiro se perde no meio do texto e o leitor precisa procurar onde um acaba.
 
 <details>
-<summary>❌ Ruim: statements colados, sem separação entre blocos distintos</summary>
+<summary>❌ Ruim: dois comandos juntos, sem nada marcando onde o primeiro termina</summary>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -256,7 +256,7 @@ JOIN
 </details>
 
 <details>
-<summary>✅ Bom: statements separados, fluxo legível</summary>
+<summary>✅ Bom: uma linha em branco separa um comando do outro</summary>
 
 ```sql
 INSERT INTO #ActiveOrders (OrderId, CustomerId, TotalAmount)
@@ -286,10 +286,10 @@ JOIN
 
 `IF ... END IF`, `WHILE` e `BEGIN TRY / CATCH` ocupam várias linhas e mudam o que roda. Uma linha em branco antes e outra depois isolam o bloco das declarações que o cercam.
 
-Dentro do bloco existe uma exceção. O `SET @RowsDeleted = @@ROWCOUNT` lê o resultado do `DELETE` que veio logo acima: ele conta quantas linhas o comando anterior apagou. Como um depende do outro, os dois ficam colados, sem linha em branco no meio.
+Dentro do bloco existe uma exceção. O `SET @RowsDeleted = @@ROWCOUNT` lê o resultado do `DELETE` que veio logo acima: ele conta quantas linhas o comando anterior apagou. Como um depende do outro, os dois ficam juntos, sem linha em branco no meio.
 
 <details>
-<summary>❌ Ruim: bloco WHILE colado ao statement anterior</summary>
+<summary>❌ Ruim: o bloco WHILE junto do comando anterior</summary>
 
 ```sql
 DECLARE @ChunkSize INT = 1000;
@@ -389,10 +389,10 @@ WHERE
 
 ## Quatro comandos iguais se quebram em dois pares
 
-Quatro `ALTER TABLE` seguidos, todos com a mesma forma, viram um bloco compacto em que o olho perde a linha e relê. Uma linha em branco no meio divide a série em dois pares, e cada par se confere de uma olhada. Até três comandos seguidos ficam juntos.
+Quatro `ALTER TABLE` seguidos, todos com a mesma forma, viram um bloco compacto em que o olho perde a linha e você relê. Uma linha em branco no meio divide a série em dois pares, e cada par se confere de uma olhada. Até três comandos seguidos ficam juntos.
 
 <details>
-<summary>❌ Ruim: muralha de quatro ALTERs sem respiro</summary>
+<summary>❌ Ruim: parede com quatro ALTERs seguidos, sem respiro</summary>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;
@@ -404,7 +404,7 @@ ALTER TABLE FootballTeams ADD Country NVARCHAR(100);
 </details>
 
 <details>
-<summary>✅ Bom: quebra em 2+2</summary>
+<summary>✅ Bom: os quatro ALTERs quebrados em dois pares</summary>
 
 ```sql
 ALTER TABLE FootballTeams ADD Founded DATE;

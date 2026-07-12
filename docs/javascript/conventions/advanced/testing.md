@@ -22,6 +22,8 @@ e uma linha em branco isola a asserção do resto.
 | **stub** (resposta fixa)                                 | Substituto simples que retorna valor fixo, sem registrar chamadas                                                                   |
 | **spy** (espião)                                         | Invólucro que registra chamadas mas mantém o comportamento original                                                                 |
 | **assertion** (asserção)                                 | Verificação explícita do resultado esperado (`assert.strictEqual`, `assert.deepStrictEqual`)                                        |
+| **actual** (valor atual)                                | O que o código devolveu de fato na execução do teste; é o valor que está sob verificação                                            |
+| **expected** (valor esperado)                            | O que o código deveria ter devolvido; é o valor que você escreve à mão no teste, como referência                                    |
 | **expressive naming** (nomeação expressiva)              | Variáveis de assert com nome do conceito (`actualPrice`, `expectedName`), nunca genéricos                                           |
 
 O [code style](../variables.md) se aplica dentro dos testes. O assert recebe
@@ -52,7 +54,7 @@ bloco único, e uma linha em branco isola a asserção do resultado.
 
 ```js
 test("applies discount", () => {
-  assert.strictEqual(applyDiscount({ price: 100, discountPct: 10 }), 90);
+  assert.strictEqual(applyDiscount({ price: 100, discountPercentage: 10 }), 90);
 });
 ```
 
@@ -63,7 +65,7 @@ test("applies discount", () => {
 
 ```js
 test("applies 10% discount to order price", () => {
-  const order = { price: 100, discountPct: 10 }; // arrange
+  const order = { price: 100, discountPercentage: 10 }; // arrange
   const actualPrice = applyDiscount(order); // act
   const expectedPrice = 90; // assert
 
@@ -184,7 +186,7 @@ ordem de execução.
 let order;
 
 test("creates order", () => {
-  order = createOrder({ items: [{ id: 1, price: 50 }] });
+  order = createOrder({ items: [{ id: 1, price: 50, quantity: 2 }] });
 
   assert.ok(order.id);
 });
@@ -205,14 +207,14 @@ test("applies discount to order", () => {
 
 ```js
 test("creates order with generated id", () => {
-  const order = createOrder({ items: [{ id: 1, price: 50 }] });
+  const order = createOrder({ items: [{ id: 1, price: 50, quantity: 2 }] });
   const actualId = order.id;
 
   assert.ok(actualId);
 });
 
 test("applies 10% discount to order price", () => {
-  const order = { items: [{ id: 1, price: 50 }], total: 100 };
+  const order = { items: [{ id: 1, price: 50, quantity: 2 }], total: 100 };
   const actualOrder = applyDiscount(order, 10);
   const actualPrice = actualOrder.price;
   const expectedPrice = 90;
@@ -226,7 +228,7 @@ test("applies 10% discount to order price", () => {
 ## Exceção sem tipo
 
 Testar que um erro foi lançado é diferente de testar qual erro foi lançado.
-`assert.rejects` verifica tipo e mensagem, não apenas presença.
+`assert.rejects` confere o tipo e a mensagem do erro, além da presença dele.
 
 <details>
 <summary>❌ Ruim: try/catch manual, tipo não verificado</summary>

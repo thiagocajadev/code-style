@@ -4,10 +4,10 @@
 // Executar: jest testing.jest.ts
 // Convenção: expect(actual).toBe(expected) — actual em expect(), expected em toBe()
 
-function applyDiscount(price: number, discountPct: number): number {
-  if (discountPct <= 0) return price;
+function applyDiscount(price: number, discountPercentage: number): number {
+  if (discountPercentage <= 0) return price;
 
-  const discountedPrice = price * (1 - discountPct / 100);
+  const discountedPrice = price * (1 - discountPercentage / 100);
   return discountedPrice;
 }
 

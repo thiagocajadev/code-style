@@ -3,11 +3,11 @@
 // Convenção: expect(actual).toBe(expected); actual em expect(), expected em toBe()
 
 function applyDiscount(order) {
-  if (order.discountPct <= 0) {
+  if (order.discountPercentage <= 0) {
     return order;
   }
 
-  const discountedPrice = order.price * (1 - order.discountPct / 100);
+  const discountedPrice = order.price * (1 - order.discountPercentage / 100);
   const discountedOrder = { ...order, price: discountedPrice };
   return discountedOrder;
 }
@@ -19,7 +19,7 @@ function formatName({ first, last }) {
 
 describe("applyDiscount", () => {
   it("applies percentage discount to order price", () => {
-    const order = { price: 100, discountPct: 10 };
+    const order = { price: 100, discountPercentage: 10 };
     const actualOrder = applyDiscount(order);
     const actualPrice = actualOrder.price;
     const expectedPrice = 90;
@@ -28,7 +28,7 @@ describe("applyDiscount", () => {
   });
 
   it("returns original order when discount is zero", () => {
-    const order = { price: 100, discountPct: 0 };
+    const order = { price: 100, discountPercentage: 0 };
     const actualOrder = applyDiscount(order);
     const expectedOrder = order;
 

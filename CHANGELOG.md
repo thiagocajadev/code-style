@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.1] - 2026-07-12
+
+### Fixed
+
+- **O jargão cru sobreviveu nos `<summary>` dos exemplos, que as revisões de voz anteriores nunca tocaram.** A prosa dos arquivos tinha sido reescrita, os títulos dos blocos Bom/Ruim não, então `par tight`, `blank fragmenta o par`, `Explaining Return tight`, `4 atomics viram 2+2`, `statements colados` e `muralha de quatro` continuavam na primeira linha que o leitor lê. Todos viraram descrição em pt-BR na voz de `docs/javascript/`, que é a referência: "a `var` e o `return` juntos", "a linha em branco parte a dupla no meio", "quatro constantes viram dois grupos de duas", "parede com quatro ALTERs seguidos". Alcança `csharp/conventions/visual-density.md` (28 títulos), `sql/conventions/visual-density.md` (8) e `csharp/conventions/{types,methods}.md`.
+- **"Colado" tinha sentido bom e ruim ao mesmo tempo**, ora descrevendo o par que deve ficar unido, ora o bloco que deveria respirar. A palavra virou "junto" nas quatro páginas de densidade visual (`shared`, `csharp`, `sql` e `csharp/conventions/methods.md`), e nos títulos Ruim quem carrega o problema é o complemento: "dois comandos juntos, sem nada marcando onde o primeiro termina". "Muralha" virou "parede" em `shared/standards/visual-density.md`, alinhando com o SQL.
+- **`discountPct` era abreviatura em bloco Good, a mesma classe de erro do `_repo`.** Renomeado para `discountPercentage` nas 8 linguagens onde aparecia, `.md` e scripts de teste.
+- **Em `csharp/conventions/types.md`, a metáfora da "caverna de herança diamante"** virou a descrição do que acontece de fato: quem implementa duas interfaces com o mesmo método herda duas versões concorrentes dele. Junto dela saíram `template method` sem tradução, o comentário `// narrowed para Order não-nulo`, que não explicava nada, e `capability`, `discriminated result` e `constraint` nos títulos dos exemplos.
+- **`record immutable` virou "registro somente leitura"** em `csharp/conventions/variables.md`.
+- **A tabela SQL Server contra PostgreSQL estava dentro do bloco de citação** em `sql/conventions/naming.md`, e a formatação a apagava ao ser publicada em outro projeto. Saiu do `>` e virou tabela normal.
+- **O primeiro par Bom/Ruim de `sql/conventions/formatting.md` não tinha explicação nenhuma**, só `❌ Ruim` e `✅ Bom`. Os dois ganharam título descritivo e um parágrafo dizendo o que muda. O heading "Cada cláusula começa a própria linha" ganhou a preposição que faltava.
+- **O `VALUES` de `sql/conventions/advanced/batch.md` tinha 2 espaços de indentação a mais** que a forma canônica de `crud.md` e de `sgbd/`. Alinhado.
+
+### Added
+
+- **UUID v4 e v7 lado a lado nos exemplos**, em `javascript/conventions/advanced/performance.md` e `csharp/conventions/advanced/performance.md`. Cada bloco mostra um identificador de verdade com uma seta apontando o primeiro caractere do terceiro grupo, que é onde a versão fica escrita: `4` no v4, `7` no v7. Um parágrafo antes explica que dá para saber a versão só de olhar o valor.
+- **`actual` e `expected` na tabela de Conceitos fundamentais de testes** (`shared/standards/testing.md`, `javascript/conventions/advanced/testing.md`, `csharp/conventions/advanced/testing.md`): `actual` é o valor atual, o que o código devolveu de fato; `expected` é o valor esperado, o que você escreve à mão como referência.
+- **`quantity: 2` no `order` de `javascript/conventions/advanced/testing.md`**, para as contas do exemplo fecharem: 2 × 50 é o total de 100 que já estava lá.
+
 ## [2.4.0] - 2026-07-12
 
 ### Changed

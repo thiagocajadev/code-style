@@ -49,9 +49,9 @@ INSERT INTO Players
   TeamId
 )
 VALUES
-  (1, 'Alice', 'GK', @TeamId),
-  (2, 'Bob', 'CB', @TeamId),
-  (3, 'Carol', 'ST', @TeamId);
+(1, 'Alice', 'GK', @TeamId),
+(2, 'Bob', 'CB', @TeamId),
+(3, 'Carol', 'ST', @TeamId);
 ```
 
 </details>

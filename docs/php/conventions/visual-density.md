@@ -441,7 +441,7 @@ O `assert` é fase distinta. A linha em branco antes dele separa o que está sen
 ```php
 public function testAppliesPercentageDiscountToOrderPrice(): void
 {
-    $order = new Order(price: 100.0, discountPct: 10);
+    $order = new Order(price: 100.0, discountPercentage: 10);
     $actualOrder = $this->applyDiscount($order);
     $expectedPrice = 90.0;
     $this->assertSame($expectedPrice, $actualOrder->price);
@@ -456,7 +456,7 @@ public function testAppliesPercentageDiscountToOrderPrice(): void
 ```php
 public function testAppliesPercentageDiscountToOrderPrice(): void
 {
-    $order = new Order(price: 100.0, discountPct: 10);
+    $order = new Order(price: 100.0, discountPercentage: 10);
     $actualOrder = $this->applyDiscount($order);
     $expectedPrice = 90.0;
 

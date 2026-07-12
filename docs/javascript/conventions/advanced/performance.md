@@ -101,12 +101,16 @@ function filterPremiumProducts(products) {
 `crypto.randomUUID()` gera um **UUID** (Universally Unique Identifier · Identificador Único Universal) v4, que é aleatório. Como o valor é imprevisível, cada nova linha entra em um ponto qualquer do índice, e o banco precisa remanejar as páginas para abrir espaço no meio. O UUID v7 é **time-ordered** (ordenado por tempo): um valor gerado depois é sempre maior que o anterior, então cada inserção vai para o fim do índice, em sequência, sem remanejar nada.
 Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#id-type-bigint-vs-uuid).
 
+A versão fica escrita no próprio valor. O UUID tem cinco grupos separados por hífen, e o primeiro caractere do terceiro grupo é o número da versão: um UUID v4 sempre mostra `4` nessa posição, e um UUID v7 sempre mostra `7`. Olhar para um identificador já diz qual dos dois você tem em mãos.
+
 <details>
-<summary>❌ Ruim: crypto.randomUUID() é v4: random, fragmenta índice</summary>
+<summary>❌ Ruim: crypto.randomUUID() gera v4 aleatório e fragmenta o índice</summary>
 
 ```js
 function createOrder(request) {
-  const orderId = crypto.randomUUID(); // v4: random, page splits no banco
+  // 3f2a9c71-8b4d-4e6f-a1c3-7d5e9b2f4a80
+  //               ^ v4: aleatório, cada linha cai em um ponto qualquer do índice
+  const orderId = crypto.randomUUID();
 
   return saveOrder({ id: orderId, ...request });
 }
@@ -115,13 +119,15 @@ function createOrder(request) {
 </details>
 
 <details>
-<summary>✅ Bom: UUID v7: time-ordered, sequencial no índice</summary>
+<summary>✅ Bom: UUID v7 nasce em ordem de tempo e entra sempre no fim do índice</summary>
 
 ```js
 import { v7 as uuidv7 } from "uuid";
 
 function createOrder(request) {
-  const orderId = uuidv7(); // time-ordered: sequencial no índice, sem fragmentação
+  // 019842f0-6c1a-7b3e-9d4f-2a1b3c4d5e6f
+  //               ^ v7: começa pelo horário, então cresce a cada chamada
+  const orderId = uuidv7();
 
   return saveOrder({ id: orderId, ...request });
 }

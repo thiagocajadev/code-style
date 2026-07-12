@@ -99,7 +99,7 @@ public class OrderRequest
 </details>
 
 <details>
-<summary>✅ Bom: record immutable, contrato explícito</summary>
+<summary>✅ Bom: registro somente leitura, com o contrato inteiro em uma linha</summary>
 
 ```csharp
 public record OrderRequest(string ProductId, int Quantity);
@@ -111,7 +111,7 @@ public record OrderRequest(string ProductId, int Quantity);
 
 ## Sem valores mágicos
 
-Um número solto no meio de um `if` guarda uma regra de negócio que ninguém consegue ler. `order.Status == 2` obriga quem lê a caçar o significado de `2` em outro arquivo, e a caça se repete a cada nova leitura. Uma constante nomeada (`OrderStatusApproved`) guarda o mesmo `2` e responde a pergunta no lugar em que ela nasce.
+Um número solto no meio de um `if` guarda uma regra de negócio que ninguém consegue ler. `order.Status == 2` obriga quem lê a procurar o significado de `2` em outro arquivo, e essa busca se repete a cada nova leitura. Uma constante nomeada (`OrderStatusApproved`) guarda o mesmo `2` e responde à pergunta na própria linha do `if`.
 
 <details>
 <summary>❌ Ruim: literais sem significado</summary>

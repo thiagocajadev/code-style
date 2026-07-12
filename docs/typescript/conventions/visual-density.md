@@ -498,7 +498,7 @@ verificado do como está sendo verificado.
 
 ```ts
 it("applies percentage discount to order price", () => {
-  const order: Order = { price: 100, discountPct: 10 };
+  const order: Order = { price: 100, discountPercentage: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
   expect(actualOrder.price).toBe(expectedPrice);
@@ -512,7 +512,7 @@ it("applies percentage discount to order price", () => {
 
 ```ts
 it("applies percentage discount to order price", () => {
-  const order: Order = { price: 100, discountPct: 10 };
+  const order: Order = { price: 100, discountPercentage: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
 

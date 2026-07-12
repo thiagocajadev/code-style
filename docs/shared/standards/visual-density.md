@@ -96,7 +96,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 }
 ```
 
-`formatter` ocupa várias linhas e pede o respiro **depois** de si. Ele foi parar antes do `return`, e o efeito é duplo: o bloco grande fica colado no que vem depois, e o par `formattedDate` + `return formattedDate` acaba partido.
+`formatter` ocupa várias linhas e pede o respiro **depois** de si. Ele foi parar antes do `return`, e o efeito é duplo: o bloco grande fica junto do que vem depois, e o par `formattedDate` + `return formattedDate` acaba partido.
 
 </details>
 
@@ -252,7 +252,7 @@ A pergunta que decide:
 - A última linha costura **fragmentos vindos de linhas diferentes**? Então ela é montagem, e leva uma linha em branco antes.
 
 <details>
-<summary>❌ Ruim: preparação e montagem coladas como se fossem o mesmo passo</summary>
+<summary>❌ Ruim: preparação e montagem juntas, como se fossem o mesmo passo</summary>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -331,7 +331,7 @@ if (response.status !== 429) {
 const delayMs = Math.pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa três linhas na tela: peso próprio. Escrito em uma linha, ficaria colado na declaração; com chaves, ganha o respiro antes.
+O bloco ocupa três linhas na tela: peso próprio. Escrito em uma linha, ficaria junto da declaração; com chaves, ganha o respiro antes.
 
 </details>
 
@@ -344,7 +344,7 @@ Um método que busca, transforma, persiste e responde tem quatro fases, e o leit
 Um objeto literal, um array ou um comando quebrado em várias linhas já ocupa espaço próprio na tela. Cole uma linha em branco **depois** dele. Sem isso, o leitor não vê onde o bloco terminou e o próximo passo começou; os dois viram uma massa só.
 
 <details>
-<summary>❌ Ruim: objeto grande colado no comando seguinte</summary>
+<summary>❌ Ruim: objeto grande junto do comando seguinte</summary>
 
 ```js
 async function createSession(user) {
@@ -382,12 +382,12 @@ async function createSession(user) {
 
 ## Dois `if` seguidos com chaves pedem uma linha entre eles
 
-Dois blocos `{ ... }` colados formam muralha: o olho não acha onde um termina e o outro começa. Sempre separe os dois.
+Dois blocos `{ ... }` juntos formam uma parede: o olho não acha onde um termina e o outro começa. Sempre separe os dois.
 
 A exceção são as guardas de uma linha. Retornos antecipados curtos e seguidos formam um grupo homogêneo e ficam juntos, pela mesma regra que mantém três declarações unidas.
 
 <details>
-<summary>❌ Ruim: dois blocos colados</summary>
+<summary>❌ Ruim: dois blocos juntos, sem nada entre eles</summary>
 
 ```js
 function processOrder(order) {

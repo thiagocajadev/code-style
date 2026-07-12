@@ -17,6 +17,8 @@ Os exemplos usam a divisão **AAA** (Arrange Act Assert · Preparar Executar Ver
 | **fake** (implementação simplificada) | Substituto funcional, mais leve que o real (ex: `InMemoryRepository`) |
 | **fixture** (estado compartilhado de teste) | Objeto que prepara contexto reutilizado entre testes (`IClassFixture<T>`) |
 | **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
+| **actual** (valor atual) | O que o código devolveu de fato na execução do teste; é o valor que está sob verificação |
+| **expected** (valor esperado) | O que o código deveria ter devolvido; é o valor que você escreve à mão no teste, como referência |
 | **FluentAssertions** (biblioteca de asserts fluentes) | API que torna asserts legíveis: `actualOrder.Should().BeEquivalentTo(expectedOrder)` |
 
 O guia usa [xUnit](https://xunit.net/) como referência: é o framework mais adotado no ecossistema .NET e dispensa o **boilerplate** (código repetitivo de cerimônia) de `[TestClass]`.

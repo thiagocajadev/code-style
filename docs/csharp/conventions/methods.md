@@ -244,7 +244,7 @@ public string BuildShippingLabel(Order order)
 O C# 12 permite declarar os parâmetros do construtor ao lado do nome da classe, e usá-los direto no corpo. Isso apaga o trio que toda classe injetada repetia: o campo privado, o parâmetro do construtor e a linha que copia um no outro. Com o construtor primário, `OrderService(IOrderRepository repository, INotifier notifier)` já deixa `repository` e `notifier` disponíveis em qualquer método.
 
 <details>
-<summary>❌ Ruim: boilerplate de construtor tradicional</summary>
+<summary>❌ Ruim: o construtor tradicional repete cada dependência três vezes</summary>
 
 ```csharp
 public class OrderService
@@ -296,7 +296,7 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 
 ## Uma linha em branco entre um passo e o próximo
 
-As linhas que pertencem ao mesmo passo ficam coladas, sem linha em branco entre elas. Entre um passo e o seguinte entra exatamente uma linha em branco. Duas linhas em branco seguidas não separam nada a mais, só espalham o método pela tela e obrigam a rolar. O corte visual conta ao leitor onde termina uma ideia e começa a outra.
+As linhas que pertencem ao mesmo passo ficam juntas, sem linha em branco entre elas. Entre um passo e o seguinte entra exatamente uma linha em branco. Duas linhas em branco seguidas não separam nada a mais, só espalham o método pela tela e obrigam a rolar. O corte visual conta ao leitor onde termina uma ideia e começa a outra.
 
 <details>
 <summary>❌ Ruim: sem separação entre passos ou separação excessiva</summary>

@@ -14,15 +14,14 @@ O nome de uma tabela ou coluna é lido muito mais vezes do que é escrito, e tro
 | **singular column** (coluna no singular) | `Name`, `Email`; representa uma propriedade da entidade |
 | **prefix convention** (convenção de prefixo) | `IX_` para índice, `FK_` para foreign key, `SP_` para procedure |
 
-> Os exemplos deste guia seguem a convenção do SQL Server. No PostgreSQL, aplique `snake_case` em
-> minúsculas; os princípios de nomenclatura são os mesmos.
->
-> | Conceito             | SQL Server            | PostgreSQL            |
-> | -------------------- | --------------------- | --------------------- |
-> | Tabela               | `FootballTeams`       | `football_teams`      |
-> | Coluna               | `SquadNumber`         | `squad_number`        |
-> | Procedure / Function | `SP_GET_ORDERS_BY_ID` | `fn_get_orders_by_id` |
-> | Index                | `IX_PLAYERS_TEAM_ID`  | `ix_players_team_id`  |
+Os exemplos deste guia seguem a convenção do SQL Server. No PostgreSQL, aplique `snake_case` em minúsculas. Os princípios de nomenclatura são os mesmos nos dois bancos, e só a grafia muda.
+
+| Conceito             | SQL Server            | PostgreSQL            |
+| -------------------- | --------------------- | --------------------- |
+| Tabela               | `FootballTeams`       | `football_teams`      |
+| Coluna               | `SquadNumber`         | `squad_number`        |
+| Procedure / Function | `SP_GET_ORDERS_BY_ID` | `fn_get_orders_by_id` |
+| Index                | `IX_PLAYERS_TEAM_ID`  | `ix_players_team_id`  |
 
 <a id="portuguese-names"></a>
 

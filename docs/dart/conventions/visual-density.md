@@ -487,7 +487,7 @@ verificado do como está sendo verificado.
 
 ```dart
 test('applies percentage discount to order price', () {
-  final order = Order(price: 100, discountPct: 10);
+  final order = Order(price: 100, discountPercentage: 10);
   final discountedOrder = applyDiscount(order);
   final expectedPrice = 90;
   expect(discountedOrder.price, expectedPrice);
@@ -501,7 +501,7 @@ test('applies percentage discount to order price', () {
 
 ```dart
 test('applies percentage discount to order price', () {
-  final order = Order(price: 100, discountPct: 10);
+  final order = Order(price: 100, discountPercentage: 10);
   final discountedOrder = applyDiscount(order);
   final expectedPrice = 90;
 

@@ -486,7 +486,7 @@ antes dele separa o que está sendo verificado do como está sendo verificado.
 
 ```swift
 @Test func appliesPercentageDiscountToOrderPrice() {
-    let order = Order(price: 100, discountPct: 10)
+    let order = Order(price: 100, discountPercentage: 10)
     let actualOrder = applyDiscount(order)
     let expectedPrice = 90.0
     #expect(actualOrder.price == expectedPrice)
@@ -500,7 +500,7 @@ antes dele separa o que está sendo verificado do como está sendo verificado.
 
 ```swift
 @Test func appliesPercentageDiscountToOrderPrice() {
-    let order = Order(price: 100, discountPct: 10)
+    let order = Order(price: 100, discountPercentage: 10)
     let actualOrder = applyDiscount(order)
     let expectedPrice = 90.0
 

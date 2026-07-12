@@ -31,7 +31,7 @@ Três valem quando dividir em duas mais uma deixaria a última linha sozinha. A
 partir de quatro, quebre em dois grupos de duas.
 
 <details>
-<summary>❌ Ruim: denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: denso demais, com todos os passos juntos</summary>
 
 ```csharp
 public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, CancellationToken ct)
@@ -77,12 +77,12 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 ## O `return` fica junto da linha que nomeia o valor
 
 Quando a linha logo acima do `return` é a `var` que dá nome ao valor devolvido,
-as duas contam a mesma coisa e ficam coladas, sem linha em branco no meio. Isso
+as duas contam a mesma coisa e ficam juntas, sem linha em branco no meio. Isso
 vale por mais longo que seja o método. A linha em branco entra antes do par,
 separando-o do passo anterior.
 
 <details>
-<summary>❌ Ruim: blank fragmenta o par</summary>
+<summary>❌ Ruim: a linha em branco parte a dupla no meio</summary>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -96,7 +96,7 @@ public int MapErrorToStatus(DomainError error)
 </details>
 
 <details>
-<summary>✅ Bom: par tight</summary>
+<summary>✅ Bom: a `var` e o `return` juntos</summary>
 
 ```csharp
 public int MapErrorToStatus(DomainError error)
@@ -126,7 +126,7 @@ Nos outros casos entra uma linha em branco antes do `return`:
   referem uma à outra.
 
 <details>
-<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: a linha em branco separou a declaração do `return` que a devolve</summary>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -144,7 +144,7 @@ linhas. Separá-las não ajuda ninguém.
 </details>
 
 <details>
-<summary>✅ Bom: Explaining Return tight</summary>
+<summary>✅ Bom: a declaração que nomeia o valor e o `return` ficam juntos</summary>
 
 ```csharp
 public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
@@ -158,7 +158,7 @@ public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
 </details>
 
 <details>
-<summary>✅ Bom: return com blank quando construído a partir de inicializador multi-linha</summary>
+<summary>✅ Bom: o respiro fica depois do inicializador de várias linhas</summary>
 
 ```csharp
 public OrderResponse BuildOrderResponse(Order order, string requestId)
@@ -193,7 +193,7 @@ public IEnumerable<Order> GetPendingOrders(Guid userId) =>
 
 Uma variável e o `if` que confere o valor dela contam um passo só: buscar e
 verificar. Quando esse `if` cabe em uma linha (`if (...) return ...;` ou
-`if (...) throw ...;`), ele fica colado na declaração, e a linha em branco vem
+`if (...) throw ...;`), ele fica junto da declaração, e a linha em branco vem
 depois dos dois.
 
 Quando o `if` abre chaves, a história muda. O bloco `{ }` ocupa várias linhas na
@@ -202,7 +202,7 @@ dentro. Aí entra uma linha em branco antes dele. O critério é o peso visual d
 bloco.
 
 <details>
-<summary>❌ Ruim: variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: a linha em branco separou a variável do `if` que a valida</summary>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -214,7 +214,7 @@ var invoice = BuildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: o `if` de uma linha fica junto da declaração</summary>
 
 ```csharp
 var order = await _orderRepository.FindByIdAsync(orderId, ct);
@@ -226,7 +226,7 @@ var invoice = BuildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: o `if` com chaves vira um passo próprio, com respiro antes</summary>
 
 ```csharp
 var handler = _eventHandlers.GetValueOrDefault(eventType);
@@ -243,7 +243,7 @@ var eventPayload = @event.Data;
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: mesmo com uma instrução só, o `if` com chaves pede respiro antes</summary>
 
 ```csharp
 var response = await requestFn();
@@ -256,7 +256,7 @@ if (response.StatusCode != HttpStatusCode.TooManyRequests)
 var delayMs = Math.Pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa quatro linhas na tela. Escrito em uma linha só, ele ficaria colado
+O bloco ocupa quatro linhas na tela. Escrito em uma linha só, ele ficaria junto
 na declaração; escrito com chaves, pede o respiro antes.
 
 </details>
@@ -271,7 +271,7 @@ sozinha entre duas linhas em branco e parece esquecida ali. Mantenha as três
 juntas. A partir de quatro, quebre em dois grupos de duas.
 
 <details>
-<summary>❌ Ruim: órfão entre blanks</summary>
+<summary>❌ Ruim: a última constante ficou sozinha entre linhas em branco</summary>
 
 ```csharp
 public static class DomainLimits
@@ -286,7 +286,7 @@ public static class DomainLimits
 </details>
 
 <details>
-<summary>✅ Bom: trio tight</summary>
+<summary>✅ Bom: as três constantes em um grupo só</summary>
 
 ```csharp
 public static class DomainLimits
@@ -300,7 +300,7 @@ public static class DomainLimits
 </details>
 
 <details>
-<summary>✅ Bom: 4 atomics viram 2+2</summary>
+<summary>✅ Bom: quatro constantes viram dois grupos de duas</summary>
 
 ```csharp
 public static class DomainLimits
@@ -324,7 +324,7 @@ duas dependem uma da outra e ficam juntas. A linha em branco entra antes desse
 par, separando-o do que veio antes.
 
 <details>
-<summary>❌ Ruim: dependência direta partida</summary>
+<summary>❌ Ruim: a linha em branco separou quem produz o valor de quem usa o valor</summary>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -342,7 +342,7 @@ public string BuildShippingLabel(Order order)
 </details>
 
 <details>
-<summary>✅ Bom: par semântico tight</summary>
+<summary>✅ Bom: a linha que usa o valor fica junto da que declarou o valor</summary>
 
 ```csharp
 public string BuildShippingLabel(Order order)
@@ -371,7 +371,7 @@ o oposto do caso anterior, e a pergunta que separa os dois é simples:
   e vai com um respiro antes.
 
 <details>
-<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: os pedaços e a montagem juntos, como se fossem um grupo só</summary>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -390,7 +390,7 @@ parecem um grupo só e a fase de montagem some.
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: os pedaços em um grupo, a montagem e o `return` em outro</summary>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -408,7 +408,7 @@ Agora dá para ver duas fases: preparar os pedaços e montar a mensagem.
 </details>
 
 <details>
-<summary>✅ Bom: contraste: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: a última linha usa só o valor da linha de cima, então as duas ficam juntas</summary>
 
 ```csharp
 public string BuildOrderSlug(Order order)
@@ -432,7 +432,7 @@ Dentro de um `while` ou de um `if`, a mesma regra vale. Quando as três linhas n
 são declarações parecidas, dois mais um continua sendo a quebra natural.
 
 <details>
-<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: três linhas diferentes entre si, todas juntas</summary>
 
 ```csharp
 while (attempt < maxAttempts)
@@ -446,7 +446,7 @@ while (attempt < maxAttempts)
 </details>
 
 <details>
-<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: declaração e `if` juntos, incremento em outro grupo</summary>
 
 ```csharp
 while (attempt < maxAttempts)
@@ -468,7 +468,7 @@ Um método que busca, transforma, salva e responde tem quatro fases. Cada uma
 merece seu grupo, para que a leitura acompanhe a operação sem reler.
 
 <details>
-<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todas as fases juntas, sem separação visual</summary>
 
 ```csharp
 public async Task<IActionResult> CreateUserAsync(CreateUserRequest request, CancellationToken ct)
@@ -509,7 +509,7 @@ O `Assert` responde a pergunta que o teste faz. A linha em branco antes dele
 separa o que foi montado e executado daquilo que está sendo conferido.
 
 <details>
-<summary>❌ Ruim: Assert colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: o Assert junto do preparo, com as fases invisíveis</summary>
 
 ```csharp
 [Fact]
@@ -525,7 +525,7 @@ public void AppliesTenPercentDiscountToPrice()
 </details>
 
 <details>
-<summary>✅ Bom: Assert separado, assertion como fase própria</summary>
+<summary>✅ Bom: linha em branco antes do Assert, que vira uma fase própria</summary>
 
 ```csharp
 [Fact]
@@ -551,7 +551,7 @@ respiro, o próximo passo parece fazer parte do bloco, e o leitor precisa contar
 chaves para achar onde ele termina.
 
 <details>
-<summary>❌ Ruim: inicializador multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: o inicializador de várias linhas junto do comando seguinte</summary>
 
 ```csharp
 public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
@@ -571,7 +571,7 @@ public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
 </details>
 
 <details>
-<summary>✅ Bom: blank depois do inicializador isola o bloco</summary>
+<summary>✅ Bom: a linha em branco depois do inicializador isola o bloco</summary>
 
 ```csharp
 public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
@@ -595,14 +595,14 @@ public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
 
 ## Dois `if` seguidos com chaves pedem uma linha entre eles
 
-Dois blocos `{ }` colados viram uma parede de chaves, e achar onde um termina e o
+Dois blocos `{ }` juntos viram uma parede de chaves, e achar onde um termina e o
 outro começa exige contá-las. Uma linha em branco entre eles resolve.
 
 A exceção são as guardas de uma linha. Elas são curtas e parecidas entre si, e
 ficam juntas como qualquer grupo de linhas parecidas.
 
 <details>
-<summary>❌ Ruim: dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos com chaves juntos, um no outro</summary>
 
 ```csharp
 public void ProcessOrder(Order order)
@@ -623,7 +623,7 @@ public void ProcessOrder(Order order)
 </details>
 
 <details>
-<summary>✅ Bom: blank entre os blocos</summary>
+<summary>✅ Bom: uma linha em branco entre os dois blocos</summary>
 
 ```csharp
 public void ProcessOrder(Order order)
@@ -645,7 +645,7 @@ public void ProcessOrder(Order order)
 </details>
 
 <details>
-<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: as três verificações de uma linha ficam juntas</summary>
 
 ```csharp
 public Input ValidateInput(Input input)
@@ -702,7 +702,7 @@ quem for mexer nele precisa achar o pedaço certo no meio da interpolação. Ext
 os pedaços em variáveis com nome e monte o texto no fim.
 
 <details>
-<summary>❌ Ruim: interpolação densa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: o texto inteiro montado dentro do `return`, sem nome para os pedaços</summary>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)
@@ -714,7 +714,7 @@ public string BuildDeliveryMessage(User user, Order order)
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: pedaços com nome, montagem no fim</summary>
 
 ```csharp
 public string BuildDeliveryMessage(User user, Order order)

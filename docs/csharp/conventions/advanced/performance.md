@@ -185,13 +185,17 @@ Deixe o `Task` onde o método quase sempre espera de verdade por uma resposta. A
 
 `Guid.NewGuid()` produz um **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4, que é aleatório. Como chave primária, isso significa que cada linha nova vai parar num ponto qualquer do índice, e o banco precisa abrir espaço no meio de páginas já cheias. `Guid.CreateVersion7()` (.NET 9+) começa pelo horário de criação, então os identificadores nascem em ordem crescente e cada linha nova entra no fim do índice. Veja o efeito disso no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#id-type-bigint-vs-uuid).
 
+A versão fica escrita no próprio valor. O identificador tem cinco grupos separados por hífen, e o primeiro caractere do terceiro grupo é o número da versão: um v4 sempre mostra `4` nessa posição, e um v7 sempre mostra `7`. Olhar para um identificador já diz qual dos dois você tem em mãos.
+
 <details>
-<summary>❌ Ruim: Guid.NewGuid() é v4: random, fragmenta índice</summary>
+<summary>❌ Ruim: Guid.NewGuid() gera v4 aleatório e fragmenta o índice</summary>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
 {
-    var orderId = Guid.NewGuid(); // v4: random, page splits no banco
+    // 3f2a9c71-8b4d-4e6f-a1c3-7d5e9b2f4a80
+    //               ^ v4: aleatório, cada linha cai em um ponto qualquer do índice
+    var orderId = Guid.NewGuid();
     var order = new Order(orderId, request.CustomerId, request.Total);
 
     return order;
@@ -201,12 +205,15 @@ public Order CreateOrder(CreateOrderRequest request)
 </details>
 
 <details>
-<summary>✅ Bom: Guid.CreateVersion7() é time-ordered, sem fragmentação</summary>
+<summary>✅ Bom: Guid.CreateVersion7() nasce em ordem de tempo e entra no fim do índice</summary>
 
 ```csharp
 public Order CreateOrder(CreateOrderRequest request)
 {
-    var orderId = Guid.CreateVersion7(); // .NET 9+: time-ordered, sequencial no índice
+    // 019842f0-6c1a-7b3e-9d4f-2a1b3c4d5e6f
+    //               ^ v7: começa pelo horário, então cresce a cada chamada
+    var orderId = Guid.CreateVersion7();
+
     var order = new Order(orderId, request.CustomerId, request.Total);
     return order;
 }

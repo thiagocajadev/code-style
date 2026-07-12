@@ -371,8 +371,8 @@ fun buildDeliveryMessage(user: User, order: Order): String {
 }
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.id` *e*
-`order.deliveryDays`. Não é par direto com `address`, é a fase de montagem.
+`deliveryMessage` usa `fullName`, `address`, `order.id` e `order.deliveryDays`.
+Ela junta valores declarados em linhas diferentes, então é a fase de montagem.
 Coladas como trio, as fases ficam invisíveis.
 
 </details>
@@ -492,7 +492,7 @@ verificado do como está sendo verificado.
 ```kotlin
 @Test
 fun `applyDiscount returns price reduced by percentage`() {
-    val order = Order(price = 100.0, discountPct = 10)
+    val order = Order(price = 100.0, discountPercentage = 10)
     val actualOrder = applyDiscount(order)
     val expectedPrice = 90.0
     actualOrder.price shouldBe expectedPrice
@@ -507,7 +507,7 @@ fun `applyDiscount returns price reduced by percentage`() {
 ```kotlin
 @Test
 fun `applyDiscount returns price reduced by percentage`() {
-    val order = Order(price = 100.0, discountPct = 10)
+    val order = Order(price = 100.0, discountPercentage = 10)
     val actualOrder = applyDiscount(order)
     val expectedPrice = 90.0
 

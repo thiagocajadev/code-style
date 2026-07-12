@@ -198,8 +198,8 @@ linha em branco vem **depois** da dupla, nunca entre a variável e o seu `if`.
 
 Quando o `if` é escrito com chaves `{ }` (mesmo com uma única instrução dentro),
 ele vira uma fase à parte: o bloco já tem peso visual próprio. Aí vale a regra de
-que todo bloco de várias linhas pede um respiro antes de si. O critério é o peso
-visual, não o significado.
+que todo bloco de várias linhas pede um respiro antes de si. O critério aqui é o
+peso visual do bloco na tela.
 
 <details>
 <summary>❌ Ruim: a variável foi separada do `if` que a valida</summary>
@@ -489,7 +489,7 @@ preparou o cenário.
 
 ```js
 it("applies percentage discount to order price", () => {
-  const order = { price: 100, discountPct: 10 };
+  const order = { price: 100, discountPercentage: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
   expect(actualOrder.price).toBe(expectedPrice);
@@ -503,7 +503,7 @@ it("applies percentage discount to order price", () => {
 
 ```js
 it("applies percentage discount to order price", () => {
-  const order = { price: 100, discountPct: 10 };
+  const order = { price: 100, discountPercentage: 10 };
   const actualOrder = applyDiscount(order);
   const expectedPrice = 90;
 

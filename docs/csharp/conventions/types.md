@@ -2,7 +2,7 @@
 
 > Escopo: **idioma C# / .NET moderno**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
-O C# oferece cinco formas de declarar um tipo: **interface**, **abstract class**, **class**, **record** e **struct**. Cada uma resolve bem um caso e resolve mal os outros. Escolher a errada compila e roda; o custo aparece depois, quando a regra que deveria morar num lugar acaba espalhada porque o tipo escolhido não tinha onde guardá-la.
+O C# oferece cinco formas de declarar um tipo: **interface**, **abstract class**, **class**, **record** e **struct**. Cada uma atende bem a um caso específico. Escolher a forma errada compila e roda, então o erro passa despercebido no começo. O custo aparece quando você precisa guardar uma regra em algum lugar e o tipo escolhido não tem onde guardá-la, e a regra acaba repetida em vários pontos do código.
 
 ## Conceitos fundamentais
 
@@ -31,7 +31,8 @@ O C# 8 permite escrever corpo de método dentro da interface. Isso tenta a gente
 ```csharp
 public interface OrderProcessor
 {
-    // C# 8+ permite default implementation, mas vira caverna de herança diamante
+    // C# 8+ aceita corpo de método na interface; quem implementar duas
+    // interfaces com este mesmo método herda duas versões concorrentes dele
     Task<Result> ProcessAsync(Order order)
     {
         var validation = Validate(order);
@@ -47,7 +48,7 @@ public interface OrderProcessor
 </details>
 
 <details>
-<summary>✅ Bom: abstract class quando há estado ou template method</summary>
+<summary>✅ Bom: classe abstrata guarda o estado comum e fixa a sequência dos passos</summary>
 
 ```csharp
 public abstract class OrderProcessor(ILogger logger)
@@ -159,7 +160,7 @@ public class OrderResponse
 </details>
 
 <details>
-<summary>✅ Bom: record para dados, igualdade estrutural sem boilerplate</summary>
+<summary>✅ Bom: record para dados, com a comparação por valor pronta</summary>
 
 ```csharp
 public record OrderResponse
@@ -190,8 +191,8 @@ public class OrderService
 {
     public Order FindById(Guid id)
     {
-        // o retorno aceita null sem marcar no contrato
-        // caller não tem aviso do compilador
+        // o retorno aceita nulo sem marcar isso na assinatura,
+        // então quem chama não recebe nenhum aviso do compilador
         return _orderRepository.FindById(id);
     }
 }
@@ -212,12 +213,13 @@ public sealed class OrderService(IOrderRepository orderRepository)
     }
 }
 
-// caller é forçado a tratar
+// o "?" no retorno obriga quem chama a tratar o caso nulo
 var order = orderService.FindById(id);
 if (order is null)
     return NotFound();
 
-var total = order.Total; // narrowed para Order não-nulo
+// depois do if acima, o compilador já sabe que order não é nulo
+var total = order.Total;
 ```
 
 </details>
@@ -255,7 +257,7 @@ public string DescribePayment(IPayment payment)
 </details>
 
 <details>
-<summary>✅ Bom: is-expression com narrowing e descrição nomeada por variante</summary>
+<summary>✅ Bom: o próprio `is` já entrega a variável com o tipo certo, sem cast</summary>
 
 ```csharp
 public string DescribePayment(IPayment payment)
@@ -282,7 +284,7 @@ public string DescribePayment(IPayment payment)
 Quando o domínio tem um conjunto fechado de variantes, declare cada uma como um tipo. O resultado do pagamento deixa de ser um campo de texto que alguém precisa comparar com a string certa, e passa a ser `PaymentResult.Success` ou `PaymentResult.Failure`, cada um carregando os campos que só fazem sentido no seu caso.
 
 <details>
-<summary>✅ Bom: discriminated result via pattern matching</summary>
+<summary>✅ Bom: sucesso e falha são tipos distintos, e o `is` escolhe o caminho</summary>
 
 ```csharp
 public abstract record PaymentResult
@@ -318,10 +320,10 @@ public IActionResult HandlePayment(PaymentResult result)
 
 ## Constraint declara o que o tipo genérico precisa ter
 
-Um genérico sem **constraint** (restrição de tipo) aceita qualquer tipo, e por isso o método não consegue chamar nada nele. A saída costuma ser descobrir a capacidade em tempo de execução, com reflection, e lançar exceção quando o tipo não serve. A constraint (`where T : IEntity`, `where T : struct`, `where T : new()`) coloca esse requisito na assinatura: o método passa a usar `e.Id` direto, e o tipo errado nem compila.
+Um genérico sem **constraint** (restrição de tipo) aceita qualquer tipo, e por isso o método não consegue chamar nada nele. A saída costuma ser descobrir em tempo de execução se o tipo tem o que o método precisa, usando **reflection** (inspeção do tipo em tempo de execução), e lançar exceção quando ele não tem. A constraint (`where T : IEntity`, `where T : struct`, `where T : new()`) escreve esse requisito na assinatura: o método passa a acessar `Id` direto, e o tipo que não atende nem compila.
 
 <details>
-<summary>❌ Ruim: genérico sem constraint, reflection para descobrir capability</summary>
+<summary>❌ Ruim: sem restrição, o método só descobre em tempo de execução se o tipo serve</summary>
 
 ```csharp
 public T? Find<T>(Guid id) where T : class
@@ -339,7 +341,7 @@ public T? Find<T>(Guid id) where T : class
 </details>
 
 <details>
-<summary>✅ Bom: constraint declara capability, compilador valida</summary>
+<summary>✅ Bom: a restrição escreve o requisito na assinatura, e o compilador confere</summary>
 
 ```csharp
 public interface IEntity
@@ -349,7 +351,7 @@ public interface IEntity
 
 public T? Find<T>(Guid id) where T : class, IEntity
 {
-    var entity = _context.Set<T>().FirstOrDefault(e => e.Id == id);
+    var entity = _context.Set<T>().FirstOrDefault(candidate => candidate.Id == id);
     return entity;
 }
 ```

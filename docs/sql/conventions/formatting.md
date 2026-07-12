@@ -16,21 +16,23 @@ Uma query bem formatada se lê de cima para baixo, como uma lista de passos. Cad
 
 <a id="single-line-query"></a>
 
-## Cada cláusula começa a própria linha
+## Cada cláusula começa na própria linha
 
 A query escrita em uma linha só obriga o leitor a varrer o texto atrás de onde termina o `SELECT` e começa o `WHERE`. Quebrando por cláusula, cada marco da query fica no início de uma linha e o olho encontra o filtro sem procurar.
 
 <details>
-<summary>❌ Ruim</summary>
+<summary>❌ Ruim: tudo em uma linha, com as cláusulas misturadas ao conteúdo</summary>
 
 ```sql
 SELECT Id, Name, Email FROM Users WHERE Id = 1 AND IsActive = 1
 ```
 
+Para achar o filtro, o leitor precisa ler a linha inteira até encontrar a palavra `WHERE` no meio dela.
+
 </details>
 
 <details>
-<summary>✅ Bom</summary>
+<summary>✅ Bom: uma cláusula por linha, com as colunas indentadas abaixo dela</summary>
 
 ```sql
 SELECT
@@ -43,6 +45,8 @@ WHERE
   Users.Id = 1 AND
   Users.IsActive = 1;
 ```
+
+`SELECT`, `FROM` e `WHERE` ficam à esquerda, um por linha. O olho encontra cada um deles sem precisar ler o resto.
 
 </details>
 
