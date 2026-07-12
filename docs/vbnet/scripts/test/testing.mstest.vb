@@ -1,13 +1,13 @@
-' MSTest — framework de testes da Microsoft, integrado ao Visual Studio
+' MSTest: framework de testes da Microsoft, integrado ao Visual Studio
 ' Executar: dotnet test  ou  Test Explorer no Visual Studio
-' Convenção: Assert.AreEqual(expected, actual) — expected primeiro
+' Convenção: Assert.AreEqual(expected, actual), com expected primeiro
 
 Imports Microsoft.VisualStudio.TestTools.UnitTesting
 
-Function ApplyDiscount(price As Decimal, discountPct As Integer) As Decimal
-    If discountPct <= 0 Then Return price
+Function ApplyDiscount(price As Decimal, discountPercentage As Integer) As Decimal
+    If discountPercentage <= 0 Then Return price
 
-    Dim discountedPrice = price * (1 - discountPct / 100D)
+    Dim discountedPrice = price * (1 - discountPercentage / 100D)
     Return discountedPrice
 End Function
 

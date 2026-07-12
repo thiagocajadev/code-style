@@ -1,18 +1,20 @@
-# Security
+# Segurança em VB.NET
 
 > Escopo: VB.NET (setup). Princípios transversais em [shared/platform/security.md](../../shared/platform/security.md).
 
-Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2 / ASP.NET **MVC** (Model-View-Controller, Modelo-Visão-Controle) 5 / Windows Forms): onde colocar o quê, quais ferramentas do ecossistema usar. As regras conceituais (segredos fora do repositório, validação no servidor, HttpOnly + Secure + SameSite) vivem em [shared/platform/security.md](../../shared/platform/security.md) e não são repetidas aqui.
+Esta página cobre o que é específico do .NET Framework 4.8 (Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2, ASP.NET **MVC** (Model-View-Controller · Modelo-Visão-Controle) 5 e Windows Forms): onde cada valor mora e qual ferramenta do ecossistema resolve cada caso. O motivo de cada regra (segredo fora do repositório, validação no servidor, cookie com HttpOnly, Secure e SameSite) está em [shared/platform/security.md](../../shared/platform/security.md), e não se repete aqui.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **Config** (configuração) | Valor não sensível que muda entre ambientes, em `Web.config` ou `App.config` |
-| **Secret** (segredo) | Credencial ou chave; fica em seção criptografada via `aspnet_regiis`, nunca commitada |
-| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Superfície HTTP (Web API 2) sujeita a autenticação e CORS |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET MVC 5 com filtros de autorização e antiforgery tokens |
-| **CI/CD** (Continuous Integration and Continuous Delivery · Integração e Entrega Contínuas) | Pipeline que aplica transforms de `Web.Release.config` e injeta secrets no deploy |
+| **config** (configuração) | Valor sem sigilo que muda entre ambientes: URL, timeout, limite |
+| **secret** (segredo) | Credencial, senha ou chave; nunca vai para o repositório com o valor real |
+| **transform** (transformação de config) | Regra do `Web.Release.config` que troca valores durante a publicação |
+| **placeholder token** (marcador de substituição) | Texto como `#{DefaultConnection}#` que o pipeline troca pelo valor real no deploy |
+| **aspnet_regiis** (ferramenta de criptografia de seção) | Utilitário que criptografa uma seção do `Web.config` com a chave da máquina |
+| **DPAPI** (Data Protection API · API de Proteção de Dados) | Mecanismo do Windows que guarda a chave de criptografia amarrada à máquina |
+| **CI/CD** (Continuous Integration and Continuous Delivery · Integração e Entrega Contínuas) | Pipeline que aplica os transforms e injeta os segredos no momento do deploy |
 
 ---
 
@@ -25,13 +27,15 @@ Esta página cobre apenas o que é específico do .NET Framework 4.8 (Web **API*
 | Secrets em máquina específica | Seção criptografada via `aspnet_regiis` | Chave DPAPI da máquina ou do farm |
 | Secrets em staging/produção | Variáveis injetadas pelo IIS / pipeline | Connection strings reais |
 
-O `Web.config` commitado nunca contém o valor real de um segredo. Ou fica vazio (token substituído no publish) ou fica criptografado (seção resolvida pela chave da máquina).
+O `Web.config` que vai para o repositório nunca carrega o valor real de um segredo. Ele guarda um token, que o pipeline troca na publicação, ou guarda a seção já criptografada, que só o servidor com a chave consegue ler.
 
 ---
 
-## Web.config transforms
+<a id="config-transforms"></a>
 
-`Web.Release.config` sobrescreve valores durante o publish. O pipeline de **CI/CD** (Continuous Integration and Continuous Delivery · Integração e Entrega Contínuas) (Azure DevOps, Octopus) substitui tokens pelas variáveis de release sem commitar o valor real.
+## O transform troca o valor na hora de publicar
+
+O `Web.Release.config` diz o que muda quando o projeto é publicado. No lugar da connection string real, o arquivo versionado guarda um token como `#{DefaultConnection}#`, e o pipeline de **CI/CD** (Azure DevOps, Octopus) o substitui pela variável daquele ambiente. O valor real fica no cofre do pipeline, e o repositório nunca o vê.
 
 ```xml
 <!-- Web.Release.config -->
@@ -46,13 +50,13 @@ O `Web.config` commitado nunca contém o valor real de um segredo. Ou fica vazio
 </configuration>
 ```
 
-O token `#{DefaultConnection}#` é resolvido no momento do publish pela variável de release correspondente.
-
 ---
 
-## Criptografia de seção com aspnet_regiis
+<a id="section-encryption"></a>
 
-Para ambientes onde variáveis de ambiente não são viáveis (hosting gerenciado, deploy manual), `aspnet_regiis` criptografa seções do `Web.config` usando a chave da máquina. O arquivo commitado fica ilegível sem a chave do servidor.
+## aspnet_regiis criptografa a seção no servidor
+
+Em hospedagem gerenciada ou deploy manual, onde não há pipeline para injetar variáveis, o `aspnet_regiis` criptografa a seção `connectionStrings` direto no `Web.config` do servidor. A chave usada é a da máquina, então o arquivo copiado para outro computador não abre. O ASP.NET decifra a seção sozinho em execução, e o código continua lendo a configuração da mesma forma.
 
 ```cmd
 rem criptografar
@@ -67,9 +71,11 @@ aspnet_regiis -pdf "connectionStrings" "C:\inetpub\wwwroot\MyApp"
 
 ---
 
-## Leitura de configuração
+<a id="reading-config"></a>
 
-`ConfigurationManager` resolve a configuração consolidada (`Web.config` + transform + seção criptografada decifrada em runtime). O código consome o valor final sem conhecer a origem.
+## O código lê o valor final, sem saber de onde ele veio
+
+O `ConfigurationManager` entrega a configuração já resolvida: o `Web.config` base, com o transform aplicado e a seção criptografada decifrada. O `ConnectionFactory` pede a connection string e recebe o valor pronto, e trocar o mecanismo de segredo não mexe em uma linha do código.
 
 ```vbnet
 ' Infrastructure/ConnectionFactory.vb
@@ -84,9 +90,11 @@ End Module
 
 ---
 
-## Autorização com atributo
+<a id="authorize-attribute"></a>
 
-Checar permissões dentro da action duplica lógica. `<Authorize>` declarado na controller ou action garante cobertura uniforme antes de qualquer código executar.
+## A autorização é declarada no atributo
+
+Verificar a permissão dentro do corpo da action espalha a mesma sequência de `If` por todo controller, e a action onde alguém esquecer de escrevê-la fica aberta sem que nada acuse. O `<Authorize>` roda antes do corpo da action, e a permissão fica visível na assinatura, onde a revisão do código a enxerga.
 
 <details>
 <summary>❌ Ruim: verificação manual de role no corpo</summary>
@@ -129,9 +137,11 @@ End Class
 
 ---
 
-## Cookies de sessão
+<a id="session-cookies"></a>
 
-Flags de segurança de cookie no .NET Framework são configuradas globalmente no `Web.config`, valem para toda a aplicação. Ver [shared/platform/security.md](../../shared/platform/security.md) para o racional de cada flag.
+## As flags do cookie ficam no Web.config
+
+No .NET Framework, as proteções do cookie de sessão são declaradas uma vez no `Web.config` e valem para a aplicação inteira, sem depender de cada ponto do código lembrar de aplicá-las. O que cada flag protege está em [shared/platform/security.md](../../shared/platform/security.md).
 
 ```xml
 <!-- Web.config -->

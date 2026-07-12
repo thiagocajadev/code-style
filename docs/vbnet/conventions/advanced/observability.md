@@ -1,28 +1,27 @@
-# Observability
+# Observabilidade em VB.NET
 
 > Escopo: VB.NET. Visão transversal: [shared/standards/observability.md](../../../shared/standards/observability.md).
 
-Logging estruturado, níveis corretos, proteção de dados sensíveis e rastreamento por requisição.
-Veja os princípios agnósticos em [shared/standards/observability.md](../../../shared/standards/observability.md).
-
-Os exemplos usam **NLog** (biblioteca de logging para .NET), amplamente adotado no ecossistema .NET Framework. **PII** (Personally Identifiable Information · Informação de Identificação Pessoal) nunca pode aparecer em logs.
+Observabilidade é a capacidade de responder, olhando os logs, o que aconteceu com uma requisição que deu errado em produção. Isso depende de quatro coisas: o log guardar campos consultáveis, o nível de severidade dizer a verdade, os dados pessoais ficarem de fora e todos os logs de uma mesma requisição carregarem o mesmo identificador. Os exemplos usam o **NLog**, biblioteca de logging mais comum no .NET Framework.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **NLog** (biblioteca de logging para .NET) | Framework de logging amplamente adotado em .NET Framework; suporta sinks variados |
-| **structured logging** (logging estruturado) | Cada argumento vira propriedade indexável no sink, não texto formatado |
-| **message template** (template de mensagem) | String com placeholders nomeados (`{OrderId}`) que preservam a estrutura |
-| **log level** (nível de severidade) | `Trace`/`Debug`/`Info`/`Warn`/`Error`/`Fatal`; controla volume e roteamento |
-| **MDC** (Mapped Diagnostic Context · Contexto de Diagnóstico Mapeado) | Mapa de campos por thread; propaga `correlationId` entre logs da mesma operação |
-| **correlation ID** (identificador de correlação) | ID único por requisição que conecta logs entre serviços |
-| **PII** (Personally Identifiable Information · Informação de Identificação Pessoal) | Dados que identificam pessoa: nunca em logs sem mascaramento |
-| **sink** (destino de log) | Saída configurada: arquivo, banco, Seq, Application Insights |
+| **NLog** (biblioteca de logging do .NET) | Framework de logging usado no .NET Framework; escreve em arquivo, banco e outros destinos |
+| **structured logging** (log estruturado) | Cada argumento do log vira um campo que dá para consultar depois |
+| **message template** (modelo de mensagem) | Texto com marcadores nomeados, como `{OrderId}`, que preservam o valor como campo |
+| **log level** (nível de severidade) | `Trace`, `Debug`, `Info`, `Warn`, `Error` ou `Fatal`; decide o volume e para onde o log vai |
+| **MDC** (Mapped Diagnostic Context · Contexto de Diagnóstico Mapeado) | Conjunto de campos guardado por thread; leva o mesmo dado a todos os logs da operação |
+| **correlation ID** (identificador de correlação) | Identificador único da requisição; conecta os logs dela, mesmo entre serviços |
+| **PII** (Personally Identifiable Information · Informação de Identificação Pessoal) | Dado que identifica uma pessoa; não entra no log |
+| **sink** (destino do log) | Para onde o log é escrito: arquivo, banco, Seq, Application Insights |
 
-## Logging estruturado
+<a id="structured-logging"></a>
 
-Concatenação de string em logs destrói a estrutura: o valor vira texto, não campo. Message templates do NLog preservam cada argumento como propriedade estruturada no sink (arquivo, banco, Seq, etc.).
+## O log guarda campos, não uma frase pronta
+
+Concatenar os valores dentro do texto entrega ao destino uma frase só. A busca "todos os erros do pedido X" vira uma busca por trecho de texto, que falha quando alguém muda uma palavra da mensagem. Com o modelo de mensagem, `{OrderId}` chega ao destino como um campo com nome e valor, e a consulta filtra por ele. O `Error` também recebe a exceção no primeiro argumento, que é o que preserva o stack trace.
 
 <details>
 <summary>❌ Ruim: concatenação destrói campos, perde stack trace</summary>
@@ -46,7 +45,11 @@ _logger.Error(ex, "Payment failed for {OrderId}", order.Id)
 
 </details>
 
-## Níveis de log
+<a id="log-levels"></a>
+
+## O nível de severidade separa o ruído do incidente
+
+Logar tudo como `Info` iguala a entrada em um handler, uma consulta lenta e um usuário que não foi encontrado. Quem responde a um incidente às três da manhã filtra por `Error` e recebe de volta o fluxo inteiro da aplicação. Cada situação tem seu nível, e a tabela abaixo diz qual.
 
 <details>
 <summary>❌ Ruim: Info para tudo, sem distinção de severidade</summary>
@@ -81,7 +84,11 @@ _logger.Error("User {UserId} not found during checkout", userId)
 
 </details>
 
-## O que nunca logar
+<a id="never-log"></a>
+
+## Senha, cartão e token ficam fora do log
+
+O log é escrito em arquivo, copiado para outro sistema e lido por quem opera a aplicação. Tudo o que entra nele passa a existir em todos esses lugares, e apagar depois não desfaz as cópias. Senha, número de cartão, CVV e token de acesso ficam de fora. O que entra é o identificador, que permite achar o registro sem carregar o dado junto.
 
 <details>
 <summary>❌ Ruim: PII e credenciais em log</summary>
@@ -107,9 +114,11 @@ _logger.Info("Token issued for {UserId}", user.Id)
 
 </details>
 
-## Correlation ID
+<a id="correlation-id"></a>
 
-Sem um identificador comum, logs de uma mesma requisição são ilhas: rastrear o fluxo se torna inviável. Um `ActionFilterAttribute` ou `HttpModule` injeta o `CorrelationId` no `MappedDiagnosticsContext` (MDC) do NLog, enriquecendo todos os logs da requisição automaticamente.
+## O Correlation ID costura os logs de uma requisição
+
+Em produção, dezenas de requisições escrevem no mesmo arquivo ao mesmo tempo. Sem um identificador comum, as cinco linhas de uma requisição ficam intercaladas com as de todas as outras, e não há como saber quais pertencem ao pedido que falhou. Um `ActionFilterAttribute` gera o **correlation ID** no início da requisição e o coloca no **MDC** do NLog, que passa a incluí-lo em cada linha escrita dali em diante, sem que nenhuma chamada de log precise repassá-lo.
 
 <details>
 <summary>❌ Ruim: logs sem contexto de requisição</summary>
@@ -179,7 +188,11 @@ End Function
 
 </details>
 
+<a id="nlog-config"></a>
+
 ## Configuração do NLog
+
+O arquivo abaixo cobre o que um projeto Web API 2 precisa no começo: um arquivo de log por dia, trinta dias de histórico, o `CorrelationId` no início de cada linha e a saída de console para o ambiente de desenvolvimento. O `LoadConfiguration` roda uma vez, no `Application_Start`.
 
 <details>
 <summary>✅ Bom: NLog.config mínimo para Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2</summary>

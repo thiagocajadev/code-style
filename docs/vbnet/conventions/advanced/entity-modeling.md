@@ -2,7 +2,7 @@
 
 > Escopo: VB.NET. Visão transversal: [shared/architecture/entity-modeling.md](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom: `Structure` como **strongly-typed ID** imutável, `NotInheritable Class` como **value object**, `MustInherit Class` como base genérica, `IReadOnlyList(Of T)` em coleções públicas e `Nullable(Of T)` para ausência em tipos de valor.
 
-Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em VB.NET e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério, não com receita fechada.
+Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em VB.NET e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério para decidir cada caso.
 
 O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: quantas propriedades uma entidade aguenta antes de fragmentar; quando uma propriedade vira lista; como expressar relacionamentos um para muitos e muitos para muitos; quando faz sentido herdar de uma `Entity` base. Os exemplos assumem `Option Strict On` e `Option Infer On` em todo o projeto.
 
@@ -10,12 +10,12 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 
 | Conceito | O que é |
 | --- | --- |
-| **entity** (entidade) | Objeto de domínio com identidade própria (`Customer`, `Order`); a igualdade é definida pelo ID, não pelas propriedades |
+| **entity** (entidade) | Objeto de domínio com identidade própria (`Customer`, `Order`); duas instâncias são iguais quando têm o mesmo ID |
 | **value object** (objeto de valor) | Conceito sem identidade, definido pelos próprios valores (`Address`, `Money`); a igualdade é estrutural, valor a valor |
 | **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItem` formam um agregado) |
 | **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo construtor e pelos métodos que alteram estado (ex.: pedido sempre tem ao menos um item) |
-| **boundary** (limite) | Fronteira entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
+| **boundary** (limite) | Linha entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
 | **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `Guid` cru, para impedir trocas acidentais entre IDs |
 | **Structure** (tipo de valor VB.NET) | Tipo alocado em pilha, passa por cópia; idiom preferido para IDs tipados e value objects pequenos em VB.NET |
 | **NotInheritable** (selada) | Modificador VB.NET que impede herança; usado em toda classe concreta de domínio como padrão |
@@ -37,7 +37,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 
 A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria comprometer-se com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
 
-Os números abaixo são heurística, não regra:
+Os números abaixo são heurística para orientar a conversa:
 
 - **5 a 10 propriedades**: zona confortável. A maior parte das entidades de domínio cabe aqui.
 - **10 a 15**: hora de olhar a coesão. Se todos os campos descrevem o mesmo conceito (`Order` com cabeçalho, totais e status), tudo bem. Se já dá para agrupar (endereço, preferências, dados fiscais), extrair.
@@ -428,7 +428,7 @@ O compilador rejeita a troca em tempo de compilação. `CustomerId` e `OrderId` 
 
 ## BaseEntity: o que entra, o que sai
 
-Toda entidade tem identidade, e concentrar essa identidade em uma classe base reutilizada faz sentido. O risco aparece logo a seguir, em uma sequência tentadora: "já que tem base, por que não colocar também os campos de auditoria?"; depois "já que tem auditoria, por que não soft delete?"; depois "já que tem soft delete, por que não version e tenantId?". A base vai engordando, e cada entidade do sistema passa a carregar campos que não usa. Esse é o caminho típico para o **God Object**.
+Toda entidade tem identidade, e concentrar essa identidade em uma classe base faz sentido. O problema começa na pergunta seguinte: "já que existe uma base, por que não colocar nela os campos de auditoria?". Depois vem o soft delete, depois o `Version` e o `TenantId`. A cada rodada a base cresce, e cada entidade do sistema passa a carregar campos que não usa. É assim que nasce o **God Object** (classe que acumula responsabilidade demais).
 
 A regra que funciona é mínima:
 
@@ -562,7 +562,7 @@ End Class
 
 ## Propriedade vs lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade modela a regra de negócio. Quantas linhas existem no banco hoje é outra história. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
 
 A tabela abaixo é a tradução direta de cada regra de cardinalidade para VB.NET:
 
@@ -609,7 +609,7 @@ Public NotInheritable Class Customer
 End Class
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra.
+A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Para aceitar um quarto telefone, alguém precisa mexer na classe e adicionar mais um campo, quando bastaria mudar o número dentro da validação.
 
 </details>
 
@@ -680,7 +680,7 @@ Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muit
 
 Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza a fronteira de agregado, então vai por ID, nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza o limite do agregado, então vai por ID.
 
 <details>
 <summary>❌ Ruim: filho carrega referência completa ao pai, ciclo bidirecional sem dono</summary>
@@ -901,7 +901,7 @@ Public NotInheritable Class Course
 End Class
 ```
 
-`Student` não lista cursos diretamente; `Course` não lista alunos diretamente. O relacionamento mora em `Enrollment`, que carrega data, status e nota. Consultas como "cursos do aluno X" viram queries sobre `Enrollment`, não navegação de lista.
+`Student` não lista cursos diretamente; `Course` não lista alunos diretamente. O relacionamento mora em `Enrollment`, que carrega data, status e nota. Consultas como "cursos do aluno X" viram queries sobre `Enrollment`.
 
 </details>
 
@@ -909,9 +909,9 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 ## Identidade vs referência
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order.LineItems` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, referência direta é o caminho natural: `Order.LineItems` guarda os objetos `OrderItem` inteiros. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
 
-Cruzando a fronteira de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Ao cruzar o limite para outro agregado, a referência muda de forma: vai por ID. `Order` guarda apenas o `CustomerId`. Se guardasse o objeto `Customer` inteiro, o agregado `Order` passaria a ter que manter o `Customer` consistente, que é o trabalho do agregado `Customer`. Com dois agregados responsáveis pela mesma invariante, cada um valida a seu tempo e os dois discordam do estado atual do cliente.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -965,7 +965,7 @@ Dim order = Order.Place(orderId, customerId)
 Dim customer = Await _customerRepository.FindByIdAsync(order.CustomerId)
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Assim, buscar um pedido lê o pedido e os itens dele, sem arrastar junto o cliente, os endereços do cliente e tudo o que estivesse pendurado ali.
 
 </details>
 
@@ -1080,7 +1080,7 @@ Public NotInheritable Class OrderRepository
 End Class
 ```
 
-A entidade não conhece o conceito de tenant ativo. O repositório injeta o filtro. Se alguém esquecer um filtro, o erro fica concentrado no repositório, não espalhado.
+A entidade não conhece o conceito de tenant ativo. O repositório injeta o filtro. Se alguém esquecer um filtro, o erro está em uma classe só, e é lá que a correção entra.
 
 </details>
 

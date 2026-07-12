@@ -1,24 +1,27 @@
 # ADO.NET
 
-**ADO.NET** (ActiveX Data Objects para .NET) é a camada de acesso a dados nativa do .NET Framework, presente em todo legado. Não tem mapeamento automático: o código lê coluna a coluna do **SqlDataReader** ou carrega em **DataTable** via **SqlDataAdapter**. Em troca, oferece controle total sobre a query, o resultado e a transação.
+**ADO.NET** (ActiveX Data Objects para .NET) é a camada de acesso a dados que já vem no .NET Framework, e é o que se encontra em praticamente todo sistema legado. Ele não faz mapeamento automático: quem lê o resultado é o seu código, coluna por coluna, com um **SqlDataReader**, ou carregando tudo em um **DataTable**. O que se ganha em troca é controle sobre a query, sobre o resultado e sobre a transação, sem nenhuma camada decidindo por você.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **ADO.NET** (ActiveX Data Objects para .NET) | Camada de acesso a dados nativa do .NET Framework; sem ORM, controle total |
-| **SqlConnection** (conexão SQL Server) | Abre o canal com o banco; implementa `IDisposable`, sempre dentro de `Using` |
-| **SqlCommand** (comando SQL) | Encapsula a instrução a executar; aceita parâmetros e tipo de comando |
-| **SqlDataReader** (leitor sequencial de resultado) | Stream forward-only de linhas; eficiente em grandes resultados |
-| **SqlDataAdapter** (adaptador de dados) | Preenche `DataTable`/`DataSet` em memória; útil para resultados pequenos |
-| **DataTable** (tabela em memória) | Tabela genérica com linhas e colunas; carregada via `Fill` do adapter |
-| **parameterized query** (consulta parametrizada) | SQL com `@param`; previne SQL injection e permite cache de plano |
-| **Using** (descarte determinístico) | Bloco que garante `Dispose()` mesmo sob exceção; obrigatório em `IDisposable` |
-| **SQL injection** (injeção de SQL) | Vulnerabilidade ao concatenar entrada do usuário em SQL; parametrização elimina o risco |
+| **ADO.NET** (ActiveX Data Objects para .NET) | Camada de acesso a dados nativa do .NET Framework, sem mapeamento automático |
+| **SqlConnection** (conexão) | Abre o canal com o banco; implementa `IDisposable`, então vive dentro de um `Using` |
+| **SqlCommand** (comando) | Carrega a instrução a executar, com os parâmetros dela |
+| **SqlDataReader** (leitor de resultado) | Percorre as linhas uma a uma, do começo ao fim, sem carregar tudo em memória |
+| **SqlDataAdapter** (adaptador) | Preenche um `DataTable` com o resultado inteiro de uma vez |
+| **DataTable** (tabela em memória) | Tabela com linhas e colunas, usada como fonte de dados de grids |
+| **parameterized query** (consulta com parâmetro) | SQL com `@nome` no lugar do valor; o valor viaja separado da instrução |
+| **SQL injection** (injeção de SQL) | Ataque que insere comando SQL pelo campo de entrada; o parâmetro fecha essa porta |
+| **DBNull** (nulo do banco) | Como o ADO.NET representa uma coluna `NULL`; é diferente de `Nothing` |
+| **Using** (bloco com descarte garantido) | Garante o `Dispose()` na saída, mesmo quando uma exceção interrompe o caminho |
 
-## SqlConnection e SqlCommand
+<a id="connection-and-command"></a>
 
-O par fundamental. `SqlConnection` abre o canal com o banco; `SqlCommand` executa a instrução. Ambos implementam `IDisposable`: sempre dentro de `Using`.
+## SqlConnection e SqlCommand dentro de Using
+
+Conexão e comando seguram recursos que o processo precisa devolver: um socket com o servidor e o espaço reservado no pool de conexões. Sem `Dispose()`, esses recursos ficam presos, e o pool se esgota depois de algumas centenas de requisições. O `Using` chama o `Dispose()` na saída do bloco, inclusive quando uma exceção corta o caminho no meio.
 
 <details>
 <summary>✅ Bom: query com SqlDataReader, Using garante descarte</summary>
@@ -50,9 +53,11 @@ End Function
 
 </details>
 
-## Parâmetros: nunca concatenação
+<a id="parameters-not-concatenation"></a>
 
-A regra mais importante de ADO.NET. Concatenar valores do usuário no **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) é SQL injection direto. Parâmetros nomeados enviam o valor separado da instrução; o banco nunca o interpreta como código.
+## O valor entra por parâmetro, nunca por concatenação
+
+Esta é a regra mais importante da página. Concatenar o que o usuário digitou dentro do **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) entrega a ele o poder de escrever a consulta: um nome como `'; DROP TABLE Customers; --` vira um comando que o banco executa. A interpolação com `$"..."` é o mesmo problema com outra escrita. Com parâmetro, a instrução vai por um caminho e o valor por outro, e o banco trata aquele valor como texto, sem nunca interpretá-lo como comando.
 
 <details>
 <summary>❌ Ruim: concatenação de strings abre porta para SQL injection</summary>
@@ -78,9 +83,11 @@ command.Parameters.Add("@Name", SqlDbType.NVarChar, 200).Value = name
 
 </details>
 
-## Adicionando parâmetros
+<a id="add-with-explicit-type"></a>
 
-Prefira `Add` com tipo explícito a `AddWithValue`. `AddWithValue` infere o tipo do valor .NET, o que pode causar conversões inesperadas, especialmente com `String` sendo mapeada para `NVarChar` de tamanho arbitrário, afetando o plano de execução.
+## Add com o tipo escrito, no lugar de AddWithValue
+
+`AddWithValue` adivinha o tipo do parâmetro a partir do valor .NET que você passou, e a adivinhação erra. Uma `String` vira `NVarChar` de um tamanho qualquer, e quando a coluna do banco é `VarChar`, o SQL Server precisa converter a coluna inteira para comparar, o que descarta o índice e transforma uma busca instantânea em varredura da tabela. `Add` com o `SqlDbType` declarado envia o parâmetro no tipo da coluna, e a conversão deixa de existir.
 
 <details>
 <summary>❌ Ruim: AddWithValue: tipo inferido pode causar conversão e miss de índice</summary>
@@ -104,9 +111,11 @@ command.Parameters.Add("@CreatedAt", SqlDbType.DateTime2).Value = createdAt
 
 </details>
 
-## ExecuteNonQuery: INSERT, UPDATE, DELETE
+<a id="execute-non-query"></a>
 
-Para operações que não retornam linhas. Retorna o número de linhas afetadas, útil para detectar se o registro existia.
+## ExecuteNonQuery para INSERT, UPDATE e DELETE
+
+`ExecuteNonQuery` roda a instrução que não devolve linhas e responde quantas linhas ela afetou. Esse número é a resposta para "o registro existia?": um `UPDATE` que afeta zero linhas encontrou o `WHERE` sem correspondência, e o método devolve isso a quem chamou em vez de fingir sucesso.
 
 <details>
 <summary>✅ Bom: INSERT com ExecuteNonQueryAsync</summary>
@@ -159,9 +168,13 @@ End Function
 
 </details>
 
-## Stored procedures
+<a id="stored-procedures"></a>
 
-`CommandType.StoredProcedure` instrui o driver a chamar a procedure pelo nome em vez de executar SQL literal. Os parâmetros são os mesmos; o driver cuida da sintaxe `EXEC`.
+## Stored procedure com CommandType.StoredProcedure
+
+Com `CommandType.StoredProcedure`, o `CommandText` passa a ser o nome da procedure, e o driver monta o `EXEC` por baixo. Os parâmetros são declarados do mesmo jeito. A alternativa, montar o `EXEC` à mão dentro de uma string, volta a misturar instrução e valor no mesmo texto.
+
+O nome da procedure segue a convenção do banco (`SP_` mais verbo e tabela, em maiúsculas), enquanto o método VB.NET que a chama segue a convenção da linguagem. Os verbos e o formato completo estão em [sql/conventions/naming.md](../../sql/conventions/naming.md#object-prefixes).
 
 <details>
 <summary>✅ Bom: procedure de leitura</summary>
@@ -172,7 +185,7 @@ Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOn
         Await connection.OpenAsync()
 
         Using command = connection.CreateCommand()
-            command.CommandText = "FindPurchasesByCustomer"
+            command.CommandText = "SP_LIST_PURCHASES_BY_CUSTOMER_ID"
             command.CommandType = CommandType.StoredProcedure
             command.Parameters.Add("@CustomerId", SqlDbType.UniqueIdentifier).Value = customerId
 
@@ -198,9 +211,11 @@ End Function
 
 </details>
 
-## Parâmetro OUTPUT
+<a id="output-parameter"></a>
 
-Procedures que retornam um valor via `OUTPUT` exigem um `SqlParameter` com `Direction = ParameterDirection.Output`. O valor fica disponível após `ExecuteNonQueryAsync`.
+## Parâmetro OUTPUT devolve o valor gerado no banco
+
+Quando a procedure calcula um valor e o devolve por um parâmetro `OUTPUT` (o `Id` recém-gerado, por exemplo), esse parâmetro precisa ser declarado com `Direction = ParameterDirection.Output`. O valor só existe depois que o comando roda: ler o `.Value` antes do `ExecuteNonQueryAsync` devolve `Nothing`.
 
 <details>
 <summary>✅ Bom: procedure com OUTPUT param para Id gerado no banco</summary>
@@ -211,7 +226,7 @@ Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(
         Await connection.OpenAsync()
 
         Using command = connection.CreateCommand()
-            command.CommandText = "CreatePurchase"
+            command.CommandText = "SP_ADD_PURCHASE"
             command.CommandType = CommandType.StoredProcedure
 
             command.Parameters.Add("@CustomerId", SqlDbType.UniqueIdentifier).Value = customerId
@@ -231,9 +246,11 @@ End Function
 
 </details>
 
-## DataTable e SqlDataAdapter
+<a id="datatable"></a>
 
-`DataTable` é o padrão de fato em WebForms e WinForms legados: carrega um result set inteiro em memória, serve como `DataSource` direto de grids e relatórios. `SqlDataAdapter` preenche o `DataTable` sem precisar de `Open()` explícito.
+## DataTable quando a tela é um grid
+
+`DataTable` carrega o resultado inteiro em memória e serve como fonte de dados direta de um `DataGridView` ou `GridView`, sem que ninguém precise escrever uma classe para as colunas. É o padrão das telas de WebForms e WinForms legados, e continua sendo a escolha certa para relatório e listagem. Para percorrer muitas linhas e processá-las uma a uma, o `SqlDataReader` faz o mesmo trabalho sem trazer tudo para a memória de uma vez.
 
 <details>
 <summary>✅ Bom: SqlDataAdapter + DataTable para binding em DataGridView/GridView</summary>
@@ -271,7 +288,7 @@ GridView1.DataBind()
 ```vbnet
 Public Function GetPurchaseReport(startDate As Date, endDate As Date) As DataTable
     Using connection = ConnectionFactory.Create()
-        Using adapter = New SqlDataAdapter("GetPurchaseReport", connection)
+        Using adapter = New SqlDataAdapter("SP_GET_PURCHASE_REPORT", connection)
             adapter.SelectCommand.CommandType = CommandType.StoredProcedure
             adapter.SelectCommand.Parameters.Add("@StartDate", SqlDbType.Date).Value = startDate
             adapter.SelectCommand.Parameters.Add("@EndDate", SqlDbType.Date).Value = endDate
@@ -287,9 +304,11 @@ End Function
 
 </details>
 
-## Transação
+<a id="transaction"></a>
 
-`SqlTransaction` garante atomicidade: ou tudo persiste, ou nada persiste. Sempre associe cada `SqlCommand` à transação via `.Transaction`. Em caso de exceção, `Rollback` desfaz tudo.
+## A transação faz as duas escritas valerem juntas
+
+Gravar a compra e baixar o estoque são duas escritas. Sem transação, a primeira já está gravada quando a segunda falha, e o banco fica com uma compra cujo estoque nunca saiu. A `SqlTransaction` mantém as duas em suspenso até o `Commit`, e o `Rollback` desfaz tudo no caminho da exceção. Cada `SqlCommand` precisa receber a transação em `.Transaction`: o comando que não a recebe roda fora dela e persiste sozinho.
 
 <details>
 <summary>❌ Ruim: sem transação, operações parcialmente persistidas em caso de erro</summary>
@@ -366,9 +385,11 @@ End Function
 
 </details>
 
-## Null em colunas anuláveis
+<a id="dbnull"></a>
 
-`SqlDataReader` retorna `DBNull.Value` para colunas `NULL`. Verificar com `IsDBNull` antes de ler evita `InvalidCastException`.
+## A coluna nula chega como DBNull, e não como Nothing
+
+Uma coluna `NULL` no banco volta ao código como `DBNull.Value`. Chamar `GetDateTime` sobre ela lança `InvalidCastException`, porque não existe data ali para converter. Pergunte com `IsDBNull` antes de ler, e devolva o valor em um tipo que aceita ausência (`DateTime?`).
 
 <details>
 <summary>❌ Ruim: leitura direta sem verificar DBNull</summary>
@@ -393,9 +414,11 @@ Dim deletedAt As DateTime? = If(
 
 </details>
 
-## ExecuteScalar
+<a id="execute-scalar"></a>
 
-Para queries que retornam um único valor (COUNT, MAX, SUM, ou uma coluna de uma linha).
+## ExecuteScalar quando a resposta é um valor só
+
+`COUNT`, `MAX`, `SUM` e a leitura de uma única coluna devolvem um valor, e não uma tabela. `ExecuteScalar` traz esse valor direto, sem `SqlDataReader` e sem laço. O retorno é `Object`, então a conversão para o tipo esperado fica por conta de quem chamou.
 
 <details>
 <summary>✅ Bom: contagem e verificação de existência com ExecuteScalar</summary>

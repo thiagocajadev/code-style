@@ -1,27 +1,29 @@
-# Performance
+# Performance em VB.NET
 
 > Escopo: VB.NET. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar. **StringBuilder** evita realocações; **GC** pressiona a aplicação quando alocações crescem em laço.
+As técnicas desta página valem no **hot path**, o trecho que roda milhares de vezes por requisição ou em volume alto. Fora dele, escreva o código mais legível e siga em frente: trocar um `For Each` por um `For` indexado em um laço de dez itens economiza microssegundos e deixa o laço mais difícil de ler. E meça antes de mexer, porque o trecho lento quase nunca é o que a intuição aponta.
+
+Quase todo ganho aqui vem de uma coisa só: alocar menos memória. Cada objeto criado no **heap** dá trabalho ao **GC** depois, e alocação dentro de laço multiplica esse trabalho pelo número de voltas.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; única região onde otimizações pagam o custo |
-| **StringBuilder** (construtor de strings) | Tipo que acumula strings com buffer interno reutilizado; substitui `&` em laço |
-| **GC** (Garbage Collector · Coletor de Lixo) | Subsistema que libera memória; alocações em laço pressionam o GC e geram pausas |
-| **allocation** (alocação) | Reserva de memória no heap gerenciado; `New`, boxing e concatenação alocam |
-| **boxing** (encaixotamento) | Cópia de tipo de valor para o heap quando atribuído a `Object`; evite em laços |
-| **Dictionary lookup** (busca em dicionário) | `Dictionary(Of K,V)` substitui `For Each` linear quando a coleção é grande |
-| **For Each vs For** (iteração) | `For` indexado é mais rápido em arrays grandes; `For Each` legível em uso normal |
-| **profiling** (medição de desempenho) | Medir antes de otimizar; números reais antes de mudar código |
+| **hot path** (caminho quente) | Trecho executado em volume ou frequência alta; o único lugar onde a otimização compensa o custo em legibilidade |
+| **heap** (área de memória gerenciada) | Onde os objetos criados com `New` são guardados |
+| **GC** (Garbage Collector · Coletor de Lixo) | Componente que libera a memória dos objetos sem uso; para a aplicação por instantes enquanto trabalha |
+| **allocation** (alocação) | Reserva de memória no heap; `New`, boxing e concatenação de string alocam |
+| **StringBuilder** (montador de strings) | Tipo que acumula texto em um buffer reaproveitado; substitui o `&` dentro do laço |
+| **boxing** (encaixotamento) | Cópia de um tipo de valor para o heap ao guardá-lo em um `Object` |
+| **HashSet(Of T)** (conjunto com busca por hash) | Coleção que responde "contém este item?" em tempo constante |
+| **profiling** (medição de desempenho) | Medir onde o tempo é gasto, com números, antes de mudar o código |
 
-## StringBuilder
+<a id="stringbuilder"></a>
 
-Concatenação com `&` dentro de um laço aloca uma nova String a cada iteração: strings são
-imutáveis em .NET. `StringBuilder` reutiliza um buffer interno e aloca uma vez no final.
+## StringBuilder para texto montado em laço
+
+String no .NET não pode ser alterada depois de criada. Cada `summary &= ...` dentro do laço cria uma string nova, copia todo o conteúdo anterior para ela e descarta a antiga. Com mil itens, são mil strings criadas e jogadas fora, e o custo da cópia cresce a cada volta, porque o texto acumulado é maior. `StringBuilder` escreve em um buffer que ele reaproveita, e monta a string final uma única vez, no `ToString()`.
 
 <details>
 <summary>❌ Ruim: nova string alocada por iteração</summary>
@@ -56,10 +58,11 @@ End Function
 
 </details>
 
-## For vs For Each em hot paths
+<a id="for-vs-foreach"></a>
 
-`For Each` sobre arrays em hot paths usa o enumerador e cria alocação implícita. `For` com
-índice acessa o array diretamente, sem overhead de enumerador.
+## For indexado em array dentro do hot path
+
+`For Each` pede um enumerador à coleção e chama `MoveNext` a cada volta. Em um array percorrido milhares de vezes por segundo, esse enumerador vira alocação e chamada extra sem contrapartida: o `For` com índice lê a posição direto. Fora do hot path, fique com o `For Each`, que diz melhor o que o laço faz.
 
 <details>
 <summary>❌ Ruim: For Each cria enumerador por iteração em hot path</summary>
@@ -93,10 +96,11 @@ End Function
 
 </details>
 
-## Boxing e unboxing
+<a id="boxing"></a>
 
-Passar um tipo de valor (`Integer`, `Decimal`, `Boolean`) para um parâmetro `Object` causa
-boxing: alocação de um wrapper no heap. Em hot paths, prefira genéricos ou tipos concretos.
+## Boxing manda o tipo de valor para o heap
+
+`Integer`, `Decimal` e `Boolean` vivem na pilha e não custam alocação. Guardá-los em um `Object`, que é o que um `ArrayList` faz com cada item, obriga o runtime a criar um objeto no heap para embrulhar aquele valor. Em uma coleção de dez mil números, são dez mil objetos criados na entrada e dez mil conversões na leitura. `List(Of Decimal)` guarda os valores como valores, e o boxing não acontece.
 
 <details>
 <summary>❌ Ruim: ArrayList usa Object, boxing por item</summary>
@@ -130,11 +134,11 @@ End Function
 
 </details>
 
-## Set para membership em alta frequência
+<a id="hashset-contains"></a>
 
-`List(Of T).Contains` percorre o inteiro a cada verificação: O(n). `HashSet(Of T).Contains`
-resolve em O(1) via hash. Para listas fixas verificadas com frequência, defina o `HashSet` uma
-vez no módulo e reutilize.
+## HashSet quando a pergunta é "contém este item?"
+
+`List(Of T).Contains` compara item por item até achar o que procura, então o custo cresce junto com a lista. Dentro de um `Where` que roda para cada produto do catálogo, a lista inteira é percorrida a cada produto. `HashSet(Of T).Contains` calcula o hash do item e vai direto à posição, em tempo que não depende do tamanho do conjunto. Para uma lista fixa consultada com frequência, declare o `HashSet` uma vez no campo e reaproveite.
 
 <details>
 <summary>❌ Ruim: List.Contains percorre tudo a cada chamada</summary>
@@ -170,11 +174,11 @@ End Function
 
 </details>
 
-## ValueTask para caminhos síncronos frequentes
+<a id="sync-path"></a>
 
-`Task(Of T)` aloca um objeto no heap a cada chamada, mesmo quando o resultado já está disponível
-sincronamente. Para métodos com caminho síncrono frequente (cache hit, validação rápida), prefira
-retornar o valor diretamente quando possível.
+## O caminho que já tem a resposta não precisa de Task
+
+Um método `Async` aloca uma `Task` em toda chamada, inclusive quando o valor já estava no cache e nada foi aguardado. Em uma busca que acerta o cache na maior parte das vezes, essa `Task` é alocação pura, repetida a cada requisição. Separe o caminho síncrono em um método que devolve o valor direto, e deixe o método `Async` para quando o dado precisar mesmo vir do repositório.
 
 <details>
 <summary>❌ Ruim: Task desnecessário quando resultado está em cache</summary>

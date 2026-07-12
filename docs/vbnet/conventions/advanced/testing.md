@@ -1,16 +1,12 @@
-# Testing
+# Testes em VB.NET
 
 > Escopo: VB.NET. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o que recebeu, o que esperava.
+O teste registra o comportamento esperado do código. Quando ele falha, a mensagem precisa contar a história inteira: o que foi chamado, o que voltou e o que se esperava no lugar. É por isso que o valor esperado ganha um nome antes da comparação.
 
-Os exemplos seguem a abordagem **AAA** (Arrange Act Assert · Preparar Executar Verificar): uma convenção que divide cada teste em três fases explícitas (preparação do contexto, execução do comportamento e verificação do resultado).
+Os exemplos seguem o **AAA** (Arrange Act Assert · Preparar Executar Verificar), convenção que separa o teste em três fases: preparar o cenário, executar o comportamento e verificar o resultado. O [code style](../variables.md) vale dentro do teste como vale em qualquer outro código. O `Assert` recebe variáveis com nome (`actualPrice`, `expectedName`), sem cálculo, acesso a propriedade ou literal escrito na chamada.
 
-O [code style](../variables.md) se aplica dentro dos testes. O assert recebe variáveis nomeadas, sem expressões, acessos de propriedade ou literais inline.
-
-As variáveis de assert são sempre nomeadas de forma expressiva (`actualPrice`, `expectedName`, `actualOrder` em vez de genéricos) e o `expected` é sempre declarado explicitamente. Isso mantém o padrão AAA consistente: cada fase é visível e o assert lê como uma frase.
-
-Usa **NUnit** (framework de testes para .NET) como referência: amplamente adotado no ecossistema .NET Framework.
+O framework de referência é o **NUnit**, o mais usado no .NET Framework.
 
 ```vbnet
 Imports NUnit.Framework
@@ -20,23 +16,25 @@ Imports NUnit.Framework
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange Act Assert · Preparar Executar Verificar) | Convenção que divide o teste em três fases explícitas |
-| **NUnit** (framework de testes para .NET) | Framework popular em .NET Framework: `<Test>` para casos, `<TestCase>` parametrizadas |
-| **mock** (dados fictícios e dublê de comportamento) | Objeto que substitui dependência real e expõe verificações de chamada (`Moq`, `NSubstitute`) |
-| **stub** (substituto passivo) | Implementação fixa que devolve valor pré-definido sem verificar interação |
-| **fake** (implementação simplificada) | Substituto funcional, mais leve que o real (ex: repositório em memória) |
-| **fixture** (estado compartilhado de teste) | Estado preparado e reutilizado entre testes na mesma classe |
-| **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
-| **TestCase** (caso parametrizado) | Atributo que executa o mesmo teste com múltiplas combinações de entrada |
+| **AAA** (Arrange Act Assert · Preparar Executar Verificar) | Convenção que separa o teste em três fases visíveis |
+| **NUnit** (framework de testes do .NET) | Framework mais usado no .NET Framework: `<Test>` marca o caso, `<TestCase>` passa entradas |
+| **mock** (dados fictícios) | Objeto que entra no lugar da dependência real e ainda permite verificar as chamadas recebidas (`Moq`, `NSubstitute`) |
+| **stub** (substituto passivo) | Implementação que devolve sempre o mesmo valor, sem verificar como foi chamada |
+| **fake** (implementação simplificada) | Substituto que funciona de verdade, porém mais leve, como um repositório em memória |
+| **fixture** (cenário de teste) | Estado preparado para os testes de uma mesma classe |
+| **assert** (verificação) | Fase final do teste; recebe variáveis com nome |
+| **TestCase** (caso com entradas) | Atributo que roda o mesmo teste várias vezes, com combinações diferentes de entrada |
 
 > [!NOTE]
 > A ordem do assert varia por framework:
 > - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))`: actual primeiro
 > - **MSTest**: `Assert.AreEqual(expected, actual)`: expected primeiro
 
-## Fases misturadas: AAA
+<a id="aaa-phases"></a>
 
-Cada teste agrupa as declarações — contexto, execução e valor esperado — em um bloco; uma linha em branco isola a asserção do resultado.
+## As três fases do teste ficam visíveis
+
+O teste escrito em uma linha só passa ou falha sem explicar nada: a mensagem de erro mostra dois números e nenhum contexto. Agrupe as declarações do cenário, da execução e do valor esperado em um bloco, e deixe uma linha em branco antes do `Assert`. A verificação é a fase que responde pelo teste, e ela merece a própria linha.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -66,9 +64,11 @@ End Sub
 
 </details>
 
-## Assert inline: semantic assert
+<a id="semantic-assert"></a>
 
-`expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
+## O valor esperado tem nome antes da comparação
+
+`expected` e `actual` são declarados antes do `Assert`, sempre, mesmo quando o valor parece óbvio na linha. Assim a comparação lê como uma frase (`actualName` é igual a `expectedName`), e a falha aponta os dois nomes. Com o cálculo escrito dentro da chamada, a mensagem de erro mostra apenas o resultado, e quem lê precisa executar o teste de novo para descobrir o que se esperava.
 
 <details>
 <summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
@@ -112,9 +112,11 @@ End Sub
 
 </details>
 
-## Nome genérico
+<a id="test-naming"></a>
 
-O nome do teste descreve o cenário e o resultado esperado, não o nome do método nem uma afirmação vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
+## O nome do teste diz o cenário e o resultado
+
+O nome do teste é a primeira coisa que aparece quando a suíte quebra no pipeline, então ele precisa dizer o que deixou de funcionar sem que ninguém abra o arquivo. `AppliesDiscountWhenOrderTotalExceedsMinimum` entrega cenário e resultado. `Test1` e `ShouldApplyDiscount` não entregam nem um nem outro. O prefixo `Should` ocupa espaço sem acrescentar informação, e o padrão `GivenWhenThen` alonga o nome com palavras que a estrutura do teste já mostra.
 
 <details>
 <summary>❌ Ruim: prefixo vazio, nome que repete a implementação</summary>
@@ -148,9 +150,11 @@ Public Sub ThrowsValidationExceptionWhenDiscountIsNegative() : End Sub
 
 </details>
 
-## Estado compartilhado
+<a id="shared-state"></a>
 
-Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
+## Cada teste monta o próprio cenário
+
+Um campo `Shared` preenchido por um teste e lido por outro amarra os dois à ordem de execução. O NUnit não garante essa ordem, e rodar um teste sozinho pela IDE já o encontra com o campo vazio. A falha aparece no segundo teste, embora a causa esteja no primeiro. Cada teste declara o que precisa dentro do próprio corpo.
 
 <details>
 <summary>❌ Ruim: campo compartilhado entre testes, ordem importa</summary>
@@ -207,9 +211,11 @@ End Class
 
 </details>
 
-## Exceção sem tipo
+<a id="exception-type"></a>
 
-Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado. `Assert.Throws(Of T)` verifica o tipo, não apenas a presença.
+## O teste de exceção verifica o tipo
+
+Um `Try/Catch` que aceita qualquer `Exception` também passa quando o código lança `NullReferenceException` por um bug, em vez do `ArgumentException` que a regra pedia. O teste fica verde enquanto o comportamento está errado. `Assert.Throws(Of ArgumentException)` exige o tipo certo e falha quando vier outro.
 
 <details>
 <summary>❌ Ruim: try/catch manual, tipo não verificado</summary>
@@ -240,9 +246,11 @@ End Sub
 
 </details>
 
-## Teste assíncrono
+<a id="async-test"></a>
 
-NUnit 3 suporta testes assíncronos com `Async Function` retornando `Task`.
+## O teste assíncrono é uma Async Function
+
+O NUnit 3 aguarda o teste declarado como `Async Function` que devolve `Task`. Chamar `.Result` dentro de um `Sub` bloqueia a thread e traz de volta o impasse descrito em [código assíncrono](async.md#no-blocking-await), agora dentro da suíte de testes.
 
 <details>
 <summary>❌ Ruim: .Result bloqueia thread e esconde falhas async</summary>

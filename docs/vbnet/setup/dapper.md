@@ -3,24 +3,28 @@
 > [!NOTE]
 > Essa estrutura reflete como usar Dapper em projetos VB.NET/.NET Framework 4.8. Os exemplos são referências conceituais. O que importa é o princípio: procedures para operações de domínio, queries abertas para casos simples, parâmetros nomeados sempre.
 
-A preferência é usar **stored procedures** para operações de domínio: a lógica de acesso a dados fica no banco, o VB.NET só chama e mapeia. Queries abertas entram quando a operação é simples demais para justificar uma procedure.
+**Dapper** é uma biblioteca que executa a query e transforma cada linha do resultado em um objeto do seu código. Ele não gera SQL nem controla o schema, então o SQL continua sendo escrito por quem entende do banco. A escolha adotada aqui é colocar a operação de domínio em uma **stored procedure**, e deixar o VB.NET com o papel de chamar e mapear. A query escrita direto no repositório fica para o caso simples, quando criar uma procedure custaria mais do que resolve.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **Dapper** (micro-ORM para .NET) | Biblioteca leve que mapeia linhas para tipos sem o peso de um ORM completo |
-| **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Camada que mapeia tabelas para classes; Dapper fica entre ADO.NET cru e Entity Framework |
-| **stored procedure** (procedimento armazenado) | Operação SQL nomeada e versionada no banco; encapsula lógica de acesso a dados |
-| **parameterized query** (consulta parametrizada) | SQL com `@param`; previne SQL injection e permite cache de plano |
-| **DbConnection** (conexão com o banco) | Abstração ADO.NET; Dapper estende com `Query`, `Execute`, `QueryAsync` |
-| **multi-mapping** (mapeamento múltiplo) | Recurso do Dapper para popular grafo de objetos a partir de uma única query |
-| **CommandType.StoredProcedure** (tipo de comando: procedure) | Flag que indica ao Dapper executar via `EXEC` em vez de SQL inline |
-| **SQL injection** (injeção de SQL) | Vulnerabilidade ao concatenar entrada do usuário em SQL; parametrização elimina o risco |
+| **Dapper** (mapeador leve para .NET) | Biblioteca que executa a query e transforma cada linha em um objeto, sem o peso de um ORM completo |
+| **ORM** (Object-Relational Mapper · Mapeador Objeto-Relacional) | Camada que traduz tabelas em classes; o Dapper fica entre o ADO.NET cru e o Entity Framework |
+| **stored procedure** (procedimento armazenado) | Consulta com nome, guardada e versionada dentro do banco |
+| **parameterized query** (consulta com parâmetro) | SQL com `@nome` no lugar do valor; o valor viaja separado da instrução |
+| **DynamicParameters** (parâmetros do Dapper) | Objeto do Dapper que carrega os parâmetros, inclusive os de saída (`OUTPUT`) |
+| **IDbConnection** (conexão) | Interface de conexão do ADO.NET que o Dapper estende com `QueryAsync` e `ExecuteAsync` |
+| **QueryMultiple** (múltiplos resultados) | Lê vários `SELECT` de uma mesma procedure em uma única ida ao banco |
+| **SQL injection** (injeção de SQL) | Ataque que insere comando SQL pelo campo de entrada; o parâmetro fecha essa porta |
 
-## Procedure por domínio
+<a id="procedure-per-domain"></a>
 
-Cada operação de domínio tem sua própria procedure. O repositório chama e mapeia, não constrói **SQL** (Structured Query Language · Linguagem de Consulta Estruturada).
+## A operação de domínio mora em uma procedure
+
+O **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) de uma operação de domínio traz os `JOIN`, o filtro de registro excluído e a ordenação que aquele negócio exige. Escrito dentro de uma string no repositório, esse SQL só pode ser ajustado com recompilação e novo deploy, e o time de banco não consegue nem revisar o plano de execução dele. Na procedure, a consulta fica versionada no banco, e o repositório se ocupa de passar os parâmetros e receber os objetos.
+
+O nome da procedure segue a convenção do banco: `SP_` seguido do verbo e da tabela, em maiúsculas, como `SP_LIST_PURCHASES_BY_CUSTOMER_ID`. O verbo `LIST` avisa que volta uma coleção filtrada, e `GET` avisa que volta um registro só. O método do repositório que chama essa procedure continua em PascalCase (`FindByCustomerAsync`), porque ele é código VB.NET. Os verbos disponíveis e o formato completo estão em [sql/conventions/naming.md](../../sql/conventions/naming.md#object-prefixes).
 
 <details>
 <summary>❌ Ruim: SQL de domínio inline no repositório</summary>
@@ -47,8 +51,8 @@ End Function
 <summary>✅ Bom: procedure encapsula a lógica, repositório só mapeia</summary>
 
 ```sql
--- FindPurchasesByCustomer.sql
-CREATE OR ALTER PROCEDURE FindPurchasesByCustomer
+-- SP_LIST_PURCHASES_BY_CUSTOMER_ID.sql
+CREATE OR ALTER PROCEDURE SP_LIST_PURCHASES_BY_CUSTOMER_ID
 (
   @CustomerId UNIQUEIDENTIFIER
 )
@@ -70,7 +74,7 @@ BEGIN
     Purchases.CreatedAt DESC;
 END;
 
--- EXEC FindPurchasesByCustomer @CustomerId = '9585E296-1114-4F35-9B34-1130987BA6D0';
+-- EXEC SP_LIST_PURCHASES_BY_CUSTOMER_ID @CustomerId = '9585E296-1114-4F35-9B34-1130987BA6D0';
 ```
 
 ```vbnet
@@ -79,7 +83,7 @@ Public Async Function FindByCustomerAsync(customerId As Guid) As Task(Of IReadOn
     parameters.Add("CustomerId", customerId)
 
     Dim summaries = Await _connection.QueryAsync(Of PurchaseSummary)(
-        "FindPurchasesByCustomer",
+        "SP_LIST_PURCHASES_BY_CUSTOMER_ID",
         parameters,
         commandType:=CommandType.StoredProcedure)
 
@@ -90,12 +94,14 @@ End Function
 
 </details>
 
+O parâmetro `OUTPUT` devolve ao código um valor que o banco gerou, como o `Id` da linha recém-inserida. No Dapper, ele é declarado no `DynamicParameters` com `direction:=ParameterDirection.Output`, e só pode ser lido depois que o `ExecuteAsync` rodou.
+
 <details>
 <summary>✅ Bom: procedure de escrita com OUTPUT param</summary>
 
 ```sql
--- CreatePurchase.sql
-CREATE OR ALTER PROCEDURE CreatePurchase
+-- SP_ADD_PURCHASE.sql
+CREATE OR ALTER PROCEDURE SP_ADD_PURCHASE
 (
   @CustomerId UNIQUEIDENTIFIER,
   @Total      DECIMAL(18, 2),
@@ -109,7 +115,7 @@ BEGIN
   VALUES (@NewId, @CustomerId, @Total, GETUTCDATE());
 END;
 
--- EXEC CreatePurchase
+-- EXEC SP_ADD_PURCHASE
 --   @CustomerId = '9585E296-1114-4F35-9B34-1130987BA6D0',
 --   @Total      = 99.90,
 --   @NewId      = NULL OUTPUT;
@@ -123,7 +129,7 @@ Public Async Function CreateAsync(customerId As Guid, total As Decimal) As Task(
     parameters.Add("NewId", dbType:=DbType.Guid, direction:=ParameterDirection.Output)
 
     Await _connection.ExecuteAsync(
-        "CreatePurchase",
+        "SP_ADD_PURCHASE",
         parameters,
         commandType:=CommandType.StoredProcedure)
 
@@ -134,9 +140,11 @@ End Function
 
 </details>
 
-## Query aberta: casos simples
+<a id="inline-query"></a>
 
-Quando a operação é simples demais para justificar uma procedure (lookup por chave, contagem, existência), query aberta é aceitável.
+## A query aberta resolve o caso simples
+
+Busca por chave primária, contagem e verificação de existência cabem em uma linha de SQL e não carregam regra de negócio nenhuma. Criar uma procedure para cada uma delas acrescenta um arquivo, uma migration e um deploy de banco, sem nada em troca. Nesses casos, a query fica no repositório, sempre com parâmetro nomeado.
 
 <details>
 <summary>✅ Bom: lookup simples por chave primária</summary>
@@ -167,9 +175,13 @@ End Function
 
 </details>
 
-## SQL injection
+<a id="sql-injection"></a>
 
-SQL injection acontece quando um valor externo é interpretado como código SQL em vez de dado. Parâmetros nomeados eliminam o risco: o driver envia o valor separado do SQL, e o banco trata como dado puro.
+## O valor entra por parâmetro, e o banco o trata como dado
+
+SQL injection acontece quando um valor digitado pelo usuário é lido pelo banco como comando. Um email igual a `' OR '1'='1` transforma a busca por um cliente na busca por todos eles, e um valor com `; DROP TABLE Customers; --` apaga a tabela. Com parâmetro nomeado, o driver manda a instrução e o valor por vias separadas, e nada do que vier no valor é interpretado como código.
+
+O `LIKE` costuma escapar dessa regra, porque parece que os `%` precisam estar no SQL. Eles não precisam: os `%` fazem parte do valor, e o parâmetro recebe o termo já cercado por eles.
 
 <details>
 <summary>❌ Ruim: concatenação deixa o atacante escrever SQL</summary>
@@ -234,9 +246,11 @@ End Function
 
 </details>
 
-## Injeção de conexão
+<a id="connection-injection"></a>
 
-`IDbConnection` é injetado no repositório via construtor, nunca instanciado internamente. O ciclo de vida da conexão é responsabilidade do container de DI.
+## A conexão chega pelo construtor
+
+O repositório recebe `IDbConnection` pelo construtor. Criar a conexão lá dentro traz a connection string junto e prende o repositório a um banco específico, o que impede o teste de trocá-la por outra coisa. Quem decide o tempo de vida da conexão é o registro no container: `HierarchicalLifetimeManager` entrega uma conexão por requisição, que é o que a transação precisa para abranger as escritas daquela requisição.
 
 <details>
 <summary>❌ Ruim: conexão instanciada dentro do repositório</summary>
@@ -273,7 +287,7 @@ Public Class PurchaseRepository
         parameters.Add("CustomerId", customerId)
 
         Dim summaries = Await _connection.QueryAsync(Of PurchaseSummary)(
-            "FindPurchasesByCustomer",
+            "SP_LIST_PURCHASES_BY_CUSTOMER_ID",
             parameters,
             commandType:=CommandType.StoredProcedure)
 
@@ -295,16 +309,18 @@ container.RegisterType(Of IPurchaseRepository, PurchaseRepository)(
 
 </details>
 
-## Multi-result: QueryMultiple
+<a id="query-multiple"></a>
 
-Quando uma procedure retorna múltiplos result sets, `QueryMultiple` lê cada um em sequência com uma única viagem ao banco.
+## QueryMultiple lê vários resultados em uma ida só
+
+Uma tela de painel precisa do cliente e da lista de compras dele. Feitas em duas chamadas, são duas idas ao banco, cada uma com a latência da rede. Uma procedure com dois `SELECT` devolve os dois resultados de uma vez, e o `QueryMultiple` lê um depois do outro, na mesma ordem em que aparecem na procedure.
 
 <details>
 <summary>✅ Bom: procedure com múltiplos SELECTs, uma única chamada</summary>
 
 ```sql
--- GetPurchaseDashboard.sql
-CREATE OR ALTER PROCEDURE GetPurchaseDashboard
+-- SP_GET_PURCHASE_DASHBOARD.sql
+CREATE OR ALTER PROCEDURE SP_GET_PURCHASE_DASHBOARD
 (
   @CustomerId UNIQUEIDENTIFIER
 )
@@ -325,7 +341,7 @@ Public Async Function GetDashboardAsync(customerId As Guid) As Task(Of CustomerD
     parameters.Add("CustomerId", customerId)
 
     Using reader = Await _connection.QueryMultipleAsync(
-        "GetPurchaseDashboard",
+        "SP_GET_PURCHASE_DASHBOARD",
         parameters,
         commandType:=CommandType.StoredProcedure)
 

@@ -1,22 +1,26 @@
-# Dates
+# Datas em VB.NET
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-`DateTime` em .NET tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou `Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira `DateTimeOffset` para eliminar a ambiguidade: o offset está embutido no tipo.
+O `DateTime` do .NET guarda, junto com a data, um campo `Kind` que diz se aquele instante é local, é **UTC** ou é indefinido. A armadilha está no valor padrão: a maioria das formas de criar um `DateTime` produz `Unspecified`, e o compilador não avisa. Duas datas com `Kind` diferente comparadas entre si dão o resultado errado sem lançar erro nenhum. O `DateTimeOffset` resolve isso na origem, porque carrega o fuso dentro do próprio valor.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Referência de tempo sem fuso; formato canônico para armazenar e transmitir |
-| **ISO 8601** (International Organization for Standardization 8601, Norma Internacional de Datas) | Formato padrão `YYYY-MM-DDTHH:mm:ssZ` para datas em texto |
-| **DateTimeOffset** (data com fuso) | Tipo .NET que carrega o offset embutido; elimina ambiguidade do `Kind` |
-| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Contrato que transporta datas entre camadas; sempre em UTC ISO 8601 |
-| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Banco relacional; colunas `datetime2` + UTC é o padrão seguro |
+| **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) | Referência de tempo sem fuso; é como as datas são gravadas e transmitidas |
+| **ISO 8601** (International Organization for Standardization 8601 · Norma Internacional de Datas) | Formato de data em texto: `YYYY-MM-DDTHH:mm:ssZ` |
+| **Kind** (natureza do instante) | Campo do `DateTime` que diz se aquele valor é `Local`, `Utc` ou `Unspecified` |
+| **offset** (diferença para o UTC) | Quanto o horário local se afasta do UTC, por exemplo `-03:00` no horário de Brasília |
+| **DateTimeOffset** (data com o fuso embutido) | Tipo do .NET que guarda o instante junto com o offset |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Objeto que leva dados entre camadas; datas nele viajam em UTC no formato ISO 8601 |
+| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Banco relacional; a coluna `datetimeoffset` guarda o fuso junto com a data |
 
-## DateTime.Now vs DateTimeOffset.UtcNow
+<a id="utcnow-over-now"></a>
 
-`DateTime.Now` captura a hora local do servidor. Em deploys com servidores em timezones diferentes, o mesmo código produz valores incomparáveis.
+## DateTimeOffset.UtcNow no lugar de DateTime.Now
+
+`DateTime.Now` devolve a hora do relógio do servidor. Dois servidores em fusos diferentes rodando o mesmo código gravam horas diferentes para o mesmo evento, e comparar esses registros depois dá resultado errado. `DateTimeOffset.UtcNow` devolve o mesmo instante em qualquer máquina, com o offset gravado junto.
 
 <details>
 <summary>❌ Ruim: hora local do servidor, Kind implícito</summary>
@@ -40,9 +44,11 @@ Dim createdAt = DateTimeOffset.UtcNow
 
 </details>
 
-## DateTime vs DateTimeOffset
+<a id="datetime-vs-datetimeoffset"></a>
 
-`DateTime` perde a informação de timezone. `DateTimeOffset` carrega o offset junto ao valor, sem precisar de contexto externo para interpretar o instante.
+## DateTimeOffset guarda o fuso junto com a data
+
+Um `DateTime` com `Kind` igual a `Unspecified` traz a data e a hora, e nada mais. Para interpretar aquele instante, quem lê precisa conhecer uma convenção que mora fora do código, do tipo "aqui a gente sempre grava em UTC". Quando essa convenção falha em um único ponto do sistema, o valor gravado fica três horas deslocado e ninguém descobre até o relatório sair errado. `DateTimeOffset` carrega o offset no valor.
 
 <details>
 <summary>❌ Ruim: DateTime sem Kind perde contexto de timezone</summary>
@@ -70,9 +76,11 @@ End Class
 
 </details>
 
-## DateTime.SpecifyKind: falsa segurança
+<a id="specify-kind"></a>
 
-`DateTime.SpecifyKind` apenas muda o campo `Kind` sem converter o valor. Um `DateTime` local marcado como `Utc` tem o valor errado: a hora não é ajustada.
+## DateTime.SpecifyKind troca o rótulo e mantém a hora
+
+`SpecifyKind` escreve outro valor no campo `Kind` e deixa a hora exatamente como estava. Em um servidor no fuso de Brasília, `11:00` local marcado como `Utc` continua sendo `11:00`, embora o UTC daquele instante seja `14:00`. O valor passa a mentir sobre si mesmo, e as três horas de diferença aparecem depois, em qualquer comparação ou relatório. Comece com `DateTimeOffset` e o ajuste deixa de ser necessário.
 
 <details>
 <summary>❌ Ruim: SpecifyKind muda o rótulo, não o valor</summary>
@@ -98,9 +106,11 @@ Dim createdAt = DateTimeOffset.UtcNow
 
 </details>
 
-## Datas sem hora: evite hora fantasma
+<a id="date-only"></a>
 
-.NET Framework 4.8 não tem `DateOnly` (disponível só no .NET 6+). Para representar apenas uma data, use `DateTime` com hora zerada, mas documente a convenção e garanta consistência na serialização para evitar shifts de timezone.
+## Data de aniversário não tem hora
+
+O .NET Framework 4.8 não tem o tipo `DateOnly`, que só chegou no .NET 6. Guardar uma data de nascimento em um `DateTime` cria uma hora que ninguém pediu, a meia-noite, e essa hora vira alvo de conversão de fuso na serialização. Meia-noite de 21/08 em Brasília é dia 20 às 21:00 em UTC, então a data de nascimento anda um dia para trás no JSON. No **DTO**, a data viaja como texto no formato `yyyy-MM-dd`, e o service converte para `DateTime` com `TryParseExact`.
 
 <details>
 <summary>❌ Ruim: DateTime com hora fantasma, sujeita a shift na serialização</summary>
@@ -148,9 +158,11 @@ End Function
 
 </details>
 
-## ADO.NET e Dapper: colunas de data
+<a id="dates-in-the-database"></a>
 
-Ao ler `DateTime` do banco, o valor volta como `DateTimeKind.Unspecified`. Trate na camada de dados: converta para UTC explicitamente ou use `DateTimeOffset` na coluna (`datetimeoffset` no SQL Server).
+## A coluna do banco também guarda o fuso
+
+Um `DateTime` lido de uma coluna `datetime2` chega ao código com `Kind` igual a `Unspecified`, porque a coluna guardou a data e descartou o fuso. Comparar esse valor com `DateTime.UtcNow` mistura duas referências diferentes e produz uma diferença de horas. A coluna `datetimeoffset` do SQL Server guarda o offset junto, e o Dapper mapeia direto para `DateTimeOffset` no modelo.
 
 <details>
 <summary>❌ Ruim: DateTime lido do banco sem Kind, interpretação ambígua</summary>
@@ -193,9 +205,11 @@ End Function
 
 </details>
 
-## Formatação: cultura explícita
+<a id="explicit-culture"></a>
 
-`ToString()` sem cultura usa a cultura do thread atual, que varia entre servidores e máquinas. Sempre passe a cultura explicitamente ao formatar datas.
+## Toda formatação de data recebe a cultura
+
+`ToString("dd/MM/yyyy")` sem cultura usa a cultura da thread, que vem da configuração do sistema operacional onde o processo roda. O mesmo código imprime `19/04/2026` na máquina do desenvolvedor e outra coisa no servidor. Passe a cultura no argumento: `CultureInfo("pt-BR")` para o que o usuário lê, `CultureInfo.InvariantCulture` com formato ISO 8601 para o que a API devolve.
 
 <details>
 <summary>❌ Ruim: formatação dependente da cultura do servidor</summary>

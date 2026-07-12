@@ -1,26 +1,28 @@
-# API Design
+# Design de API em VB.NET
 
 > Escopo: VB.NET. Idiomas Web API 2 deste arquivo.
 > SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-VB.NET sobre .NET Framework 4.8 usa **ASP.NET Web API 2** (System.Web.Http) para **API** (Application Programming Interface · Interface de Programação de Aplicações) **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto). Não há Minimal API (exige .NET 6+) nem primary constructors (exige C# 12). O design continua valendo: controller fino, handler por operação, DTOs imutáveis, envelope consistente.
+VB.NET sobre .NET Framework 4.8 escreve **API HTTP** com **ASP.NET Web API 2** (namespace `System.Web.Http`). Duas facilidades que aparecem em material recente ficam de fora aqui: a Minimal API, que pede .NET 6 ou superior, e o construtor primário, que é do C# 12. As decisões de design continuam as mesmas: controller fino, um handler por operação, DTOs que não mudam depois de criados e um envelope igual em todas as respostas.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato de comunicação entre serviços, tipicamente via HTTP |
-| **REST** (Representational State Transfer · Transferência de Estado Representacional) | Estilo arquitetural com verbos HTTP sobre recursos identificados por URL |
-| **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, headers, corpo |
-| **Controller** (controlador) | Boundary entre HTTP e domínio; recebe input, chama handler, traduz resultado |
-| **Handler** (manipulador) | Executa a regra da operação; retorna `Result(Of T)` sem conhecer HTTP |
-| **SSOT** (Single Source of Truth · Fonte Única da Verdade) | Pipeline, envelope e mapeamento Result → HTTP ficam em shared/platform/api-design.md |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato pelo qual um sistema conversa com outro, normalmente sobre HTTP |
+| **REST** (Representational State Transfer · Transferência de Estado Representacional) | Estilo que usa os verbos do HTTP sobre recursos identificados por URL |
+| **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo da web: verbos, status codes, cabeçalhos e corpo |
+| **Controller** (controlador) | Fica no limite entre o HTTP e o domínio: recebe a requisição, chama o handler e traduz o resultado |
+| **Handler** (manipulador) | Executa a operação e devolve `Result(Of T)`, sem saber que HTTP existe |
+| **Result(Of T)** (tipo de resultado) | Valor que carrega o sucesso com o dado, ou a falha com a mensagem |
+| **envelope** (envelope da resposta) | Formato fixo de toda resposta da API: `{ Data, Meta }` |
+| **SSOT** (Single Source of Truth · Fonte Única da Verdade) | Pipeline, envelope e a tradução de `Result` para HTTP moram em shared/platform/api-design.md |
 
-## Controller thin: delegar para handler
+<a id="thin-controller"></a>
 
-Controller em Web API 2 é o **boundary** entre HTTP e domínio. Recebe input, chama o handler, traduz o resultado. Handler retorna `Result(Of T)` (tipo de domínio), nunca `IHttpActionResult`: o controller é quem conhece HTTP.
+## O controller entrega o trabalho ao handler
 
-A estrutura por domínio mantém tudo colocalizado:
+O controller fica no limite do sistema: ele traduz HTTP para uma chamada de domínio e traduz o resultado de volta para HTTP. Regra de negócio escrita ali dentro só roda quando existe uma requisição para carregá-la, então testá-la exige subir o pipeline do Web API, e reaproveitá-la em um job noturno fica impossível. Cada operação vira um handler, e os arquivos de um domínio ficam na mesma pasta.
 
 ```
 Features/
@@ -134,9 +136,11 @@ End Class
 
 </details>
 
-## Handler retorna domínio, nunca HTTP
+<a id="handler-returns-domain"></a>
 
-Handler não conhece HTTP. Retorna `Result(Of T)`: success com valor de domínio ou failure com mensagem. O controller traduz para `IHttpActionResult` no boundary. Assim o handler fica testável sem `HttpContext` e reaproveitável fora de Web API.
+## O handler devolve Result, e o controller traduz para HTTP
+
+O handler devolve `Result(Of T)`: sucesso com o valor de domínio, ou falha com a mensagem. Quem escolhe o status code é o controller, no limite do sistema. Essa divisão tem dois efeitos práticos. O teste do handler roda sem `HttpContext`, chamando o método e lendo o resultado. E o mesmo handler serve a um job agendado ou a um comando de linha de comando, onde `IHttpActionResult` não significaria nada.
 
 <details>
 <summary>❌ Ruim: handler retorna IHttpActionResult, acoplado a HTTP</summary>
@@ -195,14 +199,11 @@ End Class
 
 </details>
 
-## Contrato, envelope, verbos e status codes
+<a id="immutable-dto"></a>
 
-Pipeline de API, DTOs de Request/Response, envelope `ApiResponse(Of T)` com `{ Data, Meta }`,
-verbos REST, status codes e mapeamento de `Result(Of T)` para HTTP são agnósticos. A SSOT fica em
-[shared/platform/api-design.md](../../../shared/platform/api-design.md).
+## O DTO é uma classe que não muda depois de criada
 
-Em VB.NET sobre .NET Framework 4.8 não há `record`; o equivalente idiomático é a **classe imutável**
-com propriedades `ReadOnly` inicializadas no construtor, e o envelope é montado no controller:
+O formato do envelope, os verbos, os status codes e a tradução de `Result(Of T)` para HTTP valem para qualquer linguagem, e estão em [shared/platform/api-design.md](../../../shared/platform/api-design.md). O que muda aqui é a escrita: o .NET Framework 4.8 não tem `record`, então o DTO é uma classe `NotInheritable` com propriedades `ReadOnly` preenchidas no construtor. Depois de construído, o objeto guarda os mesmos valores até o fim, e nenhuma camada do caminho consegue alterá-lo por engano.
 
 ```vbnet
 Public NotInheritable Class OrderRequest
@@ -239,9 +240,11 @@ Public NotInheritable Class ApiResponse(Of T)
 End Class
 ```
 
-## Roteamento por atributo
+<a id="attribute-routing"></a>
 
-Web API 2 suporta roteamento convencional (`config.Routes.MapHttpRoute(...)`) e roteamento por atributo (`<Route(...)>`, `<RoutePrefix(...)>`). O roteamento por atributo é preferido: rota colocalizada com o controller, sem tabela global.
+## A rota fica escrita no próprio controller
+
+Web API 2 aceita duas formas de declarar rota. A convencional monta uma tabela central no `WebApiConfig`, e ali um template como `api/{controller}/{id}` atende todos os controllers de uma vez: qualquer rota fora desse formato exige voltar ao arquivo central, e duas actions com a mesma forma de URL entram em conflito. O roteamento por atributo escreve a rota em cima da action, onde quem lê o método já enxerga a URL que chega nele.
 
 <details>
 <summary>❌ Ruim: rotas convencionais, descoberta distante do handler</summary>
@@ -280,11 +283,11 @@ End Class
 
 </details>
 
-## Async sem deadlock
+<a id="async-without-deadlock"></a>
 
-Web API 2 sobre IIS expõe um `SynchronizationContext`. Chamar `.Result` ou `.Wait()` em controller ou handler causa deadlock: a continuation aguarda a thread que está bloqueada esperando a task.
+## A cadeia async vai do controller ao service
 
-A regra é `Async/Await` ponta a ponta. Controller `Async Function`, handler `Async Function`, service `Async Function`. Nunca quebrar a cadeia.
+O Web API 2 rodando sobre IIS tem um `SynchronizationContext`, então um `.Result` ou `.Wait()` dentro do controller ou do handler trava a requisição pelo impasse descrito em [código assíncrono](async.md#no-blocking-await): a thread fica parada esperando a `Task`, e a `Task` espera aquela thread para continuar. A cadeia precisa ser `Async` inteira, do controller ao service, sem um único elo síncrono no meio.
 
 <details>
 <summary>❌ Ruim: .Result em handler async</summary>

@@ -1,6 +1,6 @@
-# Quick Reference
+# Referência rápida do VB.NET
 
-> Escopo: VB.NET. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: VB.NET. Resumo das convenções; detalhes em `conventions/`.
 
 ## Nomenclatura
 
@@ -51,7 +51,7 @@
 | `Send` | Disparar evento, notificação, e-mail | `SendNotificationAsync` |
 | `Is` / `Has` / `Can` | Predicado booleano | `IsActive`, `HasDiscount`, `CanApprove` |
 
-## Taboos
+## O que evitar
 
 | Proibido | Motivo | Alternativa |
 | --- | --- | --- |

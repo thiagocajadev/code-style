@@ -1,25 +1,29 @@
-# Async
+# Código assíncrono em VB.NET
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-Async/Await chegou ao VB.NET com o .NET Framework 4.5. Os padrões são os mesmos do C#, com uma diferença crítica: VB.NET tem **Async Sub**, que não existe em C#, e seu uso fora de event handlers cria bugs silenciosos. **Async Function** retorna `Task`, é aguardável e propaga exceções.
+`Async`/`Await` chegou ao VB.NET com o .NET Framework 4.5, e os padrões são os mesmos do C#. Existe uma diferença que custa caro: o VB.NET tem **Async Sub**, que o C# não tem, e usá-lo fora de um event handler cria falhas que ninguém percebe. **Async Function** devolve uma `Task`, pode ser aguardada com `Await` e entrega as exceções a quem chamou.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **Task** (tarefa assíncrona) | Tipo `Task` / `Task(Of T)` que representa o resultado futuro de uma operação assíncrona |
-| **Async/Await** (assíncrono / aguardar) | Palavras-chave que marcam um método como assíncrono e suspendem a execução até o resultado |
-| **Async Function** (função assíncrona) | Forma aguardável: retorna `Task` ou `Task(Of T)`; exceções propagam ao caller |
-| **Async Sub** (subrotina assíncrona) | Não é aguardável; usar APENAS em event handlers do Windows Forms/WebForms |
-| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa o limite do processo: rede, disco, banco |
-| **deadlock** (impasse) | Travamento por bloqueio síncrono (`.Result`, `.Wait()`) sobre código assíncrono |
-| **CancellationToken** (sinalizador de cancelamento) | Token propagado pela cadeia para abortar operações longas com cooperação |
-| **ConfigureAwait** (configurar continuação) | Método que controla retorno ao contexto original; em libraries usa-se `False` |
+| **Task** (tarefa) | Tipo `Task` ou `Task(Of T)` que representa um resultado que ainda vai ficar pronto |
+| **Async/Await** (assíncrono / aguardar) | Palavras que marcam o método como assíncrono e param a execução ali até o resultado chegar |
+| **Async Function** (função assíncrona) | Devolve `Task` ou `Task(Of T)`; quem chamou consegue aguardar e receber as exceções |
+| **Async Sub** (subrotina assíncrona) | Não devolve `Task`, então ninguém consegue aguardar; use apenas em event handler de Windows Forms ou WebForms |
+| **thread** (linha de execução que roda o código) | Uma execução do programa; enquanto ela está bloqueada, nada mais roda naquela linha |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que sai do processo: rede, disco, banco |
+| **deadlock** (impasse) | Travamento em que a thread espera a `Task` e a `Task` espera aquela mesma thread |
+| **SynchronizationContext** (contexto de sincronização) | Regra de qual thread continua o código depois do `Await`; existe em ASP.NET e Windows Forms |
+| **CancellationToken** (sinalizador de cancelamento) | Token passado pela cadeia de chamadas para interromper uma operação longa |
+| **ConfigureAwait** (configurar a continuação) | Método que dispensa a volta ao contexto original; em biblioteca, usa-se `False` |
 
-## Async Function vs Async Sub
+<a id="async-function-vs-async-sub"></a>
 
-`Async Sub` não é aguardável. Exceções lançadas dentro de `Async Sub` não podem ser capturadas pelo caller: vão direto para o thread pool e travam a aplicação. Use `Async Sub` **apenas** para event handlers do Windows Forms ou WebForms, onde o assinante não pode retornar `Task`.
+## Async Function em tudo, Async Sub só no event handler
+
+`Async Sub` não devolve `Task`, então quem chama não tem o que aguardar nem como saber se a operação terminou. A exceção lançada lá dentro também não chega a quem chamou: ela sobe direto para o thread pool e derruba a aplicação. Reserve o `Async Sub` para o event handler do Windows Forms ou WebForms, onde a assinatura do evento não aceita `Task` como retorno.
 
 <details>
 <summary>❌ Ruim: Async Sub fora de event handler</summary>
@@ -59,9 +63,11 @@ End Sub
 
 </details>
 
-## Await: nunca .Result ou .Wait()
+<a id="no-blocking-await"></a>
 
-`.Result` e `.Wait()` bloqueiam a thread atual até a Task completar. Em contextos com SynchronizationContext (ASP.NET, Windows Forms), causam deadlock: a Task espera a thread, a thread espera a Task.
+## Aguarde com Await, sem `.Result` e sem `.Wait()`
+
+`.Result` e `.Wait()` param a thread atual até a `Task` terminar. Em ASP.NET e em Windows Forms existe um **SynchronizationContext**, que exige que o código depois do `Await` continue naquela mesma thread. O impasse se monta assim: a thread está parada esperando a `Task`, e a `Task` só termina quando conseguir a thread para rodar o resto do trabalho. Nenhuma das duas cede, e a requisição trava para sempre.
 
 <details>
 <summary>❌ Ruim: .Result e .Wait() bloqueiam e causam deadlock</summary>
@@ -96,9 +102,11 @@ End Function
 
 </details>
 
-## Task.WhenAll para chamadas independentes
+<a id="task-whenall"></a>
 
-Chamadas de **I/O** (Input/Output · Entrada/Saída) sem dependência entre si devem ser disparadas em paralelo. Aguardá-las sequencialmente multiplica o tempo de resposta sem necessidade.
+## Task.WhenAll quando uma chamada não depende da outra
+
+Chamadas de **I/O** que não dependem umas das outras devem sair juntas. Aguardar uma de cada vez soma os tempos: 100 ms de usuário, mais 80 ms de compras, mais 60 ms de notificações, dá 240 ms de espera. Disparadas juntas, as três correm ao mesmo tempo, e o total fica perto dos 100 ms da mais lenta.
 
 <details>
 <summary>❌ Ruim: chamadas independentes em sequência</summary>
@@ -135,9 +143,11 @@ End Function
 
 </details>
 
-## ConfigureAwait
+<a id="configure-await"></a>
 
-Em bibliotecas reutilizáveis (não **UI** (User Interface · Interface do Usuário), não ASP.NET), use `ConfigureAwait(False)` para evitar captura desnecessária do SynchronizationContext. Em código de aplicação (controllers, code-behind, ViewModels), omita: o contexto é necessário para atualizar UI ou HttpContext.
+## ConfigureAwait(False) em código de biblioteca
+
+Em biblioteca reutilizável, use `ConfigureAwait(False)` em cada `Await`. Ele dispensa a volta ao **SynchronizationContext** original, que a biblioteca não precisa e que custa uma espera a mais por chamada. Em código de aplicação (controller, code-behind, ViewModel), omita: ali o contexto é o que permite atualizar um controle da tela ou ler o `HttpContext` depois do `Await`.
 
 <details>
 <summary>✅ Bom: ConfigureAwait(False) em código de biblioteca</summary>
@@ -172,9 +182,11 @@ End Sub
 
 </details>
 
-## Async até a raiz
+<a id="async-all-the-way"></a>
 
-Async é contagioso. Quando um método torna-se `Async`, seus callers devem tornar-se `Async` também, até o ponto de entrada (event handler, endpoint, thread entry point). Misturar síncrono e assíncrono no meio da cadeia causa deadlock.
+## O async vai até o ponto de entrada
+
+Quando um método vira `Async`, quem o chama também precisa virar, e assim por diante até o ponto de entrada da aplicação (o event handler, o endpoint, a thread inicial). Quebrar essa cadeia no meio significa chamar `.Result` ou `.Wait()` em algum ponto, o que traz de volta o impasse descrito acima.
 
 <details>
 <summary>❌ Ruim: mistura síncrono/assíncrono na cadeia</summary>

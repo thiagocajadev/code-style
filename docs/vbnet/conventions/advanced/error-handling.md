@@ -1,25 +1,28 @@
-# Error Handling
+# Tratamento de erros em VB.NET
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-Tratamento de erros em VB.NET convive com duas heranças: o modelo estruturado da plataforma .NET (**Try/Catch/Finally**) e o **On Error GoTo** do Basic clássico. O padrão atual é `Try/Catch` em tudo; `On Error` só sobrevive em código legado e nunca se mistura com o modelo estruturado no mesmo método.
+Tratamento de erro em VB.NET convive com duas heranças. Uma é o modelo estruturado da plataforma .NET, o **Try/Catch/Finally**. A outra é o **On Error GoTo**, que vem do Basic clássico e desvia a execução para um rótulo quando algo falha. O padrão atual é `Try/Catch` em tudo. O `On Error` só aparece em código legado, e os dois modelos nunca convivem no mesmo método.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **exception** (exceção) | Evento excepcional para falhas inesperadas: bugs, infraestrutura indisponível, estado impossível |
+| **exception** (exceção) | Evento para falhas inesperadas: bugs, infraestrutura indisponível, estado impossível |
 | **Try/Catch/Finally** (tentar / capturar / por fim) | Modelo estruturado de tratamento de exceções da plataforma .NET |
 | **On Error GoTo** (ao erro, vá para) | Modelo do Basic clássico; só sobrevive em código legado e nunca se mistura com `Try/Catch` |
-| **Throw** (relançar) | `Throw` (sem expressão) preserva o stack trace original ao propagar a mesma exceção |
-| **When clause** (cláusula When) | Filtro condicional em `Catch ... When (...)`; mantém o stack trace ao decidir capturar |
-| **business rule** (regra de negócio) | Falha esperada modelada como dado, não como exceção; retornada via tipo de resultado |
-| **Result(Of T)** (tipo de resultado) | Valor que representa sucesso ou falha; torna o contrato de erro explícito |
-| **boundary** (limite do sistema) | Camada externa onde o `Result` é convertido em resposta HTTP/JSON |
+| **Throw** (relançar) | `Throw` sozinho, sem expressão, propaga a mesma exceção e preserva o stack trace original |
+| **stack trace** (rastro de chamadas) | Lista das chamadas que levaram até o erro; é o que aponta a linha onde a falha nasceu |
+| **When clause** (cláusula When) | Filtro condicional em `Catch ... When (...)`; decide se captura sem perder o stack trace |
+| **business rule** (regra de negócio) | Falha esperada modelada como dado e devolvida por um tipo de resultado |
+| **Result(Of T)** (tipo de resultado) | Valor que representa sucesso ou falha; deixa o contrato de erro explícito na assinatura |
+| **boundary** (limite do sistema) | Camada externa onde o `Result` vira resposta HTTP ou JSON |
 
-## Try/Catch vs On Error GoTo
+<a id="trycatch-vs-on-error-goto"></a>
 
-`On Error GoTo` é o modelo de tratamento de erro do Basic clássico. Em VB.NET, `Try/Catch/Finally` é o padrão da plataforma .NET: tipado, estruturado e compatível com todo o ecossistema. Nunca misture os dois modelos no mesmo método: comportamento indefinido.
+## Todo tratamento de erro usa Try/Catch
+
+`Try/Catch/Finally` é o modelo da plataforma .NET: captura por tipo de exceção, tem escopo delimitado e funciona com o resto do ecossistema. O `On Error GoTo` do Basic clássico desvia o fluxo para um rótulo e entrega o erro em uma variável global (`Err`), que já perdeu o tipo e o stack trace. Os dois modelos no mesmo método deixam o comportamento indefinido, então escolha `Try/Catch` e fique com ele.
 
 <details>
 <summary>❌ Ruim: On Error GoTo, modelo VB clássico</summary>
@@ -54,9 +57,11 @@ End Sub
 
 </details>
 
-## Catch específico antes do genérico
+<a id="specific-catch-first"></a>
 
-Catch mais específico captura primeiro. `Exception` genérico no topo silencia erros que deveriam propagar. Cada tipo de falha tem semântica diferente e merece tratamento diferente.
+## O Catch específico vem antes do genérico
+
+O runtime testa os `Catch` de cima para baixo e para no primeiro que casa. Um `Catch ex As Exception` no topo casa com tudo, então os blocos abaixo dele nunca rodam, e uma falha de rede acaba tratada com o mesmo código que trataria um bug de programação. Cada tipo de falha pede uma resposta diferente, então liste do mais específico para o mais genérico.
 
 <details>
 <summary>❌ Ruim: Exception genérico silencia falhas específicas</summary>
@@ -95,9 +100,11 @@ End Try
 
 </details>
 
-## Catch vazio
+<a id="empty-catch"></a>
 
-Um `Catch` sem tratamento é pior que não ter `Try`: silencia o erro, esconde o estado corrompido e dificulta diagnóstico. Se não sabe o que fazer com a exceção, relance com `Throw`.
+## O Catch que captura o erro e não avisa ninguém
+
+Um `Catch` de corpo vazio faz o programa seguir em frente como se nada tivesse acontecido. O estado já está corrompido, e a próxima falha vai aparecer longe da causa, em um lugar onde ninguém encontra a origem. Quando você não sabe o que fazer com a exceção, registre no log e relance com `Throw`.
 
 <details>
 <summary>❌ Ruim: Catch silencioso oculta falha</summary>
@@ -140,9 +147,11 @@ End Try
 
 </details>
 
-## Catch When
+<a id="catch-when"></a>
 
-A cláusula `When` filtra a exceção por condição sem capturá-la quando a condição é falsa. Útil para tratar apenas subconjuntos de uma exceção sem criar subclasses.
+## Catch When filtra a exceção por condição
+
+A cláusula `When` decide se aquele `Catch` vai capturar. Quando a condição dá falso, a exceção segue procurando outro bloco, e o stack trace continua apontando para o ponto de origem. Serve para tratar um subconjunto de uma exceção (por exemplo, só o `404` de um `HttpRequestException`) sem precisar criar subclasses.
 
 <details>
 <summary>✅ Bom: Catch When filtra sem captura desnecessária</summary>
@@ -165,9 +174,11 @@ End Try
 
 </details>
 
-## Using para recursos descartáveis
+<a id="using-for-disposables"></a>
 
-Qualquer objeto que implementa `IDisposable` deve ser criado dentro de `Using`. Garante `Dispose()` mesmo em caso de exceção, equivalente a `try/finally` com `Dispose()`, sem o boilerplate.
+## Using para recursos que precisam ser liberados
+
+Todo objeto que implementa `IDisposable` (conexão de banco, arquivo, stream) nasce dentro de um `Using`. O bloco chama `Dispose()` na saída, mesmo quando uma exceção interrompe o caminho no meio. É o mesmo que escrever um `Try/Finally` com `Dispose()` dentro, com menos código para esquecer.
 
 <details>
 <summary>❌ Ruim: Dispose manual, não garante limpeza em exceção</summary>
@@ -207,9 +218,11 @@ End Using
 
 </details>
 
-## Finally para limpeza sem Using
+<a id="finally-cleanup"></a>
 
-Quando o recurso não implementa `IDisposable` mas precisa de limpeza, use `Finally`. Executa independente de exceção ou `Return`.
+## Finally para limpeza quando não há Using
+
+Quando o recurso precisa de limpeza mas não implementa `IDisposable`, a limpeza vai no `Finally`. Ele roda em qualquer saída do bloco: fim normal, `Return` no meio ou exceção.
 
 <details>
 <summary>✅ Bom: Finally garante limpeza em qualquer saída</summary>
@@ -227,9 +240,11 @@ End Try
 
 </details>
 
-## Exceções para falhas inesperadas
+<a id="exception-for-unexpected"></a>
 
-Exceções sinalizam condições inesperadas: bugs, falhas de infraestrutura, violações de contrato. Para falhas de negócio previsíveis (validação, recurso não encontrado, conflito), retorne um resultado tipado em vez de lançar.
+## A exceção sinaliza o que não era esperado
+
+Exceção é para bug, infraestrutura fora do ar e violação de contrato, ou seja, para o que o código não sabia tratar. Falha de negócio previsível (validação reprovada, recurso não encontrado, conflito) é resultado esperado da operação e volta como valor de retorno tipado. A diferença aparece em quem chama: com resultado tipado, o fluxo normal é um `If`, e não um `Try/Catch` escrito para conduzir o caso comum.
 
 <details>
 <summary>❌ Ruim: exceção como controle de fluxo de negócio</summary>

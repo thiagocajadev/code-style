@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.4.0] - 2026-07-12
+
+### Changed
+
+- **`docs/vbnet/` reescrito na voz sênior-para-leigo (épico C6 do Ciclo C).** Os 25 arquivos `.md` e os 7 scripts `.vb` da linguagem, entregues como uma unidade. H1 em pt-BR em todos, menos os três que são nome próprio (`README`, `Dapper`, `ADO.NET`), pelo mesmo critério que preservou `# PostgreSQL` no ciclo do SQL. Heading de jargão virou frase descritiva com id ASCII explícito, e as violações do `audit:prose` (drama, metáfora de mecânica, contraste binário, em dash, advérbio banido) foram zeradas.
+- **`conventions/visual-density.md` espelhou o canônico do JavaScript**, como o C# já tinha feito: os 16 headings ganharam a mesma redação, e a tabela de Conceitos caiu de 12 para 6 linhas. O jargão cunhado (`tight pair`, `atomic trio`, `semantic pair`, `single-line orphan`, `explaining return`, `fragments → assembly`) saiu da tabela e virou descrição em português no corpo.
+- **`conventions/advanced/entity-modeling.md` recebeu edição cirúrgica**, mesmo tratamento do C# e do SQL, porque a voz já estava próxima da certa e os headings precisavam bater com os das outras linguagens. Saíram 2 dramas, 5 caudas de contraste binário que o linter não pega (uma delas em célula de tabela) e 3 ocorrências de "fronteira", que a diretriz manda escrever como "limite".
+- **Cada armadilha ganhou o mecanismo no lugar da afirmação.** O deadlock explicado pelas duas pontas do impasse (a thread parada esperando a `Task`, a `Task` esperando aquela thread). O `Select` com side effect explicado pela execução adiada: o e-mail não sai se ninguém percorrer o resultado, e sai duas vezes se dois percorrerem. O `DateTime.SpecifyKind` explicado pelas três horas que o valor passa a mentir sobre si mesmo. A captive dependency explicada pelo sintoma, o dado de um usuário aparecendo na sessão de outro.
+- **Convenção `SP_` executada em `setup/ado-net.md` e `setup/dapper.md`.** As procedures de exemplo eram blocos Good que contrariavam a convenção `SP_VERBO_TABELA` já adotada em `docs/sql/` e em `csharp/setup/dapper.md`. `FindPurchasesByCustomer` virou `SP_LIST_PURCHASES_BY_CUSTOMER_ID` (verbo `LIST`, porque devolve coleção filtrada), `CreatePurchase` virou `SP_ADD_PURCHASE`, e os dois `Get` viraram `SP_GET_PURCHASE_DASHBOARD` e `SP_GET_PURCHASE_REPORT`, com os comentários `-- EXEC` e os nomes de arquivo `.sql` acompanhando. Os métodos VB.NET seguem em PascalCase (`FindByCustomerAsync`), porque seguem a convenção da linguagem, e os dois arquivos ganharam o parágrafo que explica essa separação.
+- **4 âncoras do `README.md` resolvidas.** `#trycatch-vs-on-error-goto` e `#async-function-vs-async-sub` já eram ASCII e viraram id declarado. `#await-nunca-result-ou-wait` e `#linq-puro-sem-side-effects` eram geradas do texto em português e viraram `#no-blocking-await` e `#pure-linq`, com o referrer reescrito no mesmo passo. Os rótulos das tabelas do README passaram a casar com os H1 novos.
+
+### Fixed
+
+- **Em dash em comentário de script, que nenhum gate automático cobria.** O `audit:prose` só lê `.md` e o `audit:docs` só lê fenced block, então os 7 scripts `.vb` de `docs/vbnet/scripts/` nunca tinham sido varridos. Quatro em dash em `test/testing.nunit.vb` e `test/testing.mstest.vb` viraram dois pontos e vírgula. A diretriz proíbe em dash em qualquer superfície, inclusive comentário de código.
+- **Em `scripts/variables.vb`, "imutabilidade por padrão" virou "valor não muda depois de atribuído"**, que é a tradução canônica do projeto: descrever o comportamento em vez de nomear o jargão.
+- **Em dash em `conventions/advanced/testing.md`**, que passou despercebido porque o `audit:prose` só audita arquivo alterado contra o HEAD, e a página ainda não tinha sido tocada.
+
 ## [2.3.3] - 2026-07-12
 
 ### Fixed

@@ -4,7 +4,7 @@
 
 Convenções VB.NET aplicando os mesmos princípios do guia. Os exemplos usam VB.NET 16 e .NET Framework 4.8 (a última versão major do .NET Framework) como referência para trabalho com bases de código legadas.
 
-→ [Quick Reference](quick-reference.md): nomenclatura, modificadores, tipos, controle de fluxo
+→ [Referência rápida](quick-reference.md): nomenclatura, modificadores, tipos, controle de fluxo
 
 > [!IMPORTANT]
 > Antes de qualquer convenção, três switches de compilador precisam estar ativos em todo projeto:
@@ -23,9 +23,9 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 
 | Tópico | Conceitos |
 | --- | --- |
-| [Project Foundation](setup/project-foundation.md) | `Web.config`, `Global.asax.vb`, constructor injection, Unity IoC, WinForms legacy |
-| [Legacy Desktop](setup/legacy-desktop.md) | Setup enxuto: `App.config`, módulo de acesso thin, formulário → banco → resultado |
-| [Security](setup/security.md) | Segredos, Web.config transforms, criptografia de seção, `[Authorize]`, cookies |
+| [Fundação do projeto](setup/project-foundation.md) | `Web.config`, `Global.asax.vb`, constructor injection, Unity IoC, WinForms legacy |
+| [Desktop legado](setup/legacy-desktop.md) | Setup mínimo: `App.config`, módulo de acesso enxuto, formulário → banco → resultado |
+| [Segurança](setup/security.md) | Segredos, Web.config transforms, criptografia de seção, `[Authorize]`, cookies |
 | [Dapper](setup/dapper.md) | Procedures por domínio, queries simples, `DynamicParameters`, SQL injection |
 | [ADO.NET](setup/ado-net.md) | `SqlCommand`, `SqlDataReader`, `DataTable`, transações, OUTPUT params |
 
@@ -33,26 +33,26 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 
 | Tópico | Conceitos |
 | --- | --- |
-| [Naming](conventions/naming.md) | PascalCase universal, `_camelCase`, sufixo `Async`, notação húngara |
-| [Variables](conventions/variables.md) | `Option Strict`, `Dim`, `Const`, `ReadOnly`, `Is Nothing`, `AndAlso` |
-| [Methods](conventions/methods.md) | `Sub` vs `Function`, orquestrador, SLA, guard clauses |
-| [Control Flow](conventions/control-flow.md) | Guard clauses, `Select Case`, `For Each`, `TryCast`, sem `GoTo` |
+| [Nomes](conventions/naming.md) | PascalCase universal, `_camelCase`, sufixo `Async`, notação húngara |
+| [Variáveis](conventions/variables.md) | `Option Strict`, `Dim`, `Const`, `ReadOnly`, `Is Nothing`, `AndAlso` |
+| [Métodos](conventions/methods.md) | `Sub` vs `Function`, orquestrador, SLA, guard clauses |
+| [Controle de fluxo](conventions/control-flow.md) | Guard clauses, `Select Case`, `For Each`, `TryCast`, sem `GoTo` |
 
 ## Avançados
 
 | Tópico | Conceitos |
 | --- | --- |
-| [Error Handling](conventions/advanced/error-handling.md) | `Try/Catch`, sem `On Error GoTo`, `Using`, `Catch When` |
-| [Async](conventions/advanced/async.md) | `Async Function` vs `Async Sub`, `Await`, `Task.WhenAll` |
+| [Tratamento de erros](conventions/advanced/error-handling.md) | `Try/Catch`, sem `On Error GoTo`, `Using`, `Catch When` |
+| [Código assíncrono](conventions/advanced/async.md) | `Async Function` vs `Async Sub`, `Await`, `Task.WhenAll` |
 | [LINQ](conventions/advanced/linq.md) | Method syntax, LINQ puro, materialização, `FirstOrDefault` |
-| [Validation](conventions/advanced/validation.md) | Sanitize, DataAnnotations, ModelState, regras de negócio, output filter |
-| [Dates](conventions/advanced/dates.md) | `DateTimeOffset` vs `DateTime`, UTC, formatação com cultura explícita |
-| [Observability](conventions/advanced/observability.md) | NLog, message templates, níveis, PII, Correlation ID |
-| [Testing](conventions/advanced/testing.md) | AAA, assert semântico, nomes expressivos, isolamento, `Assert.Throws(Of T)` |
-| [Visual Density](conventions/visual-density.md) | Fases de método, `Return` separado, declaração + guarda, strings longas |
+| [Validação](conventions/advanced/validation.md) | Sanitize, DataAnnotations, ModelState, regras de negócio, output filter |
+| [Datas](conventions/advanced/dates.md) | `DateTimeOffset` vs `DateTime`, UTC, formatação com cultura explícita |
+| [Observabilidade](conventions/advanced/observability.md) | NLog, message templates, níveis, PII, Correlation ID |
+| [Testes](conventions/advanced/testing.md) | AAA, assert semântico, nomes expressivos, isolamento, `Assert.Throws(Of T)` |
+| [Densidade visual](conventions/visual-density.md) | Fases de método, `Return` separado, declaração + guarda, strings longas |
 | [Performance](conventions/advanced/performance.md) | `StringBuilder`, boxing, `HashSet`, `For` vs `For Each` em hot paths |
-| [Null Safety](conventions/advanced/null-safety.md) | `Is Nothing`, `Nullable(Of T)`, `If()` null-coalescing, guard em construtor |
-| [Entity Modeling](conventions/advanced/entity-modeling.md)        | `Structure` como ID tipado, `NotInheritable`, `IReadOnlyList(Of T)`, factory `Shared` |
+| [Segurança contra nulos](conventions/advanced/null-safety.md) | `Is Nothing`, `Nullable(Of T)`, `If()` null-coalescing, guard em construtor |
+| [Modelagem de entidades](conventions/advanced/entity-modeling.md) | `Structure` como ID tipado, `NotInheritable`, `IReadOnlyList(Of T)`, factory `Shared` |
 
 ## Princípios
 
@@ -61,29 +61,29 @@ Configuração inicial de um projeto VB.NET/.NET Framework: estrutura, injeção
 | Princípio | Descrição |
 | --- | --- |
 | [Escrita em inglês](conventions/naming.md#portuguese-names) | Código universal, nomes curtos e sem ambiguidade |
-| [Orquestrador no topo](conventions/methods.md#orquestrador-no-topo) | Chamada visível antes dos detalhes: top-down |
+| [Orquestrador no topo](conventions/methods.md#orchestrator-first) | Chamada visível antes dos detalhes: top-down |
 | [SLA](conventions/methods.md#single-level-of-abstraction) | Uma responsabilidade, um nível de abstração |
-| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return) | Saída de uma linha: o `Return` nomeia o resultado, não o computa |
+| [Sem lógica no retorno](conventions/methods.md#no-logic-in-return) | O `Return` entrega uma variável que já tem nome; o cálculo fica na linha acima |
 | [Sub vs Function](conventions/methods.md#sub-vs-function) | Se produz resultado, use `Function`; `ByRef` para output é design smell |
 
 **Legibilidade**: fluxo, densidade visual e nomes
 
 | Princípio | Descrição |
 | --- | --- |
-| [Retorno antecipado](conventions/control-flow.md#aninhamento-em-cascata) | Guard clauses no topo, sem aninhamento em cascata |
+| [Retorno antecipado](conventions/control-flow.md#nested-conditionals) | Guard clauses no topo, sem aninhamento em cascata |
 | [Select Case](conventions/control-flow.md#select-case) | `Select Case` sobre cadeia de `ElseIf` para valor único |
-| [Booleans expressivos](conventions/naming.md#booleans-expressivos) | Prefixo `is`, `has`, `can`, `should` declara a semântica |
-| [Sem notação húngara](conventions/naming.md#hungarian-notation) | Nome pelo domínio, não pelo tipo |
+| [Booleans expressivos](conventions/naming.md#boolean-prefixes) | Prefixo `is`, `has`, `can`, `should` declara a semântica |
+| [Sem notação húngara](conventions/naming.md#hungarian-notation) | O nome descreve o domínio; o tipo o compilador já conhece |
 | [Sem valores mágicos](conventions/variables.md#magic-values) | `Const` nomeado em vez de literais inline |
 
 **Controle de qualidade**: estado, erros e async
 
 | Princípio | Descrição |
 | --- | --- |
-| [Option Strict On](conventions/variables.md#option-strict-e-option-explicit) | Proíbe conversões implícitas e late binding; ativar é obrigatório |
-| [Is / IsNot Nothing](conventions/variables.md#nothing-is-e-isnot) | Padrão .NET para verificar nulo, sem `IsNothing()` |
-| [AndAlso / OrElse](conventions/variables.md#andalso-e-orelse) | Curto-circuito seguro; `And`/`Or` avaliam ambos os lados |
+| [Option Strict On](conventions/variables.md#compiler-options) | Proíbe conversões implícitas e late binding; ativar é obrigatório |
+| [Is / IsNot Nothing](conventions/variables.md#nothing-checks) | Padrão .NET para verificar nulo, sem `IsNothing()` |
+| [AndAlso / OrElse](conventions/variables.md#short-circuit-operators) | Curto-circuito seguro; `And`/`Or` avaliam ambos os lados |
 | [Try/Catch estruturado](conventions/advanced/error-handling.md#trycatch-vs-on-error-goto) | Sem `On Error GoTo`, sem `GoTo` |
 | [Async Function](conventions/advanced/async.md#async-function-vs-async-sub) | `Async Sub` apenas para event handlers |
-| [Await sem bloqueio](conventions/advanced/async.md#await-nunca-result-ou-wait) | Nunca `.Result` ou `.Wait()`; deadlock em contextos com SynchronizationContext |
-| [LINQ puro](conventions/advanced/linq.md#linq-puro-sem-side-effects) | Sem efeitos colaterais em transformações |
+| [Await sem bloqueio](conventions/advanced/async.md#no-blocking-await) | Nunca `.Result` ou `.Wait()`; deadlock em contextos com SynchronizationContext |
+| [LINQ puro](conventions/advanced/linq.md#pure-linq) | Sem efeitos colaterais em transformações |

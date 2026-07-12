@@ -1,29 +1,23 @@
-# Visual Density: VB.NET
+# Densidade visual em VB.NET
 
-**Visual density** (densidade visual) é a quantidade de informação por bloco visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra quando trechos não relacionados ficam colados. A solução é agrupar por intenção semântica e separar grupos com linha em branco: cada grupo conta uma micro-história.
+Densidade visual é a quantidade de informação que você empilha em cada bloco de código. Quando muitas linhas se acumulam sem espaço, o olho cansa e você perde o fio do raciocínio. Quando linhas sem relação ficam grudadas, o leitor não sabe onde uma ideia termina e a outra começa. A saída é direta: junte as linhas que contam a mesma pequena história e separe cada história da próxima com uma linha em branco. Este guia mostra como aplicar isso em VB.NET e .NET Framework 4.8, sempre com um exemplo ruim e um bom lado a lado.
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em VB.NET/.NET Framework 4.8.
+Os princípios gerais estão em [densidade visual](../../shared/standards/visual-density.md). Aqui eles aparecem adaptados a VB.NET.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **visual density** (densidade visual) | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo |
-| **semantic group** (grupo semântico) | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir) |
-| **blank line** (linha em branco) | Separador entre grupos semânticos; substitui comentário de seção |
-| **tight pair** (par tight) | Duas linhas com relação direta (declaração + uso, `Dim` + `Return`) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico) | Três declarações simples consecutivas e homogêneas (`Dim`/`Const`); mantidas juntas sem blank; preferir ao 2+1 que cria órfão |
-| **semantic pair** (par semântico encadeado) | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta |
-| **single-line orphan** (órfão de 1) | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
-| **explaining return** (retorno explicativo) | Caso particular de `tight pair`: `Dim X = …` single-line + `Return X` sem blank entre eles |
-| **multi-line block** (bloco multi-linha) | Object initializer expandido, lambda multi-linha ou statement com `_` continuation; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta, com blank antes da montagem |
-| **boundary** (limite) | Linha que separa camadas (controller ↔ service, service ↔ repository); merece linha em branco antes |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão, frágil a rename, gera diff ruidoso |
+| **visual density** (densidade visual) | Quantidade de informação por bloco de código; o alvo é pouca por bloco e muita por arquivo |
+| **semantic group** (grupo semântico) | Poucas linhas que executam uma etapa coesa, por exemplo validar, calcular ou salvar |
+| **blank line** (linha em branco) | Separa dois grupos; faz o papel que antes cabia a um comentário de seção |
+| **boundary** (limite) | Linha que separa camadas, por exemplo do controller para o service; pede uma linha em branco antes |
+| **multi-line block** (bloco de várias linhas) | Object initializer ou comando quebrado com `_` de continuação; pede um respiro depois de si |
+| **column alignment** (alinhamento em colunas) | Espaços extras para alinhar `=` ou `:` na vertical; antipadrão, quebra a cada renomeação |
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
+A regra que resolve quase tudo: **agrupe poucas linhas por vez e separe cada grupo com uma linha em branco.** O tamanho natural de um grupo é duas linhas. Três valem quando dividir em duas mais uma deixaria a última linha sozinha. A partir de quatro, quebre em dois grupos de duas.
 
 <details>
 <summary>❌ Ruim: denso demais: todos os passos colados</summary>
@@ -66,12 +60,12 @@ End Function
 
 </details>
 
-## Explaining Return: par tight
+## O `Return` fica junto da linha que nomeia o valor
 
-Uma `Dim` nomeada acima do `Return` explica o valor retornado. Sempre que a linha imediatamente acima for essa `Dim` (single-line) e o `Return` retornar essa variável, os dois formam par de 2 linhas sem blank, não importa quantos passos haja acima. A linha em branco separa o par do que vem antes, não fragmenta o par.
+Quando a linha logo acima do `Return` é o `Dim` que dá nome ao valor devolvido, as duas formam uma dupla e ficam juntas, sem linha em branco entre elas. Não importa quantos passos venham antes. A linha em branco separa essa dupla do que veio antes; ela nunca entra no meio da dupla.
 
 <details>
-<summary>❌ Ruim: blank fragmenta o par</summary>
+<summary>❌ Ruim: a linha em branco parte a dupla no meio</summary>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -84,7 +78,7 @@ End Function
 </details>
 
 <details>
-<summary>✅ Bom: par tight</summary>
+<summary>✅ Bom: o `Dim` e o `Return` juntos</summary>
 
 ```vbnet
 Public Function MapErrorToStatus(error As DomainError) As Integer
@@ -97,15 +91,13 @@ End Function
 
 <a id="return-separated"></a>
 
-## Return tight vs return separado
+## Quando o `Return` cola na linha acima e quando ganha um respiro
 
-A regra é simples: `Return` é **tight** com a linha imediatamente acima **somente quando essa linha é a `Dim` que nomeia o valor retornado** (Explaining Return), e essa `Dim` está em uma única linha.
+O `Return` só cola na linha imediatamente acima quando essa linha é o `Dim`, de uma única linha, que nomeia o valor devolvido. Em todos os outros casos, deixe uma linha em branco antes do `Return`:
 
-Em todos os outros casos, vai blank antes do `Return`:
-
-- linha acima é **multi-linha** (object initializer expandido, statement com `_` continuation);
-- linha acima é **side effect** (`Await`, `Sub`/função sem retorno) que não nomeia o valor;
-- valor retornado foi criado **vários passos antes**, sem par direto.
+- a linha acima ocupa várias linhas (um object initializer expandido, um comando quebrado com `_` de continuação);
+- a linha acima só produz um efeito (um `Await`, um `Sub` que não devolve valor) e não dá nome ao resultado;
+- o valor devolvido foi criado vários passos antes, sem formar dupla com a linha de cima.
 
 <details>
 <summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
@@ -124,7 +116,7 @@ Public Function FormatOrderDate(isoString As String, Optional locale As String =
 End Function
 ```
 
-O object initializer multi-linha exige blank depois de si, mas o blank foi posto antes do `Return`. `formattedDate` e `Return formattedDate` formam Explaining Return tight: não devem ser separados.
+O `culture` ocupa várias linhas e pede um respiro depois de si, mas aqui a linha em branco foi parar antes do `Return`. `formattedDate` e `Return formattedDate` são a dupla que nomeia e devolve o valor: não devem ser separados.
 
 </details>
 
@@ -145,7 +137,7 @@ Public Function FormatOrderDate(isoString As String, Optional locale As String =
 End Function
 ```
 
-O blank fica **depois** do object initializer multi-linha. O par `formattedDate` + `Return formattedDate` permanece tight.
+A linha em branco fica **depois** do `culture`, que ocupa várias linhas. A dupla `formattedDate` + `Return formattedDate` continua junta.
 
 </details>
 
@@ -164,7 +156,7 @@ Public Function BuildOrderResponse(order As Order, requestId As String) As Order
 End Function
 ```
 
-`data` é object initializer multi-linha; o blank antes do `Return` isola o bloco grande do envelope final.
+`data` é um object initializer de várias linhas; a linha em branco antes do `Return` separa esse bloco grande do envelope final.
 
 </details>
 
@@ -176,11 +168,11 @@ Public Function FindPendingOrders(userId As Guid) As IEnumerable(Of Order)
 End Function
 ```
 
-## Declaração + guarda = 1 grupo
+## A variável e o `If` que a valida ficam juntos
 
-Uma variável seguida do seu `If` de guarda formam par semântico **quando o guarda cabe em uma única linha**: `If x Is Nothing Then Return`, `If ... Then Throw New ...`. Nesse caso a linha em branco vem **depois** do par, nunca entre eles.
+Uma variável e o `If` que a valida logo abaixo formam uma dupla **quando o `If` cabe em uma linha só** (`If x Is Nothing Then Return`, `If ... Then Throw New ...`). Nesse caso, a linha em branco vem **depois** da dupla, nunca entre a variável e o seu `If`.
 
-Quando o guarda é escrito em **bloco multi-linha** (`If ... Then` em uma linha, corpo, `End If` em outra), o `If` vira fase própria: o bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede respiro**: linha em branco **antes** do bloco. O critério é visual, não semântico.
+Quando o `If` é escrito em bloco (`If ... Then` em uma linha, corpo, `End If` em outra), ele vira uma fase à parte: o bloco já tem peso visual próprio. Aí vale a regra de que todo bloco de várias linhas pede um respiro antes de si. Quem decide é o peso visual do bloco na tela.
 
 <details>
 <summary>❌ Ruim: variável solta do seu guarda inline</summary>
@@ -235,13 +227,13 @@ End If
 Dim delayMs = CInt(Math.Pow(2, attempt) * 1000)
 ```
 
-O bloco ocupa três linhas físicas, com peso visual próprio. Inline ficaria tight, mas em bloco, blank antes.
+O bloco ocupa três linhas e tem peso visual próprio. Em uma linha só, ficaria junto da variável; em bloco, pede uma linha em branco antes.
 
 </details>
 
-## Órfão de 1 linha: pior que trio atômico
+## Não deixe uma linha sozinha entre espaços
 
-Três declarações simples consecutivas (`Const`, `ReadOnly`, `Dim` com literal) formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
+Três declarações simples seguidas (`Const`, `ReadOnly`, `Dim` com literal) formam um grupo coeso. Se você quebrar em duas mais uma, a última fica sozinha entre duas linhas em branco, parecendo esquecida. Mantenha as três juntas. Só divida quando forem quatro, aí em dois pares.
 
 <details>
 <summary>❌ Ruim: órfão entre blanks</summary>
@@ -285,9 +277,9 @@ End Class
 
 </details>
 
-## Par semântico encadeado
+## Duas linhas onde a segunda usa o valor da primeira
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam par. A quebra natural fica antes do par, não entre ele e sua dependência direta.
+Quando a última linha **usa o valor recém-criado** na linha de cima, as duas formam uma dupla. O respiro natural fica antes da dupla, nunca entre uma linha e o valor de que ela depende.
 
 <details>
 <summary>❌ Ruim: dependência direta partida</summary>
@@ -322,14 +314,14 @@ End Function
 
 </details>
 
-## Fragmentos → montagem: blank antes do consumidor
+## Prepare as partes, depois monte o resultado
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que **consome múltiplos fragmentos** (não depende só do último), trate a montagem como fase distinta, com blank antes dela. É o caso clássico "preparar partes → montar resultado", diferente do par semântico encadeado (onde a última depende **diretamente** da penúltima e por isso fica tight).
+Quando você prepara **dois ou mais pedaços** e depois tem uma linha que **junta vários deles** (não só o último), trate essa montagem como uma fase à parte, com uma linha em branco antes. É o padrão "preparar as partes, depois montar o resultado". Ele é diferente do caso anterior, em que a última linha depende **só** da linha logo acima e por isso fica junto dela.
 
-Heurística rápida:
+Como decidir rápido:
 
-- A última linha usa **só o valor recém-declarado** acima? → par semântico encadeado, fica tight.
-- A última linha **costura múltiplos fragmentos** declarados em linhas diferentes? → fragmentos → montagem, blank antes.
+- A última linha usa **só o valor recém-criado** acima? É uma dupla dependente: fica junto.
+- A última linha **costura vários pedaços** declarados em linhas diferentes? É a fase de montagem: linha em branco antes.
 
 <details>
 <summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
@@ -343,7 +335,7 @@ Public Function BuildDeliveryMessage(user As User, order As Order) As String
 End Function
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.Id` *e* `order.DeliveryDays`. Não é par direto com `address`: é a fase de montagem. Coladas como trio, as fases ficam invisíveis.
+`deliveryMessage` usa `fullName`, `address`, `order.Id` e `order.DeliveryDays` ao mesmo tempo. Não forma dupla com `address`: é a fase de montagem. Grudada como se as três linhas fossem iguais, as fases somem.
 
 </details>
 
@@ -360,7 +352,7 @@ Public Function BuildDeliveryMessage(user As User, order As Order) As String
 End Function
 ```
 
-Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar" (Explaining Return tight).
+Duas fases ficam visíveis: preparar os pedaços, depois montar e devolver.
 
 </details>
 
@@ -375,13 +367,13 @@ Public Function BuildOrderSlug(order As Order) As String
 End Function
 ```
 
-`slug` depende **diretamente** de `normalizedTitle` (penúltima). Par semântico encadeado: as duas ficam tight, e o `Return` ainda tight com o último.
+`slug` depende **só** de `normalizedTitle`, a linha logo acima. As duas ficam juntas, e o `Return` continua junto de `slug`.
 
 </details>
 
-## 2+1 dentro de blocos curtos
+## Dentro de laços e condições curtas
 
-Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não são todas atômicas homogêneas.
+Em laços (`While`, `For`) e condições curtas, duas linhas mais uma continua sendo a divisão natural quando as linhas não são todas do mesmo tipo.
 
 <details>
 <summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
@@ -410,9 +402,9 @@ End While
 
 </details>
 
-## Fases de um método
+## Deixe cada fase do método visível
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível.
+Métodos com vários passos (buscar, transformar, salvar, responder) devem deixar cada passo visível. Uma linha em branco entre eles marca onde um termina e o outro começa, ainda mais quando os passos cruzam um limite entre camadas, por exemplo do controller para o service.
 
 <details>
 <summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
@@ -446,9 +438,9 @@ End Function
 
 </details>
 
-## Testes: Assert como fase própria
+## No teste, a verificação é uma fase separada
 
-O `Assert` é fase distinta. A linha em branco antes dele separa o que está sendo verificado do como está sendo verificado.
+No teste, a linha que verifica o resultado (`Assert`) é uma fase própria. A linha em branco antes dela separa **o que** está sendo verificado de **como** você preparou o cenário.
 
 <details>
 <summary>❌ Ruim: Assert colado ao setup, fases invisíveis</summary>
@@ -481,9 +473,9 @@ End Sub
 
 </details>
 
-## Multi-linha: respiro depois do bloco
+## Depois de um bloco de várias linhas, deixe um respiro
 
-Quando um object initializer expande em várias linhas ou um statement quebra com `_` continuation, o bloco já ocupa espaço visual próprio. Cole uma linha em branco **depois** dele para isolar o bloco grande do próximo passo. Sem respiro, o leitor não vê onde o bloco termina e o próximo começa.
+Quando um object initializer ou um comando quebra em várias linhas, esse bloco já ocupa um espaço visual próprio. Deixe uma linha em branco **depois** dele para separá-lo do próximo passo. Sem esse respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
 <summary>❌ Ruim: object initializer multi-linha colado ao próximo statement</summary>
@@ -522,11 +514,11 @@ End Function
 
 </details>
 
-## Ifs consecutivos: blocos multi-linha precisam de respiro
+## Dois `If` seguidos em bloco pedem uma linha entre eles
 
-Dois `If` consecutivos com **bloco multi-linha** (`If ... Then` / `End If`) colados formam muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre insira blank entre eles.
+Dois `If` seguidos, cada um com um bloco de várias linhas até o `End If`, formam uma parede: o olho não distingue onde um bloco termina e o outro começa. Sempre coloque uma linha em branco entre eles.
 
-**Exceção:** guardas de uma linha (early returns curtos) formam trio homogêneo e ficam tight: a regra do trio atômico se aplica.
+**Exceção:** os `If` de saída rápida, com uma linha só (`If input Is Nothing Then Throw ...`), são do mesmo tipo e ficam juntos, como qualquer grupo de linhas iguais.
 
 <details>
 <summary>❌ Ruim: dois blocos If colados</summary>
@@ -580,9 +572,9 @@ End Function
 
 </details>
 
-## Sem column alignment
+## Não alinhe o código em colunas
 
-Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre **um espaço único**. Alinhamento artificial quebra com qualquer rename, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
+Não use espaços extras para alinhar `=`, `:` ou valores na vertical. Use sempre um espaço só. O alinhamento artificial quebra assim que você renomeia qualquer coisa, gera um diff cheio de ruído (mudanças que não importam) e treina o olho a procurar colunas que somem na primeira refatoração.
 
 <details>
 <summary>❌ Ruim: espaços extras para alinhar colunas</summary>
@@ -608,9 +600,9 @@ Dim lastLoginAt = DateTime.UtcNow
 
 </details>
 
-## Strings longas
+## Textos longos montados em uma linha
 
-Uma string longa colada em um `Return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
+Um texto longo grudado dentro de um `Return` esconde os pedaços que o compõem. Separe cada pedaço em uma variável com nome antes de montar o resultado. Em VB.NET esse texto costuma ser uma **interpolated string** (o texto que começa com `$"` e aceita valores no meio com `{...}`).
 
 <details>
 <summary>❌ Ruim: concatenação densa inline, sem semântica nas partes</summary>

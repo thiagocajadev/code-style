@@ -1,4 +1,4 @@
-' Princípios: imutabilidade por padrão, sem valores mágicos, CQS
+' Princípios: valor não muda depois de atribuído, sem valores mágicos, CQS
 
 Const StandardDiscount As Decimal = 10D
 Const ApprovedStatus As String = "approved"

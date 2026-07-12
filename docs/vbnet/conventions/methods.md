@@ -1,6 +1,8 @@
-# Methods
+# Métodos em VB.NET
 
-Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno). A escolha é semântica, não estética: comunica a intenção da operação antes mesmo do nome. **Orquestrador** fica no topo; **helpers** `Private` descem em ordem de leitura.
+VB.NET separa **Sub** (método sem retorno) de **Function** (método que retorna um valor). A escolha entre os dois conta ao leitor o que a operação faz antes de ele chegar no nome: um `Sub` altera o estado do sistema, uma `Function` calcula uma resposta.
+
+Dentro da classe, o **orquestrador** público fica no topo e os **helpers** `Private` vêm abaixo, na ordem em que são chamados. Quem abre o arquivo lê o fluxo inteiro antes de descer ao detalhe de cada passo.
 
 ## Conceitos fundamentais
 
@@ -8,7 +10,7 @@ Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno)
 | --- | --- |
 | **Sub** (subrotina sem retorno) | Método sem valor de retorno; equivale a `void` em C# |
 | **Function** (função com retorno) | Método que retorna valor; preferida sempre que houver resultado a comunicar |
-| **ByVal / ByRef** (por valor / por referência) | Modos de passagem; `ByRef` apenas em casos legítimos, jamais para devolver resultado |
+| **ByVal / ByRef** (por valor / por referência) | Modos de passagem do argumento; para devolver resultado, use o retorno da `Function` |
 | **orchestrator** (orquestrador) | Método público de entrada que descreve o fluxo em alto nível |
 | **helper** (método auxiliar) | Método `Private` abaixo do orquestrador, com responsabilidade única |
 | **Optional** (parâmetro opcional) | Parâmetro com valor padrão; `Optional ByVal logger As ILogger = Nothing` |
@@ -16,9 +18,13 @@ Métodos em VB.NET distinguem **Sub** (sem retorno) e **Function** (com retorno)
 | **single responsibility** (responsabilidade única) | Um método faz uma coisa; o nome descreve essa coisa por completo |
 | **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada método opera em um só nível: orquestra passos ou implementa detalhe |
 
-## Sub vs Function
+<a id="sub-vs-function"></a>
 
-`Sub` não retorna valor, equivale a `void`. `Function` retorna. A escolha é semântica: se a operação produz um resultado, use `Function`. `Sub` com parâmetro `ByRef` para comunicar resultado é um cheiro de design. Na dúvida, prefira `Function`.
+## Sub ou Function
+
+`Sub` não retorna valor e equivale ao `void` do C#. `Function` retorna. Se a operação produz um resultado, ela é uma `Function`.
+
+Um `Sub` que devolve o resultado por parâmetro `ByRef` obriga quem chama a fazer o trabalho: declarar as variáveis antes, passar elas, e checar depois qual foi preenchida. O retorno de uma `Function` entrega a mesma informação em uma linha, e o compilador garante que ninguém a ignore por acidente.
 
 <details>
 <summary>❌ Ruim: Sub com ByRef para comunicar resultado</summary>
@@ -68,9 +74,13 @@ If Not result.IsSuccess Then HandleError(result.ErrorMessage)
 
 </details>
 
+<a id="orchestrator-first"></a>
+
 ## Orquestrador no topo
 
-O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
+O método público de entrada lista os passos do fluxo, cada um com o nome do que ele faz: validar, buscar o produto, salvar a compra, notificar, montar a nota. Como cada passo virou um helper, o corpo do orquestrador cabe em cinco linhas e responde "o que este serviço faz" sem obrigar ninguém a ler o cálculo do imposto.
+
+Os helpers ficam abaixo, na ordem em que o orquestrador chama eles. Quem precisa do detalhe de um passo desce até o helper daquele passo.
 
 <details>
 <summary>❌ Ruim: implementação misturada com orquestração</summary>
@@ -148,9 +158,11 @@ End Function
 
 <a id="single-level-of-abstraction"></a>
 
-## SLA: orquestrador ou implementação
+## Um método fica em um só nível de abstração
 
-Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
+Cada método escolhe um dos dois papéis: ele coordena chamadas com nome, ou ele implementa um passo concreto.
+
+Quando os dois papéis se misturam, quem lê precisa acompanhar o fluxo e o cálculo ao mesmo tempo. `BuildPurchaseSummaryAsync` busca a compra, e a linha seguinte já soma item por item e multiplica pela alíquota do imposto. Separar o cálculo em `CalculateTotals` deixa o método de entrada com três linhas que dizem quais são os passos, e o detalhe da soma fica no helper, para quem for procurar por ele.
 
 <details>
 <summary>❌ Ruim: orquestração e implementação no mesmo método</summary>
@@ -206,7 +218,7 @@ End Function
 
 ## Sem lógica no retorno
 
-O `Return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
+O `Return` entrega um valor que já está pronto. Calcular dentro dele empilha `Select`, `Sum` e o construtor na mesma expressão, e quem depura precisa desmontar tudo para inspecionar um pedaço. Uma variável com nome antes do `Return` dá um ponto de parada ao debugger e diz, em uma palavra, o que está saindo do método.
 
 <details>
 <summary>❌ Ruim: construção inline no Return</summary>
@@ -240,7 +252,7 @@ End Function
 
 ## Guard clauses
 
-Valide as pré-condições no topo e saia cedo. O fluxo principal fica plano e sem aninhamento. Cada guarda remove um nível de indentação.
+As **guard clauses** (cláusulas de proteção) checam as pré-condições no topo do método e saem na hora em que uma falha. Cada guarda tira um nível de indentação do resto: as quatro checagens aninhadas do exemplo ruim viram quatro linhas retas, e o caso de sucesso volta para a margem esquerda, onde é fácil de achar.
 
 <details>
 <summary>❌ Ruim: lógica principal enterrada em aninhamento</summary>
@@ -289,7 +301,7 @@ End Function
 
 ## Baixa densidade visual
 
-Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
+As linhas de um mesmo passo ficam grudadas, sem linha em branco entre elas. Passos diferentes ficam separados por uma linha em branco, sempre uma só. Duas linhas em branco seguidas sugerem uma divisão que não existe, e o leitor procura por ela.
 
 <details>
 <summary>❌ Ruim: sem separação entre passos ou separação excessiva</summary>

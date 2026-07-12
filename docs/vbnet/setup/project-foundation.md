@@ -1,29 +1,33 @@
-# Project Foundation
+# Fundação de um projeto VB.NET
 
 > [!NOTE]
 > Essa estrutura reflete como organizar projetos VB.NET/.NET Framework 4.8. A seção Legacy Desktop cobre Windows Forms; a seção Web cobre ASP.NET MVC 5 / Web API 2. Os padrões de configuração e injeção de dependência se aplicam a ambos os contextos.
 
-Projetos VB.NET em .NET Framework 4.8 dividem-se em duas famílias: desktop (Windows Forms) e web (ASP.NET **MVC** (Model-View-Controller, Modelo-Visão-Controle) 5 / Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2). Cada família tem seu entry point e seu modelo de ciclo de vida, mas compartilham as decisões sobre configuração, injeção de dependência e organização por domínio.
+Um projeto VB.NET em .NET Framework 4.8 cai em uma de duas famílias: desktop, com Windows Forms, ou web, com ASP.NET **MVC** (Model-View-Controller · Modelo-Visão-Controle) 5 e Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2. Elas começam a rodar de formas diferentes e têm ciclos de vida próprios. As decisões que este guia trata valem para as duas: onde fica a configuração, como as dependências chegam às classes e como os arquivos se organizam por domínio.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Superfície HTTP do projeto web, servida por Web API 2 |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET MVC 5 para renderização de Views e processamento de formulários |
-| **UI** (User Interface · Interface do Usuário) | Superfície visual do cliente; Windows Forms no desktop ou Razor no web |
-| **Entry point** (ponto de entrada) | `Sub Main` no desktop, `Global.asax` no web; inicializa serviços antes da primeira interação |
-| **DI** (Dependency Injection · Injeção de Dependência) | Container (Unity) provê implementações via constructor injection |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Superfície HTTP do projeto web, servida pelo Web API 2 |
+| **MVC** (Model-View-Controller · Modelo-Visão-Controle) | Pipeline do ASP.NET MVC 5 que renderiza Views e processa formulários |
+| **UI** (User Interface · Interface do Usuário) | A parte visível para o usuário: Windows Forms no desktop, Razor na web |
+| **entry point** (ponto de entrada) | Onde a aplicação começa: `Sub Main` no desktop, `Global.asax` na web |
+| **DI** (Dependency Injection · Injeção de Dependência) | A classe recebe as dependências pelo construtor, e o container as fornece |
+| **container** (container de dependências) | Componente que guarda o registro dos serviços e monta os objetos: Unity nos projetos legados |
+| **lifetime** (tempo de vida) | Por quanto tempo o container reaproveita a mesma instância de um serviço |
 
 ---
 
 ## Legacy Desktop (Windows Forms)
 
-WinForms em .NET Framework 4.8 tem particularidades que não existem em projetos web: o ciclo de vida é gerenciado pelo `My.Application`, formulários são criados diretamente pelo framework e injeção de dependência é manual. As seções abaixo cobrem os padrões mais encontrados em código legado de desktop.
+O WinForms tem particularidades que o projeto web não tem: quem cuida do ciclo de vida é o `My.Application`, o framework cria os formulários por conta própria e não existe container de dependências pronto. As seções abaixo cobrem os padrões mais frequentes em código legado de desktop.
 
-### Entry point: Sub Main
+<a id="sub-main"></a>
 
-Por padrão o Visual Studio configura o formulário de inicialização diretamente nas propriedades do projeto, sem `Sub Main` explícito. Isso elimina qualquer chance de inicializar serviços, tratar exceções globais ou passar dependências antes da janela abrir. Prefira `Sub Main` explícito.
+### Sub Main como ponto de partida
+
+Por padrão, o Visual Studio aponta o formulário inicial nas propriedades do projeto, e a aplicação abre a janela sem passar por nenhum código seu. Isso tira o único lugar onde daria para inicializar o log, registrar o tratamento global de exceções e montar as dependências antes da primeira tela aparecer. Um `Sub Main` explícito devolve esse lugar.
 
 Para ativar: **Project Properties → Application → Startup object → Sub Main**.
 
@@ -66,11 +70,11 @@ End Module
 
 </details>
 
-### Tratamento global de exceções
+<a id="global-exception-handling"></a>
 
-WinForms expõe dois eventos para capturar exceções não tratadas: `Application.ThreadException` para exceções na UI thread, e `AppDomain.CurrentDomain.UnhandledException` para exceções em outras threads. Sem eles, o Windows exibe uma caixa de erro genérica e encerra o processo.
+### Dois eventos capturam a exceção que ninguém tratou
 
-Registre ambos antes de `Application.Run`. Exceções antes desse ponto não são capturadas por nenhum dos dois.
+Sem tratamento global, uma exceção que escapa derruba o processo com a caixa de erro genérica do Windows, e o log fica sem nenhum registro do que aconteceu. O WinForms oferece dois eventos, e os dois são necessários: `Application.ThreadException` pega o que estoura na thread da interface, e `AppDomain.CurrentDomain.UnhandledException` pega o que estoura nas demais. Registre ambos antes do `Application.Run`, porque uma exceção lançada antes desse ponto não passa por nenhum dos dois.
 
 <details>
 <summary>❌ Ruim: aplicação encerra com diálogo do Windows sem log</summary>
@@ -126,11 +130,13 @@ End Module
 
 </details>
 
-### My.Settings: preferências do usuário
+<a id="my-settings"></a>
 
-`My.Settings` é exclusivo do VB.NET e representa o `app.config` em duas camadas: configurações de aplicação (somente leitura em runtime) e configurações de usuário (leitura e escrita, persistidas por perfil de Windows).
+### My.Settings guarda a preferência do usuário
 
-Use configurações de usuário para preferências de UI: janela maximizada, tema, último diretório aberto. Nunca armazene credenciais ou dados de negócio em `My.Settings`.
+`My.Settings` existe só no VB.NET e enxerga o arquivo de configuração em duas camadas. As chaves de escopo `Application` são lidas e nunca alteradas em execução. As de escopo `User` podem ser gravadas com `My.Settings.Save()` e ficam no perfil do Windows daquela pessoa, então sobrevivem ao fechamento do programa.
+
+Guarde ali o que é preferência de tela: janela maximizada, tema, última pasta aberta. Senha, token e dado de negócio ficam de fora, porque o arquivo é texto no perfil do usuário.
 
 | Escopo | Modificável em runtime | Persistido onde |
 | --- | --- | --- |
@@ -192,9 +198,11 @@ End Class
 
 </details>
 
-### Injeção de dependência em Forms
+<a id="di-in-forms"></a>
 
-WinForms não tem container de DI nativo. O padrão mais pragmático é **manual constructor injection**: serviços são criados em `Sub Main` e passados para o formulário raiz. Formulários filhos recebem apenas o que precisam, nunca o container inteiro.
+### O formulário recebe o serviço pelo construtor
+
+O WinForms não traz container de dependências, então o grafo é montado à mão dentro do `Sub Main` e o formulário raiz recebe o que precisa pelo construtor. Um formulário que dá `New SqlPurchaseRepository()` lá dentro fica preso àquela implementação e não roda em teste sem um banco atrás. A variável global tem o mesmo problema, com um agravante: qualquer parte do programa pode trocá-la a qualquer momento. Cada formulário filho recebe apenas os serviços que usa.
 
 <details>
 <summary>❌ Ruim: Form instancia serviços diretamente ou acessa estado global</summary>
@@ -255,9 +263,11 @@ End Class
 
 </details>
 
-### My.Application: ciclo de vida e single-instance
+<a id="my-application"></a>
 
-`My.Application` expõe eventos de ciclo de vida (`Startup`, `Shutdown`) e permite configurar a aplicação como single-instance, útil para ferramentas de desktop que não devem abrir duas vezes. Ative em **Project Properties → Application → Make single instance application**.
+### My.Application: início, encerramento e instância única
+
+O `My.Application` expõe os eventos que cercam a vida do programa. O `Startup` roda antes de qualquer formulário abrir, e é onde o log é inicializado e o schema do banco é conferido. O `Shutdown` roda em qualquer encerramento, inclusive quando o usuário fecha pelo Alt+F4, e é onde o log é descarregado em disco. O `StartupNextInstance` só é chamado quando a aplicação está marcada como instância única (**Project Properties → Application → Make single instance application**): em vez de abrir uma segunda janela, ele traz a existente para a frente.
 
 <details>
 <summary>✅ Bom: inicialização e limpeza no ciclo de vida da aplicação</summary>
@@ -329,11 +339,13 @@ MyDesktopApp/
 
 ## Web (ASP.NET MVC 5 / Web API 2)
 
-ASP.NET MVC 5 e Web API 2 em .NET Framework 4.8 seguem um modelo de bootstrap baseado em `Global.asax.vb` e arquivos em `App_Start/`. O ciclo de vida é gerenciado pelo IIS/OWIN e injeção de dependência é feita via container (Unity, Autofac). As seções abaixo cobrem os padrões de configuração, entry point e registro de dependências para projetos web legados.
+ASP.NET MVC 5 e Web API 2 sobem a partir do `Global.asax.vb` e dos arquivos em `App_Start/`. Quem cuida do ciclo de vida é o IIS, e as dependências chegam por um container (Unity ou Autofac). As seções abaixo cobrem configuração, ponto de entrada e registro de dependências nesses projetos.
 
-## Configuração: Web.config e App.config
+<a id="configuration"></a>
 
-Connection strings e parâmetros de ambiente pertencem ao arquivo de configuração, nunca ao código. `ConfigurationManager` é o ponto de acesso central. Nunca passe strings diretamente para `New SqlConnection(...)`.
+## A connection string mora no arquivo de configuração
+
+Uma connection string escrita no código vai para o repositório junto com a senha, e o mesmo binário passa a servir a um ambiente só. No `Web.config`, a string fica fora do código, e cada ambiente traz a sua. O `ConfigurationManager` é o ponto de leitura, e uma fábrica central devolve a conexão pronta para quem precisar.
 
 <details>
 <summary>❌ Ruim: connection string hardcoded no código</summary>
@@ -375,9 +387,11 @@ End Module
 
 </details>
 
-## Entry point: Global.asax.vb
+<a id="global-asax"></a>
 
-`Global.asax.vb` é o equivalente ao `Program.cs` em projetos web .NET Framework. Deve declarar intenção (registrar rotas, filtros e container de DI) sem implementar nada diretamente.
+## O Global.asax.vb é um índice, não um depósito
+
+O `Application_Start` é o `Program.cs` do .NET Framework: ele diz o que precisa acontecer na subida. Escrever ali dentro cada registro do container transforma o arquivo em uma lista que cresce a cada feature, e o ponto de entrada deixa de caber na tela. Cada assunto ganha um arquivo em `App_Start/`, e o `Application_Start` chama três linhas: rotas, filtros e container.
 
 <details>
 <summary>❌ Ruim: Global.asax.vb com lógica de negócio e configuração misturadas</summary>
@@ -457,9 +471,11 @@ End Module
 
 </details>
 
-## Entry point: Module Main (console e serviços)
+<a id="module-main"></a>
 
-Para aplicações console ou Windows Services, o entry point é um `Module` com um `Sub Main`. Mesma regra: declara intenção, delega implementação.
+## Console e Windows Service começam em Module Main
+
+Em aplicação de console ou serviço do Windows, o ponto de entrada é um `Sub Main` dentro de um `Module`. A regra é a mesma do `Global.asax.vb`: ele monta o container, resolve a aplicação e manda rodar.
 
 <details>
 <summary>✅ Bom: Module Main como índice</summary>
@@ -489,9 +505,11 @@ End Module
 
 </details>
 
-## Injeção de dependência
+<a id="constructor-injection"></a>
 
-VB.NET não tem primary constructors (C# 12+). O padrão é construtor explícito com campos `ReadOnly`. Cada serviço declara suas dependências via construtor, nunca instancia ou localiza dependências internamente.
+## O construtor explícito declara as dependências
+
+VB.NET não tem construtor primário, que é recurso do C# 12. A escrita aqui é o construtor completo, com campos `ReadOnly` preenchidos nele. Uma classe que dá `New SqlPurchaseRepository()` no meio de um método esconde essa dependência de quem lê a assinatura, e um `ServiceLocator.Current.GetInstance` faz o mesmo. Nos dois casos, o teste precisa preparar o mundo inteiro em vez de passar dois substitutos. Detalhes do container em [injeção de dependência](../conventions/advanced/dependency-injection.md).
 
 <details>
 <summary>❌ Ruim: dependências instanciadas internamente</summary>
@@ -549,9 +567,9 @@ End Class
 
 <a id="registration-by-domain"></a>
 
-## Registro por domínio
+## Cada domínio registra as próprias dependências
 
-Cada domínio registra suas próprias dependências em um extension method de `IUnityContainer`. `ContainerConfig` agrega, sem conhecer os detalhes de nenhum domínio.
+O registro de um domínio fica dentro da pasta daquele domínio, escrito como extension method de `IUnityContainer`. O `ContainerConfig` chama um método por feature, sem saber o que cada um faz. Uma feature nova acrescenta um arquivo e uma linha, e o arquivo central para de crescer.
 
 <details>
 <summary>✅ Bom: domínio de Purchases dono da sua configuração</summary>
@@ -597,9 +615,11 @@ End Sub
 
 </details>
 
-## Leitura de configuração tipada
+<a id="typed-configuration"></a>
 
-Evite ler chaves de configuração com strings espalhadas pelo código. Centralize em uma classe ou módulo de configuração: qualquer mudança de chave tem um único ponto de atualização.
+## A chave de configuração aparece uma vez só
+
+`ConfigurationManager.AppSettings("Smtp:Host")` espalhado por três classes significa três lugares para atualizar quando a chave mudar de nome, e o que esquecer volta `Nothing` em execução, sem erro de compilação. Uma classe de configuração lê as chaves no construtor e entrega os valores já convertidos. Registrada como instância única, ela lê o arquivo uma vez e serve a aplicação inteira.
 
 <details>
 <summary>❌ Ruim: chaves de configuração espalhadas no código</summary>

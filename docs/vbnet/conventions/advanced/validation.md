@@ -1,28 +1,32 @@
-# Validation
+# Validação em VB.NET
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-O pipeline de validação tem três responsabilidades distintas, cada uma no seu lugar:
+A validação de uma requisição passa por três trabalhos diferentes, e cada um tem seu lugar. Limpar o dado que chegou, conferir se ele tem o formato combinado e, só então, perguntar se ele faz sentido para o negócio. O caminho completo é este:
 
 ```
-[Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
+[Entrada] → Limpa → Valida formato → Aplica regras de negócio → [Filtra saída] → Resposta
 ```
 
-Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
+Quando esses trabalhos se misturam em um lugar só, a regra de negócio passa a depender do framework de validação, o teste precisa subir um banco para rodar, e um campo interno acaba escapando na resposta.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Ponto de entrada onde a validação começa; controller recebe o input bruto |
-| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Contrato de entrada validado pelo schema; imutável, com tipos idiomáticos |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controle) | Pipeline ASP.NET onde Data Annotations executam schema validation automática |
-| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa fronteira; regras de negócio que dependem de I/O não cabem no validator |
-| **Sanitize** (higienização) | Limpa input (trim, lowercase) antes de validar; evita falsos positivos |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Ponto de entrada da requisição; o controller recebe o dado bruto |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | Objeto que carrega o dado de entrada ou de saída, com os campos que aquele contrato expõe |
+| **MVC** (Model-View-Controller · Modelo-Visão-Controle) | Pipeline do ASP.NET onde as Data Annotations rodam a validação de formato sozinhas |
+| **DataAnnotations** (anotações de validação) | Atributos como `<Required>` e `<Range>` que declaram o formato esperado na própria classe |
+| **ModelState** (estado do modelo) | Objeto do ASP.NET que reúne os erros encontrados na validação de formato |
+| **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa um limite: banco, rede, disco |
+| **sanitize** (higienizar) | Limpar o dado antes de validar: tirar espaços das pontas, baixar o email para minúsculas |
 
-## Sanitização de entrada
+<a id="sanitization"></a>
 
-Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados sujos entram em validação suja: um email com espaço passa no validator mas falha na busca no banco.
+## Limpe o dado antes de validar
+
+`" Admin@Email.com "` passa em qualquer validação de formato de email, e depois não encontra ninguém na busca do banco, porque lá o email está gravado em minúsculas e sem espaços. A limpeza vem primeiro: `Trim()` nas strings, `ToLowerInvariant()` no email. Assim a validação julga o mesmo texto que o resto do sistema vai usar.
 
 <details>
 <summary>❌ Ruim: dados brutos chegam direto na validação</summary>
@@ -69,9 +73,11 @@ End Function
 
 </details>
 
-## Schema validation com DataAnnotations
+<a id="schema-validation"></a>
 
-DataAnnotations validam shape, tipos e constraints, não regras de negócio. Centralizam o contrato técnico e eliminam validação manual espalhada nos handlers. Web API 2 e MVC 5 verificam `ModelState.IsValid` automaticamente quando `[ValidateModel]` está aplicado.
+## O formato esperado fica declarado no DTO
+
+As **DataAnnotations** dizem, na própria classe de entrada, quais campos são obrigatórios e que valores eles aceitam. O contrato passa a morar em um lugar só, e o controller deixa de repetir a mesma sequência de `If` a cada action. Web API 2 e MVC 5 rodam essa verificação sozinhos e depositam o resultado no `ModelState`.
 
 <details>
 <summary>❌ Ruim: validação manual espalhada no handler</summary>
@@ -137,9 +143,11 @@ End Class
 
 </details>
 
-## Regras de negócio
+<a id="business-rules"></a>
 
-O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no domínio: dependem de I/O (banco, serviços externos) e não pertencem ao validator.
+## A regra de negócio mora no service
+
+A validação de formato responde se o campo veio preenchido e dentro da faixa aceita. "Este produto está disponível para venda" é outra pergunta: ela exige uma consulta ao banco. Escondida dentro de um atributo de validação, essa consulta transforma um teste do DTO em um teste que precisa de infraestrutura, e o erro de negócio volta ao cliente com a mesma cara de um campo mal preenchido. O service faz essas verificações depois que o formato já passou, e devolve o resultado com um código próprio.
 
 <details>
 <summary>❌ Ruim: I/O e regra de domínio misturados na validação de esquema</summary>
@@ -192,9 +200,11 @@ End Function
 
 </details>
 
-## Output filtering
+<a id="output-filtering"></a>
 
-Retornar a entidade direta vaza campos internos: `PasswordHash`, `IsDeleted`, flags de auditoria. Use uma classe de resposta como projeção explícita, nunca a entidade do banco.
+## A resposta expõe só os campos do contrato
+
+Devolver a entidade do banco manda para o cliente tudo o que ela carrega, incluindo `PasswordHash`, `IsDeleted` e os campos de auditoria. E cada coluna nova que alguém acrescentar à tabela entra na resposta sozinha, sem ninguém decidir. Uma classe de resposta lista os campos que saem, e o que não está nessa lista fica no servidor.
 
 <details>
 <summary>❌ Ruim: entidade direta vaza campos internos</summary>
@@ -241,9 +251,11 @@ End Function
 
 </details>
 
-## Filtro global de ModelState
+<a id="global-model-state-filter"></a>
 
-Para evitar repetir `If Not ModelState.IsValid` em cada action, registre um `ActionFilterAttribute` global que retorna `400` automaticamente.
+## Um filtro global responde 400 por todas as actions
+
+O bloco `If Not ModelState.IsValid Then Return BadRequest(...)` se repete em toda action e sempre faz a mesma coisa. Um `ActionFilterAttribute` registrado globalmente roda essa verificação antes da action, devolve `400` quando o formato falhou, e some com a repetição.
 
 <details>
 <summary>✅ Bom: filtro global elimina boilerplate de ModelState em cada action</summary>

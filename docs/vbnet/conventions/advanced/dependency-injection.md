@@ -1,28 +1,31 @@
-# Dependency Injection
+# Injeção de dependência em VB.NET
 
 > Escopo: VB.NET. Idiomas específicos deste ecossistema.
 
-**DI** (Dependency Injection · injeção de dependência) torna dependências explícitas, testáveis e substituíveis. O container resolve o grafo automaticamente. A única responsabilidade do código é declarar o que precisa, não como obtê-lo.
+**DI** (Dependency Injection · Injeção de Dependência) é a prática de a classe declarar o que precisa e receber pronto, em vez de sair construindo as próprias dependências. O construtor passa a listar tudo o que aquela classe usa, o teste entrega um substituto no lugar do banco de verdade, e trocar a implementação vira uma linha no registro.
 
-VB.NET sobre .NET Framework 4.8 usa containers externos: **Unity** (container DI da Microsoft, padrão em projetos legados) ou **Autofac** (container DI com ecossistema mais rico). Os exemplos abaixo usam Unity por ser o mais comum em bases VB.NET; o idioma é equivalente em Autofac.
+VB.NET sobre .NET Framework 4.8 depende de um container externo para isso. Os dois comuns são o **Unity**, da Microsoft, presente na maioria das bases legadas, e o **Autofac**. Os exemplos usam Unity, e a escrita em Autofac é equivalente.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **DI** (Dependency Injection · Injeção de Dependências) | Padrão em que o container fornece dependências em vez de a classe construí-las |
-| **IoC container** (Inversion of Control · Inversão de Controle) | Componente que registra serviços e resolve o grafo de dependências |
-| **Unity** (container DI da Microsoft) | Container clássico em projetos VB.NET sobre .NET Framework |
-| **Autofac** (container DI alternativo) | Container popular com ecossistema rico de extensões |
-| **Service Locator** (localizador de serviços) | Antipadrão: buscar dependências do container dentro da classe |
-| **constructor injection** (injeção via construtor) | Forma preferida: parâmetros do construtor declaram tudo que a classe precisa |
-| **Singleton** (instância única) | Tempo de vida em que uma única instância serve todo o app |
-| **Transient** (por chamada) | Tempo de vida em que cada resolução cria uma nova instância |
-| **PerRequestLifetime** (por requisição HTTP) | Tempo de vida que dura por requisição em ASP.NET clássico |
+| **DI** (Dependency Injection · Injeção de Dependência) | A classe recebe as dependências prontas em vez de construí-las |
+| **IoC container** (Inversion of Control · Inversão de Controle) | Componente que guarda o registro dos serviços e monta o objeto com tudo o que ele pede |
+| **Unity** (container da Microsoft) | Container clássico das bases VB.NET sobre .NET Framework |
+| **Autofac** (container alternativo) | Container com um ecossistema maior de extensões |
+| **constructor injection** (injeção pelo construtor) | Forma adotada: os parâmetros do construtor declaram tudo o que a classe precisa |
+| **Service Locator** (localizador de serviços) | Antipadrão: pedir a dependência ao container de dentro da classe |
+| **lifetime** (tempo de vida) | Por quanto tempo o container reaproveita a mesma instância |
+| **Singleton** (instância única) | Uma instância só, que serve a aplicação inteira |
+| **Transient** (nova a cada pedido) | Uma instância nova a cada resolução |
+| **captive dependency** (dependência capturada) | Objeto de vida curta preso dentro de um de vida longa, que passa a viver junto com ele |
 
-## Service locator
+<a id="service-locator"></a>
 
-Service locator é o antipadrão clássico de DI: buscar dependências diretamente do container dentro da classe. Torna dependências implícitas, dificulta testes e cria acoplamento ao container.
+## A classe declara o que precisa no construtor
+
+Receber o container e pedir as dependências a ele lá dentro esconde o que a classe usa. O construtor mostra um parâmetro, e o `Resolve` verdadeiro está enterrado no meio de um método. Descobrir de que a classe depende passa a exigir ler o corpo inteiro dela, e o teste precisa montar um container em vez de passar dois substitutos. As dependências vão no construtor, onde quem lê a assinatura já vê todas.
 
 <details>
 <summary>❌ Ruim: dependência implícita, acoplado ao container</summary>
@@ -68,9 +71,11 @@ End Class
 
 </details>
 
-## Constructor injection sobre property injection
+<a id="constructor-over-property"></a>
 
-Property injection (setter injection) cria objetos em estado inválido: a dependência pode estar `Nothing` até alguém injetar. Constructor injection garante que o objeto nasce completo.
+## O objeto nasce com tudo o que precisa
+
+Injetar por propriedade cria um intervalo em que o objeto existe e ainda não serve para nada: o container já construiu a classe, e a propriedade `Repository` continua `Nothing` até que alguém a preencha. Se um caminho do código esquecer de preencher, o erro aparece como `NullReferenceException` dentro de um método, longe do ponto onde a montagem falhou. O construtor exige as dependências na hora de criar, e o objeto que existe é um objeto pronto para usar.
 
 <details>
 <summary>❌ Ruim: property injection, dependência opcional implícita</summary>
@@ -112,9 +117,11 @@ End Class
 
 </details>
 
-## Lifetimes
+<a id="lifetimes"></a>
 
-O container resolve cada dependência com um tempo de vida. Escolher errado gera bugs silenciosos em produção.
+## O tempo de vida decide quando a instância é reaproveitada
+
+Cada registro diz ao container por quanto tempo aquela instância vale. A tabela abaixo traz os três do Unity.
 
 | Lifetime (Unity) | Instância | Quando usar |
 | --- | --- | --- |
@@ -122,7 +129,7 @@ O container resolve cada dependência com um tempo de vida. Escolher errado gera
 | `TransientLifetimeManager` (padrão) | Nova a cada resolução | Objetos leves e sem estado compartilhado |
 | `ContainerControlledLifetimeManager` | Uma para toda a aplicação | Configuração, cache, HttpClient compartilhado |
 
-**Captive dependency**: um `ContainerControlledLifetimeManager` (singleton) que recebe um `HierarchicalLifetimeManager` (scoped) captura a instância na primeira resolução. O scoped passa a viver para sempre: comportamento incorreto e difícil de rastrear.
+O erro que dói é a **captive dependency**. Um serviço registrado como instância única recebe, no construtor, um repositório que deveria durar uma requisição. Como o serviço é construído uma vez só, ele guarda aquele repositório para sempre, junto com o `DbContext` e os dados da requisição que estava rodando naquele momento. Em produção isso aparece como o dado de um usuário surgindo na sessão de outro. Regra prática: o tempo de vida da dependência precisa ser igual ou maior que o de quem a recebe.
 
 <details>
 <summary>❌ Ruim: singleton captura scoped</summary>
@@ -153,9 +160,11 @@ container.RegisterType(Of IOrderRepository, SqlOrderRepository)(New Hierarchical
 
 </details>
 
-## Interface para testabilidade
+<a id="interface-for-testability"></a>
 
-Depender de interfaces, não de implementações concretas. Permite substituição em testes sem alterar o código de produção.
+## O construtor pede a interface
+
+Declarar o parâmetro como `SqlOrderRepository` amarra a classe àquela implementação, e o teste passa a precisar de um banco SQL Server de pé para rodar. Com o parâmetro declarado como `IOrderRepository`, o teste entrega um repositório em memória, e o registro decide qual implementação entra em produção.
 
 <details>
 <summary>❌ Ruim: dependência concreta, impossível substituir em testes</summary>
@@ -195,9 +204,11 @@ container.RegisterType(Of IOrderRepository, FakeOrderRepository)(New TransientLi
 
 </details>
 
-## Registro por convenção
+<a id="registration-by-convention"></a>
 
-Em domínios com muitos handlers, registrar cada um manualmente é repetitivo e fácil de esquecer. Unity permite varrer o assembly via reflection e registrar por convenção de nome ou interface marcadora.
+## Registro por convenção quando os handlers se multiplicam
+
+Cada handler novo pede uma linha no arquivo de registro, e a linha esquecida só aparece em execução, quando o container não sabe construir o controller. Uma interface marcadora (`IHandler`, sem nenhum método) permite varrer o assembly e registrar de uma vez todas as classes que a implementam. O handler novo passa a se registrar sozinho, bastando implementar a interface.
 
 <details>
 <summary>❌ Ruim: registro manual, cresce junto com os handlers</summary>
@@ -273,9 +284,11 @@ End Module
 > [!NOTE]
 > Unity possui `RegisterTypes` com helpers para assembly scanning (`AllClasses.FromAssembliesInBasePath()`, `WithMappings.FromMatchingInterface`). Autofac tem equivalente (`builder.RegisterAssemblyTypes(...).AsImplementedInterfaces()`). Quando o registro por convenção se repete em vários domínios, usar o helper do container reduz duplicação.
 
-## Registro
+<a id="registration"></a>
 
-O registro das dependências pertence ao módulo do domínio, não ao `Global.asax.vb`. O `UnityConfig.vb` (ou equivalente) apenas orquestra os módulos de cada feature. Veja [Project Foundation](../../setup/project-foundation.md#registration-by-domain).
+## Cada domínio registra as próprias dependências
+
+O registro de um domínio mora no módulo daquele domínio. O `UnityConfig.vb` chama um módulo por feature, e nada mais. Assim, acrescentar um domínio novo acrescenta um arquivo e uma linha, em vez de fazer um arquivo central crescer para sempre. Veja [Project Foundation](../../setup/project-foundation.md#registration-by-domain).
 
 ```vbnet
 Public Module UnityConfig

@@ -1,6 +1,8 @@
-# Control Flow
+# Controle de fluxo em VB.NET
 
-Controle de fluxo em VB.NET prioriza retorno antecipado e **guard clauses** (cláusulas de proteção) sobre aninhamento. Cada `If` que não guarda cedo acumula profundidade; cada `Else` após `Return` é ruído que o leitor precisa descartar. O objetivo é que o olho percorra o método em linha reta.
+O controle de fluxo em VB.NET começa pelo retorno antecipado e pelas **guard clauses** (cláusulas de proteção), no lugar do aninhamento. Cada `If` que não sai cedo acrescenta um nível de indentação, e o caso de sucesso vai parar no fundo do método.
+
+Um `Else` depois de um `Return` também sobra: o `Return` já encerrou aquele caminho, e quem lê o `Else` precisa confirmar isso antes de descartar o bloco.
 
 ## Conceitos fundamentais
 
@@ -16,7 +18,7 @@ Controle de fluxo em VB.NET prioriza retorno antecipado e **guard clauses** (cl�
 
 ## If e ElseIf
 
-O ponto de partida. Para dois caminhos, `If/Else` funciona, mas `Else` após um `Return` é ruído estrutural: o compilador já descartou o branch anterior.
+Para dois caminhos, `If/Else` resolve. O que sobra é o `Else` colocado depois de um `Return`: se a condição foi verdadeira, o método já saiu, e as linhas seguintes só rodam no caso contrário. O `Else` repete uma informação que o `Return` acima já deu, e leva junto um nível de indentação.
 
 <details>
 <summary>❌ Ruim: ElseIf desnecessário após Return</summary>
@@ -51,9 +53,9 @@ End Function
 
 ## If ternário
 
-Para atribuição de dois valores possíveis em uma linha. Três ou mais alternativas → `Select Case`.
-`IIf` é uma função _legacy_ que avalia **ambos** os argumentos sempre, incluindo expressões que
-lançam exceções. O operador `If(condition, truePart, falsePart)` usa curto-circuito.
+O operador `If(condição, valorSeVerdadeiro, valorSeFalso)` atribui um de dois valores em uma linha. A partir de três alternativas, use `Select Case`: o ternário aninhado dentro de outro ternário obriga o leitor a resolver a expressão de dentro para fora.
+
+Existe também o `IIf`, herdado do VB clássico, e ele tem um defeito grave: avalia sempre os dois argumentos. Em `IIf(items IsNot Nothing, items.Count, 0)`, o `items.Count` roda mesmo quando `items` é `Nothing`, e a chamada falha exatamente no caso que a condição tentava proteger. O operador `If` avalia só o ramo escolhido.
 
 <details>
 <summary>❌ Ruim: IIf avalia os dois lados sempre</summary>
@@ -98,9 +100,13 @@ End Select
 
 </details>
 
+<a id="nested-conditionals"></a>
+
 ## Aninhamento em cascata
 
-Quando as condições crescem e se aninham, o fluxo vira uma pirâmide (o _arrow antipattern_). Guard clauses invertem: valide as saídas no topo e deixe o fluxo principal limpo.
+Quatro condições aninhadas empurram o caso de sucesso para o quinto nível de indentação, e quem lê precisa manter as quatro na cabeça para saber em que situação aquela linha roda. A saída de erro, no fim do método, fica longe da condição que a causou.
+
+Inverta as condições e coloque as saídas no topo, uma por linha. O caso de sucesso volta para a margem e cada checagem fica ao lado do erro que ela produz.
 
 <details>
 <summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
@@ -146,8 +152,7 @@ End Function
 
 ## Dictionary
 
-`Dictionary(Of TKey, TValue)` substitui chains de `If/ElseIf` para mapeamento de chave → valor
-quando os dados são dinâmicos ou o conjunto é extensível sem recompilar.
+`Dictionary(Of TKey, TValue)` guarda um mapeamento de chave para valor que, escrito como `If/ElseIf`, viraria uma linha de código por entrada. Acrescentar uma moeda nova passa a ser uma linha na tabela, e o método de busca continua igual. Vale quando as entradas mudam com frequência, ou quando elas vêm de configuração e não podem exigir uma recompilação.
 
 <details>
 <summary>❌ Ruim: If/ElseIf para mapeamento estático de chave → valor</summary>
@@ -184,9 +189,11 @@ End Function
 
 </details>
 
+<a id="select-case"></a>
+
 ## Select Case
 
-`Select Case` substitui cadeias de `If/ElseIf` quando o valor de uma única expressão determina o caminho. Mais legível, mais rápido de escanear e extensível sem aninhamento extra.
+Quando o caminho depende do valor de uma única expressão, `Select Case` diz isso na primeira linha: a expressão aparece uma vez, e cada `Case` mostra um valor possível dela. A cadeia de `If/ElseIf` equivalente repete `status =` em cada ramo, e o leitor precisa comparar as condições entre si para confirmar que todas testam a mesma variável.
 
 <details>
 <summary>❌ Ruim: cadeia de ElseIf para valor único</summary>
@@ -254,10 +261,11 @@ End Function
 
 </details>
 
-## Circuit break
+## Sair do laço assim que a resposta aparece
 
-Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` (LINQ) já resolve. Esses
-métodos param no primeiro match, sem percorrer o resto.
+Um laço que percorre a coleção inteira para achar um item faz trabalho à toa depois de encontrar ele. Em uma lista de dez mil pedidos com o vencido na posição 3, o laço com flag faz 9.997 comparações desnecessárias.
+
+`Return` dentro do `For Each` sai na hora. E antes de escrever o laço, veja se o LINQ já resolve: `FirstOrDefault` para no primeiro item que casa, `Any` para no primeiro verdadeiro e `All` para no primeiro falso.
 
 <details>
 <summary>❌ Ruim: loop com flag percorre tudo mesmo após encontrar</summary>
@@ -307,7 +315,9 @@ Dim allActive = orders.All(Function(o) o.IsActive)
 
 ## For Each e For
 
-Use `For Each` quando não precisa do índice. Comunica iteração pura sem ruído de contador. Reserve `For...Next` para quando o índice é parte da lógica.
+`For Each` percorre a coleção sem contador. `For...Next` fica reservado para quando o índice entra na lógica: numerar páginas, pular de dois em dois, comparar um item com o vizinho.
+
+O `For` com índice usado só para acessar o elemento (`purchases(i)`) acrescenta três pontos onde dá para errar: o valor inicial, o `Count - 1` e cada indexação no corpo. O `For Each` não tem nenhum deles.
 
 <details>
 <summary>❌ Ruim: For com índice quando não é necessário</summary>
@@ -358,9 +368,9 @@ Next
 
 ## While
 
-Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice, `While`
-é a escolha natural. Use `Do...Loop Until` quando a primeira iteração deve sempre executar,
-independente da condição.
+`While` serve quando a parada depende de uma condição de estado e não existe coleção para percorrer, como tentar conectar ao banco até a conexão ficar pronta. Escrever isso como `For` cria um índice que não representa nada, e quem lê procura pelo significado dele.
+
+`Do...Loop Until` roda o corpo uma vez antes de testar a condição. É o que serve para esvaziar uma fila: processa o item, e só então pergunta se ainda sobrou algum.
 
 <details>
 <summary>❌ Ruim: For simulando condição de parada por estado</summary>
@@ -405,7 +415,7 @@ Loop Until taskQueue.Count = 0
 
 ## TryCast, DirectCast e CType
 
-VB.NET oferece três formas de conversão. A escolha importa para segurança e clareza de intenção.
+VB.NET tem três formas de converter um tipo em outro, e elas se diferenciam pelo que acontece quando a conversão falha. `TryCast` devolve `Nothing`, `DirectCast` lança exceção e `CType` tenta uma coerção antes de desistir. A escolha declara o que você espera do valor.
 
 | Operador | Comportamento | Quando usar |
 | --- | --- | --- |
@@ -438,7 +448,9 @@ If handler Is Nothing Then Return
 
 ## GoTo
 
-`GoTo` é proibido. VB.NET herdou `GoTo` do Basic clássico; em .NET não há justificativa para uso. `Try/Catch/Finally` cobre tratamento de erro; `Return` antecipado cobre saída condicional; `Using` cobre limpeza de recursos.
+`GoTo` é proibido. Ele veio do Basic clássico, quando a linguagem não tinha estrutura para desviar o fluxo de outro jeito. Hoje cada uso dele tem substituto direto: `Try/Catch/Finally` para tratar erro, `Return` antecipado para sair do método e `Using` para liberar recurso.
+
+O problema prático do `GoTo` é que o rótulo de destino pode estar em qualquer ponto do método, então descobrir o que roda depois de uma linha exige procurar todos os `GoTo` que apontam para lá.
 
 <details>
 <summary>❌ Ruim: GoTo como substituto de estruturas modernas</summary>

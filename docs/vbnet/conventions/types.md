@@ -1,11 +1,11 @@
-# Types
+# Tipos em VB.NET
 
 > Escopo: **idioma VB.NET sobre .NET Framework 4.8**. Decisões de arquitetura entre tipos (quando criar contratos, quando herdar, quando compor) estão em `shared/architecture/architecture.md` e `shared/architecture/patterns.md`; este documento cobre as ferramentas do idioma.
 
-VB.NET oferece **Interface**, **MustInherit Class** (equivalente a abstract), **Class**, **Structure**, **Enum**. Cada uma tem um domínio natural. A escolha errada não quebra nada, mas empurra decisões para o tipo errado.
+VB.NET oferece cinco formas de declarar um tipo: **Interface**, **MustInherit Class** (a classe abstrata), **Class**, **Structure** e **Enum**. Cada uma responde a uma pergunta diferente. Escolher a errada costuma compilar, e o custo aparece depois: uma `Structure` grande copiada a cada chamada, uma `Interface` que obriga as implementações a repetir a mesma orquestração.
 
 > [!IMPORTANT]
-> Tudo aqui assume `Option Strict On` e `Option Infer On`. Sem eles, o sistema de tipos vira sugestão: conversões implícitas viajam e late binding entra sem aviso. Veja [Variables](./variables.md#option-strict-e-option-explicit).
+> Tudo aqui assume `Option Strict On` e `Option Infer On`. Sem as duas diretivas, o compilador aceita conversão implícita e late binding, e o erro de tipo só aparece quando o código roda. Veja [Variables](./variables.md#compiler-options).
 
 ## Conceitos fundamentais
 
@@ -20,11 +20,13 @@ VB.NET oferece **Interface**, **MustInherit Class** (equivalente a abstract), **
 | **Generic** (tipo genérico) | Parâmetro de tipo (`Result(Of T)`); reaproveita o contrato sem perder verificação |
 | **Option Strict On** (modo estrito de tipos) | Diretiva que proíbe conversões implícitas perigosas; obrigatório no projeto |
 
-## Interface vs MustInherit Class
+## Interface ou MustInherit Class
 
-`Interface` descreve **capacidade**: o que o tipo consegue fazer. Suporta múltipla implementação via `Implements`, não carrega estado. `MustInherit Class` (equivalente ao `abstract class` do C#) descreve **identidade parcial**: uma base comum com estado e comportamento compartilhados, completada pelas filhas via `Inherits`.
+`Interface` declara uma **capacidade**: o que o tipo consegue fazer. Ela não guarda estado nem implementação, e uma classe pode implementar várias com `Implements`.
 
-A regra prática: se duas implementações vão compartilhar código, `MustInherit Class`. Se só compartilham contrato, `Interface`.
+`MustInherit Class` (a classe abstrata do C#) declara uma **identidade parcial**: uma base que já traz estado e comportamento prontos, e deixa as filhas completarem o resto com `Inherits`.
+
+A pergunta que decide é o que as implementações vão dividir entre si. Só o contrato, então `Interface`. Também o código, então `MustInherit Class`: em uma `Interface`, cada implementação teria que repetir a sequência "valida, e só então executa" por conta própria.
 
 <details>
 <summary>❌ Ruim: interface usada para compartilhar código entre implementações</summary>
@@ -120,7 +122,9 @@ End Class
 
 ## NotInheritable por padrão
 
-`NotInheritable` (equivalente ao `sealed` do C#) impede herança adicional. A recomendação do idioma moderno é **inverter o default**: toda classe concreta nasce `NotInheritable`, exceto quando herança for um requisito explícito de design. Classe não-sealed é um contrato implícito de extensibilidade, e contrato implícito é contrato errado.
+`NotInheritable` (o `sealed` do C#) impede que outra classe herde desta. Deixe ele como padrão: toda classe concreta nasce `NotInheritable`, e a herança passa a ser uma decisão que alguém toma de propósito.
+
+Uma classe aberta à herança promete que dá para estendê-la com segurança, e manter essa promessa dá trabalho. Quem herda pode sobrescrever um método que o resto da classe usava como pré-condição, e quebrar a invariante sem tocar em uma linha do código original. Como a classe filha costuma viver em outro assembly, o autor da classe base descobre isso quando o bug chega.
 
 <details>
 <summary>❌ Ruim: classe concreta sem NotInheritable, extensibilidade acidental</summary>
@@ -168,11 +172,13 @@ End Class
 
 </details>
 
-## Structure vs Class
+## Structure ou Class
 
-`Class` é reference type: passa por referência, nasce no heap, igualdade por referência. `Structure` é value type: passa por cópia, nasce na stack ou inline no objeto-pai, igualdade por valor se `Equals` for sobrescrito.
+`Class` é **reference type** (tipo de referência): a variável guarda o endereço do objeto no **heap** (área de memória de vida longa), a passagem para um método compartilha o mesmo objeto, e duas variáveis são iguais quando apontam para ele.
 
-A regra prática: **default é `Class`**. `Structure` só quando a semântica de valor é parte do domínio (coordenadas, dimensões, dinheiro quando não há identidade) e o tipo é pequeno, tipicamente abaixo de 16 bytes.
+`Structure` é **value type** (tipo de valor): o dado fica na própria variável, cada passagem copia ele por inteiro, e a igualdade compara campo a campo.
+
+Use `Class` por padrão. `Structure` entra quando o tipo é pequeno, abaixo de uns 16 bytes, e o domínio trata o valor como identidade, como uma coordenada ou um valor monetário. Duas notas de dez reais são a mesma coisa, então copiar não faz diferença. Uma `Structure` grande faz diferença: um tipo com dez campos é copiado inteiro a cada parâmetro, a cada retorno e a cada atribuição.
 
 <details>
 <summary>❌ Ruim: Structure grande, cópia custosa a cada passagem</summary>
@@ -220,7 +226,7 @@ End Class
 
 ## Nullable(Of T)
 
-VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (feature do C# 8+ em .NET Core 3+ / .NET 5+). Qualquer reference type pode ser `Nothing`. O tratamento de ausência é convenção:
+VB.NET sobre .NET Framework 4.8 **não suporta Nullable Reference Types** (recurso do C# 8 em diante, disponível a partir do .NET Core 3). Qualquer reference type pode ser `Nothing`, e o compilador não avisa. O tratamento da ausência fica por conta da convenção:
 
 - Retornos que podem não encontrar valor devolvem `Nothing` e o tipo documenta isso na assinatura via comentário **XML** (eXtensible Markup Language, Linguagem de Marcação Extensível) ou nomeação explícita (`FindById` vs `GetById`).
 - `Nullable(Of T)` (`T?` em C#) aplica-se apenas a value types (`Integer?`, `DateTime?`, `Guid?`).
@@ -268,9 +274,9 @@ Detalhes de contratos nulos em [null-safety.md](./advanced/null-safety.md).
 
 ## TypeOf ... Is e TryCast
 
-Pattern matching completo (`switch` expressions, property patterns do C# 8+) **não existe em VB.NET**. As ferramentas disponíveis são `TypeOf ... Is`, `TryCast`, `Select Case TypeOf` (VB 14+) e downcast explícito.
+O **pattern matching** (casamento de padrão) completo do C#, com `switch` de expressão e padrão de propriedade, **não existe em VB.NET**. O que a linguagem oferece é `TypeOf ... Is`, `TryCast`, `Select Case TypeOf` e a conversão explícita.
 
-A ferramenta idiomática para checagem + narrowing é `TryCast`: tenta a conversão, devolve `Nothing` se falhar, sem exception.
+`TryCast` é a escolha para checar o tipo e já obter a variável convertida: ele tenta a conversão e devolve `Nothing` quando ela falha, sem lançar exceção. Usar `TypeOf ... Is` seguido de `DirectCast` faz o mesmo trabalho duas vezes, uma para perguntar o tipo e outra para converter.
 
 <details>
 <summary>❌ Ruim: DirectCast após TypeOf, dupla checagem</summary>
@@ -364,7 +370,9 @@ End Class
 
 ## Generics com constraints
 
-Generic sem constraint (`Of T`) descreve qualquer tipo: abstração sem propósito. Constraints (`As Class`, `As Structure`, `As IEntity`, `As New`) tornam o contrato do genérico parte da assinatura e permitem usar membros do tipo dentro do método.
+Um genérico sem **constraint** (restrição de tipo) aceita qualquer tipo, então o corpo do método não pode chamar nenhum membro do `T`. Para descobrir se o tipo tem uma propriedade `Id`, sobra recorrer a **reflection** (inspeção do tipo durante a execução), e o erro de tipo errado só aparece quando o método roda.
+
+A constraint (`As Class`, `As Structure`, `As IEntity`, `As New`) coloca essa exigência na assinatura. Com `Of T As {Class, IEntity}`, o corpo acessa `e.Id` direto, e quem passar um tipo sem `Id` recebe erro de compilação.
 
 <details>
 <summary>❌ Ruim: genérico sem constraint, reflection para descobrir capability</summary>
@@ -402,7 +410,9 @@ End Function
 
 ## Evitar `Object` como contrato
 
-`Object` em VB.NET é o equivalente ao `dynamic` do C# quando `Option Strict Off` está ativo. Mesmo com `Option Strict On`, `Object` como parâmetro ou retorno desliga a garantia de tipo. Erros que seriam de compilação viram `InvalidCastException` em runtime.
+Um parâmetro `Object` aceita qualquer coisa, então o método não sabe o que recebeu e cada acesso precisa de uma conversão. O compilador não tem o que verificar, e o erro que ele acusaria vira uma `InvalidCastException` na execução, no cliente.
+
+Declare o tipo concreto. `ProcessConfig(config As ApiConfig)` diz na assinatura quais campos existem, e a IDE completa eles enquanto você digita.
 
 <details>
 <summary>❌ Ruim: Object para conveniência, tipo real perdido</summary>

@@ -1,8 +1,8 @@
-# Legacy Desktop: Setup Enxuto
+# Desktop legado: o setup mínimo que funciona
 
 > Escopo: VB.NET / Windows Forms / .NET Framework 4.8
 
-Aplicativos desktop com escopo limitado (consultas operacionais, relatórios locais, cadastros simples) não precisam de container de injeção de dependência (**IoC**), camadas de serviço ou padrões elaborados. A configuração do banco no **App.config** e um módulo de acesso a dados **thin** (enxuto) já resolvem o problema.
+Um aplicativo desktop de escopo pequeno (consulta operacional, relatório local, cadastro simples) não precisa de container de dependências, camada de serviço nem padrão elaborado. Duas coisas resolvem: a configuração do banco no **App.config** e um módulo de acesso a dados enxuto, com uma função por operação. Montar as camadas antes de precisar delas acrescenta arquivos que ninguém consulta e atrasa a entrega.
 
 Fluxo: `Formulário (tela) → DataAccess (acesso mínimo) → banco → resultado`
 
@@ -10,14 +10,14 @@ Fluxo: `Formulário (tela) → DataAccess (acesso mínimo) → banco → resulta
 
 | Conceito | O que é |
 | --- | --- |
-| **Windows Forms** (framework de UI desktop do .NET) | Plataforma de janelas para aplicativos desktop; padrão histórico em VB.NET |
-| **App.config** (arquivo de configuração) | XML com connection strings e parâmetros do app; carregado em runtime |
-| **connectionStrings** (seção de cadeias de conexão) | Bloco do `App.config` que centraliza credenciais e endpoint do banco |
-| **DataAccess** (módulo de acesso a dados) | Módulo `thin` (enxuto) com funções de leitura/escrita; substitui camada de serviço em apps simples |
-| **Module** (módulo VB.NET) | Container de membros compartilhados; equivale a `static class` em C# |
-| **IoC** (Inversion of Control · Inversão de Controle) | Padrão evitado em desktop legado simples; manter dependências explícitas via parâmetros |
-| **Async / Await** (assíncrono / aguardar) | Mantém a UI responsiva durante I/O; obrigatório mesmo em apps simples |
-| **DataGridView** (grid de dados do WinForms) | Componente padrão para listagem; bind direto a `DataTable` ou `BindingList` |
+| **Windows Forms** (interface desktop do .NET) | Plataforma de janelas do .NET; o padrão histórico dos aplicativos VB.NET |
+| **App.config** (arquivo de configuração) | XML com a connection string e os parâmetros do aplicativo, lido em execução |
+| **connectionStrings** (seção de conexões) | Bloco do `App.config` que guarda o endereço do banco e as credenciais |
+| **DataAccess** (módulo de acesso a dados) | Módulo com uma função por operação de banco; ocupa o lugar da camada de serviço em app simples |
+| **Module** (módulo VB.NET) | Agrupa membros compartilhados; equivale a uma classe estática do C# |
+| **IoC** (Inversion of Control · Inversão de Controle) | Container que monta as dependências; dispensável neste porte de projeto |
+| **fail-fast** (falhar cedo) | Verificar a configuração na subida e parar ali, com mensagem clara |
+| **DataGridView** (grid do WinForms) | Componente de listagem; recebe um `DataTable` direto como fonte de dados |
 
 Use este setup quando:
 - O formulário é o único consumidor do dado
@@ -29,9 +29,11 @@ Use este setup quando:
 
 ---
 
-## App.config: connection string
+<a id="app-config"></a>
 
-A connection string (string de conexão) pertence ao `App.config`, nunca ao código. Isso permite trocar o banco sem recompilar.
+## A connection string fica no App.config
+
+Escrita no código, a connection string leva a senha do banco para dentro do executável, e qualquer pessoa com o arquivo em mãos a lê. Também prende o programa a um único banco: apontar para o servidor de homologação passa a exigir recompilar e redistribuir. No `App.config`, o endereço fica em um arquivo texto ao lado do executável, e trocá-lo é editar uma linha.
 
 <details>
 <summary>❌ Ruim: connection string hardcoded no código</summary>
@@ -76,9 +78,11 @@ End Module
 
 ---
 
-## Módulo de acesso a dados thin
+<a id="thin-data-access"></a>
 
-Um módulo por domínio. Cada função executa uma query e retorna o resultado, sem lógica de negócio, sem estado. O formulário só precisa chamar a função.
+## Um módulo de acesso a dados por domínio
+
+O formulário que abre a própria `SqlConnection` mistura tela e banco no mesmo arquivo, e a conexão fica sem fechar assim que uma exceção interrompe o método antes do `Close()`. Um módulo por domínio resolve as duas coisas: cada função executa uma query e devolve o resultado, o `Using` garante o fechamento, e o formulário se ocupa de chamar e exibir.
 
 <details>
 <summary>❌ Ruim: acesso a dados misturado com lógica de **UI** (User Interface · Interface do Usuário) no Form</summary>
@@ -168,9 +172,11 @@ End Class
 
 ---
 
-## Salvar dados: INSERT e UPDATE
+<a id="insert-and-update"></a>
 
-O mesmo princípio: uma função por operação, parâmetros tipados, `Using` garante descarte da conexão.
+## Gravar segue o mesmo desenho
+
+A escrita repete a estrutura da leitura: uma função por operação, parâmetro com tipo declarado e `Using` em volta da conexão. A função devolve se a gravação encontrou o registro, e o formulário decide o que dizer ao usuário a partir dessa resposta. A validação do que o usuário digitou fica no formulário, antes da chamada.
 
 <details>
 <summary>✅ Bom: INSERT com parâmetros tipados</summary>
@@ -232,9 +238,11 @@ End Sub
 
 ---
 
-## Tratar connection string ausente
+<a id="missing-connection-string"></a>
 
-Se o `App.config` não tiver a connection string, `ConfigurationManager.ConnectionStrings` retorna `Nothing`. Falhar rápido (fail-fast) com mensagem clara é preferível a uma `NullReferenceException` genérica na primeira operação de banco.
+## Confira a configuração antes de abrir a primeira tela
+
+Quando a chave não existe no `App.config`, `ConfigurationManager.ConnectionStrings("DefaultConnection")` devolve `Nothing`, e o programa segue normalmente até a primeira consulta ao banco, onde estoura uma `NullReferenceException` no meio de uma tela. O usuário vê um erro que não diz nada, e quem for investigar começa pelo lugar errado. Conferir a chave no `Sub Main` troca isso por uma mensagem que nomeia o arquivo e a chave que faltam.
 
 <details>
 <summary>✅ Bom: fail-fast na inicialização, antes de abrir qualquer formulário</summary>
@@ -291,4 +299,4 @@ StockApp/
     └── ConnectionFactory.vb
 ```
 
-Sem `App_Start/`, sem container, sem camada de serviço. Cada domínio tem um formulário e um módulo de acesso a dados. `ConnectionFactory` é compartilhado via `Infrastructure/`.
+Cada domínio tem um formulário e um módulo de acesso a dados, e o `ConnectionFactory` fica em `Infrastructure/`, compartilhado por todos. Não existe `App_Start/`, container nem camada de serviço, e nenhum deles faz falta enquanto o projeto couber nas condições listadas no começo desta página.

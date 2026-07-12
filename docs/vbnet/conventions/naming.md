@@ -1,6 +1,6 @@
-# Naming
+# Nomes em VB.NET
 
-Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para tipos, métodos, propriedades e parâmetros públicos; **camelCase** para locais privadas. A regra sobre propósito do domínio vem antes da convenção visual: o identificador nomeia o papel, não o tipo técnico.
+Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para tipos, métodos, propriedades e parâmetros públicos, **camelCase** para variáveis locais. Antes da convenção visual vem a regra de conteúdo: o identificador diz qual papel a coisa cumpre no domínio. `pendingPurchase` conta o que a lista guarda; `purchaseList` só repete o tipo, que o compilador já sabe.
 
 ## Conceitos fundamentais
 
@@ -10,15 +10,15 @@ Nomes em VB.NET seguem as convenções da plataforma .NET: **PascalCase** para t
 | **camelCase** (capitalização a partir da segunda palavra) | Convenção `orderTotal`, `customerId`; usada para parâmetros e variáveis locais |
 | **interface prefix** (prefixo `I` em interfaces) | Convenção .NET: `IOrderRepository`, `ILogger`; identifica contrato visualmente |
 | **Async suffix** (sufixo `Async` em métodos assíncronos) | Sinaliza retorno `Task`/`Task(Of T)`: `LoadAsync`, `SaveAsync` |
-| **domain term** (termo de domínio) | Nome reflete propósito de negócio (`pendingPurchase`), não tipo técnico (`purchaseList`) |
+| **domain term** (termo de domínio) | Nome tirado do negócio: `pendingPurchase` diz o que a lista guarda; `purchaseList` repete o tipo |
 | **Hungarian notation** (notação húngara) | Antipadrão: prefixos como `strName`, `intCount`; evitar em VB.NET moderno |
 | **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
 <a id="portuguese-names"></a>
 
-## Nomes em português
+## Todo identificador é escrito em inglês
 
-Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `' why:`.
+Variáveis, métodos, classes, interfaces e propriedades ficam em inglês. Português aparece em dois lugares: nas strings que o usuário lê e nos comentários `' why:`. Misturar os dois idiomas obriga o leitor a adivinhar em qual língua está o nome que ele procura, e o resultado costuma ser um `BuscarClienteAsync` chamando um `FindByIdAsync`.
 
 <details>
 <summary>❌ Ruim: mistura de idiomas</summary>
@@ -26,7 +26,7 @@ Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, p
 ```vbnet
 Public Class ServicoDeClientes
     Public Async Function BuscarClienteAsync(id As Guid) As Task(Of Cliente)
-        Dim cliente = Await _repo.FindByIdAsync(id)
+        Dim cliente = Await _repository.FindByIdAsync(id)
         Return cliente
     End Function
 End Class
@@ -40,7 +40,7 @@ End Class
 ```vbnet
 Public Class CustomerService
     Public Async Function FindCustomerAsync(id As Guid) As Task(Of Customer)
-        Dim customer = Await _repo.FindByIdAsync(id)
+        Dim customer = Await _repository.FindByIdAsync(id)
         Return customer
     End Function
 End Class
@@ -48,11 +48,11 @@ End Class
 
 </details>
 
-## PascalCase e _camelCase
+## A capitalização declara o escopo
 
-VB.NET é case-insensitive, mas convenção importa: membros públicos usam PascalCase. Campos privados usam `_camelCase`. Parâmetros e variáveis locais usam `camelCase` sem underscore.
+Membros públicos usam PascalCase. Campos privados usam `_camelCase`. Parâmetros e variáveis locais usam `camelCase` sem underscore.
 
-A linguagem não diferencia `purchase` de `Purchase`. A convenção é o único sinal de escopo disponível para o leitor.
+A convenção pesa mais em VB.NET do que em outras linguagens porque VB.NET é **case-insensitive** (não diferencia maiúscula de minúscula): para o compilador, `purchase` e `Purchase` são o mesmo identificador. Ele não vai reclamar de um campo privado escrito em PascalCase. Sobra a convenção como único sinal de escopo que o leitor tem.
 
 | Escopo | Convenção | Exemplo |
 | --- | --- | --- |
@@ -99,9 +99,9 @@ End Class
 
 </details>
 
-## Sufixo Async
+## Método assíncrono termina em Async
 
-Todo método que retorna `Task` ou `Task(Of T)` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada. Sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
+Todo método que retorna `Task` ou `Task(Of T)` termina em `Async`. O sufixo avisa ao chamador que a operação precisa de `Await`. Sem ele, quem lê a chamada tem que abrir a assinatura do método para saber se aquilo é síncrono, e esquecer o `Await` em um retorno `Task` faz o código seguir adiante antes da operação terminar.
 
 <details>
 <summary>❌ Ruim: sem sufixo, natureza da operação obscura</summary>
@@ -125,9 +125,9 @@ Public Async Function ValidatePaymentAsync(request As PaymentRequest) As Task(Of
 
 </details>
 
-## Prefixo I: interfaces
+## Interface começa com I
 
-Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base`: o nome descreve a implementação pelo domínio ou tecnologia.
+Interfaces sempre começam com `I`: `IPurchaseRepository`, `ILogger`. O nome da implementação descreve a tecnologia ou o domínio dela, como `SqlPurchaseRepository` e `InMemoryPurchaseRepository`. Sufixos como `Impl`, `Default` e `Base` ocupam espaço sem informar onde a classe persiste os dados, o que é justamente a pergunta de quem lê.
 
 <details>
 <summary>❌ Ruim: distinção entre interface e classe ausente ou com sufixo ruído</summary>
@@ -163,9 +163,11 @@ End Class
 
 </details>
 
-## Booleans expressivos
+<a id="boolean-prefixes"></a>
 
-Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`, `valid`) são proibidos: não declaram se representam estado, capacidade ou diretiva.
+## Todo booleano começa com is, has, can ou should
+
+O prefixo diz qual pergunta o booleano responde. `active` deixa a pergunta em aberto: é o estado atual do usuário, é a permissão para ativar, é a ordem para ativar depois? `isActive`, `canActivate` e `shouldActivate` são três coisas diferentes, e `active` não diz qual delas está ali.
 
 | Prefixo | Significado | Exemplo |
 | --- | --- | --- |
@@ -196,16 +198,16 @@ Dim canDelete = user.Role = "ADMIN"
 
 </details>
 
-## Identificadores sem significado
+## Nome genérico não informa nada
 
-O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`, `item`, `result`, `temp`) são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
+`data`, `info`, `obj`, `item`, `result` e `temp` servem para qualquer coisa, então não dizem nada sobre esta. Quem lê `Dim data = MapToDto(result)` precisa subir até a declaração de `result`, de lá até a assinatura de `_repository.FindAsync`, e só então descobre que aquilo é a compra. `Dim summary = MapToSummary(purchase)` responde a mesma pergunta na própria linha.
 
 <details>
 <summary>❌ Ruim: nomes genéricos sem contexto de domínio</summary>
 
 ```vbnet
 Public Async Function GetDataAsync(id As Guid) As Task(Of Object)
-    Dim result = Await _repo.FindAsync(id)
+    Dim result = Await _repository.FindAsync(id)
     Dim data = MapToDto(result)
     Return data
 End Function
@@ -218,7 +220,7 @@ End Function
 
 ```vbnet
 Public Async Function FindPurchaseSummaryAsync(purchaseId As Guid) As Task(Of PurchaseSummary)
-    Dim purchase = Await _repo.FindByIdAsync(purchaseId)
+    Dim purchase = Await _repository.FindByIdAsync(purchaseId)
     Dim summary = MapToSummary(purchase)
     Return summary
 End Function
@@ -230,7 +232,7 @@ End Function
 
 ## Notação húngara
 
-Prefixos de tipo (`str`, `int`, `obj`, `tbl`, `btn`) eram comuns em VB clássico. Em VB.NET com `Option Strict On`, o compilador conhece o tipo; o prefixo é redundância que polui o nome.
+Prefixos de tipo (`str`, `int`, `obj`, `tbl`, `btn`) eram comuns no VB clássico, onde a variável podia mudar de tipo em tempo de execução e o prefixo era o único aviso. Com `Option Strict On`, o tipo está na declaração e a IDE mostra ele ao passar o mouse. O prefixo repete o que a declaração ao lado já diz, e fica errado na primeira vez que alguém troca o tipo sem renomear a variável: `strAge As Integer` compila sem aviso.
 
 <details>
 <summary>❌ Ruim: prefixo de tipo no nome</summary>
@@ -238,7 +240,7 @@ Prefixos de tipo (`str`, `int`, `obj`, `tbl`, `btn`) eram comuns em VB clássico
 ```vbnet
 Dim strName As String = customer.Name
 Dim intAge As Integer = customer.Age
-Dim lstPurchases As List(Of Purchase) = Await _repo.FindAllAsync()
+Dim lstPurchases As List(Of Purchase) = Await _repository.FindAllAsync()
 Dim btnSubmit As Button = FindControl("btnSubmit")
 ```
 
@@ -250,22 +252,22 @@ Dim btnSubmit As Button = FindControl("btnSubmit")
 ```vbnet
 Dim name As String = customer.Name
 Dim age As Integer = customer.Age
-Dim purchases = Await _repo.FindAllAsync()
+Dim purchases = Await _repository.FindAllAsync()
 Dim submitButton = TryCast(FindControl("submitButton"), Button)
 ```
 
 </details>
 
-## Código como documentação
+## O nome substitui o comentário
 
-Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura. Use `' why:` apenas para restrições ocultas ou invariantes não óbvios.
+Um comentário que repete o que a linha abaixo já diz vira mentira na primeira alteração que ninguém propagar. `' verifica se o usuário está ativo` acima de `If Not u.Flag Then` documenta um nome ruim em vez de corrigir ele: renomeie `Flag` para `IsActive` e o comentário fica sem função. Reserve `' why:` para o que o código não consegue mostrar, como uma restrição do sistema externo ou uma regra de negócio que explica um valor estranho.
 
 <details>
 <summary>❌ Ruim: comentários repetem o código</summary>
 
 ```vbnet
 ' busca o usuário pelo id
-Dim u = Await _repo.FindAsync(id)
+Dim u = Await _repository.FindAsync(id)
 
 ' verifica se o usuário está ativo
 If Not u.Flag Then
@@ -279,7 +281,7 @@ End If
 <summary>✅ Bom: código se explica; comentário só para restrições não óbvias</summary>
 
 ```vbnet
-Dim user = Await _repo.FindByIdAsync(userId)
+Dim user = Await _repository.FindByIdAsync(userId)
 
 If Not user.IsActive Then
     Return Nothing

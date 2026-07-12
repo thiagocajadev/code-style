@@ -1,13 +1,13 @@
-' NUnit — framework de testes open-source, popular em projetos .NET Framework
+' NUnit: framework de testes open-source, popular em projetos .NET Framework
 ' Executar: dotnet test  ou  Test Explorer no Visual Studio
-' Convenção: Assert.That(actual, Is.EqualTo(expected)) — actual primeiro no That()
+' Convenção: Assert.That(actual, Is.EqualTo(expected)), com actual primeiro no That()
 
 Imports NUnit.Framework
 
-Function ApplyDiscount(price As Decimal, discountPct As Integer) As Decimal
-    If discountPct <= 0 Then Return price
+Function ApplyDiscount(price As Decimal, discountPercentage As Integer) As Decimal
+    If discountPercentage <= 0 Then Return price
 
-    Dim discountedPrice = price * (1 - discountPct / 100D)
+    Dim discountedPrice = price * (1 - discountPercentage / 100D)
     Return discountedPrice
 End Function
 
