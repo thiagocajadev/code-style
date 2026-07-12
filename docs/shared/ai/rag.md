@@ -86,4 +86,4 @@ O **overlap** é o pedaço de texto que se repete entre um chunk e o seguinte. E
 | **Graph RAG** | Constrói grafo de conhecimento a partir dos documentos; recupera subgrafos por relevância; melhor para raciocínio relacional |
 | **Agentic RAG** | Agente decide dinamicamente quando buscar, com qual query e quantas iterações são necessárias |
 
-Comece pelo **Naive RAG** e suba para o **Advanced RAG** (busca híbrida mais re-ranking) quando a recuperação começar a trazer trecho irrelevante. Esses dois níveis cobrem a maior parte dos casos, e os pipelines modulares cobram uma complexidade que só se paga em volume.
+Comece pelo **Naive RAG** e suba para o **Advanced RAG** (busca híbrida mais re-ranking) quando a recuperação começar a trazer trecho irrelevante. Esses dois níveis cobrem a maior parte dos casos, e os pipelines modulares acrescentam uma complexidade que só compensa em volume alto de consultas.

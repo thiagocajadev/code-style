@@ -4,7 +4,7 @@
 > Conceitos fundamentais (webhook, polling, command routing, rate limit): [shared/platform/bots.md](../../../shared/platform/bots.md).
 > Primitivas Slack (tokens, Socket Mode, Block Kit, scopes): [shared/platform/bots-advanced.md](../../../shared/platform/bots-advanced.md#slack).
 
-O Slack cobra pontualidade do seu bot, e esse é o fato que organiza este guia. Toda interação que ele envia, seja um comando digitado, um clique de botão ou uma menção, precisa de um **ack()** (de *acknowledge*, o aviso de "recebi") em até três segundos, senão o usuário vê um erro na tela mesmo que o trabalho esteja em andamento. O **Bolt for JavaScript** é o framework oficial da Slack para lidar com isso: você cria um objeto **App** e registra nele os listeners de comando, evento e botão, cada um começando pelo `ack()` e só depois indo trabalhar.
+O Slack impõe um prazo de resposta ao seu bot, e esse é o fato que organiza este guia. Toda interação que ele envia, seja um comando digitado, um clique de botão ou uma menção, precisa de um **ack()** (de *acknowledge*, o aviso de "recebi") em até três segundos, senão o usuário vê um erro na tela mesmo que o trabalho esteja em andamento. O **Bolt for JavaScript** é o framework oficial da Slack para lidar com isso: você cria um objeto **App** e registra nele os listeners de comando, evento e botão, cada um começando pelo `ack()` e só depois indo trabalhar.
 
 ## Conceitos fundamentais
 

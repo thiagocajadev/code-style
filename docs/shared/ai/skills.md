@@ -75,7 +75,7 @@ Semântico:          LLM classifica a intenção → seleciona skill pelo score 
 Híbrido:            Prefixo tem prioridade; fallback para semântico se não houver prefixo
 ```
 
-O **prefixo explícito** dá sempre o mesmo resultado e custa zero token de classificação, porque a decisão é uma comparação de texto. O **roteamento semântico** aceita o pedido em linguagem natural e cobra uma chamada extra ao modelo (ou a um classificador menor) para descobrir a intenção. Com poucos domínios, o prefixo resolve.
+O **prefixo explícito** dá sempre o mesmo resultado e custa zero token de classificação, porque a decisão é uma comparação de texto. O **roteamento semântico** aceita o pedido em linguagem natural e gasta uma chamada extra ao modelo (ou a um classificador menor) para descobrir a intenção. Com poucos domínios, o prefixo resolve.
 
 ## Carregamento: trazer a skill só quando ela é acionada
 

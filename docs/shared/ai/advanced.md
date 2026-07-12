@@ -245,4 +245,4 @@ Aplicação → AI Gateway → [Claude | GPT | Gemini | modelo local]
 | **OpenRouter** | Não (SaaS) | Catálogo de 300+ modelos via endpoint único compatível com OpenAI; foco em variedade |
 | **Cloudflare AI Gateway** | Não (SaaS) | Roteamento no edge; cache semântico; 70+ modelos; integrado ao ecossistema Cloudflare |
 
-Vale a pena adotar um gateway quando a aplicação fala com mais de um provedor, precisa medir custo por tenant ou opera sob regulação (dados pessoais, conformidade). Com um provedor só e um projeto simples, a camada extra cobra manutenção e não devolve nada.
+Vale a pena adotar um gateway quando a aplicação fala com mais de um provedor, precisa medir custo por tenant ou opera sob regulação (dados pessoais, conformidade). Com um provedor só e um projeto simples, a camada extra vira mais um componente para manter, monitorar e atualizar, sem resolver problema que o projeto tenha.

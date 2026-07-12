@@ -317,7 +317,7 @@ async function consumeEvent(event) {
 
 A gravação em `processed_events` e a operação de negócio entram na mesma transação sempre que o banco
 permitir. Assim o evento fica marcado como processado exatamente quando o efeito dele existe. As
-duplicatas vão chegar, e o consumer precisa engoli-las sem cobrar o cliente duas vezes.
+duplicatas vão chegar, e o consumer precisa descartá-las sem cobrar o cliente duas vezes.
 
 ### O envelope: o formato comum de todo evento
 

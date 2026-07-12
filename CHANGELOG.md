@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-07-12
+
+### Fixed
+
+- **As 25 metáforas que as regras novas do `audit:prose` passaram a acusar em páginas já revisadas.** As regras `drama-charging` e `drama-swallowing` nasceram no fim do épico de SQL (v2.3.0), então v2.0.0 (`javascript`), v2.1.0 (`shared`) e v2.2.0 (`csharp`) fecharam sem que o gate olhasse para elas. Escopo desta correção: `javascript/`, `csharp/`, `shared/` e `sql/`, que são as pastas já revisadas; as demais 15 linguagens ficam para quando o épico chegar nelas. São 21 linhas de prosa em 16 arquivos, e nenhum fenced block foi tocado (conferido por SHA-256 contra o HEAD).
+- **O compilador do C# deixou de "cobrar o tratamento" e passou a fazer o que faz.** Em `null-safety.md` e `types.md`, ele avisa no ponto onde um valor que pode ser nulo é usado sem verificação; em `control-flow.md`, exige o caso `_` do `switch` expression; em `types.md`, acusa a variante que ficou sem tratamento. Em `testing.md`, `Assert.ThrowsAsync<NotFoundException>` só passa quando a exceção lançada é do tipo declarado.
+- **O heading `## try/catch que engole o erro` de `javascript/conventions/advanced/error-handling.md` virou "## try/catch que captura o erro e não avisa ninguém"**, com id ASCII explícito (`catch-that-hides-the-error`). Nenhum link apontava para a âncora antiga.
+- **Outras reescritas**: "o Slack cobra pontualidade do seu bot" virou o prazo de resposta que ele impõe; "as três decisões se pagam ou se cobram por anos" virou o tempo que o time convive com elas; "o Context cobra um preço" virou a dependência que não aparece na assinatura; "o cache passa a cobrar quase tudo o que economiza" virou o gasto que ele faz; "a camada extra cobra manutenção e não devolve nada" virou o componente a mais para manter, monitorar e atualizar.
+
+### Changed
+
+- **`audit-prose.mjs`: a isenção de cobrança monetária deixou de ser uma frase rígida.** `MONETARY_CHARGE` cobria só a forma `cobra por <unidade>`, e reprovava prosa correta. Agora cobre cada forma em que o dinheiro aparece de fato nas docs: o preço comparado ("o serviço gerenciado cobra mais caro por hora"), as duas linhas da fatura ("as APIs cobram entrada e saída"), quem paga ("sem cobrar o cliente duas vezes") e o verbo citado como ação de domínio (`A compensação de "cobrar" é "reembolsar"`). Três linhas de `shared/` que o gate acusava eram cobrança literal e ficaram como estavam.
+- **Isenção nova para a glosa do jargão em inglês.** A linha `| **swallow** (engolir) | Capturar erro sem tratar nem propagar |` da tabela de Conceitos traduz o termo que o leitor vai encontrar na literatura, e sobrevive ao gate. A prosa que usa o verbo continua reprovada.
+- **`drama-swallowing` passou a pegar a forma enclítica** (`engoli-las`), que escapava do regex. A ocorrência de `shared/architecture/backend-flow.md` só não passou despercebida porque a mesma linha tinha um "cobrar" que a outra regra acusou. Três testes novos em `audit-prose.test.mjs` (19 casos, antes 16).
+
 ## [2.3.0] - 2026-07-12
 
 ### Fixed

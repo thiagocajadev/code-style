@@ -145,9 +145,9 @@ Três saídas, em ordem de preferência:
 
 ### Os limites de um context
 
-Context resolve a cascata e cobra um preço: todo componente que o consome passa a depender de um
-provider (componente que fornece o valor do contexto) que ninguém vê na chamada. Três regras seguram
-o vazamento:
+Context resolve a cascata e cria uma dependência que não aparece na assinatura: todo componente que o
+consome passa a depender de um provider (componente que fornece o valor do contexto) que ninguém vê
+na chamada. Três regras seguram o vazamento:
 
 - **Um contexto por domínio** (tema, autenticação, feature flags). Um contexto único com o estado
   geral do app junta assuntos que não têm relação e obriga todo mundo a escutar tudo.
@@ -166,8 +166,8 @@ Gerenciadores de estado global (Redux, Zustand, NgRx, Fluxor, Pinia) valem quand
   anteriores) e persistência precisam de um ponto central.
 - O time já pagou o custo de aprender a abstração e o projeto é grande o bastante para amortizá-lo.
 
-Em projeto pequeno, o store global cobra cerimônia (actions, reducers, seletores) para resolver o que
-estado local e lifting já resolvem.
+Em projeto pequeno, o store global acrescenta cerimônia (actions, reducers, seletores) para resolver
+o que estado local e lifting já resolvem.
 
 ---
 
@@ -179,8 +179,8 @@ se repetem. Em componentes ela aparece de três formas: cache de valor calculado
 re-render quando as props não mudaram).
 
 O ganho depende da relação entre o **custo de calcular** e o **custo de comparar os argumentos**. Com
-argumentos que são objetos grandes, comparar chega perto de calcular, e o cache passa a cobrar quase
-tudo o que economiza.
+argumentos que são objetos grandes, comparar chega perto de calcular, e o cache gasta quase tudo o
+que economiza.
 
 | Cenário                                                                   | Memoizar?                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------- |

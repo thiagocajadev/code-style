@@ -108,7 +108,7 @@ Para o lado da cor (quanto de luminosidade separa duas camadas em **OKLCH**, qua
 
 ### Quanto menos camadas, melhor
 
-Cada camada nova cobra atenção do usuário e um lugar na pilha do código. Três anti-patterns aparecem quando a pilha cresce sem controle:
+Cada camada nova disputa a atenção do usuário e ocupa um lugar na pilha do código. Três anti-patterns aparecem quando a pilha cresce sem controle:
 
 | Anti-pattern | Efeito | Solução |
 |---|---|---|

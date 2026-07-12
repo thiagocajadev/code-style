@@ -2,7 +2,7 @@
 
 > Escopo: C#. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-O C# 8 ensinou o compilador a diferenciar `string`, que promete sempre ter valor, de `string?`, que avisa que pode vir vazio. Com isso, o `NullReferenceException` que só aparecia com o programa rodando passa a ser apontado durante o build. O C# 14 fechou o conjunto de operadores ao permitir o `?.` também do lado esquerdo de uma atribuição. Ligue o recurso no projeto inteiro e o compilador cobra o tratamento antes de deixar você compilar.
+O C# 8 ensinou o compilador a diferenciar `string`, que promete sempre ter valor, de `string?`, que avisa que pode vir vazio. Com isso, o `NullReferenceException` que só aparecia com o programa rodando passa a ser apontado durante o build. O C# 14 fechou o conjunto de operadores ao permitir o `?.` também do lado esquerdo de uma atribuição. Ligue o recurso no projeto inteiro e o compilador passa a avisar em todo ponto onde um valor que pode ser nulo é usado sem verificação.
 
 ## Conceitos fundamentais
 

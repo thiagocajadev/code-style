@@ -180,7 +180,7 @@ Existe ainda o `record struct`, para quando o dado é pequeno e vale evitar a al
 
 ## Tipos de referência anuláveis
 
-Ligar `<Nullable>enable</Nullable>` no `.csproj` muda o significado das assinaturas do projeto inteiro: `string` passa a prometer que nunca é nulo, e `string?` avisa que pode ser. O compilador cobra a verificação antes do uso, e aquele `NullReferenceException` que aparecia em produção vira aviso durante o build.
+Ligar `<Nullable>enable</Nullable>` no `.csproj` muda o significado das assinaturas do projeto inteiro: `string` passa a prometer que nunca é nulo, e `string?` avisa que pode ser. O compilador avisa em todo ponto onde um `string?` é usado sem verificação, e aquele `NullReferenceException` que aparecia em produção vira aviso durante o build.
 
 <details>
 <summary>❌ Ruim: nullable desligado, null silencioso no contrato</summary>
@@ -228,7 +228,7 @@ O operador `!` (null-forgiving) manda o compilador confiar em você e parar de a
 
 ## Pattern matching
 
-O pattern matching (correspondência de padrões) troca cadeias de `if/else` por `is`, `switch` expressions e padrões que leem propriedades do objeto. Ele faz o **narrowing** (estreitamento do tipo) sozinho: dentro do bloco onde o teste passou, a variável já vem com o tipo específico. Quando o conjunto de variantes é fechado, o compilador ainda cobra o tratamento de todas.
+O pattern matching (correspondência de padrões) troca cadeias de `if/else` por `is`, `switch` expressions e padrões que leem propriedades do objeto. Ele faz o **narrowing** (estreitamento do tipo) sozinho: dentro do bloco onde o teste passou, a variável já vem com o tipo específico. Quando o conjunto de variantes é fechado, o compilador ainda acusa a variante que ficou sem tratamento.
 
 <details>
 <summary>❌ Ruim: cadeia de if com cast explícito</summary>

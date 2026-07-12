@@ -7,10 +7,10 @@
 > importa é o princípio: entry point como índice, configuração centralizada,
 > módulos por domínio.
 
-Três decisões definem a fundação de um projeto Node.js, e as três se pagam ou se
-cobram por anos: onde a configuração é lida, como os módulos se dividem por
-domínio, e o que o **entry point** (arquivo por onde a aplicação começa a rodar)
-faz quando o processo sobe. Esta página mostra a forma que mantém as três
+Três decisões definem a fundação de um projeto Node.js, e o time convive com elas
+por anos: onde a configuração é lida, como os módulos se dividem por domínio, e o
+que o **entry point** (arquivo por onde a aplicação começa a rodar) faz quando o
+processo sobe. Esta página mostra a forma que mantém as três
 respostas visíveis no código. Editor, linter e gerenciador de pacotes ficam
 alinhados antes da primeira linha de domínio, porque acertar isso depois custa um
 diff que toca o repositório inteiro.

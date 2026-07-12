@@ -196,7 +196,7 @@ ferramentas CLI.
 
 ## YAML
 
-**YAML** domina a configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration/Continuous Delivery · Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. A indentação expressa a hierarquia, o que deixa o arquivo enxuto e cobra um preço: um tab no lugar de um espaço quebra o parse sem mensagem clara.
+**YAML** domina a configuração de infraestrutura: pipelines de **CI/CD** (Continuous Integration/Continuous Delivery · Integração e Entrega Contínuas), Kubernetes, Docker Compose e ferramentas de automação. A indentação expressa a hierarquia, o que deixa o arquivo enxuto e frágil: um tab no lugar de um espaço quebra o parse sem mensagem clara.
 
 ```yaml
 # docker-compose.yml

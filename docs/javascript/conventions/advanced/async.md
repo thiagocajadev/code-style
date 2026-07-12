@@ -54,7 +54,7 @@ async function fetchUserData(id) {
 
 ## Cadeia de .then() no lugar de await
 
-Encadear `.then()` desfaz o aninhamento, mas cobra outro preço: funções dentro de funções só para levar o resultado de um passo ao próximo. `await` lê como código síncrono e mantém cada valor no mesmo escopo, à mão do passo seguinte.
+Encadear `.then()` desfaz o aninhamento e cria outro problema: cada passo vira uma função dentro de outra função, escrita só para levar o resultado adiante. `await` lê como código síncrono e mantém cada valor no mesmo escopo, à mão do passo seguinte.
 
 <details>
 <summary>❌ Ruim: verboso, difícil de depurar</summary>

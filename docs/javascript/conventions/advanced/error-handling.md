@@ -2,7 +2,7 @@
 
 > Escopo: JavaScript. Idiomas específicos deste ecossistema.
 
-Um bom tratamento de erro começa por separar dois tipos que pedem respostas opostas. O **problema de negócio** (uma regra violada, um recurso que não existe) o chamador precisa conhecer para responder ao usuário. A **falha técnica** (um timeout, o banco fora do ar) o chamador raramente consegue tratar: ela vira log, métrica e, quando cabe, **retry** (nova tentativa). Misturar os dois esconde o que importa. E `try/catch` serve para capturar o erro no lugar certo, nunca para engoli-lo em silêncio.
+Um bom tratamento de erro começa por separar dois tipos que pedem respostas opostas. O **problema de negócio** (uma regra violada, um recurso que não existe) o chamador precisa conhecer para responder ao usuário. A **falha técnica** (um timeout, o banco fora do ar) o chamador raramente consegue tratar: ela vira log, métrica e, quando cabe, **retry** (nova tentativa). Misturar os dois esconde o que importa. E `try/catch` serve para capturar o erro no lugar certo, nunca para escondê-lo de quem chamou a função.
 
 ## Conceitos fundamentais
 
@@ -193,9 +193,11 @@ export class InternalServerError extends BaseError {
 
 </details>
 
-## try/catch que engole o erro
+<a id="catch-that-hides-the-error"></a>
 
-Capturar o erro, logar uma frase genérica e devolver `null` esconde a falha: o chamador recebe um vazio sem saber por quê. O `catch` no lugar certo faz o oposto: relança o erro de negócio como veio e embrulha a falha técnica em um erro da aplicação, com a causa original preservada.
+## try/catch que captura o erro e não avisa ninguém
+
+Capturar o erro, logar uma frase genérica e devolver `null` esconde a falha: o chamador recebe um vazio sem saber por quê. O `catch` no lugar certo relança o erro de negócio como veio e embrulha a falha técnica em um erro da aplicação, com a causa original preservada.
 
 <details>
 <summary>❌ Ruim: captura, loga e retorna null</summary>

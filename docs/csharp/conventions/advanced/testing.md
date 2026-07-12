@@ -35,7 +35,7 @@ using Xunit;
 
 ## As três fases do teste
 
-Preparar o cenário, executar a operação e declarar o valor esperado ficam juntos, em um bloco. A verificação vem depois de uma linha em branco. Escrever tudo dentro do `Assert`, como em `Assert.Equal(90m, ApplyDiscount(new Order { ... }))`, economiza linhas e cobra caro na hora que o teste quebra: a mensagem de falha mostra números sem dizer de onde vieram.
+Preparar o cenário, executar a operação e declarar o valor esperado ficam juntos, em um bloco. A verificação vem depois de uma linha em branco. Escrever tudo dentro do `Assert`, como em `Assert.Equal(90m, ApplyDiscount(new Order { ... }))`, economiza linhas e atrapalha na hora que o teste quebra: a mensagem de falha mostra números sem dizer de onde vieram.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -227,7 +227,7 @@ public class OrderTests
 
 ## Verificar qual exceção foi lançada
 
-Um `try/catch` que captura `Exception` e confirma que ela não é nula passa mesmo quando o código quebrou por um motivo diferente do esperado: um `NullReferenceException` acidental satisfaz o teste tão bem quanto o `NotFoundException` que ele queria provar. `Assert.ThrowsAsync<NotFoundException>` cobra o tipo certo.
+Um `try/catch` que captura `Exception` e confirma que ela não é nula passa mesmo quando o código quebrou por um motivo diferente do esperado: um `NullReferenceException` acidental satisfaz o teste tão bem quanto o `NotFoundException` que ele queria provar. `Assert.ThrowsAsync<NotFoundException>` só passa quando a exceção lançada é do tipo declarado.
 
 <details>
 <summary>❌ Ruim: try/catch manual, tipo não verificado</summary>

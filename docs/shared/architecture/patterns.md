@@ -352,7 +352,7 @@ SPEC → PLAN → CODE → TEST → END
 - **TEST**: verifica que a implementação satisfaz a spec
 - **END**: fecha o ciclo com changelog, backlog sync e commit
 
-O benefício central é o custo da decisão. Rever uma spec sai de graça. Rever código já implementado cobra entendimento, reescrita e reteste. Decisões de design tomadas na spec chegam ao código com a intenção já clara.
+O benefício central é o custo da decisão. Rever uma spec sai de graça. Rever código já implementado obriga a entender o que foi escrito, reescrever e testar de novo. Decisões de design tomadas na spec chegam ao código com a intenção já clara.
 
 > Este guia segue SDD. Referência completa do padrão: [specdrivenguide.org](https://specdrivenguide.org/).
 

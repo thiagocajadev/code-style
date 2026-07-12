@@ -88,7 +88,7 @@ Toda feature nova de alto risco (escrita, cobrança, integração externa) nasce
 
 ## Onde a flag é avaliada
 
-São três momentos possíveis, e cada um cobra um preço diferente:
+São três momentos possíveis, e cada um troca latência por consistência de um jeito diferente:
 
 | Ponto                                   | Latência                     | Consistência   | Exemplo de uso                                                      |
 | --------------------------------------- | ---------------------------- | -------------- | ------------------------------------------------------------------- |

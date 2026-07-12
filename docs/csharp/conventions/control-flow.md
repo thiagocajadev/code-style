@@ -220,7 +220,7 @@ public string SummarizePayment(object payment)
 
 ## Switch expression quando a entrada vira um valor
 
-Uma cadeia de `if/else` que só escolhe qual valor atribuir cabe melhor num `switch` expression. Cada braço mapeia uma entrada a um resultado, e o compilador cobra o caso `_` que cobre o resto: um valor de entrada sem tratamento vira erro de compilação em vez de retorno silencioso. O segundo exemplo mostra o mesmo recurso lendo propriedades de dentro do objeto (`{ Error.Code: "NOT_FOUND" }`) para traduzir um `Result` em resposta HTTP.
+Uma cadeia de `if/else` que só escolhe qual valor atribuir cabe melhor num `switch` expression. Cada opção mapeia uma entrada a um resultado, e o compilador exige o caso `_` que cobre o resto: um valor de entrada sem tratamento vira erro de compilação em vez de retorno silencioso. O segundo exemplo mostra o mesmo recurso lendo propriedades de dentro do objeto (`{ Error.Code: "NOT_FOUND" }`) para traduzir um `Result` em resposta HTTP.
 
 <details>
 <summary>❌ Ruim: if/else encadeado para mapeamento de valor</summary>
