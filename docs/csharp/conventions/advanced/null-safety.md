@@ -86,7 +86,7 @@ Uma coleção sem itens é uma lista vazia. Devolver `null` para dizer "não ach
 ```csharp
 public async Task<IEnumerable<Order>?> FindOrdersByUserAsync(string userId)
 {
-    var orders = await _repo.FindByUserAsync(userId);
+    var orders = await _repository.FindByUserAsync(userId);
     return orders.Any() ? orders : null;
 }
 
@@ -107,7 +107,7 @@ if (orders is not null)
 // quando o repositório já retorna []: EF e Dapper nunca retornam null
 public async Task<IReadOnlyList<Order>> FindOrdersByUserAsync(string userId)
 {
-    var orders = await _repo.FindByUserAsync(userId);
+    var orders = await _repository.FindByUserAsync(userId);
     return orders.ToList();
 }
 
@@ -117,7 +117,7 @@ public IReadOnlyList<Order> FindOrdersByStatus(string status)
     if (!_validStatuses.Contains(status))
         return Array.Empty<Order>();
 
-    var orders = _repo.FindByStatus(status);
+    var orders = _repository.FindByStatus(status);
     return orders;
 }
 
@@ -140,18 +140,18 @@ foreach (var order in orders) ProcessOrder(order);
 ```csharp
 public class OrderService
 {
-    private readonly IOrderRepository _repo;
+    private readonly IOrderRepository _repository;
 
-    public OrderService(IOrderRepository repo)
+    public OrderService(IOrderRepository repository)
     {
-        if (repo is null) throw new ArgumentNullException(nameof(repo));
-        _repo = repo;
+        if (repository is null) throw new ArgumentNullException(nameof(repository));
+        _repository = repository;
     }
 
     public async Task<Order> FindAsync(string orderId, CancellationToken ct)
     {
         // orderId não verificado: NullReferenceException em runtime se null
-        return await _repo.FindByIdAsync(orderId, ct);
+        return await _repository.FindByIdAsync(orderId, ct);
     }
 }
 ```
@@ -162,15 +162,15 @@ public class OrderService
 <summary>✅ Bom: ThrowIfNull no construtor e nos limites públicos</summary>
 
 ```csharp
-public class OrderService(IOrderRepository repo)
+public class OrderService(IOrderRepository repository)
 {
-    private readonly IOrderRepository _repo = repo ?? throw new ArgumentNullException(nameof(repo));
+    private readonly IOrderRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
 
     public async Task<Order?> FindAsync(string orderId, CancellationToken ct)
     {
         ArgumentNullException.ThrowIfNull(orderId);
 
-        var order = await _repo.FindByIdAsync(orderId, ct);
+        var order = await _repository.FindByIdAsync(orderId, ct);
         return order;
     }
 }
@@ -190,7 +190,7 @@ public class OrderService(IOrderRepository repo)
 ```csharp
 public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     return order?.Total ?? 0m; // se não existe, é zero? ou deveria ser um erro?
 }
 ```
@@ -204,7 +204,7 @@ public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken 
 // ausência é erro → guard clause
 public async Task<decimal> GetOrderTotalAsync(string orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     if (order is null)
         return Result<decimal>.Fail("Order not found.", "NOT_FOUND");
 

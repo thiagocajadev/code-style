@@ -153,7 +153,7 @@ public async Task<Product?> FindProductAsync(Guid id, CancellationToken ct)
     if (_cache.TryGetValue(id, out var cached))
         return cached;
 
-    var product = await _repo.FindByIdAsync(id, ct);
+    var product = await _repository.FindByIdAsync(id, ct);
     return product;
 }
 ```
@@ -169,7 +169,7 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
     if (_cache.TryGetValue(id, out var cached))
         return cached;
 
-    var product = await _repo.FindByIdAsync(id, ct);
+    var product = await _repository.FindByIdAsync(id, ct);
     return product;
 }
 ```

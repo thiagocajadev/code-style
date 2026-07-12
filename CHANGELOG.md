@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2026-07-12
+
+### Fixed
+
+- **`_repo` nos exemplos de `docs/csharp/`, que contradiziam a regra ensinada pelo próprio `quick-reference.md`.** A linha `| Abreviações em campo | \`_svc\`, \`_mgr\`, \`_ctrl\`, \`_repo\` | \`_service\`, \`_repository\` |` já reprovava a abreviação, e 31 blocos de exemplo usavam ela mesmo assim. O prefixo `_` está correto, é a convenção .NET para campo privado; o que viola o code-style é abreviar o nome. Corrigido em `conventions/naming.md`, `conventions/advanced/async.md`, `conventions/advanced/error-handling.md`, `conventions/advanced/null-safety.md` e `conventions/advanced/performance.md`. Em `null-safety.md`, o parâmetro `repo` do construtor virou `repository`, junto com o `nameof`.
+- A linha da regra em `quick-reference.md` ficou intacta: ali `_repo` é o exemplo do que evitar.
+- **Por que escapou do Ciclo B**: os épicos de reescrita de prosa congelam os fenced blocks e conferem o hash SHA-256 contra o HEAD, então nenhuma varredura de voz olhava para dentro do código. O desvio apareceu quando o épico do VB.NET encontrou o mesmo `_repo` em `vbnet/conventions/naming.md`. O bloco Bad de `csharp/setup/security.md` mantém `repo` e `ctx` de propósito, porque exemplo Bad concentra anti-pattern; o Good correspondente já usa `orderRepository`.
+
 ## [2.3.1] - 2026-07-12
 
 ### Fixed

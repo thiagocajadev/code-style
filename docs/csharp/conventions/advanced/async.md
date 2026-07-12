@@ -28,14 +28,14 @@ Todo acesso a banco, rede ou disco vira um método assíncrono: devolve `Task<T>
 ```csharp
 public Order FindOrder(Guid orderId)
 {
-    var order = _repo.FindByIdAsync(orderId).Result; // bloqueia thread
+    var order = _repository.FindByIdAsync(orderId).Result; // bloqueia thread
 
     return order;
 }
 
 public void SaveOrder(Order order)
 {
-    _repo.SaveAsync(order).Wait(); // deadlock em contextos com SynchronizationContext
+    _repository.SaveAsync(order).Wait(); // deadlock em contextos com SynchronizationContext
 }
 ```
 
@@ -47,13 +47,13 @@ public void SaveOrder(Order order)
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     return order;
 }
 
 public async Task SaveOrderAsync(Order order, CancellationToken ct)
 {
-    await _repo.SaveAsync(order, ct);
+    await _repository.SaveAsync(order, ct);
 }
 ```
 
@@ -120,14 +120,14 @@ Passe o `CancellationToken` adiante em toda chamada assíncrona pública. Ele é
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId)
 {
-    var order = await _repo.FindByIdAsync(orderId); // sem ct
+    var order = await _repository.FindByIdAsync(orderId); // sem ct
 
     return order;
 }
 
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(request.OrderId); // ct disponível mas não propagado
+    var order = await _repository.FindByIdAsync(request.OrderId); // ct disponível mas não propagado
     await _notifications.SendAsync(order);
 
     return Result<Invoice>.Success(BuildInvoice(order));
@@ -142,13 +142,13 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     return order;
 }
 
 public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(request.OrderId, ct);
+    var order = await _repository.FindByIdAsync(request.OrderId, ct);
     await _notifications.SendAsync(order, ct);
 
     var invoice = BuildInvoice(order);

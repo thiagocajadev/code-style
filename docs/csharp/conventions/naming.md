@@ -28,7 +28,7 @@ public class PedidoService
 {
     public async Task<Pedido> BuscarPedidoAsync(Guid id, CancellationToken ct)
     {
-        var pedido = await _repo.FindByIdAsync(id, ct);
+        var pedido = await _repository.FindByIdAsync(id, ct);
         return pedido;
     }
 }
@@ -44,7 +44,7 @@ public class OrderService
 {
     public async Task<Order> FindOrderAsync(Guid id, CancellationToken ct)
     {
-        var order = await _repo.FindByIdAsync(id, ct);
+        var order = await _repository.FindByIdAsync(id, ct);
         return order;
     }
 }
@@ -197,7 +197,7 @@ bool canDelete = user.Role == "ADMIN";
 
 ## Identificadores sem significado
 
-`data`, `info`, `obj`, `item`, `result` e `temp` cabem em qualquer lugar, e é esse o problema: eles descrevem a caixa, e o leitor queria saber o conteúdo. Quem lê `var result = await _repo.FindAsync(id, ct)` precisa subir até a assinatura do repositório para descobrir o que veio. Trocar por `order` resolve a dúvida na própria linha.
+`data`, `info`, `obj`, `item`, `result` e `temp` cabem em qualquer lugar, e é esse o problema: eles descrevem a caixa, e o leitor queria saber o conteúdo. Quem lê `var result = await _repository.FindAsync(id, ct)` precisa subir até a assinatura do repositório para descobrir o que veio. Trocar por `order` resolve a dúvida na própria linha.
 
 <details>
 <summary>❌ Ruim: nomes genéricos sem contexto de domínio</summary>
@@ -205,7 +205,7 @@ bool canDelete = user.Role == "ADMIN";
 ```csharp
 public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 {
-    var result = await _repo.FindAsync(id, ct);
+    var result = await _repository.FindAsync(id, ct);
     var data = MapToDto(result);
 
     return data;
@@ -220,7 +220,7 @@ public async Task<object> GetDataAsync(Guid id, CancellationToken ct)
 ```csharp
 public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     var summary = MapToSummary(order);
     return summary;
 }
@@ -239,7 +239,7 @@ Um comentário que repete o que a linha abaixo já diz envelhece sozinho: o cód
 
 ```csharp
 // busca o usuário pelo id
-var u = await _repo.FindAsync(id, ct);
+var u = await _repository.FindAsync(id, ct);
 
 // verifica se o usuário está ativo
 if (!u.Flag)
@@ -253,7 +253,7 @@ if (!u.Flag)
 <summary>✅ Bom: código se explica; comentário só para restrições não óbvias</summary>
 
 ```csharp
-var user = await _repo.FindByIdAsync(userId, ct);
+var user = await _repository.FindByIdAsync(userId, ct);
 if (!user.IsActive) return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
 ```
 

@@ -40,7 +40,7 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 ```csharp
 public async Task<Order> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     if (order is null)
         throw new Exception("Order not found");
 
@@ -70,7 +70,7 @@ public async Task<IResult> GetOrder(Guid orderId)
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     if (order is null)
         return Result<Order>.Fail("Order not found.", "NOT_FOUND");
 
@@ -237,7 +237,7 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 {
     try
     {
-        var order = await _repo.FindByIdAsync(orderId, ct);
+        var order = await _repository.FindByIdAsync(orderId, ct);
         return order;
     }
     catch (NotFoundException) // fluxo esperado tratado como exceção
@@ -255,7 +255,7 @@ public async Task<Order?> GetOrderAsync(Guid orderId, CancellationToken ct)
 ```csharp
 public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken ct)
 {
-    var order = await _repo.FindByIdAsync(orderId, ct);
+    var order = await _repository.FindByIdAsync(orderId, ct);
     if (order is null)
         return Result<Order>.Fail("Order not found.", "NOT_FOUND");
 
