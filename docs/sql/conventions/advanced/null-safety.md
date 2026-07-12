@@ -541,7 +541,7 @@ ORDER BY
 
 ## Schema evolution: adicionar coluna em tabela existente
 
-Ver [Null Safety: Schema Evolution](../../../shared/standards/null-safety.md#schema-evolution-campo-novo-em-tabela-existente)
+Ver [Segurança contra nulos: campo novo em tabela existente](../../../shared/standards/null-safety.md#new-column-on-existing-table)
 para a estratégia completa. O padrão SQL:
 
 <details>

@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Configuração base compatível com VS Code, JetBrains, Vim e qualquer editor que suporte `.editorconfig`. Copie para a raiz do projeto.
+O `.editorconfig` guarda as regras de formatação que todo editor do time respeita, sem depender da configuração pessoal de cada um. A base abaixo funciona em VS Code, JetBrains, Vim e qualquer editor com suporte ao padrão. Copie o arquivo para a raiz do projeto.
 
 > [!NOTE]
 > Linguagens com convenções próprias podem sobrescrever as regras globais; veja a seção de overrides ao final.
@@ -59,6 +59,6 @@ trim_trailing_whitespace = false
 
 ## Overrides por linguagem
 
-O bloco `[*]` é o ponto de partida. Cada seção abaixo sobrescreve apenas o que diverge.
+O bloco `[*]` é o ponto de partida, e cada seção seguinte sobrescreve apenas o que diverge dele.
 
-Se o projeto tiver uma única linguagem, mova as regras específicas direto para `[*]` e remova os overrides desnecessários.
+Num projeto de linguagem única, mova as regras específicas direto para `[*]` e apague os overrides que sobraram.

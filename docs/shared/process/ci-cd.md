@@ -1,13 +1,10 @@
-# CI/CD
+# CI/CD: verificar cada mudança antes que ela chegue ao usuário
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**CI/CD** (Continuous Integration · Continuous Delivery e Continuous Deployment, Integração Contínua, Entrega Contínua e Deploy Contínuo) é o
-processo que garante que qualquer mudança no código passe por verificação automática antes de chegar
-ao usuário.
+**CI/CD** (Continuous Integration and Continuous Delivery · Integração Contínua e Entrega Contínua) é o processo que submete qualquer mudança de código a uma verificação automática antes de ela chegar ao usuário. O código passa por lint, testes e build sem que ninguém precise lembrar de rodar nada.
 
-**CI** (Continuous Integration · Integração Contínua) e **CD** (Continuous Delivery · Entrega Contínua) são processos distintos com objetivos diferentes. A estratégia de branches que viabiliza
-esse fluxo está em [git.md](git.md).
+As duas metades resolvem problemas diferentes, e vale separá-las desde o começo. A estratégia de branches que sustenta esse fluxo está em [git.md](git.md).
 
 | Processo                          | O que faz                                                           | Resultado           |
 | --------------------------------- | ------------------------------------------------------------------- | ------------------- |
@@ -26,10 +23,9 @@ esse fluxo está em [git.md](git.md).
 | **Rollback** (reversão) | Retorno do artefato em produção à versão anterior; reservado para emergências |
 | **Pre-commit hook** (gancho de pré-commit) | Automação executada localmente antes de cada commit, com custo máximo de 5 segundos |
 
-## Pipeline
+## O pipeline e seus portões
 
-O **pipeline** é a sequência de verificações por onde todo código passa. Cada estágio é um portão:
-falhou, parou.
+O **pipeline** é a sequência de verificações por onde todo código passa. Cada estágio funciona como um portão: se ele falha, a mudança para ali e não avança para o próximo.
 
 ```
 Lint → Segurança → Testes → Build → Deploy Staging → Smoke → Deploy Prod
@@ -45,13 +41,11 @@ Lint → Segurança → Testes → Build → Deploy Staging → Smoke → Deploy
 | **Smoke**          | Fluxo crítico funciona em staging             | Qualquer falha no caminho crítico |
 | **Deploy Prod**    | Promoção para produção                        | Aprovação manual ou canary gate   |
 
-O artefato que vai para produção é o mesmo que passou por staging. Fazer rebuild entre ambientes
-invalida a garantia dos testes: o que foi verificado precisa ser o que é entregue.
+O artefato que chega em produção é o mesmo que passou por staging. Refazer o build entre um ambiente e outro produz um binário que ninguém testou, e a garantia dos testes se perde no caminho.
 
 ## Ambientes
 
-O mesmo artefato é promovido de ambiente em ambiente, sem rebuilds, sem branches por ambiente. Cada
-etapa adiciona confiança antes da promoção seguinte.
+O mesmo artefato é promovido de ambiente em ambiente, sem rebuilds e sem uma branch por ambiente. Cada etapa acrescenta confiança antes da promoção seguinte.
 
 <img src="../../../assets/dev-pipeline-linear-flow.svg" alt="dev-pipeline-linear-flow" width="540" />
 
@@ -62,40 +56,34 @@ etapa adiciona confiança antes da promoção seguinte.
 | `staging` | Ambiente espelho de prod: última barreira antes da entrega real        |
 | `prod`    | Entrega final: observabilidade ativa nos primeiros minutos após deploy |
 
-### Pós-deploy
+### O que fazer depois do deploy
 
 ```
 deploy prod → logs e métricas → smoke test → validar feature flag → estabilização
 ```
 
-O deploy não encerra o ciclo. Após cada promoção para `prod`:
+O ciclo continua depois que o código sobe. A cada promoção para `prod`:
 
 - Monitorar logs e métricas por tempo determinado (ex: 15–30 min)
 - Confirmar que a feature flag está desativada se a feature ainda não é pública
 - Validar o comportamento esperado com um smoke test manual ou automatizado
 - Só encerrar o acompanhamento após estabilização
 
-## Deploy e Release
-
-Deploy e release são eventos independentes.
+## Deploy e release são eventos separados
 
 ```
 merge na main → deploy (automático) → feature flag desativada → release gradual → 100%
 ```
 
-**Deploy** é o ato técnico de colocar o código em produção. Acontece automaticamente após merge na
-`main` com pipeline verde.
+**Deploy** é o ato técnico de colocar o código em produção. Acontece automaticamente depois do merge na `main`, com o pipeline verde.
 
-**Release** é o ato de tornar a funcionalidade visível ao usuário. Controlado por feature flag,
-acontece quando o time decide, de forma gradual.
+**Release** é o ato de tornar a funcionalidade visível ao usuário. Uma feature flag controla o momento, e o time decide quando abrir, para quantos e em que ritmo.
 
-Essa separação reduz o risco de cada entrega. O código pode subir para produção desativado, ser
-validado com tráfego real em percentual controlado e só então ser ativado para todos.
+A separação reduz o risco de cada entrega. O código sobe desativado, recebe tráfego real em um percentual controlado e só depois disso é ativado para todos.
 
-## Feature Flags
+## Feature flags
 
-**Feature flags** (interruptores de funcionalidade) separam o ciclo de vida do código do ciclo de vida
-da feature.
+As **feature flags** (interruptores de funcionalidade) separam o ciclo de vida do código do ciclo de vida da feature.
 
 | Situação                             | Ação                                        |
 | ------------------------------------ | ------------------------------------------- |
@@ -104,24 +92,21 @@ da feature.
 | Feature com problema                 | Desativa sem rollback de código             |
 | Feature validada                     | Ativa para 100%, flag removida              |
 
-Flags têm prazo de validade. Uma flag que nunca é removida vira débito técnico: condicionais
-permanentes que crescem com o código.
+Toda flag tem prazo de validade. A flag que ninguém remove vira dívida técnica: um condicional permanente que todo mundo que passa por aquele arquivo precisa entender.
 
-## Pre-commit
+## Pre-commit: pegar o erro antes do commit
 
-CI detecta problemas tarde: após o push, na esteira. Pre-commit hooks detectam imediatamente, antes
-do commit.
+O CI acusa o problema depois do push, quando o pipeline já rodou. Um **pre-commit hook** roda na sua máquina, antes do commit existir, e devolve o erro em segundos.
 
 ```
 código staged → lint → auto-fix → commit
 ```
 
-O custo deve ser baixo: menos de 5 segundos para não criar atrito no fluxo de trabalho.
+O custo precisa ficar abaixo de 5 segundos. Um hook lento vira o primeiro candidato a ser desativado com `--no-verify`.
 
-## Fix Forward e Rollback
+## Corrigir para frente, e reverter só na emergência
 
-**Fix forward** (corrigir para frente) é a abordagem preferida. A `main` segue para frente com histórico
-linear.
+O **fix forward** (corrigir para frente) é a abordagem preferida. A `main` continua avançando, com histórico linear.
 
 ```
 bug em prod → PR na main → pipeline → merge → deploy
@@ -136,8 +121,7 @@ bug em prod → PR na main → pipeline → merge → deploy
 | Entregar    | Merge e deploy seguindo o fluxo normal                    |
 | Confirmar   | Monitorar logs após deploy para garantir estabilização    |
 
-⚠️ Rollback é reservado para emergências: sistema indisponível e fix forward inviável no tempo
-necessário. Reverte o estado da `main` e cria inconsistência com o histórico.
+⚠️ O rollback fica reservado para a emergência: sistema indisponível e sem tempo para o fix forward passar pelo pipeline. Ele reverte o estado da `main` e deixa o histórico fora de sincronia com o que está rodando em produção.
 
 | Etapa      | Ação                                                         |
 | ---------- | ------------------------------------------------------------ |

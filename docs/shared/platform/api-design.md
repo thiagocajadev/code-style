@@ -1,13 +1,13 @@
-# API Design
+# Desenho de API
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 > Idiomas específicos em [csharp/conventions/advanced/api-design.md](../../csharp/conventions/advanced/api-design.md) e [vbnet/conventions/advanced/api-design.md](../../vbnet/conventions/advanced/api-design.md).
 
-**API** (Application Programming Interface · Interface de Programação de Aplicações) é o contrato entre
-cliente e servidor. Um design bom padroniza o caminho de uma requisição, o contrato de entrada e
-saída, o **shape** (formato) da resposta, a semântica de verbos e status, e o versionamento que
-mantém tudo isso estável no tempo. Quando esses pontos estão previsíveis, o cliente trata qualquer
-endpoint da mesma forma, e o servidor evolui sem quebrar integração.
+A **API** (Application Programming Interface · Interface de Programação de Aplicações) é o contrato entre
+cliente e servidor. Desenhar bem significa fixar cinco pontos: o caminho que a requisição percorre, o
+que entra, o que sai, o **shape** (formato) da resposta e o que cada verbo e cada status significam.
+Some a isso o versionamento, que segura tudo no lugar ao longo do tempo. Com esses pontos estáveis, o
+cliente trata qualquer endpoint do mesmo jeito, e o servidor evolui sem quebrar quem já integrou.
 
 ## Conceitos fundamentais
 
@@ -21,16 +21,16 @@ endpoint da mesma forma, e o servidor evolui sem quebrar integração.
 | **Result** (resultado) | Tipo de domínio que carrega sucesso ou falha sem usar exceções; o controller traduz para HTTP no boundary |
 | **idempotency** (operação repetível sem efeito adicional) | Propriedade de uma operação que produz o mesmo estado quando repetida com os mesmos parâmetros |
 | **versioning** (versionamento de contrato) | Prefixo estável na rota (`/api/v1`) que congela o formato das respostas; uma mudança incompatível estreia como `/api/v2`, lado a lado |
-| **QUERY** (verbo HTTP de leitura com corpo) | Método HTTP de leitura segura que leva o filtro no corpo, não na query string; rascunho na IETF |
+| **QUERY** (verbo HTTP de leitura com corpo) | Método HTTP de leitura segura que leva o filtro no corpo da requisição, longe do limite da URL; rascunho na IETF |
 | **Problem Details** (corpo de erro padronizado · RFC 9457) | Formato comum para o corpo de um erro HTTP: `type`, `title`, `status`, `detail`, `instance` |
 | **RFC** (Request for Comments · Pedido de Comentários) | Documento numerado da IETF que fixa um padrão da internet: HTTP, JSON, tokens |
 | **IETF** (Internet Engineering Task Force · força-tarefa de engenharia da internet) | Organização aberta, movida por consenso técnico, que padroniza os protocolos da internet e publica as RFCs |
 
-## Pipeline de uma requisição
+## O caminho de uma requisição
 
-Toda requisição atravessa o mesmo caminho, do cliente até a persistência e de volta. O **BFF** é o
-boundary (limite) externo; o handler é o coração do caso de uso; o service concentra a lógica
-compartilhada; o repository isola o acesso a dados.
+Toda requisição percorre o mesmo caminho, do cliente até o banco e de volta. O **BFF** guarda o
+limite externo, o **Handler** conduz o caso de uso, o **Service** concentra a regra compartilhada e o
+**Repository** isola o acesso aos dados.
 
 ```
 Requisição:  Cliente → Controller thin → Handler → Service → Repository → Storage
@@ -46,21 +46,24 @@ Cada camada tem uma responsabilidade única:
 | **Service** | Regra de negócio, invariantes, coordenação entre repositórios | Validar input de transporte, falar HTTP |
 | **Repository** | Ler e escrever no storage, devolver entidade ou primitivo | Regra de negócio, tradução para contrato externo |
 
-A separação protege o domínio: o handler pode ser testado sem montar uma requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto), o service
-pode ser reaproveitado por um job em background e o repository pode trocar de storage sem mexer no
-resto.
+A separação tem três efeitos práticos. O handler roda em teste sem que ninguém monte uma requisição
+**HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto). O service atende
+também ao job que roda em segundo plano. O repository troca de banco sem alterar o resto do código.
 
-Para padrões de runtime além do pipeline síncrono (background jobs, webhooks, event-driven), veja
+Para o que acontece fora do caminho síncrono (job em segundo plano, webhook, evento), veja
 [Backend Flow](../architecture/backend-flow.md).
 
-## BFF como boundary
+## O BFF é o único que conhece HTTP
 
-O **BFF** (Backend for Frontend) é o único ponto que conhece HTTP. Qualquer coisa além dele, handler,
-service, repository, fala domínio. Isso vale mesmo quando o projeto não tem microsserviços: o BFF é
-uma disciplina de camadas, não um deploy separado.
+O **BFF** (Backend for Frontend · backend feito para um cliente específico) fica na borda e concentra
+tudo que é HTTP: cabeçalho, status, cookie, corpo da requisição. Do BFF para dentro, o handler, o
+service e o repository falam domínio.
 
-O teste é simples: renomeie `HttpContext` para `Envelope` em todo o código. Se o handler continua
-funcionando, o boundary está no lugar.
+O BFF aqui é uma disciplina de camadas. Ele existe no monolito, no projeto de um arquivo só e no
+sistema com microsserviços: o que o define é o conjunto de coisas que ele conhece.
+
+Um teste rápido mostra se o limite está no lugar: renomeie `HttpContext` para `Envelope` em todo o
+código. Se o handler continuar compilando e passando nos testes, o limite está correto.
 
 <details>
 <summary>❌ Ruim: controller com acesso a banco e regra de negócio</summary>
@@ -85,8 +88,8 @@ app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
 });
 ```
 
-Cada responsabilidade colada na próxima: o controller valida, lê banco, calcula e grava. Trocar o
-storage exige mexer no controller. Testar a regra de preço exige subir um servidor HTTP.
+O controller acumula quatro responsabilidades: valida, lê o banco, calcula e grava. Trocar o banco
+obriga a mexer no controller. Testar a regra de preço obriga a subir um servidor HTTP.
 
 </details>
 
@@ -139,18 +142,18 @@ export function createOrderHandler({ orderService }) {
 }
 ```
 
-O handler não conhece `res`, `status` ou `headers`. Testar a regra de criação não exige nenhum
-mock de HTTP.
+O handler ignora `res`, `status` e `headers`. A regra de criação vai a teste sem nenhum dado
+fictício de HTTP no meio.
 
 </details>
 
-## Contrato de Request
+## O contrato de entrada
 
-**DTOs** de request definem o formato esperado do input. São tipos próprios da API, validados no
-boundary, nunca entidades de domínio reaproveitadas.
+O **DTO** de request descreve o formato que a API aceita. Ele é um tipo próprio da borda, validado
+ali mesmo, e vive separado da entidade de domínio, que tem invariantes e comportamento para proteger.
 
-Dois sinais de um contrato de request saudável: campos com nome de domínio (`productId`, não
-`product_id_str`) e validação centralizada antes do handler receber o objeto.
+Dois sinais denunciam um contrato de entrada saudável: os campos carregam nome de domínio
+(`productId`) e a validação acontece uma vez, antes do handler receber o objeto.
 
 <details>
 <summary>❌ Ruim: objeto mutável montado ad-hoc, sem validação explícita</summary>
@@ -167,8 +170,8 @@ app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
 });
 ```
 
-O handler recebe o que vier no body. Campo faltando, tipo errado e formato inválido só aparecem
-depois, em runtime, com stack trace confuso.
+O handler recebe o que vier no body, sem validação nenhuma. Campo faltando, tipo errado e formato
+inválido só aparecem em runtime, com um stack trace que não aponta para a origem.
 
 </details>
 
@@ -211,16 +214,16 @@ app.post('/api/v1/orders', async (httpRequest, httpResponse) => {
 });
 ```
 
-A validação acontece uma vez, na borda. O handler recebe um objeto com tipos corretos: tudo que
+A validação roda uma vez, na borda. O handler recebe um objeto com os tipos certos, porque tudo que
 chega até ele já passou pelo schema.
 
 </details>
 
-## Contrato de Response
+## O contrato de saída
 
-Response DTO é o tipo público que o cliente conhece. A entidade de domínio é privada: ela tem
-invariantes, comportamentos e campos que não devem vazar (hash de senha, flags internas, ids de
-controle interno).
+O DTO de response é o tipo público, o único que o cliente enxerga. A entidade de domínio fica
+privada: ela guarda invariantes, comportamento e campos que ficam fora do contrato externo (hash de
+senha, flag interna, id de controle).
 
 <details>
 <summary>❌ Ruim: entidade de domínio retornada direto</summary>
@@ -234,8 +237,8 @@ async function handle(id) {
 }
 ```
 
-Qualquer campo novo em `Order` vaza automaticamente para o cliente. O contrato externo cresce sem
-ninguém revisar.
+Todo campo novo em `Order` passa a aparecer na resposta. O contrato externo cresce sem que ninguém
+tenha revisado.
 
 </details>
 
@@ -265,19 +268,20 @@ async function handle(id) {
 }
 ```
 
-O DTO lista, um por um, os campos que fazem parte do contrato. Adicionar campo novo em `Order` não
-muda a resposta até que alguém decida expor.
+O DTO lista, campo a campo, o que pertence ao contrato. O campo novo em `Order` fica onde está até
+alguém decidir expor.
 
 </details>
 
-## Response Envelope
+## Envelope: toda resposta com a mesma forma
 
-Respostas sem envelope têm shapes inconsistentes: sucesso retorna objeto nu, erro retorna string,
-coleção retorna array. Cada shape exige tratamento separado no cliente.
+Sem envelope, cada resposta tem um formato diferente: o sucesso volta como objeto solto, o erro volta
+como texto, a coleção volta como array. O cliente escreve um tratamento para cada caso.
 
-Um envelope `{ data, meta }` garante contrato previsível. O campo `meta` carrega apenas o que ajuda
-na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). A montagem do envelope pertence ao
-**Controller** (boundary HTTP). O handler continua devolvendo `Result` com DTO de domínio.
+O envelope `{ data, meta }` dá um formato único a todos eles. O `meta` carrega o mínimo que serve à
+observabilidade e à paginação, sem inchar o **payload** (corpo da mensagem). Quem monta o envelope é o
+**Controller**, que já é o limite HTTP. O handler segue devolvendo `Result` com o DTO de domínio
+dentro.
 
 | Campo | Conteúdo | Quando |
 |---|---|---|
@@ -298,7 +302,7 @@ na observabilidade e paginação, sem inflar o **payload** (corpo da mensagem). 
 // 400: { "field": "quantity", "problem": "must be positive" }
 ```
 
-O cliente precisa de três parsers diferentes para três tipos de resposta do mesmo endpoint.
+O cliente precisa de três parsers para as três respostas do mesmo endpoint.
 
 </details>
 
@@ -339,17 +343,17 @@ export function buildErrorEnvelope(code, message, httpRequest, details) {
 // 400: { "error": { "code": "INVALID_INPUT", "message": "Validation failed.", "details": [...] }, "meta": { ... } }
 ```
 
-O `correlationId` em `meta` é o mesmo propagado nos logs da requisição. Veja
-[Correlation ID](../standards/observability.md#correlation-id) para o fluxo completo.
+O `correlationId` do `meta` é o mesmo que aparece nos logs daquela requisição. O percurso completo
+está em [ID de correlação](../standards/observability.md#correlation-id).
 
 </details>
 
-## Erros no padrão Problem Details
+## O corpo de erro no padrão Problem Details
 
-O corpo de erro merece o mesmo cuidado que o de sucesso. Em vez de inventar um formato próprio, o
-**Problem Details** (RFC 9457) já define um: um objeto com `type`, `title`, `status`, `detail` e
-`instance`. Adotá-lo dá ao cliente um contrato de erro que ele já conhece, e liga a resposta às
-ferramentas que leem esse padrão.
+O corpo de erro merece o mesmo cuidado que o de sucesso, e existe um formato pronto para ele. O
+**Problem Details** (RFC 9457) define o objeto com `type`, `title`, `status`, `detail` e `instance`.
+Adotar esse formato entrega ao cliente um contrato de erro que ele já conhece de outras APIs, e faz a
+resposta funcionar de imediato nas ferramentas que leem o padrão.
 
 | Campo | Conteúdo |
 |---|---|
@@ -374,16 +378,16 @@ ferramentas que leem esse padrão.
 }
 ```
 
-O `error.code` é a chave que o cliente compara em código; `error.detail` é o texto que uma pessoa
-lê; `error.status` repete o HTTP para quem só tem o corpo em mãos. O `{ code, message }` mínimo da
-seção anterior é a forma compacta desse mesmo contrato: `title` no lugar de `message`, com `detail`
-quando o caso pede mais.
+Cada campo serve a um leitor diferente. O `error.code` é o que o código do cliente compara em um
+`if`. O `error.detail` é o texto que uma pessoa lê na tela ou no log. O `error.status` repete o HTTP
+para quem recebeu só o corpo. O `{ code, message }` da seção anterior é a versão compacta desse mesmo
+contrato, com `title` no lugar de `message` e `detail` quando o caso pede mais.
 
 ## Paginação
 
-Coleções grandes não voltam inteiras. A listagem aceita `?page=` e `?pageSize=`, e a resposta
-descreve onde o cliente está no conjunto. Os campos ficam em `meta.pagination`, ao lado de `data`, na
-ordem em que se lê: "página X de Y, tantos por página, tantos no total".
+A coleção grande volta paginada. A listagem aceita `?page=` e `?pageSize=`, e a resposta diz onde o
+cliente está dentro do conjunto. Esses campos ficam em `meta.pagination`, ao lado de `data`, na ordem
+em que a frase se lê: página X de Y, tantos por página, tantos no total.
 
 | Campo | Conteúdo |
 |---|---|
@@ -392,13 +396,14 @@ ordem em que se lê: "página X de Y, tantos por página, tantos no total".
 | `totalPages` | Última página, `ceil(totalItems / pageSize)`, nunca abaixo de 1 |
 | `totalItems` | Total de registros no conjunto |
 
-Um teto no `pageSize` protege o servidor. Sem ele, `?pageSize=1000000` puxa a coleção inteira numa
-requisição só. O padrão cobre o caso comum; o teto limita o pior caso.
+O teto no `pageSize` protege o servidor. Sem ele, um `?pageSize=1000000` puxa a coleção inteira em
+uma requisição. O valor padrão cobre o caso comum, e o teto limita o pior caso.
 
 ## Verbos REST e rotas
 
-**REST** (Representational State Transfer · Transferência de Estado Representacional) usa verbos HTTP
-com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer endpoint.
+O **REST** (Representational State Transfer · Transferência de Estado Representacional) dá a cada
+verbo HTTP um significado fixo. Esse significado vale para a API inteira: o verbo faz a mesma coisa
+em qualquer rota.
 
 | Verbo | Semântica | Idempotente | Exemplo |
 |---|---|---|---|
@@ -409,21 +414,28 @@ com semântica definida. O mesmo verbo deve significar a mesma coisa em qualquer
 | `DELETE` | Remoção | Sim | `DELETE /api/v1/orders/{id}` |
 | `QUERY` | Leitura segura com filtro no corpo | Sim | `QUERY /api/v1/reports` (rascunho IETF) |
 
-Convenções de rota:
+A rota segue cinco convenções, e a **URL** (Uniform Resource Locator · Localizador Uniforme de
+Recurso) mostra todas elas:
 
-- Kebab-case na **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso): `/api/v1/order-items`, não `/api/v1/orderItems`
-- Plural para coleções: `/api/v1/orders`, não `/api/v1/order`
-- Sem verbo na URL: `POST /api/v1/orders`, não `POST /api/v1/create-order`
-- Recurso aninhado quando há relação clara: `/api/v1/orders/{id}/items`
-- Query string para filtro e paginação: `/api/v1/orders?status=pending&page=2`
+| Convenção                            | Rota                                   |
+| :----------------------------------- | :------------------------------------- |
+| Kebab-case                           | `/api/v1/order-items`                  |
+| Plural na coleção                    | `/api/v1/orders`                       |
+| Ação expressa pelo verbo HTTP        | `POST /api/v1/orders`                  |
+| Aninhamento quando a relação é clara | `/api/v1/orders/{id}/items`            |
+| Filtro e paginação na query string   | `/api/v1/orders?status=pending&page=2` |
 
-Verbos customizados (`/cancel`, `/approve`) entram como sub-recurso de ação quando a operação não se
-encaixa nos cinco verbos padrão: `POST /api/v1/orders/{id}/cancel`.
+As formas que ficam de fora, e o motivo de cada uma: `/api/v1/orderItems` traz camelCase para dentro
+da URL, `/api/v1/order` no singular esconde que a rota devolve uma lista, e `/api/v1/create-order`
+repete no caminho aquilo que o `POST` já disse.
 
-## Status codes
+A operação que não couber em nenhum dos cinco verbos vira um sub-recurso de ação:
+`POST /api/v1/orders/{id}/cancel`.
 
-Status code é o primeiro nível de contrato: antes de ler o body, o cliente já sabe se a requisição
-deu certo, se o erro é dele ou do servidor, e se vale tentar de novo.
+## Códigos de status
+
+O status code é o primeiro nível do contrato. Antes de abrir o corpo da resposta, o cliente já sabe
+se a requisição deu certo, de quem foi o erro e se vale a pena tentar de novo.
 
 | Status | Quando usar |
 |---|---|
@@ -440,15 +452,16 @@ deu certo, se o erro é dele ou do servidor, e se vale tentar de novo.
 | `429 Too Many Requests` | Rate limit atingido |
 | `500 Internal Server Error` | Falha inesperada; nunca expor detalhes ao cliente |
 
-A distinção entre `400` e `422` é sutil mas útil: `400` é erro de forma (o servidor não entendeu),
-`422` é erro de regra (o servidor entendeu, mas rejeitou). Cliente com validação local evita `400`;
-`422` sempre vem do servidor.
+A diferença entre `400` e `422` é fina. O `400` cobre o erro de forma: o servidor não entendeu o que
+chegou. O `422` cobre o erro de regra: o servidor entendeu e recusou. Um cliente que valida antes de
+enviar quase nunca vê um `400`, enquanto o `422` sempre chega do servidor, porque só ele conhece a
+regra.
 
 ## Limite de requisições
 
-Uma API aberta se protege de abuso e de picos acidentais. O **rate limiting** (limitação de taxa)
-conta as requisições de cada cliente numa janela de tempo e recusa o excesso com `429 Too Many
-Requests`. A resposta diz quando voltar a tentar.
+Uma API aberta precisa se proteger do abuso e do pico acidental. O **rate limiting** (limitação de
+taxa) conta as requisições de cada cliente dentro de uma janela de tempo e recusa o excesso com
+`429 Too Many Requests`. A resposta ainda informa quando o cliente pode voltar a tentar.
 
 | Cabeçalho | Conteúdo |
 |---|---|
@@ -457,49 +470,51 @@ Requests`. A resposta diz quando voltar a tentar.
 | `X-RateLimit-Remaining` | Quantas ainda cabem na janela atual |
 | `X-RateLimit-Reset` | Quando a janela reinicia |
 
-O limite se aplica por cliente e por rota, não ao servidor inteiro: um cliente ruidoso não derruba os
-outros. Caminhos de navegação (páginas, documentação, favicon) ficam fora da conta. Do lado do
-cliente, tratar `429` é igual a qualquer integração externa, com **exponential backoff** (recuo
-exponencial): ver [Integrations](./integrations.md#rate-limits-e-retries).
+A contagem acontece por cliente e por rota. Assim o cliente que abusa consome apenas a própria cota,
+e os demais continuam atendidos. Os caminhos de navegação (páginas, documentação, favicon) ficam fora
+da contagem. Do lado de quem consome, tratar o `429` funciona como em qualquer integração externa:
+esperar e tentar de novo, dobrando a espera a cada tentativa (**exponential backoff** · recuo
+exponencial). Detalhe em [Integrations](./integrations.md#rate-limits-and-retries).
 
 ## Versionamento
 
-A API é um contrato público. Enquanto alguém consome uma rota, o formato da resposta não pode mudar
-de um jeito que quebre a integração. O versionamento fixa esse contrato num ponto visível: o prefixo
-da rota.
+A API é um contrato público. Enquanto alguém consumir uma rota, o formato da resposta precisa
+continuar o mesmo, e o versionamento fixa esse compromisso em um ponto visível: o prefixo da rota.
 
 Os recursos vivem sob `/api/v1`. O `/api` separa a superfície de API das páginas de navegação e da
-documentação; o `v1` congela o contrato. Enquanto ele existir, os campos e o shape das respostas
-continuam os mesmos.
+documentação, e o `v1` congela o contrato: enquanto ele existir, os campos e o shape das respostas
+seguem os mesmos.
 
-Nem toda mudança quebra. A distinção guia onde ela entra:
+Nem toda mudança quebra o contrato, e é essa diferença que decide onde ela entra:
 
 | Mudança | Exemplo | Onde entra |
 |---|---|---|
 | Aditiva | Campo opcional novo, rota nova, status novo | Mesma versão (`/api/v1`) |
 | Incompatível | Renomear ou remover campo, mudar tipo, remover rota | Versão nova (`/api/v2`) |
 
-Uma mudança incompatível estreia como `/api/v2` e convive lado a lado com `/api/v1`. Ninguém migra
-de um dia para o outro: o cliente antigo continua na v1, o novo já nasce na v2, e a v1 sai de cena
-quando o último consumidor sair.
+A mudança incompatível estreia como `/api/v2` e convive lado a lado com a `/api/v1`. A migração leva
+o tempo que precisar: o cliente antigo segue na v1, o novo já nasce na v2, e a v1 sai de cena no dia
+em que o último consumidor sair dela.
 
-Endpoints operacionais ficam fora do contrato de versão. `GET /health` responde status e versão,
-não faz parte da API de recursos, então vive fora do prefixo, em `/health`.
+O endpoint operacional fica fora do contrato de versão. O `GET /health` responde o status e a versão
+da aplicação, é infraestrutura, e por isso mora fora do prefixo, direto em `/health`.
 
-GraphQL não versiona pela URL. O schema evolui somando campos e marcando os antigos como
-`deprecated`; quem consome escolhe quando parar de pedir o campo velho. Veja
+O GraphQL segue outro caminho, sem versão na URL. O schema evolui somando campos e marcando os
+antigos como `deprecated`, e quem consome escolhe quando parar de pedir o campo velho. Veja
 [Integrations](./integrations.md#graphql).
+
+<a id="query-verb"></a>
 
 ## Leituras com corpo: o verbo QUERY
 
-Relatório é a leitura que o `GET` não resolve bem: cada tela quer um recorte, e o filtro nem sempre
-cabe na URL. A query string tem limite de tamanho, aparece em log e fica em cache. Dois caminhos
-cobrem esse caso.
+O relatório é a leitura que o `GET` atende mal. Cada tela quer um recorte próprio, o filtro cresce, e
+a query string tem limite de tamanho, aparece no log do servidor e vai parar no cache. Dois caminhos
+resolvem esse caso.
 
 O **QUERY** é um método HTTP recente ([rascunho na IETF](https://datatracker.ietf.org/doc/draft-ietf-httpbis-safe-method-w-body/)).
-É uma leitura segura e idempotente, igual ao `GET`, com uma diferença: carrega um corpo. O filtro
-grande vai no body, sem estourar o limite da URL e sem vazar em log ou cache. A resposta volta no
-mesmo envelope das rotas REST, porque continua sendo uma leitura como as outras.
+Ele é uma leitura segura e idempotente, como o `GET`, com uma diferença que muda tudo aqui: carrega
+um corpo. O filtro grande viaja no body, longe do limite da URL, do log e do cache. A resposta volta
+no mesmo envelope das outras rotas REST, porque continua sendo uma leitura como qualquer outra.
 
 ```bash
 curl -X QUERY https://api.exemplo.dev/api/v1/reports \
@@ -508,20 +523,20 @@ curl -X QUERY https://api.exemplo.dev/api/v1/reports \
   -d '{"type":"expense","from":"2026-01-01","to":"2026-01-31"}'
 ```
 
-Uma ressalva de tooling: o OpenAPI 3.1 não tem campo para o método QUERY no Path Item, e só o 3.2
-traz `query`. Enquanto as UIs de documentação não renderizam o verbo, documente-o em prosa, com o
-exemplo acima.
+Uma ressalva de ferramenta: o OpenAPI 3.1 não tem campo para o método QUERY no Path Item, e o suporte
+a `query` só chega no 3.2. Enquanto as UIs de documentação ignoram o verbo, descreva a rota em prosa,
+com o exemplo acima.
 
-Para o mesmo problema com recorte por campo, o **GraphQL** deixa o cliente escolher o que volta em
-uma única consulta. A resposta segue o contrato do próprio GraphQL (`data` e `errors`), fora do
-envelope REST: cada protocolo mantém a forma que já se espera dele. Detalhe em
+O **GraphQL** ataca o mesmo problema por outro ângulo, deixando o cliente escolher os campos da
+resposta em uma única consulta. A resposta sai no contrato do próprio GraphQL (`data` e `errors`),
+fora do envelope REST, porque cada protocolo mantém a forma que já se espera dele. Detalhe em
 [Integrations](./integrations.md#graphql).
 
-## Result para HTTP no boundary
+## Traduzir o Result para HTTP no limite
 
-O handler devolve **Result** (tipo de domínio com sucesso ou falha). O controller traduz para HTTP.
-Essa tradução acontece em um único lugar, perto da porta, para que a regra de mapeamento fique
-visível e não espalhada pelo handler.
+O handler devolve um **Result** (tipo de domínio que carrega o sucesso ou a falha), e o controller
+traduz esse Result para HTTP. A tradução mora em um lugar só, colada na porta de entrada, e é isso
+que mantém a regra de mapeamento visível em vez de espalhada por dentro do handler.
 
 <details>
 <summary>❌ Ruim: handler constrói resposta HTTP, mistura domínio e transporte</summary>
@@ -537,8 +552,8 @@ async function handle(id, res) {
 }
 ```
 
-**Handler** acoplado a `res`. Não dá para reaproveitar em um **worker** (processo que executa
-tarefas em segundo plano) que lê da fila e não tem `res`.
+O **Handler** ficou preso ao `res`. O **worker** (processo que executa tarefas em segundo plano) lê a
+mesma operação da fila, chega sem `res` na mão e não consegue chamar esse handler.
 
 </details>
 
@@ -606,26 +621,27 @@ export function mapErrorToStatus(error) {
 }
 ```
 
-O handler volta para ser testável como função pura de domínio. A tabela de mapeamento fica em um só
-lugar, versionada e auditável.
+O handler volta a ser uma função de domínio, testável sozinha. A tabela de mapeamento fica em um
+arquivo só, versionada e fácil de auditar.
 
 </details>
 
 ## Documentação a partir do schema
 
-A documentação da API não precisa ser escrita à mão, nem manter sincronia à força. Ela nasce do
-mesmo schema que valida a entrada. Você declara o schema uma vez, e dele saem três coisas: a
-validação no boundary, os tipos da linguagem e a especificação **OpenAPI** (formato padrão que
-descreve a API num documento). Nenhuma das três sai do lugar sem as outras.
+A documentação da API nasce do mesmo schema que valida a entrada, e essa é a única forma de mantê-la
+em dia sem esforço manual. Você declara o schema uma vez, e dele saem três coisas: a validação no
+limite, os tipos da linguagem e a especificação **OpenAPI** (formato padrão que descreve a API em um
+documento). As três nascem juntas, então nenhuma delas envelhece sem as outras.
 
 ```
 schema → validação no boundary → tipos → OpenAPI → UI de documentação
 ```
 
-Com a spec pronta, ferramentas de leitura a renderizam sem trabalho extra: Scalar, Swagger UI e
-Redoc mostram cada rota, o corpo esperado e as respostas; GraphiQL faz o mesmo para o schema GraphQL
-via introspection. A regra que sustenta isso: anotar a rota junto do schema, para o documento nascer
-do código em vez de correr atrás dele.
+Com a spec pronta, as ferramentas de leitura a renderizam sem trabalho extra. Scalar, Swagger UI e
+Redoc mostram cada rota, o corpo esperado e as respostas possíveis; o GraphiQL faz o mesmo para um
+schema GraphQL, lendo o schema pela própria API (**introspection** · consulta que a API responde
+sobre si mesma). O que sustenta tudo isso é uma regra só: anotar a rota junto do schema, para o
+documento nascer do código.
 
 ```js
 // features/orders/orderRequest.js
@@ -639,18 +655,19 @@ export const orderRequestSchema = z
   .openapi('OrderRequest');
 ```
 
-O mesmo `orderRequestSchema` valida o body, infere o tipo do request e entra na spec OpenAPI. Um
-campo novo aparece nos três lugares de uma vez.
+O mesmo `orderRequestSchema` valida o body, infere o tipo do request e entra na spec OpenAPI. O campo
+novo aparece nos três lugares de uma vez.
 
 ## Padrões e RFCs
 
-Um contrato previsível se apoia em normas públicas. Cada RFC recebe um número estável e texto
-público, mantido pela IETF: a [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457), por exemplo,
-especifica o Problem Details usado nos erros.
+Um contrato previsível se apoia em norma pública. Cada **RFC** recebe um número estável e um texto
+aberto, mantido pela IETF: a [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457), por exemplo,
+especifica o Problem Details que os erros desta página usam.
 
-Adotar um padrão conhecido é ganho de processo. Quem consome a API não reaprende um formato a cada
-rota, a revisão de uma mudança fica mais rápida e as ferramentas (clientes, validadores, monitores)
-funcionam sem adaptação caso a caso.
+Adotar um padrão conhecido rende três ganhos concretos. Quem consome a API reconhece o formato de
+outras integrações e não reaprende nada. A revisão de uma mudança fica mais curta, porque a norma já
+respondeu metade das perguntas. E as ferramentas prontas (cliente, validador, monitor) funcionam sem
+adaptação caso a caso.
 
 | Norma | O que define |
 |---|---|

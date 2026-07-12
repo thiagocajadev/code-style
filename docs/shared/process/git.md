@@ -1,15 +1,14 @@
-# Git
+# Git: branches, commits e pull requests
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Convenções de branches (cópias da versão principal), commits (registro das alterações) e estratégia
-de entrega.
+O Git guarda o histórico do projeto e coordena o trabalho de várias pessoas no mesmo código. Este guia cobre as três decisões que aparecem todo dia: como nomear a **branch** (cópia isolada do código), como escrever o **commit** (registro de uma alteração) e como levar o trabalho de volta para a versão principal via **PR** (Pull Request · Pedido de Integração).
 
 ## Conceitos fundamentais
 
 | Conceito                                                             | O que é                                                                          |
 | -------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| **TBD** (Trunk-Based Development, Desenvolvimento baseado no tronco) | Estratégia onde a main é a única fonte da verdade; branches são curtas e focadas |
+| **TBD** (Trunk-Based Development · Desenvolvimento baseado no tronco) | Estratégia onde a main é a única fonte da verdade; branches são curtas e focadas |
 | **Branch** (cópia)                                                   | Cópia isolada do código para desenvolver uma mudança sem afetar a main           |
 | **Commit** (registro de alteração)                                   | Snapshot do código em um momento, com descrição do que mudou e por quê           |
 | **PR** (Pull Request · Pedido de Integração)                          | Solicitação de mesclagem de uma branch para a main, com revisão obrigatória      |
@@ -17,11 +16,9 @@ de entrega.
 
 ## Branches
 
-**Trunk-based development** (TBD, desenvolvimento baseado no tronco) é uma estratégia de
-desenvolvimento de software onde a `main` (fluxo principal) é a **fonte única da verdade**.
+No **trunk-based development** (TBD · desenvolvimento baseado no tronco), a `main` é a única versão que vale. Todo o resto é temporário e existe para voltar para ela.
 
-As branches derivam da `main`. Essas cópias devem existir por poucos dias, para desenvolver
-melhorias e correções, e voltam à `main` via **PR** (Pull Request · Pedido de Integração).
+Cada branch nasce da `main`, vive poucos dias enquanto você desenvolve uma melhoria ou correção, e volta para a `main` por um PR. Uma branch aberta por semanas acumula divergência: quanto mais a `main` avança sem você, mais conflitos aparecem na hora de mesclar.
 
 ```
 main → branch → commits → PR → review → merge → main
@@ -35,6 +32,8 @@ main → branch → commits → PR → review → merge → main
 | Nunca branch de branch    | Dependências implícitas adicionam complexidade ao processo de `merge` (mesclagem) |
 
 ### Nomenclatura
+
+O nome da branch diz o tipo do trabalho e o que ele faz, nesta forma:
 
 ```
 <tipo>/<descricao-em-kebab-case>
@@ -65,11 +64,11 @@ refactor/payment-service-split
 
 </details>
 
+O nome da pessoa não entra: a autoria já está no commit. A última linha do exemplo ruim mostra o outro sintoma, uma branch com dois propósitos misturados.
+
 ## Commits
 
-Uma boa estratégia para nomear commits é o
-[Conventional Commits](https://www.conventionalcommits.org/). Cada commit descreve **o que** mudou e
-**por que**, não como.
+Uma boa estratégia para nomear commits é o [Conventional Commits](https://www.conventionalcommits.org/). Cada commit descreve **o que** mudou e **por que** mudou. O como já está no diff.
 
 ```
 <tipo>[escopo opcional]: <descrição no imperativo, em inglês, sem ponto final>
@@ -117,10 +116,11 @@ chore: upgrade eslint to v9
 
 </details>
 
+As cinco primeiras mensagens ruins não sobrevivem a uma busca no histórico daqui a seis meses: `update` e `changes` valem para qualquer commit do repositório. A última é longa demais e cabe melhor no corpo do commit.
+
 ### Escopo
 
-Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de módulo ou domínio: `auth`,
-`order`, `payment`, `user`, `cart`.
+O escopo é opcional e serve quando o tipo sozinho não diz onde a mudança caiu. Prefira nomes de módulo ou domínio: `auth`, `order`, `payment`, `user`, `cart`.
 
 ### Descrição
 
@@ -130,6 +130,8 @@ Opcional. Usado quando o contexto não é óbvio pelo tipo. Prefira nomes de mó
 - Até ~72 caracteres
 
 ## Pull Requests
+
+O PR é onde outra pessoa lê o código antes que ele chegue na `main`. Quanto menor o PR, mais atenção cada linha recebe.
 
 | Prática                                                   | Motivo                                                                                           |
 | --------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |

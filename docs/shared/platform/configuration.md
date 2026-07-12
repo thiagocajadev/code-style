@@ -2,9 +2,11 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Configuração é **tudo que varia entre ambientes sem mudar o comportamento do código**: URLs de dependências, tamanhos de pool, flags de habilitação, chaves de integração. A organização certa permite promover o mesmo artefato de dev para produção sem recompilar. A errada espalha `if (env === "prod")` pelo código e transforma cada deploy em aposta.
+Configuração é tudo que muda de um ambiente para o outro sem que o código mude: a URL do banco, o tamanho do pool de conexões, o nível de log, a chave da integração. Quando ela está bem organizada, o mesmo artefato compilado sobe em desenvolvimento, em homologação e em produção, e só os valores injetados mudam.
 
-Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armazenamento, escopo) são tratados em [security.md](security.md). Feature flags, como mecanismo de release gradual, em [ci-cd.md](../process/ci-cd.md).
+Quando está mal organizada, aparecem linhas de `if (env === "prod")` espalhadas pelo código. O comportamento em produção passa a ser diferente do comportamento que foi testado, e ninguém consegue prever o resultado do deploy lendo o código.
+
+Esta página cobre estrutura e precedência. Os secrets (rotação, armazenamento, escopo) estão em [security.md](security.md). As feature flags como mecanismo de release gradual estão em [ci-cd.md](../process/ci-cd.md).
 
 ## Conceitos fundamentais
 
@@ -18,9 +20,9 @@ Esta página cobre estrutura e precedência. Secrets (rotina de rotação, armaz
 
 ---
 
-## Config vs Secret
+## O que separa uma config de um secret
 
-Os dois parecem iguais (uma string injetada no startup), mas têm ciclo de vida e superfície de risco distintos:
+Do ponto de vista do código, os dois chegam iguais: uma string injetada no startup. O que muda é o estrago que cada um causa ao vazar, e a frequência com que precisam ser trocados.
 
 | Eixo | Config | Secret |
 |---|---|---|
@@ -29,15 +31,15 @@ Os dois parecem iguais (uma string injetada no startup), mas têm ciclo de vida 
 | Rotação | Raro, acompanha release | Periódica, independente de release |
 | Exemplos | `API_BASE_URL`, `PAGE_SIZE`, `LOG_LEVEL` | `DATABASE_PASSWORD`, `JWT_SECRET`, `STRIPE_API_KEY` |
 
-A linha divisória: **um valor que vira notícia se vazar é secret**. Tudo que pode ser inspecionado por qualquer pessoa sem consequência é config.
+A pergunta que decide: esse valor dá a alguém de fora algum acesso que ele não deveria ter? Se dá, é secret. O `PAGE_SIZE` pode ser lido por qualquer pessoa sem consequência alguma, e por isso é config.
 
-Misturar os dois no mesmo arquivo força o arquivo inteiro a seguir o regime mais restrito. Config de rotina vira difícil de alterar; secret vaza com facilidade. Separar em duas origens mantém cada um no regime certo.
+Guardar os dois no mesmo arquivo obriga o arquivo inteiro a viver sob o regime mais restrito. Mudar o `PAGE_SIZE` passa a exigir acesso ao cofre de credenciais, e a senha do banco passa a circular junto com um valor que todo mundo precisa editar. Separar as origens deixa cada um no regime que lhe cabe.
 
 ---
 
 ## Precedência em camadas
 
-A configuração se resolve por camadas, do menos específico ao mais específico. Cada camada sobrescreve a anterior:
+A configuração se resolve por camadas, da menos específica para a mais específica. Cada camada sobrescreve a anterior:
 
 ```
 1. defaults no código        → última linha de defesa
@@ -47,15 +49,15 @@ A configuração se resolve por camadas, do menos específico ao mais específic
 5. secrets manager           → resolvido no startup para chaves sensíveis
 ```
 
-A regra que sustenta o modelo: **camadas mais externas ao código ganham**. Um valor commitado nunca sobrescreve uma variável injetada pelo host. Inverter a ordem quebra a capacidade de promover o mesmo artefato entre ambientes.
+A regra que sustenta o modelo: **quanto mais perto do host, mais forte o valor**. O que está commitado no repositório sempre perde para o que o host injetou no deploy. É essa ordem que permite promover o mesmo artefato entre ambientes.
 
-O default no código existe para o caso de tudo mais faltar. Um servidor que sobe com `PORT=8080` hardcoded e ignora `PORT=80` do host tem a precedência invertida.
+O default escrito no código serve para o caso em que nenhuma outra camada respondeu. Um servidor que sobe com `PORT=8080` fixo no código e ignora o `PORT=80` que o host mandou tem a precedência de cabeça para baixo, e nenhum deploy consegue corrigir isso sem alterar o código.
 
 ---
 
-## Layering por ambiente
+## Um arquivo base e um override por ambiente
 
-Um único arquivo com `if (env === "prod")` cresce desordenado. Múltiplos arquivos (`config.dev.json`, `config.staging.json`, `config.prod.json`) duplicam valores que não mudam. O padrão sustentável é **base + overrides**:
+O arquivo único com `if (env === "prod")` por dentro cresce sem ordem. Três arquivos completos (`config.dev.json`, `config.staging.json`, `config.prod.json`) repetem os valores que são iguais nos três, e alterar um default comum vira uma edição em triplicata. O formato que se sustenta é **base mais override**:
 
 ```
 config/
@@ -65,17 +67,17 @@ config/
   prod.json         <- apenas o que muda em produção
 ```
 
-No startup, o sistema lê `base.json`, aplica o arquivo do ambiente atual por cima e depois as variáveis de ambiente. Valores que não variam ficam em um lugar só. Alterar um default comum não exige tocar três arquivos.
+No startup, o sistema lê `base.json`, aplica por cima o arquivo do ambiente atual e depois as variáveis de ambiente. O valor que não varia mora em um lugar só.
 
-**Sinal de arquitetura errada**: o arquivo do ambiente tem quase tudo que o base tem, com pequenas mudanças. O base está anêmico; a maioria dos valores deveria estar lá.
+O sinal de que a divisão está errada é o arquivo de ambiente ter quase o mesmo tamanho do base. Isso indica que valores comuns aos três ambientes foram parar no arquivo específico, e o lugar deles é no base.
 
 ---
 
-## Tipagem e contrato
+## Um objeto tipado no lugar da leitura solta
 
-Configuração chega ao código como string ou objeto vindo de arquivo. Consumir esse valor diretamente espalha conversões (`parseInt(PORT)`, `value === "true"`) por toda a aplicação. Quando a chave muda de nome, o compilador não acusa; o bug aparece em produção.
+A configuração chega ao código como texto. Ler esse texto direto onde ele é usado espalha conversões (`parseInt(PORT)`, `value === "true"`) por toda a aplicação, e cada ponto de leitura pode converter de um jeito diferente. Renomear uma chave nesse cenário não quebra a compilação, e o defeito só aparece em produção.
 
-A solução é um objeto tipado, construído uma vez no startup:
+Construa um objeto tipado uma vez, no startup:
 
 ```
 AppConfig {
@@ -90,17 +92,17 @@ AppConfig {
 }
 ```
 
-O resto do código recebe `AppConfig` como dependência, não lê variáveis de ambiente diretamente. Mudanças de nome de chave viram erro de compilação, não surpresa em runtime. Testar um cenário com config específica é construir um `AppConfig` de teste, sem monkey-patching em `process.env`.
+O resto do código recebe esse `AppConfig` como dependência, e o acesso a variável de ambiente fica confinado ao ponto que monta o objeto. A partir daí, renomear uma chave vira erro de compilação, que aparece na build. Testar um cenário com configuração diferente vira construir um `AppConfig` de teste, sem precisar alterar `process.env` por baixo dos panos.
 
-Em linguagens com tipagem forte (TypeScript, C#, VB.NET), o objeto de config é uma classe ou record com propriedades não-nulas. Em linguagens dinâmicas, validar a forma na carga (schema de **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), dataclass com validação) cobre o mesmo papel.
+Em linguagens com tipagem forte (TypeScript, C#, VB.NET), o objeto de config é uma classe ou um record com propriedades não-nulas. Em linguagens dinâmicas, validar o formato na carga cumpre o mesmo papel: um schema de **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), ou uma dataclass com validação.
 
 ---
 
-## Validação fail-fast no startup
+## Validar tudo no startup, antes de aceitar tráfego
 
-Um serviço que sobe com `DATABASE_URL` ausente e só descobre no primeiro request trava o primeiro usuário. Um que sobe com `MAX_POOL_SIZE="abc"` só percebe quando o parser tenta converter, minutos depois.
+O serviço que sobe sem `DATABASE_URL` e só descobre isso no primeiro request entrega o erro para um usuário real. O que sobe com `MAX_POOL_SIZE="abc"` quebra minutos depois, quando alguma linha tenta converter o valor, longe da causa.
 
-A regra é: **validar tudo no startup, antes de aceitar tráfego**. O binding do `AppConfig` roda cedo e falha alto:
+O `AppConfig` é montado e validado antes de o servidor abrir a porta:
 
 ```
 startup → loadConfig() → validar → [válido] server.start() → aceita tráfego
@@ -123,13 +125,13 @@ Três verificações cobrem a maioria dos casos:
 | Formato | `PORT` é número, `FEATURE_X` é booleano | Exit imediato, log do valor recebido |
 | Consistência | `MAX > MIN`, URL responde a ping | Exit imediato, log da regra violada |
 
-Um fail-fast no startup é barato: o orquestrador (Kubernetes, systemd, PM2) marca o container como não-saudável e não encaminha tráfego. Um fail no N-ésimo request já contaminou dados e derrubou sessões.
+Falhar no startup sai barato porque o orquestrador (Kubernetes, systemd, PM2) enxerga o processo morrer, marca a instância como não-saudável e continua mandando tráfego para a versão anterior. Falhar no centésimo request sai caro: nesse ponto o serviço já respondeu a noventa e nove, e alguns deles podem ter gravado dados incompletos.
 
 ---
 
-## Acesso à configuração no código
+## Receber a config como dependência
 
-Configuração é **dependência**, não fato global. A forma como o código acessa o valor determina o acoplamento.
+A configuração é uma dependência do módulo, e a forma de acessá-la define o quanto o módulo fica preso ao ambiente.
 
 | Forma | Acoplamento | Testabilidade |
 |---|---|---|
@@ -137,27 +139,27 @@ Configuração é **dependência**, não fato global. A forma como o código ace
 | Objeto de config global importado | Médio | Média, requer reset entre testes |
 | Objeto de config injetado via parâmetro | Baixo | Alta, passa fixture pronta |
 
-A injeção explícita é a forma preferida. O caller do módulo decide qual config usar. Em testes, é trivial passar uma config específica para cada cenário. Em produção, o container de injeção resolve o valor uma vez no startup e distribui.
+A injeção explícita é a forma preferida. Quem chama o módulo decide qual config passar. No teste, cada cenário recebe a sua. Em produção, o container de injeção resolve o valor uma vez no startup e distribui para quem precisa.
 
-Ver também a seção [Dependências explícitas](../architecture/principles.md#dependências-explícitas) em principles.md; [database.md](database.md) aplica a mesma regra a conexões.
+Ver também a seção [Dependências explícitas](../architecture/principles.md#explicit-dependencies) em principles.md; [database.md](database.md) aplica a mesma regra a conexões.
 
 ---
 
 ## Mudanças em runtime
 
-A maioria da configuração é estática: lida no startup, não muda até o próximo deploy. Alguns valores, porém, precisam mudar sem reiniciar:
+Quase toda configuração é estática: o processo lê no startup e o valor fica igual até o próximo deploy. Alguns valores precisam mudar com o processo no ar:
 
 - Feature flags (granularidade: mudar por usuário, percentual ou geografia, ver [ci-cd.md](../process/ci-cd.md))
 - Limites operacionais (rate limit, tamanho de batch) ajustados durante incidente
 - Níveis de log temporariamente elevados para debugging em produção
 
-Esses valores precisam de um mecanismo explícito (serviço de configuração dinâmico, feature flag service, endpoint admin autenticado) com três garantias:
+Esses valores exigem um mecanismo próprio (serviço de configuração dinâmica, feature flag service, endpoint administrativo autenticado) com três garantias:
 
 - **Auditoria**: quem mudou, quando, de que valor para qual.
 - **Reversão rápida**: voltar ao estado anterior em um clique.
 - **Escopo restrito**: apenas valores marcados como dinâmicos, nunca config estrutural (connection strings, chaves de criptografia).
 
-Config dinâmica é uma faca afiada. Reserve para o que precisa mudar em runtime; o resto continua estático e previsível.
+Mantenha essa lista curta. Cada valor que pode mudar com o sistema no ar é um valor que ninguém consegue reproduzir a partir do repositório, e um incidente causado por ele fica difícil de investigar depois.
 
 ---
 

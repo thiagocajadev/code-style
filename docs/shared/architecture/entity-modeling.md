@@ -2,47 +2,45 @@
 
 > Escopo: transversal. Exemplos em JavaScript puro para manter o foco no padrão de modelagem. As regras aqui valem para qualquer linguagem orientada a objetos ou que aceite a abstração de **entity** (entidade) como peça do domínio.
 
-Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério, não com receita fechada.
+Uma entidade saudável descreve um conceito só, e a coesão é o sinal que avisa quando ela deixou de fazer isso. Esta página dá os critérios para reconhecer esse momento e decidir o que fazer: quantas propriedades uma entidade aguenta antes de fragmentar; quando uma propriedade vira lista; como expressar relacionamentos um para muitos e muitos para muitos; quando faz sentido herdar de uma `BaseEntity`.
 
-O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: quantas propriedades uma entidade aguenta antes de fragmentar; quando uma propriedade vira lista; como expressar relacionamentos um para muitos e muitos para muitos; quando faz sentido herdar de uma `BaseEntity`.
-
-O escopo é puro domínio: como as entidades são desenhadas e como elas se relacionam. Persistência (mapeamento **ORM**, repositórios, queries, índices) vive em [`../platform/database.md`](../platform/database.md) e em `data-access.md` de cada linguagem. Quando uma decisão de domínio toca persistência, o texto aponta para o lugar certo.
+O escopo é o domínio puro: como as entidades são desenhadas e como elas se relacionam. Persistência (mapeamento **ORM**, repositórios, queries, índices) vive em [`../platform/database.md`](../platform/database.md) e em `data-access.md` de cada linguagem. Quando uma decisão de domínio toca a persistência, o texto aponta para o lugar certo.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **entity** (entidade) | Objeto de domínio com identidade própria (`Customer`, `Order`); a igualdade é definida pelo ID, não pelas propriedades |
-| **value object** (objeto de valor) | Conceito sem identidade, definido pelos próprios valores (`Address`, `Money`); a igualdade é estrutural, valor a valor |
-| **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItems` formam um agregado) |
-| **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
-| **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo construtor e pelos métodos que alteram estado (ex.: pedido sempre tem ao menos um item, telefone não passa de 11 dígitos) |
-| **boundary** (limite) | Limite entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
-| **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `string` ou `GUID` cru, para impedir trocas acidentais entre IDs |
-| **cardinality** (cardinalidade, quantidade da relação) | Quantos elementos a relação aceita entre dois conceitos: 0..1, 1, 0..N, 1..N, N..N |
-| **nullable** (anulável, aceita ausência de valor) | Campo que aceita `null` quando o conceito não está presente; representa "zero ou um" em cardinalidade |
+| **entity** (entidade) | Objeto de domínio com identidade própria (`Customer`, `Order`); duas entidades são a mesma quando o ID é o mesmo, mesmo que as propriedades mudem |
+| **value object** (objeto de valor) | Conceito sem identidade, definido pelos próprios valores (`Address`, `Money`); dois valores são iguais quando todos os campos coincidem |
+| **aggregate** (agregado) | Conjunto de entidades e value objects tratado como uma unidade transacional (`Order` mais seus `OrderItems` formam um agregado) |
+| **aggregate root** (raiz do agregado) | Única entidade do agregado visível de fora; protege as invariantes e é o ponto de entrada para o conjunto |
+| **invariant** (invariante) | Regra que vale sempre, garantida pelo construtor e pelos métodos que alteram estado (pedido tem ao menos um item, telefone não passa de 11 dígitos) |
+| **boundary** (limite) | Linha entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
+| **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), no lugar de `string` ou `GUID` cru, para impedir trocas acidentais entre IDs |
+| **cardinality** (cardinalidade) | Quantos elementos a relação aceita entre dois conceitos: 0..1, 1, 0..N, 1..N, N..N |
+| **nullable** (aceita ausência de valor) | Campo que aceita `null` quando o conceito não está presente; representa "zero ou um" em cardinalidade |
 | **cohesion** (coesão) | Medida de quanto as propriedades e operações de uma entidade pertencem ao mesmo conceito de negócio |
-| **God Object** (objeto-deus, classe que sabe demais) | Antipadrão de classe que acumula responsabilidades demais e vira ponto de mudança para tudo |
+| **God Object** (objeto-deus) | Classe que acumula responsabilidades demais e vira ponto de mudança para tudo |
 | **repository** (repositório) | Componente que encapsula a persistência de uma entidade ou agregado, escondendo SQL e ORM do domínio |
-| **ORM** (Object-Relational Mapping, mapeamento objeto-relacional) | Camada que traduz objetos do código para tabelas do banco e de volta (Sequelize, Prisma, TypeORM, Entity Framework, Hibernate) |
-| **soft delete** (remoção lógica) | Marcar o registro como excluído (`deletedAt` preenchido) sem apagar fisicamente, preservando histórico |
-| **multitenancy** (multilocação) | Uma instância da aplicação serve múltiplos clientes (tenants) com isolamento de dados entre eles |
-| **row-level security** (segurança por linha, RLS) | Recurso do banco que filtra linhas pelo contexto da requisição antes da query chegar ao app |
+| **ORM** (Object-Relational Mapping · mapeamento objeto-relacional) | Camada que traduz objetos do código para tabelas do banco e de volta (Sequelize, Prisma, TypeORM, Entity Framework, Hibernate) |
+| **soft delete** (remoção lógica) | Marcar o registro como excluído (`deletedAt` preenchido) sem apagar fisicamente, preservando o histórico |
+| **multitenancy** (multilocação) | Uma instância da aplicação serve vários clientes (tenants) com isolamento de dados entre eles |
+| **row-level security** (RLS · segurança por linha) | Recurso do banco que filtra as linhas pelo contexto da requisição antes de a query chegar ao app |
 | **GUID** (Globally Unique Identifier · identificador único global) | String de 128 bits usada como ID, no formato `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx` |
 
 ---
 
 ## Tamanho saudável da entidade
 
-A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria se comprometer com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
+A coesão decide, e não a contagem de propriedades. As propriedades de uma entidade saudável mudam juntas, são consultadas juntas e fazem sentido juntas. Quando um subconjunto delas começa a mudar em outro ritmo, esse subconjunto já é outro conceito pedindo um nome próprio.
 
-Mesmo sem número fixo, ajuda ter referência para reconhecer a faixa em que se está. Os números abaixo são heurística, não regra:
+Ainda assim, ajuda ter uma referência para reconhecer a faixa em que a entidade está. Os números abaixo são heurística:
 
 - **5 a 10 propriedades**: zona confortável. A maior parte das entidades de domínio cabe aqui.
 - **10 a 15**: hora de olhar a coesão. Se todos os campos descrevem o mesmo conceito (`Order` com cabeçalho, totais e status), tudo bem. Se já dá para agrupar (endereço, preferências, dados fiscais), extrair.
-- **15 ou mais**: quase sempre é sinal de duas entidades coladas na mesma classe. Quebrar.
+- **15 ou mais**: quase sempre são duas entidades coladas na mesma classe. Quebrar.
 
-Quando o nome da entidade não descreve mais o que ela faz e vira lista (`CustomerWithAddressAndPreferencesAndAccount`), o limite já passou.
+Quando o nome da entidade vira uma lista de conceitos (`CustomerWithAddressAndPreferencesAndAccount`), o limite já passou.
 
 <details>
 <summary>❌ Ruim: Customer inchada misturando perfil, endereço, preferências e fiscal</summary>
@@ -93,7 +91,7 @@ class Customer {
 }
 ```
 
-20 propriedades em quatro conceitos misturados. Mudar preferência de newsletter força reler toda a classe. Validar endereço significa duplicar a regra em todo método que cria ou atualiza um cliente.
+20 propriedades em quatro conceitos misturados. Mudar a preferência de newsletter obriga a reler a classe inteira. Validar endereço significa duplicar a regra em todo método que cria ou atualiza um cliente.
 
 </details>
 
@@ -141,7 +139,7 @@ class TaxInfo {
 }
 ```
 
-Cada classe responde a uma pergunta clara. `Address` é reusada por `Customer`, `Order` (endereço de entrega) e qualquer outro contexto que precise de endereço, sem reinventar.
+Cada classe responde a uma pergunta clara. `Address` é reusada por `Customer`, por `Order` (endereço de entrega) e por qualquer outro contexto que precise de endereço.
 
 </details>
 
@@ -150,17 +148,17 @@ Sinais concretos de que chegou a hora de quebrar:
 - Métodos da entidade usam apenas metade dos campos.
 - Validações em conflito (o que vale para um campo invalida o outro).
 - Propriedades opcionais demais (`null` em 8 de 20).
-- Persistência precisa de duas tabelas no banco para uma única entidade no código.
+- A persistência precisa de duas tabelas no banco para uma única entidade no código.
 
 ## Composição: quando extrair
 
-Quando uma entidade fica grande, há três padrões clássicos para extrair partes dela. Cada um responde a um cenário diferente, e a escolha depende de como o conceito extraído vai ser usado.
+Quando uma entidade fica grande, três padrões clássicos resolvem a extração. Cada um atende a um cenário, e a escolha depende de como o conceito extraído vai ser usado.
 
-**Value object embutido** (`Address` dentro de `Customer`): o conceito é pequeno, não tem identidade própria, e faz parte do estado natural do dono. O endereço muda inteiro, nunca por partes. Em código, o `Address` mora como campo dentro do `Customer`.
+**Value object embutido** (`Address` dentro de `Customer`): o conceito é pequeno, não tem identidade própria e faz parte do estado natural do dono. O endereço muda inteiro, nunca por partes. Em código, `Address` mora como campo dentro de `Customer`.
 
-**Value object opcional** (`TaxInfo` dentro de `Customer`): o conceito existe apenas em alguns casos. Cliente pessoa física não tem; cliente pessoa jurídica tem. O campo é nullable; quando presente, traz o conceito completo (todos os campos juntos, validados juntos).
+**Value object opcional** (`TaxInfo` dentro de `Customer`): o conceito existe apenas em alguns casos. Cliente pessoa física não tem; cliente pessoa jurídica tem. O campo aceita `null`, e quando está presente traz o conceito completo, com todos os campos juntos e validados juntos.
 
-**Entidade satélite** (`CustomerProfile` separada): a informação é acessada raramente, tem volume maior, ou segue regras próprias de versionamento. A separação compensa quando 80% das consultas ao `Customer` não precisam do `Profile`. Aqui o satélite é uma entidade própria, com ID, e referencia o `Customer` por `customerId`.
+**Entidade satélite** (`CustomerProfile` separada): a informação é acessada com pouca frequência, tem volume maior ou segue regras próprias de versionamento. A separação compensa quando 80% das consultas ao `Customer` dispensam o `Profile`. Aqui o satélite é uma entidade própria, com ID, que referencia o `Customer` por `customerId`.
 
 <details>
 <summary>❌ Ruim: campos opcionais espalhados no lugar de extrair valor de objeto</summary>
@@ -190,7 +188,7 @@ class Customer {
 }
 ```
 
-A regra "se um campo de imposto existe, todos existem" mora no método `hasTaxInfo`. Cada nova feature de imposto vai precisar reler e replicar essa checagem.
+A regra "se um campo de imposto existe, todos existem" mora no método `hasTaxInfo`. Cada nova feature de imposto vai ter que reler e replicar essa checagem.
 
 </details>
 
@@ -224,15 +222,15 @@ class TaxInfo {
 }
 ```
 
-A invariante "se imposto existe, é completo" mora no construtor de `TaxInfo`. Quem cria um cliente sem imposto passa `null`. Não tem como criar um `TaxInfo` parcial.
+A invariante "se o imposto existe, ele está completo" mora no construtor de `TaxInfo`. Quem cria um cliente sem imposto passa `null`. Um `TaxInfo` parcial nem chega a existir.
 
 </details>
 
-## Strongly-typed IDs
+## Cada ID com seu próprio tipo
 
-Quando o sistema cresce, IDs viram fonte recorrente de bug: alguém passa `orderId` onde a função esperava `customerId`, ou inverte a ordem dos argumentos sem perceber. Como todos são `string` ou `GUID`, o compilador e os testes não enxergam a troca, e o erro só aparece quando um cliente é cobrado pelo pedido errado em produção.
+Quando o sistema cresce, os IDs viram fonte recorrente de bug: alguém passa `orderId` onde a função esperava `customerId`, ou inverte a ordem dos argumentos sem perceber. Como todos são `string` ou `GUID`, o compilador e os testes deixam a troca passar, e o erro aparece em produção, quando um cliente é cobrado pelo pedido errado.
 
-A defesa é barata: em vez de espalhar `GUID` ou `string` cru por todo lugar, embrulhar cada ID em um tipo próprio (`CustomerId`, `OrderId`, `ProductId`). Em linguagens com tipagem estática (TypeScript, C#, Kotlin), a troca quebra em tempo de compilação. Em JavaScript puro, a checagem com `instanceof` falha no boundary da função, antes da lógica rodar.
+A defesa é barata: embrulhar cada ID em um tipo próprio (`CustomerId`, `OrderId`, `ProductId`) no lugar de espalhar `GUID` ou `string` cru. Em linguagens com tipagem estática (TypeScript, C#, Kotlin), a troca quebra em tempo de compilação. Em JavaScript puro, a checagem com `instanceof` falha no limite da função, antes de a lógica rodar.
 
 <details>
 <summary>❌ Ruim: IDs como string crua, fáceis de trocar de lugar</summary>
@@ -250,6 +248,8 @@ const b = customer.id;
 
 transferOwnership(a, b); // inverte argumentos; nada acusa
 ```
+
+O **caller** (quem chama a função) inverteu os dois argumentos e o programa seguiu em frente. Nenhuma ferramenta tem como perceber a troca, porque os dois valores são strings.
 
 </details>
 
@@ -299,21 +299,21 @@ function transferOwnership(customerId, orderId) {
 }
 ```
 
-O `instanceof` falha cedo, no boundary da função. Em TypeScript ou C#, a checagem é feita em tempo de compilação e a guarda em runtime nem precisa existir.
+O `instanceof` falha cedo, no limite da função. Em TypeScript ou C#, a mesma checagem acontece em tempo de compilação e a guarda em tempo de execução pode nem existir.
 
 </details>
 
-Em JavaScript puro, essa abordagem custa duas linhas a mais por ID criado. Em projeto pequeno, dá para começar com `string` crua e migrar quando o primeiro bug de troca aparecer. Em projeto grande, com vários IDs parecidos (`customerId`, `orderId`, `productId`, `invoiceId`), o investimento se paga rápido: cada bug de troca evitado paga semanas de produtividade.
+Em JavaScript puro, essa abordagem custa duas linhas a mais por ID criado. Em projeto pequeno, dá para começar com `string` crua e migrar quando o primeiro bug de troca aparecer. Em projeto grande, com vários IDs parecidos (`customerId`, `orderId`, `productId`, `invoiceId`), o custo se paga já nos primeiros bugs evitados.
 
 ## BaseEntity: o que entra, o que sai
 
-Toda entidade tem identidade, e concentrar essa identidade em uma classe base reutilizada faz sentido. O risco aparece logo a seguir, em uma sequência tentadora: "já que tem base, por que não colocar também os campos de auditoria?"; depois "já que tem auditoria, por que não soft delete?"; depois "já que tem soft delete, por que não version e tenantId?". A base vai engordando, e cada entidade do sistema passa a carregar campos que não usa. Esse é o caminho típico para o **God Object**.
+Toda entidade tem identidade, e concentrar essa identidade em uma classe base reutilizada compensa. O risco vem logo depois, em uma sequência tentadora: "já que tem base, por que não colocar também os campos de auditoria?"; depois "já que tem auditoria, por que não soft delete?"; depois "já que tem soft delete, por que não `version` e `tenantId`?". A base engorda e cada entidade do sistema passa a carregar campos que não usa. Esse é o caminho típico para o **God Object**.
 
 A regra que funciona é mínima:
 
-- **Entra na base**: `id`. Único campo que toda entidade precisa, motivo claro, sem ambiguidade.
-- **Sai da base**: campos de auditoria (`createdAt`, `updatedAt`, `createdBy`, `updatedBy`). Vão por composição ou por interface opcional (`IAuditable`, mixin, trait, conforme a linguagem suporta).
-- **Caso à parte**: `tenantId`. Só faz sentido na **aggregate root**, nunca em entidade filha do agregado. Detalhes em [Multitenancy](#multitenancy).
+- **Entra na base**: `id`. É o único campo que toda entidade precisa, com motivo claro e sem ambiguidade.
+- **Sai da base**: campos de auditoria (`createdAt`, `updatedAt`, `createdBy`, `updatedBy`). Eles vão por composição ou por interface opcional (`IAuditable`, mixin, trait, conforme a linguagem suporta).
+- **Caso à parte**: `tenantId`. Só faz sentido na **aggregate root**, nunca em entidade filha do agregado. Detalhes na [seção sobre multitenancy](#multitenancy).
 
 <details>
 <summary>❌ Ruim: BaseEntity inchada, todo mundo herda tudo</summary>
@@ -350,7 +350,7 @@ class OrderItem extends BaseEntity {
 }
 ```
 
-`OrderItem` carrega `tenantId`, `createdBy`, `version` que não usa nem precisa. O construtor da base aceita oito campos para devolver um item de pedido com três. Cada nova feature que entra na base afeta toda entidade do sistema.
+`OrderItem` carrega `tenantId`, `createdBy` e `version` sem usar nenhum deles. O construtor da base aceita oito campos para devolver um item de pedido com três. Cada nova feature que entra na base atinge toda entidade do sistema.
 
 </details>
 
@@ -398,17 +398,17 @@ class OrderItem extends Entity {
 }
 ```
 
-`Entity` carrega só o que toda entidade precisa. Quem quer auditoria compõe com `AuditFields`. Quem é filho de agregado nem expõe auditoria porque não faz sentido editar um `OrderItem` isolado.
+`Entity` carrega só o que toda entidade precisa. Quem quer auditoria compõe com `AuditFields`. Um filho de agregado dispensa auditoria, porque editar um `OrderItem` isolado não é uma operação válida do domínio.
 
 </details>
 
-Em linguagens com interface, mixin, trait ou protocol (mecanismos que adicionam comportamento sem herança), a separação fica ainda mais limpa: `class Customer extends Entity implements IAuditable, ISoftDeletable`. Em JavaScript puro, composição via campo (`this.audit = ...`) é o equivalente direto.
+Em linguagens com interface, mixin, trait ou protocol (mecanismos que adicionam comportamento sem herança), a separação fica ainda mais limpa: `class Customer extends Entity implements IAuditable, ISoftDeletable`. Em JavaScript puro, a composição via campo (`this.audit = ...`) é o equivalente direto.
 
 ## Propriedade vs lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade traduz a regra de negócio, e o estado momentâneo dos dados não muda essa tradução. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
 
-A tabela abaixo é a tradução direta de cada regra de cardinalidade para código:
+A tabela traduz cada regra de cardinalidade para código:
 
 | Regra de negócio | Modelo | Exemplo |
 |---|---|---|
@@ -448,7 +448,7 @@ class Customer {
 }
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra.
+A regra "cliente tem até três telefones" acabou codificada no schema. Aceitar um quarto telefone vira mudança de schema, com migração de banco, quando deveria ser uma linha alterada em um método.
 
 </details>
 
@@ -483,19 +483,19 @@ class Customer {
 }
 ```
 
-A regra "no máximo 3" mora no método `addPhone`, onde dá para mudar sem mexer no schema. Lista vazia (`[]`) é o estado neutro: itera sem `?.`, sem caso especial.
+A regra "no máximo 3" mora no método `addPhone`, onde muda sem mexer no schema. A lista vazia (`[]`) é o estado neutro: quem itera não precisa de `?.` nem de caso especial.
 
 </details>
 
-Listas seguem a regra de [`null-safety`](../standards/null-safety.md#coleções-nunca-null-sempre-vazia): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
+Listas seguem a regra de [`null-safety`](../standards/null-safety.md#collections-never-null): nunca null, sempre `[]`. Ausência e vazio são equivalentes para quem itera.
 
 ## Relacionamentos 1:N
 
-Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muitos `OrderItem`, `Author` tem muitos `Book`, `Customer` tem muitos `Order`. Antes de modelar, vale responder uma pergunta só: **quem é o dono**.
+Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muitos `OrderItem`, `Author` tem muitos `Book`, `Customer` tem muitos `Order`. Uma pergunta resolve a modelagem: **quem é o dono**.
 
-Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** é quem orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado.
+Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** comanda a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pela root. Em código, a root é a única classe do agregado exposta para fora.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas o `Order` faz sentido sem o `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza limite de agregado, então vai por ID, nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, e o `Order` faz sentido sem o `Customer` carregado em memória), cada lado é um agregado separado. A referência entre eles cruza o limite do agregado, então vai por ID.
 
 <details>
 <summary>❌ Ruim: filho carrega referência completa ao pai, círculo bidirecional sem dono</summary>
@@ -524,6 +524,8 @@ order.items.push(item);
 // quem valida que items.length não passa do limite? quem garante que removeItem
 // limpa item.order? a regra fica diluída entre as duas classes.
 ```
+
+As duas classes se conhecem e nenhuma manda. Cada regra do agregado passa a depender de as duas pontas serem atualizadas juntas, e a primeira que alguém esquecer vira estado inconsistente.
 
 </details>
 
@@ -576,20 +578,20 @@ class Order {
 }
 ```
 
-`Order` é o aggregate root: protege o limite de itens, calcula o total, encapsula a criação dos filhos. `OrderItem` não conhece `Order`. A relação é unidirecional, do dono para os dependentes.
+`Order` é o aggregate root: protege o limite de itens, calcula o total e encapsula a criação dos filhos. `OrderItem` desconhece `Order`. A relação aponta em uma direção só, do dono para os dependentes.
 
 </details>
 
-Implicação prática para persistência: o repositório carrega o agregado inteiro (`Order` + `OrderItem[]`) em uma única transação. Carregar `OrderItem` solto, sem o pai, é sinal de modelo errado. Detalhes em [`platform/database.md`](../platform/database.md).
+Implicação prática para a persistência: o repositório carrega o agregado inteiro (`Order` mais `OrderItem[]`) em uma única transação. Carregar `OrderItem` solto, sem o pai, indica modelo errado. Detalhes em [`platform/database.md`](../platform/database.md).
 
 ## Relacionamentos N:N
 
-Muitos para muitos sempre cai em uma de duas situações distintas, e identificar qual delas é o seu caso decide a modelagem:
+Muitos para muitos cai sempre em uma de duas situações, e identificar qual delas é o seu caso decide a modelagem:
 
 - **Associação pura**: o aluno está matriculado em cursos, e o domínio não pede nenhuma outra informação sobre essa matrícula. Modelar com dois lados que conhecem o outro por uma lista de IDs.
-- **Associação com atributos próprios**: a matrícula tem data, status, nota final, modalidade. Esses dados não pertencem nem ao aluno nem ao curso. Aqui o relacionamento vira entidade com nome próprio (`Enrollment`, matrícula).
+- **Associação com atributos próprios**: a matrícula tem data, status, nota final, modalidade. Esses dados não pertencem ao aluno nem ao curso. Aqui o relacionamento vira uma entidade com nome próprio (`Enrollment`, matrícula).
 
-A regra de decisão é direta: quando o relacionamento carrega informação que não cabe em nenhum dos dois lados, ele é uma entidade, e merece um nome.
+A regra de decisão é direta: quando o relacionamento carrega informação que não cabe em nenhum dos dois lados, ele é uma entidade e merece um nome.
 
 <details>
 <summary>❌ Ruim: N:N com atributos espalhados em arrays paralelos</summary>
@@ -608,6 +610,8 @@ class Student {
 // procurar o índice de COURSE-42 em courseIds, usar esse índice em enrollmentDates
 // se um deles sair de ordem ou perder um elemento, dados ficam inconsistentes.
 ```
+
+As duas listas guardam metade da informação cada uma, e a ligação entre elas existe só na posição do índice. Nada no código impede que uma cresça sem a outra.
 
 </details>
 
@@ -653,17 +657,17 @@ class Course {
 }
 ```
 
-`Student` não lista cursos diretamente; `Course` não lista alunos diretamente. O relacionamento mora em `Enrollment`, que carrega data, status e nota. Consultas como "cursos do aluno X" viram queries sobre `Enrollment`, não navegação de array.
+O relacionamento mora em `Enrollment`, que carrega data, status e nota. `Student` e `Course` ficam livres de listar um ao outro. Consultas como "cursos do aluno X" viram queries sobre `Enrollment`, sem navegação de array.
 
 </details>
 
-Quando o N:N é pura associação (sem atributos), uma tabela intermediária só de IDs basta no banco, e o modelo de domínio pode expor lista de IDs em qualquer um dos lados. A regra continua: sem inventar entidade quando não há informação para ela carregar.
+Quando o N:N é associação pura, sem atributos, uma tabela intermediária só de IDs basta no banco, e o modelo de domínio pode expor a lista de IDs em qualquer um dos lados. A regra continua valendo: uma entidade nova precisa ter informação própria para carregar.
 
 ## Identidade vs referência
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order.items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, a referência direta é o caminho natural: `Order.items` guarda objetos `OrderItem` inteiros. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como um bloco só.
 
-Ao cruzar o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Ao cruzar o limite de outro agregado, a referência muda de forma e passa a ser o ID. `Order` referencia `Customer` por `customerId`. Se carregasse o `Customer` inteiro, o agregado `Order` teria que manter o `Customer` consistente, e essa responsabilidade pertence ao agregado `Customer`. Dois agregados donos da mesma invariante é a origem clássica de estado divergente.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -685,6 +689,8 @@ const order = new Order({ id: orderId, customer, items });
 // mudanças em Customer (email, telefone) podem invalidar o cache de Order
 ```
 
+Cada leitura de pedido arrasta o cliente junto, e cada alteração no cliente repercute em tudo que guardou uma cópia dele.
+
 </details>
 
 <details>
@@ -705,21 +711,23 @@ const order = new Order({ id: orderId, customerId, items });
 const customer = await customerRepository.findById(order.customerId);
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento em que for usar. A leitura de um pedido para de puxar o resto do sistema junto.
 
 </details>
 
-## Multitenancy
+<a id="multitenancy"></a>
 
-Em sistema multitenant, cada cliente (o tenant, ou inquilino) ocupa um espaço de dados isolado dentro da mesma aplicação. A regra crítica é uma: dado de um tenant nunca pode vazar para outro, seja em consulta, log, exportação, cache ou métrica.
+## Multitenancy: um sistema, vários clientes isolados
 
-A pergunta operacional é onde colocar o `tenantId`. A resposta varia conforme o papel do objeto:
+Em sistema multitenant, cada cliente (o **tenant**, ou inquilino) ocupa um espaço de dados isolado dentro da mesma aplicação. Uma regra domina o desenho: o dado de um tenant nunca pode vazar para outro, seja em consulta, log, exportação, cache ou métrica.
 
-- **Na aggregate root**: sim. `Order.tenantId`, `Customer.tenantId`. É o que permite o repositório aplicar o filtro automaticamente.
-- **Em entidade filha do agregado**: não. `OrderItem` não precisa carregar `tenantId`, porque o pai (`Order`) já carrega, e a consulta passa sempre pelo pai.
-- **Em value object**: não. `Address`, `Money` não pertencem a nenhum tenant em particular; são valores reutilizáveis.
+A pergunta operacional é onde colocar o `tenantId`, e a resposta varia conforme o papel do objeto:
 
-O isolamento mora fora da entidade: no repositório, em middleware, ou na própria camada do banco com **row-level security**. A entidade só guarda o campo; quem aplica o filtro é a infraestrutura.
+- **Na aggregate root**: sim. `Order.tenantId`, `Customer.tenantId`. É o que permite ao repositório aplicar o filtro de forma automática.
+- **Em entidade filha do agregado**: não. `OrderItem` dispensa o `tenantId`, porque o pai (`Order`) já o carrega e a consulta passa sempre pelo pai.
+- **Em value object**: não. `Address` e `Money` não pertencem a nenhum tenant em particular; são valores reutilizáveis.
+
+O isolamento mora fora da entidade: no repositório, em middleware, ou na camada do banco com **row-level security**. A entidade guarda o campo, e a infraestrutura aplica o filtro.
 
 <details>
 <summary>❌ Ruim: tenantId duplicado em toda entidade filha, esperando que o domínio aplique o filtro</summary>
@@ -756,6 +764,8 @@ function calculateOrderTotal(order, currentTenantId) {
   // ...
 }
 ```
+
+A checagem de tenant se espalha por todo serviço que toca o pedido. Basta um esquecimento em um dos pontos para o dado de um cliente aparecer para outro.
 
 </details>
 
@@ -798,31 +808,31 @@ class OrderRepository {
 }
 ```
 
-A entidade não conhece o conceito de tenant ativo. O repositório injeta o filtro. Se alguém esquecer um filtro, o erro fica concentrado no repositório, não espalhado.
+A entidade desconhece o conceito de tenant ativo, e o repositório injeta o filtro. O filtro esquecido tem um lugar só para ser procurado e corrigido.
 
 </details>
 
-Para reforço extra, ativar **row-level security** no banco (PostgreSQL, SQL Server) garante o isolamento mesmo quando a aplicação falha em aplicar o filtro. Detalhes em [`platform/database.md`](../platform/database.md).
+Como reforço, ativar **row-level security** no banco (PostgreSQL, SQL Server) garante o isolamento mesmo quando a aplicação falha em aplicar o filtro. Detalhes em [`platform/database.md`](../platform/database.md).
 
 ## Anti-patterns
 
-Os padrões abaixo aparecem com frequência em código real, e cada um é um sinal de que a modelagem merece uma volta. Quando algum deles surgir na revisão, vale revisitar a entidade antes que o débito cresça e contamine os módulos vizinhos.
+Os padrões abaixo aparecem com frequência em código real, e cada um avisa que a modelagem merece uma volta. Quando algum deles surgir na revisão, vale revisitar a entidade antes que o débito cresça e contamine os módulos vizinhos.
 
-**God Entity**. Entidade com 20+ propriedades misturando conceitos. Sintoma: o nome da classe vira lista (`UserAccountWithPreferencesAndBilling`). Tratamento: extrair value objects ou separar em agregados.
+**God Entity**. Entidade com 20 ou mais propriedades misturando conceitos. Sintoma: o nome da classe vira lista (`UserAccountWithPreferencesAndBilling`). Tratamento: extrair value objects ou separar em agregados.
 
-**BaseEntity inchada**. Classe base carregando audit + soft delete + multitenancy + versionamento, forçando filhos a herdar tudo. Sintoma: `OrderItem` carrega `tenantId` que nunca usa. Tratamento: deixar só `id` na base; demais campos viram interfaces ou composição.
+**BaseEntity inchada**. Classe base carregando auditoria, soft delete, multitenancy e versionamento, forçando os filhos a herdar tudo. Sintoma: `OrderItem` carrega `tenantId` que nunca usa. Tratamento: deixar só `id` na base; os demais campos viram interfaces ou composição.
 
-**Campos opcionais por design ruim**. Entidade com 8 dos 20 campos sempre `null`. Sintoma: caller precisa checar nulos a cada acesso. Tratamento: extrair os opcionais em value object opcional, ou separar em entidades distintas se a presença/ausência indica conceitos diferentes.
+**Campos opcionais por design ruim**. Entidade com 8 dos 20 campos sempre `null`. Sintoma: o caller precisa checar nulos a cada acesso. Tratamento: extrair os opcionais em value object opcional, ou separar em entidades distintas quando a presença e a ausência indicam conceitos diferentes.
 
 **Lista mascarada como N campos**. `phone1`, `phone2`, `phone3` quando o domínio diz "muitos telefones". Sintoma: lógica para "pegar o próximo slot vazio". Tratamento: lista de verdade.
 
 **Mapa mascarado como lista**. Lista de pares `{ key, value }` quando o domínio diz "acesso por chave". Sintoma: `find` em loop linear toda vez que se quer um valor específico. Tratamento: `Map` ou objeto indexado.
 
-**Referência direta cruzando agregado**. `Order.customer` em vez de `Order.customerId`. Sintoma: para carregar um pedido, o ORM puxa cinco tabelas. Tratamento: referência por ID; quem precisa do objeto resolve no momento certo.
+**Referência direta cruzando agregado**. `Order.customer` no lugar de `Order.customerId`. Sintoma: para carregar um pedido, o ORM puxa cinco tabelas. Tratamento: referência por ID; quem precisa do objeto resolve no momento certo.
 
-**Entidade sem identidade**. Classe sem `id` consultada como se fosse entidade. Sintoma: comparações por igualdade estrutural quando a regra diz "é o mesmo objeto, mesmo após mudar nome". Tratamento: dar identidade explícita, ou aceitar que é value object e usar igualdade estrutural.
+**Entidade sem identidade**. Classe sem `id` consultada como se fosse entidade. Sintoma: comparações por igualdade estrutural quando a regra diz "é o mesmo objeto, mesmo após mudar de nome". Tratamento: dar identidade explícita, ou aceitar que é value object e usar igualdade estrutural.
 
-**Bidirecionalidade automática**. `Order.items` e `OrderItem.order` mantidos sincronizados manualmente. Sintoma: bug onde lado A foi atualizado mas lado B ficou desatualizado. Tratamento: relação unidirecional do aggregate root para os filhos.
+**Bidirecionalidade automática**. `Order.items` e `OrderItem.order` mantidos sincronizados na mão. Sintoma: bug onde o lado A foi atualizado e o lado B ficou para trás. Tratamento: relação em uma direção só, do aggregate root para os filhos.
 
 ## Referências
 
@@ -834,4 +844,4 @@ Cross-links dentro do guia:
 - [`standards/null-safety.md`](../standards/null-safety.md): limites de validação e coleções vazias
 - [`platform/database.md`](../platform/database.md): persistência, ORM, multitenancy no banco
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-and-domain-modeling).

@@ -1,8 +1,11 @@
-# Fluxos de Frontend
+# Fluxos de frontend
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Dois fluxos estruturam a maior parte da lógica de interação em aplicações de frontend: **routing** (roteamento), que determina como o usuário navega entre telas, e **forms** (formulários), que governa como alterações são capturadas, validadas e enviadas ao servidor. Os princípios desta página são agnósticos de framework. A implementação varia por stack, mas o contrato de cada fluxo é o mesmo.
+Dois fluxos sustentam quase toda a interação de uma aplicação de frontend. O **routing** (roteamento)
+decide como o usuário chega a cada tela. Os **forms** (formulários) decidem como o que ele digita é
+capturado, conferido e enviado ao servidor. Os princípios desta página valem para qualquer framework:
+a forma de escrever muda de stack para stack, e o contrato de cada fluxo continua o mesmo.
 
 ## Conceitos fundamentais
 
@@ -18,17 +21,22 @@ Dois fluxos estruturam a maior parte da lógica de interação em aplicações d
 
 ---
 
-## Routing (Roteamento)
+## Roteamento: a URL decide a tela
 
-Routing é o contrato entre **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) e tela. Uma URL sempre resolve para o mesmo componente, com os mesmos dados, para qualquer usuário autorizado a vê-la.
+Routing é o contrato entre a **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) e a
+tela. A mesma URL leva ao mesmo componente, com os mesmos dados, para todo usuário autorizado a
+vê-la. É isso que permite copiar o endereço, mandar para um colega e ele ver a mesma coisa.
 
 ```
 Ação do usuário → URL atualiza → rota correspondida (tipada) → guard executa → loader busca dados → componente recebe dados → render
 ```
 
-### Guard de rota
+### O guard barra antes de a tela existir
 
-O guard (proteção de rota) verifica autorização durante a resolução da rota, antes de qualquer componente renderizar. Colocar essa verificação dentro do componente é um anti-pattern: o componente monta antes do redirect (redirecionamento), expondo conteúdo restrito por um frame.
+O guard (proteção de rota) confere a autorização enquanto a rota é resolvida, antes de qualquer
+componente aparecer. Fazer essa checagem dentro do componente chega tarde: ele monta, desenha o
+conteúdo restrito por um instante e só então o redirecionamento acontece. O usuário sem permissão vê
+um piscar do que não deveria ver.
 
 <details>
 <summary>❌ Ruim: guard no componente renderiza antes de redirecionar</summary>
@@ -61,7 +69,8 @@ function OrdersPage() {
 
 </details>
 
-Rotas com restrição por papel (role) são aninhadas sob um guard compartilhado. O guard roda uma vez para todo o grupo, não individualmente em cada rota filha.
+Rotas que exigem o mesmo papel (role) ficam aninhadas sob um guard comum. Ele roda uma vez para o
+grupo inteiro, e cada rota filha herda a proteção sem repetir a regra.
 
 ```
 /dashboard           ← guard: isAuthenticated
@@ -70,9 +79,11 @@ Rotas com restrição por papel (role) são aninhadas sob um guard compartilhado
   /settings
 ```
 
-### Loaders
+### O loader entrega o componente já com os dados
 
-O loader (carregador de dados) busca os dados da rota durante a resolução, antes do componente montar. O componente recebe dados prontos. Sem estado de loading interno, sem `useEffect` de busca disparado após o mount (montagem).
+O loader (carregador de dados) busca os dados enquanto a rota resolve, antes de o componente montar.
+O componente recebe tudo pronto e cuida apenas de desenhar. Some o estado de carregamento interno,
+some o `useEffect` que dispara a busca depois que a tela já apareceu.
 
 <details>
 <summary>❌ Ruim: busca dentro do componente, após montar</summary>
@@ -110,11 +121,15 @@ function OrderDetailPage() {
 
 </details>
 
-Loaders de rotas aninhadas executam em paralelo. Esperar o pai para carregar o filho é opt-in explícito, não o padrão. Waterfall (cascata de requisições em série) é falha de design.
+Os loaders de rotas aninhadas disparam em paralelo. Encadear um atrás do outro é uma escolha
+deliberada, feita apenas quando o filho depende de um dado que só o pai traz. Quando as requisições
+saem em série sem essa necessidade, o usuário espera a soma dos tempos em vez do maior deles, e essa
+cascata (waterfall) é o desperdício mais comum de tela lenta.
 
-### Layouts aninhados
+### Layouts ficam, páginas passam
 
-Layouts são persistentes; páginas são efêmeras. Um layout monta uma vez e permanece enquanto o usuário navega entre rotas filhas. Transições entre rotas irmãs não remontam o layout.
+O layout monta uma vez e permanece enquanto o usuário navega entre as rotas filhas. A página troca a
+cada navegação. Ir de uma rota irmã para outra troca o conteúdo e mantém a moldura de pé.
 
 ```
 RootLayout             → /
@@ -123,21 +138,25 @@ RootLayout             → /
     OrderDetailPage    → /dashboard/orders/:id
 ```
 
-Dados do layout (perfil do usuário, itens de navegação) ficam no loader do layout. Buscá-los de novo em cada página é falha de colocalização.
+Os dados do layout (perfil do usuário, itens de menu) ficam no loader do layout, e cada página herda
+o que ele já buscou. Buscar de novo em cada página repete a mesma chamada a cada clique.
 
 ---
 
-## Forms (Formulários)
+## Formulários: o que o usuário digita chega ao servidor
 
-Um formulário é uma operação de escrita: o usuário fornece input (entrada), o sistema valida, persiste e retorna feedback. O fluxo espelha o pipeline de escrita do [operation-flow.md](operation-flow.md).
+Um formulário é uma operação de escrita: o usuário preenche, o sistema confere, grava e devolve o
+resultado. O caminho espelha o pipeline de escrita descrito em
+[operation-flow.md](operation-flow.md).
 
 ```
 Usuário submete → schema.parse (cliente) → inválido: erros de campo | válido: server action → schema.parse (servidor) → inválido: erros estruturados | ok: sucesso → feedback
 ```
 
-### Schema como contrato
+### O schema é o contrato dos dois lados
 
-O schema (esquema de validação) é a fonte da verdade para formato e regras de campo. Definido uma vez, usado tanto no cliente quanto no servidor.
+O schema (esquema de validação) descreve o formato e as regras de cada campo. Ele é escrito uma vez e
+usado nas duas pontas, o que mantém cliente e servidor de acordo sobre o que é um pedido válido.
 
 <details>
 <summary>✅ Bom: schema único como contrato entre cliente e servidor</summary>
@@ -154,9 +173,13 @@ const orderSchema = z.object({
 
 </details>
 
-Validação no cliente é **UX** (User Experience · experiência do usuário): resposta rápida, sem round-trip (ida e volta ao servidor). Validação no servidor é o boundary (limite) de segurança: o servidor nunca confia no que veio do cliente. As duas sempre executam.
+As duas validações rodam sempre, com papéis diferentes. No cliente, a validação existe pela **UX**
+(User Experience · experiência do usuário): o erro aparece na hora, sem ida e volta até o servidor. No
+servidor, ela existe pela segurança: o cliente pode ser um script qualquer chamando a rota direto, e
+o servidor confere tudo de novo antes de gravar.
 
-O servidor retorna erros estruturados por campo, não status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) isolado:
+O servidor devolve o erro amarrado ao campo que o causou, para a tela conseguir mostrá-lo no lugar
+certo:
 
 <details>
 <summary>✅ Bom: retorno estruturado de erros do servidor</summary>
@@ -179,32 +202,46 @@ async function submitOrder(orderInput) {
 
 </details>
 
-### Erros por campo e por formulário
+Um status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) sozinho
+diz que algo deu errado. O retorno estruturado diz qual campo errou e por quê.
 
-Dois escopos, dois propósitos diferentes:
+### Erro de campo e erro de formulário
+
+Dois escopos, dois propósitos:
 
 | Escopo | Quando usar | Exemplo |
 |---|---|---|
 | **Por campo** | Falha de validação em um input específico | "E-mail precisa ser um endereço válido" |
 | **Por formulário** | Regra de negócio, cruzamento de campos, falha de rede | "E-mail já cadastrado", "Estoque insuficiente" |
 
-Erros por campo ficam inline (integrados ao elemento), abaixo do input, associados via `aria-describedby`. Limpam quando o valor do campo muda.
+O erro de campo aparece logo abaixo do input, ligado a ele por `aria-describedby` para que o leitor de
+tela anuncie os dois juntos. Ele some assim que o valor do campo muda.
 
-Erros por formulário ficam no escopo do `<form>`, adjacentes ao botão de submit (envio). Capturam o que validação de campo não consegue: regras com contexto de servidor, restrições entre campos, falhas de infraestrutura.
+O erro de formulário fica no escopo do `<form>`, perto do botão de envio. É ali que moram as falhas
+que nenhum campo isolado explica: a regra que só o servidor conhece, a restrição que envolve dois
+campos ao mesmo tempo, a rede que caiu.
 
-### Submissão in-flight (em voo)
+### Enquanto a requisição está no ar
 
-O formulário fica desabilitado durante a requisição. Não apenas o botão de submit: todos os campos. Desabilitar tudo previne double-submit (envio duplicado) e comunica o estado ao usuário. `<fieldset disabled>` é a forma mais acessível: o atributo se propaga para todos os inputs filhos sem precisar desabilitar cada um individualmente.
+O formulário inteiro fica desabilitado durante o envio, incluindo os campos. Travar o botão sozinho
+deixa o usuário editar o que já foi enviado e clicar duas vezes por outros caminhos, criando pedido
+duplicado. A forma mais acessível é o `<fieldset disabled>`: o atributo desce para todos os inputs de
+dentro sem precisar tocar em cada um.
 
-### Optimistic updates
+### Atualização otimista
 
-Optimistic update altera o estado local imediatamente, antes da confirmação do servidor, e reverte em caso de erro.
+A atualização otimista altera a tela na hora, antes de o servidor confirmar, e desfaz a alteração se a
+resposta trouxer erro. O ganho é a interface responder ao clique sem espera.
 
-Usar quando: a alteração é de baixo risco, reversível, e o servidor raramente rejeita. Exemplos: favoritar, reordenar, marcar como lido.
+Usar quando a alteração tem baixo risco, é reversível e o servidor quase nunca recusa: favoritar,
+reordenar uma lista, marcar como lido.
 
-Não usar em: formulários com validação de negócio complexa, operações financeiras, fluxos irreversíveis, ou onde o servidor produz dados que o cliente não consegue prever (IDs gerados, campos calculados, timestamps).
+Evitar em formulário com regra de negócio complexa, operação financeira, fluxo sem volta e em tudo que
+o servidor calcula e o cliente não tem como adivinhar (IDs gerados, campos derivados, horários de
+gravação). Nesses casos o palpite da tela erra, e o usuário vê o valor mudar duas vezes.
 
-O update otimista substitui o spinner de loading (carregamento), não o tratamento de erro. O caminho de falha sempre existe.
+A atualização otimista substitui o spinner de carregamento e mantém o tratamento de erro no lugar. A
+resposta do servidor continua chegando, e a tela precisa saber voltar atrás quando ela recusa.
 
 ---
 

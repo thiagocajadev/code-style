@@ -1,8 +1,10 @@
-# Performance
+# Desempenho
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Performance é uma decisão de design. As escolhas de paginação, **cache** (armazenamento temporário de respostas), processamento assíncrono e **lazy loading** (carregamento sob demanda) determinam se o sistema escala ou trava sob carga real.
+O desempenho de um sistema é decidido no desenho. Quatro escolhas respondem pela maior parte do resultado: como a listagem pagina, o que entra em **cache** (armazenamento temporário de respostas), o que sai da requisição e vai para segundo plano, e o que só carrega quando alguém precisa (**lazy loading** · carregamento sob demanda).
+
+Sob carga real, essas quatro decisões determinam se o sistema escala ou trava.
 
 ## Conceitos fundamentais
 
@@ -22,7 +24,7 @@ Performance é uma decisão de design. As escolhas de paginação, **cache** (ar
 
 ## Paginação
 
-Retornar todos os registros de uma tabela numa única resposta é a forma mais rápida de tornar um endpoint (ponto de acesso da **API** (Application Programming Interface · Interface de Programação de Aplicações)) inutilizável em produção. A quantidade de dados cresce, o tempo de resposta cresce junto, e o cliente precisa processar mais do que vai usar.
+Devolver a tabela inteira em uma resposta inutiliza um endpoint (ponto de acesso da **API** (Application Programming Interface · Interface de Programação de Aplicações)) em produção. A tabela cresce, o tempo de resposta cresce junto, e o cliente gasta memória processando registros que ninguém vai usar.
 
 Dois modelos cobrem a maioria dos casos:
 
@@ -31,15 +33,15 @@ Dois modelos cobrem a maioria dos casos:
 | **Offset/limit** | `LIMIT 20 OFFSET 40` (pula N registros) | Listagens com navegação por página |
 | **Cursor** | Referência ao último item retornado | Feeds infinitos, dados que mudam frequentemente |
 
-Offset/limit (paginação por deslocamento e quantidade) tem um problema em dados mutáveis: se um registro é inserido ou removido entre páginas, a numeração muda e itens aparecem duplicados ou somem. Cursor evita isso usando o ID ou timestamp (registro de data e hora) do último item como âncora.
+O offset/limit (paginação por deslocamento e quantidade) falha quando os dados mudam durante a navegação. Se um registro é inserido ou removido entre uma página e a seguinte, a numeração muda, e o usuário vê o mesmo item duas vezes ou deixa de ver um item. O cursor resolve isso porque ancora a próxima busca no ID ou no timestamp (registro de data e hora) do último item entregue.
 
-A resposta de uma lista paginada inclui os dados e metadados de navegação: total de registros, próxima página ou próximo cursor. O cliente nunca precisa fazer uma segunda chamada só para saber se há mais dados.
+A resposta paginada leva os dados e os metadados de navegação juntos: total de registros, próxima página ou próximo cursor. Assim o cliente descobre se ainda há dados sem fazer uma segunda chamada só para perguntar.
 
 ## Cache
 
-Cache serve uma resposta armazenada em vez de recomputar. O benefício é direto: menos banco, menos **CPU** (Central Processing Unit · Unidade Central de Processamento), menos latência. O risco também: dados desatualizados chegando ao cliente como se fossem frescos.
+O cache entrega uma resposta guardada em vez de calcular tudo de novo. O ganho é direto: menos consulta ao banco, menos **CPU** (Central Processing Unit · Unidade Central de Processamento), menos espera. O risco também: um dado desatualizado chega ao cliente como se fosse atual.
 
-A decisão central é o **TTL** (Time To Live · tempo de vida): por quanto tempo a resposta armazenada é considerada válida. TTL curto significa mais idas ao banco e dado fresco; TTL longo, menos pressão no banco e dado potencialmente obsoleto.
+A decisão que equilibra os dois lados é o **TTL** (Time To Live · tempo de vida), o prazo de validade da resposta guardada. TTL curto mantém o dado atual e devolve carga ao banco. TTL longo alivia o banco e aumenta a chance de servir informação vencida.
 
 | Estratégia | Como funciona | Quando usar |
 |---|---|---|
@@ -47,29 +49,29 @@ A decisão central é o **TTL** (Time To Live · tempo de vida): por quanto temp
 | **Write-through** | Escrita vai ao banco e ao cache ao mesmo tempo | Consistência alta, latência de escrita aceitável |
 | **Invalidação por evento** | Cache limpo quando dado muda | Dado crítico que não pode ser obsoleto |
 
-Dados que mudam frequentemente com custo de desatualização alto (saldo, estoque, status de pedido) não devem ser cacheados sem invalidação ativa. Dados estáticos ou de baixa criticidade (listas de países, configurações de layout) são candidatos naturais a TTL longo.
+O dado que muda com frequência e custa caro quando sai errado (saldo, estoque, status de pedido) só entra em cache com invalidação ativa. O dado estático ou de baixa criticidade (lista de países, configuração de layout) é candidato natural a TTL longo.
 
-## Fila e Processamento Assíncrono
+## Fila e processamento em segundo plano
 
-Operações lentas dentro de uma requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) aumentam a latência percebida pelo usuário e travam o **worker** (processo que executa tarefas em segundo plano) enquanto esperam. Envio de e-mail, geração de relatório, resize de imagem, integração com serviço externo: nenhuma dessas operações precisa bloquear a resposta.
+A operação lenta que roda dentro de uma requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) aumenta a espera do usuário e ocupa o **worker** (processo que executa tarefas em segundo plano) até terminar. Enviar e-mail, gerar relatório, redimensionar imagem, chamar um serviço externo: nenhuma dessas operações precisa segurar a resposta.
 
-O padrão é: aceitar o trabalho, responder imediatamente, processar em background.
+O padrão é sempre o mesmo: aceitar o trabalho, responder na hora e processar depois.
 
 ```
 Request → persiste job → 202 Accepted → Worker processa → notifica resultado
 ```
 
-Benefícios diretos: tempo de resposta previsível, isolamento de falhas (job falha sem derrubar o request), retry automático em falhas transitórias.
+Isso traz três ganhos diretos: o tempo de resposta fica previsível, a falha do job fica isolada no job (a requisição do usuário continua funcionando) e a nova tentativa acontece de forma automática nas falhas passageiras.
 
 **Quando usar fila:**
-- Operação leva mais de ~500ms
-- Depende de serviço externo com **SLA** (Service Level Agreement · Acordo de Nível de Serviço) variável
-- Pode falhar e precisa de retry
-- Volume pode criar picos que o banco não absorve em tempo real
+- A operação passa de uns 500ms
+- Ela depende de um serviço externo cujo **SLA** (Service Level Agreement · Acordo de Nível de Serviço) varia
+- Ela pode falhar e vai precisar de nova tentativa
+- O volume cria picos que o banco não absorve em tempo real
 
 ## Webhook
 
-**Webhook** (notificação HTTP enviada pelo servidor ao cliente quando o job conclui) elimina o polling: o servidor chama o cliente, sem o cliente precisar perguntar.
+No **webhook** (notificação HTTP que o servidor envia ao cliente quando o job termina), o servidor chama o cliente assim que o trabalho conclui, e o cliente não precisa perguntar.
 
 ```
 Worker conclui job → POST <endpoint-do-cliente> → Cliente responde 200 OK
@@ -77,24 +79,24 @@ Worker conclui job → POST <endpoint-do-cliente> → Cliente responde 200 OK
 
 | Prática | Motivo |
 |---|---|
-| ID do job no payload | Idempotência: reentregas não duplicam efeito |
-| Assinar com **HMAC** (Hash-based Message Authentication Code, código de autenticação de mensagem por hash) | Valida que a chamada veio do servidor esperado |
-| Retry com **backoff exponencial** (espera crescente entre tentativas) | Absorve falhas transitórias sem sobrecarregar o cliente |
-| Registrar todas as tentativas | Auditoria e diagnóstico de entrega |
+| ID do job no payload | Idempotência: a reentrega da mesma notificação não duplica o efeito |
+| Assinar com **HMAC** (Hash-based Message Authentication Code · código de autenticação de mensagem por hash) | Prova que a chamada veio do servidor esperado |
+| Nova tentativa com **backoff exponencial** (espera crescente entre tentativas) | Absorve a falha passageira sem sobrecarregar o cliente |
+| Registrar todas as tentativas | Auditoria e diagnóstico da entrega |
 
-**Quando usar**: cliente expõe endpoint público, job pode levar minutos ou horas.
+**Quando usar**: o cliente tem um endpoint público, e o job pode levar minutos ou horas.
 
 ## Polling
 
-**Polling** (consulta periódica ao servidor) é o cliente verificando o status do job em intervalos regulares até a resposta estar pronta.
+No **polling** (consulta periódica ao servidor), o cliente pergunta o status do job de tempos em tempos até a resposta ficar pronta.
 
 ```
 GET /jobs/{id}/status → 202 In Progress → GET /jobs/{id}/status → 200 Done + resultado
 ```
 
-Sem dependência de endpoint no cliente. O custo é carga desnecessária: a maioria das consultas retorna "em processamento".
+A vantagem é que o cliente não precisa expor endpoint nenhum. O custo é a carga desnecessária: quase toda consulta responde que o job ainda está em processamento.
 
-**Long polling** (polling que segura a conexão aberta até ter resposta ou o timeout expirar) reduz esse custo. O servidor só responde quando há dado novo. O cliente reconecta imediatamente após receber.
+O **long polling** (consulta que segura a conexão aberta até ter resposta ou até estourar o tempo limite) reduz esse custo. O servidor só responde quando tem dado novo, e o cliente reconecta assim que recebe.
 
 | Modelo | Intervalo | Impacto |
 |---|---|---|
@@ -105,7 +107,7 @@ Sem dependência de endpoint no cliente. O custo é carga desnecessária: a maio
 
 ## WebSocket
 
-**WebSocket** (canal bidirecional persistente entre cliente e servidor) mantém uma conexão aberta. O servidor envia o resultado quando o job conclui, sem o cliente perguntar.
+O **WebSocket** (canal bidirecional persistente entre cliente e servidor) mantém uma conexão aberta. O servidor envia o resultado quando o job conclui, sem o cliente perguntar.
 
 ```
 Cliente conecta → handshake → [conexão ativa] → Servidor envia resultado → Cliente processa
@@ -117,25 +119,25 @@ O custo é operacional: cada cliente conectado mantém uma conexão aberta no se
 
 **Quando usar**: **UI** (User Interface · Interface do Usuário) em tempo real, dashboards (painéis ao vivo) e feeds ao vivo, onde a latência mínima justifica a complexidade operacional.
 
-## Lazy Loading
+## Carregamento sob demanda
 
-Carregar dados antes de precisar deles desperdiça recursos e aumenta o tempo de inicialização. **Lazy loading** adia o carregamento para o momento do uso.
+Carregar dados antes de precisar deles gasta recursos e aumenta o tempo de inicialização. O **lazy loading** adia o carregamento para o momento do uso.
 
 | Contexto | Aplicação |
 |---|---|
-| **Banco de dados** | Relacionamentos carregados apenas quando acessados, não no join inicial |
+| **Banco de dados** | Relacionamentos carregados no momento do acesso, fora do join inicial |
 | **Frontend** | Componentes e imagens carregados conforme entram no viewport (área visível da tela) |
 | **Módulos** | Código importado só quando o fluxo de execução chega até ele |
 
-O risco clássico é o **N+1**: carregar uma lista de 100 itens e fazer uma query (consulta ao banco) para cada item ao acessar um relacionamento. O resultado são 101 queries em vez de 2. A solução é carregar relacionamentos em lote quando o acesso é previsível.
+O risco conhecido é o **N+1**: carregar uma lista de 100 itens e disparar uma query (consulta ao banco) para cada item ao acessar um relacionamento. São 101 queries onde 2 bastariam. A solução é carregar os relacionamentos em lote quando o acesso é previsível.
 
-## Banco de Dados
+## Banco de dados
 
-Índices, tuning de queries, plano de execução e troubleshooting de gargalos estão em [database.md](database.md).
+Índices, ajuste de queries, plano de execução e diagnóstico de gargalos estão em [database.md](database.md).
 
-## Complexidade Algorítmica (Big O)
+## Complexidade algorítmica (Big O)
 
-**Big O** descreve como o tempo de execução ou o uso de memória de um algoritmo cresce à medida que a entrada cresce. É a ferramenta para avaliar se uma solução escala antes de medir em produção.
+O **Big O** descreve como o tempo de execução ou o uso de memória de um algoritmo cresce conforme a entrada cresce. Ele permite avaliar se uma solução escala antes de medir em produção.
 
 | Notação | Comportamento | Exemplo prático |
 |---|---|---|
@@ -286,6 +288,6 @@ function findHighestScore(scores) {
 
 - **Code review**: qualquer loop dentro de outro loop sobre a mesma coleção é suspeito
 - **Query count logging**: logar o número de queries por request revela N+1 rapidamente
-- **Profiler**: medir tempo real antes de otimizar; otimização sem medição é especulação
+- **Profiler**: medir o tempo real antes de otimizar; sem medição, a otimização vira palpite
 - **Critério de aceitação**: para operações em lote ou relatórios, definir na spec o volume esperado e o tempo máximo aceitável
 

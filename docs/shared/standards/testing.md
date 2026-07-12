@@ -1,9 +1,8 @@
-# Testing
+# Testes
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma
-história: quem chamou, o que recebeu, o que esperava.
+Testes documentam o comportamento esperado numa forma que a máquina consegue conferir. Um teste que falha precisa contar quem chamou, o que recebeu e o que esperava receber. Quando o teste não deixa isso legível, ele continua verificando o código, mas deixa de documentá-lo.
 
 ## Conceitos fundamentais
 
@@ -16,11 +15,9 @@ história: quem chamou, o que recebeu, o que esperava.
 | **Fixture** (dado de teste pré-definido)                 | Contexto ou dado passado para configurar o estado do teste                                                                         |
 | **cyclomatic complexity** (complexidade ciclomática)     | Número de caminhos independentes em uma função; equivale ao mínimo de casos de teste necessários para cobertura de ramificações    |
 
-## AAA
+## As três fases de um teste
 
-O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) organiza cada
-teste em duas partes visuais: as declarações — contexto, execução e valores
-nomeados — formam um bloco; uma linha em branco isola a asserção.
+O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) tem três fases lógicas, mas apenas duas partes visuais. As declarações (o contexto, a execução e os valores nomeados) formam um bloco só. Uma linha em branco isola a asserção.
 
 ```
 [Arrange]  montar o contexto: entidades, inputs, dependências
@@ -29,16 +26,11 @@ nomeados — formam um bloco; uma linha em branco isola a asserção.
 [Assert]   comparar com variáveis nomeadas
 ```
 
-A separação visual é parte do padrão. A linha em branco antes da asserção é
-intencional: sinaliza onde termina o preparo e onde começa a verificação. Um
-teste sem separação mistura as fases e obriga o leitor a identificar os limites
-antes de entender o que está sendo testado.
+Essa separação visual faz parte do padrão. A linha em branco antes da asserção diz onde o preparo termina e a verificação começa. Sem ela, as fases se misturam e o leitor precisa descobrir sozinho onde uma acaba e a outra começa, antes mesmo de entender o que está sendo testado.
 
-### No logic no assert
+### Nada de lógica dentro da asserção
 
-O assert segue o mesmo princípio do retorno explicativo no código: variáveis
-nomeadas antes da comparação. O assert lê como uma frase, sem cálculo nem acesso
-de propriedade inline.
+A asserção segue o mesmo princípio do retorno explicativo no código: nomeie os valores antes de comparar. Ela deve se ler como uma frase, sem cálculo nem acesso a propriedade no meio.
 
 | Anti-pattern                          | Problema                                                            |
 | ------------------------------------- | ------------------------------------------------------------------- |
@@ -46,14 +38,11 @@ de propriedade inline.
 | `assert(result.price, getExpected())` | Lógica na comparação: dois pontos de falha simultâneos              |
 | `assert(result.items.length, 3)`      | Acesso de propriedade inline: a falha mostra o caminho, não o valor |
 
-`actual` e `expected` são declarados antes do assert, sempre. Mesmo quando o
-valor já tem nome, declarar `expected` explicitamente mantém o padrão
-consistente e o assert sem ambiguidade.
+`actual` e `expected` são declarados antes da asserção, sempre. Mesmo quando o valor já carrega um nome, declarar `expected` de forma explícita mantém o padrão previsível e a comparação sem ambiguidade.
 
 ### Nome do teste
 
-O nome descreve o cenário e o resultado esperado. Prefixos como `should`,
-`test_`, `given/when/then` não agregam informação.
+O nome descreve o cenário e o resultado esperado. Prefixos como `should`, `test_` ou `given/when/then` ocupam espaço sem informar nada.
 
 | Evitar                   | Usar                                               |
 | ------------------------ | -------------------------------------------------- |
@@ -61,22 +50,15 @@ O nome descreve o cenário e o resultado esperado. Prefixos como `should`,
 | `test validation`        | `throws ValidationError when discount is negative` |
 | `applyDiscount function` | `returns original price when no discount applies`  |
 
-### Isolamento
+### Cada teste monta o próprio contexto
 
-Cada teste monta seu próprio contexto. Nenhum teste depende de outro para
-funcionar: a ordem de execução não deve importar. Estado compartilhado entre
-testes é o tipo de acoplamento mais silencioso, pois falhas dependem da ordem de
-execução e são difíceis de reproduzir isoladamente.
+Nenhum teste depende de outro para funcionar, e a ordem de execução não pode importar. Estado compartilhado entre testes cria um acoplamento difícil de perceber: a falha só aparece em determinada ordem e não se reproduz quando o teste roda sozinho.
 
-## Testes Unitários
+## Testes unitários
 
-Verificam o comportamento de uma unidade isolada: uma função, um método, uma
-classe. Sem banco, sem rede, sem sistema de arquivos. Dependências externas são
-substituídas por doubles (stubs, mocks, fakes) quando necessário.
+Verificam o comportamento de uma unidade isolada: uma função, um método, uma classe. Sem banco, sem rede, sem sistema de arquivos. Quando há dependência externa, ela é substituída por um double (stub, mock ou fake).
 
-Velocidade é a característica central: rodam em milissegundos, sem setup de
-infraestrutura. Isso os torna adequados para feedback rápido durante o
-desenvolvimento e cobertura exaustiva de casos de borda.
+A velocidade é a característica central. Rodam em milissegundos e não pedem infraestrutura, o que os torna a ferramenta certa para feedback imediato durante o desenvolvimento e para cobrir casos de borda à exaustão.
 
 | Característica    | Detalhe                                                 |
 | ----------------- | ------------------------------------------------------- |
@@ -85,12 +67,11 @@ desenvolvimento e cobertura exaustiva de casos de borda.
 | Cobertura natural | Regras de negócio, transformações, validações, cálculos |
 | Quando falha      | Indica bug na lógica da unidade testada                 |
 
-## Testes de Integração
+## Testes de integração
 
-Verificam como múltiplos componentes funcionam juntos, com infraestrutura real:
-banco de dados, APIs externas, filas, sistema de arquivos.
+Verificam se múltiplos componentes funcionam juntos, usando infraestrutura de verdade: banco de dados, APIs externas, filas, sistema de arquivos.
 
-O custo é o setup: precisam de ambiente, são mais lentos e têm mais variáveis. O benefício é verificar o que testes unitários não alcançam: que a **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) gerada está correta, que a migration não quebrou o mapeamento, que o endpoint retorna o contrato esperado.
+O custo é o setup: precisam de ambiente, demoram mais e têm mais variáveis envolvidas. Em troca, verificam o que o teste unitário não alcança: se a **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) gerada está correta, se a migration não quebrou o mapeamento, se o endpoint devolve o contrato esperado.
 
 | Característica    | Detalhe                                              |
 | ----------------- | ---------------------------------------------------- |
@@ -99,16 +80,11 @@ O custo é o setup: precisam de ambiente, são mais lentos e têm mais variávei
 | Cobertura natural | Limites entre componentes e sistemas externos        |
 | Quando falha      | Indica problema na integração, não na lógica isolada |
 
-Um erro frequente é usar mocks extensivos para simular o banco em testes
-"unitários" de repositório. O repositório existe para falar com o banco:
-testá-lo com banco falso verifica quase nada. Repositórios são candidatos
-naturais a testes de integração.
+Um erro comum é usar muitos mocks para simular o banco num teste "unitário" de repositório. O repositório existe para conversar com o banco, então testá-lo contra um banco falso verifica quase nada. Repositório é candidato natural a teste de integração.
 
 ## Unitário ou integração?
 
-A distinção é o que cada tipo verifica. Testes unitários verificam se a lógica
-está correta. Testes de integração verificam se os componentes funcionam juntos
-com infraestrutura real. Os dois são necessários e se complementam.
+O que separa os dois é a pergunta que cada um responde. O unitário verifica se a lógica está correta. O de integração verifica se as peças funcionam juntas com infraestrutura real. Os dois são necessários e cobrem coisas diferentes.
 
 ```
 lógica isolada (funções, cálculos, validações) → unitário
@@ -126,9 +102,7 @@ limite com I/O real (banco, rede, fila)        → integração
 
 ## Complexidade ciclomática
 
-**Cyclomatic complexity** (complexidade ciclomática) mede o número de caminhos
-independentes em uma função. A complexidade mínima é 1 (linha reta); cada `if`,
-`else if`, `case`, loop, `&&`, `||` e `catch` soma +1.
+A **cyclomatic complexity** (complexidade ciclomática) conta quantos caminhos independentes existem dentro de uma função. Uma função em linha reta tem complexidade 1, e cada `if`, `else if`, `case`, laço, `&&`, `||` e `catch` soma mais um.
 
 | Faixa | Avaliação                                             |
 | ----- | ----------------------------------------------------- |
@@ -137,15 +111,12 @@ independentes em uma função. A complexidade mínima é 1 (linha reta); cada `i
 | 21–50 | Alta; difícil de testar; candidato a refatoração     |
 | > 50  | Intratável; cobertura completa é inviável na prática |
 
-A métrica tem uma consequência direta nos testes: uma função com complexidade N
-exige pelo menos N casos de teste para cobertura de branch (cobertura de
-ramificações). Funções com complexidade alta concentram risco: uma mudança
-pequena pode quebrar múltiplos caminhos.
+Isso tem consequência direta no teste: uma função de complexidade N exige pelo menos N casos para cobrir todas as ramificações. Complexidade alta também concentra risco, porque uma mudança pequena passa a atingir vários caminhos de uma vez.
 
-Quando a complexidade supera 10, as ações são as mesmas que para funções longas:
+Passou de 10, as saídas são as mesmas que valem para funções longas:
 
-- extrair lógica condicional em funções menores com responsabilidade única
-- substituir `switch` extenso por tabela de despacho (dispatch table) ou padrão
+- extrair a lógica condicional em funções menores, cada uma com uma responsabilidade
+- trocar o `switch` extenso por uma tabela de despacho (dispatch table) ou pelo padrão
   **Strategy**
 - usar guard clauses para eliminar aninhamento
 

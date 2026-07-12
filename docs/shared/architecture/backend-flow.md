@@ -1,12 +1,14 @@
-# Fluxos de Backend
+# Fluxos de backend
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Três fluxos cobrem a maior parte da lógica assíncrona de backend: **background job** (tarefa em
-segundo plano), **webhook** (notificação HTTP acionada por evento externo) e **event-driven**
-(orientado a eventos). Os três seguem o mesmo princípio: aceitar, persistir e processar fora do
-ciclo de request/response. Esta página complementa [operation-flow.md](operation-flow.md), que cobre
-o ciclo síncrono.
+Quase toda lógica assíncrona de backend cabe em três fluxos: o **background job** (tarefa em segundo
+plano), o **webhook** (aviso em HTTP que um sistema externo dispara quando algo acontece lá) e o
+modelo **event-driven** (orientado a eventos). Os três resolvem o mesmo problema da mesma forma:
+aceitar o trabalho, gravar que ele existe e executá-lo fora do ciclo de requisição e resposta. Quem
+chamou recebe uma confirmação rápida e não fica esperando. Esta página trata desse trabalho que roda
+depois; o ciclo síncrono, em que a resposta sai pronta na mesma requisição, está em
+[operation-flow.md](operation-flow.md).
 
 ## Conceitos fundamentais
 
@@ -25,30 +27,37 @@ o ciclo síncrono.
 
 ---
 
-## Background Job
+## Trabalho aceito agora, executado depois
 
-Um job (tarefa assíncrona) desacopla o aceite de trabalho da sua execução. A **API** (Application Programming Interface · Interface de Programação de Aplicações) aceita a
-requisição, persiste o job, responde 202, e o **worker** (processo que executa jobs) executa de
-forma independente.
+Um job (tarefa que roda separada da requisição) separa o momento em que o sistema aceita o trabalho
+do momento em que ele executa. A **API** (Application Programming Interface · Interface de
+Programação de Aplicações) recebe a requisição, grava o job, responde 202 e encerra a conversa. Um
+**worker** (processo que executa jobs) pega esse job da fila e trabalha por conta própria.
 
 ```
-HTTP Request → valida input → persiste job → 202 Accepted → Worker dequeue → executa → armazena resultado → notifica
+Requisição HTTP → valida a entrada → grava o job → 202 Accepted → Worker retira da fila → executa → guarda o resultado → notifica
 ```
 
-O 202 Accepted (Aceito) é o contrato: "recebi, execução está agendada". A resposta não espera a
-conclusão do job.
+O código 202 Accepted (Aceito) é uma promessa: "recebi o pedido e ele está agendado". A resposta sai
+antes de o trabalho terminar, então o cliente precisa descobrir o resultado por outro caminho, que é
+o assunto de [como o cliente descobre que o job terminou](#job-result-delivery).
 
-### Outbox pattern
+<a id="outbox-pattern"></a>
 
-O job precisa ser persistido **antes** do 202 ser retornado. Se a aplicação reiniciar após responder
-mas antes de enfileirar o job, o trabalho é perdido silenciosamente.
+### Gravar a intenção de publicar junto com o dado
 
-Quando a fila é externa ao banco principal (Kafka, **SQS** (Simple Queue Service · Serviço Simples de Filas), RabbitMQ), o problema se aprofunda. Commit
-no banco e publicação na fila são dois sistemas distintos, sem garantia de atomicidade (atomicity,
-execução como unidade indivisível).
+O job precisa estar gravado **antes** de o 202 sair. Se a aplicação reiniciar depois de responder e
+antes de enfileirar, o cliente acha que o trabalho foi aceito e ninguém nunca o executa. O trabalho
+some sem deixar rastro.
 
-O outbox pattern (padrão de caixa de saída) resolve isso tornando a publicação parte da mesma
-transação do banco:
+Quando a fila mora fora do banco principal (Kafka, **SQS** (Simple Queue Service · Serviço Simples de
+Filas), RabbitMQ), o buraco fica maior. Gravar no banco e publicar na fila são dois sistemas
+diferentes, e não existe garantia de que os dois aconteçam juntos: o banco pode confirmar e a
+publicação falhar logo depois.
+
+O outbox pattern (padrão de caixa de saída) fecha esse buraco colocando a publicação dentro da mesma
+transação do banco. Em vez de publicar na fila, a aplicação grava numa tabela `outbox` a mensagem que
+pretende publicar:
 
 ```sql
 BEGIN;
@@ -57,23 +66,25 @@ BEGIN;
 COMMIT;
 ```
 
-Um **relay** (processo de retransmissão) separado lê os registros não publicados do outbox, publica no
-**broker** (intermediário de mensagens) e marca como enviado. O commit no banco e a intenção de publicar
-são atômicos; o relay entrega com retry (retentativa).
+Ou as duas linhas entram, ou nenhuma entra. Depois, um **relay** (processo de retransmissão) lê as
+linhas ainda não publicadas do outbox, envia cada uma ao **broker** (intermediário de mensagens) e
+marca como enviada. Se o broker estiver fora do ar, o relay tenta de novo mais tarde, porque a
+intenção de publicar já está guardada no banco.
 
-Quando a fila de jobs **é** o banco principal (PostgreSQL com `pgboss`, por exemplo), o outbox está
-implícito na ferramenta. O pattern só é necessário explicitamente quando banco e broker são sistemas
-distintos.
+Quando a própria fila de jobs vive no banco principal (PostgreSQL com `pgboss`, por exemplo), a
+ferramenta já faz isso por dentro. O outbox escrito à mão só é necessário quando banco e broker são
+sistemas separados.
 
 <a id="job-idempotency"></a>
 
-### Idempotência do job
+### Executar o mesmo job duas vezes sem estragar nada
 
-O worker deve ser seguro para re-executar o mesmo job mais de uma vez. Redes distribuídas entregam
-mensagens ao menos uma vez (at-least-once delivery, entrega ao menos uma vez). Duplicatas são
-inevitáveis.
+O worker precisa aguentar receber o mesmo job repetido. Sistemas distribuídos entregam cada mensagem
+ao menos uma vez (at-least-once delivery, entrega ao menos uma vez), e essa garantia vem com
+duplicatas de brinde: na dúvida, a fila prefere entregar de novo a arriscar perder.
 
-O padrão é uma `idempotency_key` única na tabela de jobs:
+A proteção padrão é uma `idempotency_key`, uma chave que identifica o pedido de forma única e não
+aceita repetição na tabela:
 
 ```sql
 CREATE TABLE jobs (
@@ -87,12 +98,14 @@ CREATE TABLE jobs (
 );
 ```
 
-O worker verifica antes de executar: se a chave já existe com status `done`, retorna o resultado em
-cache sem reprocessar. A constraint (restrição) `UNIQUE` é a proteção contra race condition
-(condição de corrida) quando dois workers retiram o mesmo job da fila ao mesmo tempo. O que perder o
-`INSERT` recebe um erro de violação e aborta sem efeito colateral.
+Antes de executar, o worker consulta a chave. Se ela já existe com status `done`, ele devolve o
+resultado guardado sem refazer o trabalho. A constraint (restrição) `UNIQUE` cobre o caso mais
+apertado, quando dois workers pegam o mesmo job no mesmo instante: o banco aceita o `INSERT` de um
+deles e recusa o do outro, que aborta antes de causar qualquer efeito.
 
-### Entrega do resultado
+<a id="job-result-delivery"></a>
+
+### Como o cliente descobre que o job terminou
 
 | Modelo                                                       | Quando usar                                                              |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------ |
@@ -101,40 +114,52 @@ cache sem reprocessar. A constraint (restrição) `UNIQUE` é a proteção contr
 | **SSE** (Server-Sent Events, Eventos Enviados pelo Servidor) | Cliente é browser, entrega unidirecional em tempo real, duração moderada |
 | **WebSocket**                                                | Comunicação bidirecional em tempo real, custo e complexidade mais altos  |
 
-SSE substituiu WebSocket na maioria dos casos de entrega de status unidirecional: funciona sobre
-**HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto)/2 padrão, sem infraestrutura adicional para balanceamento de carga.
+Polling (consulta repetida) é o cliente perguntando de tempos em tempos se já acabou. Nos outros três
+modelos o servidor avisa quando termina.
+
+Para avisar o browser de mudanças de status, SSE cobre a maioria dos casos: ele carrega eventos do
+servidor para o cliente numa direção só, roda sobre **HTTP** (HyperText Transfer Protocol · Protocolo
+de Transferência de Hipertexto)/2 comum e dispensa infraestrutura extra no balanceador de carga.
+WebSocket entra quando os dois lados precisam falar.
 
 ---
 
-## Webhook
+## Webhook: o evento chega de fora
 
-Webhook é um job de entrada: o sistema recebe um evento de um parceiro externo, confirma o
-recebimento imediatamente, e processa de forma assíncrona.
+Webhook é o job pelo avesso: o trabalho nasce fora do sistema. Um parceiro (Stripe, GitHub, um
+gateway de pagamento) chama uma rota sua para contar que algo aconteceu. O sistema confirma o
+recebimento na hora e processa depois.
 
 ```
-POST /webhooks/{provider} → captura raw body → valida HMAC → checa idempotência → 200 OK → enfileira → processa
+POST /webhooks/{provider} → captura o corpo bruto → valida o HMAC → checa a idempotência → 200 OK → enfileira → processa
 ```
 
-Duas regras sem exceção:
+Duas regras valem sempre:
 
-1. **Responder 200 antes de processar.** Provedores como Stripe e GitHub fazem retry se não
-   receberem 200 em 5–30 segundos. Processar dentro do handler cria latência, falhas e tempestades
-   de retry (retentativas repetidas).
-2. **Validar HMAC antes de qualquer lógica de negócio.** A assinatura confirma a origem. Sem
-   validação, qualquer cliente pode forjar eventos.
+1. **Responder 200 antes de processar.** Provedores como Stripe e GitHub reenviam o evento se não
+   receberem 200 em 5 a 30 segundos. Processar dentro do handler (função que atende a rota) estoura
+   esse prazo, e o provedor passa a reenviar o mesmo evento em série enquanto o sistema tenta dar
+   conta do anterior.
+2. **Validar a assinatura antes de qualquer regra de negócio.** A assinatura prova a origem da
+   mensagem. Sem ela, a rota é pública e qualquer pessoa pode inventar um pagamento aprovado.
 
-### Validação HMAC
+### Provar que a mensagem veio de quem diz ter vindo
 
-O **HMAC** (Hash-based Message Authentication Code, Código de Autenticação de Mensagem Baseado em Hash)
-é o mecanismo que confirma a origem de um webhook. O provedor assina o **payload** (corpo da mensagem) com um segredo
-compartilhado. O receptor recalcula a assinatura com o mesmo segredo e compara. Se bater, a mensagem
-veio de quem diz ser e não foi alterada no caminho.
+O **HMAC** (Hash-based Message Authentication Code · Código de Autenticação de Mensagem Baseado em
+Hash) é o mecanismo que faz essa prova. Provedor e receptor compartilham um segredo. O provedor usa
+esse segredo para calcular uma assinatura do **payload** (corpo da mensagem) e a envia no header. O
+receptor refaz a conta com o mesmo segredo e compara os dois valores. Bateu, a mensagem veio de quem
+diz ter vindo e chegou intacta.
 
-O cálculo é feito sobre o **raw body** (corpo bruto da requisição), antes do parse (interpretação)
-do **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript). Frameworks que fazem parse automático do body antes do **middleware** (componente de pipeline) executar invalidam o
-cálculo. O webhook handler precisa receber o stream bruto diretamente.
+A conta é feita sobre o **raw body** (o corpo da requisição byte a byte, exatamente como chegou),
+antes de qualquer interpretação do **JSON** (JavaScript Object Notation · Notação de Objetos
+JavaScript). Frameworks que já entregam o body interpretado mudam espaços e ordem de campos, e a
+assinatura recalculada sobre esse texto reconstruído nunca bate. A rota de webhook precisa acessar o
+corpo bruto.
 
-A comparação usa `timingSafeEqual` para evitar timing attack (ataque de temporização):
+A comparação usa `timingSafeEqual`, que gasta o mesmo tempo com qualquer entrada. Uma comparação
+comum para no primeiro caractere diferente, e o atacante mede esse tempo para adivinhar a assinatura
+byte a byte (timing attack, ataque de temporização):
 
 <details>
 <summary>❌ Ruim: valida sobre JSON serializado, comparação vulnerável a timing attack</summary>
@@ -181,10 +206,11 @@ async function handleWebhook(request) {
 
 </details>
 
-### Idempotência por chave externa
+### O provedor manda o mesmo evento duas vezes
 
-Todo provedor envia um ID único no header: `X-Stripe-Event`, `X-GitHub-Delivery`. Esse ID é a chave
-de idempotência. Antes de enfileirar, o handler verifica se o evento já foi recebido:
+Todo provedor identifica a entrega com um ID único no header: `X-Stripe-Event`, `X-GitHub-Delivery`.
+Esse ID serve de chave de idempotência. Antes de enfileirar, o handler tenta gravá-lo e deixa o banco
+decidir se o evento é novo:
 
 ```sql
 INSERT INTO webhook_deliveries (event_id, provider, payload)
@@ -192,13 +218,13 @@ VALUES (?, ?, ?)
 ON CONFLICT (event_id) DO NOTHING;
 ```
 
-Zero linhas afetadas: evento duplicado. Retornar 200 silenciosamente. O provedor não precisa saber;
-ele só quer confirmação de recebimento.
+Se o `INSERT` afeta zero linhas, o evento já tinha chegado antes. O sistema devolve 200 e para por
+aí. O provedor só quer a confirmação de recebimento e fica satisfeito.
 
-### Roteamento de eventos
+### Cada tipo de evento vai para o seu handler
 
-O processador roteia o evento pelo tipo usando um registry (registro de handlers), não um switch
-crescente:
+O processador escolhe o handler por um registry (um mapa de tipo de evento para função), que cresce
+por linha nova em vez de mais um ramo num `switch` cada vez maior:
 
 <details>
 <summary>✅ Bom: registry de handlers por tipo de evento</summary>
@@ -226,42 +252,50 @@ async function dispatchWebhookEvent(event) {
 
 </details>
 
-Tipos de evento desconhecidos são logados, não rejeitados. Provedores adicionam novos tipos; o
-sistema ignora o que não conhece sem errar.
+Evento de tipo desconhecido vira log e segue em frente. Provedores criam tipos novos sem avisar, e o
+sistema precisa ignorar o que ainda não entende sem quebrar.
 
 ---
 
-## Event-Driven
+## Orientado a eventos: quem publica não conhece quem consome
 
-No modelo event-driven (orientado a eventos), o **publisher** (publicador) emite um evento de domínio
-para um **broker**. **Subscribers** (assinantes) independentes consomem e processam sem conhecer o
-**publisher**.
+No modelo event-driven (orientado a eventos), o **publisher** (publicador) anuncia ao **broker** que
+um fato aconteceu no domínio, por exemplo "pedido criado". Os **subscribers** (assinantes) escutam o
+broker e reagem cada um por conta própria: um envia o e-mail, outro atualiza o estoque, outro alimenta
+o relatório. O publisher não sabe quem são, e adicionar um consumidor novo não mexe no código dele.
 
 ```
-Publisher emite evento → Broker (tópico/fila) → Subscriber consome → processa → ack → broker remove
+Publisher emite o evento → Broker (tópico/fila) → Subscriber consome → processa → confirma (ack) → Broker remove
 Falha N vezes → DLQ → alerta → revisão manual
 ```
 
-### Dead-letter queue
+O `ack` (acknowledge, confirmação de processamento) é o aviso do subscriber ao broker: "tratei esta
+mensagem, pode apagar". Sem esse aviso, o broker devolve a mensagem para a fila e ela volta a ser
+entregue.
 
-A **DLQ** (Dead-letter queue, fila de mensagens com falha persistente) é obrigatória. Sem ela, uma mensagem que falha
-repetidamente bloqueia o consumer group (grupo de consumidores) inteiro.
+### A fila das mensagens que não passam
+
+A **DLQ** (Dead-letter queue · fila de mensagens com falha persistente) é obrigatória. Uma mensagem
+que falha sem parar volta para a fila sem parar, e o consumer group (grupo de consumidores) trava em
+cima dela enquanto o resto da fila espera.
 
 O fluxo padrão:
 
-- Retry (retentativa) com backoff exponencial (espera crescente entre tentativas), tipicamente 3–5
-  tentativas
-- Após esgotar as tentativas, a mensagem vai para a DLQ
-- Qualquer mensagem na DLQ dispara alerta. DLQ silenciosa é lixeira de perda de dados
+- Retry (nova tentativa) com backoff exponencial (espera crescente entre tentativas), tipicamente 3 a
+  5 tentativas
+- Após esgotar as tentativas, a mensagem sai da fila principal e vai para a DLQ
+- Qualquer mensagem na DLQ dispara alerta. Uma DLQ que ninguém observa acumula dados perdidos em
+  silêncio
 
-A mensagem na DLQ deve preservar: payload original, número de tentativas, último erro e timestamp do
-evento. Sem esse contexto, mensagens mortas são impossíveis de depurar.
+A mensagem na DLQ carrega o payload original, o número de tentativas, o último erro e a hora do
+evento. Sem esse contexto, quem for investigar tem uma mensagem morta e nenhuma pista.
 
-### Entrega at-least-once
+### Entrega ao menos uma vez, com consumer que aguenta repetição
 
-Entrega exactly-once (exatamente uma vez) é possível em Kafka e SQS FIFO, mas exige infraestrutura
-transacional com overhead (custo extra) de 10–30% de throughput. Na prática, **at-least-once com
-consumer idempotente** entrega a mesma garantia com menos complexidade.
+Entrega exactly-once (exatamente uma vez) existe no Kafka e no SQS FIFO, ao custo de infraestrutura
+transacional que consome de 10% a 30% do throughput (vazão, quantidade de mensagens por segundo).
+Na prática, entrega ao menos uma vez com um consumer idempotente (que tolera receber a mesma mensagem
+repetida) alcança o mesmo resultado com menos peça para manter.
 
 <details>
 <summary>✅ Bom: consumer verifica idempotência antes de processar</summary>
@@ -281,14 +315,16 @@ async function consumeEvent(event) {
 
 </details>
 
-A escrita em `processed_events` e a operação de negócio devem estar na mesma transação de banco
-quando possível. Duplicatas chegam. O sistema precisa tolerá-las sem efeito colateral.
+A gravação em `processed_events` e a operação de negócio entram na mesma transação sempre que o banco
+permitir. Assim o evento fica marcado como processado exatamente quando o efeito dele existe. As
+duplicatas vão chegar, e o consumer precisa engoli-las sem cobrar o cliente duas vezes.
 
-### Envelope de evento
+### O envelope: o formato comum de todo evento
 
-O CloudEvents v1.0 (especificação aberta mantida pela CNCF, Cloud Native Computing Foundation) é o
-padrão de envelope (estrutura de empacotamento de evento) adotado pelos principais cloud providers e
-ecossistemas:
+O CloudEvents v1.0 é a especificação aberta mantida pela **CNCF** (Cloud Native Computing Foundation ·
+Fundação de Computação Nativa em Nuvem) para o envelope do evento, ou seja, os campos fixos que
+embrulham o dado de negócio e valem para qualquer tipo de mensagem. Os principais provedores de nuvem
+já falam esse formato:
 
 ```json
 {
@@ -311,17 +347,18 @@ ecossistemas:
 | `id`     | Chave de idempotência para consumers                                                                 |
 | `source` | Serviço publicador, habilita roteamento e debugging                                                  |
 | `type`   | Tipo reverse-DNS, evita colisões entre serviços                                                      |
-| `time`   | Hora do evento, não do processamento. Essencial para ordering (ordenação) e replay (reprocessamento) |
+| `time`   | Hora em que o evento aconteceu, medida na origem. Essencial para ordering (ordenação) e replay (reprocessamento) |
 | `data`   | Payload (carga útil) de negócio. Mínimo necessário, sem IDs internos expostos a consumers externos   |
 
-Campos desconhecidos são ignorados. Producers versionam pelo campo `type` (`orders.placed.v2`).
-Deploys sincronizados para adicionar um campo são anti-pattern.
+O consumidor ignora os campos que não conhece, e é isso que permite ao publisher acrescentar
+informação sem combinar deploy com ninguém. Mudança que quebra o contrato ganha uma versão nova no
+campo `type` (`orders.placed.v2`), e os dois formatos convivem enquanto os consumidores migram.
 
-### Outbox como ponte
+### O outbox como ponte entre o banco e o broker
 
-O outbox pattern é a ponte entre o banco transacional e o broker de eventos. Resolve o problema de
-dual-write (escrita dupla): commit no banco e publicação no broker são sistemas distintos. Sem
-atomicidade, qualquer falha entre eles cria inconsistência.
+O outbox pattern liga o banco transacional ao broker de eventos. O problema que ele resolve chama-se
+dual-write (escrita dupla): gravar no banco e publicar no broker são duas escritas em sistemas
+diferentes, e qualquer falha no meio deixa os dois em desacordo.
 
 | Abordagem                                     | Problema                                      |
 | --------------------------------------------- | --------------------------------------------- |
@@ -329,7 +366,8 @@ atomicidade, qualquer falha entre eles cria inconsistência.
 | Publica no broker → commit no banco           | Se o commit falhar, evento fantasma publicado |
 | Commit inclui linha no outbox → relay publica | Intenção e dado são sempre consistentes       |
 
-O relay lê o outbox e publica com retry.
+Na terceira linha existe uma escrita só, a do banco, e ela carrega o dado e a intenção de publicar
+juntos. O relay lê o outbox e publica, tentando de novo até conseguir.
 
 ---
 

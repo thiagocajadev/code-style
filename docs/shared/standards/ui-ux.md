@@ -1,8 +1,8 @@
-# UI/UX
+# Interface e experiência do usuário
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Interface é o contrato entre o sistema e o usuário. Cada decisão de espaçamento, cor, hierarquia e estado comunica algo. Quando essas decisões são inconsistentes, o usuário trabalha mais para entender o que o sistema oferece.
+A interface é o contrato entre o sistema e quem o usa. Cada decisão de espaçamento, cor, hierarquia e estado comunica alguma coisa ao usuário. Quando essas decisões são inconsistentes, ele precisa de mais esforço para entender o que o sistema oferece.
 
 ## Conceitos fundamentais
 
@@ -15,12 +15,15 @@ Interface é o contrato entre o sistema e o usuário. Cada decisão de espaçame
 | **ARIA** (Accessible Rich Internet Applications · Aplicações de Internet Ricas Acessíveis) | Atributos HTML que complementam a semântica nativa para padrões complexos de UI |
 | **Skeleton** (esqueleto de carregamento) | Placeholder visual que representa o formato do conteúdo enquanto os dados carregam |
 | **Toast** (notificação temporária) | Mensagem de feedback exibida brevemente na interface, sem interromper o fluxo do usuário |
+| **Surface** (superfície) | Plano visual que sustenta conteúdo: o fundo da página, um painel, um card, um modal |
+| **Elevation** (elevação) | Distância aparente entre uma superfície e a que está embaixo dela, sugerida por cor, borda ou sombra |
+| **Z-index** (ordem de empilhamento) | Valor que decide qual elemento fica na frente quando dois se sobrepõem |
 
-## Densidade Visual e Respiro
+## Densidade visual e respiro
 
-Interfaces com excesso de elementos competindo por atenção cansam o olho e aumentam o tempo de decisão. Respiro (o espaço entre elementos) é a estrutura que guia a leitura.
+Quando muitos elementos disputam atenção ao mesmo tempo, o olho cansa e a decisão demora. O respiro (o espaço entre os elementos) organiza a leitura: ele mostra por onde começar e onde cada grupo termina.
 
-A regra central é agrupamento semântico: elementos relacionados ficam próximos, grupos distintos têm espaço entre eles. O olho lê a interface como parágrafos antes de ler as palavras.
+A regra é o agrupamento semântico: o que se relaciona fica perto, o que é distinto ganha distância. Antes de ler as palavras, o olho lê a interface como parágrafos.
 
 | Anti-pattern | Efeito | Solução |
 |---|---|---|
@@ -29,11 +32,11 @@ A regra central é agrupamento semântico: elementos relacionados ficam próximo
 | Espaçamento inconsistente entre seções | Interface parece montada por partes | Sistema de espaçamento em escala fixo |
 | Informação densa sem quebra visual | Cansativo de ler | Grupos de no máximo 2-3 linhas com respiro entre eles |
 
-## Sistema de Espaçamento
+## Sistema de espaçamento
 
-Espaçamentos arbitrários (`margin: 13px`, `padding: 7px`) criam inconsistência visual acumulada. Um sistema de espaçamento define uma escala com valores fixos que se repetem de forma consistente em toda a interface.
+Valores escolhidos caso a caso (`margin: 13px`, `padding: 7px`) se acumulam e produzem uma inconsistência difícil de localizar depois. Um sistema de espaçamento define uma escala de valores fixos que se repetem na interface toda.
 
-Escala típica baseada em múltiplos de 4:
+Escala típica, baseada em múltiplos de 4:
 
 | Token | Valor | Uso comum |
 |---|---|---|
@@ -45,13 +48,13 @@ Escala típica baseada em múltiplos de 4:
 | `space-8` | 32px | Separação entre seções maiores |
 | `space-12` | 48px | Separação entre blocos de página |
 
-Usar tokens (valores nomeados do sistema de design) em vez de valores livres garante que qualquer ajuste de escala se propague de forma consistente. A interface respira no mesmo ritmo em qualquer viewport (área visível da tela).
+Usar tokens (valores nomeados do sistema de design) em vez de números soltos tem um ganho concreto: ajustar a escala uma vez propaga o ajuste por toda parte. A interface passa a respirar no mesmo ritmo em qualquer viewport (área visível da tela).
 
-## Hierarquia Tipográfica
+## Hierarquia tipográfica
 
-Texto sem hierarquia não orienta a leitura. O usuário precisa de âncoras visuais para identificar o que é título, o que é descrição, o que é detalhe.
+Texto sem hierarquia não diz por onde começar. O leitor precisa de âncoras visuais para separar num relance o que é título, o que é descrição e o que é detalhe.
 
-Três níveis são suficientes para a maioria dos contextos:
+Três níveis bastam para quase todo contexto:
 
 | Nível | Papel | Características |
 |---|---|---|
@@ -59,13 +62,83 @@ Três níveis são suficientes para a maioria dos contextos:
 | **Secundário** | Subtítulo, rótulo de campo, nome de item | Tamanho médio, peso regular |
 | **Terciário** | Metadado, data, hint (dica), legenda | Tamanho menor, cor mais suave |
 
-Evitar mais de três níveis tipográficos na mesma tela: a hierarquia colapsa, tudo parece especial, nada parece importante.
+Passar de três níveis na mesma tela derruba a hierarquia em vez de refiná-la: quando tudo parece especial, nada parece importante.
 
-## Temas Claro e Escuro
+<a id="surface-hierarchy"></a>
 
-Temas requerem paletas re-otimizadas para cada contexto, não apenas inversão de cores. Superfícies, sombras, opacidade e contraste se comportam de forma diferente em cada fundo.
+## Hierarquia de superfícies
 
-A regra prática é usar variáveis semânticas em vez de valores fixos:
+Uma interface é lida em camadas antes de ser lida em palavras. O olho identifica o que está no fundo, o que está apoiado sobre ele e o que flutua por cima, e usa essa leitura para decidir o que é conteúdo, o que é moldura e o que exige resposta agora. A **superfície** (o plano visual que sustenta o conteúdo) é a peça que carrega essa informação.
+
+A pilha tem cinco níveis, e quase toda tela cabe neles:
+
+| Nível | O que é | Papel na leitura |
+|---|---|---|
+| **Background** (plano de fundo) | O fundo da página | Define o tom geral e não compete com nada |
+| **Surface** (painel) | Sidebar, cabeçalho, painel lateral | Estrutura fixa: mostra onde o usuário está |
+| **Card** (container de conteúdo) | Bloco de conteúdo agrupado | Delimita uma unidade que pode ser lida sozinha |
+| **Overlay** (camada flutuante) | Dropdown, popover, tooltip | Conteúdo temporário ligado a um gatilho |
+| **Modal** (janela bloqueante) | Diálogo, confirmação | Interrompe o fluxo e exige uma decisão |
+
+```
+modal      → interrompe: exige decisão do usuário
+overlay    → flutua: dropdown, popover, tooltip
+card       → agrupa: unidade de conteúdo
+surface    → estrutura: sidebar, header
+background → base: o plano da página
+```
+
+A ordem importa mais que os valores. Uma camada só aparece acima de outra quando o conteúdo dela é mais urgente ou mais temporário. Um card que flutua como se fosse modal, ou um modal que se confunde com o fundo, faz o usuário perder o rastro do que está ativo.
+
+### Elevar com cor, borda ou sombra
+
+Três recursos separam uma camada da que está embaixo, e cada um comunica uma coisa diferente:
+
+| Recurso | O que comunica | Quando escolher |
+|---|---|---|
+| **Diferença de cor de fundo** | Camadas distintas, ambas fixas | Estrutura permanente: sidebar sobre a página, card sobre o fundo |
+| **Borda** | Limite claro, sem sugerir altura | Interfaces densas (tabelas, painéis de dados), dark mode, quando a sombra suja o layout |
+| **Sombra** | Altura real: o elemento está acima do plano | Conteúdo temporário: dropdown, popover, modal, elemento arrastado |
+
+O erro comum é acumular os três no mesmo componente. Um card com fundo diferente, borda visível e sombra pesada grita três vezes a mesma informação e ainda assim não fica mais legível. Um recurso resolve a maioria dos casos; dois já é uma decisão que precisa de motivo.
+
+A força do recurso acompanha a altura da camada. Um card em repouso pede uma sombra que mal se nota. Um modal pede uma sombra funda, porque ele precisa parecer descolado de tudo o que está atrás. Quando a sombra do card e a do modal são iguais, o usuário deixa de distinguir o que é conteúdo do que é interrupção.
+
+Para o lado da cor (quanto de luminosidade separa duas camadas em **OKLCH**, quanto de croma cabe num fundo, como tonalizar a sombra), o SSOT é [color-theory.md](color-theory.md#surface-hierarchy).
+
+### Quanto menos camadas, melhor
+
+Cada camada nova cobra atenção do usuário e um lugar na pilha do código. Três anti-patterns aparecem quando a pilha cresce sem controle:
+
+| Anti-pattern | Efeito | Solução |
+|---|---|---|
+| Tudo elevado (card dentro de card dentro de painel) | Nenhuma camada se destaca; a tela vira um relevo confuso | Achatar: usar espaçamento e tipografia para agrupar, guardar a elevação para o que flutua |
+| Modal que abre modal | O usuário perde o caminho de volta e o `Esc` fecha o que ele não esperava | Um nível de interrupção por vez; o segundo passo vira uma etapa dentro do mesmo modal |
+| `z-index: 9999` espalhado pelo código | Ninguém sabe mais o que fica na frente do quê | Escala nomeada de z-index no sistema de design, com uma parada por nível da pilha |
+
+O `z-index` merece a mesma disciplina do espaçamento: uma escala fixa, com um valor por camada, definida num lugar só.
+
+```
+--z-base       → 0     conteúdo da página
+--z-sticky     → 10    header e sidebar fixos
+--z-dropdown   → 20    menus e popovers
+--z-modal      → 30    diálogos
+--z-toast      → 40    notificações sobre o modal
+```
+
+Com a escala nomeada, quem escreve um componente novo escolhe a camada pelo papel dele. Sem ela, cada desenvolvedor descobre o número que funciona no dia e soma um.
+
+### Superfícies e acessibilidade
+
+O contraste é medido contra a superfície imediata, e não contra o fundo da página. Um texto cinza que passa no **WCAG** sobre o branco da página pode falhar sobre o cinza claro de um card. Cada camada que muda o fundo obriga a reconferir o texto e os ícones que vivem em cima dela.
+
+Elevação sozinha não comunica estado. Um item selecionado que se distingue apenas por uma sombra some para quem enxerga pouco ou usa alto contraste. A sombra entra como reforço, acompanhada de uma borda, uma mudança de cor de fundo ou um ícone.
+
+## Temas claro e escuro
+
+Cada tema pede uma paleta própria, reajustada para o seu contexto. Superfície, sombra, opacidade e contraste se comportam de maneira diferente conforme o fundo, e inverter as cores do tema claro não resolve isso.
+
+Na prática, isso se resolve com variáveis semânticas em vez de valores fixos:
 
 | Abordagem | Problema |
 |---|---|
@@ -81,25 +154,25 @@ A regra prática é usar variáveis semânticas em vez de valores fixos:
 --interactive-default → cor de botões e links
 ```
 
-Para o detalhamento de **OKLCH**, harmonias, escala tonal de 11 paradas, hierarquia de superfícies, **WCAG** 1.4.3 e estratégias específicas de light/dark, consulte [color-theory.md](color-theory.md).
+Para o detalhamento de **OKLCH**, harmonias, escala tonal de 11 paradas, cor das superfícies, **WCAG** 1.4.3 e estratégias específicas de light/dark, consulte [color-theory.md](color-theory.md).
 
 ## Acessibilidade
 
-Acessibilidade garante que a interface funciona para todos os usuários, incluindo quem usa leitores de tela, navega pelo teclado ou tem deficiência visual.
+Acessibilidade é a garantia de que a interface funciona para todo mundo, incluindo quem usa leitor de tela, navega só pelo teclado ou enxerga pouco.
 
 ### Contraste
 
-Texto e elementos interativos precisam de contraste suficiente contra o fundo. A regra prática: se precisar apertar os olhos para ler no mockup (protótipo visual), vai falhar em produção.
+Texto e elementos interativos precisam se destacar do fundo. Um teste caseiro resolve a maioria dos casos: se você aperta os olhos para ler no mockup (protótipo visual), vai falhar em produção.
 
 ### Navegação por teclado
 
-Todo elemento interativo (botão, link, campo, modal) deve ser acessível via `Tab` e ativável via `Enter` ou `Space`. A ordem de foco deve seguir a ordem visual da página.
+Todo elemento interativo (botão, link, campo, modal) tem que ser alcançável com `Tab` e acionável com `Enter` ou `Space`, e a ordem do foco precisa seguir a ordem visual da página.
 
-Foco visível é obrigatório. Nunca remover o outline (contorno) de foco sem substituí-lo por algo equivalente ou melhor.
+Foco visível é obrigatório. Remover o outline (contorno) de foco sem colocar nada equivalente no lugar deixa quem navega por teclado sem saber onde está.
 
 ### Semântica HTML
 
-Elementos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) semânticos comunicam estrutura para leitores de tela:
+Os elementos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) semânticos são o que comunica estrutura ao leitor de tela:
 
 | Evitar | Usar |
 |---|---|
@@ -108,17 +181,17 @@ Elementos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipe
 | `<div>` para lista | `<ul>/<ol>/<li>` |
 | `<img>` sem alt | `<img alt="descrição">` |
 
-Leitor de tela lê o que o HTML diz, não o que a tela mostra. Um `<div>` com visual de botão é invisível para quem usa tecnologia assistiva.
+O leitor de tela anuncia o que o HTML declara. Um `<div>` com aparência de botão fica invisível para quem usa tecnologia assistiva, porque o HTML nunca disse que aquilo era um botão.
 
 ### ARIA
 
-ARIA complementa a semântica nativa para padrões complexos: menus, **tooltips** (dicas flutuantes), modais, **comboboxes** (campos de seleção combinados).
+ARIA completa a semântica nativa nos padrões que o HTML não cobre sozinho: menus, **tooltips** (dicas flutuantes), modais, **comboboxes** (campos de seleção combinados).
 
-A regra de uso é simples: ARIA é o último recurso. Preferir elemento HTML semântico nativo antes de qualquer atributo ARIA. ARIA mal usado é pior que nenhum ARIA.
+ARIA é o último recurso. Tente o elemento HTML semântico primeiro, sempre. ARIA aplicado errado anuncia ao leitor de tela uma estrutura que não corresponde ao comportamento real, e isso confunde mais do que a ausência de ARIA.
 
-### Estados e Feedback
+### Estados e feedback
 
-Cada ação do usuário precisa de resposta visível:
+Toda ação do usuário precisa de uma resposta que ele consiga ver:
 
 | Estado | Como comunicar |
 |---|---|
@@ -127,9 +200,9 @@ Cada ação do usuário precisa de resposta visível:
 | Sucesso | Toast (notificação temporária) ou inline com contraste e ícone |
 | Campo desabilitado | Combinar visual de desabilitado com atributo `disabled` |
 
-## Estados de Interface
+## Estados da interface
 
-Toda tela tem variações de estado além do estado feliz. Projetar apenas o estado com dados é projetar metade da interface.
+Toda tela tem mais estados do que o estado feliz. Desenhar apenas a versão com dados deixa os outros estados para a produção resolver.
 
 | Estado | Quando ocorre |
 |---|---|
@@ -139,4 +212,4 @@ Toda tela tem variações de estado além do estado feliz. Projetar apenas o est
 | **Partial** | Dados carregados com erro em parte deles |
 | **Success** | Operação concluída, com feedback temporário |
 
-Estado empty bem projetado orienta o usuário para a próxima ação. Estado de erro bem projetado diz o que aconteceu e o que fazer. Tela em branco e mensagem técnica indicam estados sem tratamento.
+Um estado vazio bem feito aponta a próxima ação. Um estado de erro bem feito diz o que aconteceu e o que fazer agora. Tela em branco e mensagem técnica crua indicam estados que ninguém desenhou.

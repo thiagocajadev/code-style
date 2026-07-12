@@ -2,7 +2,7 @@
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Arquitetura é a decisão de como organizar o código para que o sistema possa crescer, ser mantido e ser entendido. A arquitetura certa depende do contexto, do time e do estágio do produto.
+Arquitetura é a decisão de como organizar o código para que o sistema possa crescer, ser mantido e ser entendido. A escolha certa depende do contexto, do time e do estágio do produto.
 
 | Padrão | Organiza por | Melhor para |
 |---|---|---|
@@ -17,9 +17,9 @@ Arquitetura é a decisão de como organizar o código para que o sistema possa c
 | Conceito | O que é |
 |---|---|
 | **Vertical Slice** (fatia vertical) | Arquitetura que organiza o código por feature, agrupando tudo que pertence a uma funcionalidade na mesma pasta |
-| **MVC** (Model-View-Controller, Modelo-Visão-Controlador) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
+| **MVC** (Model-View-Controller · Modelo-Visão-Controlador) | Padrão que divide o sistema em Model (dados), View (apresentação) e Controller (coordenação) |
 | **REST** (Representational State Transfer · Transferência de Estado Representacional) | Estilo arquitetural para APIs web baseado em recursos e verbos HTTP |
-| **TDD** (Test-Driven Development, Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
+| **TDD** (Test-Driven Development · Desenvolvimento Guiado por Testes) | Prática de escrever o teste antes do código de produção |
 | **Blast radius** (raio de impacto) | Extensão do sistema afetada por uma alteração ou falha |
 | **MVP** (Minimum Viable Product · Produto Mínimo Viável) | Versão mais simples de um produto que valida uma hipótese de negócio |
 
@@ -58,9 +58,9 @@ features/
     logging/
 ```
 
-Cada slice é independente: adicionar uma feature é adicionar uma pasta. Mudar uma feature toca apenas os arquivos daquela pasta.
+Cada slice é independente: adicionar uma feature é adicionar uma pasta, e mudar uma feature toca apenas os arquivos daquela pasta.
 
-O custo é o compartilhamento: código comum a todos os slices (autenticação, logging, infraestrutura) precisa de uma camada `shared/` bem definida. Sem isso, duplicação aparece entre os slices.
+O custo é o compartilhamento. O código comum a todos os slices (autenticação, logging, infraestrutura) precisa de uma camada `shared/` bem definida, e sem ela a duplicação aparece entre os slices.
 
 **Melhor para**: sistemas com muitas features independentes, times que trabalham em paralelo em diferentes domínios, projetos que crescem por adição de funcionalidades.
 
@@ -91,9 +91,9 @@ views/
     index
 ```
 
-O benefício central é a separação entre lógica de negócio e lógica de apresentação. Um **Model** (modelo) pode ser testado sem renderizar nada. Uma View pode ser trocada sem tocar nas regras de negócio.
+O benefício central é a separação entre lógica de negócio e lógica de apresentação. Um **Model** (modelo) pode ser testado sem renderizar nada, e uma View pode ser trocada sem tocar nas regras de negócio.
 
-O risco clássico é o **Fat Controller**: quando o **Controller** (controlador) acumula lógica que deveria estar no Model. Controllers devem ser finos: o papel deles é coordenar o fluxo, não implementar lógica.
+O risco clássico é o **Fat Controller**: o **Controller** (controlador) acumula lógica que pertence ao Model. Controllers devem ser finos, com o papel de coordenar o fluxo e deixar a lógica onde ela mora.
 
 **Melhor para**: aplicações web tradicionais com renderização server-side, APIs **REST** (Representational State Transfer · Transferência de Estado Representacional) com múltiplas entidades.
 
@@ -101,7 +101,7 @@ O risco clássico é o **Fat Controller**: quando o **Controller** (controlador)
 
 ## Legacy
 
-Projetos legados raramente foram projetados com escalabilidade em mente. Cresceram por camadas de correções, adaptações e adições emergenciais. A estrutura que você vai encontrar é o resultado de decisões acumuladas ao longo do tempo, sem um design intencional.
+Projetos legados raramente foram desenhados com escalabilidade em mente. Cresceram por camadas de correções, adaptações e adições emergenciais, e a estrutura que você encontra é o resultado dessas decisões acumuladas.
 
 ```
 src/
@@ -116,13 +116,13 @@ Web.config
 
 Trabalhar em código legado tem regras diferentes:
 
-**Entender antes de mudar.** A lógica estranha provavelmente tem um motivo: bug específico de produção, integração com sistema externo, limitação de ambiente. Apagar código que parece sem sentido sem investigar é uma das formas mais eficientes de introduzir regressão.
+**Entender antes de mudar.** A lógica estranha costuma ter um motivo: um bug específico de produção, uma integração com sistema externo, uma limitação de ambiente. Apagar código que parece sem sentido, sem investigar antes, introduz regressão com facilidade.
 
-**Mudanças cirúrgicas.** O blast radius (raio de impacto) de uma alteração em código legado é difícil de mapear. Refatorar enquanto conserta um bug mistura riscos. O ideal é: conserta o bug, valida, refatora separado.
+**Mudanças cirúrgicas.** O blast radius (raio de impacto) de uma alteração em código legado é difícil de mapear, e refatorar durante o conserto de um bug mistura os riscos dos dois. Conserte o bug, valide, refatore em seguida.
 
-**Testes antes de tocar.** Antes de alterar uma função sem testes, escreva um teste que capture o comportamento atual, mesmo que o comportamento pareça errado. Isso dá uma rede de segurança antes de qualquer mudança.
+**Testes antes de tocar.** Antes de alterar uma função sem testes, escreva um teste que capture o comportamento atual, mesmo que esse comportamento pareça errado. Ele é a rede de segurança para qualquer mudança seguinte.
 
-**Estrutura enxuta é intencional.** Sistemas legados com pouca abstração são pragmáticos para o contexto em que foram construídos. A tentação de "fazer direito do zero" costuma subestimar o conhecimento implícito incorporado no código que funciona.
+**Estrutura enxuta é intencional.** Sistemas legados com pouca abstração costumam ser pragmáticos para o contexto em que foram construídos. A vontade de "fazer direito do zero" subestima o conhecimento implícito que já está embutido no código que funciona.
 
 **Melhor para**: manutenção incremental, migração gradual, sistemas que funcionam e não precisam ser reescritos.
 
@@ -130,7 +130,7 @@ Trabalhar em código legado tem regras diferentes:
 
 ## XP (Extreme Programming)
 
-**XP** (eXtreme Programming, Programação eXtrema) é uma metodologia de desenvolvimento que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real com pair programming (programação em par). Se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development, Desenvolvimento Guiado por Testes).
+**XP** (eXtreme Programming · Programação eXtrema) é uma metodologia que leva boas práticas de engenharia ao extremo: se code review (revisão de código) é bom, faça em tempo real com pair programming (programação em par); se testes são bons, escreva o teste antes do código com TDD (Test-Driven Development · Desenvolvimento Guiado por Testes).
 
 ```
 src/
@@ -158,7 +158,7 @@ Práticas centrais:
 | **Refactoring (refatoração) contínuo** | Design melhorado de forma incremental, sem big bang. |
 | **Simplicidade** | A solução mais simples que funciona. Sem antecipar requisitos futuros. |
 
-XP funciona melhor em times pequenos com alta comunicação, requisitos que mudam frequentemente e cultura que valoriza qualidade técnica. O custo é disciplina: as práticas exigem compromisso sustentado.
+XP funciona melhor em times pequenos com alta comunicação, requisitos que mudam com frequência e cultura que valoriza qualidade técnica. O custo é disciplina: as práticas exigem compromisso sustentado.
 
 **Melhor para**: produtos em desenvolvimento ativo, times que colaboram presencialmente ou remotamente com alta sincronia, projetos onde o custo de bugs em produção é alto.
 
@@ -168,7 +168,7 @@ XP funciona melhor em times pequenos com alta comunicação, requisitos que muda
 
 > ⚠️ Esta seção documenta um padrão real com consciência dos riscos.
 
-**XGH** (eXtreme Go Horse, Vai Cavalo eXtremo) é a arquitetura que emerge de projetos onde a velocidade supera qualquer outra consideração. Surgiu espontaneamente, sem planejamento. O processo é simples: tem um problema, resolve agora, sem questionar como.
+**XGH** (eXtreme Go Horse · Vai Cavalo eXtremo) é a arquitetura que surge em projetos onde a velocidade supera qualquer outra consideração. Ela aparece sem planejamento, e o processo é simples: tem um problema, resolve agora, sem questionar como.
 
 ```
 src/
@@ -191,11 +191,10 @@ Os axiomas são conhecidos:
 - _"Commit antes de testar é commit corajoso."_
 - _"Arquitetura é pra quem tem prazo."_
 
-XGH tem um espaço legítimo, estreito, mas real. Protótipos descartáveis, scripts de uso único, hackathons, MVPs (Minimum Viable Product · Produto Mínimo Viável) que podem ser reescritos: contextos onde o custo de engenharia supera o valor do que está sendo construído.
+XGH tem um espaço legítimo, estreito e real: protótipos descartáveis, scripts de uso único, hackathons, MVPs (Minimum Viable Product · Produto Mínimo Viável) que podem ser reescritos. São contextos onde o custo de engenharia supera o valor do que está sendo construído.
 
-Usar XGH em projetos de vida curta tem sentido. O problema aparece quando XGH se torna o padrão de um sistema que precisa durar, quando cada nova feature é construída sobre a última gambiarra e o time passa mais tempo desfazendo do que construindo.
+O problema aparece quando o XGH vira o padrão de um sistema que precisa durar. Cada feature nova é construída sobre a última gambiarra, e o time passa a gastar mais tempo desfazendo do que construindo.
 
-A métrica do XGH é simples: funciona agora? Sim. Ainda vai funcionar em seis meses? Essa pergunta não existe no framework.
+XGH responde a uma pergunta só: funciona agora? A pergunta sobre os próximos seis meses fica de fora do método.
 
 **Melhor para**: scripts descartáveis, provas de conceito, projetos de vida curta onde o custo de fazer certo supera o valor entregue.
-

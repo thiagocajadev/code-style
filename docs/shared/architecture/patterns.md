@@ -1,23 +1,23 @@
-# Patterns
+# Padrões de projeto
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Patterns de design são soluções consolidadas para problemas recorrentes: vocabulário compartilhado entre engenheiros e heurísticas testadas em produção.
+Um **pattern** (padrão de projeto) é uma solução já consolidada para um problema que reaparece com frequência. Ele serve a dois propósitos: dá aos engenheiros um vocabulário comum e entrega uma heurística já testada em produção.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
 | **Caller** (quem invoca a função) | Código que chama uma função ou serviço e trata o resultado |
-| **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) | Biblioteca que mapeia objetos do código para tabelas do banco de dados |
+| **ORM** (Object-Relational Mapper · Mapeador Objeto-Relacional) | Biblioteca que mapeia objetos do código para tabelas do banco de dados |
 | **OCP** (Open/Closed Principle · Princípio Aberto/Fechado) | Design aberto para extensão por novas implementações, fechado para modificação do código existente |
-| **CRUD** (Create, Read, Update, Delete, Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
-| **CQS** (Command-Query Separation, Separação de Comando e Consulta) | Princípio de função: retorna valor OU produz efeito colateral, nunca os dois; ver `principles.md` |
+| **CRUD** (Create, Read, Update, Delete · Criar, Ler, Atualizar, Deletar) | Conjunto das quatro operações básicas de persistência |
+| **CQS** (Command-Query Separation · Separação de Comando e Consulta) | Princípio de função: retorna valor OU produz efeito colateral, nunca os dois; ver `principles.md` |
 | **CQRS** (Command Query Responsibility Segregation · Segregação de Responsabilidade de Comando e Consulta) | Padrão arquitetural: modelos de escrita e leitura completamente separados |
 | **Command** (Comando) | Operação que altera estado; não retorna dado de negócio |
 | **Query** (Consulta) | Operação que lê e retorna dado; não altera estado |
 | **Projection** (Projeção) | Modelo de leitura desnormalizado, otimizado para consulta |
-| **SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações) | Spec define contrato de entradas, saídas e comportamentos antes de qualquer implementação |
+| **SDD** (Spec-Driven Development · Desenvolvimento Orientado a Especificações) | Spec define contrato de entradas, saídas e comportamentos antes de qualquer implementação |
 | **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) | Modelo de IA treinado em texto que gera código, explica conceitos e auxilia no desenvolvimento |
 | **Handler** (processador de evento ou requisição) | Função ou objeto que recebe um evento ou requisição e decide como processar |
 | **Middleware** (intermediário de requisição) | Componente em um pipeline que intercepta a requisição, processa e repassa para o próximo elo |
@@ -61,7 +61,7 @@ _Especializados, com aplicabilidade mais restrita e sem seção dedicada:_
 
 ## Result Pattern
 
-Operações que podem falhar têm dois caminhos: sucesso e falha. A forma mais comum de tratar isso é lançar exceções, mas exceções são invisíveis na assinatura da função. Quem chama não sabe, sem ler a implementação, que a função pode falhar e em quais condições.
+Operações que podem falhar têm dois caminhos: sucesso e falha. A forma mais comum de tratar isso é lançar exceções, e o problema é que a exceção fica invisível na assinatura da função. Quem chama precisa ler a implementação para descobrir que a função pode falhar e em quais condições.
 
 O Result pattern torna os dois caminhos explícitos na assinatura:
 
@@ -92,7 +92,7 @@ UserFactory.create({ name, email, role })
 
 ## Repository
 
-O código de negócio não deveria conhecer **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) ou detalhes de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
+O código de negócio deve ignorar **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), **ORM** (Object-Relational Mapper · Mapeador Objeto-Relacional) e qualquer detalhe de storage. Repository encapsula o acesso a dados atrás de uma interface orientada a domínio.
 
 ```
 UserRepository
@@ -101,9 +101,9 @@ UserRepository
   .save(user)
 ```
 
-O código de domínio fala em `findByEmail`, não em `SELECT * FROM users WHERE email = ?`. A camada de dados pode mudar (PostgreSQL → MongoDB, Dapper → EF) sem tocar o domínio.
+O código de domínio fala em `findByEmail` e deixa o `SELECT * FROM users WHERE email = ?` para a camada de dados. Essa camada pode mudar (PostgreSQL → MongoDB, Dapper → EF) sem tocar o domínio.
 
-**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete, Criar, Ler, Atualizar, Deletar) simples sem lógica, pode ser overhead (custo extra de implementação).
+**Quando usar**: acesso a banco em sistemas com lógica de domínio não trivial. Em CRUDs (Create, Read, Update, Delete · Criar, Ler, Atualizar, Deletar) simples sem lógica, vira overhead (custo extra de implementação).
 
 ## Strategy
 
@@ -166,7 +166,7 @@ LoggingRepository(
 )
 ```
 
-Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova tentativa), rate limiting (limitação de taxa de requisições). A composição é feita na configuração, não espalhada pelo código. A implementação original não sabe que está sendo decorada.
+Cada camada adiciona uma responsabilidade isolada: logging, cache, retry (nova tentativa), rate limiting (limitação de taxa de requisições). A composição acontece em um lugar só, na configuração, e a implementação original nunca fica sabendo que está sendo decorada.
 
 **Quando usar**: comportamento transversal (logging, cache, autenticação) que precisa ser aplicado de forma composável, sem modificar a implementação base.
 
@@ -298,7 +298,7 @@ A sequência é controlada pela base. As variações ficam nas subclasses sem du
 
 > Não confundir com **CQS** (Command-Query Separation), que é um princípio de _função_: a função retorna valor ou produz efeito, nunca os dois. CQRS é um padrão _arquitetural_ que separa modelos inteiros de escrita e leitura.
 
-Em sistemas com lógica de negócio complexa, o modelo de escrita (validações, invariantes, regras de domínio) e o modelo de leitura (relatórios, dashboards, listas paginadas) divergem: o que faz sentido para persistir não é o que faz sentido para exibir.
+Em sistemas com lógica de negócio complexa, o modelo de escrita (validações, invariantes, regras de domínio) e o modelo de leitura (relatórios, dashboards, listas paginadas) divergem. A forma boa de persistir um dado e a forma boa de exibi-lo são diferentes, e forçar as duas no mesmo modelo prejudica as duas.
 
 CQRS separa os dois em modelos distintos:
 
@@ -324,7 +324,7 @@ O **write model** (modelo de escrita) aplica as regras de domínio e persiste o 
 
 Desenvolvimento assistido por **LLM** (Large Language Model · Modelo de Linguagem de Grande Escala) integrado ao ciclo de engenharia: geração de código, revisão, sugestão de refactoring e navegação em bases de código grandes.
 
-O risco central não é a IA: é a ausência de revisão crítica. Código gerado sem avaliação contra a spec e os padrões do projeto cria dívida técnica opaca: funciona, mas não se encaixa no modelo de domínio, ignora convenções ou duplica lógica existente.
+O risco central está na ausência de revisão crítica. Código gerado sem avaliação contra a spec e os padrões do projeto cria dívida técnica opaca: ele funciona, e ao mesmo tempo desencaixa do modelo de domínio, ignora convenções ou duplica lógica que já existia.
 
 A prática correta:
 
@@ -332,13 +332,13 @@ A prática correta:
 Spec define o contrato → IA gera o candidato → Engenheiro revisa contra spec e padrões → Merge
 ```
 
-Nesse modelo, a IA acelera a geração; o engenheiro mantém a responsabilidade pelo design e pela qualidade. A spec é o critério de avaliação, não o feeling de "parece certo".
+Nesse modelo, a IA acelera a geração e o engenheiro mantém a responsabilidade pelo design e pela qualidade. O critério de avaliação é a spec, e ela substitui a impressão de que o código "parece certo".
 
 **Quando usar**: qualquer tarefa onde o contrato já está definido. A IA produz melhor quando sabe o que deve entregar; tarefas sem spec clara geram código sem critério de aceitação.
 
 ## SDD
 
-**SDD** (Spec-Driven Development, Desenvolvimento Orientado a Especificações): a spec (especificação) define entradas, saídas e comportamentos esperados antes de qualquer linha de implementação. O código serve a spec, não o contrário.
+**SDD** (Spec-Driven Development · Desenvolvimento Orientado a Especificações): a spec (especificação) define entradas, saídas e comportamentos esperados antes de qualquer linha de implementação. A implementação existe para cumprir a spec.
 
 Ciclo:
 
@@ -346,13 +346,13 @@ Ciclo:
 SPEC → PLAN → CODE → TEST → END
 ```
 
-- **SPEC**: define o contrato: o quê e por quê, não o como
+- **SPEC**: define o contrato, ou seja, o quê e o porquê; o como fica para depois
 - **PLAN**: decompõe em tarefas ordenadas com esforço estimado
 - **CODE**: implementa o plano, nada além
 - **TEST**: verifica que a implementação satisfaz a spec
 - **END**: fecha o ciclo com changelog, backlog sync e commit
 
-O benefício central é custo de decisão: rever uma spec é grátis; rever código já implementado tem custo de entendimento, reescrita e reteste. Decisões de design tomadas na spec chegam ao código com clareza de intenção.
+O benefício central é o custo da decisão. Rever uma spec sai de graça. Rever código já implementado cobra entendimento, reescrita e reteste. Decisões de design tomadas na spec chegam ao código com a intenção já clara.
 
 > Este guia segue SDD. Referência completa do padrão: [specdrivenguide.org](https://specdrivenguide.org/).
 

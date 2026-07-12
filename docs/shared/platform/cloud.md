@@ -1,8 +1,8 @@
-# Cloud
+# Computação em nuvem
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**Cloud computing** (computação em nuvem) redistribui responsabilidades: o provedor cuida da infraestrutura física, o time cuida da configuração, segurança e arquitetura dos serviços.
+A **cloud computing** (computação em nuvem) redivide o trabalho de manter um sistema no ar. O provedor cuida da máquina física, da rede e do disco. O time cuida da configuração dos serviços, das permissões e da arquitetura. O trabalho de operação diminui, e as decisões que sobram passam a valer mais.
 
 ## Conceitos fundamentais
 
@@ -15,9 +15,9 @@
 | **Health check** (verificação de saúde) | Declaração de como o orquestrador verifica se o container está saudável para receber tráfego |
 | **OOMKilled** (Out Of Memory Killed · Processo encerrado por falta de memória) | Sinal do orquestrador indicando que o container esgotou a memória disponível |
 
-## Serviços Gerenciados
+## Serviço gerenciado ou operado pelo time
 
-A escolha entre serviço gerenciado, **PaaS** (Platform as a Service · Plataforma como Serviço) ou **SaaS** (Software as a Service · Software como Serviço), e **self-hosted** (operado pelo próprio time) afeta diretamente o custo operacional e a complexidade do time.
+A escolha entre um serviço gerenciado (**PaaS** (Platform as a Service · Plataforma como Serviço) ou **SaaS** (Software as a Service · Software como Serviço)) e um **self-hosted** (operado pelo próprio time) define quanto trabalho de operação o time assume.
 
 | Categoria | Gerenciado | Self-hosted |
 |---|---|---|
@@ -26,13 +26,13 @@ A escolha entre serviço gerenciado, **PaaS** (Platform as a Service · Platafor
 | Fila | SQS, Service Bus, Cloud Pub/Sub | RabbitMQ em VM |
 | Deploy | Vercel, App Service, Cloud Run | Docker em VM própria |
 
-Serviços gerenciados entregam alta disponibilidade, backups, atualizações e escalabilidade automática. O custo é financeiro: gerenciado custa mais por hora. O benefício é operacional: o time não opera banco, não configura replicação, não gerencia discos.
+O serviço gerenciado já vem com alta disponibilidade, backup, atualização de versão e escala automática. Ele cobra mais caro por hora, e em troca o time deixa de configurar replicação, monitorar disco e aplicar patch de segurança no banco.
 
-Use gerenciado como padrão. Escolha self-hosted quando há restrição de custo ou requisito que o gerenciado não atende.
+Comece pelo gerenciado. Vá para o self-hosted quando o custo pesar de verdade na conta, ou quando o serviço gerenciado não atender a um requisito específico.
 
-## Least Privilege (Menor Privilégio)
+## Cada serviço com a permissão mínima
 
-Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity and Access Management · Gerenciamento de Identidade e Acesso) mal configurado é uma das maiores superfícies de ataque em cloud.
+Um serviço recebe as permissões que usa, e nada além disso. O **IAM** (Identity and Access Management · Gerenciamento de Identidade e Acesso) mal configurado é uma das portas de entrada mais exploradas em cloud, porque uma credencial vazada com permissão ampla dá acesso a tudo de uma vez.
 
 | Prática | Por quê |
 |---|---|
@@ -41,23 +41,23 @@ Cada serviço opera com exatamente as permissões que precisa. **IAM** (Identity
 | Permissão de leitura onde só se lê | Write não utilizado é write disponível para exploração |
 | Revisão periódica de permissões | Permissões crescem com o tempo, raramente diminuem sozinhas |
 
-Um **Secret** (segredo) fica em serviços gerenciados (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e é injetado em runtime. Variáveis de ambiente em **plaintext** (texto sem criptografia), código commitado e `.env` no repositório são vetores de vazamento. Ver [Segurança](./security.md) para detalhes.
+O **secret** (segredo) fica em um serviço próprio para isso (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e é injetado quando o processo sobe. A variável de ambiente em **plaintext** (texto sem criptografia), o valor commitado no código e o `.env` versionado são os três caminhos por onde o segredo vaza. Ver [Segurança](./security.md) para detalhes.
 
 ## Containers
 
-Containers garantem paridade entre ambientes: o que roda em dev é o que vai para prod. Essa paridade elimina a classe de bugs "funciona na minha máquina".
+O container empacota a aplicação com tudo de que ela precisa para rodar, então o que funciona na máquina do desenvolvedor funciona igual em produção. Isso apaga a categoria de defeito que começa com "na minha máquina funciona".
 
-**Multi-stage builds** separam a etapa de build da imagem final. A imagem de runtime não carrega compilador, dependências de desenvolvimento nem arquivos intermediários. Resultado: imagem menor, superfície de ataque menor.
+O **multi-stage build** separa a etapa que compila da imagem que vai para produção. A imagem final fica sem compilador, sem dependência de desenvolvimento e sem arquivo intermediário. Ela ocupa menos espaço e oferece menos coisas para um invasor explorar.
 
-**Imagem base mínima** (Alpine, Distroless): quanto menor a imagem, menos pacotes, menos vulnerabilidades potenciais.
+A **imagem base mínima** (Alpine, Distroless) segue a mesma lógica: cada pacote a menos na imagem é uma vulnerabilidade a menos para acompanhar.
 
-**Processo sem root**: o container opera com um usuário sem privilégios. Se comprometido, o acesso é limitado ao escopo do usuário, não do sistema.
+O **processo sem root** roda com um usuário comum dentro do container. Quando alguém consegue executar código ali dentro, o alcance dele para nos limites daquele usuário.
 
-**Health check**: o container declara como verificar sua própria saúde. O orquestrador usa essa informação para roteamento e restart automático. Container sem health check é container que o orquestrador monitora às cegas.
+O **health check** é a forma como o container informa se está pronto para receber tráfego. O orquestrador usa essa resposta para decidir se manda requisições para a instância e se precisa reiniciá-la. Sem health check, o orquestrador continua enviando tráfego para um processo que já parou de responder.
 
-## Limites de Recursos
+## Limites de CPU e memória
 
-Todo container em produção declara limites de **CPU** (Central Processing Unit · Unidade Central de Processamento) e memória. Sem limites, um serviço com leak de memória consome os recursos do host inteiro.
+Todo container em produção declara quanto de **CPU** (Central Processing Unit · Unidade Central de Processamento) e de memória pode consumir. Sem esse limite, um serviço com vazamento de memória vai tomando a memória do host até que os outros containers da mesma máquina parem de funcionar.
 
 | Configuração | Efeito |
 |---|---|
@@ -65,19 +65,19 @@ Todo container em produção declara limites de **CPU** (Central Processing Unit
 | Limite conservador com monitoramento | OOMKilled sinaliza o problema real |
 | CPU sem limite | **Starvation** (privação de recursos) de outros serviços no mesmo host |
 
-**OOMKilled** (Out Of Memory Killed · Processo encerrado por falta de memória) é um sinal a investigar. Restart automático silencioso mascara o problema e adia o diagnóstico.
+O **OOMKilled** (Out Of Memory Killed · Processo encerrado por falta de memória) aponta um problema real na aplicação. Quando o orquestrador reinicia o container em silêncio e ninguém olha o sinal, o vazamento de memória continua lá, e a investigação só começa quando o incidente fica grande demais para ignorar.
 
 ## Observabilidade
 
-Logs em disco local não funcionam em cloud: containers são efêmeros, instâncias sobem e descem, o disco desaparece com o container.
+O container é descartável: ele sobe, roda, morre, e o disco dele morre junto. Um log escrito em arquivo local desaparece junto com a instância, no exato momento em que alguém precisaria dele para entender por que ela caiu.
 
-Toda saída de log vai para um **sink** (destino centralizado de logs) como CloudWatch, Datadog, GCP Logging ou Azure Monitor. O padrão é stdout/stderr: o orquestrador captura e encaminha. Nenhum serviço escreve log em arquivo local em produção.
+Escreva o log em stdout e stderr. O orquestrador captura essa saída e encaminha para um **sink** (destino centralizado de logs) como CloudWatch, Datadog, GCP Logging ou Azure Monitor, onde ele sobrevive à instância e pode ser pesquisado.
 
 Ver [Observabilidade](../standards/observability.md) para estrutura de logs, níveis e correlation ID.
 
 ## Ambientes
 
-O mesmo artefato é promovido de ambiente em ambiente, sem rebuild. Cada ambiente serve um propósito:
+O mesmo artefato avança de um ambiente para o outro, sem passar por uma nova build. Cada ambiente responde a uma pergunta:
 
 ```
 artefato → dev → qa → staging → prod
@@ -90,4 +90,4 @@ artefato → dev → qa → staging → prod
 | **Staging** | Espelho de prod: última barreira antes da entrega real |
 | **Prod** | Entrega final: observabilidade ativa nos primeiros minutos após deploy |
 
-Staging deve espelhar prod em OS, runtime e formato de configuração. Divergência entre staging e prod cria uma classe de bugs que só aparecem em produção.
+Staging só cumpre o papel dele quando reproduz produção no sistema operacional, na versão do runtime e no formato da configuração. Cada divergência entre os dois cria uma categoria de defeito que passa por staging sem aparecer e só se manifesta em produção.

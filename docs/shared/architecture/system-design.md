@@ -1,8 +1,8 @@
-# System Design
+# Desenho de sistema
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-System Design é o raciocínio feito **antes** de qualquer linha de código. Define o que o sistema precisa fazer, em que condições precisa funcionar e quais trade-offs (trocas) são aceitáveis. Implementação sem esse raciocínio vira retrabalho quando o primeiro gargalo aparece.
+O **system design** (desenho de sistema) é o raciocínio feito **antes** de qualquer linha de código. Ele define o que o sistema precisa fazer, em que condições precisa funcionar e quais **trade-offs** (trocas: ganhar em um atributo custa perder em outro) são aceitáveis. Implementar sem esse raciocínio gera retrabalho assim que o primeiro gargalo aparece.
 
 ## Conceitos fundamentais
 
@@ -18,27 +18,27 @@ System Design é o raciocínio feito **antes** de qualquer linha de código. Def
 | **Bounded context** (contexto delimitado) | Limite onde um modelo de domínio é válido e consistente |
 | **Capacity planning** (planejamento de capacidade) | Estimativa de recursos necessários para atender a demanda prevista |
 
-## O papel do System Design
+## O papel do desenho de sistema
 
-System Design não descreve **como** o código é escrito. Descreve o sistema visto de fora:
+O desenho descreve o sistema visto de fora, deixando a escrita do código para depois:
 
 - Quais entidades existem e como se relacionam
 - Quais fluxos atravessam o sistema
 - Onde estão os limites entre partes independentes
 - Em que condições o sistema precisa continuar funcionando
 
-Quando essas perguntas ficam respondidas antes da implementação, o código tem critério de avaliação. Sem elas, cada decisão técnica vira opinião.
+Com essas perguntas respondidas antes da implementação, o código passa a ter critério de avaliação. Sem elas, cada decisão técnica vira opinião.
 
-## Requisitos funcionais vs não-funcionais
+## Requisitos funcionais e não-funcionais
 
-Todo sistema tem dois tipos de requisito que precisam ser explícitos.
+Todo sistema tem dois tipos de requisito, e ambos precisam estar explícitos.
 
 | Tipo | Pergunta central | Exemplos |
 |---|---|---|
 | **Funcional** | O que o sistema faz? | Cadastrar pedido, calcular frete, enviar notificação |
 | **Não-funcional** | Como o sistema se comporta? | Responder em menos de 200ms, manter 99.9% de disponibilidade, suportar 10k requisições por minuto |
 
-Requisitos funcionais vêm quase sempre do produto. Requisitos não-funcionais precisam ser perguntados:
+Os requisitos funcionais quase sempre chegam prontos do produto. Os não-funcionais precisam ser perguntados:
 
 - Qual a latência aceitável para cada operação?
 - Qual o volume esperado em pico?
@@ -46,7 +46,7 @@ Requisitos funcionais vêm quase sempre do produto. Requisitos não-funcionais p
 - Qual o impacto de perder dados?
 - Qual orçamento de infraestrutura está disponível?
 
-Sem essas respostas, o design assume valores arbitrários e descobre tarde que não são os corretos.
+Sem essas respostas, o desenho assume valores arbitrários e descobre tarde demais que eles estavam errados.
 
 ## Processo de decomposição
 
@@ -66,11 +66,11 @@ Entidades → Fluxos → Limites → Contratos → Componentes
 
 **Componentes**: a tradução dos blocos anteriores em partes implantáveis. Só nessa etapa aparecem decisões de linguagem, banco e infraestrutura.
 
-Pular etapas cria sistemas onde a implementação não reflete o domínio. Seguir a ordem mantém a linguagem do negócio visível na arquitetura.
+Pular etapas produz sistemas cuja implementação não reflete o domínio. Seguir a ordem mantém a linguagem do negócio visível na arquitetura.
 
 ## Trade-offs essenciais
 
-Sistema real tem restrições. Não existe solução que otimiza tudo ao mesmo tempo. Os trade-offs mais comuns:
+Sistema real tem restrições, e nenhuma solução otimiza todos os atributos ao mesmo tempo. Os trade-offs mais comuns:
 
 | Eixo | Lado A | Lado B | Como escolher |
 |---|---|---|---|
@@ -80,11 +80,11 @@ Sistema real tem restrições. Não existe solução que otimiza tudo ao mesmo t
 | **Custo vs Performance** | Infra barata, tuning posterior | Infra provisionada para pico | Validar o problema antes de pagar por capacidade ociosa |
 | **Consistência forte vs Performance** | Leitura vê última escrita | Leitura desnormalizada mais rápida | Write model para consistência, read model para performance (ver `CQRS` em `patterns.md`) |
 
-O trabalho de design é escolher conscientemente, não evitar a escolha. Evitar a escolha leva ao default da ferramenta, que pode não ser o default do problema.
+O trabalho de desenho é fazer a escolha de forma consciente. Quem foge da escolha acaba herdando o default da ferramenta, que raramente é o default do problema.
 
-## Quando System Design começa e termina
+## Quando o desenho começa e termina
 
-**Começa**: assim que o problema é conhecido. Antes de escolher framework, banco ou linguagem.
+**Começa**: assim que o problema é conhecido, antes de escolher framework, banco ou linguagem.
 
 **Termina**: quando existem respostas para as quatro perguntas:
 
@@ -93,7 +93,7 @@ O trabalho de design é escolher conscientemente, não evitar a escolha. Evitar 
 3. Quais trade-offs foram aceitos conscientemente?
 4. Quais limites e contratos organizam os componentes?
 
-Respondidas essas perguntas, o próximo passo é `patterns.md` (padrões táticos), `architecture.md` (organização de código) e `scaling.md` (técnicas de escala). Aprofundamento em `SLA`, `CAP`, modelos de consistência e capacity planning fica em `system-design-advanced.md`.
+Respondidas essas perguntas, o próximo passo é `patterns.md` (padrões táticos), `architecture.md` (organização de código) e `scaling.md` (técnicas de escala). O aprofundamento em `SLA`, `CAP`, modelos de consistência e capacity planning fica em `system-design-advanced.md`.
 
 ## Cross-links
 

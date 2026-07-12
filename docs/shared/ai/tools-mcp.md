@@ -1,8 +1,8 @@
-# Tool Use e MCP (Uso de Ferramentas e Protocolo de Contexto de Modelo)
+# Tool use e MCP: dar ao modelo acesso ao mundo externo
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferramentas) é o mecanismo que permite ao modelo invocar funções externas, como buscar dados em uma **API** (Application Programming Interface · Interface de Programação de Aplicações), ler um arquivo ou executar código. O **MCP** (Model Context Protocol · Protocolo de Contexto de Modelo) é o padrão aberto que padroniza como ferramentas e recursos são expostos a modelos de IA.
+Sozinho, um modelo de linguagem só produz texto. **Tool use** (uso de ferramentas) é o mecanismo que dá a ele a opção de chamar funções externas: consultar uma **API** (Application Programming Interface · Interface de Programação de Aplicações), ler um arquivo, executar código. O **MCP** (Model Context Protocol · Protocolo de Contexto de Modelo) resolve o problema seguinte: em vez de cada aplicação inventar seu jeito de expor ferramentas ao modelo, todas falam o mesmo protocolo aberto.
 
 ## Conceitos fundamentais
 
@@ -19,15 +19,15 @@ Modelos de linguagem, sozinhos, só produzem texto. **Tool use** (uso de ferrame
 | **Host** (hospedeiro) | Aplicação que instancia o MCP Client e gerencia a conversa (ex: Claude Code, Cursor) |
 | **Transport** (transporte) | Canal de comunicação entre cliente e servidor: `stdio` (local) ou Streamable HTTP (remoto) |
 
-## Tool Use (Uso de ferramentas)
+## Tool use: o modelo pede, o harness executa
 
-O modelo não executa ferramentas diretamente. O ciclo é:
+Quem executa a ferramenta é o seu código. O modelo só escreve um pedido de chamada, e o **harness** (o programa que hospeda o modelo) cumpre esse pedido e devolve o resultado:
 
 ```
 Modelo decide → Retorna tool_call com argumentos → Harness executa a função → Devolve tool_result → Modelo continua gerando
 ```
 
-O modelo recebe o schema das ferramentas disponíveis junto com o prompt. A partir daí, decide se e quando invocá-las com base no objetivo.
+Junto com o prompt, o modelo recebe o schema de cada ferramenta disponível. Com isso em mãos, ele decide se chama alguma e com quais argumentos.
 
 **Exemplo de schema em JSON** (JavaScript Object Notation · Notação de Objetos JavaScript):
 
@@ -51,19 +51,19 @@ O modelo recebe o schema das ferramentas disponíveis junto com o prompt. A part
 **Boas práticas no design de ferramentas:**
 
 - Nomes descritivos em snake_case; o modelo usa o nome para decidir quando invocar
-- Descrições precisas: o modelo não lê código, só a descrição
+- Descrição precisa: o modelo escolhe a ferramenta lendo a descrição, e o corpo da função fica invisível para ele
 - Parâmetros com nomes de domínio (não tipos técnicos)
 - Uma responsabilidade por ferramenta (princípio da responsabilidade única)
 
-**Parallel tool calls** permite que o modelo invoque múltiplas ferramentas no mesmo turno quando as chamadas são independentes. Reduz o número de chamadas de ida e volta e a latência total.
+**Parallel tool calls** deixa o modelo pedir várias ferramentas no mesmo turno, quando uma chamada não depende do resultado da outra. As três chamadas abaixo rodam ao mesmo tempo, e o modelo espera uma volta só em vez de três:
 
 ```
 Modelo → [fetch_weather("SP") | fetch_weather("RJ") | fetch_weather("BH")] → 3 resultados → Gera resposta
 ```
 
-## MCP (Model Context Protocol)
+## MCP: um protocolo único para expor ferramentas
 
-O MCP foi criado pela Anthropic e publicado como padrão aberto em novembro de 2024 (spec atual: 2025-11-25). O objetivo é padronizar a integração entre modelos de IA e o ambiente externo, da mesma forma que o protocolo **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) padroniza a comunicação web.
+O MCP foi criado pela Anthropic e publicado como padrão aberto em novembro de 2024 (spec atual: 2025-11-25). Ele padroniza a conversa entre o modelo e o ambiente externo, do mesmo jeito que o **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) padronizou a conversa entre navegador e servidor. Um servidor MCP escrito uma vez serve qualquer host que fale o protocolo.
 
 ### Arquitetura
 
@@ -86,6 +86,8 @@ O **MCP Server** expõe três tipos de capacidades:
 | **stdio** | stdin/stdout do processo filho | MCP Server local (mesmo host) |
 | **Streamable HTTP** | HTTP com streaming; substituiu SSE em março de 2025 | MCP Server remoto (cloud, serviço separado) |
 
+O `stdio` roda o servidor como processo filho do host e conversa pela entrada e saída padrão, sem rede no meio. O Streamable HTTP atende o servidor que vive em outra máquina.
+
 ### Exemplo de configuração (Claude Code)
 
 ```json
@@ -103,11 +105,13 @@ O **MCP Server** expõe três tipos de capacidades:
 }
 ```
 
+Cada entrada de `mcpServers` é um processo que o host sobe com o comando declarado. O argumento final passa o escopo: a pasta que o servidor de filesystem pode ler, a URL do banco que o servidor de postgres pode consultar.
+
 ### Adoção
 
 O MCP é suportado por Claude Code, Cursor, VS Code Copilot, Zed, Windsurf e centenas de servidores públicos no registro oficial. Servidores populares cobrem: filesystem, banco de dados (PostgreSQL, SQLite), Git, GitHub, Slack, Notion, Browserbase e Docker.
 
-### MCP vs tool use direto
+### Quando usar MCP e quando bastam ferramentas próprias
 
 | Aspecto | Tool use direto | MCP |
 |---|---|---|
@@ -115,3 +119,5 @@ O MCP é suportado por Claude Code, Cursor, VS Code Copilot, Zed, Windsurf e cen
 | Reuso | Reimplementar por aplicação | Um servidor, múltiplos clientes |
 | Descoberta | Manual | Servidores autodescrevem capacidades |
 | Indicação | Ferramentas simples e específicas de um app | Ferramentas reutilizáveis entre múltiplos hosts |
+
+A pergunta que decide é quantos lugares vão usar a ferramenta. Uma função que só faz sentido dentro de um app se resolve com tool use direto. Uma ferramenta que vários hosts vão querer chamar compensa o servidor MCP.

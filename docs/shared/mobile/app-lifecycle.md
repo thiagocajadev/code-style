@@ -1,14 +1,10 @@
-# App Lifecycle (Ciclo de Vida do Aplicativo)
+# Ciclo de vida do aplicativo
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-O **lifecycle** (ciclo de vida) do aplicativo é o conjunto de estados pelos quais o app passa desde
-o lançamento até ser encerrado pelo sistema operacional. Diferente de uma aplicação web, onde o
-servidor controla sua própria disponibilidade, um app mobile pode ser pausado, removido da memória
-ou encerrado pelo SO a qualquer momento, sem aviso ao usuário.
+O **lifecycle** (ciclo de vida) é a sequência de estados pelos quais o app passa, do lançamento até o sistema operacional encerrá-lo. Um servidor web decide sozinho quando sobe e quando cai. Um app mobile pode ser pausado, tirado da memória ou encerrado pelo sistema a qualquer momento, e o usuário não recebe aviso nenhum disso.
 
-Entender o ciclo de vida é o pré-requisito para decidir onde salvar estado, quando cancelar
-operações e como garantir que o usuário retome o app exatamente de onde parou.
+Entender esses estados é o que permite decidir três coisas: onde salvar o estado, quando cancelar as operações em andamento e como devolver o usuário exatamente ao ponto onde ele parou.
 
 ## Conceitos fundamentais
 
@@ -25,14 +21,13 @@ operações e como garantir que o usuário retome o app exatamente de onde parou
 
 ## Estados e transições
 
-O ciclo de vida segue uma sequência previsível:
+O ciclo segue uma sequência previsível:
 
 ```
 Lançado → Created → Started → Resumed (Foreground) → Paused → Stopped (Background) → Destroyed
 ```
 
-A transição crítica é **Resumed → Paused**: é o momento exato em que o app perde o foco. Toda
-operação que consome recursos em excesso (câmera, GPS, animações) deve ser pausada aqui.
+A transição que mais importa é **Resumed → Paused**, o momento exato em que o app perde o foco. Tudo que consome recurso caro (câmera, GPS, animação em andamento) precisa parar aqui, porque a partir daí o app gasta bateria sem ninguém olhando para a tela.
 
 ```
 Foreground: Created → Started → Resumed  ← usuário interage aqui
@@ -40,46 +35,37 @@ Background: Paused → Stopped             ← app fora da tela
 Killed:     Destroyed                    ← SO liberou memória
 ```
 
-## Cold start vs warm start
+## Cold start e warm start
 
-**Cold start** acontece quando o processo não existe na memória. O SO cria o processo, carrega
-dependências e inicializa a tela inicial. É o caminho mais lento: qualquer operação bloqueante
-nessa fase aumenta o tempo percebido de abertura.
+O **cold start** acontece quando o processo do app não existe na memória. O sistema cria o processo, carrega as dependências e monta a primeira tela. É o caminho mais lento, e qualquer operação bloqueante nessa fase entra direto no tempo que o usuário espera olhando para a tela de abertura.
 
-**Warm start** acontece quando o app retorna do background com o processo ainda em memória. O SO
-restaura a última tela sem recriar o processo. É rápido, mas o estado volátil (variáveis em memória)
-pode ter sido limpo se o SO aplicou **process death**.
+O **warm start** acontece quando o app volta do background com o processo ainda vivo. O sistema restaura a última tela sem recriar nada, e a volta é rápida. O estado em memória pode ter sumido mesmo assim, caso o sistema tenha aplicado o **process death** enquanto o app estava fora da tela.
 
 ```
 Cold start: SO cria processo → init → tela inicial
 Warm start: SO restaura processo → estado recuperado → tela atual
 ```
 
-A distinção importa porque cold start penaliza o usuário que não abriu o app recentemente. Apps que
-fazem trabalho pesado na inicialização (rede, banco de dados) sem estratégia de cache percebem esse
-custo como telas em branco ou spinners desnecessários.
+A diferença aparece na percepção de quem usa. O cold start recai sobre quem abre o app depois de dias, e um app que faz trabalho pesado na inicialização (chamada de rede, leitura de banco) sem cache entrega essa espera na forma de tela branca ou spinner.
 
-## Process death e estado volátil
+## Process death e estado em memória
 
-O SO pode encerrar o processo de um app em background para liberar memória. O usuário não vê esse
-encerramento. Quando retorna ao app, espera encontrar o estado anterior.
+O sistema encerra o processo de um app em background para liberar memória para o app que está na frente. O usuário não vê nada acontecer. Ele volta ao app e espera encontrar tudo como deixou.
 
-Estado **volátil** é tudo que vive apenas na memória: variáveis, objetos instanciados, resultados
-de network não persistidos. Ao retornar de um process death, esse estado é perdido.
+O estado **volátil** é tudo que vive apenas na memória: variáveis, objetos instanciados, o resultado da chamada de rede que ninguém gravou. Esse estado some junto com o processo.
 
-A solução é separar o estado em camadas:
+A saída é separar o estado em camadas:
 
 | Camada | Onde vive | Sobrevive ao process death? |
 |---|---|---|
-| UI state efêmero | Memória | Não |
+| UI state em memória | Memória | Não |
 | UI state salvo | Mecanismo de salvamento do SO | Sim |
 | Domain state | Banco de dados local | Sim |
 | Dados remotos | Servidor + cache local | Sim (se cacheado) |
 
-A regra é: qualquer estado que o usuário perceberia como perdido deve ser persistido antes de
-**Paused**, não depois.
+A regra prática: todo estado cuja perda o usuário notaria precisa estar gravado antes de o app chegar em **Paused**. Depois disso, o sistema pode encerrar o processo sem avisar, e não há mais onde rodar código de salvamento.
 
-## Impacto em UX
+## O que o usuário sente
 
 | Situação | Comportamento esperado |
 |---|---|
@@ -88,5 +74,4 @@ A regra é: qualquer estado que o usuário perceberia como perdido deve ser pers
 | Usuário reabre app após 2 dias | Cold start; estado persistido carregado do banco local |
 | SO encerra app por memória | Processo morto; próxima abertura é cold start |
 
-A falha mais comum é assumir que o app sempre esteve vivo. Um formulário parcialmente preenchido que
-desaparece ao retornar de uma chamada é uma violação direta do contrato de lifecycle.
+A falha mais comum é o código assumir que o app ficou vivo o tempo todo. O formulário meio preenchido que se apaga quando o usuário volta de uma ligação é esse erro chegando na tela.

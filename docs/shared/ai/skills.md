@@ -1,8 +1,8 @@
-# Skills (Habilidades de Agentes)
+# Skills: empacotar um comportamento que o agente sabe executar
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Uma **skill** é uma habilidade empacotada que um agente pode invocar. Diferente de uma ferramenta (que executa uma função), uma skill encapsula um comportamento completo: instrução de como raciocinar, quais ferramentas usar e qual formato de saída produzir. Skills são os "módulos" de um agente.
+Uma **skill** (habilidade) é um comportamento completo, empacotado para o agente invocar quando precisar. Ela guarda três coisas juntas: como raciocinar sobre a tarefa, quais ferramentas usar e em que formato entregar a resposta. Uma **tool** (ferramenta) executa uma função e devolve o resultado; a skill orquestra o trabalho em volta dela. As skills funcionam como os módulos de um agente.
 
 ## Conceitos fundamentais
 
@@ -17,9 +17,9 @@ Uma **skill** é uma habilidade empacotada que um agente pode invocar. Diferente
 | **Agent persona** (persona do agente) | Papel e restrições de comportamento definidos no system prompt da skill |
 | **Token gate** (portão de tokens) | Estratégia que carrega skills apenas quando ativadas, evitando contexto desnecessário |
 
-## Skill vs Tool
+## O que separa uma skill de uma tool
 
-Skills e tools são complementares, não equivalentes.
+As duas trabalham juntas em níveis diferentes. A tool é a peça atômica; a skill é o comportamento que usa as peças.
 
 | Aspecto | Tool | Skill |
 |---|---|---|
@@ -29,11 +29,11 @@ Skills e tools são complementares, não equivalentes.
 | Reutilização | Por chamada de API | Por harness em múltiplos contextos |
 | Exemplo | `search_web(query)` | Skill de pesquisa: reescreve query → busca → resume → formata |
 
-Uma skill pode usar várias tools. Uma tool não usa skills.
+A relação tem um sentido só: uma skill usa várias tools, e uma tool nunca invoca uma skill.
 
-## Anatomia de uma skill
+## As quatro partes de uma skill
 
-Uma skill bem definida tem quatro componentes:
+Uma skill bem definida declara quatro coisas:
 
 ```
 [Gatilho]     Condição que ativa a skill (prefixo, intenção, contexto)
@@ -63,9 +63,11 @@ Não reescreva o código sem pedido explícito.
 Lista por categoria. Máximo 3 pontos por categoria.
 ```
 
-## Skill routing (Roteamento)
+Repare que a seção "Quando usar" é o gatilho: é ela que o roteador lê para decidir se esta skill entra.
 
-O harness precisa saber qual skill invocar para cada entrada. Há três abordagens:
+## Roteamento: escolher qual skill atende a entrada
+
+O **harness** (o programa que hospeda o agente e executa suas chamadas) precisa decidir qual skill invocar a cada entrada. Há três caminhos:
 
 ```
 Prefixo explícito:  "review: [código]" → skill de revisão
@@ -73,11 +75,11 @@ Semântico:          LLM classifica a intenção → seleciona skill pelo score 
 Híbrido:            Prefixo tem prioridade; fallback para semântico se não houver prefixo
 ```
 
-O **prefixo explícito** é determinístico e barato: zero tokens de classificação. O **roteamento semântico** é mais flexível, mas adiciona uma chamada ao modelo (ou a um classificador menor). Para sistemas com poucos domínios, prefixo explícito é a escolha certa.
+O **prefixo explícito** dá sempre o mesmo resultado e custa zero token de classificação, porque a decisão é uma comparação de texto. O **roteamento semântico** aceita o pedido em linguagem natural e cobra uma chamada extra ao modelo (ou a um classificador menor) para descobrir a intenção. Com poucos domínios, o prefixo resolve.
 
-## Skill loading (Carregamento)
+## Carregamento: trazer a skill só quando ela é acionada
 
-Carregar todas as skills no contexto desde o início desperdiça tokens e polui o raciocínio do modelo. A estratégia correta é o **token gate**: cada skill é carregada apenas quando seu gatilho é ativado.
+Carregue cada skill no momento em que o gatilho dela dispara. Colocar todas no contexto desde o início gasta tokens em instrução que a tarefa atual não vai usar, e ainda mistura no raciocínio do modelo regras de domínios que não têm nada a ver com o pedido. Essa estratégia se chama **token gate** (portão de tokens).
 
 ```
 Entrada do usuário → Roteador identifica domínio → Carrega skill N → Executa → Descarta skill N
@@ -88,9 +90,9 @@ Benefícios do carregamento sob demanda:
 - Menor risco de conflito entre instruções de skills diferentes
 - Contexto do modelo focado no domínio da tarefa atual
 
-## Composição de skills
+## Composição: uma skill que aciona outras
 
-Skills podem se compor: uma skill de alto nível invoca sub-skills especializadas.
+Skills se compõem. Uma skill de alto nível chama sub-skills especializadas e junta o que elas devolvem.
 
 ```
 Skill: Análise de PR
@@ -99,7 +101,7 @@ Skill: Análise de PR
   └─ Sub-skill: Revisão de docs (changelog, README)
 ```
 
-Em harnesses multi-agente, cada skill pode ser executada por um agente especializado em paralelo. O orquestrador agrega os resultados e produz o output final.
+Em harness multi-agente, cada sub-skill roda em um agente próprio, e os três podem rodar ao mesmo tempo. O **orquestrador** (o agente que coordena os demais) espera as três respostas e monta a saída final.
 
 ## Exemplos de skills por domínio
 
@@ -114,10 +116,10 @@ Em harnesses multi-agente, cada skill pode ser executada por um agente especiali
 
 ## Boas práticas
 
-**Uma skill por domínio.** Skills que cobrem múltiplos domínios produzem raciocínio genérico. Uma skill de "análise geral" é menos útil que uma skill de "revisão de segurança".
+**Uma skill por domínio.** Skill que cobre vários domínios de uma vez produz raciocínio genérico. Uma skill de "revisão de segurança" rende mais que uma de "análise geral", porque as instruções dela podem ser específicas.
 
-**Instrução operacional, não descritiva.** A instrução diz o que fazer, não o que a skill é. "Identifique os 3 principais riscos de segurança" funciona melhor que "Você é um especialista em segurança".
+**Escreva a instrução como ordem de trabalho.** "Identifique os 3 principais riscos de segurança" diz ao modelo o que produzir. "Você é um especialista em segurança" descreve um papel e deixa a tarefa em aberto.
 
-**Formato de saída explícito.** Sem formato definido, o output varia entre chamadas. Especificar estrutura, como tabela, lista numerada ou **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), garante saída processável por código.
+**Declare o formato de saída.** Sem formato definido, o output muda de uma chamada para outra. Especificar a estrutura, como tabela, lista numerada ou **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), mantém a saída processável por código.
 
-**Versionar skills como código.** Skills em produção devem ter controle de versão, testes de output e processo de deploy: os mesmos critérios de qualquer artefato de software.
+**Versione a skill como código.** Skill em produção merece controle de versão, teste de saída e processo de deploy, pelos mesmos motivos que qualquer outro artefato de software.

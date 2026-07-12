@@ -1,10 +1,8 @@
-# Observability
+# Observabilidade
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Observabilidade é a capacidade de entender o estado interno do sistema a partir de seus **outputs** (saídas).
-Logging estruturado, níveis consistentes, proteção de dados sensíveis e rastreamento de requisição
-são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
+Observabilidade é a capacidade de entender o estado interno do sistema a partir das suas **outputs** (saídas). A principal dessas saídas é o **log** (registro de um evento que o sistema emitiu enquanto rodava: uma requisição atendida, um erro, uma query lenta). Quatro práticas sustentam a observabilidade em qualquer linguagem ou plataforma: emitir o log de forma estruturada, usar níveis consistentes, proteger dados sensíveis e rastrear cada requisição de ponta a ponta.
 
 ## Conceitos fundamentais
 
@@ -18,8 +16,7 @@ são as quatro alavancas fundamentais, independente de linguagem ou plataforma.
 
 ## Logging estruturado
 
-Logs como strings são invisíveis para ferramentas de observabilidade. Logs como objetos com
-campos nomeados permitem busca por campo, correlação e alertas automatizados.
+Uma ferramenta de observabilidade não consegue pesquisar dentro de um log escrito como texto corrido. Emitir o log como objeto com campos nomeados permite busca por campo, correlação entre eventos e alerta automatizado.
 
 | Anti-pattern | Problema | Ação |
 | --- | --- | --- |
@@ -29,7 +26,7 @@ campos nomeados permitem busca por campo, correlação e alertas automatizados.
 
 ## Níveis de log
 
-Cada nível tem um contrato claro. Usar o nível errado polui o output e esconde sinais reais.
+Cada nível tem um contrato definido. Usar o nível errado enche a saída de ruído e esconde os sinais que importam.
 
 | Nível | Quando usar | Exemplo |
 | --- | --- | --- |
@@ -40,8 +37,7 @@ Cada nível tem um contrato claro. Usar o nível errado polui o output e esconde
 
 ## O que nunca logar
 
-Logs são persistidos, indexados e acessíveis por múltiplos sistemas. Um dado sensível em log é um
-vazamento permanente, mesmo que o log seja deletado depois.
+Logs são persistidos, indexados e lidos por vários sistemas. Um dado sensível que entra no log vaza de forma permanente, mesmo que o log seja apagado depois.
 
 | Nunca logar | Logar no lugar |
 | --- | --- |
@@ -50,13 +46,13 @@ vazamento permanente, mesmo que o log seja deletado depois.
 | Número de cartão, CVV | Payment ID + last4 |
 | Stack trace com dados de usuário | Stack trace sanitizado |
 
-## Correlation ID
+<a id="correlation-id"></a>
 
-Uma requisição atravessa múltiplos serviços e gera dezenas de log entries. Sem um identificador
-comum, rastrear uma transação de ponta a ponta é inviável.
+## ID de correlação
 
-O correlation ID entra pelo header (cabeçalho) `X-Correlation-Id`; se ausente, é gerado na borda. Todo log
-entry da requisição carrega esse ID. A resposta retorna o header ao cliente.
+Uma requisição atravessa vários serviços e gera dezenas de entradas de log. Um identificador comum a todas elas é o que torna possível rastrear a transação de ponta a ponta.
+
+O correlation ID chega pelo header (cabeçalho) `X-Correlation-Id` e, quando ausente, é gerado na borda. Toda entrada de log da requisição carrega esse ID, e a resposta devolve o header ao cliente.
 
 ```
 Request → middleware extrai ou gera correlationId → propaga para todos os log entries → response retorna X-Correlation-Id

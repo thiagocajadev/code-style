@@ -1,8 +1,10 @@
-# ETL e BI
+# ETL e BI: levar o dado operacional para a análise
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**ETL** (Extract, Transform, Load, Extração, Transformação e Carga) e **BI** (Business Intelligence · Inteligência de Negócios) formam a camada analítica de um sistema: movem dados operacionais para um ambiente otimizado para leitura e análise. O banco transacional **OLTP** (Online Transaction Processing · Processamento de Transações Online) é projetado para escrita rápida e consistência. O banco analítico **OLAP** (Online Analytical Processing · Processamento Analítico Online) é projetado para queries agregadas em grandes volumes históricos. Rodar análises pesadas diretamente no OLTP compromete a latência do sistema operacional.
+Rodar um relatório pesado no banco que atende os usuários deixa o sistema lento para todo mundo. A camada analítica existe para evitar isso: ela copia os dados operacionais para um ambiente montado para leitura, e a análise passa a rodar longe do caminho crítico.
+
+**ETL** (Extract, Transform, Load · Extração, Transformação e Carga) é o processo que move esses dados. **BI** (Business Intelligence · Inteligência de Negócios) é o que o time de negócio faz com eles depois: dashboards, relatórios e perguntas soltas. O banco transacional **OLTP** (Online Transaction Processing · Processamento de Transações Online) é montado para escrever rápido e manter a consistência. O banco analítico **OLAP** (Online Analytical Processing · Processamento Analítico Online) é montado para varrer milhões de linhas e devolver um total.
 
 ## Conceitos fundamentais
 
@@ -10,8 +12,8 @@
 |---|---|
 | **OLTP** (Online Transaction Processing · Processamento de Transações Online) | Banco operacional: muitas escritas pequenas, schema normalizado, otimizado para consistência |
 | **OLAP** (Online Analytical Processing · Processamento Analítico Online) | Banco analítico: poucas queries grandes, schema denormalizado, otimizado para leitura |
-| **ETL** (Extract, Transform, Load, Extração, Transformação e Carga) | Pipeline que extrai dados da fonte, transforma e carrega no destino |
-| **ELT** (Extract, Load, Transform, Extração, Carga e Transformação) | Variante moderna: carrega dados brutos no destino e transforma com SQL dentro do warehouse |
+| **ETL** (Extract, Transform, Load · Extração, Transformação e Carga) | Pipeline que extrai dados da fonte, transforma e carrega no destino |
+| **ELT** (Extract, Load, Transform · Extração, Carga e Transformação) | Variante moderna: carrega dados brutos no destino e transforma com SQL dentro do warehouse |
 | **Data Warehouse** (armazém de dados) | Banco analítico central que consolida dados de múltiplas fontes com schema definido |
 | **Data Mart** (recorte do warehouse por domínio) | Subconjunto do Data Warehouse focado em um domínio: financeiro, vendas, operações |
 | **Data Lake** (lago de dados) | Repositório de dados brutos em formato original (JSON, CSV, Parquet), sem schema rígido |
@@ -27,9 +29,9 @@
 
 ---
 
-## OLTP vs OLAP
+## O banco que registra e o banco que responde perguntas
 
-A separação existe porque os dois têm requisitos opostos: otimizar para escrita prejudica leitura analítica, e vice-versa.
+Os dois bancos existem separados porque as otimizações se anulam. O schema normalizado que evita redundância na escrita obriga a query analítica a montar dezenas de JOINs. A redundância que deixa a leitura rápida encarece cada escrita. Cada lado escolhe um extremo.
 
 | Característica | OLTP | OLAP |
 |---|---|---|
@@ -42,9 +44,9 @@ A separação existe porque os dois têm requisitos opostos: otimizar para escri
 
 ---
 
-## Pipeline de dados
+## As camadas do pipeline
 
-O pipeline move dados da fonte ao consumidor em camadas com responsabilidade clara.
+O pipeline leva o dado da fonte até o dashboard passando por camadas, e cada uma tem uma responsabilidade só.
 
 `Fonte → Staging → Transform → Data Warehouse → Data Marts → BI`
 
@@ -57,13 +59,13 @@ O pipeline move dados da fonte ao consumidor em camadas com responsabilidade cla
 | **Data Marts** | Subconjuntos por domínio, otimizados para as queries do time de negócio |
 | **BI** | Dashboards, relatórios e exploração ad-hoc; consome Data Marts ou DW diretamente |
 
-A camada de **Staging** é o ponto de recuperação do pipeline: se a transformação falhar, os dados brutos estão intactos e o pipeline reexecuta sem re-extrair da fonte.
+A camada de **Staging** é o ponto de recuperação do pipeline. Quando a transformação quebra, os dados brutos continuam lá, e a reexecução parte deles sem precisar bater na fonte de novo. Isso importa quando a fonte é uma API com teto de chamadas, ou um banco de produção que já está no limite.
 
 ---
 
-## Extração
+## Extrair da fonte
 
-Três estratégias com trade-offs de volume, latência e complexidade.
+Três estratégias, com custos diferentes de volume, atraso e complexidade.
 
 | Estratégia | Como funciona | Quando usar |
 |---|---|---|
@@ -72,6 +74,8 @@ Três estratégias com trade-offs de volume, latência e complexidade.
 | **CDC** (Change Data Capture) | Lê o log de transações do banco, captura INSERT, UPDATE e DELETE | Alta frequência de mudanças, ou quando deletes precisam ser rastreados |
 
 ### Extração incremental com watermark
+
+O **watermark** é o carimbo do ponto até onde a última execução chegou. A próxima execução pede só o que mudou depois dele, e o volume extraído deixa de crescer junto com a tabela.
 
 ```sql
 -- extrair registros modificados após o último watermark
@@ -91,13 +95,13 @@ ORDER BY
 -- ao final do job: persistir o maior UpdatedAt processado como novo watermark
 ```
 
-**Limitação do incremental**: registros deletados no OLTP não aparecem na extração. CDC ou soft delete com `DeletedAt` resolvem esse ponto cego.
+O incremental tem um ponto cego: a linha apagada no OLTP some da tabela e nunca aparece na extração, então ela continua viva no warehouse para sempre. Duas saídas resolvem. O **CDC** lê o log de transações e enxerga o DELETE. O soft delete marca a linha com `DeletedAt` em vez de removê-la, e aí o `UpdatedAt` muda e a extração incremental a captura.
 
 ---
 
-## ETL vs ELT
+## Onde a transformação acontece
 
-A diferença está em onde a transformação acontece.
+A diferença entre **ETL** e **ELT** está no momento em que o dado é transformado. No ETL, uma ferramenta externa limpa e calcula antes de gravar no warehouse. No ELT, o dado bruto entra primeiro, e a transformação roda dentro do próprio warehouse com SQL.
 
 | Aspecto | ETL | ELT |
 |---|---|---|
@@ -106,27 +110,27 @@ A diferença está em onde a transformação acontece.
 | Quando usar | Dados sensíveis que não podem entrar brutos no DW; transformações que SQL não expressa bem | Warehouse com poder computacional suficiente; equipe com SQL forte |
 | Ferramentas comuns | Apache Spark, SSIS, Talend, Airflow com Python | dbt, Dataform, SQL nativo do warehouse |
 
-**ELT é o padrão moderno** para warehouses como BigQuery, Snowflake e Redshift: armazenamento barato, **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) nativo poderoso e transformações versionáveis com dbt. ETL continua a escolha certa quando os dados brutos não podem sair da rede interna ou quando a transformação exige lógica que SQL não expressa.
+O ELT virou o padrão nos warehouses modernos como BigQuery, Snowflake e Redshift, por três motivos: o armazenamento ficou barato, o **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) desses bancos dá conta da transformação, e a lógica escrita em SQL entra no controle de versão com dbt. O ETL segue sendo a escolha certa em dois casos: quando o dado bruto não pode sair da rede interna, e quando a transformação exige uma lógica que SQL expressa mal.
 
 ---
 
 ## Modelagem dimensional
 
-O modelo dimensional organiza dados para responder perguntas de negócio com queries diretas. A **Fact table** armazena métricas (o que aconteceu e quanto); as **Dimension tables** armazenam contexto (quem, onde, quando).
+O modelo dimensional organiza as tabelas para que uma pergunta de negócio vire uma query curta. A **Fact table** guarda o que aconteceu e quanto (o gol, o valor da venda). As **Dimension tables** guardam o contexto ao redor: quem, onde e quando.
 
-### Grain
+### Grain: o que cada linha da fact table representa
 
-O **grain** define o que cada linha da fact table representa. Declarar antes de modelar:
+Declare o **grain** antes de criar a tabela, em uma frase:
 
 - "Uma linha por gol marcado" (grain = evento)
 - "Uma linha por partida por time" (grain = partida + time)
 - "Uma linha por dia por jogador" (grain = dia + jogador)
 
-Misturar grains na mesma fact table gera resultados incorretos em agregações.
+Misturar dois grains na mesma fact table corrompe as agregações. Se metade das linhas é um gol e a outra metade é um resumo diário, o `SUM` conta os mesmos gols duas vezes, e ninguém percebe olhando o número.
 
-### Star schema
+### Star schema: dimensões planas ao redor do fato
 
-Dimensões planas ao redor da fact table. Queries analíticas fazem poucos JOINs. Preferido para performance.
+As dimensões ficam ao lado da fact table, cada uma a um JOIN de distância. A query analítica toca poucas tabelas, o que a deixa rápida. É o formato preferido.
 
 `DimDate + DimPlayer + DimTeam + DimStadium → FactGoal`
 
@@ -162,21 +166,25 @@ CREATE TABLE DimPlayer
 );
 ```
 
-### Snowflake schema
+A **surrogate key** (`PlayerKey`) é um número sequencial que só existe no warehouse. A **natural key** (`PlayerId`) é o identificador que veio do OLTP. As duas convivem porque o mesmo jogador pode ter várias linhas no warehouse, uma por versão histórica, e cada versão precisa de uma chave própria.
 
-Dimensões normalizadas: `DimTeam` referencia `DimLeague`, que referencia `DimCountry`. Reduz redundância, mas cada query adicional requer mais JOINs. Usar quando o custo de armazenamento for relevante ou quando as dimensões secundárias precisarem ser consultadas de forma independente.
+### Snowflake schema: dimensões normalizadas
+
+As dimensões se dividem em outras dimensões: `DimTeam` aponta para `DimLeague`, que aponta para `DimCountry`. A redundância cai, e cada query passa a precisar de mais JOINs. Vale a pena quando o armazenamento pesa no custo, ou quando as dimensões secundárias são consultadas por conta própria.
 
 ---
 
-## SCD: Slowly Changing Dimensions
+## Quando o atributo da dimensão muda com o tempo
 
-Atributos de dimensão mudam ao longo do tempo. O tipo de SCD define como registrar esse histórico.
+O jogador troca de time, o produto muda de preço, o cliente muda de cidade. O tipo de **SCD** define o que acontece com o histórico nesse momento.
 
 | Tipo | Estratégia | Preserva histórico | Quando usar |
 |---|---|---|---|
 | **Tipo 1** | Sobrescreve o valor atual | Não | Correções de erro; valor anterior não tem relevância analítica |
 | **Tipo 2** | Nova linha com período de vigência | Sim (completo) | Mudanças com impacto analítico: transferência de time, promoção, mudança de preço |
 | **Tipo 3** | Coluna `PreviousValue` | Parcial (um passo) | Quando só a última mudança interessa e o schema simples é prioritário |
+
+A escolha errada apaga informação que ninguém consegue recuperar depois. Se o time do jogador é Tipo 1, a transferência sobrescreve o passado, e os gols que ele fez pelo clube anterior passam a aparecer no clube novo.
 
 ### SCD Tipo 2
 
@@ -196,15 +204,15 @@ CREATE TABLE DimPlayer
 );
 ```
 
-Quando um jogador muda de time, o registro atual recebe `ValidUntil = hoje` e `IsCurrent = 0`. Uma nova linha é inserida com o novo time e `IsCurrent = 1`. Queries históricas filtram com `ValidFrom <= @Date AND (ValidUntil > @Date OR ValidUntil IS NULL)`.
+Na transferência, a linha vigente recebe `ValidUntil = hoje` e `IsCurrent = 0`, e uma linha nova entra com o time novo e `IsCurrent = 1`. A query histórica escolhe a versão certa filtrando por `ValidFrom <= @Date AND (ValidUntil > @Date OR ValidUntil IS NULL)`.
 
 ---
 
-## BI e Relatórios
+## BI e relatórios
 
-Ferramentas de BI (Power BI, Tableau, Metabase, Looker) conectam ao Data Warehouse ou aos Data Marts e geram SQL em tempo real ou sobre dados em cache.
+As ferramentas de BI (Power BI, Tableau, Metabase, Looker) se conectam ao Data Warehouse ou aos Data Marts. Elas geram SQL na hora em que o usuário clica, ou leem de um cache que já foi preenchido antes.
 
-### Queries analíticas vs operacionais
+### A query analítica pergunta outra coisa
 
 | Característica | Query operacional (OLTP) | Query analítica (OLAP) |
 |---|---|---|
@@ -215,13 +223,13 @@ Ferramentas de BI (Power BI, Tableau, Metabase, Looker) conectam ao Data Warehou
 
 ### Definição centralizada de métricas
 
-Quando cada dashboard calcula o mesmo `SUM` de um jeito ligeiramente diferente, os relatórios divergem. A solução é definir a métrica uma vez e reusar em todos os contextos.
+Quando cada dashboard calcula o mesmo `SUM` com um filtro ligeiramente diferente, os relatórios chegam a números diferentes, e a reunião vira uma discussão sobre qual planilha está certa. Defina a métrica em um lugar só e faça todos os dashboards lerem dali.
 
-Ferramentas com camada semântica resolvem isso diretamente: Power BI com **measures** DAX, Looker com **LookML**, dbt com **metrics**. Sem uma dessas ferramentas, a alternativa é uma view ou tabela agregada no DW que serve de fonte única.
+As ferramentas com camada semântica já oferecem esse lugar: **measures** em DAX no Power BI, **LookML** no Looker, **metrics** no dbt. Sem nenhuma delas, uma view ou uma tabela agregada no warehouse cumpre o papel de fonte única.
 
-### Pre-agregação
+### Calcular o agregado antes da pergunta
 
-Queries recorrentes sobre volumes grandes se beneficiam de pré-agregação: calcular e persistir o resultado periodicamente.
+Uma query recorrente sobre volume grande não precisa varrer tudo de novo a cada abertura do dashboard. Um job noturno calcula o total do dia e grava numa tabela pequena, e o dashboard passa a ler dessa tabela.
 
 ```sql
 -- tabela de agregado diário: populada uma vez por dia via job agendado
@@ -235,6 +243,8 @@ CREATE TABLE AggGoalsByPlayerByDay
   CONSTRAINT PK_AggGoals PRIMARY KEY (DateKey, PlayerKey)
 );
 ```
+
+O custo é a atualidade: o número reflete o último processamento, e não o instante da consulta. Combine com a frequência que o negócio aceita.
 
 ---
 
@@ -253,6 +263,6 @@ CREATE TABLE AggGoalsByPlayerByDay
 
 ## Referências relacionadas
 
-- [Database](./database.md): tuning de queries, operações em lote, plano de execução
-- [Integrations](./integrations.md): fontes externas (APIs, arquivos, protocolos)
-- [Messaging](./messaging.md): filas e eventos como fonte de dados para pipelines CDC
+- [Banco de dados](./database.md): tuning de queries, operações em lote, plano de execução
+- [Formatos e integrações](./integrations.md): fontes externas (APIs, arquivos, protocolos)
+- [Mensageria](./messaging.md): filas e eventos como fonte de dados para pipelines CDC

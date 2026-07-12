@@ -1,8 +1,8 @@
-# Engenharia de Prompts (Prompt Engineering)
+# Engenharia de prompts: escrever a instrução que o modelo entende
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**Prompt engineering** é a prática de estruturar entradas para modelos de linguagem de forma a obter respostas corretas, consistentes e econômicas. Um prompt bem construído elimina ambiguidade, reduz tokens desperdiçados e diminui a chance de o modelo alucinar ou divergir do objetivo.
+**Prompt engineering** (engenharia de prompts) é a prática de montar a entrada do modelo de um jeito que produza a resposta certa, no formato certo e sem gastar tokens à toa. O prompt bem escrito fecha as ambiguidades que o modelo teria de preencher sozinho, e é justamente nesse preenchimento que ele diverge do objetivo ou inventa a resposta.
 
 ## Conceitos fundamentais
 
@@ -17,9 +17,9 @@
 | **Output format** (formato de saída) | Especificação explícita do formato esperado: JSON, tabela, lista, texto livre |
 | **grounding** (ancoragem) | Técnica de fornecer fatos concretos no prompt para ancorar a resposta e reduzir alucinações |
 
-## Anatomia de um prompt eficiente
+## As quatro partes de um prompt
 
-Um prompt tem quatro componentes opcionais, mas a ordem importa:
+Um prompt eficiente tem quatro componentes. Todos são opcionais, e a ordem entre eles importa:
 
 ```
 [Papel]       Você é um engenheiro sênior especializado em APIs REST.
@@ -28,25 +28,25 @@ Um prompt tem quatro componentes opcionais, mas a ordem importa:
 [Formato]     Responda em dois blocos: "Causa" e "Correção". Máximo 3 linhas cada.
 ```
 
-**Papel** define a perspectiva. **Contexto** fornece os fatos. **Instrução** é o pedido concreto. **Formato** elimina ambiguidade na estrutura da resposta.
+O **papel** define de que ponto de vista o modelo responde. O **contexto** entrega os fatos que ele não teria como saber. A **instrução** é o pedido em si. O **formato** fecha a estrutura da resposta, para que ela chegue do jeito que o seu código ou o seu olho espera.
 
-## Princípios de eficiência
+## O que faz um prompt funcionar
 
-**Seja específico, não genérico.** Quanto mais específico o pedido, menor a chance de a resposta vagar. Verbos de ação precisos (listar, resumir, corrigir, converter) funcionam melhor que verbos vagos (analisar, explorar, ver).
+**Peça com verbo preciso.** Listar, resumir, corrigir e converter dizem ao modelo o que produzir. Analisar, explorar e ver deixam a decisão com ele, e a resposta vagueia.
 
-**Forneça contexto suficiente, não excessivo.** Contexto relevante melhora a resposta; contexto irrelevante ocupa tokens e pode confundir o modelo. Inclua apenas o que muda a resposta.
+**Dê o contexto que muda a resposta, e só ele.** Cada trecho irrelevante consome tokens e dilui a atenção do modelo no que interessa. Antes de colar um bloco no prompt, pergunte se a resposta mudaria sem ele.
 
-**Especifique o formato de saída.** Sem instrução de formato, o modelo escolhe. Com instrução, o output é previsível e processável por código.
+**Diga o formato da saída.** Sem instrução de formato, o modelo escolhe um, e ele pode escolher outro na próxima chamada. Com o formato declarado, a saída fica previsível e o código consegue consumi-la.
 
-**Use few-shot examples para tarefas de formatação.** Para saídas com padrão específico, como **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), tabela ou convenção de nomes, um exemplo vale mais que dez frases descritivas.
+**Use few-shot examples quando o formato é o difícil.** Para saída em **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), tabela ou convenção de nomes, um exemplo de entrada e saída ensina mais rápido que dez linhas descrevendo o formato.
 
-**Instrua raciocínio passo a passo em tarefas complexas.** "Pense passo a passo" ou "raciocine antes de responder" aumenta a precisão em problemas lógicos, matemáticos e de código.
+**Peça o raciocínio passo a passo em tarefa complexa.** "Pense passo a passo" ou "raciocine antes de responder" melhora a precisão em problema lógico, matemático ou de código, porque cada passo escrito entra no contexto do passo seguinte.
 
-**Coloque o conteúdo mais importante no início ou no fim.** Modelos recuperam melhor o que está nas extremidades do contexto (**primacy/recency bias**, viés de primazia e recência). Instruções críticas não devem ficar enterradas no meio de um prompt longo.
+**Coloque o que é crítico no começo ou no fim.** O modelo recupera melhor o que está nas pontas do contexto (**primacy/recency bias**, viés de primazia e recência). A instrução mais importante perde força quando fica no meio de um prompt longo.
 
 ## Exemplos BAD/GOOD
 
-### 1. Instrução vaga vs. específica
+### 1. Diga o escopo, o tamanho e o recorte
 
 <details>
 <summary>❌ Ruim: instrução vaga, modelo escolhe escopo, formato e tamanho</summary>
@@ -68,7 +68,7 @@ Resuma o artigo abaixo em 3 tópicos de até 1 frase cada. Foque nas implicaçõ
 
 ---
 
-### 2. Sem contexto vs. com contexto
+### 2. Entregue os fatos do seu caso
 
 <details>
 <summary>❌ Ruim: sem contexto, modelo só pode especular</summary>
@@ -88,9 +88,11 @@ Este código TypeScript lança `TypeError: Cannot read properties of undefined` 
 
 </details>
 
+O prompt bom carrega a mensagem de erro, a linha, a origem do dado e a restrição a respeitar. O modelo responde ao caso concreto porque recebeu o caso concreto.
+
 ---
 
-### 3. Sem formato vs. formato especificado
+### 3. Declare o formato da saída
 
 <details>
 <summary>❌ Ruim: sem formato, modelo decide estrutura e escopo</summary>
@@ -112,7 +114,7 @@ Liste 5 boas práticas de API REST para endpoints de escrita (POST/PUT/PATCH). F
 
 ---
 
-### 4. Sem papel vs. papel atribuído
+### 4. Atribua o papel de quem responde
 
 <details>
 <summary>❌ Ruim: sem papel, revisão genérica e subjetiva</summary>
@@ -132,9 +134,11 @@ Você é um tech writer sênior com foco em documentação de APIs. Revise o tex
 
 </details>
 
+O papel sozinho ajuda pouco. O que torna o prompt bom é a lista de critérios que vem junto: sem o "elimine adjetivos, use voz ativa", o tech writer sênior devolve uma revisão de gosto pessoal.
+
 ---
 
-### 5. Sem raciocínio vs. chain-of-thought
+### 5. Mande mostrar os passos do cálculo
 
 <details>
 <summary>❌ Ruim: sem instrução de raciocínio, modelo pode errar em cálculos diretos</summary>
@@ -156,7 +160,7 @@ Calcule 17 × 24 + 89 ÷ 7 seguindo a ordem de operações. Mostre cada passo an
 
 ---
 
-### 6. Prompt sem grounding vs. com grounding
+### 6. Forneça a fonte em vez de confiar na memória do modelo
 
 <details>
 <summary>❌ Ruim: sem grounding, modelo pode alucinar valores desatualizados</summary>
@@ -178,7 +182,7 @@ Com base na documentação abaixo, quais são os limites de rate limiting da API
 
 </details>
 
-Para dados que mudam (preços, limites, versões), sempre inclua a fonte no prompt.
+Sempre que o dado muda com o tempo (preço, limite, versão), cole a fonte no prompt. O modelo aprendeu o valor que era verdade na época do treinamento, e ele responde com a mesma confiança quando o valor já mudou.
 
 ---
 

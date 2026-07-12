@@ -1,8 +1,10 @@
-# Banco de Dados
+# Banco de dados
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-O banco de dados é o componente com maior impacto em performance e o mais difícil de escalar retroativamente. Escolher o modelo certo, escrever queries eficientes e diagnosticar gargalos antes de chegarem à produção definem até onde o sistema escala.
+O banco de dados é o componente que mais afeta o desempenho, e o mais caro de corrigir depois que o produto está no ar. Trocar o modelo de dados com a tabela cheia custa migração, janela de manutenção e risco.
+
+Três decisões respondem pela maior parte do resultado: escolher o modelo certo no começo, escrever queries que o banco consegue otimizar e encontrar o gargalo antes que ele chegue à produção.
 
 ## Conceitos fundamentais
 
@@ -32,11 +34,12 @@ O banco de dados é o componente com maior impacto em performance e o mais difí
 
 ## SQL vs NoSQL
 
-A escolha não é sobre modernidade: é sobre o modelo de dados e os padrões de acesso.
+Duas perguntas decidem a escolha: qual é o formato dos seus dados e como o sistema vai lê-los no dia
+a dia. A idade da tecnologia fica de fora da conta.
 
-### Bancos Relacionais (SQL)
+### Bancos relacionais (SQL)
 
-Dados estruturados em tabelas com schema definido. Relações entre entidades expressas como foreign keys. Transações com garantias **ACID**.
+Os dados moram em tabelas com schema definido, as relações entre entidades aparecem como foreign keys e as transações trazem as garantias **ACID**.
 
 | Ponto forte | Detalhe |
 |---|---|
@@ -47,11 +50,11 @@ Dados estruturados em tabelas com schema definido. Relações entre entidades ex
 
 **Exemplos**: PostgreSQL, SQL Server, MySQL, SQLite.
 
-**Quando usar**: domínio com relações entre entidades, necessidade de consistência transacional, queries variadas não definidas em tempo de design.
+**Quando usar**: o domínio tem entidades que se relacionam, a operação precisa de consistência transacional e as queries ainda vão surgir com o produto, sem estarem todas conhecidas no desenho inicial.
 
-### Bancos Não-Relacionais (NoSQL)
+### Bancos não-relacionais (NoSQL)
 
-Quatro modelos principais, cada um otimizado para um padrão de acesso diferente:
+Quatro modelos principais, cada um afiado para um padrão de acesso diferente:
 
 | Modelo | Como organiza os dados | Melhor para |
 |---|---|---|
@@ -60,19 +63,20 @@ Quatro modelos principais, cada um otimizado para um padrão de acesso diferente
 | **Column-Family** (família de colunas) | Colunas agrupadas, leitura eficiente em colunas específicas | Analytics, séries temporais, telemetria em alta escala |
 | **Graph** (grafo) | Nós e arestas como estrutura primária de armazenamento | Redes sociais, recomendação, detecção de fraude |
 
-**Quando usar**: escala de escrita muito alta que bancos relacionais não absorvem, dados sem schema previsível, padrão de acesso fixo e conhecido (key-value, full document), ou quando o modelo de grafo representa a estrutura natural dos dados.
+**Quando usar**: o volume de escrita passa do que um banco relacional absorve, o schema dos dados varia de registro para registro, o acesso é sempre o mesmo e já se conhece de antemão (busca por chave, leitura do documento inteiro), ou o grafo é a forma natural dos dados.
 
-**O que não fazer**: escolher NoSQL porque "escala melhor" sem medir. Banco relacional bem indexado suporta volumes muito maiores do que a maioria dos projetos vai atingir. A complexidade operacional de NoSQL tem custo real.
+**O que não fazer**: adotar NoSQL pela fama de "escalar melhor", sem medir nada. Um banco relacional bem indexado aguenta um volume muito maior do que a maioria dos projetos vai atingir, e o NoSQL adiciona complexidade operacional real.
 
 ---
 
-## Tuning de Queries
+## O que deixa uma query rápida
 
-O gargalo mais comum não é hardware: é query mal escrita ou ausência de índice.
+O gargalo quase sempre vem da query mal escrita ou do índice ausente. Trocar o hardware custa caro e
+adia o problema por alguns meses.
 
 ### Índices
 
-Um índice cria uma estrutura auxiliar que o banco usa para encontrar linhas sem varrer a tabela inteira.
+O índice é uma estrutura auxiliar que o banco consulta para achar as linhas sem varrer a tabela inteira.
 
 | Tipo | Quando usar |
 |---|---|
@@ -91,10 +95,10 @@ CREATE INDEX idx_orders_status_created ON orders(status, created_at);
 
 **Regras**:
 
-- Indexar colunas usadas em WHERE, JOIN e ORDER BY com alta seletividade
-- Não indexar colunas com poucos valores distintos (`boolean`, `gender`); o banco prefere full scan
-- Índices têm custo de escrita: cada INSERT/UPDATE/DELETE atualiza todos os índices da tabela
-- Colunas com função no WHERE desativam o índice: `WHERE LOWER(email) = ?` não usa índice em `email`; criar índice funcional ou normalizar no insert. O mesmo vale para `CAST`/`CONVERT` na coluna: converter o parâmetro, nunca a coluna. Ver [sql/performance.md](../../sql/conventions/advanced/performance.md#cast-and-type-conversion)
+- Indexe a coluna que aparece em WHERE, JOIN e ORDER BY e que separa bem os registros
+- Deixe sem índice a coluna com poucos valores distintos (`boolean`, `gender`); nesse caso o banco escolhe o full scan de propósito, porque sai mais barato
+- Cada índice tem custo de escrita: todo INSERT, UPDATE e DELETE atualiza os índices da tabela
+- A função aplicada na coluna do WHERE desliga o índice. O `WHERE LOWER(email) = ?` ignora o índice de `email`, então crie um índice funcional ou grave o valor já normalizado no insert. O mesmo vale para `CAST` e `CONVERT`: converta o parâmetro e deixe a coluna intacta. Ver [sql/performance.md](../../sql/conventions/advanced/performance.md#cast-and-type-conversion)
 
 ### Boas práticas de query
 
@@ -102,7 +106,7 @@ Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../..
 
 ### Consultas NoSQL
 
-Os anti-padrões de NoSQL diferem dos SQL, mas o princípio é o mesmo: filtrar e projetar no servidor é mais barato do que trafegar dados para descartar no cliente.
+O NoSQL tem os próprios anti-padrões, e o princípio que os resolve é o mesmo do SQL: filtrar e projetar no servidor sai mais barato do que trazer o dado pela rede para descartar no cliente.
 
 Guia completo por SGBD: [docs/nosql/](../../nosql/). Convenções de **CRUD** (Create Read Update Delete · Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../nosql/conventions/).
 
@@ -209,11 +213,11 @@ class OrderRepository {
 
 <a id="batch-operations"></a>
 
-## Operações em Lote
+## Operações em lote
 
-Operações em lote agrupam múltiplas linhas em uma única instrução ou dividem uma operação grande
-em ciclos menores. Dois objetivos distintos: aumentar throughput em carga inicial e evitar locks
-de longa duração em operações de manutenção.
+A operação em lote junta várias linhas em uma instrução só, ou parte uma operação enorme em ciclos
+menores. São dois objetivos diferentes: o primeiro aumenta o volume que passa por segundo em uma
+carga inicial, e o segundo evita que uma manutenção segure a tabela travada por minutos.
 
 | Padrão | Quando usar |
 |---|---|
@@ -223,18 +227,18 @@ de longa duração em operações de manutenção.
 | **Staging table** | Validar dados externos antes de inserir na tabela de produção |
 | **Scheduled job** | Executar operações periódicas (limpeza, agregação, arquivamento) sem intervenção manual |
 
-### Chunk size
+### Tamanho do lote
 
-Não existe valor universal. O critério é o tempo de lock aceitável para o sistema.
+Nenhum número serve para todos os casos. O que decide é quanto tempo de lock o seu sistema tolera.
 
-- Lotes entre 1.000 e 5.000 linhas são um ponto de partida seguro para a maioria dos casos
-- Lotes muito pequenos aumentam o número de round trips e o overhead de transação
-- Lotes muito grandes seguram o lock por mais tempo e aumentam o risco de rollback custoso
+- Entre 1.000 e 5.000 linhas por lote é um ponto de partida seguro na maioria dos casos
+- O lote pequeno demais multiplica as idas ao banco e o custo de abrir e fechar transação
+- O lote grande demais segura o lock por mais tempo e deixa o rollback caro quando algo falha
 
-Operações em lote que rodam em produção precisam de idempotência: se o job for interrompido, a
-próxima execução deve continuar de onde parou sem duplicar ou corromper dados. O padrão é usar a
-condição de filtro do próprio UPDATE/DELETE como cursor natural: o WHERE já exclui as linhas
-já processadas nas iterações anteriores.
+O job em lote que roda em produção precisa ser idempotente: se ele cair no meio, a execução seguinte
+retoma de onde parou, sem duplicar nem corromper dado. O jeito mais simples de conseguir isso é usar
+o próprio filtro do UPDATE ou do DELETE como cursor, porque o WHERE já deixa de fora as linhas que as
+iterações anteriores processaram.
 
 Padrões de query: [sql/conventions/advanced/batch.md](../../sql/conventions/advanced/batch.md).
 
@@ -242,11 +246,11 @@ Recursos específicos por banco: [SQL Server](../../sql/sgbd/sql-server.md#batch
 
 ---
 
-## Plano de Execução
+## Plano de execução
 
-O plano de execução mostra _como_ o banco vai executar a query: quais índices vai usar, como vai fazer joins, qual o custo estimado de cada operação.
+O plano de execução mostra o caminho que o banco vai seguir para responder a query: quais índices ele usa, como resolve cada join e quanto estima gastar em cada passo.
 
-**Antes de levar qualquer query a uma tabela grande em produção, analise o plano.**
+**Antes de levar qualquer query a uma tabela grande em produção, leia o plano.**
 
 Sintaxe por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnostics) | [SQL Server](../../sql/sgbd/sql-server.md#diagnostics).
 
@@ -267,21 +271,21 @@ Seq Scan on orders  (cost=0.00..4521.00 rows=150000 width=16)
   Filter: ((status)::text = 'pending'::text)
 ```
 
-`Seq Scan` em tabela grande com `Filter` é o sinal mais claro de índice ausente.
+Um `Seq Scan` com `Filter` em tabela grande é o sinal mais claro de índice ausente.
 
 ---
 
-## Troubleshooting de Gargalos
+## Diagnosticar o gargalo
 
-### Slow query log
+### Log de queries lentas
 
-O primeiro passo para identificar problemas em produção é habilitar o log de queries lentas.
+A investigação começa aqui. Ligue o log de queries lentas e deixe o banco apontar quais consultas passaram do tempo limite que você definiu.
 
 Configuração por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnostics) | [SQL Server](../../sql/sgbd/sql-server.md#diagnostics).
 
-### N+1 em runtime
+### Como o N+1 aparece em produção
 
-N+1 raramente aparece no código; aparece no log de queries. O sinal é um padrão repetido de queries idênticas com IDs diferentes em sequência rápida.
+O N+1 é difícil de ver no código e fácil de ver no log de queries. O sinal é uma sequência rápida de consultas idênticas, com o ID mudando a cada linha.
 
 ```
 -- sinal de N+1 no log
@@ -291,23 +295,23 @@ SELECT * FROM customers WHERE id = 3  -- 0.1ms
 ... (100 vezes)
 ```
 
-Ferramentas que expõem N+1 automaticamente: **Bullet** (Rails), **Hibernate Statistics**, **EF Core logging**, **Sequelize logging mode**.
+Ferramentas que denunciam o N+1 sozinhas: **Bullet** (Rails), **Hibernate Statistics**, **EF Core logging**, **Sequelize logging mode**.
 
-### Connection pool exhaustion
+### Pool de conexões esgotado
 
-Quando todas as conexões do pool estão em uso, novas requisições ficam em fila. Sintoma: timeouts em requisições simples que normalmente são rápidas, sem aumento de **CPU** (Central Processing Unit · Unidade Central de Processamento) ou lentidão de queries.
+Com todas as conexões do pool ocupadas, a requisição nova entra na fila e espera. O sintoma é enganoso: requisições simples, que sempre foram rápidas, começam a estourar timeout, enquanto a **CPU** (Central Processing Unit · Unidade Central de Processamento) permanece baixa e as queries mantêm o tempo de sempre.
 
 Diagnóstico por banco: [PostgreSQL](../../sql/sgbd/postgres.md#diagnostics) | [SQL Server](../../sql/sgbd/sql-server.md#diagnostics).
 
-Causas comuns: queries longas segurando conexão, transaction não fechada, pool subdimensionado, pico de tráfego inesperado.
+Causas comuns: query longa segurando a conexão, transação que ninguém fechou, pool dimensionado abaixo da carga, pico de tráfego fora do previsto.
 
 ### Locks e deadlocks
 
-Lock é esperado: é o mecanismo de consistência. O problema é lock de longa duração ou deadlock.
+O lock faz parte do funcionamento normal: ele é o mecanismo que mantém a consistência. O problema aparece quando o lock dura demais ou vira deadlock.
 
 **Identificar locks ativos**: [PostgreSQL](../../sql/sgbd/postgres.md#diagnostics) | [SQL Server](../../sql/sgbd/sql-server.md#diagnostics).
 
-**Deadlock** aparece no log com mensagem explícita. A causa mais comum é duas transações acessando as mesmas linhas em ordem inversa. A solução é padronizar a ordem de acesso.
+O **deadlock** chega ao log com mensagem própria, e a causa costuma ser sempre a mesma: duas transações tocam as mesmas linhas em ordem trocada, e cada uma fica esperando o lock que a outra segura. A saída é padronizar a ordem de acesso.
 
 ```
 -- padrão que gera deadlock
@@ -321,14 +325,14 @@ Transação B: lock em orders(1) → lock em payments(1)  ← espera A terminar
 
 ### Checklist de investigação
 
-Ao receber relatório de "banco lento":
+Quando alguém chegar dizendo que "o banco está lento", percorra esta ordem:
 
-1. Verificar slow query log (query específica ou carga geral?)
-2. `EXPLAIN ANALYZE` na query suspeita (Seq Scan em tabela grande?)
-3. Verificar conexões ativas (pool exhaustion?)
-4. Verificar locks de longa duração (transação presa?)
-5. Verificar volume de dados (a tabela cresceu e o índice ficou ineficiente?)
-6. Verificar índices existentes na tabela (algum foi dropado ou nunca foi criado?)
+1. Abra o log de queries lentas (é uma query específica ou a carga inteira?)
+2. Rode `EXPLAIN ANALYZE` na query suspeita (tem Seq Scan em tabela grande?)
+3. Olhe as conexões ativas (o pool esgotou?)
+4. Procure lock de longa duração (alguma transação ficou presa?)
+5. Confira o volume de dados (a tabela cresceu e o índice perdeu eficiência?)
+6. Confira os índices da tabela (algum foi removido ou nunca chegou a existir?)
 
 ---
 

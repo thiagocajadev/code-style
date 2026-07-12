@@ -1,14 +1,12 @@
-# Feature Flags
+# Feature flags: separar o deploy do código da entrega da feature
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**Feature flags** (interruptores de funcionalidade) separam o ciclo de vida do **código** do ciclo de
-vida da **feature**. Código pode estar em produção desativado. Feature pode ser ativada para 1% dos
-usuários antes de 100%. Uma feature problemática pode ser desligada sem rollback de deploy.
+Uma **feature flag** (interruptor de funcionalidade) permite que o código esteja em produção com a funcionalidade desligada. O deploy deixa de ser o momento em que o usuário passa a ver a novidade, e esses dois eventos podem acontecer em dias diferentes.
 
-Esta página aprofunda o vocabulário que [ci-cd.md](../process/ci-cd.md) esboça na seção de deploy vs
-release. Flags como caso particular de configuração dinâmica aparecem também em
-[configuration.md](configuration.md).
+Isso muda três coisas na prática. O código incompleto pode ser integrado sem esperar a feature ficar pronta. A feature pode ser ligada para 1% dos usuários antes de chegar aos 100%. E a feature que deu problema pode ser desligada na hora, sem esperar um rollback de deploy.
+
+Esta página aprofunda o vocabulário que [ci-cd.md](../process/ci-cd.md) esboça na seção de deploy vs release. A flag como caso particular de configuração dinâmica aparece em [configuration.md](configuration.md).
 
 ## Conceitos fundamentais
 
@@ -25,11 +23,9 @@ release. Flags como caso particular de configuração dinâmica aparecem também
 
 ---
 
-## Toggle (interruptor) por propósito
+## Quatro propósitos diferentes para uma flag
 
-Nem toda flag serve ao mesmo fim. Misturar propósitos no mesmo mecanismo cria confusão: a regra de
-negócio convive com o experimento, o kill switch convive com permissão de
-usuário. Quatro categorias cobrem a maioria dos casos:
+As flags servem a fins distintos, e o mesmo mecanismo acaba abrigando todos eles. A regra de negócio permanente fica na mesma lista do experimento que dura duas semanas, e ninguém consegue mais dizer quais podem ser apagadas. Quatro categorias cobrem a maioria dos casos:
 
 | Categoria      | Propósito                                                                               | Vida útil                                  |
 | -------------- | --------------------------------------------------------------------------------------- | ------------------------------------------ |
@@ -38,15 +34,13 @@ usuário. Quatro categorias cobrem a maioria dos casos:
 | **Ops**        | Kill switch, controle de carga, throttling (limitação de taxa)                          | Semi-permanente, usada em incidentes       |
 | **Permission** | Habilitar feature por plano, role (perfil de acesso), entitlement (permissão por plano) | Permanente, parte do modelo de negócio     |
 
-Os quatro tipos têm auditoria, governança e prazo de validade diferentes. Release deve morrer.
-Permission nunca morre. Tratar todos como o mesmo tipo atrapalha a decisão de limpeza.
+Cada categoria tem prazo de validade próprio. A flag de release existe para ser apagada assim que o rollout termina. A de permission faz parte do modelo de negócio e fica para sempre. Registrar a categoria no momento da criação é o que torna a limpeza possível depois.
 
 ---
 
-## Rollout (ativação gradual): do invisível ao universal
+## Ativar aos poucos, de ninguém até todos
 
-Uma flag não precisa ser binária ativa/inativa. Rollout controla **quem** vê a feature, em que
-proporção, em que ordem:
+A flag aceita mais estados que ligado e desligado. O **rollout** controla quem vê a feature, em que proporção e em que ordem:
 
 ```
 off              →  ninguém vê
@@ -57,20 +51,13 @@ segmentado       →  por plano, geografia, role, feature entitlement
 on               →  todos veem
 ```
 
-O padrão comum é: **interno → beta → gradual → total**. Cada transição é uma chance de observar
-métricas (erro, latência, conversão) antes de ampliar. Pular etapas é trocar visibilidade por
-velocidade.
-
-**Sinal de rollout mal feito**: o time pula de 0% direto para 100%. A flag existe, mas não entrega o
-benefício de release controlada. Vira apenas uma ramificação condicional extra no código.
+A progressão usual é **interno → beta → gradual → total**. Cada degrau é uma oportunidade de olhar as métricas (taxa de erro, latência, conversão) com um público pequeno antes de ampliar. Quem pula de 0% direto para 100% abre mão dessa observação, e a flag vira um `if` a mais no código sem nenhum benefício de release controlada.
 
 ---
 
-## Dark launch (ativação invisível)
+## Rodar o código novo sem o usuário ver
 
-Dark launch é colocar o código novo em produção **sem que o usuário perceba**. A feature roda em
-paralelo com a antiga: a lógica é executada, mas o resultado não é exposto. O output pode ser
-logado, comparado com o antigo ou descartado.
+O **dark launch** coloca o código novo em produção e esconde o resultado. A lógica executa de verdade, com tráfego de verdade, e o que ela devolve fica em log, vai para comparação ou é descartado.
 
 Três formas típicas:
 
@@ -81,34 +68,27 @@ Três formas típicas:
 - **Write-to-shadow**: a escrita acontece no sistema antigo e em um buffer (área temporária) do
   novo; consistência é verificada antes de promover.
 
-Dark launch é a forma mais segura de validar um caminho crítico (migração de banco, reescrita de
-cálculo, troca de provedor). Mais caro de implementar, mais barato que um incidente em produção.
+Vale o esforço quando o caminho é crítico: migração de banco, reescrita de cálculo financeiro, troca de provedor de pagamento. Implementar o dark launch custa tempo de engenharia, e esse tempo é menor que o de um incidente com os dados dos clientes.
 
 ---
 
-## Kill switch (chave de emergência)
+## Desligar a feature em segundos durante um incidente
 
-Kill switch é a flag que **desliga uma feature problemática em segundos**, sem abrir **PR** (Pull Request · Pedido de Integração), sem rebuild
-(recompilação), sem deploy. É a rede de segurança quando algo sai do controle: picos de erro, latência
-fora do limite, regressão detectada em métrica.
+O **kill switch** desativa uma feature na hora, sem abrir **PR** (Pull Request · Pedido de Integração), sem rebuild (recompilação) e sem deploy. Ele existe para o momento em que a taxa de erro dispara, a latência estoura o limite ou uma métrica de negócio despenca.
 
-Diferente de uma flag de release, o kill switch:
+Ele se comporta de forma diferente de uma flag de release em três pontos:
 
-- **Vive para sempre** como parte do código operacional, não é removido após rollout.
-- **É acionado por ops**, não pelo time de produto.
-- **Retorna comportamento seguro**: cair para o caminho antigo, retornar erro explícito, servir
-  resposta degradada. Nunca ficar pendurado sem resposta.
+- **Vive para sempre** como parte do código operacional, e continua no lugar depois que o rollout termina.
+- **É acionado pelo time de operação**, no meio do incidente.
+- **Cai em um comportamento seguro**: voltar ao caminho antigo, devolver um erro explícito ou servir uma resposta reduzida. A requisição sempre recebe uma resposta.
 
-O desenho é: para toda feature nova de alto risco (escrita, cobrança, integração externa), existe
-kill switch desde o primeiro deploy. Descobrir na meia-noite do incidente que não há switch é
-descobrir tarde demais.
+Toda feature nova de alto risco (escrita, cobrança, integração externa) nasce com kill switch no primeiro deploy. Escrever o switch durante o incidente adiciona um ciclo de build e deploy a um sistema que já está quebrado.
 
 ---
 
-## Avaliação: onde a decisão acontece
+## Onde a flag é avaliada
 
-Uma flag é avaliada em três pontos possíveis, cada um com **trade-off** (equilíbrio entre fatores)
-próprio:
+São três momentos possíveis, e cada um cobra um preço diferente:
 
 | Ponto                                   | Latência                     | Consistência   | Exemplo de uso                                                      |
 | --------------------------------------- | ---------------------------- | -------------- | ------------------------------------------------------------------- |
@@ -116,23 +96,19 @@ próprio:
 | **Startup** (na inicialização)          | Zero em runtime              | Por instância  | Features de infraestrutura que não mudam durante a vida do processo |
 | **Runtime** (em tempo de execução)      | Custo por avaliação          | Por requisição | Rollout gradual, kill switch, experimentos                          |
 
-A maioria das flags úteis é runtime: o valor muda sem restart (reinicialização), o rollout é
-ajustável, o kill switch responde ao incidente imediatamente.
+A maioria das flags úteis é avaliada em **runtime**, porque é o único ponto em que o valor muda sem reiniciar o processo. É o que torna possível ajustar o rollout de 10% para 50% e acionar o kill switch enquanto o incidente acontece.
 
-O custo por avaliação importa. Consultar um serviço externo a cada chamada de função é
-insustentável. O padrão é **cache local com TTL (Time To Live · tempo de validade) curto**: o cliente
-da flag sincroniza com o backend a cada poucos segundos e responde localmente ao código. Ver
-[performance.md](performance.md) seção Cache.
+O custo por avaliação importa. Consultar um serviço externo a cada chamada de função adiciona uma ida à rede dentro do caminho quente. O padrão é o **cache local com TTL** (Time To Live · tempo de validade) **curto**: o cliente da flag sincroniza com o backend a cada poucos segundos e responde ao código a partir da memória. Ver [performance.md](performance.md), seção Cache.
 
 ---
 
-## Estrutura do condicional no código
+## Como a flag aparece no código
 
-Como a flag aparece no código determina se ela será fácil de remover depois. Três padrões:
+A forma do condicional decide se a flag vai ser fácil de remover depois. Três padrões, do pior ao melhor:
 
 **1. inline (embutido no fluxo) espalhado (pior)**
 
-Vira código duplicado e quase impossível de remover.
+Duplica o fluxo inteiro dentro de um `if`, e remover a flag depois exige reler as 160 linhas para decidir o que fica.
 
 ```js
 if (flags.isNewCheckoutEnabled) {
@@ -144,8 +120,7 @@ if (flags.isNewCheckoutEnabled) {
 
 **2. isolamento por função (aceitável)**
 
-Cobre a maior parte dos casos: a flag escolhe qual implementação injetar, as duas implementações são
-pares independentes.
+Cobre a maior parte dos casos. A flag escolhe qual implementação usar, e as duas são módulos independentes com a mesma interface.
 
 ```js
 const checkout = flags.isNewCheckoutEnabled ? newCheckout : legacyCheckout;
@@ -154,26 +129,22 @@ checkout.process(order);
 
 **3. strategy (estratégia) com registro (escalável)**
 
-Vale quando há mais de duas variantes ou a decisão de qual variante usar depende de vários fatores.
+Vale quando há mais de duas variantes, ou quando a escolha depende de vários fatores combinados.
 
 ```js
 const strategy = checkoutStrategies[flags.checkoutVariant];
 strategy.process(order);
 ```
 
-A regra é: **a flag define qual caminho segue; o caminho não sabe que foi escolhido por flag**. O
-consumidor chama `checkout.process(order)` sem `if` em volta. Remover a flag, depois que a nova
-implementação venceu, é apagar a escolha e manter a implementação.
+A regra vale para os três: **a flag escolhe o caminho, e o caminho escolhido ignora que uma flag existe**. Quem chama escreve `checkout.process(order)` sem `if` em volta. Quando a nova implementação vence, remover a flag é apagar a linha da escolha e manter a implementação inteira.
 
 ---
 
-## Dívida: toda flag tem prazo de validade
+## Toda flag tem prazo de validade
 
-Flag que nunca é removida vira débito permanente: condicional no código, configuração no sistema,
-carga cognitiva para quem lê. O custo cresce em juros compostos: quantas flags inativas estão rodando
-hoje? Quais são seguras de remover?
+A flag que ninguém remove deixa três coisas para trás: o condicional no código, a entrada no painel de configuração e a dúvida de quem lê o arquivo e precisa descobrir por que aquele caminho alternativo existe. Depois de alguns meses, o time não consegue mais responder quantas flags estão ativas nem quais são seguras de apagar.
 
-Três práticas contêm a dívida:
+Três práticas seguram isso:
 
 - **Prazo explícito**: no momento de criar, registrar a data de remoção esperada. Release flag:
   dias. Experimento: duração do teste. Ops: permanente, registrar como tal.
@@ -182,23 +153,20 @@ Três práticas contêm a dívida:
 - **Cleanup como tarefa explícita**: no momento que o rollout chega a 100%, a remoção da flag entra
   no backlog (lista de tarefas pendentes) com prioridade. Adiar é criar lixo de longo prazo.
 
-**Sinal de má gestão**: o time tem dezenas de flags ligadas em 100% há meses. O sistema de flags
-virou registro arqueológico de decisões antigas, não ferramenta de release.
+O sinal de que a gestão saiu do controle é uma lista com dezenas de flags ligadas em 100% há meses. Elas guardam decisões que já foram tomadas, e o sistema de flags parou de servir para controlar release.
 
 ---
 
 ## Flags e testes
 
-O código com flag tem pelo menos dois caminhos. Os dois precisam ser testados. Dois padrões
-funcionam:
+O código com flag tem pelo menos dois caminhos, e os dois precisam de teste. Dois padrões funcionam:
 
 - **Teste por variante**: cada teste roda com uma configuração de flag específica, passada via
   fixture (dado de teste pré-definido). O flag service em teste é injetado com valores fixos.
 - **Teste do caminho novo em isolamento**: a nova implementação é testada sem flag, como qualquer
   outra unidade. O teste da escolha (qual caminho é ativado) é um teste separado, menor.
 
-O que não funciona: ler o flag service real em teste. O teste passa a depender de configuração
-externa e vira frágil.
+Ler o flag service real dentro do teste quebra os dois padrões. O resultado do teste passa a depender de uma configuração que vive fora do repositório, e alguém mudando o rollout em produção faz a suíte falhar sem que nenhuma linha de código tenha mudado.
 
 ---
 

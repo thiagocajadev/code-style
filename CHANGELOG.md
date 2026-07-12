@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-07-11
+
+### Fixed
+
+- **Ciclo B do épico writing-soul: `docs/shared/` reescrito por inteiro na voz sênior-para-leigo (57 páginas, 13.043 linhas, 8 batches).** Mesmo protocolo do `docs/javascript/` em v2.0.0: cada arquivo relido e reescrito por completo (prosa, `<summary>` e headings), com os blocos de código verificados idênticos byte a byte contra o HEAD por hash SHA-256. **T1** `standards/` (8 arquivos, piloto). **T2** `architecture/` núcleo (7). **T3** `architecture/` pesados (transactions, entity-modeling, domain-events). **T4** `architecture/` fluxos (3). **T5** `platform/` pesados (integrations, api-design, database, performance). **T6** `platform/` restante (9). **T7** `process/` e `mobile/` (13). **T8** `ai/` (10).
+- **H1 em pt-BR nas 57 páginas, e headings de jargão renomeados para frases descritivas.** `Boundary transacional é boundary do agregado` virou "Uma transação cobre um agregado", `Locking: otimista vs pessimista` virou "Esperar na fila ou conferir a versão na hora de gravar", `Queue vs Pub/Sub` virou "A fila entrega a um, o tópico entrega a todos", `MCP vs tool use direto` virou "Quando usar MCP e quando bastam ferramentas próprias", entre dezenas de outros. Os H1 no formato `Termo EN (Tradução PT)` viraram título pt-BR descritivo, com o termo em inglês glosado na introdução e na tabela de Conceitos; a sigla ficou no título onde ela é o nome pelo qual o leitor conhece a coisa (RAG, MCP, CI/CD).
+- **Contraste binário eliminado do `docs/shared/` inteiro.** A construção "não é X, é Y" e a cauda "…, não Y" saíram de toda a pasta, e cada ocorrência passou a enunciar Y direto: "O código de domínio fala em findByEmail, não em SELECT", "A rede é um detalhe de implementação, não um estado de erro", "a lógica de negócio fica nas ferramentas, não no loop de execução" e outras dezenas. O mesmo vale para metáfora de mecânica ("o N+1 se esconde", "a conta chega", "o handler engole o que vier"), fecho de efeito e AIismo.
+- **Explicações no lugar de afirmações.** As páginas passaram a dizer o porquê onde antes só declaravam o quê: por que o debounce existe (o contato do botão bate e volta), por que a sessão em memória quebra com duas instâncias, por que o reflog recupera commit depois de `reset --hard` e por que ele não viaja no push, por que mudar uma vírgula no system prompt invalida o cache de prompt inteiro (ele casa por prefixo), por que "cão" e "cachorro" caem perto no espaço vetorial sem dividir uma letra, e por que o overlap do chunking existe.
+- **Gate de escrita automatizado**: `.ai/skills/checklist-soul.md` (recitação obrigatória antes de cada arquivo) e `npm run audit:prose`, que audita os arquivos alterados contra o HEAD e falha com drama, metáfora, contraste binário, em dash ou advérbio banido. Ele pegou metáfora inédita escrita durante os próprios batches.
+- **Correções de voz do Thiago incorporadas no caminho**: glosa de sigla com interpoint (`**API** (Application Programming Interface · Interface de Programação de Aplicações)`) no lugar de vírgula; JWT reglosado de "Token Web em JSON" para "token assinado que carrega a identidade do usuário"; "UI state é efêmero" virou "pertence à tela e dura o que a tela durar"; diagramas de `operation-flow` e `backend-flow` traduzidos para pt-BR com passos numerados e tabela explicando cada passo.
+- **READMEs realinhados**: as tabelas de Plataforma, Processo, Mobile e IA do `README.md` raiz e os mapas de tópicos de `mobile/` e `ai/` passaram a casar com os H1 novos.
+- **Gates do ciclo**: audit 2518 blocos Good / 391 arquivos / 0 violações; test:docs 38/38; test:prose 10/10; audit:prose 0 erro e 0 aviso; audit-concepts shared 55 OK / 0 / 0 / 0; lint 0; em dash zerado em `docs/shared/`; blocos de código idênticos ao HEAD por SHA-256 em todas as 57 páginas, com a única exceção intencional dos diagramas traduzidos a pedido. Links repo-wide: 348 com âncora, 0 quebrado. Próximo alvo do épico: `docs/csharp/`, depois SQL e as 15 linguagens restantes.
+
+### Notas
+
+- O catálogo de modelos de `shared/ai/` ficou intacto de propósito (`models.md` e `tokens.md` ainda citam Opus 4.7, Sonnet 4.6, GPT-5 e Gemini 2.5). O refresh sai como `fix:` separado, com dados frescos dos provedores.
+
 ## [2.0.1] - 2026-07-11
 
 ### Fixed

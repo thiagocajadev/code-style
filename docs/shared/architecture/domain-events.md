@@ -2,41 +2,41 @@
 
 > Escopo: transversal. Exemplos em JavaScript puro para manter o foco no padrão de evento como peça do domínio. As regras aqui valem para qualquer linguagem orientada a objetos ou que aceite a abstração de **event** (evento) como contrato entre partes do sistema.
 
-Esta página atende a duas pessoas. A primeira está prestes a ligar dois agregados que não cabem na mesma transação e quer saber o formato do evento que vai conectar os dois. A segunda volta para revisitar uma decisão antiga (por exemplo, vale a pena partir um evento grande em dois, ou versionar o payload que vinha sendo expandido ad hoc). As duas saem daqui com critério, não com receita fechada.
+Um evento registra um fato que já aconteceu, e quem o registra é o agregado que executou a operação. A partir dessas duas frases sai o resto desta página: quando criar um evento; quem publica; o que mora no payload; como nomear; o que muda quando o consumidor vive em outro processo.
 
-O texto cobre cinco perguntas que aparecem cedo em todo sistema que cresce além de um agregado: quando criar um evento; quem é responsável por publicar; o que mora no payload; como nomear; o que muda quando o consumidor vive em outro processo. Persistência específica (drivers, queues) vive em [`../platform/messaging.md`](../platform/messaging.md); o lado transacional (como gravar o evento sem perder no caminho) vive em [`transactions.md`](transactions.md); a propagação operacional (worker, retry, DLQ) vive em [`backend-flow.md`](backend-flow.md).
+O que fica de fora: persistência específica (drivers, filas) vive em [`../platform/messaging.md`](../platform/messaging.md); o lado transacional (como gravar o evento sem perder no caminho) vive em [`transactions.md`](transactions.md); a propagação operacional (worker, nova tentativa, DLQ) vive em [`backend-flow.md`](backend-flow.md).
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
 | **event** (evento) | Fato que aconteceu no passado, registrado pelo agregado como parte do estado da operação |
-| **domain event** (evento de domínio) | Evento que circula dentro do mesmo **bounded context** (contexto delimitado); contrato interno, evoluível |
-| **integration event** (evento de integração) | Evento que atravessa limite de sistema ou contexto; contrato público, versionado, estável |
-| **aggregate root** (raiz do agregado) | Entidade que orquestra o agregado; ponto que registra eventos durante operações de escrita |
+| **domain event** (evento de domínio) | Evento que circula dentro do mesmo **bounded context** (contexto delimitado); contrato interno, que evolui junto com o código |
+| **integration event** (evento de integração) | Evento que atravessa o limite do sistema ou do contexto; contrato público, versionado, estável |
+| **aggregate root** (raiz do agregado) | Entidade que comanda o agregado; ponto que registra os eventos durante as operações de escrita |
 | **event handler** (processador de evento) | Função ou objeto que recebe um evento e executa a reação correspondente |
-| **event bus** (barramento de eventos) | Componente que entrega eventos publicados aos handlers registrados; pode ser in-process, fila ou broker externo |
-| **publish/subscribe** (publicar/assinar, pub/sub) | Padrão onde o produtor emite sem conhecer consumidores; consumidores assinam o que interessa |
-| **outbox** (caixa de saída) | Tabela no banco do agregado, gravada na mesma transação, que serve de fila persistente para publicação |
-| **payload** (carga útil) | Dados que o evento carrega; deve ser pequeno (IDs + campos essenciais), nunca o agregado inteiro |
-| **schema versioning** (versionamento de esquema) | Disciplina de evoluir o formato do payload sem quebrar consumidores antigos (V1, V2 coexistem) |
-| **at-least-once delivery** (entrega ao menos uma vez) | Garantia de que o evento chega pelo menos uma vez; pode chegar mais, então handler é idempotente |
-| **idempotency** (idempotência, operação repetível sem efeito adicional) | Propriedade do handler de aplicar o mesmo evento múltiplas vezes com o mesmo resultado |
-| **DLQ** (Dead Letter Queue · fila de mensagens com falha persistente) | Fila para eventos que falharam todas as tentativas; permite inspeção manual sem travar o consumidor |
-| **eventual consistency** (consistência eventual) | Estado entre agregados converge no tempo após o evento; não é instantâneo |
-| **choreography** (coreografia) | Cada serviço reage a eventos sem coordenador central; acoplamento por contrato de evento |
-| **orchestration** (orquestração) | Um coordenador comanda os passos da operação; cada serviço recebe comando e responde |
-| **event sourcing** (registro por eventos) | Padrão arquitetural onde o estado do agregado é derivado da sequência de eventos; fora do escopo deste guia |
+| **event bus** (barramento de eventos) | Componente que entrega os eventos publicados aos handlers registrados; pode rodar no mesmo processo, em fila ou em broker externo |
+| **publish/subscribe** (pub/sub · publicar e assinar) | Padrão onde o produtor emite sem conhecer os consumidores, e cada consumidor assina o que lhe interessa |
+| **outbox** (caixa de saída) | Tabela no banco do agregado, gravada na mesma transação, que serve de fila persistente para a publicação |
+| **payload** (carga útil) | Dados que o evento carrega; IDs e campos essenciais bastam |
+| **schema versioning** (versionamento de esquema) | Disciplina de evoluir o formato do payload sem quebrar consumidores antigos (V1 e V2 coexistem) |
+| **at-least-once delivery** (entrega ao menos uma vez) | Garantia de que o evento chega pelo menos uma vez; ele pode chegar mais vezes, e por isso o handler é idempotente |
+| **idempotency** (idempotência) | Propriedade do handler de aplicar o mesmo evento várias vezes com o mesmo resultado |
+| **DLQ** (Dead Letter Queue · fila de mensagens com falha persistente) | Fila para eventos que falharam em todas as tentativas; permite inspeção manual sem travar o consumidor |
+| **eventual consistency** (consistência eventual) | O estado entre agregados converge com o tempo depois do evento, com um intervalo de propagação no meio |
+| **choreography** (coreografia) | Cada serviço reage a eventos sem coordenador central; o acoplamento acontece pelo contrato do evento |
+| **orchestration** (orquestração) | Um coordenador comanda os passos da operação; cada serviço recebe um comando e responde |
+| **event sourcing** (registro por eventos) | Padrão onde o estado do agregado é derivado da sequência de eventos; fora do escopo deste guia |
 
 ---
 
-## Domain event vs integration event
+## Dois tipos de evento: interno e de integração
 
-Os dois carregam a palavra evento mas servem propósitos diferentes, e misturá-los gera dores específicas. A separação aparece cedo: quando o consumidor vive no mesmo processo que o produtor, o evento é de domínio; quando atravessa limite de processo ou contexto, é de integração.
+O consumidor decide o tipo. Quando ele vive no mesmo processo que o produtor, o evento é de domínio. Quando ele atravessa o limite do processo ou do contexto, o evento é de integração. Misturar os dois em um objeto só gera uma dor específica, e a seção mostra qual.
 
-**Domain event** circula dentro do mesmo bounded context. Schema é interno; evolui junto com o domínio; consumidores são módulos da mesma aplicação. Quando o agregado `Order` publica `OrderSettled`, quem reage (estoque, e-mail, métrica) faz parte do mesmo modelo de domínio. Trocar um campo de `OrderSettled` exige tocar nos consumidores, mas todos vivem no mesmo repositório, com o mesmo deploy.
+**Domain event** circula dentro do mesmo bounded context. O schema é interno, evolui junto com o domínio, e os consumidores são módulos da mesma aplicação. Quando o agregado `Order` publica `OrderSettled`, quem reage (estoque, e-mail, métrica) faz parte do mesmo modelo de domínio. Trocar um campo de `OrderSettled` obriga a tocar nos consumidores, e todos eles vivem no mesmo repositório, com o mesmo deploy.
 
-**Integration event** atravessa o limite. Schema é contrato público; evolui com cuidado; consumidores podem ser outros serviços, parceiros, jobs externos. `OrderSettled` que vai para o sistema de **BI** (Business Intelligence) ou para um **ERP** (Enterprise Resource Planning) parceiro vira contrato; mudar formato sem versionar quebra integração que não está no seu radar.
+**Integration event** atravessa o limite. O schema é contrato público, evolui com cuidado, e os consumidores podem ser outros serviços, parceiros ou jobs externos. Um `OrderSettled` que vai para o sistema de **BI** (Business Intelligence · inteligência de negócio) ou para um **ERP** (Enterprise Resource Planning · sistema integrado de gestão) parceiro vira contrato. Mudar o formato sem versionar quebra uma integração que talvez nem esteja no seu radar.
 
 <details>
 <summary>❌ Ruim: o mesmo evento atende uso interno e externo, schema vai engordando</summary>
@@ -60,7 +60,7 @@ eventBus.publish(new OrderSettled(order));
 analyticsBroker.publish(new OrderSettled(order));
 ```
 
-O mesmo objeto vira contrato interno (handler de e-mail, handler de estoque) e externo (BI, parceiro). Cada novo campo entra para algum dos consumidores e contamina os outros. Quando o parceiro reclama de payload de 80 KB, ninguém sabe quem precisa de qual campo.
+O mesmo objeto serve de contrato interno (handler de e-mail, handler de estoque) e externo (BI, parceiro). Cada campo novo entra para atender a um dos consumidores e chega aos outros de carona. Quando o parceiro reclama de um payload de 80 KB, ninguém sabe dizer quem precisa de qual campo.
 
 </details>
 
@@ -115,17 +115,17 @@ eventBus.publish(OrderSettled.from(order));
 integrationBus.publish(OrderSettledIntegrationV1.from(order));
 ```
 
-O evento de domínio fica curto e evolui livre. O evento de integração ganha campo `eventVersion`, currency explícito, contrato versionado. Mudar um não obriga mudar o outro.
+O evento de domínio fica curto e evolui livre. O evento de integração ganha o campo `eventVersion`, a moeda explícita e um contrato versionado. Cada um muda no seu próprio ritmo.
 
 </details>
 
-A consequência prática: o produtor publica o domain event durante a operação; um handler interno traduz para integration event e publica no canal externo. Esse handler é a **anti-corruption layer** (camada anticorrupção) entre o modelo interno e o contrato público. Detalhes em [`patterns.md`](patterns.md).
+Na prática: o produtor publica o domain event durante a operação, e um handler interno traduz esse evento para o integration event e o publica no canal externo. Esse handler é a **anti-corruption layer** (camada anticorrupção: peça que protege o modelo interno do contrato público). Detalhes em [`patterns.md`](patterns.md).
 
-## Quem dispara: aggregate root
+## Quem dispara o evento é a aggregate root
 
-A regra que mantém o domínio coerente: o aggregate root é o único que registra eventos. Eventos não nascem em serviço, em controller, em utilitário. Nascem no método do agregado que executa a operação, porque é lá que o estado muda e a invariante é verificada.
+O aggregate root é o único que registra eventos. O evento nasce no método do agregado que executa a operação, porque é ali que o estado muda e a invariante é verificada.
 
-O agregado mantém uma lista interna de eventos pendentes (`this.events`). Cada método de domínio que altera estado adiciona o evento correspondente. Quando o caso de uso completa, o repositório lê essa lista, grava na outbox (ou no event bus, se in-process e síncrono), e limpa.
+O agregado mantém uma lista interna de eventos pendentes (`this.events`). Cada método de domínio que altera estado adiciona o evento correspondente. Quando o caso de uso termina, o repositório lê essa lista, grava na outbox (ou no event bus, se ele roda no mesmo processo e de forma síncrona) e limpa a lista.
 
 <details>
 <summary>❌ Ruim: serviço publica evento direto, sem passar pelo agregado</summary>
@@ -206,17 +206,17 @@ class OrderRepository {
 }
 ```
 
-Não há jeito de mudar status sem registrar evento. Não há jeito de publicar evento sem mudar status. A regra é uma só, no agregado, validada pelo construtor e pelos métodos de operação.
+Mudança de status e registro do evento acontecem na mesma linha de código, dentro do agregado. As duas coisas passaram a ser uma regra só, garantida pelo construtor e pelos métodos de operação.
 
 </details>
 
-A consequência: novos casos de uso ganham eventos automaticamente. Adicionar `order.refund()` adiciona `OrderRefunded` no `events`; o repositório persiste; o worker publica. Não há lista para atualizar em paralelo no serviço; a única fonte de verdade é o agregado.
+O ganho aparece nos casos de uso seguintes. Adicionar `order.refund()` já coloca `OrderRefunded` em `events`; o repositório persiste; o worker publica. O agregado é a única fonte de verdade, e o serviço fica livre de manter uma lista paralela.
 
-## Quando se materializa: commit, depois publicação
+## Publicar só depois do commit
 
-Eventos só viram públicos depois que a transação do agregado confirma. Publicar antes do commit é apostar que a transação vai concluir; publicar fora da transação é apostar que o broker não vai falhar. As duas apostas perdem cedo.
+O evento vira público depois que a transação do agregado confirma. Publicar antes do commit aposta que a transação vai concluir. Publicar fora da transação aposta que o broker não vai falhar. As duas apostas falham em produção com frequência alta o bastante para doer.
 
-A ferramenta que resolve sem aposta é o **outbox**: o evento é gravado no banco, na mesma transação que persiste o agregado. Um worker separado lê o outbox e publica no broker. Se o worker falhar, o evento fica no outbox até a próxima tentativa; o mesmo vale se o broker falhar. Se o consumer falhar, a entrega é at-least-once, e a idempotência cobre o restante.
+O **outbox** resolve os dois casos: o evento é gravado no banco, na mesma transação que persiste o agregado. Um worker separado lê o outbox e publica no broker. Se o worker ou o broker falhar, o evento continua no outbox para a próxima tentativa. Se o consumer falhar, a entrega é at-least-once e a idempotência cobre a repetição.
 
 <details>
 <summary>❌ Ruim: publish síncrono dentro da transação</summary>
@@ -244,7 +244,7 @@ class OrderRepository {
 }
 ```
 
-O `publish` mora dentro do `try`. Se o broker estiver lento, a transação segura lock no banco esperando rede. Se o `commit` falhar depois do publish, o evento já saiu mas o agregado não persistiu: consumer recebe `OrderPlaced` de um pedido que não existe.
+O `publish` mora dentro do `try`. Se o broker estiver lento, a transação segura o registro bloqueado no banco enquanto espera a rede. Se o `commit` falhar depois do publish, o evento já saiu e o agregado não persistiu: o consumer recebe `OrderPlaced` de um pedido que não existe.
 
 </details>
 
@@ -304,22 +304,22 @@ class OutboxPublisher {
 }
 ```
 
-A transação do agregado fecha rápido, sem depender de broker. O worker publica em outro processo; falha de broker fica isolada e não afeta a operação que disparou o evento. Detalhes do worker (intervalo de polling, batch size, retry com backoff) em [`backend-flow.md`](backend-flow.md#outbox-pattern).
+A transação do agregado fecha rápido, sem depender do broker. O worker publica em outro processo, e a falha do broker fica isolada ali, longe da operação que disparou o evento. Detalhes do worker (intervalo de leitura, tamanho do lote, nova tentativa com espera progressiva) em [`backend-flow.md`](backend-flow.md#outbox-pattern).
 
 </details>
 
-Em sistema pequeno, o event bus pode ser in-process e síncrono (handlers rodam imediatamente após o commit). A regra continua válida: publicação acontece **após** o commit, não antes. Em Node.js: `await transaction.commit(); for (const event of events) await eventBus.dispatch(event);` resolve. Em sistema maior, o outbox vira essencial porque cada handler vive em processo separado e a fila precisa ser durável.
+Em sistema pequeno, o event bus pode rodar no mesmo processo, de forma síncrona, com os handlers executando logo após o commit. A regra continua valendo: a publicação acontece **depois** do commit. Em Node.js, `await transaction.commit(); for (const event of events) await eventBus.dispatch(event);` resolve. Em sistema maior, o outbox vira necessário, porque cada handler vive em um processo separado e a fila precisa sobreviver a quedas.
 
-## Naming: passado, descritivo, do domínio
+## O nome do evento é um fato no passado
 
-O nome do evento descreve um fato que aconteceu. Verbo no passado, sujeito implícito (quem fez), sem comando. `OrderPlaced` é fato; `PlaceOrder` é intenção (vira **command**, comando). A distinção parece sutil mas organiza tudo: comandos podem ser rejeitados; eventos não.
+O nome do evento descreve algo que aconteceu: verbo no passado, sem comando. `OrderPlaced` narra um fato. `PlaceOrder` expressa uma intenção, e vira **command** (comando). A distinção organiza o sistema inteiro, porque um comando pode ser rejeitado e um fato consumado não.
 
 A regra prática:
 
 - **Verbo no passado**: `Placed`, `Cancelled`, `Refunded`, `Shipped`, `Settled`. Em inglês, particípio passado.
-- **Sujeito do domínio**: `Order`, `Customer`, `Invoice`. Não `Entity`, não `Record`, não `Item` genérico.
-- **Sem auxiliar técnico**: evitar `OrderUpdatedEvent`, `CustomerSavedEvent`. O sufixo `Event` é ruído; já se sabe pelo contexto.
-- **Sem `*Updated` quando se pode ser específico**: `OrderUpdated` esconde o que mudou. Quebrar em `OrderAddressChanged`, `OrderItemAdded`, `OrderItemRemoved`. Cada um carrega regra distinta.
+- **Sujeito do domínio**: `Order`, `Customer`, `Invoice`. Evitar `Entity`, `Record` ou `Item` genérico.
+- **Sem auxiliar técnico**: evitar `OrderUpdatedEvent`, `CustomerSavedEvent`. O sufixo `Event` é ruído, porque o contexto já diz do que se trata.
+- **Específico sempre que possível**: `OrderUpdated` esconde o que mudou. Quebrar em `OrderAddressChanged`, `OrderItemAdded`, `OrderItemRemoved`. Cada um carrega uma regra distinta.
 
 <details>
 <summary>❌ Ruim: nomes genéricos no presente, com ruído técnico</summary>
@@ -347,7 +347,7 @@ eventBus.publish(new UpdateOrder(order));
 eventBus.publish(new SaveOrderEvent(order));
 ```
 
-`UpdateOrder` é nome de comando, não evento. `OrderDataChangedEvent` tem `Data` (banido por ser vago) e `Event` (redundante). `SaveOrderEvent` mistura conceito de banco (`save`) com conceito de domínio. Nenhum descreve o que aconteceu de fato.
+`UpdateOrder` tem nome de comando. `OrderDataChangedEvent` carrega `Data` (vago) e `Event` (redundante). `SaveOrderEvent` mistura o vocabulário do banco (`save`) com o do domínio. Nenhum dos três diz o que aconteceu de fato.
 
 </details>
 
@@ -384,21 +384,21 @@ class OrderItemAdded {
 }
 ```
 
-Cada nome conta uma história: alguém colocou um pedido; alguém trocou o endereço; alguém adicionou item. Quem lê o log de eventos enxerga a operação de negócio, não o método do CRUD.
+Cada nome conta uma história: alguém colocou um pedido; alguém trocou o endereço; alguém adicionou um item. O log de eventos passa a narrar a operação de negócio em linguagem que o time de produto entende.
 
 </details>
 
-Em projeto que cresce, o nome do evento vira parte da **ubiquitous language** (linguagem ubíqua): produto, suporte e engenharia conversam sobre `OrderPlaced` e todos sabem o mesmo. Eventos com nome técnico (`OrderRecordSaved`) fragmentam a conversa.
+Em projeto que cresce, o nome do evento vira parte da **ubiquitous language** (linguagem ubíqua: o vocabulário que produto, suporte e engenharia usam para falar da mesma coisa). Todos dizem `OrderPlaced` e todos entendem o mesmo fato. Nomes técnicos como `OrderRecordSaved` fragmentam essa conversa.
 
-## Schema: payload pequeno, versionado, imutável
+## O payload é pequeno, versionado e não muda depois
 
 O payload é o contrato do evento. Três princípios ditam o desenho:
 
-**Pequeno**. IDs e campos essenciais para identificar o quê e quando. Não o agregado inteiro. Quem precisar de mais detalhes resolve o ID e consulta o banco no momento certo. Carregar o objeto completo cria três problemas: payload pesado no broker, schema acoplado à estrutura interna do agregado, e estado defasado (o evento foi gravado em um momento; o consumer lê em outro; o agregado já mudou).
+**Pequeno**. IDs e os campos essenciais para identificar o que aconteceu e quando. Quem precisar de mais detalhes resolve o ID e consulta o banco no momento de usar. Carregar o agregado completo cria três problemas: payload pesado no broker, schema acoplado à estrutura interna do agregado, e dado defasado, porque o evento foi gravado em um momento, o consumer lê em outro, e o agregado já mudou.
 
-**Versionado**. Eventos de integração ganham campo `eventVersion`. Mudança no payload gera nova versão (`V2`), mantendo a versão antiga em circulação até consumers migrarem. Eventos de domínio podem ser menos rigorosos (mudança coordenada no mesmo deploy), mas o hábito de versionar paga juros quando o domain vira integration.
+**Versionado**. Eventos de integração ganham o campo `eventVersion`. Uma mudança no payload gera uma versão nova (`V2`), e a versão antiga fica em circulação até os consumers migrarem. Eventos de domínio admitem menos rigor, porque a mudança é coordenada no mesmo deploy, e mesmo assim versionar cedo economiza trabalho no dia em que o evento interno virar contrato externo.
 
-**Imutável**. Uma vez publicado, o payload não muda. Correção em evento antigo vira evento novo (`OrderCorrected`), não edição. Imutabilidade habilita auditoria, replay e debugging: o histórico de eventos é a verdade do que aconteceu, não o estado atual.
+**Não muda depois de publicado**. Corrigir um evento antigo significa emitir um evento novo (`OrderCorrected`). O histórico preservado é o que torna possível auditar, reprocessar e depurar: ele conta o que aconteceu em cada instante, e o estado atual conta apenas onde tudo parou.
 
 <details>
 <summary>❌ Ruim: payload carrega o agregado inteiro</summary>
@@ -421,7 +421,7 @@ class StockReservationHandler {
 }
 ```
 
-O handler depende do shape interno de `Order`. Quando o agregado adiciona um campo, o evento engorda. Quando refatora a estrutura, o consumer quebra. O contrato implícito é "tudo que `Order` tiver hoje" e isso é instável por desenho.
+O handler depende do formato interno de `Order`. Quando o agregado ganha um campo, o evento engorda. Quando o agregado é refatorado, o consumer quebra. O contrato implícito virou "tudo que `Order` tiver hoje", e esse contrato muda a cada sprint.
 
 </details>
 
@@ -466,26 +466,26 @@ class StockReservationHandler {
 }
 ```
 
-O payload tem só o que basta para o consumer reagir. Quem precisar dos itens consulta o agregado pelo ID. O contrato é o construtor de `OrderSettledV1`; mudanças exigem `OrderSettledV2` ou retrocompatibilidade explícita.
+O payload tem só o que basta para o consumer reagir, e quem precisar dos itens consulta o agregado pelo ID. O contrato é o construtor de `OrderSettledV1`, e qualquer mudança passa por `OrderSettledV2` ou por retrocompatibilidade explícita.
 
 </details>
 
-Migração de schema sem quebrar consumers segue duas regras:
+Migrar o schema sem quebrar consumers segue duas regras:
 
-- **Adicionar campo é sempre seguro**. Consumers antigos ignoram o campo novo.
-- **Remover ou renomear campo exige nova versão**. `OrderSettledV2` substitui `OrderSettledV1`; o produtor pode publicar os dois durante a janela de migração; consumers escolhem qual escutar; quando todos migrarem, `V1` é desligado.
+- **Adicionar campo é seguro**. Consumers antigos ignoram o campo novo.
+- **Remover ou renomear campo exige versão nova**. `OrderSettledV2` substitui `OrderSettledV1`; o produtor publica os dois durante a janela de migração; cada consumer escolhe qual escutar; quando todos migrarem, `V1` é desligado.
 
-## Handler isolation
+## Cada handler falha sozinho
 
-Cada handler é uma unidade independente, com retry, falha e estado próprios. Falha de um handler nunca afeta outro. Esse isolamento é o que diferencia handlers bem desenhados de "callbacks acoplados disfarçados de eventos".
+Cada handler é uma unidade independente, com nova tentativa, falha e estado próprios. A falha de um handler não alcança os outros. Sem esse isolamento, o que existe é uma cadeia de chamadas acopladas com nome de evento.
 
 Três regras concretas:
 
-**Idempotência**. Handler recebe at-least-once delivery; pode receber o mesmo evento duas vezes. Verificar antes de aplicar: o evento já foi processado? Se sim, ignorar. Em geral, uma tabela `processed_events(handler_name, event_id)` ou flag no estado do consumer resolvem.
+**Idempotência**. O handler recebe entrega at-least-once, então pode receber o mesmo evento duas vezes. Ele verifica antes de aplicar: o evento já foi processado? Se sim, ignora. Uma tabela `processed_events(handler_name, event_id)` ou uma flag no estado do consumer resolvem.
 
-**Sem efeito cruzado**. Handler não chama outro handler. Não escreve direto no agregado de outro handler. Se reagir gera novo fato do domínio, publica novo evento e deixa outro handler reagir.
+**Sem efeito cruzado**. O handler não chama outro handler nem escreve direto no agregado de outro handler. Quando a reação gera um fato novo do domínio, ele publica um evento novo e deixa outro handler reagir.
 
-**Falha não derruba o produtor**. Se o handler de e-mail falhar, o pedido continua pago. Falha do handler vai para retry; após N tentativas, para a DLQ.
+**Falha isolada do produtor**. Se o handler de e-mail falhar, o pedido continua pago. A falha do handler vai para nova tentativa e, depois de N tentativas, para a DLQ.
 
 <details>
 <summary>❌ Ruim: handler chama outro handler em cadeia síncrona</summary>
@@ -501,7 +501,7 @@ class OrderSettledHandler {
 }
 ```
 
-Quatro responsabilidades acopladas em um handler só. Se o e-mail falhar, estoque, entrega e analytics já rodaram, mas o handler todo vai para retry: todas as ações vão repetir. Sem idempotência forte em cada uma, estoque é reservado em dobro.
+Quatro responsabilidades acopladas em um handler só. Se o e-mail falhar, estoque, entrega e analytics já rodaram, e mesmo assim o handler inteiro volta para nova tentativa: as quatro ações repetem. Sem idempotência forte em cada uma, o estoque é reservado em dobro.
 
 </details>
 
@@ -557,21 +557,21 @@ class OrderConfirmationEmailHandler {
 }
 ```
 
-Cada handler tem sua própria checagem de idempotência. Cada um falha sozinho. O event bus reentrega para o que falhou, sem reexecutar os que passaram. A falha do e-mail não cancela o estoque.
+Cada handler tem a própria checagem de idempotência e falha por conta própria. O event bus reentrega apenas para quem falhou, e quem já passou fica de fora da repetição. A falha do e-mail deixa a reserva de estoque de pé.
 
 </details>
 
-Quando um handler precisa reagir disparando outra ação do domínio, o caminho é a regra `read this event → command → another aggregate → publish next event`. Nunca handler chamando handler direto.
+Quando um handler precisa disparar outra ação do domínio, o caminho é `ler o evento → emitir um comando → outro agregado executa → publicar o próximo evento`. Um handler nunca chama outro handler direto.
 
-## Eventual consistency e estado intermediário
+## O estado intermediário aparece na tela
 
-Quando dois agregados conversam por evento, a consistência entre eles é eventual. O ponto não é evitar isso (não dá), e sim modelar honestamente para que o sistema diga a verdade durante a janela de propagação.
+Dois agregados que conversam por evento alcançam consistência com um intervalo entre as duas escritas. Esse intervalo existe, e o trabalho é modelá-lo de forma que o sistema conte a verdade durante a propagação.
 
-A janela costuma ser de milissegundos a segundos em sistema saudável. Em sistema sob carga, pode chegar a minutos. Em sistema com falha, horas. Em todos os casos, três abordagens cobrem o usuário:
+O intervalo costuma ser de milissegundos a segundos em sistema saudável. Sob carga, pode chegar a minutos. Com falha, a horas. Em todos os casos, três abordagens cobrem o usuário:
 
-- **Estado intermediário no agregado**. `status = "awaiting_confirmation" → "confirmed"`. A UI mostra "processando" enquanto o evento ainda não chegou; mostra "confirmado" quando o handler atualizou.
-- **Otimismo na UI**. Frontend assume o resultado final e atualiza imediato. Backend retifica se algo der errado. Funciona quando o erro é raro e a correção é tolerável.
-- **Pull explícito**. Frontend pergunta a cada N segundos. Trade-off: tráfego extra; ganho: consistência percebida mais firme.
+- **Estado intermediário no agregado**. `status = "awaiting_confirmation" → "confirmed"`. A tela mostra "processando" enquanto o evento não chegou, e "confirmado" quando o handler atualizou.
+- **Otimismo na UI**. O frontend assume o resultado final e atualiza a tela de imediato; o backend corrige se algo der errado. Funciona quando o erro é raro e a correção é tolerável.
+- **Consulta periódica**. O frontend pergunta ao backend a cada N segundos. O custo é tráfego extra; o ganho é uma consistência percebida mais firme.
 
 <details>
 <summary>❌ Ruim: agregado finge consistência instantânea, UI engana o usuário</summary>
@@ -587,7 +587,7 @@ class Order {
 }
 ```
 
-`status = "confirmed"` no momento do `place`. O usuário recebe "pedido confirmado" no mesmo instante, mas estoque ainda não verificou. Quando o handler de estoque rejeitar (sem disponibilidade), o pedido vira `cancelled` segundos depois. UI mente.
+O `status` nasce como `"confirmed"` no momento do `place`. O usuário lê "pedido confirmado" na hora, e o estoque ainda nem foi verificado. Quando o handler de estoque rejeitar por falta de disponibilidade, o pedido vira `cancelled` segundos depois, e a tela mostrou uma confirmação que o sistema não tinha como dar.
 
 </details>
 
@@ -623,17 +623,17 @@ class Order {
 }
 ```
 
-O caso de uso devolve um pedido `awaiting_confirmation`. A UI exibe "verificando disponibilidade". Quando o handler de estoque concluir, dispara `confirm()` ou `rejectDueToStockShortage()`; cada um publica o evento correspondente. O usuário enxerga o estado real do sistema em cada instante.
+O caso de uso devolve um pedido `awaiting_confirmation`, e a tela exibe "verificando disponibilidade". Quando o handler de estoque concluir, ele chama `confirm()` ou `rejectDueToStockShortage()`, e cada um publica o evento correspondente. O usuário vê em cada instante o estado que o sistema tem de fato.
 
 </details>
 
-## Choreography vs orchestration
+## Coordenação: cada um reage ou um coordenador comanda
 
-Quando vários handlers reagem em sequência para completar uma operação maior, dois estilos de coordenação aparecem. A escolha entre eles tem mais a ver com complexidade do fluxo do que com tecnologia.
+Quando vários handlers reagem em sequência para completar uma operação maior, dois estilos de coordenação aparecem. A complexidade do fluxo decide qual usar.
 
-**Choreography**. Cada serviço escuta evento e reage. Não há coordenador. Fluxo emerge da soma dos handlers. Bom para fluxos curtos (3-5 passos), estáveis, com regras de cancelamento simples. Acoplamento é por contrato de evento; cada serviço é autônomo.
+**Choreography**. Cada serviço escuta o evento e reage, sem coordenador. O fluxo emerge da soma dos handlers. Serve para fluxos curtos (3 a 5 passos), estáveis, com regras de cancelamento simples. O acoplamento acontece pelo contrato do evento, e cada serviço é autônomo.
 
-**Orchestration**. Um coordenador comanda os passos. O coordenador sabe o fluxo inteiro, mantém o estado, decide o próximo comando. Bom para fluxos longos (7+ passos), com regras de compensação variadas, com pontos de espera (aprovação humana, timeout, retry programado).
+**Orchestration**. Um coordenador comanda os passos. Ele conhece o fluxo inteiro, mantém o estado e decide o próximo comando. Serve para fluxos longos (7 passos ou mais), com regras de compensação variadas e pontos de espera (aprovação humana, timeout, nova tentativa programada).
 
 | Critério | Choreography | Orchestration |
 |---|---|---|
@@ -643,27 +643,27 @@ Quando vários handlers reagem em sequência para completar uma operação maior
 | Acoplamento | Por contrato de evento | Por contrato de comando |
 | Bom para | Fluxos curtos e estáveis | Fluxos longos, com pontos de espera |
 
-A combinação também é válida: orchestration entre serviços; choreography dentro de cada serviço. Detalhes sobre saga (que aparece em ambos estilos) em [`transactions.md`](transactions.md#saga-e-long-running).
+Combinar os dois é válido: orquestração entre serviços e coreografia dentro de cada serviço. O **correlation ID** citado na tabela (identificador que acompanha a operação por todos os passos) é o que torna possível seguir um fluxo coreografado no log. Detalhes sobre saga, que aparece nos dois estilos, em [`transactions.md`](transactions.md#long-running-saga).
 
 ## Anti-patterns
 
-**Naming imperativo**. `SendEmail`, `PlaceOrder`, `UpdateStock` como nome de evento. Sintoma: handler chamado `SendEmailHandler` recebe `SendEmail`, que é o nome do comando que ele executa. Tratamento: `OrderPlaced` é o evento; `SendOrderConfirmationEmail` é o comando que o handler executa em reação; os dois nomes contam histórias diferentes.
+**Naming imperativo**. `SendEmail`, `PlaceOrder`, `UpdateStock` como nome de evento. Sintoma: um handler chamado `SendEmailHandler` recebe `SendEmail`, que é o nome do comando que ele executa. Tratamento: `OrderPlaced` nomeia o evento e `SendOrderConfirmationEmail` nomeia o comando que o handler executa em reação; os dois nomes contam histórias diferentes.
 
-**Payload pesado**. Evento carrega o agregado inteiro. Sintoma: alteração interna do `Order` quebra consumers do evento; payload chega em 50 KB no broker. Tratamento: IDs e campos essenciais; consumer resolve o ID e busca o resto.
+**Payload pesado**. O evento carrega o agregado inteiro. Sintoma: uma alteração interna do `Order` quebra os consumers do evento; o payload chega a 50 KB no broker. Tratamento: IDs e campos essenciais; o consumer resolve o ID e busca o resto.
 
-**Publish dentro da transação**. Evento publicado antes do `commit`. Sintoma: consumer recebe evento de agregado que falhou no save; ou transação segura lock esperando broker. Tratamento: outbox + worker.
+**Publish dentro da transação**. Evento publicado antes do `commit`. Sintoma: o consumer recebe evento de um agregado que falhou no save; ou a transação segura o registro bloqueado esperando o broker. Tratamento: outbox mais worker.
 
-**Handler que muda o agregado origem**. `OrderSettledHandler` que atualiza o próprio `Order` que disparou o evento. Sintoma: novo evento `OrderSettledUpdated` vira ruído; o agregado nunca para de mudar. Tratamento: agregado já gravou a mudança que disparou o evento; handlers reagem em outros agregados ou em sistemas externos.
+**Handler que muda o agregado de origem**. `OrderSettledHandler` atualiza o próprio `Order` que disparou o evento. Sintoma: um evento `OrderSettledUpdated` vira ruído e o agregado nunca para de mudar. Tratamento: o agregado já gravou a mudança que disparou o evento, então os handlers reagem em outros agregados ou em sistemas externos.
 
-**Sem versionamento de schema**. Evento muda payload em produção sem `eventVersion`. Sintoma: consumer antigo quebra, deploy de produtor obriga deploy coordenado de N consumers. Tratamento: versionar; publicar `V1` e `V2` durante migração.
+**Sem versionamento de schema**. O payload muda em produção sem `eventVersion`. Sintoma: consumer antigo quebra; o deploy do produtor passa a exigir deploy coordenado de N consumers. Tratamento: versionar; publicar `V1` e `V2` durante a migração.
 
-**Replay sem idempotência**. Reprocessar histórico de eventos para reconstruir estado sem checar duplicata. Sintoma: estoque reservado em dobro; e-mail enviado de novo; revenue duplicado em dashboard. Tratamento: idempotência em todo handler; `processed_events` ou flag no consumer.
+**Replay sem idempotência**. Reprocessar o histórico de eventos para reconstruir o estado sem checar duplicata. Sintoma: estoque reservado em dobro, e-mail enviado de novo, receita contada duas vezes no dashboard. Tratamento: idempotência em todo handler, com `processed_events` ou flag no consumer.
 
-**Domain event vazando como integration event**. O evento interno vira contrato público sem passar por tradutor. Sintoma: mudança rotineira do domínio quebra parceiro externo; refactor do agregado vira projeto. Tratamento: domain event publicado no bus interno; handler dedicado traduz e publica integration event versionado no canal externo.
+**Domain event vazando como integration event**. O evento interno vira contrato público sem passar por um tradutor. Sintoma: uma mudança rotineira do domínio quebra o parceiro externo; refatorar o agregado vira projeto. Tratamento: publicar o domain event no bus interno e deixar um handler dedicado traduzir e publicar o integration event versionado no canal externo.
 
-**Choreography em fluxo de 12 passos**. Operação longa modelada como sucessão de eventos sem coordenador. Sintoma: ninguém consegue dizer em que passo o fluxo está; debug exige seguir 12 handlers em ordem; novo passo no meio é doloroso. Tratamento: orchestration; estado da saga persistido pelo coordenador.
+**Choreography em fluxo de 12 passos**. Operação longa modelada como sucessão de eventos, sem coordenador. Sintoma: ninguém consegue dizer em que passo o fluxo está; depurar exige seguir 12 handlers em ordem; inserir um passo no meio dói. Tratamento: orchestration, com o estado da saga persistido pelo coordenador.
 
-**Handler que chama outro handler direto**. `OrderSettledHandler` invoca `StockReservationHandler.run()` no código. Sintoma: falha em cascata; retry duplo; sem isolamento. Tratamento: handlers se comunicam por evento, nunca por chamada direta.
+**Handler que chama outro handler direto**. `OrderSettledHandler` invoca `StockReservationHandler.run()` no código. Sintoma: falha em cascata, nova tentativa duplicada, nenhum isolamento. Tratamento: handlers se comunicam por evento.
 
 ## Referências
 
@@ -675,4 +675,4 @@ Cross-links dentro do guia:
 - [`architecture/patterns.md`](patterns.md): Observer, CQRS, anti-corruption layer
 - [`platform/messaging.md`](../platform/messaging.md): brokers, at-least-once, garantias de entrega
 
-Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-e-modelagem-de-domínio).
+Bibliografia externa (livros, artigos, especificações): [`REFERENCES.md`](../../../REFERENCES.md#ddd-and-domain-modeling).

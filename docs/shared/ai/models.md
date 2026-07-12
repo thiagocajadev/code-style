@@ -1,8 +1,8 @@
-# Modelos de IA (AI Models)
+# Modelos de IA: escolher entre a nuvem e a máquina local
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um modelo de IA é um conjunto de pesos e parâmetros resultante do treinamento em grandes volumes de dados. Para uso em produção, os modelos se dividem em duas categorias: **cloud** (nuvem), acessados via **API** (Application Programming Interface · Interface de Programação de Aplicações) mediante pagamento por token, e **local**, executados diretamente na máquina do desenvolvedor.
+Um modelo de IA é o conjunto de pesos e parâmetros que sobrou do treinamento em um volume enorme de dados. Na hora de usar um em produção, a primeira decisão separa dois caminhos. O modelo **cloud** (em nuvem) roda no servidor do provedor, você o acessa por **API** (Application Programming Interface · Interface de Programação de Aplicações) e paga por token consumido. O modelo **local** roda na sua máquina, sem custo por chamada e sem enviar dado nenhum para fora.
 
 ## Conceitos fundamentais
 
@@ -15,11 +15,11 @@ Um modelo de IA é um conjunto de pesos e parâmetros resultante do treinamento 
 | **Proprietary** (proprietário) | Modelo cujos pesos não são públicos; acesso via API |
 | **Context window** (janela de contexto) | Total de tokens (entrada + saída) processados em uma chamada |
 | **Quantization** (quantização) | Técnica que reduz a precisão dos pesos (ex: de 32 bits para 4 bits) para diminuir uso de memória |
-| **GGUF** (GPT-Generated Unified Format, formato unificado gerado por GPT) | Formato binário do llama.cpp para armazenar e executar modelos quantizados localmente |
+| **GGUF** (GPT-Generated Unified Format · formato unificado gerado por GPT) | Formato binário do llama.cpp para armazenar e executar modelos quantizados localmente |
 
-## Modelos em nuvem (Cloud Models)
+## Modelos em nuvem: o provedor executa e cobra por token
 
-Modelos em nuvem são acessados via API **REST** (Representational State Transfer · Transferência de Estado Representacional). O desenvolvedor envia tokens e paga por volume de entrada e saída. Nenhum hardware especializado é necessário no lado do cliente.
+Você fala com o modelo por uma API **REST** (Representational State Transfer · Transferência de Estado Representacional), envia os tokens de entrada e paga pelo que entrou e pelo que saiu. O hardware pesado fica todo do lado do provedor, e a sua máquina só precisa saber fazer uma requisição HTTP.
 
 ### Claude (Anthropic)
 
@@ -60,7 +60,7 @@ Família open weights da Meta. Llama 4 adota arquitetura **MoE** e processamento
 | **Llama 4 Scout** | 17B ativos / 109B total | 10 milhões de tokens |
 | **Llama 4 Maverick** | 17B ativos / 400B total | 1 milhão de tokens |
 
-Por serem open weights, modelos Llama podem ser rodados localmente via Ollama.
+Os pesos do Llama são públicos, então os mesmos modelos da tabela acima rodam na sua máquina via Ollama.
 
 ### Mistral
 
@@ -73,13 +73,13 @@ Família de modelos da Mistral AI, com foco em código e eficiência. Distribuí
 | **Ministral 3/8B** | Modelos compactos; rodam em laptop |
 | **Magistral** | Família de raciocínio da Mistral |
 
-## Modelos locais (Local Models)
+## Modelos locais: os pesos rodam na sua máquina
 
-Modelos locais rodam diretamente na máquina, sem envio de dados para servidores externos. São indicados para prototipagem, ambientes sem acesso à internet e controle total sobre privacidade.
+O modelo local processa tudo na sua máquina, e nenhum byte do prompt sai dela. Isso serve para prototipar sem gastar, para trabalhar sem internet e para os casos em que o dado não pode chegar a um servidor de terceiro.
 
 ### Ollama
 
-Ollama permite baixar e executar modelos localmente com um único comando. Modelos são identificados por `nome:tag` (ex: `llama3.1:8b-q4_K_M`). O download funciona em camadas, similar ao Docker.
+O Ollama baixa e executa um modelo com um comando só. Cada modelo é identificado por `nome:tag` (por exemplo `llama3.1:8b-q4_K_M`), e o download vem em camadas, como uma imagem Docker.
 
 ```bash
 # baixar e executar modelo
@@ -93,13 +93,13 @@ Modelos populares disponíveis no Ollama: `llama4`, `qwen2.5`, `mistral`, `gemma
 
 ### LM Studio
 
-LM Studio é uma interface gráfica para rodar modelos GGUF localmente. Inclui um servidor compatível com a API da OpenAI, permitindo integração direta com ferramentas existentes sem alterar código.
+O LM Studio é a interface gráfica para rodar modelos GGUF sem linha de comando. Ele sobe um servidor local compatível com a API da OpenAI, então uma ferramenta que já fala com a OpenAI passa a falar com o modelo local trocando a URL.
 
-## Quantização (Quantization)
+## Quantização: encolher os pesos para caber na memória
 
-Quantização reduz a precisão dos pesos do modelo de ponto flutuante de 32 bits (FP32) para representações menores como Q8 ou Q4. O modelo ocupa menos memória e a inferência é mais rápida, com perda controlada de qualidade.
+Quantizar é guardar cada peso do modelo com menos bits, saindo do ponto flutuante de 32 bits (FP32) para representações como Q8 ou Q4. O arquivo encolhe, o modelo cabe em menos memória e a inferência acelera. Em troca, a resposta perde um pouco de qualidade, e o quanto ela perde depende do nível escolhido.
 
-O formato GGUF (do llama.cpp) é o padrão para modelos quantizados locais. Cada arquivo `.gguf` contém os pesos já quantizados e metadados de arquitetura.
+O formato GGUF (do llama.cpp) é o padrão dos modelos quantizados locais. Cada arquivo `.gguf` traz os pesos já quantizados junto com os metadados da arquitetura, o que permite carregar o modelo sem nenhum outro arquivo ao lado.
 
 ### Níveis de quantização
 
@@ -110,7 +110,7 @@ O formato GGUF (do llama.cpp) é o padrão para modelos quantizados locais. Cada
 | **Q4_K_M** | 4 | ~25-30% | Boa (~95% de FP16) | Ponto de equilíbrio: uso geral local |
 | **Q3_K_S** | 3 | ~20% | Razoável | Hardware muito limitado |
 
-A notação `K_M` indica **K-quants** com superblocks, que preservam melhor a qualidade do que formatos antigos de mesmo nível de bits. Para a maioria dos casos, **Q4_K_M é a escolha padrão** na comunidade.
+A notação `K_M` indica os **K-quants** com superblocks, que preservam mais qualidade que os formatos antigos com o mesmo número de bits. Para a maioria dos casos, **Q4_K_M é a escolha padrão** na comunidade: o modelo ocupa cerca de um quarto do tamanho original e mantém perto de 95% da qualidade.
 
 ### Exemplo: modelo 7B em diferentes quantizações
 
@@ -120,3 +120,5 @@ A notação `K_M` indica **K-quants** com superblocks, que preservam melhor a qu
 | Q8_0 | ~7 GB | ~8 GB |
 | Q4_K_M | ~4.1 GB | ~5 GB |
 | Q3_K_S | ~3.0 GB | ~4 GB |
+
+A tabela explica por que Q4_K_M virou padrão: um modelo de 7 bilhões de parâmetros passa a caber em 5 GB de RAM, o que roda em um laptop comum.

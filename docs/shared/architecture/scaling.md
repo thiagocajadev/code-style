@@ -1,8 +1,8 @@
-# Escala e Infraestrutura
+# Escala e infraestrutura
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais dados, mais usuários simultâneos. A armadilha é tentar resolver antecipadamente um problema que ainda não existe. A postura correta: **construir com base sólida, escalar quando os dados indicarem necessidade**.
+Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais dados, mais usuários simultâneos. A armadilha é investir em infraestrutura para um problema que ainda não existe. A postura correta: **construir com base sólida e escalar quando os dados indicarem necessidade**.
 
 ## Conceitos fundamentais
 
@@ -22,21 +22,21 @@ Escalar um sistema é resolver um problema de capacidade: mais tráfego, mais da
 
 ---
 
-## Escala Vertical
+## Escala vertical
 
 Aumentar a capacidade da máquina: mais **CPU** (Central Processing Unit · Unidade Central de Processamento), mais **RAM** (Random Access Memory · Memória de Acesso Aleatório), disco mais rápido.
 
-**Vantagens**: zero mudança de código, zero complexidade de infraestrutura. Resolve a maioria dos gargalos de um sistema em crescimento.
+**Vantagens**: zero mudança de código e zero complexidade de infraestrutura. Resolve a maioria dos gargalos de um sistema em crescimento.
 
-**Limite**: tem teto físico e financeiro. Uma máquina maior sempre custa mais do que duas máquinas menores com a mesma capacidade total.
+**Limite**: existe um teto físico e financeiro. Uma máquina maior sempre custa mais do que duas máquinas menores com a mesma capacidade somada.
 
-**Quando usar**: primeiro passo de qualquer escala. Medir, identificar o gargalo, aumentar o recurso correspondente. Só partir para escala horizontal quando o teto vertical for atingido ou o custo se tornar proibitivo.
+**Quando usar**: como primeiro passo de qualquer escala. Meça, identifique o gargalo, aumente o recurso correspondente. Passe para a escala horizontal quando o teto vertical for atingido ou quando o custo se tornar proibitivo.
 
-## Escala Horizontal
+## Escala horizontal
 
 Adicionar mais instâncias da aplicação e distribuir a carga entre elas.
 
-**Requisito central**: a aplicação deve ser **stateless** (sem estado local). Estado em memória (sessão, cache local, WebSocket com estado) impede a replicação. Cada requisição deve poder cair em qualquer instância sem diferença de resultado.
+**Requisito central**: a aplicação precisa ser **stateless** (sem estado local). Estado em memória (sessão, cache local, WebSocket com estado) impede a replicação, porque cada requisição precisa poder cair em qualquer instância e produzir o mesmo resultado.
 
 Como tornar a aplicação stateless:
 
@@ -47,11 +47,11 @@ Como tornar a aplicação stateless:
 | Arquivos temporários | Object storage (S3, Blob Storage) |
 | Filas em memória | Message broker (RabbitMQ, SQS, Kafka) |
 
-Com a aplicação stateless, adicionar instâncias é linear: duas instâncias dobram a capacidade, dez instâncias multiplicam por dez.
+Com a aplicação stateless, adicionar instâncias tem efeito linear: duas instâncias dobram a capacidade, dez multiplicam por dez.
 
-## Load Balancing (Balanceamento de Carga)
+## Balanceamento de carga
 
-O **Load Balancer** (balanceador de carga) distribui requisições entre as instâncias disponíveis. É o ponto de entrada da escala horizontal.
+O **Load Balancer** (balanceador de carga) distribui as requisições entre as instâncias disponíveis, e é o ponto de entrada da escala horizontal.
 
 ### Algoritmos de distribuição
 
@@ -64,7 +64,7 @@ O **Load Balancer** (balanceador de carga) distribui requisições entre as inst
 
 ### Health checks
 
-O balanceador consulta periodicamente um endpoint de cada instância (`GET /health`). O balanceador remove da rotação as instâncias que não respondem ou respondem com erro, até se recuperarem.
+O balanceador consulta periodicamente um endpoint de cada instância (`GET /health`) e remove da rotação as que não respondem ou respondem com erro, até que se recuperem.
 
 ```
 Load Balancer → GET /health → 200 OK → instância saudável, recebe tráfego
@@ -73,7 +73,7 @@ Load Balancer → GET /health → timeout → instância removida da rotação
 
 ### SSL termination
 
-O balanceador recebe o tráfego **HTTPS** (HyperText Transfer Protocol Secure · Protocolo Seguro de Transferência de Hipertexto), descriptografa e repassa **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) simples para as instâncias internas. As instâncias não precisam gerenciar certificados; o balanceador centraliza isso.
+O balanceador recebe o tráfego **HTTPS** (HyperText Transfer Protocol Secure · Protocolo Seguro de Transferência de Hipertexto), descriptografa e repassa **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) simples para as instâncias internas. O gerenciamento de certificados fica centralizado no balanceador.
 
 ```
 Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
@@ -81,7 +81,7 @@ Cliente → HTTPS → Load Balancer (SSL termination) → HTTP → Instâncias
 
 ## API Gateway
 
-O **API Gateway** é o ponto de entrada único para todos os serviços de uma **API** (Application Programming Interface · Interface de Programação de Aplicações). Centraliza responsabilidades que, sem ele, precisariam ser implementadas em cada serviço individualmente.
+O **API Gateway** é o ponto de entrada único para todos os serviços de uma **API** (Application Programming Interface · Interface de Programação de Aplicações). Ele centraliza responsabilidades que, sem ele, teriam de ser implementadas em cada serviço.
 
 Responsabilidades centrais:
 
@@ -98,35 +98,35 @@ Responsabilidades centrais:
 Cliente → API Gateway → autenticação → rate check → roteamento → Serviço A | Serviço B
 ```
 
-O API Gateway não executa lógica de negócio. É infraestrutura de entrada: pré-processamento e roteamento.
+O API Gateway é infraestrutura de entrada: faz pré-processamento e roteamento, e deixa a lógica de negócio para os serviços.
 
 **Ferramentas comuns**: AWS API Gateway, Kong, Nginx, Traefik, Caddy.
 
-## Estratégias para Escalar
+## Estratégias para escalar
 
-Além de instâncias e balanceadores, há camadas de escala que não exigem mais servidores:
+Além de instâncias e balanceadores, existem camadas de escala que dispensam servidores novos:
 
-**CDN para assets estáticos**: imagens, JS, CSS e fontes servidos a partir de nós geograficamente próximos ao usuário. Zero carga no servidor de aplicação para esses recursos.
+**CDN para assets estáticos**: imagens, JS, CSS e fontes servidos a partir de nós geograficamente próximos ao usuário, sem carga nenhuma no servidor de aplicação.
 
-**Cache na borda**: respostas de API cacheadas no Redis ou Memcached. Requisições repetidas não chegam ao banco.
+**Cache na borda**: respostas de API guardadas no Redis ou Memcached, de modo que as requisições repetidas param antes de chegar ao banco.
 
 ```
 Requisição → Cache hit → resposta em < 1ms
 Requisição → Cache miss → banco → armazena → resposta
 ```
 
-**Read replicas**: para sistemas com muito mais leitura do que escrita, réplicas de leitura distribuem as queries SELECT sem tocar na instância primária.
+**Read replicas**: em sistemas com muito mais leitura do que escrita, as réplicas de leitura absorvem as queries SELECT sem tocar na instância primária.
 
 ```
 Escrita → banco primário
 Leitura → read replica 1 | read replica 2 | read replica N
 ```
 
-**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileirar e processar em background. O servidor de aplicação responde rápido; o **worker** (processo que executa tarefas em segundo plano) absorve o pico no seu próprio ritmo.
+**Filas para absorver picos**: em vez de processar operações lentas de forma síncrona, enfileire e processe em background. O servidor de aplicação responde rápido e o **worker** (processo que executa tarefas em segundo plano) absorve o pico no seu próprio ritmo.
 
-## Anti-Overengineering
+## Evitar engenharia excessiva
 
-A maioria dos projetos nunca vai precisar de escala horizontal, load balancer dedicado ou múltiplas read replicas. A decisão errada é investir nessa infraestrutura antes de ter o problema.
+A maioria dos projetos nunca vai precisar de escala horizontal, balanceador dedicado ou várias read replicas. Investir nessa infraestrutura antes de ter o problema custa complexidade e não entrega nada em troca.
 
 **Sequência correta**:
 
@@ -138,7 +138,7 @@ A maioria dos projetos nunca vai precisar de escala horizontal, load balancer de
 5. Microsserviços apenas quando limites de domínio ou times impuserem isolamento real
 ```
 
-Cada etapa só faz sentido depois que a anterior foi esgotada. Pular etapas aumenta complexidade sem benefício proporcional.
+Cada etapa só faz sentido depois que a anterior se esgotou. Pular etapas aumenta a complexidade sem benefício proporcional.
 
 **Sinais de que é hora de escalar**:
 
@@ -149,12 +149,12 @@ Cada etapa só faz sentido depois que a anterior foi esgotada. Pular etapas aume
 | Máquina maior não resolve mais | Avaliar escala horizontal |
 | Um módulo tem tráfego radicalmente diferente dos demais | Considerar extração cirúrgica |
 
-**O que não fazer no início**:
+**O que evitar no início**:
 
 - Configurar load balancer antes de ter tráfego que justifique
 - Separar em microsserviços porque "vai crescer"
 - Montar Kubernetes para uma aplicação com 10 usuários simultâneos
-- Implementar **CQRS** (Command Query Responsibility Segregation · Separação de Responsabilidade entre Comando e Consulta) e event sourcing sem complexidade de leitura/escrita que justifique
+- Implementar **CQRS** (Command Query Responsibility Segregation · Separação de Responsabilidade entre Comando e Consulta) e event sourcing sem uma complexidade de leitura e escrita que justifique
 
 ---
 

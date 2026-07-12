@@ -1,10 +1,10 @@
-# Design Thinking (avançado)
+# Design Thinking avançado: descoberta, ideação e validação estruturadas
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 >
 > Avançado em relação a [`design-thinking.md`](./design-thinking.md). Cobre técnicas estruturadas de descoberta, ideação e validação.
 
-Ciclos maiores de Design Thinking exigem ferramentas mais formais: frameworks que orientam o pensamento, artefatos que visualizam fluxo completo, técnicas de ideação que produzem volume sem convergência prematura.
+Um ciclo curto de Design Thinking cabe em uma conversa e um bloco de post-its. Um ciclo grande, com muita gente e um problema mal delimitado, precisa de ferramentas que organizem o pensamento: frameworks que dizem quando abrir e quando fechar o leque de opções, artefatos que mostram o fluxo inteiro (inclusive a parte que o usuário não vê) e técnicas de ideação que produzem volume antes de o time convergir para a primeira ideia razoável.
 
 ## Conceitos fundamentais
 
@@ -18,9 +18,9 @@ Ciclos maiores de Design Thinking exigem ferramentas mais formais: frameworks qu
 | **Usability testing** (teste de usabilidade) | Observação estruturada de usuário real interagindo com a solução |
 | **Think-aloud** (pensar em voz alta) | Técnica em que o usuário narra o raciocínio enquanto usa o protótipo |
 
-## Double Diamond
+## Double Diamond: abrir e fechar duas vezes
 
-Framework que organiza Design Thinking em quatro fases alternando divergência e convergência:
+O framework organiza o trabalho em quatro fases que alternam divergência (gerar opções) e convergência (escolher entre elas):
 
 ```
 Discover → Define → Develop → Deliver
@@ -34,11 +34,11 @@ Discover → Define → Develop → Deliver
 | **Develop** (desenvolver) | Explorar soluções de forma ampla | Ideias, protótipos, variações |
 | **Deliver** (entregar) | Convergir em uma solução e validar | Produto testado, pronto para implementação |
 
-O primeiro diamante responde _"qual problema?"_. O segundo responde _"qual solução?"_. Pular o primeiro diamante leva a resolver o problema errado com solução elegante.
+O primeiro diamante responde _"qual problema?"_ e o segundo responde _"qual solução?"_. Times que começam pelo segundo diamante produzem uma solução elegante para um problema que ninguém tem.
 
-## Service Blueprint
+## Service Blueprint: a jornada mais os bastidores
 
-Jornada do usuário mais as operações internas que a suportam. Mostra o que o usuário vê e o que acontece nos bastidores para que o fluxo funcione.
+O blueprint coloca lado a lado o que o usuário faz e as operações internas que sustentam cada passo. Ele mostra o caminho completo, inclusive a validação manual que alguém faz no escritório entre o clique do usuário e a confirmação na tela.
 
 Estrutura em camadas:
 
@@ -49,11 +49,11 @@ Estrutura em camadas:
 | **Backstage** (bastidores) | Ações internas invisíveis ao usuário: validação manual, processamento |
 | **Support processes** (processos de suporte) | Sistemas, integrações, equipes envolvidas |
 
-Service Blueprint expõe pontos onde a experiência do usuário depende de processos internos frágeis. Gargalo que não aparece em wireframe aparece no blueprint.
+O blueprint revela onde a experiência do usuário depende de um processo interno frágil. Uma tela impecável que espera três dias por uma aprovação manual parece ótima no wireframe e ruim no blueprint.
 
 ## Journey Map detalhado
 
-Journey Map completo vai além da sequência de passos. Para cada etapa, registra:
+O Journey Map completo registra mais que a sequência de passos. Para cada etapa, ele responde:
 
 | Dimensão | Pergunta |
 |---|---|
@@ -64,28 +64,28 @@ Journey Map completo vai além da sequência de passos. Para cada etapa, registr
 | **Fricção** | O que o atrapalha? |
 | **Oportunidade** | Que melhoria resolveria a fricção? |
 
-O mapa permite ver a experiência inteira, não só telas isoladas. Pontos de maior fricção emocional tendem a ser pontos de maior valor de melhoria.
+Com o mapa completo, o time enxerga a experiência inteira em vez de telas isoladas. As etapas de maior fricção emocional costumam ser as de maior retorno quando melhoradas.
 
-## Técnicas avançadas de ideação
+## Técnicas de ideação que forçam volume
 
-Ideação não estruturada produz as ideias óbvias em poucos minutos e depois estagna. Técnicas forçam saída da zona óbvia.
+A ideação sem estrutura produz as ideias óbvias nos primeiros minutos e depois estagna. As técnicas abaixo empurram o time para fora dessa zona.
 
 ### Crazy 8s
 
-Cada participante desenha oito ideias diferentes em oito minutos, uma por minuto. A pressão de tempo bloqueia o julgamento interno e força quantidade.
+Cada participante desenha oito ideias diferentes em oito minutos, uma por minuto. O relógio apertado deixa pouco espaço para o julgamento interno, que é o que costuma barrar a ideia estranha antes dela ser desenhada.
 
 Regras:
 
 - Uma folha dobrada em oito quadrados
 - Oito minutos cronometrados, um por quadrado
 - Sem revisão durante a execução
-- Compartilhar e discutir depois, não durante
+- Compartilhar e discutir depois, e não durante
 
-O resultado: as três primeiras ideias são óbvias, as três do meio são as previsíveis melhoradas, as duas últimas costumam ser as inesperadas.
+O padrão do resultado se repete: as três primeiras ideias são as óbvias, as três do meio são versões melhoradas das previsíveis, e as duas últimas costumam trazer o que ninguém tinha considerado.
 
 ### SCAMPER
 
-Checklist de transformações aplicadas a uma ideia existente:
+Checklist de transformações aplicadas a uma ideia que já existe:
 
 | Letra | Ação | Pergunta |
 |---|---|---|
@@ -97,21 +97,19 @@ Checklist de transformações aplicadas a uma ideia existente:
 | **E** | Eliminate (eliminar) | O que pode ser removido sem perda? |
 | **R** | Reverse (reverter) | O que aconteceria se a ordem ou o papel invertesse? |
 
-SCAMPER funciona quando há uma ideia-base para explorar variações.
+O SCAMPER precisa de uma ideia-base para explorar. Ele serve para gerar variações, e não para partir do zero.
 
 ### Lotus Blossom
 
-Estrutura expansiva: uma ideia central gera oito variações, cada variação gera outras oito. Produz 64 ideias relacionadas ao tema central.
-
-Útil quando o problema é amplo e o time precisa mapear o espaço antes de convergir.
+Uma ideia central gera oito variações, e cada variação gera outras oito, o que produz 64 ideias ligadas ao tema. Serve quando o problema é amplo e o time precisa mapear o espaço todo antes de escolher por onde ir.
 
 ### Analogia forçada
 
-Comparar o problema com um domínio não-relacionado: _"Como um restaurante lidaria com isso? Como um aeroporto faria?"_. A analogia traz soluções testadas em outro contexto que podem ser adaptadas.
+O time compara o problema com um domínio sem relação alguma: _"Como um restaurante lidaria com isso? Como um aeroporto faria?"_. A comparação traz soluções já testadas em outro contexto, e algumas se adaptam.
 
-## Estratégia de protótipo
+## Estratégia de protótipo: subir a fidelidade conforme a dúvida cai
 
-Protótipos crescem em fidelidade conforme a dúvida diminui. Subir a fidelidade cedo desperdiça esforço em detalhes que vão mudar.
+Cada estágio de protótipo responde uma pergunta diferente. Subir a fidelidade antes da hora gasta trabalho em detalhes visuais que a próxima descoberta vai mudar.
 
 ```
 Esboço em papel → Wireframe → Mockup → Protótipo interativo
@@ -126,24 +124,24 @@ Esboço em papel → Wireframe → Mockup → Protótipo interativo
 | **Protótipo interativo** | Dias a semanas | O fluxo de interação é fluido? |
 | **MVP em produção** | Semanas | A solução resolve o problema com usuários reais? |
 
-Cada estágio responde uma pergunta diferente. Usar o estágio errado para a pergunta custa tempo e cria falsa confiança.
+Usar o estágio errado para a pergunta em jogo custa tempo e produz confiança sem base: um mockup bonito convence a diretoria de uma ideia que ninguém testou com usuário.
 
-## MVP vs MLP
+## MVP e MLP: duas versões reduzidas, dois objetivos
 
-Ambos são versões reduzidas do produto, mas com objetivos distintos:
+Ambos entregam menos que o produto completo. O que muda é a pergunta que cada um responde.
 
 | Conceito | O que entrega | Quando usar |
 |---|---|---|
 | **MVP** | Validação da hipótese de valor com o mínimo viável | Problema ainda não é claro; quer testar se vale a pena construir |
 | **MLP** | Experiência suficientemente boa para gerar adesão emocional | Problema é claro; quer testar se a solução será adotada |
 
-MVP pode ter **UX** (User Experience · Experiência do Usuário) desagradável desde que valide a hipótese. MLP precisa de qualidade de experiência para gerar retorno real do usuário.
+O **MVP** tolera uma **UX** (User Experience · Experiência do Usuário) desagradável, desde que a hipótese seja validada. O **MLP** precisa de qualidade de experiência, porque a pergunta dele é se o usuário volta a usar.
 
-A escolha depende da fase: descoberta de problema usa MVP, validação de adoção usa MLP.
+A fase decide: descoberta de problema pede MVP, validação de adoção pede MLP.
 
-## Usability Testing
+## Usability testing: observar o usuário usando
 
-Observação estruturada de usuário real usando a solução. O objetivo é encontrar os pontos onde a interface falha, não provar que ela funciona.
+O teste procura os pontos em que a interface falha na mão de um usuário real. Uma sessão desenhada para confirmar que a interface funciona costuma conseguir exatamente isso, e não ensina nada.
 
 ### Modalidades
 
@@ -156,14 +154,14 @@ Observação estruturada de usuário real usando a solução. O objetivo é enco
 
 ### Think-aloud
 
-O usuário narra o raciocínio enquanto executa a tarefa:
+O usuário narra o raciocínio em voz alta enquanto executa a tarefa:
 
 ```
 Usuário: "Agora eu quero ver meus pedidos anteriores. Vou procurar... estou olhando
 o menu... não vejo 'pedidos'... vou clicar em perfil."
 ```
 
-A narração revela expectativas implícitas e pontos onde a interface não corresponde ao modelo mental do usuário.
+A narração expõe o que o usuário esperava encontrar. No exemplo, ele procura "pedidos" no menu e acaba em "perfil", o que indica um rótulo que o produto escolheu e o usuário não usa.
 
 ### Métricas de usabilidade
 
@@ -175,7 +173,7 @@ A narração revela expectativas implícitas e pontos onde a interface não corr
 | **SUS** (System Usability Scale · Escala de Usabilidade do Sistema) | Questionário de 10 perguntas com escore de 0 a 100 |
 | **NPS** (Net Promoter Score · Escore Líquido de Promotor) | Probabilidade de o usuário recomendar a solução |
 
-Métricas quantitativas orientam tendências. Observação qualitativa explica o porquê por trás dos números.
+As métricas mostram a tendência e o tamanho do problema. A observação qualitativa explica a causa por trás do número.
 
 ## Checklist de Design Thinking
 
@@ -190,7 +188,7 @@ Antes de entregar uma solução como pronta para implementação:
 - [ ] Ajustes foram aplicados antes de considerar a solução pronta
 - [ ] Métricas de sucesso em produção estão definidas
 
-Itens pendentes indicam hipóteses não validadas. Construir antes de validar transfere a validação para produção, com custo maior.
+Cada item pendente é uma hipótese que ninguém validou. Ela continua existindo depois do deploy, e quem valida passa a ser o usuário em produção.
 
 ## Cross-links
 

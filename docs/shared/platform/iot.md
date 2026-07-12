@@ -1,24 +1,26 @@
-# IoT / MicroPython
+# Dispositivos IoT com MicroPython
 
 > Escopo: transversal, com padrões de domínio IoT em exemplos MicroPython 1.28.
 
-Sistemas **IoT** (Internet of Things · Internet das Coisas) têm restrições que não existem em servidores: memória em kilobytes, **CPU** (Central Processing Unit · Unidade Central de Processamento) em megahertz, sem sistema operacional completo, alimentação por bateria e conectividade instável. As boas práticas derivam dessas restrições.
+Um microcontrolador impõe limites que um servidor não tem: memória medida em kilobytes, processador na casa dos megahertz, nenhum sistema operacional completo por baixo, bateria contada em meses e uma rede que cai sem avisar. Cada prática desta página nasce de um desses limites. Sistemas **IoT** (Internet of Things · Internet das Coisas) são os que colocam esses dispositivos para conversar com um servidor.
+
+Os exemplos usam MicroPython, a versão do Python que roda direto no chip. O módulo `machine` dá acesso ao hardware: pinos, conversores analógicos, temporizadores.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | -------- | ------- |
-| **debounce** (filtragem de ruído) | Ignorar leituras redundantes de sensor durante uma janela de tempo após a primeira leitura |
-| **FSM** (Finite State Machine · Máquina de Estados Finitos) | Modelo de controle onde o sistema está sempre em um estado definido; transições são explícitas |
-| **watchdog** (timer de reinício automático) | Timer de hardware que reinicia o dispositivo se o firmware travar |
-| **idempotency** (operação repetível sem efeito adicional) | Enviar o mesmo alerta múltiplas vezes não causa efeito duplicado no servidor |
-| **polling** (consulta periódica) | Leitura periódica de um sensor; alternativa a interrupções quando GPIO não suporta IRQ |
-| **IRQ** (Interrupt Request · Requisição de Interrupção) | Sinal de hardware que interrompe o loop principal para tratar um evento |
-| `machine` | Módulo MicroPython de acesso ao hardware: GPIO, I2C, SPI, UART, Timer, WDT |
+| **debounce** (filtragem de ruído) | Ignorar as leituras repetidas que o sensor produz logo depois da primeira |
+| **FSM** (Finite State Machine · Máquina de Estados Finitos) | Modelo em que o sistema está sempre em um estado nomeado, e cada transição é escrita de forma explícita |
+| **watchdog** (temporizador de reinício) | Temporizador de hardware que reinicia o dispositivo quando o firmware para de responder |
+| **idempotency** (repetir sem efeito extra) | Enviar o mesmo alerta duas vezes produz o mesmo resultado no servidor que enviar uma |
+| **polling** (consulta periódica) | Ler o sensor de tempos em tempos, dentro do laço principal |
+| **IRQ** (Interrupt Request · Requisição de Interrupção) | Sinal do hardware que interrompe o laço principal na hora em que o evento acontece |
+| `machine` | Módulo do MicroPython que dá acesso ao hardware: GPIO, I2C, SPI, UART, Timer e WDT |
 
-## Naming de sensores e atuadores
+## O nome revela o papel do sensor no domínio
 
-Nomes refletem o papel do sensor no domínio, não o tipo de hardware.
+O nome do pino diz para que ele serve no produto. `pin0` obriga quem lê a procurar o esquema elétrico para descobrir o que está ligado ali. `door_sensor` responde na hora.
 
 <details>
 <summary>❌ Ruim: nome técnico sem contexto de domínio</summary>
@@ -42,10 +44,11 @@ fan_pwm = machine.PWM(machine.Pin(2), freq=1000)
 
 </details>
 
-## Debounce: filtragem de ruído de botão e sensor
+## Ignorar o ruído do botão e do sensor
 
-Sensores físicos produzem leituras ruidosas na transição. Ignore leituras dentro da janela
-de tempo após a primeira detecção.
+Um toque físico no botão não produz um sinal limpo. O contato metálico bate e volta algumas vezes antes de assentar, e o pino registra dezenas de transições em poucos milissegundos. Sem tratamento, o programa acha que o usuário apertou o botão cinquenta vezes.
+
+A correção é guardar o instante da primeira detecção e descartar tudo que chegar dentro da janela seguinte, por exemplo 200 milissegundos. `utime.ticks_ms()` devolve o relógio interno do chip, e `utime.ticks_diff()` calcula a distância entre dois instantes sem quebrar quando o contador estoura o limite e volta a zero.
 
 <details>
 <summary>❌ Ruim: sem debounce, evento disparado múltiplas vezes</summary>
@@ -95,9 +98,11 @@ def handle_door_open():
 
 </details>
 
-## Máquina de estados: FSM
+## O dispositivo está sempre em um estado nomeado
 
-Modele o comportamento do dispositivo como estados explícitos. Evite flags booleanas soltas.
+Descreva o comportamento do dispositivo como um conjunto pequeno de estados, e escreva cada transição entre eles de forma explícita. Um alarme de porta tem quatro: parado, porta aberta, alarme tocando, alarme silenciado.
+
+Com flags booleanas soltas, o número de combinações cresce rápido, e várias delas não fazem sentido no mundo real. Três flags dão oito combinações, e nada no código impede que o dispositivo caia numa que não existe (porta fechada com alarme tocando). Uma **FSM** guarda um único valor de estado por vez, então a combinação impossível deixa de ser representável.
 
 <details>
 <summary>❌ Ruim: flags soltos sem estado explícito</summary>
@@ -160,10 +165,13 @@ def tick():
 
 </details>
 
-## Alertas idempotentes
+Cada função de transição confere o estado atual antes de mudar. `on_silence_button()` só age quando o alarme está tocando, então apertar o botão de silêncio com a porta fechada não faz nada.
 
-Envie alertas com identificador único. O servidor ignora duplicatas. Evite reenviar
-o mesmo alerta enquanto a condição não mudar.
+## Um alerta por evento, mesmo quando a condição persiste
+
+O laço principal roda a cada segundo, e a temperatura alta continua alta no ciclo seguinte. Um `if` sem memória faz o dispositivo repetir a requisição em toda volta: o servidor recebe o mesmo alerta de superaquecimento sessenta vezes por minuto.
+
+A solução tem duas partes. Uma flag registra que o alerta já saiu e só volta a zero quando a temperatura normaliza, o que impede o reenvio. Um `alert_id` único vai no corpo da requisição, e o servidor usa esse identificador para descartar a cópia que chegar duas vezes por causa de uma retentativa de rede.
 
 <details>
 <summary>❌ Ruim: alerta reenviado a cada tick enquanto condição persiste</summary>
@@ -213,10 +221,13 @@ def check_temperature(temp_celsius):
 
 </details>
 
-## Watchdog: recuperação de travamento
+O `.close()` no fim da chamada devolve a memória do buffer da resposta. Em um chip com poucos kilobytes livres, esquecer isso derruba o dispositivo depois de algumas centenas de requisições.
 
-O **Watchdog** reinicia o dispositivo se o loop principal parar de alimentá-lo.
-Útil para recuperação automática de travamentos ou deadlocks de rede.
+## Reiniciar sozinho quando o firmware trava
+
+O **watchdog** é um temporizador de hardware que reinicia o dispositivo se o firmware parar de avisá-lo que está vivo. O laço principal chama `wdt.feed()` a cada volta. Se uma chamada de rede travar e o laço não completar dentro do prazo configurado, o chip reinicia sem intervenção humana.
+
+Isso importa porque um dispositivo IoT costuma estar preso a uma parede, longe de qualquer pessoa que possa apertar o botão de reset. O prazo precisa ser folgado o bastante para caber a iteração mais lenta do laço, e curto o bastante para o dispositivo não ficar horas parado.
 
 <details>
 <summary>❌ Ruim: watchdog nunca alimentado, ou ausente</summary>
@@ -261,10 +272,11 @@ def main_loop():
 
 </details>
 
-## Polling vs IRQ
+## Consultar de tempos em tempos ou reagir à interrupção
 
-Use IRQ para eventos rápidos (botão, borda de sinal). Use polling para leituras periódicas
-de sensores analógicos ou quando o hardware não suporta interrupção.
+A escolha depende do tipo de evento. Um botão exige **IRQ**: o hardware chama a função no instante em que o sinal muda, e nenhum toque se perde entre duas voltas do laço. Um sensor de temperatura pede **polling**: o valor muda devagar, ler a cada cinco segundos basta, e muitos pinos analógicos não geram interrupção.
+
+O `utime.sleep_ms()` entre as leituras existe por causa da bateria. O processador entra em repouso durante a espera, e o consumo cai.
 
 <details>
 <summary>✅ Bom: polling periódico com sleep para sensores analógicos</summary>

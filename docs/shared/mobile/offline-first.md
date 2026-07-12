@@ -1,15 +1,10 @@
-# Offline-first
+# Offline-first: o app funciona a partir do banco local
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**Offline-first** é a estratégia de design em que o app funciona a partir de dados locais e usa a
-rede para sincronizar, não o contrário. A premissa é que conectividade é intermitente: metrô,
-túnel, roaming, sinal fraco. Um app que falha silenciosamente sem rede transfere ao usuário um
-problema que é responsabilidade do produto.
+**Offline-first** é a estratégia em que o app lê e escreve no banco local, e usa a rede para sincronizar esse banco em segundo plano. A premissa é a conectividade intermitente do celular: metrô, túnel, elevador, roaming, sinal fraco no fundo do galpão. Um app que trava sem rede empurra para o usuário um problema que o produto deveria resolver.
 
-A diferença em relação a um app com cache simples: no offline-first, o banco local é a fonte de
-verdade da **UI** (User Interface · Interface do Usuário). A rede atualiza o banco; o banco atualiza
-a UI.
+A diferença em relação a um cache simples está em quem manda na tela. No offline-first, o banco local é a fonte de verdade da **UI** (User Interface · Interface do Usuário). A rede atualiza o banco, e o banco atualiza a UI.
 
 ## Conceitos fundamentais
 
@@ -26,7 +21,7 @@ a UI.
 
 ## O modelo offline-first
 
-O fluxo padrão inverte a dependência da rede:
+O fluxo padrão tira a rede do caminho da leitura:
 
 ```
 UI lê do banco local → banco local é atualizado pela rede (em background)
@@ -39,12 +34,11 @@ Tradicional:   UI → rede → exibe resultado
 Offline-first: UI → banco local → rede atualiza banco → UI reage
 ```
 
-No modelo tradicional, a rede está no caminho crítico de toda leitura. No offline-first, a rede
-está no caminho de atualização: a UI nunca espera por ela para exibir dados.
+No modelo tradicional, cada leitura depende de uma resposta da rede, e a tela fica em espera enquanto ela não chega. No offline-first, a rede trabalha no caminho de atualização do banco, e a tela exibe o que já tem.
 
-## Cache strategy
+## Estratégias de cache
 
-A estratégia de cache define quando buscar dados frescos e quando servir do local:
+A estratégia de cache decide quando buscar dado fresco e quando servir o que já está no aparelho:
 
 | Estratégia | Comportamento | Quando usar |
 |---|---|---|
@@ -53,44 +47,38 @@ A estratégia de cache define quando buscar dados frescos e quando servir do loc
 | **Stale-while-revalidate** | Serve local imediatamente; atualiza em background | Melhor UX percebida; sempre rápido |
 | **Network-only** | Sempre da rede; sem fallback | Dados em tempo real (saldo, disponibilidade) |
 
-A maioria dos casos se beneficia de **stale-while-revalidate**: o usuário vê dados imediatamente e a
-atualização chega sem spinner.
+A maior parte dos casos se resolve bem com **stale-while-revalidate**: o dado aparece na hora e a atualização chega depois, sem spinner no meio.
 
-## Optimistic update
+## Atualização otimista
 
-Optimistic update aplica a mudança na UI antes de o servidor confirmar. A hipótese é que a operação
-vai ter sucesso, daí o otimismo.
+A **optimistic update** aplica a mudança na tela antes de o servidor confirmar. A aposta é que a operação vai dar certo, e é daí que vem o nome.
 
 ```
 Usuário curte post → UI mostra curtida imediatamente → requisição em background → falha? reverte curtida na UI + notifica
 ```
 
-Regras para usar optimistic update com segurança:
+Regras para usar com segurança:
 
-- A operação deve ser reversível se o servidor rejeitar
-- O usuário deve ser informado se a reversão acontecer
-- Não usar em operações destrutivas sem confirmação (exclusão de conta, transferência financeira)
+- A operação precisa ser reversível se o servidor rejeitar
+- O usuário precisa ser avisado quando a reversão acontecer
+- Operação destrutiva sem confirmação fica de fora (exclusão de conta, transferência financeira)
 
 ## Fila de operações e sincronização
 
-Quando o usuário age sem rede, as operações precisam ser enfileiradas para sincronização posterior:
+Quando o usuário age sem rede, a operação entra em uma fila e espera a conexão voltar:
 
 ```
 Offline: Usuário cria pedido → pedido salvo localmente com status "pendente"
 Online:  Fila processada → pedido enviado ao servidor → status atualizado para "confirmado"
 ```
 
-A fila deve ser persistente: se o app for encerrado com operações pendentes, elas devem sobreviver
-ao cold start e ser processadas quando a rede voltar.
+A fila precisa ser persistente, gravada em disco. Se o app for encerrado com operações pendentes, elas continuam lá no próximo cold start e são processadas quando a rede voltar.
 
-Cada operação na fila deve ser **idempotente**: se enviada duas vezes (por nova tentativa após falha de
-rede), o resultado deve ser o mesmo. A estratégia mais comum é incluir um ID único gerado pelo
-cliente em cada operação.
+Cada operação na fila precisa ser **idempotente**. A nova tentativa depois de uma falha de rede pode enviar o mesmo pedido duas vezes, e o resultado no servidor precisa ser o mesmo de um envio só. A forma mais comum é o cliente gerar um ID único por operação, que o servidor usa para reconhecer a repetição.
 
-## Conflict resolution
+## Resolução de conflito
 
-Conflito ocorre quando local e remoto divergem: o usuário editou um registro offline enquanto outro
-usuário o editou no servidor.
+O conflito aparece quando as duas pontas mudam o mesmo registro: o usuário editou offline enquanto outra pessoa editava no servidor.
 
 | Estratégia | Comportamento | Trade-off |
 |---|---|---|
@@ -100,13 +88,11 @@ usuário o editou no servidor.
 | **Merge** | Tentativa de combinar as duas versões | Melhor resultado; complexo de implementar |
 | **Manual** | Apresenta o conflito ao usuário para resolver | Correto; intrusivo |
 
-A estratégia depende do domínio. Para notas pessoais, **merge** é o ideal. Para transações
-financeiras, **server wins** é o mais seguro. Nunca escolher a estratégia sem entender o custo de
-cada tipo de conflito para o usuário.
+O domínio decide. Em notas pessoais, o **merge** preserva o trabalho das duas edições. Em transação financeira, o **server wins** evita que uma edição offline sobrescreva um saldo já processado. A escolha exige saber quanto custa cada tipo de conflito para o usuário daquele app.
 
-## Network-aware UX
+## Comunicar o estado da rede
 
-O estado da rede deve ser visível e comunicado sem alarmar:
+O estado da conexão precisa ficar visível, sem transformar cada oscilação de sinal em alarme:
 
 | Estado | Comportamento esperado |
 |---|---|
@@ -116,5 +102,4 @@ O estado da rede deve ser visível e comunicado sem alarmar:
 | Operação pendente | Indicador de "aguardando sincronização" na entidade afetada |
 | Sincronização falhou | Mensagem clara com opção de nova tentativa; nunca perder a operação silenciosamente |
 
-O erro mais comum é mostrar uma tela de erro onde deveria aparecer dado em cache. Se o dado existe
-localmente, exibi-lo. A rede é um detalhe de implementação, não um estado de erro do produto.
+O erro mais comum é mostrar tela de erro onde havia dado em cache para exibir. Se o dado está no banco local, ele vai para a tela. A ausência de rede é uma condição de operação normal do celular, e o app segue funcionando com o que tem.

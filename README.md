@@ -164,13 +164,13 @@ granular:
 
 | Tópico                                                                        | Descrição                                                                                     |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [Governance](docs/shared/process/governance.md)                               | Pensamento de staff engineer, SDLC, onboarding e governança do projeto                        |
-| [Methodologies](docs/shared/process/methodologies.md)                         | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
+| [Governança](docs/shared/process/governance.md)                               | Pensamento de staff engineer, SDLC, onboarding e governança do projeto                        |
+| [Metodologias](docs/shared/process/methodologies.md)                          | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
 | [Git](docs/shared/process/git.md)                                             | Branches, commits, pull requests e estratégia de entrega                                      |
-| [Git (avançado)](docs/shared/process/git-advanced.md)                         | Rotina convencional, squash, DX no PR e troubleshooting                                       |
+| [Git (avançado)](docs/shared/process/git-advanced.md)                         | Rotina de uma tarefa, squash, review e recuperação de erros                                   |
 | [Design Thinking](docs/shared/process/design-thinking.md)                     | Empatia, definição de problema, ideação, protótipo e teste centrado no usuário                |
-| [Design Thinking (avançado)](docs/shared/process/design-thinking-advanced.md) | Double Diamond, Service Blueprint, Crazy 8s, SCAMPER, MVP vs MLP e usability testing          |
-| [CI/CD](docs/shared/process/ci-cd.md)                                         | Pipeline, deploy vs release, feature flags, TBD e fix forward                                 |
+| [Design Thinking (avançado)](docs/shared/process/design-thinking-advanced.md) | Double Diamond, Service Blueprint, Crazy 8s, SCAMPER, MVP e MLP e usability testing           |
+| [CI/CD](docs/shared/process/ci-cd.md)                                         | Pipeline, deploy e release, feature flags, TBD e fix forward                                  |
 
 <br>
 
@@ -213,18 +213,19 @@ granular:
 
 | Tópico                                                 | Descrição                                                                                            |
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
-| [API Design](docs/shared/platform/api-design.md)       | Pipeline BFF, contratos Request/Response, envelope padrão, verbos REST, status codes e Result → HTTP |
-| [Security](docs/shared/platform/security.md)           | Segredos, configuração em camadas, autorização e blindagem de cookies                                |
-| [Configuration](docs/shared/platform/configuration.md) | Config vs secret, precedência, layering, tipagem e fail-fast                                         |
-| [Feature Flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e dívida                                     |
-| [Performance](docs/shared/platform/performance.md)     | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O               |
-| [Database](docs/shared/platform/database.md)           | SQL vs NoSQL, tuning de queries, operações em lote, plano de execução e troubleshooting              |
+| [Desenho de API](docs/shared/platform/api-design.md)   | Pipeline BFF, contratos Request/Response, envelope padrão, verbos REST, status codes e Result → HTTP |
+| [Segurança](docs/shared/platform/security.md)          | Segredos, configuração em camadas, autorização e flags do cookie de sessão                           |
+| [Configuração](docs/shared/platform/configuration.md)  | Config e secret, precedência, camadas por ambiente, objeto tipado e fail-fast                        |
+| [Feature flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e prazo de validade                          |
+| [Desempenho](docs/shared/platform/performance.md)      | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O               |
+| [Banco de dados](docs/shared/platform/database.md)     | SQL vs NoSQL, tuning de queries, operações em lote, plano de execução e troubleshooting              |
 | [NoSQL](docs/nosql/README.md)                          | MongoDB, Redis, DynamoDB, Cassandra e Elasticsearch: convenções, SGBD e scripts                      |
 | [ETL e BI](docs/shared/platform/etl-bi.md)             | OLTP vs OLAP, pipeline de dados, extração incremental, ELT, modelagem dimensional, SCD e BI          |
-| [Integrations](docs/shared/platform/integrations.md)   | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial                           |
-| [Messaging](docs/shared/platform/messaging.md)         | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure                       |
-| [Bots](docs/shared/platform/bots.md)                   | Webhook vs polling, command routing, session state, rate limit e lifecycle                           |
-| [Cloud](docs/shared/platform/cloud.md)                 | Serviços gerenciados, least privilege, containers e ambientes                                        |
+| [Formatos e integrações](docs/shared/platform/integrations.md) | GraphQL, TOML, YAML, XML/SOAP (NF-e, CT-e), CNAB, SPED, ZPL e porta serial                   |
+| [Mensageria](docs/shared/platform/messaging.md)        | Broker, queue, pub/sub, garantias de entrega, DLQ, idempotência e backpressure                       |
+| [Bots de mensageria](docs/shared/platform/bots.md)     | Webhook e polling, roteamento de comando, sessão, teto de envio e ciclo de vida                      |
+| [Computação em nuvem](docs/shared/platform/cloud.md)   | Serviços gerenciados, permissão mínima, containers e ambientes                                       |
+| [Dispositivos IoT](docs/shared/platform/iot.md)        | Debounce, máquina de estados, alerta idempotente, watchdog e polling vs IRQ                          |
 
 <br>
 
@@ -232,14 +233,14 @@ granular:
 
 | Tópico                                             | Descrição                                                                                             |
 | -------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| [Modelos](docs/shared/ai/models.md)                | Modelos cloud (Claude, GPT, Gemini, Llama, Mistral), modelos locais (Ollama, LM Studio) e quantização |
-| [Agentes](docs/shared/ai/agents.md)                | Agent, Harness, Orchestration, Multi-agent e Memory                                                   |
-| [RAG](docs/shared/ai/rag.md)                       | Retrieval-Augmented Generation, Embeddings, Vector store e Chunking                                   |
-| [Tool Use e MCP](docs/shared/ai/tools-mcp.md)      | Tool Use, Function Calling e MCP Protocol                                                             |
-| [Tokens](docs/shared/ai/tokens.md)                 | Token, Context window, Custo e Prompt Caching                                                         |
-| [Engenharia de Prompts](docs/shared/ai/prompts.md) | Estrutura de prompt e exemplos BAD/GOOD para eficiência                                               |
-| [Skills](docs/shared/ai/skills.md)                 | Skills como capacidades de agentes: routing, loading, composição e boas práticas                      |
-| [Conceitos Avançados](docs/shared/ai/advanced.md)  | Fine-tuning, Hallucination, Structured outputs, Extended thinking, Inference engines e AI Gateway     |
+| [Modelos](docs/shared/ai/models.md)                | Escolher entre nuvem e máquina local: Claude, GPT, Gemini, Llama, Mistral, Ollama e quantização      |
+| [Agentes](docs/shared/ai/agents.md)                | O loop do agente, o harness que o executa, orquestração, multi-agente e memória                       |
+| [RAG](docs/shared/ai/rag.md)                       | Responder com base em documentos recuperados: embeddings, vector store e chunking                     |
+| [Tool use e MCP](docs/shared/ai/tools-mcp.md)      | Dar ao modelo acesso ao mundo externo: tool use, function calling e o protocolo MCP                   |
+| [Tokens](docs/shared/ai/tokens.md)                 | A unidade que o modelo lê e a que a conta mede: janela de contexto, custo e cache de prompt           |
+| [Engenharia de prompts](docs/shared/ai/prompts.md) | Escrever a instrução que o modelo entende, com exemplos BAD/GOOD                                      |
+| [Skills](docs/shared/ai/skills.md)                 | Empacotar um comportamento do agente: roteamento, carregamento sob demanda e composição               |
+| [Conceitos avançados](docs/shared/ai/advanced.md)  | Ajuste fino, alucinação, saídas estruturadas, raciocínio estendido, motores de inferência e AI Gateway |
 
 <br>
 
@@ -247,11 +248,11 @@ granular:
 
 | Tópico                                                     | Descrição                                                        |
 | ---------------------------------------------------------- | ---------------------------------------------------------------- |
-| [App Lifecycle](docs/shared/mobile/app-lifecycle.md)       | Estados do app, ciclo de vida, cold/warm start e impacto em UX   |
-| [Navigation](docs/shared/mobile/navigation.md)             | Stack, tab bar, modal, deep link e back stack                    |
-| [State Management](docs/shared/mobile/state-management.md) | UI state vs domain state, unidirectional data flow e reatividade |
-| [Offline-first](docs/shared/mobile/offline-first.md)       | Cache strategy, sync, conflict resolution e network-aware UX     |
-| [Permissions](docs/shared/mobile/permissions.md)           | Runtime permissions, graceful degradation e fluxo de solicitação |
+| [Ciclo de vida do aplicativo](docs/shared/mobile/app-lifecycle.md) | Estados do app, cold e warm start, process death e impacto na experiência |
+| [Navegação entre telas](docs/shared/mobile/navigation.md)          | Pilha, barra de abas, modal, deep link e back stack                       |
+| [Gerenciamento de estado](docs/shared/mobile/state-management.md)  | Estado da tela e estado do domínio, fluxo unidirecional e reatividade     |
+| [Offline-first](docs/shared/mobile/offline-first.md)               | Estratégias de cache, sincronização, resolução de conflito e estado da rede |
+| [Permissões do dispositivo](docs/shared/mobile/permissions.md)     | Permissões em tempo de execução, negação definitiva e fluxo de solicitação |
 
 </details>
 

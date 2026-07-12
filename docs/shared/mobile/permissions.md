@@ -1,13 +1,10 @@
-# Permissions (Permissões)
+# Permissões do dispositivo
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-**Runtime permissions** (permissões em tempo de execução) são a forma como o sistema operacional
-mobile protege recursos sensíveis do dispositivo. Diferente de aplicações web, onde o browser pede
-permissão em contexto, em mobile o modelo é mais restritivo: o usuário pode negar permanentemente,
-e o SO lembra dessa decisão entre sessões.
+As **runtime permissions** (permissões em tempo de execução) são a forma como o sistema operacional protege os recursos sensíveis do aparelho: câmera, localização, microfone, contatos. Na web, o navegador pede a permissão no contexto do uso e a decisão vale para aquela sessão. Em mobile o modelo aperta mais: o usuário pode negar em definitivo, e o sistema guarda essa decisão de uma sessão para a outra.
 
-Uma estratégia de permissões bem projetada não é sobre obter acesso: é sobre merecer confiança.
+Uma boa estratégia de permissões trabalha para que o usuário entenda o pedido no momento em que ele aparece. Cada pedido sem contexto gasta um crédito de confiança que não volta.
 
 ## Conceitos fundamentais
 
@@ -23,18 +20,15 @@ Uma estratégia de permissões bem projetada não é sobre obter acesso: é sobr
 
 ## O fluxo de solicitação
 
-O fluxo correto de permissão tem três etapas:
+O pedido de permissão tem três etapas antes da resposta:
 
 ```
 Contexto claro → Rationale (se necessário) → Diálogo do SO → Resposta tratada
 ```
 
-**Contexto claro** significa que o usuário entende por que está sendo pedido antes de ver o diálogo.
-Solicitar câmera ao abrir o app sem contexto algum é o erro mais comum, e o mais eficiente em
-destruir confiança.
+**Contexto claro** significa que o usuário já entendeu o motivo quando o diálogo do sistema aparece. Pedir a câmera no primeiro segundo do app, antes de qualquer tela, é o erro mais comum: o usuário nega porque nada na tela explica para que serve.
 
-**Rationale** é necessário quando o SO indica que o usuário já negou anteriormente. É uma chance de
-explicar o valor antes de pedir de novo:
+O **rationale** entra quando o sistema avisa que o usuário já negou antes. É a chance de explicar o valor com as palavras do app, antes de o diálogo aparecer de novo:
 
 ```
 Fluxo sem rationale:  App abre → Diálogo do SO aparece → Usuário nega → Fim
@@ -43,7 +37,7 @@ Fluxo com rationale:  App abre → [usuário já negou antes] → Explicação d
 
 ## Quando solicitar
 
-A regra é: solicitar no momento em que o recurso é necessário, nunca antes.
+A regra é pedir no instante em que o recurso vai ser usado.
 
 | Prática | Resultado |
 |---|---|
@@ -52,27 +46,23 @@ A regra é: solicitar no momento em que o recurso é necessário, nunca antes.
 | Pedir localização ao abrir o mapa | Contexto óbvio; alta taxa de aprovação |
 | Pedir localização na tela de cadastro | Usuário desconfia; baixa taxa de aprovação |
 
-Permissões agrupadas no splash screen são o antipadrão clássico. O usuário não tem contexto para
-avaliar nenhum dos pedidos e tende a negar tudo.
+Juntar todas as permissões no splash screen é o antipadrão clássico. O usuário recebe quatro diálogos seguidos sem ter visto nenhuma tela do app, e a resposta previsível é negar todos.
 
-## Permanently denied
+## Quando a negação é definitiva
 
-Quando o usuário nega permanentemente, o diálogo do SO não pode mais ser exibido. Exibir o diálogo
-nesse estado não tem efeito: o sistema o ignora.
+Depois que o usuário nega em definitivo, o diálogo do sistema para de aparecer. Chamar a API de permissão nesse estado retorna a negativa sem mostrar nada na tela, e o app fica esperando uma resposta que nunca vem.
 
-O único caminho restante é direcionar o usuário para as configurações do dispositivo:
+O caminho que resta é levar o usuário até as configurações do aparelho:
 
 ```
 App detecta permanently denied → explica o impacto → botão "Abrir Configurações" → usuário recusou? funcionalidade desativada graciosamente
 ```
 
-Nunca: ignorar o estado permanently denied e tentar exibir o diálogo. Nunca: bloquear o app
-completamente por falta de uma permissão não essencial.
+Duas coisas ficam fora: insistir no diálogo depois da negação definitiva e bloquear o app inteiro por causa de uma permissão que só uma funcionalidade usa.
 
-## Graceful degradation
+## Funcionar sem a permissão
 
-O app deve funcionar mesmo quando permissões são negadas. A funcionalidade afetada deve ser
-desativada de forma clara, não silenciosa.
+O app segue de pé quando o usuário nega. A funcionalidade afetada fica desativada de forma visível, com o motivo à mão, e o resto continua funcionando.
 
 | Permissão negada | Comportamento esperado |
 |---|---|
@@ -82,17 +72,14 @@ desativada de forma clara, não silenciosa.
 | Contatos | Importação de contatos desativada; busca manual disponível |
 | Notificações | App funciona normalmente; sem lembretes baseados em push |
 
-A pergunta a responder para cada permissão: **o que o usuário ainda consegue fazer sem ela?** Se a
-resposta for "nada", a permissão é essencial e o fluxo deve deixar isso claro antes de pedir, não
-depois de negar.
+Para cada permissão, responda: **o que o usuário ainda consegue fazer sem ela?** Quando a resposta for "nada", a permissão é essencial, e o fluxo precisa deixar isso claro no momento do pedido, enquanto o usuário ainda pode decidir com a informação na mão.
 
-## Permissões e trust
+## Permissão e confiança
 
-Permissões são o primeiro teste de confiança entre o app e o usuário. As diretrizes que preservam
-essa confiança:
+O pedido de permissão é o primeiro teste de confiança entre o app e o usuário. As diretrizes que preservam essa confiança:
 
 - Pedir apenas o que é necessário para a funcionalidade atual
 - Nunca pedir permissões que o app não usa imediatamente
 - Justificar antes de pedir quando o motivo não for óbvio
 - Aceitar a negação sem punir o usuário com popups repetitivos
-- Tratar permanently denied como decisão definitiva, não como obstáculo a contornar
+- Tratar a negação definitiva como decisão tomada, e desativar a funcionalidade com clareza

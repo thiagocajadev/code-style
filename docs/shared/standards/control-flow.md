@@ -1,10 +1,8 @@
-# Control Flow
+# Controle de fluxo
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
-existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
-O princípio é sempre o mesmo: sair cedo na falha, nunca aninhar o caminho feliz.
+A ferramenta de controle de fluxo certa depende de três perguntas: quantas condições existem, se elas mapeiam valores ou executam ações, e se o fluxo pode precisar sair antes do fim. O princípio que atravessa todas as respostas é o mesmo: saia cedo na falha e mantenha o caminho feliz sem aninhamento.
 
 ## Conceitos fundamentais
 
@@ -21,7 +19,7 @@ O princípio é sempre o mesmo: sair cedo na falha, nunca aninhar o caminho feli
 
 ## Quando usar cada ferramenta
 
-Ordem crescente de complexidade. Prefira sempre a ferramenta mais simples que resolve o problema.
+A tabela segue ordem crescente de complexidade. Escolha sempre a ferramenta mais simples que resolve o caso.
 
 | Ferramenta | Quando usar |
 |---|---|

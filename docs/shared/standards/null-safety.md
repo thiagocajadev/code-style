@@ -1,12 +1,10 @@
-# Null Safety
+# Segurança contra nulos
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Null tem um espaço definido: os limites do sistema. O sintoma mais comum de uso incorreto é `?.`
-espalhado em todo o código como defesa preventiva. Isso é sinal de que os **contratos de entrada não
-estão fechados**.
+Null tem um lugar certo no sistema: os limites. Quando o `?.` aparece espalhado pelo código inteiro, como defesa preventiva, isso indica que os **contratos de entrada não estão fechados**: o limite deixou passar um valor ausente, e cada função seguinte precisa checá-lo de novo.
 
-A pergunta certa é _"esse null deveria chegar até aqui?"_
+Diante de cada `?.`, a pergunta a fazer é: _"esse null deveria ter chegado até aqui?"_
 
 ## Conceitos fundamentais
 
@@ -21,7 +19,7 @@ A pergunta certa é _"esse null deveria chegar até aqui?"_
 
 ## A regra: checa no limite, confia no interior
 
-O sistema tem dois territórios com regras diferentes:
+O sistema tem dois territórios, e as regras de um não valem no outro:
 
 | Território    | O que é                                                                            | Regra                                        |
 | ------------- | ---------------------------------------------------------------------------------- | -------------------------------------------- |
@@ -32,7 +30,7 @@ O sistema tem dois territórios com regras diferentes:
 entrada externa → limite (checa + normaliza) → domínio (confia no contrato)
 ```
 
-Null que chega no interior é um **bug de limite** que deve ser corrigido na entrada.
+Null que aparece no interior indica um limite que deixou passar. Corrija na entrada.
 
 ## O que é limite
 
@@ -41,12 +39,11 @@ Null que chega no interior é um **bug de limite** que deve ser corrigido na ent
 | Entrada de request             | Body, query params, path params de uma requisição HTTP |
 | Resposta de API externa        | JSON de terceiros, webhooks                            |
 | Retorno de banco de dados      | `findById` que pode retornar null quando não encontra  |
-| Variáveis de ambiente / config | `process.env`, `appsettings.json`                      |
+| Variáveis de ambiente / config | `process.env`, `appsettings.json`                       |
 
 ## O que não é limite
 
-Funções internas, serviços de domínio, cálculos: tudo que recebe dados **que já passaram pelo
-limite**. Essas funções confiam que quem chamou já garantiu o contrato.
+Funções internas, serviços de domínio, cálculos: tudo que recebe dados **já filtrados pelo limite**. Essas funções não checam nada, porque confiam que quem chamou entregou o contrato cumprido.
 
 <details>
 <summary>❌ Ruim: interior checando null que não deveria existir</summary>
@@ -74,12 +71,11 @@ function calculateDiscount(order) {
 
 </details>
 
-A diferença é **responsabilidade bem definida**. Quem chama `calculateDiscount` é responsável por
-passar um `Order` válido. Se não passar, é um bug de quem chamou.
+A diferença está em quem responde pelo quê. Passar um `Order` válido é responsabilidade de quem chama `calculateDiscount`. Se chegar inválido, o bug é de quem chamou, e checar dentro da função apenas esconderia esse bug.
 
 ## Como fechar o limite
 
-Três padrões resolvem a maioria dos casos:
+Três padrões dão conta da maioria dos casos:
 
 **1. Validação de schema na entrada**
 
@@ -108,10 +104,11 @@ function buildOrder(id, items) {
 }
 ```
 
+<a id="collections-never-null"></a>
+
 ## Coleções: nunca null, sempre vazia
 
-Listas têm um estado neutro natural: `[]`. Retornar null para "sem resultados" força defesa em
-cascata em cada caller, sem benefício nenhum.
+Uma lista já tem um estado neutro pronto: `[]`. Devolver null para dizer "não achei nada" não informa mais do que a lista vazia informaria, e obriga cada chamador a se defender antes de iterar.
 
 | Função                         | Retorno correto                      | Por quê                                           |
 | ------------------------------ | ------------------------------------ | ------------------------------------------------- |
@@ -119,10 +116,9 @@ cascata em cada caller, sem benefício nenhum.
 | `findUserById(id)`             | `User \| null`: `null` se não existe | Ausência de entidade é informação relevante       |
 | Propriedade de lista em classe | inicializada como `[]`               | Nunca precisa de `?.` para iterar                 |
 
-## Onde usar `?.` e `??`
+## Quando `?.` e `??` ajudam e quando escondem um bug
 
-Esses operadores têm lugar nos campos **opcionais por design no domínio**, sem servir como defesa
-contra contratos mal fechados.
+Esses operadores existem para o campo que é **opcional por design no domínio**, aquele que legitimamente pode não estar lá. Não servem de escudo contra contrato mal fechado.
 
 <details>
 <summary>❌ Ruim: ?. como defesa contra contrato que deveria ser fechado</summary>
@@ -144,34 +140,32 @@ const city = user.address?.city ?? "N/A"; // endereço pode não existir
 
 </details>
 
-Se você precisa de `?.` para acessar um campo que "sempre deveria existir", o problema está no
-contrato.
+Se você precisa de `?.` para acessar um campo que "sempre deveria existir", o contrato está aberto. Feche o contrato e remova o operador.
 
-## Schema evolution: campo novo em tabela existente
+<a id="new-column-on-existing-table"></a>
 
-Quando uma regra de negócio muda e um campo novo entra no banco, os registros antigos ficam com null
-por compatibilidade. Esse null não deve vazar para o domínio: o repositório é o limite que
-absorve esse caso.
+## Campo novo em tabela que já tem dados
+
+Uma regra de negócio muda, um campo novo entra no banco, e os registros antigos ficam com null porque não havia valor para eles. Esse null é histórico e o domínio não deve recebê-lo. O repositório resolve o valor antes de entregar o dado.
 
 ```
 campo novo → registros antigos nulos → limite absorve → domínio nunca vê null
 ```
 
-Três abordagens em ordem de preferência:
+Três abordagens, em ordem de preferência:
 
-**1. Migration com DEFAULT: null nunca existe no banco**
+**1. Migration com DEFAULT: null nunca chega a existir no banco**
 
-A mais limpa. A migration preenche os registros antigos e garante valor para os novos. O domínio
-nunca vê null.
+A saída mais limpa. A migration preenche os registros antigos e garante valor para os novos, e o domínio nunca vê null nenhum.
 
 ```sql
 ALTER TABLE orders ADD COLUMN priority VARCHAR(20) NOT NULL DEFAULT 'normal';
 -- registros existentes recebem 'normal' automaticamente
 ```
 
-**2. Normalização no repositório: null morre no limite**
+**2. Normalização no repositório: o null morre no limite**
 
-Quando não é possível alterar o banco (legado, multi-tenant, sem controle da migration).
+Use quando alterar o banco está fora de alcance: legado, multi-tenant, migration sob controle de outro time.
 
 ```js
 async function findById(id) {
@@ -187,10 +181,9 @@ async function findById(id) {
 }
 ```
 
-**3. Campo opcional com semântica explícita: quando a ausência tem significado**
+**3. Campo opcional de verdade: quando a ausência significa alguma coisa**
 
-Às vezes null _quer dizer algo_: "esse pedido foi criado antes dessa feature existir". Nesse caso, o
-campo é opcional por design, e o domínio tem uma função central que resolve a ausência.
+Às vezes o null carrega informação: "esse pedido foi criado antes dessa feature existir". Nesse caso o campo é opcional por design, e o domínio resolve a ausência em uma função central, sem espalhar `?.` pelo código.
 
 ```js
 // priority é opcional: ausência significa "criado antes dessa feature existir"

@@ -1,8 +1,10 @@
-# Bots de Mensageria
+# Bots de mensageria
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma de mensagens e responde a eventos em nome de um usuário ou serviço. O bot recebe eventos da plataforma (mensagem, reação, **callback** (retorno de interação)), executa lógica e devolve uma resposta. A plataforma age como intermediária: o **bot** nunca fala diretamente com o usuário final; a mensagem passa pelo **gateway** (ponto de entrada da plataforma) em ambas as direções.
+Um **bot** (agente automatizado) é um programa ligado a uma plataforma de mensagens, que responde a eventos no lugar de uma pessoa. Ele recebe o evento (uma mensagem nova, uma reação, o clique num botão), executa alguma lógica e devolve a resposta.
+
+O bot nunca conversa direto com o usuário. Tudo passa pelo **gateway** (ponto de entrada da plataforma), nas duas direções: a plataforma entrega o evento ao bot, e o bot entrega a resposta à plataforma. Essa página cobre o que é igual em todas as plataformas. As particularidades de cada uma estão em [bots-advanced.md](bots-advanced.md).
 
 ## Conceitos fundamentais
 
@@ -20,9 +22,9 @@ Um **bot** (agente automatizado) é um programa que se conecta a uma plataforma 
 | **Intent** (intenção) | Objetivo semântico por trás de uma mensagem do usuário: comprar, consultar, cancelar |
 | **Callback** (retorno) | Dado enviado de volta ao bot quando o usuário interage com um botão inline |
 
-## Webhook vs Polling
+## Receber por webhook ou buscar por polling
 
-A escolha do modo de conexão afeta latência, infraestrutura e custo.
+São os dois jeitos de o evento chegar até o bot. No **webhook**, a plataforma chama o bot assim que o evento acontece. No **polling**, o bot pergunta à plataforma, de tempos em tempos, se há algo novo.
 
 ```
 Webhook: Plataforma → POST /webhook → Bot processa → responde à plataforma
@@ -37,17 +39,17 @@ Polling: Bot → GET /updates → Plataforma retorna fila → Bot processa → r
 | Desenvolvimento local | Requer túnel (ex: ngrok) | Funciona direto sem exposição pública |
 | Recomendação | Produção | Desenvolvimento local ou ambientes sem IP fixo |
 
-Webhook é o padrão para produção. Polling é conveniente para desenvolvimento local porque não exige endpoint público nem certificado TLS.
+Em produção, use webhook. Em desenvolvimento, o polling evita o trabalho de expor a máquina local à internet com um túnel e um certificado TLS.
 
-## Command Routing
+## Encaminhar cada comando ao seu handler
 
-O roteamento de comandos mapeia a entrada do usuário para o **Handler** correto. A estratégia mais limpa é um **Strategy Map** (mapa de estratégias): um objeto que associa cada comando a uma função.
+O roteamento leva o comando que o usuário digitou até o **Handler** que sabe atendê-lo. A forma que se sustenta é o **Strategy Map** (mapa de estratégias): um objeto que associa cada nome de comando a uma função.
 
 ```
 Mensagem chega → extrai comando → Strategy Map[comando] → Handler executa
 ```
 
-Sem Strategy Map, a alternativa é um bloco `if/else` ou `switch` que cresce a cada novo comando e mistura roteamento com lógica de negócio. O mapa separa os dois.
+A alternativa é um `if/else` que ganha um ramo a cada comando novo. Ele cresce sem limite, e a lógica de negócio acaba escrita dentro do próprio roteador. O mapa mantém o roteamento em uma linha e deixa cada comando no seu arquivo.
 
 ### Estrutura recomendada
 
@@ -64,9 +66,9 @@ bot/
   client.js         ← instância da plataforma e setup de eventos
 ```
 
-## Session State
+## Guardar onde o usuário parou no fluxo
 
-Bots **stateless** (sem estado) respondem a cada mensagem de forma independente. Para fluxos com múltiplas etapas (ex: wizard de cadastro), o bot precisa de sessão: guardar onde o usuário está no fluxo entre mensagens.
+Um bot **stateless** (sem estado) trata cada mensagem por conta própria, sem lembrar da anterior. Isso basta para um comando que responde de uma vez. Um cadastro em etapas precisa de **sessão**: o bot guarda em que passo aquele usuário está entre uma mensagem e a seguinte.
 
 Opções por complexidade:
 
@@ -76,33 +78,35 @@ Opções por complexidade:
 | Cache externo (Redis) | Produção com múltiplas instâncias ou reinícios frequentes |
 | Banco de dados | Estado persistente que sobrevive a reinícios longos |
 
-A chave de sessão padrão é `userId` (identificador do usuário) ou `chatId` (identificador da conversa), dependendo da plataforma.
+A memória do processo perde tudo no primeiro restart, e com duas instâncias no ar a segunda mensagem do usuário pode cair na instância que não tem a sessão dele. Por isso, produção com mais de uma instância pede cache externo.
 
-## Rate Limits
+A chave da sessão é o `userId` (identificador do usuário) ou o `chatId` (identificador da conversa), conforme a plataforma.
 
-Toda plataforma impõe limites de envio. Exceder o limite resulta em erro `429 Too Many Requests` e suspensão temporária do bot.
+## Respeitar o teto de envio da plataforma
 
-Padrões para respeitar rate limits:
+Toda plataforma limita quantas mensagens o bot manda por segundo. Passar do limite devolve `429 Too Many Requests`, e a insistência leva a uma suspensão temporária do bot.
+
+Três padrões mantêm o envio dentro do teto:
 
 - **Fila de envio**: enfileirar mensagens de saída e processar com intervalo mínimo entre envios
 - **Retry com backoff exponencial**: ao receber `429`, aguardar intervalo crescente antes de tentar de novo
 - **Bulk operations**: agrupar notificações em vez de enviar uma por evento
 
-Nunca enviar mensagens em loop sem controle de intervalo. Em notificações em massa, processar em lotes com pausa entre lotes.
+O caso que quebra na prática é a notificação em massa disparada em laço, sem intervalo. Processe em lotes, com pausa entre eles.
 
-## Lifecycle do Bot
+## Ligar e desligar o bot sem perder evento
 
 ```
 start → conecta ao gateway → registra Handlers → aguarda eventos → processa → responde → repete
 ```
 
-Ao encerrar, o bot deve:
+No encerramento, o bot segue três passos:
 
 1. Parar de aceitar novos eventos
 2. Aguardar processamento dos eventos em andamento
 3. Fechar conexão com o gateway de forma limpa (graceful shutdown)
 
-Shutdown abrupto pode deixar eventos sem resposta e usuários em estados de sessão inconsistentes.
+Matar o processo no meio disso deixa o usuário sem resposta e a sessão dele parada em um passo intermediário do fluxo, sem ninguém para continuar.
 
 ## Veja também
 

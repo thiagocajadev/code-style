@@ -1,51 +1,44 @@
-# Visual Density
+# Densidade visual
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Código é lido muito mais vezes do que escrito. **Visual density** (densidade visual, como o olho percorre o código) trata de agrupar o que pertence junto e separar o que é distinto, sem precisar de comentários para guiar o olho.
+Código é lido muitas vezes mais do que é escrito. A **visual density** (densidade visual) trata de agrupar o que pertence junto e separar o que é distinto, usando uma ferramenta só: a linha em branco. Ela guia o olho pelo código e dispensa o comentário de seção. Esta página é o guia transversal; cada linguagem tem a sua versão com exemplos idiomáticos, linkada no fim.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **blank line** (linha em branco) | Separador entre grupos coesos; uma só, nunca duas seguidas |
-| **tight pair** (par grudado) | Duas linhas com relação direta sem linha em branco entre elas; o respiro vem antes ou depois do par, nunca no meio |
-| **atomic trio** (trio atômico) | Três declarações simples consecutivas e homogêneas (`const`/`let`) mantidas juntas; preferir ao `2+1` que cria órfão |
-| **semantic pair** (par semântico encadeado) | Par grudado em que a última linha usa **diretamente** o valor declarado na penúltima |
-| **explaining return** (retorno explicativo) | Caso particular de par grudado: `const X = …` em uma única linha + `return X` sem linha em branco entre eles |
-| **multi-line block** (bloco multi-linha) | Objeto literal, array literal ou statement quebrado em várias linhas; pede linha em branco depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; é fase distinta, com linha em branco antes da montagem |
-| **orphan line** (linha órfã) | Declaração isolada entre linhas em branco que pertencia ao grupo anterior; cria pausa sem motivo |
-| **declaration + guard** (declaração e guarda) | Variável seguida do `if` que a valida; o respiro vem depois do par, não entre ele |
-| **wall of code** (muralha de código) | Quatro ou mais linhas relacionadas sem respiro; sempre quebrar em `2+2` |
-| **method phase** (fase do método) | Etapa lógica (preparar, transformar, persistir, responder); cada fase ganha seu respiro |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão frágil a renomeações, gera diff ruidoso |
+| **visual density** (densidade visual) | Quantidade de informação por bloco de código; o alvo é pouca por bloco e muita por arquivo |
+| **semantic group** (grupo semântico) | Poucas linhas que executam uma etapa coesa, por exemplo validar, calcular ou salvar |
+| **blank line** (linha em branco) | Separa dois grupos; faz o papel que antes cabia a um comentário de seção |
+| **boundary** (limite) | Linha que separa camadas, por exemplo do handler para o service; pede uma linha em branco antes |
+| **multi-line block** (bloco de várias linhas) | Objeto, array ou comando quebrado em várias linhas; pede um respiro depois de si |
+| **column alignment** (alinhamento em colunas) | Espaços extras para alinhar `=` ou `:` na vertical; antipadrão, quebra a cada renomeação |
 
 ## Referência rápida
 
 | Regra | Descrição |
 |---|---|
-| **Grupo padrão: 2 linhas** | Linhas relacionadas ficam juntas; a separação natural é por par |
-| **Trio tolerado** | Três declarações simples consecutivas e homogêneas (`const`, `let`) podem ficar juntas quando a divisão criaria uma linha solta |
-| **4+ quebra em 2+2** | A partir de quatro linhas relacionadas, sempre dividir para evitar muralha |
-| **Retorno explicativo é par grudado** | `const X = …; return X;` é um par sem linha em branco, não importa quantos passos haja acima |
-| **Retorno separado** | Só vai linha em branco antes do `return` se a linha imediatamente acima for multi-linha, efeito colateral ou se o valor foi criado vários passos antes |
-| **Par semântico encadeado** | Quando a linha final depende **diretamente** da penúltima (ex: `label = f(cityLine)`), elas ficam grudadas |
-| **Fragmentos → montagem** | Linha final que costura múltiplos fragmentos é fase distinta, com linha em branco antes |
-| **Declaração + guarda = par** | A variável e o `if` que a valida ficam juntos; o respiro vem depois do par |
-| **Multi-linha pede respiro depois** | Objeto literal, array literal ou statement quebrado em várias linhas exige linha em branco depois |
-| **Ifs com bloco `{}` consecutivos** | Sempre linha em branco entre eles; exceção: trio de guardas de uma linha fica grudado |
-| **Sem alinhamento de coluna** | Um espaço único ao redor de `=` ou `:`; sem espaçamento artificial |
-| **Strings longas** | Extrair fragmentos em variáveis nomeadas antes de montar o resultado |
-| **Nunca duplo respiro** | Exatamente uma linha em branco entre grupos; duas é ruído |
+| **O grupo natural tem 2 linhas** | Linhas relacionadas ficam juntas; a separação natural é por par |
+| **Três linhas quando dividir criaria uma solta** | Três declarações simples do mesmo tipo (`const`, `let`) podem ficar juntas |
+| **Quatro ou mais quebram em 2+2** | A partir de quatro linhas relacionadas, sempre dividir para evitar a muralha |
+| **A `const` que nomeia o retorno cola no `return`** | `const X = …; return X;` ficam juntas, não importa quantos passos venham acima |
+| **`return` separado** | Só vai linha em branco antes do `return` se a linha acima for de várias linhas, for efeito colateral ou se o valor nasceu passos antes |
+| **A linha que usa o valor recém-declarado cola nele** | Quando a última linha depende só da penúltima (ex: `label = f(cityLine)`), as duas ficam juntas |
+| **Montar o resultado é fase separada** | A linha que costura vários fragmentos ganha respiro antes |
+| **A variável e o `if` que a valida são um grupo** | O respiro vem depois do par, não no meio dele |
+| **Bloco de várias linhas pede respiro depois** | Objeto, array ou comando quebrado em várias linhas exige linha em branco depois |
+| **`if` com chaves seguidos pedem respiro entre si** | Exceção: guardas de uma linha ficam juntas |
+| **Sem alinhamento em colunas** | Um espaço único ao redor de `=` ou `:` |
+| **Nunca duas linhas em branco** | Uma separa; duas viram ruído |
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural; três é permitido quando a divisão criaria uma linha solta. A partir de quatro, sempre quebrar. Nunca duas linhas em branco seguidas: é ruído, não respiro.
+**Grupos pequenos, separados por uma linha em branco.** Dois é o tamanho natural do grupo. Três é aceitável quando dividir deixaria uma linha sozinha. A partir de quatro, sempre quebre. Use exatamente uma linha em branco entre grupos: a segunda vira ruído.
 
-## Retorno explicativo: par grudado
+## O `return` fica junto da linha que nomeia o valor
 
-Uma `const` nomeada acima do `return` explica o valor retornado. Sempre que a linha imediatamente acima for essa `const` em uma única linha e o `return` retornar exatamente essa variável, os dois formam par sem linha em branco. **Não importa quantos passos haja acima**: a linha em branco separa o par do que vem antes, mas não fragmenta o par.
+Uma `const` nomeada logo acima do `return` explica o que está sendo devolvido. Quando essa `const` ocupa uma única linha e o `return` devolve exatamente ela, as duas se leem como uma frase e não aceitam linha em branco no meio. Quantos passos existem acima não importa: o respiro separa o par do que veio antes, nunca parte o par.
 
 <details>
 <summary>❌ Ruim: linha em branco fragmenta o par</summary>
@@ -58,12 +51,12 @@ function mapErrorToStatus(error) {
 }
 ```
 
-A linha em branco isola o `return` como se fosse um parágrafo de encerramento, mas não há parágrafo antes, só uma linha. O olho procura o bloco que foi encerrado e não encontra.
+A linha em branco isola o `return` como se ele encerrasse um parágrafo. Só que não há parágrafo nenhum antes dele, há uma linha. O olho procura o bloco que terminou e não acha.
 
 </details>
 
 <details>
-<summary>✅ Bom: par grudado</summary>
+<summary>✅ Bom: as duas linhas juntas</summary>
 
 ```js
 function mapErrorToStatus(error) {
@@ -72,22 +65,22 @@ function mapErrorToStatus(error) {
 }
 ```
 
-Duas linhas que se leem como uma unidade: "o status vem da tabela, retorne."
+Lê-se como uma frase só: o status vem da tabela, devolva.
 
 </details>
 
-## Retorno grudado vs retorno separado
+## Quando o `return` cola na linha acima e quando ganha um respiro
 
-A regra é simples: o `return` fica **grudado** na linha imediatamente acima **somente quando essa linha é a `const` que nomeia o valor retornado** (retorno explicativo) e essa `const` ocupa uma única linha.
+O `return` gruda na linha imediatamente acima em um caso só: quando essa linha é a `const` que nomeia o valor devolvido e cabe em uma única linha.
 
-Em todos os outros casos, vai uma linha em branco antes do `return`:
+Em todos os outros casos vai uma linha em branco antes dele:
 
-- linha acima é **multi-linha** (objeto ou statement quebrado em várias linhas);
-- linha acima é **efeito colateral** (`await`, função sem retorno) que não nomeia o valor;
-- valor retornado foi criado **vários passos antes**, sem par direto.
+- a linha acima ocupa **várias linhas** (um objeto ou um comando quebrado);
+- a linha acima é **efeito colateral** (`await`, função que não devolve nada) e portanto não nomeia o valor;
+- o valor devolvido nasceu **vários passos antes**, sem par direto com a linha de cima.
 
 <details>
-<summary>❌ Ruim: retorno fragmentado quando a linha acima é de uma linha e nomeia o valor</summary>
+<summary>❌ Ruim: o respiro caiu no lugar errado</summary>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -103,12 +96,12 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 }
 ```
 
-`formatter` é multi-linha e exige linha em branco **depois** de si. A linha em branco foi colocada no lugar errado: antes do `return`, fragmentando o retorno explicativo `formattedDate` + `return formattedDate`.
+`formatter` ocupa várias linhas e pede o respiro **depois** de si. Ele foi parar antes do `return`, e o efeito é duplo: o bloco grande fica colado no que vem depois, e o par `formattedDate` + `return formattedDate` acaba partido.
 
 </details>
 
 <details>
-<summary>✅ Bom: multi-linha isolada, retorno explicativo grudado</summary>
+<summary>✅ Bom: bloco grande isolado, retorno junto do seu nome</summary>
 
 ```js
 function formatOrderDate(isoString, locale = "pt-BR") {
@@ -127,7 +120,7 @@ function formatOrderDate(isoString, locale = "pt-BR") {
 </details>
 
 <details>
-<summary>✅ Bom: retorno com linha em branco quando o valor é objeto multi-linha</summary>
+<summary>✅ Bom: respiro antes do `return` quando o valor é um objeto de várias linhas</summary>
 
 ```js
 function buildOrderResponse(order, requestId) {
@@ -141,12 +134,12 @@ function buildOrderResponse(order, requestId) {
 }
 ```
 
-`data` é objeto multi-linha; a linha em branco antes do `return` isola o bloco grande do envelope final.
+`data` ocupa várias linhas. O respiro antes do `return` separa esse bloco do envelope que fecha a função.
 
 </details>
 
 <details>
-<summary>✅ Bom: retorno com linha em branco quando o valor foi criado vários passos antes</summary>
+<summary>✅ Bom: respiro antes do `return` quando o valor nasceu passos antes</summary>
 
 ```js
 async function registerUser(input) {
@@ -159,16 +152,16 @@ async function registerUser(input) {
 }
 ```
 
-`return user` não forma par com `await sendWelcomeEmail` (efeito colateral); `user` foi criado várias linhas acima. A linha em branco antes do `return` marca o encerramento.
+`return user` não forma par com `await sendWelcomeEmail`, que é efeito colateral e não nomeia nada. O `user` foi criado lá em cima. A linha em branco marca o encerramento.
 
 </details>
 
-## Linha órfã é pior que trio grudado
+## Não deixe uma linha sozinha entre espaços
 
-Três declarações simples consecutivas formam um grupo coeso. Partir em `2+1` deixa a última linha solta entre linhas em branco, sem contexto: o leitor pausa procurando o motivo da separação e descobre que era só mais uma constante. Mantenha as três juntas. Só divida em `2+2` quando houver quatro ou mais.
+Três declarações simples e seguidas formam um grupo coeso. Parti-las em 2+1 deixa a última boiando entre duas linhas em branco, e o leitor para para descobrir o que aquele destaque significa. Descobre que era só mais uma constante. Mantenha as três juntas e só divida em 2+2 quando forem quatro ou mais.
 
 <details>
-<summary>❌ Ruim: linha órfã entre linhas em branco</summary>
+<summary>❌ Ruim: a terceira linha boiando sozinha</summary>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -177,12 +170,12 @@ const ORDER_STATUS_APPROVED = 2;
 const ONE_DAY_MS = 86_400_000;
 ```
 
-A linha solta parece um passo separado, mas é só mais uma constante. O leitor pausa procurando o motivo da separação e não encontra.
+A linha solta parece um passo à parte, mas é só mais uma constante. O leitor pausa procurando o motivo e não encontra.
 
 </details>
 
 <details>
-<summary>✅ Bom: trio grudado</summary>
+<summary>✅ Bom: as três juntas</summary>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -193,7 +186,7 @@ const ONE_DAY_MS = 86_400_000;
 </details>
 
 <details>
-<summary>✅ Bom: quatro declarações viram 2+2</summary>
+<summary>✅ Bom: quatro viram 2+2</summary>
 
 ```js
 const MINIMUM_DRIVING_AGE = 18;
@@ -205,12 +198,12 @@ const MAX_RETRY_ATTEMPTS = 3;
 
 </details>
 
-## Par semântico encadeado
+## Duas linhas onde a segunda usa o valor da primeira
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as duas formam um par semântico. A quebra natural fica antes do par, não entre ele e sua dependência direta.
+Quando a linha final consome o valor que a linha anterior acabou de declarar, as duas contam uma coisa só. A quebra natural vem antes das duas, nunca entre elas.
 
 <details>
-<summary>❌ Ruim: dependência direta partida</summary>
+<summary>❌ Ruim: a dependência direta foi partida ao meio</summary>
 
 ```csharp
 public static string BuildShippingLabel(Order order)
@@ -226,12 +219,12 @@ public static string BuildShippingLabel(Order order)
 }
 ```
 
-`cityLine` é consumido imediatamente por `label`. Separá-los com linha em branco esconde a relação.
+`cityLine` é consumido pela linha seguinte. Separar as duas com uma linha em branco esconde justamente a relação que importa.
 
 </details>
 
 <details>
-<summary>✅ Bom: par semântico grudado</summary>
+<summary>✅ Bom: quem depende fica junto</summary>
 
 ```csharp
 public static string BuildShippingLabel(Order order)
@@ -245,21 +238,21 @@ public static string BuildShippingLabel(Order order)
 }
 ```
 
-Dois pares grudados: `cityLine + label` (par semântico encadeado) e `label + return label` (retorno explicativo). O leitor vê "nome, endereço / cidade, label, retorne."
+Dois pares grudados: `cityLine` com `label`, porque um alimenta o outro, e `label` com `return label`, porque um nomeia o outro. O leitor lê "nome e endereço / cidade, etiqueta, devolve."
 
 </details>
 
-## Fragmentos → montagem: linha em branco antes do consumidor
+## Prepare as partes, depois monte o resultado
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que **consome múltiplos fragmentos** (não depende só do último), trate a montagem como fase distinta, com linha em branco antes dela. É o caso clássico "preparar partes → montar resultado", diferente do par semântico encadeado (onde a última depende **diretamente** da penúltima e por isso fica grudada).
+Quando duas ou mais linhas preparam fragmentos e uma linha final costura vários deles de uma vez, essa montagem é uma fase à parte e ganha respiro antes. É o clássico "preparar as partes, montar o resultado", e ele se distingue do caso anterior por um detalhe só: lá a última linha depende **apenas** da penúltima, aqui ela puxa material de várias.
 
-Heurística rápida:
+A pergunta que decide:
 
-- A última linha usa **só o valor recém-declarado** acima? → par semântico, fica grudado.
-- A última linha **costura múltiplos fragmentos** declarados em linhas diferentes? → fragmentos → montagem, linha em branco antes.
+- A última linha usa **só** o valor declarado logo acima? Então as duas ficam juntas.
+- A última linha costura **fragmentos vindos de linhas diferentes**? Então ela é montagem, e leva uma linha em branco antes.
 
 <details>
-<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: preparação e montagem coladas como se fossem o mesmo passo</summary>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -270,12 +263,12 @@ function buildDeliveryMessage(user, order) {
 }
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.id` *e* `order.deliveryDays`. Não é par direto com `address`: é a fase de montagem. Coladas como trio, as fases ficam invisíveis.
+`deliveryMessage` consome `fullName`, `address`, `order.id` e `order.deliveryDays`. Ele monta o resultado a partir de vários fragmentos, então forma uma fase própria. Coladas como um trio, as duas fases somem.
 
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos como par, montagem isolada, retorno explicativo grudado</summary>
+<summary>✅ Bom: fragmentos de um lado, montagem do outro</summary>
 
 ```js
 function buildDeliveryMessage(user, order) {
@@ -287,18 +280,18 @@ function buildDeliveryMessage(user, order) {
 }
 ```
 
-Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar" (retorno explicativo grudado).
+Duas fases visíveis: preparar os fragmentos, montar e entregar.
 
 </details>
 
-## Declaração + guarda = 1 grupo
+## A variável e o `if` que a valida ficam juntos
 
-Uma variável seguida do `if` que a valida formam um par semântico **quando o guarda cabe em uma única linha**: `if (...) return;`, `if (...) throw ...;`. Nesse caso a linha em branco vem **depois** do par, não entre ele.
+Uma variável seguida do `if` que a valida formam um grupo só, desde que o guarda caiba em uma linha: `if (...) return;`, `if (...) throw ...;`. O respiro vem depois do par.
 
-Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas físicas, mesmo com uma única instrução dentro), o `if` vira fase própria, porque o bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede respiro**: linha em branco **antes** do bloco. O critério é visual, não semântico.
+Quando o guarda é escrito com chaves, a conta muda. O bloco `{ }` tem peso visual próprio, mesmo carregando uma única instrução dentro, e por isso vira fase separada: linha em branco **antes** dele. O critério aqui é visual: o que decide é quanto espaço o bloco ocupa na tela.
 
 <details>
-<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: guarda de uma linha, junto da declaração</summary>
 
 ```js
 const product = await fetchProduct(id);
@@ -310,7 +303,7 @@ const result = process(product);
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco, fase própria com linha em branco antes</summary>
+<summary>✅ Bom: guarda com chaves, fase própria e respiro antes</summary>
 
 ```js
 const handler = eventHandlers[eventType];
@@ -326,7 +319,7 @@ const eventPayload = event.data;
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: com chaves pede respiro antes mesmo carregando uma instrução só</summary>
 
 ```js
 const response = await requestFn();
@@ -338,20 +331,20 @@ if (response.status !== 429) {
 const delayMs = Math.pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa três linhas físicas: peso visual próprio. Inline ficaria tight, mas em bloco, blank antes.
+O bloco ocupa três linhas na tela: peso próprio. Escrito em uma linha, ficaria colado na declaração; com chaves, ganha o respiro antes.
 
 </details>
 
-## Fases de um método
+## Deixe cada fase do método visível
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem deixar cada fase visível. Cada fase pode ter até 2 linhas antes de um respiro; 3 quando são declarações simples do mesmo tipo.
+Um método que busca, transforma, persiste e responde tem quatro fases, e o leitor deveria enxergar as quatro sem ler o corpo. Cada fase ocupa até duas linhas antes do respiro, ou três quando são declarações simples do mesmo tipo.
 
-## Multi-linha: respiro depois do bloco
+## Depois de um bloco de várias linhas, deixe um respiro
 
-Quando um objeto literal, array literal ou statement quebra em várias linhas, o bloco já ocupa espaço visual próprio. Cole uma linha em branco **depois** dele para isolar o bloco grande do próximo passo. Sem respiro, o leitor não vê onde o bloco termina e o próximo começa.
+Um objeto literal, um array ou um comando quebrado em várias linhas já ocupa espaço próprio na tela. Cole uma linha em branco **depois** dele. Sem isso, o leitor não vê onde o bloco terminou e o próximo passo começou; os dois viram uma massa só.
 
 <details>
-<summary>❌ Ruim: objeto multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: objeto grande colado no comando seguinte</summary>
 
 ```js
 async function createSession(user) {
@@ -369,7 +362,7 @@ async function createSession(user) {
 </details>
 
 <details>
-<summary>✅ Bom: linha em branco depois do objeto isola o bloco</summary>
+<summary>✅ Bom: o respiro depois do objeto fecha o bloco</summary>
 
 ```js
 async function createSession(user) {
@@ -387,14 +380,14 @@ async function createSession(user) {
 
 </details>
 
-## Ifs consecutivos: blocos com chaves precisam de respiro
+## Dois `if` seguidos com chaves pedem uma linha entre eles
 
-Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) colados formam muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre insira linha em branco entre eles.
+Dois blocos `{ ... }` colados formam muralha: o olho não acha onde um termina e o outro começa. Sempre separe os dois.
 
-**Exceção:** guardas de uma linha (retornos antecipados curtos) formam trio homogêneo e ficam grudadas. A regra do trio atômico se aplica.
+A exceção são as guardas de uma linha. Retornos antecipados curtos e seguidos formam um grupo homogêneo e ficam juntos, pela mesma regra que mantém três declarações unidas.
 
 <details>
-<summary>❌ Ruim: dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos colados</summary>
 
 ```js
 function processOrder(order) {
@@ -412,7 +405,7 @@ function processOrder(order) {
 </details>
 
 <details>
-<summary>✅ Bom: linha em branco entre os blocos</summary>
+<summary>✅ Bom: uma linha em branco entre os blocos</summary>
 
 ```js
 function processOrder(order) {
@@ -431,7 +424,7 @@ function processOrder(order) {
 </details>
 
 <details>
-<summary>✅ Bom: guardas de uma linha ficam grudadas (trio atômico)</summary>
+<summary>✅ Bom: guardas de uma linha ficam juntas</summary>
 
 ```js
 function validateInput(input) {
@@ -445,12 +438,12 @@ function validateInput(input) {
 
 </details>
 
-## Sem alinhamento de coluna
+## Não alinhe o código em colunas
 
-Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre **um espaço único**. Alinhamento artificial quebra com qualquer renomeação, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
+Não use espaços extras para alinhar `=`, `:` ou valores na vertical. Um espaço único, sempre. O alinhamento artificial quebra a cada renomeação e enche o diff de linhas que ninguém mudou de fato.
 
 <details>
-<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras para alinhar as colunas</summary>
 
 ```js
 const userName     = "alice";
@@ -462,7 +455,7 @@ const lastLoginAt  = new Date();
 </details>
 
 <details>
-<summary>✅ Bom: espaço único, sem espaçamento extra</summary>
+<summary>✅ Bom: um espaço só</summary>
 
 ```js
 const userName = "alice";
@@ -473,9 +466,9 @@ const lastLoginAt = new Date();
 
 </details>
 
-## Strings longas
+## Textos longos montados em uma linha
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia fragmentos em variáveis nomeadas antes de montar o resultado: o template final fica legível e os pedaços ganham semântica.
+Uma string longa escrita direto no `return` esconde as partes que a compõem. Extraia os fragmentos em variáveis nomeadas e monte o resultado depois: o texto final fica legível e cada pedaço ganha um nome.
 
 ---
 

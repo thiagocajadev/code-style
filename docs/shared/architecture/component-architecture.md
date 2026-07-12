@@ -1,19 +1,20 @@
-# Componentização e Arquitetura de Módulos
+# Componentização e arquitetura de módulos
 
 > Escopo: transversal. Aplica-se a qualquer linguagem ou stack do projeto.
 
-Componentização é a decisão de **onde cortar o sistema**: como dividir responsabilidades, como os
-dados fluem entre as partes e onde ficam os limites de reuso.
+Componentizar é decidir **onde cortar o sistema**: quem cuida de quê, por onde os dados passam de uma
+parte para outra e o que pode ser reaproveitado.
 
 ```
 dado externo → container (busca, estado, regras) → presentational (renderiza, emite eventos) → output
 ```
 
-A divisão certa faz o código crescer sem virar um monolito opaco. A errada espalha acoplamento e
-transforma cada nova feature em cirurgia de peito aberto.
+Com os cortes no lugar certo, o sistema cresce e continua legível: cada pedaço tem um dono e uma
+fronteira clara. Com os cortes no lugar errado, tudo depende de tudo, e uma feature nova exige mexer
+em cinco arquivos que ninguém lembra por que existem.
 
-Os princípios desta página são **agnósticos de framework**. Aplicam-se a React, Angular, Blazor,
-Razor, Vue ou qualquer organização modular de backend. Frameworks específicos ancoram o vocabulário
+Os princípios desta página valem para **qualquer framework**. Servem a React, Angular, Blazor, Razor,
+Vue e também à organização de módulos no backend. O vocabulário específico de cada framework aparece
 depois, na documentação da linguagem.
 
 ## Conceitos fundamentais
@@ -31,15 +32,14 @@ depois, na documentação da linguagem.
 
 ---
 
-## Composição sobre herança
+## Combinar blocos em vez de estender classes
 
-Herança encadeia responsabilidades em hierarquia vertical: a classe filha carrega tudo que a mãe
-tem, queira ou não. Adicionar um comportamento novo exige criar mais um nível na árvore ou inflar a
-classe existente. Em poucos níveis, a hierarquia vira um grafo rígido onde mudanças no topo quebram
-o que está embaixo.
+Herança empilha responsabilidades numa cadeia vertical: a classe filha recebe tudo o que a mãe tem,
+precise ou não. Um comportamento novo pede mais um nível na árvore ou engorda a classe que já existe.
+Com poucos níveis a árvore endurece, e uma mudança lá em cima chega quebrando quem está embaixo.
 
-Composição inverte o modelo: pequenos blocos independentes são **combinados** para formar o
-comportamento desejado. Cada bloco faz uma coisa e aceita outros como dependência.
+Composição monta o comportamento de outro jeito: blocos pequenos e independentes são **combinados**
+até formar o que se quer. Cada bloco faz uma coisa e recebe os outros como dependência.
 
 ```
 // herança: responsabilidades amarradas na cadeia
@@ -53,23 +53,23 @@ class User {
 }
 ```
 
-A mesma lógica vale para componentes de **UI** (User Interface · Interface do Usuário). Um `Card` que
-aceita `children` compõe. Um `ProductCard extends Card` herda. O primeiro é reutilizável por design;
-o segundo precisa de uma subclasse nova para cada variação.
+O mesmo vale para componentes de **UI** (User Interface · Interface do Usuário). Um `Card` que aceita
+`children` compõe: qualquer conteúdo entra nele. Um `ProductCard extends Card` herda, e cada variação
+nova pede outra subclasse.
 
-**Quando usar herança**: hierarquia is-a legítima (relação de "é um"), raramente mais de um nível, em domínios
-estáveis (exceções, entidades de framework). Para tudo mais, composição vence: mais testável, mais
-flexível, menos frágil a mudanças.
+**Quando herança serve**: relação is-a (relação de "é um") legítima, com raramente mais de um nível, em
+domínios estáveis como exceções e entidades de framework. Fora daí, composição sai na frente: mais
+fácil de testar, mais fácil de recombinar e menos sensível a mudanças.
 
 ---
 
-## Container vs apresentação
+## O componente que busca dados e o que desenha a tela
 
-Um componente que busca dados, aplica regras de negócio **e** renderiza tela mistura três
-responsabilidades na mesma caixa. Testar a renderização exige simular toda a stack de dados.
-Reaproveitar a tela em outro contexto exige reescrever a busca.
+Um componente que busca dados, aplica regra de negócio **e** desenha a tela guarda três
+responsabilidades na mesma caixa. Testar só a renderização obriga a simular a stack de dados inteira.
+Reaproveitar a tela em outro contexto obriga a reescrever a busca.
 
-A separação clássica divide em dois papéis:
+A separação clássica cria dois papéis:
 
 | Papel                     | Responsabilidade                                         | Testa com                                 |
 | ------------------------- | -------------------------------------------------------- | ----------------------------------------- |
@@ -88,35 +88,36 @@ OrderDetailsView (pure)
   └── emite eventos ao clicar
 ```
 
-O presentational (apresentação) não sabe **de onde** vêm os dados. Isso permite trocar a fonte sem
-tocar na UI: **API** (Application Programming Interface · Interface de Programação de Aplicações)
-real, mock em Storybook ou fixture de teste pré-definida. O container não sabe **como** a tela é
-desenhada. Designers trocam o layout sem medo de quebrar a lógica.
+O presentational (componente de apresentação) ignora **de onde** o dado veio. Isso deixa trocar a
+fonte sem tocar na tela: a **API** (Application Programming Interface · Interface de Programação de
+Aplicações) real hoje, um mock (dados fictícios) no Storybook amanhã, uma fixture (dado fixo escrito
+para o teste) na suíte. O container ignora **como** a tela é desenhada, então o layout muda sem risco
+para a lógica.
 
-A separação vira anti-padrão quando a aplicação é **pequena o suficiente** para que container e view
-coincidam sem atrito. Dividir por disciplina vazia cria indireção sem ganho. A regra é: dividir
-quando a mesma tela aparece em dois contextos, ou quando a regra de negócio do container fica grande
-o bastante para merecer teste isolado.
+Em aplicação pequena, container e view coincidem sem atrito, e dividir só por disciplina cria uma
+camada a mais para atravessar sem nada em troca. Vale dividir quando a mesma tela aparece em dois
+contextos, ou quando a regra do container fica grande o bastante para merecer teste próprio.
 
 ---
 
 ## Estado: onde colocar, por onde passar
 
-Estado é a pergunta mais cara da arquitetura de componentes. Colocar no lugar errado gera prop
-drilling, re-renders (re-renderizações) desnecessários, bugs de sincronização e limites de teste confusos.
+Estado é a decisão mais cara da arquitetura de componentes. No lugar errado, ele gera cascata de
+props, re-renderizações à toa, telas que discordam entre si e testes difíceis de montar.
 
-A decisão segue um caminho progressivo: começa pelo mínimo e sobe conforme a necessidade.
+A escolha sobe um degrau de cada vez, começando pelo mínimo:
 
 ```
 estado local → lifting (ancestral comum) → context (transversal: tema, user)
              → store global (partes distantes, operações compostas)
 ```
 
-### Lifting state (elevar estado)
+### Elevar o estado até o ancestral comum
 
 Quando dois componentes irmãos precisam do mesmo dado, o estado sobe para o **ancestral comum mais
-próximo** que consegue coordenar os dois. O pai detém a fonte da verdade; os filhos recebem o valor
-e um **callback** (função de retorno) para mudá-lo.
+próximo**, o primeiro componente acima dos dois que consegue coordená-los. Esse pai passa a ser a
+fonte da verdade, e cada filho recebe o valor e um **callback** (função de retorno) para pedir a
+alteração.
 
 ```
         <Checkout>                    <- detém shippingAddress
@@ -124,60 +125,62 @@ e um **callback** (função de retorno) para mudá-lo.
  <AddressForm>  <OrderSummary>        <- ambos recebem via props
 ```
 
-Elevar estado demais cria o problema seguinte.
+Subir estado além do necessário cria o problema seguinte.
 
-### Prop drilling (cascata de props)
+### Cascata de props (prop drilling)
 
-Quando o estado precisa atravessar cinco camadas de componentes até chegar ao filho que o consome,
-cada camada intermediária ganha uma prop que só repassa adiante. O código vira cano: muda a forma do
-dado, precisa tocar seis arquivos.
+Quando o dado precisa descer cinco camadas até chegar em quem o usa, cada camada do meio ganha uma
+prop que ela só repassa. O caminho vira encanamento: mudar o formato do dado obriga a editar seis
+arquivos que não fazem nada com ele.
 
 Três saídas, em ordem de preferência:
 
 1. **Puxar o consumidor para perto da fonte**: reorganizar a árvore para encurtar o caminho é quase
    sempre a melhor resposta.
-2. **Passar objetos de domínio em vez de campos soltos**: `order` em vez de `orderId` +
-   `orderStatus` + `orderTotal` reduz a quantidade de props, mesmo que a cascata permaneça.
-3. **Context / injection**: compartilha dados transversais (tema, usuário logado, localização) sem
-   drill. Usar com parcimônia: toda referência implícita é um acoplamento escondido.
+2. **Passar objetos de domínio em vez de campos soltos**: `order` no lugar de `orderId` +
+   `orderStatus` + `orderTotal` reduz o número de props, mesmo que a cascata continue existindo.
+3. **Context / injection**: entrega dados transversais (tema, usuário logado, idioma) sem descer
+   props. Usar com parcimônia, porque toda referência implícita é um acoplamento que não aparece na
+   assinatura do componente.
 
-### Context boundaries (limites de contexto)
+### Os limites de um context
 
-Contexto global resolve drill, mas transforma qualquer consumidor em dependente invisível do
-provider (fornecedor de contexto). Três regras para não vazar:
+Context resolve a cascata e cobra um preço: todo componente que o consome passa a depender de um
+provider (componente que fornece o valor do contexto) que ninguém vê na chamada. Três regras seguram
+o vazamento:
 
-- **Um contexto por domínio** (tema, autenticação, feature flags), não um grande blob (aglomerado) de estado
-  geral.
-- **Tipagem explícita** do valor que o contexto entrega, para que o consumidor saiba o contrato sem
-  caçar o provider.
-- **Valores estáveis**: um contexto que muda a cada render invalida todos os consumidores abaixo e
-  anula o ganho.
+- **Um contexto por domínio** (tema, autenticação, feature flags). Um contexto único com o estado
+  geral do app junta assuntos que não têm relação e obriga todo mundo a escutar tudo.
+- **Tipagem explícita** do valor entregue, para o consumidor conhecer o contrato sem ir caçar o
+  provider.
+- **Valores estáveis**: um contexto que muda de identidade a cada render invalida todos os
+  consumidores abaixo e devolve o custo que ele deveria economizar.
 
-### Store externo: quando vale
+### Store global: quando vale o custo
 
-Gerenciadores de estado global (Redux, Zustand, NgRx, Fluxor, Pinia) fazem sentido quando:
+Gerenciadores de estado global (Redux, Zustand, NgRx, Fluxor, Pinia) valem quando:
 
-- O mesmo estado é lido e escrito por partes distantes da árvore que não compartilham ancestral
+- O mesmo estado é lido e escrito por partes distantes da árvore, que não têm um ancestral comum
   natural.
-- Operações compostas como undo/redo (desfazer/refazer), time-travel (replay de estados anteriores) e persistência precisam de um ponto central.
-- A equipe já pagou o custo de aprender a abstração e o projeto é grande o suficiente para
-  amortizar.
+- Operações compostas como undo/redo (desfazer/refazer), time-travel (navegar pelos estados
+  anteriores) e persistência precisam de um ponto central.
+- O time já pagou o custo de aprender a abstração e o projeto é grande o bastante para amortizá-lo.
 
-Em projetos pequenos, store global é um martelo grande demais. Estado local + lifting cobrem a
-maioria dos casos sem cerimônia.
+Em projeto pequeno, o store global cobra cerimônia (actions, reducers, seletores) para resolver o que
+estado local e lifting já resolvem.
 
 ---
 
-## Memoization (memorização de resultados): quando ajuda, quando prejudica
+## Memoization: quando o cache ajuda e quando atrapalha
 
-Memoization armazena o resultado de uma computação cara e devolve o valor em cache nas chamadas
-seguintes com os mesmos argumentos. Em componentes, aparece em três formas: cache de valor
-computado, cache de função (para manter identidade referencial entre renders) e cache de componente
-inteiro (evitar re-render quando props não mudaram).
+Memoization guarda o resultado de uma computação cara e devolve o valor guardado quando os argumentos
+se repetem. Em componentes ela aparece de três formas: cache de valor calculado, cache de função
+(para a referência continuar a mesma entre renders) e cache do componente inteiro (para evitar
+re-render quando as props não mudaram).
 
-O ganho depende da razão entre **custo da computação** e **custo da comparação de argumentos**.
-Quando os argumentos são objetos complexos, a comparação chega perto do custo da computação e o
-cache vira overhead (custo extra).
+O ganho depende da relação entre o **custo de calcular** e o **custo de comparar os argumentos**. Com
+argumentos que são objetos grandes, comparar chega perto de calcular, e o cache passa a cobrar quase
+tudo o que economiza.
 
 | Cenário                                                                   | Memoizar?                                   |
 | ------------------------------------------------------------------------- | ------------------------------------------- |
@@ -186,30 +189,30 @@ cache vira overhead (custo extra).
 | Cálculo trivial (soma de dois campos, concatenação curta)                 | Não, a comparação custa mais que o trabalho |
 | Componente que depende de contexto que muda a cada render                 | Não, o cache nunca acerta                   |
 
-O sinal de memoization mal aplicada é o time gastar tempo investigando **por que o cache não
-invalida** ou **por que uma prop muda de identidade a cada render**. Quando o debugging (depuração) do cache domina, a
-memoization está no lugar errado.
+O sinal de memoization mal aplicada aparece no dia a dia do time: horas investigando **por que o cache
+não invalida** ou **por que esta prop muda de identidade a cada render**. Quando depurar o cache toma
+mais tempo do que o cache economiza, ele está no lugar errado.
 
-**Regra prática**: medir antes de memoizar. Otimização sem medição é crença, não engenharia.
+**Regra prática**: medir antes de memoizar. Sem medição, a otimização é palpite, e o palpite costuma
+custar mais do que rende.
 
 ---
 
 ## Limites de módulo e regras de import
 
-Módulos são as unidades que o sistema empacota, testa e versiona. Os limites entre eles
-determinam o que pode depender de quê. Sem regras explícitas, o grafo de dependências vira um
-emaranhado: mudança em um módulo distante quebra um módulo qualquer sem que o autor saiba.
+Módulos são as unidades que o sistema empacota, testa e versiona. Os limites entre eles dizem quem
+pode depender de quem. Sem regra explícita, o grafo de dependências vira um emaranhado, e uma mudança
+num módulo distante quebra outro sem que o autor perceba.
 
-### Feature-based (por funcionalidade) vs layer-based (por camada)
+### Agrupar por funcionalidade ou por camada
 
 | Organização       | Agrupa por                                           | Melhor para                                                   |
 | ----------------- | ---------------------------------------------------- | ------------------------------------------------------------- |
 | **Feature-based** | Domínio de negócio (orders, users, billing)          | Times paralelos, sistemas com muitas features independentes   |
 | **Layer-based**   | Camada técnica (controllers, services, repositories) | Aplicações com poucas features mas muita disciplina de camada |
 
-Projetos reais costumam ser **híbridos**: feature-based no nível superior, layer-based dentro de
-cada feature. O padrão é consistente com Vertical Slice descrito em
-[architecture.md](architecture.md).
+Projeto real costuma ser **híbrido**: feature-based no nível de cima, layer-based dentro de cada
+feature. O arranjo é o mesmo do Vertical Slice descrito em [architecture.md](architecture.md).
 
 ```
 features/
@@ -228,39 +231,39 @@ shared/
 
 ### Regras de import
 
-A direção das dependências dentro de uma feature segue uma regra única: as camadas externas dependem
-das internas, nunca o contrário.
+Dentro de uma feature, a dependência tem direção única: as camadas de fora dependem das de dentro.
 
 ```
 application → domain ← infrastructure
 ```
 
-`application` depende de `domain`. `infrastructure` depende de `domain` via interface. `domain` não
-depende de nada.
+`application` depende de `domain`. `infrastructure` depende de `domain` por meio de uma interface.
+`domain` não depende de ninguém, e é isso que permite testá-lo sem banco, sem rede e sem framework.
 
 Três regras mantêm o grafo saudável entre features:
 
-- **Features não importam features.** Se `orders` precisa de algo de `billing`, o compartilhado sobe
-  para `shared/` ou a dependência acontece por evento (ver Observer em [patterns.md](patterns.md)).
-  Import direto vira acoplamento oculto.
-- **Camadas respeitam direção.** O import que fere a direção acima é sinal de responsabilidade mal
-  colocada.
-- **Public API explícita.** Cada módulo tem um `index` ou barrel file (arquivo índice) como único ponto de exportação. Consumidores importam desse contrato, não de arquivos internos. Mudanças internas ficam contidas.
+- **Feature não importa feature.** Se `orders` precisa de algo de `billing`, esse algo sobe para
+  `shared/` ou a conversa acontece por evento (ver Observer em [patterns.md](patterns.md)). O import
+  direto amarra as duas em silêncio.
+- **Camada respeita a direção.** Um import contra a seta acima indica responsabilidade no lugar
+  errado.
+- **API pública explícita.** Cada módulo expõe um `index` ou barrel file (arquivo índice) como única
+  porta de saída. Quem consome importa desse contrato, e o resto do módulo fica livre para mudar.
 
-Quando a ferramenta suporta, as regras viram **configuração verificável** (ESLint boundaries, Nx
-tags, analyzers .NET, dependency-cruiser). Regras checadas pelo **CI** (Continuous Integration · Integração Contínua, pipeline que automatiza lint,
-testes e build a cada commit) não degradam; as confiadas na disciplina humana erodem em dois
-sprints.
+Quando a ferramenta permite, essas regras viram **configuração verificável** (ESLint boundaries, Nx
+tags, analyzers .NET, dependency-cruiser). Regra checada pelo **CI** (Continuous Integration ·
+Integração Contínua, pipeline que roda lint, testes e build a cada commit) continua valendo daqui a um
+ano. Regra que depende só da disciplina de quem revisa se dissolve em dois sprints.
 
 ### Sinais de limite errado
 
-- O mesmo domínio aparece em três features diferentes, sempre ligeiramente diferente. Falta um
-  módulo compartilhado.
-- Uma mudança em uma feature exige tocar arquivos em outras quatro. Limite vazando.
-- Um módulo `shared/utils` cresce indefinidamente e vira lixeira. Falta naming (nomenclatura) por domínio:
-  `shared/formatting`, `shared/validation`, não `shared/utils`.
-- O grafo de dependências tem ciclos. Qualquer ciclo é um bug de design; quebrar exige inverter uma
-  dependência via interface.
+- O mesmo domínio aparece em três features, sempre com uma pequena diferença. Falta um módulo
+  compartilhado.
+- Uma mudança em uma feature obriga a tocar arquivos de outras quatro. O limite está vazando.
+- Um `shared/utils` cresce sem fim e vira depósito. Faltam nomes por domínio: `shared/formatting`,
+  `shared/validation`.
+- O grafo de dependências tem ciclo. Todo ciclo é um erro de design, e quebrá-lo exige inverter uma
+  das dependências por meio de uma interface.
 
 ---
 
