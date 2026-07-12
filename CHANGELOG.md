@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.3] - 2026-07-12
+
+### Fixed
+
+- **12 exemplos em que o blank line separava uma declaração da única linha que a consumia.** O caso que abriu a investigação, em `csharp/frameworks/blazor.md`: `var editRoute = $"/orders/{OrderId}/edit";` seguido de blank e de `navigation.NavigateTo(editRoute);`. O método tem uma fase só, navegar, e a declaração apenas monta o argumento dela; o blank anunciava uma divisão que não existe. Corrigido em `csharp/frameworks/blazor.md` (3 casos), `javascript/conventions/advanced/null-safety.md`, `javascript/frameworks/bot/{discord,telegram,whatsapp}.md` (4), `nosql/sgbd/redis.md`, `php/conventions/advanced/error-handling.md` e `swift/conventions/variables.md`.
+- **Nos três bots, o blank subiu em vez de sumir.** A linha de embalagem estava colada no grupo que faz trabalho (`const replyPayload = { embeds: [embed] };` logo abaixo de `fetchOrder` e `buildOrderEmbed`). O blank passou para antes dela, e o exemplo passou a ler como duas fases: preparar os dados, enviar.
+
+### Changed
+
+- **`density-lonely-chain` deixou de discriminar por "o consumidor atribui ou não".** A regra isentava toda chamada de side-effect, e com isso perdia o par que só existe para alimentar a chamada. O critério novo é a natureza da declaração: se o lado direito chama ou aguarda algo, ela é uma fase do fluxo e o blank fica (`const input = schema.parse(sanitized);` antes de `await createUser(input);` segue isento); se ela só monta um valor, é preparação do argumento e o par vira tight.
+- **Exceção nova para a cadeia de cálculo.** `temperature = 27 - (voltage - 0.706) / 0.001721`, em `python/conventions/advanced/micropython.md`, fecha uma conta que começou em `raw = adc.read_u16()`. Aritmética que consome a variável declarada na linha imediatamente acima é continuação do cálculo, não embalagem de argumento, e mantém o blank antes do `print`.
+- **Dois bugs de cobertura que a regra nova revelou.** `TEST_BLOCK_PATTERN` não reconhecia teste em PHP, porque `assertSame` não casava com `\bassert[.!(_ ]`, e um bloco AAA de `php/conventions/visual-density.md` era acusado indevidamente. E `isCallStatement` lia a definição `def summarize(state: OrderState)` como chamada, acusando um type alias em `python/conventions/advanced/entity-modeling.md`. Seis casos novos em `audit-docs.test.mjs` (44, antes 38).
+
 ## [2.3.2] - 2026-07-12
 
 ### Fixed

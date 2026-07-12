@@ -255,7 +255,6 @@ Use `finally` para liberar recursos independente de sucesso ou falha.
 public function processWithLock(int $orderID): Order
 {
     $lockKey = "order:{$orderID}:lock";
-
     $this->cache->acquire($lockKey);
 
     try {

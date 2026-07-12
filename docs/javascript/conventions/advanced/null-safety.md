@@ -211,7 +211,6 @@ config.hasOwnProperty("timeout"); // funciona, mas pode ser sobrescrito via prot
 
 ```js
 const config = { timeout: 0, debug: false };
-
 Object.hasOwn(config, "timeout"); // true: existe, mesmo sendo 0
 Object.hasOwn(config, "retries"); // false: não existe
 

@@ -187,8 +187,8 @@ async function orderCommand(socket, chatId, messageText) {
 
   const order = await fetchOrder(orderId);
   const summary = buildOrderSummary(order);
-  const messagePayload = { text: summary };
 
+  const messagePayload = { text: summary };
   await socket.sendMessage(chatId, messagePayload);
 }
 ```
@@ -279,7 +279,6 @@ function extractMessage(body) {
 async function processMessage(message) {
   const chatId = message.from;
   const text = message.text?.body ?? '';
-
   await routeCommand(chatId, text);
 }
 ```

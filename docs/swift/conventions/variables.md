@@ -162,7 +162,6 @@ sendNotification(message)
 
 ```swift
 let message = order.isSettled ? "Payment confirmed" : "Payment pending"
-
 sendNotification(message)
 ```
 

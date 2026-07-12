@@ -215,14 +215,13 @@ export async function orderCommand(context) {
     Markup.button.callback('Cancelar pedido', `cancel_${orderId}`),
     Markup.button.callback('Ver detalhes', `details_${orderId}`),
   ]);
-  const replyText = `Pedido #${orderId} encontrado.`;
 
+  const replyText = `Pedido #${orderId} encontrado.`;
   await context.reply(replyText, keyboard);
 }
 
 bot.action(/^cancel_(.+)$/, async (context) => {
   const orderId = context.match[1];
-
   await cancelOrder(orderId);
 
   const cancelMessage = `Pedido #${orderId} cancelado.`;

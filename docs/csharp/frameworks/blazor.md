@@ -179,14 +179,12 @@ decide o que fazer. O filho continua sem saber quem o usa, e por isso serve a v�
     private async Task DecrementAsync()
     {
         var updatedQuantity = Quantity - 1;
-
         await OnQuantityChanged.InvokeAsync(updatedQuantity);
     }
 
     private async Task IncrementAsync()
     {
         var updatedQuantity = Quantity + 1;
-
         await OnQuantityChanged.InvokeAsync(updatedQuantity);
     }
 }
@@ -374,7 +372,6 @@ navegar a partir do código, use o `NavigationManager` dentro de um método com 
     private void NavigateToEdit()
     {
         var editRoute = $"/orders/{OrderId}/edit";
-
         navigation.NavigateTo(editRoute);
     }
 }

@@ -208,8 +208,8 @@ export async function orderCommand(interaction) {
 
   const order = await fetchOrder(orderId);
   const embed = buildOrderEmbed(order);
-  const replyPayload = { embeds: [embed] };
 
+  const replyPayload = { embeds: [embed] };
   await interaction.editReply(replyPayload);
 }
 

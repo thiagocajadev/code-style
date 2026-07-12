@@ -257,7 +257,6 @@ Coleção não ordenada de strings únicas. Útil para tags, permissões, membro
 ```js
 // times favoritos de um usuário
 const userKey = `user:favorites:${userId}`;
-
 await client.sAdd(userKey, 'team:42');
 await client.sAdd(userKey, 'team:43');
 
