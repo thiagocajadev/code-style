@@ -1,7 +1,6 @@
-# Control Flow
+# Controle de fluxo em C#
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
-existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada. **Guard clauses** (cláusulas de proteção) achatam aninhamento; **pattern matching** do C# moderno substitui cadeias longas de `if/else` por `switch` expressivos.
+A estrutura certa depende de três perguntas: quantas condições existem, se elas escolhem um valor ou disparam uma ação, e se o método pode sair antes do fim. **Guard clauses** (cláusulas de proteção) tratam o caso inválido no topo e devolvem o fluxo principal sem aninhamento. O **pattern matching** (correspondência de padrões) do C# moderno troca cadeias longas de `if/else` por um `switch` que o compilador consegue conferir.
 
 ## Conceitos fundamentais
 
@@ -15,10 +14,11 @@ existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de s
 | **null-conditional** (acesso seguro a nulo, `?.`) | Operador que evita `NullReferenceException` ao acessar membro de null |
 | **null-coalescing** (coalescência de ausente, `??`) | Operador que devolve o lado direito quando o esquerdo é null |
 
-## If e else
+<a id="if-and-else"></a>
 
-O ponto de partida. Para dois caminhos, `if/else` funciona, mas o `else` após um `return` é ruído
-estrutural: o compilador já descartou o branch anterior.
+## Retornar cedo dispensa o else
+
+Depois de um `return`, o `else` não decide mais nada: se o programa chegou à linha seguinte, é porque a condição anterior era falsa. Escrever o `else` mesmo assim só acrescenta um nível de indentação a cada caso.
 
 <details>
 <summary>❌ Ruim: else desnecessário após return</summary>
@@ -52,10 +52,11 @@ public decimal GetDiscount(string customerType)
 
 </details>
 
-## Ternário
+<a id="ternary"></a>
 
-Para atribuição de dois valores possíveis em uma linha. Três ou mais alternativas → `switch`
-expression. Nunca aninhar ternários.
+## Ternário para dois valores em uma linha
+
+O ternário (`cond ? a : b`) cabe quando existem dois resultados possíveis e os três pedaços da expressão são curtos. A partir de três alternativas, use `switch` expression. Ternário dentro de ternário obriga o leitor a contar `?` e `:` para descobrir qual condição pertence a qual resultado.
 
 <details>
 <summary>❌ Ruim: if/else imperativo para atribuição simples</summary>
@@ -102,10 +103,11 @@ var priority = (isUrgent, isCritical) switch
 
 </details>
 
-## Aninhamento em cascata
+<a id="cascading-nesting"></a>
 
-Quando as condições crescem e se aninham, o fluxo vira uma pirâmide: o _arrow antipattern_. Guard
-clauses invertem a pirâmide: trate os casos inválidos no topo e deixe o fluxo principal limpo.
+## Guard clause no topo achata o aninhamento
+
+Quando cada validação abre um `if` novo dentro do anterior, o código útil vai parar no fundo de uma pirâmide de chaves, e a condição que levou até lá fica cinco linhas acima. Inverta: valide o caso inválido primeiro e saia do método. O que sobra depois das guardas é o caminho feliz, sem indentação e sem `else`.
 
 <details>
 <summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
@@ -160,10 +162,11 @@ public async Task<Result<Invoice>> CheckoutAsync(CartRequest request, Cancellati
 
 </details>
 
-## Pattern matching
+<a id="pattern-matching"></a>
 
-Guard clauses resolvem pré-condições simples. Quando a condição envolve verificação de tipo, `is`
-extrai e verifica em uma única expressão, sem cast manual, com escopo garantido pelo compilador.
+## Pattern matching testa o tipo e já entrega a variável
+
+`if (payment is CreditCardPayment creditCard)` faz duas coisas de uma vez: confere o tipo e declara `creditCard` já convertido, válido dentro do bloco. O compilador garante que a variável só existe onde o teste passou. A alternativa antiga, testar com `is` e depois converter na mão com `(CreditCardPayment)payment`, escreve o nome do tipo duas vezes e deixa a conversão longe da checagem.
 
 <details>
 <summary>❌ Ruim: cast manual após verificação de tipo</summary>
@@ -213,11 +216,11 @@ public string SummarizePayment(object payment)
 
 </details>
 
-## Switch expression
+<a id="switch-expression"></a>
 
-Quando múltiplos `if/else` mapeiam uma entrada para um valor, `switch` expression substitui com
-clareza declarativa. Cada arm retorna um valor e o compilador exige exaustividade: sem `default`
-esquecido, sem caso não tratado.
+## Switch expression quando a entrada vira um valor
+
+Uma cadeia de `if/else` que só escolhe qual valor atribuir cabe melhor num `switch` expression. Cada braço mapeia uma entrada a um resultado, e o compilador cobra o caso `_` que cobre o resto: um valor de entrada sem tratamento vira erro de compilação em vez de retorno silencioso. O segundo exemplo mostra o mesmo recurso lendo propriedades de dentro do objeto (`{ Error.Code: "NOT_FOUND" }`) para traduzir um `Result` em resposta HTTP.
 
 <details>
 <summary>❌ Ruim: if/else encadeado para mapeamento de valor</summary>
@@ -293,12 +296,11 @@ public IResult MapResult(Result<Order> result)
 
 </details>
 
-## Switch statement
+<a id="switch-statement"></a>
 
-Switch expression resolve mapeamento de valores. Quando cada caso precisa executar múltiplas ações
-(não retornar um valor, mas fazer algo), `switch` statement torna a intenção mais clara que um
-`if/else` encadeado. Cada `case` termina com `break` explícito: **fall-through** (execução que continua no caso seguinte) acidental é bug
-silencioso.
+## Switch statement quando cada caso executa ações
+
+O `switch` expression devolve um valor. Quando o caso precisa disparar várias chamadas, como mandar e-mail e atualizar estoque, use o `switch` statement. Feche cada `case` com `break` explícito: sem ele, o C# passa a execução para o caso seguinte, e esse **fall-through** (execução que escorre para o próximo caso) é um bug que roda sem reclamar.
 
 <details>
 <summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
@@ -354,11 +356,11 @@ public void ProcessOrderEvent(OrderEvent orderEvent)
 
 </details>
 
-## Dictionary
+<a id="dictionary"></a>
 
-Switch expression e switch statement resolvem casos estáticos conhecidos em tempo de compilação.
-Quando os dados são dinâmicos (carregados de config, banco ou fonte externa),
-`Dictionary<TKey, TValue>` é a estrutura certa.
+## Dictionary quando as opções vêm de fora do código
+
+`switch` serve para o conjunto de casos que já se conhece ao escrever o programa. Quando as opções chegam de um arquivo de configuração, do banco ou de uma API, elas mudam sem recompilação, e um `Dictionary<TKey, TValue>` é a estrutura que aceita essa mudança. `GetValueOrDefault` ainda resolve a chave ausente na mesma linha da busca.
 
 <details>
 <summary>❌ Ruim: lógica hardcoded para dados que vêm de fonte externa</summary>
@@ -397,13 +399,13 @@ public string GetCurrencyCode(string region)
 
 ---
 
-_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem **iteração**: quantas vezes percorrer._
+_As estruturas acima escolhem um caminho entre vários. As de baixo repetem um trecho de código sobre uma coleção._
 
-## Circuit break
+<a id="circuit-break"></a>
 
-Antes de escrever um loop, verifique se `FirstOrDefault`, `Any` ou `All` já resolve. Esses métodos
-**LINQ** (Language Integrated Query · consulta integrada à linguagem) param no primeiro match, sem percorrer o resto. Para busca com lógica de saída explícita,
-`foreach` com `return` antecipado é direto.
+## Parar de percorrer assim que encontrar
+
+Antes de escrever o loop, veja se `FirstOrDefault`, `Any` ou `All` já resolve. Esses métodos **LINQ** (Language Integrated Query · consulta integrada à linguagem) param no primeiro item que decide a resposta e ignoram o resto da coleção. Um `foreach` que guarda o achado numa variável e continua rodando até o fim faz trabalho que ninguém vai usar, e numa lista grande esse trabalho aparece no tempo de resposta.
 
 <details>
 <summary>❌ Ruim: percorre tudo mesmo após encontrar o resultado</summary>
@@ -478,10 +480,11 @@ var allOrdersActive = orders.All(order => order.IsActive);
 
 </details>
 
-## foreach
+<a id="foreach"></a>
 
-Para iterar sobre uma coleção executando ações por item, `foreach` é direto: sem índice, sem
-variável de controle, com suporte nativo a `break` e `continue`.
+## foreach para percorrer a coleção inteira
+
+`foreach` percorre os itens sem pedir índice, sem variável de controle e sem risco de errar o limite do último elemento. Ele aceita `break` e `continue` normalmente. Reserve o `for` com índice para quando a posição do item importa de verdade, como percorrer de trás para frente ou saltar de dois em dois.
 
 <details>
 <summary>❌ Ruim: for com índice quando o índice nunca é usado</summary>
@@ -507,11 +510,11 @@ foreach (var order in orders)
 
 </details>
 
-## while
+<a id="while"></a>
 
-Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice ou tamanho,
-`while` é a escolha natural. Use `do...while` quando a primeira iteração deve sempre executar,
-independente da condição.
+## while quando a parada depende de uma condição
+
+Use `while` quando não existe uma coleção para percorrer e a repetição continua enquanto um estado for verdadeiro: a conexão ainda não subiu, a fila ainda tem item. Nesses casos o `for` com contador finge ter um índice que ninguém usa. Use `do...while` quando a primeira execução acontece sempre e a condição só decide se haverá uma segunda.
 
 <details>
 <summary>❌ Ruim: for simulando condição de parada por estado</summary>

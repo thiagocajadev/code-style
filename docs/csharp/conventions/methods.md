@@ -1,6 +1,6 @@
-# Methods
+# Métodos em C#
 
-Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de abstração único. O **orquestrador** lê como sumário da operação; **helpers** privados implementam os passos logo abaixo, na ordem em que o leitor os encontra.
+Um método bem escrito responde a uma pergunta só, e responde no nível certo de detalhe. O método público de entrada, o **orquestrador**, funciona como o sumário da operação: ele nomeia os passos e não mostra como cada passo acontece. Logo abaixo dele ficam os **helpers** (métodos auxiliares privados), na mesma ordem em que foram chamados, para o leitor descer ao detalhe só quando quiser.
 
 ## Conceitos fundamentais
 
@@ -14,9 +14,11 @@ Métodos em C# carregam dois sinais de qualidade: tamanho controlado e nível de
 | **pure function** (função pura) | Método sem side effects; saída depende só dos argumentos; mais fácil de testar |
 | **expression-bodied member** (membro com corpo de expressão) | Sintaxe `=>` para métodos curtos com retorno único |
 
+<a id="orchestrator-on-top"></a>
+
 ## Orquestrador no topo
 
-O método de entrada declara o fluxo de alto nível: o quê, não o como. Helpers ficam abaixo. O leitor entende o fluxo completo antes de descer aos detalhes.
+O método de entrada conta o que a operação faz, na sequência em que ela acontece: valida o pedido, busca o produto, grava, notifica, monta a nota. Cada um desses passos vira uma chamada com nome próprio, e a implementação de cada um fica logo abaixo. Quem abre o arquivo entende a operação inteira lendo as primeiras vinte linhas, e desce ao detalhe do passo que interessa.
 
 <details>
 <summary>❌ Ruim: implementação misturada com orquestração</summary>
@@ -79,9 +81,9 @@ private static Invoice BuildInvoice(Order order) { ... }
 
 <a id="single-level-of-abstraction"></a>
 
-## SLA: orquestrador ou implementação
+## Um nível de abstração por método
 
-Cada método faz uma coisa: ou orquestra chamadas nomeadas, ou implementa um passo concreto. Nunca os dois. Um método que coordena e também calcula tem duas responsabilidades.
+Cada método escolhe um papel: ou ele coordena chamadas com nome, ou ele executa um passo concreto. O método que faz as duas coisas mistura a altura da leitura. `BuildOrderSummaryAsync` chama o repositório, o que é alto nível, e no meio calcula imposto multiplicando por `0.1m`, o que é detalhe de cálculo. Quem lê troca de altura no meio do método e perde o fio da operação. Extraia o cálculo para um helper com nome (`CalculateTotals`) e o método de entrada volta a ser só a sequência de passos.
 
 <details>
 <summary>❌ Ruim: orquestração e implementação no mesmo método</summary>
@@ -142,7 +144,9 @@ private static OrderSummary BuildSummary(Order order, OrderTotals totals)
 
 ## Sem lógica no retorno
 
-O `return` declara o que sai, não calcula. Uma variável nomeada antes do retorno documenta o resultado e mantém o método legível.
+O `return` anuncia o que sai do método. Quando ele também monta o objeto, soma a lista e formata o texto, a última linha vira a mais densa do arquivo, justo onde o leitor esperava a resposta. Guarde o resultado numa variável com nome antes de devolvê-lo. O nome dessa variável é o que documenta o retorno, e o `return` volta a ter uma palavra só.
+
+Vale também para o retorno que só repassa a chamada de outro objeto. `=> await _repository.FindByStatusAsync(...)` devolve algo sem nunca nomear o que é. Uma linha a mais, com `var pendingOrders = ...`, e o leitor sabe o que sai sem consultar a assinatura.
 
 <details>
 <summary>❌ Ruim: lógica e construção inline no return</summary>
@@ -233,9 +237,11 @@ public string BuildShippingLabel(Order order)
 
 </details>
 
-## Primary constructors
+<a id="primary-constructors"></a>
 
-C# 12 introduziu primary constructors. Use para injeção de dependência: elimina o **boilerplate** (código repetitivo de cerimônia) de campo + construtor. Parâmetros do construtor primário ficam acessíveis em todo o corpo da classe.
+## Construtor primário para injeção de dependência
+
+O C# 12 permite declarar os parâmetros do construtor ao lado do nome da classe, e usá-los direto no corpo. Isso apaga o trio que toda classe injetada repetia: o campo privado, o parâmetro do construtor e a linha que copia um no outro. Com o construtor primário, `OrderService(IOrderRepository repository, INotifier notifier)` já deixa `repository` e `notifier` disponíveis em qualquer método.
 
 <details>
 <summary>❌ Ruim: boilerplate de construtor tradicional</summary>
@@ -286,9 +292,11 @@ public class OrderService(IOrderRepository repository, INotifier notifier)
 
 </details>
 
-## Baixa densidade visual
+<a id="visual-density"></a>
 
-Linhas relacionadas ficam juntas, sem linha em branco dentro do mesmo passo. Passos diferentes são separados por exatamente uma linha em branco. Nunca duas linhas em branco consecutivas.
+## Uma linha em branco entre um passo e o próximo
+
+As linhas que pertencem ao mesmo passo ficam coladas, sem linha em branco entre elas. Entre um passo e o seguinte entra exatamente uma linha em branco. Duas linhas em branco seguidas não separam nada a mais, só espalham o método pela tela e obrigam a rolar. O corte visual conta ao leitor onde termina uma ideia e começa a outra.
 
 <details>
 <summary>❌ Ruim: sem separação entre passos ou separação excessiva</summary>

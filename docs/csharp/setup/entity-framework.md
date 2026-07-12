@@ -1,6 +1,6 @@
 # Entity Framework Core
 
-Entity Framework Core é o **ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) padrão da plataforma .NET. Sua força está no rastreamento automático de entidades para `SaveChanges`; sua armadilha é exatamente a mesma quando o código apenas lê. Três decisões cobrem a maior parte dos casos: quando desligar o rastreamento, como escrever queries que traduzem bem, e como evitar N+1.
+O Entity Framework Core é o **ORM** (Object-Relational Mapper · Mapeador Objeto-Relacional) padrão do .NET, ou seja, a camada que transforma linha de tabela em objeto e objeto em comando SQL. Ele guarda uma cópia de tudo o que leu do banco para descobrir sozinho o que mudou quando você chamar `SaveChanges`. Isso é o que faz a escrita ser cômoda, e é também o que faz a leitura ser cara: numa consulta que só exibe dados, esse trabalho de vigilância acontece e ninguém aproveita. Três decisões resolvem a maior parte dos casos: quando desligar o rastreamento, como escrever a consulta para que ela vire um SQL bom, e como evitar o N+1.
 
 ## Conceitos fundamentais
 
@@ -12,9 +12,11 @@ Entity Framework Core é o **ORM** (Object-Relational Mapper, Mapeador Objeto-Re
 | **Change Tracker** (rastreador de alterações) | Componente do `DbContext` que detecta mudanças entre `Load` e `SaveChanges` |
 | **N+1** (consulta repetida por item) | Anti-padrão: 1 query para a lista + N queries para cada item; resolve com `Include` ou projeção |
 
+<a id="as-no-tracking"></a>
+
 ## AsNoTracking
 
-Por padrão, o EF rastreia todas as entidades retornadas: qualquer alteração é detectada no `SaveChanges`. Para queries de leitura, esse rastreamento é custo puro. `AsNoTracking()` elimina o overhead e reduz alocações.
+Toda entidade que sai de uma consulta entra no rastreador, e o EF guarda uma segunda cópia dela para comparar depois. Numa tela que só lista pedidos, essa cópia nunca vai ser comparada com nada. `AsNoTracking()` avisa que a consulta é de leitura: o EF devolve os objetos e esquece deles, gastando metade da memória e pulando a comparação.
 
 <details>
 <summary>❌ Ruim: rastreamento habilitado em query somente leitura</summary>
@@ -54,9 +56,13 @@ public async Task<IReadOnlyList<OrderSummary>> FindRecentOrdersAsync(Guid custom
 
 </details>
 
+<a id="projection"></a>
+
 ## Projeção com Select
 
-Nunca exponha entidades EF diretamente: elas carregam estado de rastreamento, navegações não inicializadas e detalhes de persistência. Projete sempre para DTOs via `.Select()` diretamente na query, não após materializar.
+Escreva o `.Select()` dentro da consulta, antes do `ToListAsync`. Assim o EF traduz a projeção para o SQL e pede ao banco só as colunas que você citou. Escrevê-lo depois de materializar traz todas as colunas de todas as linhas para a memória, e só então descarta o que não vai usar.
+
+Isso também mantém a entidade do EF longe de quem chamou. A entidade carrega estado de rastreamento e propriedades de navegação que ainda não foram carregadas, e acessar uma dessas propriedades fora do escopo do `DbContext` estoura uma exceção difícil de rastrear.
 
 <details>
 <summary>❌ Ruim: entidade exposta, materialização antes da projeção</summary>
@@ -97,9 +103,13 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 
 </details>
 
-## Include e N+1
+<a id="include-and-n-plus-1"></a>
 
-Acesso a propriedades de navegação sem `Include` dispara uma query por registro: o problema N+1. Use `Include` para grafos conhecidos; projete com `.Select()` quando precisar de campos específicos de entidades relacionadas.
+## Include e o N+1
+
+Acessar `order.Items` numa lista de cem pedidos, sem ter pedido os itens na consulta, faz o EF ir ao banco cem vezes, uma por pedido. É o **N+1**: uma consulta para a lista, mais uma para cada elemento dela. Em desenvolvimento, com dez pedidos, ninguém percebe. Em produção, a mesma tela leva segundos.
+
+`Include` traz as coleções junto na mesma ida ao banco. Quando você precisa de poucos campos das entidades relacionadas, o `.Select()` resolve melhor, porque traz só esses campos.
 
 <details>
 <summary>❌ Ruim: N+1: uma query por order para acessar Items</summary>
@@ -163,9 +173,11 @@ public async Task<Order?> FindOrderWithItemsAsync(Guid orderId, CancellationToke
 
 </details>
 
+<a id="as-split-query"></a>
+
 ## AsSplitQuery
 
-`Include` de múltiplas coleções gera um produto cartesiano: linhas duplicadas na query SQL. `AsSplitQuery()` divide em queries separadas e elimina a explosão de dados.
+Dois `Include` de coleção na mesma consulta fazem o banco cruzar as duas listas. Um pedido com 5 itens e 3 pagamentos volta em 15 linhas, e os dados do pedido se repetem em todas elas. Com coleções maiores, o número cresce pela multiplicação e o tempo de resposta vai junto. `AsSplitQuery()` manda o EF fazer uma consulta por coleção e juntar os resultados na memória.
 
 <details>
 <summary>❌ Ruim: múltiplos Include sem AsSplitQuery gera produto cartesiano</summary>
@@ -202,9 +214,11 @@ public async Task<Order?> FindOrderAsync(Guid orderId, CancellationToken ct)
 
 </details>
 
+<a id="order-by"></a>
+
 ## OrderBy e ThenBy
 
-Toda query paginada, ou cujo resultado o chamador espera em ordem determinística, precisa de `OrderBy`. Sem ordenação explícita, o banco não garante a ordem: o resultado varia entre execuções.
+Sem `OrderBy`, o banco devolve as linhas na ordem que for mais conveniente para ele, e essa ordem muda quando o plano de execução muda. Numa lista paginada isso vira um bug visível: o mesmo registro aparece na página 1 e na página 2, e outro não aparece em nenhuma. Ordene sempre que a ordem importar, e use `ThenBy` para desempatar quando o primeiro critério se repete.
 
 <details>
 <summary>❌ Ruim: paginação sem ordenação, resultado não determinístico</summary>
@@ -269,9 +283,11 @@ public async Task<IReadOnlyList<OrderSummary>> FindOrdersAsync(Guid customerId, 
 
 </details>
 
+<a id="pagination"></a>
+
 ## Paginação
 
-Paginação requer `OrderBy` + `Skip` + `Take`. Retorne metadados junto com os dados: o chamador precisa saber o total de registros para renderizar a navegação.
+Uma página é `OrderBy` para fixar a ordem, `Skip` para pular as anteriores e `Take` para limitar o tamanho. Devolva junto o total de registros: sem ele, a tela não tem como desenhar a navegação nem dizer quantas páginas existem.
 
 <details>
 <summary>❌ Ruim: duas queries independentes, sem compartilhar o filtro base</summary>
@@ -320,9 +336,11 @@ public async Task<PagedResult<OrderSummary>> FindOrdersAsync(
 
 </details>
 
+<a id="left-join"></a>
+
 ## Left join
 
-EF Core 10 introduziu `LeftJoin` como operador de primeira classe. Antes era necessário combinar `GroupJoin` + `SelectMany` + `DefaultIfEmpty()`: intenção enterrada em ruído. O novo operador declara o que faz.
+O `LeftJoin` mantém todas as linhas da esquerda, mesmo as que não têm par do lado direito: os pedidos sem pagamento continuam na lista, com o pagamento vindo nulo. O EF Core 10 trouxe esse operador direto. Antes dele era preciso encadear `GroupJoin`, `SelectMany` e `DefaultIfEmpty()`, três chamadas cuja soma significa "left join" e que nenhuma delas diz sozinha.
 
 <details>
 <summary>❌ Ruim: intenção oculta em GroupJoin + SelectMany + DefaultIfEmpty</summary>
@@ -371,13 +389,15 @@ var result = await _context.Orders
 
 </details>
 
+<a id="migrations"></a>
+
 ## Migrations
 
-Migrations descrevem intenção: cada uma resolve uma mudança atômica no schema. O nome diz o que muda; o histórico conta a evolução do banco.
+Cada migration é um passo na história do banco: ela resolve uma mudança e leva o nome dessa mudança. Lidas em sequência, elas contam como o schema chegou ao estado atual, e é essa leitura que salva quem precisa entender por que uma coluna existe.
 
 ### Nomenclatura
 
-O nome segue a convenção Rails: verbo + substantivo, descrevendo a mudança concreta. Nomes genéricos como `Update`, `Fix` ou `Initial` não comunicam nada.
+O nome é um verbo seguido do que foi alterado, como `AddEmailToCustomer`. Ele aparece no arquivo, na tabela de controle do banco e na lista do `dotnet ef migrations list`, e é por ele que alguém vai achar a migration que criou determinada coluna. `Update`, `Fix` e `Initial` não ajudam nessa busca.
 
 <details>
 <summary>❌ Ruim: nomes vagos que não descrevem a mudança</summary>
@@ -404,9 +424,9 @@ dotnet ef migrations add DropLegacyStatusColumn
 
 </details>
 
-### Forward-only
+### Só para a frente
 
-Migrations são append-only: `Down()` não é implementado. Reverter um schema é uma nova migration, não um rollback. Implementar `Down()` cria uma falsa sensação de segurança: em produção, rollback de schema raramente funciona sem perda de dados.
+Deixe o `Down()` sem implementação. Para desfazer uma mudança de schema, escreva uma migration nova que faça o caminho de volta. O `Down()` promete uma reversão que o banco não consegue cumprir: a migration que apagou uma coluna não tem como trazer de volta os dados que estavam nela, e rodá-la ao contrário em produção apaga o que sobrou.
 
 <details>
 <summary>❌ Ruim: Down() implementado, ilusão de reversibilidade</summary>
@@ -462,7 +482,7 @@ public partial class CreateOrdersTable : Migration
 
 ### Uma migration por mudança
 
-Cada migration resolve uma coisa. Agrupar mudanças não relacionadas dificulta o rastreamento, mistura contextos no histórico e impede rollback cirúrgico via nova migration.
+Uma migration que cria um índice, adiciona uma coluna e renomeia uma tabela não tem nome possível: qualquer um dos três deixa os outros dois escondidos. Separadas, cada uma se explica pelo nome, e desfazer só uma delas é escrever uma migration nova para aquele ponto.
 
 <details>
 <summary>❌ Ruim: múltiplas mudanças sem relação na mesma migration</summary>
@@ -519,9 +539,11 @@ public partial class AddEmailToCustomers : Migration
 
 </details>
 
+<a id="right-join"></a>
+
 ## Right join
 
-`RightJoin` preserva todos os registros do lado direito, mesmo sem correspondência no esquerdo. Use quando a tabela da direita é a fonte principal e a esquerda é opcional.
+`RightJoin` mantém todas as linhas da direita, mesmo as que não têm par na esquerda. Ele cabe quando a tabela principal da consulta é a da direita: listar todos os produtos e, para cada um, o pedido em que apareceu, mostrando também os que nunca foram vendidos.
 
 <details>
 <summary>✅ Bom: RightJoin (EF Core 10), products sem reviews incluídos</summary>

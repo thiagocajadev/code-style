@@ -2,11 +2,12 @@
 
 > Escopo: C#/.NET. Guia baseado em **ASP.NET Core .NET 10** com **C# 14**.
 
-**Razor Pages** e **MVC** (Model-View-Controller, Modelo-Visão-Controlador) são dois padrões de
-interface de usuário server-rendered do ASP.NET Core. Razor Pages organiza cada página como um par
-`PageModel`/`.cshtml`, adequado para fluxos focados como formulários e wizards. MVC separa o
-**Controller** (Controlador), a **View** (Visão) e o **Model** (Modelo), adequado para aplicações
-com múltiplas views por entidade.
+**Razor Pages** e **MVC** (Model-View-Controller · Modelo-Visão-Controlador) são as duas formas de
+montar a página no servidor e enviá-la pronta ao navegador. No Razor Pages, cada página é um par de
+arquivos: o `.cshtml` com a marcação e o `PageModel` com o código que a alimenta. Isso encaixa bem
+em fluxos fechados, como um formulário de cadastro. No MVC, um **Controller** (Controlador) atende
+várias telas da mesma entidade, e cada tela é uma **View** (Visão) separada. Escolha o MVC quando a
+mesma entidade aparece em muitas telas diferentes.
 
 Este guia aplica os princípios de [methods.md](../conventions/methods.md) e
 [api-design.md](../conventions/advanced/api-design.md).
@@ -24,11 +25,14 @@ Este guia aplica os princípios de [methods.md](../conventions/methods.md) e
 | **Partial View** (View parcial)   | Fragmento de marcação reutilizável renderizado com `<partial name="..." />`                        |
 | **Layout** (layout mestre)        | Template mestre declarado com `Layout`; define estrutura HTML compartilhada entre páginas          |
 
+<a id="razor-pages"></a>
+
 ## Razor Pages
 
-Cada página é um par de arquivos: `Pages/Orders/Create.cshtml` (marcação) e
-`Pages/Orders/Create.cshtml.cs` (PageModel). O `PageModel` define o `OnGet` para preparar
-os dados da view e o `OnPost` para processar o formulário.
+Cada página são dois arquivos: `Pages/Orders/Create.cshtml` guarda a marcação e
+`Pages/Orders/Create.cshtml.cs` guarda o `PageModel`. O `PageModel` responde a dois momentos: o
+`OnGet` prepara o que a tela precisa exibir quando o usuário chega, e o `OnPost` recebe o
+formulário quando ele é enviado.
 
 **Fluxo GET:** `GET /orders/create → OnGet → View`
 **Fluxo POST:** `POST /orders/create → Binding → OnPost → Validate → Service → Redirect`
@@ -109,11 +113,16 @@ public class OrderInput
 
 </details>
 
+<a id="tag-helpers"></a>
+
 ## Tag Helpers
 
-Tag Helpers geram os atributos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) a partir do model. `asp-for` vincula um input à propriedade
-do `PageModel`; `asp-validation-for` exibe erros por campo; `asp-page` gera a **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) do formulário
-e injeta o token anti-falsificação automaticamente.
+Tag Helper é um atributo que o ASP.NET Core lê no servidor e transforma no **HTML** (HyperText
+Markup Language · Linguagem de Marcação de Hipertexto) final. `asp-for` liga o campo à propriedade
+do `PageModel`, e daí saem sozinhos o `name`, o `id` e as regras de validação que a propriedade já
+declara. `asp-validation-for` mostra o erro daquele campo. `asp-page` monta a **URL** (Uniform
+Resource Locator · Localizador Uniforme de Recurso) do formulário e inclui o token que protege
+contra requisição forjada de outro site.
 
 <details>
 <summary>❌ Ruim: HTML manual sem Tag Helpers; sem anti-forgery; erros hardcoded</summary>
@@ -156,11 +165,16 @@ e injeta o token anti-falsificação automaticamente.
 
 </details>
 
-## MVC: Controller thin
+<a id="controller-thin"></a>
 
-Controllers MVC são adaptadores: recebem a requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto), delegam para um **Service** ou
-**Handler** (processador de requisição), e traduzem o `Result<T>` em `IActionResult`. Nenhuma lógica de negócio fica no
-controller. O acesso ao banco passa pelo **Repository**; o controller nunca injeta `DbContext`.
+## MVC: o controller é um adaptador
+
+O controller faz a tradução entre o mundo do **HTTP** (HyperText Transfer Protocol · Protocolo de
+Transferência de Hipertexto) e o mundo do domínio: recebe a requisição, chama um **Service** ou
+**Handler** (classe que atende a operação) e transforma o `Result<T>` que voltou em
+`IActionResult`. A regra de negócio mora no service, e o acesso ao banco passa pelo
+**Repository**. Um `DbContext` injetado no controller é o sinal de que esse limite caiu, e a partir
+dali a mesma regra passa a ser reescrita em cada tela que precisar dela.
 
 **Fluxo:** `HTTP Request → Controller → Service → Result<T> → IActionResult → HTTP Response`
 
@@ -225,10 +239,13 @@ public class OrdersController(IOrderService orderService) : ControllerBase
 
 </details>
 
+<a id="view-models"></a>
+
 ## ViewModels
 
-A view só recebe o que precisa. Um **ViewModel** tipado evita expor entidades de domínio
-diretamente na view e impede que campos sensíveis vazem para o HTML.
+O **ViewModel** é um tipo criado para a tela, com os campos que aquela tela mostra. Entregar a
+entidade de domínio direto para a view leva junto tudo o que ela carrega, e o `PasswordHash` que
+ninguém pretendia publicar acaba a um `@Model.` de distância de aparecer no HTML.
 
 <details>
 <summary>❌ Ruim: entidade de domínio passada direto para a view; campos sensíveis expostos</summary>
@@ -259,7 +276,6 @@ public async Task<IActionResult> DetailAsync(Guid id, CancellationToken ct)
         return NotFound();
 
     var viewModel = result.Value!;
-
     return View(viewModel);
 }
 ```
@@ -278,11 +294,14 @@ public record OrderDetailViewModel(
 
 </details>
 
+<a id="layouts"></a>
+
 ## Layouts e Partial Views
 
-O **Layout** define a estrutura HTML compartilhada. `@RenderBody()` injeta o conteúdo da página
-corrente. **Partial Views** encapsulam fragmentos reutilizáveis, como tabelas e cards, mantendo
-cada view focada em seu próprio conteúdo.
+O **Layout** guarda o que toda página tem em volta: cabeçalho, menu, rodapé, os arquivos de estilo.
+O `@RenderBody()` marca o ponto onde o conteúdo da página entra. A **Partial View** guarda um
+pedaço que se repete em várias telas, como a tabela de itens ou o cartão de produto, e passa a ser
+editada num lugar só.
 
 <details>
 <summary>❌ Ruim: HTML estrutural duplicado em cada página</summary>

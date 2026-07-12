@@ -1,34 +1,34 @@
-# Visual density: C#
+# Densidade visual em C#
 
-**Visual density** (densidade visual) é a quantidade de informação por bloco
-visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
-quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco; cada grupo conta uma
-micro-história.
+Densidade visual é a quantidade de informação que você empilha em cada bloco de
+código. Quando muitas linhas se acumulam sem espaço, o olho cansa e você perde o
+fio do raciocínio. Quando linhas sem relação ficam grudadas, o leitor não sabe
+onde uma ideia termina e a outra começa. A saída é direta: junte as linhas que
+contam a mesma pequena história e separe cada história da próxima com uma linha
+em branco. Este guia mostra como aplicar isso em C# e .NET, sempre com um exemplo
+ruim e um bom lado a lado.
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) com exemplos em C#/.NET.
+Os princípios gerais estão em
+[densidade visual](../../shared/standards/visual-density.md). Aqui eles aparecem
+adaptados a C#.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **visual density** (densidade visual) | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo |
-| **semantic group** (grupo semântico) | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir) |
-| **blank line** (linha em branco) | Separador entre grupos semânticos; substitui comentário de seção |
-| **tight pair** (par tight) | Duas linhas com relação direta (declaração + uso, var + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico) | Três declarações simples consecutivas e homogêneas (`var`, `const`); mantidas juntas sem blank (preferir ao 2+1 que cria órfão) |
-| **semantic pair** (par semântico encadeado) | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta |
-| **single-line orphan** (órfão de 1) | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
-| **explaining return** (retorno explicativo) | Caso particular de `tight pair`: `var X = …` single-line + `return X` sem blank entre eles |
-| **multi-line block** (bloco multi-linha) | Inicializador de objeto, coleção `new[] { ... }` expandido ou statement quebrado em várias linhas; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta, com blank antes da montagem |
-| **boundary** (limite) | Linha que separa camadas (controller ↔ service, service ↔ repository); merece linha em branco antes |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão, frágil a rename, gera diff ruidoso |
+| **visual density** (densidade visual) | Quantidade de informação por bloco de código; o alvo é pouca por bloco e muita por arquivo |
+| **semantic group** (grupo semântico) | Poucas linhas que executam uma etapa coesa, por exemplo validar, calcular ou salvar |
+| **blank line** (linha em branco) | Separa dois grupos; faz o papel que antes cabia a um comentário de seção |
+| **boundary** (limite) | Linha que separa camadas, por exemplo do controller para o service; pede uma linha em branco antes |
+| **multi-line block** (bloco de várias linhas) | Inicializador de objeto, coleção ou comando quebrado em várias linhas; pede um respiro depois de si |
+| **column alignment** (alinhamento em colunas) | Espaços extras para alinhar `=` ou `:` na vertical; antipadrão, quebra a cada renomeação |
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural;
-três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
+A regra que resolve quase tudo: **agrupe poucas linhas por vez e separe cada
+grupo com uma linha em branco.** O tamanho natural de um grupo é duas linhas.
+Três valem quando dividir em duas mais uma deixaria a última linha sozinha. A
+partir de quatro, quebre em dois grupos de duas.
 
 <details>
 <summary>❌ Ruim: denso demais: todos os passos colados</summary>
@@ -72,13 +72,14 @@ public async Task<UserDto> RegisterUserAsync(RegisterUserRequest request, Cancel
 
 </details>
 
-## Explaining Return: par tight
+<a id="explaining-return"></a>
 
-Uma `var` nomeada acima do `return` explica o valor retornado. Sempre que a
-linha imediatamente acima for essa `var` (single-line) e o `return` retornar
-essa variável, os dois formam par de 2 linhas sem blank, não importa quantos
-passos haja acima. A linha em branco separa o par do que vem antes, não
-fragmenta o par.
+## O `return` fica junto da linha que nomeia o valor
+
+Quando a linha logo acima do `return` é a `var` que dá nome ao valor devolvido,
+as duas contam a mesma coisa e ficam coladas, sem linha em branco no meio. Isso
+vale por mais longo que seja o método. A linha em branco entra antes do par,
+separando-o do passo anterior.
 
 <details>
 <summary>❌ Ruim: blank fragmenta o par</summary>
@@ -107,19 +108,22 @@ public int MapErrorToStatus(DomainError error)
 
 </details>
 
-## Return tight vs return separado
+<a id="return-tight-vs-separated"></a>
 
-A regra é simples: `return` é **tight** com a linha imediatamente acima
-**somente quando essa linha é a `var` (ou `Type X = ...`) que nomeia o valor
-retornado** (Explaining Return), e essa declaração está em uma única linha.
+## Quando o `return` cola na linha acima e quando ganha um respiro
 
-Em todos os outros casos, vai blank antes do `return`:
+O `return` cola na linha de cima em um caso só: quando essa linha é a declaração
+que nomeia o valor devolvido (`var x = ...` ou `Type x = ...`) e cabe inteira em
+uma linha.
 
-- linha acima é **multi-linha** (inicializador de objeto/coleção ou statement
-  quebrado em várias linhas);
-- linha acima é **side effect** (`await`, método sem retorno) que não nomeia o
-  valor;
-- valor retornado foi criado **vários passos antes**, sem par direto.
+Nos outros casos entra uma linha em branco antes do `return`:
+
+- a linha de cima ocupa várias linhas (um inicializador de objeto ou de coleção,
+  ou um comando quebrado);
+- a linha de cima executa uma ação e não nomeia valor nenhum (um `await`, um
+  método sem retorno);
+- o valor devolvido foi criado vários passos antes, e as duas linhas não se
+  referem uma à outra.
 
 <details>
 <summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
@@ -134,8 +138,8 @@ public string FormatOrderDate(DateTimeOffset date, string locale = "pt-BR")
 }
 ```
 
-`formattedDate` e `return formattedDate` formam Explaining Return tight; não
-devem ser separados.
+`formattedDate` e `return formattedDate` são a mesma ideia escrita em duas
+linhas. Separá-las não ajuda ninguém.
 
 </details>
 
@@ -171,31 +175,31 @@ public OrderResponse BuildOrderResponse(Order order, string requestId)
 }
 ```
 
-`data` é inicializador multi-linha; o blank antes do `return` isola o bloco
-grande do envelope final.
+O inicializador de `data` ocupa seis linhas. A linha em branco depois dele marca
+onde esse bloco termina e onde começa a montagem da resposta.
 
 </details>
 
-**Exceção:** métodos de uma expressão ficam compactos. O `return` é o único
-conteúdo.
+Métodos de uma expressão só fogem da regra, porque o `return` é o corpo inteiro:
 
 ```csharp
 public IEnumerable<Order> GetPendingOrders(Guid userId) =>
     _orderRepository.FindByStatus(userId, OrderStatus.Pending);
 ```
 
-## Declaração + guarda = 1 grupo
+<a id="declaration-and-guard"></a>
 
-Uma variável seguida do seu `if` de guarda formam par semântico **quando o
-guarda cabe em uma única linha**: `if (...) return ...;`,
-`if (...) throw ...;`. Nesse caso a linha em branco vem **depois** do par,
-nunca entre eles.
+## A variável e o `if` que a valida ficam juntos
 
-Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas
-físicas, mesmo com uma única instrução dentro), o `if` vira fase própria; o
-bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede
-respiro**: linha em branco **antes** do bloco. O critério é visual, não
-semântico.
+Uma variável e o `if` que confere o valor dela contam um passo só: buscar e
+verificar. Quando esse `if` cabe em uma linha (`if (...) return ...;` ou
+`if (...) throw ...;`), ele fica colado na declaração, e a linha em branco vem
+depois dos dois.
+
+Quando o `if` abre chaves, a história muda. O bloco `{ }` ocupa várias linhas na
+tela e passa a pesar como um passo próprio, mesmo que tenha uma instrução só
+dentro. Aí entra uma linha em branco antes dele. O critério é o peso visual do
+bloco.
 
 <details>
 <summary>❌ Ruim: variável solta do seu guarda inline</summary>
@@ -252,16 +256,19 @@ if (response.StatusCode != HttpStatusCode.TooManyRequests)
 var delayMs = Math.Pow(2, attempt) * 1000;
 ```
 
-O bloco ocupa quatro linhas físicas: peso visual próprio. Inline ficaria
-tight, mas em bloco, blank antes.
+O bloco ocupa quatro linhas na tela. Escrito em uma linha só, ele ficaria colado
+na declaração; escrito com chaves, pede o respiro antes.
 
 </details>
 
-## Órfão de 1 linha: pior que trio atômico
+<a id="single-line-orphan"></a>
 
-Três declarações simples consecutivas (`const`, `readonly`, `var` com literal)
-formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks.
-Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
+## Não deixe uma linha sozinha entre espaços
+
+Três declarações simples e parecidas (`const`, `readonly`, `var` com um valor
+literal) formam um grupo coeso. Se você quebrar duas mais uma, a última fica
+sozinha entre duas linhas em branco e parece esquecida ali. Mantenha as três
+juntas. A partir de quatro, quebre em dois grupos de duas.
 
 <details>
 <summary>❌ Ruim: órfão entre blanks</summary>
@@ -308,11 +315,13 @@ public static class DomainLimits
 
 </details>
 
-## Par semântico encadeado
+<a id="semantic-pair"></a>
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as
-duas formam par. A quebra natural fica antes do par, não entre ele e sua
-dependência direta.
+## Duas linhas onde a segunda usa o valor da primeira
+
+Quando a última linha usa o valor que a linha logo acima acabou de declarar, as
+duas dependem uma da outra e ficam juntas. A linha em branco entra antes desse
+par, separando-o do que veio antes.
 
 <details>
 <summary>❌ Ruim: dependência direta partida</summary>
@@ -349,20 +358,17 @@ public string BuildShippingLabel(Order order)
 
 </details>
 
-## Fragmentos → montagem: blank antes do consumidor
+<a id="fragments-to-assembly"></a>
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que
-**consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta, com blank antes dela. É o caso clássico "preparar partes →
-montar resultado", diferente do par semântico encadeado (onde a última depende
-**diretamente** da penúltima e por isso fica tight).
+## Prepare as partes, depois monte o resultado
 
-Heurística rápida:
+Quando duas ou mais linhas preparam pedaços e uma linha final junta todos eles, a
+montagem é um passo próprio e ganha uma linha em branco antes. Repare que isso é
+o oposto do caso anterior, e a pergunta que separa os dois é simples:
 
-- A última linha usa **só o valor recém-declarado** acima? → par semântico
-  encadeado, fica tight.
-- A última linha **costura múltiplos fragmentos** declarados em linhas
-  diferentes? → fragmentos → montagem, blank antes.
+- a última linha usa só o valor declarado logo acima? As duas ficam juntas.
+- a última linha junta valores declarados em linhas diferentes? Ela é a montagem,
+  e vai com um respiro antes.
 
 <details>
 <summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
@@ -377,9 +383,9 @@ public string BuildDeliveryMessage(User user, Order order)
 }
 ```
 
-`deliveryMessage` consome `fullName` *e* `address` *e* `order.Id` *e*
-`order.DeliveryDays`. Não é par direto com `address`; é a fase de montagem.
-Coladas como trio, as fases ficam invisíveis.
+`deliveryMessage` usa `fullName`, `address`, `order.Id` e `order.DeliveryDays`.
+Ela não pertence a `address`, ela costura tudo. Coladas assim, as três linhas
+parecem um grupo só e a fase de montagem some.
 
 </details>
 
@@ -397,8 +403,7 @@ public string BuildDeliveryMessage(User user, Order order)
 }
 ```
 
-Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
-(Explaining Return tight).
+Agora dá para ver duas fases: preparar os pedaços e montar a mensagem.
 
 </details>
 
@@ -414,16 +419,17 @@ public string BuildOrderSlug(Order order)
 }
 ```
 
-`slug` depende **diretamente** de `normalizedTitle` (penúltima). Par
-semântico encadeado: as duas ficam tight, e o `return` ainda tight com o
-último.
+Aqui `slug` usa só `normalizedTitle`, a linha logo acima. As duas ficam juntas, e
+o `return` fica junto delas.
 
 </details>
 
-## 2+1 dentro de blocos curtos
+<a id="short-blocks"></a>
 
-Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
-são todas atômicas homogêneas.
+## Dentro de laços e condições curtas
+
+Dentro de um `while` ou de um `if`, a mesma regra vale. Quando as três linhas não
+são declarações parecidas, dois mais um continua sendo a quebra natural.
 
 <details>
 <summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
@@ -454,10 +460,12 @@ while (attempt < maxAttempts)
 
 </details>
 
-## Fases de um método
+<a id="method-phases"></a>
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
-deixar cada fase visível.
+## Deixe cada fase do método visível
+
+Um método que busca, transforma, salva e responde tem quatro fases. Cada uma
+merece seu grupo, para que a leitura acompanhe a operação sem reler.
 
 <details>
 <summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
@@ -493,10 +501,12 @@ public async Task<IActionResult> CreateUserAsync(CreateUserRequest request, Canc
 
 </details>
 
-## Testes: Assert como fase própria
+<a id="assert-phase"></a>
 
-O `Assert` é fase distinta. A linha em branco antes dele separa o que está
-sendo verificado do como está sendo verificado.
+## No teste, a verificação é uma fase separada
+
+O `Assert` responde a pergunta que o teste faz. A linha em branco antes dele
+separa o que foi montado e executado daquilo que está sendo conferido.
 
 <details>
 <summary>❌ Ruim: Assert colado ao setup, fases invisíveis</summary>
@@ -531,12 +541,14 @@ public void AppliesTenPercentDiscountToPrice()
 
 </details>
 
-## Multi-linha: respiro depois do bloco
+<a id="multi-line-block"></a>
 
-Quando um inicializador de objeto, coleção `new[] { ... }` expandida ou
-statement quebra em várias linhas, o bloco já ocupa espaço visual próprio.
-Cole uma linha em branco **depois** dele para isolar o bloco grande do próximo
-passo. Sem respiro, o leitor não vê onde o bloco termina e o próximo começa.
+## Depois de um bloco de várias linhas, deixe um respiro
+
+Um inicializador de objeto, uma coleção expandida ou um comando quebrado já
+ocupam bastante espaço na tela. Deixe uma linha em branco depois deles. Sem esse
+respiro, o próximo passo parece fazer parte do bloco, e o leitor precisa contar
+chaves para achar onde ele termina.
 
 <details>
 <summary>❌ Ruim: inicializador multi-linha colado ao próximo statement</summary>
@@ -579,14 +591,15 @@ public async Task<string> CreateSessionAsync(User user, CancellationToken ct)
 
 </details>
 
-## Ifs consecutivos: blocos com chaves precisam de respiro
+<a id="consecutive-ifs"></a>
 
-Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) colados formam
-muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre
-insira blank entre eles.
+## Dois `if` seguidos com chaves pedem uma linha entre eles
 
-**Exceção:** guardas de uma linha (early returns curtos) formam trio homogêneo
-e ficam tight; a regra do trio atômico se aplica.
+Dois blocos `{ }` colados viram uma parede de chaves, e achar onde um termina e o
+outro começa exige contá-las. Uma linha em branco entre eles resolve.
+
+A exceção são as guardas de uma linha. Elas são curtas e parecidas entre si, e
+ficam juntas como qualquer grupo de linhas parecidas.
 
 <details>
 <summary>❌ Ruim: dois blocos {} colados</summary>
@@ -647,11 +660,14 @@ public Input ValidateInput(Input input)
 
 </details>
 
-## Sem column alignment
+<a id="column-alignment"></a>
 
-Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre
-**um espaço único**. Alinhamento artificial quebra com qualquer rename, gera
-diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
+## Não alinhe o código em colunas
+
+Use um espaço só antes e depois do `=`. Alinhar os sinais na vertical com espaços
+extras parece organizado até alguém renomear uma variável: aí todas as linhas do
+bloco precisam ser reajustadas, e o diff mostra mudança em linhas que ninguém
+tocou.
 
 <details>
 <summary>❌ Ruim: espaços extras para alinhar colunas</summary>
@@ -677,10 +693,13 @@ var lastLoginAt = DateTimeOffset.UtcNow;
 
 </details>
 
-## Strings longas
+<a id="long-strings"></a>
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
-fragmentos em variáveis nomeadas antes de montar o resultado.
+## Textos longos montados em uma linha
+
+Um texto longo montado dentro do `return` esconde as partes que o compõem, e
+quem for mexer nele precisa achar o pedaço certo no meio da interpolação. Extraia
+os pedaços em variáveis com nome e monte o texto no fim.
 
 <details>
 <summary>❌ Ruim: interpolação densa inline, sem semântica nas partes</summary>

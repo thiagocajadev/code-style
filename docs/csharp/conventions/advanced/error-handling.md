@@ -1,8 +1,8 @@
-# Error handling
+# Tratamento de erros em C#
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-Tratamento de erros em C# separa dois mundos: falhas inesperadas (**exception**) e falhas esperadas de negócio (**Result**). A distinção é semântica: exceção é evento excepcional, resultado é parte do contrato. Confundir os dois produz código defensivo em excesso ou silêncio perigoso.
+Existem dois tipos de falha, e cada um pede uma ferramenta. A falha inesperada (o banco caiu, um bug deixou o objeto num estado impossível) vira **exception** (exceção), porque ninguém programou para aquilo acontecer. A falha prevista (o pedido não existe, o cliente não tem saldo) faz parte do que a operação pode responder, então ela vira um valor de retorno: o **Result**. Tratar as duas com a mesma ferramenta produz `try/catch` em volta de código que só queria saber se o pedido existe.
 
 ## Conceitos fundamentais
 
@@ -16,9 +16,11 @@ Tratamento de erros em C# separa dois mundos: falhas inesperadas (**exception**)
 | **business rule** (regra de negócio) | Falha esperada modelada como dado, não como exceção; retornada via `Result<T>` |
 | **boundary** (limite do sistema) | Camada externa (controller, handler) onde o `Result` é convertido em resposta HTTP/JSON |
 
+<a id="result-t"></a>
+
 ## Result\<T\>
 
-Exceções são para falhas inesperadas: erros de infraestrutura, bugs, estado impossível. Falhas de negócio são resultados esperados e devem ser representadas como valores. `Result<T>` torna o contrato explícito: o chamador sabe que pode falhar e é obrigado a lidar com isso.
+`Result<T>` carrega um de dois conteúdos: o valor, quando deu certo, ou o erro, quando não deu. A assinatura do método passa a declarar que a operação pode falhar, e quem chama precisa olhar qual dos dois veio antes de usar o valor. Compare com o método que lança exceção: a assinatura promete devolver um `Order`, e a possibilidade de falha só aparece na documentação ou no susto em produção.
 
 ```csharp
 public sealed record ApiError(string Message, string Code);
@@ -92,9 +94,11 @@ public async Task<IResult> GetOrder(Guid orderId, CancellationToken ct)
 
 </details>
 
+<a id="api-error"></a>
+
 ## ApiError
 
-Erros são tipados e carregam código semântico. O código é uma string em `UPPER_SNAKE_CASE`, mapeável para status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) no adapter sem `if-else` espalhados pela aplicação.
+O erro carrega um código em `UPPER_SNAKE_CASE` (`NOT_FOUND`, `INVALID_PRODUCT_ID`) que diz o que aconteceu no vocabulário do domínio. Esse código é o que a camada de fora traduz para status **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto), num único ponto de mapeamento. Guardar o `404` direto no erro amarraria a regra de negócio ao protocolo, e a mesma operação chamada por uma fila ou por um job não teria o que fazer com um número de status.
 
 <details>
 <summary>❌ Ruim: strings mágicas sem contrato</summary>
@@ -128,9 +132,11 @@ private static int MapStatusCode(string code) => code switch
 
 </details>
 
-## Implicit operator: happy path sem cerimônia
+<a id="implicit-operator"></a>
 
-O `implicit operator` converte qualquer `T` em `Result<T>.Success(value)` automaticamente. O caminho feliz retorna o valor diretamente, sem `Success(...)` explícito em cada ponto de retorno.
+## O caminho feliz devolve o valor direto
+
+O `implicit operator` declarado no `Result<T>` converte um `T` em `Result<T>.Success(value)` sozinho. Na prática, o método valida, sai cedo em cada falha e termina com `return request`. As linhas de falha continuam explícitas, e a de sucesso perde a cerimônia.
 
 <details>
 <summary>❌ Ruim: Success() explícito repetido em cada retorno bem-sucedido</summary>
@@ -172,7 +178,7 @@ public static Result<OrderCreateRequest> Validate(OrderCreateRequest request)
 
 ## Falhar rápido
 
-Valide pré-condições no início do método, antes de qualquer **I/O** (Input/Output · Entrada/Saída) ou processamento. Interromper cedo evita trabalho desnecessário e mantém o fluxo feliz livre de ruído de validação.
+Confira as pré-condições na primeira linha do método, antes de qualquer **I/O** (Input/Output · Entrada/Saída). Validar depois de três consultas ao banco significa pagar as três consultas para no fim descobrir que a descrição veio vazia. Além do desperdício, a validação no topo deixa o resto do método livre: dali para baixo, os dados já são válidos.
 
 <details>
 <summary>❌ Ruim: validação tardia, trabalho desnecessário antes de falhar</summary>
@@ -217,9 +223,11 @@ public async Task<Result<Invoice>> CreateInvoiceAsync(InvoiceRequest request, Ca
 
 </details>
 
-## Exceção como controle de fluxo
+<a id="exception-as-control-flow"></a>
 
-`try/catch` tem custo: é reservado para limites de I/O e falhas inesperadas. Usar exceção para desviar fluxo esperado esconde intenção e força o chamador a inferir a semântica pelo tipo da exceção.
+## Exceção para desviar fluxo esperado
+
+Lançar e capturar exceção custa caro em tempo de execução, e o custo maior é de leitura: quem chama precisa adivinhar quais exceções aquele método lança, porque a assinatura não conta. Um pedido que não existe é uma resposta prevista da operação. Devolva isso como `Result` e deixe o `try/catch` para o limite do sistema, onde ele protege contra o que ninguém esperava.
 
 <details>
 <summary>❌ Ruim: try/catch como desvio de fluxo esperado</summary>
@@ -257,11 +265,13 @@ public async Task<Result<Order>> FindOrderAsync(Guid orderId, CancellationToken 
 
 </details>
 
-## Global exception handler
+<a id="global-exception-handler"></a>
 
-Exceções não capturadas propagam até o topo. Sem um handler global, o runtime devolve stack trace ou detalhes internos ao cliente: vazamento de informação e contrato quebrado.
+## Barreira final para a exceção que ninguém tratou
 
-O `IExceptionHandler` (disponível a partir do .NET 8) é a barreira final: intercepta qualquer exceção não tratada, registra o erro internamente e devolve sempre `500` com uma mensagem segura. Regras de negócio, nomes de tabela, mensagens de infraestrutura: nada disso chega ao cliente.
+Uma exceção que ninguém capturou sobe até o topo da aplicação. Sem um tratador global, quem responde é o runtime, e a resposta traz stack trace, nome de tabela e mensagem do driver do banco: informação interna entregue a quem fez a requisição.
+
+O `IExceptionHandler` (a partir do .NET 8) intercepta esse caso. Ele registra o erro completo no log, onde o time consegue investigar, e devolve ao cliente um `500` com uma mensagem genérica. Registre-o como primeiro middleware do pipeline, para que ele fique por fora de todos os outros e enxergue qualquer exceção que aconteça abaixo.
 
 <details>
 <summary>❌ Ruim: sem handler global, detalhe interno vaza</summary>

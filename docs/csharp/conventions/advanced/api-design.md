@@ -1,9 +1,9 @@
-# API Design
+# Design de API em C#
 
 > Escopo: C#. Idiomas .NET deste arquivo.
 > SSOT do pipeline, envelope, verbos, status codes e Result → HTTP: [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-**API** em C# tem dois caminhos idiomáticos: **Minimal API** (ASP.NET Core 6+) e Controllers (herança de **MVC**). O padrão deste guia é Minimal API com Result → HTTP tipado, alinhado ao pipeline agnóstico definido no **SSOT** transversal. As siglas estão na tabela abaixo.
+O ASP.NET Core oferece dois jeitos de escrever uma **API** (Application Programming Interface · Interface de Programação de Aplicações): a **Minimal API**, que declara cada rota como uma função, e os **Controllers**, que herdam do pipeline de **MVC** (Model-View-Controller · Modelo-Visão-Controlador). Este guia adota a Minimal API, com o retorno tipado que traduz o `Result` do domínio em resposta HTTP. As regras que valem para qualquer linguagem (verbos, status, envelope) ficam no documento transversal; aqui está o que muda em C#.
 
 ## Conceitos fundamentais
 
@@ -16,20 +16,19 @@
 | **CQS** (Command-Query Separation, Separação Comando-Consulta) | Princípio: um método ou altera estado (command) ou retorna dado (query), nunca os dois |
 | **SSOT** (Single Source of Truth · Fonte Única da Verdade) | Um único lugar canônico para cada regra ou contrato; cross-links apontam para ele |
 
-## Minimal API: preferência
+<a id="minimal-api"></a>
 
-Minimal API é a abordagem preferida para novos projetos. O design se alinha com **Vertical Slice
-Architecture**: toda a lógica de uma funcionalidade fica reunida no mesmo lugar, não fragmentada
-em camadas horizontais.
+## Minimal API como padrão
 
-Para endpoints triviais sem dependências, uma lambda direta é suficiente e idiomática:
+A Minimal API combina com a organização por funcionalidade: tudo o que diz respeito a pedidos (rotas, handlers, DTOs, serviço) mora na pasta `Features/Orders`, em vez de espalhado entre uma pasta de controllers, uma de services e uma de models.
+
+Uma rota sem dependência nenhuma cabe numa lambda:
 
 ```csharp
 app.MapGet("/health", () => TypedResults.Ok());
 ```
 
-Para endpoints com lógica de negócio e serviços injetados, a classe **handler** (processador de requisição) organiza as
-dependências via construtor: um handler por operação, sem misturar DI com parâmetros de request:
+Quando a rota tem regra de negócio e precisa de serviços, escreva um **handler** (classe que atende a rota) por operação. As dependências entram pelo construtor, e o método recebe só o que veio na requisição:
 
 ```
 Features/
@@ -153,11 +152,11 @@ public class CreateOrderHandler(OrderService orderService)
 
 </details>
 
-## [AsParameters] e context records
+<a id="as-parameters"></a>
 
-Em Minimal API, handlers com muitas dependências produzem assinaturas longas. `[AsParameters]`
-permite agrupar todos os parâmetros em um context record. O framework resolve cada propriedade
-individualmente via DI, como se fossem parâmetros avulsos.
+## Agrupar os parâmetros do handler
+
+Um handler que precisa do request, de dois repositórios, de um leitor e do token de cancelamento fica com cinco parâmetros, e a lista cresce a cada dependência nova. `[AsParameters]` deixa juntar todos num `record` de contexto. O framework olha dentro do record e resolve cada propriedade pelo container, como se fossem parâmetros soltos, e o handler passa a receber um só.
 
 <details>
 <summary>❌ Ruim: assinatura longa, dependências espalhadas no handler</summary>
@@ -203,11 +202,11 @@ public static async Task<OrderCreateResult> Handle(
 
 </details>
 
-## Controller: MVC e legados
+<a id="controllers"></a>
 
-Controllers fazem sentido em projetos que já os adotam ou que precisam de convenções MVC (filtros
-globais, model binding por atributo, scaffolding). O mesmo princípio se aplica: controller não tem
-lógica, apenas orquestra.
+## Controller em projetos MVC
+
+Controllers continuam fazendo sentido no projeto que já os usa ou que depende de recursos do MVC, como filtros globais e model binding por atributo. A regra é a mesma da Minimal API: o controller recebe a requisição, chama o serviço e traduz o resultado em resposta. Regra de negócio, cálculo e acesso ao banco ficam de fora dele.
 
 <details>
 <summary>❌ Ruim: controller com lógica de negócio</summary>
@@ -266,20 +265,15 @@ public class OrdersController(OrderService orderService) : ControllerBase
 
 </details>
 
-## TypedResults vs Results
+<a id="typedresults-vs-results"></a>
 
-Minimal API oferece duas famílias de retorno. `Results` (`Microsoft.AspNetCore.Http.Results`) é o
-idioma histórico; `TypedResults` é a variante tipada introduzida no .NET 7. Ambas produzem a
-mesma resposta HTTP; a diferença está no que o compilador sabe sobre ela.
+## TypedResults e Results
 
-`Results.Ok(order)` retorna `IResult`, um tipo apagado. Quem assina a rota com `Results` perde
-informação: OpenAPI/Swagger não infere o status nem o **payload** (corpo da mensagem), testes precisam de cast
-(`(Ok<Order>)result`), e a documentação só aparece com atributos `[ProducesResponseType]`
-redundantes.
+A Minimal API tem duas famílias de retorno. `Results` é a mais antiga, `TypedResults` chegou no .NET 7. As duas produzem a mesma resposta HTTP; o que muda é o que o compilador enxerga.
 
-`TypedResults.Ok(order)` retorna `Ok<Order>`, um tipo concreto. OpenAPI extrai status (200) e shape
-(`Order`) automaticamente. Testes leem `result.Value` direto. A assinatura do handler passa a
-**dizer** exatamente o que retorna.
+`Results.Ok(order)` devolve `IResult`, um tipo que não guarda informação sobre o conteúdo. O Swagger não consegue descobrir o status nem o formato do **payload** (corpo da mensagem), e você precisa declarar isso à mão com `[ProducesResponseType]`. O teste precisa converter o resultado antes de ler.
+
+`TypedResults.Ok(order)` devolve `Ok<Order>`, um tipo concreto. O Swagger lê dali o status 200 e o formato `Order` sem ajuda. O teste acessa `result.Value` direto. A assinatura do handler passa a declarar o que ele responde.
 
 ### Quando usar qual
 
@@ -290,10 +284,9 @@ redundantes.
 | MVC Controller (`ControllerBase`)              | métodos da base class (`Ok()`, `NotFound()`, `Created(...)`), não `Results.*` |
 | Código legado usando `Results.*`               | manter até a próxima refatoração natural                                       |
 
-### Assinatura rica para múltiplos status
+### Assinatura que enumera os status possíveis
 
-O tipo genérico `Results<,>` enumera **na assinatura** todos os retornos possíveis. OpenAPI gera
-documentação para cada um e o compilador garante que nenhum caminho retorna fora do contrato.
+O tipo `Results<,>` lista na própria assinatura todos os retornos que o handler pode dar. O Swagger documenta cada um, e o compilador recusa um retorno que não esteja na lista.
 
 <details>
 <summary>❌ Ruim: Results apaga o tipo de retorno</summary>
@@ -331,10 +324,9 @@ static async Task<Results<Ok<OrderResponse>, NotFound>> FindOrder(
 
 </details>
 
-### Location header sem lógica no return
+### Header Location sem lógica no return
 
-`TypedResults.Created` aceita `string` ou `Uri` como header `Location`. Monte a **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) em variável
-nomeada antes do retorno; o `return` nomeia, não computa.
+`TypedResults.Created` recebe a **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) do recurso criado, que vai no header `Location`. Monte essa URL numa variável com nome antes da última linha, e deixe o `return` só entregando o resultado.
 
 <details>
 <summary>❌ Ruim: interpolação no return</summary>
@@ -357,12 +349,11 @@ return response;
 
 </details>
 
-## TypedResults aliases
+<a id="typedresults-aliases"></a>
 
-A assinatura `Results<T1, T2, T3>` enumera todos os retornos possíveis, mas repetir namespaces
-completos em cada handler polui o código. `global using` dá um apelido ao tipo uma vez para todo o assembly:
-os handlers ficam limpos, o contrato permanece explícito e o OpenAPI continua enumerando cada
-status.
+## Apelido para a assinatura de retorno
+
+Enumerar os status na assinatura deixa o contrato explícito e produz um tipo comprido, com o namespace inteiro repetido a cada handler. Um `global using` batiza esse tipo uma vez e vale para o assembly todo. O handler passa a declarar `Task<OrderCreateResult>`, e o Swagger continua enxergando cada status que o apelido representa.
 
 <details>
 <summary>❌ Ruim: tipo union verboso repetido em cada handler</summary>
@@ -406,11 +397,11 @@ public static async Task<OrderCreateResult> Handle(
 
 </details>
 
-## CQS: Save sem retorno
+<a id="cqs"></a>
 
-`SaveAsync` é um comando: persiste e retorna `void`. Retornar a entidade salva mistura command e
-query no mesmo método, viola CQS e acopla a leitura à escrita. Um `IOrderReader` separado lê após o
-save.
+## O comando grava e a consulta lê
+
+`SaveAsync` grava e devolve `void`. Quando ele também devolve a entidade salva, o método passa a fazer as duas coisas, e quem lê a chamada não sabe mais se aquele valor veio do banco ou do objeto que acabou de ser enviado. Esse é o princípio **CQS** (Command-Query Separation · Separação Comando-Consulta). Depois de gravar, um `IOrderReader` lê o registro, e aí o dado devolvido é o que está no banco de verdade, com os campos que ele mesmo preencheu.
 
 <details>
 <summary>❌ Ruim: SaveAsync retorna entidade (CQS violado)</summary>
@@ -458,13 +449,13 @@ return response;
 
 </details>
 
+<a id="contract-and-envelope"></a>
+
 ## Contrato, envelope, verbos e status codes
 
-Pipeline de API, DTOs de Request/Response, `ApiResponse<T>` com envelope `{ data, meta }`, verbos
-REST, status codes e mapeamento de `Result` para HTTP são agnósticos. A SSOT fica em
-[shared/platform/api-design.md](../../../shared/platform/api-design.md).
+O desenho do pipeline, os DTOs de request e response, o envelope `{ data, meta }`, os verbos REST, os status codes e a tradução de `Result` para HTTP valem para qualquer linguagem, e a fonte deles é [shared/platform/api-design.md](../../../shared/platform/api-design.md).
 
-Em C# a implementação idiomática usa `record` com `required init`:
+Em C#, esses contratos viram `record` com `required init`, que obriga o preenchimento na criação e impede a alteração depois:
 
 ```csharp
 public record OrderRequest(string ProductId, int Quantity);
@@ -491,11 +482,6 @@ public record ApiResponse<T>
 }
 ```
 
-A tradução de `Result` para HTTP acontece no handler ou em uma extensão sobre `Result`, usando
-`TypedResults` (ver seção [TypedResults vs Results](#typedresults-vs-results)).
+A tradução de `Result` para HTTP acontece no handler ou numa extensão sobre o `Result`, com `TypedResults` (veja [TypedResults e Results](#typedresults-vs-results)).
 
-Versionamento, verbo QUERY e o padrão de erro Problem Details também são agnósticos e vivem na SSOT.
-Em ASP.NET Core, o versionamento de rota usa o pacote `Asp.Versioning.Http` para servir `/api/v1` e
-`/api/v2` lado a lado; um verbo fora dos padrão entra por `app.MapMethods("/reports", ["QUERY"], ...)`;
-e o corpo de erro sai pronto no formato Problem Details via `TypedResults.Problem(...)`, que já emite
-`type`, `title`, `status` e `detail`.
+Versionamento, o verbo QUERY e o formato de erro Problem Details também são agnósticos e vivem na SSOT. Do lado do ASP.NET Core: o versionamento de rota usa o pacote `Asp.Versioning.Http`, que serve `/api/v1` e `/api/v2` lado a lado; um verbo fora do conjunto padrão entra por `app.MapMethods("/reports", ["QUERY"], ...)`; e o corpo de erro no formato Problem Details sai pronto de `TypedResults.Problem(...)`, que já preenche `type`, `title`, `status` e `detail`.

@@ -1,11 +1,13 @@
-# Blazor
+# Interfaces com Blazor
 
 > Escopo: C#/.NET. Guia baseado em **Blazor .NET 10** com **C# 14**.
 
-Blazor é o framework de interface de usuário da Microsoft para .NET. Um componente Blazor combina
-marcação **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) com código C# em um único arquivo `.razor`. A mesma base de código roda no servidor
-via **SignalR** (protocolo de comunicação bidirecional em tempo real) ou no browser via
-**WebAssembly** (formato binário executado diretamente no browser), sem JavaScript obrigatório.
+Blazor permite escrever a interface do usuário em C#, sem JavaScript. Um componente é um arquivo
+`.razor` que junta a marcação **HTML** (HyperText Markup Language · Linguagem de Marcação de
+Hipertexto) e o código que a alimenta. O mesmo componente roda de dois jeitos: no servidor, com o
+navegador conectado por **SignalR** (canal que mantém servidor e navegador conversando o tempo
+todo), ou dentro do próprio navegador, com **WebAssembly** (formato que o navegador executa como
+se fosse código nativo).
 
 Este guia cobre os padrões de componentes, estado, formulários, roteamento e interoperabilidade
 com JavaScript seguindo os princípios de [methods.md](../conventions/methods.md) e
@@ -24,11 +26,14 @@ com JavaScript seguindo os princípios de [methods.md](../conventions/methods.md
 | **EditForm** (formulário editável)       | Componente de formulário Blazor: gerencia `EditContext`, validação e submissão                           |
 | **IJSRuntime** (runtime de interop com JS) | Serviço para interoperabilidade JavaScript: invoca funções JS e recebe retornos no C#                  |
 
-## Render Modes
+<a id="render-modes"></a>
 
-Blazor .NET 10 oferece quatro modos de renderização. Cada componente declara o próprio modo com
-`@rendermode`, ou herda do componente pai. Escolher o modo errado desperdiça conexões SignalR
-ou impede recursos interativos.
+## Modos de renderização
+
+O modo de renderização decide onde o componente roda e se ele responde a cliques. Cada componente
+declara o seu com `@rendermode`, ou herda o do pai. A escolha tem custo: um componente que só
+mostra texto, marcado como interativo, abre uma conexão com o servidor e a mantém aberta sem
+precisar. Um componente com botão, marcado como estático, aparece na tela e ignora o clique.
 
 **Fluxo Static SSR:** `Request → Prerender → HTML estático → Browser`
 **Fluxo Interactive Server:** `Request → Prerender → HTML → SignalR circuit → DOM diffs`
@@ -80,11 +85,14 @@ ou impede recursos interativos.
 
 </details>
 
+<a id="components"></a>
+
 ## Componentes
 
-Um componente Blazor separa marcação de lógica. A marcação usa HTML com diretivas Razor (`@`);
-a lógica fica no bloco `@code`. Cálculos e transformações nunca ficam inline na marcação: computed
-properties no `@code` mantêm o template legível.
+O componente tem duas partes: a marcação, que é HTML com diretivas Razor (`@`), e o bloco `@code`,
+que guarda a lógica. Deixe o cálculo no `@code`, atrás de uma propriedade com nome, e a marcação
+fica com a leitura desse nome. Uma conta escrita no meio do HTML se repete a cada renderização e
+mistura a formatação com a regra.
 
 <details>
 <summary>❌ Ruim: cálculo e ternário inline na marcação</summary>
@@ -128,10 +136,13 @@ properties no `@code` mantêm o template legível.
 
 </details>
 
+<a id="parameters"></a>
+
 ## Parâmetros e EventCallback
 
-`[Parameter]` define propriedades que recebem dados do pai. `EventCallback<T>` permite que o filho
-notifique o pai sobre eventos sem acoplar os dois componentes.
+Os dados descem e os eventos sobem. `[Parameter]` marca a propriedade que o componente pai
+preenche. `EventCallback<T>` faz o caminho inverso: o filho avisa que algo aconteceu, e o pai
+decide o que fazer. O filho continua sem saber quem o usa, e por isso serve a várias telas.
 
 <details>
 <summary>❌ Ruim: filho injeta serviço para notificar mudança; acoplamento desnecessário</summary>
@@ -183,12 +194,15 @@ notifique o pai sobre eventos sem acoplar os dois componentes.
 
 </details>
 
+<a id="persistent-state"></a>
+
 ## Estado com [PersistentState]
 
-Durante a prerenderização, componentes interativos são renderizados no servidor antes de o circuit
-ser estabelecido. Sem persistência, o componente faz a mesma chamada ao servidor duas vezes: uma
-na prerenderização e outra após a hidratação. O atributo `[PersistentState]` do .NET 10 serializa
-o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
+Para o usuário ver a página logo, o Blazor a monta uma primeira vez no servidor e envia o HTML
+pronto. Depois a conexão se estabelece e o componente ganha vida no navegador. O problema é que
+esse segundo momento roda a mesma busca de dados de novo: a API é chamada duas vezes para exibir
+a mesma lista. O `[PersistentState]` do .NET 10 guarda o resultado da primeira busca dentro do
+HTML enviado, e o componente o encontra ali quando acorda.
 
 <details>
 <summary>❌ Ruim: chamada duplicada ao repositório: prerenderização e hidratação</summary>
@@ -232,11 +246,15 @@ o estado no HTML e o restaura no cliente, eliminando a chamada duplicada.
 
 </details>
 
+<a id="forms"></a>
+
 ## Formulários
 
-`EditForm` gerencia o `EditContext`, validação e submissão. `DataAnnotationsValidator` conecta as
-anotações do model (`[Required]`, `[Range]`) ao `EditContext`. `ValidationMessage` exibe erros
-por campo; `ValidationSummary` exibe todos os erros consolidados.
+O `EditForm` cuida do formulário inteiro: acompanha o que o usuário digitou, dispara a validação e
+chama o método de envio quando tudo está válido. O `DataAnnotationsValidator` faz valer as
+anotações que já estão no model (`[Required]`, `[Range]`), então a regra é escrita uma vez e vale
+no formulário e na API. `ValidationMessage` mostra o erro ao lado do campo, e `ValidationSummary`
+lista todos juntos no topo.
 
 <details>
 <summary>❌ Ruim: formulário manual sem EditForm; validação ad hoc no handler</summary>
@@ -315,11 +333,14 @@ public class OrderInput
 
 </details>
 
+<a id="routing"></a>
+
 ## Roteamento
 
-Blazor usa `@page` para declarar rotas. Parâmetros de rota são propriedades com `[Parameter]` e
-devem ter o tipo correto declarado na constraint da rota. `NavigationManager` navega
-programaticamente e deve ser chamado em métodos, nunca inline na marcação.
+A rota é declarada no topo do componente com `@page`. O trecho variável da URL chega como
+propriedade marcada com `[Parameter]`, e vale declarar o tipo esperado na própria rota
+(`{id:guid}`): assim uma URL com um id malformado devolve 404 antes de o componente rodar. Para
+navegar a partir do código, use o `NavigationManager` dentro de um método com nome.
 
 <details>
 <summary>❌ Ruim: NavigationManager inline no markup; parâmetro de rota sem tipo</summary>
@@ -361,11 +382,15 @@ programaticamente e deve ser chamado em métodos, nunca inline na marcação.
 
 </details>
 
-## JS Interop
+<a id="js-interop"></a>
 
-`IJSRuntime` chama funções JavaScript a partir do C#. `InvokeVoidAsync` para chamadas sem retorno;
-`InvokeAsync<T>` para chamadas com retorno. O interop só está disponível após a renderização: use
-`OnAfterRenderAsync` com o guard `firstRender` para não repetir a chamada a cada re-render.
+## Interoperar com JavaScript
+
+Quando uma biblioteca só existe em JavaScript, o `IJSRuntime` faz a ponte: `InvokeVoidAsync` para
+chamar sem esperar resposta, `InvokeAsync<T>` para receber um valor de volta. Só chame depois que
+o componente virou HTML na tela, dentro de `OnAfterRenderAsync`, porque antes disso o elemento que
+o JavaScript vai procurar ainda não existe. E confira o `firstRender`: sem esse guard, a chamada
+se repete a cada nova renderização do componente.
 
 <details>
 <summary>❌ Ruim: interop em OnInitializedAsync; falha silenciosa em prerenderização</summary>

@@ -1,6 +1,6 @@
-# Naming
+# Nomes em C#
 
-Nomes em C# seguem convenções da plataforma .NET: **PascalCase** para tipos, métodos e propriedades; **camelCase** para parâmetros e variáveis locais. A regra mais forte vem antes da convenção visual: o identificador expressa propósito do domínio, não tipo técnico.
+Um nome bem escolhido dispensa o comentário que explicaria o mesmo. Em C#, duas formas de capitalização dividem o trabalho: **PascalCase** em tipos, métodos e propriedades, e **camelCase** em parâmetros e variáveis locais. A capitalização mostra em que escopo o identificador vive. O texto do nome mostra o que ele significa, e para isso ele usa a palavra que o time já usa para falar do negócio.
 
 ## Conceitos fundamentais
 
@@ -10,15 +10,15 @@ Nomes em C# seguem convenções da plataforma .NET: **PascalCase** para tipos, m
 | **camelCase** (capitalização a partir da segunda palavra) | Convenção `orderTotal`, `customerId`; usada para parâmetros e variáveis locais |
 | **interface prefix** (prefixo `I` em interfaces) | Convenção .NET: `IOrderRepository`, `ILogger`; identifica contrato visualmente |
 | **Async suffix** (sufixo `Async` em métodos assíncronos) | Sinaliza retorno `Task`/`Task<T>`: `LoadAsync`, `SaveAsync` |
-| **domain term** (termo de domínio) | Nome reflete propósito de negócio (`pendingInvoice`), não tipo técnico (`invoiceList`) |
+| **domain term** (termo de domínio) | Palavra tirada do vocabulário do negócio: `pendingInvoice` conta o que o valor é; `invoiceList` só repete a estrutura de dados |
 | **abbreviation** (abreviação) | Evite contrações ambíguas (`mgr`, `svc`); siglas conhecidas mantêm forma do .NET (`Id`, `Url`) |
 | **boolean prefix** (prefixo de booleano) | `is`, `has`, `can`, `should`: `isActive`, `hasInvoice`, `canCancel` |
 
 <a id="portuguese-names"></a>
 
-## Nomes em português
+## Todo identificador é escrito em inglês
 
-Todo código é escrito em inglês: variáveis, métodos, classes, interfaces, propriedades. Português aparece apenas em strings de usuário e comentários `// why:`.
+Variáveis, métodos, classes, interfaces e propriedades ficam em inglês. Português entra só em duas situações: no texto que o usuário lê na tela e no comentário `// why:`. Misturar os dois idiomas no mesmo arquivo obriga o leitor a trocar de vocabulário no meio da linha, e o código passa a ter dois nomes para a mesma coisa (`Pedido` e `Order`).
 
 <details>
 <summary>❌ Ruim: mistura de idiomas</summary>
@@ -52,9 +52,11 @@ public class OrderService
 
 </details>
 
-## PascalCase e _camelCase
+<a id="capitalization-by-scope"></a>
 
-Membros públicos usam PascalCase. Membros privados usam `_camelCase` com underscore. Parâmetros e variáveis locais usam `camelCase` sem underscore.
+## A capitalização revela o escopo
+
+Olhando só a primeira letra, o leitor sabe se está diante de um membro público, de um campo privado ou de uma variável local. Membro público usa PascalCase. Campo privado usa `_camelCase`, com underscore na frente. Parâmetro e variável local usam `camelCase`, sem underscore.
 
 | Escopo | Convenção | Exemplo |
 | --- | --- | --- |
@@ -100,9 +102,11 @@ public class OrderService(IOrderRepository repository)
 
 </details>
 
-## Sufixo Async
+<a id="async-suffix"></a>
 
-Todo método que retorna `Task` ou `ValueTask` termina em `Async`. O sufixo sinaliza ao chamador que a operação deve ser aguardada. Sem ele, o leitor não tem como distinguir chamadas síncronas de assíncronas sem inspecionar a assinatura.
+## O sufixo Async avisa que a chamada precisa de await
+
+Todo método que devolve `Task` ou `ValueTask` termina em `Async`. O sufixo existe para quem chama: ele vê `SaveOrderAsync(...)` na lista de sugestões do editor e já sabe que precisa de `await`. Sem o sufixo, descobrir se a chamada é assíncrona exige abrir a assinatura do método, e é assim que uma `Task` acaba esquecida sem `await`.
 
 <details>
 <summary>❌ Ruim: sem sufixo, natureza da operação obscura</summary>
@@ -126,9 +130,11 @@ public async Task<bool> ValidatePaymentAsync(PaymentRequest request) { ... }
 
 </details>
 
-## Prefixo I: interfaces
+<a id="interface-prefix"></a>
 
-Interfaces sempre começam com `I`. Implementações não carregam sufixo `Impl`, `Default` ou `Base`: o nome descreve a implementação pelo domínio ou tecnologia.
+## Interfaces começam com I
+
+O `I` na frente do nome (`IOrderRepository`) é a convenção do .NET para separar contrato de implementação. A implementação recebe um nome que conta alguma coisa sobre ela: onde os dados moram, qual tecnologia usa. Sufixos como `Impl`, `Default` e `Base` ocupam espaço sem responder nenhuma dessas perguntas.
 
 <details>
 <summary>❌ Ruim: distinção entre interface e classe ausente ou com sufixo ruído</summary>
@@ -152,9 +158,11 @@ public class InMemoryOrderRepository : IOrderRepository { ... }
 
 </details>
 
-## Booleans expressivos
+<a id="boolean-prefix"></a>
 
-Todo booleano carrega prefixo semântico. Nomes sem prefixo (`active`, `loading`, `valid`) são proibidos: não declaram se representam estado, capacidade ou diretiva.
+## Todo booleano começa com is, has, can ou should
+
+O prefixo diz que tipo de pergunta o booleano responde. `active` sozinho deixa a dúvida no ar: é o estado atual do usuário, é a permissão de ativar, é uma ordem para ativar? `isActive` responde na primeira leitura. Por isso booleano sem prefixo (`active`, `loading`, `valid`) fica de fora.
 
 | Prefixo | Significado | Exemplo |
 | --- | --- | --- |
@@ -185,9 +193,11 @@ bool canDelete = user.Role == "ADMIN";
 
 </details>
 
+<a id="meaningless-identifiers"></a>
+
 ## Identificadores sem significado
 
-O nome revela intenção pelo domínio. Nomes genéricos (`data`, `info`, `obj`, `item`, `result`, `temp`) são falhas de nomenclatura: forçam o leitor a rastrear o tipo para entender o contexto.
+`data`, `info`, `obj`, `item`, `result` e `temp` cabem em qualquer lugar, e é esse o problema: eles descrevem a caixa, e o leitor queria saber o conteúdo. Quem lê `var result = await _repo.FindAsync(id, ct)` precisa subir até a assinatura do repositório para descobrir o que veio. Trocar por `order` resolve a dúvida na própria linha.
 
 <details>
 <summary>❌ Ruim: nomes genéricos sem contexto de domínio</summary>
@@ -222,7 +232,7 @@ public async Task<OrderSummary> FindOrderSummaryAsync(Guid orderId, Cancellation
 
 ## Código como documentação
 
-Nomes expressivos eliminam a necessidade de comentários. Um comentário que reescreve o que o código já diz é uma falha de nomenclatura, não uma contribuição de clareza. Use `// why:` apenas para restrições ocultas ou invariantes não óbvios.
+Um comentário que repete o que a linha abaixo já diz envelhece sozinho: o código muda, o comentário fica. Quando o nome é expressivo, o comentário some por falta de assunto. Guarde `// why:` para o que o código não consegue mostrar, como uma restrição do fornecedor ou uma regra que parece errada e não é.
 
 <details>
 <summary>❌ Ruim: comentários repetem o código</summary>
@@ -249,9 +259,11 @@ if (!user.IsActive) return Result<Order>.Fail("User inactive.", "UNAUTHORIZED");
 
 </details>
 
-## Ordem semântica
+<a id="semantic-order"></a>
 
-Nomes seguem a ordem de leitura natural: domínio primeiro, ação depois, qualificador por último. O leitor encontra o contexto antes do detalhe.
+## Domínio primeiro, ação depois, qualificador por último
+
+`CalculateOrderTotalAsync` se lê na ordem em que a frase acontece em português: calcula o total do pedido. `TotalCalculateOrderAsync` embaralha as mesmas palavras e obriga o leitor a remontar a frase. A ordem também ajuda o editor: métodos do mesmo domínio ficam agrupados na lista de sugestões quando começam pelo mesmo verbo e pelo mesmo substantivo.
 
 <details>
 <summary>❌ Ruim: qualificador antes do domínio</summary>

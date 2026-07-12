@@ -1,14 +1,10 @@
-# Testing
+# Testes em C#
 
 > Escopo: C#. Visão transversal: [shared/standards/testing.md](../../../shared/standards/testing.md).
 
-Testes documentam o comportamento esperado. Um teste que falha conta uma história: quem chamou, o
-que recebeu, o que esperava.
+Um teste é a descrição executável do comportamento esperado. Quando ele falha, a mensagem precisa contar três coisas sem que ninguém abra o código: o que foi chamado, o que voltou e o que se esperava.
 
-Os exemplos seguem a abordagem **AAA**: cada teste em três fases explícitas, com os detalhes na
-tabela abaixo. O [code style](../variables.md) se aplica dentro dos testes: o assert recebe
-variáveis nomeadas (`actualPrice`, `expectedName`), sem expressões, acessos de propriedade ou
-literais inline.
+Os exemplos usam a divisão **AAA** (Arrange Act Assert · Preparar Executar Verificar), com as declarações agrupadas e a verificação isolada por uma linha em branco. O [code style](../variables.md) vale dentro do teste também: a comparação recebe variáveis com nome (`actualPrice`, `expectedName`), sem cálculo, acesso a propriedade ou valor solto escrito no meio do `Assert`.
 
 ## Conceitos fundamentais
 
@@ -23,7 +19,7 @@ literais inline.
 | **assert** (verificação de resultado) | Última fase do teste; recebe variáveis nomeadas, nunca expressões inline |
 | **FluentAssertions** (biblioteca de asserts fluentes) | API que torna asserts legíveis: `actualOrder.Should().BeEquivalentTo(expectedOrder)` |
 
-O guia usa [xUnit](https://xunit.net/) como referência: o framework mais adotado no ecossistema .NET, sem o **boilerplate** (código repetitivo de cerimônia) de `[TestClass]`.
+O guia usa [xUnit](https://xunit.net/) como referência: é o framework mais adotado no ecossistema .NET e dispensa o **boilerplate** (código repetitivo de cerimônia) de `[TestClass]`.
 
 ```csharp
 using Xunit;
@@ -35,10 +31,11 @@ using Xunit;
 > - **MSTest**: `Assert.AreEqual(expected, actual)`: expected primeiro
 > - **NUnit**: `Assert.That(actual, Is.EqualTo(expected))`: actual primeiro
 
-## Fases misturadas: AAA
+<a id="aaa-phases"></a>
 
-Cada teste agrupa as declarações — contexto, execução e valor esperado — em um bloco; uma linha em
-branco isola a asserção do resultado.
+## As três fases do teste
+
+Preparar o cenário, executar a operação e declarar o valor esperado ficam juntos, em um bloco. A verificação vem depois de uma linha em branco. Escrever tudo dentro do `Assert`, como em `Assert.Equal(90m, ApplyDiscount(new Order { ... }))`, economiza linhas e cobra caro na hora que o teste quebra: a mensagem de falha mostra números sem dizer de onde vieram.
 
 <details>
 <summary>❌ Ruim: tudo inline, fases invisíveis</summary>
@@ -70,9 +67,11 @@ public void AppliesTenPercentDiscountToOrderPrice()
 
 </details>
 
-## Assert inline: semantic assert
+<a id="semantic-assert"></a>
 
-`expected` e `actual` são nomeados antes da comparação. O assert lê como uma frase, não como um cálculo. A regra vale sempre: mesmo quando o valor já tem nome, declare `expected` explicitamente para manter consistência e deixar o assert sem ambiguidade.
+## Nomeie o esperado e o obtido antes de comparar
+
+Dê nome aos dois lados da comparação: `actualName` para o que o código produziu, `expectedName` para o que deveria produzir. O `Assert` passa a se ler como uma frase. Mantenha a regra mesmo quando o valor já tem nome, porque a simetria entre `expected` e `actual` é o que deixa claro qual dos dois está sob teste.
 
 <details>
 <summary>❌ Ruim: literais inline, falha não diz o que era esperado</summary>
@@ -120,10 +119,11 @@ public void ReturnsActiveUsersOnly()
 
 </details>
 
-## Nome genérico
+<a id="test-naming"></a>
 
-O nome do teste descreve o cenário e o resultado esperado, não o nome do método nem uma afirmação
-vaga. Sem prefixos: `Should` não agrega informação, `GivenWhenThen` é mecânico e verboso.
+## O nome do teste conta o cenário e o resultado
+
+`AppliesDiscountWhenOrderTotalExceedsMinimum` responde duas perguntas: em que situação, e o que acontece. É esse nome que aparece na lista de falhas do CI, então ele precisa se explicar sozinho. `Test1` não diz nada. `ApplyDiscount` repete o nome do método e some com o cenário. `Should` na frente ocupa espaço sem acrescentar informação, e `GivenWhenThen` alonga o nome sem melhorar a leitura.
 
 <details>
 <summary>❌ Ruim: prefixo vazio, nome que repete a implementação</summary>
@@ -157,9 +157,11 @@ public void ThrowsValidationExceptionWhenDiscountIsNegative() { /* ... */ }
 
 </details>
 
-## Estado compartilhado
+<a id="shared-state"></a>
 
-Cada teste monta seu próprio contexto. Nenhum teste depende de outro para funcionar.
+## Cada teste monta o próprio contexto
+
+Um campo estático que um teste escreve e o outro lê cria uma ordem de execução obrigatória que ninguém declarou. O segundo teste passa quando roda depois do primeiro e falha quando roda sozinho, e a mensagem de erro não vai contar isso. Monte o cenário dentro de cada teste, mesmo que a linha se repita entre eles.
 
 <details>
 <summary>❌ Ruim: campo estático que um teste escreve e outro lê</summary>
@@ -221,10 +223,11 @@ public class OrderTests
 
 </details>
 
-## Exceção sem tipo
+<a id="exception-type"></a>
 
-Testar que um erro foi lançado é diferente de testar _qual_ erro foi lançado. `Assert.Throws<T>`
-verifica o tipo, não apenas a presença.
+## Verificar qual exceção foi lançada
+
+Um `try/catch` que captura `Exception` e confirma que ela não é nula passa mesmo quando o código quebrou por um motivo diferente do esperado: um `NullReferenceException` acidental satisfaz o teste tão bem quanto o `NotFoundException` que ele queria provar. `Assert.ThrowsAsync<NotFoundException>` cobra o tipo certo.
 
 <details>
 <summary>❌ Ruim: try/catch manual, tipo não verificado</summary>

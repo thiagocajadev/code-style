@@ -2,7 +2,7 @@
 
 > Escopo: C#. Visão transversal: [shared/architecture/entity-modeling.md](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom: `readonly record struct` para IDs tipados, `abstract class Entity<TId>` com igualdade por ID, `IReadOnlyList<T>` em propriedades públicas e `#nullable enable` como **guard rail** (barreira de proteção).
 
-Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em C# e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério, não com receita fechada.
+Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em C# e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério para decidir caso a caso.
 
 O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: quantas propriedades uma entidade aguenta antes de fragmentar; quando uma propriedade vira lista; como expressar relacionamentos um para muitos e muitos para muitos; quando faz sentido herdar de uma `Entity<TId>` base. Os exemplos assumem `<Nullable>enable</Nullable>` no `.csproj` e seguem o code style C# moderno: `sealed` por padrão, `private init` em setters de domínio, construtores `private` com factory estáticos.
 
@@ -37,7 +37,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 
 A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria comprometer-se com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
 
-Os números abaixo são heurística, não regra:
+Os números abaixo servem como referência para começar a conversa:
 
 - **5 a 10 propriedades**: zona confortável. A maior parte das entidades de domínio cabe aqui.
 - **10 a 15**: hora de olhar a coesão. Se todos os campos descrevem o mesmo conceito (`Order` com cabeçalho, totais e status), tudo bem. Se já dá para agrupar (endereço, preferências, dados fiscais), extrair.
@@ -329,7 +329,7 @@ public sealed class Order : Entity<OrderId>
 
 ## BaseEntity: o que entra, o que sai
 
-Toda entidade tem identidade, e concentrar essa identidade em uma classe base reutilizada faz sentido. O risco aparece logo a seguir, em uma sequência tentadora: "já que tem base, por que não colocar também os campos de auditoria?"; depois "já que tem auditoria, por que não soft delete?"; depois "já que tem soft delete, por que não version e tenantId?". A base vai engordando, e cada entidade do sistema passa a carregar campos que não usa. Esse é o caminho típico para o **God Object**.
+Toda entidade tem identidade, e concentrar essa identidade numa classe base faz sentido. O problema começa na pergunta seguinte: "já que existe uma base, por que não colocar nela os campos de auditoria?". Depois vem o soft delete, depois o `Version` e o `TenantId`. A cada rodada a base cresce, e cada entidade do sistema passa a carregar campos que não usa. É assim que nasce o **God Object** (classe que acumula responsabilidade demais).
 
 A regra que funciona é mínima:
 
@@ -362,7 +362,7 @@ public sealed class OrderItem : Entity
 }
 ```
 
-`OrderItem` herda oito campos para expor três. O `TenantId` vazio no construtor denuncia o problema. Cada nova feature que entra na base afeta toda entidade do sistema.
+`OrderItem` herda oito campos para expor três. O `TenantId` que ele carrega fica sempre vazio, porque nunca é preenchido nem consultado. Cada campo novo que entra na base passa a existir em toda entidade do sistema.
 
 </details>
 
@@ -434,7 +434,7 @@ A constraint `where TId : struct, IEquatable<TId>` fecha o tipo: só `readonly r
 
 ## Propriedade vs lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade (quantos elementos a relação aceita) vem da regra de negócio. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
 
 A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos C#:
 
@@ -468,7 +468,7 @@ public sealed class Customer : Entity<CustomerId>
 }
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra. Iterar os três campos exige três `if` separados.
+A regra "cliente tem até três telefones" ficou gravada no formato da classe. Para aceitar um quarto telefone é preciso criar `Phone4`, mexer na tabela e revisar todo código que lê os campos, quando bastaria alterar um número dentro de um método. Percorrer os telefones também exige três `if` separados.
 
 </details>
 
@@ -759,9 +759,9 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 ## Identidade vs referência
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order.Items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, guarde o objeto inteiro: `Order.Items` é uma lista de `OrderItem`. O agregado é carregado do banco de uma vez e mantido coerente como um bloco só, então os filhos já estão em memória e guardar apenas o ID deles obrigaria a uma segunda ida ao banco para ler o que já veio.
 
-Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que manter esse `Customer` consistente, e essa já é a responsabilidade do agregado `Customer`. Com dois lugares responsáveis pela mesma regra, cada um passa a supor que o outro a aplicou.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -819,7 +819,7 @@ var order = Order.Place(customerId);
 var customer = await customerRepository.FindByIdAsync(order.CustomerId, ct);
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Buscar um pedido deixa de trazer junto o cliente, o endereço dele e tudo o que estiver pendurado ali.
 
 </details>
 
@@ -860,7 +860,7 @@ public string Summarize(OrderState state)
 }
 ```
 
-Para o estado simples (sem dados associados), um `enum OrderStatus` em um único campo basta. A hierarquia de records só ganha tração quando o estado carrega informação própria.
+Para o estado simples, sem dados associados, um `enum OrderStatus` em um único campo resolve. A hierarquia de records compensa quando cada estado carrega informação própria.
 
 </details>
 
@@ -965,7 +965,7 @@ Para reforço extra, ativar **row-level security** no banco (PostgreSQL, SQL Ser
 
 ## Anti-patterns
 
-Os padrões abaixo aparecem com frequência em código C# real, e cada um é um sinal de que a modelagem merece uma volta. Quando algum deles surgir na revisão, vale revisitar a entidade antes que o débito cresça e contamine os módulos vizinhos.
+Os padrões abaixo aparecem com frequência em código C# real, e cada um sinaliza que a modelagem merece uma segunda olhada. Quando um deles surgir na revisão, vale corrigir enquanto o custo é o de mexer em uma classe, antes que outros módulos passem a depender do formato errado.
 
 **God Entity**. Entidade com 20+ propriedades misturando conceitos. Sintoma: o nome da classe vira lista (`UserAccountWithPreferencesAndBilling`). Tratamento: extrair value objects (`sealed record`) ou separar em agregados.
 

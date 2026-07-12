@@ -1,8 +1,8 @@
-# Async
+# Assincronia em C#
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação que atravessa o limite do processo (banco, rede, arquivo) retorna `Task`. O chamador aguarda com `await`; bloquear (`Result`, `Wait()`) trava threads do pool e leva a **deadlock**. **CancellationToken** propaga cancelamento ao longo da cadeia.
+Toda operação que sai do processo (banco, rede, arquivo) devolve uma `Task<T>`, que representa um resultado que ainda vai chegar. Quem chama espera esse resultado com `await`, e enquanto a resposta não vem, a **thread** (linha de execução que roda o código) fica livre para atender outra requisição. Pedir o valor de forma bloqueante, com `.Result` ou `.Wait()`, prende a thread parada, e com tráfego suficiente isso trava a aplicação inteira. O **CancellationToken** (sinalizador de cancelamento) percorre a cadeia de chamadas para que um cancelamento lá em cima interrompa o trabalho lá embaixo.
 
 ## Conceitos fundamentais
 
@@ -16,9 +16,11 @@ Assincronia em .NET é baseada em `Task<T>` + `async`/`await`. Toda operação q
 | **ConfigureAwait** (configurar continuação) | Método que controla se a continuação retorna ao contexto original; em libraries usa-se `false` |
 | **thread pool** (conjunto gerenciado de linhas de execução) | Threads do .NET reutilizadas para executar continuações; bloquear esgota o pool |
 
+<a id="async-await"></a>
+
 ## async/await
 
-Todo I/O é assíncrono. Métodos que realizam I/O retornam `Task<T>` ou `Task` e carregam o sufixo `Async`. O chamador sempre usa `await`, nunca `.Result` ou `.Wait()`.
+Todo acesso a banco, rede ou disco vira um método assíncrono: devolve `Task<T>` ou `Task` e termina em `Async`. Quem chama usa `await`. O `await` entrega a thread de volta ao pool enquanto a resposta não chega, e é isso que permite a um servidor atender centenas de requisições com poucas threads.
 
 <details>
 <summary>❌ Ruim: I/O síncrono bloqueia a thread</summary>
@@ -57,9 +59,11 @@ public async Task SaveOrderAsync(Order order, CancellationToken ct)
 
 </details>
 
-## Task.WhenAll
+<a id="task-whenall"></a>
 
-Chamadas independentes de I/O devem rodar em paralelo. `await` sequencial em operações sem dependência entre si desperdiça tempo: o tempo total vira a soma, não o máximo.
+## Task.WhenAll para chamadas que não dependem uma da outra
+
+Três `await` em sequência levam a soma dos três tempos, mesmo quando nenhuma das chamadas precisa do resultado da anterior. Dispare as três, guarde as `Task` sem `await`, e só então espere todas com `Task.WhenAll`. O tempo total passa a ser o da chamada mais lenta. Um painel que buscava usuário, pedidos e notificações em 300 ms cada responde em 300 ms, e não em 900 ms.
 
 <details>
 <summary>❌ Ruim: await sequencial em chamadas independentes</summary>
@@ -104,9 +108,11 @@ public async Task<Dashboard> BuildDashboardAsync(Guid userId, CancellationToken 
 
 </details>
 
+<a id="cancellation-token"></a>
+
 ## CancellationToken
 
-Propague `CancellationToken` em toda chamada de I/O pública. Ele permite que o chamador cancele a operação. Sem ele, requisições **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) canceladas ou timeouts não interrompem o trabalho em andamento.
+Passe o `CancellationToken` adiante em toda chamada assíncrona pública. Ele é o que permite parar o trabalho quando ele já não serve para ninguém: o usuário fechou a aba, o timeout estourou, a requisição **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) foi abortada. Um método que recebe o token e não o repassa quebra a corrente: a consulta ao banco continua rodando até o fim, ocupando conexão para produzir um resultado que ninguém vai ler.
 
 <details>
 <summary>❌ Ruim: CancellationToken ignorado ou ausente</summary>
@@ -153,9 +159,11 @@ public async Task<Result<Invoice>> ProcessOrderAsync(OrderRequest request, Cance
 
 </details>
 
-## Sem bloqueio síncrono
+<a id="no-sync-blocking"></a>
 
-`.Result`, `.Wait()` e `GetAwaiter().GetResult()` bloqueiam a thread chamante. Em aplicações ASP.NET Core, isso pode causar deadlock quando o `SynchronizationContext` está presente. Não existe caminho seguro: a única solução é async de ponta a ponta.
+## Nunca bloquear com `.Result` ou `.Wait()`
+
+`.Result`, `.Wait()` e `GetAwaiter().GetResult()` param a thread atual até a operação terminar. Em ASP.NET Core isso consome uma thread do pool sem fazer trabalho nenhum, e em contextos que têm `SynchronizationContext` chega a travar de vez: a thread bloqueada é justamente a que precisaria estar livre para receber a resposta, e as duas ficam se esperando. A saída é manter o `async` do endpoint até a chamada ao banco, sem quebrar a corrente no meio.
 
 <details>
 <summary>❌ Ruim: bloqueio síncrono em contexto async</summary>

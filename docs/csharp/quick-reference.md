@@ -1,6 +1,6 @@
-# Quick Reference
+# Referência rápida de C#
 
-> Escopo: C#. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: C#. Resumo das convenções; o raciocínio que sustenta cada uma está em `conventions/`.
 
 ## Nomenclatura
 
@@ -28,7 +28,7 @@
 | Enviar / notificar | `Send`, `Dispatch`, `Notify`, `Emit` | `Fire`, `Trigger` |
 | Remover | `Delete`, `Remove`, `Purge`, `Clear` | `Destroy`, `Kill` |
 
-## Taboos
+## Nomes proibidos
 
 | Categoria | Evitar | Usar |
 | --- | --- | --- |

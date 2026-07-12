@@ -1,10 +1,8 @@
-# Dates
+# Datas e horas em C#
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-`DateTime` em C# tem uma armadilha central: o campo `Kind` pode ser `Local`, `Utc` ou
-`Unspecified`, e a maioria das construções produz `Unspecified` sem aviso. Prefira
-**DateTimeOffset** para eliminar a ambiguidade: o offset está embutido no tipo. **UTC** é o ponto comum entre servidores; conversão para o **timezone** (fuso horário) do usuário é responsabilidade da camada de apresentação.
+O `DateTime` do C# guarda, além da data e da hora, um campo `Kind` que diz se aquele instante é local, é **UTC** (Coordinated Universal Time · Tempo Universal Coordenado) ou é indefinido. O problema é que a maior parte das formas de criar um `DateTime` deixa esse campo como indefinido, e o valor passa a depender de quem o lê. Use **DateTimeOffset**, que carrega o deslocamento em relação ao UTC dentro do próprio valor. Guarde tudo em UTC, que é a referência comum entre servidores, e converta para o **timezone** (fuso horário) do usuário só na hora de exibir.
 
 ## Conceitos fundamentais
 
@@ -18,10 +16,11 @@
 | **DateOnly / TimeOnly** (apenas data / apenas hora) | Tipos do .NET 6+ para representar apenas data ou apenas hora, sem componente residual |
 | **ISO 8601** (padrão internacional de formato de data) | Formato textual `YYYY-MM-DDTHH:mm:ssZ` para troca interoperável de instantes |
 
-## DateTime.Now vs DateTimeOffset.UtcNow
+<a id="datetime-now-vs-utcnow"></a>
 
-`DateTime.Now` captura a hora local do servidor. Em deploys multi-region ou containers com
-timezones diferentes, o mesmo código produz valores incomparáveis.
+## Marcar o instante em UTC
+
+`DateTime.Now` devolve a hora do relógio da máquina onde o código roda. Dois servidores em regiões diferentes, ou dois containers com fuso diferente, gravam horas diferentes para o mesmo acontecimento, e comparar esses valores depois produz respostas erradas. `DateTimeOffset.UtcNow` devolve sempre o mesmo instante, com o deslocamento explícito no valor.
 
 <details>
 <summary>❌ Ruim: hora local do servidor, Kind implícito</summary>
@@ -45,10 +44,11 @@ var createdAt = DateTimeOffset.UtcNow;
 
 </details>
 
-## DateTime vs DateTimeOffset
+<a id="datetime-vs-datetimeoffset"></a>
 
-`DateTime` perde a informação de timezone. `DateTimeOffset` carrega o offset junto ao valor,
-sem precisar de contexto externo para interpretar o instante.
+## DateTimeOffset carrega o fuso junto do valor
+
+Um `DateTime` com `Kind` indefinido no contrato da API entrega ao cliente um `"2026-04-19T14:00:00"` que não diz de que fuso aquilo veio. Cada lado interpreta com a própria convenção, e a diferença aparece como um pedido criado três horas no futuro. `DateTimeOffset` serializa `"2026-04-19T14:00:00+00:00"`, e o `+00:00` responde a pergunta sem depender de combinação prévia.
 
 <details>
 <summary>❌ Ruim: DateTime sem Kind perde contexto de timezone</summary>
@@ -78,11 +78,11 @@ public record OrderResponse
 
 </details>
 
+<a id="dateonly-and-timeonly"></a>
+
 ## DateOnly e TimeOnly
 
-`DateTime` para representar apenas uma data arrasta um componente de hora (`00:00:00`) sem
-significado, que pode causar bugs de timezone ao ser serializado. `DateOnly` e `TimeOnly`
-(.NET 6+) expressam a intenção com precisão.
+Uma data de nascimento não tem hora. Guardá-la num `DateTime` acrescenta um `00:00:00` que ninguém pediu, e esse zero vira problema quando o valor é convertido de fuso: a meia-noite de 21 de agosto em São Paulo é o dia 20 em UTC, e a data de nascimento anda um dia para trás. `DateOnly` e `TimeOnly` (.NET 6+) guardam só o que interessa e não têm o que deslocar.
 
 <details>
 <summary>❌ Ruim: DateTime para data pura, hora fantasma causa bugs</summary>
@@ -119,10 +119,11 @@ public record ScheduleRequest
 
 </details>
 
-## Entity Framework: armazenar UTC
+<a id="ef-store-utc"></a>
 
-EF Core serializa `DateTime` conforme o `Kind`. Sem configuração explícita, valores `Unspecified`
-são salvos sem conversão; o que for lido do banco volta como `Unspecified` também.
+## Gravar e ler no banco sem perder o fuso
+
+O EF Core grava o `DateTime` conforme o `Kind` que ele encontrar. Quando o `Kind` é indefinido, o valor vai para o banco sem conversão e volta indefinido na leitura: a informação de fuso não estava lá para se perder. Declarar a propriedade como `DateTimeOffset` resolve na origem. O EF mapeia para `datetimeoffset` no SQL Server e `timestamptz` no PostgreSQL, e o deslocamento sobrevive à ida e à volta sem configuração extra.
 
 <details>
 <summary>❌ Ruim: DateTime sem Kind, round-trip ambíguo com o banco</summary>

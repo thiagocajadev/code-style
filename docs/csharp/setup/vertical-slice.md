@@ -1,10 +1,10 @@
-# Vertical Slice Architecture
+# Arquitetura de fatia vertical em C#
 
 > Escopo: C#. Visão transversal: [shared/architecture/architecture.md](../../shared/architecture/architecture.md) · [shared/architecture/operation-flow.md](../../shared/architecture/operation-flow.md).
 
-Cada feature é uma fatia vertical autossuficiente, sem camadas horizontais cruzando o sistema. A fatia de pedidos tem suas rotas, contratos, regras de negócio e acesso a dados. Nenhuma dependência cruza para outra fatia.
+Numa **fatia vertical** (vertical slice), tudo o que uma funcionalidade precisa mora na mesma pasta: as rotas, os contratos, as regras de negócio e o acesso ao banco. A pasta `Features/Orders` guarda a feature de pedidos inteira, e mexer nela não obriga a abrir mais nada. Isso substitui a divisão por camadas, em que alterar um campo do pedido significa editar um arquivo na pasta de controllers, outro na de services e outro na de repositories.
 
-Este documento segue o ciclo de vida de uma requisição: de `Program.cs` até o response final.
+Este documento acompanha uma requisição do começo ao fim, do `Program.cs` até a resposta.
 
 ## Conceitos fundamentais
 
@@ -16,7 +16,9 @@ Este documento segue o ciclo de vida de uma requisição: de `Program.cs` até o
 | **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto) | Protocolo da fatia: verbo, status, envelope no boundary |
 | **I/O** (Input/Output · Entrada/Saída) | Operação que atravessa o limite do processo: banco, rede, arquivo; sempre assíncrona |
 
-## Estrutura de arquivos
+<a id="file-structure"></a>
+
+## Onde cada arquivo mora
 
 ```
 src/
@@ -49,7 +51,11 @@ src/
         └── ValidationFilter.cs
 ```
 
-## Pipeline
+<a id="pipeline"></a>
+
+## O caminho da requisição
+
+Toda requisição percorre a mesma sequência, e os nomes abaixo são as classes que você vai encontrar no código:
 
 `HTTP Request → ValidationFilter → [AsParameters] → Sanitize → Validate → Business Rules → Save → Read → Filter Output → TypedResults`
 
@@ -67,9 +73,11 @@ src/
 
 ---
 
-## 1. Entry point
+<a id="entry-point"></a>
 
-`Program.cs` declara intenção em 4 linhas. Toda configuração é delegada.
+## 1. Ponto de entrada
+
+O `Program.cs` cabe em quatro linhas porque não configura nada: ele chama quem configura.
 
 ```csharp
 // Program.cs
@@ -82,7 +90,7 @@ app.UseDefaults();
 app.Run();
 ```
 
-`AddDefaults` registra infraestrutura e chama `RegisterModules`, que descobre todos os `IModule` via reflexão e registra seus serviços de DI automaticamente.
+`AddDefaults` registra a infraestrutura e chama `RegisterModules`, que varre o assembly em busca de classes que implementam `IModule` e registra os serviços de cada uma. Uma fatia nova é descoberta por existir.
 
 ```csharp
 // Infrastructure/Extensions/ServiceExtensions.cs
@@ -130,9 +138,11 @@ public static class AppExtensions
 
 ---
 
-## 2. Módulos: IModule e auto-discovery
+<a id="modules"></a>
 
-Cada fatia implementa `IModule`. `ModuleExtensions` descobre todos os módulos via reflexão; tanto rotas quanto serviços de DI são registrados automaticamente. Nenhuma feature precisa ser adicionada manualmente ao aggregator.
+## 2. Cada fatia se registra sozinha
+
+A fatia implementa `IModule`, que pede duas coisas: registrar os serviços dela e mapear as rotas dela. O `ModuleExtensions` encontra todas as implementações no assembly e chama os dois métodos de cada uma. Ninguém precisa lembrar de adicionar a feature nova a uma lista central, e por isso ninguém esquece.
 
 ```csharp
 // Shared/IModule.cs
@@ -208,9 +218,11 @@ public sealed class OrdersModule : IModule
 
 ---
 
-## 3. Contratos: request, response e aliases
+<a id="contracts"></a>
 
-`OrderContracts.cs` define os tipos que fluem pela fatia. `OrderAliases.cs` declara os tipos de retorno HTTP: uma linha por status possível, `global using` válido em todo o assembly.
+## 3. Contratos: request, response e apelidos
+
+`OrderContracts.cs` guarda os tipos que entram e saem da fatia. `OrderAliases.cs` batiza os tipos de retorno HTTP com um `global using`: uma linha por conjunto de status possíveis, válida no assembly inteiro, para que a assinatura do handler não carregue o namespace completo.
 
 ```csharp
 // Features/Orders/OrderContracts.cs
@@ -243,9 +255,11 @@ global using OrderGetResult = Microsoft.AspNetCore.Http.HttpResults.Results<
 
 ---
 
-## 4. Entrada da requisição: filter e context
+<a id="request-entry"></a>
 
-Antes de chegar ao handler, a requisição passa pelo `ValidationFilter`. Se o body for nulo, retorna `400` imediatamente; o handler não é chamado.
+## 4. Entrada da requisição: filtro e contexto
+
+Antes do handler, a requisição passa pelo `ValidationFilter`. Corpo vazio vira `400` ali mesmo, e o handler nem chega a rodar. Isso poupa o handler de começar todo método verificando se o que chegou existe.
 
 ```csharp
 // Shared/Filters/ValidationFilter.cs
@@ -265,7 +279,7 @@ public sealed class ValidationFilter<TRequest> : IEndpointFilter
 }
 ```
 
-O handler recebe um único parâmetro via `[AsParameters]`. O framework resolve cada propriedade do record individualmente via DI, sem service locator e sem parâmetros avulsos.
+O handler recebe um parâmetro só, marcado com `[AsParameters]`. O framework olha dentro do record e resolve cada propriedade pelo container, como se fossem parâmetros soltos. A assinatura fica curta e as dependências continuam explícitas.
 
 ```csharp
 // Features/Orders/OrderContexts.cs
@@ -286,9 +300,11 @@ public sealed record OrderGetContext(
 
 ---
 
-## 5. Pipeline: 6 steps invariantes
+<a id="six-steps"></a>
 
-Todo handler segue esta sequência. Nenhuma etapa é opcional, nenhuma pode ser reordenada.
+## 5. Os seis passos do handler
+
+Todo handler executa esta sequência, na íntegra e nesta ordem. A ordem existe por dependência: validar antes de limpar deixa passar um dado que a limpeza consertaria, e consultar o banco antes de validar gasta uma ida ao banco para descobrir que o campo estava vazio.
 
 ```
 1. Sanitize       → normaliza entrada            (puro, sem I/O, classe estática)
@@ -301,7 +317,7 @@ Todo handler segue esta sequência. Nenhuma etapa é opcional, nenhuma pode ser 
 
 ### 5.1 Sanitize
 
-Normaliza o input antes de qualquer validação. Dados sujos que passam pela validação podem falhar silenciosamente em operações posteriores.
+Limpa a entrada antes de qualquer verificação: aqui, descarta os itens com quantidade zero. É uma função pura, sem acesso ao banco, então dá para testá-la passando um objeto e conferindo o resultado.
 
 ```csharp
 // Features/Orders/OrderCreateSanitizer.cs
@@ -321,7 +337,7 @@ public static class OrderCreateSanitizer
 
 ### 5.2 Validate
 
-Valida regras de input, sem I/O. Retorna `Result<T>`: happy path usa o `implicit operator` (`return request`), falha usa `Fail` com código semântico.
+Confere o formato do que chegou, sem consultar nada: cliente preenchido, pelo menos um item. Devolve `Result<T>`, com `Fail` e um código de erro em cada saída antecipada. O sucesso aproveita o `implicit operator` e devolve o próprio request.
 
 ```csharp
 // Features/Orders/OrderCreateValidator.cs
@@ -344,7 +360,7 @@ public static class OrderCreateValidator
 
 ### 5.3 Business Rules
 
-Valida regras de domínio, com I/O. Separado do validator porque depende de repositórios. Injetado via interface para testabilidade.
+Aqui ficam as perguntas que só o banco responde: o cliente existe? o pedido repete o mesmo produto? Esta etapa é separada do validator justamente porque acessa o repositório. Ela entra por interface, então o teste passa uma implementação em memória e continua rápido.
 
 ```csharp
 // Features/Orders/IOrderBusinessRules.cs
@@ -385,7 +401,7 @@ public sealed class OrderBusinessRules(IOrderRepository repository) : IOrderBusi
 
 ### 5.4 Save
 
-Persiste o aggregate e retorna `void`. CQS obrigatório: um comando não produz dados. A leitura pós-save é responsabilidade do step seguinte.
+Grava o agregado e devolve `void`. O comando não entrega dado de volta: quem quiser ver o que ficou gravado usa o passo seguinte, e aí lê o estado que está no banco, com os campos que ele mesmo preencheu.
 
 ```csharp
 // Features/Orders/IOrderRepository.cs
@@ -400,7 +416,7 @@ public interface IOrderRepository
 
 ### 5.5 Read
 
-Busca o que foi salvo via interface de leitura separada. `IOrderReader` é distinto de `IOrderRepository`: command e query em contratos distintos.
+Busca o registro gravado por um contrato próprio. `IOrderReader` existe separado de `IOrderRepository` para que a escrita e a leitura tenham interfaces diferentes: uma pode evoluir (ganhar um filtro, uma projeção) sem mexer na outra.
 
 ```csharp
 // Features/Orders/IOrderReader.cs
@@ -414,7 +430,7 @@ public interface IOrderReader
 
 ### 5.6 Filter Output
 
-Projeta a entidade no DTO de resposta. Nunca retorna a entidade de domínio diretamente; campos internos ficam ocultos.
+Copia da entidade para o DTO de resposta os campos que a API publica. A entidade de domínio fica de fora da resposta, e com ela ficam os campos internos que ninguém decidiu expor.
 
 ```csharp
 // Features/Orders/OrderResponseFilterOutput.cs
@@ -436,9 +452,11 @@ public static class OrderResponseFilterOutput
 
 ---
 
-## 6. Orquestrador: handler
+<a id="handler"></a>
 
-O handler orquestra os 6 steps em sequência. Retorna cedo na falha, nunca implementa lógica diretamente.
+## 6. O handler orquestra
+
+O handler chama os seis passos na ordem e sai na primeira falha. Ele não valida, não calcula e não monta texto: cada uma dessas coisas tem uma classe com nome. Lido de cima a baixo, ele conta a operação inteira.
 
 <details>
 <summary>❌ Ruim: lógica inline, SaveAsync retornando entidade, sem sanitize</summary>
@@ -531,9 +549,11 @@ public static class GetById
 
 ---
 
-## 7. Shared: Result e extensões
+<a id="shared-result"></a>
 
-`Result<T>` é o tipo de retorno de todo step do pipeline. Ver [error-handling.md](../conventions/advanced/error-handling.md) para o raciocínio completo.
+## 7. Compartilhado: Result e extensões
+
+`Result<T>` é o que cada passo devolve: ou o valor, ou o erro com um código. O raciocínio que justifica esse tipo está em [error-handling.md](../conventions/advanced/error-handling.md).
 
 ```csharp
 // Shared/Result.cs
@@ -548,7 +568,7 @@ public record Result<T>(bool IsSuccess, bool IsFailure, T? Value, ApiError? Erro
 }
 ```
 
-`ToHttpError` é usado em handlers com retorno `IResult`. Handlers com tipo union (`OrderCreateResult`) mapeiam erros explicitamente via `TypedResults.*` para preservar os tipos do contrato.
+`ToHttpError` traduz o código do erro em status HTTP, e serve aos handlers que devolvem `IResult`. Os handlers que enumeram os status na assinatura (como `OrderCreateResult`) escrevem cada `TypedResults.*` na mão, porque é assim que o tipo declarado no contrato se mantém.
 
 ```csharp
 // Shared/ResultExtensions.cs
@@ -567,9 +587,11 @@ public static class ResultExtensions
 
 ---
 
+<a id="tests"></a>
+
 ## Testes
 
-Os handlers estáticos são testáveis diretamente via context record, sem mocks de framework e sem `WebApplicationFactory` para testes unitários.
+O handler é um método estático que recebe um record. O teste monta esse record com implementações em memória e o chama direto, sem subir servidor e sem `WebApplicationFactory`. É por isso que a suíte roda em milissegundos.
 
 ```csharp
 [Fact]
@@ -593,7 +615,11 @@ Para convenções de teste completas, ver [testing.md](../conventions/advanced/t
 
 ---
 
-## Anti-patterns
+<a id="anti-patterns"></a>
+
+## Antipadrões
+
+Os quatro desvios abaixo aparecem juntos no mesmo handler com frequência, e cada um desfaz uma decisão do padrão.
 
 <details>
 <summary>❌ Ruim: violações frequentes no padrão vertical slice</summary>

@@ -1,9 +1,9 @@
-# Project Foundation
+# Fundação de um projeto .NET
 
 > [!NOTE]
 > Esta estrutura reflete como costumo iniciar projetos C#/.NET. Os exemplos são referências conceituais e podem não cobrir todos os detalhes de implementação; conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice, configuração delegada, módulos por domínio.
 
-Um projeto .NET bem fundado define três coisas antes da primeira linha de domínio: editor e linter alinhados, `Program.cs` como índice legível da aplicação, e configuração delegada a **appsettings** com secrets fora do repositório. O resto cresce a partir daí.
+Três decisões vêm antes da primeira linha de domínio. O editor e o formatador precisam concordar, para que ninguém abra um diff cheio de mudança de espaço em branco. O `Program.cs` precisa caber numa tela, funcionando como o índice de tudo o que a aplicação liga. E a configuração precisa morar no **appsettings**, com os segredos guardados fora do repositório. O resto do projeto cresce em cima disso.
 
 ## Conceitos fundamentais
 
@@ -18,9 +18,11 @@ Um projeto .NET bem fundado define três coisas antes da primeira linha de domí
 | **NuGet** (gerenciador de pacotes do .NET) | Sistema de pacotes; dependências declaradas no `.csproj` via `<PackageReference>` |
 | **TargetFramework** (framework-alvo do projeto) | Define a versão do .NET (`net8.0`, `net9.0`); fixar para reproduzibilidade |
 
-## Ambiente
+<a id="environment"></a>
 
-Antes de iniciar, configure o editor:
+## Preparar o editor antes do primeiro arquivo
+
+Combine indentação, charset e fim de linha antes de escrever código, e o time para de gerar diff onde não houve mudança de lógica. O `.editorconfig` guarda essas regras e todas as IDEs o respeitam. O `dotnet format` aplica a formatação e já vem com o SDK, sem instalar nada.
 
 - [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
 - `dotnet format`: formatter nativo do .NET, sem instalação adicional
@@ -29,9 +31,11 @@ Antes de iniciar, configure o editor:
 dotnet format
 ```
 
-## Program.cs enxuto
+<a id="entry-point"></a>
 
-`Program.cs` declara intenção, não implementa. Toda configuração é delegada via extension methods. O arquivo serve como índice do projeto: o leitor vê o que existe, não como funciona.
+## O Program.cs funciona como índice da aplicação
+
+Quem abre o `Program.cs` quer saber o que a aplicação tem: banco, autenticação, limite de requisições, quais domínios. Cinco linhas respondem isso. Quando cada registro é escrito ali dentro, o arquivo cresce a cada feature nova e vira o lugar onde todo mundo mexe, com conflito de merge a cada pull request. Delegue cada bloco a um extension method e o `Program.cs` volta a caber na tela.
 
 <details>
 <summary>❌ Ruim: Program.cs como depósito de toda a configuração</summary>
@@ -97,9 +101,9 @@ app.Run();
 
 <a id="extension-methods-by-domain"></a>
 
-## Extension methods por domínio
+## Cada domínio registra as próprias dependências
 
-Cada domínio registra suas próprias dependências. `Program.cs` não conhece `DbContext`, `JwtBearer` ou repositórios: apenas chama quem conhece. Extension methods ficam junto do domínio que registram.
+O `Program.cs` não conhece `DbContext`, `JwtBearer` nem repositório: ele chama quem conhece. O extension method mora junto do domínio que ele registra, então o arquivo que cria a feature de pedidos é o mesmo que a liga na aplicação. Adicionar um domínio novo passa a ser uma linha no agregador, e o resto acontece dentro da pasta dele.
 
 <details>
 <summary>❌ Ruim: dependências de domínio registradas diretamente no Program.cs</summary>
@@ -195,9 +199,11 @@ public static class OrdersExtensions
 
 </details>
 
-## Configuração tipada: Options pattern
+<a id="options-pattern"></a>
 
-Cada domínio lê sua própria seção do `appsettings.json`. Nenhum extension method acessa `builder.Configuration` com strings soltas espalhadas pelo código.
+## Cada domínio lê a própria seção da configuração
+
+`builder.Configuration["Auth:Authority"]` espalha o nome da chave pelo código como texto. Um erro de digitação devolve `null` sem reclamar, e o problema aparece depois, na primeira requisição autenticada. O Options pattern lê a seção inteira uma vez e a entrega como um `record`: o nome da chave existe num lugar só, e o valor ausente aparece no startup.
 
 <details>
 <summary>❌ Ruim: configuração lida com chaves espalhadas</summary>
@@ -247,9 +253,11 @@ public static class AuthExtensions
 
 </details>
 
+<a id="database"></a>
+
 ## Banco de dados
 
-Configuração do `DbContext` pertence ao extension method de infraestrutura. Connection string nunca inline: sempre via `IConfiguration`.
+A configuração do `DbContext` mora no extension method de infraestrutura, e a connection string vem do `IConfiguration`. Escrita direto no código, ela entra no repositório junto com a senha do banco de produção, e trocar de ambiente vira recompilação.
 
 <details>
 <summary>❌ Ruim: DbContext configurado inline no Program.cs com string hardcoded</summary>
@@ -283,9 +291,11 @@ public static class DatabaseExtensions
 
 </details>
 
+<a id="openapi"></a>
+
 ## OpenAPI
 
-.NET 9 introduziu suporte nativo a OpenAPI via `Microsoft.AspNetCore.OpenApi`, sem Swashbuckle. A documentação fica em um extension method, exposta apenas em Development, e usa [Scalar](https://scalar.com) como **UI** (User Interface · Interface do Usuário).
+O .NET 9 gera a documentação da API sem Swashbuckle, com o pacote `Microsoft.AspNetCore.OpenApi`. Deixe a configuração num extension method e exponha a documentação só em Development: em produção, ela entrega a quem quiser ver o mapa completo das suas rotas. A interface de leitura fica por conta do [Scalar](https://scalar.com), que consome o documento gerado.
 
 <details>
 <summary>❌ Ruim: Swashbuckle inline no Program.cs, exposto em todos os ambientes</summary>
@@ -380,9 +390,11 @@ app.MapApiDocs();          // MapOpenApi + Scalar, só em Development
 
 </details>
 
-## Rate limiting
+<a id="rate-limiting"></a>
 
-Rate limiting é **middleware** (componente de pipeline): entra no `AddAppServices` como serviço e no pipeline com `UseRateLimiter`. Cada política tem nome e pode ser aplicada por endpoint ou globalmente.
+## Limite de requisições
+
+O limite de requisições é um **middleware** (função que roda antes do handler): registra-se como serviço no `AddAppServices` e entra no pipeline com `UseRateLimiter`. Cada política ganha um nome e pode valer para a aplicação inteira ou para um endpoint específico. Os números (quantas requisições, em quanto tempo) vêm da configuração, porque eles mudam entre ambientes e você vai querer ajustá-los sem recompilar.
 
 <details>
 <summary>❌ Ruim: rate limiting inline no Program.cs, sem options tipadas</summary>
@@ -461,9 +473,11 @@ group.MapPost("/", OrderEndpoints.Create)
 
 </details>
 
-## Ordem do pipeline
+<a id="pipeline-order"></a>
 
-A ordem do middleware após `Build()` é determinística e importa. Desviar da ordem padrão causa comportamentos silenciosos: autenticação após roteamento, por exemplo, não protege nada.
+## A ordem do pipeline decide o que fica protegido
+
+O middleware roda na ordem em que você o registra, e essa ordem muda o comportamento sem gerar nenhum erro. `UseAuthorization` antes de `UseAuthentication` executa a verificação de permissão quando a identidade do usuário ainda não foi resolvida: a rota parece protegida e não está. O limite de requisições entra cedo, antes de autenticação e banco, para que a requisição excedente seja recusada sem gastar trabalho.
 
 ```
 UseHttpsRedirection   → redireciona antes de qualquer processamento
@@ -502,7 +516,9 @@ app.MapAppEndpoints();
 
 </details>
 
-## Estrutura de arquivos
+<a id="file-structure"></a>
+
+## Onde cada arquivo mora
 
 ```
 src/

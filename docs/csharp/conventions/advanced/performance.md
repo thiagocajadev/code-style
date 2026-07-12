@@ -1,9 +1,8 @@
-# Performance
+# Desempenho em C#
 
 > Escopo: C#. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Estas diretrizes se aplicam a **hot paths** (caminhos quentes): fluxos executados em volume ou frequência alta. Fora desse
-contexto, prefira legibilidade. Meça antes de otimizar. **Span\<T\>** elimina alocações em fatiamento de string; **GC** pressiona a aplicação quando alocações crescem em laço.
+As técnicas deste guia valem para **hot paths** (caminhos quentes), os trechos que executam muitas vezes por segundo ou processam volume grande. Fora deles, escolha a versão mais legível. Meça antes de trocar código legível por código rápido, porque a intuição sobre onde está o gargalo erra com frequência, e `BenchmarkDotNet` responde em minutos. As duas ferramentas que mais aparecem aqui são **Span\<T\>**, que fatia texto e arrays sem alocar memória nova, e o **StringBuilder**, que monta texto sem criar uma string a cada volta do laço.
 
 ## Conceitos fundamentais
 
@@ -18,11 +17,11 @@ contexto, prefira legibilidade. Meça antes de otimizar. **Span\<T\>** elimina a
 | **StringBuilder** (construtor de strings) | Tipo que acumula strings sem realocar a cada concatenação |
 | **BenchmarkDotNet** (biblioteca de benchmarking) | Ferramenta padrão para medir antes de decidir; números reais antes de mudar código |
 
+<a id="span"></a>
+
 ## Span\<T\>
 
-Operações em strings com `Split`, `Substring` e `IndexOf` alocam novos objetos a cada chamada. Em
-hot paths, isso pressiona o GC. `ReadOnlySpan<char>` fatia a string original sem nenhuma alocação:
-mesma posição de memória, janela diferente.
+`Split`, `Substring` e `IndexOf` criam objetos novos a cada chamada. Numa rota chamada mil vezes por segundo, esse lixo se acumula e o **GC** (Garbage Collector · Coletor de Lixo) precisa pausar a aplicação para limpá-lo. `ReadOnlySpan<char>` aponta para um pedaço da string que já existe na memória, sem copiar nada: mesma posição, janela diferente. A alocação só acontece no `.ToString()` final, quando o pedaço precisa virar string de verdade.
 
 <details>
 <summary>❌ Ruim: Split aloca array e strings intermediárias</summary>
@@ -56,7 +55,7 @@ public string ExtractProductCode(string sku)
 </details>
 <br>
 
-`Span<T>` também funciona sobre arrays. Quando o método recebe `T[]` e itera em alta frequência, `ReadOnlySpan<T>` elimina a indireção do enumerador.
+`Span<T>` também serve para arrays. Quando o método recebe `T[]` e o laço roda em alta frequência, `ReadOnlySpan<T>` percorre os itens direto pelo índice, sem passar pelo enumerador que o `foreach` cria.
 
 <details>
 <summary>❌ Ruim: foreach sobre array em hot path</summary>
@@ -96,11 +95,11 @@ public decimal SumLineItemAmounts(OrderItem[] items)
 
 </details>
 
+<a id="stringbuilder"></a>
+
 ## StringBuilder
 
-Concatenação com `+` ou interpolação dentro de um loop aloca uma nova string a cada iteração:
-string em .NET não muda depois de criada. Para construir strings dinamicamente, `StringBuilder`
-reutiliza um buffer interno e aloca uma vez no final.
+Em .NET, a string não muda depois de criada. Por isso `summary += "..."` dentro de um laço não acrescenta texto ao que existia: ele cria uma string nova, com o conteúdo antigo mais o novo, e joga a anterior fora. Cem itens produzem cem strings descartadas. `StringBuilder` mantém um buffer que cresce conforme necessário e produz a string uma única vez, no `ToString()`.
 
 <details>
 <summary>❌ Ruim: nova string alocada por iteração</summary>
@@ -139,11 +138,11 @@ public string BuildOrderSummary(IEnumerable<OrderItem> items)
 
 </details>
 
+<a id="valuetask"></a>
+
 ## ValueTask
 
-`Task<T>` aloca um objeto no heap a cada chamada, mesmo quando o resultado já está disponível
-sincronamente. `ValueTask<T>` evita essa alocação nos caminhos síncronos: resultado em cache, dado
-já computado. Indicado para métodos de alta frequência: repositórios, caches, validators.
+Todo `Task<T>` cria um objeto na memória, mesmo quando a resposta já estava pronta e nada precisou ser esperado. É o caso do método que consulta o cache e encontra o valor: ele aloca o objeto de uma operação assíncrona sem ter esperado por nada. `ValueTask<T>` evita essa alocação quando o resultado vem na hora, e por isso cabe em repositório, cache e validator, que são chamados o tempo todo e acertam o cache na maioria das vezes.
 
 <details>
 <summary>❌ Ruim: <b>Task</b> aloca mesmo quando o resultado está em cache</summary>
@@ -178,13 +177,13 @@ public async ValueTask<Product?> FindProductAsync(Guid id, CancellationToken ct)
 </details>
 <br>
 
-`ValueTask` não é substituto universal de `Task`. Quando o método é quase sempre assíncrono, `Task` tem menos overhead de leitura e não traz o risco de double-await.
+Deixe o `Task` onde o método quase sempre espera de verdade por uma resposta. Ali o ganho não aparece, e o `ValueTask` traz uma regra a mais para lembrar: ele só pode ser aguardado uma vez, e aguardá-lo duas vezes é um bug que o compilador não pega.
 
-## ID: Guid v4 vs Guid v7
+<a id="guid-v4-vs-v7"></a>
 
-`Guid.NewGuid()` gera **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4: aleatório. Inserções aleatórias fragmentam o índice primário
-progressivamente. `Guid.CreateVersion7()` gera UUID v7: time-ordered, insere sempre próximo ao fim
-da B-tree, sem fragmentação. Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
+## Guid v4 e Guid v7 como identificador
+
+`Guid.NewGuid()` produz um **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4, que é aleatório. Como chave primária, isso significa que cada linha nova vai parar num ponto qualquer do índice, e o banco precisa abrir espaço no meio de páginas já cheias. `Guid.CreateVersion7()` (.NET 9+) começa pelo horário de criação, então os identificadores nascem em ordem crescente e cada linha nova entra no fim do índice. Veja o efeito disso no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
 
 <details>
 <summary>❌ Ruim: Guid.NewGuid() é v4: random, fragmenta índice</summary>

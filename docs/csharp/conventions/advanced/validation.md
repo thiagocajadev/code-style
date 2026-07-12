@@ -1,14 +1,14 @@
-# Validation
+# Validação em C#
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-O pipeline de validação tem três responsabilidades distintas, cada uma no seu lugar:
+Validar uma entrada envolve três trabalhos diferentes, e cada um acontece num ponto do caminho:
 
 ```
-[Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
+[Entrada] → Limpa → Valida formato → Aplica regras de negócio → [Filtra saída] → Resposta
 ```
 
-Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança. **FluentValidation** cobre validação de esquema; **business rules** vivem no domínio.
+Primeiro o dado bruto é limpo (espaços sobrando, maiúsculas no e-mail). Depois o formato é conferido: campo obrigatório presente, número dentro da faixa. Só então entram as regras que dependem do domínio, como saber se o produto está disponível, e essas precisam consultar o banco. Quando os três se misturam no mesmo lugar, o **validator** passa a acessar o banco, e testar uma regra de formato exige subir um banco junto.
 
 ## Conceitos fundamentais
 
@@ -23,10 +23,11 @@ Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segu
 | **input boundary** (limite de entrada) | Camada externa onde dados crus entram e são sanitizados antes de qualquer regra |
 | **output filter** (filtro de saída) | Etapa final que remove campos sensíveis antes de serializar a resposta |
 
+<a id="sanitization"></a>
+
 ## Sanitização de entrada
 
-Antes de validar, limpar: `Trim` em strings, `ToLowerInvariant` em emails. Dados sujos entram em
-validação suja: um email com espaço passa no validator mas falha na busca no banco.
+Limpe antes de validar: `Trim` nas strings, `ToLowerInvariant` no e-mail. O motivo aparece no caso concreto: `" Admin@Email.com "` passa por qualquer validador de formato de e-mail, e depois não encontra ninguém no banco, porque lá o endereço está gravado em minúsculas e sem espaço. O erro aparece longe da causa, num "usuário não encontrado" que não explica nada.
 
 <details>
 <summary>❌ Ruim: dados brutos chegam direto na validação</summary>
@@ -77,10 +78,11 @@ public async Task<Result<User>> CreateUserAsync(CreateUserRequest request, Cance
 
 </details>
 
-## Schema validation com FluentValidation
+<a id="schema-validation"></a>
 
-`AbstractValidator` valida shape, tipos e constraints, não regras de negócio. Centraliza o contrato
-técnico e elimina validação manual espalhada pelos handlers.
+## Validar o formato com FluentValidation
+
+O `AbstractValidator` reúne num só lugar as regras de forma: campo preenchido, texto no formato de um `Guid`, quantidade maior que zero. Sem ele, essas checagens se espalham como uma fila de `if` no começo de cada handler, e a mesma regra acaba escrita de três jeitos diferentes em três lugares.
 
 <details>
 <summary>❌ Ruim: validação manual espalhada no handler</summary>
@@ -120,10 +122,11 @@ public class CreateOrderValidator : AbstractValidator<CreateOrderRequest>
 
 </details>
 
+<a id="business-rules"></a>
+
 ## Regras de negócio
 
-O validator valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no
-domínio: dependem de **I/O** (Input/Output · Entrada/Saída) (banco, serviços externos) e não pertencem ao validator.
+"O produto está disponível?" é uma pergunta que só o banco responde. Ela pertence ao handler, depois da validação de formato. Colocar essa consulta dentro do validator, com `MustAsync`, mistura duas camadas: o validator deixa de ser uma função de formato e passa a depender de repositório, e o teste dele passa a exigir dados fictícios de banco para checar se o campo estava preenchido.
 
 <details>
 <summary>❌ Ruim: I/O dentro do validator mistura camadas</summary>
@@ -185,10 +188,11 @@ public async Task<Result<Invoice>> HandleAsync(CreateOrderRequest request, Cance
 
 </details>
 
-## Output filtering
+<a id="output-filtering"></a>
 
-Retornar a entidade direta vaza campos internos: `PasswordHash`, `SecurityStamp`, `IsDeleted`. Usar
-um `record` de resposta como projeção explícita, nunca a entidade do banco.
+## Filtrar o que sai na resposta
+
+Devolver a entidade do banco direto na resposta entrega junto tudo o que ela carrega: `PasswordHash`, `SecurityStamp`, `IsDeleted`. Ninguém decidiu publicar esses campos, eles apenas moram na mesma classe. Declare um `record` de resposta com os campos que a API expõe e monte-o a partir da entidade. O que a API publica passa a ser uma lista escrita, e um campo novo na tabela não vaza sozinho para o cliente.
 
 <details>
 <summary>❌ Ruim: entidade direta vaza campos internos</summary>

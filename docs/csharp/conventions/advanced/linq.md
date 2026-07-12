@@ -1,8 +1,8 @@
-# LINQ
+# LINQ em C#
 
 > Escopo: C#. Idiomas específicos deste ecossistema.
 
-**LINQ** é a linguagem de transformação de coleções em C#. O estilo é declarativo: operadores encadeados descrevem a transformação, e a query só executa quando o resultado é percorrido (**lazy evaluation**). Vale como query engine (sobre `IEnumerable`, `IQueryable`), não como orquestrador de efeitos. Manter queries puras torna o resultado previsível e testável.
+**LINQ** (Language Integrated Query · Consulta Integrada à Linguagem) é o jeito de transformar coleções em C#. Você encadeia operadores que descrevem o que quer (`Where`, `Select`, `GroupBy`) e o resultado só é calculado quando alguém percorre a coleção, comportamento chamado **lazy evaluation** (avaliação sob demanda). Essa característica define o bom uso: LINQ serve para consultar e transformar dados. Quando você coloca log, escrita ou chamada externa dentro da query, o momento em que essas ações acontecem passa a depender de quem percorre o resultado, e aí elas podem rodar duas vezes ou nenhuma.
 
 ## Conceitos fundamentais
 
@@ -16,9 +16,11 @@
 | **deferred execution** (execução adiada) | Resultado materializado só quando enumerado; `ToList()`/`ToArray()` força execução |
 | **method syntax** (sintaxe de método) | Forma fluente `xs.Where(...).Select(...)`; preferida no projeto sobre query syntax |
 
-## LINQ puro: sem side effects
+<a id="pure-linq"></a>
 
-LINQ é para transformação de dados: `Where`, `Select`, `GroupBy`, `OrderBy`. Nunca para side effects. Logging, alteração de estado e **I/O** (Input/Output · Entrada/Saída) dentro de uma query tornam o comportamento imprevisível e difícil de testar.
+## A query transforma dados e nada mais
+
+Dentro de um `Select`, escreva só o cálculo que produz o novo valor. Um `_logger.LogInformation` ou um `order.ProcessedAt = ...` ali dentro roda quando a coleção for percorrida, e a coleção pode ser percorrida duas vezes, ou nunca. O log sai duplicado, o campo é escrito de novo, e nada disso aparece lendo a query. Separe: o LINQ produz a lista, e o `foreach` logo abaixo executa as ações.
 
 <details>
 <summary>❌ Ruim: side effect dentro de query LINQ</summary>
@@ -55,9 +57,13 @@ foreach (var order in activeOrders)
 
 </details>
 
-## Select vs foreach
+<a id="select-vs-foreach"></a>
 
-`Select` é para transformação 1-para-1: cada elemento de entrada produz exatamente um de saída. `foreach` é para acumulação, side effects ou lógica que não mapeia 1-para-1.
+## Quando usar Select e quando usar foreach
+
+`Select` cabe quando cada item de entrada vira exatamente um item de saída. É o caso de transformar pedidos em resumos: dez pedidos, dez resumos. Escrever isso com `foreach` e uma lista que recebe `Add` a cada volta funciona, mas gasta quatro linhas para dizer o que `Select` diz em uma.
+
+`foreach` cabe quando o resultado não acompanha a entrada item a item: somar tudo num total, disparar ações. `Aggregate` também soma, e vale saber que ele existe, mas ler `Aggregate(0m, (acc, o) => acc + ...)` custa mais atenção do que ler um `foreach` com uma variável chamada `totalRevenue`.
 
 <details>
 <summary>❌ Ruim: Aggregate onde foreach é mais claro</summary>
@@ -108,9 +114,11 @@ var summaries = orders
 
 </details>
 
-## Materialização nos limites
+<a id="materialization"></a>
 
-`IEnumerable<T>` é lazy: a query só executa quando iterada. Materialize com `.ToList()` apenas nos limites: ao retornar para o chamador ou ao passar para outro método que itera múltiplas vezes. Materialização prematura desperdiça memória.
+## Materializar só no limite
+
+Enquanto a query é um `IEnumerable<T>`, ela é uma receita, e nada foi calculado. `.ToList()` executa a receita e guarda o resultado na memória. Chame `.ToList()` uma vez, no fim, quando for devolver o resultado ou percorrê-lo várias vezes. Cada `.ToList()` no meio do caminho cria uma lista intermediária que existe só para o próximo operador ler e descartar.
 
 <details>
 <summary>❌ Ruim: materialização prematura no meio do pipeline</summary>
@@ -153,9 +161,11 @@ public IReadOnlyList<OrderSummary> BuildSummaries(IEnumerable<Order> orders, Dat
 
 </details>
 
-## Encadeamento excessivo
+<a id="long-chains"></a>
 
-Chains longas sacrificam legibilidade. Quando um pipeline mistura filtro, agrupamento e projeção, quebre em etapas nomeadas, cada uma com uma responsabilidade.
+## Cadeias longas viram etapas com nome
+
+Uma cadeia que filtra, agrupa, projeta, ordena e corta os dez primeiros faz cinco coisas, e quem lê precisa segurar as cinco na cabeça até o `ToList()`. Quebre em variáveis com nome: `recentConfirmedOrders`, `customerGroups`, `report`. Cada nome responde uma pergunta que o leitor faria, e a linha densa de projeção vira um método com nome próprio.
 
 <details>
 <summary>❌ Ruim: chain monolítica, difícil de rastrear</summary>
@@ -211,9 +221,11 @@ static CustomerReport BuildCustomerReport(IGrouping<Guid, Order> group)
 
 </details>
 
-## Left join (LINQ in-memory)
+<a id="left-join"></a>
 
-`GroupJoin` + `SelectMany` com `DefaultIfEmpty()` é o padrão para left join em LINQ in-memory. Todo elemento do lado esquerdo é preservado; o lado direito pode ser `null` quando não há correspondência.
+## Left join com coleções em memória
+
+`Join` devolve só os pares que casaram: um pedido sem pagamento some do resultado, e um relatório de inadimplência construído assim mostra zero. Para manter todos os itens da esquerda e aceitar a ausência do lado direito, use `GroupJoin` seguido de `SelectMany` com `DefaultIfEmpty()`. O pagamento vem `null` quando não existe, e o `?.Amount` trata esse caso.
 
 > Para queries EF Core 10+, use o operador `LeftJoin` nativo. Veja [Entity Framework](../../setup/entity-framework.md#left-join).
 

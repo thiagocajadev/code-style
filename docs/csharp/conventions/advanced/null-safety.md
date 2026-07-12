@@ -1,11 +1,8 @@
-# Null Safety
+# Segurança contra nulos em C#
 
 > Escopo: C#. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-C# 8 introduziu **nullable reference types**: o compilador passou a distinguir `string` (não-nulo
-garantido) de `string?` (pode ser null). C# 14 adicionou **null-conditional assignment**, completando
-o conjunto de operadores null-safe. Ativado globalmente, o compilador bloqueia violações antes do
-runtime.
+O C# 8 ensinou o compilador a diferenciar `string`, que promete sempre ter valor, de `string?`, que avisa que pode vir vazio. Com isso, o `NullReferenceException` que só aparecia com o programa rodando passa a ser apontado durante o build. O C# 14 fechou o conjunto de operadores ao permitir o `?.` também do lado esquerdo de uma atribuição. Ligue o recurso no projeto inteiro e o compilador cobra o tratamento antes de deixar você compilar.
 
 ## Conceitos fundamentais
 
@@ -19,10 +16,11 @@ runtime.
 | **NullReferenceException** (exceção de referência nula) | Exceção runtime ao desreferenciar null; o objetivo é eliminá-la em tempo de compilação |
 | **Nullable\<T\>** (tipo de valor anulável) | Wrapper para tipos de valor (`int?`, `bool?`); equivale a `Nullable<int>` |
 
-## Configuração: habilitar globalmente
+<a id="enable-globally"></a>
 
-Ativar no `.csproj` cobre todo o projeto. Por arquivo com `#nullable enable` é para migração
-gradual; o destino é sempre global.
+## Ligar o recurso no projeto inteiro
+
+Uma linha no `.csproj` cobre todos os arquivos. O `#nullable enable` no topo de um arquivo existe para migrar um projeto antigo aos poucos, e o destino dessa migração continua sendo a configuração global.
 
 ```xml
 <!-- .csproj -->
@@ -32,14 +30,13 @@ gradual; o destino é sempre global.
 </PropertyGroup>
 ```
 
-Com `TreatWarningsAsErrors`, o compilador bloqueia o build em violações de nullability, não
-apenas avisa.
+Com `TreatWarningsAsErrors`, o aviso de nulo passa a quebrar o build. Sem isso, ele vira mais uma linha amarela que o time aprende a rolar para baixo.
 
-## required e init: contratos não-nulos em tempo de compilação
+<a id="required-and-init"></a>
 
-`required` (C# 11) força o inicializador de objeto a preencher o campo. `init` impede que o campo
-seja alterado após a construção. Juntos, eliminam a necessidade de checar null em propriedades que
-sempre devem ter valor.
+## required e init garantem o valor na construção
+
+`required` (C# 11) obriga quem cria o objeto a preencher aquele campo, e o esquecimento vira erro de compilação. `init` deixa o campo ser escrito na criação e mais nunca. Os dois juntos removem a checagem de nulo lá na frente: se o objeto existe, o campo tem valor. Vale o mesmo para coleção, que nasce com `= []` e dispensa o `?.` em cada uso.
 
 <details>
 <summary>❌ Ruim: propriedades com setter público sem garantia de valor</summary>
@@ -77,10 +74,11 @@ order.Items.ForEach(ProcessItem); // sem checagem: Items é sempre List<LineItem
 
 </details>
 
+<a id="collections-never-null"></a>
+
 ## Coleções nunca são nulas
 
-Propriedades e retornos de coleção sempre têm valor: `[]` quando vazias, nunca `null`.
-`Array.Empty<T>()` não aloca, sendo preferido para retornos de método.
+Uma coleção sem itens é uma lista vazia. Devolver `null` para dizer "não achei nada" obriga cada chamador a testar antes do `foreach`, e basta um esquecer para a exceção aparecer. A lista vazia atravessa o `foreach` sem executar nada, que é o comportamento desejado. Em retorno de método, `Array.Empty<T>()` entrega essa lista vazia sem alocar memória.
 
 <details>
 <summary>❌ Ruim: null em coleção força defesa em cada caller</summary>
@@ -130,10 +128,11 @@ foreach (var order in orders) ProcessOrder(order);
 
 </details>
 
-## ArgumentNullException.ThrowIfNull: validação nos limites
+<a id="throw-if-null"></a>
 
-`ArgumentNullException.ThrowIfNull` (C# 11) substitui o padrão verboso de `if (x is null) throw`.
-Usado nos limites do sistema: construtores, métodos públicos, endpoints.
+## ArgumentNullException.ThrowIfNull nos limites
+
+`ArgumentNullException.ThrowIfNull` (C# 11) faz numa linha o que antes pedia três: testa, monta a mensagem com o nome do parâmetro e lança. Use no limite de entrada, onde o dado chega de fora e a garantia do compilador acaba: construtor, método público, endpoint. Dali para dentro, o tipo não anulável já resolve.
 
 <details>
 <summary>❌ Ruim: verificação manual verbosa ou ausente</summary>
@@ -179,10 +178,11 @@ public class OrderService(IOrderRepository repo)
 
 </details>
 
-## Operadores null-safe
+<a id="null-safe-operators"></a>
 
-`?.` e `??` são atalhos para navegação segura e defaults. Use quando a ausência é um caso esperado.
-Quando a ausência é um erro de negócio, guard clause é mais expressivo.
+## Quando usar `?.` e `??`, e quando usar guard clause
+
+`?.` e `??` servem para a ausência que o sistema já espera: o usuário não preencheu o endereço, então mostre "Unknown". Eles resolvem em silêncio, e é isso que os torna perigosos no outro caso. `order?.Total ?? 0m` devolve zero para um pedido que não existe, e zero é um total plausível: o erro atravessa o sistema disfarçado de dado válido. Quando a ausência significa que algo deu errado, use guard clause, que dá nome à condição e devolve o erro.
 
 <details>
 <summary>❌ Ruim: encadeamento que esconde condição de negócio</summary>
@@ -221,10 +221,11 @@ public string FormatUserCity(User? user)
 
 </details>
 
-## ?. no lado esquerdo: null-conditional assignment (C# 14)
+<a id="null-conditional-assignment"></a>
 
-C# 14 permite usar `?.` no lado esquerdo de uma atribuição. A operação só executa se o receptor
-não for null, sem `if` explícito, sem guard clause desnecessário.
+## Atribuir só se o objeto existir (C# 14)
+
+O C# 14 aceita `?.` do lado esquerdo do `=`. A atribuição acontece quando o objeto existe e é ignorada quando ele é nulo, sem o `if` que só servia para proteger aquela linha.
 
 <details>
 <summary>❌ Ruim: if apenas para proteger a atribuição</summary>
@@ -250,13 +251,13 @@ session?.User?.LastSeenAt = DateTimeOffset.UtcNow;
 
 </details>
 
-> Use quando a ausência do objeto é um caso **esperado e silencioso**. Quando a ausência é um
-> erro de negócio, guard clause continua sendo a escolha certa: ela nomeia a condição.
+> Vale quando a ausência do objeto é esperada e não precisa de reação. Quando a ausência significa erro de negócio, continue com a guard clause: ela nomeia a condição em vez de ignorá-la.
 
-## ??=: atribuição condicional
+<a id="null-coalescing-assignment"></a>
 
-`??=` atribui apenas se o valor atual for null. Útil para lazy initialization e merge de defaults
-sem repetir o nome da variável.
+## `??=` preenche só o que está vazio
+
+`??=` atribui quando o valor atual é nulo e não faz nada quando já existe valor. Serve para completar campos que o chamador deixou em branco e para inicializar algo caro só na primeira vez que ele é pedido, sem repetir o nome do campo em três linhas de `if`.
 
 <details>
 <summary>❌ Ruim: verificação manual de null antes da atribuição</summary>
@@ -301,10 +302,11 @@ public class ReportConfig
 
 </details>
 
-## Null-forgiving: uso restrito
+<a id="null-forgiving"></a>
 
-O operador `!` suprime o aviso de null do compilador. Aceitável apenas quando você tem garantia
-externa que o compilador não consegue inferir. Documentar o motivo.
+## O operador `!` e seu uso restrito
+
+O `!` manda o compilador confiar que aquele valor não é nulo. Ele cabe quando existe uma garantia que o compilador não tem como enxergar, e nesse caso escreva o motivo ao lado. Usado para calar um aviso legítimo, ele apenas adia o problema: o aviso some do build e a exceção aparece em produção. Reescrever com `TryGetValue` costuma resolver melhor, porque o compilador entende o padrão e libera a variável já como não-nula.
 
 <details>
 <summary>❌ Ruim: ! para silenciar o compilador sem garantia</summary>
@@ -328,11 +330,11 @@ if (!_cache.TryGetValue(userId, out var user))
 
 </details>
 
+<a id="static-analysis-attributes"></a>
+
 ## Atributos de análise estática
 
-Para métodos que já fazem a verificação internamente, atributos do namespace
-`System.Diagnostics.CodeAnalysis` informam o compilador do resultado, sem obrigar o caller a
-repetir a checagem.
+Quando o seu método já confere o nulo por dentro, o compilador não tem como saber disso e continua avisando quem chamou. Os atributos de `System.Diagnostics.CodeAnalysis` contam a ele o que o método garante: `[NotNull]` diz que o parâmetro sai não-nulo depois da chamada, e `[NotNullWhen(true)]` diz que ele é não-nulo quando o método devolve `true`. Com isso, o `if (Guard.IsValid(email))` libera `email` como não-nulo lá dentro, sem ninguém precisar checar de novo.
 
 <details>
 <summary>❌ Ruim: parâmetro nullable sem atributo, compilador não propaga garantia</summary>
