@@ -1,9 +1,9 @@
-# Foundation
+# Fundação de um projeto SQL
 
 > [!NOTE]
 > Essa estrutura reflete como costumo organizar projetos SQL. Os exemplos usam SQL Server como referência; os princípios se aplicam a qualquer banco relacional.
 
-A fundação de um projeto **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) define três coisas: onde vivem migrations versionadas, como scripts são organizados por domínio (não por tipo de objeto) e quais convenções de naming se aplicam. Editor e formatter ficam alinhados antes da primeira migration entrar no repositório.
+A fundação de um projeto **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) responde três perguntas: onde ficam as migrations versionadas, como os scripts se organizam em pastas e quais convenções de nome valem para todo mundo. Deixe o editor e o formatter configurados antes que a primeira migration entre no repositório, porque depois disso cada arquivo novo carrega a indentação de quem o escreveu.
 
 ## Conceitos fundamentais
 
@@ -17,16 +17,20 @@ A fundação de um projeto **SQL** (Structured Query Language · Linguagem de Co
 | **SQLFluff** (linter e formatter de SQL) | Ferramenta Python que aplica as regras de estilo automaticamente |
 | **CI** (Continuous Integration · Integração Contínua) | Pipeline que valida lint e migrations a cada push |
 
-## Ambiente
+<a id="environment"></a>
 
-Antes de iniciar, configure o editor:
+## Preparar o editor antes do primeiro arquivo
+
+Duas configurações combinadas evitam que o estilo do SQL dependa de quem digitou:
 
 - [EditorConfig](../../shared/standards/editorconfig.md): indentação, charset, trailing whitespace
 - [SQLFluff](./sqlfluff.md): linting e formatação SQL
 
-## Estrutura de arquivos
+<a id="file-structure"></a>
 
-Separar scripts por responsabilidade facilita revisão, rollback e automação de CI.
+## Onde cada script mora
+
+Cada pasta guarda um tipo de script, e a pasta já diz o que esperar do arquivo. O revisor que abre um pull request sabe se está olhando uma mudança de schema ou uma carga de dados, e o pipeline de CI consegue rodar só a pasta de migrations.
 
 ```
 sql/
@@ -38,7 +42,7 @@ sql/
 
 ## Migrations
 
-Cada migration é um arquivo atômico com timestamp no nome, sem editar o que já foi executado.
+Cada migration é um arquivo que faz uma mudança e carrega um timestamp no nome. O arquivo que já rodou fica como está, e a próxima correção entra como arquivo novo.
 
 ```
 migrations/

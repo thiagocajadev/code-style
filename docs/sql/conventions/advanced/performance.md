@@ -1,8 +1,10 @@
-# Performance
+# Performance de queries SQL
 
 > Escopo: SQL. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (uso de índice) e ordem de filtros dominam o custo: o otimizador só pode escolher entre os caminhos disponíveis.
+Quase toda query lenta é lenta pelo mesmo motivo: o banco está lendo linhas demais. Ou o índice que serviria àquele filtro não existe, ou a query foi escrita de um jeito que impede o banco de usar o índice que existe. O componente do banco que decide como resolver a query, o **query optimizer** (otimizador), escolhe o melhor caminho entre os que estão disponíveis, e cabe a você deixar o caminho bom disponível.
+
+Esta página reúne os erros que mais aparecem, cada um com o motivo pelo qual ele custa caro.
 
 ## Conceitos fundamentais
 
@@ -10,15 +12,17 @@ Erros comuns que tornam consultas lentas e como corrigi-los. **Index usage** (us
 | --- | --- |
 | **execution plan** (plano de execução) | Sequência de operadores que o otimizador escolhe para resolver a query; visualizar com `EXPLAIN` |
 | **covering index** (índice de cobertura) | Índice que contém todas as colunas necessárias; evita acesso ao heap |
-| **index seek** (busca por índice) | Acesso direto a poucas linhas via índice; oposto a `index scan` |
-| **table scan** (varredura de tabela) | Lê todas as linhas; aceitável só em tabelas pequenas |
+| **index seek** (busca por índice) | O banco vai direto às poucas linhas que interessam, usando o índice |
+| **table scan** (varredura de tabela) | O banco lê todas as linhas da tabela; aceitável só em tabela pequena |
 | **N+1 query** (consulta N+1) | Uma query principal seguida de N derivadas; resolver com `JOIN` ou batch |
-| **SARGable predicate** (predicado pesquisável por índice) | Filtro que permite uso de índice; envolver coluna em função quebra esse uso |
+| **SARGable predicate** (predicado que o índice consegue pesquisar) | Filtro escrito de um jeito que permite usar o índice; envolver a coluna numa função quebra isso |
 | **statistics** (estatísticas) | Distribuição de dados que o otimizador consulta para escolher o plano; manter atualizadas |
+
+<a id="select-star"></a>
 
 ## SELECT *
 
-Trazer todas as colunas transfere dados desnecessários, impede covering indexes e acopla a query ao schema.
+O `SELECT *` traz três problemas. Ele puxa pela rede colunas que ninguém vai usar, e uma coluna de texto longo pesa. Ele impede o **covering index** (índice que já carrega todas as colunas pedidas), porque o índice nunca cobre todas as colunas da tabela, então o banco precisa voltar à tabela para buscar o resto. E ele prende a query ao schema: no dia em que alguém acrescentar uma coluna, sua query passa a trazê-la sem que você tenha pedido.
 
 <details>
 <summary>❌ Ruim: todas as colunas, inclusive as não usadas</summary>
@@ -53,9 +57,13 @@ ORDER BY
 
 </details>
 
-## Função aplicada à coluna no WHERE
+<a id="function-on-filtered-column"></a>
 
-Aplicar função sobre a coluna filtrada impede o uso do índice: o banco precisa avaliar cada linha.
+## A função em volta da coluna desliga o índice
+
+O índice de `JoinedAt` guarda as datas ordenadas, e é isso que permite ao banco pular direto para o trecho que interessa. Ao escrever `YEAR(Players.JoinedAt) = 2022`, você pede o ano, e o índice não guarda anos: ele guarda datas. O banco então calcula `YEAR(...)` para cada linha da tabela para descobrir quais valem, e a leitura vira uma varredura completa.
+
+A saída é filtrar pela coluna crua, com um intervalo de datas. `JoinedAt >= '2022-01-01' AND JoinedAt < '2023-01-01'` seleciona o mesmo conjunto de linhas e o índice atende direto.
 
 <details>
 <summary>❌ Ruim: função no WHERE, índice ignorado</summary>
@@ -94,10 +102,11 @@ ORDER BY
 
 ## CAST e conversão de tipo em colunas
 
-Aplicar `CAST` ou `CONVERT` sobre uma coluna indexada tem o mesmo efeito de qualquer função no
-`WHERE`: o banco avalia cada linha individualmente e descarta o índice. O caso mais insidioso é a
-conversão implícita: quando o tipo do parâmetro não corresponde ao tipo da coluna, o banco converte
-em silêncio, sem aviso, sem erro, com full scan.
+O `CAST` e o `CONVERT` em volta da coluna fazem o mesmo estrago que qualquer outra função no `WHERE`: o banco converte linha a linha e abandona o índice.
+
+O caso difícil de achar é a conversão que você não escreveu. Quando o tipo do parâmetro difere do tipo da coluna, o banco converte a coluna por conta própria para poder comparar. Nenhum erro aparece, nenhum aviso aparece, a query devolve o resultado certo, e o índice ficou de fora. A query que rodava em 20 ms passa a rodar em 4 segundos, e o código-fonte da query está igual ao que sempre esteve.
+
+A correção é sempre a mesma: converta o parâmetro e deixe a coluna intacta.
 
 ### CAST explícito na coluna de filtro
 
@@ -141,8 +150,7 @@ ORDER BY
 
 ### Conversão implícita por tipo incompatível
 
-SQL Server converte o tipo da coluna quando o literal ou parâmetro não corresponde. A query roda,
-nenhum erro aparece, e o índice é ignorado em silêncio.
+Um detalhe do SQL Server pega muita gente: o literal `'Alice Smith'`, sem prefixo, é um `VARCHAR`. Se a coluna `Players.Name` é `NVARCHAR`, os tipos diferem, e o banco converte o `Name` de cada linha antes de comparar. O prefixo `N` no literal (`N'Alice Smith'`) resolve, porque aí os dois lados já são do mesmo tipo.
 
 <details>
 <summary>❌ Ruim: literal VARCHAR comparado com coluna NVARCHAR: conversão implícita linha a linha</summary>
@@ -180,8 +188,7 @@ WHERE
 
 ### CAST em condição de JOIN
 
-Type mismatch entre colunas de JOIN força conversão em cada linha de uma das tabelas. Converter
-a coluna não indexada preserva o índice da principal.
+Quando as duas colunas do `JOIN` têm tipos diferentes, uma das duas vai ser convertida linha a linha. Você escolhe qual. Convertendo a coluna que tem índice, o índice se perde; convertendo a que não tem, ele sobrevive. A saída melhor é alinhar os tipos no schema e não converter nada.
 
 <details>
 <summary>❌ Ruim: CAST na coluna indexada da tabela principal</summary>
@@ -221,9 +228,9 @@ JOIN
 
 ### Data armazenada como texto
 
-Coluna de data armazenada como `VARCHAR` obriga `CONVERT` em toda query de filtro por período.
-A correção é normalizar o tipo no schema: `DATE` ou `DATETIME2` na definição da coluna e
-converter na aplicação antes do `INSERT`.
+A data guardada em `VARCHAR` obriga um `CONVERT` em toda query que filtra por período, e o `CONVERT` em volta da coluna já derruba o índice. Ela traz um problema pior junto: como o banco aceita qualquer texto, a mesma coluna acaba guardando `2024-01-15`, `15/01/2024` e `2024/01/15`, e nenhuma comparação funciona direito.
+
+A correção mora no schema. Declare a coluna como `DATE` ou `DATETIME2` e converta na aplicação antes do `INSERT`.
 
 <details>
 <summary>❌ Ruim: data como VARCHAR: CONVERT em todo filtro, índice inutilizável</summary>
@@ -262,9 +269,11 @@ ORDER BY
 
 </details>
 
-## Subquery correlacionada no SELECT
+<a id="correlated-subquery"></a>
 
-Subquery no SELECT executa uma vez por linha retornada. Com mil linhas, são mil queries adicionais.
+## A subquery dentro do SELECT roda uma vez por linha
+
+A subquery que aparece na lista de colunas é executada para cada linha que a query devolve. Se a consulta traz mil times, aquele `COUNT` de jogadores roda mil vezes. Levando a contagem para um `LEFT JOIN` com `GROUP BY`, o banco faz a conta uma vez para todos os times de uma vez.
 
 <details>
 <summary>❌ Ruim: subquery executa N vezes, uma por time</summary>
@@ -319,9 +328,11 @@ ORDER BY
 
 </details>
 
-## Índice simples
+<a id="single-column-index"></a>
 
-Colunas usadas em WHERE, JOIN e ORDER BY sem índice forçam full table scan.
+## A coluna que você filtra precisa de índice
+
+Sem índice em `TeamId`, o banco lê a tabela inteira de jogadores para achar os de um time. Com o índice, ele vai direto ao grupo de linhas daquele time. A regra prática: as colunas que aparecem no `WHERE`, no `JOIN` e no `ORDER BY` são candidatas a índice.
 
 <details>
 <summary>❌ Ruim: full scan em tabela grande sem índice na coluna filtrada</summary>
@@ -351,9 +362,13 @@ CREATE INDEX IX_Players_TeamId
 
 </details>
 
-## Índice composto: ordem de seletividade
+<a id="composite-index-order"></a>
 
-A coluna de maior seletividade (mais valores distintos) deve vir primeiro.
+## No índice composto, a coluna mais seletiva vem primeiro
+
+**Seletividade** é quantos valores diferentes a coluna tem. `IsActive` guarda dois valores (0 e 1), então filtrar por ela deixa metade da tabela de fora, e olhe lá. `TeamId` guarda centenas de valores, e filtrar por ele deixa quase tudo de fora.
+
+O índice composto ordena as linhas pela primeira coluna, depois pela segunda. Colocando `TeamId` primeiro, o banco chega ao punhado de linhas daquele time e usa `IsActive` para escolher dentro desse punhado. Na ordem inversa, ele começaria por metade da tabela.
 
 <details>
 <summary>❌ Ruim: coluna de baixa seletividade isolada</summary>
@@ -376,9 +391,13 @@ CREATE INDEX IX_Players_TeamId_IsActive
 
 </details>
 
-## Covering index
+<a id="covering-index"></a>
 
-Sem INCLUDE, o banco faz key lookup na tabela principal para cada linha, mesmo com índice.
+## O índice que carrega as colunas do SELECT dispensa a volta à tabela
+
+O índice de `TeamId` guarda o `TeamId` e o endereço da linha. Quando a query pede `Name`, `Position` e `SquadNumber`, o banco encontra as linhas pelo índice e volta à tabela para buscar essas três colunas, uma linha de cada vez. Essa volta se chama **key lookup**, e com muitas linhas ela custa mais que a busca em si.
+
+O `INCLUDE` guarda as três colunas dentro do próprio índice. A query se resolve sem tocar a tabela.
 
 <details>
 <summary>❌ Ruim: índice sem cobertura, key lookup para Name / Position / SquadNumber</summary>
@@ -414,9 +433,11 @@ CREATE INDEX IX_Players_TeamId_IsActive_Cover
 
 <a id="fk-without-index"></a>
 
-## FK sem índice
+## Toda foreign key pede um índice na coluna que aponta
 
-Foreign key sem índice na coluna referenciadora força full table scan a cada `DELETE` ou `UPDATE` na tabela pai. O banco precisa verificar se existem filhos antes de executar a operação.
+A **FK** (Foreign Key · chave estrangeira) declara que `Players.TeamId` aponta para um time. Antes de apagar ou atualizar um time, o banco precisa saber se algum jogador ainda aponta para ele, e vai procurar em `Players.TeamId`. Sem índice nessa coluna, cada `DELETE` na tabela de times varre a tabela de jogadores inteira.
+
+Criar a FK não cria o índice: são duas declarações separadas, e a segunda é fácil de esquecer.
 
 <details>
 <summary>❌ Ruim: FK declarada, coluna sem índice</summary>
@@ -458,13 +479,15 @@ CREATE INDEX IX_Players_TeamId
 </details>
 
 > [!NOTE]
-> Alguns sistemas de alta escala (o GitHub é um exemplo público) optam por **não usar FK no banco** e transferem a integridade referencial para a aplicação. O trade-off é consciente: FK tem custo em toda operação de escrita, porque INSERT, UPDATE e DELETE precisam validar a referência, e em volumes muito grandes esse overhead se torna relevante. O ganho é performance de escrita e flexibilidade de deploy. A contrapartida é que o banco deixa de garantir a integridade: qualquer falha na camada de aplicação pode gerar dados órfãos. Para a maioria dos sistemas, FK com índice é a escolha certa. A remoção é uma decisão arquitetural, não uma otimização prematura.
+> Alguns sistemas de alta escala (o GitHub é um exemplo público) optam por **não usar FK no banco** e passam a checagem de integridade para a aplicação. O trade-off é assumido de propósito: a FK acrescenta trabalho a toda escrita, porque `INSERT`, `UPDATE` e `DELETE` param para validar a referência, e em volume muito grande esse custo pesa. O ganho é velocidade de escrita e liberdade no deploy. A contrapartida é que o banco para de garantir a integridade, e qualquer falha na aplicação deixa registros órfãos. Para a maioria dos sistemas, a FK com índice é a escolha certa. Removê-la é uma decisão de arquitetura tomada com números na mão.
 
-## Tipo de ID: BIGINT vs UUID
+<a id="id-type-bigint-vs-uuid"></a>
 
-A escolha do tipo de ID impacta diretamente o tamanho do índice e a frequência de page splits.
-**UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4 insere em posições aleatórias na B-tree e o banco divide páginas constantemente. Em tabelas
-com alto volume de inserções, a fragmentação degrada leituras e escritas.
+## Tipo de ID: BIGINT ou UUID
+
+O tipo do identificador decide o tamanho do índice e a frequência com que o banco precisa reorganizar as páginas dele.
+
+O índice fica guardado em páginas ordenadas. Quando o identificador cresce sempre (1, 2, 3), cada linha nova entra no fim do índice, e o banco só abre página nova quando a última encheu. O **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4 é aleatório, então a linha nova cai em qualquer ponto do índice, muitas vezes no meio de uma página cheia. O banco então parte a página em duas para abrir espaço, o que se chama **page split**. Em uma tabela que recebe muitas inserções, os splits se acumulam, o índice fica esparso e tanto a leitura quanto a escrita ficam mais lentas.
 
 | Tipo | Tamanho | Unicidade global | Sequencial | Page splits |
 | --- | --- | --- | --- | --- |
@@ -472,8 +495,7 @@ com alto volume de inserções, a fragmentação degrada leituras e escritas.
 | `UUID v4` (`NEWID`) | 16 bytes | ✅ | ❌ | alto |
 | `UUID v7` | 16 bytes | ✅ | ✅ | mínimo |
 
-UUID v7 combina timestamp de alta resolução com aleatoriedade e insere sempre próximo ao fim da
-B-tree, como um `BIGINT`, mas com unicidade global. É gerado na aplicação, não pelo banco.
+O UUID v7 resolve o impasse: ele começa pelo horário de criação e termina com bits aleatórios. Como o horário sempre cresce, os identificadores nascem em ordem e cada linha nova entra perto do fim do índice, do jeito que um `BIGINT` entraria, e ainda assim continuam únicos entre máquinas diferentes. Quem gera o UUID v7 é a aplicação, e o banco recebe o valor pronto.
 
 <details>
 <summary>❌ Ruim: NEWID() gera UUID v4: random, fragmenta índice progressivamente</summary>
@@ -530,9 +552,13 @@ CREATE TABLE Orders
 `NEWSEQUENTIALID()` (SQL Server) é uma alternativa nativa sequencial, mas só funciona como
 `DEFAULT`: não é portável entre bancos e impede geração de ID antes do INSERT.
 
-## Paginação: OFFSET / FETCH
+<a id="pagination"></a>
 
-Nunca trazer todos os registros para paginar em memória. Delegar a paginação ao banco.
+## Quem pagina é o banco
+
+Trazer os cinquenta mil times para a memória da aplicação e mostrar vinte deles gasta rede, gasta memória e demora. O `OFFSET ... FETCH NEXT` diz ao banco quantas linhas pular e quantas devolver, e só as vinte atravessam a rede.
+
+O `ORDER BY` é obrigatório aqui. Sem ele o banco não tem critério para decidir quem é a linha 21, e o mesmo registro pode aparecer em duas páginas seguidas.
 
 <details>
 <summary>❌ Ruim: traz tudo e descarta em memória</summary>

@@ -1,12 +1,14 @@
-# CRUD
+# As quatro operações básicas sobre uma tabela
 
-INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão. **CRUD** cobre as quatro operações básicas sobre uma tabela.
+**CRUD** (Create, Read, Update, Delete · criar, ler, atualizar, excluir) é o apelido das quatro operações que todo sistema faz no banco: `INSERT`, `SELECT`, `UPDATE` e `DELETE`. Esta página mostra como escrever cada uma no formato vertical e como decidir o que acontece quando um registro sai de cena.
+
+A decisão de exclusão merece atenção desde o começo. O `DELETE` apaga a linha do disco e ninguém recupera o dado depois. O **soft delete** (exclusão lógica) marca a linha como inativa e mantém o histórico disponível para auditoria.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **CRUD** (Create, Read, Update, Delete; criar, ler, atualizar, excluir) | As quatro operações básicas sobre uma tabela: `INSERT`, `SELECT`, `UPDATE`, `DELETE` |
+| **CRUD** (Create, Read, Update, Delete · criar, ler, atualizar, excluir) | As quatro operações básicas sobre uma tabela: `INSERT`, `SELECT`, `UPDATE`, `DELETE` |
 | **vertical formatting** (formatação vertical) | Cada coluna ou cláusula em sua linha; legível de cima para baixo, sem scroll horizontal |
 | **soft delete** (exclusão lógica) | Marcar a linha como removida (`DeletedAt`) sem apagar do disco |
 | **hard delete** (exclusão física) | `DELETE` que remove do disco; irreversível |
@@ -14,7 +16,11 @@ INSERT, SELECT, UPDATE, DELETE: formatação vertical e estratégia de exclusão
 | **WHERE clause** (cláusula WHERE) | Filtro de linhas; sem `WHERE`, `UPDATE`/`DELETE` afeta toda a tabela |
 | **RETURNING / OUTPUT** (cláusula de retorno) | Recupera linhas afetadas pelo DML em uma única ida ao banco |
 
-## INSERT horizontal
+<a id="insert-vertical"></a>
+
+## O INSERT separa colunas e valores em dois blocos
+
+Escrito na vertical, o `INSERT` deixa a coluna e o valor dela na mesma posição dos dois blocos: a terceira coluna corresponde ao terceiro valor. Com tudo em uma linha só, conferir se `Email` está recebendo o e-mail vira contagem de vírgulas.
 
 <details>
 <summary>❌ Ruim: colunas e valores em linha única</summary>
@@ -45,7 +51,11 @@ VALUES
 
 </details>
 
-## INSERT ... SELECT
+<a id="insert-select"></a>
+
+## INSERT que copia de outra tabela
+
+Quando os valores vêm de um `SELECT`, a ordem das colunas do `INSERT` precisa bater com a ordem das colunas do `SELECT`. Alinhando os dois blocos na vertical, a correspondência fica visível linha a linha: `Email` embaixo de `Email`, `ContactEmail` embaixo de `ContactEmail`.
 
 <details>
 <summary>❌ Ruim: SELECT inline, sem correspondência visual entre colunas</summary>
@@ -78,7 +88,11 @@ WHERE
 
 </details>
 
-## UPDATE usando outra tabela
+<a id="update-from"></a>
+
+## UPDATE que busca o valor em outra tabela
+
+O `UPDATE ... FROM` junta as duas tabelas uma vez e atualiza tudo numa passagem. A alternativa comum é a **subquery correlacionada** (subconsulta que roda de novo para cada linha da tabela externa) dentro do `SET`, e ela repete trabalho: com dez mil usuários a atualizar, o banco executa dez mil vezes o `SELECT` de dentro.
 
 <details>
 <summary>❌ Ruim: subquery correlacionada no SET</summary>
@@ -111,9 +125,11 @@ WHERE
 
 </details>
 
-## Hard DELETE
+<a id="soft-delete"></a>
 
-Dados deletados são irrecuperáveis. Soft delete com coluna `IsActive = 0` preserva histórico e permite auditoria.
+## Marcar como inativo em vez de apagar
+
+O `DELETE` tira a linha do disco e o dado se foi. Quando alguém perguntar por que aquele pedido sumiu, ou quando a auditoria pedir o histórico do cliente, não há o que responder. Marcar a linha com `IsActive = 0` e gravar o horário da inativação mantém o registro disponível para consulta e permite desfazer o engano.
 
 <details>
 <summary>❌ Ruim: remoção permanente sem rastro</summary>
@@ -142,7 +158,11 @@ WHERE
 
 </details>
 
-## UPDATE condicional em massa
+<a id="conditional-bulk-update"></a>
+
+## Um CASE resolve várias condições em uma passagem
+
+Dois `UPDATE` seguidos, um para cada condição, varrem a tabela duas vezes. O `CASE` dentro do `SET` decide o valor linha a linha, e o banco percorre a tabela uma vez só.
 
 <details>
 <summary>❌ Ruim: um UPDATE por condição, duas passagens na tabela</summary>
@@ -177,9 +197,11 @@ WHERE
 
 </details>
 
-## Filtros antecipados
+<a id="early-filters"></a>
 
-Filtrar na tabela principal antes dos JOINs reduz o volume processado. WHERE na tabela driving, não após o JOIN.
+## Filtrar a tabela principal antes de juntar as outras
+
+Cada linha que entra no `JOIN` é trabalho que o banco faz. Se a tabela de pedidos tem cinco milhões de linhas e o filtro deixa mil, aplicar o filtro primeiro faz a junção com clientes acontecer sobre mil linhas. Uma **CTE** (Common Table Expression · expressão de tabela nomeada) recorta a tabela principal e dá um nome a esse recorte, e o `JOIN` vem depois.
 
 <details>
 <summary>❌ Ruim: filtro aplicado depois do JOIN em tabela grande</summary>
@@ -231,9 +253,9 @@ JOIN
 
 <a id="explicit-ordering"></a>
 
-## Ordenação explícita
+## Todo SELECT que devolve lista declara ORDER BY
 
-Nunca assumir ordem natural. Declarar ORDER BY em todo SELECT que retorna lista.
+Sem `ORDER BY`, o banco entrega as linhas na ordem que for mais barata para ele naquele momento, e essa ordem muda quando o plano de execução muda. A query que hoje devolve os times em ordem de cadastro pode devolver em outra ordem amanhã, depois de um índice novo. Se a ordem importa para quem lê o resultado, ela precisa estar escrita na query.
 
 <details>
 <summary>❌ Ruim: sem ORDER BY, ordem indefinida</summary>
@@ -267,9 +289,11 @@ ORDER BY
 
 </details>
 
-## Magic numbers: comentário inline
+<a id="magic-numbers"></a>
 
-Literais numéricos fixos perdem o significado fora do contexto. Comentário inline expõe a intenção sem criar abstração desnecessária.
+## O número solto na query ganha um comentário
+
+`Orders.StatusId = 2` não diz nada a quem abre a query seis meses depois. Um comentário curto no fim da linha (`-- Approved`) devolve o significado sem exigir uma tabela de constantes ou uma camada nova de abstração. O mesmo vale para o `30` de uma janela de retenção.
 
 <details>
 <summary>❌ Ruim: números sem contexto</summary>
@@ -305,9 +329,9 @@ WHERE
 
 <a id="named-parameters"></a>
 
-## Parâmetros nomeados: sem valores mágicos
+## O valor que vem de fora entra como parâmetro nomeado
 
-Literais inline tornam a query frágil e difícil de reusar. Usar parâmetros nomeados.
+O valor que a aplicação envia (o status escolhido, a data inicial do relatório) entra na query como parâmetro: `@StatusId` no SQL Server, `:statusId` no PostgreSQL. Com o valor colado direto no texto da query, duas coisas acontecem: o banco trata cada combinação como uma query nova e joga fora o plano de execução que já tinha, e uma string vinda do usuário passa a poder alterar o comando (o ataque conhecido como SQL injection).
 
 <details>
 <summary>❌ Ruim: literais inline, sem contexto</summary>

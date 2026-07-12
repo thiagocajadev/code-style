@@ -1,6 +1,6 @@
-# Quick reference
+# Referência rápida de SQL
 
-> Escopo: SQL. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: SQL. Resumo das convenções para consulta de relance; a explicação de cada uma está em `conventions/`.
 
 ## Nomenclatura
 
@@ -24,7 +24,7 @@
 | `UPDATE` | Atualização | `SP_UPDATE_ORDER_STATUS` |
 | `DELETE` | Exclusão (preferencialmente soft) | `SP_DELETE_ORDER_BY_ID` |
 
-## Taboos
+## O que evitar
 
 | Evitar | Usar |
 | --- | --- |

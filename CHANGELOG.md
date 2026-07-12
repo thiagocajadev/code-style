@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.0] - 2026-07-12
+
+### Fixed
+
+- **Ciclo B do épico writing-soul: `docs/sql/` reescrito por inteiro na voz sênior-para-leigo (18 páginas, 5.784 linhas, 8 batches).** Mesmo protocolo de v2.0.0 (`javascript`), v2.1.0 (`shared`) e v2.2.0 (`csharp`): cada arquivo relido e reescrito, com os blocos de código verificados por hash SHA-256 contra o HEAD. **T1** naming, formatting. **T2** crud, migrations, setup. **T3** visual-density, advanced, procedures, scripts. **T4** performance. **T5** null-safety. **T6** postgres. **T7** sql-server, sqlite. **T8** entity-modeling, batch, README, quick-reference.
+- **H1 em pt-BR e headings de jargão renomeados para frases descritivas, com id ASCII explícito.** `Naming` virou "Nomes em SQL"; `CRUD` virou "As quatro operações básicas sobre uma tabela"; `Consulta em linha única` virou "Cada cláusula começa a própria linha"; `Hard DELETE` virou "Marcar como inativo em vez de apagar"; `= NULL nunca funciona` virou "Use IS NULL, porque `= NULL` nunca devolve linha"; `Taboos` virou "O que evitar". Os nomes de produto (SQL Server, PostgreSQL, SQLite) ficaram como estão.
+- **Explicações no lugar de afirmações.** A conversão implícita de tipo passou a aparecer pelo estrago (a query de 20 ms vira 4 segundos com o código-fonte igual ao que sempre esteve); o `NOT IN` com um NULL na subquery, pelo sintoma (devolve zero linhas para sempre, sem erro); o `AVG`, pela conta errada (devolve 15 onde a resposta era 10, porque o divisor virou 2); o page split, pelo mecanismo (a linha nova cai no meio de uma página cheia e o banco parte a página em duas); o `IMMEDIATE` do SQLite, pela janela de disputa que o `DEFERRED` deixa aberta.
+- **`visual-density.md` seguiu o canônico de JavaScript**: a tabela de Conceitos podada de 9 para 6 linhas, e o jargão cunhado no projeto (`blank line`, `clause separator`, `CTE separator`, `multi-line block`, `signature / body boundary`, `statement separator`, `orphan statement`) saiu da tabela para virar descrição do mecanismo em pt-BR.
+
+### Changed
+
+- **Convenção `SP_`/`fn_` aplicada aos exemplos, fechando pendência antiga do backlog.** Os exemplos Good contrariavam o `naming.md` do próprio guia. As procedures do SQL Server passaram a seguir `SP_VERBO_TABELA` (`SP_GET_FOOTBALL_TEAM_BY_ID`, `SP_GET_TEAM_PERFORMANCE_REPORT`, `SP_LIST_PLAYERS_BY_TEAM_AND_POSITION`, com o verbo `LIST` porque devolve coleção filtrada). As functions do PostgreSQL foram consertadas por inteiro: estavam em PascalCase dentro de blocos Good, e passaram a `fn_get_football_team_by_id` em `snake_case`, com nome, parâmetro, colunas e tabelas. O parâmetro leva o prefixo `p_` (`p_team_id`) porque, sem ele, colide com a coluna `team_id` dentro do corpo e o PL/pgSQL não resolve a ambiguidade. Os blocos Bad (`sp_GetData`, `get_team`) ficaram intactos, porque neles a ausência do prefixo é o anti-pattern. Dois scripts renomeados: `scripts/procedures/SP_GET_FOOTBALL_TEAM_BY_ID.sql` e `scripts/functions/fn_get_football_team_by_id.sql`. São 8 divergências intencionais de fenced block, e nenhuma além delas.
+- **Âncoras frágeis convertidas em id ASCII, com os referrers sincronizados no mesmo passo.** `#tipo-de-id-bigint-vs-uuid` virou `#id-type-bigint-vs-uuid`, e ela tinha **três** referrers, e não os dois que o levantamento previa: `javascript/conventions/advanced/performance.md`, `csharp/conventions/advanced/performance.md` e `sql/sgbd/sql-server.md`. O `#select-`, cuja âncora dependia do slug do asterisco em `## SELECT *`, ganhou `#select-star`. Também entraram `#object-prefixes`, `#named-constraints`, `#indentation`, `#join-simple-on`, `#early-filters`, `#forward-only`, `#nested-subquery` e `#chained-ctes`, todos com o `docs/sql/README.md` sincronizado. O `#batch-operations` e o `#diagnostics` de postgres e sql-server foram preservados de propósito, porque recebem 5 links de `shared/platform/database.md`.
+- **`csharp/setup/dapper.md` passou a apontar para a seção, e não mais para o arquivo.** O link esperava o id ASCII no heading `## Prefixos de objetos` do `naming.md`, que este ciclo criou. Um contraste binário que passou no épico do C# saiu junto ("segue a convenção do banco, e não a do C#").
+
+### Added
+
+- **Os anti-patterns de `sql/conventions/advanced/entity-modeling.md` ganharam exemplos Bad/Good** (pedido do Thiago durante o ciclo). Eram oito parágrafos de prosa corrida; viraram oito seções com id próprio, lead explicando o sintoma e par Bad/Good em PostgreSQL: god table, campos nulos por design ruim, lista disfarçada de colunas numeradas, JSONB no lugar de coluna tipada, JOIN em outro agregado, FK removida entre agregados, `tenant_id` repetido na tabela filha e ENUM para status que carrega dados extras. São 16 blocos novos, com constraint nomeada, formatação vertical e coluna qualificada; os 8 Good passaram no `audit:docs` sem violação.
+- **Três regras novas no `audit:prose`, atacando a família da metáfora em vez da frase exata.** `drama-charging` pega qualquer forma do verbo cobrar aplicado a mecânica, `drama-swallowing` pega engolir, e `drama-false-promise` avisa sobre a construção "parece dar X, e Y". A lista de frases fixas vinha deixando passar cada redação nova da mesma metáfora ("cobra caro", "cobra três preços", "cobrava esse custo"), e cinco delas foram escritas durante os próprios batches deste ciclo, depois da recitação do checklist. A cobrança monetária de provedor ("o provedor cobra por token") é isenta pela regra `MONETARY_CHARGE`, porque ali a cobrança é literal. Testes de 10 para 16, cobrindo cada regra e os dois falsos positivos mapeados.
+
+### Notas
+
+- As regras novas do `audit:prose` acusam 31 ocorrências em páginas que os épicos anteriores deram como revisadas (`shared/` 14, `csharp/` 6, `javascript/` 5, mais 6 nas linguagens ainda não revisadas). O gate só falha nos arquivos alterados, então nada está bloqueado. A limpeza está no backlog como `fix:` separado, restrita às pastas já revisadas.
+- Próximo alvo do épico: as 15 linguagens restantes.
+
 ## [2.2.0] - 2026-07-11
 
 ### Fixed

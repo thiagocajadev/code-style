@@ -1,9 +1,10 @@
-# Procedures
+# Procedures: quebrar a query grande em etapas
 
 > Escopo: SQL. Idioms específicos deste ecossistema.
 
-Procedures decompõem queries complexas em etapas nomeadas. Tabelas temporárias materializam
-resultados intermediários, tornando cada passo testável e legível.
+Uma **stored procedure** (procedimento armazenado) é um bloco de SQL que fica guardado dentro do banco e roda quando alguém chama pelo nome. O ganho está em poder quebrar uma query grande em etapas: cada passo grava o resultado parcial em uma **temp table** (tabela temporária que existe só durante a sessão) e o passo seguinte lê dali.
+
+Com as etapas separadas, você consegue rodar uma de cada vez e olhar o que saiu de cada uma. Quando o relatório vem com o número errado, a etapa que errou aparece na conferência. Na query monolítica, com subqueries dentro de subqueries, o mesmo diagnóstico exige desmontar a query à mão.
 
 ## Conceitos fundamentais
 
@@ -19,7 +20,9 @@ resultados intermediários, tornando cada passo testável e legível.
 
 <a id="monolithic-query-vs-temp-tables"></a>
 
-## Query monolítica vs etapas com temp tables
+## Cada etapa do relatório vira uma temp table nomeada
+
+A procedure abaixo monta o relatório em três passos: primeiro separa os times campeões ativos, depois calcula as estatísticas dos jogadores desses times, e só então junta os dois. Cada passo tem um comentário dizendo o que faz e grava o resultado numa temp table com nome descritivo (`#ActiveChampionTeams`, `#PlayerStatsByTeam`).
 
 <details>
 <summary>❌ Ruim: query única com subqueries aninhadas, difícil de debugar</summary>
@@ -57,7 +60,7 @@ ORDER BY
 <summary>✅ Bom: procedure com temp tables, uma etapa por responsabilidade</summary>
 
 ```sql
-CREATE OR ALTER PROCEDURE GetTeamPerformanceReport
+CREATE OR ALTER PROCEDURE SP_GET_TEAM_PERFORMANCE_REPORT
 AS
 
 BEGIN
@@ -103,18 +106,22 @@ BEGIN
     #ActiveChampionTeams.ChampionshipsWon DESC;
 END;
 
--- EXEC GetTeamPerformanceReport;
+-- EXEC SP_GET_TEAM_PERFORMANCE_REPORT;
 ```
 
 </details>
 
-## Procedure com parâmetros e temp tables
+<a id="procedure-with-parameters"></a>
+
+## Procedure com parâmetros segue a mesma divisão em etapas
+
+Receber parâmetros não muda a estrutura. A procedure abaixo filtra os jogadores em uma etapa, busca o contexto do time em outra, e junta as duas no final. O verbo `LIST` no nome avisa que ela devolve uma coleção filtrada, e o verbo `GET` ficaria reservado para a busca que devolve um único registro.
 
 <details>
 <summary>❌ Ruim: JOIN direto sem materializar contexto, lógica misturada em uma query</summary>
 
 ```sql
-CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
+CREATE OR ALTER PROCEDURE SP_LIST_PLAYERS_BY_TEAM_AND_POSITION
 (
   @TeamId UNIQUEIDENTIFIER,
   @Position NVARCHAR(50)
@@ -148,7 +155,7 @@ END;
 <summary>✅ Bom: parâmetros nomeados, contexto materializado antes do JOIN final</summary>
 
 ```sql
-CREATE OR ALTER PROCEDURE GetPlayersByTeamAndPosition
+CREATE OR ALTER PROCEDURE SP_LIST_PLAYERS_BY_TEAM_AND_POSITION
 (
   @TeamId UNIQUEIDENTIFIER,
   @Position NVARCHAR(50)
@@ -199,7 +206,7 @@ BEGIN
     #FilteredPlayers.SquadNumber;
 END;
 
--- EXEC GetPlayersByTeamAndPosition
+-- EXEC SP_LIST_PLAYERS_BY_TEAM_AND_POSITION
 -- @TeamId = '9585E296-1114-4F35-9B34-1130987BA6D0',
 -- @Position = 'Forward';
 ```

@@ -24,7 +24,7 @@ O Dapper fica entre escrever ADO.NET na mão e adotar um ORM completo: você ent
 
 Cada operação de domínio ganha a própria procedure, e o repositório fica com duas responsabilidades: chamar e mapear o resultado. O **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) montado dentro do repositório espalha a consulta pelo código C#, onde o time de banco não a revisa e nenhuma ferramenta de banco a enxerga para analisar o plano de execução.
 
-O nome da procedure segue a convenção do banco, e não a do C#: `SP_` seguido do verbo e da tabela, em maiúsculas, como `SP_LIST_ORDERS_BY_CUSTOMER_ID`. O método do repositório que a chama continua em PascalCase (`FindByCustomerAsync`), porque ele é código C#. Os verbos disponíveis e o formato completo estão em [sql/conventions/naming.md](../../sql/conventions/naming.md).
+O nome da procedure segue a convenção do banco: `SP_` seguido do verbo e da tabela, em maiúsculas, como `SP_LIST_ORDERS_BY_CUSTOMER_ID`. O método do repositório que a chama continua em PascalCase (`FindByCustomerAsync`), porque ele é código C#. Os verbos disponíveis e o formato completo estão em [sql/conventions/naming.md](../../sql/conventions/naming.md#object-prefixes).
 
 <details>
 <summary>❌ Ruim: SQL de domínio inline no repositório</summary>

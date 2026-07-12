@@ -99,7 +99,7 @@ function filterPremiumProducts(products) {
 ## UUID v7 para chaves ordenadas no índice
 
 `crypto.randomUUID()` gera um **UUID** (Universally Unique Identifier · Identificador Único Universal) v4, que é aleatório. Como o valor é imprevisível, cada nova linha entra em um ponto qualquer do índice, e o banco precisa remanejar as páginas para abrir espaço no meio. O UUID v7 é **time-ordered** (ordenado por tempo): um valor gerado depois é sempre maior que o anterior, então cada inserção vai para o fim do índice, em sequência, sem remanejar nada.
-Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
+Veja o impacto no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#id-type-bigint-vs-uuid).
 
 <details>
 <summary>❌ Ruim: crypto.randomUUID() é v4: random, fragmenta índice</summary>

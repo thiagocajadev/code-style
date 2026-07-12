@@ -8,7 +8,9 @@
 > **Naming no PostgreSQL**: `snake_case` para tabelas, colunas e funções, conforme a convenção da
 > comunidade. Princípios de nomenclatura são os mesmos do guia principal.
 
-PostgreSQL 18 traz tipos ricos (JSONB, ARRAY, ranges), CTEs recursivos, window functions completas, índices especializados (GIN, BRIN, partial) e extensões como `pg_trgm` e `postgis`. As seções abaixo cobrem o que é idiomático do Postgres: `PL/pgSQL` para procedures, `EXPLAIN ANALYZE` para diagnóstico, `COPY` para carga em massa e `pg_cron` para agendamento dentro do próprio banco.
+O PostgreSQL resolve dentro do banco várias coisas que em outros bancos você resolveria na aplicação. Ele guarda JSON com índice, guarda listas e intervalos em uma coluna, devolve a linha que acabou de gravar e ainda agenda tarefas. Esta página cobre o que é próprio dele: a linguagem `PL/pgSQL` para escrever functions, o `EXPLAIN ANALYZE` para descobrir por que a query está lenta, o `COPY` para carregar muitos registros de uma vez e o `pg_cron` para agendar rotinas.
+
+O naming aqui segue o costume da comunidade PostgreSQL: `snake_case` minúsculo para tabelas, colunas e funções. Os princípios de nomenclatura são os mesmos do guia; muda a caixa.
 
 ## Conceitos fundamentais
 
@@ -69,10 +71,11 @@ CREATE TABLE orders (
 
 </details>
 
-## UUID v7 nativo (PostgreSQL 18)
+<a id="native-uuid-v7"></a>
 
-PostgreSQL 18 inclui `uuidv7()` nativo: UUID com prefixo de timestamp de alta resolução.
-Sequencial, sem fragmentação de índice, com unicidade global.
+## O PostgreSQL 18 gera UUID v7 sozinho
+
+A função `uuidv7()` já vem no banco. O identificador que ela devolve começa pelo horário de criação, então cada linha nova entra no fim do índice e o banco não precisa partir páginas cheias para abrir espaço. O detalhe prático é que ele cabe num `DEFAULT` da coluna, e a aplicação não precisa gerar identificador nenhum antes de inserir.
 
 <details>
 <summary>✅ Bom: UUID v7 como DEFAULT, sem geração na aplicação</summary>
@@ -90,10 +93,11 @@ CREATE TABLE events (
 
 </details>
 
-## GENERATED ALWAYS AS IDENTITY
+<a id="generated-always-as-identity"></a>
 
-Substitui `SERIAL`. Padrão **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), compatível com `INSERT ... RETURNING`, sem a sequência implícita
-criada pelo `SERIAL`.
+## GENERATED ALWAYS AS IDENTITY no lugar de SERIAL
+
+O `SERIAL` cria por baixo uma sequência com nome próprio, e essa sequência não aparece na definição da tabela. Para descobrir o nome dela, alterar o passo ou reiniciar a contagem, você precisa ir procurar. O `GENERATED ALWAYS AS IDENTITY` faz o mesmo trabalho, está no padrão **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) e deixa a declaração inteira visível na coluna.
 
 <details>
 <summary>❌ Ruim: SERIAL cria uma sequência implícita difícil de inspecionar</summary>
@@ -121,12 +125,13 @@ CREATE TABLE customers (
 
 </details>
 
-## RETURNING
+<a id="returning"></a>
 
-`RETURNING` retorna as linhas afetadas por INSERT, UPDATE, DELETE ou MERGE, sem query adicional.
+## RETURNING devolve a linha gravada na mesma ida ao banco
 
-No PostgreSQL 18, `RETURNING` suporta `OLD` e `NEW` em UPDATE e DELETE para acessar o valor
-antes e depois da operação.
+Depois de um `INSERT`, a aplicação costuma precisar do identificador que o banco gerou. Sem `RETURNING`, isso vira uma segunda query, e a segunda query custa outra ida e volta pela rede. O `RETURNING id` faz o próprio `INSERT` devolver o valor.
+
+No PostgreSQL 18 ele ficou mais útil: em `UPDATE` e `DELETE`, você pede `OLD` e `NEW` para receber o valor antes e depois da alteração, na mesma resposta.
 
 <details>
 <summary>❌ Ruim: query adicional para recuperar o ID após INSERT</summary>
@@ -171,11 +176,17 @@ RETURNING
 
 </details>
 
-## Functions (PL/pgSQL)
+<a id="functions"></a>
+
+## Functions em PL/pgSQL
+
+O **PL/pgSQL** (Procedural Language/PostgreSQL · linguagem procedural do PostgreSQL) é a linguagem em que se escrevem as functions do banco. Ela acrescenta ao SQL o que o SQL não tem: variáveis, `IF`, laços e tratamento de erro.
+
+O nome da function segue o idioma do banco: `snake_case` minúsculo com o prefixo `fn_`, e isso vale também para os parâmetros e para as colunas devolvidas. O parâmetro leva o prefixo `p_` (`p_team_id`) porque, sem ele, um parâmetro chamado `team_id` colide com a coluna `team_id` dentro do corpo, e o PL/pgSQL não sabe a qual dos dois você se refere.
 
 ### RETURNS TABLE
 
-Prefira `RETURNS TABLE` a `RETURNS SETOF` para funções que retornam linhas com colunas nomeadas.
+`RETURNS TABLE` declara o nome e o tipo de cada coluna que a function devolve, e quem chama sabe o que vai receber. `RETURNS VOID` não devolve nada: o `SELECT` de dentro da function roda e o resultado se perde.
 
 <details>
 <summary>❌ Ruim: RETURNS VOID, SELECT * dentro de function</summary>
@@ -222,10 +233,13 @@ $$ LANGUAGE plpgsql;
 
 </details>
 
-## CTEs em DML
+<a id="ctes-in-dml"></a>
 
-No PostgreSQL, CTEs podem ser usadas com INSERT, UPDATE e DELETE via `WITH ... RETURNING`.
-Permite encadear operações em uma única instrução.
+## A CTE do PostgreSQL também escreve
+
+Em muitos bancos a CTE só lê. No PostgreSQL ela pode conter `INSERT`, `UPDATE` ou `DELETE`, e o `RETURNING` entrega as linhas afetadas para o passo seguinte da mesma instrução.
+
+Isso permite mover um registro de uma tabela para outra em um comando só: a CTE apaga o rascunho e devolve os dados apagados, e o `INSERT` de fora grava esses dados na tabela de pedidos. Como é uma instrução única, ou as duas coisas acontecem, ou nenhuma acontece.
 
 <details>
 <summary>✅ Bom: mover registro de tabela de origem para destino em uma instrução</summary>
@@ -260,10 +274,13 @@ RETURNING
 
 </details>
 
-## JSONB: índice GIN
+<a id="jsonb-gin-index"></a>
 
-`JSONB` suporta índice GIN para busca eficiente em documentos **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript), sem precisar conhecer a
-estrutura completa em tempo de definição do schema.
+## JSONB guarda documento e ainda aceita índice
+
+A coluna `JSONB` guarda um documento **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) em formato binário, e o banco entende o conteúdo dela. Isso serve para o dado cuja forma você não conhece de antemão, como o corpo de um evento que muda de tipo para tipo.
+
+Escolha `JSONB` e não `JSON`. O tipo `JSON` guarda o texto cru e não aceita o índice **GIN**, o índice que o PostgreSQL usa para procurar dentro do documento. Sem ele, toda busca por uma chave do JSON lê a tabela inteira.
 
 <details>
 <summary>❌ Ruim: coluna JSON sem índice: full table scan em todo acesso</summary>
@@ -307,10 +324,11 @@ WHERE
 
 </details>
 
-## Índice parcial
+<a id="partial-index"></a>
 
-Índice criado apenas sobre as linhas que satisfazem uma condição. Menor que o índice completo,
-mais eficiente para queries que sempre filtram pelo mesmo critério.
+## O índice parcial cobre só as linhas que interessam
+
+Se toda query de pedidos pendentes filtra por `status = 'pending'`, e os pendentes são 2% da tabela, um índice sobre a tabela inteira guarda 98% de linhas que aquelas queries nunca vão consultar. O índice parcial (`WHERE status = 'pending'`) indexa só os pendentes: ele ocupa menos disco, cabe mais facilmente em memória e é mais rápido de manter a cada escrita.
 
 <details>
 <summary>✅ Bom: índice apenas em pedidos pendentes</summary>
@@ -327,7 +345,11 @@ CREATE INDEX ix_orders_pending
 
 </details>
 
+<a id="pagination"></a>
+
 ## Paginação
+
+O PostgreSQL pagina com `LIMIT` e `OFFSET`: quantas linhas devolver e quantas pular. O `ORDER BY` acompanha, porque sem um critério de ordem o banco não tem como saber qual é a linha 21, e o mesmo registro pode reaparecer na página seguinte.
 
 <details>
 <summary>✅ Bom: LIMIT / OFFSET</summary>
@@ -348,10 +370,13 @@ LIMIT $1 OFFSET $2;
 
 </details>
 
-## Window functions
+<a id="window-functions"></a>
 
-Window functions calculam agregações sem colapsar as linhas, permitindo ranking, acumulados e
-comparações com linhas adjacentes.
+## Window functions calculam sem juntar as linhas
+
+O `GROUP BY` colapsa: dez pedidos de um cliente viram uma linha com o total. A **window function** (função de janela) calcula o mesmo total e mantém as dez linhas, acrescentando o resultado como mais uma coluna em cada uma.
+
+É o que permite responder perguntas como "qual a posição deste pedido no ranking do cliente" ou "quanto o cliente já tinha gasto até este pedido", sem perder o detalhe de cada linha.
 
 <details>
 <summary>✅ Bom: ranking de jogadores por número de camisa por time</summary>
@@ -373,10 +398,13 @@ WHERE
 
 </details>
 
-## LISTEN / NOTIFY
+<a id="listen-notify"></a>
 
-Mecanismo de pub/sub nativo do PostgreSQL para notificações assíncronas entre sessões.
-Útil para invalidar cache ou disparar processamento sem polling.
+## LISTEN e NOTIFY avisam a aplicação sem que ela pergunte
+
+A aplicação que quer saber quando um pedido novo chega costuma perguntar ao banco de tempos em tempos, o que se chama **polling** (consulta repetida em intervalo fixo). O polling gasta query à toa quando nada mudou e ainda assim atrasa a notícia quando algo muda.
+
+O `NOTIFY` inverte: quando a linha é gravada, o banco avisa. A aplicação declara `LISTEN` em um canal, um trigger dispara `NOTIFY` naquele canal a cada `INSERT`, e a mensagem chega na hora.
 
 <details>
 <summary>✅ Bom: notificar canal quando pedido é criado</summary>
@@ -405,11 +433,9 @@ CREATE TRIGGER trg_orders_on_insert
 
 ## Recursos do PostgreSQL 18
 
-### AIO: Asynchronous I/O
+### Leitura de disco em paralelo (AIO)
 
-PostgreSQL 18 introduz um subsistema de **AIO** que emite múltiplas operações de **I/O** (Input/Output · Entrada/Saída) em paralelo,
-em vez de aguardar cada leitura em sequência. Benchmarks mostram ganhos de até 3x em sequential
-scans e vacuum em cargas de trabalho I/O-bound. Não requer configuração: ativo por padrão.
+O **AIO** (Asynchronous I/O · entrada e saída assíncrona) dispara várias leituras de disco ao mesmo tempo, em vez de pedir uma, esperar a resposta, e só então pedir a próxima. Nos testes publicados, a varredura sequencial e o vacuum chegam a ficar 3x mais rápidos quando o gargalo é o disco. Ele vem ligado, sem configuração.
 
 ### uuidv7() nativo
 
@@ -420,9 +446,9 @@ de microsegundo com aleatoriedade, produzindo UUIDs sequenciais que não fragmen
 SELECT uuidv7(); -- ex: 01926ef0-b4d7-7c3a-a0e1-2f3b4c5d6e7f
 ```
 
-### Virtual generated columns (padrão)
+### Coluna calculada na leitura, sem ocupar disco
 
-Colunas geradas agora são virtuais por padrão: calculadas na leitura, sem armazenamento em disco.
+A **generated column** (coluna gerada) guarda uma fórmula em vez de um valor: o `total` de um pedido sai de `amount * (1 + tax_rate)`, e ninguém precisa lembrar de atualizá-lo quando o valor mudar. A partir do PostgreSQL 18, ela é calculada no momento da leitura e não ocupa espaço em disco.
 
 ```sql
 CREATE TABLE orders (
@@ -435,10 +461,9 @@ CREATE TABLE orders (
 );
 ```
 
-### Temporal constraints (PostgreSQL 18)
+### Constraint que entende período de validade
 
-Constraints sobre intervalos de tempo para PRIMARY KEY, UNIQUE e FOREIGN KEY. Garantem unicidade
-ou integridade referencial dentro de um período específico.
+O `WITHOUT OVERLAPS` faz a chave primária considerar o intervalo de datas. No exemplo, o mesmo funcionário pode ocupar o mesmo cargo em dois períodos diferentes, e o banco recusa dois períodos que se sobrepõem. A regra "ninguém tem dois cargos ao mesmo tempo" passa a ser garantida pelo banco.
 
 ```sql
 CREATE TABLE employee_roles (
@@ -455,12 +480,11 @@ CREATE TABLE employee_roles (
 
 <a id="batch-operations"></a>
 
-## Operações em Lote
+## Operações em lote
 
 ### COPY
 
-`COPY` importa ou exporta dados entre um arquivo, como um **CSV** (Comma-Separated Values, Valores Separados por Vírgula), e uma tabela com performance muito superior ao INSERT
-linha a linha: sem overhead de parse por linha, sem round trips pela aplicação.
+O `COPY` move dados entre um arquivo, como um **CSV** (Comma-Separated Values · valores separados por vírgula), e uma tabela. Ele existe para a carga grande, e a diferença para um `INSERT` por linha é enorme: o banco lê o arquivo de uma vez, sem interpretar um comando novo a cada linha, e a aplicação não fica indo e voltando pela rede a cada registro.
 
 <details>
 <summary>✅ Bom: importar CSV com COPY (arquivo no servidor)</summary>
@@ -497,8 +521,7 @@ WITH (FORMAT csv, HEADER true, DELIMITER ',')
 
 ### pg_cron
 
-`pg_cron` é uma extensão para jobs agendados diretamente no PostgreSQL, usando sintaxe cron.
-Requer `shared_preload_libraries = 'pg_cron'` no `postgresql.conf`.
+O `pg_cron` é uma extensão que agenda tarefas dentro do próprio banco, com a mesma sintaxe do cron do Linux. A limpeza noturna de registros antigos deixa de precisar de um serviço à parte só para disparar um `DELETE`. Ele exige `shared_preload_libraries = 'pg_cron'` no `postgresql.conf`, o que significa reiniciar o banco uma vez.
 
 <details>
 <summary>✅ Bom: agendar limpeza diária com pg_cron</summary>
@@ -534,7 +557,11 @@ SELECT cron.unschedule('clean-inactive-players');
 
 ## Diagnóstico
 
-### Slow query log
+Quando o banco fica lento, estas quatro perguntas cobrem a maior parte dos casos: quais queries demoram, o que o banco faz para resolver uma query específica, quantas conexões estão abertas e quem está travando quem.
+
+### Registrar as queries lentas
+
+O `log_min_duration_statement` manda o PostgreSQL escrever no log toda query que passar do tempo que você definir. Com 500 ms, as queries rápidas não poluem o log e as lentas ficam registradas com o texto completo.
 
 `postgresql.conf`:
 
@@ -544,6 +571,8 @@ log_statement = 'none'
 ```
 
 ### Plano de execução
+
+O `EXPLAIN` mostra o caminho que o banco pretende seguir, sem rodar a query. O `EXPLAIN ANALYZE` roda de verdade e mostra o tempo real de cada passo, o que revela quando a estimativa do otimizador está longe do que aconteceu.
 
 ```sql
 -- EXPLAIN: mostra o plano sem executar
@@ -567,9 +596,11 @@ WHERE
   orders.status = 'pending';
 ```
 
-`Seq Scan` em tabela grande com `Filter` é o sinal mais claro de índice ausente.
+No plano, `Seq Scan` significa que o banco leu a tabela inteira. Numa tabela grande, acompanhado de um `Filter`, é o sinal mais direto de que falta um índice para aquele filtro.
 
 ### Conexões ativas
+
+A tabela `pg_stat_activity` mostra o que cada conexão está fazendo. Muitas conexões em `idle in transaction` apontam para transação aberta e esquecida na aplicação, e elas seguram locks enquanto durarem.
 
 ```sql
 -- conexões por estado (diagnóstico de pool exhaustion)
@@ -583,6 +614,8 @@ GROUP BY
 ```
 
 ### Queries lentas e locks
+
+A primeira query lista o que está rodando há mais de cinco segundos, com o texto e o `pid` de cada uma. A segunda mostra quem está esperando por quem: quando uma transação segura o lock que outra precisa, é aqui que o par aparece.
 
 ```sql
 -- queries em execução há mais de 5 segundos

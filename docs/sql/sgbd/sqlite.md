@@ -9,7 +9,9 @@
 > Indicado para apps mobile, desktop, CLI, testes e edge computing. Não substitui PostgreSQL ou
 > SQL Server em workloads de alta concorrência com múltiplas escritas.
 
-SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) com idioms próprios: tipos dinâmicos (type affinity), pragmas de configuração por conexão, Write-Ahead Logging para concorrência de leitura, `UPSERT` com `ON CONFLICT` e full-text search via `FTS5`. As seções abaixo cobrem o que distingue o SQLite de bancos servidor-cliente.
+O SQLite é um banco embutido: o programa abre um arquivo `.db` e conversa com ele direto, sem servidor no meio, sem usuário e sem senha. É o que roda dentro de aplicativos de celular, de programas de desktop e da maioria das suítes de teste.
+
+Essa arquitetura traz idioms próprios, e é deles que esta página trata: o tipo da coluna funciona como sugestão e não como regra, a configuração se faz com **PRAGMA** (comando que ajusta o comportamento da conexão), a concorrência de leitura depende de ligar o modo **WAL**, e a busca em texto vem do módulo `FTS5`. Um aviso de escopo: em carga com muitas escritas simultâneas, o SQLite não substitui um PostgreSQL ou um SQL Server, porque só uma escrita acontece por vez.
 
 ## Conceitos fundamentais
 
@@ -21,10 +23,13 @@ SQLite 3.53 oferece um subconjunto enxuto de **SQL** (Structured Query Language 
 | **FTS5** (Full-Text Search 5, Busca de Texto Integral 5) | Extensão embutida para indexação e busca textual eficiente |
 | **OPFS** (Origin Private File System) | Sistema de arquivos privado de origem do navegador; suportado via WebAssembly no SQLite 3.53 |
 
-## Type affinity
+<a id="type-affinity"></a>
 
-SQLite não impõe tipos rígidos. Uma coluna `INTEGER` aceita texto; uma coluna `TEXT` aceita
-número. O tipo declarado define a **afinidade** usada para conversões implícitas.
+## O tipo da coluna é uma preferência, não uma regra
+
+Esta é a maior surpresa para quem chega de outro banco. No SQLite, uma coluna declarada `INTEGER` aceita a string `'abacaxi'` sem reclamar. O tipo declarado define a **type affinity** (afinidade de tipo), que é a preferência do banco na hora de converter o valor recebido. Se a conversão não for possível, ele guarda o valor como veio.
+
+A consequência prática: a validação do tipo é responsabilidade da aplicação, e o `CHECK` constraint é o que resta para exigir a garantia dentro do banco.
 
 | Afinidade | Regra de mapeamento | Exemplo de declaração |
 | --- | --- | --- |
@@ -66,9 +71,13 @@ CREATE TABLE Orders
 
 </details>
 
-## Foreign keys: ativação explícita
+<a id="foreign-keys"></a>
 
-Foreign keys estão **desativadas por padrão** no SQLite. Precisam ser ativadas por conexão.
+## As foreign keys vêm desligadas
+
+O SQLite aceita a declaração `REFERENCES` e a guarda no schema, mas não a aplica: por compatibilidade com versões antigas, a checagem vem desligada. Você insere um pedido apontando para um cliente que não existe e o banco aceita, sem erro.
+
+O `PRAGMA foreign_keys = ON` liga a checagem, e ele vale para uma conexão só. Toda conexão que a aplicação abrir precisa executá-lo, o que costuma virar uma linha na configuração do pool.
 
 <details>
 <summary>❌ Ruim: FK declarada mas não aplicada: dados inválidos inseridos sem erro</summary>
@@ -102,10 +111,13 @@ VALUES
 
 </details>
 
+<a id="ids"></a>
+
 ## IDs no SQLite
 
-`INTEGER PRIMARY KEY` é um alias direto para o `rowid` interno. A sequência é automática e
-eficiente. Para unicidade global, armazene **UUID** (Universally Unique Identifier · Identificador Universalmente Único) como `TEXT`.
+Toda tabela do SQLite já tem, por dentro, uma coluna chamada `rowid`. Declarar `INTEGER PRIMARY KEY` faz a sua coluna virar essa coluna interna, e aí o banco preenche o valor sozinho, em sequência, sem custo nenhum.
+
+Quando o identificador precisa ser único entre dispositivos (o app do celular gera registros offline e sincroniza depois), guarde um **UUID** (Universally Unique Identifier · identificador universalmente único) como `TEXT`.
 
 <details>
 <summary>✅ Bom: BIGINT sequencial via rowid alias</summary>
@@ -141,10 +153,13 @@ CREATE TABLE Events
 
 </details>
 
-## WAL mode
+<a id="wal-mode"></a>
 
-O modo padrão `DELETE` serializa leituras e escritas. O modo `WAL` permite leituras concorrentes
-durante uma escrita, melhorando performance em aplicações com múltiplos leitores.
+## O modo WAL deixa a leitura acontecer durante a escrita
+
+No modo padrão, uma escrita bloqueia as leituras: quem quiser ler espera a gravação terminar. O **WAL** (Write-Ahead Logging · registro antes da escrita) grava a alteração num arquivo de log à parte, e os leitores continuam lendo a versão anterior do banco enquanto isso.
+
+Numa aplicação com vários leitores e um escritor, que é o caso comum, ligar o WAL costuma ser a mudança de maior efeito. Ele se liga uma vez e fica gravado no arquivo do banco.
 
 ```sql
 PRAGMA journal_mode = WAL;
@@ -160,10 +175,13 @@ PRAGMA foreign_keys = ON;
 PRAGMA cache_size = -64000; -- 64 MB de cache em memória
 ```
 
-## Transações
+<a id="transactions"></a>
 
-SQLite suporta três tipos de transações. O padrão é `DEFERRED` (leitura inicial, escrita ao
-primeiro acesso). Para operações de escrita, use `IMMEDIATE` para adquirir o lock logo no início.
+## Transações: use IMMEDIATE quando for escrever
+
+O SQLite tem três tipos de transação, e a diferença está em quando ele pega o lock de escrita.
+
+O padrão, `DEFERRED`, só pega o lock no primeiro comando de escrita. Isso abre uma janela: duas transações começam, as duas leem, e a segunda descobre na hora de gravar que a primeira chegou antes. Ela então falha com `SQLITE_BUSY`, no meio do trabalho. O `IMMEDIATE` pega o lock logo na abertura, então a disputa se resolve antes de a transação fazer qualquer coisa.
 
 | Tipo | Comportamento | Quando usar |
 | --- | --- | --- |
@@ -208,10 +226,11 @@ COMMIT;
 
 </details>
 
+<a id="json"></a>
+
 ## JSON: funções nativas
 
-SQLite suporta funções **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) sem extensão desde a versão 3.38. Armazene JSON como `TEXT` e acesse
-via `json_extract`, `json_object`, `json_array` e demais funções.
+Desde a versão 3.38, o SQLite lê **JSON** (JavaScript Object Notation · notação de objetos JavaScript) sem precisar de extensão. O documento fica guardado numa coluna `TEXT`, e `json_extract` puxa um campo de dentro dele. Não existe um tipo `JSONB` como no PostgreSQL: aqui o texto é texto, e a leitura interpreta o documento a cada acesso.
 
 SQLite 3.53 adicionou `json_array_insert()` para inserir elemento em posição específica de um
 array JSON.
@@ -247,10 +266,13 @@ WHERE
 
 </details>
 
-## FTS5: full-text search
+<a id="fts5"></a>
 
-`FTS5` (Full-Text Search 5) é uma extensão embutida para indexação e busca textual eficiente.
-Crie uma tabela virtual com `USING fts5`.
+## FTS5: busca dentro do texto
+
+Procurar uma palavra com `LIKE '%tenis%'` lê a tabela inteira e não entende plural nem acento. O `FTS5` (Full-Text Search 5) resolve isso: ele mantém um índice das palavras que aparecem em cada linha, e a busca vai direto às linhas que contêm a palavra.
+
+Ele funciona por meio de uma tabela virtual, criada com `USING fts5`. Ela espelha o conteúdo textual da tabela real e é nela que a busca acontece.
 
 <details>
 <summary>✅ Bom: tabela FTS5 para busca textual em produtos</summary>
@@ -282,9 +304,13 @@ ORDER BY
 
 </details>
 
-## ALTER TABLE: limitações
+<a id="alter-table"></a>
 
-SQLite tem suporte limitado a `ALTER TABLE`. Operações não suportadas exigem recriar a tabela.
+## O ALTER TABLE faz pouca coisa
+
+O SQLite acrescenta coluna, renomeia coluna e renomeia tabela. Fora disso, ele não altera. Mudar o tipo de uma coluna, acrescentar uma constraint ou trocar a chave primária exige o caminho longo: criar a tabela nova com o schema certo, copiar os dados para ela, apagar a antiga e renomear a nova.
+
+Vale conhecer esse limite antes de escrever a migration, porque ele muda o formato do arquivo.
 
 | Operação | Suporte |
 | --- | --- |
@@ -356,6 +382,8 @@ COMMIT;
 | `json_array_insert(json, path, val)` | Array JSON com elemento inserido | Novo em 3.53 |
 
 ## PRAGMAs recomendados
+
+Este bloco é o ponto de partida para uma aplicação em produção. Ele liga o WAL, liga a checagem de foreign key, dá mais memória de cache ao banco e afrouxa um pouco a garantia de gravação em disco (`synchronous = NORMAL`), o que é seguro quando o WAL está ligado. Rode os PRAGMAs na abertura de cada conexão.
 
 ```sql
 PRAGMA journal_mode = WAL;

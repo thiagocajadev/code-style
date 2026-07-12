@@ -1,7 +1,6 @@
-# Naming
+# Nomes em SQL
 
-Código em inglês. Tabelas no plural, colunas no singular. Nomes descritivos eliminam conflito com
-palavras reservadas sem precisar de delimitadores.
+O nome de uma tabela ou coluna é lido muito mais vezes do que é escrito, e trocá-lo depois sai caro: você precisa de uma migration, e toda query, view e linha de código que citam aquele nome mudam junto. Escreva tudo em inglês, use plural na tabela e singular na coluna. Um nome descritivo em inglês raramente colide com uma palavra que a linguagem SQL já reservou para si, então você não precisa de colchetes nem de aspas para escapar o nome.
 
 ## Conceitos fundamentais
 
@@ -27,10 +26,9 @@ palavras reservadas sem precisar de delimitadores.
 
 <a id="portuguese-names"></a>
 
-## Nomes em português
+## Todo identificador é escrito em inglês
 
-Palavras comuns no português colidem com tipos e funções **SQL** (Structured Query Language · Linguagem de Consulta Estruturada): `Data` (data type), `Time` (time
-type), `Status` (usado em comandos).
+Palavras comuns do português colidem com tipos e funções que a linguagem **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) já usa: `Data` é um tipo de data, `Time` é um tipo de hora e `Status` aparece em comandos. Quando o nome colide, o banco só aceita a query se você escapar o identificador com colchetes ou aspas, e a partir daí todo mundo que tocar naquela tabela carrega os delimitadores junto.
 
 <details>
 <summary>❌ Ruim: delimitadores para escapar palavras reservadas</summary>
@@ -50,7 +48,11 @@ SELECT MatchDate, TeamName FROM FootballTeams;
 
 </details>
 
-## Tabelas no plural, colunas no singular
+<a id="plural-table-singular-column"></a>
+
+## Tabela no plural, coluna no singular
+
+A tabela guarda uma coleção, então ela recebe o plural: `FootballTeams`. Cada coluna descreve uma propriedade de um único registro, então ela recebe o singular: `Name`, `FoundedYear`. Ler `FootballTeams.Name` já diz que estamos olhando o nome de um time dentro da coleção de times.
 
 <details>
 <summary>❌ Ruim: singular em tabelas, português, sem padrão</summary>
@@ -87,7 +89,11 @@ CREATE TABLE FootballTeams
 
 </details>
 
-## Prefixo da tabela no nome da coluna
+<a id="table-name-in-column"></a>
+
+## A coluna não repete o nome da tabela
+
+`Users.UserName` diz "usuário" duas vezes. A tabela já dá o contexto, então a coluna carrega só a propriedade: `Users.Name`, `Users.Email`. O prefixo repetido cresce em cada `SELECT` e não acrescenta informação nenhuma.
 
 <details>
 <summary>❌ Ruim: nome da tabela repetido em cada coluna</summary>
@@ -119,9 +125,9 @@ FROM
 
 <a id="explicit-qualification"></a>
 
-## Qualificação explícita: sempre Tabela.Coluna
+## Toda coluna aparece como Tabela.Coluna
 
-Nunca usar colunas nuas em queries com mais de uma tabela. Sem aliases de uma letra (`u`, `t`, `c`).
+Em uma query com mais de uma tabela, a coluna sozinha esconde de onde ela veio. `Name` pode ser o nome do usuário ou o nome do pedido, e descobrir qual dos dois exige abrir o schema. Escrever `Users.Name` responde a pergunta na própria linha. Pelo mesmo motivo, o alias de uma letra (`u`, `t`, `c`) fica de fora: ele economiza três caracteres e devolve a dúvida ao leitor.
 
 <details>
 <summary>❌ Ruim: colunas sem qualificação, alias de letra</summary>
@@ -155,9 +161,13 @@ JOIN
 
 </details>
 
+<a id="object-prefixes"></a>
+
 ## Prefixos de objetos
 
-Cada tipo de objeto carrega um prefixo que declara a intenção antes mesmo de ler o nome.
+Cada tipo de objeto do banco carrega um prefixo no nome. Ao encontrar `IX_PLAYERS_TEAM_ID` em um script, você já sabe que é um índice antes de ler o resto da linha, e ao encontrar `SP_GET_ORDER_BY_ID` já sabe que é uma procedure que busca um pedido por identificador.
+
+No SQL Server, procedures e functions ficam em maiúsculas com sublinhado (`SP_GET_ORDER_BY_ID`). No PostgreSQL, o mesmo objeto segue o `snake_case` minúsculo da linguagem (`fn_get_order_by_id`). O prefixo é o mesmo em ideia; a caixa acompanha o idioma do banco.
 
 | Prefixo | Objeto            | Padrão do nome                                  | Exemplos                                             |
 | ------- | ----------------- | ----------------------------------------------- | ---------------------------------------------------- |
@@ -171,10 +181,11 @@ Cada tipo de objeto carrega um prefixo que declara a intenção antes mesmo de l
 | `UQ_`   | Unique constraint | `UQ_TABELA_CAMPO`                               | `UQ_USERS_EMAIL`, `UQ_PLAYERS_TEAM_JERSEY`           |
 | `CK_`   | Check constraint  | `CK_TABELA_CAMPO`                               | `CK_Players_SquadNumber`, `CK_Orders_Amount`         |
 
-## Constraints nomeadas
+<a id="named-constraints"></a>
 
-Toda constraint deve ser declarada com `CONSTRAINT` e um nome explícito. Constraints inline sem nome
-tornam erros difíceis de identificar e impossibilitam `ALTER TABLE ... DROP CONSTRAINT`.
+## Toda constraint tem nome explícito
+
+Declare cada **constraint** (regra que o banco impõe sobre os dados) com a palavra `CONSTRAINT` e um nome seu. Quando você deixa a constraint inline e sem nome, o banco inventa um nome como `CK__Players__SquadN__3B75D760`. Duas coisas quebram a partir daí: a mensagem de erro que chega ao desenvolvedor cita esse nome ilegível, e o `ALTER TABLE ... DROP CONSTRAINT` fica impossível de escrever numa migration, porque o nome gerado muda de ambiente para ambiente.
 
 <details>
 <summary>❌ Ruim: constraints inline sem nome</summary>
@@ -209,7 +220,9 @@ CREATE TABLE Players
 
 </details>
 
-### Verbos de Stored Procedure
+### Verbos de stored procedure
+
+O verbo abre o nome da procedure e diz o que ela faz com os dados. `GET` traz um registro, `LIST` traz uma coleção filtrada, e essa diferença evita que o chamador espere uma linha e receba mil.
 
 | Verbo    | Intenção                           | Exemplo                                      |
 | -------- | ---------------------------------- | -------------------------------------------- |

@@ -1,6 +1,6 @@
-# SQLFluff
+# SQLFluff: o linter de SQL
 
-SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language · Linguagem de Consulta Estruturada). Aplica automaticamente as convenções de formatação deste guia.
+O SQLFluff lê seus arquivos **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) e aponta onde eles fogem do estilo combinado. Ele faz duas coisas: o `lint` mostra as violações sem tocar no arquivo, e o `fix` reescreve o arquivo corrigindo o que dá para corrigir sozinho. Com ele no pipeline, a discussão sobre caixa de palavra-chave e indentação sai da revisão de código.
 
 ## Conceitos fundamentais
 
@@ -16,7 +16,7 @@ SQLFluff é o linter e formatter padrão para **SQL** (Structured Query Language
 
 ## Instalação
 
-SQLFluff é uma ferramenta Python. Escolha a opção que melhor se encaixa no seu ambiente:
+O SQLFluff é escrito em Python. Escolha a forma de instalar que combina com o seu ambiente:
 
 ```bash
 # Python (recomendado para projetos com pipeline CI)
@@ -31,7 +31,7 @@ docker run --rm -v $(pwd):/sql sqlfluff/sqlfluff lint /sql
 
 ## Arquivo pronto para uso
 
-Copie `.sqlfluff` para a raiz do projeto e ajuste o dialeto conforme o banco.
+Copie este `.sqlfluff` para a raiz do projeto e troque o dialeto pelo do seu banco. O **dialect** (dialeto) diz ao SQLFluff qual sintaxe aceitar: o `tsql` do SQL Server conhece `TOP` e `@variavel`, e o `postgres` conhece `LIMIT` e `$$`.
 
 ```ini
 [sqlfluff]
@@ -98,4 +98,4 @@ sqlfluff lint script.sql --dialect tsql
 | `indented_joins = false` | JOIN alinhado com FROM, sem indentação extra |
 
 > [!NOTE]
-> SQLFluff não cobre todas as convenções do guia. Formatação vertical, ordem de cláusulas e CTEs precisam de revisão manual ou configuração adicional via rules personalizadas.
+> O SQLFluff cobre parte das convenções deste guia. A formatação vertical, a ordem das cláusulas e o uso de CTEs continuam por conta da revisão humana, ou de regras personalizadas que você escreva.

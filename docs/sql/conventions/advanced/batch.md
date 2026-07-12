@@ -1,11 +1,10 @@
-# Operações em Lote
+# Operações em lote
 
 > Escopo: SQL. Visão transversal: [shared/platform/database.md](../../../shared/platform/database.md#batch-operations).
 
-Operações em lote reduzem round trips e aumentam throughput em inserções de alto volume. Em
-atualizações e exclusões de grande escala, o padrão é dividir em lotes de tamanho fixo: uma
-transação que modifica milhões de linhas mantém o lock por toda a duração, bloqueando outras
-operações. Lotes menores liberam o lock entre cada commit.
+Escrever muitos registros de uma vez pede uma abordagem diferente de escrever um. Na inserção, mandar mil linhas num comando só evita mil idas e voltas pela rede, e cada ida e volta custa mais do que a gravação em si.
+
+Na atualização e na exclusão em massa, o problema é outro: o **lock**. Um `DELETE` que apaga milhões de linhas trava essas linhas do começo ao fim da transação, e todo mundo que precisar delas fica esperando, às vezes por minutos. Quebrando o trabalho em lotes de mil, cada `COMMIT` libera o lock e deixa as outras operações passarem entre um lote e o próximo.
 
 ## Conceitos fundamentais
 
@@ -19,7 +18,13 @@ operações. Lotes menores liberam o lock entre cada commit.
 | **round trip** (ida e volta) | Latência de uma requisição cliente-banco; lotes amortizam o custo por linha |
 | **MERGE** (mesclar) | Comando que faz `INSERT` ou `UPDATE` conforme a chave existe ou não; útil para upsert em lote |
 
-## Batch INSERT multi-row
+<a id="multi-row-insert"></a>
+
+## Um INSERT com várias linhas de uma vez
+
+O `INSERT` aceita vários blocos de `VALUES` separados por vírgula. Mil linhas viram um comando, e a aplicação faz uma viagem até o banco em vez de mil.
+
+O SQL Server tem um limite de 1.000 linhas por `INSERT`, então uma carga maior se quebra em blocos desse tamanho.
 
 <details>
 <summary>❌ Ruim: um INSERT por linha, um round trip por registro</summary>
@@ -82,7 +87,13 @@ WHERE
 
 </details>
 
+<a id="batched-delete"></a>
+
 ## DELETE em lotes
+
+O `DELETE TOP (@ChunkSize)` apaga até mil linhas por vez, dentro de um `WHILE` que repete enquanto houver o que apagar. O `SET @RowsDeleted = @@ROWCOUNT` logo abaixo lê quantas linhas o comando anterior apagou, e é isso que encerra o laço quando o resultado chega a zero.
+
+O tamanho do lote é um ajuste: mil linhas costumam ser um bom começo, e vale medir no seu banco.
 
 <details>
 <summary>❌ Ruim: DELETE único em tabela grande: lock de longa duração</summary>
@@ -118,7 +129,13 @@ END;
 
 </details>
 
+<a id="batched-update"></a>
+
 ## UPDATE em lotes
+
+O `UPDATE` em massa segue a mesma estrutura do `DELETE`: `TOP (@ChunkSize)` dentro de um `WHILE`, com o `@@ROWCOUNT` decidindo quando parar.
+
+Existe uma armadilha aqui. O `WHERE` precisa excluir as linhas que o lote anterior já alterou, senão o mesmo conjunto de linhas volta a ser selecionado a cada volta e o laço nunca termina. No exemplo, `Players.IsActive = 1` cumpre esse papel: a linha atualizada deixa de casar com o filtro.
 
 <details>
 <summary>❌ Ruim: UPDATE único em tabela grande</summary>
@@ -168,7 +185,13 @@ END;
 
 </details>
 
-## Staging table
+<a id="staging-table"></a>
+
+## Staging table: valide antes de entrar na tabela real
+
+A **staging table** (tabela de entrada) é uma tabela intermediária, sem constraint nenhuma, que recebe o dado bruto do parceiro exatamente como ele veio. A validação acontece depois, com queries contra ela.
+
+Sem esse passo, a carga vai direto para a tabela de produção e a primeira linha inválida derruba a operação inteira, no meio. Com a staging, você carrega tudo, descobre em uma query quais linhas têm time inexistente ou posição inválida, separa essas e promove só as boas.
 
 <details>
 <summary>❌ Ruim: inserir dados externos diretamente na tabela de produção sem validação</summary>

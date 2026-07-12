@@ -5,7 +5,9 @@
 > Este documento cobre idioms e recursos específicos do SQL Server. Convenções gerais de formatação
 > e naming estão em [conventions/](../conventions/).
 
-SQL Server 2025 traz T-SQL moderno com **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) nativo, window functions completas, tabelas temporais, Query Store para análise de planos e recursos de tuning baseados em execução. As seções abaixo cobrem o que é idiomático da plataforma: `BULK INSERT` para carga, SQL Server **Agent** (serviço de jobs agendados) para agendamento, `SET STATISTICS` e `sys.sysprocesses` para diagnóstico, e padrões de procedures com `SET NOCOUNT ON` + transações explícitas.
+O SQL Server fala **T-SQL** (Transact-SQL), o dialeto da Microsoft, que acrescenta ao SQL padrão variáveis, fluxo de controle e um conjunto grande de funções de sistema. Esta página cobre o que é próprio dele: a stored procedure com transação explícita, o `BULK INSERT` para carregar arquivo, o **SQL Server Agent** (serviço que roda tarefas agendadas) e as ferramentas de diagnóstico, do plano de execução ao Query Store.
+
+Os exemplos seguem a convenção PascalCase do SQL Server, e o nome de cada procedure segue o formato `SP_VERBO_TABELA` descrito em [prefixos de objetos](../conventions/naming.md#object-prefixes).
 
 ## Conceitos fundamentais
 
@@ -72,8 +74,7 @@ CREATE TABLE Products
 
 ## Identidade e UUID
 
-Escolha o tipo de ID pelo trade-off entre sequencialidade e unicidade global. Ver
-[performance.md: Tipo de ID](../conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
+A escolha do tipo de identificador troca uma coisa pela outra: o número sequencial mantém o índice arrumado, e o **UUID** (Universally Unique Identifier · identificador único global) permite gerar o valor fora do banco, sem consultar ninguém. O efeito de cada escolha sobre o índice está em [tipo de ID: BIGINT ou UUID](../conventions/advanced/performance.md#id-type-bigint-vs-uuid).
 
 | Tipo | Quando usar |
 | --- | --- |
@@ -104,12 +105,11 @@ CREATE TABLE Orders
 
 ## Stored Procedure
 
-Procedures decompõem queries complexas em etapas nomeadas. Ver
-[procedures.md](../conventions/advanced/procedures.md) para o padrão completo de temp tables.
+A procedure quebra a query grande em etapas nomeadas, cada uma gravando o resultado parcial numa temp table. O padrão completo, com o exemplo de ponta a ponta, está em [procedures](../conventions/advanced/procedures.md).
 
 ### Nomenclatura
 
-Padrão: `SP_VERBO_TABELA` ou `SP_VERBO_TABELA_BY_CAMPO` em `UPPER_SNAKE_CASE`.
+O nome segue `SP_VERBO_TABELA`, ou `SP_VERBO_TABELA_BY_CAMPO` quando há filtro, sempre em maiúsculas com sublinhado. O verbo diz o que a procedure faz: `GET` traz um registro, `LIST` traz uma coleção, `ADD` insere.
 
 | Verbo | Intenção |
 | --- | --- |
@@ -157,7 +157,13 @@ END;
 
 </details>
 
-## Tratamento de erros: TRY / CATCH
+<a id="try-catch"></a>
+
+## Tratamento de erros com TRY e CATCH
+
+A procedure que grava em duas tabelas e falha na segunda deixa o banco pela metade: a primeira linha entrou, a segunda não. O `BEGIN TRY / BEGIN CATCH` captura o erro, e o `ROLLBACK` dentro do `CATCH` desfaz o que a transação já tinha feito.
+
+O `THROW` no fim do `CATCH` é o que faz o erro chegar até a aplicação. Sem ele, a procedure trata a falha, não avisa ninguém, e devolve sucesso a quem chamou.
 
 <details>
 <summary>❌ Ruim: sem tratamento de erro, falha silenciosa</summary>
@@ -217,9 +223,13 @@ END;
 
 </details>
 
+<a id="transactions"></a>
+
 ## Transações
 
-Toda operação que modifica múltiplas tabelas deve estar em uma transação explícita.
+Toda operação que grava em mais de uma tabela roda dentro de uma transação explícita. O pedido entra em `Orders` e os itens entram em `OrderItems`: se o segundo comando falhar, o pedido fica no banco sem item nenhum, e ninguém percebe até o cliente reclamar.
+
+`BEGIN TRANSACTION` abre, `COMMIT` confirma as duas gravações juntas e `ROLLBACK` desfaz as duas juntas.
 
 <details>
 <summary>❌ Ruim: múltiplos INSERTs sem transação: estado inconsistente em caso de falha</summary>
@@ -276,7 +286,11 @@ END CATCH
 
 </details>
 
-## Paginação: OFFSET / FETCH
+<a id="pagination"></a>
+
+## Paginação com OFFSET e FETCH
+
+O `OFFSET` diz quantas linhas pular e o `FETCH NEXT` quantas devolver. O `ORDER BY` é obrigatório: sem um critério de ordem, o banco não tem como decidir qual é a linha 21, e o mesmo registro pode aparecer em duas páginas.
 
 ```sql
 SELECT
@@ -295,10 +309,9 @@ FETCH NEXT @PageSize ROWS ONLY;
 
 ## Recursos de SQL Server 2025
 
-### Funções RegEx nativas
+### Expressões regulares no próprio T-SQL
 
-SQL Server 2025 introduz funções `REGEXP_LIKE`, `REGEXP_REPLACE`, `REGEXP_SUBSTR` e
-`REGEXP_COUNT` diretamente em T-SQL.
+O SQL Server 2025 trouxe `REGEXP_LIKE`, `REGEXP_REPLACE`, `REGEXP_SUBSTR` e `REGEXP_COUNT`. Validar o formato de um e-mail dentro do banco deixa de exigir uma função escrita em .NET e instalada no servidor.
 
 <details>
 <summary>✅ Bom: validação de e-mail sem CLR ou função auxiliar</summary>
@@ -315,10 +328,9 @@ WHERE
 
 </details>
 
-### Fuzzy string matching
+### Busca que tolera erro de digitação
 
-`EDITDISTANCE` (Damerau-Levenshtein) e `JARO_WINKLER_SIMILARITY` estão disponíveis nativamente
-para deduplicação e busca tolerante a erros.
+`EDITDISTANCE` conta quantas letras precisam mudar para uma palavra virar a outra, e `JARO_WINKLER_SIMILARITY` devolve o quanto duas palavras se parecem, de 0 a 1. As duas servem para achar `Jhon Smith` quando o usuário digitou `John Smith`, e para encontrar cadastros duplicados que diferem por uma letra.
 
 <details>
 <summary>✅ Bom: encontrar nomes similares com tolerância a typos</summary>
@@ -338,10 +350,9 @@ ORDER BY
 
 </details>
 
-### Native JSON (SQL Server 2025)
+### Coluna JSON de verdade
 
-O tipo `JSON` nativo armazena até 2 GB por linha com indexação direta, sem necessidade de
-`NVARCHAR(MAX)` com funções JSON.
+Antes, guardar JSON no SQL Server significava jogá-lo num `NVARCHAR(MAX)` e usar funções para ler dentro. O texto era só texto para o banco, e buscar por uma chave lia a tabela inteira. O tipo `JSON` do SQL Server 2025 guarda até 2 GB por linha, o banco entende a estrutura e aceita índice sobre o conteúdo.
 
 <details>
 <summary>✅ Bom: coluna JSON nativa com índice</summary>
@@ -363,10 +374,9 @@ CREATE INDEX IX_Events_Payload_Type
 
 </details>
 
-### Vector search (SQL Server 2025)
+### Busca por similaridade de significado
 
-O tipo `VECTOR(n)` e `VECTOR_DISTANCE` permitem busca semântica por similaridade diretamente
-em T-SQL, usando **DiskANN** para indexação eficiente.
+O tipo `VECTOR(n)` guarda o **embedding** (a representação numérica que um modelo de linguagem gera para um texto), e `VECTOR_DISTANCE` mede o quanto dois desses vetores estão próximos. Textos com significado parecido produzem vetores próximos, então a busca passa a encontrar "calçado esportivo" quando o usuário procurou "tênis". O índice **DiskANN** (Disk-based Approximate Nearest Neighbor · vizinho mais próximo aproximado em disco) é o que torna essa busca viável em tabelas grandes.
 
 <details>
 <summary>✅ Bom: busca por similaridade vetorial</summary>
@@ -394,10 +404,11 @@ ORDER BY
 
 </details>
 
-### OPPO: Optional Parameter Plan Optimization
+### Um plano por combinação de parâmetro opcional
 
-**OPPO** gera planos distintos para cada valor de parâmetro em procedures com parâmetros opcionais,
-eliminando parameter sniffing sem `OPTION (RECOMPILE)`.
+A procedure de busca com filtros opcionais tem um problema conhecido. O SQL Server guarda o plano de execução da primeira vez que ela roda, e reusa esse plano nas próximas. Se a primeira chamada veio com o filtro de cliente preenchido, o plano é bom para esse caso e ruim para a chamada seguinte, que filtrou por data. Isso se chama **parameter sniffing**.
+
+O **OPPO** (Optional Parameter Plan Optimization · otimização de plano com parâmetro opcional) guarda um plano para cada combinação de filtros, e cada chamada recebe o plano que serve a ela. A alternativa antiga era `OPTION (RECOMPILE)`, que refazia o plano em toda execução, e esse trabalho se repetia a cada chamada.
 
 <details>
 <summary>✅ Bom: ativar OPPO na procedure</summary>
@@ -437,8 +448,9 @@ END;
 
 ### BULK INSERT
 
-`BULK INSERT` importa um arquivo de texto, como um **CSV** (Comma-Separated Values, Valores Separados por Vírgula), diretamente para uma tabela. Mais eficiente que INSERT
-linha a linha para volumes acima de milhares de registros.
+O `BULK INSERT` carrega um arquivo de texto, como um **CSV** (Comma-Separated Values · valores separados por vírgula), direto para dentro de uma tabela. Passando de alguns milhares de registros, ele deixa o `INSERT` linha a linha para trás, porque o banco lê o arquivo de uma vez em vez de interpretar um comando novo a cada linha.
+
+O `BATCHSIZE` decide de quantas em quantas linhas o banco confirma a gravação. Sem ele, um arquivo de um milhão de linhas vira uma transação só, e um erro na última linha desfaz o milhão.
 
 <details>
 <summary>✅ Bom: importar CSV com BULK INSERT</summary>
@@ -460,8 +472,9 @@ WITH
 
 ### SQL Server Agent
 
-**SQL Server Agent** executa jobs agendados em T-SQL, SSIS ou PowerShell. Cada job tem uma ou
-mais etapas e um ou mais schedules.
+O **SQL Server Agent** é o serviço que roda tarefas agendadas dentro do próprio servidor, em T-SQL, SSIS ou PowerShell. A limpeza noturna de registros antigos vive aqui, sem depender de um serviço externo só para disparar um comando.
+
+Um **job** (tarefa) reúne uma ou mais etapas e um ou mais horários. As procedures `sp_add_job`, `sp_add_jobstep` e `sp_add_schedule` que aparecem no exemplo são do próprio SQL Server, e por isso não seguem o `SP_` maiúsculo do guia.
 
 <details>
 <summary>✅ Bom: criar job com etapa T-SQL e agendamento diário</summary>
@@ -516,7 +529,11 @@ EXEC sp_add_jobserver
 
 ## Diagnóstico
 
+Quando o banco fica lento, quatro perguntas resolvem a maior parte dos casos: o que o banco faz para resolver uma query, quais queries demoram mais, quantas conexões estão abertas e quem está travando quem.
+
 ### Plano de execução
+
+`SET STATISTICS IO ON` mostra quantas páginas o banco precisou ler, e `SET STATISTICS TIME ON` mostra quanto tempo levou. Os dois juntos dizem se a query está lenta por ler demais ou por calcular demais.
 
 ```sql
 -- ativar antes da query para ver I/O e tempo
@@ -532,11 +549,11 @@ WHERE
   Orders.Status = 'pending';
 ```
 
-`Logical reads` alto com `Scan count` 1 em tabela grande indica índice ausente.
+`Logical reads` alto com `Scan count` igual a 1, numa tabela grande, significa que o banco varreu a tabela inteira uma vez. É o sinal de que falta índice para aquele filtro.
 
 ### Queries lentas (Query Store)
 
-**Query Store** está ativo por padrão no SQL Server 2016+.
+O **Query Store** guarda o histórico de execução das queries: quanto cada uma demorou, quantas vezes rodou e qual plano usou. Ele vem ligado a partir do SQL Server 2016, e é por ele que se descobre a query que ficou lenta depois de um deploy.
 
 ```sql
 -- top 20 queries por tempo médio de execução
@@ -553,6 +570,8 @@ ORDER BY
 ```
 
 ### Conexões ativas
+
+A aplicação reutiliza um conjunto fixo de conexões, o **pool**. Quando todas ficam ocupadas, a próxima requisição espera, e a aplicação parece lenta mesmo com o banco ocioso. Contar as conexões por banco mostra se é isso que está acontecendo.
 
 ```sql
 -- conexões por banco (diagnóstico de pool exhaustion)

@@ -1,8 +1,10 @@
-# Migrations
+# Migrations: como o schema evolui
 
 > Escopo: SQL. Idioms específicos deste ecossistema.
 
-Migrações são incrementais e irreversíveis. Cada arquivo representa uma mudança atômica no schema. **Forward-only migrations** (migrações apenas para frente) eliminam ambiguidade e simplificam pipelines de **CI** (Continuous Integration · Integração Contínua).
+Uma **migration** (migração) é um arquivo SQL versionado que altera a estrutura do banco. Cada arquivo carrega uma mudança e roda uma vez, na ordem do timestamp que abre o nome. O schema de produção é a soma de todas as migrations que já rodaram, na ordem em que rodaram.
+
+Este guia adota a política **forward-only** (apenas para frente): nenhuma migration escreve o script de volta. Para desfazer algo, você escreve uma migration nova que desfaz. Assim existe um único caminho do banco vazio até o schema atual, e o pipeline de **CI** (Continuous Integration · Integração Contínua) só precisa rodar os arquivos em ordem.
 
 ## Conceitos fundamentais
 
@@ -18,9 +20,9 @@ Migrações são incrementais e irreversíveis. Cada arquivo representa uma muda
 
 <a id="naming-convention"></a>
 
-## Convenção de nomenclatura
+## O nome do arquivo começa pelo timestamp
 
-Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
+O formato é `YYYYMMDDHHMMSS_descricao_da_migracao.sql`, o mesmo que o Rails popularizou. O timestamp resolve a ordem de execução mesmo quando dois desenvolvedores criam migrations no mesmo dia, em branches diferentes: a hora de criação decide quem roda primeiro. A numeração sequencial (`01-`, `02-`) quebra nesse cenário, porque os dois escolhem o mesmo número.
 
 <details>
 <summary>❌ Ruim: numeração sequencial, sem contexto temporal</summary>
@@ -43,9 +45,11 @@ Formato Rails: `YYYYMMDDHHMMSS_descricao_da_migracao.sql`
 
 </details>
 
-## Somente para frente: forward only
+<a id="forward-only"></a>
 
-Nunca editar uma migration já executada. Para ajustes, criar uma nova migration.
+## Uma migration que já rodou nunca é editada
+
+Editar o arquivo depois que ele rodou cria dois bancos diferentes com o mesmo histórico. O seu banco local, recriado do zero, ganha a coluna nova; produção, que já marcou aquela migration como executada, continua sem ela. Para corrigir o schema, escreva uma migration nova.
 
 <details>
 <summary>❌ Ruim: editar migration existente para corrigir schema</summary>
@@ -75,9 +79,11 @@ ADD
 
 </details>
 
-## Uma responsabilidade por arquivo
+<a id="one-change-per-file"></a>
 
-Cada migration faz uma coisa. Não misturar criação de tabelas com inserção de dados ou criação de índices não relacionados.
+## Cada migration faz uma coisa
+
+Criação de tabela, carga de dados iniciais e criação de índice vão em arquivos separados. Quando a migration junta tudo e falha no meio, você fica com metade aplicada e precisa descobrir onde parou. Com um arquivo por mudança, a que falhou é a que você lê, e o nome dela já diz o que estava tentando fazer.
 
 <details>
 <summary>❌ Ruim: migration faz tudo de uma vez</summary>

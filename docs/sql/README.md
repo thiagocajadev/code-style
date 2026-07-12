@@ -1,30 +1,30 @@
 # SQL
 
-Convenções SQL focadas em legibilidade e manutenção. Os exemplos usam SQL Server como referência; diferenças com PostgreSQL são destacadas onde relevantes.
+Convenções de SQL voltadas a quem vai ler a query depois. Os exemplos usam SQL Server como referência, e as diferenças do PostgreSQL aparecem sinalizadas onde importam.
 
-O banco de dados é um **store**: armazena e devolve dados. Regras de negócio, validações e orquestrações pertencem à aplicação. Procedures e functions têm espaço para otimizações de performance e relatórios, não para lógica de domínio.
+Uma linha divide este guia: o banco guarda e devolve dados, e a aplicação decide o que os dados significam. As regras de negócio, as validações e a orquestração ficam na aplicação. As procedures e as functions ficam reservadas ao que só o banco faz bem, que é otimizar acesso e montar relatório.
 
 ## Fundamentos
 
-| Tópico                                          | Conceitos                                                          |
-| ----------------------------------------------- | ------------------------------------------------------------------ |
-| [Formatting](conventions/formatting.md)         | Estilo vertical, indentação, JOIN, condições verticais             |
-| [Naming](conventions/naming.md)                 | Inglês, plural/singular, qualificação, prefixos, constraints       |
-| [CRUD](conventions/crud.md)                     | INSERT, SELECT, UPDATE, DELETE, soft delete, filtros, ordenação    |
-| [Visual Density](conventions/visual-density.md) | CTEs encadeadas, etapas em procedures                              |
+| Tópico                                                | Conceitos                                                          |
+| ----------------------------------------------------- | ------------------------------------------------------------------ |
+| [Formatação](conventions/formatting.md)               | Estilo vertical, indentação, JOIN, condições verticais             |
+| [Nomes](conventions/naming.md)                        | Inglês, plural/singular, qualificação, prefixos, constraints       |
+| [CRUD](conventions/crud.md)                           | INSERT, SELECT, UPDATE, DELETE, soft delete, filtros, ordenação    |
+| [Densidade visual](conventions/visual-density.md)     | CTEs encadeadas, etapas em procedures                              |
 
 ## Avançados
 
 | Tópico                                                        | Conceitos                                                           |
 | ------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [Advanced](conventions/advanced/advanced.md)                  | CTEs, subqueries, functions                                         |
+| [Recursos avançados](conventions/advanced/advanced.md)        | CTEs, subqueries, functions                                         |
 | [Procedures](conventions/advanced/procedures.md)              | Temp tables, etapas nomeadas, queries complexas                     |
 | [Performance](conventions/advanced/performance.md)            | SELECT *, índices, subquery correlacionada, FK sem índice, paginação |
-| [Null Safety](conventions/advanced/null-safety.md)            | IS NULL, COALESCE, NULLIF, NOT NULL + DEFAULT, NULL em JOIN          |
+| [Segurança contra nulos](conventions/advanced/null-safety.md) | IS NULL, COALESCE, NULLIF, NOT NULL + DEFAULT, NULL em JOIN          |
 | [Migrations](conventions/advanced/migrations.md)              | Naming YYYYMMDDHHMMSS, forward only, uma responsabilidade           |
-| [Batch](conventions/advanced/batch.md)                        | Batch INSERT, DELETE/UPDATE em lotes com TOP + WHILE, staging table |
-| [Entity Modeling](conventions/advanced/entity-modeling.md)    | `DOMAIN` type para IDs, embedded columns vs satellite, ENUM/CHECK, FK por id, RLS |
-| [Quick Reference](quick-reference.md)                         | Nomenclatura, verbos, taboos, query estruturada                     |
+| [Operações em lote](conventions/advanced/batch.md)            | Batch INSERT, DELETE/UPDATE em lotes com TOP + WHILE, staging table |
+| [Modelagem de entidades](conventions/advanced/entity-modeling.md) | `DOMAIN` type para IDs, embedded columns vs satellite, ENUM/CHECK, FK por id, RLS |
+| [Referência rápida](quick-reference.md)                       | Nomenclatura, verbos, taboos, query estruturada                     |
 
 ## SGBD
 
@@ -45,15 +45,15 @@ Idioms e recursos específicos de cada banco de dados.
 | [Escrita em inglês](conventions/naming.md#portuguese-names)                                                | Tabelas, colunas e objetos nomeados em inglês                               |
 | [Escrita vertical](conventions/formatting.md#single-line-query)                                        | Uma cláusula por linha: SELECT, FROM, JOIN, WHERE, ORDER BY                 |
 | [Baixa densidade visual](conventions/formatting.md#rule-of-three-inline)                                | Inline somente com ≤3 campos e ≤1 condição                                  |
-| [Indentação consistente](conventions/formatting.md#colunas-sem-recuo)                                        | 2 espaços sob cada cláusula, blocos alinhados por nível                     |
+| [Indentação consistente](conventions/formatting.md#indentation)                                        | 2 espaços sob cada cláusula, blocos alinhados por nível                     |
 | [Nomes expressivos](conventions/naming.md#explicit-qualification)                        | Aliases descritivos pelo domínio; nunca `t`, `c`, `x`                       |
 | [Qualificação explícita](conventions/naming.md#explicit-qualification)                   | Sempre `Tabela.Coluna`, nunca colunas nuas                                  |
-| [Joins legíveis](conventions/formatting.md#join-com-on-simples)                                              | JOIN e ON em linhas separadas; ON complexo expandido                        |
+| [Joins legíveis](conventions/formatting.md#join-simple-on)                                              | JOIN e ON em linhas separadas; ON complexo expandido                        |
 | [Condições verticais](conventions/formatting.md#vertical-conditions)                                         | Uma condição por linha, AND e OR ao final da linha                          |
 | [Sem valores mágicos](conventions/crud.md#named-parameters)                           | Parâmetros nomeados em vez de literais inline                               |
 | [Ordenação explícita](conventions/crud.md#explicit-ordering)                                               | ORDER BY sempre declarado                                                   |
-| [Objetos nomeados](conventions/naming.md#prefixos-de-objetos)                                                | `SP_`, `FN_`, `IX_`, `VW_`: prefixo declara a intenção                     |
-| [Constraints nomeadas](conventions/naming.md#constraints-nomeadas)                                           | `PK_`, `FK_`, `UQ_`, `CK_`: toda constraint tem nome explícito             |
+| [Objetos nomeados](conventions/naming.md#object-prefixes)                                                | `SP_`, `FN_`, `IX_`, `VW_`: prefixo declara a intenção                     |
+| [Constraints nomeadas](conventions/naming.md#named-constraints)                                           | `PK_`, `FK_`, `UQ_`, `CK_`: toda constraint tem nome explícito             |
 
 <br>
 
@@ -63,9 +63,9 @@ Idioms e recursos específicos de cada banco de dados.
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
 | [Fluxo linear](conventions/formatting.md#single-line-query)                                            | Leitura de cima para baixo: filtros antes de JOINs, resultado no final      |
 | [Etapas explícitas](conventions/advanced/procedures.md#monolithic-query-vs-temp-tables)           | Queries complexas decompostas em passos nomeados com temp tables            |
-| [Sem subqueries profundas](conventions/advanced/advanced.md#subquery-aninhada)                               | Subqueries substituídas por CTEs nomeadas                                   |
-| [CTE vs temp table](conventions/advanced/advanced.md#ctes-encadeadas)                                        | CTE para leitura simples; temp table (`#`) para reuso e performance         |
-| [Filtros antecipados](conventions/crud.md#filtros-antecipados)                                               | WHERE na tabela principal antes dos JOINs                                   |
+| [Sem subqueries profundas](conventions/advanced/advanced.md#nested-subquery)                               | Subqueries substituídas por CTEs nomeadas                                   |
+| [CTE vs temp table](conventions/advanced/advanced.md#chained-ctes)                                        | CTE para leitura simples; temp table (`#`) para reuso e performance         |
+| [Filtros antecipados](conventions/crud.md#early-filters)                                               | WHERE na tabela principal antes dos JOINs                                   |
 
 <br>
 
@@ -73,7 +73,7 @@ Idioms e recursos específicos de cada banco de dados.
 
 | Princípio                                                                                                    | Descrição                                                                   |
 | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------- |
-| [Consultas enxutas](conventions/advanced/performance.md#select-)                                             | Sem `SELECT *`; trazer apenas as colunas necessárias                        |
+| [Consultas enxutas](conventions/advanced/performance.md#select-star)                                             | Sem `SELECT *`; trazer apenas as colunas necessárias                        |
 | [FK com índice](conventions/advanced/performance.md#fk-without-index)                                           | FK sempre acompanhada de índice na coluna referenciadora                    |
 | [Migrations incrementais](conventions/advanced/migrations.md#naming-convention)                      | `YYYYMMDDHHMMSS_descricao.sql`: uma mudança por arquivo                     |
-| [Forward only](conventions/advanced/migrations.md#somente-para-frente-forward-only)                         | Nunca editar migration existente; ajuste = nova migration                   |
+| [Forward only](conventions/advanced/migrations.md#forward-only)                         | Nunca editar migration existente; ajuste = nova migration                   |

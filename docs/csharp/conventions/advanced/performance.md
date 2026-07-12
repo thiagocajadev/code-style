@@ -183,7 +183,7 @@ Deixe o `Task` onde o método quase sempre espera de verdade por uma resposta. A
 
 ## Guid v4 e Guid v7 como identificador
 
-`Guid.NewGuid()` produz um **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4, que é aleatório. Como chave primária, isso significa que cada linha nova vai parar num ponto qualquer do índice, e o banco precisa abrir espaço no meio de páginas já cheias. `Guid.CreateVersion7()` (.NET 9+) começa pelo horário de criação, então os identificadores nascem em ordem crescente e cada linha nova entra no fim do índice. Veja o efeito disso no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#tipo-de-id-bigint-vs-uuid).
+`Guid.NewGuid()` produz um **UUID** (Universally Unique Identifier · Identificador Universalmente Único) v4, que é aleatório. Como chave primária, isso significa que cada linha nova vai parar num ponto qualquer do índice, e o banco precisa abrir espaço no meio de páginas já cheias. `Guid.CreateVersion7()` (.NET 9+) começa pelo horário de criação, então os identificadores nascem em ordem crescente e cada linha nova entra no fim do índice. Veja o efeito disso no banco em [sql/conventions/advanced/performance.md](../../../sql/conventions/advanced/performance.md#id-type-bigint-vs-uuid).
 
 <details>
 <summary>❌ Ruim: Guid.NewGuid() é v4: random, fragmenta índice</summary>

@@ -1,9 +1,10 @@
-# Null safety
+# Segurança contra nulos em SQL
 
 > Escopo: SQL. Visão transversal: [shared/standards/null-safety.md](../../../shared/standards/null-safety.md).
 
-NULL em **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) não é `false`, não é `0`, não é string vazia. É a ausência de valor com comportamento
-único: qualquer comparação com NULL retorna NULL, não `true` nem `false`.
+`NULL` em **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) significa "o valor é desconhecido". Ele ocupa uma categoria própria, separada de `0`, de `false` e da string vazia, e é daí que vem a maior parte das surpresas.
+
+A consequência prática está nas comparações. Perguntar se um valor desconhecido é igual a 10 devolve outro desconhecido: a resposta não é verdadeira nem falsa. Em SQL isso se chama **three-valued logic** (lógica de três valores): toda comparação devolve `TRUE`, `FALSE` ou `UNKNOWN`, e o `WHERE` só deixa passar a linha quando a resposta é `TRUE`.
 
 > Os exemplos seguem a convenção SQL Server (PascalCase). Exemplos específicos de PostgreSQL são
 > marcados com `-- PostgreSQL`.
@@ -12,18 +13,21 @@ NULL em **SQL** (Structured Query Language · Linguagem de Consulta Estruturada)
 
 | Conceito | O que é |
 | --- | --- |
-| **NULL** (ausência de valor) | Marca de "desconhecido"; não é `0`, `false` nem string vazia |
-| **three-valued logic** (lógica de três valores) | `TRUE`, `FALSE`, `UNKNOWN`; toda comparação com NULL retorna `UNKNOWN` |
-| **IS NULL / IS NOT NULL** (é nulo / não é nulo) | Únicos operadores que testam NULL corretamente; `= NULL` nunca funciona |
+| **NULL** (ausência de valor) | Marca que o valor é desconhecido; categoria própria, separada de `0`, `false` e string vazia |
+| **three-valued logic** (lógica de três valores) | `TRUE`, `FALSE`, `UNKNOWN`; toda comparação com NULL devolve `UNKNOWN` |
+| **IS NULL / IS NOT NULL** (é nulo / não é nulo) | Os operadores que testam a presença de NULL; `= NULL` nunca devolve linha |
 | **COALESCE** (coalescência) | Retorna o primeiro argumento não-nulo; substitui NULL por valor padrão |
 | **NULLIF** (anular se igual) | Retorna NULL quando dois argumentos são iguais; útil para evitar divisão por zero |
 | **NOT NULL constraint** (restrição NOT NULL) | Garante que a coluna nunca aceita NULL; aplicar quando o domínio exige presença |
 | **NULL-safe equals** (igualdade segura contra NULL) | `IS NOT DISTINCT FROM` (PostgreSQL) ou `INTERSECT` (SQL Server); compara tratando NULL como valor |
 
-## `= NULL` nunca funciona
+<a id="is-null"></a>
 
-A armadilha mais comum. `= NULL` sempre retorna NULL: a condição nunca é verdadeira. Use
-`IS NULL` e `IS NOT NULL`.
+## Use IS NULL, porque `= NULL` nunca devolve linha
+
+`WHERE Coach = NULL` pergunta se um valor desconhecido é igual a um valor desconhecido, e a resposta é `UNKNOWN`. Como o `WHERE` só aceita a linha quando a resposta é `TRUE`, a query devolve zero linhas, mesmo com a tabela cheia de times sem técnico. Nenhum erro aparece, o resultado vem vazio, e a query parece certa.
+
+`IS NULL` e `IS NOT NULL` são os operadores que perguntam pela presença do valor, e eles respondem `TRUE` ou `FALSE`.
 
 <details>
 <summary>❌ Ruim: = NULL não retorna nenhuma linha</summary>
@@ -76,10 +80,13 @@ WHERE
 
 </details>
 
-## COALESCE: primeiro valor não-nulo
+<a id="coalesce"></a>
 
-`COALESCE` retorna o primeiro argumento não-nulo. Substitui `CASE WHEN x IS NULL THEN ...`.
-Indispensável para fallbacks e para tornar cálculos seguros.
+## COALESCE devolve o primeiro valor que existir
+
+`COALESCE(Nickname, FirstName, 'Anonymous')` percorre os argumentos da esquerda para a direita e devolve o primeiro que tiver valor. Ele resolve numa linha o que o `CASE WHEN` resolve em cinco, e a lista de alternativas cresce acrescentando um argumento.
+
+O mesmo vale para conta: `Total + Bonus` devolve `NULL` inteiro se o bônus for desconhecido, porque qualquer operação com `NULL` resulta em `NULL`. `Total + COALESCE(Bonus, 0)` trata a ausência de bônus como zero e a soma volta a fazer sentido.
 
 <details>
 <summary>❌ Ruim: CASE WHEN para fallback: verboso e difícil de encadear</summary>
@@ -132,10 +139,13 @@ FROM
 
 </details>
 
-## NULLIF: converter valor em NULL
+<a id="nullif"></a>
 
-`NULLIF(a, b)` retorna NULL se `a = b`, senão retorna `a`. Resolve dois casos comuns: divisão
-por zero e tratar string vazia como NULL.
+## NULLIF transforma um valor específico em NULL
+
+`NULLIF(a, b)` devolve `NULL` quando `a` e `b` são iguais, e devolve `a` no resto dos casos. Ele serve a dois usos frequentes.
+
+O primeiro é a divisão por zero. `Amount / NULLIF(Quantity, 0)` transforma o divisor zero em `NULL`, e a divisão devolve `NULL` no lugar de derrubar a query com erro. O segundo é a string vazia: `NULLIF(Nickname, '')` faz o apelido em branco valer como ausente, e aí o `COALESCE` que vem depois consegue cair no próximo valor.
 
 <details>
 <summary>❌ Ruim: CASE WHEN para divisão segura e normalização: mais verboso</summary>
@@ -183,10 +193,13 @@ FROM
 
 </details>
 
-## NOT NULL + DEFAULT: fechar null no schema
+<a id="not-null-and-default"></a>
 
-A melhor defesa contra null é não deixá-lo entrar. `NOT NULL` e `DEFAULT` juntos garantem que
-a coluna sempre tem valor, sem precisar de `COALESCE` em cada query.
+## Barrar o NULL no schema poupa COALESCE em toda query
+
+A coluna que aceita `NULL` obriga cada query a se defender. Toda soma precisa de `COALESCE`, todo filtro precisa lembrar do caso ausente, e basta um esquecimento para o resultado sair errado em silêncio.
+
+Declarar `NOT NULL` com um `DEFAULT` resolve na origem: a coluna nasce com valor mesmo quando o `INSERT` não a menciona. Quando o domínio exige que o valor exista (todo pedido tem status, todo registro tem data de criação), essa é a declaração certa.
 
 <details>
 <summary>❌ Ruim: coluna nullable sem default obriga COALESCE em todo lugar</summary>
@@ -236,10 +249,13 @@ FROM
 
 </details>
 
-## NULL em agregações
+<a id="null-in-aggregates"></a>
 
-`SUM`, `AVG`, `MIN` e `MAX` ignoram NULL como se a linha não existisse para o cálculo.
-`COUNT(coluna)` ignora NULL; `COUNT(*)` conta todas as linhas.
+## As agregações pulam o NULL, e o AVG mente por causa disso
+
+`SUM`, `AVG`, `MIN` e `MAX` descartam as linhas nulas antes de calcular. Isso importa muito no `AVG`: a média de `10`, `20` e `NULL` é 15, porque o divisor é 2. Se aquele `NULL` deveria valer zero, a média real era 10, e a query devolveu 15 sem avisar.
+
+A diferença entre as duas formas de contar segue a mesma lógica. `COUNT(*)` conta as linhas da tabela. `COUNT(AssignedTo)` conta as linhas em que `AssignedTo` tem valor. Trocar uma pela outra muda o número do relatório.
 
 <details>
 <summary>❌ Ruim: assumir que COUNT(*) e COUNT(coluna) são equivalentes</summary>
@@ -300,10 +316,13 @@ GROUP BY
 
 </details>
 
-## NULL em JOIN
+<a id="null-in-join"></a>
 
-NULL nunca iguala NULL em condições de JOIN. Chaves estrangeiras devem ser `NOT NULL` para evitar
-linhas fantasmas e comportamento inesperado.
+## A linha com chave nula desaparece do INNER JOIN
+
+O `JOIN` compara a chave dos dois lados, e a comparação com `NULL` devolve `UNKNOWN`. O pedido cujo `CustomerId` está nulo não casa com cliente nenhum, e o `INNER JOIN` o descarta. O relatório de pedidos vem com menos pedidos do que a tabela tem, e nada na saída indica que faltou alguém.
+
+Declarar a chave estrangeira como `NOT NULL` fecha o caso na origem. Quando a ausência é legítima (um pedido de balcão sem cliente cadastrado), o `LEFT JOIN` preserva a linha e deixa as colunas do cliente nulas.
 
 <details>
 <summary>❌ Ruim: JOIN com chave nullable perde linhas silenciosamente</summary>
@@ -348,10 +367,13 @@ JOIN
 
 </details>
 
-## NOT IN com subquery: armadilha de NULL
+<a id="not-in-with-null"></a>
 
-Se a subquery retornar qualquer NULL, `NOT IN` retorna vazio: comportamento silencioso que não
-gera erro. Filtre NULL da subquery ou use `NOT EXISTS`.
+## Um NULL na subquery faz o NOT IN devolver zero linhas
+
+Essa é a mais traiçoeira da página. `WHERE Id NOT IN (SELECT UserId FROM Users)` pergunta, para cada pedido, se o identificador é diferente de todos os valores da lista. Se um dos valores da lista é `NULL`, a comparação com ele devolve `UNKNOWN`, e a resposta final nunca chega a `TRUE`. A query devolve vazio, sempre, mesmo com as duas tabelas cheias.
+
+`NOT EXISTS` faz a mesma pergunta e não cai nessa armadilha, porque ele testa a existência da linha em vez de comparar valores. Use `NOT EXISTS` por padrão.
 
 <details>
 <summary>❌ Ruim: NOT IN retorna vazio se a subquery contiver NULL</summary>
@@ -398,10 +420,13 @@ WHERE
 
 </details>
 
-## NULL em UNIQUE
+<a id="null-in-unique"></a>
 
-Múltiplos NULL são permitidos em colunas `UNIQUE` porque NULL não é igual a NULL. Use índice filtrado
-quando quiser "único entre os preenchidos".
+## A coluna UNIQUE aceita vários NULL
+
+A restrição `UNIQUE` impede valores repetidos, e como um `NULL` nunca é considerado igual a outro `NULL`, ela deixa passar quantas linhas nulas você quiser. Uma coluna de CPF `UNIQUE` aceita mil usuários sem CPF, e isso costuma ser o que se quer.
+
+Quando a regra é "único entre os que têm valor", declare um índice filtrado (`WHERE Cpf IS NOT NULL`). Assim a intenção fica escrita no schema.
 
 <details>
 <summary>❌ Ruim: intenção de "único quando preenchido" não está declarada explicitamente</summary>
@@ -446,10 +471,13 @@ CREATE UNIQUE INDEX uq_users_phone_not_null
 
 </details>
 
-## IS DISTINCT FROM (PostgreSQL)
+<a id="is-distinct-from"></a>
 
-`IS DISTINCT FROM` é uma comparação null-safe: `NULL IS DISTINCT FROM NULL` retorna `false`
-(os valores são iguais). Útil para detectar mudanças reais em auditorias e updates condicionais.
+## IS DISTINCT FROM compara tratando NULL como um valor
+
+No PostgreSQL, `IS DISTINCT FROM` responde `TRUE` ou `FALSE` mesmo quando um dos lados é `NULL`. Dois nulos contam como iguais, e um nulo contra um texto conta como diferente.
+
+Isso resolve a comparação de auditoria. Para detectar que o status mudou de `NULL` para `'shipped'`, o `<>` comum devolve `UNKNOWN` e a linha some do resultado, então a mudança passa despercebida. `IS DISTINCT FROM` devolve `TRUE` e a mudança aparece.
 
 <details>
 <summary>❌ Ruim: comparação sem IS DISTINCT FROM perde mudanças envolvendo NULL</summary>
@@ -491,9 +519,13 @@ WHERE
 
 </details>
 
-## NULL em ORDER BY
+<a id="null-in-order-by"></a>
 
-NULL ocupa uma posição diferente dependendo do banco. Controle explícito da posição evita surpresas.
+## Cada banco põe o NULL num lugar diferente da ordenação
+
+Ordenando em ordem crescente, o PostgreSQL joga os nulos para o fim e o SQL Server os joga para o começo. A mesma query, o mesmo dado, duas telas diferentes. Isso morde quem desenvolve num banco e roda em produção no outro.
+
+O PostgreSQL aceita `NULLS FIRST` e `NULLS LAST` no `ORDER BY`. No SQL Server, a posição se declara com uma coluna auxiliar no `ORDER BY` que ordena primeiro pelo `CASE WHEN ... IS NULL`.
 
 <details>
 <summary>❌ Ruim: ORDER BY sem controle de NULL: posição varia por banco</summary>
@@ -539,10 +571,13 @@ ORDER BY
 
 </details>
 
-## Schema evolution: adicionar coluna em tabela existente
+<a id="new-column-on-existing-table"></a>
 
-Ver [Segurança contra nulos: campo novo em tabela existente](../../../shared/standards/null-safety.md#new-column-on-existing-table)
-para a estratégia completa. O padrão SQL:
+## A coluna nova numa tabela com dados precisa de DEFAULT
+
+`ALTER TABLE Orders ADD Priority NVARCHAR(20) NOT NULL` funciona na tabela vazia e falha na tabela com dados. A migration para na hora: os pedidos que já existem não têm valor para a coluna nova, e a restrição `NOT NULL` proíbe deixá-los nulos.
+
+Declarar o `DEFAULT` junto resolve, porque o banco preenche as linhas antigas com ele. A estratégia completa, para quando o valor padrão não serve, está em [Segurança contra nulos: campo novo em tabela existente](../../../shared/standards/null-safety.md#new-column-on-existing-table).
 
 <details>
 <summary>❌ Ruim: NOT NULL sem DEFAULT: migration falha em tabelas com dados</summary>

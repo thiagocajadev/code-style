@@ -255,7 +255,7 @@ O sufixo `_id` documenta a FK pelo nome. O `DOMAIN customer_id` impede que um `o
 
 ## Colunas comuns: id, created_at, updated_at, deleted_at, tenant_id
 
-Toda tabela de **aggregate root** carrega um conjunto fixo de colunas que expressam identidade, auditoria e ciclo de vida. Esse conjunto é o equivalente relacional da `BaseEntity` do modelo OO. Aqui, "herança" é uma convenção de DDL repetida, não uma classe pai.
+Toda tabela de **aggregate root** carrega um conjunto fixo de colunas que expressam identidade, auditoria e ciclo de vida. Esse conjunto é o equivalente relacional da `BaseEntity` do modelo OO. No banco, a "herança" acontece pela repetição das mesmas colunas em cada tabela, escritas à mão no DDL.
 
 As tabelas filhas do agregado (ex.: `order_items`) não carregam `tenant_id` nem colunas de auditoria: acessadas sempre pelo pai, herdam o contexto da aggregate root.
 
@@ -304,7 +304,7 @@ CREATE INDEX ix_orders_active
 
 ## Coluna obrigatória vs nullable vs coleção (FK 1:N)
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. A tabela abaixo traduz cada regra para DDL:
+A cardinalidade escreve no schema a regra permanente do negócio: se todo pedido precisa ter um cliente, a coluna é `NOT NULL` para sempre, mesmo que hoje existam pedidos antigos sem cliente cadastrado. A tabela abaixo traduz cada regra para DDL:
 
 | Regra de negócio | Modelo SQL | Exemplo |
 | --- | --- | --- |
@@ -328,7 +328,7 @@ CREATE TABLE customers
 );
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma constraint de negócio. Adicionar um quarto telefone é mudança de DDL, não de regra. Verificar "quais clientes têm ao menos um telefone" vira `WHERE phone1 IS NOT NULL OR phone2 IS NOT NULL OR phone3 IS NOT NULL`.
+O limite de três telefones virou parte da estrutura da tabela, e isso atrapalha em duas frentes. Aceitar um quarto telefone passa a exigir uma migration, quando deveria ser uma linha de regra de negócio. E toda pergunta simples fica torta: "quais clientes têm ao menos um telefone" vira `WHERE phone1 IS NOT NULL OR phone2 IS NOT NULL OR phone3 IS NOT NULL`.
 
 </details>
 
@@ -731,21 +731,467 @@ Para ativar o contexto na sessão: `SET app.current_tenant = '<uuid>'`. Com RLS 
 
 Os padrões abaixo aparecem com frequência em schemas reais, e cada um é um sinal de que a modelagem merece uma volta. Quando algum deles surgir na revisão, vale revisitar a tabela antes que o débito cresça e contamine queries e índices vizinhos.
 
-**God Table**. Tabela com 25+ colunas misturando conceitos. Sintoma: o nome da tabela vira lista (`user_account_preferences_billing`). Tratamento: extrair value objects como colunas com prefixo ou tabelas satélite; separar em agregados quando os ciclos de vida divergem.
+<a id="god-table"></a>
 
-**Campos nullable por design ruim**. Tabela com 10 dos 20 campos sempre `NULL` para uma categoria de registros. Sintoma: queries precisam de `COALESCE` em todo acesso ou `IS NOT NULL` espalhado. Tratamento: extrair os opcionais em tabela satélite 1:1 (presente quando o conceito existe, ausente quando não).
+### God table: uma tabela que guarda vários conceitos
 
-**Lista mascarada como colunas numeradas**. `phone1`, `phone2`, `phone3` quando o domínio diz "muitos telefones". Sintoma: lógica `CASE WHEN phone1 IS NULL THEN ... WHEN phone2 IS NULL THEN ...`. Tratamento: tabela filha com FK e constraint de cardinalidade.
+Passando de umas 25 colunas, a tabela costuma ter juntado conceitos que não vivem juntos. O sintoma aparece no nome, que vira uma lista de assuntos (`user_account_preferences_billing`). O endereço muda quando o cliente se muda, a preferência muda quando ele clica num toggle, e o dado de cobrança muda quando o financeiro atualiza: três ciclos de vida diferentes na mesma linha.
 
-**JSONB como substituto de schema**. Coluna `data JSONB` contendo campos que deveriam ser colunas tipadas. Sintoma: queries com `->>'field'` em condições de filtro, sem índice. Tratamento: promover campos frequentemente filtrados para colunas. JSONB serve para dados semi-estruturados que variam de fato, não para escapar do DDL.
+O tratamento é separar. O endereço, que é um **value object** (conjunto de campos que só faz sentido junto), vira um grupo de colunas com prefixo comum ou uma tabela satélite. O que tem ciclo de vida próprio vira agregado próprio.
 
-**Referência cruzada via JOIN em carga de agregado**. Query que faz JOIN em `customers` para "completar" o `orders`. Sintoma: cache de `orders` é invalidado quando `customers` muda. Tratamento: queries separadas por agregado; caller resolve o `customer_id`.
+<details>
+<summary>❌ Ruim: uma tabela para cliente, endereço, preferência e cobrança</summary>
 
-**Cross-aggregate sem FK no banco**. Remover FK entre agregados para "flexibilidade". Sintoma: `order_items.product_id` aponta para produtos deletados; inconsistência silenciosa. Tratamento: manter FK para integridade referencial; a FK não significa JOIN, significa contrato de existência.
+```sql
+CREATE TABLE user_account_preferences_billing
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  name VARCHAR(200) NOT NULL,
+  email VARCHAR(200) NOT NULL,
+  address_street VARCHAR(200),
+  address_city VARCHAR(100),
+  address_zip VARCHAR(20),
+  newsletter_opt_in BOOLEAN,
+  theme VARCHAR(20),
+  language VARCHAR(10),
+  card_last_four VARCHAR(4),
+  card_brand VARCHAR(20),
+  billing_cycle VARCHAR(20),
 
-**tenant_id em tabelas filhas**. Duplicar `tenant_id` em `order_items`, `invoice_lines`, `enrollment_grades`. Sintoma: risco de inconsistência entre tenant do pai e tenant do filho; surface de filtro aumenta. Tratamento: `tenant_id` só na aggregate root; filhos acessados sempre via FK para o pai.
+  CONSTRAINT pk_user_account_preferences_billing PRIMARY KEY (id)
+);
+```
 
-**ENUM type para status com dados adicionais**. `CREATE TYPE order_status AS ENUM (...)` quando cada status precisa de campos extras (`settled_at`, `cancelled_at`). Sintoma: colunas de data sempre nullable sem garantia de preenchimento. Tratamento: `VARCHAR` + `CHECK` de coerência entre status e campos associados.
+</details>
+
+<details>
+<summary>✅ Bom: o cliente guarda o endereço; preferência e cobrança viram agregados próprios</summary>
+
+```sql
+CREATE TABLE customers
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  name VARCHAR(200) NOT NULL,
+  email VARCHAR(200) NOT NULL,
+  address_street VARCHAR(200) NOT NULL,
+  address_city VARCHAR(100) NOT NULL,
+  address_zip VARCHAR(20) NOT NULL,
+
+  CONSTRAINT pk_customers PRIMARY KEY (id)
+);
+
+CREATE TABLE customer_preferences
+(
+  customer_id UUID NOT NULL,
+  newsletter_opt_in BOOLEAN NOT NULL DEFAULT FALSE,
+  theme VARCHAR(20) NOT NULL DEFAULT 'light',
+  language VARCHAR(10) NOT NULL DEFAULT 'pt-BR',
+
+  CONSTRAINT pk_customer_preferences PRIMARY KEY (customer_id),
+  CONSTRAINT fk_customer_preferences_customers FOREIGN KEY (customer_id)
+    REFERENCES customers (id)
+);
+```
+
+</details>
+
+<a id="nullable-by-bad-design"></a>
+
+### Metade das colunas sempre nula
+
+Quando dez dos vinte campos vêm nulos para uma categoria inteira de registros, o schema está tentando descrever dois conceitos numa tabela só. O sintoma é a query que precisa de `COALESCE` em todo acesso, ou de `IS NOT NULL` espalhado por toda parte.
+
+O tratamento é extrair os campos opcionais para uma tabela satélite 1:1. Ela existe quando o conceito existe e some quando ele não existe, e aí a presença da linha já responde a pergunta.
+
+<details>
+<summary>❌ Ruim: dados de empresa sempre nulos para a pessoa física</summary>
+
+```sql
+CREATE TABLE customers
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  name VARCHAR(200) NOT NULL,
+  customer_kind VARCHAR(20) NOT NULL,
+  company_tax_id VARCHAR(20),
+  company_legal_name VARCHAR(200),
+  company_state_registration VARCHAR(30),
+
+  CONSTRAINT pk_customers PRIMARY KEY (id)
+);
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: tabela satélite 1:1, presente só quando o cliente é empresa</summary>
+
+```sql
+CREATE TABLE customers
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  name VARCHAR(200) NOT NULL,
+  customer_kind VARCHAR(20) NOT NULL,
+
+  CONSTRAINT pk_customers PRIMARY KEY (id),
+  CONSTRAINT ck_customers_kind CHECK (customer_kind IN ('individual', 'company'))
+);
+
+CREATE TABLE customer_companies
+(
+  customer_id UUID NOT NULL,
+  tax_id VARCHAR(20) NOT NULL,
+  legal_name VARCHAR(200) NOT NULL,
+  state_registration VARCHAR(30) NOT NULL,
+
+  CONSTRAINT pk_customer_companies PRIMARY KEY (customer_id),
+  CONSTRAINT fk_customer_companies_customers FOREIGN KEY (customer_id)
+    REFERENCES customers (id)
+);
+```
+
+</details>
+
+<a id="numbered-columns"></a>
+
+### Lista disfarçada de colunas numeradas
+
+`phone1`, `phone2` e `phone3` acontecem quando o domínio diz "o cliente tem vários telefones" e o schema responde com três colunas. O limite de três vira estrutura, e aceitar o quarto passa a exigir migration.
+
+O tratamento é uma tabela filha com FK para o cliente. A quantidade deixa de ser um problema de DDL, e as perguntas voltam a ser simples: contar telefones é um `COUNT`.
+
+<details>
+<summary>❌ Ruim: três colunas fixas, e a query precisa testar uma por uma</summary>
+
+```sql
+CREATE TABLE customers
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  name VARCHAR(200) NOT NULL,
+  phone1 VARCHAR(20),
+  phone2 VARCHAR(20),
+  phone3 VARCHAR(20),
+
+  CONSTRAINT pk_customers PRIMARY KEY (id)
+);
+
+-- quais clientes têm ao menos um telefone
+SELECT
+  customers.id,
+  customers.name
+FROM
+  customers
+WHERE
+  customers.phone1 IS NOT NULL OR
+  customers.phone2 IS NOT NULL OR
+  customers.phone3 IS NOT NULL;
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: tabela filha, e a mesma pergunta vira um JOIN</summary>
+
+```sql
+CREATE TABLE customer_phones
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  customer_id UUID NOT NULL,
+  phone_number VARCHAR(20) NOT NULL,
+  phone_kind VARCHAR(20) NOT NULL,
+
+  CONSTRAINT pk_customer_phones PRIMARY KEY (id),
+  CONSTRAINT fk_customer_phones_customers FOREIGN KEY (customer_id)
+    REFERENCES customers (id),
+  CONSTRAINT uq_customer_phones_number UNIQUE (customer_id, phone_number)
+);
+
+-- quais clientes têm ao menos um telefone
+SELECT DISTINCT
+  customers.id,
+  customers.name
+FROM
+  customers
+JOIN
+  customer_phones ON customers.id = customer_phones.customer_id;
+```
+
+</details>
+
+<a id="jsonb-as-schema"></a>
+
+### JSONB no lugar de coluna
+
+A coluna `data JSONB` que guarda campos conhecidos adia uma decisão que já podia ser tomada. O sintoma é o filtro `->>'field'` no `WHERE`: como o campo mora dentro do documento, o banco lê a tabela inteira e ainda perde a checagem de tipo, então um `total` pode chegar como texto.
+
+O tratamento é promover a coluna o campo que você filtra com frequência. Reserve o JSONB ao dado que varia de forma de verdade, como o corpo de um evento que muda de tipo para tipo.
+
+<details>
+<summary>❌ Ruim: status e total escondidos dentro do JSONB</summary>
+
+```sql
+CREATE TABLE orders
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  data JSONB NOT NULL,
+
+  CONSTRAINT pk_orders PRIMARY KEY (id)
+);
+
+-- sem índice possível: lê a tabela inteira e compara texto
+SELECT
+  orders.id
+FROM
+  orders
+WHERE
+  orders.data ->> 'status' = 'pending';
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: o que se filtra vira coluna; o JSONB guarda o que varia de fato</summary>
+
+```sql
+CREATE TABLE orders
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  status VARCHAR(20) NOT NULL,
+  total NUMERIC(10, 2) NOT NULL,
+  metadata JSONB NOT NULL DEFAULT '{}',
+
+  CONSTRAINT pk_orders PRIMARY KEY (id),
+  CONSTRAINT ck_orders_status CHECK (status IN ('pending', 'paid', 'cancelled'))
+);
+
+CREATE INDEX ix_orders_status
+  ON orders (status);
+
+SELECT
+  orders.id
+FROM
+  orders
+WHERE
+  orders.status = 'pending';
+```
+
+</details>
+
+<a id="cross-aggregate-join"></a>
+
+### JOIN em outro agregado para "completar" a carga
+
+A query que junta `customers` ao carregar `orders` mistura dois agregados numa leitura só. O sintoma aparece no cache: o pedido guardado em cache precisa ser invalidado toda vez que o cliente muda de nome, ainda que o pedido não tenha mudado.
+
+O tratamento é carregar um agregado por query. O pedido devolve o `customer_id`, e quem chamou decide se busca o cliente.
+
+<details>
+<summary>❌ Ruim: uma query carrega pedido e cliente juntos</summary>
+
+```sql
+SELECT
+  orders.id,
+  orders.total,
+  orders.status,
+  customers.name AS customer_name,
+  customers.email AS customer_email
+FROM
+  orders
+JOIN
+  customers ON orders.customer_id = customers.id
+WHERE
+  orders.id = $1;
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: o pedido devolve o customer_id; o cliente vem em outra query</summary>
+
+```sql
+-- agregado order
+SELECT
+  orders.id,
+  orders.customer_id,
+  orders.total,
+  orders.status
+FROM
+  orders
+WHERE
+  orders.id = $1;
+
+-- agregado customer, quando quem chamou precisar dele
+SELECT
+  customers.id,
+  customers.name,
+  customers.email
+FROM
+  customers
+WHERE
+  customers.id = $1;
+```
+
+</details>
+
+<a id="missing-cross-aggregate-fk"></a>
+
+### FK removida entre agregados
+
+Sem a FK entre `order_items` e `products`, o banco aceita apagar um produto que ainda tem itens de pedido apontando para ele. O item fica com um `product_id` que não corresponde a nenhuma linha, e o relatório do mês passado passa a mostrar linhas sem nome de produto.
+
+A FK garante que o identificador referenciado existe, e isso vale mesmo quando você nunca faz `JOIN` entre as duas tabelas. Carregar um agregado por vez e manter a FK são coisas compatíveis.
+
+<details>
+<summary>❌ Ruim: product_id sem FK aponta para produto que já foi apagado</summary>
+
+```sql
+CREATE TABLE order_items
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  order_id UUID NOT NULL,
+  product_id UUID NOT NULL,
+  quantity INT NOT NULL,
+
+  CONSTRAINT pk_order_items PRIMARY KEY (id),
+  CONSTRAINT fk_order_items_orders FOREIGN KEY (order_id)
+    REFERENCES orders (id)
+);
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: a FK garante que o produto existe, e o índice a acompanha</summary>
+
+```sql
+CREATE TABLE order_items
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  order_id UUID NOT NULL,
+  product_id UUID NOT NULL,
+  quantity INT NOT NULL,
+
+  CONSTRAINT pk_order_items PRIMARY KEY (id),
+  CONSTRAINT fk_order_items_orders FOREIGN KEY (order_id)
+    REFERENCES orders (id),
+  CONSTRAINT fk_order_items_products FOREIGN KEY (product_id)
+    REFERENCES products (id)
+);
+
+CREATE INDEX ix_order_items_product_id
+  ON order_items (product_id);
+```
+
+</details>
+
+<a id="tenant-id-in-child-tables"></a>
+
+### tenant_id repetido na tabela filha
+
+Copiar `tenant_id` para `order_items` cria duas fontes para a mesma informação, e nada impede que elas discordem: um item pode acabar com o tenant errado, apontando para um pedido do tenant certo. O filtro também se espalha, porque cada query passa a poder esquecer de um dos dois.
+
+O tratamento é deixar `tenant_id` só na aggregate root. O item é sempre alcançado pelo pedido, e o pedido já carrega o tenant.
+
+<details>
+<summary>❌ Ruim: o tenant aparece nas duas tabelas e pode divergir</summary>
+
+```sql
+CREATE TABLE order_items
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  tenant_id UUID NOT NULL,
+  order_id UUID NOT NULL,
+  quantity INT NOT NULL,
+
+  CONSTRAINT pk_order_items PRIMARY KEY (id),
+  CONSTRAINT fk_order_items_orders FOREIGN KEY (order_id)
+    REFERENCES orders (id)
+);
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: o tenant mora na raiz; o item chega por ela</summary>
+
+```sql
+CREATE TABLE order_items
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  order_id UUID NOT NULL,
+  quantity INT NOT NULL,
+
+  CONSTRAINT pk_order_items PRIMARY KEY (id),
+  CONSTRAINT fk_order_items_orders FOREIGN KEY (order_id)
+    REFERENCES orders (id)
+);
+
+-- o filtro de tenant entra uma vez, pela raiz
+SELECT
+  order_items.id,
+  order_items.quantity
+FROM
+  order_items
+JOIN
+  orders ON order_items.order_id = orders.id
+WHERE
+  orders.tenant_id = $1 AND
+  orders.id = $2;
+```
+
+</details>
+
+<a id="enum-with-extra-fields"></a>
+
+### ENUM para status que carrega dados extras
+
+O tipo `ENUM` guarda o nome do status e nada mais. Quando cada status traz um campo junto (o cancelamento tem data de cancelamento, a quitação tem data de quitação), as datas viram colunas nulas soltas, e nada garante que o pedido cancelado tenha `cancelled_at` preenchido.
+
+O tratamento é um `VARCHAR` com `CHECK`, e um segundo `CHECK` que amarra o status ao campo correspondente. A regra passa a ser garantida pelo banco.
+
+<details>
+<summary>❌ Ruim: ENUM com datas nulas que ninguém garante</summary>
+
+```sql
+CREATE TYPE order_status AS ENUM ('pending', 'settled', 'cancelled');
+
+CREATE TABLE orders
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  status order_status NOT NULL,
+  settled_at TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ,
+
+  CONSTRAINT pk_orders PRIMARY KEY (id)
+);
+```
+
+</details>
+
+<details>
+<summary>✅ Bom: CHECK amarra cada status ao campo que ele exige</summary>
+
+```sql
+CREATE TABLE orders
+(
+  id UUID NOT NULL DEFAULT uuidv7(),
+  status VARCHAR(20) NOT NULL,
+  settled_at TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ,
+
+  CONSTRAINT pk_orders PRIMARY KEY (id),
+  CONSTRAINT ck_orders_status CHECK (status IN ('pending', 'settled', 'cancelled')),
+  CONSTRAINT ck_orders_settled_at CHECK (
+    (status = 'settled' AND settled_at IS NOT NULL) OR
+    (status <> 'settled' AND settled_at IS NULL)
+  ),
+  CONSTRAINT ck_orders_cancelled_at CHECK (
+    (status = 'cancelled' AND cancelled_at IS NOT NULL) OR
+    (status <> 'cancelled' AND cancelled_at IS NULL)
+  )
+);
+```
+
+</details>
 
 ## Referências
 

@@ -1,6 +1,6 @@
-# Formatting
+# Formatação de SQL
 
-Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) legível de cima para baixo, sem scroll horizontal.
+Uma query bem formatada se lê de cima para baixo, como uma lista de passos. Cada cláusula da linguagem **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) começa a própria linha, e as colunas ficam indentadas com 2 espaços abaixo dela. A query cresce para baixo e nunca exige que o leitor role a tela para o lado.
 
 ## Conceitos fundamentais
 
@@ -8,7 +8,7 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured 
 | --- | --- |
 | **clause-per-line** (uma cláusula por linha) | `SELECT`, `FROM`, `WHERE`, `JOIN` em linhas separadas; cada cláusula é um marco visual |
 | **indentation** (indentação) | 2 espaços para colunas, expressões e subqueries; mantém alinhamento sem ambiguidade |
-| **vertical layout** (layout vertical) | Query cresce para baixo, não para a direita; elimina scroll horizontal |
+| **vertical layout** (layout vertical) | A query cresce para baixo a cada cláusula, e a tela nunca precisa rolar para o lado |
 | **comma style** (estilo de vírgula) | Vírgula no final da linha (padrão); vírgula no início preserva diffs limpos |
 | **keyword case** (caixa de palavra-chave) | `UPPERCASE` para palavras reservadas (`SELECT`, `WHERE`); identificadores em PascalCase ou snake_case |
 | **trailing whitespace** (espaço em branco final) | Remover sempre; ruído invisível em diffs |
@@ -16,7 +16,9 @@ Uma cláusula por linha, colunas indentadas com 2 espaços. **SQL** (Structured 
 
 <a id="single-line-query"></a>
 
-## Consulta em linha única
+## Cada cláusula começa a própria linha
+
+A query escrita em uma linha só obriga o leitor a varrer o texto atrás de onde termina o `SELECT` e começa o `WHERE`. Quebrando por cláusula, cada marco da query fica no início de uma linha e o olho encontra o filtro sem procurar.
 
 <details>
 <summary>❌ Ruim</summary>
@@ -46,9 +48,9 @@ WHERE
 
 <a id="rule-of-three-inline"></a>
 
-## Regra de 3: exceção inline
+## Uma query trivial pode ficar em uma linha
 
-Expressão inline é aceita somente quando há ≤3 campos E ≤1 condição. Qualquer coisa além disso vai para o estilo vertical.
+A exceção existe para a query que cabe inteira no campo de visão: até 3 campos e até 1 condição. `SELECT Users.Id, Users.Name FROM Users WHERE Users.IsActive = 1;` se entende de relance, e quebrar isso em oito linhas gasta espaço sem devolver clareza. Passou de 3 campos ou de 1 condição, a query vai para o estilo vertical.
 
 <details>
 <summary>❌ Ruim: inline com 4+ campos ou 2+ condições</summary>
@@ -70,7 +72,11 @@ DELETE FROM Logs WHERE Logs.Id = 123;
 
 </details>
 
-## Colunas sem recuo
+<a id="indentation"></a>
+
+## Dois espaços de indentação sob cada cláusula
+
+A coluna indentada mostra que ela pertence ao `SELECT` logo acima. Sem o recuo, `Id` e `FROM Users` ficam na mesma margem e o bloco perde a hierarquia: tudo parece estar no mesmo nível.
 
 <details>
 <summary>❌ Ruim: alinhadas com SELECT, sem indentação</summary>
@@ -104,7 +110,11 @@ WHERE
 
 </details>
 
-## JOIN com ON simples
+<a id="join-simple-on"></a>
+
+## JOIN com uma condição cabe em uma linha
+
+Quando o `ON` tem uma única igualdade, ele fica na mesma linha da tabela que está entrando na query. A linha inteira se lê de uma vez: junte `Statuses` onde o identificador bate.
 
 <details>
 <summary>❌ Ruim: linha longa misturando JOIN e ON</summary>
@@ -134,7 +144,11 @@ WHERE
 
 </details>
 
-## JOIN com ON complexo
+<a id="join-complex-on"></a>
+
+## JOIN com várias condições abre uma linha por condição
+
+Passando de uma condição, o `ON` desce para a linha seguinte e cada condição ocupa a própria linha, alinhada com as outras. Assim dá para conferir as regras da junção uma a uma, e acrescentar a próxima condição gera um diff de uma linha.
 
 <details>
 <summary>❌ Ruim: múltiplas condições em linha única</summary>
@@ -175,9 +189,9 @@ WHERE
 
 <a id="vertical-conditions"></a>
 
-## Condições verticais
+## Uma condição por linha, com AND ao final
 
-Uma condição por linha. AND e OR ao final da linha, nunca no início.
+Cada condição do `WHERE` ocupa uma linha. O `AND` e o `OR` ficam no final da linha, e não no começo da linha seguinte. Com o operador no fim, a linha anuncia que a condição continua abaixo, e a leitura segue de cima para baixo sem voltar.
 
 <details>
 <summary>❌ Ruim: AND no início da linha</summary>
