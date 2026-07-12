@@ -68,7 +68,7 @@ A documentação em camadas serve esse propósito:
 | Não técnico    | Entender o que o sistema faz e como se organiza | README, docs conceituais          |
 | Dev iniciando  | Rodar, contribuir, entender convenções          | README, quick-reference, exemplos |
 | Dev experiente | Detalhes de padrões e decisões de arquitetura   | docs/shared, ADRs                 |
-| Especialista   | Raciocínio por trás de cada escolha técnica     | ADRs, comentários de decisão      |
+| Especialista   | Raciocínio que sustenta cada escolha técnica    | ADRs, comentários de decisão      |
 
 Quando cada uma dessas audiências abre o projeto e encontra o seu nível, a governança está funcionando.
 
@@ -90,7 +90,7 @@ A inconsistência produz o efeito oposto. Cada módulo com o seu jeito próprio 
 
 ## ADR: registrar por que a decisão foi tomada
 
-Os **ADRs** (Architecture Decision Records · Registros de Decisão de Arquitetura) guardam o raciocínio por trás da escolha. O código mostra o que foi feito; o ADR guarda o motivo, as alternativas que estavam na mesa e o que se abriu mão ao escolher.
+Os **ADRs** (Architecture Decision Records · Registros de Decisão de Arquitetura) guardam o raciocínio que levou à escolha. O código mostra o que foi feito; o ADR guarda o motivo, as alternativas que estavam na mesa e o que se abriu mão ao escolher.
 
 Decisão sem registro vira conhecimento que só existe na cabeça de quem estava presente. Quando essas pessoas saem, o motivo sai junto. Quem chega depois questiona a decisão, refaz a mesma análise e às vezes reverte uma escolha que tinha um motivo legítimo e invisível.
 
@@ -201,6 +201,6 @@ O checklist cobre o óbvio que se esquece sob pressão. O julgamento sobre o que
 
 O sinal aparece quando pessoas de contextos diferentes conseguem interagir com o projeto com confiança.
 
-O não técnico entende o que o sistema faz e como está organizado. O dev novo contribui em dias, sem precisar pedir contexto. O dev experiente localiza o que precisa sem perguntar. O especialista encontra o raciocínio por trás das decisões.
+O não técnico entende o que o sistema faz e como está organizado. O dev novo contribui em dias, sem precisar pedir contexto. O dev experiente localiza o que precisa sem perguntar. O especialista encontra o raciocínio que levou a cada decisão.
 
 Quando qualquer um deles abre o projeto e diz "ficou fácil de entender", a governança cumpriu o propósito.

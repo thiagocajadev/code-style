@@ -173,7 +173,7 @@ A narração expõe o que o usuário esperava encontrar. No exemplo, ele procura
 | **SUS** (System Usability Scale · Escala de Usabilidade do Sistema) | Questionário de 10 perguntas com escore de 0 a 100 |
 | **NPS** (Net Promoter Score · Escore Líquido de Promotor) | Probabilidade de o usuário recomendar a solução |
 
-As métricas mostram a tendência e o tamanho do problema. A observação qualitativa explica a causa por trás do número.
+As métricas mostram a tendência e o tamanho do problema. A observação qualitativa explica a causa do número.
 
 ## Checklist de Design Thinking
 

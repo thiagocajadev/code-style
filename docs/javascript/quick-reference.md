@@ -1,6 +1,6 @@
 # Referência rápida de JavaScript
 
-> Escopo: JavaScript. Resumo das convenções; o raciocínio por trás de cada uma está em `conventions/`.
+> Escopo: JavaScript. Resumo das convenções; o raciocínio que sustenta cada uma está em `conventions/`.
 
 Esta página serve a quem já leu as convenções e precisa conferir uma decisão em segundos: que caixa usar no nome, qual verbo escolher, que palavra não usar. Se algo aqui parecer arbitrário, a página correspondente em `conventions/` explica o porquê.
 

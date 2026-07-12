@@ -212,7 +212,7 @@ function formatCurrency(amount) {
 
 ## Um nível de abstração por função
 
-O princípio por trás dessa divisão é manter um único nível de abstração por
+O princípio que orienta essa divisão é manter um único nível de abstração por
 função (na sigla em inglês, SLA, de Single Level of Abstraction). Ou a função
 organiza passos com nome, ou implementa um detalhe. Quando faz as duas coisas ao
 mesmo tempo, a leitura pula da visão geral para o detalhe miúdo sem aviso, e quem

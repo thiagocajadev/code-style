@@ -19,7 +19,7 @@ O bot nunca conversa direto com o usuário. Tudo passa pelo **gateway** (ponto d
 | **Polling** (consulta periódica) | Bot consulta o gateway em intervalo fixo para buscar novos eventos; o bot fica ativo |
 | **Rate limit** (limite de taxa) | Número máximo de requisições que o bot pode enviar à plataforma por unidade de tempo |
 | **Session** (sessão) | Estado mantido entre mensagens de um mesmo usuário dentro de uma conversa |
-| **Intent** (intenção) | Objetivo semântico por trás de uma mensagem do usuário: comprar, consultar, cancelar |
+| **Intent** (intenção) | Objetivo que a mensagem do usuário expressa: comprar, consultar, cancelar |
 | **Callback** (retorno) | Dado enviado de volta ao bot quando o usuário interage com um botão inline |
 
 ## Receber por webhook ou buscar por polling

@@ -85,7 +85,7 @@ O XP é a base conceitual do que hoje se chama DevOps e **CI/CD** (Continuous In
 
 ### Desenvolvimento intuitivo
 
-A decisão vem da experiência acumulada, por padrão reconhecido, sem um processo formal por trás.
+A decisão vem da experiência acumulada, por padrão reconhecido, sem um processo formal que a sustente.
 
 Tem lugar válido:
 
