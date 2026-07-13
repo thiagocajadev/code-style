@@ -169,6 +169,12 @@ Gerenciadores de estado global (Redux, Zustand, NgRx, Fluxor, Pinia) valem quand
 Em projeto pequeno, o store global acrescenta cerimônia (actions, reducers, seletores) para resolver
 o que estado local e lifting já resolvem.
 
+O que o store global não guarda é o dado que veio do servidor. Ele tem dono próprio, que é a camada
+de cache (TanStack Query, RTK Query, SWR). Copiar a resposta da API para dentro do store cria duas
+cópias do mesmo dado, e a que o cache revalida passa a divergir da que a tela lê.
+[React SPA](../../typescript/frameworks/react-spa.md#server-state-vs-client-state) desenvolve essa
+divisão com Zustand e TanStack Query.
+
 ---
 
 ## Memoization: quando o cache ajuda e quando atrapalha

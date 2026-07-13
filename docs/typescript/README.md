@@ -20,6 +20,7 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | Tópico                                            | Conceitos                                        |
 | ------------------------------------------------- | ------------------------------------------------ |
 | [Fundação do projeto](setup/project-foundation.md) | tsconfig, modo estrito, apelidos de caminho, pipeline |
+| [Vite](setup/vite.md)                             | Variáveis de ambiente, apelido de caminho, proxy do servidor local, divisão do pacote |
 
 ## Fundamentos
 
@@ -52,6 +53,8 @@ Configuração inicial de um projeto TypeScript: compilador, estrutura e ferrame
 | Framework | Conceitos |
 | ---------------------------------------------------- | ---------------------------------------------------------------------- |
 | [React + Next.js](frameworks/react-nextjs.md) | RSC, RCC, Server Actions, API Routes, caching, guards, formulários com Zod |
+| [React SPA](frameworks/react-spa.md) | TanStack Router, TanStack Query, Zustand: o dado do servidor e o dado do navegador |
+| [TanStack Table](frameworks/tanstack-table.md) | Colunas tipadas, ordenação, paginação no servidor, virtualização |
 | [Angular](frameworks/angular.md) | Standalone, Signals, Smart/Dumb, guards, resolvers, formulários tipados, interceptors |
 | [Vue + Nuxt](frameworks/vue.md) | `<script setup>`, Composition API, Pinia, Route Middleware, Server Routes, defineCachedEventHandler |
 

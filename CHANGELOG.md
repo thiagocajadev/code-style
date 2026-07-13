@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2026-07-13
+
+### Added
+
+- **A stack React SPA ganhou documentação própria (Épico C9).** Cinco páginas novas, escritas do zero: `docs/typescript/setup/vite.md`, `docs/typescript/frameworks/react-spa.md`, `docs/typescript/frameworks/tanstack-table.md`, `docs/css/shadcn.md` e `docs/css/lucide.md`. O buraco que elas fecham: os frameworks de TypeScript cobriam Next, Vue e Angular, e no Next quem faz o trabalho do TanStack Query é o RSC com Server Actions. As bibliotecas só se justificam no cenário de **SPA** (Single Page Application · aplicação de página única), que não tinha página no repo.
+- **`react-spa.md` traça a linha entre o dado do servidor e o dado do navegador**, que é o argumento central do épico. O TanStack Query é dono de tudo que veio da API (cache, revalidação, estado de carregamento), e o Zustand fica com o que nasce e morre no cliente (filtro da tela, passo do assistente, tema). O anti-pattern documentado é copiar a resposta do Query para dentro da store com um `useEffect` no meio, que cria duas cópias do mesmo dado e faz a tela ler a que ficou para trás. A página também mostra o TanStack Router (rota tipada, `beforeLoad` para checagem de acesso, `loader` com `ensureQueryData`) e substitui o hook com três `useState` que aparece em `react-nextjs.md`.
+- **`vite.md` fica em `setup/`, e não na página de um framework**, porque o Vite serve Vue, Svelte e biblioteca. Cobre o prefixo `VITE_` (a linha entre configuração pública e segredo, e o exemplo Ruim é a chave da Stripe viajando no pacote que o usuário baixa), o apelido de caminho declarado em dois lugares, o proxy do servidor local que dispensa configurar CORS para desenvolver, e a divisão do pacote por rota.
+- **`tanstack-table.md` saiu de `react-spa.md` para a página não estourar.** Colunas tipadas com `createColumnHelper`, a identidade estável do array de linhas, a paginação que vai para o servidor acima de alguns milhares de linhas (`manualPagination` mais `rowCount` da resposta) e a virtualização.
+- **`shadcn.md` mora em `docs/css/`**, ao lado de `tailwind.md` e `bootstrap.md`, por decisão do Thiago: os componentes são `.tsx`, e ainda assim a conversa é a da prateleira de design system. Tokens semânticos, variantes declaradas com `cva`, o `cn()` que resolve o conflito entre duas utilitárias da mesma propriedade, e o limite entre estender (variante nova no `cva`) e forkar (editar a marcação, e perder as correções que o projeto publicar).
+- **`lucide.md` entrou a pedido do Thiago, no meio do épico.** Import por nome (o `import * as Icons` traz mil ícones e desliga o tree shaking), a cor herdada via `currentColor`, e a regra de acessibilidade que mais aparece quebrada: o ícone decorativo se esconde com `aria-hidden`, e o botão só com ícone ganha `aria-label` mais área de toque de 44 pixels.
+- **Os índices foram sincronizados**: `docs/typescript/README.md` (tabelas Setup e Frameworks), `docs/css/README.md` (Frameworks), o `README.md` do root (badges de Frontend e a linha do CSS) e `docs/shared/architecture/component-architecture.md`, onde o Zustand aparecia solto numa lista e agora linka a página nova com o parágrafo que separa cache de store.
+
+### Fixed
+
+- **`audit-prose.mjs` violava a regra de densidade do próprio projeto** (a do v2.3.3: a declaração explicativa cola no `return`), em `isScriptFile`. O `eslint` acusou, e é a segunda vez que este arquivo aparece com a mesma classe de violação. Corrigido com `--fix`.
+
+### Changed
+
+- **A sidebar do site ganhou ordem e rótulos declarados** (`NAV_ORDER` e `NAV_LABELS` em `.github/workflows/docs.yml`, escrito pelo Thiago). As pastas passam a sair agrupadas em Estrutura (html, javascript, css), Programação (csharp, typescript), Banco de Dados (sql) e Conceitos (shared), em vez da ordem alfabética do sistema de arquivos. Os rótulos consertam os slugs que a capitalização automática errava (`Sql` virava o nome exibido de `sql`, e agora sai `SQL`; `csharp` sai como `C#`, `shared` como `Compartilhado`).
+
+### Notas
+
+- **`LANGS` ficou intacto.** `typescript` e `css` já estavam na lista, então as 5 páginas novas publicam sozinhas.
+- **O `audit:prose` não enxerga arquivo novo.** Ele roda sobre `git diff --name-only HEAD`, que não lista arquivo ainda não rastreado, então as 5 páginas passaram fora do escopo até serem auditadas por caminho explícito. O gate protege reescrita e deixa passar página nova, e fechar isso é candidato a `fix:` próprio.
+
 ## [2.6.0] - 2026-07-13
 
 ### Changed

@@ -25,6 +25,8 @@ Convenções de CSS seguindo os mesmos princípios do resto do guia: classes nom
 | ------------------------- | -------------------------------------------------------------------- |
 | [Tailwind](tailwind.md)   | Extrair o componente com `@layer`, e registrar os tokens no config   |
 | [Bootstrap](bootstrap.md) | Trocar a variável em vez do seletor, e compor sobre a classe base    |
+| [shadcn/ui](shadcn.md)    | Tokens semânticos, variantes com `cva`, o `cn()`, estender e forkar  |
+| [Lucide](lucide.md)       | Import por nome, cor herdada, nome acessível no botão só com ícone   |
 
 ## Princípios
 

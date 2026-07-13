@@ -103,6 +103,28 @@ jobs:
           STATIC_PAGE_GENERATION_TIMEOUT: "300"
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
           HOME_REDIRECT: /javascript/readme
+          # Ordem e agrupamento da sidebar. Pastas fora daqui vão para o fim, sem grupo.
+          NAV_ORDER: |
+            Estrutura:
+              - html
+              - javascript
+              - css
+            Programação:
+              - csharp
+              - typescript
+            Banco de Dados:
+              - sql
+            Conceitos:
+              - shared
+          # Nomes exibidos, para os slugs que a capitalização automática erra (sql -> Sql).
+          NAV_LABELS: |
+            html: HTML
+            css: CSS
+            sql: SQL
+            javascript: JavaScript
+            typescript: TypeScript
+            csharp: C#
+            shared: Compartilhado
           NEXT_PUBLIC_LIBNAME: Code Style
           NEXT_PUBLIC_LIBNAME_SHORT: code-style
           NEXT_PUBLIC_LIBNAME_DOTSUFFIX_LABEL: docs
