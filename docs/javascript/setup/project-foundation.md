@@ -1,6 +1,6 @@
 # Fundação de um projeto Node.js
 
-> [!NOTE]  
+> [!NOTE]
 > Essa estrutura reflete como costumo iniciar projetos Node.js. Os exemplos são
 > referências conceituais: podem não cobrir todos os detalhes de implementação
 > e, conforme as tecnologias evoluem, alguns podem ficar desatualizados. O que
@@ -40,7 +40,8 @@ npm init @eslint/config
 npm install --save-dev prettier
 ```
 
-> [!NOTE] [Biome](https://biomejs.dev) é uma alternativa moderna que substitui
+> [!NOTE]
+> [Biome](https://biomejs.dev) é uma alternativa moderna que substitui
 > ESLint + Prettier em um único binário: mais rápido e sem conflito de
 > configuração entre as duas ferramentas.
 

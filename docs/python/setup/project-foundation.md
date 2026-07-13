@@ -1,6 +1,7 @@
 # Project Foundation
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos Python. Os exemplos são referências
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos Python. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
 > configuração centralizada, módulos por domínio.
@@ -60,7 +61,8 @@ source .venv/bin/activate  # Windows: .venv\Scripts\activate
 pip install ruff
 ```
 
-> [!NOTE] `uv` é uma alternativa moderna que substitui `pip` e `venv` em um único binário:
+> [!NOTE]
+> `uv` é uma alternativa moderna que substitui `pip` e `venv` em um único binário:
 > instalação de pacotes e gerenciamento de ambientes virtuais ordens de magnitude mais rápido.
 
 ## pyproject.toml: configuração central

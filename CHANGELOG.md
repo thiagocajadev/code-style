@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.3] - 2026-07-13
+
+### Fixed
+
+- **Dez callouts `[!NOTE]` não renderizavam**, porque o texto vinha colado no marcador (`> [!NOTE] Essa estrutura reflete...`). O GitHub só reconhece o alerta quando o marcador tem linha própria: do jeito que estava, o bloco saía como citação comum e o `[!NOTE]` aparecia literal no meio da frase. Todos os dez estavam nos `setup/project-foundation.md` de sete linguagens — Rust, PHP, Go, Java, Python (2), TypeScript (3) e JavaScript.
+- **Varredura de todos os `.md` do repositório atrás do mesmo defeito**, com um validador que checa marcador no início da linha, sem texto colado e com a continuação `>` logo abaixo. Além dos dez, só apareceram três marcadores com espaço em branco sobrando no fim (dois no `README.md` do root, um em `docs/javascript/setup/project-foundation.md`), que renderizavam mas destoavam do padrão. Estado final: 32 callouts no repositório, zero quebrados. Em `docs/` e no `README.md` só existem dois tipos em uso, 28 `[!NOTE]` e 2 `[!IMPORTANT]`, sem nenhuma variante que o GitHub ignoraria (`[!WARN]`, `[!INFO]`, minúsculas).
+
 ## [2.7.2] - 2026-07-13
 
 ### Fixed

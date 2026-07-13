@@ -1,6 +1,7 @@
 # Fundação de um projeto TypeScript
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos TypeScript. Os exemplos são
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos TypeScript. Os exemplos são
 > referências conceituais. O que importa é o princípio: strict mode sempre ativo, path aliases
 > para importações limpas, e o compilador como primeira linha de defesa.
 
@@ -38,7 +39,8 @@ npm install --save-dev typescript tsx @types/node
 npm install --save-dev eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser
 ```
 
-> [!NOTE] [Biome](https://biomejs.dev) suporta TypeScript nativamente e substitui ESLint + Prettier
+> [!NOTE]
+> [Biome](https://biomejs.dev) suporta TypeScript nativamente e substitui ESLint + Prettier
 > em um único binário.
 
 ## O modo estrito fica ligado desde o primeiro dia
@@ -111,7 +113,8 @@ e a saída fácil vira desligá-la de novo. No primeiro dia, o custo é zero.
 
 </details>
 
-> [!NOTE] **TypeScript 6, novos defaults.** `strict`, `module: esnext` e `target: es2025` passaram
+> [!NOTE]
+> **TypeScript 6, novos defaults.** `strict`, `module: esnext` e `target: es2025` passaram
 > a ser padrão. O campo `types` agora é `[]` por padrão: declare explicitamente os pacotes `@types`
 > que o projeto usa (ex.: `["node"]`, `["node", "jest"]`). `baseUrl` foi depreciado: use `paths`
 > com caminhos relativos completos a partir da raiz (`"./src/*"`).

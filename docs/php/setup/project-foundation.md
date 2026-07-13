@@ -2,7 +2,8 @@
 
 > Escopo: PHP 8.4.
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos PHP. Os exemplos são referências
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos PHP. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point enxuto,
 > configuração centralizada, módulos por domínio.

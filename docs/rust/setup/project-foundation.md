@@ -2,7 +2,8 @@
 
 > Escopo: Rust 1.95 (2024 Edition).
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos Rust. Os exemplos são referências
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos Rust. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
 > evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point enxuto,
 > módulos por domínio, configuração centralizada.

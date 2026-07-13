@@ -2,7 +2,8 @@
 
 > Escopo: Go 1.26.
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos Go. Os exemplos são referências
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos Go. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
 > evoluem, alguns podem ficar desatualizados. O princípio importa: entry point enxuto, pacotes
 > por domínio, configuração centralizada.

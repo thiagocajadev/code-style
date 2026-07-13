@@ -1,6 +1,7 @@
 # Project Foundation
 
-> [!NOTE] Essa estrutura reflete como costumo iniciar projetos Java com Spring Boot 4. Os exemplos
+> [!NOTE]
+> Essa estrutura reflete como costumo iniciar projetos Java com Spring Boot 4. Os exemplos
 > são referências conceituais: podem não cobrir todos os detalhes de implementação. O que importa
 > é o princípio: configuração centralizada, módulos por domínio e entry point como índice.
 

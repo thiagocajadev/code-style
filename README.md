@@ -29,7 +29,7 @@ Olá Dev! Neste projeto documento meu **code style** (estilo de código) e o meu
 **setup** (as configurações que uso). Aqui estão as convenções, os padrões e as
 boas práticas que sigo no dia a dia.
 
-> [!NOTE]  
+> [!NOTE]
 > Este guia reflete o que pratico hoje, e continua mudando. Dependendo do
 > contexto, outros princípios entram ou se sobrepõem aos daqui: o tipo de
 > projeto, a cultura da empresa, o acordo com os outros profissionais do time.
@@ -59,7 +59,7 @@ ilustrar, porque é a linguagem que mais gente lê sem precisar de tradução, e
 mesmos princípios se aplicam a qualquer **stack** (o conjunto de tecnologias de
 um projeto).
 
-> [!NOTE]  
+> [!NOTE]
 > Em time, a melhor abordagem é sempre a **convenção que a organização já
 > definiu**.
 
