@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.8.0] - 2026-07-13
+
+### Fixed
+
+- **`docs/python/` reescrito na voz senior-para-leigo (Épico C10, Ciclo C).** 21 arquivos `.md` e 6.242 linhas, entregues como unidade única. Os fenced blocks ficaram idênticos ao HEAD por SHA-256 em 20 dos 21 arquivos: o diff tem 830 inserções e 823 remoções, e nenhuma linha de código.
+- **16 dos 21 H1 viraram pt-BR** (`Naming` → "Nomes em Python", `Control Flow` → "Controle de fluxo em Python", `Project Foundation` → "Base de um projeto Python", `Quick Reference` → "Referência rápida", com `Taboos` → "O que evitar", como no SQL e no TypeScript). Os cinco preservados são nome de produto: `Python`, `FastAPI`, `HTMX`, `Reflex` e `MicroPython`.
+- **Os 6 slugs pt-BR viraram id ASCII**, com os referrers reescritos no mesmo passo. Todos moravam no `README.md` da linguagem, então nenhum arquivo fora de `docs/python/` foi tocado: `#identificadores-sem-significado` → `#meaningless-identifiers`, `#if-e-else` → `#if-and-else`, `#aninhamento-em-cascata` → `#nested-conditionals`, `#a-regra-central` → `#core-rule`, `#tryexcept-que-engole-o-erro` → `#swallowed-error` e `#fases-misturadas-aaa` → `#mixed-phases-aaa`. São os gêmeos pt-BR dos que o C8 consertou em `docs/javascript/`. O `#multitenancy`, que resolvia por slug gerado do heading, ganhou `<a id>` explícito.
+- **`visual-density.md` espelhou o canônico de `docs/javascript/`.** Os 14 headings ganharam a redação de lá, e a tabela de Conceitos caiu de 12 para 7 linhas: saíram os termos que o projeto cunhou e que o leitor não conhece (`tight pair`, `atomic trio`, `semantic pair`, `single-line orphan`, `explaining return`, `fragments → assembly`), e cada um virou descrição em pt-BR no corpo. A linha do PEP 8 entrou, porque a regra do espaço único em volta do `=` sai de lá.
+- **Os 254 `<summary>` foram varridos.** Eles são o título do exemplo, e carregavam jargão cru: `4 atomics viram 2+2`, `blank depois do dict`, `par tight`, `Explaining Return tight`, `trio atômico`, `circuit break nativo`, `bare return: pass-through`, `dumping ground`, `join: uma única alocação`. Saiu também `frozen=True garante imutabilidade`, que violava a tradução canônica do projeto ("não muda depois de atribuído").
+- **`entity-modeling.md` recebeu edição cirúrgica**, como o arquivo gêmeo em C#, SQL e TypeScript: as duas metáforas (`receita certa de bug`, `carregar o universo inteiro`), três caudas de contraste binário e os `<summary>`.
+- **A linha do `Optional` mudou, e o `audit-concepts.py` ficou como está.** O termo em negrito virou `**Optional** (anulável, aceita ausência de valor)`, com o `T | None` na descrição. O pipe escapado dentro do negrito quebrava o parser de tabela do script, e o falso positivo estava no backlog esperando este épico decidir. `concepts python` foi de 19 OK com 1 NO-PARENS para 19 OK e zero.
+- **"A partir de quatro" virou "com quatro ou mais"** nos três lugares de `docs/python/` (duas vezes em `visual-density.md`, uma em `functions.md`), atendendo ao pedido feito durante a v2.7.2. Os outros 17 `visual-density.md` do repositório seguem pendentes, e o item continua aberto no backlog para as linguagens ainda não revisadas.
+- **Typo de longa data**: `error-handling.md` dizia `excpet` num `<summary>`.
+- **Decisão registrada: as linguagens restantes não entram em `LANGS`.** O passo de publicação sai da fila do Ciclo C, e `vbnet` fica fora por definitivo. O site continua com as sete atuais (`javascript csharp sql shared typescript html css`), e a pendência que estava aberta desde o C6 foi encerrada.
+
+**Gates**: audit:prose 21 arquivos / 0 erro / 0 aviso · audit:docs 2562 Good / 396 arquivos / 0 violações · test:docs 44/0 · test:prose 25/0 · lint 0 · concepts python 19 OK / 0 / 0 / 0 · 0 âncora quebrada · 0 em dash e 0 "fronteira" em toda a pasta.
+
 ## [2.7.3] - 2026-07-13
 
 ### Fixed

@@ -2,26 +2,23 @@
 
 > Escopo: Python. Guia baseado em **Reflex 0.8.28** com **Python 3.10+** (Python 3.14: ver nota de compatibilidade).
 
-Reflex é um framework Python fullstack (completo): o código Python compila para um frontend em **React**
-(biblioteca de **UI** (User Interface · Interface do Usuário)) e um backend em **FastAPI** (framework web assíncrono). Toda a lógica de negócio
-permanece no servidor. O browser recebe apenas o **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) e o JavaScript gerados a partir dos componentes
-declarados em Python.
+O Reflex é um framework que escreve a aplicação inteira em Python. O código que você declara vira um frontend em **React** (a biblioteca de interface do Facebook) e um backend em **FastAPI**, e o navegador recebe o **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) e o JavaScript já gerados.
 
-Este guia mostra como estruturar State, event handlers, computed vars e componentes seguindo os
-princípios de [functions.md](../conventions/functions.md) e
-[control-flow.md](../conventions/control-flow.md).
+A regra de negócio nunca sai do servidor. É a diferença que importa: no Reflex, o botão que o usuário clica dispara um método Python que roda na sua máquina, e não uma função JavaScript que roda na máquina dele.
+
+Este guia mostra como estruturar o State, os handlers de evento, as vars computadas e os componentes, seguindo os princípios de [funções](../conventions/functions.md) e [controle de fluxo](../conventions/control-flow.md).
 
 ## Conceitos fundamentais
 
 | Conceito                                              | O que é                                                                                                    |
 | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **State** (Estado)                                    | Classe que herda de `rx.State`: armazena variáveis reativas e event handlers de uma sessão de usuário      |
-| **Var** (Variable, Variável reativa)                  | Atributo tipado do State: qualquer alteração propaga para os componentes que o referenciam                 |
-| **Computed Var** (Var computada)                      | Método com `@rx.var`: derivado de outros Vars, somente leitura, sem sincronização manual                   |
-| **Event Handler** (Manipulador de evento)             | Método público do State: único mecanismo para alterar Vars; disparado por interações do usuário            |
-| **Component** (Componente)                            | Função Python que retorna elementos `rx.*`; declara a UI de forma procedural                               |
-| **Page** (Página)                                     | Função de componente registrada em uma rota via `app.add_page()`                                           |
-| **Backend Var** (Var de backend)                      | Atributo com prefixo `_`: nunca serializado para o browser                                                 |
+| **State** (estado)                                    | A classe que herda de `rx.State`. Guarda os dados da sessão de um usuário e os métodos que os alteram |
+| **Var** (variável reativa)                            | O atributo tipado do State. Alterar o valor redesenha sozinho todo componente que o usa |
+| **Computed Var** (var derivada)                       | O método com `@rx.var`. Ele calcula um valor a partir de outras vars, e recalcula quando elas mudam |
+| **Event Handler** (método de evento)                  | O método público do State. É por onde as vars mudam, e o clique do usuário o dispara |
+| **Component** (componente)                            | A função Python que devolve elementos `rx.*` e declara um pedaço da tela |
+| **Page** (página)                                     | O componente registrado numa rota com `app.add_page()` |
+| **Backend Var** (var que fica no servidor)            | O atributo com nome começando por `_`. Ele nunca é enviado ao navegador |
 
 ## Compatibilidade com Python 3.14
 
@@ -69,11 +66,12 @@ app/
 
 ## State
 
-O State concentra todas as Vars e event handlers. Vars com prefixo `_` são de backend: não chegam
-ao browser.
+O State guarda os dados da sessão e os métodos que os alteram. Anote o tipo de toda var: é ele que o Reflex usa para gerar o código do frontend, e uma var sem tipo vira `Any` do outro lado.
+
+O nome começando por `_` marca a var que fica no servidor. Use isso para tudo que o navegador não precisa ver, como um filtro intermediário ou um cache de consulta.
 
 <details>
-<summary>❌ Ruim: Var sem tipo, boolean sem prefixo semântico, intenção de backend var sem prefixo</summary>
+<summary>❌ Ruim: var sem tipo, booleano sem prefixo, e um dado interno exposto ao navegador</summary>
 
 ```python
 class AppState(rx.State):
@@ -85,7 +83,7 @@ class AppState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom: Vars tipadas, boolean com is_, backend var com prefixo _</summary>
+<summary>✅ Bom: tipos declarados, booleano com is_, e o dado interno com _ na frente</summary>
 
 ```python
 class OrderState(rx.State):
@@ -98,11 +96,12 @@ class OrderState(rx.State):
 
 ## Event Handlers
 
-Métodos públicos do State são event handlers: o frontend pode dispará-los diretamente. Prefixo `_`
-torna o método privado (somente uso interno, não exposto ao browser).
+Todo método público do State pode ser chamado a partir do navegador. Isso importa para a segurança: um método sem `_` na frente é uma porta aberta, e alguém pode chamá-lo com os argumentos que quiser, sem passar pela tela.
+
+O método auxiliar, que só existe para o handler chamar, leva `_` no nome. E o nome do handler diz o que ele faz (`submit_order`), porque `handle_click` serve para qualquer coisa.
 
 <details>
-<summary>❌ Ruim: verbo handle, validação misturada com persistência, helper sem prefixo</summary>
+<summary>❌ Ruim: nome genérico, e um auxiliar exposto ao navegador sem querer</summary>
 
 ```python
 class OrderState(rx.State):
@@ -119,7 +118,7 @@ class OrderState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom: verbo expressivo, validação em helper privado, persistência delegada ao serviço</summary>
+<summary>✅ Bom: nome que diz a ação, validação num auxiliar privado, gravação no serviço</summary>
 
 ```python
 class OrderState(rx.State):
@@ -144,13 +143,14 @@ class OrderState(rx.State):
 
 </details>
 
-## Vars Computadas
+## Vars derivadas de outras
 
-`@rx.var` declara uma Var derivada: somente leitura, recalculada quando as Vars de origem mudam.
-Anotação de tipo obrigatória.
+O `@rx.var` declara um valor calculado a partir de outras vars. Ele é só de leitura, e o Reflex o recalcula sozinho quando qualquer var de origem muda. A anotação de tipo é obrigatória.
+
+O que isso evita: guardar o total do carrinho numa var própria e ter que lembrar de atualizá-lo em toda operação que mexe nos itens. Basta esquecer num lugar, e a tela passa a mostrar um total que não corresponde à lista logo abaixo.
 
 <details>
-<summary>❌ Ruim: Var atualizada manualmente a cada escrita, sem tipo, sem decorator</summary>
+<summary>❌ Ruim: o total é atualizado à mão em cada escrita, e uma delas vai ser esquecida</summary>
 
 ```python
 class CartState(rx.State):
@@ -165,7 +165,7 @@ class CartState(rx.State):
 </details>
 
 <details>
-<summary>✅ Bom: computed var derivada automaticamente, sem sincronização manual</summary>
+<summary>✅ Bom: o total é calculado a partir da lista, e nunca sai de sincronia</summary>
 
 ```python
 class CartState(rx.State):
@@ -189,11 +189,12 @@ class CartState(rx.State):
 
 ## Componentes
 
-Componentes são funções Python que retornam elementos `rx.*`. Recebem props como parâmetros e
-referenciam Vars do State. Sem **I/O** (Input/Output · Entrada/Saída) nem lógica de negócio inline.
+O componente é uma função que devolve elementos `rx.*`. Ele recebe os parâmetros de quem o usa e lê as vars do State para montar a tela.
+
+O que ele não faz é ir ao banco. Uma consulta dentro do componente roda a cada vez que a tela é redesenhada, o que pode ser dezenas de vezes por interação. A busca mora no handler de evento, que roda uma vez, guarda o resultado numa var, e deixa o componente só exibir.
 
 <details>
-<summary>❌ Ruim: I/O direto no componente, lógica de negócio misturada com apresentação</summary>
+<summary>❌ Ruim: o componente consulta o banco toda vez que a tela é redesenhada</summary>
 
 ```python
 def order_list():
@@ -206,7 +207,7 @@ def order_list():
 </details>
 
 <details>
-<summary>✅ Bom: componente referencia State, sem I/O, sem lógica de negócio</summary>
+<summary>✅ Bom: o componente só lê o State e desenha</summary>
 
 ```python
 def order_card(order: Order) -> rx.Component:

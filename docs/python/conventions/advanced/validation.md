@@ -1,24 +1,25 @@
-# Validation
+# Validação em Python
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Validação acontece no limite do sistema, onde dados externos entram. Uma vez validado, o dado
-circula com tipos garantidos. Revalidar dados internos é sinal de desconfiança no próprio código.
+A validação acontece no limite do sistema, no ponto em que o dado de fora entra: o corpo da requisição HTTP, o arquivo que alguém subiu, a mensagem que chegou na fila. Depois desse ponto, o dado circula com o tipo já conferido, e as funções lá dentro podem confiar nele.
+
+Isso é o que permite as camadas internas ficarem enxutas. Quando cada função repete a checagem, a mesma regra vive em cinco lugares e muda em quatro deles no dia da alteração.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **boundary** (limite) | onde input externo entra na aplicação; único lugar que precisa validar |
-| **Pydantic** (biblioteca de validação por tipos) | biblioteca que valida e serializa dados a partir de type hints |
-| **BaseModel** (modelo base do Pydantic) | classe que vira schema validado; campos com type hints viram constraints |
-| **type hint** (anotação de tipo) | anotação `x: int` que documenta tipo esperado; Pydantic e mypy usam |
-| **schema** (esquema de validação) | descrição estrutural dos dados; Pydantic gera a partir do `BaseModel` |
-| **ValidationError** (erro de validação) | exceção do Pydantic que lista todos os campos inválidos de uma vez |
-| **dataclass** (classe de dados) | decorator da stdlib para gerar `__init__`, `__repr__`, `__eq__` automaticamente |
+| **boundary** (limite) | O ponto por onde o dado de fora entra na aplicação. É o único lugar que valida |
+| **Pydantic** (biblioteca de validação) | Valida e converte o dado a partir das anotações de tipo que você já escreveu |
+| **BaseModel** (modelo base do Pydantic) | A classe que vira o contrato: cada campo anotado vira uma regra de validação |
+| **schema** (contrato do dado) | A descrição da forma esperada: quais campos existem e de que tipo é cada um |
+| **sanitize** (limpeza) | Tirar o espaço sobrando, baixar a caixa do email, normalizar o texto antes de validar |
+| **ValidationError** (erro de validação) | A exceção do Pydantic. Ela lista todos os campos inválidos de uma vez, e não só o primeiro |
+| **output filter** (filtro de saída) | O modelo que declara quais campos a resposta pode conter, para o resto ficar de fora |
 
 <details>
-<summary>❌ Ruim: verificações manuais duplicadas, sem contrato</summary>
+<summary>❌ Ruim: a checagem escrita à mão, campo por campo</summary>
 
 ```python
 def create_order(data: dict):
@@ -37,7 +38,7 @@ def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom: Pydantic valida na fronteira, tipo garantido no domínio</summary>
+<summary>✅ Bom: o Pydantic valida no limite, e o domínio recebe o dado pronto</summary>
 
 ```python
 from pydantic import BaseModel
@@ -55,16 +56,16 @@ def create_order(data: OrderInput):
 
 ---
 
-O pipeline de validação tem responsabilidades distintas, cada uma no seu lugar:
+A validação passa por etapas, e cada uma tem um trabalho diferente:
 
 ```
 [Input] → Sanitize → Schema Validate → Business Rules → [Output Filter] → Response
 ```
 
-Misturar essas camadas cria acoplamento, dificulta testes e abre brechas de segurança.
+A limpeza tira o espaço sobrando do texto. O schema confere que os campos existem e são do tipo certo. As regras de negócio consultam o banco para saber se aquilo faz sentido no domínio. O filtro de saída escolhe o que a resposta mostra. Escrever as quatro dentro da mesma função deixa cada uma sem teste próprio, e é como o `password_hash` acaba na resposta.
 
 <details>
-<summary>❌ Ruim: sanitize, schema, regras de negócio e output misturados na mesma função</summary>
+<summary>❌ Ruim: limpeza, schema, regra de negócio e resposta na mesma função</summary>
 
 ```python
 async def create_order(body: dict):
@@ -102,13 +103,14 @@ async def create_order(body: dict):
 
 </details>
 
-## Sanitize: limpar antes de validar
+## Limpar antes de validar
 
-Antes de validar, limpar: `.strip()` em strings, `.lower()` em emails. Dados sujos entram em
-validação suja: um email com espaço passa no schema mas falha na busca no banco.
+O `.strip()` no texto e o `.lower()` no email vêm antes da validação do schema. O motivo é concreto: `" Admin@Email.com "` passa em qualquer regra de formato de email, e depois não encontra ninguém na busca por `admin@email.com` no banco.
+
+O Pydantic faz essa limpeza dentro do próprio modelo. O `mode="before"` do `@field_validator` diz em que momento a função roda: antes de o Pydantic conferir o tipo do campo, e não depois. É o que permite receber o texto ainda cru, com espaço e caixa alta, e devolvê-lo limpo para a checagem.
 
 <details>
-<summary>❌ Ruim: dados brutos chegam direto na validação</summary>
+<summary>❌ Ruim: o texto chega ao banco com espaço e caixa alta</summary>
 
 ```python
 async def create_user(body: dict):
@@ -120,7 +122,7 @@ async def create_user(body: dict):
 </details>
 
 <details>
-<summary>✅ Bom: sanitize antes de validar</summary>
+<summary>✅ Bom: o Pydantic limpa o texto antes de conferir o tipo</summary>
 
 ```python
 from pydantic import BaseModel, field_validator
@@ -149,13 +151,14 @@ async def create_user(body: dict):
 
 </details>
 
-## Schema validation com Pydantic
+## O schema com Pydantic
 
-Pydantic valida shape, tipos e constraints, nunca regras de negócio. Centraliza o contrato
-técnico e elimina validação manual espalhada pelos handlers.
+O schema cuida da forma do dado: quais campos existem, de que tipo são, quais limites cada um respeita. As regras que dependem de consultar o banco ficam fora dele, e a próxima seção explica por quê.
+
+Escrever o contrato uma vez, na classe, tira a checagem manual de dentro de todos os handlers que recebem aquele dado.
 
 <details>
-<summary>❌ Ruim: verificações manuais duplicadas, sem contrato</summary>
+<summary>❌ Ruim: a checagem escrita à mão dentro do handler</summary>
 
 ```python
 def create_order(data: dict):
@@ -174,7 +177,7 @@ def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom: schema centralizado, handler recebe dado tipado e validado</summary>
+<summary>✅ Bom: o contrato mora na classe, e o handler recebe o dado pronto</summary>
 
 ```python
 from pydantic import BaseModel, field_validator
@@ -200,11 +203,12 @@ def create_order(data: OrderInput):
 
 ## Regras de negócio
 
-Schema valida se o dado tem o formato correto. Regras de negócio validam se faz sentido no
-domínio: dependem de **I/O** (Input/Output · Entrada/Saída) (banco, serviços externos) e não pertencem ao schema.
+O schema responde se o dado tem a forma certa. A regra de negócio responde se ele faz sentido: este cliente está inadimplente, este produto ainda tem estoque, esta data já passou. Para responder, ela precisa consultar o banco ou um serviço externo, e é aí que ela sai do schema.
+
+Um validador do Pydantic que vai ao banco cria dois problemas. O modelo passa a depender de uma conexão para ser instanciado, o que quebra qualquer teste que só queria conferir a forma do dado. E a consulta roda dentro de um construtor, num ponto em que ninguém espera uma ida ao banco.
 
 <details>
-<summary>❌ Ruim: I/O dentro do validador mistura camadas</summary>
+<summary>❌ Ruim: o validador do schema consulta o banco</summary>
 
 ```python
 class OrderInput(BaseModel):
@@ -224,7 +228,7 @@ class OrderInput(BaseModel):
 </details>
 
 <details>
-<summary>✅ Bom: schema valida shape; domínio valida regras após</summary>
+<summary>✅ Bom: o schema confere a forma, e a função confere a regra depois</summary>
 
 ```python
 from pydantic import BaseModel
@@ -244,10 +248,10 @@ async def create_order(data: OrderInput):
 
 </details>
 
-Regras de negócio falham rápido: valide na entrada da função, não após percorrer o fluxo inteiro.
+A regra de negócio é conferida na entrada da função. No exemplo ruim abaixo, o desconto negativo passa pela busca do pedido, pelo cálculo e pela montagem da nota, e só aparece na hora de gravar. Três operações rodaram para nada, e a mensagem de erro chega associada à gravação, longe do desconto que a causou.
 
 <details>
-<summary>❌ Ruim: dado inválido percorre o fluxo antes de falhar</summary>
+<summary>❌ Ruim: o desconto negativo atravessa três passos antes de estourar</summary>
 
 ```python
 async def issue_invoice(order_id: int, discount: float):
@@ -263,7 +267,7 @@ async def issue_invoice(order_id: int, discount: float):
 </details>
 
 <details>
-<summary>✅ Bom: guard clause valida na entrada, falha imediata</summary>
+<summary>✅ Bom: a guarda confere o desconto na primeira linha</summary>
 
 ```python
 async def issue_invoice(order_id: int, discount: float):

@@ -1,24 +1,26 @@
-# Project Foundation
+# Base de um projeto Python
 
 > [!NOTE]
 > Essa estrutura reflete como costumo iniciar projetos Python. Os exemplos são referências
 > conceituais: podem não cobrir todos os detalhes de implementação e, conforme as tecnologias
-> evoluem, alguns podem ficar desatualizados. O que importa é o princípio: entry point como índice,
-> configuração centralizada, módulos por domínio.
+> evoluem, alguns podem ficar desatualizados. O que importa são os princípios: ponto de entrada
+> como índice, configuração num lugar só, módulos organizados por domínio.
 
-Um projeto Python bem fundado começa com `pyproject.toml` concentrando deps, linter (ruff), type checker (mypy) e runner de testes (pytest). O entry point carrega configuração, registra dependências e sobe a aplicação; módulos ficam organizados por domínio, não por camada técnica.
+O `pyproject.toml` concentra as dependências e a configuração das ferramentas: o `ruff` para lint, o `mypy` para tipos e o `pytest` para testes. O ponto de entrada carrega a configuração, registra o que a aplicação precisa e a coloca no ar.
+
+As pastas são organizadas por domínio: `orders/` guarda a rota, o serviço e os modelos de pedido, juntos. A alternativa, uma pasta `routers/` com as rotas de tudo e uma `services/` com os serviços de tudo, espalha uma alteração de pedido por quatro pastas.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **pyproject.toml** (manifesto de projeto Python) | arquivo único com deps, build, ruff, mypy e pytest |
-| **virtualenv** (ambiente virtual isolado) | diretório que isola pacotes do projeto do Python global |
-| **ruff** (linter e formatter Python) | linter rápido (Rust) com regras combinadas; substitui flake8 + isort |
-| **mypy** (type checker estático) | verificador de tipos baseado em type hints; pega bugs antes do runtime |
-| **pytest** (framework de testes) | runner padrão de testes; usa funções e fixtures |
-| **entry point** (ponto de entrada) | módulo que carrega configuração e sobe a aplicação |
-| **feature module** (módulo por domínio) | pacote que reúne handler, service e modelos de uma feature |
+| **pyproject.toml** (manifesto do projeto) | O arquivo único com as dependências, o build e a configuração do ruff, do mypy e do pytest |
+| **virtualenv** (ambiente virtual) | A pasta que isola os pacotes deste projeto do Python instalado na máquina |
+| **ruff** (lint e formatação) | Confere as regras de estilo e formata o código. É escrito em Rust, e substitui o flake8, o isort e o black |
+| **mypy** (verificador de tipos) | Lê as anotações de tipo e acusa a incompatibilidade antes de o programa rodar |
+| **pytest** (ferramenta de testes) | O executor padrão de testes do ecossistema |
+| **entry point** (ponto de entrada) | O módulo que carrega a configuração e sobe a aplicação |
+| **feature module** (módulo de domínio) | O pacote que reúne a rota, o serviço e os modelos de um domínio, num lugar só |
 
 ## Estrutura de arquivos
 
@@ -65,13 +67,12 @@ pip install ruff
 > `uv` é uma alternativa moderna que substitui `pip` e `venv` em um único binário:
 > instalação de pacotes e gerenciamento de ambientes virtuais ordens de magnitude mais rápido.
 
-## pyproject.toml: configuração central
+## pyproject.toml, o arquivo de configuração do projeto
 
-`pyproject.toml` é o único arquivo de configuração do projeto. Substitui `setup.py`, `setup.cfg`,
-`requirements.txt`, `.flake8` e `mypy.ini` em um único lugar.
+Um arquivo só, no lugar dos cinco que o Python acumulou ao longo dos anos: `setup.py`, `setup.cfg`, `requirements.txt`, `.flake8` e `mypy.ini`. Cada ferramenta lê a sua seção.
 
 <details>
-<summary>❌ Ruim: configuração fragmentada em múltiplos arquivos</summary>
+<summary>❌ Ruim: a configuração espalhada por cinco arquivos diferentes</summary>
 
 ```
 setup.py
@@ -123,16 +124,14 @@ asyncio_mode = "auto"
 
 </details>
 
-## Configuração centralizada
+## A configuração lida num lugar só
 
-`pyproject.toml` configura ferramentas de build (ruff, mypy, pytest): estático, versionado.
-`app/config.py` lê variáveis de ambiente do `.env` em tempo de execução; nunca versionado.
+Os dois arquivos de configuração cuidam de coisas diferentes. O `pyproject.toml` guarda o que é igual para todo mundo (as regras do ruff, a versão do Python) e vai para o git. O `app/config.py` lê o que muda de ambiente para ambiente (o endereço do banco, a chave da API), e o `.env` de onde ele lê nunca vai para o git.
 
-`config.py` é o único ponto de leitura de variáveis de ambiente. Nenhum módulo acessa
-`os.environ` diretamente. Use `pydantic-settings` para validação e tipagem automáticas.
+Deixe o `config.py` ser o único lugar do projeto que toca em `os.environ`. Quando o `os.environ["DATABASE_URL"]` aparece em cinco módulos, ninguém sabe quais variáveis o projeto exige sem varrer o código inteiro, e o programa sobe faltando uma.
 
 <details>
-<summary>❌ Ruim: os.environ espalhado em todo lugar</summary>
+<summary>❌ Ruim: cada módulo lê a variável de ambiente por conta própria</summary>
 
 ```python
 # database/client.py
@@ -147,7 +146,7 @@ secret = os.environ["JWT_SECRET"]  # leitura direta
 </details>
 
 <details>
-<summary>✅ Bom: Settings como único ponto de entrada de env vars</summary>
+<summary>✅ Bom: uma classe Settings concentra a leitura, e os módulos a recebem</summary>
 
 ```python
 # app/config.py
@@ -175,11 +174,10 @@ class OrderService:
 
 ## Entry point enxuto
 
-`main.py` declara intenção, não implementa. Toda configuração é delegada para módulos.
-O arquivo serve como índice do projeto.
+O `main.py` funciona como o índice do projeto. Quem abre o arquivo pela primeira vez lê, em dez linhas, quais domínios existem e o que a aplicação carrega ao subir. Cada linha aponta para o módulo que faz o trabalho.
 
 <details>
-<summary>❌ Ruim: main.py como dumping ground de configuração</summary>
+<summary>❌ Ruim: o main.py acumula a conexão, a autenticação e todas as rotas</summary>
 
 ```python
 from fastapi import FastAPI, Depends
@@ -209,7 +207,7 @@ async def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom: main.py como índice, configuração delegada</summary>
+<summary>✅ Bom: três linhas, e cada uma aponta para o módulo que faz o trabalho</summary>
 
 ```python
 from app.config import settings
@@ -220,13 +218,14 @@ app = create_app(settings)
 
 </details>
 
-## Módulos por domínio
+## Cada domínio registra a si mesmo
 
-Cada domínio registra suas próprias rotas e dependências. O factory não conhece os internos
-de cada módulo: apenas monta o app.
+O `orders/module.py` sabe quais rotas e dependências o domínio de pedidos tem, e expõe uma função `register_orders(app)`. A fábrica que monta a aplicação só chama essa função.
+
+Assim, acrescentar uma rota de pedido é uma alteração dentro de `orders/`. A fábrica continua igual, e não vira o arquivo que todo mundo edita ao mesmo tempo.
 
 <details>
-<summary>❌ Ruim: factory conhece os internos de cada domínio</summary>
+<summary>❌ Ruim: a fábrica conhece as rotas e os serviços de cada domínio</summary>
 
 ```python
 # app/factory.py

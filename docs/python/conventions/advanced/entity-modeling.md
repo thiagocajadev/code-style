@@ -2,7 +2,7 @@
 
 > Escopo: Python 3.13+. Visão transversal: [shared/architecture/entity-modeling.md](../../../shared/architecture/entity-modeling.md). As decisões de domínio (quando extrair, como relacionar, onde mora a invariante) são as mesmas; aqui o foco é o idiom: `NewType` para IDs tipados, `@dataclass(frozen=True, slots=True)` para value objects, `class Entity(Generic[TId])` como base mínima e `Sequence[T]` em retornos públicos.
 
-Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em Python e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com critério, não com receita fechada.
+Esta página serve a duas pessoas. A primeira está modelando a entidade inicial do projeto em Python e ainda não sabe quantas propriedades é demais. A segunda volta para revisar uma decisão antiga (por exemplo, vale a pena quebrar `Customer` agora que ela tem 18 campos?). As duas saem daqui com um critério para decidir cada caso.
 
 O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: quantas propriedades uma entidade aguenta antes de fragmentar; quando uma propriedade vira lista; como expressar relacionamentos um para muitos e muitos para muitos; quando faz sentido herdar de uma `Entity` base. Os exemplos assumem Python 3.13+, `mypy --strict` ou Pyright no modo estrito, e não usam `# type: ignore` em ponto nenhum.
 
@@ -15,20 +15,20 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItem` formam um agregado) |
 | **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo `__post_init__` ou pelo classmethod factory e pelos métodos que alteram estado |
-| **boundary** (limite) | Fronteira entre dois contextos onde os dados são validados ao atravessar (entrada da função, limite do agregado, limite do sistema) |
+| **boundary** (limite) | A linha entre dois contextos, onde o dado é validado ao atravessar (a entrada da função, a borda do agregado, a borda do sistema) |
 | **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `UUID` ou `str` cru, para impedir trocas acidentais entre IDs |
 | **NewType** (novo tipo) | `typing.NewType('CustomerId', UUID)`: alias de tipo com custo zero em runtime; mypy e Pyright rejeitam trocas entre NewTypes distintos |
 | **dataclass** (classe de dados) | Decorator `@dataclass` que gera `__init__`, `__repr__` e `__eq__` automaticamente; `frozen=True` torna o objeto não-alterável |
 | **slots** (atributos via slots) | `@dataclass(slots=True)`: troca `__dict__` por `__slots__`, reduz memória e acelera acesso a atributos |
 | **`__post_init__`** (pós-inicialização) | Método especial de dataclass chamado depois do `__init__` gerado; local idiomático para validação de invariantes |
 | **Pydantic** (biblioteca de validação e serialização) | Biblioteca que valida e serializa dados a partir de type hints; `BaseModel` com `model_config = ConfigDict(frozen=True)` cobre value objects com validação rica de entrada externa |
-| **Optional / `T \| None`** (anulável, aceita ausência de valor) | Campo que aceita `None` quando o conceito não está presente; representa "zero ou um" em cardinalidade |
+| **Optional** (anulável, aceita ausência de valor) | Campo escrito como `T | None`, que aceita `None` quando o conceito não está presente. Representa "zero ou um" na cardinalidade |
 | **Sequence[T]** (sequência somente leitura) | `collections.abc.Sequence[T]`: interface de coleção sem `append` nem `__setitem__`; usado em retornos públicos de coleções de agregados |
 | **cardinality** (cardinalidade, quantidade da relação) | Quantos elementos a relação aceita entre dois conceitos: 0..1, 1, 0..N, 1..N, N..N |
 | **cohesion** (coesão) | Medida de quanto as propriedades e operações de uma entidade pertencem ao mesmo conceito de negócio |
 | **God Object** (objeto-deus, classe que sabe demais) | Antipadrão de classe que acumula responsabilidades demais e vira ponto de mudança para tudo |
 | **repository** (repositório) | Componente que encapsula a persistência de uma entidade ou agregado, escondendo SQL e ORM do domínio |
-| **ORM** (Object-Relational Mapping, mapeamento objeto-relacional) | Camada que traduz objetos do código para tabelas do banco e de volta (SQLAlchemy, Django ORM, Tortoise) |
+| **ORM** (Object-Relational Mapping · mapeamento objeto-relacional) | Camada que traduz objetos do código para tabelas do banco e de volta (SQLAlchemy, Django ORM, Tortoise) |
 | **soft delete** (remoção lógica) | Marcar o registro como excluído (`deleted_at` preenchido) sem apagar fisicamente, preservando histórico |
 | **multitenancy** (multilocação) | Uma instância da aplicação serve múltiplos clientes (tenants) com isolamento de dados entre eles |
 | **row-level security** (segurança por linha, RLS) | Recurso do banco que filtra linhas pelo contexto da requisição antes da query chegar ao app |
@@ -40,7 +40,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 
 A pergunta "quantas propriedades é demais" não tem número certo, e ninguém deveria comprometer-se com um. O sinal que funciona é a coesão: as propriedades mudam juntas, são consultadas juntas, fazem sentido juntas. Quando um subconjunto começa a mudar em outro ritmo, ele já é outra coisa pedindo um nome próprio.
 
-Os números abaixo são heurística, não regra:
+Trate os números abaixo como um sinal para olhar mais de perto, e decida pela coesão:
 
 - **5 a 10 propriedades**: zona confortável. A maior parte das entidades de domínio cabe aqui.
 - **10 a 15**: hora de olhar a coesão. Se todos os campos descrevem o mesmo conceito (`Order` com cabeçalho, totais e status), tudo bem. Se já dá para agrupar (endereço, preferências, dados fiscais), extrair.
@@ -461,11 +461,11 @@ class OrderItem(Entity[OrderItemId]):
 
 </details>
 
-## Propriedade vs lista
+## Campo único ou lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade traduz a regra de negócio, e ignora o estado do momento. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram um só.
 
-A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos Python:
+A tabela abaixo traduz cada regra de cardinalidade para o tipo Python correspondente:
 
 | Regra de negócio | Modelo | Exemplo |
 | --- | --- | --- |
@@ -474,7 +474,7 @@ A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos
 | Zero ou mais | `Sequence[T]` público, `list[T]` interno (vazio, nunca None) | `Sequence[OrderItem]` |
 | Exatamente N (N fixo) | N campos nomeados | `Address.{street, city, country}` |
 
-Em Python, listas públicas usam `Sequence[T]` (ou `tuple[T, ...]`) para sinalizar somente leitura. A mutação interna passa por um `list[T]` privado prefixado com `_`, e o método de domínio é a única forma de alterar. O getter retorna uma cópia (`tuple(self._phones)` ou `list(self._phones)`) para evitar que callers alterem a lista interna.
+Em Python, a coleção exposta ao mundo usa `Sequence[T]` (ou `tuple[T, ...]`), que é a interface sem `append`. A escrita passa por um `list[T]` privado, com nome prefixado por `_`, e só o método de domínio altera. O getter devolve uma cópia (`tuple(self._phones)`), para quem chamou não conseguir alterar a lista interna por fora do método.
 
 <details>
 <summary>❌ Ruim: três campos numerados forçando uma lista mascarada</summary>
@@ -501,7 +501,7 @@ class Customer:
         raise ValueError("Customer can have at most 3 phones.")
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra.
+A regra "cliente tem até três telefones" acabou escrita na forma da classe, com um campo por telefone. Ela deveria morar no método, como uma invariante. Do jeito que está, aceitar um quarto telefone obriga a alterar a classe, o banco e o `add_phone` inteiro.
 
 </details>
 
@@ -558,7 +558,7 @@ Um para muitos é o relacionamento mais comum em todo domínio: `Order` tem muit
 
 Quando os filhos não fazem sentido fora do pai (`OrderItem` sem `Order` não existe), eles vivem dentro do mesmo agregado. A **aggregate root** orquestra a vida dos filhos: cria, valida, remove. O acesso a um filho específico passa pelo root, nunca direto. Em código, a root é a única classe exposta do agregado, e o construtor da entidade filha pode ser protegido para que só o root produza instâncias.
 
-Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles cruza fronteira de agregado, então vai por ID, nunca por objeto completo.
+Quando os filhos existem por conta própria (`Customer` tem muitos `Order`, mas `Order` faz sentido sem `Customer` em memória), cada lado é um agregado separado. A referência entre eles atravessa o limite de um agregado para o outro, e por isso vai por ID.
 
 <details>
 <summary>❌ Ruim: filho carrega referência completa ao pai, ciclo bidirecional sem dono</summary>
@@ -767,17 +767,17 @@ class Course(Entity[CourseId]):
         self.title = title
 ```
 
-`Student` não lista cursos diretamente; `Course` não lista alunos diretamente. O relacionamento mora em `Enrollment`, que carrega data, status e nota. Consultas como "cursos do aluno X" viram queries sobre `Enrollment`, não navegação de lista.
+Nenhum dos dois lados lista o outro. O relacionamento mora em `Enrollment`, que guarda a data, o status e a nota. A pergunta "quais cursos o aluno X faz" vira uma consulta a `Enrollment`, e o aluno deixa de carregar uma lista de cursos que ninguém mantém atualizada.
 
 </details>
 
-Quando o N:N é pura associação (sem atributos), uma tabela intermediária só de IDs basta no banco, e o modelo pode expor `Sequence[CourseId]` em qualquer um dos lados. A regra continua: sem inventar entidade quando não há informação para ela carregar.
+Quando a relação de muitos para muitos não guarda atributo nenhum, uma tabela só de IDs resolve no banco, e o modelo pode expor `Sequence[CourseId]` de qualquer um dos lados. Crie a entidade intermediária quando houver informação para ela guardar.
 
-## Identidade vs referência
+## Referenciar pelo objeto ou pelo ID
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order._items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, guarde o objeto. `Order._items` é uma lista de `OrderItem`, e não de `OrderItemId`. O agregado é uma unidade que se grava e se carrega inteira, e mantê-la coerente é trabalho de um dono só.
 
-Cruzando a fronteira de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customer_id: CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Ao apontar para outro agregado, guarde o ID. `Order` referencia `Customer` por `customer_id: CustomerId`. Carregar o `Customer` inteiro dentro de `Order` faria o agregado `Order` responder pela consistência de um cliente que ele não governa, e essa responsabilidade já é do agregado `Customer`. Com duas classes cuidando da mesma invariante, uma delas vai deixar de aplicá-la em alguma alteração futura.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -821,7 +821,7 @@ order = Order.place(order_id=new_order_id, customer_id=target_customer_id)
 customer = await customer_repository.find_by_id(order.customer_id)
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` busca pelo ID no momento em que for usar. Abrir a tela de um pedido deixa de trazer o cliente inteiro, com endereço, preferências e dados fiscais, quando a tela só precisava do número do pedido.
 
 </details>
 
@@ -872,6 +872,8 @@ def summarize(state: OrderState) -> str:
 Para o estado simples (sem dados associados), `class OrderStatus(Enum): PENDING = 'pending'` em um único campo basta. As classes de estado só ganham tração quando o estado carrega informação própria.
 
 </details>
+
+<a id="multitenancy"></a>
 
 ## Multitenancy
 

@@ -3,24 +3,25 @@
 > Escopo: MicroPython 1.28 (RP2040, Raspberry Pi Pico, e ESP32).
 > Padrões de domínio IoT (debounce, FSM, watchdog): [shared/platform/iot.md](../../../shared/platform/iot.md)
 
-MicroPython é uma implementação de Python 3 otimizada para microcontroladores. Roda com
-256 KB de RAM ou menos, sem sistema operacional, sem `pip` completo e com uma stdlib
-reduzida. O código Python é o mesmo em sintaxe, mas as restrições de hardware mudam tudo.
+O MicroPython é uma implementação de Python 3 feita para microcontroladores. A sintaxe é a mesma que você já escreve, e o ambiente em volta é outro: 256 KB de memória ou menos, nenhum sistema operacional, sem o `pip` completo e com uma biblioteca padrão cortada.
+
+O que isso significa na prática é que operações consideradas gratuitas no servidor passam a importar. Uma lista que cresce dentro de um laço infinito derruba o dispositivo por falta de memória, e um `time.sleep()` no laço principal deixa o **watchdog** (o circuito que reinicia a placa quando o programa trava) sem resposta.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | -------- | ------- |
-| `machine` | Módulo de acesso ao hardware: GPIO, ADC, PWM, I2C, SPI, Timer, WDT |
-| `utime` | Versão reduzida de `time`; use `ticks_ms()` e `ticks_diff()` para medir intervalos |
-| `micropython-lib` | Coleção de módulos compatíveis com MicroPython; substituto parcial de PyPI |
-| **heap** (memória dinâmica) | Memória de alocação dinâmica; limitada; alocações excessivas causam `MemoryError` |
-| `gc` | Garbage collector; pode ser chamado manualmente com `gc.collect()` em loops longos |
-| **frozen module** (módulo congelado em flash) | Módulo compilado em bytecode e gravado na flash do dispositivo; economiza RAM |
+| `machine` | O módulo que conversa com o hardware: pinos digitais, leitura analógica, temporizadores, watchdog |
+| `utime` | A versão reduzida do `time`. Para medir intervalo, use `ticks_ms()` com `ticks_diff()` |
+| `micropython-lib` | A coleção de módulos que funcionam no MicroPython. Substitui em parte o repositório de pacotes do Python |
+| **heap** (memória para objetos) | A memória onde os objetos são criados. É pouca, e enchê-la levanta `MemoryError` |
+| `gc` | O coletor de lixo, que libera a memória dos objetos sem uso. Aqui ele pode ser chamado à mão, com `gc.collect()` |
+| **WDT** (Watchdog Timer · temporizador de vigilância) | O circuito que reinicia a placa se o programa parar de avisar que está vivo |
+| **frozen module** (módulo gravado na flash) | O módulo já compilado e gravado na memória permanente. Ele não ocupa a memória de trabalho |
 
-## Diferenças da stdlib CPython
+## O que falta da biblioteca padrão
 
-MicroPython omite ou reduz módulos da stdlib padrão. Verifique disponibilidade antes de usar.
+O MicroPython corta ou reduz vários módulos. Confira a tabela antes de escrever o `import`.
 
 | Módulo CPython | Situação no MicroPython | Alternativa |
 | -------------- | ----------------------- | ----------- |
@@ -33,13 +34,14 @@ MicroPython omite ou reduz módulos da stdlib padrão. Verifique disponibilidade
 | `socket` | Disponível, sem SSL completo | `ssl` disponível em alguns ports |
 | `asyncio` | Disponível (`uasyncio`) | `import asyncio` funciona em MicroPython 1.20+ |
 
-## Restrições de memória
+## Memória
 
-Evite criar listas e strings grandes em loops. Prefira operações in-place.
-Chame `gc.collect()` periodicamente em loops que alocam muito.
+Não deixe lista nem texto crescerem dentro de um laço. Prefira somar num acumulador de tamanho fixo, e chame `gc.collect()` de tempos em tempos nos laços que criam muitos objetos.
+
+O exemplo ruim abaixo guarda cem leituras numa lista para tirar a média. Ele funciona na bancada e falha em campo: a lista chega a cem itens antes de ser esvaziada, e esse pico de memória compete com o que a pilha de rede precisa no mesmo instante.
 
 <details>
-<summary>❌ Ruim: lista crescente em memória limitada</summary>
+<summary>❌ Ruim: a lista de leituras cresce até estourar a memória</summary>
 
 ```python
 import machine
@@ -63,7 +65,7 @@ while True:
 </details>
 
 <details>
-<summary>✅ Bom: acumulador com tamanho fixo, sem lista</summary>
+<summary>✅ Bom: soma num total e conta as amostras, sem guardar nenhuma</summary>
 
 ```python
 import machine
@@ -92,12 +94,12 @@ while True:
 
 </details>
 
-## Módulos ausentes: datetime
+## O datetime não existe aqui
 
-MicroPython não tem `datetime`. Use `utime.localtime()` para decompor timestamps Unix.
+O `import datetime` falha no dispositivo. O substituto é o `utime`: `utime.time()` devolve os segundos desde 1970, e `utime.localtime()` quebra esse número nos campos de data e hora.
 
 <details>
-<summary>❌ Ruim: import que falha em MicroPython</summary>
+<summary>❌ Ruim: um import que falha assim que a placa liga</summary>
 
 ```python
 from datetime import datetime, timedelta
@@ -109,7 +111,7 @@ expiry = now + timedelta(hours=1)
 </details>
 
 <details>
-<summary>✅ Bom: utime como substituto</summary>
+<summary>✅ Bom: utime devolve os segundos e separa os campos da data</summary>
 
 ```python
 import utime
@@ -125,13 +127,14 @@ print(f"now: {year}-{month:02d}-{day:02d} {hour:02d}:{minute:02d}:{second:02d}")
 
 </details>
 
-## asyncio em MicroPython (uasyncio)
+## asyncio no MicroPython
 
-MicroPython 1.20+ inclui `uasyncio` compatível com `asyncio`. Permite concorrência cooperativa
-sem threads. Essencial para ler sensores e manter rede ao mesmo tempo.
+A partir da versão 1.20, o `import asyncio` funciona no dispositivo. Como não há threads, ele é o caminho para fazer duas coisas ao mesmo tempo: ler o sensor a cada cinco segundos e avisar o watchdog a cada segundo, sem que uma espera trave a outra.
+
+O exemplo abaixo mostra as duas tarefas rodando juntas. Se a leitura do sensor fosse feita com `utime.sleep(5)` num laço único, o watchdog ficaria cinco segundos sem receber aviso, e reiniciaria a placa.
 
 <details>
-<summary>✅ Bom: leitura de sensor + keep-alive de rede com asyncio</summary>
+<summary>✅ Bom: o sensor e o aviso ao watchdog rodam ao mesmo tempo</summary>
 
 ```python
 import asyncio
@@ -167,12 +170,12 @@ asyncio.run(main())
 
 </details>
 
-## Boas práticas gerais
+## Práticas que valem a pena
 
 | Padrão | Motivo |
 | ------ | ------ |
-| Constantes em `UPPER_SNAKE_CASE` para pinos e timeouts | Facilita reconfiguração sem busca no código |
-| `try/except` em operações de rede | Conexão pode cair a qualquer momento |
-| Nunca use `time.sleep()` no loop principal com watchdog | Bloqueia o feed; use `utime.sleep_ms()` com intervalo menor que o timeout do WDT |
-| Evite f-strings longas em loops críticos | Alocam strings; use `print()` com múltiplos argumentos quando possível |
-| `gc.collect()` após operações que alocam muito | Libera memória proativamente antes que o heap encha |
+| Constantes em `UPPER_SNAKE_CASE` para pinos e tempos de espera | Trocar o pino vira uma linha, sem procurar o número solto no meio do código |
+| `try/except` em volta de operação de rede | A conexão cai, e o dispositivo precisa continuar rodando quando isso acontece |
+| Nada de `time.sleep()` no laço principal quando há watchdog | Ele trava o laço, o aviso não sai, e a placa reinicia. Use `utime.sleep_ms()` com intervalo menor que o tempo do watchdog |
+| Poucas f-strings dentro do laço que roda o tempo todo | Cada uma cria um texto novo na memória. O `print()` aceita vários argumentos e evita a montagem |
+| `gc.collect()` depois do trecho que cria muitos objetos | Libera a memória num momento que você escolhe, antes que ela acabe num momento que você não escolhe |

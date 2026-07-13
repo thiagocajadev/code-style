@@ -1,39 +1,29 @@
-# Visual density: Python
+# Densidade visual em Python
 
-**Visual density** (densidade visual) é a quantidade de informação por bloco
-visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
-quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco. Cada grupo conta uma
-micro-história.
+Densidade visual é a quantidade de informação que você empilha em cada bloco de código. Quando muitas linhas se acumulam sem espaço, o olho cansa e você perde o fio do raciocínio. Quando linhas sem relação ficam grudadas, o leitor não sabe onde uma ideia termina e a outra começa. A saída é direta: junte as linhas que contam a mesma pequena história e separe cada história da próxima com uma linha em branco.
 
-Os mesmos princípios de
-[densidade visual](../../shared/standards/visual-density.md) com exemplos em
-Python idiomático (PEP 8).
+Este guia mostra como aplicar isso em Python, sempre com um exemplo ruim e um bom lado a lado. Os princípios gerais estão em [densidade visual](../../shared/standards/visual-density.md), e aqui eles aparecem adaptados ao PEP 8.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **visual density** (densidade visual) | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo |
-| **semantic group** (grupo semântico) | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir) |
-| **blank line** (linha em branco) | Separador entre grupos semânticos; substitui comentário de seção |
-| **tight pair** (par tight) | Duas linhas com relação direta (declaração + uso, atribuição + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico) | Três declarações simples consecutivas e homogêneas (`x = expr`); mantidas juntas sem blank; preferir ao 2+1 que cria órfão |
-| **semantic pair** (par semântico encadeado) | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta |
-| **single-line orphan** (órfão de 1) | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
-| **explaining return** (retorno explicativo) | Caso particular de `tight pair`: `x = expr` single-line + `return x` sem blank entre eles |
-| **multi-line block** (bloco multi-linha) | Dict literal, list literal, tuple, list comprehension quebrada ou statement com `\`/parênteses multi-linha; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; trata-se de fase distinta; blank antes da montagem |
-| **boundary** (limite) | Linha que separa camadas (handler ↔ service, service ↔ repository); merece linha em branco antes |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão; frágil a rename, gera diff ruidoso, violação de PEP 8 |
+| **visual density** (densidade visual) | Quantidade de informação por bloco de código; o alvo é pouca por bloco e muita por arquivo |
+| **semantic group** (grupo semântico) | Poucas linhas que executam uma etapa coesa, por exemplo validar, calcular ou gravar |
+| **blank line** (linha em branco) | Separa dois grupos; faz o papel que antes cabia a um comentário de seção |
+| **boundary** (limite) | Linha que separa camadas, por exemplo do handler para o serviço; pede uma linha em branco antes |
+| **multi-line block** (bloco de várias linhas) | Dicionário, lista, tupla ou comando quebrado em várias linhas; pede um respiro depois de si |
+| **column alignment** (alinhamento em colunas) | Espaços extras para alinhar `=` ou `:` na vertical; antipadrão, quebra a cada renomeação e contraria o PEP 8 |
+| **PEP 8** (Python Enhancement Proposal 8 · Proposta de Melhoria 8) | Guia oficial de estilo da linguagem; o espaço único em volta do `=` sai de lá |
+
+<a id="core-rule"></a>
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural;
-três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
+A regra que resolve quase tudo: **agrupe poucas linhas por vez e separe cada grupo com uma linha em branco.** O tamanho natural de um grupo é duas linhas. Três valem quando dividir em duas mais uma deixaria a última linha sozinha. Com quatro ou mais, quebre em dois grupos de duas.
 
 <details>
-<summary>❌ Ruim: denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: tudo grudado, sem um respiro entre os passos</summary>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -50,7 +40,7 @@ async def register_user(name: str, email: str, password: str):
 </details>
 
 <details>
-<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: cada fase visível, no máximo duas linhas por grupo</summary>
 
 ```python
 async def register_user(name: str, email: str, password: str):
@@ -69,16 +59,12 @@ async def register_user(name: str, email: str, password: str):
 
 </details>
 
-## Explaining Return: par tight
+## O `return` fica junto da linha que nomeia o valor
 
-Uma variável nomeada acima do `return` explica o valor retornado. Sempre que a
-linha imediatamente acima for `x = expr` (single-line) e o `return` retornar
-exatamente `x`, os dois formam par de 2 linhas sem blank, não importa quantos
-passos haja acima. A linha em branco separa o par do que vem antes, não
-fragmenta o par.
+Quando a linha logo acima do `return` é a atribuição que dá nome ao valor devolvido, as duas formam uma dupla e ficam juntas, sem linha em branco entre elas. Não importa quantos passos venham antes. A linha em branco separa essa dupla do que veio antes; ela nunca entra no meio da dupla.
 
 <details>
-<summary>❌ Ruim: blank fragmenta o par</summary>
+<summary>❌ Ruim: a linha em branco parte a dupla no meio</summary>
 
 ```python
 def map_error_to_status(error) -> int:
@@ -90,7 +76,7 @@ def map_error_to_status(error) -> int:
 </details>
 
 <details>
-<summary>✅ Bom: par tight</summary>
+<summary>✅ Bom: a atribuição e o `return` juntos</summary>
 
 ```python
 def map_error_to_status(error) -> int:
@@ -100,22 +86,16 @@ def map_error_to_status(error) -> int:
 
 </details>
 
-## Return tight vs return separado
+## Quando o `return` cola na linha acima e quando ganha um respiro
 
-A regra é simples: `return` é **tight** com a linha imediatamente acima
-**somente quando essa linha é a atribuição que nomeia o valor retornado**
-(Explaining Return), e essa atribuição está em uma única linha.
+O `return` só cola na linha imediatamente acima quando essa linha é a atribuição, de uma única linha, que nomeia o valor devolvido. Em todos os outros casos, deixe uma linha em branco antes do `return`:
 
-Em todos os outros casos, vai blank antes do `return`:
-
-- linha acima é **multi-linha** (dict/list/tuple literal, comprehension
-  quebrada, statement com `\` ou parênteses multi-linha);
-- linha acima é **side effect** (`await`, função sem retorno, `logger.info`)
-  que não nomeia o valor;
-- valor retornado foi criado **vários passos antes**, sem par direto.
+- a linha acima ocupa várias linhas (um dicionário, uma lista ou um comando quebrado em vários pedaços);
+- a linha acima só produz um efeito (um `await`, um `logger.info`, uma função que não devolve valor) e não dá nome ao resultado;
+- o valor devolvido foi criado vários passos antes, sem formar dupla com a linha de cima.
 
 <details>
-<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: a linha em branco separou a atribuição do `return` que a devolve</summary>
 
 ```python
 def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
@@ -131,14 +111,12 @@ def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
     return formatted_date
 ```
 
-`formatter_options` multi-linha exige blank depois de si, mas o blank foi posto
-antes do `return`. `formatted_date` e `return formatted_date` formam Explaining
-Return tight: não devem ser separados.
+O `formatter_options` ocupa várias linhas e pede um respiro depois de si, mas aqui a linha em branco foi parar antes do `return`. `formatted_date` e `return formatted_date` são a dupla que nomeia e devolve o valor: não devem ser separados.
 
 </details>
 
 <details>
-<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: o bloco de várias linhas isolado, a atribuição e o `return` juntos</summary>
 
 ```python
 def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
@@ -154,13 +132,12 @@ def format_order_date(iso_string: str, locale: str = "pt-BR") -> str:
     return formatted_date
 ```
 
-O blank fica **depois** do dict multi-linha. O par `formatted_date` +
-`return formatted_date` permanece tight.
+A linha em branco fica **depois** do dicionário, que ocupa várias linhas. A dupla `formatted_date` mais `return formatted_date` continua junta.
 
 </details>
 
 <details>
-<summary>✅ Bom: return com blank quando construído a partir de dict multi-linha</summary>
+<summary>✅ Bom: return com respiro quando é montado a partir de um dicionário de várias linhas</summary>
 
 ```python
 def build_order_response(order, request_id: str) -> dict:
@@ -173,32 +150,25 @@ def build_order_response(order, request_id: str) -> dict:
     return {"data": data, "request_id": request_id}
 ```
 
-`data` é dict multi-linha; o blank antes do `return` isola o bloco grande do
-envelope final.
+`data` é um dicionário de várias linhas; a linha em branco antes do `return` separa esse bloco grande do envelope final.
 
 </details>
 
-**Exceção:** funções de uma linha ficam compactas. O `return` é o único
-conteúdo.
+**Exceção:** funções de uma linha ficam compactas. O `return` é o único conteúdo.
 
 ```python
 def find_pending_orders(user_id: int) -> list:
     return order_repository.find_by_status(user_id, "pending")
 ```
 
-## Declaração + guarda: critério visual
+## A variável e o `if` que a valida ficam juntos
 
-Uma variável seguida do seu `if` de guarda formam par semântico **quando o
-guarda é inline**: `if not x: return`, `if not x: raise ValueError(...)`.
-Nesse caso a linha em branco vem **depois** do par, nunca entre eles.
+Uma variável e o `if` que a valida logo abaixo formam uma dupla **quando o `if` cabe em uma linha só** (`if not x: return`, `if not x: raise ValueError(...)`). Nesse caso, a linha em branco vem **depois** da dupla, nunca entre a variável e o seu `if`.
 
-Quando o guarda é escrito em **bloco indentado** (duas ou mais linhas físicas,
-mesmo com uma única instrução dentro), o `if` vira fase própria, e o bloco já
-ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede respiro**:
-linha em branco **antes** do bloco. O critério é visual, não semântico.
+Quando o `if` abre um bloco indentado (duas ou mais linhas, mesmo com uma única instrução dentro), ele vira uma fase à parte: o bloco já tem peso visual próprio. Aí vale a regra de que todo bloco de várias linhas pede um respiro antes de si. O critério aqui é o peso visual do bloco na tela.
 
 <details>
-<summary>❌ Ruim: variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: a variável foi separada do `if` que a valida</summary>
 
 ```python
 order = await fetch_order(order_id)
@@ -210,7 +180,7 @@ invoice = build_invoice(order)
 </details>
 
 <details>
-<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: `if` de uma linha, junto da variável</summary>
 
 ```python
 order = await fetch_order(order_id)
@@ -222,7 +192,7 @@ invoice = build_invoice(order)
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: `if` com bloco indentado, fase à parte com um respiro antes</summary>
 
 ```python
 handler = event_handlers.get(event_type)
@@ -237,7 +207,7 @@ event_payload = event.data
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: o bloco indentado pede respiro antes mesmo com uma só instrução</summary>
 
 ```python
 response = await request_fn()
@@ -248,19 +218,16 @@ if response.status_code != 429:
 delay_ms = (2 ** attempt) * 1000
 ```
 
-O bloco ocupa duas linhas físicas: peso visual próprio. Inline ficaria
-tight, mas em bloco, blank antes.
+O bloco ocupa duas linhas e tem peso visual próprio. Em uma linha só, ficaria junto da variável; com bloco indentado, pede uma linha em branco antes.
 
 </details>
 
-## Órfão de 1 linha: pior que trio atômico
+## Não deixe uma linha sozinha entre espaços
 
-Três declarações simples consecutivas (atribuições homogêneas) formam grupo
-coeso. Partir em 2+1 deixa a última linha solitária entre blanks. Mantenha as
-três juntas. Só divida em 2+2 a partir de quatro.
+Três atribuições simples seguidas formam um grupo coeso. Se você quebrar em duas mais uma, a última fica sozinha entre duas linhas em branco, parecendo esquecida. Mantenha as três juntas. Com quatro ou mais, divida em dois pares.
 
 <details>
-<summary>❌ Ruim: órfão entre blanks</summary>
+<summary>❌ Ruim: a última linha sozinha entre espaços</summary>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -272,7 +239,7 @@ ONE_DAY_SECONDS: Final = 86_400
 </details>
 
 <details>
-<summary>✅ Bom: trio tight</summary>
+<summary>✅ Bom: as três juntas</summary>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -283,7 +250,7 @@ ONE_DAY_SECONDS: Final = 86_400
 </details>
 
 <details>
-<summary>✅ Bom: 4 atomics viram 2+2</summary>
+<summary>✅ Bom: quatro viram dois pares</summary>
 
 ```python
 MINIMUM_DRIVING_AGE: Final = 18
@@ -295,14 +262,12 @@ MAX_RETRY_ATTEMPTS: Final = 3
 
 </details>
 
-## Par semântico encadeado
+## Duas linhas onde a segunda usa o valor da primeira
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as
-duas formam par. A quebra natural fica antes do par, não entre ele e sua
-dependência direta.
+Quando a última linha **usa o valor recém-criado** na linha de cima, as duas formam uma dupla. O respiro natural fica antes da dupla, nunca entre uma linha e o valor de que ela depende.
 
 <details>
-<summary>❌ Ruim: dependência direta partida</summary>
+<summary>❌ Ruim: a linha foi separada do valor de que depende</summary>
 
 ```python
 def build_shipping_label(order) -> str:
@@ -318,7 +283,7 @@ def build_shipping_label(order) -> str:
 </details>
 
 <details>
-<summary>✅ Bom: par semântico tight</summary>
+<summary>✅ Bom: as duas linhas dependentes juntas</summary>
 
 ```python
 def build_shipping_label(order) -> str:
@@ -332,23 +297,17 @@ def build_shipping_label(order) -> str:
 
 </details>
 
-## Fragmentos → montagem: blank antes do consumidor
+## Prepare as partes, depois monte o resultado
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que
-**consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta, com blank antes dela. É o caso clássico "preparar partes →
-montar resultado", diferente do par semântico encadeado (onde a última depende
-**diretamente** da penúltima e por isso fica tight).
+Quando você prepara **dois ou mais pedaços** e depois tem uma linha que **junta vários deles** (não só o último), trate essa montagem como uma fase à parte, com uma linha em branco antes. É o padrão "preparar as partes, depois montar o resultado". Ele é diferente do caso anterior, em que a última linha depende **só** da linha logo acima e por isso fica junto dela.
 
-Heurística rápida:
+Como decidir rápido:
 
-- A última linha usa **só o valor recém-declarado** acima? → par semântico
-  encadeado, fica tight.
-- A última linha **costura múltiplos fragmentos** declarados em linhas
-  diferentes? → fragmentos → montagem, blank antes.
+- A última linha usa **só o valor recém-criado** acima? É uma dupla dependente: fica junto.
+- A última linha **costura vários pedaços** declarados em linhas diferentes? É a fase de montagem: linha em branco antes.
 
 <details>
-<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: preparação e montagem grudadas como se fossem linhas iguais</summary>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -358,14 +317,12 @@ def build_delivery_message(user, order) -> str:
     return delivery_message
 ```
 
-`delivery_message` consome `full_name` *e* `address` *e* `order.order_id` *e*
-`order.delivery_days`. Não é par direto com `address`: é a fase de montagem.
-Coladas como trio, as fases ficam invisíveis.
+`delivery_message` usa `full_name`, `address`, `order.order_id` e `order.delivery_days` ao mesmo tempo. Ela é a fase de montagem, e não uma dupla com `address`. Grudada como se as três linhas fossem iguais, as fases somem.
 
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: pedaços em uma dupla, montagem à parte, `return` junto do valor</summary>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -376,13 +333,12 @@ def build_delivery_message(user, order) -> str:
     return delivery_message
 ```
 
-Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
-(Explaining Return tight).
+Duas fases ficam visíveis: preparar os pedaços, depois montar e devolver.
 
 </details>
 
 <details>
-<summary>✅ Bom: contraste: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: contraste, a última linha depende só da anterior</summary>
 
 ```python
 def build_order_slug(order) -> str:
@@ -391,19 +347,16 @@ def build_order_slug(order) -> str:
     return slug
 ```
 
-`slug` depende **diretamente** de `normalized_title` (penúltima). Par
-semântico encadeado: as duas ficam tight, e o `return` ainda tight com o
-último.
+`slug` depende **só** de `normalized_title`, a linha logo acima. As duas ficam juntas, e o `return` continua junto de `slug`.
 
 </details>
 
-## 2+1 dentro de blocos curtos
+## Dentro de laços e condições curtas
 
-Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
-são todas atômicas homogêneas.
+Em laços (`while`, `for`) e condições curtas, duas linhas mais uma continua sendo a divisão natural quando as linhas não são todas do mesmo tipo.
 
 <details>
-<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: três linhas de tipos diferentes grudadas</summary>
 
 ```python
 while attempt < max_attempts:
@@ -415,7 +368,7 @@ while attempt < max_attempts:
 </details>
 
 <details>
-<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: variável e `if` juntos, o incremento separado</summary>
 
 ```python
 while attempt < max_attempts:
@@ -427,13 +380,12 @@ while attempt < max_attempts:
 
 </details>
 
-## Fases de um método
+## Deixe cada fase da função visível
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
-deixar cada fase visível.
+Funções com vários passos (buscar, transformar, gravar, responder) devem deixar cada passo visível. Uma linha em branco entre eles marca onde um termina e o outro começa, ainda mais quando os passos cruzam um limite entre camadas, por exemplo do handler para o serviço.
 
 <details>
-<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todos os passos grudados, sem separação visual</summary>
 
 ```python
 async def create_user_handler(request):
@@ -447,7 +399,7 @@ async def create_user_handler(request):
 </details>
 
 <details>
-<summary>✅ Bom: fases explícitas</summary>
+<summary>✅ Bom: cada passo visível</summary>
 
 ```python
 async def create_user_handler(request):
@@ -462,13 +414,12 @@ async def create_user_handler(request):
 
 </details>
 
-## Testes: assert como fase própria
+## No teste, a verificação é uma fase separada
 
-O `assert` é fase distinta. A linha em branco antes dele separa o que está
-sendo verificado do como está sendo verificado.
+No teste, a linha que verifica o resultado (`assert`) é uma fase própria. A linha em branco antes dela separa **o que** está sendo verificado de **como** você preparou o cenário.
 
 <details>
-<summary>❌ Ruim: assert colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: `assert` grudado na preparação, as fases somem</summary>
 
 ```python
 def test_apply_discount_reduces_order_price():
@@ -481,7 +432,7 @@ def test_apply_discount_reduces_order_price():
 </details>
 
 <details>
-<summary>✅ Bom: assert separado, assertion como fase própria</summary>
+<summary>✅ Bom: `assert` separado, a verificação como fase própria</summary>
 
 ```python
 def test_apply_discount_reduces_order_price():
@@ -494,15 +445,12 @@ def test_apply_discount_reduces_order_price():
 
 </details>
 
-## Multi-linha: respiro depois do bloco
+## Depois de um bloco de várias linhas, deixe um respiro
 
-Quando um dict literal, list literal, tuple ou statement quebra em várias
-linhas, o bloco já ocupa espaço visual próprio. Cole uma linha em branco
-**depois** dele para isolar o bloco grande do próximo passo. Sem respiro, o
-leitor não vê onde o bloco termina e o próximo começa.
+Quando um dicionário, uma lista, uma tupla ou um comando quebra em várias linhas, esse bloco já ocupa um espaço visual próprio. Deixe uma linha em branco **depois** dele para separá-lo do próximo passo. Sem esse respiro, o leitor não vê onde o bloco termina e o próximo começa.
 
 <details>
-<summary>❌ Ruim: dict multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: dicionário de várias linhas grudado no próximo comando</summary>
 
 ```python
 async def create_session(user):
@@ -519,7 +467,7 @@ async def create_session(user):
 </details>
 
 <details>
-<summary>✅ Bom: blank depois do dict isola o bloco</summary>
+<summary>✅ Bom: linha em branco depois do dicionário separa o bloco</summary>
 
 ```python
 async def create_session(user):
@@ -536,17 +484,14 @@ async def create_session(user):
 
 </details>
 
-## Ifs consecutivos: blocos indentados precisam de respiro
+## Dois `if` seguidos com bloco indentado pedem uma linha entre eles
 
-Dois `if` consecutivos com **bloco indentado** colados formam muralha: o olho
-não distingue onde um bloco termina e o outro começa. Sempre insira blank
-entre eles.
+Dois `if` seguidos, cada um abrindo um bloco de várias linhas, formam uma parede: o olho não distingue onde um bloco termina e o outro começa. Sempre coloque uma linha em branco entre eles.
 
-**Exceção:** guardas de uma linha (early returns curtos) formam trio
-homogêneo e ficam tight, e a regra do trio atômico se aplica.
+**Exceção:** os `if` de saída rápida, com uma linha só (`if not user_input: raise ...`), são do mesmo tipo e ficam juntos, como qualquer grupo de linhas iguais.
 
 <details>
-<summary>❌ Ruim: dois blocos indentados colados</summary>
+<summary>❌ Ruim: dois blocos indentados grudados</summary>
 
 ```python
 def process_order(order):
@@ -561,7 +506,7 @@ def process_order(order):
 </details>
 
 <details>
-<summary>✅ Bom: blank entre os blocos</summary>
+<summary>✅ Bom: linha em branco entre os blocos</summary>
 
 ```python
 def process_order(order):
@@ -577,7 +522,7 @@ def process_order(order):
 </details>
 
 <details>
-<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: saídas rápidas de uma linha ficam juntas</summary>
 
 ```python
 def validate_input(user_input):
@@ -590,15 +535,12 @@ def validate_input(user_input):
 
 </details>
 
-## Sem column alignment
+## Não alinhe o código em colunas
 
-Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre
-**um espaço único**: também é regra do PEP 8. Alinhamento artificial quebra
-com qualquer rename, gera diff ruidoso e treina o olho a procurar colunas que
-somem na primeira refator.
+Não use espaços extras para alinhar `=`, `:` ou valores na vertical. Use sempre um espaço só, que também é o que o PEP 8 manda. O alinhamento artificial quebra assim que você renomeia qualquer coisa, gera um diff cheio de ruído (mudanças que não importam) e treina o olho a procurar colunas que somem na primeira refatoração.
 
 <details>
-<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras alinhando colunas</summary>
 
 ```python
 user_name     = "alice"
@@ -610,7 +552,7 @@ last_login_at = datetime.now(tz=timezone.utc)
 </details>
 
 <details>
-<summary>✅ Bom: espaço único, sem padding</summary>
+<summary>✅ Bom: um espaço só, sem preenchimento</summary>
 
 ```python
 user_name = "alice"
@@ -621,13 +563,12 @@ last_login_at = datetime.now(tz=timezone.utc)
 
 </details>
 
-## Strings longas
+## Textos longos montados em uma linha
 
-Uma f-string longa colada em um `return` esconde as partes que a compõem.
-Extraia fragmentos em variáveis nomeadas antes de montar o resultado.
+Um texto longo grudado dentro de um `return` esconde os pedaços que o compõem. Separe cada pedaço em uma variável com nome antes de montar o resultado. Em Python esse texto costuma ser uma **f-string** (o texto com `f` na frente, que aceita valores no meio com `{...}`).
 
 <details>
-<summary>❌ Ruim: string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: texto enorme em uma linha, sem nome nos pedaços</summary>
 
 ```python
 def build_delivery_message(user, order) -> str:
@@ -637,7 +578,7 @@ def build_delivery_message(user, order) -> str:
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: pedaços com nome, texto final limpo</summary>
 
 ```python
 def build_delivery_message(user, order) -> str:

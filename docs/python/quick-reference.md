@@ -1,8 +1,8 @@
-# Quick Reference
+# Referência rápida
 
-> Escopo: Python. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: Python. O resumo das convenções, para consulta. Os detalhes estão em `conventions/`.
 
-## Nomenclatura
+## Nomes
 
 | Categoria          | Convenção                            | Exemplos                                        |
 | ------------------ | ------------------------------------ | ----------------------------------------------- |
@@ -27,9 +27,9 @@
 | `build` / `create`       | Construção   | `build_report`, `create_instance`                      |
 | `parse` / `map`          | Conversão    | `parse_date`, `map_to_view_model`                      |
 
-## Taboos
+## O que evitar
 
-Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
+Os nomes abaixo cabem em qualquer coisa, e por isso não descrevem nada. Troque pelo verbo ou pelo conceito de que a linha trata.
 
 | Evitar                           | Usar                                                  |
 | -------------------------------- | ----------------------------------------------------- |
@@ -38,10 +38,10 @@ Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 | `tmp`, `val`, `arr`, `obj`       | nome completo e expressivo                            |
 | `item`, `thing`, `x`             | nome do domínio: `order`, `product`, `entry`          |
 
-## Type hints modernos (3.10+)
+## Anotações de tipo modernas (3.10 ou superior)
 
 <details>
-<summary>❌ Ruim: sintaxe legada</summary>
+<summary>❌ Ruim: a sintaxe antiga, com um import para cada tipo</summary>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -54,7 +54,7 @@ def load_config() -> Dict[str, str]: ...
 </details>
 
 <details>
-<summary>✅ Bom: sintaxe moderna, sem imports extras</summary>
+<summary>✅ Bom: a sintaxe moderna, sem import nenhum</summary>
 
 ```python
 def find_user(user_id: int) -> User | None: ...
@@ -67,7 +67,7 @@ def load_config() -> dict[str, str]: ...
 ## Strings
 
 <details>
-<summary>❌ Ruim: f-string em contexto sensível a injeção</summary>
+<summary>❌ Ruim: f-string montando SQL com texto que veio do usuário</summary>
 
 ```python
 query = f"SELECT * FROM users WHERE name = '{user_input}'"
@@ -76,7 +76,7 @@ query = f"SELECT * FROM users WHERE name = '{user_input}'"
 </details>
 
 <details>
-<summary>✅ Bom: f-string para interpolação segura; t-string para sanitização (Python 3.14+)</summary>
+<summary>✅ Bom: f-string quando o texto vai para os olhos, t-string quando ele vira comando</summary>
 
 ```python
 # interpolação segura: UI, logs, mensagens
@@ -88,12 +88,12 @@ safe_query = t"SELECT user_id, name FROM users WHERE name = {user_input}"
 
 </details>
 
-## Destructuring
+## Extrair os campos antes de usar
 
-Sempre no corpo da função, nunca inline no return.
+Dê nome a cada campo no corpo da função, e deixe a linha final montar o resultado a partir dos nomes.
 
 <details>
-<summary>❌ Ruim: acesso encadeado inline</summary>
+<summary>❌ Ruim: a cadeia de acessos inteira dentro do return</summary>
 
 ```python
 def format_address(user):
@@ -103,7 +103,7 @@ def format_address(user):
 </details>
 
 <details>
-<summary>✅ Bom: extrai antes de usar</summary>
+<summary>✅ Bom: cada campo ganha um nome, e o texto final fica legível</summary>
 
 ```python
 def format_address(user):

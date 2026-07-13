@@ -2,48 +2,45 @@
 
 > Escopo: Python · HTML. Guia baseado em **HTMX 2.0.10** integrado com **FastAPI** e **Jinja2**.
 
-HTMX é uma biblioteca JavaScript que adiciona comportamento hypermedia (hipermídia) ao **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto)
-padrão. Em vez de uma **SPA** (Single Page Application · Aplicação de Página Única), o browser
-troca fragmentos de HTML retornados pelo servidor. Toda a lógica de renderização permanece no
-backend Python.
+O HTMX é uma biblioteca JavaScript que deixa o **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) pedir dados ao servidor sozinho, por meio de atributos no próprio elemento. O servidor devolve um pedaço de HTML pronto, e o HTMX o encaixa na página.
 
-Este guia mostra como estruturar os endpoints FastAPI e os templates Jinja2 para funcionar
-com HTMX, seguindo os princípios de [functions.md](../conventions/functions.md).
+A consequência é que a montagem da tela continua inteira no Python. Numa **SPA** (Single Page Application · Aplicação de Página Única), o servidor devolveria JSON, e o JavaScript do navegador montaria o HTML a partir dele, o que significa manter a mesma lógica de exibição escrita duas vezes, em duas linguagens.
+
+Este guia mostra como estruturar as rotas do FastAPI e os templates Jinja2 para funcionar com HTMX, seguindo os princípios de [funções](../conventions/functions.md).
 
 ## Conceitos fundamentais
 
 | Conceito                          | O que é                                                                                     |
 | --------------------------------- | ------------------------------------------------------------------------------------------- |
-| **hx-get / hx-post** (atributos para disparar HTTP via HTMX)             | Atributos que disparam uma requisição HTTP ao servidor no evento configurado                |
-| **hx-target** (atributo de elemento alvo)                    | Seletor CSS do elemento onde o fragmento retornado será inserido                            |
-| **hx-swap** (atributo de estratégia de inserção)                      | Estratégia de inserção: `innerHTML`, `outerHTML`, `beforeend`, `afterend`, `delete`         |
-| **hx-trigger** (atributo de evento disparador)                   | Evento que dispara a requisição: `click` (padrão), `change`, `load`, `revealed`             |
-| **hx-indicator** (atributo de indicador de carregamento)                 | ID do elemento exibido enquanto a requisição está em andamento                              |
-| **hx-swap-oob** (atributo de troca fora de banda)                  | Out-of-band swap (troca fora de banda): atualiza elementos adicionais na mesma resposta     |
-| **Fragmento** (partial response)  | HTML parcial retornado pelo servidor; sem `<html>`, `<head>` ou `<body>`                    |
+| **hx-get / hx-post** (o atributo que dispara a requisição) | Colocado no elemento, faz o HTMX chamar o servidor quando o evento acontece |
+| **hx-target** (o atributo que diz onde encaixar)  | O seletor CSS do elemento que vai receber o pedaço de HTML devolvido |
+| **hx-swap** (o atributo que diz como encaixar)    | A forma de inserir: substituir o conteúdo, substituir o elemento inteiro, acrescentar no fim |
+| **hx-trigger** (o atributo que diz quando disparar) | O evento que dispara a chamada: `click` (o padrão), `change`, `load`, `revealed` |
+| **hx-indicator** (o atributo do aviso de carregando) | O elemento que aparece enquanto a requisição está em andamento |
+| **hx-swap-oob** (a troca fora do alvo)            | Permite que a mesma resposta atualize outros elementos da página, além do alvo principal |
+| **fragmento** (pedaço de HTML)    | A resposta parcial do servidor: só o trecho a encaixar, sem `<html>`, `<head>` nem `<body>` |
 
 ## Como funciona
 
-HTMX intercepta eventos no browser e substitui a navegação padrão por requisições
-**AJAX** (Asynchronous JavaScript and XML · JavaScript e XML Assíncronos). O servidor responde
-com HTML puro; o HTMX insere o fragmento no **DOM** (Document Object Model · Modelo de Objeto do Documento) sem recarregar a página.
+O HTMX intercepta o evento no navegador e faz uma requisição **AJAX** (Asynchronous JavaScript and XML · JavaScript e XML Assíncronos) no lugar da navegação normal. O servidor responde com HTML, e o HTMX o insere no **DOM** (Document Object Model · Modelo de Objeto do Documento), sem recarregar a página.
 
 **Fluxo:** `User Action → hx-* → HTTP Request → Python Handler → HTML Fragment → DOM Swap`
 
 | Etapa                | O que acontece                                               |
 | -------------------- | ------------------------------------------------------------ |
-| **hx-get/hx-post**   | HTMX envia a requisição com os atributos configurados        |
-| **Handler Python**   | FastAPI processa e renderiza um template Jinja2 parcial      |
-| **HTML Fragment**    | Resposta sem `<html>`: apenas o trecho a ser inserido        |
-| **hx-target + hx-swap** | HTMX localiza o elemento alvo e insere o fragmento        |
+| **hx-get/hx-post**   | O HTMX envia a requisição que o atributo configurou          |
+| **Handler Python**   | O FastAPI processa e renderiza um template parcial do Jinja2 |
+| **Fragmento**        | A resposta traz só o trecho a encaixar, sem a página em volta |
+| **hx-target + hx-swap** | O HTMX acha o elemento alvo e encaixa o pedaço ali        |
 
 ## Respostas parciais
 
-O handler Python retorna um fragmento HTML, não a página completa. Templates parciais ficam em
-arquivos separados (convenção: prefixo `_`).
+O handler devolve só o pedaço da tela que mudou. Guarde os templates parciais em arquivos separados, com o nome começando por `_`, que é a convenção do Jinja2 para o template que nunca é servido sozinho.
+
+Devolver a página inteira faz o HTMX encaixar um `<html>` completo dentro de uma `<div>`, e a página passa a ter duas cabeças e dois corpos aninhados.
 
 <details>
-<summary>❌ Ruim: handler retorna página completa; HTMX recebe <html> inteiro</summary>
+<summary>❌ Ruim: devolve a página inteira, e ela vai parar dentro de uma div</summary>
 
 ```python
 @router.get("/orders")
@@ -73,7 +70,7 @@ async def list_orders(request: Request):
 </details>
 
 <details>
-<summary>✅ Bom: handler retorna fragmento; template parcial em arquivo separado</summary>
+<summary>✅ Bom: devolve só a lista, e o template parcial mora num arquivo próprio</summary>
 
 ```html
 <!-- trigger na página principal -->
@@ -113,12 +110,12 @@ async def list_orders_partial(request: Request):
 
 ## hx-target e hx-swap
 
-`hx-target` define onde o fragmento é inserido. Sem ele, HTMX insere dentro do próprio elemento
-que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o conteúdo interno;
-`beforeend` adiciona ao final da lista sem apagar o que já existe.
+O `hx-target` diz onde o pedaço entra. Sem ele, o HTMX encaixa dentro do próprio elemento que disparou a chamada, e a lista de pedidos aparece dentro do botão que a pediu.
+
+O `hx-swap` diz de que jeito. `innerHTML` troca o conteúdo do alvo, e serve para recarregar uma lista inteira. `beforeend` acrescenta no fim do que já está lá, e serve para a paginação que carrega mais itens sem apagar os anteriores.
 
 <details>
-<summary>❌ Ruim: sem hx-target, HTMX insere o fragmento dentro do botão; hx-swap ausente</summary>
+<summary>❌ Ruim: sem alvo, a lista é encaixada dentro do próprio botão</summary>
 
 ```html
 <button hx-get="/orders/partial">Carregar</button>
@@ -131,7 +128,7 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 </details>
 
 <details>
-<summary>✅ Bom: hx-target explícito, hx-swap intencional por caso de uso</summary>
+<summary>✅ Bom: o alvo é declarado, e a forma de encaixar combina com o caso</summary>
 
 ```html
 <!-- substituir conteúdo existente -->
@@ -157,14 +154,14 @@ que disparou a requisição. `hx-swap` define como: `innerHTML` substitui o cont
 
 </details>
 
-## Out-of-band Swaps
+## Atualizar mais de um elemento na mesma resposta
 
-Um único fragmento de resposta pode atualizar múltiplos elementos. O elemento principal é
-inserido no `hx-target`; os elementos com `hx-swap-oob="true"` são inseridos nos seus próprios
-IDs, sem requisições adicionais.
+Criar um pedido muda duas coisas na tela: a lista ganha uma linha, e o contador do topo sobe. Uma resposta só resolve as duas.
+
+O trecho principal vai para o `hx-target`, como sempre. Qualquer outro elemento marcado com `hx-swap-oob="true"` vai para o lugar onde estiver o elemento de mesmo ID na página. A alternativa seria uma segunda requisição só para buscar o contador, e nesse meio tempo a tela mostra uma lista com quatro itens e um contador dizendo três.
 
 <details>
-<summary>❌ Ruim: duas requisições separadas para atualizar lista e contador</summary>
+<summary>❌ Ruim: duas requisições, e a tela fica inconsistente entre elas</summary>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -180,7 +177,7 @@ IDs, sem requisições adicionais.
 </details>
 
 <details>
-<summary>✅ Bom: uma resposta atualiza lista e contador via out-of-band</summary>
+<summary>✅ Bom: uma resposta só atualiza a lista e o contador juntos</summary>
 
 ```html
 <form hx-post="/orders" hx-target="#order-list" hx-swap="beforeend">
@@ -214,13 +211,14 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 
 </details>
 
-## Estados de loading
+## Avisar que a requisição está em andamento
 
-`hx-indicator` aponta para um elemento exibido durante a requisição. O HTMX adiciona a classe
-`htmx-request` ao elemento enquanto aguarda a resposta.
+Sem aviso nenhum, o usuário clica, nada muda na tela por dois segundos, e ele clica de novo. Agora são dois pedidos criados.
+
+O `hx-indicator` aponta para o elemento que aparece durante a espera. O HTMX põe a classe `htmx-request` nele enquanto a resposta não chega, e a tira quando chega.
 
 <details>
-<summary>❌ Ruim: sem feedback visual; usuário não sabe se a requisição está em andamento</summary>
+<summary>❌ Ruim: a tela não muda durante a espera, e o usuário clica de novo</summary>
 
 ```html
 <button hx-get="/orders/partial" hx-target="#order-list">
@@ -233,7 +231,7 @@ async def create_order(request: Request, order_input: OrderInput = Form()):
 </details>
 
 <details>
-<summary>✅ Bom: indicador visível durante a requisição via hx-indicator</summary>
+<summary>✅ Bom: um aviso aparece enquanto a resposta não chega</summary>
 
 ```html
 <button

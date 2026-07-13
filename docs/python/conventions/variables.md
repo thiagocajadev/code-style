@@ -1,22 +1,24 @@
-# Variables
+# Variáveis em Python
 
-Python não tem `const` nativo. Use `Final` para sinalizar que uma variável não deve ser reatribuída.
-Para objetos de valor, `dataclass(frozen=True)` garante a imutabilidade em tempo de execução.
+Python não tem `const`. Duas ferramentas cobrem o espaço: `Final`, que avisa ao verificador de tipos que a variável não deve receber outro valor, e `dataclass(frozen=True)`, que faz o objeto recusar alteração já em tempo de execução.
+
+A diferença entre as duas está em quem acusa o erro, e quando. `Final` é uma anotação: o verificador de tipos aponta a reatribuição enquanto você ainda edita o arquivo, e o programa roda mesmo assim. `frozen=True` levanta `FrozenInstanceError` em tempo de execução, e a operação para.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **Final** (valor fixo) | Anotação do `typing` que sinaliza variável não reatribuível; verificada por type checker |
-| **Frozen dataclass** (classe de dados congelada) | `@dataclass(frozen=True)` torna instâncias imutáveis em tempo de execução |
-| **SQL** (Structured Query Language · Linguagem de Consulta Estruturada) | Linguagem de consulta relacional; strings constantes nomeadas por propósito |
-| **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) | Marcação da web; valores fixos típicos incluem nomes de classes e IDs |
-| **UI** (User Interface · Interface do Usuário) | Superfície visual; constantes de UI separam dados de apresentação |
+| **Final** (valor fixo) | Anotação do módulo `typing`: marca a variável que não deve receber outro valor. Quem verifica é o type checker |
+| **frozen dataclass** (classe de dados congelada) | `@dataclass(frozen=True)`: a instância recusa alteração de atributo em tempo de execução |
+| **type hint** (anotação de tipo) | A declaração do tipo esperado na assinatura: `def find_user(user_id: int) -> User \| None` |
+| **f-string** (string formatada) | Interpola o valor direto no texto: `f"olá, {name}"`. O resultado já sai pronto |
+| **t-string** (string de template, Python 3.14) | Devolve um objeto `Template` em vez do texto pronto, e permite sanitizar o valor antes de montar a string |
+| **injection** (injeção) | O valor vindo do usuário é lido como comando pelo destino, e não como dado. É o risco que a t-string existe para fechar |
 
-## Final: valor fixo por padrão
+## Final: o valor fixo por padrão
 
 <details>
-<summary>❌ Ruim: constante sem tipo, reatribuível sem aviso</summary>
+<summary>❌ Ruim: a constante aceita outro valor sem ninguém reclamar</summary>
 
 ```python
 MAX_RETRIES = 3
@@ -39,10 +41,12 @@ API_URL: Final = "https://api.example.com"
 
 </details>
 
-## Dataclass frozen: objetos de valor não mutáveis
+## Dataclass congelada: o objeto de valor que não muda
+
+Um objeto de valor representa uma quantia, um endereço, uma data: coisas que o sistema compara e substitui inteiras. Deixá-lo aceitar alteração de atributo abre espaço para um trecho distante zerar o preço de uma instância que outro trecho ainda vai ler.
 
 <details>
-<summary>❌ Ruim: objeto de valor mutável por padrão</summary>
+<summary>❌ Ruim: qualquer trecho do código altera o atributo depois</summary>
 
 ```python
 class Money:
@@ -57,7 +61,7 @@ price.amount = 0  # alteração acidental sem aviso
 </details>
 
 <details>
-<summary>✅ Bom: frozen=True garante imutabilidade</summary>
+<summary>✅ Bom: com frozen=True o atributo não muda depois de criado</summary>
 
 ```python
 from dataclasses import dataclass
@@ -75,13 +79,14 @@ price = Money(100.0, "BRL")
 
 <a id="direct-mutation"></a>
 
-## Mutação direta
+## Alteração do objeto recebido
 
-Objetos passados como parâmetro são referências. Alterar um parâmetro muda o estado do chamador:
-um efeito colateral invisível e difícil de rastrear. Prefira retornar um novo objeto.
+O parâmetro chega como referência ao mesmo objeto que o chamador tem em mãos. Escrever num campo dele altera o estado lá fora, e quem chamou a função nunca vê essa escrita na própria linha de chamada. Meses depois, alguém vai procurar onde o total do pedido mudou e não vai encontrar, porque a alteração mora dentro de uma função cujo nome só promete calcular um desconto.
+
+Devolva um objeto novo. A linha de chamada passa a mostrar o que entrou e o que saiu.
 
 <details>
-<summary>❌ Ruim: mutação acoplada e difícil de rastrear</summary>
+<summary>❌ Ruim: a função escreve no objeto do chamador</summary>
 
 ```python
 def apply_discount(order):
@@ -92,7 +97,7 @@ def apply_discount(order):
 </details>
 
 <details>
-<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: devolve um objeto novo e deixa o original intacto</summary>
 
 ```python
 def apply_discount(order):
@@ -111,10 +116,10 @@ def apply_discount(order):
 
 ## Valores mágicos
 
-Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
+Um número solto no meio de uma condição obriga o leitor a adivinhar de onde ele veio. O `18` é maioridade, idade mínima para dirigir ou o limite de algum contrato? A constante nomeada responde a pergunta no próprio identificador, e concentra a mudança num lugar quando a regra virar 21.
 
 <details>
-<summary>❌ Ruim: o que significa 18? e 86400?</summary>
+<summary>❌ Ruim: o leitor precisa adivinhar o que 18 e 86400 significam</summary>
 
 ```python
 if user.age >= 18:
@@ -149,13 +154,12 @@ time.sleep(ONE_DAY_SECONDS)
 
 </details>
 
-## Type hints modernos (Python 3.10+)
+## Anotações de tipo modernas (Python 3.10 ou superior)
 
-Use a sintaxe `X | Y` no lugar de `Optional[X]` e `Union[X, Y]`. Com as anotações diferidas do
-Python 3.14 (PEP 649), forward references não precisam mais de aspas.
+A sintaxe `X | Y` substitui `Optional[X]` e `Union[X, Y]`, e dispensa os imports do módulo `typing`. Desde o Python 3.14 (PEP 649), a anotação que cita uma classe declarada mais abaixo no arquivo também dispensa as aspas em volta do nome.
 
 <details>
-<summary>❌ Ruim: sintaxe legada, verbose</summary>
+<summary>❌ Ruim: a sintaxe antiga, com import para cada tipo</summary>
 
 ```python
 from typing import Optional, Union, List, Dict
@@ -188,14 +192,14 @@ def load_config() -> dict[str, str]:
 
 </details>
 
-## t-strings vs f-strings
+## Quando usar t-string no lugar de f-string
 
-`f-strings` interpolam diretamente: conveniente, mas inseguro em contextos onde o valor pode
-conter conteúdo malicioso (SQL, HTML, shell). `t-strings` (Python 3.14, PEP 750) retornam um
-objeto `Template` que pode ser sanitizado antes de produzir a string final.
+A f-string interpola o valor direto no texto e entrega a string pronta. Isso serve para log e mensagem de tela. Serve mal para **SQL** (Structured Query Language · Linguagem de Consulta Estruturada), **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) e comando de shell, porque nesses destinos o texto vira comando: um nome digitado como `'; DROP TABLE users; --` chega ao banco como instrução, e não como nome.
+
+A t-string (Python 3.14, PEP 750) devolve um objeto `Template` em vez do texto pronto. Quem recebe esse objeto sabe quais pedaços vieram do usuário, e escapa cada um antes de montar a string final.
 
 <details>
-<summary>❌ Ruim: f-string em contexto sensível a injeção</summary>
+<summary>❌ Ruim: f-string montando SQL com texto que veio do usuário</summary>
 
 ```python
 def build_query(user_input: str) -> str:
@@ -207,7 +211,7 @@ def build_query(user_input: str) -> str:
 </details>
 
 <details>
-<summary>✅ Bom: t-string para contextos que exigem sanitização</summary>
+<summary>✅ Bom: t-string deixa o destino escapar o valor antes de montar o texto</summary>
 
 ```python
 from string.templatelib import Template
@@ -227,17 +231,15 @@ def build_safe_query(user_input: str) -> Template:
 
 </details>
 
-> Use `f-strings` para interpolação segura (logs, mensagens de UI, labels).
-> Use `t-strings` quando o resultado for passado para um contexto que sanitiza a entrada
-> (SQL builders, template engines, comandos shell).
+> Use f-string quando o texto vai para os olhos de alguém: log, mensagem de tela, rótulo de botão.
+> Use t-string quando o texto vira comando no destino: consulta SQL, marcação HTML, linha de shell.
 
-## pathlib: operações de arquivo
+## pathlib: os caminhos de arquivo
 
-`pathlib.Path` é o idioma moderno para caminhos: stdlib, sem instalação. Python 3.14 adiciona
-`.copy()` e `.move()` nativos; substitua `shutil` onde possível.
+`pathlib.Path` vem na biblioteca padrão e monta caminho com o operador `/`, o que dispensa a concatenação manual e acerta o separador em qualquer sistema operacional. O Python 3.14 trouxe `.copy()` e `.move()` para dentro do próprio `Path`, e o `shutil` sai da maioria dos arquivos.
 
 <details>
-<summary>❌ Ruim: os.path e shutil fragmentados</summary>
+<summary>❌ Ruim: os.path e shutil espalhados pelo mesmo trecho</summary>
 
 ```python
 import os
@@ -251,7 +253,7 @@ if os.path.exists(config_path):
 </details>
 
 <details>
-<summary>✅ Bom: pathlib.Path fluente e legível</summary>
+<summary>✅ Bom: pathlib.Path monta o caminho e checa a existência no mesmo objeto</summary>
 
 ```python
 from pathlib import Path

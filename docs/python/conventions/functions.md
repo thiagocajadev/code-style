@@ -1,29 +1,29 @@
-# Functions
+# Funções em Python
 
-Uma função faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela. **SRP** (Single
-Responsibility Principle, Princípio da Responsabilidade Única) e **cohesion** (coesão) guiam o
-desenho.
+Uma função cuida de uma tarefa, e o nome dela conta qual é. Quando o corpo passa de uma tela, quase sempre há duas tarefas ali dentro esperando para virar duas funções.
+
+Esta página parte da função que cresceu demais e mostra o caminho até a versão em que a leitura de cima para baixo conta a história: o orquestrador chama os passos, e cada passo aparece logo abaixo com o detalhe.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | cada função tem uma única razão para mudar |
-| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | cada função opera em um só nível: orquestra passos ou implementa detalhe |
-| **cohesion** (coesão) | grau em que as instruções da função pertencem à mesma tarefa |
-| **god function** (função-deus) | função que faz tudo: busca, valida, calcula, persiste, loga |
-| **helper** (função auxiliar) | função de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
-| **side effect** (efeito colateral) | alteração observável fora do retorno (I/O, estado global, mutação de argumento) |
-| **pure function** (função pura) | sem efeito colateral; mesma entrada produz mesma saída |
-| **type hint** (anotação de tipo) | `def f(x: int) -> str` documenta contrato e habilita type checker |
-| **keyword-only argument** (argumento exclusivo por nome) | argumento após `*` na assinatura; obriga chamada nominal e elimina ambiguidade |
+| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | Cada função tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | Cada função fica num só nível de detalhe: ou ela chama os passos, ou ela executa um passo |
+| **cohesion** (coesão) | O quanto as instruções de uma função pertencem à mesma tarefa |
+| **god function** (função-deus) | A função que faz tudo: busca, valida, calcula, grava e escreve o log |
+| **helper** (função auxiliar) | A função de apoio que executa um passo e dá nome ao detalhe |
+| **side effect** (efeito colateral) | Qualquer alteração que a função faz além de devolver o resultado: gravar em disco, escrever num estado global, alterar o objeto que recebeu |
+| **pure function** (função pura) | A função sem efeito colateral: a mesma entrada devolve sempre a mesma saída |
+| **type hint** (anotação de tipo) | `def f(x: int) -> str` declara o contrato e permite ao verificador de tipos conferir as chamadas |
+| **keyword-only argument** (argumento passado só por nome) | O argumento que vem depois do `*` na assinatura, e que a chamada precisa nomear |
 
 <a id="god-function"></a>
 
-## God function: múltiplas responsabilidades
+## A função que faz tudo
 
 <details>
-<summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim: busca, valida, calcula, grava e escreve o log na mesma função</summary>
 
 ```python
 def realiza_venda(x):
@@ -95,10 +95,12 @@ async def issue_invoice(order):
 
 <a id="single-level-of-abstraction"></a>
 
-## SLA: orquestrador ou implementação, nunca os dois
+## Um nível de abstração por função
+
+Cada função escolhe um dos dois papéis. Ou ela chama os passos e deixa o detalhe para as auxiliares abaixo, ou ela executa um passo inteiro. Quando os dois papéis convivem no mesmo corpo, o leitor pula de "monta o resumo do pedido" para "formata centavos com duas casas" no meio da mesma leitura.
 
 <details>
-<summary>❌ Ruim: mesma função orquestra e implementa</summary>
+<summary>❌ Ruim: a função chama um passo e executa o outro no mesmo corpo</summary>
 
 ```python
 def build_order_summary(order):
@@ -114,7 +116,7 @@ def build_order_summary(order):
 </details>
 
 <details>
-<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: o orquestrador chama as auxiliares, e cada uma cuida de um passo</summary>
 
 ```python
 def build_order_summary(order) -> str:
@@ -136,10 +138,12 @@ def build_line_items(order) -> str:
 
 </details>
 
-## Separar cálculo de formatação
+## Separar o cálculo da formatação
+
+O cálculo produz números, e a formatação produz texto para alguém ler. Separar os dois deixa o cálculo testável sem que o teste precise conhecer o formato do cifrão, e deixa o formato mudar sem tocar na conta.
 
 <details>
-<summary>❌ Ruim: cálculo e formatação misturados</summary>
+<summary>❌ Ruim: a mesma função soma os itens e monta o texto final</summary>
 
 ```python
 def get_order_summary(order):
@@ -179,12 +183,12 @@ def format_summary(order_id: int, totals: dict) -> str:
 
 </details>
 
-## Direct return
+## Retorno direto
 
-O retorno fica no topo da função, com os detalhes encapsulados em auxiliares abaixo dela.
+A função de cima diz o que acontece, e devolve o resultado em duas linhas. A busca no banco, a checagem do vazio e o `raise` moram na auxiliar logo abaixo, onde quem procura o detalhe encontra.
 
 <details>
-<summary>❌ Ruim: variável auxiliar desnecessária, else após raise</summary>
+<summary>❌ Ruim: variável de apoio sem função, e um else depois do raise</summary>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -203,7 +207,7 @@ async def find_product_by_id(product_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom: a intenção no topo, o detalhe na auxiliar abaixo</summary>
 
 ```python
 async def find_product_by_id(product_id: int):
@@ -225,11 +229,12 @@ async def fetch_product(product_id: int):
 
 ## Sem lógica no retorno
 
-O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção da
-função.
+O `return` entrega um resultado que já está pronto e já tem nome. A linha acima dele faz a conta e guarda o valor numa variável cujo nome combina com o da função: `build_greeting` termina em `greeting`, `get_active_users` termina em `active_users`.
+
+Ganha-se em duas frentes. O leitor que só quer saber o que a função devolve lê uma palavra em vez de decifrar uma expressão, e o depurador para numa linha que tem um valor com nome para inspecionar.
 
 <details>
-<summary>❌ Ruim: lógica ou expressão inline direto no return</summary>
+<summary>❌ Ruim: a expressão inteira dentro do return</summary>
 
 ```python
 def build_greeting(user):
@@ -242,7 +247,7 @@ def get_active_users(users):
 </details>
 
 <details>
-<summary>✅ Bom: variável expressiva antes do return</summary>
+<summary>✅ Bom: a variável nomeia o resultado, e o return só entrega</summary>
 
 ```python
 def build_greeting(user) -> str:
@@ -257,7 +262,7 @@ def get_active_users(users) -> list:
 </details>
 
 <details>
-<summary>❌ Ruim: bare return: pass-through sem nome, o retorno não diz o que é</summary>
+<summary>❌ Ruim: a função repassa a chamada e o retorno não diz o que sai dali</summary>
 
 ```python
 def find_pending_orders(user_id: int):
@@ -270,7 +275,7 @@ async def process_checkout(cart_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: nome simétrico com a função deixa claro o que sai</summary>
+<summary>✅ Bom: o nome da variável combina com o da função e mostra o que sai</summary>
 
 ```python
 def find_pending_orders(user_id: int) -> list:
@@ -284,12 +289,14 @@ async def process_checkout(cart_id: int):
 
 </details>
 
-## Parâmetros: estilo vertical
+## Quantos parâmetros a assinatura aguenta
 
-Até 3 parâmetros na mesma linha. Com 4 ou mais, use um objeto (dataclass ou dict).
+Até três parâmetros cabem na mesma linha. Com quatro ou mais, agrupe num objeto, uma `dataclass` ou um `dict`.
+
+O motivo aparece na linha de chamada. Em `create_invoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL")`, nada diz qual string é o cliente e qual é o pedido, e trocar as duas de lugar passa pelo verificador de tipos sem um pio. A `dataclass` obriga cada valor a chegar com o nome do campo em volta.
 
 <details>
-<summary>❌ Ruim: 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim: cinco parâmetros soltos, e a chamada não diz o que é cada um</summary>
 
 ```python
 def create_invoice(order_id, customer_id, amount, due_date, currency):
@@ -301,7 +308,7 @@ create_invoice("ord-1", "cust-99", 149.90, "2026-05-01", "BRL")
 </details>
 
 <details>
-<summary>✅ Bom: dataclass quando 4+ parâmetros</summary>
+<summary>✅ Bom: com quatro ou mais, uma dataclass nomeia cada valor na chamada</summary>
 
 ```python
 from dataclasses import dataclass
@@ -330,8 +337,10 @@ create_invoice(InvoiceData(
 
 ## Código morto
 
+Código que nunca roda ocupa espaço na leitura e sugere que alguém ainda depende dele. O histórico do git guarda o que foi removido, e quem precisar recupera de lá.
+
 <details>
-<summary>❌ Ruim: condição impossível, função nunca chamada</summary>
+<summary>❌ Ruim: uma condição que nunca é verdadeira, uma função que ninguém chama</summary>
 
 ```python
 def get_status(value: int) -> str:
@@ -348,7 +357,7 @@ def legacy_transform(items):
 </details>
 
 <details>
-<summary>✅ Bom: remove o que não é usado</summary>
+<summary>✅ Bom: o que ninguém usa sai do arquivo</summary>
 
 ```python
 def get_status(value: int) -> str:

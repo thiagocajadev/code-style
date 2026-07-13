@@ -1,31 +1,31 @@
-# Security
+# Segurança em Python
 
 > Escopo: Python. Especificidades do ecossistema; princípios em [shared/platform/security.md](../../shared/platform/security.md).
 
-Segurança em Python concentra-se em três frentes: gerenciamento de **secrets** (segredos) em
-variáveis de ambiente, validação de input no **boundary** (limite) com Pydantic e
-**pinning** (fixação de versões) + auditoria de dependências. Os princípios conceituais vivem no
-guia transversal; aqui ficam apenas as escolhas idiomáticas do ecossistema.
+Três frentes cobrem a maior parte do risco num projeto Python: os segredos ficam em variáveis de ambiente e fora do código, a entrada externa é validada no limite do sistema com Pydantic, e as versões das dependências são fixadas e auditadas.
+
+Os princípios gerais estão no guia transversal. Esta página trata das ferramentas do ecossistema.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **secret** (segredo) | credencial, token ou chave que nunca pode aparecer no código-fonte |
-| **boundary** (limite) | onde input externo entra na aplicação; único lugar que precisa validar |
-| **pinning** (fixação de versões) | travar versões exatas de dependências para builds reprodutíveis |
-| **JWT** (JSON Web Token · Token Web JSON) | token assinado para autenticação stateless |
-| **CSRF** (Cross-Site Request Forgery, Falsificação de Requisição entre Sites) | ataque que executa ações em nome do usuário autenticado |
-| **bcrypt** (algoritmo de hash de senha) | função adaptativa para armazenar senhas com salt embutido |
-| **pip-audit** (auditor de dependências) | ferramenta que checa vulnerabilidades conhecidas nos pacotes instalados |
+| **secret** (segredo) | A credencial, o token ou a chave que nunca aparece no código-fonte |
+| **boundary** (limite) | O ponto por onde o dado de fora entra. É o único lugar que valida |
+| **pinning** (fixação de versão) | Travar a versão exata de cada dependência, para o build de hoje ser igual ao de amanhã |
+| **JWT** (JSON Web Token · Token Web JSON) | O token assinado que carrega quem é o usuário, e dispensa o servidor de guardar a sessão |
+| **CSRF** (Cross-Site Request Forgery · Falsificação de Requisição entre Sites) | O ataque em que outro site faz o navegador do usuário logado executar uma ação no seu |
+| **bcrypt** (algoritmo de hash de senha) | Guarda a senha de um jeito que não permite voltar ao original, e é lento de propósito para dificultar a tentativa em massa |
+| **pip-audit** (auditor de dependências) | A ferramenta que confere se algum pacote instalado tem falha de segurança conhecida |
 
-## Secrets em variáveis de ambiente
+## Segredos em variáveis de ambiente
 
-Nunca hardcode credenciais. Use `.env` para desenvolvimento local e variáveis de ambiente reais
-para produção. Nunca commite o arquivo `.env`.
+A credencial escrita no código vai para o histórico do git, e continua lá depois de removida do arquivo. Quem clona o repositório um ano depois recupera a senha do commit antigo.
+
+Use um `.env` no desenvolvimento local, e as variáveis de ambiente reais em produção. O `.env` entra no `.gitignore` antes do primeiro commit.
 
 <details>
-<summary>❌ Ruim: credencial no código-fonte</summary>
+<summary>❌ Ruim: a senha do banco escrita no arquivo, e no histórico do git para sempre</summary>
 
 ```python
 DATABASE_URL = "postgresql://admin:s3cr3t@localhost/app"
@@ -35,7 +35,7 @@ JWT_SECRET = "my-super-secret-key"
 </details>
 
 <details>
-<summary>✅ Bom: pydantic-settings lê e valida variáveis de ambiente</summary>
+<summary>✅ Bom: o pydantic-settings lê as variáveis de ambiente e confere se estão lá</summary>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -67,14 +67,14 @@ API_KEY=sk-live-...
 
 </details>
 
-## python-dotenv para projetos sem pydantic-settings
+## python-dotenv, quando não há Pydantic no projeto
 
-Em scripts ou projetos simples que não usam Pydantic, `python-dotenv` carrega o `.env` na
-inicialização. Leia as variáveis via `os.environ`, nunca `os.getenv` sem default em código
-de produção: falha rápido se a variável não existir.
+Num script ou num projeto pequeno, o `python-dotenv` carrega o `.env` na partida. Leia as variáveis com `os.environ["NOME"]`, que levanta `KeyError` quando a variável não existe.
+
+O `os.getenv("NOME")` devolve `None` no mesmo caso, e o programa segue. A conexão com o banco recebe `None` como endereço, e o erro que aparece dez linhas adiante fala de um problema de conexão, sem mencionar a variável que faltou.
 
 <details>
-<summary>❌ Ruim: os.getenv sem validação de presença</summary>
+<summary>❌ Ruim: a variável ausente vira None, e o erro aparece longe da causa</summary>
 
 ```python
 import os
@@ -85,7 +85,7 @@ db_url = os.getenv("DATABASE_URL")  # None se ausente: bug silencioso
 </details>
 
 <details>
-<summary>✅ Bom: dotenv + os.environ falha se a variável não existir</summary>
+<summary>✅ Bom: o os.environ levanta erro na hora se a variável não existir</summary>
 
 ```python
 import os
@@ -98,9 +98,9 @@ db_url = os.environ["DATABASE_URL"]  # KeyError se ausente: falha explícita
 
 </details>
 
-## Cadeia de configuração
+## A ordem em que as configurações se sobrepõem
 
-A precedência correta evita que valores de desenvolvimento vazem para produção:
+O que vem de cima ganha do que vem de baixo. É essa ordem que impede um valor de desenvolvimento, deixado num `.env` esquecido dentro da imagem, de sobrescrever a variável real que o Kubernetes injetou:
 
 ```
 Variáveis do sistema (CI/CD, Kubernetes)
@@ -110,8 +110,7 @@ Variáveis do sistema (CI/CD, Kubernetes)
         → defaults no código
 ```
 
-`pydantic-settings` aplica essa cadeia automaticamente quando configurado com múltiplos
-`env_file`:
+O `pydantic-settings` aplica essa ordem sozinho quando recebe vários arquivos em `env_file`:
 
 ```python
 from pydantic_settings import BaseSettings
@@ -125,13 +124,14 @@ class Settings(BaseSettings):
         env_file_encoding = "utf-8"
 ```
 
-## Validação de secrets na inicialização
+## Conferir os segredos quando a aplicação sobe
 
-Falhe na inicialização, não em tempo de requisição. Se uma variável obrigatória não existir,
-a aplicação não deve subir.
+A aplicação que sobe sem a `JWT_SECRET` fica no ar, aceita requisições, e falha na primeira que precisar assinar um token. Se o segredo tiver um valor padrão no código, é pior: ela assina os tokens com uma chave que está publicada no repositório, e ninguém percebe.
+
+Deixe a partida quebrar. Um segredo sem valor padrão faz o Pydantic reclamar antes de a primeira requisição entrar, e o deploy falha no lugar certo.
 
 <details>
-<summary>❌ Ruim: variável obrigatória com default silencioso</summary>
+<summary>❌ Ruim: um valor padrão para o segredo, publicado no repositório</summary>
 
 ```python
 from pydantic_settings import BaseSettings
@@ -144,7 +144,7 @@ class Settings(BaseSettings):
 </details>
 
 <details>
-<summary>✅ Bom: sem default para secrets; Pydantic falha na inicialização</summary>
+<summary>✅ Bom: sem valor padrão, e o Pydantic reprova a partida se o segredo faltar</summary>
 
 ```python
 from pydantic import field_validator

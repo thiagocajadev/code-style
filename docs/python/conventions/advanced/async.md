@@ -1,28 +1,29 @@
-# Async
+# Código assíncrono em Python
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Toda operação que depende de **I/O** (Input/Output · Entrada/Saída) é assíncrona. Bloquear o
-**event loop** (laço de eventos) congela a aplicação inteira.
+Toda operação que espera por algo de fora do processo (uma resposta do banco, um arquivo em disco, uma chamada de rede) deve ser assíncrona. Enquanto ela espera, o **event loop** (o laço que reveza as tarefas) atende outras requisições.
+
+O contrário também vale, e é o erro mais comum: uma chamada que trava a espera dentro de uma função `async` para o laço inteiro. Nenhuma outra requisição avança enquanto aquele `time.sleep(3)` conta os três segundos, mesmo que o servidor tenha mil conexões abertas.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **I/O** (Input/Output · Entrada/Saída) | operação que atravessa o limite do processo: rede, disco, banco |
-| **event loop** (laço de eventos) | despachante de tarefas async; processa coroutines até `await` |
-| **coroutine** (corrotina) | função `async def` que pode pausar com `await` sem bloquear o thread |
-| **await** (palavra-chave de espera) | suspende a coroutine atual até o awaitable resolver |
-| **asyncio.gather** (execução concorrente de coroutines) | roda várias coroutines em paralelo e coleta os resultados |
-| **TaskGroup** (grupo estruturado de tarefas) | escopo (Python 3.11+) que cancela todas as tarefas se uma falhar |
-| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; não escala com asyncio |
+| **I/O** (Input/Output · Entrada/Saída) | A operação que sai do processo: rede, disco, banco de dados |
+| **event loop** (laço de eventos) | O laço que reveza as tarefas assíncronas. Ele roda uma coroutine até o próximo `await` e passa a vez para outra |
+| **coroutine** (corrotina) | A função declarada com `async def`. Ela pode pausar num `await` sem travar a thread |
+| **await** (espera) | Pausa a coroutine atual até o resultado ficar pronto, e devolve a vez ao laço enquanto isso |
+| **asyncio.gather** (execução concorrente) | Dispara várias coroutines ao mesmo tempo e junta os resultados |
+| **TaskGroup** (grupo de tarefas, Python 3.11 ou superior) | Um escopo que cancela todas as tarefas do grupo assim que uma delas falha |
+| **CPU-bound** (limitado pelo processador) | A operação cujo gargalo é cálculo, e não espera. O asyncio não ajuda aqui |
 
 <a id="blocking-sync-call"></a>
 
-## Bloqueio síncrono
+## A chamada que trava o laço
 
 <details>
-<summary>❌ Ruim: I/O síncrono dentro de função async bloqueia o event loop</summary>
+<summary>❌ Ruim: uma espera síncrona dentro de função async trava o laço inteiro</summary>
 
 ```python
 import time
@@ -37,7 +38,7 @@ async def process_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: asyncio.sleep libera o event loop enquanto aguarda</summary>
+<summary>✅ Bom: asyncio.sleep devolve a vez ao laço durante a espera</summary>
 
 ```python
 import asyncio
@@ -51,10 +52,12 @@ async def process_order(order_id: int):
 
 </details>
 
-## await sequencial desnecessário
+## Espere em sequência só quando um passo depende do anterior
+
+Encadear `await` faz sentido quando o segundo passo precisa do resultado do primeiro: buscar o usuário, e então buscar os pedidos daquele usuário. O exemplo bom abaixo mostra essa cadeia real, em que cada linha usa o valor da anterior.
 
 <details>
-<summary>❌ Ruim: await encadeado quando não há dependência</summary>
+<summary>❌ Ruim: três esperas em fila, e nenhuma depende da outra</summary>
 
 ```python
 async def fetch_user_data(user_id: int):
@@ -70,7 +73,7 @@ async def fetch_user_data(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: async/await linear e legível</summary>
+<summary>✅ Bom: a fila se justifica, porque cada passo usa o resultado do anterior</summary>
 
 ```python
 async def fetch_user_data(user_id: int):
@@ -86,12 +89,12 @@ async def fetch_user_data(user_id: int):
 
 <a id="gather-parallel-execution"></a>
 
-## gather: execução paralela
+## gather: disparar tudo ao mesmo tempo
 
-Quando as operações são independentes entre si, rodá-las em paralelo reduz o tempo total de espera.
+Quando as chamadas não dependem umas das outras, esperar uma por vez soma os tempos. Três chamadas de 200 milissegundos em fila levam 600. Disparadas juntas com `asyncio.gather`, levam os 200 da mais lenta.
 
 <details>
-<summary>❌ Ruim: await sequencial quando não há dependência entre chamadas</summary>
+<summary>❌ Ruim: três esperas em fila somam os tempos sem necessidade</summary>
 
 ```python
 async def fetch_dashboard(user_id: int):
@@ -107,7 +110,7 @@ async def fetch_dashboard(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: asyncio.gather dispara tudo ao mesmo tempo</summary>
+<summary>✅ Bom: asyncio.gather dispara as três e espera pela mais lenta</summary>
 
 ```python
 import asyncio
@@ -126,16 +129,16 @@ async def fetch_dashboard(user_id: int):
 </details>
 
 > Use `asyncio.gather` quando as operações não dependem umas das outras.
-> Se uma falhar, todas falham. Use `asyncio.gather(*tasks, return_exceptions=True)`
-> quando quiser continuar mesmo com erros parciais.
+> Por padrão, se uma delas levantar exceção, a chamada inteira falha. Passe
+> `asyncio.gather(*tasks, return_exceptions=True)` quando quiser receber os
+> resultados que deram certo junto com os erros dos que falharam.
 
-## Leitura de arquivo assíncrona
+## Leitura de arquivo em código assíncrono
 
-`open()` padrão bloqueia o event loop. Use `aiofiles` ou `asyncio.to_thread` para operações de
-arquivo em código async.
+O `open()` da biblioteca padrão espera pelo disco travando a thread, e trava o laço junto. Use `asyncio.to_thread` para empurrar a leitura para outra thread, ou a biblioteca `aiofiles`.
 
 <details>
-<summary>❌ Ruim: open() síncrono bloqueia o event loop</summary>
+<summary>❌ Ruim: open() trava o laço enquanto lê o arquivo</summary>
 
 ```python
 async def read_config() -> dict:
@@ -150,7 +153,7 @@ async def read_config() -> dict:
 </details>
 
 <details>
-<summary>✅ Bom: asyncio.to_thread para I/O de arquivo</summary>
+<summary>✅ Bom: asyncio.to_thread lê o arquivo fora do laço</summary>
 
 ```python
 import asyncio
@@ -165,14 +168,14 @@ async def read_config() -> dict:
 
 </details>
 
-## Context managers assíncronos
+## Gerenciador de contexto assíncrono
 
-Recursos que exigem setup e teardown assíncronos (conexões de banco, sessões **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto)) usam
-`async with`. O protocolo `__aenter__`/`__aexit__` garante que o recurso seja liberado mesmo em
-caso de exceção.
+Recursos que abrem e fecham de forma assíncrona (a conexão de banco, a sessão **HTTP** (HyperText Transfer Protocol · Protocolo de Transferência de Hipertexto)) usam `async with`.
+
+O ganho está no caminho do erro. No exemplo ruim, se a consulta levantar exceção, a linha do `close()` nunca roda e a conexão fica presa até o servidor derrubá-la por tempo. Com `async with`, o fechamento acontece na saída do bloco, inclusive quando a saída é uma exceção.
 
 <details>
-<summary>❌ Ruim: conexão aberta sem garantia de fechamento</summary>
+<summary>❌ Ruim: se a consulta falhar, a conexão nunca fecha</summary>
 
 ```python
 async def fetch_orders(user_id: int):
@@ -186,7 +189,7 @@ async def fetch_orders(user_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: async with garante fechamento em qualquer cenário</summary>
+<summary>✅ Bom: async with fecha a conexão inclusive quando dá erro</summary>
 
 ```python
 async def fetch_orders(user_id: int):
@@ -198,14 +201,14 @@ async def fetch_orders(user_id: int):
 
 </details>
 
-## Quando criar uma função async
+## Quando declarar a função como async
 
-Toda função que contém um `await` deve ser `async`. Funções que não fazem I/O não precisam ser
-`async`. Adicionar `async` sem `await` cria uma coroutine inútil que o chamador precisa
-aguardar sem ganho algum.
+A regra é o `await`. Se o corpo da função tem um, ela precisa ser `async`. Se não tem, ela fica síncrona.
+
+Marcar como `async` uma função que só faz contas cria uma coroutine que ninguém precisava: quem chamar vai ter que escrever `await` na frente, e a espera não compra nada. E deixar síncrona uma função que vai ao banco trava o laço, que é o problema da primeira seção desta página.
 
 <details>
-<summary>❌ Ruim: async sem await, e I/O síncrono sem async</summary>
+<summary>❌ Ruim: async numa função de cálculo, e uma ida ao banco sem async</summary>
 
 ```python
 async def calculate_tax(amount: float) -> float:  # async desnecessário
@@ -219,7 +222,7 @@ def fetch_user(user_id: int):  # I/O sem async
 </details>
 
 <details>
-<summary>✅ Bom: async só quando há I/O; funções puras são síncronas</summary>
+<summary>✅ Bom: async onde há espera, síncrona onde há só cálculo</summary>
 
 ```python
 def calculate_tax(amount: float) -> float:

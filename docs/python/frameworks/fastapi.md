@@ -2,41 +2,35 @@
 
 > Escopo: Python. Guia baseado em **FastAPI 0.136.0** com **Python 3.12+**.
 
-FastAPI é um framework web assíncrono para construção de **APIs** (Application Programming
-Interfaces, Interfaces de Programação). Usa type hints para validação automática via Pydantic e
-gera documentação **OpenAPI** (Open API Specification · Especificação de API Aberta) sem
-configuração extra.
+O FastAPI é um framework web assíncrono para construir **API** (Application Programming Interface · Interface de Programação de Aplicações). Ele lê as anotações de tipo que você já escreveu, valida a entrada com o Pydantic a partir delas, e gera a documentação **OpenAPI** (Open API Specification · Especificação de API Aberta) sem configuração.
 
-Este guia mostra como organizar schemas, path operations e dependências seguindo os princípios
-de [functions.md](../conventions/functions.md) e
-[validation.md](../conventions/advanced/validation.md).
+Este guia mostra como organizar os schemas, as rotas e as dependências seguindo os princípios de [funções](../conventions/functions.md) e [validação](../conventions/advanced/validation.md).
 
 ## Conceitos fundamentais
 
 | Conceito                              | O que é                                                                                              |
 | ------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| **Router** (Roteador)                 | `APIRouter`: agrupa path operations de um domínio; montado no app via `include_router()`             |
-| **Path Operation** (Operação de rota) | Função decorada com `@router.get()`, `@router.post()` etc.; ponto de entrada de uma requisição       |
-| **Schema** (Esquema)                  | Modelo Pydantic que define o contrato de entrada ou saída; separado da camada de domínio             |
-| **Dependency** (Dependência)          | Função injetada via `Depends()`: resolve autenticação, sessão de banco, paginação                    |
-| **response_model** (modelo de resposta)                    | Parâmetro do decorator: define e valida o contrato de saída; exposto no OpenAPI                      |
-| **Lifespan** (Ciclo de vida)          | Contexto assíncrono que inicializa e encerra recursos (pool de banco, cliente HTTP) no startup/shutdown |
+| **Router** (roteador)                 | O `APIRouter`, que agrupa as rotas de um domínio. O app o monta com `include_router()`                |
+| **Path Operation** (rota)             | A função decorada com `@router.get()` ou `@router.post()`. É por onde a requisição entra             |
+| **Schema** (contrato do dado)         | O modelo Pydantic que declara o formato da entrada ou da saída, separado das classes de domínio       |
+| **Dependency** (dependência)          | A função injetada com `Depends()`. Resolve autenticação, sessão de banco e paginação num lugar só     |
+| **response_model** (modelo de resposta) | O parâmetro do decorador que declara o formato da saída. O FastAPI o valida e o publica na documentação |
+| **Lifespan** (ciclo de vida)          | O bloco que abre os recursos quando o app sobe (a conexão com o banco, o cliente HTTP) e os fecha quando ele desce |
 
 ## Arquitetura
 
-FastAPI recebe a requisição, injeta dependências, chama o handler e serializa a resposta via
-`response_model`. Toda lógica de negócio fica fora do handler.
+O FastAPI recebe a requisição, resolve as dependências, chama o handler e serializa a resposta usando o `response_model`. O handler fica com o trabalho de traduzir entre o mundo HTTP e o serviço, e a regra de negócio mora no serviço.
 
 **Fluxo:** `Request → Router → Dependency → Handler → Service → Response`
 
 | Camada                        | O que faz                                              | Arquivo           |
 | ----------------------------- | ------------------------------------------------------ | ----------------- |
-| **Router**                    | Agrupa rotas por domínio                               | `routers/`        |
-| **Handler** (Path Operation)  | Recebe parâmetros, chama Service, retorna schema       | `routers/`        |
-| **Service**                   | Lógica de negócio; opera sobre domain objects          | `services/`       |
-| **Repository**                | Acesso ao banco: queries e mutações                    | `repositories/`   |
-| **Schema**                    | Contrato de entrada/saída via Pydantic                 | `schemas/`        |
-| **Dependency**                | Sessão de banco, auth, paginação via `Depends()`       | `dependencies/`   |
+| **Router**                    | Agrupa as rotas de um domínio                          | `routers/`        |
+| **Handler**                   | Recebe os parâmetros, chama o serviço, devolve o schema | `routers/`       |
+| **Service**                   | A regra de negócio, trabalhando sobre as classes de domínio | `services/`  |
+| **Repository**                | O acesso ao banco: as consultas e as escritas          | `repositories/`   |
+| **Schema**                    | O contrato de entrada e de saída, com Pydantic         | `schemas/`        |
+| **Dependency**                | A sessão de banco, a autenticação e a paginação, com `Depends()` | `dependencies/` |
 
 ```
 app/
@@ -57,11 +51,12 @@ app/
 
 ## Schemas
 
-Schemas de entrada e saída são Pydantic models separados. O schema de resposta nunca expõe
-campos internos (senhas, tokens, IDs de banco não destinados ao cliente).
+A entrada e a saída são dois modelos Pydantic diferentes, mesmo quando os campos coincidem hoje. O modelo de saída declara o que o cliente pode ver, e é o que mantém a senha e o token fora da resposta no dia em que alguém acrescentar um campo à classe de domínio.
+
+Receber `data: dict` desliga a validação inteira: qualquer corpo passa, e o erro aparece lá dentro, na hora de gravar.
 
 <details>
-<summary>❌ Ruim: dict sem validação, mesmo modelo para entrada e saída, sem response_model</summary>
+<summary>❌ Ruim: recebe um dicionário qualquer e devolve a entidade crua</summary>
 
 ```python
 @router.post("/orders")
@@ -73,7 +68,7 @@ async def create_order(data: dict):
 </details>
 
 <details>
-<summary>✅ Bom: schemas separados, response_model declarado</summary>
+<summary>✅ Bom: um modelo para a entrada, outro para a saída, e o formato da resposta declarado</summary>
 
 ```python
 # schemas/order.py
@@ -103,13 +98,14 @@ async def create_order(
 
 </details>
 
-## Path Operations
+## As rotas
 
-O handler é fino: recebe parâmetros, delega ao serviço e retorna. Sem lógica de negócio inline,
-sem acesso direto ao banco.
+O handler recebe os parâmetros, chama o serviço e devolve o resultado. Ele não escreve SQL e não calcula desconto.
+
+O motivo é o teste. Um serviço é uma função que você chama direto, com os argumentos que quiser. Um handler com a regra dentro só é testável subindo um servidor e mandando uma requisição, e a mesma regra terá que ser reescrita quando ela precisar rodar num script de linha de comando ou num consumidor de fila.
 
 <details>
-<summary>❌ Ruim: lógica de negócio no handler, acesso direto ao banco, sem response_model</summary>
+<summary>❌ Ruim: o SQL e o cálculo do desconto dentro do handler</summary>
 
 ```python
 @router.get("/orders/{order_id}")
@@ -129,7 +125,7 @@ async def get_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: handler fino, delega ao serviço, response_model declarado</summary>
+<summary>✅ Bom: o handler só chama o serviço, e o formato da resposta está declarado</summary>
 
 ```python
 # routers/orders.py
@@ -156,11 +152,12 @@ async def find_by_id(self, order_id: int) -> Order:
 
 ## Dependências
 
-`Depends()` injeta recursos reutilizáveis em qualquer handler. Autenticação e sessão de banco
-definidas uma vez e compartilhadas entre rotas.
+O `Depends()` declara o que a rota precisa, e o FastAPI providencia. A autenticação e a sessão de banco são escritas uma vez, e cada rota que precisar delas as recebe como parâmetro.
+
+Sem isso, a decodificação do token vira um bloco copiado no topo de cada handler. No dia em que a regra de autenticação mudar, ela muda em quarenta lugares, e algum vai ficar para trás.
 
 <details>
-<summary>❌ Ruim: auth repetida em cada handler, sessão de banco acoplada ao handler</summary>
+<summary>❌ Ruim: o token é decodificado à mão dentro do handler</summary>
 
 ```python
 @router.get("/orders")
@@ -179,7 +176,7 @@ async def list_orders(token: str = Header()):
 </details>
 
 <details>
-<summary>✅ Bom: auth e sessão injetadas via Depends, reutilizáveis em qualquer rota</summary>
+<summary>✅ Bom: a rota declara que precisa de autenticação e sessão, e as recebe prontas</summary>
 
 ```python
 # dependencies/auth.py
@@ -210,13 +207,14 @@ async def list_orders(
 
 </details>
 
-## Async
+## Código assíncrono
 
-Handlers assíncronos não bloqueiam o event loop. Chamadas síncronas de **I/O** (Input/Output · Entrada/Saída) (**ORM** (Object-Relational Mapper, Mapeador Objeto-Relacional) síncrono,
-`time.sleep`, biblioteca `requests`) congestionam todas as requisições em andamento.
+Uma chamada síncrona dentro de um handler `async` trava o **event loop** (o laço que reveza as requisições), e com ele todas as outras requisições em andamento. Os culpados de sempre: a biblioteca `requests`, o `time.sleep`, e o **ORM** (Object-Relational Mapping · mapeamento objeto-relacional) que não tem versão assíncrona.
+
+O substituto de cada um existe. Para HTTP, o `httpx` com `AsyncClient`. Para espera, `asyncio.sleep`. Para banco, a versão assíncrona do driver.
 
 <details>
-<summary>❌ Ruim: I/O síncrono dentro de handler assíncrono, bloqueia o event loop</summary>
+<summary>❌ Ruim: requests e time.sleep travam o servidor inteiro por uma requisição</summary>
 
 ```python
 import time
@@ -233,7 +231,7 @@ async def get_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: I/O assíncrono com httpx, sem bloqueio do event loop</summary>
+<summary>✅ Bom: httpx assíncrono, e o servidor segue atendendo durante a espera</summary>
 
 ```python
 # routers/orders.py

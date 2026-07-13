@@ -1,20 +1,22 @@
-# Naming
+# Nomes em Python
 
-Quando o nome carrega a intenção, o comentário deixa de fazer falta. Use
-**snake_case** (caixa-baixa com underline) para identificadores e **PascalCase** (pascal) para
-classes: é o padrão do **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8).
+Um nome que descreve a intenção poupa o comentário que explicaria a mesma coisa. Python define suas convenções no **PEP 8** (Python Enhancement Proposal 8 · Proposta de Melhoria 8), o guia oficial de estilo: `snake_case` para identificadores, `PascalCase` para classes. Seguir essas formas é parte de escrever Python, e não preferência pessoal.
+
+Esta página cobre as convenções de caixa, a escolha do verbo e os nomes que revelam o domínio do problema.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **PEP 8** (Python Enhancement Proposal 8, Proposta de Melhoria 8) | guia oficial de estilo da linguagem; define convenções de nome |
+| **PEP 8** (Python Enhancement Proposal 8 · Proposta de Melhoria 8) | guia oficial de estilo da linguagem; define as convenções de nome |
 | **snake_case** (caixa-baixa com underline) | convenção para variáveis, funções e módulos: `user_name`, `find_by_id` |
-| **PascalCase** (pascal) | convenção para classes e exceções: `OrderService`, `ValidationError` |
+| **PascalCase** (caixa camelo iniciando em maiúscula) | convenção para classes e exceções: `OrderService`, `ValidationError` |
 | **SCREAMING_SNAKE_CASE** (caixa-alta com underline) | convenção para constantes de módulo: `MAX_RETRIES`, `DEFAULT_TIMEOUT` |
-| **dunder** (double underscore, duplo sublinhado) | nomes `__nome__` reservados pela linguagem: `__init__`, `__repr__` |
-| **intention-revealing name** (nome que revela intenção) | nome que descreve propósito, não tipo: `expiration_days`, não `int_d` |
-| **boolean prefix** (prefixo booleano) | `is_`, `has_`, `should_` deixa booleanos óbvios: `is_active`, `has_permission` |
+| **dunder** (double underscore · duplo sublinhado) | nomes no formato `__nome__`, reservados pela linguagem: `__init__`, `__repr__` |
+| **intention-revealing name** (nome que revela a intenção) | nome que descreve o propósito do valor: `expiration_days` diz o que guarda, `int_d` esconde |
+| **boolean prefix** (prefixo booleano) | `is_`, `has_`, `should_` marcam o identificador que guarda verdadeiro ou falso: `is_active`, `has_permission` |
+
+<a id="meaningless-identifiers"></a>
 
 ## Identificadores sem significado
 
@@ -69,7 +71,7 @@ def busca_endereco_do_cliente(id):
 </details>
 
 <details>
-<summary>✅ Bom: inglês: curto, direto, universal</summary>
+<summary>✅ Bom: em inglês o nome fica curto e legível para qualquer time</summary>
 
 ```python
 user_name = "Alice"
@@ -86,9 +88,9 @@ def get_customer_address(customer_id):
 
 <a id="case-conventions"></a>
 
-## Convenções de case
+## Convenções de caixa
 
-Python tem convenções fortes definidas pela PEP 8. Segui-las é parte do idioma, não preferência.
+A PEP 8 fixa uma convenção por contexto. A tabela abaixo é a lista inteira que aparece no dia a dia.
 
 | Contexto                              | Convenção         | Exemplos                              |
 | ------------------------------------- | ----------------- | ------------------------------------- |
@@ -100,7 +102,7 @@ Python tem convenções fortes definidas pela PEP 8. Segui-las é parte do idiom
 | Parâmetro descartado                  | `_`               | `for _ in range(3):`                  |
 
 <details>
-<summary>❌ Ruim: case errado para o contexto</summary>
+<summary>❌ Ruim: a caixa não combina com o contexto</summary>
 
 ```python
 maxRetries = 3
@@ -128,9 +130,9 @@ class OrderRepository:
 
 </details>
 
-## Ordem semântica invertida
+## Ordem das palavras no nome
 
-Em inglês, o nome segue a ordem natural da fala: **ação + objeto + contexto**.
+Em inglês, o nome segue a ordem da fala: ação, depois objeto, depois contexto. `get_user_profile` lê como uma frase; `get_profile_user` obriga o leitor a reordenar as palavras na cabeça.
 
 <details>
 <summary>❌ Ruim: ordem invertida</summary>
@@ -158,8 +160,10 @@ calculate_invoice_total()
 
 ## Verbos genéricos
 
+`handle`, `process`, `manage` e `do` cabem em qualquer função, e por isso não descrevem nenhuma. Quem lê a chamada continua sem saber o que acontece lá dentro.
+
 <details>
-<summary>❌ Ruim: handle, process, manage, do não dizem nada</summary>
+<summary>❌ Ruim: verbos que servem para qualquer coisa</summary>
 
 ```python
 def handle(data):
@@ -207,12 +211,12 @@ def apply_seasonal_discount(order):
 | Validar            | `validate`, `check`, `assert`, `verify`   | `handle`, `test`   |
 | Notificar          | `send`, `dispatch`, `notify`, `emit`      | `fire`, `trigger`  |
 
-## Domain-first naming
+## Nomes que falam a linguagem do negócio
 
-O nome reflete a intenção de negócio, não o detalhe técnico de como ou onde a operação acontece.
+O nome descreve a intenção de negócio. `charge_customer` continua verdadeiro depois que a Stripe virar outro provedor; `call_stripe` vira mentira no dia da troca, e o nome passa a apontar para uma infraestrutura que saiu.
 
 <details>
-<summary>❌ Ruim: nome revela infraestrutura, não domínio</summary>
+<summary>❌ Ruim: o nome expõe a infraestrutura escolhida</summary>
 
 ```python
 def call_stripe(amount):
@@ -253,11 +257,12 @@ def archive_document(file):
 
 ## Código como documentação
 
-Comentários que explicam o _quê_ mentem: o código muda, o comentário fica. Um nome expressivo
-substitui qualquer comentário.
+Um comentário que descreve o que a linha faz fica desatualizado assim que alguém altera a linha e esquece o comentário logo acima. O nome extraído para uma variável resolve o mesmo problema e acompanha a mudança, porque ele faz parte do código.
+
+Guarde o comentário para o que o código sozinho não mostra: a restrição externa, a razão da escolha, o link para o chamado que originou a regra.
 
 <details>
-<summary>❌ Ruim: comentário repete o que o código já diz</summary>
+<summary>❌ Ruim: o comentário repete o que a linha abaixo já diz</summary>
 
 ```python
 # verifica se o usuário pode excluir registros
@@ -283,10 +288,12 @@ attempts += 1
 
 </details>
 
-## Boolean naming
+## Nomes de booleano
+
+O prefixo avisa o leitor de que o identificador guarda verdadeiro ou falso, antes que ele chegue no `if`. Use `is_` para estado, `has_` para posse, `can_` para permissão e `should_` para decisão.
 
 <details>
-<summary>❌ Ruim: booleanos sem prefixo semântico</summary>
+<summary>❌ Ruim: booleano sem prefixo, indistinguível de um valor comum</summary>
 
 ```python
 loading = True

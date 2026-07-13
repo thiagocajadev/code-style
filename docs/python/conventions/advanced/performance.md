@@ -1,29 +1,29 @@
-# Performance
+# Performance em Python
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Python prioriza legibilidade. Otimize onde há medição, não por antecipação. As regras abaixo
-resolvem problemas reais e frequentes no ecossistema.
+Meça antes de otimizar. Um `cProfile` mostra onde o tempo vai, e quase sempre o lugar é outro. A regra de ouro é escrever o código legível primeiro, e mexer nele quando a medição apontar aquele trecho.
+
+Os casos desta página são a exceção que vale saber de cor. Eles aparecem toda hora, a forma correta é tão legível quanto a errada, e a diferença cresce com o tamanho do dado.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **generator** (gerador) | função com `yield` que produz valores sob demanda; não materializa lista intermediária |
-| **list comprehension** (compreensão de lista) | sintaxe declarativa para construir listas: `[f(x) for x in xs if p(x)]` |
-| **hot path** (caminho crítico de execução) | trecho chamado com altíssima frequência; overhead é amplificado |
-| **GIL** (Global Interpreter Lock · Trava Global do Interpretador) | trava do CPython que serializa execução de bytecode em um único thread |
-| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; `multiprocessing` ajuda |
-| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco; `asyncio` resolve melhor |
-| **profiler** (perfilador) | ferramenta como `cProfile` que mede onde o tempo é gasto antes de otimizar |
+| **generator** (gerador) | Produz um valor por vez, conforme quem consome pede. Nunca monta a lista inteira na memória |
+| **list comprehension** (compreensão de lista) | A sintaxe `[f(x) for x in xs if p(x)]`, que monta uma lista a partir de outra |
+| **hot path** (trecho de execução frequente) | O código que roda milhares de vezes por segundo. Um custo pequeno ali é multiplicado |
+| **GIL** (Global Interpreter Lock · Trava Global do Interpretador) | A trava do CPython que deixa uma thread por vez executando código Python |
+| **CPU-bound** (limitado pelo processador) | A operação cujo gargalo é cálculo. O `multiprocessing` ajuda, e o `asyncio` não |
+| **I/O-bound** (limitado por entrada e saída) | A operação cujo gargalo é a espera por rede, disco ou banco. É onde o `asyncio` resolve |
+| **profiler** (medidor) | A ferramenta, como o `cProfile`, que mostra onde o tempo foi gasto de verdade |
 
-## Generators vs listas
+## Gerador no lugar da lista
 
-Quando o resultado é consumido uma vez (loop, `sum`, `any`, `next`), um generator evita criar
-uma lista intermediária em memória.
+Quando o resultado é consumido uma vez só (num `for`, num `sum`, num `any`), o gerador entrega os valores um por um. A lista intermediária deixa de existir, e o pico de memória cai junto: uma lista com um milhão de preços ocupa memória, e o gerador ocupa uma linha por vez.
 
 <details>
-<summary>❌ Ruim: lista completa criada antes de consumir</summary>
+<summary>❌ Ruim: monta a lista inteira só para somá-la em seguida</summary>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -36,7 +36,7 @@ def sum_active_prices(products: list) -> float:
 </details>
 
 <details>
-<summary>✅ Bom: generator expression, sem lista intermediária</summary>
+<summary>✅ Bom: soma um preço por vez, sem montar a lista</summary>
 
 ```python
 def sum_active_prices(products: list) -> float:
@@ -46,13 +46,14 @@ def sum_active_prices(products: list) -> float:
 
 </details>
 
-## set para busca e deduplicação
+## set quando a pergunta é "está aí dentro?"
 
-Busca em `list` é O(n). Busca em `set` é O(1). Quando a ordem não importa e a operação é
-"está contido?", `set` é a escolha correta.
+Perguntar `x in lista` percorre a lista até achar. Perguntar `x in conjunto` responde num passo só, porque o `set` guarda os itens pelo endereço calculado a partir do valor.
+
+A diferença cresce rápido. Filtrar mil usuários contra mil bloqueados faz um milhão de comparações com a lista, e mil com o conjunto. Converter a lista em `set` uma vez, antes do laço, é o que a linha extra do exemplo bom faz.
 
 <details>
-<summary>❌ Ruim: in list: percorre tudo a cada verificação</summary>
+<summary>❌ Ruim: cada usuário percorre a lista de bloqueados inteira</summary>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -64,7 +65,7 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 </details>
 
 <details>
-<summary>✅ Bom: in set: O(1) por verificação</summary>
+<summary>✅ Bom: o conjunto responde a cada busca num passo só</summary>
 
 ```python
 def filter_blocked_users(users: list, blocked_ids: list) -> list:
@@ -75,13 +76,14 @@ def filter_blocked_users(users: list, blocked_ids: list) -> list:
 
 </details>
 
-## Concatenação de strings em loop
+## Montar texto dentro de um laço
 
-`str + str` cria um novo objeto a cada iteração. Para montar uma string a partir de partes,
-use `"".join()`.
+Em Python, o texto não muda depois de criado. Cada `row += field` monta um texto novo, copiando tudo o que já estava lá. Numa lista de mil campos, a última linha do laço copia os 999 anteriores de novo.
+
+O `"".join()` percorre os pedaços, soma os tamanhos, reserva o espaço uma vez e copia cada pedaço uma vez.
 
 <details>
-<summary>❌ Ruim: concatenação O(n²) em loop</summary>
+<summary>❌ Ruim: cada volta do laço copia o texto inteiro de novo</summary>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -95,7 +97,7 @@ def build_csv_row(fields: list[str]) -> str:
 </details>
 
 <details>
-<summary>✅ Bom: join: uma única alocação</summary>
+<summary>✅ Bom: o join copia cada pedaço uma única vez</summary>
 
 ```python
 def build_csv_row(fields: list[str]) -> str:
@@ -105,13 +107,14 @@ def build_csv_row(fields: list[str]) -> str:
 
 </details>
 
-## Leitura de arquivo grande: iteração vs leitura total
+## Ler um arquivo grande
 
-`read()` carrega o arquivo inteiro em memória. Para arquivos grandes, iterar linha a linha
-mantém o uso de memória constante.
+O `read()` traz o arquivo inteiro para a memória. Num log de dois gigabytes, o processo pede dois gigabytes e o servidor pode derrubá-lo antes da primeira linha ser contada.
+
+Percorrer o arquivo linha a linha mantém uma linha por vez na memória, e o consumo fica igual para um arquivo de dois megabytes e para um de dois gigabytes.
 
 <details>
-<summary>❌ Ruim: arquivo inteiro em memória</summary>
+<summary>❌ Ruim: puxa o arquivo inteiro para a memória antes de contar</summary>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -126,7 +129,7 @@ def count_error_lines(log_path: str) -> int:
 </details>
 
 <details>
-<summary>✅ Bom: iteração linha a linha, memória constante</summary>
+<summary>✅ Bom: lê uma linha por vez, e a memória não cresce com o arquivo</summary>
 
 ```python
 def count_error_lines(log_path: str) -> int:
@@ -136,13 +139,14 @@ def count_error_lines(log_path: str) -> int:
 
 </details>
 
-## dict.get() vs acesso direto
+## dict.get() quando a chave pode não existir
 
-`dict["key"]` lança `KeyError` se a chave não existir. `dict.get("key", default)` retorna o
-default sem exceção, sem try/except desnecessário.
+`permissions[user_id]` levanta `KeyError` quando a chave não está lá, e obriga o `try/except` em volta. `permissions.get(user_id, "viewer")` devolve o valor padrão na mesma linha.
+
+São quatro linhas a menos, e a intenção fica declarada: quem não tem papel definido é visitante.
 
 <details>
-<summary>❌ Ruim: try/except para controle de fluxo normal</summary>
+<summary>❌ Ruim: try/except para uma chave que pode faltar por rotina</summary>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -157,7 +161,7 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 </details>
 
 <details>
-<summary>✅ Bom: dict.get com default declarativo</summary>
+<summary>✅ Bom: o get devolve "viewer" quando a chave não existe</summary>
 
 ```python
 def get_user_role(permissions: dict, user_id: str) -> str:
@@ -167,13 +171,14 @@ def get_user_role(permissions: dict, user_id: str) -> str:
 
 </details>
 
-## __slots__ em classes de dados
+## __slots__ em classes com muitas instâncias
 
-Classes sem `__slots__` armazenam atributos em um `__dict__` por instância. Em coleções com
-milhares de objetos, `__slots__` reduz o uso de memória consideravelmente.
+Toda instância de uma classe comum carrega um dicionário interno para guardar os atributos, e esse dicionário ocupa espaço mesmo quando a classe tem três campos. Declarar `slots=True` troca o dicionário por uma estrutura fixa com as três posições.
+
+A diferença só importa em volume. Numa classe com dez instâncias, não mude nada. Em duzentos mil itens de pedido carregados de uma vez, o consumo de memória cai à metade.
 
 <details>
-<summary>❌ Ruim: __dict__ implícito em classe de dado intensivo</summary>
+<summary>❌ Ruim: cada item carrega um dicionário interno para três campos</summary>
 
 ```python
 class OrderItem:
@@ -186,7 +191,7 @@ class OrderItem:
 </details>
 
 <details>
-<summary>✅ Bom: dataclass com slots=True</summary>
+<summary>✅ Bom: slots=True troca o dicionário por três posições fixas</summary>
 
 ```python
 from dataclasses import dataclass

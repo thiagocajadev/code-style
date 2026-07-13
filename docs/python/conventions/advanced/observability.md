@@ -1,29 +1,31 @@
-# Observability
+# Observabilidade em Python
 
 > Escopo: Python. Idiomas específicos deste ecossistema.
 
-Log é a primeira linha de diagnóstico. Um log útil diz quem, o quê e por quê, sem expor dados
-sensíveis e sem poluir com ruído.
+Quando algo quebra em produção, o log é o que você tem. Ele precisa dizer qual operação estava rodando, sobre qual registro, e o que deu errado, sem carregar o nome e o email de ninguém junto.
+
+Esta página trata do que registrar, em que nível, e como amarrar os registros de uma mesma requisição para conseguir segui-la entre serviços.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **logging** (módulo padrão de log) | módulo da stdlib com níveis, handlers e formatters configuráveis |
-| **structlog** (biblioteca de log estruturado) | biblioteca para logs em chave-valor ou JSON, prontos para agregadores |
-| **log level** (nível de log) | severidade do evento: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` |
-| **structured log** (log estruturado) | log em chave-valor ou JSON; consultável em ferramentas de observabilidade |
-| **PII** (Personally Identifiable Information · Informações de Identificação Pessoal) | dados que identificam uma pessoa; nunca devem aparecer em logs |
-| **correlation id** (identificador de correlação) | identificador único de uma requisição, propagado em todos os logs |
-| **OpenTelemetry** (padrão de telemetria distribuída) | padrão aberto para traces, métricas e logs entre serviços |
+| **logging** (módulo de log da biblioteca padrão) | Vem com o Python. Tem níveis, e permite escolher para onde o log vai |
+| **structlog** (biblioteca de log estruturado) | Escreve o log em pares de chave e valor, ou em JSON, prontos para a ferramenta que indexa |
+| **log level** (nível do log) | A gravidade do evento: `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL` |
+| **structured log** (log estruturado) | O log escrito em campos, e não numa frase. Permite filtrar por `order_id` na ferramenta de busca |
+| **PII** (Personally Identifiable Information · Informações de Identificação Pessoal) | O dado que identifica uma pessoa: nome, email, CPF, cartão. Fica de fora do log |
+| **correlation id** (identificador de correlação) | O código único da requisição, repetido em todo log que ela gera. É o que permite juntar os registros dela |
+| **OpenTelemetry** (padrão aberto de telemetria) | O padrão que os serviços usam para trocar rastros, métricas e logs entre si |
 
 ## print() em produção
 
-`print()` não tem nível, não tem contexto e não é capturável por sistemas de log. Use o módulo
-`logging` padrão ou uma biblioteca estruturada como `structlog`.
+O `print()` escreve no terminal e para por aí. Ele não tem nível, então não dá para filtrar; não tem campos, então não dá para buscar por pedido; e a ferramenta que recolhe os logs do servidor não o distingue de qualquer outra saída.
+
+Use o módulo `logging`, que vem com a linguagem, ou uma biblioteca de log estruturado como o `structlog`.
 
 <details>
-<summary>❌ Ruim: print() sem nível, sem contexto</summary>
+<summary>❌ Ruim: print() sem nível e sem campos para buscar depois</summary>
 
 ```python
 def process_order(order_id: int):
@@ -34,7 +36,7 @@ def process_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: logging com nível e contexto</summary>
+<summary>✅ Bom: o log tem nível, e o id do pedido vai separado da mensagem</summary>
 
 ```python
 import logging
@@ -54,18 +56,18 @@ def process_order(order_id: int):
 
 ## Níveis de log
 
-Cada nível tem um significado fixo. Usar o nível errado polui o output e dificulta alertas.
+O nível é o que permite montar alerta e filtrar ruído. Se a queda do banco entra como `INFO`, ela se perde no meio de milhares de linhas de rotina, e o alerta que dispara em `ERROR` nunca toca.
 
 | Nível | Quando usar |
 | --- | --- |
-| `DEBUG` | Detalhes de execução para diagnóstico local; nunca em produção |
-| `INFO` | Eventos de negócio relevantes: pedido criado, pagamento aprovado |
-| `WARNING` | Situação inesperada mas recuperável: retry, fallback ativado |
-| `ERROR` | Falha que interrompeu uma operação: exceção capturada na fronteira |
-| `CRITICAL` | Falha que compromete o sistema inteiro: indisponibilidade de banco |
+| `DEBUG` | Detalhe de execução, para diagnóstico na sua máquina. Fica desligado em produção |
+| `INFO` | O evento de negócio que aconteceu: pedido criado, pagamento aprovado |
+| `WARNING` | Algo saiu do esperado, e o sistema contornou: uma nova tentativa, um caminho alternativo |
+| `ERROR` | A operação parou por causa de uma falha: a exceção que o limite do sistema capturou |
+| `CRITICAL` | A falha atinge o sistema inteiro: o banco de dados ficou indisponível |
 
 <details>
-<summary>❌ Ruim: nível errado para o contexto</summary>
+<summary>❌ Ruim: a queda do banco entra como INFO, e o login como ERROR</summary>
 
 ```python
 logger.info("Database connection failed")    # deveria ser ERROR
@@ -76,7 +78,7 @@ logger.debug("Payment processed successfully")  # deveria ser INFO
 </details>
 
 <details>
-<summary>✅ Bom: nível correto para cada evento</summary>
+<summary>✅ Bom: cada evento no nível que corresponde à gravidade dele</summary>
 
 ```python
 logger.info("user logged in", extra={"user_id": user.user_id})
@@ -87,13 +89,12 @@ logger.error("database connection failed", extra={"host": db_host}, exc_info=Tru
 
 </details>
 
-## PII em logs
+## Dado pessoal não entra no log
 
-Dados pessoais (nome, e-mail, CPF, número de cartão) não entram em logs. Logar apenas
-identificadores opacos: IDs que não revelam a pessoa.
+Nome, email, CPF e número de cartão ficam de fora. O log é copiado para a ferramenta de busca, fica guardado por meses e é lido por gente que não teria acesso àquele dado no sistema. Registre o identificador, que aponta para a pessoa sem revelá-la.
 
 <details>
-<summary>❌ Ruim: dados pessoais expostos no log</summary>
+<summary>❌ Ruim: nome, email e cartão escritos na linha do log</summary>
 
 ```python
 logger.info(f"processing payment for {user.name} ({user.email}), card {card.number}")
@@ -102,7 +103,7 @@ logger.info(f"processing payment for {user.name} ({user.email}), card {card.numb
 </details>
 
 <details>
-<summary>✅ Bom: apenas identificadores opacos</summary>
+<summary>✅ Bom: só os identificadores, que não revelam quem é a pessoa</summary>
 
 ```python
 logger.info(
@@ -113,13 +114,14 @@ logger.info(
 
 </details>
 
-## Logging estruturado com correlation_id
+## O correlation_id, que amarra os logs de uma requisição
 
-Em sistemas distribuídos, rastrear uma requisição entre serviços exige um identificador comum.
-Propague o `correlation_id` por todas as chamadas de **I/O** (Input/Output · Entrada/Saída).
+Uma requisição atravessa vários serviços e gera dezenas de linhas de log, misturadas com as de todas as outras requisições que rodavam ao mesmo tempo. Sem um código comum entre elas, não há como reconstruir o que aconteceu numa só.
+
+O `correlation_id` é esse código. Ele nasce na entrada, viaja em toda chamada que sai para fora, e vai em todo log. Na ferramenta de busca, filtrar por ele devolve a história completa daquela requisição.
 
 <details>
-<summary>❌ Ruim: logs sem contexto de rastreamento</summary>
+<summary>❌ Ruim: os logs não dizem de qual requisição vieram</summary>
 
 ```python
 async def handle_order(order_id: int):
@@ -135,7 +137,7 @@ async def handle_order(order_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: correlation_id propagado em todos os logs da operação</summary>
+<summary>✅ Bom: o mesmo correlation_id aparece em todos os logs da operação</summary>
 
 ```python
 import uuid
@@ -155,13 +157,14 @@ async def handle_order(order_id: int, correlation_id: str | None = None):
 
 </details>
 
-## Logging de exceções
+## Registrar a exceção com o rastro de onde ela nasceu
 
-Ao capturar uma exceção, use `exc_info=True` ou `logger.exception()` para incluir o traceback.
-Sem ele, o log não diz onde o erro ocorreu.
+Passe `exc_info=True` no `logger.error`, ou use `logger.exception()`. Os dois anexam o **traceback** (a sequência de chamadas até o ponto do erro).
+
+Sem ele, o log guarda só o texto da exceção. Um "connection refused" solto não diz qual das quatro chamadas de rede daquela função falhou, e a investigação começa do zero.
 
 <details>
-<summary>❌ Ruim: exceção capturada sem traceback</summary>
+<summary>❌ Ruim: só o texto do erro, sem dizer onde ele aconteceu</summary>
 
 ```python
 async def process_payment(payment_id: int):
@@ -176,7 +179,7 @@ async def process_payment(payment_id: int):
 </details>
 
 <details>
-<summary>✅ Bom: exc_info preserva o traceback completo</summary>
+<summary>✅ Bom: exc_info anexa a sequência de chamadas até o erro</summary>
 
 ```python
 async def process_payment(payment_id: int):

@@ -2,72 +2,71 @@
 
 [![Python](https://img.shields.io/badge/Python-3.14-3776AB?logo=python&logoColor=white)](https://docs.python.org/3.14/)
 
-Convenções Python aplicando os mesmos princípios do guia. Os exemplos usam Python 3.14 como
-referência; diferenças relevantes com versões anteriores são destacadas onde necessário.
+As convenções de Python aplicando os mesmos princípios do guia. Os exemplos usam Python 3.14 como referência, e as diferenças que importam em versões anteriores estão marcadas onde aparecem.
 
-→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, type hints, strings, destructuring
+→ [Referência rápida](quick-reference.md): nomes, verbos, o que evitar, type hints, strings, desempacotamento
 
 ## Setup
 
-Configuração inicial de um projeto Python: estrutura, tooling e segurança.
+A configuração inicial de um projeto Python: estrutura, ferramentas e segurança.
 
 | Tópico                                            | Conceitos                                                      |
 | ------------------------------------------------- | -------------------------------------------------------------- |
-| [Project Foundation](setup/project-foundation.md) | pyproject.toml, venv, estrutura de módulos, entry point        |
-| [Security](setup/security.md)                     | Secrets, env vars, pydantic-settings, cadeia de configuração   |
+| [Base do projeto](setup/project-foundation.md) | pyproject.toml, venv, estrutura de módulos, ponto de entrada        |
+| [Segurança](setup/security.md)                     | segredos, variáveis de ambiente, pydantic-settings, cadeia de configuração   |
 
 ## Fundamentos
 
 | Tópico                                            | Conceitos                                                    |
 | ------------------------------------------------- | ------------------------------------------------------------ |
-| [Variables](conventions/variables.md)             | `Final`, `dataclass(frozen=True)`, t-strings vs f-strings, pathlib |
-| [Naming](conventions/naming.md)                   | snake_case, PascalCase, UPPER_SNAKE, `_private`, boolean     |
-| [Functions](conventions/functions.md)             | SLA, orquestrador, guard clauses, direct return              |
-| [Control Flow](conventions/control-flow.md)       | Guard clauses, early return, match/case, comprehensions      |
-| [Visual Density](conventions/visual-density.md)   | Agrupamento de linhas, return separado, fases de função      |
+| [Variáveis](conventions/variables.md)             | `Final`, `dataclass(frozen=True)`, t-string e f-string, pathlib |
+| [Nomes](conventions/naming.md)                   | snake_case, PascalCase, UPPER_SNAKE, `_privado`, booleano     |
+| [Funções](conventions/functions.md)             | um nível de abstração, orquestrador, guarda de entrada, retorno direto              |
+| [Controle de fluxo](conventions/control-flow.md)       | guarda de entrada, retorno antecipado, match/case, comprehension      |
+| [Densidade visual](conventions/visual-density.md)   | agrupamento de linhas, retorno isolado, fases da função      |
 
 ## Avançados
 
 | Tópico                                                         | Conceitos                                            |
 | -------------------------------------------------------------- | ---------------------------------------------------- |
-| [Error Handling](conventions/advanced/error-handling.md)      | Exceções tipadas, hierarquia, fronteiras             |
-| [Async](conventions/advanced/async.md)                        | asyncio, async/await, gather, evitar bloqueio        |
-| [Testing](conventions/advanced/testing.md)                    | pytest, AAA, fixtures, assert semântico              |
-| [Performance](conventions/advanced/performance.md)            | Generators, set, join, evitar cópias desnecessárias  |
-| [Observability](conventions/advanced/observability.md)        | logging estruturado, níveis, PII, correlation_id     |
-| [Validation](conventions/advanced/validation.md)              | Pydantic, validação na fronteira, output filter      |
-| [Dates](conventions/advanced/dates.md)                        | datetime aware, zoneinfo, ISO 8601, strptime         |
-| [Entity Modeling](conventions/advanced/entity-modeling.md)    | `NewType` para IDs, `@dataclass(frozen=True)`, `Sequence[T]` read-only, `classmethod` factory |
+| [Tratamento de erro](conventions/advanced/error-handling.md)      | exceções tipadas, hierarquia, limites do sistema             |
+| [Assíncrono](conventions/advanced/async.md)                        | asyncio, async/await, gather, evitar o bloqueio        |
+| [Testes](conventions/advanced/testing.md)                    | pytest, AAA, fixtures, assert que descreve a regra              |
+| [Performance](conventions/advanced/performance.md)            | generator, set, join, evitar cópia desnecessária  |
+| [Observabilidade](conventions/advanced/observability.md)        | log estruturado, níveis, dado pessoal, correlation_id     |
+| [Validação](conventions/advanced/validation.md)              | Pydantic, validação no limite, filtro de saída      |
+| [Datas](conventions/advanced/dates.md)                        | datetime com fuso, zoneinfo, ISO 8601, strptime         |
+| [Modelagem de entidades](conventions/advanced/entity-modeling.md)    | `NewType` para IDs, `@dataclass(frozen=True)`, `Sequence[T]` só de leitura, `classmethod` como fábrica |
 
 ## Frameworks
 
 | Tópico                             | Conceitos                                                      |
 | ---------------------------------- | -------------------------------------------------------------- |
-| [FastAPI](frameworks/fastapi.md)   | Router, Schema, Path Operation, Dependency Injection, Async   |
-| [HTMX](frameworks/htmx.md)         | Fragmentos, hx-target, hx-swap, Out-of-band, Loading          |
-| [Reflex](frameworks/reflex.md)     | State, Computed Var, Event Handlers, Components, Python 3.14  |
+| [FastAPI](frameworks/fastapi.md)   | router, schema, rota, injeção de dependência, assíncrono   |
+| [HTMX](frameworks/htmx.md)         | fragmento, hx-target, hx-swap, atualização fora do alvo, indicador de carga          |
+| [Reflex](frameworks/reflex.md)     | State, computed var, handler de evento, componente, Python 3.14  |
 
 ## MicroPython / IoT
 
 | Tópico                                                       | Conceitos                                                              |
 | ------------------------------------------------------------ | ---------------------------------------------------------------------- |
-| [MicroPython](conventions/advanced/micropython.md)           | Diferenças da stdlib, restrições de hardware, asyncio, watchdog        |
+| [MicroPython](conventions/advanced/micropython.md)           | diferenças da biblioteca padrão, limites de hardware, asyncio, watchdog        |
 
-→ Padrões de domínio IoT (debounce, FSM, alertas): [shared/platform/iot.md](../shared/platform/iot.md)
+→ Padrões de domínio IoT (debounce, máquina de estados, alertas): [shared/platform/iot.md](../shared/platform/iot.md)
 
 ## Princípios
 
-**Forma**: estrutura e narrativa da função
+**Forma**: a estrutura e a narrativa da função
 
 | Princípio                                                                                    | Descrição                                                            |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Escrita em inglês](conventions/naming.md#portuguese-names)                                | Código universal, nomes curtos e sem ambiguidade                     |
+| [Escrita em inglês](conventions/naming.md#portuguese-names)                                | Nomes curtos, sem ambiguidade, legíveis para qualquer time           |
 | [snake_case nativo](conventions/naming.md#case-conventions)                                | Identificadores em snake_case; classes em PascalCase                 |
-| [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                   | Variáveis e funções que dispensam explicação                         |
-| [Código como documentação](conventions/naming.md#code-as-documentation)                   | Nomes substituem comentários; comentários mentem                     |
-| [Orquestrador no topo](conventions/functions.md#god-function)    | Chamada visível antes dos detalhes (top-down)                        |
-| [SLA](conventions/functions.md#single-level-of-abstraction)              | Uma responsabilidade, um nível de abstração                          |
-| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                      | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
+| [Nomes expressivos](conventions/naming.md#meaningless-identifiers)                   | Variáveis e funções que dispensam explicação                         |
+| [Código como documentação](conventions/naming.md#code-as-documentation)                   | O nome extraído acompanha a mudança; o comentário fica para trás     |
+| [Orquestrador no topo](conventions/functions.md#god-function)    | A chamada aparece antes dos detalhes, de cima para baixo             |
+| [Um nível de abstração](conventions/functions.md#single-level-of-abstraction)              | Uma responsabilidade por função, num só nível de detalhe             |
+| [Sem lógica no retorno](conventions/functions.md#no-logic-in-return)                      | O retorno dá nome a um resultado já pronto                           |
 
 <br>
 
@@ -75,22 +74,22 @@ Configuração inicial de um projeto Python: estrutura, tooling e segurança.
 
 | Princípio                                                                                    | Descrição                                                            |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Retorno antecipado](conventions/control-flow.md#if-e-else)                                  | Saída cedo na falha, sem else após return                            |
-| [Fluxo linear](conventions/control-flow.md#aninhamento-em-cascata)                           | Aninhamento em cascata substituído por fluxo plano                   |
-| [Baixa densidade visual](conventions/visual-density.md#a-regra-central)                     | Linhas relacionadas juntas, grupos separados por uma linha em branco |
-| [Valor fixo por padrão](conventions/variables.md#direct-mutation)                             | `Final`, `frozen=True`: alteração é exceção explícita                |
-| [Sem valores mágicos](conventions/variables.md#magic-values)                              | Constantes nomeadas no lugar de literais inline                      |
-| [CQS](conventions/variables.md#direct-mutation)                                               | Retornar novo estado, sem efeitos colaterais ocultos                 |
+| [Retorno antecipado](conventions/control-flow.md#if-and-else)                                  | Sai cedo na falha, e o `else` depois do `return` some                |
+| [Fluxo linear](conventions/control-flow.md#nested-conditionals)                           | O aninhamento em cascata vira fluxo plano                            |
+| [Baixa densidade visual](conventions/visual-density.md#core-rule)                     | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Valor fixo por padrão](conventions/variables.md#direct-mutation)                             | `Final` e `frozen=True`: alterar exige um passo explícito            |
+| [Sem valores mágicos](conventions/variables.md#magic-values)                              | Constantes nomeadas no lugar do literal solto no meio do código      |
+| [Consulta separada de escrita](conventions/variables.md#direct-mutation)                                               | A função devolve o novo estado, sem efeito colateral escondido       |
 
 <br>
 
-**Controle de qualidade**: estado, erros, async e testes
+**Controle de qualidade**: estado, erros, código assíncrono e testes
 
 | Princípio                                                                                           | Descrição                                                    |
 | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | [Exceções tipadas](conventions/advanced/error-handling.md#exception-as-string)                     | Subclasses de `Exception`, identificáveis e tratáveis        |
-| [Falhar rápido](conventions/advanced/error-handling.md#multiple-return-types)                  | Validar cedo, interromper fluxo inválido                     |
-| [Fronteira de erro](conventions/advanced/error-handling.md#tryexcept-que-engole-o-erro)              | try/except nas fronteiras, propagar com contexto             |
-| [I/O assíncrono](conventions/advanced/async.md#blocking-sync-call)                                  | async/await, sem bloqueio do event loop                      |
+| [Falhar cedo](conventions/advanced/error-handling.md#multiple-return-types)                  | Validar na entrada e interromper o fluxo inválido            |
+| [Erro tratado no limite](conventions/advanced/error-handling.md#swallowed-error)              | `try/except` nos limites do sistema, propagando com contexto |
+| [Entrada e saída assíncronas](conventions/advanced/async.md#blocking-sync-call)                                  | `async`/`await`, sem travar o event loop                     |
 | [Concorrência explícita](conventions/advanced/async.md#gather-parallel-execution)                   | `asyncio.gather` para chamadas independentes em paralelo     |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                        | AAA: fases explícitas; assert limpo, sem expressões inline   |
+| [Testes estruturados](conventions/advanced/testing.md#mixed-phases-aaa)                        | AAA: as três fases visíveis, com assert limpo                |
