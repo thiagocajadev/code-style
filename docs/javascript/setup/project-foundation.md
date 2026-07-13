@@ -257,8 +257,8 @@ export function create(orderService) {
 a seção que lhe cabe: o de pedidos recebe `config.database`, o de autenticação
 recebe `config.auth`. O ganho aparece no teste, onde passar um objeto qualquer
 substitui a configuração real, e aparece no dia em que uma variável muda de nome:
-existe um arquivo para editar, não uma busca por `process.env` no repositório
-inteiro.
+o ajuste acontece em um arquivo só, sem varrer o repositório atrás de cada
+`process.env`.
 
 <details>
 <summary>❌ Ruim: process.env espalhado em todo lugar</summary>

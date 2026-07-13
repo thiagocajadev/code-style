@@ -251,7 +251,9 @@ async function findProductById(id) {
 
 ## Exceção como controle de fluxo
 
-Exceção sinaliza o que foge do esperado, não o caminho normal. Buscar uma chave que pode não existir é caminho normal: um `??` com valor padrão resolve. Reservar `try/catch` para isso troca uma verificação barata por um desvio caro e mais difícil de seguir.
+O `try/catch` serve para o que o código não consegue prever: a rede caiu no meio da requisição, o arquivo sumiu do disco. Uma chave que pode não estar no objeto é caso previsto, e o `??` com valor padrão resolve na mesma linha da leitura.
+
+Usar `try/catch` para isso muda onde o comportamento normal fica escrito. O caminho que roda quase sempre passa a morar no `catch`, e quem lê o código precisa entrar no bloco de erro para descobrir o que acontece no caso comum.
 
 <details>
 <summary>❌ Ruim: try/catch controlando lógica de negócio normal</summary>

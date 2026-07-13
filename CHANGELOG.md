@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.1] - 2026-07-13
+
+### Fixed
+
+- **Duas caudas de contraste binário e uma metáfora de preço em `docs/javascript/`**, achadas por varredura repo-wide dos audits. `error-handling.md` dizia "Exceção sinaliza o que foge do esperado, não o caminho normal" e fechava com "troca uma verificação barata por um desvio caro", que é a metáfora de cobrança em forma de adjetivo. O trecho foi reescrito pelo mecanismo: o `try/catch` serve para o que o código não consegue prever (a rede caiu, o arquivo sumiu), e usá-lo como fluxo normal muda onde o comportamento comum fica escrito, porque o caminho que roda quase sempre passa a morar dentro do `catch`. `setup/project-foundation.md` perdeu a cauda "existe um arquivo para editar, não uma busca por `process.env` no repositório inteiro".
+
 ## [2.7.0] - 2026-07-13
 
 ### Added
