@@ -33,7 +33,7 @@ def test_apply_discount():
 </details>
 
 <details>
-<summary>✅ Bom: **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar): fases explícitas</summary>
+<summary>✅ Bom: as três fases do teste ficam visíveis</summary>
 
 ```python
 def test_apply_discount_reduces_total():

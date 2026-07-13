@@ -1,6 +1,6 @@
-// xUnit — framework mais adotado no ecossistema .NET moderno
+// xUnit: framework mais adotado no ecossistema .NET moderno
 // Executar: dotnet test
-// Convenção: Assert.Equal(expected, actual) — expected primeiro
+// Convenção: Assert.Equal(expected, actual), com expected primeiro
 
 using Xunit;
 

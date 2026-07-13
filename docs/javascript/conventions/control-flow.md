@@ -18,6 +18,8 @@ com um exemplo ruim e um bom lado a lado.
 | **short-circuit** (curto-circuito) | `&&` retorna o primeiro falsy; `||` retorna o primeiro truthy; `??` retorna o primeiro não-nulo |
 | **truthy / falsy** (avalia como verdadeiro / como falso) | Valores que avaliam como `true` ou `false` em contexto booleano (`0`, `""`, `null` são falsy) |
 
+<a id="if-and-else"></a>
+
 ## If e else
 
 É o ponto de partida. Para dois caminhos, `if/else` resolve. Só que um `else`
@@ -50,6 +52,8 @@ function getDiscount(user) {
 ```
 
 </details>
+
+<a id="nested-conditionals"></a>
 
 ## Aninhamento em cascata
 

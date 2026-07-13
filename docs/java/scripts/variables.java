@@ -74,7 +74,7 @@ public class VariablesExamples {
         if (order.getStatus() == ORDER_STATUS_APPROVED) { /* ... */ }
     }
 
-    // ─── Records — imutabilidade estrutural ───────────────────────────────────
+    // ─── Records: o valor não muda depois de atribuído ────────────────────────
 
     // ❌ Ruim: classe mutável para transportar dados
     static class InvoiceDataBad {
@@ -92,7 +92,7 @@ public class VariablesExamples {
         final var orderId = invoice.orderId(); // getter gerado
     }
 
-    // ─── var — inferência de tipo ─────────────────────────────────────────────
+    // ─── var: inferência de tipo ──────────────────────────────────────────────
 
     // ❌ Ruim: var obscurece o tipo
     public void varBad() {
@@ -101,8 +101,8 @@ public class VariablesExamples {
 
     // ✅ Bom: var quando o tipo é óbvio; tipo explícito quando agrega clareza
     public void varGood() {
-        final var orders = orderRepository.findAll(); // List<Order> — óbvio
-        final var user = new User("Alice", "alice@example.com"); // User — óbvio
+        final var orders = orderRepository.findAll(); // List<Order>, óbvio
+        final var user = new User("Alice", "alice@example.com"); // User, óbvio
 
         final Optional<User> found = userRepository.findById("u-1"); // tipo explícito agrega contexto
     }

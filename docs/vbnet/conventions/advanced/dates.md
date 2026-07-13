@@ -127,7 +127,7 @@ End Class
 </details>
 
 <details>
-<summary>✅ Bom: string **ISO** (International Organization for Standardization · Organização Internacional de Normalização) no DTO, parse explícito no domínio</summary>
+<summary>✅ Bom: a data trafega como texto no formato ISO, e o domínio a converte no limite</summary>
 
 ```vbnet
 ' DTO recebe a data como string, sem ambiguidade de timezone

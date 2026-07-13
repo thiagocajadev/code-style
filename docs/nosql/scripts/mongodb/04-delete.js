@@ -3,7 +3,7 @@ import { database } from "./db.js";
 const teamsCollection = database.collection("teams");
 const playersCollection = database.collection("players");
 
-// ── soft delete — remoção lógica ─────────────────────────────────────────────
+// ── soft delete: remoção lógica ──────────────────────────────────────────────
 
 async function softDeleteTeam(teamId) {
   const filter = { _id: teamId };
@@ -35,7 +35,7 @@ async function softDeletePlayersByTeam(teamId) {
   return modifiedCount;
 }
 
-// ── hard delete — purga de registros expirados ────────────────────────────────
+// ── hard delete: purga de registros expirados ─────────────────────────────────
 
 async function purgeDeletedTeams(cutoffDate) {
   const filter = {
@@ -48,7 +48,7 @@ async function purgeDeletedTeams(cutoffDate) {
   return deletedCount;
 }
 
-// ── deleteOne — remoção física por ID ─────────────────────────────────────────
+// ── deleteOne: remoção física por ID ──────────────────────────────────────────
 
 export async function removePlayer(playerId) {
   const filter = { _id: playerId };

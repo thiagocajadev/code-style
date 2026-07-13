@@ -195,7 +195,7 @@ End Function
 O arquivo abaixo cobre o que um projeto Web API 2 precisa no começo: um arquivo de log por dia, trinta dias de histórico, o `CorrelationId` no início de cada linha e a saída de console para o ambiente de desenvolvimento. O `LoadConfiguration` roda uma vez, no `Application_Start`.
 
 <details>
-<summary>✅ Bom: NLog.config mínimo para Web **API** (Application Programming Interface · Interface de Programação de Aplicações) 2</summary>
+<summary>✅ Bom: o NLog.config mínimo para uma Web API</summary>
 
 ```xml
 <!-- NLog.config -->

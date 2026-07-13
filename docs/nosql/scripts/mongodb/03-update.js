@@ -4,7 +4,7 @@ const teamsCollection = database.collection("teams");
 const playersCollection = database.collection("players");
 const standingsCollection = database.collection("standings");
 
-// ── updateOne — patch parcial ─────────────────────────────────────────────────
+// ── updateOne: patch parcial ──────────────────────────────────────────────────
 
 async function updateManager(teamId, managerId) {
   const filter = { _id: teamId };
@@ -20,7 +20,7 @@ async function updateManager(teamId, managerId) {
   return modifiedCount;
 }
 
-// ── updateOne — incremento atômico ────────────────────────────────────────────
+// ── updateOne: incremento atômico ─────────────────────────────────────────────
 
 async function incrementGoals(playerId, goals) {
   const filter = { _id: playerId };
@@ -34,7 +34,7 @@ async function incrementGoals(playerId, goals) {
   return modifiedCount;
 }
 
-// ── upsert — insert ou update atômico ────────────────────────────────────────
+// ── upsert: insert ou update atômico ─────────────────────────────────────────
 
 async function saveStandings(teamId, season, points) {
   const filter = { teamId, season };
@@ -51,7 +51,7 @@ async function saveStandings(teamId, season, points) {
   return { wasInserted, modifiedCount: result.modifiedCount };
 }
 
-// ── updateMany — desativação em lote ─────────────────────────────────────────
+// ── updateMany: desativação em lote ──────────────────────────────────────────
 
 async function deactivatePlayersByTeam(teamId) {
   const filter = { teamId, isActive: true };

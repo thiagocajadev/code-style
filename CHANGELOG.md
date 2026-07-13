@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.1] - 2026-07-13
+
+Correções em linguagens fora do escopo do épico C8, achadas ao fechar os buracos de gate que o épico expôs. O `audit:prose` passou a ler o interior dos fenced blocks e os arquivos de `docs/*/scripts/**`, e a primeira varredura com o escopo novo acusou o que nenhum gate lia.
+
+### Fixed
+
+- **26 em dash em 9 scripts, que nenhum gate automático alcançava.** O `audit:prose` só lia `.md`, então `docs/*/scripts/**` nunca foi auditado. A varredura repo-wide achou 12 em `docs/java/` (`control-flow.java`, `variables.java`, `test/testing.junit.java`), 8 em `docs/nosql/` (`mongodb/03-update.js`, `mongodb/04-delete.js`, `redis/03-sets.js`) e **6 em `docs/csharp/` (`test/testing.mstest.cs`, `test/testing.nunit.cs`, `test/testing.xunit.cs`), que é regressão em linguagem já revisada no Ciclo B**. Quase todos moravam em banner de seção, separando título e subtítulo; viraram dois pontos ou vírgula. Os 58 scripts do repositório estão limpos.
+- **"Imutabilidade estrutural" no banner de `docs/java/scripts/variables.java`** virou "o valor não muda depois de atribuído", que é a tradução canônica do projeto: descrever o comportamento em vez de nomear o jargão.
+- **6 `<summary>` carregavam a glosa do termo dentro do título do exemplo**, o que é bug de formatação, e não de voz. O título de um exemplo é prosa curta, e a expansão de sigla pertence ao corpo. Um deles ainda arrastava um "2" solto no fim. Corrigidos em `docs/python/` ×2 (`conventions/advanced/testing.md`, `setup/project-foundation.md`), **`docs/vbnet/` ×3, também já revisada** (`conventions/advanced/dates.md`, `conventions/advanced/observability.md`, `setup/legacy-desktop.md`) e `docs/nosql/sgbd/redis.md`.
+- **2 caudas de contraste binário que moravam em `docs/javascript/conventions/functions.md` desde sempre**: "Quem chama a função diz o **quê**, não o **como**" e "O retorno dá nome ao resultado, não o calcula". São a origem das frases que o `README.md` do root repetia. Reescritas para enunciar direto o que acontece.
+
+### Changed
+
+- **6 headings de `docs/javascript/` ganharam id ASCII explícito**, porque o `README.md` do root os referenciava por slug gerado do texto, contra a diretriz de âncora do projeto: `#clean-entry-point` e `#low-visual-density` (`conventions/functions.md`), `#if-and-else` e `#nested-conditionals` (`conventions/control-flow.md`), `#meaningless-identifiers` (`conventions/naming.md`) e `#mixed-phases-aaa` (`conventions/advanced/testing.md`). Só prosa: nenhum fenced block de `docs/javascript/` foi tocado.
+
 ## [2.5.0] - 2026-07-12
 
 ### Changed

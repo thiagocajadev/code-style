@@ -1,6 +1,6 @@
-// MSTest — built-in do Visual Studio, sem dependência externa adicional
+// MSTest: built-in do Visual Studio, sem dependência externa adicional
 // Executar: dotnet test
-// Convenção: Assert.AreEqual(expected, actual) — expected primeiro
+// Convenção: Assert.AreEqual(expected, actual), com expected primeiro
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

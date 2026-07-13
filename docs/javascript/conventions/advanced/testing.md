@@ -44,6 +44,8 @@ import assert from "node:assert/strict";
 > primeiro. Em Jest e Vitest, a API fluente deixa a ordem explícita:
 > `expect(actual).toBe(expected)`.
 
+<a id="mixed-phases-aaa"></a>
+
 ## Fases misturadas: AAA
 
 Cada teste agrupa as três fases (contexto, execução e valor esperado) em um

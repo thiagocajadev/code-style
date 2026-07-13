@@ -31,7 +31,7 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
 
-    // ─── @Nested — agrupamento por contexto ──────────────────────────────────
+    // ─── @Nested: agrupamento por contexto ───────────────────────────────────
 
     @Nested
     class WhenOrderExists {
@@ -95,7 +95,7 @@ class OrderServiceTest {
     }
 }
 
-// ─── DiscountServiceTest — AAA e assert semântico ─────────────────────────────
+// ─── DiscountServiceTest: AAA e assert semântico ──────────────────────────────
 
 @ExtendWith(MockitoExtension.class)
 class DiscountServiceTest {

@@ -40,7 +40,7 @@ await client.connect();
 ```
 
 <details>
-<summary>❌ Ruim: sem tratamento de erro de conexão; **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) hardcoded</summary>
+<summary>❌ Ruim: o endereço fica escrito no código, e a falha de conexão não é tratada</summary>
 
 ```js
 const client = createClient({ url: 'redis://localhost:6379' });

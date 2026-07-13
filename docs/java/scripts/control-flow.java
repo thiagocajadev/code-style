@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-// Demonstra os princípios de control-flow.md — ordem simples → complexo:
+// Demonstra os princípios de control-flow.md, na ordem simples → complexo:
 // if/else → ternário → guard clauses → switch expression → pattern matching
 // → circuit break → for-each → while → do-while
 
@@ -52,7 +52,7 @@ public class ControlFlowExamples {
         return "F";
     }
 
-    // ─── Guard clauses — aninhamento em cascata ───────────────────────────────
+    // ─── Guard clauses: aninhamento em cascata ────────────────────────────────
 
     // ❌ Ruim: lógica enterrada em múltiplos níveis
     private Invoice processOrderBad(Order order) {
@@ -80,7 +80,7 @@ public class ControlFlowExamples {
         return invoice;
     }
 
-    // ─── Switch expression — lookup de valor ──────────────────────────────────
+    // ─── Switch expression: lookup de valor ───────────────────────────────────
 
     // ❌ Ruim: switch tradicional verboso com fall-through implícito
     private String getStatusLabelBad(OrderStatus status) {
@@ -98,7 +98,7 @@ public class ControlFlowExamples {
         return label;
     }
 
-    // ✅ Bom: switch expression — sem fall-through, sem break
+    // ✅ Bom: switch expression, sem fall-through e sem break
     private String getStatusLabel(OrderStatus status) {
         final var label = switch (status) {
             case PENDING -> "Pending review";
@@ -110,7 +110,7 @@ public class ControlFlowExamples {
         return label;
     }
 
-    // ─── Switch — despacho de ações ───────────────────────────────────────────
+    // ─── Switch: despacho de ações ────────────────────────────────────────────
 
     // ✅ Bom: switch com bloco para múltiplas ações por caso
     private void processPaymentEvent(PaymentEvent event) {
@@ -130,7 +130,7 @@ public class ControlFlowExamples {
         }
     }
 
-    // ─── Pattern matching — tipo e desestruturação ────────────────────────────
+    // ─── Pattern matching: tipo e desestruturação ─────────────────────────────
 
     // ❌ Ruim: instanceof + cast manual
     private String describePaymentBad(PaymentResult result) {

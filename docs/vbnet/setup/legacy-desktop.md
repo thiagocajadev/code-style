@@ -85,7 +85,7 @@ End Module
 O formulário que abre a própria `SqlConnection` mistura tela e banco no mesmo arquivo, e a conexão fica sem fechar assim que uma exceção interrompe o método antes do `Close()`. Um módulo por domínio resolve as duas coisas: cada função executa uma query e devolve o resultado, o `Using` garante o fechamento, e o formulário se ocupa de chamar e exibir.
 
 <details>
-<summary>❌ Ruim: acesso a dados misturado com lógica de **UI** (User Interface · Interface do Usuário) no Form</summary>
+<summary>❌ Ruim: o acesso ao banco mora dentro do Form, junto da lógica de tela</summary>
 
 ```vbnet
 Public Class ProductForm

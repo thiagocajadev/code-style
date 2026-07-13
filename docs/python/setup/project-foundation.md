@@ -83,7 +83,7 @@ mypy.ini
 </details>
 
 <details>
-<summary>✅ Bom: pyproject.toml como **SSOT** (Single Source of Truth · Fonte Única da Verdade)</summary>
+<summary>✅ Bom: o pyproject.toml concentra a configuração num arquivo só</summary>
 
 ```toml
 [project]

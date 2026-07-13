@@ -20,6 +20,8 @@ Programação de Aplicações), o contrato que outro código vai usar.
 | **boolean prefix** (prefixo booleano)            | `is`, `has`, `can`, `should`: torna o nome legível como pergunta (`isActive`, `hasPermission`)        |
 | **domain term** (termo de domínio)               | Palavra que pertence ao negócio (`invoice`, `subscriber`), não ao tipo técnico (`object`, `entity`)   |
 
+<a id="meaningless-identifiers"></a>
+
 ## Identificadores sem significado
 
 <details>

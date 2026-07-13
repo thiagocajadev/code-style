@@ -31,7 +31,7 @@ async function isFavoriteTeam(userId, teamId) {
   return isFavorite;
 }
 
-// ── interseção — times favoritos em comum ────────────────────────────────────
+// ── interseção: times favoritos em comum ─────────────────────────────────────
 
 async function findCommonFavorites(userId1, userId2) {
   const key1 = `user:favorites:${userId1}`;

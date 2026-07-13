@@ -1,6 +1,6 @@
-// NUnit — amplamente adotado em projetos enterprise e legados .NET
+// NUnit: amplamente adotado em projetos enterprise e legados .NET
 // Executar: dotnet test
-// Convenção: Assert.That(actual, Is.EqualTo(expected)) — actual primeiro
+// Convenção: Assert.That(actual, Is.EqualTo(expected)), com actual primeiro
 
 using NUnit.Framework;
 

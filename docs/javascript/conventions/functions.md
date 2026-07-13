@@ -354,9 +354,11 @@ async function findProductById(id) {
 
 </details>
 
+<a id="clean-entry-point"></a>
+
 ## Ponto de entrada limpo
 
-Quem chama a função diz o **quê**, não o **como**. Toda a montagem do contexto
+A chamada anuncia o que acontece, em uma linha. Toda a montagem do contexto
 acontece dentro da função.
 
 <details>
@@ -393,8 +395,8 @@ async function submitOrder(orderId) {
 
 ## Sem lógica no retorno
 
-O retorno dá nome ao resultado, não o calcula. A variável tem um nome expressivo,
-alinhado com o que a função promete entregar.
+O `return` devolve o valor que a linha anterior já calculou e nomeou. A variável
+carrega um nome expressivo, alinhado com o que a função promete entregar.
 
 A regra vale até para uma função auxiliar de duas linhas, por um motivo prático:
 a variável com nome te dá onde parar o depurador (o **breakpoint**, a pausa na
@@ -493,6 +495,8 @@ function buildShippingLabel(order) {
 ```
 
 </details>
+
+<a id="low-visual-density"></a>
 
 ## Baixa densidade visual
 
