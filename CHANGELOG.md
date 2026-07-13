@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.2] - 2026-07-13
+
+### Fixed
+
+- **Ajuste de voz no `README.md` do root e em `docs/shared/process/governance.md`**, o arquivo de governança que ele linka. Saíram as palavras difíceis e a dramatização: "abstrair a complexidade" virou "mostrar a complexidade em camadas", "carga cognitiva" virou "esforço de leitura", "repertório de normas" virou "conjunto de normas públicas", "não conformidade" virou "desvio" e "interoperabilidade" virou "troca de dados entre sistemas". Caíram as metáforas de preço ("barato de mudar", "a pergunta mais cara", o heading "O nome é a forma mais barata de governança"), os fechos de efeito ("o projeto passa a falar uma língua só", o "ficou fácil de entender" do final) e a cauda de contraste binário na linha do retorno explícito.
+- **A tabela do processo auditável ficou legível para quem não conhece os termos.** Cada etapa abre com o termo em inglês em negrito e a tradução entre parênteses (`**Spec**` (especificação), `**CI**` (Continuous Integration · Integração Contínua), `**Deploy**` (publicação)), e as colunas passaram a dizer o que a etapa entrega e o que dá para conferir depois. A tabela de checklists usa os mesmos seis nomes de etapa.
+- **`docs/shared/standards/ui-ux.md`**: "escala baseada em múltiplos de 4" virou "com os valores subindo a cada 4px".
+- **`docs/go/conventions/visual-density.md`**: a tabela de conceitos dizia "um grupo de 4+ atômicas", que virou "quando o grupo tem quatro ou mais declarações simples". A prosa de column alignment carregava um contraste binário antigo ("não é column alignment manual, é determinístico"), pego pelo `audit:prose` quando o arquivo entrou no escopo.
+
 ## [2.7.1] - 2026-07-13
 
 ### Fixed

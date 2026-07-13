@@ -40,14 +40,15 @@ exemplo): a regra escrita explica, e o código ao lado mostra.
 
 ## O que eu penso sobre código
 
-Penso como um **resolvedor de problemas**, e aplico as boas práticas na altura
-de um **staff engineer** (engenheiro sênior de alto nível). Na prática, isso
-quer dizer olhar o ciclo de vida inteiro do software: o código que entra hoje
-vai ser lido, alterado e operado por alguém durante anos.
+Penso como um **resolvedor de problemas**, e procuro aplicar as boas práticas
+como um sênior faria. Na prática, isso quer dizer olhar o ciclo de vida inteiro
+do software: o código que entra hoje vai ser lido, alterado e operado por alguém
+durante anos.
 
-O código serve ao time, e a governança acompanha o ciclo todo. Abstrair a
-complexidade faz com que todos entendam o que está acontecendo, do não técnico
-ao especialista, e é isso que abre espaço para ideia nova e melhoria.
+O código serve ao time, e a governança acompanha o ciclo todo. Mostrar a
+complexidade em camadas faz com que todo mundo entenda o que está acontecendo,
+do não técnico ao especialista. Quem entende o sistema consegue propor ideia
+nova e melhoria.
 
 Confira os detalhes em [Governança](docs/shared/process/governance.md).
 
@@ -66,13 +67,11 @@ um projeto).
 
 Todo princípio daqui pode ser aplicado em qualquer linguagem.
 
-Estão organizados como um checklist de revisão, do mais impactante ao mais
-granular:
+Estão organizados como um checklist de revisão, do mais amplo ao mais detalhado:
 
 - **Forma:** avalia a estrutura da função de fora para dentro
 - **Legibilidade:** analisa fluxo, espaçamento e nomes, linha a linha
-- **Controle de qualidade:** confere as garantias de robustez: estado, erros,
-  código assíncrono e testes
+- **Controle de qualidade:** confere estado, erros, código assíncrono e testes
 
 <details>
 <summary>Ver todos os princípios</summary>
@@ -84,10 +83,10 @@ granular:
 | Princípio                                                                                                  | Descrição                                                        |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
 | [Escrita em inglês](docs/javascript/conventions/naming.md#portuguese-names)                              | Código universal, com nomes curtos e sem ambiguidade             |
-| [Código narrativo](docs/javascript/conventions/functions.md#god-function)     | O próprio código conta a história, e dispensa o comentário       |
-| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#clean-entry-point)                  | A chamada de uma linha anuncia o que acontece, e o como fica abaixo |
-| [Estilo vertical](docs/javascript/conventions/functions.md#vertical-parameters)                    | Até 3 parâmetros na linha. A partir de 4, use um objeto          |
-| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function) | A chamada aparece antes dos detalhes que a cumprem               |
+| [Código narrativo](docs/javascript/conventions/functions.md#god-function)     | O código explica sozinho o que faz, e dispensa o comentário      |
+| [Ponto de entrada limpo](docs/javascript/conventions/functions.md#clean-entry-point)                  | A chamada de uma linha diz o que acontece, e os detalhes ficam abaixo |
+| [Estilo vertical](docs/javascript/conventions/functions.md#vertical-parameters)                    | Até 3 parâmetros na linha. Com 4 ou mais, use um objeto          |
+| [Orquestrador no topo](docs/javascript/conventions/functions.md#god-function) | A chamada aparece antes das funções que fazem o trabalho         |
 | [Detalhes abaixo](docs/javascript/conventions/functions.md#nested-helpers)                                  | As funções auxiliares ficam abaixo do orquestrador que as chama  |
 | [Sem lógica no retorno](docs/javascript/conventions/functions.md#no-logic-in-return)                    | O `return` nomeia o resultado que a linha anterior calculou      |
 
@@ -101,7 +100,7 @@ granular:
 | [Fluxo linear](docs/javascript/conventions/control-flow.md#nested-conditionals)            | O aninhamento em cascata dá lugar a um fluxo plano                   |
 | [Baixa densidade visual](docs/javascript/conventions/functions.md#low-visual-density)      | Linhas relacionadas ficam juntas, e uma linha em branco separa os grupos |
 | [Nomes expressivos](docs/javascript/conventions/naming.md#meaningless-identifiers)         | A variável e a função dizem o que são, e dispensam explicação        |
-| [Código como documentação](docs/javascript/conventions/naming.md#code-as-documentation) | O nome expressivo torna o comentário desnecessário, e o comentário envelhece sozinho |
+| [Código como documentação](docs/javascript/conventions/naming.md#code-as-documentation) | O nome expressivo dispensa o comentário, que fica desatualizado quando o código muda |
 | [Sem valores mágicos](docs/javascript/conventions/variables.md#magic-values)     | Constante nomeada no lugar do número e da string soltos               |
 
 <br>
@@ -116,7 +115,7 @@ granular:
 | [CQS](docs/javascript/conventions/variables.md#direct-object-mutation)                                                    | Comando e consulta em funções separadas, sem efeito colateral escondido |
 | [Dependências explícitas](docs/javascript/conventions/advanced/async.md#centralized-api-client)                             | A dependência entra por parâmetro, e o estado global fica de fora |
 | [Falhar rápido](docs/javascript/conventions/advanced/error-handling.md#multiple-return-types)                           | Valida na entrada, e interrompe o fluxo inválido ali mesmo   |
-| [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exception-as-control-flow)                   | A exceção sinaliza o inesperado, e não conduz o fluxo normal |
+| [Retorno explícito](docs/javascript/conventions/advanced/error-handling.md#exception-as-control-flow)                   | A exceção sinaliza o inesperado. O fluxo normal segue pelo retorno |
 | [Contratos consistentes](docs/javascript/conventions/advanced/error-handling.md#baseerror-centralized-abstraction)           | A resposta sai sempre no mesmo formato                       |
 | [Tratamento centralizado de erros](docs/javascript/conventions/advanced/error-handling.md#baseerror-centralized-abstraction) | Classes de erro tipadas, com o `try/catch` nos limites do sistema |
 | [Entrada e saída assíncronas](docs/javascript/conventions/advanced/async.md#nested-callbacks)                              | `async` e `await`, sem travar a execução                     |

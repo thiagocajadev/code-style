@@ -36,7 +36,7 @@ A regra é o agrupamento semântico: o que se relaciona fica perto, o que é dis
 
 Valores escolhidos caso a caso (`margin: 13px`, `padding: 7px`) se acumulam e produzem uma inconsistência difícil de localizar depois. Um sistema de espaçamento define uma escala de valores fixos que se repetem na interface toda.
 
-Escala típica, baseada em múltiplos de 4:
+Escala típica, com os valores subindo a cada 4px:
 
 | Token | Valor | Uso comum |
 |---|---|---|

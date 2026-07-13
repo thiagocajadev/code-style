@@ -13,7 +13,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 | **declaration + guard** (declaração e guarda) | Variável seguida do `if err != nil` que a valida; em Go o guarda é quase sempre um bloco `{ }`, fase com blank antes |
 | **multi-line block** (bloco multi-linha) | Struct literal, slice/map literal ou call com args quebrados em várias linhas; pede blank depois |
 | **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; fase distinta, blank antes |
-| **orphan line** (linha órfã) | Uma linha solta de um grupo de 4+ atômicas; quebrar em 2+2 evita |
+| **orphan line** (linha órfã) | Uma linha solta quando o grupo tem quatro ou mais declarações simples; quebrar em 2+2 evita |
 | **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:=` verticalmente; antipadrão, frágil a rename e gera diff ruidoso |
 
 ## A regra central
@@ -420,7 +420,7 @@ func createSession(user User) (string, error) {
 
 ## Sem column alignment
 
-Não alinhe verticalmente `:=` ou `=` com múltiplos espaços. Use sempre **um espaço único**. `gofmt` faz padding apenas dentro de struct literais e blocos `const`/`var`; não é column alignment manual, é determinístico.
+Não alinhe verticalmente `:=` ou `=` com vários espaços. Use sempre **um espaço único**. O `gofmt` preenche espaço apenas dentro de struct literais e blocos `const`/`var`, e faz isso sozinho, sempre do mesmo jeito.
 
 <details>
 <summary>❌ Ruim: espaços extras para alinhar `:=`</summary>
