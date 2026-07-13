@@ -1,26 +1,30 @@
-# Naming
+# Nomes em CSS
 
-Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** (User Interface · Interface do Usuário), não sua aparência. Uma classe `.button--danger` sobrevive a uma mudança de cor. `.red-button` não.
+O nome da **class** (classe) diz qual papel o elemento cumpre na interface. `.button--danger` continua correto no dia em que o botão de exclusão deixar de ser vermelho. `.red-button` obriga alguém a caçar todas as ocorrências no HTML e trocar a classe, ou a conviver com uma classe chamada `.red-button` num botão laranja.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **class** (classe) | Identificador reutilizável aplicado via `class="..."`; alvo do seletor `.nome` |
-| **kebab-case** (palavras separadas por hífen) | Convenção CSS: `product-card`, não `productCard` |
-| **BEM** (Block Element Modifier · Bloco-Elemento-Modificador) | `block__element--modifier`; vincula classe ao papel no componente |
-| **block** (bloco) | Componente raiz no BEM: `.card`, `.menu` |
-| **element** (elemento) | Parte do bloco no BEM: `.card__title`, `.menu__item` |
-| **modifier** (modificador) | Variante de estado/aparência: `.button--danger`, `.menu--open` |
-| **semantic class** (classe semântica) | Nome descreve o papel; sobrevive a mudanças de design |
-| **utility class** (classe utilitária) | Classe atômica focada em uma propriedade: `.text-center`, `.mt-2` |
+| **class** (classe) | Nome reutilizável posto no elemento por `class="..."`, e alvo do seletor `.nome` no CSS |
+| **kebab-case** (palavras separadas por hífen) | A forma dos nomes em CSS: `product-card` |
+| **BEM** (Block Element Modifier · Bloco-Elemento-Modificador) | Convenção `block__element--modifier`, que amarra a classe ao papel dela dentro do componente |
+| **block** (bloco) | A raiz do componente no BEM: `.card`, `.menu` |
+| **element** (elemento) | Uma parte que só existe dentro do bloco: `.card__title`, `.menu__item` |
+| **modifier** (modificador) | Uma variante de estado ou aparência do bloco: `.button--danger`, `.menu--open` |
+| **specificity** (especificidade) | O peso que o navegador dá a um seletor ao decidir qual regra vence |
+| **utility class** (classe utilitária) | Classe que faz uma coisa só: `.text-center`, `.mt-2` |
 
 <a id="semantic-vs-presentational"></a>
 
-## Semântico vs presentacional
+## O nome vem do papel do elemento, e não da aparência dele
+
+Um nome escolhido pela aparência descreve o CSS de hoje. `.blue-header`, `.big-text`, `.left-col` param de descrever o elemento no primeiro redesenho, e a partir daí quem lê o HTML recebe uma informação falsa sobre o que aquele bloco é.
+
+Um nome escolhido pelo papel atravessa o redesenho intacto. `.heading--primary` continua sendo o título principal com qualquer cor, e `.layout__sidebar` continua sendo a barra lateral mesmo se ela mudar de lado.
 
 <details>
-<summary>❌ Ruim: nome descreve aparência, quebra ao mudar o design</summary>
+<summary>❌ Ruim: os nomes descrevem cor, tamanho e posição, e travam o design</summary>
 
 ```css
 .blue-header {
@@ -42,7 +46,7 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 </details>
 
 <details>
-<summary>✅ Bom: nome descreve papel, sobrevive a mudanças de design</summary>
+<summary>✅ Bom: os nomes descrevem o papel, e o valor visual fica no token</summary>
 
 ```css
 .heading--primary {
@@ -62,13 +66,16 @@ Nomes de **class** (classe) descrevem o papel do elemento no domínio da **UI** 
 
 </details>
 
-## BEM
+<a id="bem"></a>
 
-BEM - Block\_\_Element--Modifier (Bloco\_\_Elemento--Modificador) torna explícita a hierarquia e o
-relacionamento entre partes da **UI** (User Interface · Interface do Usuário) sem depender de aninhamento no CSS.
+## BEM põe a hierarquia dentro do próprio nome da classe
+
+O padrão tem três peças. O bloco é o componente (`.card`). O elemento é uma parte que só existe dentro dele, escrito com dois sublinhados (`.card__title`). O modificador é uma variante, escrito com dois hifens (`.card--featured`).
+
+Com isso, a classe já conta onde ela mora. Quem lê `.card__title` no HTML sabe que aquele título pertence ao card, sem abrir o CSS. E o seletor no CSS fica com uma classe só, no lugar da corrente `.card .title`, que amarra o estilo à posição do elemento na marcação e quebra quando alguém move o título de lugar.
 
 <details>
-<summary>❌ Ruim: hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto)</summary>
+<summary>❌ Ruim: as classes genéricas só significam algo dentro da corrente de seletores</summary>
 
 ```html
 <div class="card featured">
@@ -93,7 +100,7 @@ relacionamento entre partes da **UI** (User Interface · Interface do Usuário) 
 </details>
 
 <details>
-<summary>✅ Bom: BEM: bloco__elemento--modificador</summary>
+<summary>✅ Bom: cada classe diz a que bloco pertence, e o seletor tem uma classe só</summary>
 
 ```html
 <div class="card card--featured">
@@ -117,13 +124,18 @@ relacionamento entre partes da **UI** (User Interface · Interface do Usuário) 
 
 </details>
 
-## Especificidade
+<a id="specificity"></a>
 
-Especificidade alta torna o CSS frágil. Qualquer override exige `!important` ou seletor ainda mais
-específico.
+## Mantenha a especificidade baixa
+
+Quando duas regras querem estilizar o mesmo elemento, o navegador escolhe a de maior especificidade, e o id pesa muito mais que a classe. Um seletor como `#app .container .card h2` vence quase tudo, e é aí que começa o problema.
+
+Para sobrescrever aquela regra em um único lugar, o próximo desenvolvedor precisa escrever um seletor ainda mais pesado, ou apelar para o `!important`. Alguém depois vai precisar sobrescrever o `!important`, e a partir daí cada estilo novo carrega o peso acumulado dos anteriores.
+
+Seletor de uma classe só mantém o peso baixo e previsível, e a regra seguinte vence pela ordem no arquivo, que é o comportamento fácil de raciocinar.
 
 <details>
-<summary>❌ Ruim: IDs e seletores encadeados inflam a especificidade</summary>
+<summary>❌ Ruim: id encadeado e !important, e a próxima regra precisará pesar mais que os dois</summary>
 
 ```css
 #app .container .card h2 {
@@ -137,7 +149,7 @@ específico.
 </details>
 
 <details>
-<summary>✅ Bom: classes simples, especificidade baixa e previsível</summary>
+<summary>✅ Bom: uma classe por seletor, e a ordem do arquivo decide quem vence</summary>
 
 ```css
 .card__title {

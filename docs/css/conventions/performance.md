@@ -1,27 +1,31 @@
-# Performance
+# Performance em CSS
 
-CSS controla como o browser renderiza a página. Seletores complexos, propriedades que disparam **reflow** (recálculo de layout) e animações na **main thread** (thread principal) degradam a experiência. Meça com DevTools antes de otimizar.
+Para desenhar a tela, o navegador passa por três etapas em sequência: calcula onde cada elemento fica e que tamanho tem (**layout**), preenche os pixels (**paint**) e junta as camadas prontas na placa gráfica (**composite**).
+
+A propriedade que você anima decide em qual dessas etapas o navegador entra a cada quadro. Animar `top` obriga ele a refazer as três, sessenta vezes por segundo. Animar `transform` entra direto na terceira, que roda na placa gráfica e custa quase nada. É essa diferença que separa a animação fluida da que engasga.
+
+Meça no DevTools antes de otimizar qualquer coisa.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **layout** (cálculo de layout) | Etapa em que o browser calcula geometria; disparada por `width`, `top`, `padding` |
-| **paint** (pintura) | Etapa em que o browser preenche pixels; disparada por `color`, `background` |
-| **composite** (composição) | Etapa em que camadas são unidas na GPU; barata, ideal pra animação |
-| **reflow** (recálculo de layout) | Recalcular o layout de um elemento e seus afetados; caro |
-| **GPU layer** (camada de GPU) | Camada renderizada pela placa gráfica; alvo de `transform` e `opacity` |
-| **will-change** (vai mudar) | Avisa o browser que a propriedade vai animar; criar camada antes do estresse |
-| **contain** (isolamento de layout) | `contain: layout/paint` impede que mudanças vazem pro resto da árvore |
-| **selector specificity** (especificidade do seletor) | Custo de match cresce com `>`, `~`, `:nth-*`; prefira classes diretas |
+| **layout** (cálculo de layout) | A etapa em que o navegador calcula a posição e o tamanho dos elementos. Propriedades como `width`, `top` e `padding` disparam ela |
+| **paint** (pintura) | A etapa em que o navegador preenche os pixels. Propriedades como `color` e `background` disparam ela |
+| **composite** (composição) | A etapa em que as camadas prontas são juntadas na placa gráfica. É a mais barata das três |
+| **reflow** (recálculo de layout) | Refazer o cálculo de layout de um elemento e de todos os que a mudança dele afeta |
+| **GPU layer** (camada de placa gráfica) | Uma camada desenhada pela placa gráfica, que `transform` e `opacity` movem sem tocar no layout |
+| **will-change** (vai mudar) | Avisa o navegador que a propriedade vai animar, para ele preparar a camada antes |
+| **contain** (isolamento) | `contain: layout` promete ao navegador que o que muda dentro do elemento não afeta nada fora dele |
 
-## Propriedades que não disparam reflow
+## Anime `transform` e `opacity`, e não a geometria
 
-Reflow recalcula a geometria de todos os elementos afetados, o que é caro. `transform` e `opacity`
-operam na GPU via compositor, sem reflow. Para animações, prefira essas duas propriedades.
+Animar `top` ou `width` faz o navegador recalcular a geometria da página a cada quadro, e não só a do elemento animado: tudo o que a posição dele empurra ou puxa entra na conta. Numa animação de 300ms, isso são dezoito recálculos completos.
+
+`transform` e `opacity` não mexem no layout. O elemento já tem a própria camada, e a placa gráfica a desloca ou a apaga sem que o navegador precise recalcular nada. O modal desce com `translateY` em vez de `top`, e a notificação entra com `translateX` em vez de crescer de `width: 0`.
 
 <details>
-<summary>❌ Ruim: anima propriedades de layout, dispara reflow por frame</summary>
+<summary>❌ Ruim: anima top e width, e o layout é recalculado a cada quadro</summary>
 
 ```css
 .modal {
@@ -47,7 +51,7 @@ operam na GPU via compositor, sem reflow. Para animações, prefira essas duas p
 </details>
 
 <details>
-<summary>✅ Bom: transform e opacity no compositor sem reflow</summary>
+<summary>✅ Bom: os dois animam por transform e opacity, sem tocar no layout</summary>
 
 ```css
 .modal {
@@ -75,14 +79,16 @@ operam na GPU via compositor, sem reflow. Para animações, prefira essas duas p
 
 </details>
 
-## will-change: uso restrito
+## `will-change` só no elemento que está prestes a animar
 
-`will-change` cria uma nova camada no compositor antecipadamente. Promove o elemento para GPU
-antes da animação começar, eliminando o jank do primeiro frame. Cada camada consome memória:
-aplique apenas em elementos que animam, e remova depois da animação se possível.
+Preparar a camada leva tempo, e por padrão o navegador só faz isso quando a animação começa. O resultado é um engasgo no primeiro quadro. O `will-change` avisa com antecedência, e a camada já está pronta quando a animação parte.
+
+O aviso tem preço: cada camada ocupa memória da placa gráfica. Declarar `will-change` em `.card` numa lista de cinquenta cards cria cinquenta camadas que ficam ali paradas, consumindo memória o tempo todo para uma animação que talvez nunca aconteça.
+
+O jeito certo é ligar o aviso pouco antes de animar e desligar quando a animação termina, o que o JavaScript faz com uma classe.
 
 <details>
-<summary>❌ Ruim: will-change em tudo, pressão de memória desnecessária</summary>
+<summary>❌ Ruim: cada card vira uma camada permanente, e o botão anuncia uma propriedade que não se beneficia</summary>
 
 ```css
 /* aplicado globalmente: cada card vira uma camada de GPU */
@@ -98,7 +104,7 @@ aplique apenas em elementos que animam, e remova depois da animação se possív
 </details>
 
 <details>
-<summary>✅ Bom: will-change aplicado via JS apenas durante a animação</summary>
+<summary>✅ Bom: o aviso é ligado antes de animar e desligado quando a animação acaba</summary>
 
 ```css
 .card {
@@ -119,14 +125,14 @@ card.addEventListener("transitionend", () => {
 
 </details>
 
-## Especificidade baixa
+## O seletor longo obriga a próxima regra a repetir a corrente inteira
 
-Seletores de alta especificidade (`#id`, `!important`, seletores aninhados profundos) criam
-dependências de ordem que precisam ser sobrescritas com especificidade ainda maior. A cascata
-vira um jogo de força bruta. Classes simples com BEM resolvem isso.
+Um seletor como `#main-content .product-list .product-card .product-card__title` tem peso alto na cascata. Para sobrescrever aquela regra em qualquer lugar, o próximo desenvolvedor precisa repetir a corrente inteira, e o `@media` do exemplo abaixo mostra isso: mudar só o tamanho da fonte no celular custou repetir quatro seletores.
+
+Com uma classe só, a regra do `@media` vence pela posição no arquivo, e a corrente desaparece.
 
 <details>
-<summary>❌ Ruim: especificidade alta força escalada de força bruta</summary>
+<summary>❌ Ruim: a corrente de quatro seletores precisa ser repetida para mudar uma propriedade</summary>
 
 ```css
 #main-content .product-list .product-card .product-card__title {
@@ -145,7 +151,7 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 </details>
 
 <details>
-<summary>✅ Bom: classe simples, sobrescrita trivial</summary>
+<summary>✅ Bom: uma classe, e a regra do @media vence pela posição no arquivo</summary>
 
 ```css
 .product-card__title {
@@ -162,14 +168,14 @@ vira um jogo de força bruta. Classes simples com BEM resolvem isso.
 
 </details>
 
-## contain: isolar reflow
+## `contain` limita o alcance de um recálculo
 
-`contain: layout` instrui o browser que o reflow interno ao elemento não afeta elementos
-externos. Útil em componentes que renderizam em lista: o reflow de um card não propaga
-para o resto da página.
+Por padrão, o navegador precisa assumir o pior: quando algo muda dentro de um card, ele não sabe se aquilo vai empurrar o card seguinte, então recalcula a lista inteira. Numa lista de cem itens, uma mudança em um deles custa cem.
+
+O `contain: layout` é uma promessa que você faz ao navegador: o que acontece dentro deste elemento fica dentro dele. Com essa garantia, o recálculo para nas bordas do card.
 
 <details>
-<summary>✅ Bom: contain isola o impacto de reflow por componente</summary>
+<summary>✅ Bom: o recálculo de um item para nas bordas dele, sem alcançar a lista</summary>
 
 ```css
 .product-card {
@@ -183,16 +189,17 @@ para o resto da página.
 
 </details>
 
-> `contain: strict` é o mais agressivo: `layout + style + paint + size`. Use quando o tamanho
-> do elemento é conhecido (altura fixa) e o conteúdo é completamente isolado.
+> O `contain: strict` promete tudo de uma vez: layout, estilo, pintura e tamanho. Ele exige que
+> o elemento tenha altura fixa, porque o navegador passa a reservar o espaço sem olhar o conteúdo.
 
-## Seletores universais e profundos
+## O seletor universal faz o navegador percorrer a árvore inteira
 
-`*`, `[attr]`, e seletores descendentes (`A B C`) forçam o browser a percorrer a árvore
-inteira a cada recálculo. Quanto mais específico o seletor, menos elementos são percorridos.
+Um seletor como `.form * input` pede ao navegador que confira todos os descendentes do formulário. O `[data-theme] *` é pior: ele alcança todos os elementos da página, e o navegador precisa avaliar cada um a cada recálculo.
+
+A classe direta no elemento resolve o mesmo problema com uma comparação só. E quando várias regras compartilham a transição, listar os seletores explicitamente mantém o alcance no que precisa dela.
 
 <details>
-<summary>❌ Ruim: seletor descendente profundo recalcula a árvore</summary>
+<summary>❌ Ruim: os dois seletores pedem uma varredura da árvore a cada recálculo</summary>
 
 ```css
 /* percorre todos os filhos de .form para encontrar input */
@@ -209,7 +216,7 @@ inteira a cada recálculo. Quanto mais específico o seletor, menos elementos s�
 </details>
 
 <details>
-<summary>✅ Bom: classe direta no elemento</summary>
+<summary>✅ Bom: a classe vai direto no elemento, e a transição alcança só quem precisa</summary>
 
 ```css
 .form__input {

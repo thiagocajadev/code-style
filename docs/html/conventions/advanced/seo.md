@@ -1,26 +1,34 @@
-# SEO
+# SEO em HTML
 
 > Escopo: HTML. Idiomas específicos deste ecossistema.
 
-**SEO** (Search Engine Optimization · Otimização para Mecanismos de Busca) técnico em **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) começa no `<head>`. Title, description e canonical são os três mais impactantes. **Open Graph** (protocolo de metadados sociais) controla a aparência em redes sociais. **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript)-LD comunica estrutura a crawlers.
+**SEO** (Search Engine Optimization · Otimização para Mecanismos de Busca) técnico começa dentro do `<head>`, e é onde a marcação fala com quem nunca vê a página renderizada: o robô do buscador e o servidor da rede social que monta a prévia de um link compartilhado.
+
+Três tags carregam quase todo o resultado: o `<title>`, a descrição e a `canonical`. As demais desta página resolvem casos específicos, como a prévia no WhatsApp ou a estrelinha de avaliação no resultado do Google.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **SEO** (Search Engine Optimization · Otimização para Mecanismos de Busca) | Conjunto de práticas para melhorar visibilidade em buscadores |
-| **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) | Marcação estrutural interpretada por crawlers e navegadores |
-| **Open Graph** (protocolo de metadados sociais) | Padrão do Facebook para controlar como a página aparece em redes sociais |
-| **JSON-LD** (JavaScript Object Notation for Linked Data · Notação de Objetos JavaScript para Dados Ligados) | Formato de dados estruturados embutido em `<script>` para crawlers |
-| **URL** (Uniform Resource Locator · Localizador Uniforme de Recurso) | Endereço canônico da página; `rel="canonical"` evita conteúdo duplicado |
+| **SEO** (Search Engine Optimization · Otimização para Mecanismos de Busca) | O conjunto de práticas que ajuda a página a ser encontrada no buscador |
+| **crawler** (robô de indexação) | Programa do buscador que percorre a página, lê a marcação e decide como listá-la |
+| **snippet** (trecho do resultado) | O bloco que o buscador mostra na lista de resultados: título, endereço e descrição |
+| **Open Graph** (protocolo de metadados sociais) | Padrão que define como a página aparece quando alguém compartilha o link numa rede social |
+| **JSON-LD** (JavaScript Object Notation for Linked Data · Notação de Objetos JavaScript para Dados Ligados) | Bloco de dados dentro de um `<script>`, que descreve o conteúdo em termos que o robô entende |
+| **canonical URL** (endereço canônico) | O endereço oficial de uma página, quando o mesmo conteúdo responde em vários endereços |
 
-## title e description
+<a id="title-and-description"></a>
 
-`<title>` único por página, entre 50–60 caracteres. `<meta name="description">` único, entre
-150–160 caracteres. Não melhora ranking, mas controla o snippet nos resultados.
+## Cada página tem o próprio `<title>` e a própria descrição
+
+O `<title>` é o que vira o link azul do resultado da busca, e a `<meta name="description">` é o texto cinza embaixo dele. Escreva os dois pensando em quem está lendo a lista de resultados e decidindo em qual clicar.
+
+O `<title>` cabe em 50 a 60 caracteres antes de o buscador cortar, e a descrição em 150 a 160. Vale escrever os dois específicos por página. Repetir "My Site" em todas desperdiça o espaço que decide o clique.
+
+A descrição não muda a posição da página no ranking. Ela decide se a pessoa clica no seu resultado ou no de baixo.
 
 <details>
-<summary>❌ Ruim: title genérico, description ausente ou duplicada</summary>
+<summary>❌ Ruim: um título genérico, e a mesma descrição em todas as páginas</summary>
 
 ```html
 <head>
@@ -31,7 +39,7 @@
 ```html
 <!-- mesma description em todas as páginas -->
 <head>
-  <title>Product — My Site</title>
+  <title>Product: My Site</title>
   <meta name="description" content="Welcome to My Site." />
 </head>
 ```
@@ -39,11 +47,11 @@
 </details>
 
 <details>
-<summary>✅ Bom: title e description únicos, concisos e descritivos</summary>
+<summary>✅ Bom: o título diz o que a página vende, e a descrição dá o motivo do clique</summary>
 
 ```html
 <head>
-  <title>Running Shoes for Men — Acme Store</title>
+  <title>Running Shoes for Men: Acme Store</title>
   <meta
     name="description"
     content="Shop lightweight running shoes for men. Free shipping on orders over $50."
@@ -53,28 +61,31 @@
 
 </details>
 
-## Open Graph
+## Open Graph decide a aparência do link compartilhado
 
-Tags **Open Graph** (protocolo de metadados sociais) controlam título, descrição e imagem ao compartilhar em redes sociais. Sem elas,
-a plataforma escolhe, geralmente mal.
+Quando alguém cola o link da sua página no WhatsApp, no Slack ou no LinkedIn, a plataforma busca a página e monta um cartão com título, descrição e imagem. As tags de **Open Graph** (protocolo de metadados sociais) são de onde ela tira esses três campos.
+
+Sem elas, a plataforma escolhe sozinha. Costuma pegar a primeira imagem que encontrar no arquivo, que muitas vezes é o logo ou um ícone de interface, e o cartão sai com a marca da empresa no lugar da foto do produto.
+
+A imagem de compartilhamento pede 1200 por 630 pixels. Fora dessa proporção, o corte acontece na plataforma, e ninguém controla onde.
 
 <details>
-<summary>❌ Ruim: sem **Open Graph** (protocolo de metadados sociais), aparência ao compartilhar indefinida</summary>
+<summary>❌ Ruim: nenhuma tag social, e a plataforma escolhe a imagem que quiser</summary>
 
 ```html
 <head>
-  <title>Running Shoes for Men — Acme Store</title>
+  <title>Running Shoes for Men: Acme Store</title>
 </head>
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom: **Open Graph** (protocolo de metadados sociais) completo com imagem 1200×630</summary>
+<summary>✅ Bom: título, descrição e imagem declarados para o cartão do link</summary>
 
 ```html
 <head>
-  <title>Running Shoes for Men — Acme Store</title>
+  <title>Running Shoes for Men: Acme Store</title>
 
   <!-- Open Graph: identidade -->
   <meta property="og:type" content="product" />
@@ -101,42 +112,44 @@ a plataforma escolhe, geralmente mal.
 
 </details>
 
-## Canonical URL
+## A `canonical` aponta qual endereço é o oficial
 
-`<link rel="canonical">` resolve conteúdo duplicado e indica a URL preferencial quando o mesmo
-conteúdo aparece em múltiplos endereços (com/sem `www`, com parâmetros de rastreamento, paginação).
+O mesmo conteúdo costuma responder em vários endereços: com e sem `www`, com os parâmetros de campanha que o time de marketing cola no link, na página 2 da paginação. Para o buscador, cada endereço desses é uma página diferente, e ele acaba dividindo a relevância entre elas, ou escolhendo por conta própria qual indexar.
+
+A `<link rel="canonical">` encerra a dúvida: ela declara qual é o endereço oficial, e o buscador concentra ali tudo o que as variações acumularam.
 
 <details>
-<summary>❌ Ruim: sem canonical em página com parâmetros UTM</summary>
+<summary>❌ Ruim: a página com parâmetros de campanha é indexada como se fosse outra</summary>
 
 ```html
 <!-- URL: /products?utm_source=email&utm_campaign=spring -->
 <head>
-  <title>Products — Acme Store</title>
+  <title>Products: Acme Store</title>
 </head>
 ```
 
 </details>
 
 <details>
-<summary>✅ Bom: canonical aponta para URL limpa</summary>
+<summary>✅ Bom: a canonical aponta para o endereço limpo</summary>
 
 ```html
 <head>
-  <title>Products — Acme Store</title>
+  <title>Products: Acme Store</title>
   <link rel="canonical" href="https://acme.com/products" />
 </head>
 ```
 
 </details>
 
-## JSON-LD
+## JSON-LD descreve o conteúdo em termos que o robô entende
 
-JSON-LD comunica dados estruturados a crawlers (Google, Bing) sem alterar o HTML visível. Produtos,
-artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
+Um humano olha `<p>$89.99</p>` e sabe que aquilo é o preço. O robô vê um parágrafo com um texto dentro. O bloco de **JSON-LD** (JavaScript Object Notation for Linked Data · Notação de Objetos JavaScript para Dados Ligados) traduz a página para o vocabulário do buscador: aqui está um produto, este é o preço, esta é a nota média, este é o número de avaliações.
+
+Com esses dados declarados, o resultado da busca deixa de ser só título e descrição, e passa a mostrar preço, disponibilidade e as estrelas de avaliação. O bloco entra num `<script>` e não muda nada do que aparece na tela.
 
 <details>
-<summary>❌ Ruim: dados estruturados ausentes, sem rich snippet</summary>
+<summary>❌ Ruim: o preço e a nota estão na tela, e o robô não sabe o que eles são</summary>
 
 ```html
 <body>
@@ -149,7 +162,7 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 </details>
 
 <details>
-<summary>✅ Bom: JSON-LD com schema Product, preço e avaliação</summary>
+<summary>✅ Bom: o bloco nomeia produto, preço, disponibilidade e avaliação</summary>
 
 ```html
 <body>
@@ -182,10 +195,11 @@ artigos, FAQs e breadcrumbs ganham rich snippets nos resultados.
 
 </details>
 
-## robots e indexação
+## `robots` diz o que fica fora do índice
 
-`<meta name="robots">` controla indexação e seguimento de links por página, útil para pages de
-admin, resultados de busca interna ou conteúdo duplicado temporário.
+A `<meta name="robots">` controla duas coisas em separado: se a página entra no índice do buscador, e se o robô segue os links que ela contém.
+
+Serve para a área administrativa, que não deveria aparecer em busca nenhuma, e para a página de resultado da busca interna, que gera endereços infinitos e não tem valor no índice, embora os links dela levem a produtos que valem a pena rastrear.
 
 ```html
 <!-- padrão: indexar e seguir links -->

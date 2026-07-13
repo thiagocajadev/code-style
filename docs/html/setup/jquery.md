@@ -1,19 +1,22 @@
 # jQuery
 
-> **Contexto de uso:** jQuery é uma ferramenta de **manutenção de legado**. Para código novo, prefira
-> JavaScript vanilla: os equivalentes nativos cobrem todos os casos de uso comuns sem dependência
-> adicional. Veja [JavaScript Vanilla](javascript-vanilla.md).
+> **Contexto de uso:** esta página serve à **manutenção de código legado**. Em código novo, use
+> JavaScript sem framework: as APIs nativas do navegador cobrem os casos comuns sem trazer uma
+> dependência junto. Veja [JavaScript sem framework](javascript-vanilla.md).
 
-jQuery simplifica manipulação de **DOM** (Document Object Model · Modelo de Objetos do Documento), eventos e requisições assíncronas. Seu valor hoje está em bases de código que já o adotam; para projetos novos, as APIs nativas do navegador cobrem o mesmo terreno sem dependência.
+jQuery resolveu, na época dele, um problema real: cada navegador implementava a manipulação de **DOM** (Document Object Model · Modelo de Objetos do Documento), os eventos e as requisições de um jeito, e o `$` escondia essa diferença atrás de uma API só. Os navegadores convergiram, e hoje o que resta é uma base grande de código escrito com ele.
+
+Esta página serve a quem mantém esse código: as convenções que evitam os erros mais comuns, e a tabela do fim, que traz o equivalente nativo de cada operação.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 |---|---|
-| **DOM** (Document Object Model · Modelo de Objetos do Documento) | Árvore de nós do navegador; jQuery abstrai seleção e manipulação |
-| **API** (Application Programming Interface · Interface de Programação de Aplicações) | Contrato público de uma biblioteca; jQuery tem a sua própria (`$`, `.on`, `.ajax`) |
-| **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) | Formato de resposta mais comum em chamadas assíncronas |
-| **callback** (função de retorno) | Função passada como argumento para executar quando a operação termina |
+| **DOM** (Document Object Model · Modelo de Objetos do Documento) | A árvore de nós que o navegador monta a partir do HTML. É o que o `$` seleciona e altera |
+| **API** (Application Programming Interface · Interface de Programação de Aplicações) | O conjunto de métodos que a biblioteca expõe. No jQuery são `$`, `.on` e `.ajax`, entre outros |
+| **JSON** (JavaScript Object Notation · Notação de Objetos JavaScript) | O formato em que a API responde na maioria das chamadas assíncronas |
+| **callback** (função de retorno) | Função passada como argumento, que roda quando a operação termina |
+| **chaining** (encadeamento) | Chamar um método atrás do outro na mesma linha, porque cada um devolve a própria seleção |
 
 ## Versões de referência
 
@@ -22,17 +25,16 @@ jQuery simplifica manipulação de **DOM** (Document Object Model · Modelo de O
 | 4.0.0   | Mais recente (2026) | Projetos novos que ainda exigem jQuery         |
 | 3.7.1   | LTS de fato         | Projetos legados: versão mais comum em produção |
 
-jQuery 4.x remove suporte a IE, adota ES Modules e tem footprint menor (~19.5KB gzip). Projetos
-legados em 3.x devem permanecer nela; migração para 4.x exige revisão das APIs removidas.
+A versão 4.x abandonou o suporte ao Internet Explorer, passou a usar ES Modules e encolheu para cerca de 19,5 KB comprimidos. Um projeto que já roda em 3.x fica onde está. A subida para a 4.x pede uma revisão das APIs removidas antes de valer a pena.
 
-## Document ready
+## O script precisa esperar a página existir
 
-`$(document).ready()` espera o DOM estar disponível. Na versão 3.x, a forma curta `$(fn)` é
-equivalente. Prefira `DOMContentLoaded` nativo em código novo; use jQuery ready apenas quando já
-está em contexto jQuery.
+Um `$('#submit-btn')` que roda dentro do `<head>` não encontra nada. O navegador ainda não leu o `<body>`, então o botão não existe na árvore, e a seleção volta vazia. A chamada não quebra nem avisa: ela registra o clique num conjunto de zero elementos, e o botão fica sem resposta.
+
+O `$(function () { ... })` adia o código até a página estar montada. Em código novo, o `type="module"` ou o `defer` no script já garantem isso, sem passar pelo jQuery.
 
 <details>
-<summary>❌ Ruim: inline no head, DOM ainda não existe</summary>
+<summary>❌ Ruim: o script roda no head, e o botão que ele procura ainda não existe</summary>
 
 ```html
 <head>
@@ -45,7 +47,7 @@ está em contexto jQuery.
 </details>
 
 <details>
-<summary>✅ Bom: aguarda DOM com $(fn) ou script defer</summary>
+<summary>✅ Bom: o código espera a página estar montada antes de procurar o botão</summary>
 
 ```js
 $(function () {
@@ -55,13 +57,14 @@ $(function () {
 
 </details>
 
-## Seleção eficiente
+## Guarde a seleção, e limite onde ela procura
 
-Seletores por ID são os mais rápidos (mapeiam para `getElementById`). Seletores por classe e
-atributo percorrem o DOM. Reduzir o escopo com contexto ou cache melhora performance.
+Cada `$('.card .title')` percorre a página inteira de novo. Três chamadas seguidas do mesmo seletor fazem três varreduras para achar os mesmos elementos.
+
+Guardar o resultado numa variável corta as repetições. Buscar a partir de um id, com `find`, corta o alcance: em vez de varrer o documento todo, o jQuery salta direto para o container e procura só ali dentro.
 
 <details>
-<summary>❌ Ruim: seletor global repetido, sem cache</summary>
+<summary>❌ Ruim: o mesmo seletor varre a página três vezes</summary>
 
 ```js
 $('.card .title').css('color', 'blue');
@@ -72,7 +75,7 @@ $('.card .title').addClass('active');
 </details>
 
 <details>
-<summary>✅ Bom: seleção cacheada, escopo limitado</summary>
+<summary>✅ Bom: uma busca guardada, e a procura limitada ao container</summary>
 
 ```js
 const $cards = $('#product-list');
@@ -85,14 +88,14 @@ $titles
 
 </details>
 
-## Event delegation
+## Escute o clique no container, e filtre pelo seletor do filho
 
-Adicionar handler em cada elemento filho é ineficiente para listas dinâmicas. Delegation registra
-um único handler no pai e usa `event.target` para filtrar. Funciona para elementos adicionados
-depois do bind.
+O `$('.product-card').on(...)` registra um handler em cada card que existe naquele instante. Os cards que a lista carregar depois, por filtro ou por scroll, chegam sem handler, e o clique neles não faz nada.
+
+Passar o seletor do filho como segundo argumento muda o registro de lugar: o handler fica no container, que nunca é recriado, e o jQuery confere se o clique veio de um `.product-card`. Cards que ainda nem existem já estão cobertos.
 
 <details>
-<summary>❌ Ruim: handler em cada item, não funciona com itens adicionados dinamicamente</summary>
+<summary>❌ Ruim: um handler por card, e os cards carregados depois ficam de fora</summary>
 
 ```js
 $('.product-card').on('click', function () {
@@ -103,7 +106,7 @@ $('.product-card').on('click', function () {
 </details>
 
 <details>
-<summary>✅ Bom: delegation no container estático, selector como filtro</summary>
+<summary>✅ Bom: o handler mora no container, e o seletor filtra a origem do clique</summary>
 
 ```js
 $('#product-list').on('click', '.product-card', function () {
@@ -113,13 +116,14 @@ $('#product-list').on('click', '.product-card', function () {
 
 </details>
 
-## Chaining
+## Encadeie as operações sobre a mesma seleção
 
-jQuery retorna `this` na maioria dos métodos. O encadeamento agrupa operações no mesmo elemento sem
-repetir a seleção. Cada nível de chain é uma operação, não uma nova query.
+Quase todo método do jQuery devolve a própria seleção, e é isso que permite chamar o próximo método logo em seguida. Escrever `$('#notification')` quatro vezes faz o jQuery buscar quatro vezes o mesmo elemento. Encadeado, ele busca uma vez e aplica as quatro operações sobre o que já tem em mãos.
+
+Quebre uma operação por linha. A leitura fica vertical, e o diff do Git aponta a linha que mudou.
 
 <details>
-<summary>❌ Ruim: seleção repetida para cada operação</summary>
+<summary>❌ Ruim: a mesma busca repetida a cada operação</summary>
 
 ```js
 $('#notification').removeClass('hidden');
@@ -131,7 +135,7 @@ $('#notification').fadeIn(300);
 </details>
 
 <details>
-<summary>✅ Bom: chain, uma seleção, múltiplas operações</summary>
+<summary>✅ Bom: uma busca, quatro operações encadeadas, uma por linha</summary>
 
 ```js
 $('#notification')
@@ -143,14 +147,16 @@ $('#notification')
 
 </details>
 
-## AJAX
+## Declare o formato na chamada, e trate o erro
 
-`$.ajax` é a API base; `$.get` e `$.post` são atalhos para casos comuns. Para JSON, defina
-`contentType` e `dataType` explicitamente. Em jQuery 3.x/4.x, os métodos retornam uma Promise
-compatível com `.then()` / `.catch()`.
+O `$.ajax` é a chamada completa, e `$.get` e `$.post` são atalhos dela. O atalho esconde duas decisões que costumam ser as erradas.
+
+A primeira é o formato. Sem `contentType`, o `$.post` envia os dados como formulário, e a API que espera JSON recusa. A segunda é o erro: passar um callback de sucesso e parar por aí deixa a falha sem tratamento nenhum, e o usuário fica olhando para uma tela que não responde.
+
+A partir da 3.x, a chamada devolve uma Promise, então `.then` e `.catch` cobrem os dois caminhos.
 
 <details>
-<summary>❌ Ruim: sem contentType, callback no sucesso, sem tratamento de erro</summary>
+<summary>❌ Ruim: envia como formulário, e a falha não tem para onde ir</summary>
 
 ```js
 $.post('/api/orders', orderData, function (createdOrder) {
@@ -161,7 +167,7 @@ $.post('/api/orders', orderData, function (createdOrder) {
 </details>
 
 <details>
-<summary>✅ Bom: JSON explícito, Promise com then/catch</summary>
+<summary>✅ Bom: JSON declarado nos dois sentidos, com sucesso e falha tratados</summary>
 
 ```js
 $.ajax({

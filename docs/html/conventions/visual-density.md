@@ -1,43 +1,47 @@
-# Visual density: HTML
+# Densidade visual em HTML
 
-Os mesmos princípios de [densidade visual](../../shared/standards/visual-density.md) aplicados a **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto): agrupar o que pertence junto via **indentation** (indentação) e separar o que é distinto via **blank line** (linha em branco). HTML é marcação, não fluxo de controle, então as regras de retorno explicativo e declaração + guarda não se aplicam. O foco aqui é agrupamento semântico de elementos, respiro após blocos multi-linha e ausência de alinhamento de coluna.
+Um arquivo de HTML cresce com facilidade, e a estrutura da página some no meio das tags. As regras de [densidade visual](../../shared/standards/visual-density.md) resolvem isso com dois recursos que o HTML já tem: a indentação mostra o que está dentro do quê, e a linha em branco separa uma parte da página da seguinte.
+
+HTML não tem retorno de função nem condicional, então as regras de densidade que tratam disso ficam de fora aqui. O que sobra é o que importa em marcação: agrupar os elementos que formam uma mesma parte da tela, dar respiro depois de uma tag que ocupou várias linhas e nunca alinhar atributos em coluna.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **blank line** (linha em branco) | Separador entre seções top-level; uma só, nunca duas seguidas |
-| **indentation** (indentação) | 2 espaços por nível; representa a hierarquia DOM no arquivo |
-| **sibling block** (bloco irmão) | Elementos no mesmo nível; uma linha em branco entre eles separa fases da página |
-| **landmark phase** (fase do landmark) | `<header>`, `<main>`, `<footer>` e seções top-level; cada fase ganha respiro |
-| **multi-line tag** (tag multi-linha) | Elemento com muitos atributos quebrado em várias linhas; pede blank depois |
-| **tight siblings** (irmãos colados) | `<li>` ou `<tr>` curtos consecutivos; podem ficar juntos sem respiro |
-| **orphan element** (elemento órfão) | Único elemento isolado entre blanks; resolve juntando aos vizinhos ou quebrando 4 em 2+2 |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar atributos verticalmente; antipadrão |
+| **visual density** (densidade visual) | Quanta informação cabe em um bloco. O alvo é pouca por bloco e muita por arquivo |
+| **blank line** (linha em branco) | Separa duas partes da página. Uma só entre grupos, nunca duas seguidas |
+| **indentation** (indentação) | Dois espaços por nível de profundidade, que desenham a hierarquia no arquivo |
+| **landmark** (região da página) | `<header>`, `<nav>`, `<main>`, `<aside>` e `<footer>`. Cada um é uma parte distinta e ganha respiro |
+| **multi-line tag** (tag de várias linhas) | Elemento com atributos demais para caber em uma linha. Pede uma linha em branco depois |
+| **column alignment** (alinhamento em colunas) | Espaços extras para deixar os atributos alinhados na vertical. Antipadrão |
 
 ## Referência rápida
 
 | Regra | Descrição |
 | --- | --- |
-| **Fases top-level separadas** | `<header>`, `<main>`, `<footer>` e seções irmãs ganham linha em branco entre si |
-| **Filhos relacionados ficam juntos** | Dentro de um bloco coeso (ex: um card), elementos filhos não levam blank |
-| **Multi-linha pede respiro depois** | Tag com muitos atributos seguida de outro elemento exige linha em branco depois |
-| **Listas curtas ficam tight** | `<li>` ou `<tr>` de uma linha podem ficar consecutivos sem respiro |
-| **Listas expandidas pedem respiro** | Quando um `<li>` ou `<tr>` quebra em várias linhas, blank entre cada item |
-| **Sem alinhamento de coluna** | Um único espaço entre atributos; nunca alinhar verticalmente |
-| **4+ elementos homogêneos quebram 2+2** | A partir de quatro irmãos repetitivos, divida em pares para evitar muralha |
-| **Nunca duplo respiro** | Exatamente uma linha em branco entre grupos; duas é ruído |
+| Regiões da página levam respiro | `<header>`, `<main>`, `<footer>` e seções irmãs ficam separados por uma linha em branco |
+| Filhos da mesma parte ficam juntos | Dentro de um bloco coeso, como um card, os filhos ficam colados |
+| Tag de várias linhas pede respiro depois | Se um elemento ocupou várias linhas, deixe uma linha em branco antes do próximo |
+| Item de uma linha fica colado no seguinte | Vários `<li>` ou `<tr>` curtos ficam consecutivos, sem respiro |
+| Item que cresce ganha respiro | Quando o `<li>` ou o `<tr>` quebra em várias linhas, deixe uma linha em branco entre eles |
+| Um espaço entre atributos | Nunca alinhe os atributos na vertical |
+| Quatro elementos iguais viram dois mais dois | A partir do quarto irmão repetido, divida em pares |
+| Uma linha em branco basta | Duas seguidas são ruído |
 
 ## A regra central
 
-**Agrupar por fase semântica, separar fases com uma linha em branco.** Filhos diretos de um bloco coeso (um card, um campo de formulário) ficam colados; irmãos que representam fases distintas da página (header, nav, main, footer) ganham respiro. Nunca duas linhas em branco seguidas.
+Agrupe os elementos que formam a mesma parte da tela e separe partes diferentes com uma linha em branco.
 
-## Fases top-level: respiro entre landmarks
+Os filhos diretos de um bloco coeso ficam colados: o `<label>` e o `<input>` de um campo, o título e o parágrafo de um card. Os irmãos que representam partes distintas da página ganham respiro entre si: o cabeçalho, o conteúdo principal, o rodapé. Uma linha em branco resolve a separação, e duas seguidas não acrescentam nada.
 
-`<header>`, `<main>`, `<footer>` e seções irmãs dentro de `<main>` são fases distintas da página. Uma linha em branco entre elas torna o arquivo escaneável e revela a estrutura sem precisar ler o conteúdo. Já filhos diretos de um mesmo bloco coeso (o link da marca dentro do header, o link de navegação dentro do nav) não levam blank: eles formam a fase.
+## Deixe uma linha em branco entre as regiões da página
+
+`<header>`, `<main>`, `<footer>` e as seções irmãs dentro de `<main>` são partes distintas. Com uma linha em branco entre elas, você abre o arquivo e enxerga a estrutura da página sem ler o conteúdo.
+
+Dentro de cada região, os filhos diretos ficam colados, porque eles formam a região. O link da marca e o `<nav>` estão os dois dentro do `<header>`, e é o cabeçalho inteiro que se separa do que vem depois.
 
 <details>
-<summary>❌ Ruim: landmarks colados, sem respiro entre fases</summary>
+<summary>❌ Ruim: as regiões da página coladas, sem nenhum respiro entre elas</summary>
 
 ```html
 <header>
@@ -62,7 +66,7 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 </details>
 
 <details>
-<summary>✅ Bom: uma linha em branco entre landmarks e seções irmãs</summary>
+<summary>✅ Bom: uma linha em branco entre as regiões e entre as seções irmãs</summary>
 
 ```html
 <header>
@@ -88,18 +92,18 @@ Os mesmos princípios de [densidade visual](../../shared/standards/visual-densit
 <footer>© 2026</footer>
 ```
 
-Dentro de cada landmark, os filhos diretos (`<h1>` + `<p>` da seção hero) ficam colados: fazem parte da mesma fase. Entre seções irmãs, blank.
+O `<h1>` e o `<p>` da primeira seção ficam colados, porque juntos eles são a seção. O respiro aparece entre uma seção e a outra.
 
 </details>
 
-## Multi-linha: respiro depois do bloco
+## Depois de uma tag de várias linhas, deixe um respiro
 
-Quando uma tag quebra em várias linhas por ter muitos atributos (`id`, `name`, `aria-*`, validação), o bloco já ocupa peso visual próprio. Cole uma linha em branco **depois** dele antes do próximo elemento separado. Sem respiro, o leitor não vê onde a tag termina e a próxima fase começa.
+Uma tag com muitos atributos ocupa cinco ou seis linhas e passa a pesar como um bloco. Sem uma linha em branco depois dela, o elemento seguinte parece continuação do mesmo campo, e o leitor precisa contar tags para achar onde um termina e o outro começa.
 
-A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<label>` + `<input>` multi-linha de um mesmo campo de formulário): o blank vai **depois do par**, não entre eles.
+Quando a tag de várias linhas faz parte de um par, como o `<label>` e o `<input>` de um mesmo campo, o respiro vai depois do par, e não entre os dois.
 
 <details>
-<summary>❌ Ruim: campos multi-linha colados, fases indistintas</summary>
+<summary>❌ Ruim: dois campos e um botão colados, sem separação visível</summary>
 
 ```html
 <form>
@@ -126,7 +130,7 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 </details>
 
 <details>
-<summary>✅ Bom: blank depois de cada par label+input multi-linha</summary>
+<summary>✅ Bom: uma linha em branco separa cada campo do próximo</summary>
 
 ```html
 <form>
@@ -152,16 +156,18 @@ A exceção é quando a tag multi-linha pertence a uma unidade coesa (ex: `<labe
 </form>
 ```
 
-Cada par label+input é uma unidade: sem blank entre eles. O respiro separa campos distintos e isola o botão final.
+Cada `<label>` fica colado no `<input>` que ele nomeia, porque os dois são um campo só. O respiro separa um campo do outro e isola o botão do fim.
 
 </details>
 
-## Listas e tabelas: tight quando curto, respiro quando expandido
+## Item de uma linha fica junto, item que cresce ganha respiro
 
-`<li>` ou `<tr>` de uma única linha são "irmãos colados": ficam consecutivos sem respiro, e o olho percorre a lista naturalmente. Quando um item quebra em múltiplas linhas (com atributos, filhos aninhados ou conteúdo complexo), o item ganha peso visual de bloco e pede blank entre cada um.
+Um `<li>` ou um `<tr>` que cabe em uma linha fica colado no seguinte, e o olho percorre a lista de cima a baixo sem interrupção. Separar itens curtos com linha em branco só estica a lista.
+
+Quando um item passa a ocupar várias linhas, com filhos aninhados e atributos, ele vira um bloco, e aí pede uma linha em branco entre um item e o próximo.
 
 <details>
-<summary>❌ Ruim: itens curtos com blanks inúteis</summary>
+<summary>❌ Ruim: três links curtos afastados por linhas em branco que não separam nada</summary>
 
 ```html
 <ul>
@@ -176,7 +182,7 @@ Cada par label+input é uma unidade: sem blank entre eles. O respiro separa camp
 </details>
 
 <details>
-<summary>✅ Bom: itens de uma linha ficam tight</summary>
+<summary>✅ Bom: os itens de uma linha ficam consecutivos</summary>
 
 ```html
 <ul>
@@ -189,7 +195,7 @@ Cada par label+input é uma unidade: sem blank entre eles. O respiro separa camp
 </details>
 
 <details>
-<summary>✅ Bom: itens expandidos pedem respiro entre eles</summary>
+<summary>✅ Bom: cada card ocupa várias linhas, então ganha respiro</summary>
 
 ```html
 <ul class="product-grid">
@@ -211,22 +217,24 @@ Cada par label+input é uma unidade: sem blank entre eles. O respiro separa camp
 </ul>
 ```
 
-Cada `<li>` virou bloco multi-linha: peso visual próprio. Blank entre eles separa as unidades.
+Cada `<li>` virou um bloco de cinco linhas. A linha em branco entre eles mostra onde um card acaba.
 
 </details>
 
-## Órfão de 1 linha: 4+ elementos quebram em 2+2
+## Quatro elementos iguais se dividem em dois mais dois
 
-Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar juntos. A partir de quatro, sempre quebrar em 2+2 para evitar muralha. Nunca isole um único elemento entre blanks: a linha solta parece um passo separado, mas é só mais um item.
+Três elementos parecidos, um embaixo do outro, ainda se leem como um grupo. A partir do quarto, o bloco vira um paredão de linhas quase idênticas, e o olho perde a conta. Divida em dois pares, e escolha a divisão pelo que cada par significa.
+
+Uma linha sozinha entre duas linhas em branco também atrapalha: ela parece uma etapa própria quando é só mais um item da lista.
 
 <details>
-<summary>❌ Ruim: quatro meta tags como muralha sem respiro</summary>
+<summary>❌ Ruim: quatro meta tags empilhadas, sem divisão nenhuma</summary>
 
 ```html
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Acme Store — running shoes and apparel." />
+  <meta name="description" content="Acme Store: running shoes and apparel." />
   <meta name="theme-color" content="#0f172a" />
 </head>
 ```
@@ -234,28 +242,28 @@ Três elementos homogêneos consecutivos formam um grupo coeso e podem ficar jun
 </details>
 
 <details>
-<summary>✅ Bom: quatro meta tags quebradas em 2+2</summary>
+<summary>✅ Bom: as quatro meta tags divididas em dois pares</summary>
 
 ```html
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta name="description" content="Acme Store — running shoes and apparel." />
+  <meta name="description" content="Acme Store: running shoes and apparel." />
   <meta name="theme-color" content="#0f172a" />
 </head>
 ```
 
-Primeiro par: encoding e viewport (configuração do documento). Segundo par: descrição e tema (apresentação). Fases visíveis.
+O primeiro par configura o documento: codificação e viewport. O segundo par cuida de como a página se apresenta: descrição e cor do tema.
 
 </details>
 
-## Sem alinhamento de coluna
+## Não alinhe o código em colunas
 
-Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço entre atributos, sempre. Alinhamento artificial quebra com qualquer renomeação, gera diff ruidoso e treina o olho a procurar colunas que somem na primeira refatoração.
+Use um espaço entre atributos. Alinhar os atributos na vertical com espaços extras parece organizado e sai caro: renomear um único atributo desalinha o bloco inteiro, o diff do Git marca todas as linhas como alteradas, e alguém precisa reindentar tudo de novo a cada mudança.
 
 <details>
-<summary>❌ Ruim: espaços extras para alinhar atributos verticalmente</summary>
+<summary>❌ Ruim: espaços extras alinham os atributos na vertical</summary>
 
 ```html
 <input id="first-name"  type="text"     name="first_name"  required />
@@ -266,7 +274,7 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 </details>
 
 <details>
-<summary>✅ Bom: um único espaço entre atributos</summary>
+<summary>✅ Bom: um espaço entre atributos</summary>
 
 ```html
 <input id="first-name" type="text" name="first_name" required />
@@ -276,12 +284,14 @@ Não alinhe verticalmente atributos com múltiplos espaços. Um único espaço e
 
 </details>
 
-## Comentários HTML
+## O comentário marca onde a seção começa e termina
 
-Comentários delimitam seções longas, úteis em templates com muitas partes. O comentário de fechamento identifica o bloco, não o elemento.
+Em template longo, o comentário serve para delimitar uma seção grande, e o comentário de fechamento repete o nome dela. Num arquivo de trezentas linhas, isso responde à pergunta que o leitor faz ao ver um `</div>` solto: qual bloco acabou de fechar?
+
+Escrever no comentário o que o elemento faz não ajuda ninguém: o `<nav>` já se apresenta como navegação.
 
 <details>
-<summary>❌ Ruim: comentário sobre o que o código faz, não onde termina</summary>
+<summary>❌ Ruim: o comentário repete o que a tag já diz</summary>
 
 ```html
 <!-- This is the navigation menu with links -->
@@ -292,7 +302,7 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 </details>
 
 <details>
-<summary>✅ Bom: comentário de fechamento identifica a seção</summary>
+<summary>✅ Bom: o comentário nomeia a seção e marca o fechamento dela</summary>
 
 ```html
 <!-- Navigation -->
@@ -304,6 +314,4 @@ Comentários delimitam seções longas, úteis em templates com muitas partes. O
 
 </details>
 
-Use comentários com parcimônia. HTML semântico com IDs descritivos já é autoexplicativo.
-</content>
-</invoke>
+Use comentário com parcimônia. Marcação semântica com id descritivo já se explica sozinha.

@@ -1,18 +1,20 @@
-# Project Foundation: HTML
+# Base de um projeto HTML
 
-Template base pra novos projetos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto). A ordem do `<head>` afeta performance: **charset** (codificação de caracteres) e **viewport** (área visível) primeiro, recursos críticos antes do CSS, scripts com **defer** (adiar execução).
+O template desta página é o ponto de partida de um projeto novo, e a ordem em que as tags do `<head>` aparecem faz parte dele.
+
+Essa ordem não é estética. O navegador lê o arquivo de cima para baixo e age conforme lê, então uma tag colocada tarde chega tarde. A codificação declarada depois do título faz o navegador reler o que já tinha lido. O `preconnect` colocado depois do CSS abre a conexão quando o pedido já saiu.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>` ativa o modo padrão do browser; sempre na primeira linha |
-| **lang attribute** (atributo de idioma) | `<html lang="pt-BR">`; informa o idioma a leitores de tela e tradutores |
-| **charset** (codificação de caracteres) | `<meta charset="UTF-8">`; declarada antes de qualquer texto pra evitar reparse |
-| **viewport** (área visível) | `<meta name="viewport">` controla escala e largura inicial em mobile |
-| **head order** (ordem do head) | Charset → viewport → SEO → preconnect → CSS → scripts; afeta performance |
-| **favicon** (ícone do site) | `<link rel="icon">`; identifica o site na aba e nos favoritos |
-| **canonical** (URL canônica) | `<link rel="canonical">`; sinaliza ao buscador a URL preferida |
+| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>`, na primeira linha. Faz o navegador interpretar a página pelo padrão atual |
+| **lang attribute** (atributo de idioma) | `<html lang="pt-BR">`, que dá o idioma ao leitor de tela e ao tradutor automático |
+| **charset** (codificação de caracteres) | `<meta charset="UTF-8">`, declarado antes de qualquer texto para o navegador não precisar reler o arquivo |
+| **viewport** (área visível) | `<meta name="viewport">`, que define a largura e a escala iniciais no celular |
+| **head order** (ordem do head) | Codificação → SEO → conexões externas → CSS → scripts. A ordem muda quando cada recurso começa a baixar |
+| **favicon** (ícone do site) | `<link rel="icon">`, o ícone que aparece na aba do navegador e nos favoritos |
+| **canonical** (endereço canônico) | `<link rel="canonical">`, que diz ao buscador qual endereço é o oficial da página |
 
 ## Template base
 
@@ -25,7 +27,7 @@ Template base pra novos projetos **HTML** (HyperText Markup Language · Linguage
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- 2. SEO -->
-    <title>Page Title — Site Name</title>
+    <title>Page Title: Site Name</title>
     <meta name="description" content="Page description, 150–160 characters." />
     <link rel="canonical" href="https://example.com/page" />
 
@@ -80,24 +82,25 @@ Template base pra novos projetos **HTML** (HyperText Markup Language · Linguage
 </html>
 ```
 
-## Ordem do `<head>`
+## Por que o `<head>` segue essa ordem
 
-| Posição | Elemento                           | Motivo                                         |
-| ------- | ---------------------------------- | ---------------------------------------------- |
-| 1       | `charset`, `viewport`              | Afetam parse e layout; obrigatoriamente primeiro  |
-| 2       | `title`, `description`, `canonical`| SEO: descobertos antes dos recursos             |
-| 3       | Open Graph                         | Compartilhamento social                         |
-| 4       | `preconnect`                       | Abre conexão TCP antes do CSS referenciar       |
-| 5       | `preload`                          | Antecipa recursos críticos (fontes, hero image) |
-| 6       | CSS                                | Render-blocking: antes do body                  |
-| 7       | Favicon, manifesto                 | Baixa prioridade, não bloqueia                  |
-| 8       | Scripts `async`                    | Independentes, não bloqueiam                    |
-| 9       | Scripts `defer`                    | `defer` garante execução pós-parse; ficam no `<head>`     |
+| Posição | Elemento                           | Motivo                                                              |
+| ------- | ---------------------------------- | ------------------------------------------------------------------- |
+| 1       | `charset`, `viewport`              | Decidem como o arquivo é decodificado e como a página mede a tela. Depois deles, tarde demais |
+| 2       | `title`, `description`, `canonical`| O robô do buscador encontra os três logo no começo do arquivo        |
+| 3       | Open Graph                         | Monta o cartão que aparece quando alguém compartilha o link          |
+| 4       | `preconnect`                       | Abre a conexão com o domínio externo antes de o CSS pedir a fonte    |
+| 5       | `preload`                          | Começa a baixar a fonte e a imagem do topo sem esperar a descoberta   |
+| 6       | CSS                                | O navegador segura a primeira pintura até o CSS chegar               |
+| 7       | Favicon e manifesto                | Baixam quando sobrar banda, e não seguram nada                       |
+| 8       | Scripts `async`                    | Rodam quando terminarem de baixar, em qualquer ordem                 |
+| 9       | Scripts `defer`                    | Esperam a leitura do documento e rodam na ordem em que aparecem      |
 
-## Skip link
+## O skip link deixa o teclado pular o menu
 
-Permite usuários de teclado pular direto para o conteúdo principal, obrigatório em qualquer site
-com navegação global.
+Quem navega por teclado começa pelo primeiro elemento do arquivo, que costuma ser o menu. Em um site com trinta links de navegação, chegar ao conteúdo custa trinta toques em `Tab`, e o custo se repete em cada página visitada.
+
+O skip link é um `<a>` que aponta para o `<main>` e fica escondido fora da tela até receber foco. No primeiro `Tab`, ele aparece, e o `Enter` leva direto ao conteúdo.
 
 ```html
 <body>

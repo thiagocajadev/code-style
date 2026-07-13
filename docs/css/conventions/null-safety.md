@@ -1,29 +1,31 @@
-# Null Safety
+# Valor ausente em CSS
 
-CSS não tem `null` como tipo, mas tem o equivalente: uma **custom property** (propriedade customizada) referenciada antes de ser definida produz um **invalid value** (valor inválido) que o browser descarta sem aviso. O mecanismo de defesa é o **fallback** (valor de reserva) em `var()` e o **@property** com **initial-value** (valor inicial).
+CSS não tem **null** (a marca de que um valor não existe), e mesmo assim o problema do valor ausente aparece aqui. Um `var(--color-primary)` que aponta para um **token** (valor do design guardado num nome) nunca declarado devolve um valor que o navegador não sabe interpretar, e ele descarta a declaração inteira. O botão fica sem cor de fundo, e nada aparece no console.
 
-> Conceito geral: [Null Safety](../../shared/standards/null-safety.md)
+Essa falha silenciosa é o assunto da página. As defesas são duas: o **fallback** (valor de reserva) dentro do `var()`, e o `@property`, que registra a variável com tipo e valor inicial.
+
+> Conceito geral: [Valor ausente](../../shared/standards/null-safety.md)
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **custom property** (propriedade customizada) | Variável CSS definida com `--nome: valor` e lida via `var(--nome)` |
-| **fallback** (valor de reserva) | Segundo argumento de `var(--nome, fallback)`; aplicado se a variável for inválida |
-| **invalid value** (valor inválido) | Valor que o browser não consegue interpretar; descarta a declaração inteira |
-| **initial value** (valor inicial) | Valor padrão da propriedade definido pela spec; restaurado por `initial` |
-| **@property** (propriedade tipada) | Registra tipo, herança e `initial-value` de uma custom property |
-| **unset** (limpa o valor) | Volta ao valor herdado se a propriedade herda; senão ao initial |
-| **revert** (reverte) | Volta ao valor da camada anterior (browser, autor, usuário) |
+| **custom property** (propriedade customizada) | A variável do CSS, declarada como `--nome: valor` e lida com `var(--nome)` |
+| **fallback** (valor de reserva) | O segundo argumento de `var(--nome, reserva)`, usado quando a variável não existe |
+| **invalid value** (valor inválido) | Um valor que o navegador não consegue interpretar. Ele descarta a declaração e segue em frente |
+| **initial value** (valor inicial) | O valor que a propriedade tem quando ninguém a define |
+| **@property** (registro da variável) | Declara o tipo da variável, se ela é herdada e qual o valor inicial dela |
+| **unset** (limpa o valor) | Volta ao valor herdado, se a propriedade herda. Se não herda, volta ao valor inicial |
+| **revert** (reverte) | Volta ao valor que o próprio navegador daria ao elemento |
 
-## var() com fallback: o operador ?? do CSS
+## O `var()` aceita um valor de reserva
 
-`var(--property, fallback)` funciona como `??` em JavaScript: usa o fallback se a propriedade
-não estiver definida. Sem fallback, uma propriedade indefinida resulta em valor inválido e o
-browser descarta a declaração sem aviso.
+O segundo argumento do `var()` entra quando a variável não existe: `var(--color-primary, #3b82f6)`. Funciona como o `??` do JavaScript.
+
+Sem ele, o componente fica à mercê de um token que talvez ninguém tenha declarado. E o modo como isso falha é o pior possível: a declaração é descartada em silêncio, o botão renderiza sem fundo, e o navegador não reclama de nada.
 
 <details>
-<summary>❌ Ruim: custom property sem fallback, componente quebra se o token não existir</summary>
+<summary>❌ Ruim: três tokens sem reserva, e o botão renderiza sem fundo, borda ou espaçamento</summary>
 
 ```css
 .button {
@@ -36,7 +38,7 @@ browser descarta a declaração sem aviso.
 </details>
 
 <details>
-<summary>✅ Bom: fallback garante que o componente sempre renderiza</summary>
+<summary>✅ Bom: cada token tem uma reserva, e o botão sempre renderiza</summary>
 
 ```css
 .button {
@@ -48,14 +50,14 @@ browser descarta a declaração sem aviso.
 
 </details>
 
-## @property: contrato com initial-value
+## O `@property` declara o tipo e o valor inicial da variável
 
-`@property` (CSS Houdini) registra uma custom property com tipo e valor inicial. É o equivalente
-ao `required + tipo não-nulo` das linguagens tipadas: o browser sabe o tipo esperado e qual valor
-usar quando a propriedade não foi atribuída.
+Sem registro, o navegador trata `--color-primary` como um texto qualquer. Ele não sabe que aquilo é uma cor, e é por isso que um `transition` sobre a variável não anima: para interpolar entre dois valores, o navegador precisa saber o que eles são. A cor troca de uma vez, sem transição nenhuma.
+
+O `@property` resolve os dois problemas com uma declaração. O `syntax` diz o tipo, e a transição passa a funcionar. O `initial-value` dá à variável um valor de partida, e com ele a variável nunca chega inválida a lugar nenhum, mesmo que ninguém a declare.
 
 <details>
-<summary>❌ Ruim: custom property sem registro, tipo desconhecido, animação não funciona</summary>
+<summary>❌ Ruim: a variável não tem tipo, e a transição de cor não acontece</summary>
 
 ```css
 /* sem @property: o browser trata --color-primary como string opaca */
@@ -74,7 +76,7 @@ usar quando a propriedade não foi atribuída.
 </details>
 
 <details>
-<summary>✅ Bom: @property define contrato e previne valor inválido</summary>
+<summary>✅ Bom: o tipo declarado libera a transição, e o valor inicial cobre a ausência</summary>
 
 ```css
 @property --color-primary {
@@ -104,16 +106,17 @@ usar quando a propriedade não foi atribuída.
 
 </details>
 
-> `@property` tem suporte em todos os browsers modernos (Chrome 85+, Firefox 128+, Safari 16.4+).
-> Para projetos que precisam de IE ou browsers antigos, use apenas `var()` com fallback.
+> O `@property` funciona nos navegadores atuais (Chrome 85+, Firefox 128+, Safari 16.4+). Onde
+> for preciso atender navegador antigo, o `var()` com valor de reserva cobre sozinho.
 
-## Fallback em cascata
+## Uma reserva pode apontar para outra
 
-Fallbacks podem referenciar outras custom properties. O browser resolve a cadeia e usa o
-primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
+O valor de reserva aceita outro `var()` dentro dele, e assim se monta uma cadeia. O navegador tenta o primeiro token; se ele não existir, tenta o segundo; e assim por diante, até o valor escrito à mão no fim da linha.
+
+Isso dá ao componente uma ordem de preferência. Ele usa o token próprio dele, se alguém tiver declarado um. Na falta, cai no token do tema. Na falta dos dois, cai na cor da marca. E o último valor da cadeia garante que sempre existe algo para pintar.
 
 <details>
-<summary>❌ Ruim: var() sem fallback em cadeia, falha silenciosa quando token não existe</summary>
+<summary>❌ Ruim: o tema declara a cor da marca, e o botão aponta para um token que nunca existiu</summary>
 
 ```css
 :root {
@@ -134,7 +137,7 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 </details>
 
 <details>
-<summary>✅ Bom: cadeia de fallback para tokens com herança de tema</summary>
+<summary>✅ Bom: a cadeia tenta o token do componente, o do tema, o da marca, e por fim o valor escrito</summary>
 
 ```css
 :root {
@@ -154,20 +157,23 @@ primeiro valor disponível, ou o valor final da cadeia se nenhum existir.
 
 </details>
 
-## unset, initial e revert: resetar para o estado correto
+## Para remover um estilo, diga isso, em vez de escrever um valor neutro
 
-Quando uma propriedade deve ser removida sem definir um valor concreto, esses keywords expressam
-a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
+Escrever `box-shadow: none` e `border-radius: 0` funciona, e não é o que você quis dizer. A intenção era remover o que a classe pai aplicou, e o que ficou escrito foi um valor específico, escolhido à mão para parecer com a ausência dele.
 
-| Keyword | Comportamento |
+Existem palavras para dizer "remova" com todas as letras, e cada uma remove até um ponto diferente:
+
+| Palavra | O que ela faz |
 | --- | --- |
-| `initial` | Valor padrão da especificação CSS (independente de herança) |
-| `unset` | `inherit` se a propriedade herda, `initial` se não herda |
-| `revert` | Valor do stylesheet do browser (UA stylesheet) |
-| `revert-layer` | Valor da cascade layer anterior |
+| `initial` | Volta ao valor que a especificação do CSS define, ignorando o que o elemento herdaria |
+| `unset` | Volta ao valor herdado, quando a propriedade herda. Quando não herda, volta ao inicial |
+| `revert` | Volta ao valor que o próprio navegador daria ao elemento, sem nenhum CSS seu |
+| `revert-layer` | Volta ao valor que a camada anterior da cascata tinha definido |
+
+O `all: unset` merece destaque: ele zera todas as propriedades de uma vez, o que resolve o reset de um `<button>` em uma linha, no lugar das cinco declarações que fazem isso à mão.
 
 <details>
-<summary>❌ Ruim: valores hardcoded como sentinela para "sem estilo"</summary>
+<summary>❌ Ruim: valores escolhidos à mão para imitar a ausência de estilo</summary>
 
 ```css
 /* valores mágicos para "remover" estilo, frágeis e sem intenção clara */
@@ -190,7 +196,7 @@ a intenção sem usar `0`, `none` ou strings vazias como sentinelas.
 </details>
 
 <details>
-<summary>✅ Bom: keywords semânticos no lugar de valores sentinela</summary>
+<summary>✅ Bom: as palavras dizem "remova", e o reset do botão cabe em uma linha</summary>
 
 ```css
 /* remover estilo aplicado por classe pai */

@@ -1,26 +1,29 @@
 # Bootstrap
 
-**Bootstrap** (framework de CSS baseado em componentes) fornece componentes prontos via classes. Sobrescrever com `!important` ou redefinir seletores internos cria CSS que briga com o framework e perde. **override** (sobrescrita) via **custom property** (propriedade customizada) é o caminho suportado desde o Bootstrap 5.
+O **Bootstrap** (framework de CSS com componentes prontos) entrega `.btn`, `.card` e `.modal` já estilizados, e a pergunta que surge no primeiro dia é como mudar o visual deles.
+
+A resposta que costuma aparecer, repetir o seletor do framework e carimbar `!important`, funciona no primeiro caso e cria uma dívida. Cada estilo novo do seu time precisa pesar mais que o do framework, e depois mais que o do seu próprio time. Desde a versão 5, existe caminho suportado: cada componente lê as variáveis `--bs-*`, e redefinir essas variáveis muda o visual sem entrar nessa disputa.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **Bootstrap** (framework de CSS baseado em componentes) | Biblioteca com `.btn`, `.card`, `.modal` prontos e grid de 12 colunas |
-| **utility class** (classe utilitária) | Classe atômica como `.mt-3`, `.text-center`; modifica uma propriedade |
-| **component class** (classe de componente) | Classe de papel como `.btn`, `.alert`; aplica o conjunto de estilos |
-| **modifier** (modificador) | Variante de componente: `.btn-primary`, `.alert-danger` |
-| **breakpoint** (ponto de quebra) | Sufixos `-sm`, `-md`, `-lg`, `-xl`, `-xxl` ativam regra a partir do tamanho |
-| **grid** (sistema de grade) | `.container`/`.row`/`.col-*`; layout de 12 colunas responsivo |
-| **custom property override** (sobrescrita por propriedade customizada) | Redefinir `--bs-*` no escopo do componente; não altera especificidade |
+| **Bootstrap** (framework de CSS com componentes prontos) | Biblioteca com `.btn`, `.card` e `.modal` já estilizados, mais uma grade de 12 colunas |
+| **utility class** (classe utilitária) | Classe que muda uma propriedade só, como `.mt-3` ou `.text-center` |
+| **component class** (classe de componente) | Classe que aplica o conjunto de estilos de um componente inteiro, como `.btn` ou `.alert` |
+| **modifier** (modificador) | Variante do componente: `.btn-primary`, `.alert-danger` |
+| **breakpoint** (largura de corte) | Os sufixos `-sm`, `-md`, `-lg`, `-xl` e `-xxl`, que ligam a regra a partir daquela largura |
+| **grid** (grade) | O trio `.container`, `.row` e `.col-*`, que monta o layout de 12 colunas |
+| **custom property override** (troca pela variável) | Redefinir uma variável `--bs-*` no escopo do componente, sem mexer no peso do seletor |
 
-## Override via custom properties
+## Troque a variável, e não o seletor
 
-Bootstrap 5 expõe custom properties em todos os componentes. Sobrescrever a variável muda o
-visual sem alterar a especificidade do framework.
+Sobrescrever `.btn-primary` com `!important` resolve o botão de hoje. O problema chega quando alguém precisa de um botão primário diferente numa tela específica: como o `!important` já venceu tudo, a única saída é outro `!important` com seletor mais pesado.
+
+Redefinir `--bs-btn-bg` faz o mesmo trabalho por dentro. O seletor do Bootstrap continua o mesmo, o peso na cascata não muda, e a próxima pessoa que precisar de uma variação ainda tem para onde ir.
 
 <details>
-<summary>❌ Ruim: sobrescrita por seletor ou !important</summary>
+<summary>❌ Ruim: !important em cada declaração, e a próxima variação precisará pesar mais</summary>
 
 ```css
 .btn-primary {
@@ -36,7 +39,7 @@ visual sem alterar a especificidade do framework.
 </details>
 
 <details>
-<summary>✅ Bom: override via custom properties do Bootstrap</summary>
+<summary>✅ Bom: as variáveis do próprio Bootstrap carregam a cor da marca</summary>
 
 ```css
 :root {
@@ -50,13 +53,14 @@ visual sem alterar a especificidade do framework.
 
 </details>
 
-## Extensão de componente
+## Componha sobre a classe do framework, e escreva só a diferença
 
-Use as classes base do framework e adicione apenas o delta como modificador. Criar uma nova classe
-que duplica o componente Bootstrap desacopla do framework.
+Criar uma `.my-card` do zero significa reescrever à mão o fundo, a borda, o raio e o espaçamento que a `.card` já entrega. A partir daí, o componente deixa de acompanhar o framework: uma atualização que ajusta a sombra dos cards passa ao largo da sua classe, e o visual sai do lugar.
+
+Mantenha a `.card` no elemento e acrescente uma classe só com a diferença. O componente continua recebendo o que vier do framework, e o seu CSS guarda apenas o que é seu.
 
 <details>
-<summary>❌ Ruim: duplica o componente base, desacopla do framework</summary>
+<summary>❌ Ruim: a classe própria recria o que a .card já fazia, e para de acompanhar o framework</summary>
 
 ```html
 <div class="my-card">...</div>
@@ -75,7 +79,7 @@ que duplica o componente Bootstrap desacopla do framework.
 </details>
 
 <details>
-<summary>✅ Bom: compõe sobre a classe base, adiciona apenas o delta</summary>
+<summary>✅ Bom: a .card continua no elemento, e a classe nova traz só a diferença</summary>
 
 ```html
 <div class="card card--product">...</div>

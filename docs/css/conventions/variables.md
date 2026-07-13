@@ -1,25 +1,33 @@
-# Variables
+# Variáveis em CSS
 
-**custom property** (propriedade customizada) é o mecanismo nativo do CSS pra **design token** (token de design). Nomes semânticos que descrevem o papel do valor, não a aparência, permitem mudar o design sem caçar ocorrências espalhadas pelo código.
+A **custom property** (propriedade customizada) é a variável nativa do CSS, e é com ela que se monta um **design token** (token de design): o valor do design guardado num nome, declarado uma vez e referenciado em todo lugar.
+
+O ganho aparece na hora de mudar. Com o `#3b82f6` copiado em quarenta seletores, trocar a cor da marca exige achar as quarenta ocorrências, e basta esquecer uma para a interface ficar com duas cores de marca. Com o valor num token, a troca acontece na declaração, e as quarenta regras acompanham.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **custom property** (propriedade customizada) | Variável CSS declarada com `--nome: valor`; lida via `var(--nome)` |
-| **design token** (token de design) | Valor nomeado por papel (`--color-primary`); fonte única da verdade do design |
-| **cascade** (cascata) | Ordem de aplicação por origem, especificidade e ordem do código |
-| **scope** (escopo) | Custom property vale pro elemento e descendentes; `:root` cobre o documento |
-| **fallback** (valor de reserva) | Segundo argumento de `var(--nome, fallback)`; cobre ausência da variável |
-| **theme switch** (troca de tema) | Redefinir tokens em `[data-theme="dark"]` ou `:root.dark` |
-| **semantic token** (token semântico) | Nome descreve o papel (`--surface-card`), não a aparência (`--white`) |
+| **custom property** (propriedade customizada) | A variável do CSS, declarada como `--nome: valor` e lida com `var(--nome)` |
+| **design token** (token de design) | O valor do design guardado num nome que descreve o papel dele, como `--color-primary` |
+| **cascade** (cascata) | A ordem em que o navegador aplica as regras, decidida pela origem, pela especificidade e pela posição no arquivo |
+| **scope** (escopo) | Onde a variável vale. Declarada num elemento, ela alcança ele e os descendentes. Declarada em `:root`, alcança o documento inteiro |
+| **fallback** (valor de reserva) | O segundo argumento de `var(--nome, reserva)`, usado quando a variável não existe |
+| **theme switch** (troca de tema) | Redeclarar os tokens dentro de `[data-theme="dark"]`, o que troca o tema sem tocar em nenhuma regra de componente |
+| **semantic token** (token semântico) | O token nomeado pelo papel (`--surface-card`), e não pela cor que ele guarda hoje (`--white`) |
 
 <a id="semantic-tokens"></a>
 
-## Tokens semânticos
+## O nome do token diz para que ele serve
+
+`--blue-500` guarda uma cor e nomeia essa cor. No dia em que a marca virar roxa, você fica com duas opções ruins: renomear o token em todos os arquivos, ou deixar um token chamado `--blue-500` devolvendo roxo.
+
+`--color-primary` guarda a mesma cor e nomeia o papel dela. A troca acontece só no valor.
+
+O par `--color-primary` e `--color-on-primary` merece atenção: o segundo é a cor do texto que fica por cima do primeiro. Guardar os dois juntos mantém o contraste correto quando a cor de fundo mudar.
 
 <details>
-<summary>❌ Ruim: valores mágicos espalhados e nomes não-semânticos</summary>
+<summary>❌ Ruim: a mesma cor copiada em três regras, e o token nomeado pela cor</summary>
 
 ```css
 .button { background: #3b82f6; }
@@ -35,7 +43,7 @@
 </details>
 
 <details>
-<summary>✅ Bom: token semântico definido uma vez, referenciado em todo lugar</summary>
+<summary>✅ Bom: o token declarado uma vez pelo papel, e referenciado em todo lugar</summary>
 
 ```css
 :root {
@@ -61,13 +69,16 @@
 
 </details>
 
-## Escopo
+## O token do componente fica dentro do componente
 
-Custom properties se propagam em cascata. Quando um valor faz sentido apenas dentro de um
-componente, defini-lo no `:root` polui o namespace global.
+O `:root` é o lugar do que atravessa a interface inteira: as cores da marca, a escala de espaçamento, os tamanhos de fonte. O que só o card usa não precisa estar lá.
+
+Declarar `--card-padding` no `:root` deixa ele visível para todo o CSS, e agora qualquer regra pode consumir esse valor. Meses depois, mexer no espaçamento do card significa procurar quem mais passou a depender dele.
+
+Declarar dentro de `.card` resolve o alcance: o valor vale ali e nos descendentes, e ninguém de fora enxerga. O prefixo `--_` marca a variável como interna ao bloco, o que avisa a quem lê que aquele nome não faz parte da API do design system.
 
 <details>
-<summary>❌ Ruim: variáveis de componente expostas globalmente</summary>
+<summary>❌ Ruim: três valores só do card declarados no escopo global</summary>
 
 ```css
 :root {
@@ -86,7 +97,7 @@ componente, defini-lo no `:root` polui o namespace global.
 </details>
 
 <details>
-<summary>✅ Bom: variáveis de componente escopadas ao bloco</summary>
+<summary>✅ Bom: os valores ficam dentro do bloco, marcados como internos</summary>
 
 ```css
 .card {

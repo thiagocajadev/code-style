@@ -1,29 +1,39 @@
-# Performance
+# Performance em HTML
 
 > Escopo: HTML. Visão transversal: [shared/platform/performance.md](../../../shared/platform/performance.md).
 
-**HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) controla como o browser carrega e prioriza recursos. Scripts bloqueiam o parse por padrão; imagens fora da **viewport** (área visível) consomem banda desnecessária; recursos críticos chegam tarde sem **preload** (pré-carregamento) explícito.
+É a marcação que decide o que o navegador baixa primeiro e o que ele deixa para depois. Antes de otimizar qualquer coisa em JavaScript, vale acertar quatro atributos no `<head>` e nas imagens.
+
+Sem eles, três coisas acontecem por padrão, e todas atrasam a primeira tela. O script para a leitura do documento enquanto baixa. As imagens do rodapé baixam junto com as do topo, disputando a mesma banda. E a fonte que o CSS pede só começa a ser buscada depois que o CSS inteiro chegou.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **critical render path** (caminho crítico de renderização) | Sequência mínima que o browser executa pra pintar a primeira tela |
-| **defer** (adiar execução) | Atributo que baixa o script em paralelo e executa após o parse, na ordem do documento |
-| **async** (assíncrono) | Atributo que baixa em paralelo e executa imediatamente, sem garantia de ordem |
-| **lazy loading** (carregamento preguiçoso) | `loading="lazy"` em `<img>`/`<iframe>`: só baixa quando próximo da viewport |
-| **preload** (pré-carregamento) | `<link rel="preload">` antecipa um recurso crítico identificado tarde no parse |
-| **preconnect** (pré-conexão) | `<link rel="preconnect">` abre conexão TCP/TLS com origem externa antes do uso |
-| **picture** (imagem responsiva) | `<picture>` com `<source>` serve a imagem certa por viewport ou formato |
+| **critical render path** (caminho crítico de renderização) | O mínimo que o navegador precisa baixar e processar para desenhar a primeira tela |
+| **viewport** (área visível) | O pedaço da página que cabe na tela sem rolagem |
+| **defer** (adiar execução) | Atributo que baixa o script em paralelo e o executa depois da leitura do documento, na ordem em que os scripts aparecem |
+| **async** (assíncrono) | Atributo que baixa em paralelo e executa assim que o download termina, em ordem imprevisível |
+| **lazy loading** (carregamento tardio) | `loading="lazy"` em `<img>` e `<iframe>`. O download só começa quando o usuário chega perto do elemento |
+| **preload** (pré-carregamento) | `<link rel="preload">`, que antecipa um recurso que o navegador só descobriria mais tarde |
+| **preconnect** (pré-conexão) | `<link rel="preconnect">`, que abre a conexão com um domínio externo antes do primeiro pedido |
+| **layout shift** (deslocamento de layout) | O conteúdo pula na tela quando uma imagem termina de carregar e empurra o que estava embaixo |
 
-## defer e async
+<a id="defer-and-async"></a>
 
-Scripts sem atributo bloqueiam o parse HTML enquanto baixam e executam. `defer` baixa em paralelo e
-executa após o parse, na ordem do documento: ficam no `<head>`, sem necessidade de mover para o
-fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia de ordem.
+## `defer` no script que precisa da página, `async` no que não precisa
+
+Um `<script>` sem atributo nenhum para tudo. O navegador estava lendo o documento, encontra a tag, e fica parado até baixar e executar o arquivo inteiro. Enquanto isso, nada do que vem abaixo aparece na tela.
+
+Os dois atributos resolvem isso de formas diferentes:
+
+- `defer` baixa o script em paralelo e o executa só depois que o documento inteiro foi lido, respeitando a ordem em que os scripts aparecem. É o que você quer no script que manipula a página e no que depende de outro ter rodado antes.
+- `async` baixa em paralelo e executa assim que o download termina, sem esperar nada. Quem chega primeiro roda primeiro, e a ordem muda a cada carregamento. Serve para o script que não mexe na página nem depende de ninguém, como o de analytics.
+
+Com `defer`, o script pode ficar no `<head>`, e não há mais motivo para empurrar a tag para o fim do `<body>`.
 
 <details>
-<summary>❌ Ruim: script no head sem defer, bloqueia o parse</summary>
+<summary>❌ Ruim: dois scripts no head sem atributo, e a página para de carregar em cada um</summary>
 
 ```html
 <head>
@@ -35,7 +45,7 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 </details>
 
 <details>
-<summary>✅ Bom: defer para scripts dependentes de DOM; async para scripts independentes</summary>
+<summary>✅ Bom: defer nos scripts que mexem na página, async no analytics</summary>
 
 ```html
 <head>
@@ -50,19 +60,22 @@ fim do `<body>`. `async` baixa em paralelo e executa imediatamente, sem garantia
 
 </details>
 
-| Atributo | Baixa em paralelo | Executa após parse | Ordem garantida |
+| Atributo | Baixa em paralelo | Espera a leitura do documento | Mantém a ordem |
 | -------- | :---------------: | :----------------: | :-------------: |
 | nenhum   | ❌                | ❌                | ✅              |
 | `async`  | ✅                | ❌                | ❌              |
 | `defer`  | ✅                | ✅                | ✅              |
 
-## Lazy loading
+<a id="lazy-loading"></a>
 
-Imagens e iframes abaixo da dobra (`loading="lazy"`) só são carregados quando o usuário se
-aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
+## A imagem abaixo da dobra espera o usuário chegar perto
+
+Um `loading="lazy"` na imagem faz o navegador adiar o download dela até o usuário rolar a página até perto dali. Numa vitrine com trinta produtos, isso corta quase toda a banda do primeiro carregamento, e não custa uma linha de JavaScript.
+
+A imagem do topo fica de fora dessa regra. Ela precisa aparecer o quanto antes, então continua sem `lazy` e ainda ganha `fetchpriority="high"`, que pede ao navegador para buscá-la na frente das outras.
 
 <details>
-<summary>❌ Ruim: todas as imagens carregam imediatamente</summary>
+<summary>❌ Ruim: as quatro imagens disputam banda no primeiro carregamento</summary>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" />
@@ -74,7 +87,7 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 </details>
 
 <details>
-<summary>✅ Bom: hero sem lazy (above the fold), demais com lazy</summary>
+<summary>✅ Bom: a imagem do topo vem com prioridade, e as de baixo esperam a rolagem</summary>
 
 ```html
 <img src="/img/hero.jpg" alt="Hero banner" fetchpriority="high" />
@@ -84,17 +97,18 @@ aproxima da área visível, reduzindo o carregamento inicial sem JavaScript.
 <img src="/img/product-3.jpg" alt="Product 3" loading="lazy" />
 ```
 
-O hero tem papel distinto (above the fold, prioridade alta): fase isolada. Os três produtos com `loading="lazy"` formam trio homogêneo e ficam tight.
+A imagem do topo cumpre um papel próprio e fica sozinha no primeiro grupo. As três de produto se repetem e ficam juntas.
 
 </details>
 
-## preload e preconnect
+## `preconnect` abre a conexão, `preload` antecipa o download
 
-`<link rel="preload">` instrui o browser a baixar um recurso crítico antes de descobri-lo no CSS
-ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas antecipadamente.
+O navegador só descobre a fonte quando termina de processar o CSS, porque é lá dentro que o `@font-face` está escrito. Até esse momento, ele nem sabe que o arquivo existe, e a fonte chega tarde: o texto aparece com a fonte de sistema e depois troca na cara do usuário.
+
+Os dois atributos atacam esse atraso em pontos diferentes. O `preload` diz ao navegador para começar o download agora, sem esperar a descoberta. O `preconnect` cuida do custo de falar com um domínio novo (a resolução do DNS, o aperto de mão do TLS), que pode passar de cem milissegundos, e faz isso antes do primeiro pedido chegar.
 
 <details>
-<summary>❌ Ruim: fonte crítica descoberta tarde, origem externa sem preconnect</summary>
+<summary>❌ Ruim: a fonte só aparece quando o CSS termina de ser processado</summary>
 
 ```html
 <head>
@@ -106,7 +120,7 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 </details>
 
 <details>
-<summary>✅ Bom: preconnect abre conexão, preload antecipa recursos críticos</summary>
+<summary>✅ Bom: a conexão externa abre cedo, e a fonte começa a baixar antes do CSS</summary>
 
 ```html
 <head>
@@ -127,13 +141,14 @@ ou JS. `<link rel="preconnect">` abre a conexão TCP/TLS com origens externas an
 
 </details>
 
-## width e height em imagens
+## Declare `width` e `height` para o conteúdo não pular na tela
 
-Declarar `width` e `height` em imagens previne layout shift (CLS). O browser reserva o espaço
-antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
+Uma imagem sem dimensões declaradas ocupa zero pixel de altura até terminar de baixar. Quando ela chega, empurra para baixo tudo o que estava embaixo dela. Se o usuário já tinha começado a ler, o texto foge; se ele ia clicar num botão, o botão sai do lugar debaixo do dedo.
+
+Com `width` e `height` na tag, o navegador calcula a proporção e reserva o espaço certo antes de o arquivo chegar. Os números são a proporção, e não o tamanho na tela: o CSS com `max-width: 100%` e `height: auto` continua responsável por quanto a imagem mede em cada dispositivo.
 
 <details>
-<summary>❌ Ruim: sem dimensões, layout shift ao carregar</summary>
+<summary>❌ Ruim: sem dimensões, o conteúdo abaixo pula quando a imagem chega</summary>
 
 ```html
 <img src="/img/product.jpg" alt="Product photo" loading="lazy" />
@@ -142,7 +157,7 @@ antes de baixar a imagem. Com CSS `height: auto`, a proporção é mantida.
 </details>
 
 <details>
-<summary>✅ Bom: dimensões declaradas, CSS mantém proporção</summary>
+<summary>✅ Bom: dimensões na tag reservam o espaço, e o CSS cuida do tamanho na tela</summary>
 
 ```html
 <img

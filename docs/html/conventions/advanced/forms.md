@@ -1,28 +1,33 @@
-# Forms
+# Formulários em HTML
 
-> Escopo: HTML. Idiomas específicos deste ecossistema.
+O navegador já sabe fazer boa parte do trabalho de um formulário. Ele valida o formato do e-mail, abre o teclado numérico no celular, preenche o endereço que o usuário salvou e mostra a mensagem de campo obrigatório. Tudo isso vem dos atributos da marcação, sem uma linha de JavaScript.
 
-Formulários acessíveis associam **label** (rótulo) a **input** (campo), agrupam campos relacionados em **fieldset** (conjunto de campos) e usam tipos nativos. O browser entrega validação, teclado virtual e **autocomplete** (autopreenchimento) sem JavaScript adicional.
+Esta página mostra como pedir esse trabalho ao navegador: amarrar cada **label** (rótulo) ao seu **input** (campo), agrupar campos relacionados num **fieldset** (conjunto de campos) e escolher o `type` certo para cada dado.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **form** (formulário) | Container que agrupa campos e dispara o envio via `action`/`method` |
-| **input** (campo) | Elemento de entrada; o atributo `type` define teclado virtual e validação |
-| **label** (rótulo) | Texto associado ao campo via `for`/`id`; alvo de clique e leitor de tela |
-| **fieldset** (conjunto de campos) | Agrupa campos relacionados; `<legend>` descreve o grupo |
-| **autocomplete** (autopreenchimento) | Atributo que sinaliza o tipo do dado (`email`, `name`, `tel`) ao browser |
-| **client-side validation** (validação no cliente) | `required`, `type`, `pattern`, `min`/`max` aplicados pelo browser antes do submit |
-| **placeholder** (texto auxiliar) | Dica que desaparece ao digitar; não substitui label |
+| **form** (formulário) | O elemento que agrupa os campos e dispara o envio, configurado por `action` e `method` |
+| **input** (campo) | O elemento de entrada. O `type` dele decide o teclado do celular e a validação |
+| **label** (rótulo) | O texto do campo, ligado a ele por `for` e `id`. Vira área de clique e é o que o leitor de tela anuncia |
+| **fieldset** (conjunto de campos) | Agrupa campos relacionados, com a `<legend>` nomeando o grupo |
+| **autocomplete** (autopreenchimento) | Diz ao navegador que dado o campo espera, como `email` ou `tel`, para ele oferecer o que o usuário já salvou |
+| **client-side validation** (validação no navegador) | `required`, `type`, `pattern`, `min` e `max`, conferidos antes do envio |
+| **placeholder** (texto de exemplo) | A dica dentro do campo, que some assim que o usuário digita |
 
-## Label
+<a id="label"></a>
 
-Todo input tem um `<label>` explícito associado via `for`/`id`. Placeholder não substitui label:
-desaparece ao digitar e tem contraste insuficiente.
+## Todo campo tem uma `<label>` própria
+
+Ligue a `<label>` ao campo pelo par `for` e `id`. Isso dá duas coisas ao usuário: o leitor de tela anuncia o nome do campo ao chegar nele, e um clique no texto do rótulo põe o cursor dentro do campo, o que amplia bastante a área de acerto no celular.
+
+O `placeholder` não faz esse papel. Ele some assim que a pessoa começa a digitar, e é justamente aí que ela precisa conferir o que aquele campo pedia. Em formulário longo, o usuário apaga o que escreveu só para reler a dica. Some a isso o contraste baixo do texto de exemplo na maioria dos temas.
+
+O `placeholder` continua útil ao lado do rótulo, para mostrar o formato esperado: `name@example.com`.
 
 <details>
-<summary>❌ Ruim: sem label, placeholder como único texto</summary>
+<summary>❌ Ruim: nenhum rótulo, e o texto de exemplo some ao digitar</summary>
 
 ```html
 <input type="text" placeholder="First name" />
@@ -33,7 +38,7 @@ desaparece ao digitar e tem contraste insuficiente.
 </details>
 
 <details>
-<summary>✅ Bom: label explícita com for/id; placeholder complementa</summary>
+<summary>✅ Bom: rótulo ligado ao campo por for e id, com o exemplo de formato ao lado</summary>
 
 ```html
 <label for="first-name">First name</label>
@@ -48,13 +53,16 @@ desaparece ao digitar e tem contraste insuficiente.
 
 </details>
 
-## fieldset e legend
+## Grupo de opções vai dentro de `<fieldset>` com `<legend>`
 
-`<fieldset>` + `<legend>` agrupam campos relacionados. Obrigatório para grupos de radio/checkbox,
-recomendado para seções de formulário com múltiplos campos.
+Um grupo de radio ou de checkbox precisa de uma pergunta, e a `<legend>` é onde ela mora. Sem o `<fieldset>`, o leitor de tela anuncia "Standard, botão de opção" e não diz do que se trata: a pergunta "Shipping method" está num `<p>` solto acima, que não pertence ao grupo.
+
+Com o par `<fieldset>` e `<legend>`, o leitor de tela anuncia a pergunta antes de cada opção, e o usuário entende o que está escolhendo.
+
+Vale também para blocos maiores do formulário, como separar os dados de entrega dos dados de pagamento.
 
 <details>
-<summary>❌ Ruim: grupo de radio sem fieldset, sem contexto semântico</summary>
+<summary>❌ Ruim: as opções soltas, e a pergunta num parágrafo que não pertence ao grupo</summary>
 
 ```html
 <p>Shipping method</p>
@@ -67,7 +75,7 @@ recomendado para seções de formulário com múltiplos campos.
 </details>
 
 <details>
-<summary>✅ Bom: fieldset + legend contextualiza o grupo</summary>
+<summary>✅ Bom: a legend faz a pergunta, e o leitor de tela anuncia ela antes de cada opção</summary>
 
 ```html
 <fieldset>
@@ -87,13 +95,14 @@ recomendado para seções de formulário com múltiplos campos.
 
 </details>
 
-## Tipos de input
+## O `type` do campo decide o que o navegador entrega
 
-O tipo correto entrega teclado virtual otimizado no mobile, validação nativa e autopreenchimento
-contextual, sem JavaScript adicional.
+`type="text"` em tudo funciona, e joga fora o que o navegador daria de graça. Trocar pelo tipo certo muda a experiência no celular, que é onde a maioria dos formulários é preenchida.
+
+Com `type="email"`, o teclado do celular já vem com a tecla `@`, e o navegador confere o formato antes do envio. Com `type="tel"`, aparece o teclado numérico. Com `type="date"`, o usuário ganha o seletor de data do próprio sistema, no lugar de digitar a data à mão e errar o formato.
 
 <details>
-<summary>❌ Ruim: type="text" para tudo</summary>
+<summary>❌ Ruim: cinco dados diferentes, todos como texto</summary>
 
 ```html
 <input type="text" name="email" />
@@ -106,7 +115,7 @@ contextual, sem JavaScript adicional.
 </details>
 
 <details>
-<summary>✅ Bom: tipo correto para cada dado</summary>
+<summary>✅ Bom: cada campo declara o dado que espera, e o navegador ajusta teclado e validação</summary>
 
 ```html
 <input type="email" name="email" autocomplete="email" />
@@ -118,14 +127,14 @@ contextual, sem JavaScript adicional.
 
 </details>
 
-## Validação nativa
+## Declare a regra na marcação antes de escrever validação em JavaScript
 
-Atributos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) (`required`, `pattern`, `min`, `max`, `minlength`, `maxlength`) ativam validação
-nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine com
-`setCustomValidity` ou `aria-describedby`.
+Os atributos `required`, `pattern`, `min`, `max`, `minlength` e `maxlength` fazem o navegador barrar o envio e apontar o campo errado sozinho. A regra fica declarada ao lado do campo, onde quem lê a marcação a encontra.
+
+O JavaScript entra por cima disso, para o que a marcação não cobre: a mensagem de erro escrita com as palavras do produto (via `setCustomValidity`) e a dica que explica o formato antes de o usuário errar. O `aria-describedby` amarra a dica e o erro ao campo, e é assim que o leitor de tela anuncia os dois.
 
 <details>
-<summary>❌ Ruim: validação só em JS, sem atributos nativos</summary>
+<summary>❌ Ruim: o campo não declara regra nenhuma, e o erro vive escondido num parágrafo solto</summary>
 
 ```html
 <input type="text" id="username" name="username" />
@@ -135,7 +144,7 @@ nativa do browser; use antes de JavaScript. Para mensagens customizadas, combine
 </details>
 
 <details>
-<summary>✅ Bom: atributos nativos + mensagem de erro acessível</summary>
+<summary>✅ Bom: as regras na marcação, com a dica e o erro ligados ao campo</summary>
 
 ```html
 <label for="username">Username</label>

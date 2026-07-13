@@ -1,6 +1,6 @@
-# Quick reference: HTML
+# Referência rápida: HTML
 
-> Escopo: HTML. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: HTML. Resumo das convenções, com os detalhes em `conventions/`.
 
 ## Elementos semânticos
 
@@ -44,8 +44,8 @@ id → class → name → type → src | href → value → placeholder → for
 - [ ] `<meta charset>` e `<meta name="viewport">` primeiros no `<head>`
 - [ ] Scripts com `defer` (ou no fim do `<body>`)
 - [ ] Scripts independentes (analytics) com `async`
-- [ ] Imagens below-the-fold com `loading="lazy"`
-- [ ] Imagem hero com `fetchpriority="high"`
+- [ ] Imagens abaixo da dobra com `loading="lazy"`
+- [ ] Imagem do topo com `fetchpriority="high"`
 - [ ] `width` e `height` declarados em todas as `<img>`
 - [ ] `<link rel="preconnect">` para origens externas críticas
 - [ ] `<link rel="preload">` para fontes e imagens críticas

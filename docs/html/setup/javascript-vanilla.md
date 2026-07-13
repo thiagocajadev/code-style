@@ -1,23 +1,23 @@
-# JavaScript Vanilla
+# JavaScript sem framework em páginas HTML
 
-Padrões modernos de JavaScript pra projetos **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) sem **bundler** (empacotador). O objetivo aqui é o contexto de integração com o **DOM** (Document Object Model · Modelo de Objeto do Documento). Pra convenções da linguagem em si, veja a [documentação completa de JavaScript](../../javascript/README.md).
+Esta página cobre o encontro do JavaScript com a marcação: como achar um elemento, como escutar um clique e como falar com a API. As convenções da própria linguagem estão na [documentação completa de JavaScript](../../javascript/README.md).
+
+Vale como referência para o projeto que roda direto no navegador, sem **bundler** (empacotador) nem framework. O que era feito com jQuery hoje tem equivalente nativo, e sem dependência.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **DOM** (Document Object Model · Modelo de Objeto do Documento) | Árvore de objetos que representa o HTML em memória; alvo das APIs do browser |
-| **type module** (módulo nativo) | `<script type="module">` ativa `import`/`export`, strict mode e `defer` automático |
-| **defer** (adiar execução) | Baixa em paralelo e executa após o parse, na ordem do documento |
-| **event delegation** (delegação de eventos) | Listener no ancestral; usa `event.target` pra identificar a origem |
-| **querySelector** (seletor único) | API de seleção via CSS; substitui `getElementById` e seletores jQuery |
-| **classList** (lista de classes) | API moderna pra `add`/`remove`/`toggle` classes em um elemento |
-| **AbortController** (controlador de cancelamento) | `controller.abort()` remove listeners e cancela `fetch` pendente |
+| **DOM** (Document Object Model · Modelo de Objeto do Documento) | A árvore de objetos que o navegador monta em memória a partir do HTML. É nela que o JavaScript mexe |
+| **type module** (script como módulo) | `<script type="module">`, que liga `import` e `export`, o modo estrito e o `defer` automático |
+| **event delegation** (delegação de eventos) | Escutar o evento no elemento pai e descobrir pelo `event.target` qual filho recebeu o clique |
+| **querySelector** (seleção por seletor CSS) | Acha o elemento com a mesma sintaxe do CSS. Cobre o que `getElementById` e o jQuery faziam |
+| **classList** (lista de classes) | Adiciona, remove e alterna a classe de um elemento sem mexer no atributo como texto |
+| **AbortController** (controlador de cancelamento) | Um `controller.abort()` derruba os listeners registrados e cancela o `fetch` que ainda está em voo |
 
-## Script como módulo
+## O script como módulo já vem com `defer`
 
-`type="module"` implica `defer` automaticamente, ativa strict mode e habilita `import`/`export`. É a
-forma padrão de incluir scripts em projetos sem bundler.
+Escrever `type="module"` na tag resolve três coisas de uma vez: o script passa a aceitar `import` e `export`, roda em modo estrito e espera a leitura do documento terminar, como se tivesse `defer`.
 
 ```html
 <head>
@@ -25,15 +25,16 @@ forma padrão de incluir scripts em projetos sem bundler.
 </head>
 ```
 
-Código em um módulo não precisa de wrapper `DOMContentLoaded`: o script executa após o parse.
+Dentro de um módulo, o código não precisa esperar por `DOMContentLoaded`. Quando ele roda, a página já está montada.
 
-## Seleção e manipulação de DOM
+## Guarde o elemento numa variável antes de reusá-lo
 
-`querySelector` e `querySelectorAll` substituem todos os seletores jQuery com a mesma sintaxe CSS.
-Cache a seleção quando reutilizar o elemento.
+Cada `querySelector` percorre a árvore da página de novo. Chamar o mesmo seletor duas vezes seguidas faz o navegador procurar duas vezes o elemento que ele acabou de achar.
+
+Guardar a busca numa variável resolve a repetição, e ainda dá um nome ao elemento, o que diz ao leitor o que aquele nó representa.
 
 <details>
-<summary>❌ Ruim: seleção repetida, sem cache</summary>
+<summary>❌ Ruim: o mesmo seletor percorre a árvore duas vezes</summary>
 
 ```js
 document.querySelector(".card__title").classList.add("active");
@@ -43,7 +44,7 @@ document.querySelector(".card__title").textContent = "Updated";
 </details>
 
 <details>
-<summary>✅ Bom: cache da seleção, operações encadeadas no mesmo elemento</summary>
+<summary>✅ Bom: uma busca só, guardada num nome que diz o que o elemento é</summary>
 
 ```js
 const title = document.querySelector(".card__title");
@@ -54,13 +55,14 @@ title.textContent = "Updated";
 
 </details>
 
-## Event delegation
+## Escute o clique no pai, e descubra qual filho foi clicado
 
-Um único listener no container estático cobre elementos presentes e futuros. `element.matches()`
-filtra o target pelo seletor.
+Registrar um listener em cada card funciona enquanto os cards já estão na tela. No momento em que a lista carrega mais itens por scroll infinito ou por filtro, os cards novos chegam sem listener nenhum, e o clique neles não faz nada.
+
+Um listener só, no container que nunca é recriado, resolve os dois casos. O evento sobe do card clicado até o container, e o `closest` diz de qual card ele veio. Cards que ainda nem existem já estão cobertos.
 
 <details>
-<summary>❌ Ruim: listener em cada item, não cobre elementos dinâmicos</summary>
+<summary>❌ Ruim: um listener por card, e os cards carregados depois ficam sem nenhum</summary>
 
 ```js
 document.querySelectorAll(".product-card").forEach((card) => {
@@ -71,7 +73,7 @@ document.querySelectorAll(".product-card").forEach((card) => {
 </details>
 
 <details>
-<summary>✅ Bom: delegation no container, matches como filtro</summary>
+<summary>✅ Bom: um listener no container, e o closest identifica o card de origem</summary>
 
 ```js
 document.getElementById("product-list").addEventListener("click", (event) => {
@@ -83,12 +85,14 @@ document.getElementById("product-list").addEventListener("click", (event) => {
 
 </details>
 
-## fetch
+## `fetch` fala com a API, e o status precisa ser conferido
 
-`fetch` é o substituto nativo de `$.ajax`. Retorna uma Promise; use `async/await` para clareza.
+O `fetch` é o `$.ajax` nativo. Ele devolve uma Promise, e `async` com `await` deixa o fluxo legível de cima para baixo.
+
+Uma armadilha aparece aqui: o `fetch` só rejeita a Promise quando a rede falha. Um 400 ou um 500 do servidor chegam como resposta bem-sucedida, e o `.then` roda normalmente. É por isso que o `orderResponse.ok` precisa ser conferido à mão. Sem essa conferência, um pedido recusado pela API cai no caminho de sucesso, e o usuário vê a tela de confirmação de um pedido que nunca existiu.
 
 <details>
-<summary>❌ Ruim: sem verificação de status, sem tratamento de erro</summary>
+<summary>❌ Ruim: o erro da API entra no caminho de sucesso, e o usuário vê a confirmação</summary>
 
 ```js
 fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
@@ -99,7 +103,7 @@ fetch("/api/orders", { method: "POST", body: JSON.stringify(orderData) })
 </details>
 
 <details>
-<summary>✅ Bom: status verificado, erro tratado, Content-Type explícito</summary>
+<summary>✅ Bom: o status é conferido, e a resposta de erro vira exceção</summary>
 
 ```js
 async function createOrder(orderData) {

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2026-07-13
+
+### Changed
+
+- **`docs/html/` e `docs/css/` reescritos na voz sênior-para-leigo (Épico C8, Ciclo C).** 24 arquivos `.md` e 6 scripts, 3.553 linhas, entregues como unidade única. É o épico mais leve do ciclo (o TypeScript teve 7.589 linhas, o VB.NET 8.377), e chegou com duas superfícies prontas: `## Conceitos fundamentais` já existia nos 20 arquivos técnicos, e nenhum link com âncora entra em `html/` ou `css/` vindo de fora. Contraste binário, metáfora de mecânica, fecho de efeito e advérbio banido zerados nas duas pastas.
+- **Os 24 H1 viraram pt-BR**: `Naming` → "Nomes em HTML", `Structure` → "Estrutura do documento HTML", `Null Safety` → "Valor ausente em CSS", `Responsive` → "Layout responsivo em CSS", `Project Foundation: HTML` → "Base de um projeto HTML", `Quick reference` → "Referência rápida". Os preservados são nome de produto (HTML, CSS, jQuery, Bootstrap, Tailwind).
+- **Os 138 `<summary>` de Bom/Ruim foram varridos**, que é o escopo novo do Ciclo C. Saíram `utility sprawl`, `override via custom properties`, `delegation no container`, `hero sem lazy (above the fold)`, `chain, uma seleção`, `keywords semânticos no lugar de valores sentinela` e `magic numbers espalhados`, entre outros. Todos viraram descrição em pt-BR na voz de `docs/javascript/`.
+- **Os dois `conventions/visual-density.md` espelharam o canônico JavaScript.** Os headings ganharam a redação de `docs/javascript/conventions/visual-density.md` ("Não deixe uma linha sozinha entre espaços", "Não alinhe o código em colunas", "Depois de um bloco de várias linhas, deixe um respiro"), e o jargão cunhado saiu das tabelas de Conceitos (`tight siblings`, `orphan element`, `landmark phase`, `sibling block`, `scannability`, `declaration group`), virando descrição no corpo. A tabela do HTML caiu de 8 para 6 linhas, e a do CSS de 7 para 6.
+- **13 âncoras que resolviam por slug gerado do texto viraram id ASCII explícito**, com os referrers dos dois README reescritos no mesmo passo. Em HTML: `#ids-and-classes`, `#data-attributes`, `#heading-hierarchy`, `#lang-and-charset`, `#images`, `#label`, `#defer-and-async`, `#lazy-loading`, `#title-and-description`. Em CSS: `#bem`, `#specificity`, `#property-order`, `#mobile-first`.
+- **O `README.md` do root passou pelo gate de escrita.** O `audit:prose` já passava limpo nele, e o gate manual achou o resto: 3 caudas de contraste binário ("o retorno nomeia o resultado, não o computa", a mesma que o README do VB.NET perdeu no C6; "o quê, não o como"; "um reflexo do que pratico hoje, não um conjunto fechado de regras"), 1 metáfora com agência ("porque comentários mentem"), a tradução canônica violada em "Imutabilidade por padrão" (virou "`const` como padrão", com a descrição do comportamento) e os headings em Title Case ("Conceitos Compartilhados", "Controle de Qualidade").
+- **A glosa de `breakpoint` deixou de ser "ponto de quebra" e virou "largura de corte"**, em `docs/css/conventions/responsive.md` e `docs/css/bootstrap.md`. A tradução nova descreve o comportamento em vez de nomear o jargão, que é o que a diretriz do projeto já pedia. Ela também tira do caminho um falso positivo da regra `[drama]` do `audit:prose`, que acusava a expressão "de quebra".
+
+### Fixed
+
+- **Os 16 em dash de `docs/html/` moravam dentro de fenced block e de script `.html`, e nenhum era comentário.** Eram conteúdo de exemplo, quase todos em `<title>Products — Acme Store</title>`, mais duas linhas de frete em `scripts/forms.html` e duas frases de prosa em `scripts/structure.html`. Todos viraram dois pontos ou vírgula. **É a divergência intencional de bloco desta release** (autorizada pelo Thiago), e alcança 3 dos 24 arquivos `.md`: `conventions/advanced/seo.md` (6), `conventions/visual-density.md` (2) e `setup/project-foundation.md` (1). Os outros 21 batem por SHA-256 com o HEAD; os 7 em dash restantes estavam nos scripts, que o gate de hash não cobre.
+- **2 `<summary>` de `docs/html/conventions/advanced/seo.md` e 1 de `docs/css/conventions/naming.md` carregavam a expansão de sigla dentro do título do exemplo**, o que é bug de formatação. `❌ Ruim: hierarquia implícita, acoplada ao **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto)` virou prosa curta.
+
+### Added
+
+- **`html` e `css` entraram em `LANGS` de `.github/workflows/docs.yml`**, e as duas linguagens passam a ser publicadas no site. A lista agora é `javascript csharp sql shared typescript html css`. `vbnet` segue fora por decisão do Thiago, mesmo tendo sido entregue em v2.4.0.
+
 ## [2.5.1] - 2026-07-13
 
 Correções em linguagens fora do escopo do épico C8, achadas ao fechar os buracos de gate que o épico expôs. O `audit:prose` passou a ler o interior dos fenced blocks e os arquivos de `docs/*/scripts/**`, e a primeira varredura com o escopo novo acusou o que nenhum gate lia.

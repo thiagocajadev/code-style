@@ -61,7 +61,7 @@ jobs:
         run: |
           # Escopo reduzido enquanto o build não cabe no runner free.
           # Ampliar acrescentando a pasta a LANGS conforme o disco permitir.
-          LANGS="javascript csharp sql shared typescript"
+          LANGS="javascript csharp sql shared typescript html css"
 
           rm -rf docs-renderer/docs
           mkdir -p docs-renderer/docs

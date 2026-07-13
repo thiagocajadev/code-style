@@ -1,26 +1,25 @@
-# Formatting
+# Formatação do HTML
 
-Formatação consistente torna o **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) escaneável: **indentation** (indentação) revela hierarquia, ordem de **attribute** (atributo) cria previsibilidade e aspas duplas eliminam ambiguidade.
+Um arquivo de **HTML** (HyperText Markup Language · Linguagem de Marcação de Hipertexto) tende a ficar longo, e quem abre esse arquivo quase sempre está procurando uma coisa só. As três convenções desta página existem para encurtar essa procura: a **indentation** (indentação) mostra qual elemento está dentro de qual, a ordem fixa dos **attribute** (atributos) diz onde olhar antes de olhar, e a aspa dupla em todo valor tira a decisão do caminho.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>` no topo; ativa modo padrão do browser |
-| **tag** (marcação) | Abertura `<el>` e fechamento `</el>` que delimitam o conteúdo |
-| **attribute** (atributo) | Par `nome="valor"` dentro da tag de abertura; configura o elemento |
-| **void element** (elemento vazio) | Tag sem fechamento (`<img>`, `<br>`, `<meta>`); não aceita conteúdo |
-| **self-closing** (autofechamento) | Sintaxe `<el />`; opcional em HTML5, obrigatória em XHTML/JSX |
-| **indentation** (indentação) | 2 espaços por nível; revela hierarquia do documento |
-| **block vs inline** (bloco vs em linha) | Bloco quebra linha (`<section>`, `<div>`); inline flui no texto (`<a>`, `<span>`) |
+| **doctype** (declaração de tipo de documento) | `<!DOCTYPE html>`, na primeira linha. Faz o navegador interpretar a página pelo padrão atual |
+| **tag** (marcação) | O par `<el>` e `</el>` que delimita um trecho de conteúdo |
+| **attribute** (atributo) | Um `nome="valor"` dentro da tag de abertura, que configura o elemento |
+| **void element** (elemento vazio) | Tag que não aceita conteúdo e por isso não tem fechamento: `<img>`, `<br>`, `<meta>` |
+| **self-closing** (autofechamento) | A forma `<el />`. Opcional em HTML5 e obrigatória em XHTML e JSX |
+| **indentation** (indentação) | Dois espaços por nível de profundidade, o que deixa a hierarquia visível |
+| **block vs inline** (bloco e em linha) | O elemento de bloco ocupa a própria linha, como `<section>`. O elemento em linha corre junto do texto, como `<a>` |
 
-## Indentação
+## Dois espaços por nível de profundidade
 
-2 espaços por nível. Elementos de bloco em nova linha, indentados em relação ao pai. Elementos
-inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
+Cada nível de aninhamento entra dois espaços em relação ao pai, e é essa indentação que deixa a hierarquia legível sem contar tags. Elemento de bloco começa em linha nova. Elemento em linha (`<a>`, `<strong>`, `<span>`) fica junto do texto que ele envolve, porque quebrar a linha ali insere espaço em branco no conteúdo renderizado.
 
 <details>
-<summary>❌ Ruim: indentação inconsistente, bloco colado ao pai</summary>
+<summary>❌ Ruim: cada linha entra num nível diferente, e a hierarquia some</summary>
 
 ```html
 <ul>
@@ -34,7 +33,7 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 </details>
 
 <details>
-<summary>✅ Bom: 2 espaços, hierarquia visível</summary>
+<summary>✅ Bom: dois espaços por nível, e a hierarquia aparece</summary>
 
 ```html
 <ul>
@@ -45,10 +44,11 @@ inline (`<a>`, `<strong>`, `<span>`) permanecem na mesma linha do conteúdo.
 
 </details>
 
-## Ordem de atributos
+## Os atributos entram sempre na mesma ordem
 
-Atributos seguem uma ordem fixa: identificação → tipo/papel → fonte → estado → dados → aria. A
-ordem previsível reduz o tempo para localizar um atributo específico.
+Combine uma ordem e mantenha ela em toda a base. Quem procura o `name` de um input já sabe que ele vem depois do `class` e antes do `type`, e acha o atributo pela posição, sem ler a linha inteira.
+
+A ordem do projeto vai da identificação até a acessibilidade:
 
 ```
 id → class → name → type → src | href → value → placeholder → for
@@ -56,7 +56,7 @@ id → class → name → type → src | href → value → placeholder → for
 ```
 
 <details>
-<summary>❌ Ruim: atributos em ordem aleatória</summary>
+<summary>❌ Ruim: cada elemento embaralha os atributos de um jeito</summary>
 
 ```html
 <input required placeholder="Enter email" type="email" name="email" id="user-email" class="input" />
@@ -66,7 +66,7 @@ id → class → name → type → src | href → value → placeholder → for
 </details>
 
 <details>
-<summary>✅ Bom: ordem consistente, fácil de escanear</summary>
+<summary>✅ Bom: a mesma ordem nos dois, e o olho acha o atributo pela posição</summary>
 
 ```html
 <input id="user-email" class="input" name="email" type="email" placeholder="Enter email" required />
@@ -75,13 +75,14 @@ id → class → name → type → src | href → value → placeholder → for
 
 </details>
 
-## Atributos longos
+## Muitos atributos pedem uma linha para cada um
 
-Quando um elemento tem muitos atributos, um por linha. O fechamento `>` ou `/>` fica na última
-linha do atributo ou em linha própria; o padrão do projeto define qual, mas deve ser consistente.
+Quando o elemento acumula atributos, quebre um por linha. A linha única obriga a rolagem horizontal, e o diff do Git passa a marcar a linha inteira como alterada quando só um atributo mudou.
+
+O fechamento `>` ou `/>` pode ficar colado no último atributo ou sozinho na linha seguinte. Escolha uma das duas formas e repita em todo o projeto.
 
 <details>
-<summary>❌ Ruim: atributos numa linha longa, difícil de ler</summary>
+<summary>❌ Ruim: oito atributos numa linha só, que não cabe na tela</summary>
 
 ```html
 <input id="search-input" class="input input--search" name="q" type="search" placeholder="Search products..." autocomplete="off" aria-label="Search products" required />
@@ -90,7 +91,7 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 </details>
 
 <details>
-<summary>✅ Bom: um atributo por linha, fechamento alinhado</summary>
+<summary>✅ Bom: um atributo por linha, e o fechamento sozinho embaixo</summary>
 
 ```html
 <input
@@ -107,13 +108,14 @@ linha do atributo ou em linha própria; o padrão do projeto define qual, mas de
 
 </details>
 
-## Aspas e boolean attributes
+## Aspas duplas sempre, e booleano sem valor
 
-Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `disabled`, `checked`,
-`readonly`) não precisam de valor; a presença já é `true`.
+Todo valor de atributo vai entre aspas duplas. A aspa simples funciona, e misturar as duas no mesmo arquivo faz o leitor parar para conferir qual está em uso.
+
+O atributo booleano (`required`, `disabled`, `checked`, `readonly`) dispensa valor: estar escrito já significa `true`. Escrever `required="required"` repete a informação, e escrever `required="false"` engana, porque o navegador continua tratando o campo como obrigatório. Para desligar o atributo, remova ele da tag.
 
 <details>
-<summary>❌ Ruim: aspas simples, valor redundante em boolean</summary>
+<summary>❌ Ruim: aspas simples, e o booleano repetido dentro do próprio valor</summary>
 
 ```html
 <input type='text' required='required' disabled='disabled' />
@@ -123,7 +125,7 @@ Sempre aspas duplas em valores de atributo. Atributos booleanos (`required`, `di
 </details>
 
 <details>
-<summary>✅ Bom: aspas duplas, booleanos sem valor</summary>
+<summary>✅ Bom: aspas duplas, e o booleano vale por estar escrito</summary>
 
 ```html
 <input type="text" required disabled />

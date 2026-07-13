@@ -1,23 +1,34 @@
-# Formatting
+# Formatação do CSS
 
-A ordem de **declaration** (declaração) não é arbitrária. Agrupar por responsabilidade (**positioning**, **box model**, **typography**, visual) torna um **ruleset** (bloco de regras) legível de cima pra baixo: de "onde está e qual o tamanho" para "como parece".
+Um bloco de regras com doze propriedades em ordem aleatória obriga o leitor a percorrer as doze para achar a que ele procura. Agrupar por responsabilidade responde antes de ele começar a ler: onde o elemento está, que tamanho ele tem, como o texto dentro dele se comporta e como ele se parece.
+
+O bloco passa a ser lido de cima para baixo, das decisões de layout até as de acabamento.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **ruleset** (bloco de regras) | Seletor + declarações entre chaves: `.card { ... }` |
-| **selector** (seletor) | Padrão que escolhe os elementos: `.card`, `nav > a`, `[type="email"]` |
-| **declaration** (declaração) | Par `propriedade: valor;` dentro do ruleset |
-| **shorthand** (forma resumida) | `margin: 8px 16px` em vez de quatro `margin-*`; cuidado com sobrescrita acidental |
-| **box model** (modelo de caixa) | `content` → `padding` → `border` → `margin`; base do dimensionamento |
-| **positioning** (posicionamento) | Grupo de `position`, `top`/`right`/`bottom`/`left`, `z-index` |
-| **typography** (tipografia) | Grupo de `font-*`, `line-height`, `letter-spacing`, `text-*` |
+| **ruleset** (bloco de regras) | O seletor mais as declarações entre chaves: `.card { ... }` |
+| **selector** (seletor) | O padrão que escolhe quais elementos recebem as regras: `.card`, `nav > a`, `[type="email"]` |
+| **declaration** (declaração) | Um par `propriedade: valor;` dentro do bloco |
+| **shorthand** (forma resumida) | Uma propriedade que escreve várias de uma vez, como `margin: 8px 16px`. Ela zera as que você não mencionou |
+| **box model** (modelo de caixa) | Como o elemento é medido, do conteúdo para fora: `content`, `padding`, `border` e `margin` |
+| **positioning** (posicionamento) | O grupo de `position`, `top`, `right`, `bottom`, `left` e `z-index` |
+| **typography** (tipografia) | O grupo de `font-*`, `line-height`, `letter-spacing` e `text-*` |
 
-## Ordem de propriedades
+<a id="property-order"></a>
+
+## As propriedades entram agrupadas por responsabilidade
+
+Quatro grupos, sempre nesta ordem, separados por uma linha em branco:
+
+1. **Posicionamento**: onde o elemento fica e quem passa por cima de quem.
+2. **Caixa**: como o elemento se organiza por dentro e quanto espaço ocupa.
+3. **Texto**: tamanho, altura de linha e cor da fonte.
+4. **Acabamento**: fundo, borda e sombra.
 
 <details>
-<summary>❌ Ruim: ordem aleatória, difícil de escanear</summary>
+<summary>❌ Ruim: doze propriedades sem agrupamento, e achar uma delas exige ler todas</summary>
 
 ```css
 .card {
@@ -39,7 +50,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 </details>
 
 <details>
-<summary>✅ Bom: agrupado por responsabilidade, legível de cima pra baixo</summary>
+<summary>✅ Bom: quatro grupos separados por linha em branco, do layout ao acabamento</summary>
 
 ```css
 .card {
@@ -69,8 +80,12 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 
 ## Uma propriedade por linha
 
+Quatro propriedades numa linha só cabem na tela, e o custo aparece no histórico. Quando alguém muda o `font-weight`, o diff do Git marca a linha inteira como alterada, e o revisor precisa comparar duas linhas longas caractere a caractere para achar o que mudou.
+
+Com uma propriedade por linha, o diff aponta exatamente a linha que mudou.
+
 <details>
-<summary>❌ Ruim: múltiplas propriedades em uma linha, diff ilegível</summary>
+<summary>❌ Ruim: quatro propriedades numa linha, e o diff não mostra qual delas mudou</summary>
 
 <!-- prettier-ignore -->
 ```css
@@ -80,7 +95,7 @@ A ordem de **declaration** (declaração) não é arbitrária. Agrupar por respo
 </details>
 
 <details>
-<summary>✅ Bom: uma propriedade por linha, diff limpo</summary>
+<summary>✅ Bom: uma por linha, e o diff aponta a que mudou</summary>
 
 ```css
 .button {

@@ -1,28 +1,27 @@
-# Structure
+# Estrutura do documento HTML
 
-**semantic HTML** (HTML semântico) usa o elemento correto pra cada propósito. **landmark** (marco de página) e **sectioning** (seccionamento) carregam significado, dispensam classes explicativas e melhoram acessibilidade sem custo extra.
+HTML tem um elemento próprio para cada papel de uma página: `<nav>` para o menu, `<main>` para o conteúdo principal, `<article>` para um texto que se sustenta sozinho. Usar o elemento certo é o que se chama de **semantic HTML** (HTML semântico), e o ganho é concreto. O leitor de tela anuncia "navegação" ao chegar no `<nav>`, e oferece um atalho para pular direto ao `<main>`. Um `<div class="nav">` não recebe nada disso, porque `<div>` não diz ao navegador o que aquele bloco é.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **semantic HTML** (HTML semântico) | Usar o elemento que descreve o papel (`<nav>`, `<article>`) em vez de `<div>` |
-| **landmark** (marco de página) | Elemento que define região navegável: `<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>` |
-| **sectioning element** (elemento de seção) | `<article>`, `<section>`, `<nav>`, `<aside>`; cria escopo no document outline |
-| **heading hierarchy** (hierarquia de títulos) | `<h1>`–`<h6>` em ordem, sem pular nível; revela a estrutura do conteúdo |
-| **document outline** (estrutura do documento) | Árvore de seções e títulos que leitores de tela percorrem |
-| **div soup** (sopa de divs) | Anti-padrão: estrutura feita só de `<div>`/`<span>`, sem significado |
-| **figure** (figura) | `<figure>` com `<figcaption>`; agrupa mídia ao seu rótulo |
+| **semantic HTML** (HTML semântico) | Escolher o elemento que descreve o papel, como `<nav>` ou `<article>`, no lugar de um `<div>` genérico |
+| **landmark** (marco de página) | Elemento que vira uma região que o leitor de tela navega: `<header>`, `<nav>`, `<main>`, `<aside>`, `<footer>` |
+| **sectioning element** (elemento de seção) | `<article>`, `<section>`, `<nav>` e `<aside>`, que abrem um novo escopo dentro da estrutura da página |
+| **heading hierarchy** (hierarquia de títulos) | Os títulos de `<h1>` a `<h6>` usados em ordem, sem pular nível |
+| **document outline** (estrutura do documento) | A árvore de seções e títulos que o leitor de tela percorre para dar ao usuário um índice da página |
+| **div soup** (sopa de divs) | Antipadrão em que a página inteira é feita de `<div>` e `<span>`, sem nenhum elemento que carregue significado |
+| **figure** (figura) | O par `<figure>` e `<figcaption>`, que amarra uma imagem à legenda dela |
 
 <a id="semantic-elements"></a>
 
-## Elementos semânticos
+## Prefira o elemento que já carrega o significado
 
-`<div>` e `<span>` são elementos sem significado. Quando existe um elemento semântico para o caso de
-uso, ele substitui o genérico.
+`<div>` e `<span>` são caixas neutras: agrupam conteúdo sem dizer o que ele é. Sempre que existir um elemento que descreve o papel do bloco, use ele no lugar do genérico. A marcação encurta, as classes explicativas somem, e a acessibilidade vem junto, sem trabalho extra.
 
 <details>
-<summary>❌ Ruim: div soup, estrutura sem significado</summary>
+<summary>❌ Ruim: a página inteira feita de div, e nada diz o que cada bloco é</summary>
 
 ```html
 <div class="header">
@@ -45,7 +44,7 @@ uso, ele substitui o genérico.
 </details>
 
 <details>
-<summary>✅ Bom: elementos semânticos, estrutura legível</summary>
+<summary>✅ Bom: cada elemento anuncia o próprio papel</summary>
 
 ```html
 <header>
@@ -71,14 +70,16 @@ uso, ele substitui o genérico.
 
 </details>
 
-## Hierarquia de headings
+<a id="heading-hierarchy"></a>
 
-Os headings descrevem a hierarquia do documento, não o tamanho visual do texto. Pular níveis quebra
-a estrutura e prejudica leitores de tela. Use CSS para ajustar tamanho; nunca escolha heading pelo
-tamanho padrão.
+## O nível do título vem da estrutura, e o tamanho vem do CSS
+
+Escolha entre `<h2>` e `<h3>` pela posição do título na estrutura do conteúdo. Escolher pelo tamanho que a fonte tem por padrão é o erro comum, e ele custa caro: o leitor de tela monta um índice da página a partir dos títulos, e um `<h3>` que aparece sem nenhum `<h2>` acima cria um item de índice pendurado em um pai que não existe.
+
+Para deixar o título menor, mude o tamanho no CSS e mantenha o nível certo na marcação.
 
 <details>
-<summary>❌ Ruim: nível pulado, h3 sem h2 pai</summary>
+<summary>❌ Ruim: o h3 aparece antes de existir qualquer h2</summary>
 
 ```html
 <h1>Blog</h1>
@@ -89,7 +90,7 @@ tamanho padrão.
 </details>
 
 <details>
-<summary>✅ Bom: hierarquia contínua, sem saltos</summary>
+<summary>✅ Bom: cada nível aparece antes do nível que ele contém</summary>
 
 ```html
 <h1>Blog</h1>
@@ -100,16 +101,18 @@ tamanho padrão.
 
 </details>
 
-Um `<h1>` por página. Seções dentro de `<article>` ou `<section>` reiniciam a hierarquia local;
-cada `<section>` pode ter seu próprio `<h2>`.
+Cada página tem um `<h1>` só, que nomeia o assunto dela. Dentro de um `<article>` ou de uma `<section>`, a contagem recomeça, e cada seção pode abrir com o próprio `<h2>`.
 
-## lang e charset
+<a id="lang-and-charset"></a>
 
-`lang` no `<html>` habilita pronúncia correta em leitores de tela e hifenização automática. `charset`
-garante codificação. Ambos são obrigatórios e devem aparecer antes de qualquer outro metadado.
+## `lang` e `charset` vêm antes de qualquer outro metadado
+
+O `lang` no `<html>` diz ao leitor de tela em que idioma pronunciar o texto. Sem ele, um texto em português sai lido com fonética de inglês, e fica incompreensível. O `charset` diz ao navegador como decodificar os bytes do arquivo; sem ele, os acentos aparecem trocados.
+
+O `charset` precisa vir logo no começo do `<head>`, antes do `<title>`. O navegador começa a interpretar o arquivo assim que recebe os primeiros bytes, e se a codificação aparece depois do título, ele já leu o título com a codificação errada.
 
 <details>
-<summary>❌ Ruim: sem lang, charset fora de posição</summary>
+<summary>❌ Ruim: sem lang, e o charset chega depois do título</summary>
 
 ```html
 <!DOCTYPE html>
@@ -124,7 +127,7 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 </details>
 
 <details>
-<summary>✅ Bom: lang e charset corretos, na ordem certa</summary>
+<summary>✅ Bom: lang declarado, e o charset na primeira linha do head</summary>
 
 ```html
 <!DOCTYPE html>
@@ -139,14 +142,14 @@ garante codificação. Ambos são obrigatórios e devem aparecer antes de qualqu
 
 </details>
 
-## section vs div
+## Quando usar `<section>` e quando usar `<div>`
 
-`<section>` agrupa conteúdo tematicamente relacionado e deve ter um heading filho. `<div>` é para
-agrupamento sem significado semântico (layout, JS hooks). Não substitua `<div>` por `<section>` só
-para parecer mais semântico.
+Use `<section>` quando o bloco agrupa um tema do conteúdo e você consegue dar um título a ele. O título é o teste: uma `<section>` sem heading não entra na estrutura do documento, e o leitor de tela anuncia uma região anônima, o que atrapalha mais do que ajuda.
+
+Use `<div>` quando o agrupamento existe para o layout ou para o JavaScript se prender nele. Trocar `<div>` por `<section>` sem ter um título para a região deixa a marcação parecida com HTML semântico e piora a experiência de quem navega por leitor de tela.
 
 <details>
-<summary>❌ Ruim: section sem heading, usado como div</summary>
+<summary>❌ Ruim: duas section sem título, cumprindo papel de div de layout</summary>
 
 ```html
 <section class="wrapper">
@@ -160,7 +163,7 @@ para parecer mais semântico.
 </details>
 
 <details>
-<summary>✅ Bom: section com heading, div para layout</summary>
+<summary>✅ Bom: a section tem título, e a div cuida da grade</summary>
 
 ```html
 <section aria-labelledby="featured-heading">
