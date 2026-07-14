@@ -19,25 +19,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Free disk space
-        run: |
-          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
-                      /usr/local/share/boost "$AGENT_TOOLSDIRECTORY" \
-                      /opt/hostedtoolcache/CodeQL
-          sudo apt-get clean
-          df -h /
-
       - name: Checkout code-style
         uses: actions/checkout@v6
-        with:
-          path: code-style
-
-      - name: Checkout pmndrs/docs fork
-        uses: actions/checkout@v6
-        with:
-          repository: thiagocajadev/docs
-          ref: main
-          path: docs-renderer
 
       - name: Configure Pages
         id: pages
@@ -45,29 +28,18 @@ jobs:
         with:
           enablement: true
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.28.1
-
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: pnpm
-          cache-dependency-path: docs-renderer/pnpm-lock.yaml
-
-      - name: Sync docs content into renderer
+      - name: Select the languages to publish
         run: |
-          # Escopo reduzido enquanto o build não cabe no runner free.
-          # Ampliar acrescentando a pasta a LANGS conforme o disco permitir.
+          set -e
+
+          # Only these are published. Add a folder here to include it.
           LANGS="javascript csharp sql shared typescript html css"
 
-          rm -rf docs-renderer/docs
-          mkdir -p docs-renderer/docs
+          rm -rf site
+          mkdir -p site
 
           for lang in $LANGS; do
-            src="code-style/docs/$lang"
+            src="docs/$lang"
             if [ ! -d "$src" ]; then
               echo "::error::$lang: pasta ausente em docs/ — estrutura inválida"
               exit 1
@@ -76,32 +48,48 @@ jobs:
               echo "::error::$lang: nenhum .md encontrado — pasta vazia"
               exit 1
             fi
-            cp -r "$src" "docs-renderer/docs/$lang"
+            cp -r "$src" "site/$lang"
           done
 
-          cp -r code-style/assets docs-renderer/assets
-
-      - name: Cache Next.js build
-        uses: actions/cache@v5
-        with:
-          path: docs-renderer/.next/cache
-          key: nextjs-${{ runner.os }}-${{ hashFiles('docs-renderer/pnpm-lock.yaml') }}-${{ hashFiles('code-style/docs/**/*.md') }}
-          restore-keys: |
-            nextjs-${{ runner.os }}-${{ hashFiles('docs-renderer/pnpm-lock.yaml') }}-
-            nextjs-${{ runner.os }}-
-
-      - name: Install dependencies
-        working-directory: docs-renderer
-        run: pnpm install --frozen-lockfile
-
+      # The renderer is a prebuilt image, so there is no checkout, no pnpm install and no node_modules
+      # on the runner. `site` is mounted as the docs folder and `assets` as its sibling, which is what
+      # the `../assets/...` image paths in the markdown resolve to.
       - name: Build site
-        working-directory: docs-renderer
+        run: |
+          set -ex
+
+          docker run --rm --init \
+            -v "./site":/app/docs \
+            -v "./assets":/app/assets \
+            -e MDX \
+            -e DIST_DIR \
+            -e OUTPUT \
+            -e BASE_PATH \
+            -e STATIC_PAGE_GENERATION_TIMEOUT \
+            -e HOME_REDIRECT \
+            -e NAV_ORDER \
+            -e NAV_LABELS \
+            -e NEXT_PUBLIC_LOCALE \
+            -e NEXT_PUBLIC_LIBNAME \
+            -e NEXT_PUBLIC_LIBNAME_SHORT \
+            -e NEXT_PUBLIC_LIBNAME_DOTSUFFIX_LABEL \
+            -e GITHUB \
+            -e THEME_PRIMARY \
+            -e THEME_SCHEME \
+            -e THEME_CONTRAST \
+            -e THEME_NOTE \
+            -e THEME_TIP \
+            -e THEME_IMPORTANT \
+            -e THEME_WARNING \
+            -e THEME_CAUTION \
+            ghcr.io/thiagocajadev/do-docs:3 pnpm run build
         env:
+          # Paths are relative to /app inside the container, where ./site is mounted as docs.
           MDX: docs
-          DIST_DIR: out
+          DIST_DIR: docs/out${{ steps.pages.outputs.base_path }}
           OUTPUT: export
-          STATIC_PAGE_GENERATION_TIMEOUT: "300"
           BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          STATIC_PAGE_GENERATION_TIMEOUT: "300"
           HOME_REDIRECT: /javascript/readme
           # Ordem e agrupamento da sidebar. Pastas fora daqui vão para o fim, sem grupo.
           NAV_ORDER: |
@@ -125,6 +113,7 @@ jobs:
             typescript: TypeScript
             csharp: C#
             shared: Compartilhado
+          NEXT_PUBLIC_LOCALE: pt-BR
           NEXT_PUBLIC_LIBNAME: Code Style
           NEXT_PUBLIC_LIBNAME_SHORT: code-style
           NEXT_PUBLIC_LIBNAME_DOTSUFFIX_LABEL: docs
@@ -137,12 +126,11 @@ jobs:
           THEME_IMPORTANT: "#8957e5"
           THEME_WARNING: "#d29922"
           THEME_CAUTION: "#da3633"
-        run: pnpm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: docs-renderer/out
+          path: site/out${{ steps.pages.outputs.base_path }}
 
   deploy:
     needs: build
