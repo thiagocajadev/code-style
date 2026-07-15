@@ -1,6 +1,6 @@
-# Quick Reference
+# Referência rápida
 
-> Escopo: Java 25 LTS. Cheat-sheet das convenções; detalhes em `conventions/`.
+> Escopo: Java 25 LTS. Resumo das convenções; os detalhes ficam em `conventions/`.
 
 ## Nomenclatura
 
@@ -30,9 +30,9 @@
 | `build` / `create`     | Construção       | `buildReport`, `createInvoice`                       |
 | `parse` / `map`        | Conversão        | `parseDate`, `mapToViewModel`                        |
 
-## Taboos
+## O que evitar
 
-Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
+Nomes que não dizem nada. Troque pelo verbo ou pelo conceito certo.
 
 | Evitar                         | Usar                                                             |
 | ------------------------------ | ---------------------------------------------------------------- |
@@ -42,7 +42,7 @@ Nomes que não dizem nada. Troque pelo verbo ou conceito correto.
 | `tmp`, `val`, `obj`, `item`    | nome completo e expressivo                                       |
 | `Manager`, `Helper`, `Utils`   | nome do domínio: `OrderService`, `InvoiceBuilder`, `DateParser`  |
 
-## Records: imutabilidade por padrão
+## Records: o valor não muda depois de criado
 
 ```java
 record InvoiceData(String orderId, String customerId, BigDecimal amount, String currency) {}
@@ -50,7 +50,7 @@ record InvoiceData(String orderId, String customerId, BigDecimal amount, String 
 InvoiceData invoice = new InvoiceData("ord-1", "cust-99", new BigDecimal("149.90"), "BRL");
 ```
 
-## Pattern matching: switch expressivo
+## Pattern matching com switch
 
 ```java
 String label = switch (status) {

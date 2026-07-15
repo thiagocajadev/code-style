@@ -2,29 +2,26 @@
 
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 
-Spring Boot 4 é o framework Java mais popular para aplicações web e APIs REST. Esta versão
-requer Java 21+ e habilita **virtual threads** (threads leves gerenciadas pela JVM) por padrão
-via `spring.threads.virtual.enabled=true`.
+O Spring Boot 4 é o framework Java mais usado para aplicação web e API REST. Esta versão pede Java 21 no mínimo e já liga as **virtual threads** (threads leves que a JVM cria aos milhares) por padrão, pela configuração `spring.threads.virtual.enabled=true`. As três camadas do padrão aparecem em anotações: `@RestController` recebe o HTTP, `@Service` guarda a regra de negócio, e `@Repository` fala com o banco.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **@RestController** (anotação de controlador REST) | combina `@Controller` e `@ResponseBody`; cada método retorna o corpo HTTP serializado |
-| **@Service** (anotação de serviço) | marca a camada de negócio; orquestra regras e dependências |
-| **@Repository** (anotação de repositório) | marca a camada de acesso a dados; traduz exceções de persistência |
-| **JPA** (Jakarta Persistence API · API de Persistência Java) | especificação Java para mapeamento objeto-relacional |
-| **DI** (Dependency Injection · Injeção de Dependência) | o container Spring fornece dependências via construtor |
-| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | record para input/output HTTP; não vaza entidade JPA |
-| **virtual threads** (threads leves gerenciadas pela JVM) | habilitadas no Spring Boot 4 por padrão; código bloqueante escala como reativo |
+| **@RestController** (anotação de controlador REST) | junta `@Controller` e `@ResponseBody`; cada método devolve o corpo HTTP já serializado |
+| **@Service** (anotação de serviço) | marca a camada de negócio, que coordena as regras e as dependências |
+| **@Repository** (anotação de repositório) | marca a camada de acesso a dados e traduz as exceções de persistência |
+| **JPA** (Jakarta Persistence API · API de Persistência Java) | especificação Java para o mapeamento objeto-relacional |
+| **DI** (Dependency Injection · Injeção de Dependência) | o container do Spring entrega as dependências pelo construtor |
+| **DTO** (Data Transfer Object · Objeto de Transferência de Dados) | record de entrada e saída HTTP, que mantém a entidade JPA fora da resposta |
+| **virtual threads** (threads leves que a JVM cria aos milhares) | ligadas por padrão no Spring Boot 4; o código sequencial atende muitas requisições ao mesmo tempo |
 
-## Controller: camada HTTP
+## Controller: a camada HTTP
 
-O controller recebe a requisição, delega ao service e retorna a resposta. Nenhuma lógica de
-negócio fica aqui.
+O controller recebe a requisição, chama o service e devolve a resposta. Nenhuma regra de negócio mora aqui: quando o controller começa a validar dados de negócio e a montar objetos de domínio, a mesma regra vai precisar ser repetida no próximo controller que fizer a mesma operação.
 
 <details>
-<summary>❌ Ruim: controller com lógica de negócio e acesso direto ao banco</summary>
+<summary>❌ Ruim: controller com regra de negócio e acesso direto ao banco</summary>
 
 ```java
 @RestController
@@ -84,13 +81,12 @@ public class OrderController {
 
 </details>
 
-## Request e Response: records tipados
+## Request e Response como records
 
-Records eliminam boilerplate (código repetitivo) e garantem imutabilidade nos DTOs
-(Data Transfer Objects · Objetos de Transferência de Dados).
+O record descreve o contrato da API em poucas linhas, e o compilador gera o construtor, os acessores e o `equals`. O objeto nasce pronto e não muda depois, então a requisição que chegou não é alterada no meio do caminho. Manter records de entrada e saída separados da entidade JPA impede que uma coluna nova do banco apareça sozinha na resposta da API.
 
 <details>
-<summary>✅ Bom: records como contrato de API</summary>
+<summary>✅ Bom: records como contrato de entrada e saída da API</summary>
 
 ```java
 // request
@@ -131,12 +127,12 @@ public record OrderResponse(
 
 </details>
 
-## Service: camada de negócio
+## Service: a camada de negócio
 
-O service orquestra as regras de negócio. Não conhece HTTP nem detalhes de banco.
+O service coordena as regras de negócio e nada mais. Ele não sabe que veio de uma requisição HTTP, e não sabe se o banco é Postgres ou MySQL. Assim a mesma regra serve a um controller REST, a um consumer de fila e a um teste, sem arrastar junto o detalhe de onde a chamada nasceu.
 
 <details>
-<summary>✅ Bom: service orquestra, não implementa detalhes de infra</summary>
+<summary>✅ Bom: o service coordena as regras e delega a infra</summary>
 
 ```java
 @Slf4j
@@ -189,12 +185,12 @@ public class OrderService {
 
 </details>
 
-## Repository: Spring Data JPA
+## Repository com Spring Data JPA
 
-Spring Data JPA gera implementações de queries a partir de nomes de método. Para queries complexas, use JPQL (Java Persistence Query Language) com `@Query` (referencia a entidade Java pelo nome da classe) ou SQL nativo com `nativeQuery = true` (referencia a tabela real do banco).
+O Spring Data JPA lê o nome do método e escreve a query sozinho: `findByCustomerIdAndStatus` vira um `SELECT` com os dois filtros. Para uma consulta que o nome não alcança, escreva a query você mesmo, de dois jeitos. O **JPQL** (Java Persistence Query Language) fala em nomes de entidade Java pelo `@Query`. O **SQL nativo**, com `nativeQuery = true`, fala nos nomes reais das tabelas do banco.
 
 <details>
-<summary>✅ Bom: JPQL: referencia a entidade Java, alias expressivo</summary>
+<summary>✅ Bom: JPQL usa o nome da entidade Java e um alias claro</summary>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -229,7 +225,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 </details>
 
 <details>
-<summary>✅ Bom: SQL nativo: tabela real, padrão Tabela.coluna</summary>
+<summary>✅ Bom: SQL nativo usa a tabela real, no padrão Tabela.coluna</summary>
 
 ```java
 public interface OrderRepository extends JpaRepository<Order, String> {
@@ -260,12 +256,12 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
 </details>
 
-## @Transactional: uso correto
+## @Transactional no lugar certo
 
-`@Transactional` no service, não no repository (já gerenciado pelo Spring Data). Use `readOnly = true` por padrão; sobrescreva com `@Transactional` sem `readOnly` nos métodos de escrita.
+O `@Transactional` mora no service, a camada que decide o que entra numa transação. O repository já vem com a transação gerenciada pelo Spring Data, e o controller cuida do HTTP. Marque a classe do service com `readOnly = true`, que é o caso da maioria dos métodos, e sobrescreva com `@Transactional` sem `readOnly` só nos métodos que gravam.
 
 <details>
-<summary>❌ Ruim: @Transactional no controller ou sem readOnly</summary>
+<summary>❌ Ruim: @Transactional no controller, ou na classe sem readOnly</summary>
 
 ```java
 @Transactional // no controller: camada errada
@@ -296,12 +292,12 @@ public class OrderService {
 
 </details>
 
-## @ControllerAdvice: tratamento global de erros
+## @ControllerAdvice para os erros da aplicação
 
-Centralize o mapeamento de exceções para respostas HTTP em um `@RestControllerAdvice`.
+Um `@RestControllerAdvice` reúne num lugar só a tradução de cada exceção para a resposta HTTP. O `NotFoundException` vira 404, o `ValidationException` vira 400, e qualquer outra exceção cai no 500 com log. Sem esse ponto único, cada controller repetiria o mesmo `try/catch` para montar a resposta de erro.
 
 <details>
-<summary>✅ Bom: tratamento centralizado por tipo de exceção</summary>
+<summary>✅ Bom: um handler por tipo de exceção, num ponto só</summary>
 
 ```java
 @Slf4j
@@ -336,10 +332,10 @@ record ErrorResponse(String message, String action) {}
 
 ## Paginação
 
-Use `Pageable` e `Page<T>` para endpoints que retornam listas potencialmente grandes.
+Um endpoint que devolve lista pode crescer para milhares de linhas com o tempo. Receba um `Pageable` e devolva um `Page<T>`: o cliente pede uma página por vez, e a consulta traz só aquele pedaço do banco, em vez de carregar a tabela inteira na memória.
 
 <details>
-<summary>✅ Bom: paginação via Pageable</summary>
+<summary>✅ Bom: paginação com Pageable</summary>
 
 ```java
 // controller
@@ -364,9 +360,9 @@ public Page<Order> findAll(Pageable pageable) {
 
 </details>
 
-## Actuator: health e métricas
+## Actuator para saúde e métricas
 
-Spring Actuator expõe endpoints de saúde e métricas para monitoramento.
+O Spring Actuator abre endpoints que informam a saúde e as métricas da aplicação, para o sistema de monitoramento consultar. Exponha só os que o monitoramento usa, e proteja os detalhes: o `show-details: when-authorized` esconde o estado interno de quem não está autenticado.
 
 ```yaml
 # application.yml

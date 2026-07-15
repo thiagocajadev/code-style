@@ -1,28 +1,30 @@
-# Testing
+# Testes em Java
 
 > Escopo: Java 25 LTS com JUnit 6 + AssertJ + Mockito.
 
-Testes bem estruturados documentam o comportamento, isolam falhas e resistem ao refactor
-(refatoração). **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) é o esqueleto de
-todo teste.
+Um teste bem escrito faz três coisas: mostra como o código deve se comportar, aponta a falha quando algo quebra, e continua passando depois de uma refatoração que não muda o comportamento. O **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) dá o esqueleto: monte o cenário, execute a ação, verifique o resultado.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa setup, execução e verificação |
-| **AssertJ** (biblioteca de afirmações fluentes para Java) | biblioteca de assertions (afirmações) fluentes para Java |
-| **Mockito** (biblioteca de dados fictícios para Java) | biblioteca de mocks (objetos simulados) para Java |
-| **mock** (objeto simulado) | substituto de uma dependência real que responde conforme programado |
-| `@Mock` | cria um mock gerenciado pelo Mockito |
-| `@InjectMocks` | injeta os mocks nas dependências da classe sob teste |
-| `@Nested` | agrupa testes relacionados dentro de uma classe pai |
-| `@BeforeEach` | executa setup antes de cada método de teste |
+| **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) | estrutura que separa o preparo, a execução e a verificação |
+| **AssertJ** (biblioteca de asserções fluentes para Java) | biblioteca de asserções encadeadas, com mensagem de falha legível |
+| **Mockito** (biblioteca de dados fictícios para Java) | biblioteca que cria os dados fictícios das dependências |
+| **mock** (dados fictícios) | substituto de uma dependência real, programado para responder o que o teste precisa |
+| `@Mock` | cria um dado fictício gerenciado pelo Mockito |
+| `@InjectMocks` | injeta os dados fictícios na classe sob teste |
+| `@Nested` | agrupa testes relacionados dentro de uma classe |
+| `@BeforeEach` | roda o preparo antes de cada método de teste |
 
-## Fases misturadas: AAA
+<a id="mixed-phases-aaa"></a>
+
+## Fases misturadas contra o AAA
+
+Quando o preparo, a ação e a verificação ficam grudados sem separação, o leitor precisa decidir linha a linha em que fase cada uma está. Uma linha em branco antes da primeira asserção separa o que o teste faz do que ele verifica, e as três fases ficam visíveis de relance.
 
 <details>
-<summary>❌ Ruim: fases misturadas, sem separação visual</summary>
+<summary>❌ Ruim: preparo, ação e asserção grudados na mesma parede</summary>
 
 ```java
 @Test
@@ -38,7 +40,7 @@ void appliesDiscountToOrder() {
 </details>
 
 <details>
-<summary>✅ Bom: AAA explícito: setup agrupado, asserção isolada por blank line</summary>
+<summary>✅ Bom: preparo e ação juntos, a asserção separada por uma linha em branco</summary>
 
 ```java
 @Test
@@ -54,13 +56,12 @@ void appliesDiscountToOrder() {
 
 </details>
 
-## Assert semântico com AssertJ
+## Asserção que diz o que falhou, com AssertJ
 
-AssertJ (biblioteca de assertions fluentes) produz mensagens de falha legíveis e elimina o
-`assertTrue(a.equals(b))` genérico.
+Um `assertTrue(users.size() > 0)` que falha só informa "esperava true, veio false", e você fica sem saber o tamanho real da lista. O AssertJ descreve a intenção na chamada (`assertThat(users).isNotEmpty()`) e, quando falha, imprime o valor que encontrou, então a mensagem já aponta o problema sem depurar.
 
 <details>
-<summary>❌ Ruim: assert genérico, mensagem de falha obscura</summary>
+<summary>❌ Ruim: assertTrue genérico, a falha não diz o valor encontrado</summary>
 
 ```java
 @Test
@@ -74,7 +75,7 @@ void findsActiveUsers() {
 </details>
 
 <details>
-<summary>✅ Bom: AssertJ: assert expressivo, mensagem de falha clara</summary>
+<summary>✅ Bom: AssertJ diz a intenção e imprime o valor na falha</summary>
 
 ```java
 @Test
@@ -88,13 +89,12 @@ void findsActiveUsers() {
 
 </details>
 
-## Nomes de teste expressivos
+## Nomes de teste que descrevem o caso
 
-O nome do teste documenta o comportamento: **dado um contexto, quando uma ação, então um
-resultado**.
+O nome do teste conta o caso em uma frase: dado um contexto, quando acontece uma ação, então este é o resultado. `testOrder` não diz nada disso, e quando ele quebra na esteira, o nome sozinho não conta o que parou de funcionar. `appliesPercentageDiscountWhenOrderQualifies` conta.
 
 <details>
-<summary>❌ Ruim: nome genérico não documenta o comportamento</summary>
+<summary>❌ Ruim: nome genérico não conta o que o teste cobre</summary>
 
 ```java
 @Test
@@ -107,7 +107,7 @@ void test1() { /* ... */ }
 </details>
 
 <details>
-<summary>✅ Bom: nome descreve o cenário e o resultado esperado</summary>
+<summary>✅ Bom: o nome descreve o cenário e o resultado esperado</summary>
 
 ```java
 @Test
@@ -122,13 +122,12 @@ void returnsEmptyListWhenNoActiveUsersExist() { /* ... */ }
 
 </details>
 
-## Mockito: isolamento de dependências
+## Mockito para isolar as dependências
 
-Mockito cria mocks (objetos simulados) que isolam a unidade testada das suas dependências
-reais. Use `@Mock` para dependências e `@InjectMocks` para a classe sob teste.
+O Mockito cria dados fictícios das dependências, então o teste exercita só a classe alvo e não o banco de verdade por trás dela. Marque cada dependência com `@Mock` e a classe alvo com `@InjectMocks`. Um teste que usa o repositório real precisa de um banco no ar, fica lento e falha por motivos que não têm a ver com a lógica sob teste.
 
 <details>
-<summary>❌ Ruim: teste depende de implementação real do repositório</summary>
+<summary>❌ Ruim: o teste depende do repositório real e de um banco no ar</summary>
 
 ```java
 @Test
@@ -144,7 +143,7 @@ void findsUserById() {
 </details>
 
 <details>
-<summary>✅ Bom: mock isola a dependência; teste foca no comportamento do serviço</summary>
+<summary>✅ Bom: os dados fictícios isolam a dependência e o teste foca no serviço</summary>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -179,12 +178,12 @@ class UserServiceTest {
 
 </details>
 
-## @Nested: agrupamento por contexto
+## @Nested para agrupar por contexto
 
-`@Nested` agrupa testes por estado ou contexto, deixando a estrutura legível como documentação.
+O `@Nested` junta os testes que partem do mesmo cenário dentro de uma classe interna com nome, como "quando o pedido existe". A saída da esteira passa a se ler como uma lista de casos por situação, e fica claro qual contexto ficou sem cobertura.
 
 <details>
-<summary>✅ Bom: @Nested organiza por cenário</summary>
+<summary>✅ Bom: @Nested organiza os testes por cenário</summary>
 
 ```java
 class OrderServiceTest {
@@ -210,12 +209,12 @@ class OrderServiceTest {
 
 </details>
 
-## @BeforeEach: setup compartilhado
+## @BeforeEach para o preparo compartilhado
 
-Extraia setup repetido para `@BeforeEach`. Cada teste inicia com estado limpo.
+Tire o preparo repetido dos testes e coloque num método `@BeforeEach`. O JUnit o executa antes de cada teste, então cada um começa com um objeto novo e nenhum herda o estado deixado pelo anterior.
 
 <details>
-<summary>✅ Bom: @BeforeEach inicializa o estado compartilhado</summary>
+<summary>✅ Bom: @BeforeEach monta o estado antes de cada teste</summary>
 
 ```java
 @ExtendWith(MockitoExtension.class)
@@ -246,12 +245,12 @@ class DiscountServiceTest {
 
 </details>
 
-## Verificar apenas o que importa
+## Verificar só o que o chamador observa
 
-Cada teste verifica um comportamento. Verificar demais acopla o teste ao detalhe de implementação.
+Cada teste verifica um comportamento visível de fora. Conferir cada chamada interna que o método faz prende o teste ao jeito atual de implementar: no dia em que alguém troca o `findByEmail` por outra busca, sem mudar o resultado, o teste quebra sem que nada de fato tenha parado de funcionar.
 
 <details>
-<summary>❌ Ruim: verifica estado interno que não é contrato público</summary>
+<summary>❌ Ruim: verifica chamadas internas que não são o contrato público</summary>
 
 ```java
 @Test
@@ -267,7 +266,7 @@ void createsUser() {
 </details>
 
 <details>
-<summary>✅ Bom: verifica o contrato: o que o chamador observa</summary>
+<summary>✅ Bom: verifica o resultado e o efeito que o chamador observa</summary>
 
 ```java
 @Test

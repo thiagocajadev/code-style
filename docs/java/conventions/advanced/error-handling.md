@@ -1,26 +1,27 @@
-# Error Handling
+# Tratamento de erros em Java
 
 > Escopo: Java 25 LTS. Idiomas específicos deste ecossistema.
 
-Erros bem estruturados separam o que é **problema de negócio** do que é **falha técnica**.
-`try/catch` existe para capturar, nunca para esconder.
+Um erro bem estruturado deixa claro se o que aconteceu foi um **problema de negócio**, como um pedido que não existe, ou uma **falha técnica**, como o banco fora do ar. O `try/catch` serve para capturar a exceção e decidir o que fazer com ela. Quando o `catch` registra a falha e devolve `null`, ele apaga a informação do erro, e o problema reaparece mais longe, sem a pista de onde nasceu.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **checked exception** (exceção verificada) | exceção que o compilador obriga a declarar ou capturar; ex.: `IOException` |
-| **unchecked exception** (exceção não verificada) | subclasse de `RuntimeException`; não obrigada a declarar; preferida em código moderno |
-| **try-with-resources** (bloco de recursos gerenciados) | bloco que fecha recursos `AutoCloseable` automaticamente ao sair, com ou sem exceção |
-| **AutoCloseable** (autofechável) | interface que marca um recurso fechável automaticamente pelo `try-with-resources` |
-| **stack trace** (rastreamento de pilha) | sequência de chamadas que levou à exceção |
+| **checked exception** (exceção verificada) | exceção que o compilador obriga a declarar ou capturar, como `IOException` |
+| **unchecked exception** (exceção não verificada) | subclasse de `RuntimeException`; não precisa ser declarada; a escolha no código moderno |
+| **try-with-resources** (bloco que fecha recursos sozinho) | bloco que fecha os recursos `AutoCloseable` na saída, com ou sem exceção |
+| **AutoCloseable** (fechável automaticamente) | interface que marca um recurso para o `try-with-resources` fechar |
+| **stack trace** (rastreamento de pilha) | a sequência de chamadas que levou até a exceção |
 
 <a id="multiple-return-types"></a>
 
-## Múltiplos tipos de retorno
+## Um único tipo de retorno
+
+Quando o método devolve `null` na falta do ID, `null` no ID em branco e `null` no pedido não encontrado, quem chama recebe o mesmo `null` para três causas diferentes e não sabe qual delas ocorreu. Lançar uma exceção tipada em cada caso dá ao chamador a causa exata, e o caminho de sucesso devolve sempre um `Order` de verdade.
 
 <details>
-<summary>❌ Ruim: null, Optional vazio e objeto na mesma função com contrato inconsistente</summary>
+<summary>❌ Ruim: null para três causas diferentes, e quem chama não distingue qual foi</summary>
 
 ```java
 public Order processOrder(String orderId) {
@@ -38,7 +39,7 @@ public Order processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom: contrato consistente: lança exceção tipada em caso de falha</summary>
+<summary>✅ Bom: cada falha lança a exceção que nomeia a causa</summary>
 
 ```java
 public Order processOrder(String orderId) {
@@ -58,10 +59,12 @@ public Order processOrder(String orderId) {
 
 <a id="baseexception-centralized-abstraction"></a>
 
-## BaseException: abstração centralizada
+## Uma exceção base para o projeto inteiro
+
+Uma `RuntimeException` genérica não diz se o erro foi culpa do cliente ou do servidor, e obriga cada `catch` a ler a mensagem de texto para decidir. Uma hierarquia com raiz comum resolve isso: cada exceção carrega o código HTTP e a ação sugerida, e um único handler traduz qualquer uma delas para a resposta certa.
 
 <details>
-<summary>❌ Ruim: RuntimeException genérica, sem tipo, sem contrato</summary>
+<summary>❌ Ruim: RuntimeException genérica, sem código nem tipo</summary>
 
 ```java
 public User findUser(String id) {
@@ -84,7 +87,7 @@ public Order processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom: hierarquia de exceções tipada, contrato único</summary>
+<summary>✅ Bom: hierarquia com raiz comum, cada exceção com código e ação</summary>
 
 ```java
 // exceptions/AppException.java
@@ -132,10 +135,12 @@ public class InternalException extends AppException {
 
 </details>
 
-## try/catch que engole o erro
+## O try/catch que descarta o erro
+
+Quando o `catch` registra a falha e devolve `null`, ele descarta a exceção original e apaga o rastro de onde o problema começou. Quem chamou recebe `null` e trata como "não encontrado", quando na verdade o banco pode ter caído. Propague a exceção com o contexto e deixe o tratamento para o limite do sistema.
 
 <details>
-<summary>❌ Ruim: captura, loga e retorna null</summary>
+<summary>❌ Ruim: captura, registra log e devolve null</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -152,7 +157,7 @@ public Product findProductById(String id) {
 </details>
 
 <details>
-<summary>✅ Bom: propaga com contexto, trata na fronteira</summary>
+<summary>✅ Bom: propaga com contexto e trata no limite do sistema</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -171,13 +176,12 @@ public Product findProductById(String id) {
 
 </details>
 
-## try-with-resources (bloco de recursos gerenciados)
+## try-with-resources para fechar recursos
 
-Recursos que implementam `AutoCloseable` (interface que marca recursos fecháveis automaticamente)
-devem ser abertos em `try-with-resources`. Garante fechamento mesmo em caso de exceção.
+Abra todo recurso que implementa `AutoCloseable`, como um arquivo ou uma conexão, dentro de um `try-with-resources`. Ele fecha o recurso na saída do bloco mesmo quando uma exceção interrompe o meio do caminho. O fechamento manual no `finally` depende de alguém lembrar de escrevê-lo, e o esquecimento vaza o recurso.
 
 <details>
-<summary>❌ Ruim: fechamento manual em finally, propenso a erro</summary>
+<summary>❌ Ruim: fechamento manual no finally, fácil de esquecer</summary>
 
 ```java
 public String readFile(Path path) throws IOException {
@@ -207,10 +211,12 @@ public String readFile(Path path) throws IOException {
 
 </details>
 
-## Exceção como controle de fluxo
+## Exceção não é controle de fluxo
+
+Um valor ausente num mapa é um resultado esperado, e o código deve tratá-lo com uma verificação. Capturar o `NullPointerException` para transformar o ausente em `null` usa a exceção como um `if` disfarçado, esconde o caso normal e mascara o dia em que o `NullPointerException` vier de outra linha. Devolva um `Optional` e deixe o ausente explícito na assinatura.
 
 <details>
-<summary>❌ Ruim: try/catch controlando lógica de negócio normal</summary>
+<summary>❌ Ruim: try/catch tratando um caso de negócio comum</summary>
 
 ```java
 public User getUser(String id) {
@@ -225,7 +231,7 @@ public User getUser(String id) {
 </details>
 
 <details>
-<summary>✅ Bom: verificação explícita, sem exceção para fluxo normal</summary>
+<summary>✅ Bom: Optional deixa o valor ausente explícito na assinatura</summary>
 
 ```java
 public Optional<User> getUser(String id) {
@@ -238,9 +244,9 @@ public Optional<User> getUser(String id) {
 
 ## Quando usar try/catch
 
-| Use                                          | Não use                                               |
+| Use                                          | Evite                                                 |
 | -------------------------------------------- | ----------------------------------------------------- |
-| I/O externo (DB, rede, arquivo)              | Para encadear chamadas que já propagam erros          |
-| Fronteira do sistema (controller HTTP)       | Para logar e ignorar: mascara problemas               |
-| Para mapear erro técnico → erro de negócio   | Quando o erro já será tratado em camada superior      |
-| `try-with-resources` para recursos externos  | Como substituto de `Optional` ou verificação de null  |
+| I/O externo (banco, rede, arquivo)           | Em chamadas que já propagam o erro sozinhas           |
+| Limite do sistema (controller HTTP)          | Para registrar log e devolver null, o que esconde a falha |
+| Para traduzir erro técnico em erro de negócio | Quando uma camada acima já vai tratar o erro          |
+| `try-with-resources` para recursos externos  | No lugar de `Optional` ou de uma verificação de null  |

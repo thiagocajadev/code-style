@@ -1,29 +1,25 @@
-# Types
+# Tipos em Java
 
-Java moderno (25 LTS) oferece ferramentas para modelar domínio com precisão:
-**records** (registros imutáveis) para dados, **sealed classes** (classes seladas) para
-hierarquias fechadas, **enums** (enumerações) com comportamento e **generics** (tipos
-genéricos) para contratos reutilizáveis.
+O Java 25 LTS traz quatro construções para desenhar o domínio com precisão. O **record** guarda dados que nascem prontos e não mudam. A **sealed class** fecha a lista de filhos de uma hierarquia. O **enum** junta um conjunto fixo de valores com o comportamento de cada um. E os **generics** deixam um mesmo contrato servir a vários tipos sem abrir mão da checagem do compilador.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **record** (registro imutável) | tipo de dados imutável e compacto; gera construtor, getters e `equals` |
-| **sealed class** (classe selada) | hierarquia fechada com `permits`; o compilador verifica a exaustividade |
-| **enum** (enumeração) | conjunto fixo de instâncias nomeadas; pode ter campos e métodos |
-| **generics** (tipos genéricos) | parâmetros de tipo que dão segurança em coleções e contratos |
+| **record** (registro que não muda) | tipo de dados compacto; o compilador gera o construtor, os acessores e o `equals` |
+| **sealed class** (classe selada) | hierarquia fechada com `permits`; o compilador acusa erro se o `switch` esquecer um filho |
+| **enum** (enumeração) | conjunto fixo de instâncias nomeadas; cada uma pode ter campos e métodos |
+| **generics** (tipos genéricos) | parâmetros de tipo que dão segurança a coleções e contratos |
 | **wildcard** (curinga) | `? extends T` e `? super T` ampliam ou restringem o tipo aceito |
-| **pattern matching** (correspondência de padrão) | desconstrói records e tipos no `switch` ou `instanceof` |
-| **boilerplate** (código burocrático) | código repetitivo sem valor de domínio; records e Lombok eliminam |
+| **pattern matching** (correspondência de padrão) | abre records e tipos dentro do `switch` ou do `instanceof` |
+| **boilerplate** (código burocrático) | código repetido sem valor de domínio; o record dispensa boa parte dele |
 
-## Records: dados sem boilerplate (código burocrático)
+## Records dispensam o código burocrático
 
-`record` é o tipo certo para objetos de dados imutáveis. Compacto, seguro e sem
-getter/setter manual.
+O `record` é o tipo certo para um objeto de dados que não muda depois de criado. A declaração cabe em uma linha, e o compilador escreve o construtor, os acessores, o `equals`, o `hashCode` e o `toString`. Nenhum getter manual sobra para alguém escrever errado.
 
 <details>
-<summary>❌ Ruim: classe de dados verbosa</summary>
+<summary>❌ Ruim: uma classe inteira de campos e acessores manuais</summary>
 
 ```java
 public class UserProfile {
@@ -48,7 +44,7 @@ public class UserProfile {
 </details>
 
 <details>
-<summary>✅ Bom: record elimina o boilerplate</summary>
+<summary>✅ Bom: uma linha declara os campos e o compilador escreve o resto</summary>
 
 ```java
 public record UserProfile(String id, String name, String email) {}
@@ -60,10 +56,12 @@ profile.name(); // getter gerado
 
 </details>
 
-## Records com validação no construtor compacto
+## Records validam no construtor compacto
+
+O **construtor compacto** roda antes de os campos serem gravados, então ele é o lugar para rejeitar valores inválidos e normalizar o que entra. Um `Money` com valor negativo nunca chega a existir, e a moeda sempre nasce em maiúsculas.
 
 <details>
-<summary>✅ Bom: construtor compacto valida invariantes</summary>
+<summary>✅ Bom: o construtor compacto valida e normaliza antes de gravar</summary>
 
 ```java
 public record Money(BigDecimal amount, String currency) {
@@ -81,13 +79,12 @@ public record Money(BigDecimal amount, String currency) {
 
 </details>
 
-## Sealed classes: hierarquias fechadas
+## Sealed classes fecham a hierarquia
 
-`sealed` restringe quais classes podem implementar uma interface ou estender uma
-classe. O compilador garante que todos os casos são cobertos no switch.
+O `sealed` declara a lista exata de classes que podem implementar uma interface ou estender uma classe. Como o compilador conhece essa lista, ele consegue apontar um `switch` que deixou um caso de fora, e o programa deixa de precisar de um `default` que esconde o esquecimento.
 
 <details>
-<summary>❌ Ruim: hierarquia aberta, switch incompleto passa em silêncio</summary>
+<summary>❌ Ruim: hierarquia aberta, e o switch incompleto passa sem aviso</summary>
 
 ```java
 public abstract class PaymentResult {}
@@ -105,7 +102,7 @@ String message = switch (result) {
 </details>
 
 <details>
-<summary>✅ Bom: sealed garante cobertura total em tempo de compilação</summary>
+<summary>✅ Bom: o sealed faz o compilador exigir todos os casos</summary>
 
 ```java
 public sealed interface PaymentResult
@@ -127,10 +124,10 @@ String message = switch (result) {
 
 ## Enums com comportamento
 
-Enums não são só constantes. Podem carregar dados e implementar métodos.
+O enum guarda mais que uma lista de constantes: cada valor pode carregar campos e responder a métodos. Quando o texto de exibição mora dentro do próprio enum, ele fica num lugar só, e a corrente de `if` que repetia a associação em vários arquivos desaparece.
 
 <details>
-<summary>❌ Ruim: lógica espalhada fora do enum</summary>
+<summary>❌ Ruim: a associação de texto se repete fora do enum</summary>
 
 ```java
 public enum OrderStatus { PENDING, APPROVED, REJECTED, CANCELLED }
@@ -144,7 +141,7 @@ else if (status == OrderStatus.APPROVED) label = "Approved";
 </details>
 
 <details>
-<summary>✅ Bom: enum centraliza os dados e o comportamento</summary>
+<summary>✅ Bom: o enum guarda o texto e o comportamento junto de cada valor</summary>
 
 ```java
 public enum OrderStatus {
@@ -166,12 +163,12 @@ final var label = order.getStatus().label();
 
 </details>
 
-## Generics: contratos reutilizáveis
+## Generics deixam o contrato explícito
 
-Generics eliminam casts e tornam os contratos explícitos.
+O parâmetro de tipo diz o que a coleção guarda, e com isso o compilador dispensa a conversão manual e recusa o valor de tipo errado antes de rodar. O **raw type** (a coleção declarada sem o parâmetro, como `List` em vez de `List<Order>`) abre mão dessa checagem e devolve um `Object` que alguém precisa converter à mão.
 
 <details>
-<summary>❌ Ruim: raw type (tipo sem parâmetro genérico) perde a segurança do compilador</summary>
+<summary>❌ Ruim: o raw type devolve Object e exige conversão manual</summary>
 
 ```java
 public List fetchAll() { // raw type
@@ -185,7 +182,7 @@ Order order = (Order) orders.get(0); // cast manual
 </details>
 
 <details>
-<summary>✅ Bom: tipo parametrizado torna o contrato explícito</summary>
+<summary>✅ Bom: o tipo parametrizado dispensa a conversão</summary>
 
 ```java
 public List<Order> fetchAll() {
@@ -199,13 +196,12 @@ final var order = orders.getFirst(); // sem cast
 
 </details>
 
-## Bounded wildcards (curingas delimitados)
+## Curingas delimitados
 
-Use bounded wildcards para aceitar coleções de subtipos sem perder a
-legibilidade do contrato.
+O **bounded wildcard** (curinga delimitado) faz o método aceitar uma coleção de qualquer subtipo, sem escrever uma versão para cada um. `List<? extends Order>` recebe tanto `List<Order>` quanto `List<PriorityOrder>`, e o contrato continua legível na assinatura.
 
 <details>
-<summary>✅ Bom: covariance (covariância: aceitar tipos mais específicos) com `? extends`</summary>
+<summary>✅ Bom: `? extends` aceita a lista de qualquer subtipo de Order</summary>
 
 ```java
 // aceita List<Order>, List<PriorityOrder>, List<SampleOrder>

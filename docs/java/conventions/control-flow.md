@@ -1,30 +1,28 @@
-# Control Flow
+# Controle de fluxo em Java
 
 > Escopo: Java 25 LTS.
 
-Controle de fluxo evolui com a complexidade. A ferramenta certa depende de quantas condições
-existem, se mapeiam valores ou executam ações, e se o fluxo pode precisar de saída antecipada.
-**Guard clauses** (cláusulas de proteção) achatam aninhamento; **switch expressions**
-(expressões de seleção) substituem cadeias longas de `if/else`.
+A construção certa depende de três respostas: quantas condições o método precisa avaliar, se elas escolhem um valor ou disparam uma ação, e se o método pode terminar antes de chegar ao fim. Duas ferramentas resolvem a maior parte dos casos. A **guard clause** (cláusula de proteção) trata o caso inválido no topo e devolve o método plano. A **switch expression** (expressão de seleção) troca uma corrente longa de `if/else` por uma lista de casos.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **guard clause** (cláusula de proteção) | `if` no topo do método que retorna cedo em caso inválido; reduz aninhamento |
-| **early return** (retorno antecipado) | sair do método assim que o resultado for conhecido, sem `else` desnecessário |
-| **ternary** (operador ternário) | `cond ? a : b`; expressão condicional curta para valores simples |
-| **switch expression** (expressão de seleção) | `switch` que retorna valor; suporta `->` e pattern matching no Java moderno |
-| **pattern matching** (correspondência de padrão) | desconstrói tipos no `switch` ou `instanceof` sem cast manual |
-| **sealed class** (classe selada) | hierarquia fechada; o `switch` cobre todos os casos sem `default` |
+| **guard clause** (cláusula de proteção) | `if` no topo do método que sai cedo no caso inválido e evita aninhar o resto |
+| **early return** (retorno antecipado) | sair do método assim que o resultado for conhecido, sem passar por um `else` |
+| **ternary** (operador ternário) | `cond ? a : b`, uma condição curta que escolhe entre dois valores |
+| **switch expression** (expressão de seleção) | `switch` que devolve um valor; aceita a seta `->` e pattern matching no Java moderno |
+| **pattern matching** (correspondência de padrão) | abre o tipo dentro do `switch` ou do `instanceof` sem escrever a conversão à mão |
+| **sealed class** (classe selada) | hierarquia fechada: o compilador conhece todos os filhos e acusa erro se o `switch` esquecer um |
+
+<a id="if-and-else"></a>
 
 ## If e else
 
-O ponto de partida. Para dois caminhos, `if/else` funciona. O `else` após um `return` é ruído:
-o fluxo já saiu.
+Para dois caminhos, o `if/else` resolve. Quando o primeiro bloco termina em `return`, o `else` sobra: o método já saiu, e as linhas seguintes só rodam no outro caso.
 
 <details>
-<summary>❌ Ruim: else desnecessário após return</summary>
+<summary>❌ Ruim: o else vem depois de um return que já encerrou o método</summary>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -39,7 +37,7 @@ private BigDecimal getDiscount(User user) {
 </details>
 
 <details>
-<summary>✅ Bom: early return elimina o else</summary>
+<summary>✅ Bom: o retorno antecipado dispensa o else</summary>
 
 ```java
 private BigDecimal getDiscount(User user) {
@@ -57,11 +55,10 @@ private BigDecimal getDiscount(User user) {
 
 ## Ternário
 
-Para atribuição de dois valores possíveis em uma linha, não para lógica de fluxo. Encadeado,
-vira puzzle (quebra-cabeça). Três ou mais alternativas → guard clauses ou switch expression.
+O ternário escolhe entre dois valores numa linha, para uma atribuição simples. Encadear vários vira um quebra-cabeça: o leitor precisa seguir cada `?` e cada `:` para achar qual ramo responde. Com três alternativas ou mais, passe para guard clauses ou switch expression.
 
 <details>
-<summary>❌ Ruim: ternário encadeado ilegível</summary>
+<summary>❌ Ruim: cinco condições encadeadas num único ternário</summary>
 
 ```java
 final var label = score >= 90 ? "A"
@@ -74,7 +71,7 @@ final var label = score >= 90 ? "A"
 </details>
 
 <details>
-<summary>✅ Bom: ternário para dois valores; guard clauses para três ou mais</summary>
+<summary>✅ Bom: ternário para dois valores e guard clauses para três ou mais</summary>
 
 ```java
 final var label = user.isPremium() ? "Premium" : "Standard";
@@ -91,13 +88,14 @@ private String getGrade(int score) {
 
 </details>
 
-## Guard clauses: aninhamento em cascata
+<a id="nested-conditionals"></a>
 
-Quando as condições crescem e se aninham, cada nível enterra a lógica um nível mais fundo.
-Guard clauses invertem: valide as saídas no topo e deixe o caminho feliz limpo.
+## Guard clauses no lugar do aninhamento em cascata
+
+Cada `if` aninhado empurra a lógica principal um nível mais para dentro, e o caminho principal acaba no fundo de quatro chaves. A guard clause vira a ordem: cada condição inválida sai no topo com um `return`, e o caminho principal fica plano, no nível de fora do método.
 
 <details>
-<summary>❌ Ruim: lógica enterrada em múltiplos níveis</summary>
+<summary>❌ Ruim: o caminho principal fica no fundo de quatro if aninhados</summary>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -117,7 +115,7 @@ private Invoice processOrder(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: guard clauses, caminho feliz ao fundo</summary>
+<summary>✅ Bom: cada caso inválido sai no topo e o caminho principal fica plano</summary>
 
 ```java
 private Invoice processOrder(Order order) {
@@ -134,14 +132,12 @@ private Invoice processOrder(Order order) {
 
 </details>
 
-## Switch expression: lookup de valor
+## Switch expression para escolher um valor
 
-Quando múltiplos guards ou `if/else` retornam um valor para cada chave, a lista de condições
-vira um catálogo. Switch expression com arrow (`->`) é compacto, sem fall-through (queda entre casos) acidental e
-sem `break`.
+Quando vários `if/else` devolvem um valor por chave, a lista de condições é um catálogo disfarçado. A switch expression com seta (`->`) escreve esse catálogo direto: uma linha por caso, sem `break` e sem o **fall-through** (a execução escorregar de um caso para o seguinte quando falta o `break`), que a forma tradicional deixa acontecer por engano.
 
 <details>
-<summary>❌ Ruim: switch tradicional verboso com fall-through implícito</summary>
+<summary>❌ Ruim: switch tradicional, com variável de apoio e um break por caso</summary>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -166,7 +162,7 @@ private String getStatusLabel(OrderStatus status) {
 </details>
 
 <details>
-<summary>✅ Bom: switch expression: compacto, sem fall-through, sem break</summary>
+<summary>✅ Bom: uma linha por caso, sem break e sem variável de apoio</summary>
 
 ```java
 private String getStatusLabel(OrderStatus status) {
@@ -183,13 +179,12 @@ private String getStatusLabel(OrderStatus status) {
 
 </details>
 
-## Switch: despacho de ações
+## Switch para disparar ações
 
-Quando cada caso precisa executar múltiplas ações (não retornar um valor, mas fazer algo),
-`switch` com bloco `{}` é mais claro que um `if/else` encadeado.
+Quando cada caso executa um conjunto de ações em vez de devolver um valor, o `switch` com bloco `{}` separa os casos melhor que uma corrente de `if/else`. Cada ramo fica visível dentro das próprias chaves, e a chave que decide aparece uma vez no topo.
 
 <details>
-<summary>❌ Ruim: if/else encadeado para despacho de ações</summary>
+<summary>❌ Ruim: corrente de if/else para escolher qual ação disparar</summary>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -209,7 +204,7 @@ private void processPaymentEvent(PaymentEvent event) {
 </details>
 
 <details>
-<summary>✅ Bom: switch para despacho de comportamento</summary>
+<summary>✅ Bom: o switch separa cada conjunto de ações no próprio bloco</summary>
 
 ```java
 private void processPaymentEvent(PaymentEvent event) {
@@ -232,13 +227,12 @@ private void processPaymentEvent(PaymentEvent event) {
 
 </details>
 
-## Pattern matching: tipo e desestruturação
+## Pattern matching por tipo
 
-Java 21+ permite desestruturar no switch direto do tipo, eliminando o cast manual. Com sealed
-classes, o compilador garante exaustividade, sem `default` necessário.
+Do Java 21 em diante, o `switch` reconhece o tipo do valor e abre o objeto na mesma linha, sem a conversão manual que o `instanceof` clássico exige. Quando o tipo é uma sealed class, o compilador conhece a lista fechada de filhos e acusa erro se o `switch` deixar um de fora, então o `default` deixa de ser necessário.
 
 <details>
-<summary>❌ Ruim: instanceof + cast manual</summary>
+<summary>❌ Ruim: instanceof seguido da conversão escrita à mão</summary>
 
 ```java
 private String describePayment(PaymentResult result) {
@@ -256,7 +250,7 @@ private String describePayment(PaymentResult result) {
 </details>
 
 <details>
-<summary>✅ Bom: pattern matching com desestruturação; sealed garante exaustividade</summary>
+<summary>✅ Bom: o switch abre o tipo e a sealed class cobre todos os casos</summary>
 
 ```java
 // sealed interface PaymentResult permits PaymentSuccess, PaymentFailure, PaymentPending {}
@@ -276,16 +270,14 @@ private String describePayment(PaymentResult result) {
 
 ---
 
-_As ferramentas acima resolvem **decisão**: qual caminho seguir. As abaixo resolvem
-**iteração**: quantas vezes percorrer._
+_As construções acima escolhem **qual caminho** o método segue. As de baixo controlam **quantas vezes** ele percorre uma coleção._
 
-## Circuit break
+## Parar na primeira ocorrência
 
-Antes de escrever um loop, verifique se `findFirst`, `anyMatch` ou `allMatch` já resolve.
-Esses métodos param no primeiro match, sem percorrer o resto.
+Antes de escrever um laço à mão, veja se `findFirst`, `anyMatch` ou `allMatch` já resolve. Esses métodos param assim que encontram o resultado e deixam o resto da lista sem visitar, então o laço não precisa de uma flag para lembrar que já achou.
 
 <details>
-<summary>❌ Ruim: loop manual com flag percorre tudo</summary>
+<summary>❌ Ruim: laço com flag continua rodando depois de encontrar</summary>
 
 ```java
 private Product findFirstExpiredProduct(List<Product> products) {
@@ -304,7 +296,7 @@ private Product findFirstExpiredProduct(List<Product> products) {
 </details>
 
 <details>
-<summary>✅ Bom: stream para no primeiro match</summary>
+<summary>✅ Bom: o stream para na primeira ocorrência</summary>
 
 ```java
 // para no primeiro match
@@ -321,11 +313,10 @@ final var allProductsActive = products.stream().allMatch(Product::isActive);
 
 ## for-each
 
-Para efeitos colaterais sobre cada item de uma coleção, `for-each` é legível e suficiente:
-sem índice, sem variável de controle.
+Para executar uma ação em cada item de uma coleção, o `for-each` basta e se lê direto: nenhum índice, nenhuma variável de controle para manter. O `for` com índice só se justifica quando o índice em si entra na lógica.
 
 <details>
-<summary>❌ Ruim: for indexado quando o índice nunca é usado</summary>
+<summary>❌ Ruim: for com índice que nunca é lido</summary>
 
 ```java
 for (int i = 0; i < orders.size(); i++) {
@@ -336,7 +327,7 @@ for (int i = 0; i < orders.size(); i++) {
 </details>
 
 <details>
-<summary>✅ Bom: for-each para efeitos colaterais por item</summary>
+<summary>✅ Bom: for-each executa a ação em cada item</summary>
 
 ```java
 for (final var order : orders) {
@@ -350,11 +341,10 @@ for (final var order : orders) {
 
 ## while
 
-Quando não há coleção pré-definida e o critério de parada é uma condição, não um índice ou
-tamanho, `while` é a escolha natural.
+O `while` serve quando não existe uma coleção para percorrer e a parada depende de uma condição de estado, como uma conexão que ficou pronta. Escrever isso num `for` com índice cria um contador que ninguém usa e sugere uma contagem que não existe.
 
 <details>
-<summary>❌ Ruim: for simulando condição de parada por estado</summary>
+<summary>❌ Ruim: o for finge contar, mas a parada é por estado</summary>
 
 ```java
 for (int attempt = 0; attempt < maxAttempts; attempt++) {
@@ -366,7 +356,7 @@ for (int attempt = 0; attempt < maxAttempts; attempt++) {
 </details>
 
 <details>
-<summary>✅ Bom: while para condição de parada por estado</summary>
+<summary>✅ Bom: o while para quando a condição de estado muda</summary>
 
 ```java
 var attempt = 0;
@@ -383,10 +373,10 @@ while (attempt < maxAttempts) {
 
 ## do-while
 
-Use `do-while` quando a primeira iteração deve sempre executar, independente da condição.
+O `do-while` avalia a condição no fim, então a primeira volta roda sempre. Use quando o corpo precisa executar ao menos uma vez antes da primeira checagem, como ao drenar uma fila que você sabe ter pelo menos um item.
 
 <details>
-<summary>❌ Ruim: while quando a fila deve processar ao menos um item</summary>
+<summary>❌ Ruim: o while checa antes e pode nunca executar o corpo</summary>
 
 ```java
 // verifica antes de executar: se a fila já estiver vazia, nunca executa
@@ -399,7 +389,7 @@ while (!taskQueue.isEmpty()) {
 </details>
 
 <details>
-<summary>✅ Bom: do-while quando a primeira execução é garantida</summary>
+<summary>✅ Bom: o do-while garante a primeira execução</summary>
 
 ```java
 // drena a fila: processa pelo menos um item antes de verificar

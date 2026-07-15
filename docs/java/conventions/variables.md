@@ -1,24 +1,26 @@
-# Variables
+# Variáveis em Java
 
-Dúvida? Use `final`. Só omita quando precisar reatribuir. **Immutability** (imutabilidade) reduz bugs e torna o fluxo previsível.
+Comece toda variável com `final` e tire o modificador só quando o código precisar reatribuir aquele nome. Uma variável que não muda depois de atribuída dispensa o leitor de procurar, no resto do método, se alguém trocou o valor no caminho.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **final** (referência fixa) | modificador que impede reatribuição da variável após inicialização |
-| **var** (inferência de tipo local) | declaração `var` (Java 10+) deixa o compilador inferir o tipo da variável local |
-| **immutability** (imutabilidade) | propriedade de um valor que não muda após criado; reduz bugs e facilita concorrência |
-| **shadowing** (sombreamento) | variável local que oculta uma de mesmo nome em escopo externo |
+| **final** (referência fixa) | modificador que impede reatribuir a variável depois da inicialização |
+| **var** (inferência de tipo local) | declaração `var` (Java 10 em diante) deixa o compilador deduzir o tipo da variável local |
+| **immutability** (o valor não muda depois de criado) | o objeto nasce pronto e nenhum método altera seu conteúdo, o que dispensa cuidado com concorrência |
+| **shadowing** (sombreamento) | variável local que oculta outra de mesmo nome declarada num escopo externo |
 | **scope** (escopo) | região do código em que a variável é visível; declarar perto do uso encurta o escopo |
-| **effectively final** (efetivamente final) | variável que nunca é reatribuída, mesmo sem `final`; lambdas exigem isso |
+| **effectively final** (efetivamente final) | variável nunca reatribuída, mesmo sem escrever `final`; lambdas só aceitam essa forma |
 
 <a id="unnecessary-mutation"></a>
 
-## Mutação desnecessária
+## Reatribuição desnecessária
+
+A variável sem `final` avisa ao leitor que o valor pode trocar mais adiante. Quando ele nunca troca, o aviso é falso e custa uma releitura.
 
 <details>
-<summary>❌ Ruim: variável reatribuída sem necessidade</summary>
+<summary>❌ Ruim: a variável anuncia uma troca que nunca acontece</summary>
 
 ```java
 String userName = "Alice"; // nunca reatribuído
@@ -28,7 +30,7 @@ int maxRetries = 3;        // nunca reatribuído
 </details>
 
 <details>
-<summary>✅ Bom: final por padrão, mutável só quando necessário</summary>
+<summary>✅ Bom: final por padrão, e o contador sem final porque ele troca mesmo</summary>
 
 ```java
 final var userName = "Alice";
@@ -44,13 +46,14 @@ while (attempt < maxRetries) {
 
 <a id="parameter-mutation"></a>
 
-## Mutação de parâmetros
+## Alteração do objeto recebido por parâmetro
 
-Parâmetros são passados por referência para objetos. Alterar o estado de um parâmetro muda o
-objeto do chamador: efeito colateral invisível e difícil de rastrear.
+Quando um método recebe um objeto, ele recebe uma referência para o mesmo objeto que o chamador tem em mãos. Escrever nesse objeto altera o que o chamador enxerga, e a alteração não aparece em lugar nenhum da assinatura. Quem lê `applyDiscount(order)` espera que o `order` dele continue igual depois da chamada.
+
+Devolva o novo estado como retorno. A assinatura passa a dizer o que acontece, e o chamador decide se aproveita o resultado.
 
 <details>
-<summary>❌ Ruim: mutação do parâmetro recebido</summary>
+<summary>❌ Ruim: o método escreve no pedido do chamador sem avisar</summary>
 
 ```java
 private void applyDiscount(Order order) {
@@ -62,7 +65,7 @@ private void applyDiscount(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: retorna novo estado, sem efeitos colaterais</summary>
+<summary>✅ Bom: devolve um pedido novo e deixa o original intacto</summary>
 
 ```java
 private Order applyDiscount(Order order) {
@@ -80,10 +83,10 @@ private Order applyDiscount(Order order) {
 
 ## Evitar valores mágicos
 
-Números e strings soltos no código não dizem nada. Constantes nomeadas tornam a intenção visível.
+Um número solto no meio de uma condição obriga o leitor a adivinhar de onde ele saiu. `86400000` é um dia em milissegundos, e descobrir isso exige uma conta. A constante nomeada guarda a resposta ao lado do valor, e o nome aparece de novo em cada lugar que usa o número.
 
 <details>
-<summary>❌ Ruim: o que significa 18? e 86400000?</summary>
+<summary>❌ Ruim: o número não diz de onde saiu nem o que representa</summary>
 
 ```java
 if (user.getAge() >= 18) { /* ... */ }
@@ -95,7 +98,7 @@ scheduler.schedule(this::syncData, 86400000, TimeUnit.MILLISECONDS);
 </details>
 
 <details>
-<summary>✅ Bom: constantes nomeadas</summary>
+<summary>✅ Bom: o nome da constante guarda o significado do número</summary>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -110,13 +113,12 @@ scheduler.schedule(this::syncData, ONE_DAY_MS, TimeUnit.MILLISECONDS);
 
 </details>
 
-## Records: imutabilidade estrutural
+## Records para transportar dados
 
-Para objetos de dados que não mudam após a criação, use `record`. O compilador gera construtor,
-getters, `equals`, `hashCode` e `toString` automaticamente.
+Um `record` descreve um objeto que nasce pronto e nunca é alterado. O compilador escreve sozinho o construtor, os acessores, o `equals`, o `hashCode` e o `toString`, então a declaração cabe em quatro linhas e não sobra código repetido para alguém errar na revisão.
 
 <details>
-<summary>❌ Ruim: classe mutável para transportar dados</summary>
+<summary>❌ Ruim: uma classe inteira de acessores para carregar quatro campos</summary>
 
 ```java
 public class InvoiceData {
@@ -132,7 +134,7 @@ public class InvoiceData {
 </details>
 
 <details>
-<summary>✅ Bom: record elimina o boilerplate e garante imutabilidade</summary>
+<summary>✅ Bom: o record declara os campos e o compilador escreve o resto</summary>
 
 ```java
 public record InvoiceData(
@@ -148,13 +150,12 @@ final var invoice = new InvoiceData("ord-1", "cust-99", new BigDecimal("149.90")
 
 </details>
 
-## var: inferência de tipo
+## var e a inferência de tipo
 
-`var` reduz verbosidade quando o tipo é óbvio pelo lado direito da atribuição. Não use quando o
-tipo inferido não é imediatamente claro.
+Use `var` quando o lado direito da atribuição já mostra o tipo: `new User(...)` deixa claro que a variável é um `User`. Quando o tipo só apareceria na assinatura de um método que está em outro arquivo, escreva o tipo por extenso, porque quem lê o código no diff do pull request não tem o editor para consultar.
 
 <details>
-<summary>❌ Ruim: var obscurece o tipo</summary>
+<summary>❌ Ruim: descobrir o tipo exige abrir outro arquivo</summary>
 
 ```java
 final var result = repository.fetch(); // qual é o tipo?
@@ -164,7 +165,7 @@ final var x = buildSomething();        // sem contexto
 </details>
 
 <details>
-<summary>✅ Bom: var quando o tipo é óbvio; tipo explícito quando agrega clareza</summary>
+<summary>✅ Bom: var onde o tipo aparece na linha, e tipo escrito onde ele esclarece</summary>
 
 ```java
 final var orders = orderRepository.findAll();    // List<Order>: óbvio pelo nome
@@ -175,14 +176,14 @@ final Optional<User> found = userRepository.findById(id); // tipo explícito agr
 
 </details>
 
-## Primitivos vs wrappers
+## Primitivos e wrappers
 
-Use primitivos (`int`, `long`, `boolean`) para valores locais e parâmetros de método. Use
-wrappers (tipos de referência: `Integer`, `Long`, `Boolean`) apenas quando nulidade ou uso em
-coleções genéricas for necessário.
+Prefira o primitivo (`int`, `long`, `boolean`) em variável local e em parâmetro de método. O **wrapper** (`Integer`, `Long`, `Boolean`, a versão do primitivo como objeto) serve para dois casos: quando o valor precisa aceitar `null` e quando ele entra numa coleção genérica, que só guarda objetos.
+
+Passar de um para o outro tem nome, **autoboxing** (empacotamento automático), e cada conversão aloca um objeto novo. Declarar `Integer count = 0` num contador de laço repete essa alocação em toda volta sem ganhar nada em troca.
 
 <details>
-<summary>❌ Ruim: wrapper com autoboxing (conversão automática de primitivo para referência) desnecessário</summary>
+<summary>❌ Ruim: o wrapper aparece onde nenhum valor pode ser nulo</summary>
 
 ```java
 Integer count = 0;           // autoboxing desnecessário
@@ -193,7 +194,7 @@ Long totalMs = 86_400_000L;  // valor fixo, nunca null
 </details>
 
 <details>
-<summary>✅ Bom: primitivo por padrão, wrapper só quando necessário</summary>
+<summary>✅ Bom: primitivo no contador, wrapper só dentro da coleção genérica</summary>
 
 ```java
 int count = 0;

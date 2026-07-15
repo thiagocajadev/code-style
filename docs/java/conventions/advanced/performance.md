@@ -1,26 +1,26 @@
-# Performance
+# Performance em Java
 
 > Escopo: Java 25 LTS. Otimize onde há evidência de problema; código legível sempre.
+
+Otimize o trecho que uma medição apontou como lento, e mantenha o resto do código legível. As dicas abaixo tratam de casos onde a escolha mais rápida também é clara, ou onde o ganho aparece num **hot path** (o trecho chamado muitas vezes por segundo, onde qualquer custo extra se multiplica). Fora desses casos, escreva o código que se lê melhor e deixe a otimização para quando o profiler mostrar o gargalo.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **hot path** (caminho crítico de execução) | trecho de código chamado com altíssima frequência; impacto de overhead é amplificado |
-| **overhead** (custo adicional) | processamento extra além da lógica de negócio; alocações, boxing, chamadas de método |
-| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; parallelStream() pode ajudar |
-| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco; virtual threads resolvem melhor |
-| **preallocation** (pré-alocação) | informar a capacidade inicial de uma coleção para evitar realocações internas |
-| **ForkJoinPool** (pool de roubo de trabalho) | pool compartilhado da JVM usado por `parallelStream()`; não bloquear nele com I/O |
+| **hot path** (caminho de execução crítico) | trecho chamado muitas vezes por segundo; qualquer custo extra ali se multiplica |
+| **overhead** (custo extra) | processamento além da lógica de negócio: alocações, boxing, chamadas de método |
+| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é o processamento; o `parallelStream()` pode ajudar |
+| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco; as virtual threads resolvem melhor |
+| **preallocation** (pré-alocação) | informar a capacidade inicial de uma coleção para evitar que ela cresça em etapas |
+| **ForkJoinPool** (pool de roubo de trabalho) | pool compartilhado da JVM que o `parallelStream()` usa; não prender ele com I/O |
 
-## Streams vs loops: escolha consciente
+## Stream ou laço: uma escolha consciente
 
-Streams são declarativos e legíveis para pipelines de transformação. Para operações simples
-sobre coleções pequenas, a diferença de performance é irrelevante. Para hot paths
-(caminhos críticos de execução), prefira `for-each`.
+O stream se lê bem para uma sequência de transformações, e para coleção pequena a diferença de tempo não aparece. Num hot path, o `for-each` evita o custo extra que o stream cria a cada elemento (um objeto de pipeline e uma chamada de método por etapa), e o ganho passa a valer porque o trecho roda muitas vezes por segundo.
 
 <details>
-<summary>✅ Bom: stream para transformação declarativa</summary>
+<summary>✅ Bom: stream para uma transformação declarativa</summary>
 
 ```java
 final var activeUserIds = users.stream()
@@ -32,7 +32,7 @@ final var activeUserIds = users.stream()
 </details>
 
 <details>
-<summary>✅ Bom: for-each em hot path: sem overhead de stream</summary>
+<summary>✅ Bom: for-each no trecho chamado muitas vezes, sem o custo extra do stream</summary>
 
 ```java
 // chamado milhões de vezes por segundo
@@ -43,13 +43,12 @@ for (final var item : items) {
 
 </details>
 
-## ArrayList: pré-alocação
+## Pré-alocar o ArrayList
 
-`ArrayList` cresce dobrando de tamanho. Se o tamanho final é conhecido, passe-o no construtor
-para evitar realocações.
+Quando o `ArrayList` enche, ele cria um array maior e copia tudo para o novo. Se você já sabe quantos itens vai guardar, passe esse número no construtor: a lista nasce do tamanho certo e a cópia não acontece nenhuma vez.
 
 <details>
-<summary>❌ Ruim: ArrayList cresce dinamicamente com realocação</summary>
+<summary>❌ Ruim: a lista cresce em etapas e copia os itens a cada vez</summary>
 
 ```java
 final var results = new ArrayList<String>();
@@ -62,7 +61,7 @@ for (final var item : items) {
 </details>
 
 <details>
-<summary>✅ Bom: tamanho inicial conhecido</summary>
+<summary>✅ Bom: a lista nasce do tamanho final</summary>
 
 ```java
 final var results = new ArrayList<String>(items.size());
@@ -74,12 +73,12 @@ for (final var item : items) {
 
 </details>
 
-## String: concatenação em loop
+## Concatenar String dentro de um laço
 
-O operador `+` em loop cria um objeto `String` por iteração. `StringBuilder` reutiliza o buffer.
+Uma `String` não muda depois de criada, então o `+` dentro do laço cria um objeto novo a cada volta e joga o anterior fora. Com mil itens, são mil objetos descartados. O `StringBuilder` escreve tudo no mesmo buffer, e o `String.join` resolve o caso da lista em uma linha.
 
 <details>
-<summary>❌ Ruim: concatenação cria N objetos</summary>
+<summary>❌ Ruim: o + no laço cria um objeto novo por volta</summary>
 
 ```java
 String result = "";
@@ -91,7 +90,7 @@ for (final var item : items) {
 </details>
 
 <details>
-<summary>✅ Bom: StringBuilder ou String.join()</summary>
+<summary>✅ Bom: StringBuilder no laço, String.join para a lista</summary>
 
 ```java
 // para listas, String.join() é mais expressivo
@@ -108,13 +107,12 @@ for (final var item : items) {
 
 </details>
 
-## HashMap: capacidade inicial
+## Capacidade inicial do HashMap
 
-`HashMap` redimensiona quando atinge 75% de sua capacidade (fator de carga padrão). Para mapas
-de tamanho conhecido, calcule a capacidade inicial: `tamanho / 0.75 + 1`.
+O `HashMap` refaz sua tabela interna quando chega a 75% da capacidade, que é o fator de carga padrão. Para um mapa de tamanho conhecido, informe a capacidade inicial pela conta `tamanho / 0,75 + 1`, e o mapa evita refazer a tabela enquanto você o preenche.
 
 <details>
-<summary>❌ Ruim: HashMap com capacidade padrão (16), realoca se >12 entradas</summary>
+<summary>❌ Ruim: capacidade padrão de 16, refaz a tabela acima de 12 entradas</summary>
 
 ```java
 final var cache = new HashMap<String, User>(); // padrão: 16
@@ -124,7 +122,7 @@ final var cache = new HashMap<String, User>(); // padrão: 16
 </details>
 
 <details>
-<summary>✅ Bom: capacidade calculada</summary>
+<summary>✅ Bom: capacidade informada pela conta</summary>
 
 ```java
 final int expectedSize = 100;
@@ -133,14 +131,12 @@ final var cache = new HashMap<String, User>(expectedSize * 2); // fator de segur
 
 </details>
 
-## Stream.parallel(): usar com critério
+## Stream.parallel() com critério
 
-`Stream.parallel()` usa o ForkJoinPool (pool de roubo de trabalho) comum da JVM. É benéfico
-apenas para operações CPU-bound sobre grandes datasets (conjuntos de dados). Para I/O-bound,
-use virtual threads.
+O `Stream.parallel()` divide o trabalho no ForkJoinPool comum da JVM, o mesmo que outras partes da aplicação usam. Ele compensa em operação limitada por CPU sobre uma lista grande, onde há cálculo de verdade para dividir entre os núcleos. Numa operação de I/O, cada elemento parado esperando a rede ocupa uma thread desse pool compartilhado, e as demais partes da aplicação ficam sem vaga; ali as virtual threads servem melhor.
 
 <details>
-<summary>❌ Ruim: parallel para operação I/O-bound (piora o throughput)</summary>
+<summary>❌ Ruim: parallel numa operação de I/O prende o pool compartilhado</summary>
 
 ```java
 final var results = orders.parallelStream()
@@ -151,7 +147,7 @@ final var results = orders.parallelStream()
 </details>
 
 <details>
-<summary>✅ Bom: parallel apenas para CPU-bound com dados grandes</summary>
+<summary>✅ Bom: parallel só no cálculo pesado sobre lista grande</summary>
 
 ```java
 // CPU-bound: cálculo pesado sobre lista grande (>10k elementos)
@@ -162,13 +158,12 @@ final var total = largePriceList.parallelStream()
 
 </details>
 
-## Collections.unmodifiableList vs List.of
+## List.of no lugar de Collections.unmodifiableList
 
-Para coleções que não devem ser modificadas após criação, prefira `List.of`, `Set.of` e
-`Map.of` (imutáveis por construção) a `Collections.unmodifiableList` (wrapper mutável).
+Para uma coleção que ninguém deve alterar depois de criada, prefira `List.of`, `Set.of` e `Map.of`, que criam uma coleção fixa de verdade. O `Collections.unmodifiableList` só embrulha a lista original: quem ainda tem a referência à lista de dentro consegue escrever nela, e a mudança aparece na versão que era para ser fixa.
 
 <details>
-<summary>❌ Ruim: wrapper ainda permite mutação se a referência original vazar</summary>
+<summary>❌ Ruim: o embrulho deixa a lista original alterar o resultado</summary>
 
 ```java
 final var mutableList = new ArrayList<>(items);
@@ -180,7 +175,7 @@ mutableList.add(newItem); // readOnly reflete a mudança!
 </details>
 
 <details>
-<summary>✅ Bom: List.of() é imutável por construção</summary>
+<summary>✅ Bom: List.of cria uma coleção fixa de verdade</summary>
 
 ```java
 final var immutableItems = List.of("a", "b", "c"); // lança UnsupportedOperationException em add/remove

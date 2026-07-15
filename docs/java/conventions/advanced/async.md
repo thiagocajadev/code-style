@@ -1,29 +1,29 @@
-# Async
+# Código assíncrono em Java
 
 > Escopo: Java 25 LTS, Virtual Threads (Project Loom) e CompletableFuture.
 
-Java 21+ torna I/O assíncrono simples: **virtual threads** (threads virtuais) permitem escrever
-código bloqueante com throughput (vazão) de código reativo, sem callback hell
-(inferno de callbacks).
+Do Java 21 em diante, o I/O assíncrono cabe em código sequencial. As **virtual threads** (threads virtuais) deixam você escrever a chamada que espera pela rede na ordem natural, e mesmo assim o servidor atende milhares de requisições ao mesmo tempo. A corrente de **callbacks** (funções chamadas quando a operação termina), que antes era o preço de não travar a thread, deixa de ser necessária.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **virtual threads** (threads virtuais) | threads leves gerenciadas pela JVM; bloquear é barato |
-| **platform threads** (threads de plataforma) | threads do SO; bloquear em I/O desperdiça recurso caro |
+| **virtual threads** (threads virtuais) | threads leves que a JVM cria aos milhares; uma delas parar para esperar I/O ocupa pouca memória |
+| **platform threads** (threads de plataforma) | threads do sistema operacional; existem em número limitado, e cada uma parada em I/O deixa um recurso escasso ocioso |
 | **throughput** (vazão) | número de operações concluídas por unidade de tempo |
-| **CompletableFuture** (futuro completável) | contêiner de resultado futuro; compõe operações assíncronas |
-| **Structured Concurrency** (concorrência estruturada) | escopo que garante que todas as tarefas filhas encerrem antes do pai |
-| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é processamento; não I/O |
-| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é rede, disco ou banco |
+| **CompletableFuture** (futuro completável) | objeto que guarda um resultado que ainda vai chegar; encadeia operações assíncronas |
+| **Structured Concurrency** (concorrência estruturada) | escopo que só devolve depois que todas as tarefas filhas encerram |
+| **CPU-bound** (limitado pela CPU) | operação cujo gargalo é o processamento, e não a espera por I/O |
+| **I/O-bound** (limitado por entrada e saída) | operação cujo gargalo é a espera por rede, disco ou banco |
 
-## Thread bloqueada desnecessariamente
+<a id="blocked-thread"></a>
 
-Antes de virtual threads, threads de plataforma eram caras: bloquear em I/O desperdiçava recursos. Com virtual threads, bloquear é barato e o código fica simples.
+## Thread parada sem necessidade
+
+Uma thread de plataforma parada esperando o banco responder mantém ocupado um recurso que existe em número fixo. As virtual threads mudam a conta: a JVM cria milhares delas, e uma parada à espera de I/O ocupa pouca memória, então o código pode esperar a chamada na ordem natural sem prender uma thread do sistema.
 
 <details>
-<summary>❌ Ruim: CompletableFuture encadeado apenas para "não bloquear"</summary>
+<summary>❌ Ruim: CompletableFuture encadeado só para não parar a thread</summary>
 
 ```java
 public CompletableFuture<Invoice> processOrder(String orderId) {
@@ -40,7 +40,7 @@ public CompletableFuture<Invoice> processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom: virtual thread: código sequencial, throughput de I/O não bloqueante</summary>
+<summary>✅ Bom: virtual thread, código sequencial com a vazão de I/O não bloqueante</summary>
 
 ```java
 // application.yml: spring.threads.virtual.enabled=true (Spring Boot 4)
@@ -59,13 +59,12 @@ public Invoice processOrder(String orderId) {
 
 </details>
 
-## CompletableFuture: tarefas concorrentes independentes
+## CompletableFuture para tarefas independentes
 
-Quando múltiplas operações independentes podem ocorrer em paralelo, `CompletableFuture.allOf`
-combina os resultados sem bloquear por cada um sequencialmente.
+Quando três buscas não dependem uma da outra, rodá-las em sequência soma os três tempos de espera. O `CompletableFuture.supplyAsync` dispara as três ao mesmo tempo, e o `allOf` espera todas terminarem, então o tempo total cai para o da busca mais lenta.
 
 <details>
-<summary>❌ Ruim: operações independentes executadas em sequência</summary>
+<summary>❌ Ruim: três buscas independentes, uma esperando a outra</summary>
 
 ```java
 public DashboardData loadDashboard(String userId) {
@@ -104,14 +103,12 @@ public DashboardData loadDashboard(String userId) {
 
 </details>
 
-## Structured Concurrency: escopo de vida explícito
+## Structured Concurrency com escopo de vida explícito
 
-Java 21+ oferece `StructuredTaskScope` (concorrência estruturada) para garantir que todas as
-tarefas filhas encerrem antes que o escopo pai retorne. Mais seguro que `CompletableFuture`
-livre: falha em uma cancela as demais.
+Do Java 21 em diante, o `StructuredTaskScope` amarra a vida das tarefas filhas ao escopo que as criou: o bloco só devolve depois que todas terminam. Ele dá uma garantia que o `CompletableFuture` solto não dá: se uma tarefa falha, o escopo cancela as outras em vez de deixá-las rodando à toa.
 
 <details>
-<summary>✅ Bom: ShutdownOnFailure: falha em uma tarefa cancela todas</summary>
+<summary>✅ Bom: ShutdownOnFailure cancela as demais quando uma tarefa falha</summary>
 
 ```java
 public DashboardData loadDashboard(String userId) throws InterruptedException, ExecutionException {
@@ -135,13 +132,12 @@ public DashboardData loadDashboard(String userId) throws InterruptedException, E
 
 </details>
 
-## Executors: pool explícito
+## Executors com pool explícito
 
-Quando precisar de controle de pool, prefira `Executors.newVirtualThreadPerTaskExecutor()`
-em vez de pools de threads de plataforma de tamanho fixo.
+Quando o código precisa de um executor próprio, prefira `Executors.newVirtualThreadPerTaskExecutor()`. Um pool fixo de threads de plataforma limita quantas tarefas de I/O rodam ao mesmo tempo ao número de threads do pool, e as demais ficam na fila esperando uma vaga.
 
 <details>
-<summary>❌ Ruim: pool de tamanho fixo limita throughput de I/O</summary>
+<summary>❌ Ruim: o pool fixo limita quantas tarefas de I/O rodam juntas</summary>
 
 ```java
 final var executor = Executors.newFixedThreadPool(10); // 10 threads: gargalo em I/O
@@ -150,7 +146,7 @@ final var executor = Executors.newFixedThreadPool(10); // 10 threads: gargalo em
 </details>
 
 <details>
-<summary>✅ Bom: executor de virtual threads: sem limite artificial</summary>
+<summary>✅ Bom: executor de virtual threads, uma por tarefa</summary>
 
 ```java
 final var executor = Executors.newVirtualThreadPerTaskExecutor();
@@ -158,7 +154,7 @@ final var executor = Executors.newVirtualThreadPerTaskExecutor();
 
 </details>
 
-## Quando usar CompletableFuture vs Virtual Threads
+## CompletableFuture ou virtual threads: quando usar cada um
 
 | Cenário                                             | Preferir                    |
 | --------------------------------------------------- | --------------------------- |

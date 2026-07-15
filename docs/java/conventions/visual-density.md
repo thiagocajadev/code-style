@@ -1,39 +1,37 @@
-# Visual density: Java
+# Densidade visual em Java
 
-**Visual density** (densidade visual) é a quantidade de informação por bloco
-visual. Olhos cansam quando linhas se acumulam sem respiro; raciocínio quebra
-quando trechos não relacionados ficam colados. A solução é agrupar por intenção
-semântica e separar grupos com linha em branco; cada grupo conta uma
-micro-história.
+Densidade visual é a quantidade de informação que você empilha em cada bloco de
+código. Quando muitas linhas se acumulam sem espaço, o olho cansa e você perde o
+fio do raciocínio. Quando linhas sem relação ficam grudadas, o leitor não sabe
+onde uma ideia termina e a outra começa. A saída é direta: junte as linhas que
+contam a mesma pequena história e separe cada história da próxima com uma linha
+em branco. Este guia mostra como aplicar isso em Java, sempre com um exemplo ruim
+e um bom lado a lado.
 
-Os mesmos princípios de
-[densidade visual](../../shared/standards/visual-density.md) com exemplos em
-Java idiomático (`final var` + `return`).
+Os princípios gerais estão em
+[densidade visual](../../shared/standards/visual-density.md). Aqui eles aparecem
+adaptados a Java idiomático (`final var` e `return`).
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **visual density** (densidade visual) | Quantidade de informação por bloco visual; alvo é baixa por bloco, alta por arquivo |
-| **semantic group** (grupo semântico) | Conjunto pequeno de linhas que executa uma micro-tarefa coesa (ex: validar, calcular, persistir) |
-| **blank line** (linha em branco) | Separador entre grupos semânticos; substitui comentário de seção |
-| **tight pair** (par tight) | Duas linhas com relação direta (declaração + uso, var + return) sem blank entre elas; o respiro vem antes ou depois do par, não no meio |
-| **atomic trio** (trio atômico) | Três declarações simples consecutivas e homogêneas (`final var`); mantidas juntas sem blank (preferir ao 2+1 que cria órfão) |
-| **semantic pair** (par semântico encadeado) | Par tight em que a última linha usa **diretamente** o valor declarado na penúltima; nunca separar a dependência direta |
-| **single-line orphan** (órfão de 1) | Grupo isolado de uma única linha que parece esquecido; resolve juntando ao vizinho ou quebrando 4 em 2+2 |
-| **explaining return** (retorno explicativo) | Caso particular de `tight pair`: `final var X = …` single-line + `return X` sem blank entre eles |
-| **multi-line block** (bloco multi-linha) | Builder fluente, lista expandida ou statement quebrado em várias linhas; pede blank depois para isolar o bloco |
-| **fragments → assembly** (fragmentos → montagem) | Linha final que costura múltiplos fragmentos anteriores; fase distinta, blank antes da montagem |
-| **boundary** (limite) | Linha que separa camadas (controller ↔ service, service ↔ repository); merece linha em branco antes |
-| **column alignment** (alinhamento de coluna) | Espaços extras para alinhar `=` ou `:` verticalmente; antipadrão frágil a rename, gera diff ruidoso |
+| **visual density** (densidade visual) | Quantidade de informação por bloco de código; o alvo é pouca por bloco e muita por arquivo |
+| **semantic group** (grupo semântico) | Poucas linhas que executam uma etapa coesa, por exemplo validar, calcular ou salvar |
+| **blank line** (linha em branco) | Separa dois grupos; faz o papel que antes cabia a um comentário de seção |
+| **boundary** (limite) | Linha que separa camadas, por exemplo do controller para o service; pede uma linha em branco antes |
+| **multi-line block** (bloco de várias linhas) | Builder, lista ou comando quebrado em várias linhas; pede um respiro depois de si |
+| **column alignment** (alinhamento em colunas) | Espaços extras para alinhar `=` ou `:` na vertical; antipadrão, quebra a cada renomeação |
 
 ## A regra central
 
-**Grupos pequenos separados por uma linha em branco.** Dois é o tamanho natural;
-três é permitido quando a divisão criaria órfão de 1; quatro quebra em 2+2.
+A regra que resolve quase tudo: **agrupe poucas linhas por vez e separe cada
+grupo com uma linha em branco.** O tamanho natural de um grupo é duas linhas.
+Três valem quando dividir em duas mais uma deixaria a última linha sozinha. Com
+quatro ou mais, quebre em dois grupos de duas.
 
 <details>
-<summary>❌ Ruim: denso demais: todos os passos colados</summary>
+<summary>❌ Ruim: tudo grudado, sem um respiro entre os passos</summary>
 
 ```java
 public User registerUser(UserInput input) {
@@ -52,7 +50,7 @@ public User registerUser(UserInput input) {
 </details>
 
 <details>
-<summary>✅ Bom: fases visíveis, no máximo 2 linhas por grupo</summary>
+<summary>✅ Bom: cada fase visível, no máximo duas linhas por grupo</summary>
 
 ```java
 public User registerUser(UserInput input) {
@@ -73,16 +71,15 @@ public User registerUser(UserInput input) {
 
 </details>
 
-## Explaining Return: par tight
+## O `return` fica junto da linha que nomeia o valor
 
-Uma `final var` nomeada acima do `return` explica o valor retornado. Sempre que
-a linha imediatamente acima for essa `final var` (single-line) e o `return`
-retornar essa variável, os dois formam par de 2 linhas sem blank, não importa
-quantos passos haja acima. A linha em branco separa o par do que vem antes, não
-fragmenta o par.
+Quando a linha logo acima do `return` é a `final var` que dá nome ao valor
+devolvido, as duas formam uma dupla e ficam juntas, sem linha em branco entre
+elas. Não importa quantos passos venham antes. A linha em branco separa essa
+dupla do que veio antes; ela nunca entra no meio da dupla.
 
 <details>
-<summary>❌ Ruim: blank fragmenta o par</summary>
+<summary>❌ Ruim: a linha em branco parte a dupla no meio</summary>
 
 ```java
 private String mapErrorToStatus(AppException error) {
@@ -95,7 +92,7 @@ private String mapErrorToStatus(AppException error) {
 </details>
 
 <details>
-<summary>✅ Bom: par tight</summary>
+<summary>✅ Bom: a `final var` e o `return` juntos</summary>
 
 ```java
 private String mapErrorToStatus(AppException error) {
@@ -106,20 +103,21 @@ private String mapErrorToStatus(AppException error) {
 
 </details>
 
-## Return tight vs return separado
+## Quando o `return` cola na linha acima e quando ganha um respiro
 
-A regra é simples: `return` é **tight** com a linha imediatamente acima
-**somente quando essa linha é a `final var` que nomeia o valor retornado**
-(Explaining Return), e essa declaração está em uma única linha.
+O `return` só cola na linha imediatamente acima quando essa linha é a `final var`,
+de uma única linha, que nomeia o valor devolvido. Em todos os outros casos, deixe
+uma linha em branco antes do `return`:
 
-Em todos os outros casos, vai blank antes do `return`:
-
-- linha acima é **multi-linha** (builder fluente, statement quebrado);
-- linha acima é **side effect** (chamada void) que não nomeia o valor;
-- valor retornado foi criado **vários passos antes**, sem par direto.
+- a linha acima ocupa várias linhas (um builder ou comando quebrado em vários
+  pedaços);
+- a linha acima só produz um efeito (uma chamada que não devolve valor) e não dá
+  nome ao resultado;
+- o valor devolvido foi criado vários passos antes, sem formar dupla com a linha
+  de cima.
 
 <details>
-<summary>❌ Ruim: return fragmentado quando a linha acima é single-line</summary>
+<summary>❌ Ruim: a linha em branco separou a `final var` do `return` que a devolve</summary>
 
 ```java
 public String formatOrderDate(String isoString) {
@@ -134,14 +132,15 @@ public String formatOrderDate(String isoString) {
 }
 ```
 
-`formatter` multi-linha exige blank depois de si, mas o blank foi posto antes
-do `return`. `formattedDate` e `return formattedDate` formam Explaining Return
-tight, não devem ser separados.
+O `formatter` ocupa várias linhas e pede um respiro depois de si, mas aqui a
+linha em branco foi parar antes do `return`. `formattedDate` e
+`return formattedDate` são a dupla que nomeia e devolve o valor: não devem ser
+separados.
 
 </details>
 
 <details>
-<summary>✅ Bom: multi-linha isolada, Explaining Return tight</summary>
+<summary>✅ Bom: o bloco de várias linhas isolado, a `final var` e o `return` juntos</summary>
 
 ```java
 public String formatOrderDate(String isoString) {
@@ -156,13 +155,13 @@ public String formatOrderDate(String isoString) {
 }
 ```
 
-O blank fica **depois** do `formatter` multi-linha. O par `formattedDate` +
-`return formattedDate` permanece tight.
+A linha em branco fica **depois** do `formatter`, que ocupa várias linhas. A
+dupla `formattedDate` + `return formattedDate` continua junta.
 
 </details>
 
 <details>
-<summary>✅ Bom: return com blank quando construído a partir de builder multi-linha</summary>
+<summary>✅ Bom: return com respiro quando é montado a partir de um builder de várias linhas</summary>
 
 ```java
 public OrderResponse buildOrderResponse(Order order, String requestId) {
@@ -177,8 +176,8 @@ public OrderResponse buildOrderResponse(Order order, String requestId) {
 }
 ```
 
-`data` é builder multi-linha; o blank antes do `return` isola o bloco grande do
-envelope final.
+`data` é um builder de várias linhas; a linha em branco antes do `return` separa
+esse bloco grande do envelope final.
 
 </details>
 
@@ -191,20 +190,19 @@ public List<Order> findPendingOrders(String userId) {
 }
 ```
 
-## Declaração + guarda = 1 grupo
+## A variável e o `if` que a valida ficam juntos
 
-Uma variável seguida do seu `if` de guarda formam par semântico **quando o
-guarda cabe em uma única linha** (`if (...) return;`, `if (...) throw ...;`).
-Nesse caso a linha em branco vem **depois** do par, nunca entre eles.
+Uma variável e o `if` que a valida logo abaixo formam uma dupla **quando o `if`
+cabe em uma linha só** (`if (...) return;`, `if (...) throw ...;`). Nesse caso, a
+linha em branco vem **depois** da dupla, nunca entre a variável e o seu `if`.
 
-Quando o guarda é escrito em **bloco `{ }`** (qualquer quantidade de linhas
-físicas, mesmo com uma única instrução dentro), o `if` vira fase própria. O
-bloco já ocupa peso visual próprio. Aplica-se a regra de **multi-linha pede
-respiro**: linha em branco **antes** do bloco. O critério é visual, não
-semântico.
+Quando o `if` é escrito com chaves `{ }` (mesmo com uma única instrução dentro),
+ele vira uma fase à parte: o bloco já tem peso visual próprio. Aí vale a regra de
+que todo bloco de várias linhas pede um respiro antes de si. O critério aqui é o
+peso visual do bloco na tela.
 
 <details>
-<summary>❌ Ruim: variável solta do seu guarda inline</summary>
+<summary>❌ Ruim: a variável foi separada do `if` que a valida</summary>
 
 ```java
 final var order = orderRepository.findById(orderId).orElse(null);
@@ -216,7 +214,7 @@ final var invoice = buildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom: guarda inline (uma linha), par tight com a declaração</summary>
+<summary>✅ Bom: `if` de uma linha, junto da variável</summary>
 
 ```java
 final var order = orderRepository.findById(orderId).orElse(null);
@@ -228,7 +226,7 @@ final var invoice = buildInvoice(order);
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco, fase própria com blank antes</summary>
+<summary>✅ Bom: `if` com chaves, fase à parte com um respiro antes</summary>
 
 ```java
 final var handler = eventHandlers.get(eventType);
@@ -244,7 +242,7 @@ final var eventPayload = event.data();
 </details>
 
 <details>
-<summary>✅ Bom: guarda em bloco mesmo com uma única instrução pede respiro antes</summary>
+<summary>✅ Bom: `if` com chaves pede respiro antes mesmo com uma só instrução</summary>
 
 ```java
 final var response = requestFn.get();
@@ -256,19 +254,20 @@ if (response.statusCode() != 429) {
 final var delayMs = (long) Math.pow(2, attempt) * 1000L;
 ```
 
-O bloco ocupa três linhas físicas, com peso visual próprio. Inline ficaria
-tight, mas em bloco, blank antes.
+O bloco ocupa três linhas e tem peso visual próprio. Em uma linha só, ficaria
+junto da variável; com chaves, pede uma linha em branco antes.
 
 </details>
 
-## Órfão de 1 linha: pior que trio atômico
+## Não deixe uma linha sozinha entre espaços
 
-Três declarações simples consecutivas (`final var`, `private static final`)
-formam grupo coeso. Partir em 2+1 deixa a última linha solitária entre blanks.
-Mantenha as três juntas. Só divida em 2+2 a partir de quatro.
+Três declarações simples seguidas (`final var`, `private static final`) formam um
+grupo coeso. Se você quebrar em duas mais uma, a última fica sozinha entre duas
+linhas em branco, parecendo esquecida. Mantenha as três juntas. Só divida quando
+forem quatro, aí em dois pares.
 
 <details>
-<summary>❌ Ruim: órfão entre blanks</summary>
+<summary>❌ Ruim: a última linha sozinha entre espaços</summary>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -280,7 +279,7 @@ private static final long ONE_DAY_MS = 86_400_000L;
 </details>
 
 <details>
-<summary>✅ Bom: trio tight</summary>
+<summary>✅ Bom: as três juntas</summary>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -291,7 +290,7 @@ private static final long ONE_DAY_MS = 86_400_000L;
 </details>
 
 <details>
-<summary>✅ Bom: 4 atomics viram 2+2</summary>
+<summary>✅ Bom: quatro viram dois pares</summary>
 
 ```java
 private static final int MINIMUM_DRIVING_AGE = 18;
@@ -303,14 +302,14 @@ private static final int MAX_RETRY_ATTEMPTS = 3;
 
 </details>
 
-## Par semântico encadeado
+## Duas linhas onde a segunda usa o valor da primeira
 
-Quando a linha final **depende** da penúltima (usa o valor recém declarado), as
-duas formam par. A quebra natural fica antes do par, não entre ele e sua
-dependência direta.
+Quando a última linha **usa o valor recém-criado** na linha de cima, as duas
+formam uma dupla. O respiro natural fica antes da dupla, nunca entre uma linha e
+o valor de que ela depende.
 
 <details>
-<summary>❌ Ruim: dependência direta partida</summary>
+<summary>❌ Ruim: a linha foi separada do valor de que depende</summary>
 
 ```java
 public String buildShippingLabel(Order order) {
@@ -327,7 +326,7 @@ public String buildShippingLabel(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: par semântico tight</summary>
+<summary>✅ Bom: as duas linhas dependentes juntas</summary>
 
 ```java
 public String buildShippingLabel(Order order) {
@@ -340,29 +339,29 @@ public String buildShippingLabel(Order order) {
 }
 ```
 
-Dois pares tight: `cityLine + label` (par semântico encadeado) e
-`label + return label` (Explaining Return). O leitor vê "nome, endereço /
-cidade, label, retorne."
+Duas duplas juntas: `cityLine` com `label`, porque `label` usa `cityLine`, e
+`label` com `return label`. O leitor vê "nome, endereço / cidade, label,
+retorne."
 
 </details>
 
-## Fragmentos → montagem: blank antes do consumidor
+## Prepare as partes, depois monte o resultado
 
-Quando há **dois ou mais fragmentos** preparados e uma linha final que
-**consome múltiplos fragmentos** (não depende só do último), trate a montagem
-como fase distinta, com blank antes dela. É o caso clássico "preparar partes →
-montar resultado", diferente do par semântico encadeado (onde a última depende
-**diretamente** da penúltima e por isso fica tight).
+Quando você prepara **dois ou mais pedaços** e depois tem uma linha que **junta
+vários deles** (não só o último), trate essa montagem como uma fase à parte, com
+uma linha em branco antes. É o padrão "preparar as partes, depois montar o
+resultado". Ele é diferente do caso anterior, em que a última linha depende **só**
+da linha logo acima e por isso fica junto dela.
 
-Heurística rápida:
+Como decidir rápido:
 
-- A última linha usa **só o valor recém-declarado** acima? Par semântico
-  encadeado, fica tight.
-- A última linha **costura múltiplos fragmentos** declarados em linhas
-  diferentes? Fragmentos → montagem, blank antes.
+- A última linha usa **só o valor recém-criado** acima? É uma dupla dependente:
+  fica junto.
+- A última linha **costura vários pedaços** declarados em linhas diferentes? É a
+  fase de montagem: linha em branco antes.
 
 <details>
-<summary>❌ Ruim: fragmentos e montagem coladas como se fossem trio homogêneo</summary>
+<summary>❌ Ruim: preparação e montagem grudadas como se fossem linhas iguais</summary>
 
 ```java
 public String buildDeliveryMessage(User user, Order order) {
@@ -373,14 +372,14 @@ public String buildDeliveryMessage(User user, Order order) {
 }
 ```
 
-`deliveryMessage` consome `fullName`, `address`, `order.id` e
-`order.deliveryDays`. Não é par direto com `address`; é a fase de montagem.
-Coladas como trio, as fases ficam invisíveis.
+`deliveryMessage` usa `fullName`, `address`, `order.id` e `order.deliveryDays` ao
+mesmo tempo. Não é uma dupla com `address`: é a fase de montagem. Grudada como se
+as três linhas fossem iguais, as fases somem.
 
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos como par, montagem isolada, Explaining Return tight</summary>
+<summary>✅ Bom: pedaços em uma dupla, montagem à parte, `return` junto do valor</summary>
 
 ```java
 public String buildDeliveryMessage(User user, Order order) {
@@ -392,13 +391,12 @@ public String buildDeliveryMessage(User user, Order order) {
 }
 ```
 
-Duas fases visíveis: "preparar fragmentos" (par) e "montar + entregar"
-(Explaining Return tight).
+Duas fases ficam visíveis: preparar os pedaços, depois montar e devolver.
 
 </details>
 
 <details>
-<summary>✅ Bom: par semântico encadeado (última depende só da penúltima)</summary>
+<summary>✅ Bom: contraste, a última linha depende só da anterior</summary>
 
 ```java
 public String buildOrderSlug(Order order) {
@@ -408,18 +406,18 @@ public String buildOrderSlug(Order order) {
 }
 ```
 
-`slug` depende **diretamente** de `normalizedTitle` (penúltima). Par semântico
-encadeado: as duas ficam tight, e o `return` ainda tight com o último.
+`slug` depende **só** de `normalizedTitle`, a linha logo acima. As duas ficam
+juntas, e o `return` continua junto de `slug`.
 
 </details>
 
-## 2+1 dentro de blocos curtos
+## Dentro de laços e condições curtas
 
-Em loops e branches curtos, 2+1 ainda é a quebra natural quando as linhas não
-são todas atômicas homogêneas.
+Em laços (`while`, `for`) e condições curtas, duas linhas mais uma continua sendo
+a divisão natural quando as linhas não são todas do mesmo tipo.
 
 <details>
-<summary>❌ Ruim: 3 linhas heterogêneas coladas</summary>
+<summary>❌ Ruim: três linhas de tipos diferentes grudadas</summary>
 
 ```java
 while (attempt < maxAttempts) {
@@ -432,7 +430,7 @@ while (attempt < maxAttempts) {
 </details>
 
 <details>
-<summary>✅ Bom: declaração + guarda em par, incremento separado</summary>
+<summary>✅ Bom: variável e `if` juntos, o incremento separado</summary>
 
 ```java
 while (attempt < maxAttempts) {
@@ -445,13 +443,15 @@ while (attempt < maxAttempts) {
 
 </details>
 
-## Fases de um método
+## Deixe cada fase do método visível
 
-Métodos com múltiplos passos (buscar, transformar, persistir, responder) devem
-deixar cada fase visível.
+Métodos com vários passos (buscar, transformar, salvar, responder) devem deixar
+cada passo visível. Uma linha em branco entre eles marca onde um termina e o
+outro começa, ainda mais quando os passos cruzam um limite entre camadas, por
+exemplo do controller para o service.
 
 <details>
-<summary>❌ Ruim: todas as fases coladas, sem separação visual</summary>
+<summary>❌ Ruim: todos os passos grudados, sem separação visual</summary>
 
 ```java
 public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
@@ -466,7 +466,7 @@ public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request)
 </details>
 
 <details>
-<summary>✅ Bom: fases explícitas</summary>
+<summary>✅ Bom: cada passo visível</summary>
 
 ```java
 public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request) {
@@ -482,13 +482,14 @@ public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest request)
 
 </details>
 
-## Testes: assertion como fase própria
+## No teste, a verificação é uma fase separada
 
-O `assertThat` é fase distinta. A linha em branco antes dele separa o que
-está sendo verificado do como está sendo verificado.
+No teste, a linha que verifica o resultado (`assertThat`) é uma fase própria. A
+linha em branco antes dela separa **o que** está sendo verificado de **como** você
+preparou o cenário.
 
 <details>
-<summary>❌ Ruim: assertion colado ao setup, fases invisíveis</summary>
+<summary>❌ Ruim: `assertThat` grudado na preparação, as fases somem</summary>
 
 ```java
 @Test
@@ -503,7 +504,7 @@ void appliesPercentageDiscountToOrderPrice() {
 </details>
 
 <details>
-<summary>✅ Bom: assertion separado, como fase própria</summary>
+<summary>✅ Bom: `assertThat` separado, a verificação como fase própria</summary>
 
 ```java
 @Test
@@ -518,15 +519,15 @@ void appliesPercentageDiscountToOrderPrice() {
 
 </details>
 
-## Multi-linha: respiro depois do bloco
+## Depois de um bloco de várias linhas, deixe um respiro
 
-Quando um builder fluente, lista expandida ou statement quebra em várias linhas,
-o bloco já ocupa espaço visual próprio. Cole uma linha em branco **depois** dele
-para isolar o bloco grande do próximo passo. Sem respiro, o leitor não vê onde
-o bloco termina e o próximo começa.
+Quando um builder, uma lista ou um comando quebra em várias linhas, esse bloco já
+ocupa um espaço visual próprio. Deixe uma linha em branco **depois** dele para
+separá-lo do próximo passo. Sem esse respiro, o leitor não vê onde o bloco
+termina e o próximo começa.
 
 <details>
-<summary>❌ Ruim: builder multi-linha colado ao próximo statement</summary>
+<summary>❌ Ruim: builder de várias linhas grudado no próximo comando</summary>
 
 ```java
 public String createSession(User user) {
@@ -544,7 +545,7 @@ public String createSession(User user) {
 </details>
 
 <details>
-<summary>✅ Bom: blank depois do builder isola o bloco</summary>
+<summary>✅ Bom: linha em branco depois do builder separa o bloco</summary>
 
 ```java
 public String createSession(User user) {
@@ -562,17 +563,17 @@ public String createSession(User user) {
 
 </details>
 
-## Ifs consecutivos: blocos com chaves precisam de respiro
+## Dois `if` seguidos com chaves pedem uma linha entre eles
 
-Dois `if` consecutivos com **bloco multi-linha** (`{ ... }`) colados formam
-muralha: o olho não distingue onde um bloco termina e o outro começa. Sempre
-insira blank entre eles.
+Dois `if` seguidos, cada um com um bloco de várias linhas entre chaves, formam
+uma parede: o olho não distingue onde um bloco termina e o outro começa. Sempre
+coloque uma linha em branco entre eles.
 
-**Exceção:** guardas de uma linha (early returns curtos) formam trio homogêneo
-e ficam tight, sob a regra do trio atômico.
+**Exceção:** os `if` de saída rápida, com uma linha só (`if (input == null) throw ...`),
+são do mesmo tipo e ficam juntos, como qualquer grupo de linhas iguais.
 
 <details>
-<summary>❌ Ruim: dois blocos {} colados</summary>
+<summary>❌ Ruim: dois blocos com chaves grudados</summary>
 
 ```java
 public void processOrder(Order order) {
@@ -590,7 +591,7 @@ public void processOrder(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: blank entre os blocos</summary>
+<summary>✅ Bom: linha em branco entre os blocos</summary>
 
 ```java
 public void processOrder(Order order) {
@@ -609,7 +610,7 @@ public void processOrder(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: guardas de uma linha ficam tight (trio atômico)</summary>
+<summary>✅ Bom: saídas rápidas de uma linha ficam juntas</summary>
 
 ```java
 public UserInput validateInput(UserInput input) {
@@ -623,14 +624,15 @@ public UserInput validateInput(UserInput input) {
 
 </details>
 
-## Sem column alignment
+## Não alinhe o código em colunas
 
-Não alinhe verticalmente `=`, `:` ou valores com múltiplos espaços. Use sempre
-**um espaço único**. Alinhamento artificial quebra com qualquer rename, gera
-diff ruidoso e treina o olho a procurar colunas que somem na primeira refator.
+Não use espaços extras para alinhar `=`, `:` ou valores na vertical. Use sempre um
+espaço só. O alinhamento artificial quebra assim que você renomeia qualquer
+coisa, gera um diff cheio de ruído (mudanças que não importam) e treina o olho a
+procurar colunas que somem na primeira refatoração.
 
 <details>
-<summary>❌ Ruim: espaços extras para alinhar colunas</summary>
+<summary>❌ Ruim: espaços extras alinhando colunas</summary>
 
 ```java
 final var userName    = "alice";
@@ -642,7 +644,7 @@ final var lastLoginAt = Instant.now();
 </details>
 
 <details>
-<summary>✅ Bom: espaço único, sem padding</summary>
+<summary>✅ Bom: um espaço só, sem preenchimento</summary>
 
 ```java
 final var userName = "alice";
@@ -653,13 +655,15 @@ final var lastLoginAt = Instant.now();
 
 </details>
 
-## Strings longas
+## Textos longos montados em uma linha
 
-Uma string longa colada em um `return` esconde as partes que a compõem. Extraia
-fragmentos em variáveis nomeadas antes de montar o resultado.
+Um texto longo grudado dentro de um `return` esconde os pedaços que o compõem.
+Separe cada pedaço em uma variável com nome antes de montar o resultado. Em Java
+esse texto costuma ser uma concatenação com `+`, ou um `String.format` com os
+valores no fim.
 
 <details>
-<summary>❌ Ruim: string imensa inline, sem semântica nas partes</summary>
+<summary>❌ Ruim: texto enorme em uma linha, sem nome nos pedaços</summary>
 
 ```java
 public String buildDeliveryMessage(User user, Order order) {
@@ -670,7 +674,7 @@ public String buildDeliveryMessage(User user, Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: fragmentos nomeados, template final limpo</summary>
+<summary>✅ Bom: pedaços com nome, texto final limpo</summary>
 
 ```java
 public String buildDeliveryMessage(User user, Order order) {

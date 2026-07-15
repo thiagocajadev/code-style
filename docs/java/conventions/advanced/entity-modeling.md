@@ -15,7 +15,7 @@ O texto cobre quatro perguntas que aparecem cedo em todo projeto que cresce: qua
 | **aggregate** (agregado) | Cluster de entidades e value objects tratado como uma unidade transacional (`Order` + `OrderItems` formam um agregado) |
 | **aggregate root** (raiz do agregado) | Única entidade externa do agregado; protege as invariantes e é o único ponto de entrada para o cluster |
 | **invariant** (invariante, regra que sempre vale) | Restrição garantida pelo construtor compacto do record ou pelos métodos que alteram estado (ex.: pedido sempre tem ao menos um item) |
-| **boundary** (limite) | Fronteira entre dois contextos onde os dados são validados ao atravessar (entrada do método, limite do agregado, limite do sistema) |
+| **boundary** (limite) | Linha entre dois contextos onde os dados são validados ao atravessar (entrada do método, limite do agregado, limite do sistema) |
 | **strongly-typed id** (identificador tipado) | ID embrulhado em um tipo próprio (`CustomerId`), em vez de `String` ou `UUID` cru, para impedir trocas acidentais entre IDs |
 | **record** (registro imutável) | Tipo de dados conciso introduzido no Java 14; gera construtor, getters, `equals`, `hashCode` e `toString` automaticamente; adequado para value objects |
 | **compact constructor** (construtor compacto) | Construtor especial de `record` sem lista de parâmetros; ideal para validação de invariantes antes da atribuição dos campos |
@@ -452,7 +452,7 @@ Em Java, `interface` com método `default` pode adicionar comportamento sem hera
 
 ## Propriedade vs lista
 
-A cardinalidade modela a regra de negócio, não o estado momentâneo. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
+A cardinalidade modela a regra de negócio, e ignora o estado do momento. Se o domínio diz "cliente tem um endereço principal", o campo é único, mesmo que o banco eventualmente guarde o histórico de todos os endereços já usados. Se o domínio diz "cliente pode ter vários telefones", a propriedade é lista, mesmo quando 90% dos clientes cadastram apenas um.
 
 A tabela abaixo é a tradução direta de cada regra de cardinalidade para tipos Java:
 
@@ -493,7 +493,7 @@ public final class Customer extends Entity<CustomerId> {
 }
 ```
 
-A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone é mudança de schema, não de regra.
+A regra "cliente tem até três telefones" foi codificada no schema, em vez de virar uma invariante no método. Adicionar um quarto telefone vira uma mudança de schema, quando deveria ser só uma mudança de regra.
 
 </details>
 
@@ -756,9 +756,9 @@ Quando o N:N é pura associação (sem atributos), uma tabela intermediária só
 
 ## Identidade vs referência
 
-Dentro do mesmo agregado, referência direta é o caminho natural: `Order.items` é uma lista de `OrderItem`, não uma lista de `OrderItemId`. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
+Dentro do mesmo agregado, a referência direta é o caminho natural: `Order.items` guarda os próprios `OrderItem`, com o objeto inteiro dentro da lista. O agregado é uma unidade transacional, carregada inteira do banco e mantida coerente como bloco único.
 
-Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId: CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Dois donos para a mesma invariante é receita certa de bug.
+Cruzando o limite de outro agregado, a referência muda de forma: vai por ID. `Order` referencia `Customer` por `customerId: CustomerId`, nunca pelo objeto `Customer` completo. Se carregasse o `Customer` inteiro, o agregado `Order` teria que se preocupar em manter o `Customer` consistente, e isso é responsabilidade do agregado `Customer`. Com dois agregados donos da mesma invariante, uma alteração feita por um deles quebra a garantia que o outro achava manter.
 
 <details>
 <summary>❌ Ruim: agregado puxa outro agregado por referência direta</summary>
@@ -815,7 +815,7 @@ var customer = customerRepository.findById(order.getCustomerId())
     .orElseThrow(() -> new IllegalArgumentException("Customer not found."));
 ```
 
-`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Isso evita carregar o universo inteiro toda vez que alguém pede um pedido.
+`Order` carrega só a referência. Quem precisa do `Customer` resolve o ID no momento certo. Assim, buscar um pedido não arrasta junto o cliente inteiro e tudo que ele referencia.
 
 </details>
 
@@ -848,6 +848,8 @@ public String summarize(OrderState state) {
 Para estado simples (sem dados associados), `enum OrderStatus { PENDING, SETTLED, SHIPPED, CANCELLED }` em um único campo basta. A `sealed interface` só ganha tração quando cada estado carrega informação própria.
 
 </details>
+
+<a id="multitenancy"></a>
 
 ## Multitenancy
 

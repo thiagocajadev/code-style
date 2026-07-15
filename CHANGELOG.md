@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.9.0] - 2026-07-15
+
+### Fixed
+
+- **`docs/java/` reescrito na voz senior-para-leigo (Épico C11, Ciclo C).** 20 arquivos `.md` e 5.821 linhas, entregues como unidade única. Os fenced blocks ficaram idênticos ao HEAD por SHA-256 nos 20 arquivos: o diff não tem nenhuma linha de código.
+- **17 dos 20 H1 viraram pt-BR** (`Naming` → "Nomes em Java", `Control Flow` → "Controle de fluxo em Java", `Quick Reference` → "Referência rápida", `Visual density: Java` → "Densidade visual em Java", com `Taboos` → "O que evitar", como no SQL, TypeScript e Python). Os preservados são nome de produto: `Java` e `Spring Boot 4`. `# Modelagem de entidades` já estava em pt-BR.
+- **Os 7 slugs pt-BR viraram id ASCII**, com os referrers reescritos no mesmo passo. Todos moravam no `README.md` da linguagem, então nenhum arquivo fora de `docs/java/` foi tocado: `#identificadores-sem-significado` → `#meaningless-identifiers`, `#if-e-else` → `#if-and-else`, `#guard-clauses-aninhamento-em-cascata` → `#nested-conditionals`, `#baixa-densidade-visual` → `#low-visual-density`, `#ponto-de-entrada-limpo` → `#clean-entry-point`, `#thread-bloqueada-desnecessariamente` → `#blocked-thread` e `#fases-misturadas-aaa` → `#mixed-phases-aaa`. São os gêmeos pt-BR dos que o C8 consertou em `docs/javascript/`. O `#multitenancy`, que resolvia por slug gerado do heading, ganhou `<a id>` explícito.
+- **`visual-density.md` espelhou o canônico de `docs/javascript/`.** Os 14 headings ganharam a redação de lá, e a tabela de Conceitos caiu de 11 para 6 linhas: saíram os termos que o projeto cunhou e que o leitor não conhece (`tight pair`, `atomic trio`, `semantic pair`, `single-line orphan`, `explaining return`, `fragments → assembly`), e cada um virou descrição em pt-BR no corpo.
+- **Os 227 `<summary>` foram varridos.** Eles são o título do exemplo, e carregavam jargão cru (`par tight`, `Explaining Return tight`, `trio atômico`, `guarda inline`, `for-each no hot path`). Estado final: zero `<summary>` com termo cru e zero com glosa injetada.
+- **`entity-modeling.md` recebeu edição cirúrgica**, como o arquivo gêmeo em C#, SQL, TypeScript e Python: as duas metáforas (`receita certa de bug`, `carregar o universo`), três caudas de contraste binário, a "Fronteira" da tabela de Conceitos e o `<a id>` explícito do multitenancy.
+- **"A partir de quatro" virou "com quatro ou mais"** nos lugares de `docs/java/`, atendendo ao pedido feito durante a v2.7.2. O item segue aberto no backlog para as linguagens ainda não revisadas.
+- **`performance.md` ganhou o parágrafo de introdução** que faltava entre o escopo e a seção `## Conceitos fundamentais`, seguindo a estrutura obrigatória do arquivo técnico. As 8 ocorrências de "fronteira" na pasta viraram "limite".
+
+**Gates**: audit:prose 20 arquivos / 0 erro / 0 aviso · audit:docs 2562 Good / 396 arquivos / 0 violações · test:docs 44/0 · test:prose 25/0 · lint 0 · concepts java 18 OK / 0 / 0 / 0 · 21 âncoras internas / 0 quebrada · 0 em dash e 0 "fronteira" em toda a pasta · fenced blocks idênticos ao HEAD por SHA-256 nos 20 arquivos.
+
 ## [2.8.0] - 2026-07-13
 
 ### Fixed

@@ -1,21 +1,20 @@
-# Dates
+# Datas em Java
 
 > Escopo: Java 25 LTS, API `java.time`.
 
-Use **sempre** a API `java.time` (Java 8+). `java.util.Date` e `java.util.Calendar` são
-legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código novo.
+Escreva todo código novo de data com a API `java.time`, presente desde o Java 8. As classes antigas `java.util.Date` e `java.util.Calendar` podem ser alteradas depois de criadas, quebram quando duas threads as usam ao mesmo tempo, e têm uma API que confunde. A `java.time` resolve os três problemas: cada valor nasce pronto e não muda mais.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **Instant** (instante UTC) | timestamp em UTC sem fuso; ideal para persistência e logs |
-| **LocalDate** (data local sem fuso) | data calendário sem hora e sem fuso; aniversários, datas de negócio |
-| **LocalDateTime** (data e hora local sem fuso) | data + hora sem fuso; só para uso local/temporário |
-| **ZonedDateTime** (data e hora com fuso) | data + hora + fuso; exibição localizada ao usuário |
-| **Duration** (duração absoluta) | duração em segundos e nanosegundos; tempo físico |
-| **Period** (período de calendário) | duração em dias, meses, anos; tempo de calendário |
-| **ISO 8601** (norma ISO de datas) | formato textual padronizado para datas e horários |
+| **Instant** (instante em UTC) | momento no tempo em UTC, sem fuso; a escolha para gravar no banco e em logs |
+| **LocalDate** (data sem fuso) | data de calendário sem hora e sem fuso: aniversário, data de vencimento |
+| **LocalDateTime** (data e hora sem fuso) | data mais hora, sem fuso; só para uso local ou temporário |
+| **ZonedDateTime** (data e hora com fuso) | data mais hora mais fuso; para exibir no horário do usuário |
+| **Duration** (duração em tempo físico) | intervalo medido em segundos e nanosegundos |
+| **Period** (intervalo de calendário) | intervalo medido em dias, meses e anos |
+| **ISO 8601** (norma ISO para datas) | formato de texto padronizado para data e hora, como `2026-04-27T14:30:00Z` |
 
 ## Tipos corretos para cada contexto
 
@@ -28,10 +27,12 @@ legados: mutáveis, thread-unsafe e com API confusa. Nunca os use em código nov
 | `Duration`      | Duração absoluta em segundos ou nanosegundos              |
 | `Period`        | Duração em dias, meses ou anos (calendário)               |
 
-## java.util.Date: legado
+## java.util.Date ficou para trás
+
+Um campo `java.util.Date` pode ser alterado por qualquer um que tenha a referência, mesmo depois de você guardá-lo dentro do objeto. Trocar para `Instant` e `LocalDate` fecha essa porta: o valor nasce pronto e ninguém o altera pelas costas.
 
 <details>
-<summary>❌ Ruim: java.util.Date é mutável e sem fuso</summary>
+<summary>❌ Ruim: java.util.Date pode ser alterado e não guarda o fuso</summary>
 
 ```java
 import java.util.Date;
@@ -60,12 +61,12 @@ public class Order {
 
 </details>
 
-## Armazenar sempre em UTC
+## Guarde sempre em UTC
 
-Persistência usa `Instant` (UTC). Conversão para fuso local só na camada de apresentação.
+Grave a data como `Instant`, que é sempre UTC. A conversão para o fuso do usuário acontece só na camada que exibe o valor. Gravar um `LocalDateTime` deixa a dúvida de qual fuso aquele horário representava, e a resposta some assim que o servidor troca de região.
 
 <details>
-<summary>❌ Ruim: armazena com fuso local; converte ao persistir</summary>
+<summary>❌ Ruim: grava sem fuso e deixa a dúvida de qual timezone era</summary>
 
 ```java
 final var now = LocalDateTime.now(); // sem fuso: qual timezone?
@@ -88,10 +89,12 @@ final var localDateTime = now.atZone(userZone).toLocalDateTime();
 
 </details>
 
-## Parsing e formatting com DateTimeFormatter
+## Ler e formatar com DateTimeFormatter
+
+O `SimpleDateFormat` guarda estado interno durante a conversão, então duas threads que compartilham a mesma instância corrompem o resultado uma da outra. O `DateTimeFormatter` não muda depois de criado, então uma constante `static final` serve a todas as threads sem risco.
 
 <details>
-<summary>❌ Ruim: SimpleDateFormat é thread-unsafe</summary>
+<summary>❌ Ruim: SimpleDateFormat corrompe o resultado entre threads</summary>
 
 ```java
 final var sdf = new SimpleDateFormat("dd/MM/yyyy"); // thread-unsafe
@@ -101,7 +104,7 @@ final var date = sdf.parse("27/04/2026");
 </details>
 
 <details>
-<summary>✅ Bom: DateTimeFormatter é imutável e thread-safe (seguro para uso concorrente)</summary>
+<summary>✅ Bom: DateTimeFormatter não muda depois de criado e serve a todas as threads</summary>
 
 ```java
 private static final DateTimeFormatter BR_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -119,13 +122,12 @@ public String formatDate(LocalDate date) {
 
 </details>
 
-## ISO 8601 para serialização
+## ISO 8601 no tráfego de API
 
-Ao trafegar datas em APIs, use sempre ISO 8601: `2026-04-27T14:30:00Z`. Jackson (Spring Boot)
-serializa `Instant` e `LocalDate` nesse formato por padrão quando configurado corretamente.
+Ao enviar datas numa API, use sempre o formato ISO 8601, como `2026-04-27T14:30:00Z`. Ele fixa a ordem dos campos e o fuso, então quem recebe lê a data sem adivinhar se o dia ou o mês vem primeiro. O **Jackson** (biblioteca de serialização do Spring Boot) já escreve `Instant` e `LocalDate` nesse formato quando você desliga a serialização como número.
 
 <details>
-<summary>✅ Bom: configuração Jackson para java.time</summary>
+<summary>✅ Bom: configuração do Jackson para java.time</summary>
 
 ```yaml
 # application.yml
@@ -142,10 +144,12 @@ public record OrderResponse(String id, Instant createdAt, LocalDate dueDate) {}
 
 </details>
 
-## Cálculo de duração e período
+## Calcular duração e período
+
+`Duration` mede a diferença em tempo físico, em segundos e milissegundos, e serve para cronometrar uma operação. `Period` mede a diferença em unidades de calendário, em dias, meses e anos, e serve para calcular idade. Os dois nomes evitam a conta manual e a confusão entre um mês de 28 e um de 31 dias.
 
 <details>
-<summary>✅ Bom: Duration para diferença em tempo, Period para diferença em calendário</summary>
+<summary>✅ Bom: Duration para o tempo cronometrado, Period para a diferença de calendário</summary>
 
 ```java
 // duração absoluta

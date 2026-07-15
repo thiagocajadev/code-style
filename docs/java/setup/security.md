@@ -1,28 +1,27 @@
-# Security
+# Segurança em Java
 
 > Escopo: Java 25 LTS com Spring Security 7 + Spring Boot 4.
 
-Segurança começa no limite do sistema: nunca confie em **input** (entrada), nunca persista
-**secrets** (segredos) no código, e sempre valide **JWT** (JSON Web Token) na fronteira HTTP.
+A segurança começa no limite do sistema, o ponto onde o dado externo entra. Três regras valem desde a primeira linha: valide todo dado que chega de fora antes de usá-lo, mantenha os **secrets** (segredos) fora do código-fonte, e confira a assinatura do **JWT** (JSON Web Token) em toda requisição que chega pelo HTTP.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **secret** (segredo) | credencial, token ou chave que nunca pode aparecer no código-fonte |
-| **JWT** (JSON Web Token · Token Web JSON) | token assinado para autenticação stateless |
-| **CSRF** (Cross-Site Request Forgery, Falsificação de Requisição entre Sites) | ataque que executa ações em nome do usuário autenticado |
-| **CORS** (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens) | mecanismo que controla qual origem pode chamar a API |
-| **BCrypt** (algoritmo de hash de senha) | função adaptativa para armazenar senhas com salt embutido |
-| **RBAC** (Role-Based Access Control, Controle de Acesso Baseado em Papéis) | autorização por papel atribuído ao usuário |
-| **principal** (identidade autenticada) | objeto que representa o usuário corrente após autenticação |
+| **secret** (segredo) | credencial, token ou chave que nunca aparece no código-fonte |
+| **JWT** (JSON Web Token · Token Web em JSON) | token assinado que carrega a identidade sem o servidor guardar sessão |
+| **CSRF** (Cross-Site Request Forgery · Falsificação de Requisição entre Sites) | ataque que dispara ações em nome do usuário já autenticado |
+| **CORS** (Cross-Origin Resource Sharing · Compartilhamento de Recursos entre Origens) | regra que controla qual origem pode chamar a API |
+| **BCrypt** (algoritmo de hash de senha) | função que guarda a senha com um salt embutido e um custo ajustável |
+| **RBAC** (Role-Based Access Control · Controle de Acesso por Papel) | autorização pelo papel atribuído ao usuário |
+| **principal** (identidade autenticada) | objeto que representa o usuário atual depois da autenticação |
 
-## Secrets fora do código
+## Segredos fora do código
 
-Nunca hardcode (codifique diretamente) credenciais, tokens ou chaves no código-fonte.
+Nunca escreva credencial, token ou chave direto no código-fonte. O que entra no repositório fica no histórico do Git para sempre, e qualquer pessoa com acesso ao código passa a ter a chave. Guarde o valor numa variável de ambiente e leia por `@ConfigurationProperties`.
 
 <details>
-<summary>❌ Ruim: segredo hardcoded no código</summary>
+<summary>❌ Ruim: o segredo escrito direto no código</summary>
 
 ```java
 private static final String JWT_SECRET = "minha-chave-super-secreta"; // no repositório
@@ -40,7 +39,7 @@ public DataSource dataSource() {
 </details>
 
 <details>
-<summary>✅ Bom: variáveis de ambiente via @ConfigurationProperties</summary>
+<summary>✅ Bom: variáveis de ambiente lidas por @ConfigurationProperties</summary>
 
 ```yaml
 # application.yml
@@ -67,10 +66,12 @@ public record SecurityProperties(
 
 </details>
 
-## Spring Security: configuração mínima
+## Configuração mínima do Spring Security
+
+O Spring Security 7 configura a segurança por um bean `SecurityFilterChain`, montado com o `HttpSecurity`. A API antiga, que estendia `WebSecurityConfigurerAdapter`, saiu. O bean deixa as regras à vista: quais rotas são públicas, que a sessão é stateless (o servidor não guarda estado de login) e onde o filtro do JWT entra na fila.
 
 <details>
-<summary>✅ Bom: SecurityFilterChain por bean, sem herança de WebSecurityConfigurerAdapter</summary>
+<summary>✅ Bom: SecurityFilterChain como bean, sem a classe base antiga</summary>
 
 ```java
 @Configuration
@@ -101,12 +102,12 @@ public class SecurityConfig {
 
 </details>
 
-## Senhas: BCrypt sempre
+## Senhas sempre com BCrypt
 
-Nunca armazene senhas em texto puro. Nunca use MD5 ou SHA-1.
+Nunca guarde a senha em texto puro, e nunca com MD5 ou SHA-1. O MD5 e o SHA-1 são rápidos de calcular, o que ajuda quem tenta adivinhar a senha por força bruta a testar bilhões por segundo. O BCrypt tem um custo ajustável que torna cada tentativa lenta de propósito, e embute um salt (um valor aleatório por senha) que impede o ataque por tabela pronta.
 
 <details>
-<summary>❌ Ruim: senha em texto puro ou hash fraco</summary>
+<summary>❌ Ruim: senha em texto puro ou com hash rápido demais</summary>
 
 ```java
 user.setPassword(input.password());                        // texto puro
@@ -138,12 +139,12 @@ public class UserService {
 
 </details>
 
-## JWT (JSON Web Token · Token Web em JSON): validação rigorosa
+## Validação rigorosa do JWT
 
-Valide assinatura, expiração e audience (audiência) do token. Rejeite tokens malformados.
+Confira três coisas em todo token: a assinatura, para garantir que ninguém o forjou; a expiração, para recusar um token vencido; e a audience (o destinatário para quem o token foi emitido), para recusar um token feito para outro serviço. Um token malformado é rejeitado antes de qualquer uso.
 
 <details>
-<summary>✅ Bom: filtro JWT com validação completa</summary>
+<summary>✅ Bom: o filtro do JWT confere assinatura, expiração e validade</summary>
 
 ```java
 @Component
@@ -183,12 +184,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 </details>
 
-## @PreAuthorize: autorização por método
+## @PreAuthorize na autorização por método
 
-Use `@PreAuthorize` para autorização granular por role (papel) ou permissão específica.
+O `@PreAuthorize` prende a regra de acesso ao próprio método, e o Spring a checa antes de executá-lo. A anotação aceita uma expressão, então dá para exigir o papel `ADMIN` e ainda barrar que um admin apague a própria conta na mesma linha. A regra fica ao lado do código que ela protege, à vista de quem lê o método.
 
 <details>
-<summary>✅ Bom: autorização declarativa no método</summary>
+<summary>✅ Bom: a regra de acesso declarada no próprio método</summary>
 
 ```java
 @RestController
@@ -216,12 +217,12 @@ public class AdminController {
 
 </details>
 
-## CORS (Cross-Origin Resource Sharing, Compartilhamento de Recursos entre Origens): configuração explícita
+## CORS declarado por extenso
 
-Nunca deixe CORS permissivo em produção. Configure origens, métodos e headers permitidos.
+O CORS diz ao navegador quais sites de outra origem podem chamar a sua API. Em produção, liste as origens, os métodos e os headers que você aceita. Deixar `*` em qualquer um deles libera qualquer site a chamar a API com o cookie do usuário logado, o que abre a porta que o CORS existe para fechar.
 
 <details>
-<summary>❌ Ruim: CORS aberto para tudo</summary>
+<summary>❌ Ruim: CORS liberado para qualquer origem</summary>
 
 ```java
 corsConfig.addAllowedOrigin("*"); // permite qualquer origem

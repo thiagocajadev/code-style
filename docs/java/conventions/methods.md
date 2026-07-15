@@ -1,29 +1,29 @@
-# Methods
+# Métodos em Java
 
-Um método faz uma coisa. Seu nome diz o quê. Seu tamanho cabe na tela. **SRP** (Single
-Responsibility Principle, Princípio da Responsabilidade Única) e **cohesion** (coesão)
-guiam o desenho.
+Um método cumpre uma tarefa, e o nome dele anuncia qual é. O tamanho vem como consequência: quando o método faz uma coisa só, ele cabe na tela sem esforço. Os dois princípios que guiam o desenho são **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) e **cohesion** (coesão), o grau em que as linhas de dentro do método pertencem à mesma tarefa.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | cada método tem uma única razão para mudar |
-| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | cada método opera em um só nível: orquestra passos ou implementa detalhe |
+| **SRP** (Single Responsibility Principle · Princípio da Responsabilidade Única) | o método tem uma única razão para mudar |
+| **SLA** (Single Level of Abstraction · Único Nível de Abstração) | o método ou coordena os passos, ou implementa um deles |
 | **cohesion** (coesão) | grau em que as instruções do método pertencem à mesma tarefa |
-| **god method** (método-deus) | método que faz tudo: busca, valida, calcula, persiste, loga |
-| **side effect** (efeito colateral) | alteração observável fora do retorno do método (I/O, mutação de estado) |
-| **pure function** (função pura) | função sem efeito colateral; mesma entrada produz mesma saída |
-| **method extraction** (extração de método) | extrair bloco coeso para método nomeado, reduzindo o tamanho do original |
-| **helper** (método auxiliar) | método de apoio que implementa um passo do orquestrador; dá nome ao detalhe |
-| **builder** (construtor fluente) | padrão para construir objetos com muitos parâmetros sem listas longas |
+| **god method** (método-deus) | método que busca, valida, calcula, grava e registra log tudo de uma vez |
+| **side effect** (efeito colateral) | alteração que o método provoca fora do próprio retorno: escrita em disco, chamada de rede, troca de estado de um objeto |
+| **pure function** (função pura) | função sem efeito colateral; a mesma entrada devolve sempre a mesma saída |
+| **method extraction** (extração de método) | tirar um bloco coeso de dentro do método e dar um nome a ele |
+| **helper** (método auxiliar) | método de apoio que executa um dos passos do coordenador |
+| **builder** (construtor fluente) | forma de montar um objeto de muitos campos sem uma lista longa de parâmetros |
 
 <a id="god-method"></a>
 
-## God method: múltiplas responsabilidades
+## O método que faz tudo
+
+Quando um método busca, valida, calcula, grava e registra log, qualquer mudança em qualquer uma dessas cinco frentes abre o mesmo arquivo. Separe os passos em métodos com nome, e deixe o método de cima só coordenar a sequência.
 
 <details>
-<summary>❌ Ruim: busca, valida, calcula, persiste e loga na mesma função</summary>
+<summary>❌ Ruim: busca, valida, calcula, grava e registra log na mesma função</summary>
 
 ```java
 public Order realizaVenda(String id) {
@@ -55,7 +55,7 @@ public Order realizaVenda(String id) {
 </details>
 
 <details>
-<summary>✅ Bom: orquestrador no topo, responsabilidades separadas</summary>
+<summary>✅ Bom: o método de cima coordena e cada passo tem seu próprio nome</summary>
 
 ```java
 public Order processOrder(String orderId) {
@@ -97,10 +97,12 @@ private Order issueInvoice(Order order) {
 
 <a id="single-level-of-abstraction"></a>
 
-## SLA: orquestrador ou implementação, nunca os dois
+## Um único nível de abstração por método
+
+Um método coordena os passos ou executa um deles. Quando os dois papéis convivem na mesma função, o leitor pula do "o que acontece aqui" para o "como isso é montado" no meio da leitura, e precisa segurar os dois níveis na cabeça ao mesmo tempo.
 
 <details>
-<summary>❌ Ruim: mesmo método orquestra e implementa</summary>
+<summary>❌ Ruim: a mesma função coordena e monta o detalhe</summary>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -118,7 +120,7 @@ public String buildOrderSummary(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: orquestrador chama helpers, cada um faz uma coisa</summary>
+<summary>✅ Bom: o método de cima só chama, e cada auxiliar faz uma coisa</summary>
 
 ```java
 public String buildOrderSummary(Order order) {
@@ -148,8 +150,10 @@ private String buildLineItems(Order order) {
 
 ## Separar cálculo de formatação
 
+O cálculo do total é uma regra de negócio, e o texto que mostra o total é uma escolha de apresentação. Separar os dois deixa o cálculo disponível para a tela, para o PDF e para o teste, sem arrastar junto o formato de exibição.
+
 <details>
-<summary>❌ Ruim: cálculo e formatação misturados</summary>
+<summary>❌ Ruim: a regra de negócio e o texto de exibição saem do mesmo método</summary>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -166,7 +170,7 @@ public String getOrderSummary(Order order) {
 </details>
 
 <details>
-<summary>✅ Bom: cálculo separado da formatação</summary>
+<summary>✅ Bom: um método calcula os totais e outro monta o texto</summary>
 
 ```java
 public String getOrderSummary(Order order) {
@@ -195,12 +199,12 @@ private String formatSummary(String orderId, OrderTotals totals) {
 
 </details>
 
-## Direct return
+## Retorno direto
 
-O retorno fica no topo do método, com os detalhes encapsulados em auxiliares abaixo.
+O método público responde à pergunta em duas linhas, e o auxiliar abaixo cuida da busca e do erro. Quem abre o arquivo lê a intenção primeiro e desce até o detalhe só se precisar dele.
 
 <details>
-<summary>❌ Ruim: variável auxiliar desnecessária, else após throw</summary>
+<summary>❌ Ruim: uma variável de apoio e um else depois do throw</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -221,7 +225,7 @@ public Product findProductById(String id) {
 </details>
 
 <details>
-<summary>✅ Bom: intenção clara no topo, detalhe abaixo</summary>
+<summary>✅ Bom: a intenção fica no topo e a busca desce para o auxiliar</summary>
 
 ```java
 public Product findProductById(String id) {
@@ -239,12 +243,14 @@ private Product fetchProduct(String id) {
 
 </details>
 
+<a id="clean-entry-point"></a>
+
 ## Ponto de entrada limpo
 
-O caller expressa o quê, não o como. Toda construção de contexto fica dentro do método.
+A linha que chama o método diz o que deve acontecer. O cálculo dos argumentos desce para dentro do método chamado, porque quem lê a chamada quer a intenção e não a montagem dos valores.
 
 <details>
-<summary>❌ Ruim: caller monta lógica inline antes de chamar</summary>
+<summary>❌ Ruim: a chamada carrega o cálculo inteiro nos argumentos</summary>
 
 ```java
 submitOrder(
@@ -259,7 +265,7 @@ submitOrder(
 </details>
 
 <details>
-<summary>✅ Bom: entrada de uma linha, detalhes dentro</summary>
+<summary>✅ Bom: a chamada cabe em uma linha e os passos moram dentro</summary>
 
 ```java
 submitOrder(orderId);
@@ -279,11 +285,10 @@ private Invoice submitOrder(String orderId) {
 
 ## Sem lógica no retorno
 
-O retorno nomeia o resultado, não o computa. A variável é expressiva e simétrica com a intenção
-do método.
+O `return` entrega uma variável já pronta, e o nome dessa variável repete a intenção do método. Quando a expressão inteira mora dentro do `return`, o leitor precisa avaliar a expressão de cabeça para descobrir o que sai dali.
 
 <details>
-<summary>❌ Ruim: lógica inline no return</summary>
+<summary>❌ Ruim: a expressão inteira mora dentro do return</summary>
 
 ```java
 public String buildGreeting(User user) {
@@ -300,7 +305,7 @@ public List<User> getActiveUsers(List<User> users) {
 </details>
 
 <details>
-<summary>✅ Bom: variável expressiva antes do return</summary>
+<summary>✅ Bom: a variável nomeia o resultado e o return só a entrega</summary>
 
 ```java
 public String buildGreeting(User user) {
@@ -321,13 +326,14 @@ public List<User> getActiveUsers(List<User> users) {
 
 </details>
 
+<a id="low-visual-density"></a>
+
 ## Baixa densidade visual
 
-Linhas relacionadas ficam juntas. Grupos distintos se separam com exatamente uma linha em branco.
-Nunca duas.
+Linhas que fazem parte do mesmo passo ficam coladas. Entre um passo e o seguinte entra uma linha em branco, sempre uma só. O bloco passa a ter parágrafos, e o leitor enxerga onde cada etapa começa antes de ler qualquer linha.
 
 <details>
-<summary>❌ Ruim: parede de código sem respiro entre grupos</summary>
+<summary>❌ Ruim: sete linhas seguidas sem separação entre as etapas</summary>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -344,7 +350,7 @@ public Invoice processOrder(String orderId) {
 </details>
 
 <details>
-<summary>✅ Bom: parágrafos de intenção</summary>
+<summary>✅ Bom: busca, cálculo, gravação e retorno em blocos separados</summary>
 
 ```java
 public Invoice processOrder(String orderId) {
@@ -365,12 +371,12 @@ public Invoice processOrder(String orderId) {
 
 <a id="vertical-parameters"></a>
 
-## Estilo vertical: parâmetros
+## Estilo vertical nos parâmetros
 
-Até 3 parâmetros na mesma linha. Com 4 ou mais, use um record.
+Até três parâmetros cabem na mesma linha. Com quatro ou mais, agrupe-os num `record`. O ganho aparece na chamada: cada valor passa a vir acompanhado do nome do campo, e trocar a ordem de dois argumentos do mesmo tipo deixa de compilar em silêncio.
 
 <details>
-<summary>❌ Ruim: 4+ parâmetros inline, intenção obscura na chamada</summary>
+<summary>❌ Ruim: cinco valores soltos na chamada, sem nada dizendo qual é qual</summary>
 
 ```java
 private Invoice createInvoice(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) { /* ... */ }
@@ -381,7 +387,7 @@ createInvoice("ord-1", "cust-99", new BigDecimal("149.90"), LocalDate.of(2026, 5
 </details>
 
 <details>
-<summary>✅ Bom: record quando 4+ parâmetros</summary>
+<summary>✅ Bom: o record agrupa os campos e a chamada mostra um valor por linha</summary>
 
 ```java
 record InvoiceRequest(String orderId, String customerId, BigDecimal amount, LocalDate dueDate, String currency) {}

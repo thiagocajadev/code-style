@@ -1,25 +1,26 @@
-# Validation
+# Validação em Java
 
 > Escopo: Java 25 LTS, Jakarta Bean Validation 3.1, Hibernate Validator 9.
 
-Valide na **fronteira** do sistema: input externo (HTTP, mensageria, CLI). Dentro da aplicação,
-confie nos contratos já validados.
+Valide o dado no **limite** do sistema, onde ele entra vindo de fora: a requisição HTTP, a mensagem de uma fila, o argumento de linha de comando. Depois que o dado passou por essa checagem uma vez, o código lá dentro confia no contrato e não repete a validação a cada método.
 
 ## Conceitos fundamentais
 
 | Conceito | O que é |
 | --- | --- |
-| **Bean Validation** (validação de bean) | especificação Jakarta para validação declarativa via anotações |
-| **Hibernate Validator** (implementação de Bean Validation) | implementação de referência do Bean Validation |
-| **constraint** (restrição) | regra de validação declarada via anotação (`@NotBlank`, `@Size`, etc.) |
-| **ConstraintViolation** (violação de restrição) | objeto que descreve um campo inválido e a mensagem de erro |
-| **@Valid** (anotação que dispara validação) | instrui o Spring a validar o objeto anotado antes de chamar o método |
+| **Bean Validation** (validação por anotação) | especificação Jakarta que declara as regras de validação com anotações no campo |
+| **Hibernate Validator** (implementação do Bean Validation) | a implementação de referência da especificação |
+| **constraint** (restrição) | regra de validação declarada numa anotação, como `@NotBlank` ou `@Size` |
+| **ConstraintViolation** (violação de restrição) | objeto que descreve o campo inválido e a mensagem de erro |
+| **@Valid** (anotação que dispara a validação) | instrui o Spring a validar o objeto antes de entrar no método |
 | **consumer** (consumidor de mensagem) | componente que lê e processa mensagens de uma fila ou tópico |
 
-## Validação inline no service
+## Validação escrita à mão no service
+
+Repetir os `if` de validação dentro de cada service espalha a mesma regra por vários arquivos, e uma delas fica para trás no dia em que o limite muda. Declarar as regras como anotações no record de entrada junta tudo num lugar, e o Spring roda a validação sozinho quando o `@Valid` marca o parâmetro.
 
 <details>
-<summary>❌ Ruim: validação espalhada em múltiplos serviços</summary>
+<summary>❌ Ruim: os mesmos if de validação repetidos em cada service</summary>
 
 ```java
 public User createUser(String name, String email) {
@@ -72,12 +73,12 @@ public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserInput inp
 | `@PositiveOrZero`     | Número deve ser positivo ou zero (≥ 0)                      |
 | `@Past` / `@Future`   | Data deve estar no passado / futuro                         |
 
-## Validator programático
+## Validação chamada no código
 
-Quando precisar validar fora de um controller Spring, injete o `Validator` programaticamente.
+Fora de um controller Spring, o `@Valid` não dispara sozinho, então injete o `Validator` e chame a validação no código. É o caso do **consumer** (consumidor de mensagem) que lê de uma fila: a mensagem chega pelo mesmo limite externo de uma requisição HTTP e passa pela mesma checagem antes de seguir para o service.
 
 <details>
-<summary>✅ Bom: validação programática na fronteira de um consumer (consumidor de mensagem)</summary>
+<summary>✅ Bom: o consumer valida a mensagem no limite antes de processar</summary>
 
 ```java
 @Component
@@ -107,12 +108,12 @@ public class OrderMessageConsumer {
 
 </details>
 
-## Validator customizado
+## Validação sob medida
 
-Quando as anotações padrão não cobrem uma regra de negócio, crie um validator customizado.
+Quando nenhuma anotação padrão descreve a regra, como validar o dígito verificador de um CPF, escreva uma anotação própria e a classe que a implementa. O campo passa a carregar `@Cpf` do mesmo jeito que carregaria `@NotBlank`, e a regra fica reutilizável em qualquer record.
 
 <details>
-<summary>✅ Bom: validator customizado para CPF</summary>
+<summary>✅ Bom: anotação e validador próprios para o CPF</summary>
 
 ```java
 // annotation
@@ -144,10 +145,12 @@ public record CustomerInput(
 
 </details>
 
-## @ControllerAdvice: tratamento centralizado de erros de validação
+## Um handler para os erros de validação
+
+Quando o `@Valid` recusa uma requisição, o Spring lança `MethodArgumentNotValidException`. Um `@RestControllerAdvice` captura essa exceção num lugar só e monta a mesma resposta de erro para toda a API, com a lista de campos inválidos e suas mensagens, em vez de repetir esse tratamento em cada controller.
 
 <details>
-<summary>✅ Bom: mapeia MethodArgumentNotValidException para resposta padronizada</summary>
+<summary>✅ Bom: um handler traduz o erro de validação para a resposta padrão</summary>
 
 ```java
 @RestControllerAdvice

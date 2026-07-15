@@ -3,12 +3,9 @@
 [![Java](https://img.shields.io/badge/Java-25_LTS-ED8B00?logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring_Boot-4.0-6DB33F?logo=springboot&logoColor=white)](https://spring.io/projects/spring-boot)
 
-Java é uma linguagem de tipagem estática, orientada a objetos, com foco em legibilidade e
-segurança. Os princípios deste guia (nomes expressivos, guard clauses, métodos
-pequenos, fluxo linear) aplicam-se diretamente ao ecossistema Java moderno: records,
-pattern matching (casamento de padrões) e virtual threads (threads virtuais).
+Java é uma linguagem de tipagem estática e orientada a objetos, com foco em legibilidade e segurança. Os princípios deste guia (nomes expressivos, guard clauses, métodos pequenos, fluxo linear) valem direto no Java moderno, que traz records, pattern matching (casamento de padrões) e virtual threads (threads leves que a JVM cria aos milhares).
 
-→ [Quick Reference](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
+→ [Referência rápida](quick-reference.md): nomenclatura, verbos, taboos, tipos, controle de fluxo
 
 ## Setup
 
@@ -34,12 +31,12 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 
 | Tópico                                                        | Conceitos                                         |
 | ------------------------------------------------------------- | ------------------------------------------------- |
-| [Error Handling](conventions/advanced/error-handling.md)      | Exceções tipadas, try-with-resources, fronteiras  |
+| [Error Handling](conventions/advanced/error-handling.md)      | Exceções tipadas, try-with-resources, limites     |
 | [Async](conventions/advanced/async.md)                        | Virtual threads, CompletableFuture, Loom          |
 | [Testing](conventions/advanced/testing.md)                    | JUnit 6, AssertJ, Mockito, AAA                    |
 | [Performance](conventions/advanced/performance.md)            | Streams vs loops, pré-alocação, String building   |
 | [Observability](conventions/advanced/observability.md)        | SLF4J, Logback, Micrometer, MDC, correlationId    |
-| [Validation](conventions/advanced/validation.md)              | Jakarta Bean Validation, fronteiras, custom       |
+| [Validation](conventions/advanced/validation.md)              | Jakarta Bean Validation, limites, custom          |
 | [Null Safety](conventions/advanced/null-safety.md)            | Optional, Objects.requireNonNullElse, guard       |
 | [Dates](conventions/advanced/dates.md)                        | java.time, UTC, ISO 8601, DateTimeFormatter       |
 | [Entity Modeling](conventions/advanced/entity-modeling.md)    | `record` para IDs, `sealed interface`, `Optional` em retorno, factory estática |
@@ -59,7 +56,7 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
 | [Escrita em inglês](conventions/naming.md#portuguese-names)                                           | Código universal, nomes curtos e sem ambiguidade                     |
 | [Código narrativo](conventions/methods.md#god-method)                      | O código conta a história, sem precisar de comentários               |
-| [Ponto de entrada limpo](conventions/methods.md#ponto-de-entrada-limpo)                                 | Caller de uma linha: o quê, não o como                               |
+| [Ponto de entrada limpo](conventions/methods.md#clean-entry-point)                                 | Chamada de uma linha: diz o quê, esconde o como                      |
 | [Estilo vertical](conventions/methods.md#vertical-parameters)                                   | Até 3 parâmetros por linha; 4+ usa record ou builder                 |
 | [Orquestrador no topo](conventions/methods.md#god-method)                  | Chamada visível antes dos detalhes (top-down)                        |
 | [Sem lógica no retorno](conventions/methods.md#no-logic-in-return)                                   | Saída de uma linha: o retorno nomeia o resultado, não o computa      |
@@ -70,10 +67,10 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 
 | Princípio                                                                                    | Descrição                                                            |
 | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- |
-| [Retorno antecipado](conventions/control-flow.md#if-e-else)                                  | Saída cedo na falha, sem else após return                            |
-| [Fluxo linear](conventions/control-flow.md#guard-clauses-aninhamento-em-cascata)                           | Aninhamento em cascata substituído por fluxo plano                   |
-| [Baixa densidade visual](conventions/methods.md#baixa-densidade-visual)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
-| [Nomes expressivos](conventions/naming.md#identificadores-sem-significado)                   | Variáveis e métodos que dispensam explicação                         |
+| [Retorno antecipado](conventions/control-flow.md#if-and-else)                                  | Saída cedo na falha, sem else após return                            |
+| [Fluxo linear](conventions/control-flow.md#nested-conditionals)                           | Aninhamento em cascata substituído por fluxo plano                   |
+| [Baixa densidade visual](conventions/methods.md#low-visual-density)                      | Linhas relacionadas juntas, grupos separados por uma linha em branco |
+| [Nomes expressivos](conventions/naming.md#meaningless-identifiers)                   | Variáveis e métodos que dispensam explicação                         |
 | [Código como documentação](conventions/naming.md#code-as-documentation)                   | Nomes substituem comentários; comentários mentem                     |
 | [Sem valores mágicos](conventions/variables.md#magic-values)                       | Constantes nomeadas no lugar de números e strings soltos             |
 
@@ -89,5 +86,5 @@ Configuração inicial de um projeto Java: estrutura, build e pipeline.
 | [CQS](conventions/variables.md#parameter-mutation)                                                  | Separar comando de consulta, sem efeitos colaterais ocultos  |
 | [Falhar rápido](conventions/advanced/error-handling.md#multiple-return-types)                     | Validar cedo, interromper fluxo inválido                     |
 | [Contratos consistentes](conventions/advanced/error-handling.md#baseexception-centralized-abstraction) | Respostas padronizadas, sempre o mesmo formato               |
-| [I/O assíncrono](conventions/advanced/async.md#thread-bloqueada-desnecessariamente)                    | Virtual threads, sem bloqueio desnecessário                  |
-| [Testes estruturados](conventions/advanced/testing.md#fases-misturadas-aaa)                           | AAA: fases explícitas; assert limpo: sem expressões inline   |
+| [I/O assíncrono](conventions/advanced/async.md#blocked-thread)                    | Virtual threads, sem prender a thread à toa                  |
+| [Testes estruturados](conventions/advanced/testing.md#mixed-phases-aaa)                           | AAA: fases explícitas; assert limpo, sem expressão inline    |
