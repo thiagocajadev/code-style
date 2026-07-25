@@ -4,7 +4,7 @@
 > [security.md](security.md), que cobre segredo fora do código, configuração em camadas, validação
 > no servidor e a separação entre autenticação e autorização.
 
-A lista do **OWASP** (Open Worldwide Application Security Project · projeto aberto de segurança de aplicações) nomeia as dez classes de falha que mais aparecem em aplicações reais, e serve de vocabulário comum entre quem escreve o código, quem revisa o PR e quem audita o sistema. A edição de 2025 saiu em novembro daquele ano e mudou o suficiente para invalidar a lista que a maioria decorou: entraram duas categorias novas, cadeia de suprimentos e tratamento de condição excepcional, e o **SSRF** (Server-Side Request Forgery · falsificação de requisição pelo servidor) perdeu a categoria própria. Este documento percorre as dez com exemplo de código, e fecha com o padrão de verificação, os portões do pipeline e a migração criptográfica que já começou. Identidade mora em [auth.md](auth.md): OAuth, **OIDC** (OpenID Connect · autenticação construída sobre OAuth), JWT, cookie, e o token no navegador ou no app.
+A lista do **OWASP** (Open Worldwide Application Security Project · projeto aberto de segurança de aplicações) nomeia as dez classes de falha que mais aparecem em aplicações reais. Ela serve de vocabulário comum entre quem escreve o código, quem revisa o PR e quem audita o sistema: dizer "isso é A01" economiza um parágrafo de explicação. Este documento cobre a edição de 2025, uma categoria por seção, cada uma com exemplo de código, e fecha com o padrão de verificação, os portões do pipeline e a migração criptográfica que já começou. Identidade mora em [auth.md](auth.md): OAuth, **OIDC** (OpenID Connect · autenticação construída sobre OAuth), JWT, cookie, e o token no navegador ou no app.
 
 ## Conceitos fundamentais
 
@@ -32,24 +32,28 @@ A lista do **OWASP** (Open Worldwide Application Security Project · projeto abe
 | **STRIDE** (Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege · seis categorias de ameaça) | Roteiro para levantar ameaças de um desenho antes de implementá-lo |
 | **PQC** (Post-Quantum Cryptography · criptografia pós-quântica) | Família de algoritmos que resiste a um computador quântico; a migração começou pelos handshakes de TLS |
 
-<a id="what-changed"></a>
+<a id="the-ten"></a>
 
-## O que mudou de 2021 para 2025
+## As dez categorias
 
-| Categoria 2025 | Posição em 2021 | O que a mudança diz |
+O código de cada categoria tem duas partes. O `A` é o prefixo que a OWASP usa para numerar risco de aplicação (*application*), e o número é a posição no ranking: `A01` é a classe de falha mais frequente, `A10` é a décima. Quando o texto precisa deixar clara a edição, o ano entra junto, no formato `A01:2025`. A letra nunca ganhou expansão oficial em documento da OWASP, ela vem da numeração adotada nas primeiras edições e ficou.
+
+Essa posição não mede gravidade. Uma falha de `A09` pode custar mais caro que uma de `A01` no seu sistema. O que o ranking diz é com que frequência aquela classe apareceu no levantamento.
+
+| Código | Categoria | O que é |
 |---|---|---|
-| A01 Broken Access Control | 1ª | Segue no topo pela quarta edição, e agora carrega o SSRF (`CWE-918`) e o CSRF (`CWE-352`) como fraquezas mapeadas |
-| A02 Security Misconfiguration | 5ª | Subiu três posições. Default inseguro, credencial de fábrica e header ausente aparecem mais que criptografia mal feita |
-| A03 Software Supply Chain Failures | nova | Expande a antiga "Vulnerable and Outdated Components". Deixou de ser sobre versão velha e passou a ser sobre o build inteiro |
-| A04 Cryptographic Failures | 2ª | Caiu duas |
-| A05 Injection | 3ª | Caiu duas. XSS continua aqui dentro, com mais de 30 mil CVEs mapeadas |
-| A06 Insecure Design | 4ª | Caiu duas |
-| A07 Authentication Failures | 7ª | Renomeada. Era "Identification and Authentication Failures" |
-| A08 Software or Data Integrity Failures | 8ª | Estável |
-| A09 Security Logging & Alerting Failures | 9ª | Renomeada: "Monitoring" virou "Alerting". Guardar log sem disparar alerta deixou de contar |
-| A10 Mishandling of Exceptional Conditions | nova | 24 CWEs sobre erro tratado errado, com `CWE-636` (falhar abrindo) no centro |
+| [A01](#a01-broken-access-control) | Broken Access Control (controle de acesso quebrado) | O usuário alcança dado ou ação de outro, porque a rota confere se existe sessão e não confere de quem é o registro. Carrega o SSRF (`CWE-918`) e o CSRF (`CWE-352`) como fraquezas mapeadas |
+| [A02](#a02-security-misconfiguration) | Security Misconfiguration (configuração insegura) | Valor de fábrica que ninguém trocou: credencial padrão, recurso desnecessário ligado, cabeçalho de segurança ausente, bucket público |
+| [A03](#a03-supply-chain) | Software Supply Chain Failures (falhas na cadeia de suprimentos) | Alguém adulterou o caminho entre o código-fonte e o artefato que subiu em produção |
+| [A04](#a04-cryptographic-failures) | Cryptographic Failures (falhas de criptografia) | Algoritmo fraco, hash rápido guardando senha, chave exposta, dado sensível trafegando ou parado sem proteção |
+| [A05](#a05-injection) | Injection (injeção) | Texto de origem externa chega a um interpretador e parte dele é lida como comando. XSS mora aqui dentro |
+| [A06](#a06-insecure-design) | Insecure Design (desenho inseguro) | O desenho não previu o abuso, e implementação sem nenhum bug não corrige isso |
+| [A07](#a07-authentication-failures) | Authentication Failures (falhas de autenticação) | Credencial que já vazou, senha fraca aceita, sessão que não termina |
+| [A08](#a08-integrity-failures) | Software or Data Integrity Failures (falhas de integridade) | Código ou dado vindo de fora é tratado como confiável sem verificação de origem |
+| [A09](#a09-logging-failures) | Security Logging & Alerting Failures (falhas de registro e alerta) | O evento de segurança não é registrado, ou é registrado e não dispara alerta para ninguém |
+| [A10](#a10-exceptional-conditions) | Mishandling of Exceptional Conditions (tratamento errado de condição excepcional) | O erro é tratado de um jeito que libera acesso, com `CWE-636` (falhar abrindo) no centro |
 
-A base de dados também cresceu: 589 CWEs contra cerca de 400 em 2021, com teto de 40 por categoria, sobre 2,8 milhões de aplicações. Oito categorias saem de dado medido e duas de pesquisa com profissionais, que é como o OWASP inclui risco que ainda não aparece em volume.
+A lista sai de dado medido: 589 CWEs mapeadas sobre 2,8 milhões de aplicações, com teto de 40 CWEs por categoria. Oito categorias vêm desse levantamento e duas vêm de pesquisa com profissionais, que é como o OWASP inclui risco que ainda não aparece em volume.
 
 <a id="a01-broken-access-control"></a>
 
@@ -102,9 +106,9 @@ O OWASP recomenda negar por padrão, centralizar o controle em código do servid
 
 <a id="ssrf"></a>
 
-### SSRF: quando o atacante escolhe para onde o servidor liga
+### SSRF: quando o atacante escolhe o endereço que o servidor vai buscar
 
-O SSRF perdeu a categoria própria e virou uma das fraquezas de A01, porque o efeito é o mesmo: acesso a recurso que a política não autorizava. O servidor tem posição de rede privilegiada, então uma URL controlada pelo usuário alcança o serviço de metadados da nuvem, o banco na rede interna e o painel administrativo sem porta pública.
+O SSRF é uma das fraquezas mapeadas em A01, porque o efeito é o mesmo: acesso a recurso que a política não autorizava. O servidor ocupa uma posição de rede privilegiada, então uma URL escolhida pelo usuário alcança o serviço de metadados da nuvem, o banco na rede interna e o painel administrativo sem porta pública.
 
 <details>
 <summary>❌ Ruim: o endereço vem do usuário e o servidor busca sem perguntar</summary>
@@ -167,7 +171,7 @@ Bloquear por lista de endereços proibidos não funciona no lugar da allowlist. 
 
 ## A02: o default que ninguém trocou
 
-Configuração insegura subiu de quinto para segundo lugar. As causas listadas pelo OWASP são operacionais: hardening (endurecimento da configuração) desligado, recurso que ninguém usa continuando ativo, credencial de fábrica intacta, mensagem de erro contando demais, bucket de nuvem com permissão pública por padrão e header de segurança ausente.
+As causas que o OWASP lista nesta categoria são operacionais, e nenhuma delas exige código novo para ser corrigida: **hardening** (endurecimento da configuração) desligado, recurso que ninguém usa continuando ativo, credencial de fábrica intacta, mensagem de erro contando demais, bucket de nuvem com permissão pública por padrão e cabeçalho de segurança ausente.
 
 Os cabeçalhos abaixo vêm do Cheat Sheet do OWASP e são os que uma aplicação web deve enviar:
 
@@ -231,9 +235,9 @@ Um detalhe de implementação que o Cheat Sheet marca em negrito: nunca escreva 
 
 <a id="a03-supply-chain"></a>
 
-## A03: a categoria nova que olha o build inteiro
+## A03: o caminho entre o código-fonte e o artefato publicado
 
-A antiga categoria de componentes desatualizados tratava de uma pergunta: sua dependência tem CVE conhecida? A de 2025 trata de outra: alguém adulterou o caminho entre o código-fonte e o artefato que subiu em produção? Os exemplos que o OWASP cita são o SolarWinds, o roubo de US$ 1,5 bilhão na Bybit em 2025 e o worm Shai-Hulud, que se propagou sozinho pelo npm e publicou versão maliciosa em mais de 500 pacotes.
+A pergunta desta categoria é se alguém adulterou alguma etapa entre o commit e o artefato que subiu em produção. O escopo passa longe de "sua dependência tem CVE conhecida": cobre o build, o registro de pacotes, a credencial de publicação e as actions do pipeline. Os exemplos que o OWASP cita são o SolarWinds, o roubo de US$ 1,5 bilhão na Bybit em 2025 e o worm Shai-Hulud, que se propagou sozinho pelo npm e publicou versão maliciosa em mais de 500 pacotes.
 
 A onda de maio de 2026 mostrou o limite dos controles: 84 versões adulteradas em 42 pacotes do TanStack, em poucas horas, num alvo que tinha **2FA** (autenticação com dois fatores) em todas as contas de mantenedor, publicação por OIDC em vez de token de longa duração e atestado de procedência assinado em cada release. Os pacotes maliciosos saíram com procedência válida, emitida por uma execução de **CI** (Continuous Integration · integração contínua) legitimamente autorizada.
 
@@ -440,9 +444,9 @@ O OWASP acrescenta validação positiva no servidor, escape com a sintaxe do int
 
 ## A06: a falha que implementação perfeita não corrige
 
-A distinção que abre a categoria é a única coisa que precisa ficar clara: um desenho seguro ainda pode ter defeito de implementação, e um desenho inseguro não se resolve com implementação impecável. Se o fluxo de recuperação de senha usa pergunta secreta, escrever esse fluxo sem nenhum bug entrega um sistema em que a resposta que várias pessoas conhecem substitui a senha.
+A categoria começa por uma distinção. Um desenho seguro ainda pode ter defeito de implementação, e um desenho inseguro continua inseguro mesmo com implementação impecável. Se o fluxo de recuperação de senha usa pergunta secreta, escrever esse fluxo sem nenhum bug entrega um sistema em que a resposta que várias pessoas conhecem substitui a senha.
 
-Os exemplos que o OWASP escolheu tratam de regra de negócio. Uma rede de cinema com desconto para grupos de até 15 pessoas, e sem limite de reserva por transação, permite reservar centenas de assentos de uma vez. Um comércio eletrônico sem defesa contra automação entrega o estoque limitado de placa de vídeo a revendedor em segundos.
+Os dois exemplos que o OWASP escolheu tratam de regra de negócio. No primeiro, uma rede de cinema dá desconto para grupos de até 15 pessoas e não limita quantos assentos uma reserva pode conter. Um atacante reserva centenas de assentos de uma vez e não paga, e a sala fica bloqueada até o prazo de pagamento vencer. No segundo, um comércio eletrônico sem defesa contra automação entrega o estoque limitado de placa de vídeo a revendedor em segundos.
 
 **STRIDE** é o roteiro para achar isso antes de implementar. Cada letra é uma pergunta feita sobre o desenho:
 
@@ -455,7 +459,15 @@ Os exemplos que o OWASP escolheu tratam de regra de negócio. Uma rede de cinema
 | **D**enial of service (indisponibilidade) | O serviço para de responder | Qual chamada é caro repetir, e o que limita a repetição? |
 | **E**levation of privilege (elevação de privilégio) | Usuário comum ganha poder de administrador | Onde a permissão é decidida e quem pode influenciar essa decisão? |
 
-O caso de abuso entra no refinamento junto com o critério de aceite, e vira teste. A história "o cliente reserva assentos com desconto de grupo" ganha o par "o cliente não reserva mais de 15 assentos por transação", e esse par vira código de teste.
+O caso de abuso entra no refinamento ao lado do critério de aceite, e sai de lá como teste automatizado. Vale voltar ao cinema para ver como isso fica escrito:
+
+| O que o time escreve | Frase |
+|---|---|
+| História de usuário | O cliente reserva assentos com desconto de grupo |
+| Caso de abuso | O cliente reserva 400 assentos numa transação e não paga |
+| Regra que sai daí | Nenhuma reserva aceita mais de 15 assentos |
+
+A terceira linha é a que vira código de teste. A primeira, sozinha, produz um teste que passa enquanto o sistema continua vulnerável, porque reservar 400 assentos também é reservar assentos com desconto de grupo.
 
 <a id="a07-authentication-failures"></a>
 
@@ -575,7 +587,7 @@ Nas demais frentes, o OWASP pede assinatura digital para verificar origem de sof
 
 ## A09: log que ninguém lê e alerta que ninguém dispara
 
-A renomeação da categoria muda o alvo: guardar log deixou de bastar, o que conta é o alerta chegar a alguém com um roteiro de resposta. O que chama atenção nos exemplos citados é a duração: um plano de saúde com invasão sem detecção por sete anos, uma companhia aérea com dado de passageiro exposto por uma década, e outra com mais de 400 mil registros de pagamento comprometidos e multa de € 20 milhões por **GDPR** (General Data Protection Regulation · regulamento europeu de proteção de dados).
+Guardar log não fecha esta categoria. O que conta é o alerta chegar a alguém que tem um roteiro de resposta na mão. O que chama atenção nos exemplos citados é a duração: um plano de saúde com invasão sem detecção por sete anos, uma companhia aérea com dado de passageiro exposto por uma década, e outra com mais de 400 mil registros de pagamento comprometidos e multa de € 20 milhões por **GDPR** (General Data Protection Regulation · regulamento europeu de proteção de dados).
 
 | Evento | Registrar | Por quê |
 |---|---|---|
@@ -619,7 +631,7 @@ Alerta é a outra metade. O log de falha de login só serve com um limiar ligado
 
 ## A10: o erro tratado errado
 
-A segunda categoria nova cobre três falhas: não impedir a condição anormal, não perceber quando ela ocorre, e responder mal depois. `CWE-636`, falhar abrindo, é o centro: o controle de segurança não consegue decidir e o sistema segue como se a resposta tivesse sido "pode".
+Esta categoria cobre três falhas em sequência: não impedir a condição anormal, não perceber quando ela ocorre, e responder mal depois que ela ocorreu. `CWE-636`, falhar abrindo, é o centro: o controle de segurança não consegue decidir e o sistema segue como se a resposta tivesse sido "pode".
 
 <details>
 <summary>❌ Ruim: o controle de permissão libera quando a consulta falha</summary>

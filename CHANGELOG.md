@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.1] - 2026-07-25
+
+### Fixed
+
+- **`security-advanced.md` passou a documentar só a edição de 2025 do OWASP Top 10.** A seção `## O que mudou de 2021 para 2025` saiu inteira, com a tabela de posições anterior. Nenhum arquivo apontava para a âncora `what-changed`, então a remoção não quebrou link. Junto com ela saiu a linguagem de movimentação em seis pontos do texto: o SSRF deixou de "perder a categoria própria" e passa a ser apresentado direto como fraqueza mapeada em A01, A02 não "subiu de quinto para segundo", A03 não é "a categoria nova" nem se compara à anterior, A09 não menciona renomeação e A10 não é "a segunda categoria nova". Quem lê agora aprende a lista atual sem precisar da anterior como contexto.
+- **Nova seção `## As dez categorias`**, com tabela `A01…A10` trazendo nome em inglês, tradução e uma linha do que é cada classe de falha, cada código linkado para a seção que o detalha.
+- **O prefixo `A` ganhou explicação.** O texto trata como prefixo de risco de aplicação (*application*), com o número marcando a posição no ranking e o formato `A01:2025` quando a edição precisa ficar explícita. Registra que a OWASP nunca publicou expansão oficial da letra, o que a fonte não sustenta. Acrescenta a ressalva que faltava: a posição mede frequência no levantamento, não gravidade, e uma falha de `A09` pode custar mais caro que uma de `A01` em um sistema específico.
+- **O exemplo de caso de abuso em A06 virou tabela.** A frase "a história X ganha o par Y, e esse par vira código de teste" empilhava três ideias em uma linha. No lugar entrou uma tabela de três linhas (história de usuário → caso de abuso → regra que sai daí), seguida da explicação de por que a história sozinha produz um teste que passa com o sistema ainda vulnerável. O parágrafo que abre o cenário do cinema também passou a dizer qual é o prejuízo, que antes ficava implícito.
+
+**Gates**: audit:prose 1 arquivo / 0 erro / 0 aviso · audit:docs 2614 Good / 403 arquivos / 0 violações · audit:pedagogy 0 gaps no arquivo, antes e depois · 10 links internos / 0 quebrado, com as 17 âncoras `<a id>` preservadas · 0 blocos de código alterados, conforme o gate de passada de prosa. O `lint` segue em 7 erros pré-existentes em `.ai/tooling/scripts/audit-prose.mjs` (regra `curly`), contagem idêntica antes e depois.
+
 ## [2.11.0] - 2026-07-25
 
 ### Added
