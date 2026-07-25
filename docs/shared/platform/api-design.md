@@ -686,6 +686,8 @@ Catálogo oficial das normas: [rfc-editor.org/series/rfc](https://www.rfc-editor
 - [Backend Flow](../architecture/backend-flow.md): jobs, webhooks, event-driven além do pipeline síncrono
 - [Observability](../standards/observability.md): correlationId, logs estruturados, níveis
 - [Security](./security.md): autenticação, autorização e blindagem de cookies no boundary
+- [Auth](./auth.md): OAuth e OIDC, verificação de JWT, atributos do cookie e token por tipo de cliente
+- [Security Advanced](./security-advanced.md): OWASP Top 10:2025, injeção, resposta de erro sem detalhe interno
 - [Integrations](./integrations.md): contratos com sistemas externos (GraphQL, XML/SOAP, HMAC)
 - [Messaging](./messaging.md): filas, DLQ e entrega quando a API dispara trabalho assíncrono
 - [C# API Design](../../csharp/conventions/advanced/api-design.md): Minimal API, TypedResults, `[AsParameters]`

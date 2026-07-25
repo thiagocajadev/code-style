@@ -41,7 +41,7 @@ Um serviço recebe as permissões que usa, e nada além disso. O **IAM** (Identi
 | Permissão de leitura onde só se lê | Write não utilizado é write disponível para exploração |
 | Revisão periódica de permissões | Permissões crescem com o tempo, raramente diminuem sozinhas |
 
-O **secret** (segredo) fica em um serviço próprio para isso (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e é injetado quando o processo sobe. A variável de ambiente em **plaintext** (texto sem criptografia), o valor commitado no código e o `.env` versionado são os três caminhos por onde o segredo vaza. Ver [Segurança](./security.md) para detalhes.
+O **secret** (segredo) fica em um serviço próprio para isso (AWS Secrets Manager, Azure Key Vault, GCP Secret Manager) e é injetado quando o processo sobe. A variável de ambiente em **plaintext** (texto sem criptografia), o valor commitado no código e o `.env` versionado são os três caminhos por onde o segredo vaza. Ver [Segurança](./security.md) para detalhes, e [security-advanced.md](./security-advanced.md#a04-cryptographic-failures) para chave em HSM, criptografia autenticada e a migração pós-quântica.
 
 ## Containers
 

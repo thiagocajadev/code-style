@@ -181,7 +181,7 @@ app.MapDelete("/orders/{id}", async (Guid id, IOrderRepository orderRepository, 
 
 ## O cookie de sessão e suas três flags
 
-`AddSession` aceita as três flags obrigatórias direto na configuração: `HttpOnly` impede que JavaScript leia o cookie, `Secure` impede que ele trafegue fora de HTTPS e `SameSite` impede que outro site o envie junto de uma requisição. O motivo de cada uma está em [shared/platform/security.md](../../shared/platform/security.md).
+`AddSession` aceita as três flags obrigatórias direto na configuração: `HttpOnly` impede que JavaScript leia o cookie, `Secure` impede que ele trafegue fora de HTTPS e `SameSite` impede que outro site o envie junto de uma requisição. O motivo de cada uma está em [shared/platform/security.md](../../shared/platform/security.md), e os atributos completos de `Set-Cookie`, com a escolha entre `Strict`, `Lax` e `None`, em [shared/platform/auth.md](../../shared/platform/auth.md#cookie).
 
 ```csharp
 builder.Services.AddSession(options =>
@@ -209,3 +209,8 @@ appsettings.*.local.json
 .env.*
 secrets.json
 ```
+
+## Veja também
+
+- [shared/platform/security-advanced.md](../../shared/platform/security-advanced.md): OWASP Top 10:2025, hash de senha, cabeçalhos de segurança e cadeia de suprimentos
+- [shared/platform/auth.md](../../shared/platform/auth.md): OAuth e OIDC, validação de JWT, atributos do cookie e token por tipo de cliente

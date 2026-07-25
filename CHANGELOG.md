@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.0] - 2026-07-25
+
+### Added
+
+- **Segurança de aplicação e identidade no estado de julho de 2026 (Épico D2).** 2 arquivos novos e 1.316 linhas, mais cross-link em 14 arquivos existentes, entregues como unidade única. O levantamento que abriu o épico achou os buracos: **OAuth aparecia em uma linha de `governance.md`** (só a RFC 6749) mais o fluxo de instalação de bot; **OIDC, JOSE e hash de senha tinham zero ocorrência no repositório inteiro**, e `ETag`, `If-None-Match`, `Cache-Control` e `Vary` também; JWT existia como glosa de tabela e como `verify` vs `decode` em `docs/javascript/setup/security.md`.
+- **`docs/shared/platform/security-advanced.md`** (740 linhas), uma seção por categoria do OWASP Top 10:2025 com par Ruim e Bom em código. A edição de 2025 mudou o suficiente para invalidar a lista que se repete de memória: **cadeia de suprimentos e tratamento de condição excepcional entraram como categorias próprias, o SSRF perdeu a dele e virou fraqueza de A01**, e o alerta entrou no nome de A09. Fecha com ASVS 5.0 em três níveis, os cinco portões do pipeline (secret scanning, SAST, SCA, IaC e DAST) e a migração pós-quântica com o prazo de 2030 que o próprio OWASP fixou.
+- **O caso do MD5 com número, não com adjetivo.** 60% das senhas com hash MD5 recuperadas em menos de uma hora com **uma** RTX 5090, e 48% em até 60 segundos, sobre 231 milhões de senhas reais de vazamento. Contra Argon2id com os parâmetros mínimos publicados (19 MiB, `t=2`, `p=1`), mais a tabela de scrypt, bcrypt e PBKDF2 e a estratégia de migrar sem resetar a senha de todo mundo.
+- **`docs/shared/platform/auth.md`** (576 linhas), declarado no cabeçalho como **fonte única do projeto sobre cookie**. Cobre OAuth com os quatro papéis e os grant types, o que a 2.1 tirou (implicit e password grant fora, PKCE obrigatório), OIDC com o erro de usar `access_token` para saber quem é o usuário, JWT e as cinco RFCs de JOSE, `Set-Cookie` atributo por atributo com `__Host-` e CHIPS, cache e `ETag` como supercookie, e a comparação de onde o token mora em navegador, app mobile e serviço para serviço. Mais rotação de refresh com detecção de reuso, DPoP e mTLS, passkeys, e os cinco frameworks gratuitos de auth com versão e licença conferidas na fonte.
+- **Contradição do `SameSite` resolvida com SSOT.** A tabela de flags em `security.md` recomendava `SameSite=Strict` sem ressalva, e `Strict` quebra login que volta por redirect de provedor de identidade. A linha virou `SameSite` genérico com ponteiro, e os dois `setup/security.md` de linguagem (JavaScript e C#) passaram a apontar para o mesmo lugar em vez de repetir a regra.
+- **`REFERENCES.md`: 221 → 271 URLs, 50 novas, todas com HTTP 200 verificado antes de entrar.** Uma URL por categoria do Top 10:2025, os cinco Cheat Sheets citados, as fontes empíricas do custo de quebra (SHA-mbles, survey de colisão do Marc Stevens, Kaspersky, benchmark do hashcat), cadeia de suprimentos, e uma seção `## Identidade e Autenticação` com RFC 9700, 8252, 7636, 9449, 8705, OIDC Core, WebAuthn e as quatro RFCs de JOSE.
+- **`REFERENCES.md` perdeu os 46 em dashes pré-existentes**, trocados por `:` dentro do rótulo do link, porque o `audit:prose` bloqueia o arquivo alterado inteiro. Ganhou `<a id="apis-http-and-rfcs">` para o link interno do JWT parar de depender de âncora gerada de heading.
+
+**Gates**: audit:prose 15 arquivos / 0 erro / 0 aviso · audit:docs 2614 Good / 403 arquivos / 0 violações · test:docs 44/0 · test:prose 25/0 · concepts shared 62 OK / 0 / 0 / 0, javascript 20, csharp 25 · 218 links internos nos 18 arquivos do ciclo / 0 quebrado · 0 em dash e 0 "fronteira" · 34 `<summary>` em prosa, sem termo cru · 17 blocos `✅ Bom` sem lógica no `return`.
+
+**Achado não corrigido, registrado no backlog**: a varredura de links do repositório inteiro (1.389 links) encontrou **78 âncoras acentuadas quebradas pré-existentes**, nenhuma em arquivo deste ciclo. As de `swift`, `rust`, `php`, `ruby`, `dart`, `kotlin` e `go` têm dono na fila do Ciclo C. Ficam sem dono `docs/javascript/README.md` (9 âncoras) e os 5 links de `docs/javascript/frameworks/bot/*` para `bots-advanced.md`, porque javascript já saiu da fila.
+
 ## [2.10.0] - 2026-07-24
 
 ### Added

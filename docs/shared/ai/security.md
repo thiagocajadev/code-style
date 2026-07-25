@@ -242,3 +242,4 @@ Com a lista do exemplo bom, a injeção mais criativa do mundo consegue no máxi
 - [agents.md](agents.md): arquitetura de agentes e gerenciamento de ferramentas
 - [tools-mcp.md](tools-mcp.md): Tool Use e MCP Protocol com escopo de permissões
 - [Integrations](../platform/integrations.md#llm-apis): autenticação e retry para APIs de LLM
+- [Security Advanced](../platform/security-advanced.md#a05-injection): injeção clássica, a família que o prompt injection imita

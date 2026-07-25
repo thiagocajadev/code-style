@@ -191,7 +191,7 @@ app.delete("/orders/:id", authenticate, authorize(["admin", "manager"]), cancelO
 
 ## O cookie de sessão com as três flags obrigatórias
 
-O `express-session` aceita as três flags no próprio objeto de configuração, sem plugin nem truque. `httpOnly` esconde o cookie do JavaScript da página, `secure` só o transmite por HTTPS e `sameSite` impede que outro site o envie por você. O motivo de cada uma está em [shared/platform/security.md](../../shared/platform/security.md).
+O `express-session` aceita as três flags no próprio objeto de configuração, sem plugin nem truque. `httpOnly` esconde o cookie do JavaScript da página, `secure` só o transmite por HTTPS e `sameSite` impede que outro site o envie por você. O motivo de cada uma está em [shared/platform/security.md](../../shared/platform/security.md), e os atributos completos de `Set-Cookie`, com a escolha entre `Strict`, `Lax` e `None`, em [shared/platform/auth.md](../../shared/platform/auth.md#cookie).
 
 ```js
 const sessionConfig = {
@@ -251,3 +251,8 @@ O passo que evita a próxima vez é automático: ative o **secret scanning** (va
 npm install --save-dev @gitleaks/gitleaks
 npx gitleaks protect --staged --verbose
 ```
+
+## Veja também
+
+- [shared/platform/security-advanced.md](../../shared/platform/security-advanced.md): OWASP Top 10:2025, hash de senha com Argon2id, CSP com nonce e cadeia de suprimentos
+- [shared/platform/auth.md](../../shared/platform/auth.md#jwt-jose): verificação de JWT com `algorithms`, `issuer` e `audience` fixados, e a família JOSE

@@ -8,7 +8,7 @@ Clean Code, Robert C. Martin _(livro)_
 The Clean Coder, Robert C. Martin _(livro)_  
 [Command Query Separation, Martin Fowler](https://martinfowler.com/bliki/CommandQuerySeparation.html)  
 [CQRS, Martin Fowler](https://martinfowler.com/bliki/CQRS.html)  
-[Refactoring Guru — Design Patterns](https://refactoring.guru/design-patterns)  
+[Refactoring Guru: Design Patterns](https://refactoring.guru/design-patterns)  
 [The Twelve-Factor App](https://12factor.net/)
 
 ## Metodologias e Processo
@@ -26,6 +26,8 @@ The Clean Coder, Robert C. Martin _(livro)_
 [Strangler Fig Pattern, Martin Fowler](https://martinfowler.com/bliki/StranglerFigApplication.html)  
 [Event-Driven Architecture, Martin Fowler](https://martinfowler.com/articles/201701-event-driven.html)  
 [CloudEvents Spec](https://cloudevents.io/)
+
+<a id="apis-http-and-rfcs"></a>
 
 ## APIs, HTTP e RFCs
 
@@ -59,21 +61,21 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [Versioning in an Event Sourced System, Greg Young](https://leanpub.com/esversioning) _(livro)_  
 [PostgreSQL Transaction Isolation Levels](https://www.postgresql.org/docs/current/transaction-iso.html)
 
-## Banco de Dados — SQL
+## Banco de Dados SQL
 
 [PostgreSQL Documentation](https://www.postgresql.org/docs/)  
 [SQL Server Documentation, Microsoft](https://learn.microsoft.com/en-us/sql/sql-server/)  
-[Use the Index, Luke — SQL Performance Explained](https://use-the-index-luke.com/)  
+[Use the Index, Luke: SQL Performance Explained](https://use-the-index-luke.com/)  
 [PostgreSQL EXPLAIN Visualizer (PEV2)](https://explain.depesz.com/)
 
-## Banco de Dados — NoSQL
+## Banco de Dados NoSQL
 
 [MongoDB Manual 8.x](https://www.mongodb.com/docs/manual/)  
 [MongoDB Node.js Driver](https://www.mongodb.com/docs/drivers/node/current/)  
 [Redis Documentation](https://redis.io/docs/latest/)  
-[node-redis — Official Node.js Client](https://redis.io/docs/latest/develop/clients/nodejs/)  
+[node-redis: Official Node.js Client](https://redis.io/docs/latest/develop/clients/nodejs/)  
 [AWS DynamoDB Developer Guide](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/)  
-[AWS SDK v3 — DynamoDB Examples](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_dynamodb_code_examples.html)  
+[AWS SDK v3: DynamoDB Examples](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_dynamodb_code_examples.html)  
 [Apache Cassandra Documentation](https://cassandra.apache.org/doc/latest/)  
 [DataStax Node.js Driver for Cassandra](https://docs.datastax.com/en/developer/nodejs-driver/4.3/)  
 [Elasticsearch Reference 8.x](https://www.elastic.co/guide/en/elasticsearch/reference/current/)  
@@ -89,7 +91,83 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 ## Segurança
 
 [OWASP Top 10](https://owasp.org/www-project-top-ten/)  
-[OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
+[OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)  
+[OWASP Top 10:2025, introdução e metodologia](https://owasp.org/Top10/2025/0x00_2025-Introduction/)  
+[OWASP ASVS, repositório e releases](https://github.com/OWASP/ASVS)  
+[ASVS 5.0, anúncio da revisão pública](https://owasp.org/blog/2025/04/09/asvs-rc1-review)  
+[OWASP Dependency-Track](https://owasp.org/www-project-dependency-track/)
+
+### As dez categorias do Top 10:2025
+
+[A01 Broken Access Control](https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/)  
+[A02 Security Misconfiguration](https://owasp.org/Top10/2025/A02_2025-Security_Misconfiguration/)  
+[A03 Software Supply Chain Failures](https://owasp.org/Top10/2025/A03_2025-Software_Supply_Chain_Failures/)  
+[A04 Cryptographic Failures](https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/)  
+[A05 Injection](https://owasp.org/Top10/2025/A05_2025-Injection/)  
+[A06 Insecure Design](https://owasp.org/Top10/2025/A06_2025-Insecure_Design/)  
+[A07 Authentication Failures](https://owasp.org/Top10/2025/A07_2025-Authentication_Failures/)  
+[A08 Software or Data Integrity Failures](https://owasp.org/Top10/2025/A08_2025-Software_or_Data_Integrity_Failures/)  
+[A09 Security Logging and Alerting Failures](https://owasp.org/Top10/2025/A09_2025-Security_Logging_and_Alerting_Failures/)  
+[A10 Mishandling of Exceptional Conditions](https://owasp.org/Top10/2025/A10_2025-Mishandling_of_Exceptional_Conditions/)
+
+### Cheat Sheets citados
+
+[Password Storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html)  
+[HTTP Security Headers](https://cheatsheetseries.owasp.org/cheatsheets/HTTP_Headers_Cheat_Sheet.html)  
+[Session Management](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html)  
+[Content Security Policy](https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html)  
+[Cross-Site Request Forgery Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
+
+### Criptografia quebrada e custo de ataque
+
+[SHA-1 is a Shambles: colisão de prefixo escolhido em SHA-1](https://sha-mbles.github.io/)  
+[A Survey of Chosen-Prefix Collision Attacks, Marc Stevens](https://marc-stevens.nl/research/papers/CC21Chapter-S.pdf) _(PDF)_  
+[Kaspersky 2026: 60% das senhas com hash MD5 quebradas em menos de uma hora com uma RTX 5090](https://pbxscience.com/60-of-md5-hashed-passwords-can-be-cracked-in-under-an-hour-by-a-single-rtx-5090-kasperskys-2026-research-sounds-the-alarm/)  
+[Tabela de benchmark do hashcat por GPU, 2026](https://tutorials.technology/blog/08-Hashcat-GPU-benchmarking-table-Nvidia-and-amd.html)  
+[NIST: Post-Quantum Cryptography](https://csrc.nist.gov/projects/post-quantum-cryptography)
+
+### Cadeia de suprimentos
+
+[Shai-Hulud 2.0: análise e defesa, Microsoft Security](https://www.microsoft.com/en-us/security/blog/2025/12/09/shai-hulud-2-0-guidance-for-detecting-investigating-and-defending-against-the-supply-chain-attack/)  
+[Ataques à cadeia do npm, Unit 42](https://unit42.paloaltonetworks.com/monitoring-npm-supply-chain-attacks/)  
+[Lições da onda Shai-Hulud: procedência válida não basta sem escopo preso](https://turingpoint.de/en/blog/hardening-npm-supply-chains-lessons-from-mini-shai-hulud/)  
+[npm Trusted Publishers](https://docs.npmjs.com/trusted-publishers)
+
+## Identidade e Autenticação
+
+[RFC 9700: Best Current Practice for OAuth 2.0 Security](https://datatracker.ietf.org/doc/rfc9700/)  
+[OAuth 2.1, estado do rascunho na IETF](https://oauth.net/2.1/)  
+[RFC 8252: OAuth 2.0 for Native Apps (BCP 212)](https://datatracker.ietf.org/doc/html/rfc8252)  
+[RFC 7636: Proof Key for Code Exchange (PKCE)](https://www.rfc-editor.org/rfc/rfc7636)  
+[RFC 9449: OAuth 2.0 Demonstrating Proof of Possession (DPoP)](https://datatracker.ietf.org/doc/html/rfc9449)  
+[RFC 8705: OAuth 2.0 Mutual-TLS e token preso ao certificado](https://datatracker.ietf.org/doc/html/rfc8705)  
+[OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)  
+[Web Authentication (WebAuthn), W3C](https://www.w3.org/TR/webauthn-3/)
+
+### JOSE
+
+[RFC 7515: JSON Web Signature (JWS)](https://www.rfc-editor.org/rfc/rfc7515)  
+[RFC 7516: JSON Web Encryption (JWE)](https://www.rfc-editor.org/rfc/rfc7516)  
+[RFC 7517: JSON Web Key (JWK)](https://www.rfc-editor.org/rfc/rfc7517)  
+[RFC 7518: JSON Web Algorithms (JWA)](https://www.rfc-editor.org/rfc/rfc7518)  
+[jose, implementação para JavaScript de panva](https://github.com/panva/jose)
+
+O RFC 7519, que define o JWT, está listado em [APIs, HTTP e RFCs](#apis-http-and-rfcs).
+
+### Cookie, cache e navegador
+
+[MDN: Set-Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie)  
+[MDN: cookies particionados (CHIPS)](https://developer.mozilla.org/en-US/docs/Web/Privacy/Guides/Privacy_sandbox/Partitioned_cookies)  
+[MDN: ETag](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/ETag)
+
+### Servidores e bibliotecas de identidade
+
+[Keycloak Documentation](https://www.keycloak.org/documentation)  
+[Authentik Documentation](https://goauthentik.io/docs/)  
+[Zitadel Documentation](https://zitadel.com/docs)  
+[Better Auth Documentation](https://www.better-auth.com/docs/introduction)  
+[Supabase Auth](https://supabase.com/docs/guides/auth)  
+[Auth.js passa a fazer parte do Better Auth](https://better-auth.com/blog/authjs-joins-better-auth)
 
 ## Frontend
 
@@ -104,19 +182,19 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 
 ## Cor e Acessibilidade Visual
 
-[oklch.com — Picker Interativo](https://oklch.com)  
-[Evil Martians — OKLCH in CSS: why quit RGB & HSL](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl)  
-[MDN — CSS oklch()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch)  
-[WCAG 2.2 — Criterion 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)  
-[WCAG 2.2 — Criterion 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)  
+[oklch.com: Picker Interativo](https://oklch.com)  
+[Evil Martians: OKLCH in CSS: why quit RGB & HSL](https://evilmartians.com/chronicles/oklch-in-css-why-quit-rgb-hsl)  
+[MDN: CSS oklch()](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/oklch)  
+[WCAG 2.2: Criterion 1.4.3 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum)  
+[WCAG 2.2: Criterion 1.4.11 Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast)  
 [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)  
 [APCA Contrast Calculator](https://www.myndex.com/APCA/)  
-[Adobe Color — Roda de Cores](https://color.adobe.com/pt/create/color-wheel)  
-[Smashing Magazine — Color Theory for Designers](https://www.smashingmagazine.com/2010/01/color-theory-for-designers-part-1-the-meaning-of-color/)  
-[Material Design 3 — Color System](https://m3.material.io/styles/color/system/overview)  
+[Adobe Color: Roda de Cores](https://color.adobe.com/pt/create/color-wheel)  
+[Smashing Magazine: Color Theory for Designers](https://www.smashingmagazine.com/2010/01/color-theory-for-designers-part-1-the-meaning-of-color/)  
+[Material Design 3: Color System](https://m3.material.io/styles/color/system/overview)  
 [Refactoring UI](https://www.refactoringui.com)  
-[Tailwind CSS v4 — Colors](https://tailwindcss.com/docs/colors)  
-[shadcn/ui — Themes](https://ui.shadcn.com/themes)
+[Tailwind CSS v4: Colors](https://tailwindcss.com/docs/colors)  
+[shadcn/ui: Themes](https://ui.shadcn.com/themes)
 
 ## Bots e Mensageria
 
@@ -124,7 +202,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [Discord Developer Portal](https://discord.com/developers/docs)
 [Telegraf Documentation](https://telegraf.js.org/)
 [Telegram Bot API Reference](https://core.telegram.org/bots/api)
-[Baileys — WhatsApp Web API](https://github.com/WhiskeySockets/Baileys)
+[Baileys: WhatsApp Web API](https://github.com/WhiskeySockets/Baileys)
 [WhatsApp Cloud API, Meta Developers](https://developers.facebook.com/docs/whatsapp/cloud-api)
 [Bolt for JavaScript Documentation](https://docs.slack.dev/tools/bolt-js/)
 [Slack API Reference](https://api.slack.com/methods)
@@ -152,7 +230,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [Nuxt useFetch Composable](https://nuxt.com/docs/api/composables/use-fetch)  
 [Nitro Caching Layer](https://nitro.build/guide/cache)  
 [Vite Documentation](https://vite.dev/guide/)  
-[VueUse — Collection of Composables](https://vueuse.org/)
+[VueUse: Collection of Composables](https://vueuse.org/)
 
 ## C# e .NET
 
@@ -167,11 +245,11 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 ## Python
 
 [Python 3.14 Documentation](https://docs.python.org/3.14/)  
-[asyncio — Python Docs](https://docs.python.org/3/library/asyncio.html)  
+[asyncio: Python Docs](https://docs.python.org/3/library/asyncio.html)  
 [Pydantic Documentation](https://docs.pydantic.dev/latest/)  
 [Jinja2 Documentation](https://jinja.palletsprojects.com/)  
 [FastAPI Documentation](https://fastapi.tiangolo.com)  
-[httpx — Async HTTP Client](https://www.python-httpx.org/)  
+[httpx: Async HTTP Client](https://www.python-httpx.org/)  
 [HTMX Documentation](https://htmx.org/docs/)  
 [Reflex Documentation](https://reflex.dev/docs/getting-started/introduction/)
 
@@ -188,7 +266,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 ## PHP
 
 [PHP Documentation](https://www.php.net/docs.php)
-[PHP-FIG — PSR Standards](https://www.php-fig.org/psr/)
+[PHP-FIG: PSR Standards](https://www.php-fig.org/psr/)
 [PHP: The Right Way](https://phptherightway.com/)
 [PHP CS Fixer](https://cs.symfony.com/)
 [PHPStan](https://phpstan.org/)
@@ -204,7 +282,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [Kotlin Documentation](https://kotlinlang.org/docs/home.html)
 [Kotlin Coding Conventions](https://kotlinlang.org/docs/coding-conventions.html)
 [Kotlin Coroutines Guide](https://kotlinlang.org/docs/coroutines-guide.html)
-[Kotlin — java.time no Android/JVM](https://kotlinlang.org/docs/datetime.html)
+[Kotlin: java.time no Android/JVM](https://kotlinlang.org/docs/datetime.html)
 [ktlint](https://pinterest.github.io/ktlint/)
 [detekt](https://detekt.dev/)
 [Kotest Framework](https://kotest.io/docs/framework/framework.html)
@@ -218,14 +296,14 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [The Swift Programming Language](https://docs.swift.org/swift-book/)
 [Swift Package Manager](https://www.swift.org/documentation/package-manager/)
 [SwiftLint](https://github.com/realm/SwiftLint)
-[XCTest — Apple Developer](https://developer.apple.com/documentation/xctest)
-[Swift Testing — Apple Developer](https://developer.apple.com/documentation/testing)
+[XCTest: Apple Developer](https://developer.apple.com/documentation/xctest)
+[Swift Testing: Apple Developer](https://developer.apple.com/documentation/testing)
 
 ## Dart e Flutter
 
 [Dart Documentation](https://dart.dev/guides)
-[Effective Dart — Style](https://dart.dev/effective-dart/style)
-[Dart — pub.dev](https://pub.dev/)
+[Effective Dart: Style](https://dart.dev/effective-dart/style)
+[Dart: pub.dev](https://pub.dev/)
 [Flutter Documentation](https://docs.flutter.dev/)
 [Flutter Widget Catalog](https://docs.flutter.dev/ui/widgets)
 [Riverpod](https://riverpod.dev/docs/introduction/why_riverpod)
@@ -234,7 +312,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 
 ## Observabilidade
 
-[Pino — Fast Node.js Logger](https://getpino.io/)  
+[Pino: Fast Node.js Logger](https://getpino.io/)  
 [Serilog](https://serilog.net/)  
 [Sentry](https://docs.sentry.io/)  
 [New Relic](https://docs.newrelic.com/)
@@ -247,8 +325,8 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [The Cargo Book](https://doc.rust-lang.org/cargo/)  
 [Rust API Guidelines](https://rust-lang.github.io/api-guidelines/)  
 [Clippy Lints Reference](https://rust-lang.github.io/rust-clippy/master/)  
-[Tokio — Async Runtime](https://tokio.rs/)  
-[Axum — Web Framework](https://github.com/tokio-rs/axum)  
+[Tokio: Async Runtime](https://tokio.rs/)  
+[Axum: Web Framework](https://github.com/tokio-rs/axum)  
 [Actix-web](https://actix.rs/)  
 [Serde](https://serde.rs/)  
 [thiserror](https://docs.rs/thiserror)  
@@ -257,11 +335,11 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 ## Blockchain / Smart Contracts
 
 [Solana Documentation](https://solana.com/docs)  
-[Solana — Accounts](https://solana.com/docs/core/accounts)  
-[Solana — Instructions](https://solana.com/docs/core/instructions)  
-[Solana — Programs](https://solana.com/docs/core/programs)  
+[Solana: Accounts](https://solana.com/docs/core/accounts)  
+[Solana: Instructions](https://solana.com/docs/core/instructions)  
+[Solana: Programs](https://solana.com/docs/core/programs)  
 [Anchor Framework Documentation](https://www.anchor-lang.com/docs)  
-[anchor-lang — docs.rs](https://docs.rs/anchor-lang/latest/anchor_lang/)  
+[anchor-lang: docs.rs](https://docs.rs/anchor-lang/latest/anchor_lang/)  
 [Solana Playground (Beta)](https://beta.solpg.io/)
 
 ## Ruby e Rails
@@ -277,11 +355,11 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [ActiveRecord Associations](https://guides.rubyonrails.org/association_basics.html)
 [ActiveRecord Validations](https://guides.rubyonrails.org/active_record_validations.html)
 [Active Job Basics](https://guides.rubyonrails.org/active_job_basics.html)
-[Solid Queue — GitHub](https://github.com/rails/solid_queue)
+[Solid Queue: GitHub](https://github.com/rails/solid_queue)
 [RSpec Documentation](https://rspec.info/documentation/)
-[FactoryBot — GitHub](https://github.com/thoughtbot/factory_bot)
+[FactoryBot: GitHub](https://github.com/thoughtbot/factory_bot)
 [dry-validation](https://dry-rb.org/gems/dry-validation/)
-[semantic_logger — GitHub](https://github.com/reidmorrison/semantic_logger)
+[semantic_logger: GitHub](https://github.com/reidmorrison/semantic_logger)
 [Kamal Deploy Documentation](https://kamal-deploy.org/)
 
 ## Java e Spring
@@ -289,12 +367,12 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [OpenJDK Documentation](https://openjdk.org/)  
 [Java 25 Release Notes](https://openjdk.org/projects/jdk/25/)  
 [Java SE 25 API Specification](https://docs.oracle.com/en/java/javase/25/docs/api/)  
-[The Java Tutorials — java.time](https://docs.oracle.com/javase/tutorial/datetime/)  
-[JEP Index — Project Loom (Virtual Threads)](https://openjdk.org/projects/loom/)  
-[JEP 425 — Virtual Threads](https://openjdk.org/jeps/425/)  
-[JEP 441 — Pattern Matching for switch](https://openjdk.org/jeps/441/)  
-[JEP 395 — Records](https://openjdk.org/jeps/395/)  
-[JEP 409 — Sealed Classes](https://openjdk.org/jeps/409/)  
+[The Java Tutorials: java.time](https://docs.oracle.com/javase/tutorial/datetime/)  
+[JEP Index: Project Loom (Virtual Threads)](https://openjdk.org/projects/loom/)  
+[JEP 425: Virtual Threads](https://openjdk.org/jeps/425/)  
+[JEP 441: Pattern Matching for switch](https://openjdk.org/jeps/441/)  
+[JEP 395: Records](https://openjdk.org/jeps/395/)  
+[JEP 409: Sealed Classes](https://openjdk.org/jeps/409/)  
 [Spring Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/current/reference/html/)  
 [Spring Framework Documentation](https://docs.spring.io/spring-framework/reference/)  
 [Spring Security Reference](https://docs.spring.io/spring-security/reference/)  
@@ -312,7 +390,7 @@ Implementing Domain-Driven Design, Vaughn Vernon _(livro)_
 [MicroPython Documentation](https://docs.micropython.org/)  
 [MicroPython Standard Library Reference](https://docs.micropython.org/en/latest/library/index.html)  
 [MicroPython Differences from CPython](https://docs.micropython.org/en/latest/genrst/index.html)  
-[machine — MicroPython](https://docs.micropython.org/en/latest/library/machine.html)  
-[machine.WDT — Watchdog Timer](https://docs.micropython.org/en/latest/library/machine.WDT.html)  
-[RP2 Quick Reference — Raspberry Pi Pico](https://docs.micropython.org/en/latest/rp2/quickref.html)  
-[ESP32 Quick Reference — MicroPython](https://docs.micropython.org/en/latest/esp32/quickref.html)
+[machine: MicroPython](https://docs.micropython.org/en/latest/library/machine.html)  
+[machine.WDT: Watchdog Timer](https://docs.micropython.org/en/latest/library/machine.WDT.html)  
+[RP2 Quick Reference: Raspberry Pi Pico](https://docs.micropython.org/en/latest/rp2/quickref.html)  
+[ESP32 Quick Reference: MicroPython](https://docs.micropython.org/en/latest/esp32/quickref.html)

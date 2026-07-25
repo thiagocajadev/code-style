@@ -220,6 +220,8 @@ Estão organizados como um checklist de revisão, do mais amplo ao mais detalhad
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | [Desenho de API](docs/shared/platform/api-design.md)   | Pipeline BFF, contratos Request/Response, envelope padrão, verbos REST, status codes e Result → HTTP |
 | [Segurança](docs/shared/platform/security.md)          | Segredos, configuração em camadas, autorização e flags do cookie de sessão                           |
+| [Segurança avançada](docs/shared/platform/security-advanced.md) | OWASP Top 10:2025, hash de senha, CSP e headers, cadeia de suprimentos, ASVS e pós-quântico |
+| [Autenticação](docs/shared/platform/auth.md)           | OAuth e OIDC, JWT e JOSE, cookie por dentro, cache e ETag, token no navegador e no app mobile, passkeys |
 | [Configuração](docs/shared/platform/configuration.md)  | Config e secret, precedência, camadas por ambiente, objeto tipado e fail-fast                        |
 | [Feature flags](docs/shared/platform/feature-flags.md) | Toggle por propósito, rollout, dark launch, kill switch e prazo de validade                          |
 | [Desempenho](docs/shared/platform/performance.md)      | Paginação, cache, filas assíncronas, webhook, polling, WebSocket, lazy loading e Big O               |

@@ -102,11 +102,11 @@ CREATE INDEX idx_orders_status_created ON orders(status, created_at);
 
 ### Boas práticas de query
 
-Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../../sql/conventions/advanced/performance.md).
+Padrões com BAD/GOOD completos: [sql/conventions/advanced/performance.md](../../sql/conventions/advanced/performance.md). Consulta parametrizada e o que a concatenação abre está em [security-advanced.md](./security-advanced.md#a05-injection).
 
 ### Consultas NoSQL
 
-O NoSQL tem os próprios anti-padrões, e o princípio que os resolve é o mesmo do SQL: filtrar e projetar no servidor sai mais barato do que trazer o dado pela rede para descartar no cliente.
+O NoSQL tem os próprios anti-padrões, e o princípio que os resolve é o mesmo do SQL: filtrar e projetar no servidor sai mais barato do que trazer o dado pela rede para descartar no cliente. O filtro que recebe o corpo da requisição inteiro tem uma falha de segurança própria, a injeção de operador, tratada em [security-advanced.md](./security-advanced.md#a05-injection).
 
 Guia completo por SGBD: [docs/nosql/](../../nosql/). Convenções de **CRUD** (Create Read Update Delete · Criar Ler Atualizar Excluir), naming e performance: [nosql/conventions/](../../nosql/conventions/).
 

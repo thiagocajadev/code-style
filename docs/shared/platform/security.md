@@ -4,6 +4,8 @@
 
 As decisões de segurança acontecem espalhadas pelo design inteiro: onde guardar a senha do banco, quem valida o formulário, quais flags o cookie de sessão carrega, quais origens a API aceita. Cada uma delas é tomada durante o desenvolvimento normal, e revisar tudo depois sai mais caro que acertar na hora. Os princípios desta página valem para qualquer linguagem ou plataforma.
 
+Dois documentos continuam daqui. [security-advanced.md](security-advanced.md) cobre as dez categorias do OWASP Top 10:2025, hash de senha, cabeçalhos de segurança e cadeia de suprimentos. [auth.md](auth.md) cobre identidade e transporte de credencial: OAuth, OIDC, JWT, cookie, e onde guardar o token no navegador e no app.
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -75,6 +77,8 @@ Request → autenticação (quem é você?) → autorização (o que pode fazer?
 
 Um usuário com sessão válida continua sem permissão para acessar o recurso de outro. Quando os dois controles viram um só, aparece o ponto cego clássico: a rota protegida apenas por autenticação libera qualquer usuário logado, inclusive o que deveria enxergar somente os próprios dados.
 
+<a id="centralized-authorization"></a>
+
 ## Autorização centralizada
 
 Escrever a checagem de permissão dentro de cada handler espalha a regra pelo código todo. O endpoint novo entra sem a checagem porque alguém esqueceu, e a mudança de regra obriga a revisar dezenas de arquivos.
@@ -89,9 +93,11 @@ O cookie de sessão sem flags de segurança abre caminho para dois ataques: **XS
 | --- | --- | --- |
 | `HttpOnly` | XSS | Script não consegue ler o cookie via `document.cookie` |
 | `Secure` | Interceptação de rede | Cookie só é enviado em conexões HTTPS |
-| `SameSite=Strict` | CSRF | Cookie não é enviado em requisições cross-origin |
+| `SameSite` | CSRF | Restringe o envio do cookie em requisições partidas de outro site |
 
 Cada flag cobre um caminho diferente, e nenhuma cobre o caminho da outra. Faltando uma, aquele caminho fica aberto.
+
+O valor de `SameSite` depende de como o login termina, e `Strict` quebra o retorno de um provedor de identidade externo. Os atributos completos de `Set-Cookie`, a escolha entre `Strict`, `Lax` e `None`, e os prefixos de nome estão em [auth.md](auth.md#cookie), que é a referência única do projeto sobre cookie.
 
 ## CORS: aceitar chamada só das origens conhecidas
 

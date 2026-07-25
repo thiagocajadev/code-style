@@ -252,3 +252,4 @@ resposta do servidor continua chegando, e a tela precisa saber voltar atrás qua
 **Veja também**
 - [operation-flow.md](operation-flow.md): pipeline de busca de dados: Component → Hook → Service → apiClient
 - [component-architecture.md](component-architecture.md): container vs presentacional; rotas impõem essa separação naturalmente
+- [../platform/auth.md](../platform/auth.md#token-browser): onde a credencial fica no navegador, o padrão BFF e a checagem de origem na escrita

@@ -106,4 +106,6 @@ Respondidas essas perguntas, o próximo passo é `patterns.md` (padrões tático
 | Comunicação assíncrona entre componentes | [`../platform/messaging.md`](../platform/messaging.md) |
 | Performance de query e operações de dados | [`../platform/database.md`](../platform/database.md) |
 | Requisitos de segurança e proteção de dados | [`../platform/security.md`](../platform/security.md) |
+| Classes de falha, OWASP Top 10:2025 e modelagem de ameaça | [`../platform/security-advanced.md`](../platform/security-advanced.md) |
+| Identidade, sessão e transporte de credencial | [`../platform/auth.md`](../platform/auth.md) |
 | SLA, CAP, capacity planning, sharding | [`system-design-advanced.md`](./system-design-advanced.md) |

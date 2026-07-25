@@ -75,3 +75,5 @@ A regra prática: todo estado cuja perda o usuário notaria precisa estar gravad
 | SO encerra app por memória | Processo morto; próxima abertura é cold start |
 
 A falha mais comum é o código assumir que o app ficou vivo o tempo todo. O formulário meio preenchido que se apaga quando o usuário volta de uma ligação é esse erro chegando na tela.
+
+O token de sessão segue regra própria na retomada: ele é lido do Keychain ou do Keystore, e nunca de armazenamento comum de preferências. Ver [../platform/auth.md](../platform/auth.md#token-mobile).

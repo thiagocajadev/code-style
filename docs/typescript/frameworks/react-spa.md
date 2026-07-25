@@ -415,7 +415,7 @@ As funções que escrevem na store (`selectStatus`, `changeSearchTerm`) têm ide
 
 O `persist` do Zustand grava a store no `localStorage`, e a escolha do usuário sobrevive ao recarregar a página. Serve para o tema, o idioma e o layout da tabela.
 
-O token de sessão fica fora dessa lista. Qualquer script que rode na página lê o `localStorage`, e um **XSS** (Cross-Site Scripting · injeção de script na página) transforma o token guardado ali em sessão roubada. O token pertence a um cookie `HttpOnly`, que o JavaScript não alcança.
+O token de sessão fica fora dessa lista. Qualquer script que rode na página lê o `localStorage`, e um **XSS** (Cross-Site Scripting · injeção de script na página) transforma o token guardado ali em sessão roubada. O token pertence a um cookie `HttpOnly`, que o JavaScript não alcança. A comparação entre `localStorage`, `sessionStorage`, memória e cookie, e o padrão BFF que mantém o token fora do navegador, estão em [shared/platform/auth.md](../../shared/platform/auth.md#token-browser).
 
 <details>
 <summary>✅ Bom: a store persistida guarda a preferência de exibição, e o campo de sessão fica de fora</summary>

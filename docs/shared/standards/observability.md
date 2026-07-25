@@ -35,6 +35,8 @@ Cada nível tem um contrato definido. Usar o nível errado enche a saída de ru�
 | **warn** | Inesperado, mas o sistema continua | Query lenta, retry (nova tentativa), config ausente com fallback (solução alternativa) |
 | **error** | Falha que requer atenção, com stack trace (rastreamento de pilha) | Exception, I/O failure, assertion violada |
 
+<a id="never-log"></a>
+
 ## O que nunca logar
 
 Logs são persistidos, indexados e lidos por vários sistemas. Um dado sensível que entra no log vaza de forma permanente, mesmo que o log seja apagado depois.

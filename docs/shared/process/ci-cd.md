@@ -41,6 +41,8 @@ Lint → Segurança → Testes → Build → Deploy Staging → Smoke → Deploy
 | **Smoke**          | Fluxo crítico funciona em staging             | Qualquer falha no caminho crítico |
 | **Deploy Prod**    | Promoção para produção                        | Aprovação manual ou canary gate   |
 
+O que o estágio de segurança roda, ferramenta por ferramenta (secret scanning, SAST, SCA, varredura de infraestrutura e DAST), e o que bloqueia o merge em cada caso, está em [security-advanced.md](../platform/security-advanced.md#pipeline-gates). O pin de action por SHA e a instalação reprodutível estão em [A03](../platform/security-advanced.md#a03-supply-chain).
+
 O artefato que chega em produção é o mesmo que passou por staging. Refazer o build entre um ambiente e outro produz um binário que ninguém testou, e a garantia dos testes se perde no caminho.
 
 ## Ambientes
