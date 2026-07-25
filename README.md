@@ -164,8 +164,10 @@ Estão organizados como um checklist de revisão, do mais amplo ao mais detalhad
 
 | Tópico                                                                        | Descrição                                                                                     |
 | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| [Governança](docs/shared/process/governance.md)                               | Pensamento de staff engineer, SDLC, onboarding e governança do projeto                        |
-| [Metodologias](docs/shared/process/methodologies.md)                          | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
+| [Governance](docs/shared/process/governance.md)                               | Pensamento de staff engineer, SDLC, onboarding e governança do projeto                        |
+| [Methodologies](docs/shared/process/methodologies.md)                         | DDD, BDD, TDD, XP, XGH, desenvolvimento orgânico + Monolito, Microsserviços, Monolito Modular |
+| [Agile](docs/shared/process/agile.md)                                         | Manifesto, Scrum, Kanban, Lean, cascata, histórias de usuário e definição de pronto           |
+| [BPM](docs/shared/process/bpm.md)                                             | BPMN, raias e desvios, orquestração e coreografia, motor de processo e máquina de estados     |
 | [Git](docs/shared/process/git.md)                                             | Branches, commits, pull requests e estratégia de entrega                                      |
 | [Git (avançado)](docs/shared/process/git-advanced.md)                         | Rotina de uma tarefa, squash, review e recuperação de erros                                   |
 | [Design Thinking](docs/shared/process/design-thinking.md)                     | Empatia, definição de problema, ideação, protótipo e teste centrado no usuário                |
@@ -179,11 +181,14 @@ Estão organizados como um checklist de revisão, do mais amplo ao mais detalhad
 | Tópico                                                                         | Descrição                                                                                     |
 | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------- |
 | [Principles](docs/shared/architecture/principles.md)                           | Todos os princípios explicados: Forma, Legibilidade, Controle de Qualidade                    |
+| [SOLID](docs/shared/architecture/solid.md)                                     | Uma seção por letra: SRP, OCP, LSP, ISP e DIP, com sinal de violação e custo do excesso       |
+| [Principles (avançado)](docs/shared/architecture/principles-advanced.md)       | KISS, YAGNI, DRY e a regra das três, separação de responsabilidades, Deméter, menor surpresa  |
 | [System Design](docs/shared/architecture/system-design.md)                     | Requisitos funcionais e não-funcionais, decomposição, trade-offs essenciais                   |
 | [System Design (avançado)](docs/shared/architecture/system-design-advanced.md) | SLA/SLO/SLI, CAP, PACELC, modelos de consistência, sharding, replicação e capacity planning   |
 | [Architecture](docs/shared/architecture/architecture.md)                       | Vertical Slice, MVC, Legacy, XP e XGH com estrutura de pastas                                 |
 | [Component Architecture](docs/shared/architecture/component-architecture.md)   | Composição, container/presentational, estado, memoization, limites de módulo                         |
-| [Patterns](docs/shared/architecture/patterns.md)                               | Result, Factory, Repository, Strategy, Observer, Builder, Decorator, CQRS, AI-Driven, SDD     |
+| [Patterns](docs/shared/architecture/patterns.md)                               | Os 23 padrões GoF em criacionais, estruturais e comportamentais, com exemplo ruim e bom       |
+| [Patterns (avançado)](docs/shared/architecture/patterns-advanced.md)           | Result, Repository, Specification, Null Object, Unit of Work, CQRS, Circuit Breaker, DI, SDD  |
 | [Entity Modeling](docs/shared/architecture/entity-modeling.md)                 | Tamanho saudável, value objects, strongly-typed IDs, BaseEntity, cardinalidade, 1:N e N:N     |
 | [Transactions](docs/shared/architecture/transactions.md)                       | Boundary transacional, Unit of Work, locking otimista/pessimista, saga, eventual consistency  |
 | [Domain Events](docs/shared/architecture/domain-events.md)                     | Domain vs integration event, outbox, naming no passado, schema versionado, handler isolation  |

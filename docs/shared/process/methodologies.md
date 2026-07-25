@@ -4,6 +4,8 @@
 
 A metodologia define como o time organiza o trabalho. O estilo arquitetural define como o código é estruturado e implantado. As duas escolhas produzem efeito cedo: uma metodologia que não cabe no time gera retrabalho, e um estilo arquitetural grande demais para o problema gera complexidade que alguém vai precisar operar.
 
+Este documento cobre as metodologias que orientam a construção do software. O guarda-chuva ágil, com Scrum, Kanban e Lean, está em [`agile.md`](./agile.md). A modelagem do processo de negócio que o software atende está em [`bpm.md`](./bpm.md).
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -81,6 +83,8 @@ Um conjunto de práticas de engenharia voltadas a feedback rápido e qualidade c
 
 O XP é a base conceitual do que hoje se chama DevOps e **CI/CD** (Continuous Integration and Continuous Delivery · Integração e Entrega Contínuas: **CI** é Integração Contínua; **CD** é Entrega Contínua).
 
+O XP trata das práticas de engenharia. A organização do trabalho em ciclos, com Scrum e Kanban, está em [`agile.md`](./agile.md), e as duas escolhas se combinam.
+
 **Quando usar**: times pequenos com entregas frequentes e domínio em evolução.
 
 ### Desenvolvimento intuitivo
@@ -99,7 +103,7 @@ O risco está na transferência: uma decisão tomada por intuição é difícil 
 
 A estrutura emerge da necessidade real, sem planejamento _upfront_ (antecipado) extenso. O código cresce na direção que o problema exige.
 
-Isso descreve um adiamento deliberado das abstrações. A abstração entra quando o padrão se repete pela terceira vez (**Rule of Three** · regra das três ocorrências), porque só aí ficam visíveis as partes que variam e as que se mantêm.
+Isso descreve um adiamento deliberado das abstrações. A abstração entra quando o padrão se repete pela terceira vez (**Rule of Three** · regra das três ocorrências), porque só aí ficam visíveis as partes que variam e as que se mantêm. O critério e o caso oposto, em que a unificação precoce acopla dois módulos que nunca foram iguais, estão em [`principles-advanced.md`](../architecture/principles-advanced.md#dry).
 
 O risco é a dívida técnica se acumular sem que ninguém perceba, e o refactoring regular é o que evita isso. Com uma suíte de testes cobrindo o comportamento, refatorar deixa de ser aposta e o desenvolvimento orgânico se sustenta.
 
@@ -189,3 +193,14 @@ Monolito Modular
 | **Monolito** | Início de projeto, time pequeno | Escala acoplada ao crescer |
 | **Monolito Modular** | Padrão recomendado; domínio claro, time crescendo | Exige disciplina de limites |
 | **Microsserviços** | Escala de time ou domínio impõe isolamento real | Complexidade operacional alta |
+
+## Cross-links
+
+| Quando o trabalho exige | Documento |
+|---|---|
+| Scrum, Kanban, Lean e o Manifesto | [`agile.md`](./agile.md) |
+| Modelar o processo de negócio que o software atende | [`bpm.md`](./bpm.md) |
+| Decidir o que construir antes de entrar no backlog | [`design-thinking.md`](./design-thinking.md) |
+| Os cinco princípios de design orientado a objetos | [`../architecture/solid.md`](../architecture/solid.md) |
+| KISS, YAGNI, DRY e a regra das três ocorrências | [`../architecture/principles-advanced.md`](../architecture/principles-advanced.md) |
+| Os padrões de projeto que implementam essas ideias | [`../architecture/patterns.md`](../architecture/patterns.md) |

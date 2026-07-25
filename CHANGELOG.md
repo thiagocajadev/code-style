@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.10.0] - 2026-07-24
+
+### Added
+
+- **Metodologias, princípios e o catálogo de patterns completados (Épico D1).** 5 arquivos novos e 2.060 linhas, mais 1.207 inserções nos 4 existentes. O levantamento que abriu o épico encontrou nove temas com **zero ocorrência no repositório**: Liskov, ISP, DIP, KISS, YAGNI, DRY, Scrum, Kanban e BPMN. `SRP` e `OCP` existiam só como linha de tabela de conceitos, em `docs/python/conventions/functions.md` e em `patterns.md`.
+- **`docs/shared/architecture/solid.md`** (462 linhas), uma seção por letra. Cada princípio traz o problema, um par de exemplos Ruim e Bom em `js`, os sinais de violação e o custo de aplicar onde não cabe. Fecha com a tabela "Quando SOLID atrapalha", que nomeia os cinco excessos mais comuns e a correção de cada um.
+- **`docs/shared/architecture/principles-advanced.md`** (527 linhas): KISS, YAGNI, DRY, separação de responsabilidades, Lei de Deméter, composição sobre herança, princípio da menor surpresa e regra do escoteiro. O DRY tem dois pares de exemplos, e o segundo mostra o caso oposto, em que a unificação precoce acopla dois módulos que nunca compartilharam a mesma regra.
+- **`docs/shared/architecture/patterns.md` reestruturado** nas três categorias GoF. Os 23 padrões clássicos ganharam par Ruim/Bom em `js`, onde antes havia pseudocódigo sem linguagem. Os **9 que existiam apenas como linha da tabela de especializados** (Abstract Factory, Prototype, Composite, Mediator, Memento, Bridge, Visitor, Flyweight, Iterator) passaram a ter seção. `Factory` foi desdobrado em **Factory Method** e **Abstract Factory**: o termo "Factory Method" não aparecia uma única vez no arquivo.
+- **`docs/shared/architecture/patterns-advanced.md`** (547 linhas), com os padrões que apareceram depois do catálogo de 1994. Recebeu Result, Repository, CQRS, AI-Driven e SDD, que saíram de `patterns.md`, e ganhou **Specification, Null Object, Unit of Work, Circuit Breaker e injeção de dependência**. Saga, Outbox e nova tentativa com espera crescente entram por cross-link para `transactions.md`, `domain-events.md` e `backend-flow.md`.
+- **`docs/shared/process/agile.md`** (306 linhas): o Manifesto e os quatro valores, Scrum com papéis, reuniões e artefatos, Kanban com limite de trabalho em andamento e as métricas de tempo, Lean com os seis desperdícios, e a cascata com os cenários em que ela é a escolha correta. Os exemplos Ruim e Bom são artefatos de processo: história de usuário, definição de pronto, reunião diária e quadro sem limite.
+- **`docs/shared/process/bpm.md`** (218 linhas): BPMN com os nove símbolos que cobrem a maioria dos diagramas, o processo espalhado em campos booleanos contra o processo declarado como máquina de estados, orquestração e coreografia lado a lado, e os critérios para trazer ou dispensar um motor de processo. Os fluxos seguem a regra do projeto: lineares, da esquerda para a direita, em uma linha.
+- **Cross-links sincronizados** em `methodologies.md` (que agora aponta o XP para o guarda-chuva ágil e a regra das três ocorrências para o DRY), `principles.md`, e 5 linhas novas no `README.md`.
+
+**Gates**: audit:prose 8 arquivos / 0 erro / 0 aviso · audit:docs 2595 Good / 401 arquivos / 0 violações · test:docs 44/0 · test:prose 25/0 · concepts shared 60 OK / 0 / 0 / 0 · 445 links com âncora verificados / 0 quebra introduzida · 0 em dash e 0 "fronteira" nos 9 arquivos tocados · 101 `<summary>` sem termo cru · 45 blocos `✅ Bom` sem lógica no `return`.
+
 ## [2.9.0] - 2026-07-15
 
 ### Fixed

@@ -9,6 +9,7 @@ node_modules/
 # AI artifacts — session state, not project logic
 .ai/backlog/
 CLAUDE.md
+AGENTS.md
 .ai/
 tmp/
 temp/
@@ -17,3 +18,7 @@ temp/
 .vscode/
 .idea/
 *.swp
+
+.ai/backlog/tasks.md
+.ai/backlog/impact-map.md
+.ai/last-prompt.md

@@ -12,6 +12,8 @@ A lista está organizada como checklist de revisão, do mais impactante ao mais 
 - **Legibilidade:** fluxo, espaçamento e nomes lidos linha a linha
 - **Controle de qualidade:** as garantias de robustez: estado, erros, **I/O** (Input/Output · Entrada/Saída) e testes
 
+Dois documentos continuam daqui. [`solid.md`](./solid.md) trata dos cinco princípios de design orientado a objetos, e [`principles-advanced.md`](./principles-advanced.md) trata de quanto desenho o problema merece, com KISS, YAGNI e DRY.
+
 ## Conceitos fundamentais
 
 | Conceito | O que é |
@@ -139,3 +141,13 @@ Operações de I/O (_leitura de banco, chamadas de rede, acesso a disco_) bloque
 ### Testes estruturados
 
 O padrão **AAA** (Arrange, Act, Assert · Arranjar, Agir, Atestar) divide cada teste em **três fases explícitas**. A preparação monta o contexto. A execução chama o comportamento. A verificação confirma o resultado com **variáveis nomeadas**, sem expressões inline no assert. Testes estruturados são legíveis como especificações do comportamento esperado.
+
+## Cross-links
+
+| Quando o trabalho exige | Documento |
+|---|---|
+| SRP, OCP, LSP, ISP e DIP, com uma seção por letra | [`solid.md`](./solid.md) |
+| KISS, YAGNI, DRY, Deméter e composição sobre herança | [`principles-advanced.md`](./principles-advanced.md) |
+| Os 23 padrões clássicos do catálogo GoF | [`patterns.md`](./patterns.md) |
+| Result, Repository, CQRS, Circuit Breaker e injeção de dependência | [`patterns-advanced.md`](./patterns-advanced.md) |
+| A regra de densidade visual em profundidade | [`../standards/visual-density.md`](../standards/visual-density.md) |
