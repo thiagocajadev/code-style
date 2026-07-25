@@ -309,6 +309,8 @@ function getOrderSummary(order) {
 
 </details>
 
+<a id="direct-return"></a>
+
 ## Retorno direto
 
 O retorno aparece no topo da função; os detalhes ficam em funções auxiliares logo

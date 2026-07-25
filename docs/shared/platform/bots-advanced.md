@@ -21,6 +21,8 @@ Cada plataforma de mensageria resolve os mesmos problemas de um jeito próprio. 
 
 ---
 
+<a id="discord"></a>
+
 ## Discord
 
 ### Autenticação e setup
@@ -66,6 +68,8 @@ Limites de embed:
 - Total de caracteres por mensagem: 6000
 
 ---
+
+<a id="telegram"></a>
 
 ## Telegram
 
@@ -114,6 +118,8 @@ O clique chega ao bot como um evento `callback_query`. Depois de tratar o clique
 Em grupo e supergrupo, o Telegram protege a privacidade da conversa: o bot só enxerga a mensagem que o menciona (`@bot`), a menos que a leitura ampla seja habilitada nas configurações do BotFather.
 
 ---
+
+<a id="whatsapp"></a>
 
 ## WhatsApp
 
@@ -166,6 +172,8 @@ Bot responde: 200 OK com body = hub.challenge
 ```
 
 ---
+
+<a id="slack"></a>
 
 ## Slack
 

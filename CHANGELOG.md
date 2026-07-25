@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.11.2] - 2026-07-25
+
+### Fixed
+
+- **Os 9 links do `docs/javascript/README.md` passaram a apontar para a âncora ASCII declarada no destino.** Eles usavam o slug gerado do heading em português (`#ponto-de-entrada-limpo`, `#if-e-else`, `#fases-misturadas-aaa` e outros seis). Nenhum estava quebrado, porque o slug resolve enquanto o heading não muda, e oito dos nove destinos já declaravam a âncora ASCII que o link ignorava. Só `## Retorno direto` em `conventions/functions.md` não tinha nenhuma, e ganhou `<a id="direct-return">`.
+- **`docs/shared/platform/bots-advanced.md` passou a declarar as quatro âncoras de plataforma** (`discord`, `telegram`, `whatsapp`, `slack`), alvo de 5 links vindos de `docs/javascript/frameworks/bot/`. Os headings geravam esses slugs por coincidência, sem o destino declarar nada.
+- **Um dos três achados era falso positivo, e o documento não mudou.** `docs/go/conventions/types.md:194` é `func Contains[T comparable](slice []T, value T) bool`, sintaxe de generics de Go dentro de bloco fenced. A varredura de links do Épico D2 leu o conteúdo do fence como link markdown. O que precisava mudar era a varredura.
+
+### Added
+
+- **`npm run audit:anchors`** (`.ai/tooling/scripts/audit-anchors.mjs`): exige que todo link com âncora aponte para um `<a id>` declarado no arquivo de destino, em vez de aceitar slug gerado de heading, que quebra na primeira reescrita do título. Pula blocos fenced, que é o que separa defeito real de generics de Go. Sem argumento varre `docs/` inteiro; com caminhos explícitos varre só o escopo do épico.
+- **Baseline do audit registrado: 63 âncoras não declaradas no repositório**, todas nas 7 linguagens ainda não revisadas (rust 11, go 10, swift 9, ruby 9, dart 9, kotlin 8, php 7) e **zero** nas 7 já revisadas (`javascript`, `shared`, `csharp`, `sql`, `typescript`, `html`, `css`). Cada épico de linguagem do Ciclo C zera a sua parte.
+
+**Verificação**: o audit rodado contra o `HEAD` anterior num worktree isolado acusou os 14 links corrigidos (9 do README mais 5 dos bots) e ignorou o `types.md`, separando defeito real de falso positivo na mesma passada. Contra o estado atual, `javascript/` e `shared/` somam 86 arquivos com 0 âncora não declarada.
+
+**Gates**: audit:prose 3 arquivos / 0 erro / 0 aviso · audit:docs 2614 Good / 403 arquivos / 0 violações, idêntico ao baseline · test:docs 44/0 · test:prose 25/0 · audit:anchors 182 arquivos das 7 linguagens revisadas / 0 âncora não declarada · 0 bloco de código alterado, confirmado por diff. O `lint` segue em 7 erros pré-existentes em `.ai/tooling/scripts/audit-prose.mjs` (regra `curly`), arquivo gitignored que o ciclo não tocou.
+
+**Fora deste release, no `sdg-agents-cli` v6.0.3**: o formato do `## Done` do backlog ficou em `- [DONE]` com bullet, decisão de não afrouxar a regex para não abrir margem fora do padrão. O `prune` sempre exigiu o bullet; quem induzia o drift eram os templates. Junto saiu um bug que quebrava `npm run prune` com exit 1 em projeto recém-inicializado, porque o placeholder `<!-- -->` do template semente era lido como drift.
+
 ## [2.11.1] - 2026-07-25
 
 ### Fixed
